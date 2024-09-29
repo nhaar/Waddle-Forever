@@ -36,7 +36,7 @@ handler.xt('j#js', (client) => {
 })
 
 handler.xt('i#gi', (client) => {
-  client.send('%xt%gi%-1%15%9106%1285%3032%821%8006%8010%8011%6026%4025%6025%4026%429%5014%340%1%')
+  client.send('%xt%gi%-1%%')
 })
 
 handler.xt('b#gb', (client) => {
