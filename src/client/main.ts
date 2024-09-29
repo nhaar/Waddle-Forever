@@ -5,7 +5,7 @@ import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
 import createWindow from "./window";
-import startServer from "./cpss/src/server";
+import startServer from "../server/server";
 
 log.initialize();
 
