@@ -1,0 +1,78 @@
+{
+  "name": "cpsc2",
+  "version": "0.0.0",
+  "description": "CPSC2",
+  "main": "./compiled/main.js",
+  "scripts": {
+    "clean": "rimraf compiled/",
+    "copy-files": "copyfiles -u 1 assets/**/* assets/* assets/flash/PepperFlashPlayer.plugin/Contents/* assets/flash/PepperFlashPlayer.plugin/Contents/_CodeSignature/* assets/flash/PepperFlashPlayer.plugin/Contents/MacOs/* compiled/assets/",
+    "build-tsc": "yarn clean && tsc && yarn copy-files",
+    "start": "yarn build-tsc && electron ./compiled/main.js",
+    "lint": "eslint -c .eslintrc --ext .ts ./src",
+    "build-win": "electron-builder build --win --publish never",
+    "build-mac": "electron-builder build --mac --publish never",
+    "build-linux": "electron-builder build --linux --x64 --publish never"
+  },
+  "author": "CPS",
+  "license": "MIT",
+  "build": {
+    "electronDist": "node_modules/electron/dist",
+    "appId": "com.clubpenguin.speedrunning.client",
+    "productName": "CPSC 2",
+    "asar": "false",
+    "win": {
+      "publish": "github",
+      "artifactName": "CPSC-Setup-${version}.${ext}"
+    },
+    "mac": {
+      "category": "game",
+      "icon": "./assets/icon.icns",
+      "artifactName": "CPS-Client-${version}.${ext}"
+    },
+    "linux": {
+      "category": "game",
+      "publish": "github",
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "icon": "./assets/icon.icns",
+      "maintainer": "renanrcp"
+    },
+    "appImage": {
+      "synopsis": "CPSC2",
+      "description": "CPSC2",
+      "category": "Games",
+      "artifactName": "CPS-Client-${version}.${ext}"
+    }
+  },
+  "devDependencies": {
+    "@types/discord-rpc": "^4.0.3",
+    "@types/electron-prompt": "^1.6.1",
+    "@types/express": "^5.0.0",
+    "@types/node": "^18.13.0",
+    "@types/sqlite3": "^3.1.11",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "copyfiles": "^2.4.1",
+    "electron": "^11.3.0",
+    "electron-builder": "23.0.2",
+    "eslint": "^8.34.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "rimraf": "^4.1.2",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@cliqz/adblocker-electron": "^1.25.2",
+    "cross-fetch": "^3.1.5",
+    "discord-rpc": "^4.0.1",
+    "electron-fetch": "^1.9.1",
+    "electron-is-dev": "^2.0.0",
+    "electron-log": "^5.0.0-beta.16",
+    "electron-prompt": "^1.7.0",
+    "electron-store": "^8.1.0",
+    "electron-updater": "^5.3.0",
+    "express": "^4.21.0",
+    "sqlite3": "5.1.6"
+  }
+}

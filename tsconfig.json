@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "ES6",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "compiled",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "/dist/**/*",
+    "/compiled/**/*"
+  ]
+}
