@@ -1,6 +1,6 @@
 # CPSC 2
 
-CPSC 2 (Name subject to change) is a localhost server emulator and client for playing the game. It is meant to be a straightforward way to setup the game singleplayer, without needing to worry about the underlying networking.
+CPSC 2 (Name subject to change) is a localhost server emulator and client for playing the game. Its purpose is to be a localhost server emulator that works out of the box, no setup required.
 
 # Progress
 
