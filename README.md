@@ -31,12 +31,17 @@ Here is a rough roadmap:
 - [ ] Support for AS3 client
 - [ ] All Stamps speedruns
     - [ ] Card-Jitsu games working
+    - [ ] Igloo system works
     - [ ] Treasure Hunt working
     - [ ] All AS3 minigames playable
     - [ ] All party/activity stamps working
     - [ ] Bots controllable by commands
     - [ ] Initial version switcher
     - [ ] Add all versions relevant for stamps
+- [ ] Other essential features
+      - [ ] Buddy system
+      - [ ] Mail system
+      - [ ] Puffle care system
 - [ ] Finish version/time switcher
     - [ ] Implementing every party
 - [ ] Implement NPCs
