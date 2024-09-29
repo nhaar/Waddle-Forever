@@ -13,7 +13,7 @@
     "build-mac": "electron-builder build --mac --publish never",
     "build-linux": "electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
-    "build-server": "tsc&&pkg compiled/server/main.js"
+    "build-server": "tsc&&pkg compiled/server/main.js -o server"
   },
   "author": "CPS",
   "license": "MIT",

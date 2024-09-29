@@ -1,0 +1,623 @@
+
+<!-- The XML file must use the achievementDocument tag to start achievement definitions   --> 
+<achievementDocument> 
+	    
+    <!-- ~~~ 9 - Stage Crew ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Stage Crew" id="9"> 
+		<event>user hasAchievementEvent</event> 
+		<!-- User must be in the stage:                                                   --> 
+		<condition>user in 340</condition> 
+		<!-- Check for the correct event ID. This should be matched by the event fired    --> 
+		<!-- from the room when the Switchbox is clicked.                                 --> 
+		<condition>event hasEventID stageCrew</condition> 
+		<result>stampEarned 9</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 11 - Snapshot ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Snapshot" id="11"> 
+		<event>user playerAction</event> 
+		<!-- User is in the ski hill:                                                     --> 
+		<condition>user in 230</condition> 
+		<!-- User is waving:                                                              --> 
+		<condition>event isOnFrame 25</condition> 
+		<!-- User is wearing the camera:                                                  --> 
+		<condition>user wearing only 195 or 10195</condition> 
+		<result>stampEarned 11</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 12 - Go Swimming ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	<!-- This achievement is divided up for the different rooms it can be achieved from:  --> 
+	<achievement name="Go Swimming" id="12.0"> 
+		<event>user changesFrame</event> 
+		<!-- User is in the cove:                                                         --> 
+		<condition>user in 810</condition> 
+		<!-- User is dancing:                                                             --> 
+		<condition>event isOnFrame 26</condition> 
+		<!-- User is in the right part of the room:                                       --> 
+		<condition>event hasProperty x greaterThan 283</condition> 
+		<condition>event hasProperty y greaterThan 329</condition> 
+		<!-- User is wearing the rubber ducky:                                            --> 
+		<condition>user wearing only 274 or 292 or 4257</condition> 
+		<result>stampEarned 12</result> 
+	</achievement> 
+    
+	<achievement name="Go Swimming" id="12.1"> 
+		<event>user changesFrame</event> 
+		<!-- User is in the cave:                                                         --> 
+		<condition>user in 806</condition> 
+		<!-- User is dancing:                                                             --> 
+		<condition>event isOnFrame 26</condition> 
+		<!-- User is in the right part of the room:                                       --> 
+		<condition>event hasProperty x greaterThan 204</condition> 
+		<condition>event hasProperty x lessThan 590</condition> 
+		<condition>event hasProperty y greaterThan 317</condition> 
+		<condition>event hasProperty y lessThan 410</condition> 
+		<!-- User is wearing the rubber ducky:                                            --> 
+		<condition>user wearing only 274 or 292 or 4257</condition> 
+		<result>stampEarned 12</result> 
+	</achievement> 
+    
+    <achievement name="Go Swimming" id="12.2"> 
+		<event>user changesFrame</event> 
+		<!-- User is in the lake:                                                         --> 
+		<condition>user in 814</condition> 
+		<!-- User is dancing:                                                             --> 
+		<condition>event isOnFrame 26</condition> 
+		<!-- User is in the right part of the room:                                       --> 
+		<condition>event hasProperty x greaterThan 307</condition> 
+		<condition>event hasProperty y greaterThan 236</condition> 
+        <condition>event hasProperty y lessThan 431</condition> 
+		<!-- User is wearing the rubber ducky:                                            --> 
+		<condition>user wearing only 274 or 292 or 4257</condition> 
+		<result>stampEarned 12</result> 
+	</achievement> 
+ 
+    <achievement name="Go Swimming" id="12.3"> 
+		<event>user changesFrame</event> 
+		<!-- User is in the underwater:                                                   --> 
+		<condition>user in 815</condition> 
+		<!-- User is dancing:                                                             --> 
+		<condition>event isOnFrame 26</condition> 
+		<!-- User is wearing the rubber ducky:                                            --> 
+		<condition>user wearing only 274 or 292 or 4257</condition> 
+		<result>stampEarned 12</result> 
+	</achievement> 
+    
+    <!-- ~~~ 13 - Clock Target ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Clock Target" id="13">
+        <condition>user in 801</condition> 
+		<event>user snowballHit</event> 
+		<!-- User is in the right part of the clocktower. Numbers pulled from forts.fla:  --> 
+		<condition>event hasProperty x greaterThan 660</condition> 
+		<condition>event hasProperty x lessThan 685</condition> 
+		<condition>event hasProperty y greaterThan 61</condition> 
+		<condition>event hasProperty y lessThan 93</condition> 
+		<!-- Conditions up to this point must be met ten times - ie. ten snowball hits.   --> 
+		<condition>event occurs 10</condition> 
+		<result>stampEarned 13</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 14 - 183 days! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="183 days!" id="14"> 
+		<event>user enterRoom</event> 
+		<!-- player object meets the age requirement:                                     --> 
+		<condition>user hasProperty created_date greaterThan 182</condition> 
+		<result>stampEarned 14</result> 
+	</achievement> 
+    
+    <!-- ~~~ 15 - Going Places ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Going Places" id="15"> 
+		<event>user enterRoom</event> 
+		<condition>event occursUniquely room 30</condition> 
+		<result>stampEarned 15</result> 
+	</achievement> 
+    
+    <!-- ~~~ 16 - Dance Party ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Dance Party" id="16"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<!-- User must be in the night club room:                                         --> 
+		<condition>user in 120</condition> 
+		<condition>anyWithUser 10 penguins isOnFrame 26</condition> 
+		<result>stampEarned 16</result> 
+	</achievement> 
+    
+    <!-- ~~~ 17 - Igloo Party ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Igloo Party" id="17"> 
+		<event>user enterIgloo</event> 
+        <event>any penguin enterRoom</event> 
+		<!-- User must be in their Igloo:                                                 --> 
+		<condition>user in myIgloo</condition> 
+		<!-- At least 9 other penguins                                                   --> 
+		<condition>any 10 penguins in myIgloo</condition> 
+		<result>stampEarned 17</result> 
+    </achievement> 
+ 
+    <!-- ~~~ 18 - Coffee Server ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Coffee Server" id="18"> 
+		<event>user sendEmote</event> 
+		<!-- User must be in the Coffee Shop:                                             --> 
+		<condition>user in 110</condition> 
+		<condition>event hasEmoteID 13</condition> 
+		<condition>user wearing 262 or 10262</condition> 
+		<condition>event occurs 5</condition> 
+		<result>stampEarned 18</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 19 - Pizza Waitor ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Pizza Waitor" id="19"> 
+		<event>user sendEmote</event> 
+		<!-- User must be in the pizza parlor:                                            --> 
+		<condition>user in 330</condition> 
+		<!-- User sends the pizza emote:                                                  --> 
+		<condition>event hasEmoteID 24</condition> 
+		<condition>user wearing 263 or 240 or 10263</condition> 
+		<condition>event occurs 5</condition> 
+		<result>stampEarned 19</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 20 - 365 days! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="365 days!" id="20"> 
+		<event>user enterRoom</event> 
+		<!-- player object meets the age requirement:                                     --> 
+		<condition>user hasProperty created_date greaterThan 364</condition> 
+		<result>stampEarned 20</result> 
+	</achievement> 
+    
+    <!-- ~~~ 21 - Puffle Owner ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Puffle Owner" id="21"> 
+		<event>user enterIgloo</event> 
+        <condition>user in myIgloo</condition> 
+        <condition>user puffles countGreaterThan 15</condition> 
+		<result>stampEarned 21</result> 
+	</achievement> 
+    
+    <!-- ~~~ 22 - Floor Filler ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Floor Filler" id="22"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<!-- User must be in the night club room:                                         --> 
+		<condition>user in 120</condition> 
+		<!-- The local user must be dancing to be considered part of the party. Frame 26  --> 
+		<!-- is the dancing frame.                                                        --> 
+        <condition>anyWithUser 25 penguins isOnFrame 26</condition> 
+		<result>stampEarned 22</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 23 - Full House ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Full House" id="23.0"> 
+		<event>user iglooFurnitureLoaded</event> 
+		<condition>user in 1108SS</condition>
+		<condition>event hasProperty furnitureCount greaterThan 98</condition> 
+		<result>stampEarned 23</result> 
+	</achievement> 
+    
+    <!-- Handle the case when user saves their furniture editing                         --> 
+    <achievement name="Full House" id="23.1"> 
+		<event>user iglooEdited</event> 
+		<condition>user in myIgloo</condition>
+		<condition>event hasProperty furnitureCount greaterThan 98</condition> 
+        <!-- "active" will be set to false when the user exits edit mode                 --> 
+        <condition>event hasProperty active lessThan 1</condition> 
+		<result>stampEarned 23</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 24 - Play it loud! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Play it loud!" id="24"> 
+		<event>user hasAchievementEvent</event> 
+		<!-- User must be in the lighthouse:                                              --> 
+		<condition>user in 410</condition> 
+		<condition>event hasEventID playItLoud</condition> 
+		<result>stampEarned 24</result> 
+	</achievement> 
+    
+    <!-- ~~~ 25 - Soccer Team ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Soccer Team" id="25.0"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 775</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.1"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 10775</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+ 
+    <achievement name="Soccer Team" id="25.2"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 778</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.3"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4088</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.4"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4091</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.5"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 10778</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.6"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 778 or 10778</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.7"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 775 or 10775</condition> 
+		<result>stampEarned 25</result> 
+	</achievement> 
+    
+    <achievement name="Soccer Team" id="25.8"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4346</condition> 
+		<result>stampEarned 25</result> 
+	</achievement>
+    
+    <achievement name="Soccer Team" id="25.9"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4347</condition> 
+		<result>stampEarned 25</result> 
+	</achievement>
+    
+    <achievement name="Soccer Team" id="25.10"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4348</condition> 
+		<result>stampEarned 25</result> 
+	</achievement>
+    
+    <achievement name="Soccer Team" id="25.11"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4349</condition> 
+		<result>stampEarned 25</result> 
+	</achievement>
+    
+    <achievement name="Soccer Team" id="25.12"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>anyWithUser 5 penguins wearing 4350</condition> 
+		<result>stampEarned 25</result> 
+	</achievement>
+
+    <!-- ~~~ 26 - Berg Drill! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Berg Drill!" id="26"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>user in 805</condition> 
+        <condition>anyWithUser 30 penguins wearing only 403 or 429 or 674 or 10403 or 1133 or 10429</condition> 
+        <condition>sameSubjects isOnFrame 26</condition> 
+		<result>stampEarned 26</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 27 - Snow Forts ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Snow Forts" id="27"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+        <condition>user in 801</condition> 
+        <condition>anyWithUser 5 penguins hasProperty thrownSnowballInCurrentRoom greaterThan 0</condition> 
+        <condition>sameSubjects hasPenguinColourID myPenguinColourID</condition> 
+        <result>stampEarned 27</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 28 - Party Host  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Party Host" id="28"> 
+		<event>user enterIgloo</event> 
+        <event>any penguin enterRoom</event> 
+		<!-- User must be in their Igloo:                                                 --> 
+		<condition>user in myIgloo</condition> 
+		<!-- At least 29 other penguins                                                   --> 
+		<condition>any 30 penguins in myIgloo</condition> 
+		<result>stampEarned 28</result> 
+    </achievement> 
+ 
+    <!-- ~~~ 29 - Hockey Team ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+    <achievement name="Hockey Team" id="29"> 
+        <!-- Break this condition down into a periodic check to reduce the chance of      --> 
+        <!-- affecting frame rate                                                         --> 
+        <event>every 2 seconds</event> 
+        <condition>anyWithUser 5 penguins wearing 277 or 278 or 4143 or 10277 or 14143 or 14204 or 4204</condition> 
+        <result>stampEarned 29</result> 
+    </achievement> 
+ 
+    <!-- ~~~ 30 - Ninja Meeting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Ninja Meeting" id="30.0"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<!-- User must be in the Dojo Hideout                                             --> 
+		<condition>user in 322</condition> 
+		<!-- Black belt, ninja outfit with black belt or white outfit with black belt.    --> 
+		<condition>anyWithUser 10 penguins wearing 4033</condition> 
+		<result>stampEarned 30</result> 
+	</achievement> 
+    
+    <achievement name="Ninja Meeting" id="30.1"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<!-- User must be in the Dojo Hideout                                             --> 
+		<condition>user in 322</condition> 
+		<!-- Black belt, ninja outfit with black belt or white outfit with black belt.    --> 
+		<condition>anyWithUser 10 penguins wearing 4034</condition> 
+		<result>stampEarned 30</result> 
+	</achievement> 
+ 
+    <achievement name="Ninja Meeting" id="30.2"> 
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<!-- User must be in the Dojo Hideout                                             --> 
+		<condition>user in 322</condition> 
+		<!-- Black belt, ninja outfit with black belt or white outfit with black belt.    --> 
+		<condition>anyWithUser 10 penguins wearing 4075</condition> 
+		<result>stampEarned 30</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 182 - Happy Party Room ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+       
+    <achievement name="Happy Party Room" id="182"> 
+		<!-- This stamp expires on Wed, 01 Feb 2012 23:00:00 GMT     --> 
+        <!-- <expiryDate>1328137200</expiryDate> --> 
+		
+        <!-- Break this condition down into a periodic check to reduce --> 
+        <!-- the chance of affecting frame rate --> 
+        <event>every 2 seconds</event> 
+        <condition>user in 200 or 400 or 410 or 800 or 810 or 851 or 852 or 853 or 854 or 855 or 856 or 857</condition> 
+        <condition>anyWithUser 10 penguins hasProperty emoteIDDisplayedInCurrentRoom equals 1 or 2</condition> 
+        <result>stampEarned 182</result> 
+    </achievement> 
+ 
+    <!-- ~~~ 184 - Tend a concession stand / Snack Shack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Tend A Concession Stand" id="184"> 
+		<!-- This stamp expires on Wed, 01 Feb 2012 23:00:00 GMT     --> 
+        <!-- <expiryDate>1328137200</expiryDate> --> 
+		
+		<event>user sendEmote</event> 
+		<condition>user in 200 or 800</condition> 
+        <condition>user hits snackShack_mc or shipfront_mc</condition> 
+		<condition>event hasEmoteID 13 or 24 or 28 or 29 or 26 or 27</condition> 
+		<result>stampEarned 184</result> 
+	</achievement> 
+ 
+    <!-- ~~~ 187 - Monster Mash ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+ 
+	<achievement name="Monster Mash" id="187">
+        <!-- This stamp expires on Thu, 03 Nov 2011 05:00:00 GMT     --> 
+        <!-- <expiryDate>1320296400</expiryDate> --> 
+        
+		<event>every 2 seconds</event> 
+		
+		<optionalCondition>user wearing 1185 and 4270</optionalCondition> <!-- Count --> 
+		<optionalCondition>user wearing 1186 and 4271</optionalCondition> <!-- Witch --> 
+		<optionalCondition>user wearing 1187 and 4272</optionalCondition> <!-- Lady Frankenpenguin --> 
+		<optionalCondition>user wearing 1188 and 4273</optionalCondition> <!-- Cleo -->		
+		<optionalCondition>user wearing 10244</optionalCondition> <!-- Ghost Costume R --> 
+		<optionalCondition>user wearing 244</optionalCondition> <!-- Ghost Costume --> 
+		<optionalCondition>user wearing 246</optionalCondition> <!-- Skeleton --> 
+		<optionalCondition>user wearing 789</optionalCondition> <!-- Mummy Costume --> 
+		<optionalCondition>user wearing 10789</optionalCondition> <!-- Mummy Costume R --> 
+		<optionalCondition>user wearing 1306 and 4428 and 5123 and 6084</optionalCondition> <!-- Green Witch --> 
+		<optionalCondition>user wearing 4430 and 6091 and 1309 and 3089</optionalCondition> <!-- Unicorn --> 
+		<optionalCondition>user wearing 1305 and 3088 and 4427</optionalCondition> <!-- Purple Fairy --> 
+		<optionalCondition>user wearing 4432 and 6086 and 5120</optionalCondition> <!-- Headless Horseman --> 
+		<optionalCondition>user wearing 1307 and 4435 and 6089</optionalCondition> <!-- Werewolf --> 
+		<optionalCondition>user wearing 4429 and 6085</optionalCondition> <!-- Brown Horse --> 
+		<optionalCondition>user wearing 4431 and 5119</optionalCondition> <!-- Ghoul Detector -->
+		<optionalCondition>user wearing 4433</optionalCondition> <!-- Candy Corn Costume --> 
+		<optionalCondition>user wearing 4434</optionalCondition> <!-- Purple Spider Costume --> 
+		<optionalCondition>user wearing 3090</optionalCondition> <!-- Raven Wings --> 
+		<optionalCondition>user wearing 6087</optionalCondition> <!-- Green Dragon Feet --> 
+		<optionalCondition>user wearing 6088</optionalCondition> <!-- Orange Frankenfeet --> 
+		<optionalCondition>user wearing 6090</optionalCondition> <!-- Swamp Monster --> 
+		
+		<!-- Frankenpenguin variations --> 
+		<optionalCondition>user wearing 1013 and 14016</optionalCondition> 
+		<optionalCondition>user wearing 11013 and 4016</optionalCondition> 
+		<optionalCondition>user wearing 1013 and 4016</optionalCondition> 
+		<optionalCondition>user wearing 11013 and 14016</optionalCondition> 
+		
+		<!-- Pharaoh variations --> 
+		<optionalCondition>user wearing 10666 and 788</optionalCondition> 
+		<optionalCondition>user wearing 666 and 10788</optionalCondition> 
+		<optionalCondition>user wearing 666 and 788</optionalCondition> 
+		<optionalCondition>user wearing 10666 and 10788</optionalCondition> 
+		
+		<!-- Blizzard variations --> 
+		<optionalCondition>user wearing 11093 and 4128</optionalCondition> 
+		<optionalCondition>user wearing 1093 and 14128</optionalCondition> 
+		<optionalCondition>user wearing 1093 and 4128</optionalCondition> 
+		<optionalCondition>user wearing 11093 and 14128</optionalCondition> 
+		
+		<!-- Faery variations --> 
+		<optionalCondition>user wearing 11014 and 4017</optionalCondition> 
+		<optionalCondition>user wearing 1014 and 14017</optionalCondition> 
+		<optionalCondition>user wearing 1014 and 4017</optionalCondition> 
+		<optionalCondition>user wearing 11014 and 14017</optionalCondition> 
+		
+		<!-- Bee variations --> 
+		<optionalCondition>user wearing 10472 and 227</optionalCondition> 
+		<optionalCondition>user wearing 472 and 10227</optionalCondition> 
+		<optionalCondition>user wearing 472 and 227</optionalCondition> 
+		<optionalCondition>user wearing 10472 and 10227</optionalCondition> 
+		
+		<!-- Rad Scientist variations --> 
+		<optionalCondition>user wearing 11015 and 4018</optionalCondition> 
+		<optionalCondition>user wearing 1015 and 14018</optionalCondition> 
+		<optionalCondition>user wearing 1015 and 4018</optionalCondition> 
+		<optionalCondition>user wearing 11015 and 14018</optionalCondition> 
+		
+		<result>stampEarned 187</result> 
+	</achievement> 
+ 
+   	<!-- ~~~ 189 - Construction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+    
+    <achievement name="Construction" id="189">
+        <!-- This stamp expires on Wed, 23 Nov 2011 23:00:00 GMT     --> 
+        <!-- <expiryDate>1322089200</expiryDate>  --> 
+        
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+		<condition>user in 400</condition> 
+        <condition>user wearing only 342 or 5069 or 403 or 10403 or 429 or 10429 or 674 or 1133 or 11133</condition> 
+        <condition>user isOnFrame 26</condition> 
+        <result>stampEarned 189</result> 
+	</achievement>
+ 
+    <!-- ~~~ 190 - Explorer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        
+    <achievement name="Explorer" id="190">
+        <!-- This stamp expires on Wed, 01 Feb 2012 23:00:00 GMT     --> 
+        <!-- <expiryDate>1328137200</expiryDate>  --> 
+        
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+		<!-- affecting frame rate                                                         --> 
+		<event>every 2 seconds</event> 
+        <condition>user hasProperty is_member equals 1</condition> 
+		<condition>user in 200 400 410 800 810 851 852 853 854 855 856 857</condition> 
+        <result>stampEarned 190</result> 
+	</achievement> 
+	
+	<!-- ~~~ 332 - Food Fight ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Food Fight" id="332">
+		<debug>true</debug>
+		<!-- This stamp expires on Sun, 03 April 2011 19:00:00 GMT     -->
+        <!-- <expiryDate>1301857200</expiryDate> -->
+
+		<event>user snowballHit</event>	
+		<!-- User is in pizza or Sweet Land (April Party Room 4) -->
+		<condition>user in 854 or 330</condition>
+		<result>stampEarned 332</result>
+	</achievement>
+ 
+    <!-- ~~~ 360 - Noble Knight ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+
+	<achievement name="Noble Knight" id="360">
+        <!-- This stamp expires on Mon, 30 May 2011 23:00:00 GMT     --> 
+        <!-- <expiryDate>1306796400</expiryDate>  --> 
+        
+		<event>every 2 seconds</event> 
+		
+		<condition>user hasProperty is_member equals 1</condition>
+        
+        <!-- Shield hand items -->
+        <condition>user wearing 723 or 724 or 725 or 5028 or 5058 or 5097 or 5099 or 5098 or 5100 or 5095</condition> 
+		
+		<optionalCondition>user wearing 688 and 794</optionalCondition> <!-- Standard Knight --> 
+		<optionalCondition>user wearing 1052 and 4078</optionalCondition> <!-- Golden Knight --> 
+		<optionalCondition>user wearing 1146 and 4219</optionalCondition> <!-- Iron Knight --> 
+		<optionalCondition>user wearing 1253 and 4362</optionalCondition> <!-- White Knight -->		
+				
+		<result>stampEarned 360</result> 
+	</achievement>
+	
+	<!-- ~~~ 362 - Go Green ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Go Green" id="362">
+		<!-- This stamp expires on Mon, 30 May 2011 23:00:00 GMT     --> 
+        <!-- <expiryDate>1304017200</expiryDate> --> 
+
+        <condition>user in 122</condition> 
+		<event>user snowballHit</event> 
+		<!-- User is in the right part of the clocktower. Numbers pulled from eco.fla:  --> 
+		<condition>event hasProperty x greaterThan 92</condition> 
+		<condition>event hasProperty x lessThan 203</condition> 
+		<condition>event hasProperty y greaterThan 48</condition> 
+		<condition>event hasProperty y lessThan 128</condition> 
+		<!-- Conditions up to this point must be met ten times - ie. ten snowball hits.   --> 
+		<condition>event occurs 10</condition> 
+		<result>stampEarned 362</result> 
+	</achievement>
+	
+	<!-- ~~~ 364 - Tree Mob ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Tree Mob" id="364"> 
+		<!-- This stamp expires on Mon, 30 May 2011 23:00:00 GMT     --> 
+        <!-- <expiryDate>1304017200</expiryDate> --> 
+
+        <!-- Break this condition down into a periodic check to reduce the chance of      --> 
+        <!-- affecting frame rate                                                         --> 
+        <event>every 2 seconds</event>
+        <condition>anyWithUser 10 penguins wearing only 4147 or 14147</condition> 
+        <result>stampEarned 364</result> 
+    </achievement> 
+
+    <!-- ~~~ 440 - Snowboarder ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+	
+	<achievement name="Snowboarder" id="440">
+        <!-- This stamp expires on Thu, 01 Sep 2011 08:00:00 GMT     --> 
+        <!-- <expiryDate>1314864000</expiryDate> --> 
+        
+		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
+        <!-- affecting frame rate                                                         --> 
+        <event>every 2 seconds</event>
+        <condition>user wearing only 3083 or 3084 or 3085</condition>
+		<condition>user isOnFrame 26</condition>
+        <condition>user in 300 or 100 or 200 or 851 or 852 or 853 or 854 or 855 or 856 or 857 or 858 or 859 or 860</condition>  
+        <result>stampEarned 440</result> 
+    </achievement> 
+
+</achievementDocument>

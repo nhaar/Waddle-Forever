@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" ?>
+<Bean-Counter>
+	<game-mode id="1" name="regular">
+		<level id="1">
+			<scoring>
+				<score-event id="1" name="bag-caught">
+					<score-change val="2" type="gain" />
+				</score-event>
+				<score-event id="2" name="right-bag-placed">
+					<score-change val="3" type="gain" />
+				</score-event>
+			</scoring>
+			<bags>
+				<bag-place-min val="20" />
+			</bags>
+
+		</level>
+		<level id="2">
+			<scoring>
+				<score-event id="1" name="bag-caught">
+					<score-change val="4" type="gain" />
+				</score-event>
+				<score-event id="2" name="right-bag-placed">
+					<score-change val="6" type="gain" />
+				</score-event>
+			</scoring>
+			<bags>
+				<bag-place-min val="30" />
+			</bags>
+		</level>
+		<level id="3">
+			<scoring>
+				<score-event id="1" name="bag-caught">
+					<score-change val="6" type="gain" />
+				</score-event>
+				<score-event id="2" name="right-bag-placed">
+					<score-change val="9" type="gain" />
+				</score-event>
+			</scoring>
+			<bags>
+				<bag-place-min val="40" />
+			</bags>
+		</level>
+		<level id="4">
+			<scoring>
+				<score-event id="1" name="bag-caught">
+					<score-change val="8" type="gain" />
+				</score-event>
+				<score-event id="2" name="right-bag-placed">
+					<score-change val="12" type="gain" />
+				</score-event>
+			</scoring>
+			<bags>
+				<bag-place-min val="50" />
+			</bags>
+		</level>
+		<level id="5">
+			<scoring>
+				<score-event id="1" name="bag-caught">
+					<score-change val="10" type="gain" />
+				</score-event>
+				<score-event id="2" name="right-bag-placed">
+					<score-change val="15" type="gain" />
+				</score-event>
+			</scoring>
+			<bags>
+				<bag-place-min val="60" />
+			</bags>
+		</level>		
+	</game-mode>
+	<game-mode id="2" name="color">
+		<game-difficulty id="1" name="hard">
+			<level id="1">
+				<game id="monochrome" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="4" type="gain" />
+					</score-event>
+					
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="10.5" type="gain" />
+					</score-event>
+					
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="2.5" type="gain" />
+					</score-event>
+					
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-2.5" type="lose" />
+					</score-event>					
+				</scoring>
+				<bags>
+					<bag-place-min val="20" />
+				</bags>
+				<powerup frequency="0" />
+			</level>
+			<level id="2">
+				<game id="monochrome" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="10" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="15" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="5" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-5" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="30" />
+				</bags>
+				<powerup frequency="1" />
+
+			</level>
+			<level id="3">
+				<game id="complementary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="15" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="22.5" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="7.5" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-7.5" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="40" />
+				</bags>
+				<powerup frequency="1" />
+
+			</level>
+			<level id="4">
+				<game id="complementary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="20" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="30" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="10" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-10" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="50" />
+				</bags>
+				<powerup frequency="2" />
+
+			</level>
+			<level id="5">
+				<game id="complementary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="25" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="37.5" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="12.5" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-12.5" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="60" />
+				</bags>
+				<powerup frequency="2" />
+
+			</level>
+		</game-difficulty>
+		<game-difficulty id="2" name="expert">
+			<level id="1">
+				<game id="complementary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="6" type="gain" />
+					</score-event>
+					
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="9" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="3" type="gain" />
+					</score-event>
+			
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-3" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="20" />
+				</bags>
+				<powerup frequency="0" />
+
+			</level>
+			<level id="2">
+				<game id="complementary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="12" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="18" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="6" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-6" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="30" />
+				</bags>
+				<powerup frequency="1" />
+
+			</level>
+			<level id="3">
+				<game id="analogous" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="18" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="27" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="9" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-9" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="40" />
+				</bags>
+				<powerup frequency="2" />
+
+			</level>
+			<level id="4">
+				<game id="analogous" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="24" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="36" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="12" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-12" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="50" />
+				</bags>
+				<powerup frequency="2" />
+			</level>
+			<level id="5">
+				<game id="analogous" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="30" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="45" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="15" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-15" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="60" />
+				</bags>
+				<powerup frequency="2" />
+			</level>
+		</game-difficulty>
+		<game-difficulty id="3" name="extreme">
+			<level id="1">
+				<game id="primary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="10" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="15" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="5" type="gain" />
+					</score-event>
+			
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-5" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="20" />
+				</bags>
+				<powerup frequency="0" />
+			</level>
+			<level id="2">
+				<game id="secondary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="20" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="30" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="10" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-10" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="30" />
+				</bags>
+				<powerup frequency="1" />
+			</level>
+			<level id="3">
+				<game id="cool" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="30" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="45" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="15" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-15" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="40" />
+				</bags>
+				<powerup frequency="2" />
+			</level>
+			<level id="4">
+				<game id="warm" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="40" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="60" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="20" type="gain" />
+					</score-event>
+
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-20" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="50" />
+				</bags>
+				<powerup frequency="3" />
+			</level>
+			<level id="5">
+				<game id="tertiary" />
+				<scoring>
+					<score-event id="1" name="bag-caught">
+						<score-change val="50" type="gain" />
+					</score-event>
+
+					<score-event id="2" name="right-bag-placed">
+						<score-change val="75" type="gain" />
+					</score-event>
+
+					<score-event id="3" name="wrong-bag-returned">
+						<score-change val="25" type="gain" />
+					</score-event>
+					<score-event id="4" name="wrong-bag-placed">
+						<score-change val="-25" type="lose" />
+					</score-event>
+				</scoring>
+				<bags>
+					<bag-place-min val="60" />
+				</bags>
+				<powerup frequency="3" />
+			</level>
+		</game-difficulty>
+	</game-mode>
+</Bean-Counter>
