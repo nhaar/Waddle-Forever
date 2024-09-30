@@ -21,9 +21,10 @@ Here is a rough roadmap:
     - [x] Room navigation works
     - [x] Singleplayer minigames work
 - [ ] Functional for PSA Mission speedruns
+    - [ ] Shortcut command
+    - [ ]  All Mission playable
     - [ ]  Yearbook recruiting works
     - [ ]  EPF test recruitment works
-    - [ ]  All Mission playable
 - [ ] Supersede CPSC (Original) for stamp speedruns
     - [ ] Item inventory works
     - [ ] Stampbook works
