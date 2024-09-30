@@ -25,6 +25,7 @@ Here is a rough roadmap:
     - [ ]  All Mission playable
     - [ ]  Basic inventory system
     - [ ]  Mission awards work
+    - [ ]  VR Room music
 - [ ] Supersede CPSC (Original) for stamp speedruns
     - [ ] Item inventory works
     - [ ] Stampbook works
