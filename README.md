@@ -20,7 +20,7 @@ Here is a rough roadmap:
     - [x] Login works
     - [x] Room navigation works
     - [x] Singleplayer minigames work
-- [ ] Work for All Mission speedruns
+- [ ] Functional for PSA Mission speedruns
     - [ ]  Yearbook recruiting works
     - [ ]  EPF test recruitment works
     - [ ]  All Mission playable
