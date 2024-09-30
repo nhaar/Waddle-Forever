@@ -66,6 +66,32 @@ Under the hood, a Club Penguin server emulator runs to give full functionality t
 > The server made for this client is not safe for multiplayer! It can be exploited easily so only host it to people you trust.
 > If you wish to make a CPPS, use a different emulator like Houdini
 
+# Building
+
+To build you must have node.js, npm and yarn installed. After cloning the code, install all dependencies:
+
+```yarn install```
+
+For running the client in development, run
+
+```yarn start```
+
+For running the server in development, run
+
+```yarn dev```
+
+To build the client (windows):
+
+```yarn build-win```
+
+It will be in `dist`, but you need to move the media folder to the win-unpacked folder as well
+
+To build the server (windows):
+
+```yarn build-server```
+
+The server executable will be generated, it also needs to be in the same folder as the media folder
+
 # Credits
 
 The electron client is originally forked from the [Club Penguin Avalanche client](https://github.com/Club-Penguin-Avalanche/CPA-Client).
