@@ -23,8 +23,8 @@ Here is a rough roadmap:
 - [ ] Functional for PSA Mission speedruns
     - [ ] Shortcut command
     - [ ]  All Mission playable
-    - [ ]  Yearbook recruiting works
-    - [ ]  EPF test recruitment works
+    - [ ]  Basic inventory system
+    - [ ]  Mission awards work
 - [ ] Supersede CPSC (Original) for stamp speedruns
     - [ ] Item inventory works
     - [ ] Stampbook works
