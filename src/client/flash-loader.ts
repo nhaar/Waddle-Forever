@@ -31,7 +31,7 @@ const getPluginName = () => {
 const loadFlashPlugin = (app: App) => {
   const pluginName = getPluginName();
 
-  app.commandLine.appendSwitch('ppapi-flash-path', path.join(__dirname, pluginName));
+  app.commandLine.appendSwitch('ppapi-flash-path', path.join(__dirname, '..', pluginName));
 };
 
 export default loadFlashPlugin;

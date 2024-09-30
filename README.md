@@ -21,11 +21,11 @@ Here is a rough roadmap:
     - [x] Room navigation works
     - [x] Singleplayer minigames work
 - [ ] Functional for PSA Mission speedruns
-    - [ ] Shortcut command
-    - [ ]  All Mission playable
-    - [ ]  Basic inventory system
-    - [ ]  Mission awards work
-    - [ ]  VR Room music
+    - [x] Shortcut command
+    - [x] PSA Missions playable
+    - [x] Basic inventory system
+    - [x] Mission awards work
+    - [x] Missions music
 - [ ] Supersede CPSC (Original) for stamp speedruns
     - [ ] Item inventory works
     - [ ] Stampbook works

@@ -1,60 +1,96 @@
-import path from 'path'
-import fs from 'fs'
+import path from 'path';
+import fs, { writeFileSync } from 'fs';
 
-import { Database } from 'sqlite3'
+export enum Databases {
+  Penguins = 'penguins'
+}
 
-const databaseFolder = path.join(process.cwd(), 'database')
+type JsonProperty = string | number | boolean
+
+const databaseFolder = path.join(process.cwd(), 'data');
 if (!fs.existsSync(databaseFolder)) {
-  fs.mkdirSync(databaseFolder, {})
+  fs.mkdirSync(databaseFolder, {});
 }
 
-const db = new Database(path.join(databaseFolder, 'db.sqlite'))
+/**
+ * A replacement to sqlite since it was not working with the electron dependencies
+ * 
+ * This also allows to edit the database easily and the performance is not an issue
+ */
+class JsonDatabase {
+  /** Absolute path to the database folder */
+  root: string;
 
-db.run(`CREATE TABLE IF NOT EXISTS Penguin (
-  id  INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT,
-  is_agent INTEGER,
-  mascot INTEGER,
-  color INTEGER,
-  head INTEGER,
-  face INTEGER,
-  neck INTEGER,
-  body INTEGER,
-  hand INTEGER,
-  feet INTEGER,
-  flag INTEGER,
-  background INTEGER,
-  coins INTEGER,
-  registration_date INTEGER,
-  minutes_played INTEGER
-)`)
+  constructor (rootDir: string) {
+    if (!fs.existsSync(rootDir)) {
+      fs.mkdirSync(rootDir);
+    }
+    this.root = rootDir;
+  }
 
-export async function run (query: string, values: any[]): Promise<void> {
-  await new Promise<void>((resolve, reject) => {
-    db.run(query, values, (err) => {
-      if (err !== null) {
-        reject(err)
+  private getSubDatabaseDir (name: string): string {
+    return path.join(this.root, name);
+  }
+
+  private getSeqDir (name: string): string {
+    return path.join(this.root, name, 'seq');
+  }
+
+  createDatabase(database: Databases) {
+    const subDir = this.getSubDatabaseDir(database);
+    if (!fs.existsSync(subDir)) {
+      fs.mkdirSync(subDir);
+    }
+    const seqDir = this.getSeqDir(database);
+    if (!fs.existsSync(seqDir)) {
+      fs.writeFileSync(seqDir, '0');
+    }
+  }
+
+  update<T>(database: Databases, id: number, data: T): void {
+    const subDir = this.getSubDatabaseDir(database);
+    fs.writeFileSync(path.join(subDir, `${id}.json`), JSON.stringify(data));
+  }
+
+  get<T>(database: Databases, property: string, value: JsonProperty): [T, number] | undefined {
+    const isString = typeof value === 'string';
+    const subDir = this.getSubDatabaseDir(database);
+    const files = fs.readdirSync(subDir);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file === 'seq') {
+        continue;
       }
-      resolve()
-    })
-  })
+      const id = Number(file.match(/\d+/)[0]);
+      const content = fs.readFileSync(path.join(subDir, file), { encoding: 'utf-8' });
+      const data = JSON.parse(content);
+      if (isString && data[property].toLowerCase() === value.toLowerCase()) {
+        return [data, id];
+      } else if (data[property] === value) {
+        return [data, id];
+      }
+    }
+
+    return undefined;
+  }
+
+  add<T>(database: Databases, value: T): [T, number] {
+    const seqDir = this.getSeqDir(database);
+    const seq = Number(fs.readFileSync(seqDir, { encoding: 'utf-8' }));
+    const id = seq + 1;
+    this.update(database, id, { id, ...value });
+    writeFileSync(seqDir, String(id));
+    return [value, id];
+  }
 }
 
-export async function get<T> (query: string, values: any[]): Promise<T[]> {
-  return await new Promise<any>((resolve, reject) => {
-    db.all<T>(query, values, (err, rows) => {
-      if (err != null) {
-        reject(err)
-      }
-      resolve(rows)
-    })
-  })
-}
+const db = new JsonDatabase(databaseFolder);
+
+db.createDatabase(Databases.Penguins);
 
 export interface Penguin {
-  id: number
   name: string
-  is_agent: number
+  is_agent: boolean
   mascot: number
   color: number
   head: number
@@ -67,8 +103,9 @@ export interface Penguin {
   background: number
   coins: number
   registration_date: number
-  minutes_played: number
+  minutes_played: number,
+  inventory: number[]
 }
 
-export default db
+export default db;
 // TODO proper minute incrementing

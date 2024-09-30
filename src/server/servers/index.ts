@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
 
 interface PenguinServer {
   id: string
@@ -39,7 +39,7 @@ const serverList: PenguinServer[] = [
     port: '9878',
     lang: 'fr'
   }
-]
+];
 
 const serversXml = `
 <?xml version="1.0" encoding="UTF-8"?>
@@ -52,11 +52,11 @@ const serversXml = `
           <language locale="${server.lang}">
             <server id="${server.id}" name="${server.name}" safe="false" address="127.0.0.1" port="${server.port}" />
           </language>
-        `
+        `;
       }).join('')}
     </environment>
 </servers>
-`
+`;
 // serverList.forEach((server) => {
 //   serversXml += `
 //   <language locale="${server.lang}">
@@ -69,6 +69,6 @@ const serversXml = `
 //    </environment>
 // </servers>`
 
-fs.writeFileSync(path.join(process.cwd(), 'media/servers.xml'), serversXml)
+fs.writeFileSync(path.join(process.cwd(), 'media/servers.xml'), serversXml);
 
-export default serverList
+export default serverList;

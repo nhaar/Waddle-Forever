@@ -1,7 +1,7 @@
-import { XtHandler } from '..'
-import { Room } from '../../game/rooms'
+import { XtHandler } from '..';
+import { Room } from '../../game/rooms';
 
-const handler = new XtHandler()
+const handler = new XtHandler();
 
 handler.xt('j#js', (client) => {
   /*
@@ -10,9 +10,9 @@ handler.xt('j#js', (client) => {
   Figure out what moderator_status is used for
   Add last number (something to do with stamp book)
   */
-  const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0
+  const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
   // initializing penguin data
-  client.sendXt('js', client.penguin.is_agent, 0, moderatorStatus, 0)
+  client.sendXt('js', client.penguin.is_agent ? 1 : 0, 0, moderatorStatus, 0);
   /*
   TODO safe chat (after coins) will ever be required?
   TODO after safechat, what is that variable
@@ -25,58 +25,54 @@ handler.xt('j#js', (client) => {
   TODO 4: map category how to handle
   TODO 3: how to handle status field
   */
-  client.sendXt('lp', client.penguinString, String(client.penguin.coins), 0, 1440, 1727536687000, client.age, 0, client.penguin.minutes_played, -1, 7, 1, 4, 3)
+  client.sendXt('lp', client.penguinString, String(client.penguin.coins), 0, 1440, 1727536687000, client.age, 0, client.penguin.minutes_played, -1, 7, 1, 4, 3);
 
   // joining spawn room // TODO more spawn rooms in the future?
-  client.joinRoom(Room.Town)
+  client.joinRoom(Room.Town);
 
   // receiving inventory
   // TODO proper inventory
-  client.sendXt('gps', client.penguin.id, '274|270|242|238|244|230|260|254|16|27|36|358|8|31|290|32|466|35|7|33|34|448|26|24|22|17|28|14|20')
-})
-
-handler.xt('i#gi', (client) => {
-  client.send('%xt%gi%-1%%')
-})
+  client.sendXt('gps', client.id, '274|270|242|238|244|230|260|254|16|27|36|358|8|31|290|32|466|35|7|33|34|448|26|24|22|17|28|14|20');
+});
 
 handler.xt('b#gb', (client) => {
-  client.sendXt('gb', '')
-})
+  client.sendXt('gb', '');
+});
 
 handler.xt('n#gn', (client) => {
-  client.sendXt('gn', '')
-})
+  client.sendXt('gn', '');
+});
 
 handler.xt('l#mst', (client) => {
-  client.sendXt('mst', 3, 3)
-})
+  client.sendXt('mst', 3, 3);
+});
 
 handler.xt('l#mg', (client) => {
-  client.send('%xt%mg%-1%sys|0|112||1726639082|29|0%sys|0|177||1726474034|4|0%sys|0|125||1726466667|2|0%')
-})
+  client.send('%xt%mg%-1%sys|0|112||1726639082|29|0%sys|0|177||1726474034|4|0%sys|0|125||1726466667|2|0%');
+});
 
 handler.xt('u#glr', (client) => {
-  client.sendXt('glr', '')
-})
+  client.sendXt('glr', '');
+});
 
 handler.xt('f#epfga', (client) => {
-  client.send('%xt%epfga%-1%0%')
-})
+  client.send('%xt%epfga%-1%0%');
+});
 
 handler.xt('i#qpa', (client) => {
-  client.send('%xt%qpa%-1%103%821|8006|8010|8011%')
-})
+  client.send('%xt%qpa%-1%103%821|8006|8010|8011%');
+});
 
 handler.xt('f#epfgf', (client) => {
-  client.sendXt('epfgf', 0)
-})
+  client.sendXt('epfgf', 0);
+});
 
 handler.xt('f#epfgr', (client) => {
-  client.sendXt('epfgr', 0, 0)
-})
+  client.sendXt('epfgr', 0, 0);
+});
 
 handler.xt('u#h', (client) => {
-  client.sendXt('h', '')
-})
+  client.sendXt('h', '');
+});
 
-export default handler
+export default handler;

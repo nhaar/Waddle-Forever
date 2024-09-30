@@ -260,8 +260,8 @@ export const enableOrDisableDiscordRPCLocationTracking = async (store: Store, ma
 };
 
 const setDefaultRooms = async (store: Store) => {
-  const enPath = path.join(__dirname, 'assets/default/rooms-en.jsonp');
-  const ptPath = path.join(__dirname, 'assets/default/rooms-pt.jsonp');
+  const enPath = path.join(__dirname, '../assets/default/rooms-en.jsonp');
+  const ptPath = path.join(__dirname, '../assets/default/rooms-pt.jsonp');
 
   const enRoomsBuff = await fs.readFile(enPath);
   const ptRoomsBuff = await fs.readFile(ptPath);

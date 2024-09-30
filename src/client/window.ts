@@ -17,7 +17,7 @@ interface FiveIconByPlatforms {
 const createWindow = async (store: Store) => {
   const setFaviconByPlatform: FiveIconByPlatforms = {
     win32: () => {
-      mainWindow.setIcon(path.join(__dirname, "assets/favicon.ico"));
+      mainWindow.setIcon(path.join(__dirname, "../assets/favicon.ico"));
     },
     darwin: () => {
       mainWindow.setIcon(path.join(__dirname, "assets/icon.png"));
