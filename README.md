@@ -19,7 +19,11 @@ Here is a rough roadmap:
 - [x] Prerelease -> v0.0.0
     - [x] Login works
     - [x] Room navigation works
-    - [x] Singleplayer minigames work 
+    - [x] Singleplayer minigames work
+- [ ] Work for All Mission speedruns
+    - [ ]  Yearbook recruiting works
+    - [ ]  EPF test recruitment works
+    - [ ]  All Mission playable
 - [ ] Supersede CPSC (Original) for stamp speedruns
     - [ ] Item inventory works
     - [ ] Stampbook works
@@ -39,9 +43,9 @@ Here is a rough roadmap:
     - [ ] Initial version switcher
     - [ ] Add all versions relevant for stamps
 - [ ] Other essential features
-      - [ ] Buddy system
-      - [ ] Mail system
-      - [ ] Puffle care system
+    - [ ] Buddy system
+    - [ ] Mail system
+    - [ ] Puffle care system
 - [ ] Finish version/time switcher
     - [ ] Implementing every party
 - [ ] Implement NPCs
