@@ -75,7 +75,6 @@ const createServer = (type: string, port: number, handlers: XtHandler): void => 
 };
 
 const startServer = (): void => {
-  console.log('yes, starting')
   const server = express();
 
   server.get('/', (_, res) => {

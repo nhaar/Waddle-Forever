@@ -49,7 +49,9 @@
     }
   },
   "nodemonConfig": {
-      "ignore": ["/data/*"]
+    "ignore": [
+      "/data/*"
+    ]
   },
   "devDependencies": {
     "@types/discord-rpc": "^4.0.3",
@@ -64,10 +66,10 @@
     "eslint": "^8.34.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "rimraf": "^4.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@cliqz/adblocker-electron": "^1.25.2",
     "cross-fetch": "^3.1.5",
     "discord-rpc": "^4.0.1",
     "electron-fetch": "^1.9.1",
