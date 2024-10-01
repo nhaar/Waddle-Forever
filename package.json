@@ -9,9 +9,9 @@
     "build-tsc": "yarn clean && tsc && yarn copy-files",
     "start": "yarn build-tsc && electron ./compiled/client/main.js",
     "lint": "eslint -c .eslintrc --ext .ts ./src",
-    "build-win": "electron-builder build --win --publish never",
-    "build-mac": "electron-builder build --mac --publish never",
-    "build-linux": "electron-builder build --linux --x64 --publish never",
+    "build-win": "yarn build-tsc && electron-builder build --win --publish never",
+    "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
+    "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
     "build-server": "tsc&&pkg compiled/server/main.js -o server"
   },
