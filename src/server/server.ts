@@ -10,6 +10,7 @@ import serverList from './servers';
 import commandsHandler from './handlers/commands';
 import itemHandler from './handlers/play/item';
 import { Client } from './penguin';
+import settings from './settings';
 
 const createServer = (type: string, port: number, handlers: XtHandler): void => {
   net.createServer((socket) => {
@@ -76,6 +77,12 @@ const createServer = (type: string, port: number, handlers: XtHandler): void => 
 
 const startServer = (): void => {
   const server = express();
+
+  // entrypoint for as2 client
+  server.get('/boots.swf', (_, res) => {
+    const fps = settings.fps30 ? '30' : '24'
+    res.sendFile(path.join(process.cwd(), `special-media/boots${fps}.swf`))
+  })
 
   server.get('/', (_, res) => {
     res.sendFile(path.join(process.cwd(), 'media/index.html'));
