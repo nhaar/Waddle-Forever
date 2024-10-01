@@ -80,9 +80,9 @@ const startServer = (): void => {
 
   // entrypoint for as2 client
   server.get('/boots.swf', (_, res) => {
-    const fps = settings.fps30 ? '30' : '24'
-    res.sendFile(path.join(process.cwd(), `special-media/boots${fps}.swf`))
-  })
+    const fps = settings.fps30 ? '30' : '24';
+    res.sendFile(path.join(process.cwd(), `special-media/boots${fps}.swf`));
+  });
 
   server.get('/', (_, res) => {
     res.sendFile(path.join(process.cwd(), 'media/index.html'));

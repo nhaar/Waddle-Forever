@@ -9,7 +9,7 @@ export const checkVersion = async (): Promise<[boolean | undefined, string]> => 
   const latestRelease = await getJSON('api.github.com', '/repos/nhaar/Waddle-Client/releases');
   // no internet connection
   if (latestRelease === undefined) {
-    return [undefined, '']
+    return [undefined, ''];
   }
   const latestVersion = latestRelease[0]['tag_name'];
   const isUpToDate = latestVersion === `v${version}`;
@@ -50,11 +50,11 @@ const getJSON = async (host: string, path: string) => {
   
     req.on('error', (err) => {
       try {
-        const code = (err as any).code
+        const code = (err as any).code;
         if (code === 'ENOTFOUND') {
-          resolve(undefined)
+          resolve(undefined);
         } else {
-          throw new Error('Error not expected')
+          throw new Error('Error not expected');
         }
       } catch {
         reject(err);
