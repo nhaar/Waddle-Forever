@@ -45,7 +45,7 @@ const createWindow = async (store: Store) => {
   mainWindow.loadURL('http://localhost');
   
   const [isUpToDate, version] = await checkVersion();
-  if (!isUpToDate) {
+  if (isUpToDate !== undefined && !isUpToDate) {
     await dialog.showMessageBox(mainWindow, {
       buttons: ['Ok'],
       title: 'New version available',
