@@ -4,6 +4,9 @@ Waddle Client is an electron client built with a localhost server emulator for C
 
 It's main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival.
 
+> [!IMPORTANT]  
+> Users, check the [download tutorial](https://github.com/nhaar/Waddle-Client/blob/main/guide/GUIDE.md)! It is very simple
+
 # Progress
 
 At the moment, the program is very basic and all you can do is walk around the island and play some minigames.
