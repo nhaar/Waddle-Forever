@@ -99,7 +99,7 @@ export const setLocationStatus = (store: Store, state: DiscordState, location: C
 };
 
 const getGameName = () =>  {
-  return 'Club Penguin Singleplayer Client 2'
+  return 'Club Penguin Singleplayer Client 2';
 };
 
 const registerWindowReload = (store: Store, mainWindow: BrowserWindow) => {

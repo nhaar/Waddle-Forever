@@ -25,7 +25,7 @@ loadFlashPlugin(app);
 let mainWindow: BrowserWindow;
 
 app.on('ready', async () => {
-  startServer()
+  startServer();
 
   mainWindow = await createWindow(store);
 
