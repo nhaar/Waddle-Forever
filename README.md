@@ -74,6 +74,9 @@ Under the hood, a Club Penguin server emulator runs to give full functionality t
 
 To build you must have node.js, npm and yarn installed. After cloning the code, install all dependencies:
 
+> [!NOTE]  
+> Last built using Node.js v20.12.2, NPM v9.8.1, yarn v1.22.22
+
 ```yarn install```
 
 For running the client in development, run
