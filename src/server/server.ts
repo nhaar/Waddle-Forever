@@ -90,7 +90,7 @@ const startServer = (): void => {
   server.get('/play/v2/games/thinice/ThinIce.swf', (_, res) => {
     const igt = settings.thin_ice_igt ? 'IGT' : 'Vanilla';
     res.sendFile(path.join(process.cwd(), `special-media/ThinIce${igt}.swf`));
-  })
+  });
 
   server.get('/', (_, res) => {
     res.sendFile(path.join(process.cwd(), 'media/index.html'));
