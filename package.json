@@ -1,6 +1,6 @@
 {
   "name": "waddle-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Waddle Client",
   "main": "./compiled/client/main.js",
   "scripts": {

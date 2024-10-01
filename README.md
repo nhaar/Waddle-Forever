@@ -22,18 +22,17 @@ Here is a rough roadmap:
     - [x] Login works
     - [x] Room navigation works
     - [x] Singleplayer minigames work
-- [ ] Functional for PSA Mission speedruns
+- [x] Functional for PSA Mission speedruns -> v0.1.0 (BETA start)
     - [x] Shortcut command
     - [x] PSA Missions playable
     - [x] Basic inventory system
     - [x] Mission awards work
     - [x] Missions music
-    - [ ] Suitable for general audiences
-- [ ] Supersede CPSC (Original) for stamp speedruns
-    - [ ] Item inventory works
+    - [x] Suitable for general speedrunning audience
+- [ ] Supersede CPSC for stamp speedruns
     - [ ] Stampbook works
     - [ ] Original basic CPSC stamps work
-    - [ ] All Missions minigame
+    - [ ] Ability to become EPF agent
     - [ ] Island is accurate
 - [ ] Supersede CPSC (Original) for modding
     - [ ] Allow making media server mods
