@@ -1,6 +1,8 @@
-# CPSC 2
+# Waddle Client
 
-CPSC 2 (Name subject to change) is a localhost server emulator and client for playing the game. Its purpose is to be a localhost server emulator that works out of the box, no setup required.
+Waddle Client is an electron client built with a localhost server emulator for Club Penguin that works out of the box, built with Node.JS in TypeScript.
+
+It's main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival.
 
 # Progress
 
@@ -55,7 +57,7 @@ Here is a rough roadmap:
 
 # How it works
 
-CPSC 2 is composed of two segments:
+The project is composed of two segments:
 
 ## Client
 

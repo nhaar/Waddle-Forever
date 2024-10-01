@@ -1,7 +1,7 @@
 {
-  "name": "cpsc2",
+  "name": "waddle-client",
   "version": "0.0.0",
-  "description": "CPSC2",
+  "description": "Waddle Client",
   "main": "./compiled/client/main.js",
   "scripts": {
     "clean": "rimraf compiled/",
@@ -20,7 +20,7 @@
   "build": {
     "electronDist": "node_modules/electron/dist",
     "appId": "com.clubpenguin.speedrunning.client",
-    "productName": "CPSC 2",
+    "productName": "Waddle Client",
     "asar": "false",
     "win": {
       "publish": "github",
@@ -42,8 +42,8 @@
       "maintainer": "renanrcp"
     },
     "appImage": {
-      "synopsis": "CPSC2",
-      "description": "CPSC2",
+      "synopsis": "WaddleClient",
+      "description": "WaddleClient",
       "category": "Games",
       "artifactName": "CPS-Client-${version}.${ext}"
     }
