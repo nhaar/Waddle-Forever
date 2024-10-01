@@ -26,6 +26,7 @@ export enum Room {
   Mission10 = 923,
   DJ3K = 926,
   Mission11 = 927,
+  PuffleRescue = 949,
   DanceContest = 952
 }
 
@@ -53,6 +54,7 @@ const gameRooms = [
   Room.Mission9,
   Room.Mission10,
   Room.Mission11,
+  Room.PuffleRescue,
   Room.DanceContest
 ];
 
