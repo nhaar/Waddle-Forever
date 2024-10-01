@@ -31,7 +31,7 @@ const createWindow = async (store: Store) => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
-    title: "Iniciando...",
+    title: "Starting...",
     webPreferences: {
       plugins: true,
     },
