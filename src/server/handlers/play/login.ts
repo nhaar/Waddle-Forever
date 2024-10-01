@@ -43,8 +43,9 @@ handler.xt('n#gn', (client) => {
   client.sendXt('gn', '');
 });
 
+// mail system
 handler.xt('l#mst', (client) => {
-  client.sendXt('mst', 3, 3);
+  client.sendXt('mst', 0, 3);
 });
 
 handler.xt('l#mg', (client) => {

@@ -26,6 +26,7 @@ Here is a rough roadmap:
     - [x] Basic inventory system
     - [x] Mission awards work
     - [x] Missions music
+    - [ ] Suitable for general audiences
 - [ ] Supersede CPSC (Original) for stamp speedruns
     - [ ] Item inventory works
     - [ ] Stampbook works
