@@ -8,45 +8,45 @@ import { toggleFullScreen } from "./window";
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow): MenuItemConstructorOptions[] => {
   const options: MenuItemConstructorOptions = {
     id: '1',
-    label: 'Opções',
+    label: 'Options',
     submenu: [
       {
-        label: 'Limpar Cache',
+        label: 'Clear Cache',
         click: () => { clearCache(mainWindow); }
       },
       {
-        label: 'Abrir Dev Tools',
+        label: 'Open Dev Tools',
         accelerator: 'CommandOrControl+Shift+I',
         click: () => { openDevTools(mainWindow); }
       },
       {
-        label: 'Recarregar',
+        label: 'Reload',
         accelerator: 'F5',
         role: 'reload',
       },
       {
-        label: 'Recarregar Sem Cache',
+        label: 'Reload Clear Cache',
         accelerator: 'CommandOrControl+R',
         click: () => { mainWindow.webContents.reloadIgnoringCache(); }
       },
       {
-        label: 'Alternar Tela Cheia',
+        label: 'Toggle Full Screen',
         accelerator: 'F11',
         click: () => { toggleFullScreen(store, mainWindow); }
       },
       { 
-        label: 'Aumentar o Zoom',
+        label: 'Zoom In',
         role: 'zoomIn',
         accelerator: 'CommandOrControl+=',
       },
       {
-        label: 'Diminuir o Zoom',
+        label: 'Zoom Out',
         role: 'zoomOut',
         accelerator: 'CommandOrControl+-',
       },
 
       {
-        label: 'Resetar o Zoom',
+        label: 'Reset Zoom',
         role: 'resetZoom',
         accelerator: 'CommandOrControl+0',
       },
@@ -58,11 +58,11 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow): MenuItemCo
     label: 'Discord',
     submenu: [
       {
-        label: 'Ativar/Desativar Discord Rich Presence',
+        label: 'Enable/Disable Discord Rich Presence',
         click: () => { enableOrDisableDiscordRPC(store, mainWindow); }
       },
       {
-        label: 'Ativar/Desativar rastreamente de sala no Discord Rich Presence',
+        label: 'Enable/Disable room tracking through Discord Rich Presence',
         click: () => { enableOrDisableDiscordRPCLocationTracking(store, mainWindow); }
       }
     ]

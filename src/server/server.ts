@@ -1,94 +1,114 @@
-import path from 'path'
-import express from 'express'
-import net from 'net'
+import path from 'path';
+import express from 'express';
+import net from 'net';
 
-import { XtPacket } from '.'
-import { XtHandler } from './handlers'
-import loginHandler from './handlers/play/login'
-import navigationHandler from './handlers/play/navigation'
-import serverList from './servers'
-import { Client } from './penguin'
+import { XtPacket } from '.';
+import { XtHandler } from './handlers';
+import loginHandler from './handlers/play/login';
+import navigationHandler from './handlers/play/navigation';
+import serverList from './servers';
+import commandsHandler from './handlers/commands';
+import itemHandler from './handlers/play/item';
+import { Client } from './penguin';
+import settings from './settings';
 
-function createServer (type: string, port: number, handlers: XtHandler): void {
+const createServer = (type: string, port: number, handlers: XtHandler): void => {
   net.createServer((socket) => {
-    socket.setEncoding('utf8')
+    socket.setEncoding('utf8');
 
-    const client = new Client(socket)
+    const client = new Client(socket);
 
     socket.on('data', (data: Buffer) => {
-      const dataStr = data.toString().split('\0')[0]
-      console.log('incoming data!', dataStr)
+      const dataStr = data.toString().split('\0')[0];
+      console.log('incoming data!', dataStr);
       if (dataStr.startsWith('<')) {
         if (dataStr === '<policy-file-request/>') {
-          socket.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>')
+          socket.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
         } else if (dataStr === "<msg t='sys'><body action='verChk' r='0'><ver v='153' /></body></msg>") {
-          client.send('<msg t="sys"><body action="apiOK" r="0"></body></msg>')
+          client.send('<msg t="sys"><body action="apiOK" r="0"></body></msg>');
         } else if (dataStr === "<msg t='sys'><body action='rndK' r='-1'></body></msg>") {
-          client.send('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>')
+          client.send('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>');
         } else if (dataStr.includes('login')) {
-          const dataMatch = dataStr.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/)
+          const dataMatch = dataStr.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
           if (dataMatch === null) {
-            socket.end('')
+            socket.end('');
           } else {
-            const name = dataMatch[1]
-            void client.create(name).then(() => {
-              /*
-              TODO
-              will key be required?
-              buddies
-              how will server size be handled after NPCs?
-              */
-              // information regarding how many populations are in each server
-              client.sendXt('l', client.penguin.id, client.penguin.id, '', serverList.map((server) => {
-                return `${server.id},5`
-              }).join('|'))
+            const name = dataMatch[1];
+            client.create(name);
+            /*
+            TODO
+            will key be required?
+            buddies
+            how will server size be handled after NPCs?
+            */
+            // information regarding how many populations are in each server
+            client.sendXt('l', client.id, client.id, '', serverList.map((server) => {
+              return `${server.id},5`;
+            }).join('|'));
 
-              /** TODO puffle stuff */
-              client.sendXt('pgu')
-            })
+            /** TODO puffle stuff */
+            client.sendXt('pgu');
           }
         }
       } else {
-        const packet = new XtPacket(dataStr)
-        const callbacks = handlers.getCallback(packet)
+        const packet = new XtPacket(dataStr);
+        const callbacks = handlers.getCallback(packet);
         if (callbacks === undefined) {
-          console.log('unhandled XT: ', packet)
+          console.log('unhandled XT: ', packet);
         } else {
           callbacks.forEach((callback) => {
-            callback(client, ...packet.args)
-          })
+            callback(client, ...packet.args);
+          });
         }
       }
-    })
+    });
 
     socket.on('close', () => {
-      console.log('A client has disconnected')
-    })
+      console.log('A client has disconnected');
+    });
 
     socket.on('error', (error) => {
-      console.error(error)
-    })
+      console.error(error);
+    });
   }).listen(port, () => {
-    console.log(`${type} server listening on port ${port}`)
-  })
-}
+    console.log(`${type} server listening on port ${port}`);
+  });
+};
 
-export default function startServer (): void {
-  const server = express()
+const startServer = (): void => {
+  const server = express();
+
+  // entrypoint for as2 client
+  server.get('/boots.swf', (_, res) => {
+    const fps = settings.fps30 ? '30' : '24';
+    res.sendFile(path.join(process.cwd(), `special-media/boots${fps}.swf`));
+  });
+
+  // TODO a better system for handling these special medias
+
+  // TODO thin ice IGT without font issues and insane number of decimals
+  server.get('/play/v2/games/thinice/ThinIce.swf', (_, res) => {
+    const igt = settings.thin_ice_igt ? 'IGT' : 'Vanilla';
+    res.sendFile(path.join(process.cwd(), `special-media/ThinIce${igt}.swf`));
+  });
 
   server.get('/', (_, res) => {
-    res.sendFile(path.join(process.cwd(), 'media/index.html'))
-  })
+    res.sendFile(path.join(process.cwd(), 'media/index.html'));
+  });
 
-  server.use(express.static('media'))
+  server.use(express.static('media'));
 
-  server.listen(80, () => console.log('HTTP server running in port 80'))
+  server.listen(80, () => console.log('HTTP server running in port 80'));
 
-  const worldListener = new XtHandler()
-  worldListener.use(loginHandler)
-  worldListener.use(navigationHandler)
-  createServer('Login', 6112, new XtHandler())
+  const worldListener = new XtHandler();
+  worldListener.use(loginHandler);
+  worldListener.use(navigationHandler);
+  worldListener.use(commandsHandler);
+  worldListener.use(itemHandler);
+  createServer('Login', 6112, new XtHandler());
   serverList.forEach((server) => {
-    createServer(server.name, Number(server.port), worldListener)
-  })
-}
+    createServer(server.name, Number(server.port), worldListener);
+  });
+};
+
+export default startServer;

@@ -1,6 +1,8 @@
-# CPSC 2
+# Waddle Client
 
-CPSC 2 (Name subject to change) is a localhost server emulator and client for playing the game. Its purpose is to be a localhost server emulator that works out of the box, no setup required.
+Waddle Client is an electron client built with a localhost server emulator for Club Penguin that works out of the box, built with Node.JS in TypeScript.
+
+It's main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival.
 
 # Progress
 
@@ -20,17 +22,17 @@ Here is a rough roadmap:
     - [x] Login works
     - [x] Room navigation works
     - [x] Singleplayer minigames work
-- [ ] Functional for PSA Mission speedruns
-    - [ ] Shortcut command
-    - [ ]  All Mission playable
-    - [ ]  Basic inventory system
-    - [ ]  Mission awards work
-    - [ ]  VR Room music
-- [ ] Supersede CPSC (Original) for stamp speedruns
-    - [ ] Item inventory works
+- [x] Functional for PSA Mission speedruns -> v0.1.0 (BETA start)
+    - [x] Shortcut command
+    - [x] PSA Missions playable
+    - [x] Basic inventory system
+    - [x] Mission awards work
+    - [x] Missions music
+    - [x] Suitable for general speedrunning audience
+- [ ] Supersede CPSC for stamp speedruns
     - [ ] Stampbook works
     - [ ] Original basic CPSC stamps work
-    - [ ] All Missions minigame
+    - [ ] Ability to become EPF agent
     - [ ] Island is accurate
 - [ ] Supersede CPSC (Original) for modding
     - [ ] Allow making media server mods
@@ -54,7 +56,7 @@ Here is a rough roadmap:
 
 # How it works
 
-CPSC 2 is composed of two segments:
+The project is composed of two segments:
 
 ## Client
 
@@ -98,6 +100,6 @@ The server executable will be generated, it also needs to be in the same folder 
 
 The electron client is originally forked from the [Club Penguin Avalanche client](https://github.com/Club-Penguin-Avalanche/CPA-Client).
 
-The server is based in solero's works in reverse engineering the Club Penguin server [(Houdini server emulator)](https://github.com/solero/houdini).
+The server is based in solero's works in reverse engineering the Club Penguin server [(Houdini server emulator)](https://github.com/solero/houdini). The media server is also mostly from solero's media servers.
 
-Special thanks to charlotte, who made the original CPSC.
+Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunning client.
