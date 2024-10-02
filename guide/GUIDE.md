@@ -1,12 +1,12 @@
-# How to play Waddle Client
+# How to play Waddle Forever
 
-1. Download the latest version [here](https://github.com/nhaar/Waddle-Client/releases/latest). In the "Assets" section, click the .zip to download it:
+1. Download the latest version [here](https://github.com/nhaar/Waddle-Forever/releases/latest). In the "Assets" section, click the .zip to download it:
 
 ![Download](./download.png)
 
 2. Extract the folder
 
-3. Open inside `Waddle Client.exe`. You will likely be warned by computer/antivirus, but you can accept everything as there is no risk in using this program.
+3. Open inside `WaddleForeverClient.exe`. You will likely be warned by computer/antivirus, but you can accept everything as there is no risk in using this program.
 
 4. Enjoy!
 
@@ -17,7 +17,7 @@
 
 Instead of using the built-in client, you can play in browser or flash projector if that is better for you.
 
-1. In the Waddle Client folder, there is a file called `server.exe`. Open it and a command prompt will show up. This means the game is running.
+1. In the Waddle Forever folder, there is a file called `WaddleForeverServer.exe`. Open it and a command prompt will show up. This means the game is running.
 
 2. For browser, go to `http://localhost/` to play. For Flash Projector, go to `http://localhost/boots.swf`.
 

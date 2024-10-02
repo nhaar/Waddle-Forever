@@ -1,7 +1,7 @@
 {
-  "name": "waddle-client",
+  "name": "waddle-forever",
   "version": "0.1.0",
-  "description": "Waddle Client",
+  "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
     "clean": "rimraf compiled/",
@@ -13,23 +13,23 @@
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
-    "build-server": "tsc&&pkg compiled/server/main.js -o server"
+    "build-server": "tsc&&pkg compiled/server/main.js -o WaddleForeverServer"
   },
   "author": "CPS",
   "license": "MIT",
   "build": {
     "electronDist": "node_modules/electron/dist",
     "appId": "com.clubpenguin.speedrunning.client",
-    "productName": "Waddle Client",
+    "productName": "WaddleForeverClient",
     "asar": "false",
     "win": {
       "publish": "github",
-      "artifactName": "CPSC-Setup-${version}.${ext}"
+      "artifactName": "WaddleForever-Setup-${version}.${ext}"
     },
     "mac": {
       "category": "game",
       "icon": "./assets/icon.icns",
-      "artifactName": "CPS-Client-${version}.${ext}"
+      "artifactName": "WaddleForever-Client-${version}.${ext}"
     },
     "linux": {
       "category": "game",
@@ -39,13 +39,13 @@
         "AppImage"
       ],
       "icon": "./assets/icon.icns",
-      "maintainer": "renanrcp"
+      "maintainer": "nhaar"
     },
     "appImage": {
-      "synopsis": "WaddleClient",
-      "description": "WaddleClient",
+      "synopsis": "WaddleForeverClient",
+      "description": "Waddle Forever's Client",
       "category": "Games",
-      "artifactName": "CPS-Client-${version}.${ext}"
+      "artifactName": "WaddleForever-Client-${version}.${ext}"
     }
   },
   "nodemonConfig": {
