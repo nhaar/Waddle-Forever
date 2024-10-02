@@ -38,11 +38,11 @@ Prject roadmap:
     - [ ] Original basic CPSC stamps work
     - [ ] Ability to become EPF agent
     - [ ] Island is accurate
-- [ ] Supersede CPSC casually:
-    - [ ] Regular Card-Jitsu
-    - [ ] Allow making media server mods
-- [ ] Support for AS3 client
-- [ ] All Stamps speedruns
+- [ ] Supersede Houdini for 100 stamps:
+    - [ ] AS3 Client
+    - [ ] Houdini base game stamps
+    - [ ] Puffle Digging stamps
+- [ ] Useable for All Stamps speedruns
     - [ ] Card-Jitsu games working
     - [ ] Igloo system works
     - [ ] Treasure Hunt working
@@ -51,11 +51,16 @@ Prject roadmap:
     - [ ] Bots controllable by commands
     - [ ] Initial version switcher
     - [ ] Add all versions relevant for stamps
-- [ ] Other essential features
+- [ ] Supersede CPSC for localhost:
+    - [ ] Halloween Party, Medieval Party mods restored as versions
+    - [ ] Allow making media server mods
+    - [ ] Archive other CPSC mods
+    - [ ] Regular Card-Jitsu
+- [ ] Catch up to Houdini for localhost
     - [ ] Buddy system
     - [ ] Mail system
     - [ ] Puffle care system
-- [ ] Finish version/time switcher
+- [ ] Finish timeline switcher
     - [ ] Implementing every party
 - [ ] Implement NPCs
 
