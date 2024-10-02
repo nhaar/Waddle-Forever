@@ -6,15 +6,21 @@ const pjson = require('../../package.json');
 const version = pjson.version;
 
 export const checkVersion = async (): Promise<[boolean | undefined, string]> => {
-  const latestRelease = await getJSON('api.github.com', '/repos/nhaar/Waddle-Client/releases');
-  // no internet connection
-  if (latestRelease === undefined) {
-    return [undefined, ''];
-  }
-  const latestVersion = latestRelease[0]['tag_name'];
-  const isUpToDate = latestVersion === `v${version}`;
+  const latestRelease = await getJSON('api.github.com', '/repos/nhaar/Waddle-Forever/releases');
 
-  return [isUpToDate, latestVersion];
+  try {
+    // no internet connection
+    if (latestRelease === undefined) {
+      return [undefined, ''];
+    }
+    const latestVersion = latestRelease[0]['tag_name'];
+    const isUpToDate = latestVersion === `v${version}`;
+  
+    return [isUpToDate, latestVersion];
+  } catch (error) {
+    console.log(error)
+    return [false, '?']
+  }
 };
 
 /**
