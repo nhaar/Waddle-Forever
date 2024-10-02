@@ -13,6 +13,10 @@
 > [!WARNING]
 > You can only have one client open at a time
 
+# Logging In
+
+You don't create accounts, all you need to do is to login with the name you want. You can use any password, it will always work.
+
 # How to play in Browser or Flash Projector
 
 Instead of using the built-in client, you can play in browser or flash projector if that is better for you.
