@@ -13,6 +13,7 @@ const settingsPath = path.join(process.cwd(), 'settings.toml');
 if (!fs.existsSync(settingsPath)) {
   fs.writeFileSync(settingsPath, `[settings]
 30fps=false
+# If you want to use IGT, you need to use 30 FPS!
 thin_ice_igt=false`);
 }
 

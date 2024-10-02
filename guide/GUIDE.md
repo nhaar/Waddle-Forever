@@ -36,7 +36,14 @@ After you play the game once, a file called `settings.toml` will appear. You can
 - `30fps`, set to `true` if you want to play in 30 FPS.
 - `thin_ice_igt`, set to `true` to use the Thin Ice IGT mod.
 
+> [!WARNING]
+> The Thin Ice IGT mod only works for 30 FPS.
+
 You will need to restart the client or server everytime you make a settings change.
+
+> [!WARNING]
+> Making changes in Flash Player requires you to clear cache. In the client you can do that easily in the menu, and it's usually easy for browsers too.
+> Clearing cache for Flash Projector is harder as you need a special script for it.
 
 # Data
 
