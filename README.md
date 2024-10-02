@@ -1,11 +1,11 @@
-# Waddle Client
+# Waddle Forever
 
-Waddle Client is an electron client built with a localhost server emulator for Club Penguin that works out of the box, built with Node.JS in TypeScript.
+Waddle Forever is composed of a localhost server emulator for Club Penguin and an electron client with the server that can run the game out of the box, built with Node.JS in TypeScript.
 
-It's main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival.
+It's main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival of parties and events.
 
 > [!IMPORTANT]  
-> Users, check the [download tutorial](https://github.com/nhaar/Waddle-Client/blob/main/guide/GUIDE.md)! It is very simple
+> Users, check the [download tutorial](https://github.com/nhaar/Waddle-Forever/blob/main/guide/GUIDE.md)! It is very simple
 
 # Progress
 
@@ -13,13 +13,14 @@ At the moment, the program is very basic and all you can do is walk around the i
 
 The client has ambitious goals, so it is uncertain if they will be met. The main goals include:
 
-* Be fully useable for stamp speedruns
-* Allow exploring any parties
+* Be fully useable for all speedruns
+* Allow exploring any party, event and timestamp in the timeline
 * Allow adding mods easily
-* Allow freedom over the penguins
+* Useable for small servers hosted for friends
 * Have a world of NPCs over the island
+* Have a complete singleplayer experience and "story mode"
 
-Here is a rough roadmap:
+Prject roadmap:
 
 - [x] Prerelease -> v0.0.0
     - [x] Login works
@@ -37,7 +38,8 @@ Here is a rough roadmap:
     - [ ] Original basic CPSC stamps work
     - [ ] Ability to become EPF agent
     - [ ] Island is accurate
-- [ ] Supersede CPSC (Original) for modding
+- [ ] Supersede CPSC casually:
+    - [ ] Regular Card-Jitsu
     - [ ] Allow making media server mods
 - [ ] Support for AS3 client
 - [ ] All Stamps speedruns
