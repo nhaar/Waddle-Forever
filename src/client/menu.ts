@@ -4,12 +4,17 @@ import openDevTools from "./dev-tools";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
 import { toggleFullScreen } from "./window";
+import { createSettingsWindow } from "./settings";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow): MenuItemConstructorOptions[] => {
   const options: MenuItemConstructorOptions = {
     id: '1',
     label: 'Options',
     submenu: [
+      {
+        label: 'Open Settings',
+        click: () => { createSettingsWindow(); }
+      },
       {
         label: 'Clear Cache',
         click: () => { clearCache(mainWindow); }
