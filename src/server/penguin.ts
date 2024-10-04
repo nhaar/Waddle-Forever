@@ -140,4 +140,10 @@ export class Client {
     this.update();
     this.sendXt('ai', item, this.penguin.coins);
   }
+
+  updateColor (color: number): void {
+    this.penguin.color = color;
+    this.update();
+    this.sendXt('upc', this.id, color);
+  }
 }

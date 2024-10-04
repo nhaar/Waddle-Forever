@@ -19,4 +19,9 @@ handler.xt('i#ai', (client, item) => {
   }
 });
 
+// equipping color
+handler.xt('s#upc', (client, color) => {
+  client.updateColor(Number(color));
+})
+
 export default handler;
