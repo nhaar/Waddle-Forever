@@ -1,6 +1,6 @@
 {
   "name": "waddle-forever",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
@@ -62,7 +62,7 @@
     "@typescript-eslint/parser": "^5.52.0",
     "@yao-pkg/pkg": "^5.15.0",
     "copyfiles": "^2.4.1",
-    "electron": "^11.3.0",
+    "electron": "^10.0.0",
     "electron-builder": "23.0.2",
     "eslint": "^8.34.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
