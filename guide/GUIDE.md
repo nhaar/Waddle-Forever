@@ -13,6 +13,10 @@
 > [!WARNING]
 > You can only have one client open at a time
 
+# Logging In
+
+You don't create accounts, all you need to do is to login with the name you want. You can use any password, it will always work.
+
 # How to play in Browser or Flash Projector
 
 Instead of using the built-in client, you can play in browser or flash projector if that is better for you.
@@ -31,6 +35,8 @@ Two commands you should use for speedruns:
 
 # Settings
 
+Currently, the only way to edit settings is to do it manually. In future updates, you will be able to do this from inside the client.
+
 After you play the game once, a file called `settings.toml` will appear. You can open the file and change the settings. Currently, two settings are available:
 
 - `30fps`, set to `true` if you want to play in 30 FPS.
@@ -48,3 +54,6 @@ You will need to restart the client or server everytime you make a settings chan
 # Data
 
 You can change your database in the folder `data`.
+
+> [!WARNING]
+> Since we are still in Beta, the database of newer versions may NOT be consistent with older versions. If you really wish to port an older database, contact us!
