@@ -4,7 +4,7 @@ import { Store } from "./store";
 import { checkVersion } from "../common/version";
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
-  const fullScreen = !store.private.get("fullScreen") ?? false;
+  const fullScreen = !store.private.get("fullScreen");
 
   store.private.set("fullScreen", fullScreen);
 
