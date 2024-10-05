@@ -6,6 +6,7 @@ import startMenu from "./menu";
 import createStore from "./store";
 import createWindow from "./window";
 import startServer from "../server/server";
+import settingsManager from "../server/settings";
 
 log.initialize();
 
@@ -25,14 +26,15 @@ loadFlashPlugin(app);
 let mainWindow: BrowserWindow;
 
 app.on('ready', async () => {
-  startServer();
+  console.log('hellobruv');
+  startServer(settingsManager);
 
   mainWindow = await createWindow(store);
 
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow);
+  startMenu(store, mainWindow, settingsManager);
 
   startDiscordRPC(store, mainWindow);
 

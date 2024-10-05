@@ -1,5 +1,6 @@
 import { checkVersion } from '../common/version';
 import startServer from './server';
+import settingsManager from './settings';
 
 checkVersion().then((value) => {
   if (value[0] === undefined) {
@@ -7,5 +8,5 @@ checkVersion().then((value) => {
   } else if (!value[0]) {
     console.log(`A new version is available (${value[1]})`);
   }
-  startServer();
+  startServer(settingsManager);
 });
