@@ -14,3 +14,9 @@ thinIceIgtInput.addEventListener('change', (e) => {
     api.update({ thin_ice_igt: e.target.checked })
   }
 })
+
+window.addEventListener('receive-settings', (e: any) => {
+  const settings = e.detail
+  fpsInput.checked = settings['fps30']
+  thinIceIgtInput.checked = settings['thin_ice_igt']
+})
