@@ -1,10 +1,14 @@
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow, ipcMain, dialog } from "electron";
 import { SettingsManager } from "../server/settings";
 import path from "path";
 
-export const createSettingsWindow = async (settingsManager: SettingsManager) => {
+export const createSettingsWindow = async (settingsManager: SettingsManager, mainWindow: BrowserWindow) => {
   if (settingsManager.isEditting) {
-
+    await dialog.showMessageBox(mainWindow, {
+      buttons: ['Ok'],
+      title: 'Error',
+      message: `You already have the settings window open.`,
+    });
   } else {
     settingsManager.isEditting = true
     const settingsWindow = new BrowserWindow({

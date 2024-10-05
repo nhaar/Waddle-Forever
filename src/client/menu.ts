@@ -14,7 +14,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, settingsMan
     submenu: [
       {
         label: 'Open Settings',
-        click: () => { createSettingsWindow(settingsManager); }
+        click: () => { createSettingsWindow(settingsManager, mainWindow); }
       },
       {
         label: 'Clear Cache',
