@@ -13,7 +13,7 @@
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
-    "build-server": "tsc&&pkg compiled/server/main.js -o WaddleForeverServer"
+    "build-server": "tsc&&pkg compiled/server/main.js -o WaddleForeverServer -t node20-linux-x64,node20-win-x64"
   },
   "author": "CPS",
   "license": "MIT",
@@ -53,6 +53,10 @@
       "/data/*",
       "settings.json"
     ]
+  },
+  "pkg": {
+    "targets": [ "latest-linux-arm64", "latest-win-arm64" ],
+    "outputPath": "pkgdist"
   },
   "devDependencies": {
     "@types/discord-rpc": "^4.0.3",
