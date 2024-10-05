@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog } from "electron";
+import { BrowserWindow } from "electron";
 
 const openDevTools = async (mainWindow: BrowserWindow) => {
   mainWindow.webContents.openDevTools();

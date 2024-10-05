@@ -10,7 +10,7 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
       message: `You already have the settings window open.`,
     });
   } else {
-    settingsManager.isEditting = true
+    settingsManager.isEditting = true;
     const settingsWindow = new BrowserWindow({
       width: 400,
       height: 300,
@@ -22,15 +22,15 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
   
     settingsWindow.loadFile('views/settings.html');
     settingsWindow.webContents.on('did-finish-load', () => {
-      settingsWindow.webContents.send('receive-settings', settingsManager.settings)
-    })
+      settingsWindow.webContents.send('receive-settings', settingsManager.settings);
+    });
 
     settingsWindow.on('close', () => {
-      settingsManager.isEditting = false
-    })
+      settingsManager.isEditting = false;
+    });
   
     ipcMain.on('update-settings', (e, arg) => {
-      settingsManager.updateSettings(arg)
-    })
+      settingsManager.updateSettings(arg);
+    });
   }
-}
+};
