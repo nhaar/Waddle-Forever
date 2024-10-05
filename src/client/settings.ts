@@ -20,7 +20,7 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
       }
     });
   
-    settingsWindow.loadFile('views/settings.html');
+    settingsWindow.loadFile(path.join(__dirname, 'views/settings.html'));
     settingsWindow.webContents.on('did-finish-load', () => {
       settingsWindow.webContents.send('receive-settings', settingsManager.settings);
     });
