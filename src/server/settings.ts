@@ -21,7 +21,7 @@ export class SettingsManager {
     }
 
     this.settings = {
-      fps30: this.readBoolean(settingsJson, '30fps', false),
+      fps30: this.readBoolean(settingsJson, 'fps30', false),
       thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false)
     }
 
