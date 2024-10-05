@@ -13,6 +13,8 @@ const settingsPath = path.join(process.cwd(), 'settings.json');
 export class SettingsManager {
   settings: Settings
 
+  isEditting: boolean = false
+
   constructor () {
     let settingsJson: any = {}
 
