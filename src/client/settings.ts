@@ -23,7 +23,6 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
     settingsWindow.loadFile('views/settings.html');
     settingsWindow.webContents.on('did-finish-load', () => {
       settingsWindow.webContents.send('settings-manager', settingsManager)
-      settingsWindow.webContents.openDevTools()
     })
 
     settingsWindow.on('close', () => {
