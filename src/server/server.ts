@@ -10,7 +10,7 @@ import serverList from './servers';
 import commandsHandler from './handlers/commands';
 import itemHandler from './handlers/play/item';
 import { Client } from './penguin';
-import settings from './settings';
+import { SettingsManager } from './settings';
 
 const createServer = (type: string, port: number, handlers: XtHandler): void => {
   net.createServer((socket) => {
@@ -75,12 +75,12 @@ const createServer = (type: string, port: number, handlers: XtHandler): void => 
   });
 };
 
-const startServer = (): void => {
+const startServer = (settingsManager: SettingsManager): void => {
   const server = express();
 
   // entrypoint for as2 client
   server.get('/boots.swf', (_, res) => {
-    const fps = settings.fps30 ? '30' : '24';
+    const fps = settingsManager.settings.fps30 ? '30' : '24';
     res.sendFile(path.join(process.cwd(), `special-media/boots${fps}.swf`));
   });
 
@@ -88,8 +88,11 @@ const startServer = (): void => {
 
   // TODO thin ice IGT without font issues and insane number of decimals
   server.get('/play/v2/games/thinice/ThinIce.swf', (_, res) => {
-    const igt = settings.thin_ice_igt ? 'IGT' : 'Vanilla';
-    res.sendFile(path.join(process.cwd(), `special-media/ThinIce${igt}.swf`));
+    let suffix = settingsManager.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
+    if (settingsManager.settings.thin_ice_igt) {
+      suffix += settingsManager.settings.fps30 ? '30' : '24';
+    }
+    res.sendFile(path.join(process.cwd(), `special-media/ThinIce${suffix}.swf`));
   });
 
   server.get('/', (_, res) => {

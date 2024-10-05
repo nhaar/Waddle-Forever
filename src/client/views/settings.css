@@ -1,0 +1,23 @@
+body {
+  background-color: #005bbb;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+
+  user-select: none;
+}
+
+body > * {
+  text-align: center;
+}
+
+.settings {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
