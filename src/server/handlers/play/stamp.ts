@@ -32,4 +32,12 @@ handler.xt('st#ssbcd', (client, color, highlight, pattern, icon) => {
   client.update()
 });
 
+// earn stamp
+handler.xt('st#sse', (client, stamp) => {
+  const stampId = Number(stamp)
+  client.penguin.stamps.push(stampId)
+  client.penguin.stampbook.recent_stamps.push(stampId)
+  client.update()
+})
+
 export default handler;

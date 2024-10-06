@@ -130,7 +130,8 @@ export class Client {
         highlight: 1,
         pattern: 0,
         icon: 1,
-        stamps: []
+        stamps: [],
+        recent_stamps: []
       }
     };
   }

@@ -118,7 +118,8 @@ export interface Penguin {
       y: number,
       rotation: number,
       depth: number
-    }>
+    }>,
+    recent_stamps: number[]
   }
 }
 
