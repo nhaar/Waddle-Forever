@@ -186,4 +186,11 @@ export class Client {
 
     return cover.join('%');
   }
+
+  getRecentStampsString (): string {
+    const recentStamps = this.penguin.stampbook.recent_stamps.join('|')
+    this.penguin.stampbook.recent_stamps = []
+    this.update()
+    return recentStamps
+  }
 }

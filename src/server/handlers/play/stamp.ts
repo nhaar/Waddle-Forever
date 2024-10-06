@@ -19,8 +19,7 @@ handler.xt('st#gps', (client, id) => {
 
 // getting recent player stamps
 handler.xt('st#gmres', (client) => {
-  // TODO implement feature
-  client.sendXt('gmres', '');
+  client.sendXt('gmres', client.getRecentStampsString());
 });
 
 // save stamp book cover data
