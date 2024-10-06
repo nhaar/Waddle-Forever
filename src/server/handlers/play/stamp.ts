@@ -23,4 +23,13 @@ handler.xt('st#gmres', (client) => {
   client.sendXt('gmres', '');
 });
 
+// save stamp book cover data
+handler.xt('st#ssbcd', (client, color, highlight, pattern, icon) => {
+  client.penguin.stampbook.color = Number(color)
+  client.penguin.stampbook.highlight = Number(highlight)
+  client.penguin.stampbook.icon = Number(icon)
+  client.penguin.stampbook.pattern = Number(pattern)
+  client.update()
+});
+
 export default handler;
