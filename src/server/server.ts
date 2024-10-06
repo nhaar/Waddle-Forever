@@ -81,7 +81,7 @@ const startServer = (settingsManager: SettingsManager): void => {
   // entrypoint for as2 client
   server.get('/boots.swf', (_, res) => {
     const fps = settingsManager.settings.fps30 ? '30' : '24';
-    res.sendFile(path.join(process.cwd(), `special-media/boots${fps}.swf`));
+    res.sendFile(path.join(process.cwd(), `media/special/boots${fps}.swf`));
   });
 
   // TODO a better system for handling these special medias
@@ -92,14 +92,14 @@ const startServer = (settingsManager: SettingsManager): void => {
     if (settingsManager.settings.thin_ice_igt) {
       suffix += settingsManager.settings.fps30 ? '30' : '24';
     }
-    res.sendFile(path.join(process.cwd(), `special-media/ThinIce${suffix}.swf`));
+    res.sendFile(path.join(process.cwd(), `media/special/ThinIce${suffix}.swf`));
   });
 
   server.get('/', (_, res) => {
     res.sendFile(path.join(process.cwd(), 'media/index.html'));
   });
 
-  server.use(express.static('media'));
+  server.use(express.static('media/static'));
 
   server.listen(80, () => console.log('HTTP server running in port 80'));
 

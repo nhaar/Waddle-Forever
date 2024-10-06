@@ -69,6 +69,6 @@ const serversXml = `
 //    </environment>
 // </servers>`
 
-fs.writeFileSync(path.join(process.cwd(), 'media/servers.xml'), serversXml);
+fs.writeFileSync(path.join(process.cwd(), 'media/static/servers.xml'), serversXml);
 
 export default serverList;
