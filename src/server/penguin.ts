@@ -164,9 +164,9 @@ export class Client {
     const pins = this.penguin.pins.map((pin) => {
       // TODO -> middle is "date", third is member
       // Proper pin objects and information
-      return [pin, 0, 0].join('|')
-    })
-    return pins.join('%')
+      return [pin, 0, 0].join('|');
+    });
+    return pins.join('%');
   }
 
   getStampbookCoverString (): string {
@@ -175,14 +175,14 @@ export class Client {
       this.penguin.stampbook.highlight,
       this.penguin.stampbook.pattern,
       this.penguin.stampbook.icon
-    ].map((n) => String(n))
+    ].map((n) => String(n));
 
     this.penguin.stampbook.stamps.forEach((info) => {
       cover.push([
         0, info.stamp, info.x, info.y, info.rotation, info.depth
-      ].join('|'))
-    })
+      ].join('|'));
+    });
 
-    return cover.join('%')
+    return cover.join('%');
   }
 }
