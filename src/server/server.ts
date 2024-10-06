@@ -9,6 +9,7 @@ import navigationHandler from './handlers/play/navigation';
 import serverList from './servers';
 import commandsHandler from './handlers/commands';
 import itemHandler from './handlers/play/item';
+import stampHandler from './handlers/play/stamp';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
 
@@ -108,6 +109,7 @@ const startServer = (settingsManager: SettingsManager): void => {
   worldListener.use(navigationHandler);
   worldListener.use(commandsHandler);
   worldListener.use(itemHandler);
+  worldListener.use(stampHandler);
   createServer('Login', 6112, new XtHandler());
   serverList.forEach((server) => {
     createServer(server.name, Number(server.port), worldListener);

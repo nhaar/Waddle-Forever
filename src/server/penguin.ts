@@ -122,7 +122,16 @@ export class Client {
       registration_date: Date.now(),
       coins: 500,
       minutes_played: 0,
-      inventory: [Item.Blue]
+      inventory: [Item.Blue],
+      stamps: [],
+      pins: [],
+      stampbook: { // TODO: enums for the options
+        color: 1,
+        highlight: 1,
+        pattern: 0,
+        icon: 1,
+        stamps: []
+      }
     };
   }
 
@@ -145,5 +154,35 @@ export class Client {
     this.penguin.color = color;
     this.update();
     this.sendXt('upc', this.id, color);
+  }
+
+  sendStamps (): void {
+    this.sendXt('gps', this.id, this.penguin.stamps.join('|'));
+  }
+
+  getPinString (): string {
+    const pins = this.penguin.pins.map((pin) => {
+      // TODO -> middle is "date", third is member
+      // Proper pin objects and information
+      return [pin, 0, 0].join('|')
+    })
+    return pins.join('%')
+  }
+
+  getStampbookCoverString (): string {
+    const cover = [
+      this.penguin.stampbook.color,
+      this.penguin.stampbook.highlight,
+      this.penguin.stampbook.pattern,
+      this.penguin.stampbook.icon
+    ].map((n) => String(n))
+
+    this.penguin.stampbook.stamps.forEach((info) => {
+      cover.push([
+        0, info.stamp, info.x, info.y, info.rotation, info.depth
+      ].join('|'))
+    })
+
+    return cover.join('%')
   }
 }

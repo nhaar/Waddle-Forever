@@ -104,7 +104,22 @@ export interface Penguin {
   coins: number
   registration_date: number
   minutes_played: number,
-  inventory: number[]
+  inventory: number[],
+  stamps: number[],
+  pins: number[],
+  stampbook: {
+    color: number,
+    highlight: number,
+    pattern: number,
+    icon: number,
+    stamps: Array<{
+      stamp: number,
+      x: number,
+      y: number,
+      rotation: number,
+      depth: number
+    }>
+  }
 }
 
 export default db;

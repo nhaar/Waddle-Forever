@@ -32,7 +32,7 @@ handler.xt('j#js', (client) => {
 
   // receiving inventory
   // TODO proper inventory
-  client.sendXt('gps', client.id, '274|270|242|238|244|230|260|254|16|27|36|358|8|31|290|32|466|35|7|33|34|448|26|24|22|17|28|14|20');
+  client.sendStamps();
 });
 
 handler.xt('b#gb', (client) => {
