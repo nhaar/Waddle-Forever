@@ -60,6 +60,20 @@ const gameRooms = [
   Room.DanceContest
 ];
 export const roomStamps: Record<number, number[]> = {
+  [Room.AstroBarrier]: [
+    Stamp.Astro5,
+    Stamp.Astro5Max,
+    Stamp.Astro40,
+    Stamp.ShipBlast,
+    Stamp.OneUpBlast,
+    Stamp.AstroSecret,
+    Stamp.Astro10Max,
+    Stamp.Astro20Max,
+    Stamp.AstroExpert,
+    Stamp.Astro30Max,
+    Stamp.Astro1Up,
+    Stamp.AstroMaster,
+  ],
   [Room.ThinIce]: [
     Stamp.OneCoinBag,
     Stamp.ThreeCoinBags,
