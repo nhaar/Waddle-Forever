@@ -1,7 +1,7 @@
 import net from 'net';
 
 import { isGameRoom, Room, roomStamps } from './game/rooms';
-import db, { Penguin, Databases } from './database';
+import db, { Penguin, Databases, Puffle } from './database';
 import { Item } from './game/items';
 
 export class Client {
@@ -142,7 +142,9 @@ export class Client {
         icon: 1,
         stamps: [],
         recent_stamps: []
-      }
+      },
+      puffleSeq: 0,
+      puffles: []
     };
   }
 
@@ -236,5 +238,21 @@ export class Client {
     this.penguin.stampbook.recent_stamps.push(stamp);
     this.sessionStamps.push(stamp);
     this.update();
+  }
+
+  removeCoins (amount: number): void {
+    this.penguin.coins -= amount
+    this.update()
+  }
+
+  addPuffle (type: number, name: string): Puffle {
+    this.penguin.puffleSeq += 1;
+    const puffle = {
+      id: this.penguin.puffleSeq,
+      name,
+      type
+    };
+    this.penguin.puffles.push(puffle);
+    return puffle
   }
 }

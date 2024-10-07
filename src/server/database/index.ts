@@ -88,6 +88,12 @@ const db = new JsonDatabase(databaseFolder);
 
 db.createDatabase(Databases.Penguins);
 
+export interface Puffle {
+  id: number
+  name: string
+  type: number
+}
+
 export interface Penguin {
   name: string
   is_agent: boolean
@@ -120,7 +126,9 @@ export interface Penguin {
       depth: number
     }>,
     recent_stamps: number[]
-  }
+  },
+  puffleSeq: number
+  puffles: Puffle[]
 }
 
 export default db;
