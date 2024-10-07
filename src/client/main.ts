@@ -26,7 +26,6 @@ loadFlashPlugin(app);
 let mainWindow: BrowserWindow;
 
 app.on('ready', async () => {
-  console.log('hellobruv');
   startServer(settingsManager);
 
   mainWindow = await createWindow(store);
