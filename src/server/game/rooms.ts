@@ -84,6 +84,20 @@ export const roomStamps: Record<number, number[]> = {
     Stamp.IceTrekker,
     Stamp.AllCoinBags,
     Stamp.IceMaster
+  ],
+  [Room.CartSurfer]: [
+    Stamp.GreatBalance,
+    Stamp.CartPro,
+    Stamp.MineMarvel,
+    Stamp.MineMission,
+    Stamp.TrickMaster,
+    Stamp.PufflePower,
+    Stamp.CartExpert,
+    Stamp.MineGrind,
+    Stamp.SurfsUp,
+    Stamp.FlipMania,
+    Stamp.UltimateDuo,
+    Stamp.CartMaster
   ]
 };
 

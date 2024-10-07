@@ -20,5 +20,18 @@ export enum Stamp {
   IceBonus = 68,
   IceTrekker = 69,
   AllCoinBags = 70,
-  IceMaster = 71
+  IceMaster = 71,
+
+  GreatBalance = 212,
+  CartPro = 206,
+  MineMarvel = 214,
+  MineMission = 216,
+  TrickMaster = 218,
+  PufflePower = 228,
+  CartExpert = 208,
+  MineGrind = 220,
+  SurfsUp = 222,
+  FlipMania = 224,
+  UltimateDuo = 226,
+  CartMaster = 210
 }
