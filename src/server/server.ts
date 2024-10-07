@@ -89,7 +89,6 @@ const startServer = (settingsManager: SettingsManager): void => {
 
   // TODO a better system for handling these special medias
 
-  // TODO thin ice IGT without font issues and insane number of decimals
   server.get('/play/v2/games/thinice/ThinIce.swf', (_, res) => {
     let suffix = settingsManager.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
     if (settingsManager.settings.thin_ice_igt) {
