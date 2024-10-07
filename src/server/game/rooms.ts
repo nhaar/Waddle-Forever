@@ -21,7 +21,7 @@ export enum Room {
   Mission4 = 913,
   Mission5 = 914,
   Mission6 = 915,
-  Aquagrabber = 916,
+  AquaGrabber = 916,
   Mission7 = 920,
   Mission8 = 921,
   Mission9 = 922,
@@ -43,7 +43,7 @@ const gameRooms = [
   Room.ThinIce,
   Room.Pizzatron,
   Room.CatchinWaves,
-  Room.Aquagrabber,
+  Room.AquaGrabber,
   Room.DJ3K,
   Room.Mission1,
   Room.Mission2,
@@ -105,6 +105,28 @@ export const roomStamps: Record<number, number[]> = {
     Stamp.AllCoinBags,
     Stamp.IceMaster
   ],
+  [Room.AquaGrabber]: [
+    Stamp.SquidSpotter,
+    Stamp.AquaPuffle,
+    Stamp.SodaSucces,
+    Stamp.ClamSuccess,
+    Stamp.SodaMaster,
+    Stamp.ClamMaster,
+    Stamp.GetFluffy,
+    Stamp.GetTheWorm,
+    Stamp.BubbleCatch,
+    Stamp.PearlCapture,
+    Stamp.ClamTreasure,
+    Stamp.SodaTreasure,
+    Stamp.ClamCompress,
+    Stamp.SodaCompress,
+    Stamp.ClamPressure,
+    Stamp.SodaPressure,
+    Stamp.ClamTimer,
+    Stamp.SodaTimer,
+    Stamp.CrabsTreasure,
+    Stamp.MulletCapture
+  ],
   [Room.CartSurfer]: [
     Stamp.GreatBalance,
     Stamp.CartPro,
@@ -128,7 +150,7 @@ export const isLiteralScoreGame = (room: Room): boolean => {
     Room.CartSurfer,
     Room.JetPackAdventure,
     Room.CatchinWaves,
-    Room.Aquagrabber,
+    Room.AquaGrabber,
     Room.DanceContest
   ].includes(room);
 }
