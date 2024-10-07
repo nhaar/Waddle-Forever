@@ -56,4 +56,26 @@ handler.xt('p#pg', (client, id) => {
   client.sendXt('pg', ...puffles);
 })
 
+// walking puffle
+handler.xt('p#pw', (client, puffleId, walking) => {
+  const id = Number(puffleId);
+  const isWalking = walking === '1';
+
+  // TODO add puffle refusing to walk
+
+  client.walkPuffle(id);
+
+  // TODO make the room send XT to everyone
+  client.sendXt('pw', client.id, `${id}||||||||||||${walking}`);
+})
+
+handler.xt('s#upa', (client, item) => {
+  const itemId = Number(item);
+  
+  client.penguin.hand = itemId;
+  client.update()
+  // TODO make the room send XT to everyone
+  client.sendXt('upa', client.id, itemId)
+})
+
 export default handler

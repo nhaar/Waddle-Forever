@@ -266,6 +266,7 @@ export class Client {
       food: 100
     };
     this.penguin.puffles.push(puffle);
+    this.update()
     return puffle
   }
 
@@ -286,5 +287,9 @@ export class Client {
       this.penguin.igloo.flooring,
       furnitureString
     ].join('%');
+  }
+
+  walkPuffle (puffle: number) {
+    this.walkingPuffle = puffle;
   }
 }
