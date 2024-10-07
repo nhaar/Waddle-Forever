@@ -87,6 +87,18 @@ export const roomStamps: Record<number, number[]> = {
   ]
 };
 
+/** If the game's score is converted to coins exactly */
+export const isLiteralScoreGame = (room: Room): boolean => {
+  return [
+    Room.IceFishing,
+    Room.CartSurfer,
+    Room.JetPackAdventure,
+    Room.CatchinWaves,
+    Room.Aquagrabber,
+    Room.DanceContest
+  ].includes(room);
+}
+
 export const isGameRoom = (room: Room): boolean => {
   return gameRooms.includes(room);
 };

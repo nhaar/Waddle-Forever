@@ -1,3 +1,4 @@
+import { isLiteralScoreGame } from '../../game/rooms';
 import { XtHandler } from '..';
 
 const handler = new XtHandler();
@@ -11,7 +12,12 @@ handler.xt('j#jr', (client, destinationRoom, x, y) => {
 
 // client requesting to leave a minigame
 handler.xt('z', 'zo', (client, score) => {
-  client.penguin.coins += Math.floor(Number(score) / 10);
+  const coins = isLiteralScoreGame(client.currentRoom) ? (
+    Number(score)
+  ) : (
+    Math.floor(Number(score) / 10)
+  );
+  client.penguin.coins += coins;
   void client.update();
 
   /* TODO stamps information */
