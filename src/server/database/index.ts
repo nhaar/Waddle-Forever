@@ -92,6 +92,9 @@ export interface Puffle {
   id: number
   name: string
   type: number
+  clean: number
+  food: number
+  rest: number
 }
 
 export interface Penguin {
@@ -128,7 +131,19 @@ export interface Penguin {
     recent_stamps: number[]
   },
   puffleSeq: number
-  puffles: Puffle[]
+  puffles: Puffle[],
+  igloo: {
+    type: number,
+    music: number,
+    flooring: number,
+    furniture: Array<{
+      id: number,
+      x: number,
+      y: number,
+      rotation: number,
+      frame: number
+    }>
+  }
 }
 
 export default db;

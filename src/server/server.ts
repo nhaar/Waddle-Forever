@@ -11,6 +11,7 @@ import commandsHandler from './handlers/commands';
 import itemHandler from './handlers/play/item';
 import stampHandler from './handlers/play/stamp';
 import puffleHandler from './handlers/play/puffle';
+import iglooHandler from './handlers/play/igloo';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
 
@@ -112,6 +113,7 @@ const startServer = (settingsManager: SettingsManager): void => {
   worldListener.use(itemHandler);
   worldListener.use(stampHandler);
   worldListener.use(puffleHandler);
+  worldListener.use(iglooHandler);
   createServer('Login', 6112, new XtHandler());
   serverList.forEach((server) => {
     createServer(server.name, Number(server.port), worldListener);

@@ -24,4 +24,10 @@ handler.xt('z', 'zo', (client, score) => {
   client.sendXt('zo', String(client.penguin.coins), ...client.getEndgameStampsInformation());
 });
 
+// Joining player igloo
+handler.xt('j#jp', (client, fakeId) => {
+  // TODO room ID is currently useless here
+  client.joinRoom(Number(fakeId));
+})
+
 export default handler;

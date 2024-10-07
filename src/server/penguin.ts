@@ -18,6 +18,9 @@ export class Client {
    */
   sessionStamps: number[];
 
+  /** ID of puffle that player is walking */
+  walkingPuffle: number;
+
   constructor (socket: net.Socket) {
     this.socket = socket;
     this.penguin = Client.getDefault();
@@ -26,6 +29,7 @@ export class Client {
     this.y = 100;
   
     this.sessionStamps = [];
+    this.walkingPuffle = NaN;
   }
 
   send (message: string): void {
@@ -144,7 +148,13 @@ export class Client {
         recent_stamps: []
       },
       puffleSeq: 0,
-      puffles: []
+      puffles: [],
+      igloo: {
+        type: 0,
+        music: 0,
+        flooring: 0,
+        furniture: []
+      }
     };
   }
 
@@ -250,9 +260,31 @@ export class Client {
     const puffle = {
       id: this.penguin.puffleSeq,
       name,
-      type
+      type,
+      clean: 100,
+      rest: 100,
+      food: 100
     };
     this.penguin.puffles.push(puffle);
     return puffle
+  }
+
+  getIglooString (): string {
+    const furnitureString = this.penguin.igloo.furniture.map((furniture) => {
+      return [
+        furniture.id,
+        furniture.x,
+        furniture.y,
+        furniture.rotation,
+        furniture.frame
+      ].join('|')
+    }).join(',')
+
+    return [
+      this.penguin.igloo.type,
+      this.penguin.igloo.music,
+      this.penguin.igloo.flooring,
+      furnitureString
+    ].join('%');
   }
 }

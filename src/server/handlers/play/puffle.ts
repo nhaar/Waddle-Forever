@@ -33,4 +33,27 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
   // TODO 'pgu'
 })
 
+// get puffles in igloo
+handler.xt('p#pg', (client, id) => {
+  const puffles = client.penguin.puffles.map((puffle) => {
+    return [
+      puffle.id,
+      puffle.name,
+      puffle.type,
+      puffle.clean,
+      puffle.food,
+      puffle.rest,
+      100,
+      100,
+      100,
+      0,
+      0,
+      0,
+      puffle.id === client.walkingPuffle ? 1 : 0
+    ].join('|')
+  })
+
+  client.sendXt('pg', ...puffles);
+})
+
 export default handler
