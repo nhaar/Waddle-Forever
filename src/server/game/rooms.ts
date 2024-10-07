@@ -1,3 +1,5 @@
+import { Stamp } from "./stamps";
+
 export enum Room {
   Town = 100,
   GiftShop = 130,
@@ -57,6 +59,19 @@ const gameRooms = [
   Room.PuffleRescue,
   Room.DanceContest
 ];
+export const roomStamps: Record<number, number[]> = {
+  [Room.ThinIce]: [
+    Stamp.OneCoinBag,
+    Stamp.ThreeCoinBags,
+    Stamp.SixCoinBags,
+    Stamp.IcedTreasure,
+    Stamp.TenCoinBags,
+    Stamp.IceBonus,
+    Stamp.IceTrekker,
+    Stamp.AllCoinBags,
+    Stamp.IceMaster
+  ]
+};
 
 export const isGameRoom = (room: Room): boolean => {
   return gameRooms.includes(room);

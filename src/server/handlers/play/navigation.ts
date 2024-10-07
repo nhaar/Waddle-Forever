@@ -15,7 +15,7 @@ handler.xt('z', 'zo', (client, score) => {
   void client.update();
 
   /* TODO stamps information */
-  client.sendXt('zo', String(client.penguin.coins), 0, 0, 0, 0);
+  client.sendXt('zo', String(client.penguin.coins), ...client.getEndgameStampsInformation());
 });
 
 export default handler;

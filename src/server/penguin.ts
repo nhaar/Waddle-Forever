@@ -1,6 +1,6 @@
 import net from 'net';
 
-import { isGameRoom, Room } from './game/rooms';
+import { isGameRoom, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases } from './database';
 import { Item } from './game/items';
 
@@ -10,6 +10,13 @@ export class Client {
   id: number;
   x: number;
   y: number;
+  currentRoom: number;
+
+  /**
+   * Temporary variable to keep track of stamps collected used to know
+   * which ones someone collected when ending a game
+   */
+  sessionStamps: number[];
 
   constructor (socket: net.Socket) {
     this.socket = socket;
@@ -17,6 +24,8 @@ export class Client {
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
+  
+    this.sessionStamps = [];
   }
 
   send (message: string): void {
@@ -76,6 +85,7 @@ export class Client {
       this.sendXt('jr', room, string);
       this.sendXt('ap', string);
     }
+    this.currentRoom = room;
   }
 
   update (): void {
@@ -192,5 +202,39 @@ export class Client {
     this.penguin.stampbook.recent_stamps = []
     this.update()
     return recentStamps
+  }
+
+  getEndgameStampsInformation (): [string, number, number, number] {
+    const info: [string, number, number, number] = ['', 0, 0, 0];
+
+    if (this.currentRoom in roomStamps) {
+      const stamps = roomStamps[this.currentRoom];
+      const gameSessionStamps: number[] = [];
+      this.sessionStamps.forEach((stamp) => {
+        if (stamps.includes(stamp)) {
+          gameSessionStamps.push(stamp);
+        }
+      })
+      // string of recently collected stamps
+      info[0] = gameSessionStamps.join('|')
+      // total number of stamps collected in this game
+      info[1] = stamps.filter((stamp) => this.penguin.stamps.includes(stamp)).length;
+      // total number of stamps the game has
+      info[2] = stamps.length;
+
+      // TODO check what this is used for
+      info[3] = 0;
+    }
+
+    this.sessionStamps = [];
+
+    return info
+  }
+
+  addStamp (stamp: number): void {
+    this.penguin.stamps.push(stamp)
+    this.penguin.stampbook.recent_stamps.push(stamp)
+    this.sessionStamps.push(stamp)
+    this.update()
   }
 }
