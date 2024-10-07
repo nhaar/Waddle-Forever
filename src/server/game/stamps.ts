@@ -8,4 +8,4 @@ export enum Stamp {
   IceTrekker = 69,
   AllCoinBags = 70,
   IceMaster = 71
-};
+}

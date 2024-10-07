@@ -198,10 +198,10 @@ export class Client {
   }
 
   getRecentStampsString (): string {
-    const recentStamps = this.penguin.stampbook.recent_stamps.join('|')
-    this.penguin.stampbook.recent_stamps = []
-    this.update()
-    return recentStamps
+    const recentStamps = this.penguin.stampbook.recent_stamps.join('|');
+    this.penguin.stampbook.recent_stamps = [];
+    this.update();
+    return recentStamps;
   }
 
   getEndgameStampsInformation (): [string, number, number, number] {
@@ -214,9 +214,9 @@ export class Client {
         if (stamps.includes(stamp)) {
           gameSessionStamps.push(stamp);
         }
-      })
+      });
       // string of recently collected stamps
-      info[0] = gameSessionStamps.join('|')
+      info[0] = gameSessionStamps.join('|');
       // total number of stamps collected in this game
       info[1] = stamps.filter((stamp) => this.penguin.stamps.includes(stamp)).length;
       // total number of stamps the game has
@@ -228,13 +228,13 @@ export class Client {
 
     this.sessionStamps = [];
 
-    return info
+    return info;
   }
 
   addStamp (stamp: number): void {
-    this.penguin.stamps.push(stamp)
-    this.penguin.stampbook.recent_stamps.push(stamp)
-    this.sessionStamps.push(stamp)
-    this.update()
+    this.penguin.stamps.push(stamp);
+    this.penguin.stampbook.recent_stamps.push(stamp);
+    this.sessionStamps.push(stamp);
+    this.update();
   }
 }
