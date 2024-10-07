@@ -60,6 +60,26 @@ const gameRooms = [
   Room.DanceContest
 ];
 export const roomStamps: Record<number, number[]> = {
+  [Room.JetPackAdventure]: [
+    Stamp.LiftOff,
+    Stamp.FuelRank1,
+    Stamp.PufflePilot,
+    Stamp.JetPack5,
+    Stamp.Crash,
+    Stamp.FuelRank2,
+    Stamp.FuelRank3,
+    Stamp.FuelRank4,
+    Stamp.FuelRank5,
+    Stamp.OneUpLeader,
+    Stamp.PuffleBonus,
+    Stamp.Kerching,
+    Stamp.FuelCommand,
+    Stamp.FuelWings,
+    Stamp.OneUpCaptain,
+    Stamp.PufflePlus,
+    Stamp.AcePilot,
+    Stamp.PuffleBoost,
+  ],
   [Room.AstroBarrier]: [
     Stamp.Astro5,
     Stamp.Astro5Max,
