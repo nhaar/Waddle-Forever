@@ -12,16 +12,22 @@ handler.xt('j#jr', (client, destinationRoom, x, y) => {
 
 // client requesting to leave a minigame
 handler.xt('z', 'zo', (client, score) => {
-  const coins = isLiteralScoreGame(client.currentRoom) ? (
+  const stampInfo = client.getEndgameStampsInformation();
+  let coins = isLiteralScoreGame(client.currentRoom) ? (
     Number(score)
   ) : (
     Math.floor(Number(score) / 10)
   );
+
+  // stamps double coins
+  if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {
+    coins *= 2;
+  }
+
   client.penguin.coins += coins;
   void client.update();
 
-  /* TODO stamps information */
-  client.sendXt('zo', String(client.penguin.coins), ...client.getEndgameStampsInformation());
+  client.sendXt('zo', String(client.penguin.coins), ...stampInfo);
 });
 
 // Joining player igloo
