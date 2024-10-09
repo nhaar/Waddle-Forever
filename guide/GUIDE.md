@@ -13,7 +13,7 @@
 > [!WARNING]
 > You can only have one client open at a time
 
-> > [!WARNING]  
+> [!WARNING]  
 > LINUX USERS: The client does not currently work for Linux. The server does. See How to play in Browser or Flash Projector to use the server.
 
 # Logging In
