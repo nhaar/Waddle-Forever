@@ -13,6 +13,9 @@
 > [!WARNING]
 > You can only have one client open at a time
 
+> > [!WARNING]  
+> LINUX USERS: The client does not currently work for Linux. The server does. See How to play in Browser or Flash Projector to use the server.
+
 # Logging In
 
 You don't create accounts, all you need to do is to login with the name you want. You can use any password, it will always work.
