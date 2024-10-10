@@ -513,45 +513,45 @@
  
    	<!-- ~~~ 189 - Construction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
     
-    <achievement name="Construction" id="189">
+    <!-- <achievement name="Construction" id="189"> -->
         <!-- This stamp expires on Wed, 23 Nov 2011 23:00:00 GMT     --> 
         <!-- <expiryDate>1322089200</expiryDate>  --> 
         
 		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
 		<!-- affecting frame rate                                                         --> 
-		<event>every 2 seconds</event> 
+		<!-- <event>every 2 seconds</event> 
 		<condition>user in 400</condition> 
         <condition>user wearing only 342 or 5069 or 403 or 10403 or 429 or 10429 or 674 or 1133 or 11133</condition> 
         <condition>user isOnFrame 26</condition> 
         <result>stampEarned 189</result> 
-	</achievement>
+	</achievement> -->
  
     <!-- ~~~ 190 - Explorer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         
-    <achievement name="Explorer" id="190">
+    <!-- <achievement name="Explorer" id="190"> -->
         <!-- This stamp expires on Wed, 01 Feb 2012 23:00:00 GMT     --> 
         <!-- <expiryDate>1328137200</expiryDate>  --> 
         
 		<!-- Break this condition down into a periodic check to reduce the chance of      --> 
 		<!-- affecting frame rate                                                         --> 
-		<event>every 2 seconds</event> 
+		<!-- <event>every 2 seconds</event> 
         <condition>user hasProperty is_member equals 1</condition> 
 		<condition>user in 200 400 410 800 810 851 852 853 854 855 856 857</condition> 
         <result>stampEarned 190</result> 
-	</achievement> 
+	</achievement>  -->
 	
 	<!-- ~~~ 332 - Food Fight ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
 	
-	<achievement name="Food Fight" id="332">
-		<debug>true</debug>
+	<!-- <achievement name="Food Fight" id="332">
+		<debug>true</debug> -->
 		<!-- This stamp expires on Sun, 03 April 2011 19:00:00 GMT     -->
         <!-- <expiryDate>1301857200</expiryDate> -->
 
-		<event>user snowballHit</event>	
+		<!-- <event>user snowballHit</event>	 -->
 		<!-- User is in pizza or Sweet Land (April Party Room 4) -->
-		<condition>user in 854 or 330</condition>
+		<!-- <condition>user in 854 or 330</condition>
 		<result>stampEarned 332</result>
-	</achievement>
+	</achievement> -->
  
     <!-- ~~~ 360 - Noble Knight ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
 
