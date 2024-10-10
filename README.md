@@ -20,49 +20,7 @@ The client has ambitious goals, so it is uncertain if they will be met. The main
 * Have a world of NPCs over the island
 * Have a complete singleplayer experience and "story mode"
 
-Prject roadmap:
-
-- [x] Prerelease -> v0.0.0
-    - [x] Login works
-    - [x] Room navigation works
-    - [x] Singleplayer minigames work
-- [x] Functional for PSA Mission speedruns -> v0.1.0 (BETA start)
-    - [x] Shortcut command
-    - [x] PSA Missions playable
-    - [x] Basic inventory system
-    - [x] Mission awards work
-    - [x] Missions music
-    - [x] Suitable for general speedrunning audience
-- [ ] Supersede CPSC for stamp speedruns
-    - [ ] Stampbook works
-    - [ ] Original basic CPSC stamps work
-    - [ ] Ability to become EPF agent
-    - [ ] Island is accurate
-- [ ] Supersede Houdini for 100 stamps:
-    - [ ] AS3 Client
-    - [ ] Houdini base game stamps
-    - [ ] Puffle Digging stamps
-- [ ] Useable for All Stamps speedruns
-    - [ ] Card-Jitsu games working
-    - [ ] Igloo system works
-    - [ ] Treasure Hunt working
-    - [ ] All AS3 minigames playable
-    - [ ] All party/activity stamps working
-    - [ ] Bots controllable by commands
-    - [ ] Initial version switcher
-    - [ ] Add all versions relevant for stamps
-- [ ] Supersede CPSC for localhost:
-    - [ ] Halloween Party, Medieval Party mods restored as versions
-    - [ ] Allow making media server mods
-    - [ ] Archive other CPSC mods
-    - [ ] Regular Card-Jitsu
-- [ ] Catch up to Houdini for localhost
-    - [ ] Buddy system
-    - [ ] Mail system
-    - [ ] Puffle care system
-- [ ] Finish timeline switcher
-    - [ ] Implementing every party
-- [ ] Implement NPCs
+For more detailed updates and plans for the project, check out the [discord server](https://discord.gg/URHXm3cFv5).
 
 # How it works
 
