@@ -54,3 +54,8 @@ You can change your database in the folder `data`.
 
 > [!WARNING]
 > Since we are still in Beta, the database of newer versions may NOT be consistent with older versions. If you really wish to port an older database, contact us!
+
+# Help and Updates
+
+[Join the discord server.
+](https://discord.gg/URHXm3cFv5)
