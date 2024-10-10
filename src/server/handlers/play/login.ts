@@ -56,20 +56,8 @@ handler.xt('u#glr', (client) => {
   client.sendXt('glr', '');
 });
 
-handler.xt('f#epfga', (client) => {
-  client.send('%xt%epfga%-1%0%');
-});
-
 handler.xt('i#qpa', (client) => {
   client.send('%xt%qpa%-1%103%821|8006|8010|8011%');
-});
-
-handler.xt('f#epfgf', (client) => {
-  client.sendXt('epfgf', 0);
-});
-
-handler.xt('f#epfgr', (client) => {
-  client.sendXt('epfgr', 0, 0);
 });
 
 handler.xt('u#h', (client) => {

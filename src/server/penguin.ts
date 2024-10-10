@@ -292,4 +292,9 @@ export class Client {
   walkPuffle (puffle: number) {
     this.walkingPuffle = puffle;
   }
+
+  makeAgent (): void {
+    this.penguin.is_agent = true;
+    this.update();
+  }
 }
