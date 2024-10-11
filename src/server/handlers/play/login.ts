@@ -56,9 +56,6 @@ handler.xt('u#glr', (client) => {
   client.sendXt('glr', '');
 });
 
-handler.xt('i#qpa', (client) => {
-  client.send('%xt%qpa%-1%103%821|8006|8010|8011%');
-});
 
 handler.xt('u#h', (client) => {
   client.sendXt('h', '');

@@ -1,10 +1,22 @@
 import { XtHandler } from "..";
+import { isAward } from '../../game/items';
 
 const handler = new XtHandler();
 
 // getting pin information opening stampbook
 handler.xt('i#qpp', (client, id) => {
   client.sendXt('qpp', client.getPinString());
+});
+
+// getting mission stamps
+handler.xt('i#qpa', (client) => {
+  const awards = [];
+  for (const item of client.penguin.inventory) {
+    if (isAward(item)) {
+      awards.push(item);
+    }
+  }
+  client.sendXt('qpa', client.id, awards.join('|'));
 });
 
 // stampbook cover information

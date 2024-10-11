@@ -1,4 +1,53 @@
 export enum Item {
   Nothing = 0,
-  Blue = 1
-}
+  Blue = 1,
+  Mission1Medal = 801,
+  AuntArcticLetter = 802,
+  Mission2Medal = 803,
+  GsLetter = 804,
+  Mission3Medal = 805,
+  ThankYouCard = 806,
+  Mission4Medal = 808,
+  HandyAward = 809,
+  Mission5Medal = 810,
+  PizzaBox = 811,
+  Mission6Medal = 813,
+  Blueprint = 814,
+  Mission7Medal = 815,
+  Pennant = 816,
+  Mission8Medal = 817,
+  CoolGift = 818,
+  Mission9Medal = 819,
+  ChocolateBox = 820,
+  Mission10Medal = 822,
+  EmployeeAward = 823,
+  Mission11Medal = 8007,
+  SnowGlobe = 8008
+};
+
+export const isAward = (item: Item): boolean => {
+  return [
+    Item.Mission1Medal,
+    Item.AuntArcticLetter,
+    Item.Mission2Medal,
+    Item.GsLetter,
+    Item.Mission3Medal,
+    Item.ThankYouCard,
+    Item.Mission4Medal,
+    Item.HandyAward,
+    Item.Mission5Medal,
+    Item.PizzaBox,
+    Item.Mission6Medal,
+    Item.Blueprint,
+    Item.Mission7Medal,
+    Item.Pennant,
+    Item.Mission8Medal,
+    Item.CoolGift,
+    Item.Mission9Medal,
+    Item.ChocolateBox,
+    Item.Mission10Medal,
+    Item.EmployeeAward,
+    Item.Mission11Medal,
+    Item.SnowGlobe
+  ].includes(item);
+};
