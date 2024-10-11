@@ -21,10 +21,10 @@ const createWindow = async (store: Store) => {
       mainWindow.setIcon(path.join(__dirname, "../assets/favicon.ico"));
     },
     darwin: () => {
-      mainWindow.setIcon(path.join(__dirname, "assets/icon.png"));
+      mainWindow.setIcon(path.join(__dirname, "../assets/icon.png"));
     },
     linux: () => {
-      mainWindow.setIcon(path.join(__dirname, "assets/icon.png"));
+      mainWindow.setIcon(path.join(__dirname, "../assets/icon.png"));
     },
   };
 
