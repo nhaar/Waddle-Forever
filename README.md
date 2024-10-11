@@ -73,4 +73,6 @@ The electron client is originally forked from the [Club Penguin Avalanche client
 
 The server is based in solero's works in reverse engineering the Club Penguin server [(Houdini server emulator)](https://github.com/solero/houdini). The media server is also mostly from solero's media servers.
 
+Thanks for Levi for help with the Linux version.
+
 Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunning client.
