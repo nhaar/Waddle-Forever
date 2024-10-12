@@ -4,6 +4,7 @@ import path from 'path';
 interface Settings {
   fps30: boolean
   thin_ice_igt: boolean
+  clothing: boolean
 }
 
 type PartialSettings = Partial<Settings>
@@ -24,7 +25,8 @@ export class SettingsManager {
 
     this.settings = {
       fps30: this.readBoolean(settingsJson, 'fps30', false),
-      thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false)
+      thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false),
+      clothing: this.readBoolean(settingsJson, 'clothing', false)
     };
 
     this.updateSettings({});

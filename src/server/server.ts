@@ -1,5 +1,6 @@
 import path from 'path';
-import express from 'express';
+import fs from 'fs';
+import express, { Request } from 'express';
 import net from 'net';
 
 import { XtPacket } from '.';
@@ -101,6 +102,21 @@ const startServer = (settingsManager: SettingsManager): void => {
   server.get('/', (_, res) => {
     res.sendFile(path.join(process.cwd(), 'media/index.html'));
   });
+
+  server.get('/play/v2/content/global/clothing/*', (req: Request, res) => {
+    const clothingPath = req.params[0];
+    const specialPath = path.join(process.cwd(), 'media/clothing', clothingPath);
+    if (settingsManager.settings.clothing && fs.existsSync(specialPath)) {
+      res.sendFile(specialPath);
+    } else {
+      const staticPath = path.join(process.cwd(), 'media/static', req.url);
+      if (fs.existsSync(staticPath)) {
+        res.sendFile(staticPath);
+      } else {
+        res.sendStatus(404);
+      }
+    }
+  })
 
   server.use(express.static('media/static'));
 
