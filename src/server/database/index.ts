@@ -108,7 +108,7 @@ export interface Penguin {
   body: number
   hand: number
   feet: number
-  flag: number
+  pin: number
   background: number
   coins: number
   registration_date: number
