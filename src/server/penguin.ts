@@ -2,7 +2,6 @@ import net from 'net';
 
 import { isGameRoom, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, Puffle } from './database';
-import { Item } from './game/items';
 
 export class Client {
   socket: net.Socket;
@@ -124,19 +123,19 @@ export class Client {
       name: '',
       mascot: 0,
       is_agent: false,
-      color: Item.Blue,
-      head: Item.Nothing,
-      face: Item.Nothing,
-      neck: Item.Nothing,
-      body: Item.Nothing,
-      hand: Item.Nothing,
-      feet: Item.Nothing,
-      background: Item.Nothing,
-      pin: Item.Nothing,
+      color: 1,
+      head: 0,
+      face: 0,
+      neck: 0,
+      body: 0,
+      hand: 0,
+      feet: 0,
+      background: 0,
+      pin: 0,
       registration_date: Date.now(),
       coins: 500,
       minutes_played: 0,
-      inventory: [Item.Blue],
+      inventory: [1],
       stamps: [],
       pins: [],
       stampbook: { // TODO: enums for the options
