@@ -248,7 +248,7 @@ export class Client {
     this.sessionStamps.push(stamp);
     this.update();
   }
-
+  
   addCoins (amount: number): void {
     this.penguin.coins += amount;
     this.update();
@@ -300,5 +300,12 @@ export class Client {
   makeAgent (): void {
     this.penguin.is_agent = true;
     this.update();
+  }
+
+  sendPuffles (): void {
+    const puffles = this.penguin.puffles.map((puffle) => {
+      return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
+    })
+    this.sendXt('pgu', ...puffles);
   }
 }

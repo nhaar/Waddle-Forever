@@ -33,6 +33,8 @@ handler.xt('j#js', (client) => {
   // receiving inventory
   // TODO proper inventory
   client.sendStamps();
+
+  client.sendPuffles();
 });
 
 handler.xt('b#gb', (client) => {
