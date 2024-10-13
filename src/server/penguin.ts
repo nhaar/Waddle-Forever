@@ -249,6 +249,11 @@ export class Client {
     this.update();
   }
 
+  addCoins (amount: number): void {
+    this.penguin.coins += amount;
+    this.update();
+  }
+
   removeCoins (amount: number): void {
     this.penguin.coins -= amount
     this.update()
