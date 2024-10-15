@@ -23,4 +23,9 @@ handler.xt('l#mg', (client) => {
   client.sendXt('mg', ...postcards);
 });
 
+// opened the postcards
+handler.xt('l#mc', (client) => {
+  client.setMailRead();
+})
+
 export default handler;

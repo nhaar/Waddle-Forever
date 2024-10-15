@@ -337,4 +337,12 @@ export class Client {
     this.sendXt('mr', senderName, senderId, postcard, details, timestamp, this.penguin.mailSeq);
     this.update();
   }
+
+  setMailRead(): void {
+    this.penguin.mail = this.penguin.mail.map((mail) => {
+      const postcard = { ...mail.postcard, read: true };
+      return { ...mail, postcard: postcard }
+    })
+    this.update()
+  }
 }
