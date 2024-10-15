@@ -143,7 +143,18 @@ export interface Penguin {
       rotation: number,
       frame: number
     }>
-  }
+  },
+  mail: Array<{
+    sender: { name: string, id: number },
+    postcard: {
+      postcardId: number
+      details: string
+      timestamp: number
+      uid: number
+      read: boolean
+    }
+  }>,
+  mailSeq: number
 }
 
 export default db;

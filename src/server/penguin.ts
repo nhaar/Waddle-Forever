@@ -153,7 +153,9 @@ export class Client {
         music: 0,
         flooring: 0,
         furniture: []
-      }
+      },
+      mail: [],
+      mailSeq: 0
     };
   }
 
@@ -307,5 +309,32 @@ export class Client {
       return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
     })
     this.sendXt('pgu', ...puffles);
+  }
+
+  addPostcard (postcard: number, info: {
+    senderId?: number
+    senderName?: string
+    details?: string    
+  }): void {
+    this.penguin.mailSeq += 1;
+    const senderName = info.senderName ?? 'sys';
+    const senderId = info.senderId ?? 0;
+    const details = info.details ?? '';
+    const timestamp = Date.now();
+    this.penguin.mail.push({
+      sender: {
+        name: senderName,
+        id: senderId
+      },
+      postcard: {
+        postcardId: postcard,
+        uid: this.penguin.mailSeq,
+        details,
+        timestamp,
+        read: false
+      }
+    })
+    this.sendXt('mr', senderName, senderId, postcard, details, timestamp, this.penguin.mailSeq);
+    this.update();
   }
 }

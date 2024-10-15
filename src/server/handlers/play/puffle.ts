@@ -28,9 +28,9 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
   const puffle = client.addPuffle(Number(puffleType), puffleName);
   client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
 
-  // TODO send puffle postcard
+  client.addPostcard(111, { details: puffleName });
   // TODO favorite item code in houdini?
-  // TODO 'pgu'
+  // TODO 'pgu' is necessary?
 })
 
 // get puffles in igloo

@@ -45,15 +45,6 @@ handler.xt('n#gn', (client) => {
   client.sendXt('gn', '');
 });
 
-// mail system
-handler.xt('l#mst', (client) => {
-  client.sendXt('mst', 0, 3);
-});
-
-handler.xt('l#mg', (client) => {
-  client.send('%xt%mg%-1%sys|0|112||1726639082|29|0%sys|0|177||1726474034|4|0%sys|0|125||1726466667|2|0%');
-});
-
 handler.xt('u#glr', (client) => {
   client.sendXt('glr', '');
 });
