@@ -101,7 +101,7 @@ const startServer = (settingsManager: SettingsManager): void => {
   });
 
   server.get('/', (_, res) => {
-    res.sendFile(path.join(process.cwd(), 'media/index.html'));
+    res.sendFile(path.join(process.cwd(), 'media/special/index.html'));
   });
 
   server.get('/play/v2/content/global/clothing/*', (req: Request, res) => {
