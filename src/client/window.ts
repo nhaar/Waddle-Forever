@@ -1,7 +1,7 @@
+import path from 'path';
 import { BrowserWindow, dialog } from "electron";
-import path = require("path");
 import { Store } from "./store";
-import { checkVersion } from "../common/version";
+import { checkUpdates, update } from "./update";
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   const fullScreen = !store.private.get("fullScreen");
@@ -42,17 +42,10 @@ const createWindow = async (store: Store) => {
   mainWindow.setMenu(null);
   mainWindow.maximize();
   
+  await checkUpdates(mainWindow);
+
   mainWindow.loadURL('http://localhost');
   
-  const [isUpToDate, version] = await checkVersion();
-  if (isUpToDate !== undefined && !isUpToDate) {
-    await dialog.showMessageBox(mainWindow, {
-      buttons: ['Ok'],
-      title: 'New version available',
-      message: `A new version (${version}) is available for download.`,
-    });
-  }
-
   return mainWindow;
 };
 
