@@ -1,6 +1,10 @@
 import { BrowserWindow, ipcMain, dialog } from "electron";
 import { SettingsManager } from "../server/settings";
 import path from "path";
+import fs from 'fs';
+import { download } from "./download";
+import { VERSION } from "../common/version";
+import { unzip } from "./unzip";
 
 export const createSettingsWindow = async (settingsManager: SettingsManager, mainWindow: BrowserWindow) => {
   if (settingsManager.isEditting) {
@@ -32,5 +36,28 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
     ipcMain.on('update-settings', (e, arg) => {
       settingsManager.updateSettings(arg);
     });
+
+    ipcMain.on('download-package', (e, arg) => {
+      (async () => {
+        // avoid collision (unlink only deletes after the app is closed)
+        const zipName = String(Date.now()) + '.zip'
+        const mediaDir = path.join(process.cwd(), 'media');
+        const zipDir = path.join(mediaDir, zipName)
+        await download(`${arg}-${VERSION}.zip`, zipDir)
+        await unzip(zipDir, path.join(mediaDir, arg))
+        settingsWindow.webContents.send('finish-download', arg)
+        settingsManager.updateSettings({
+          [arg]: true
+        })
+      })()
+    })
+
+    ipcMain.on('delete-package', (e, arg) => {
+      fs.rmdirSync(path.join(process.cwd(), 'media', arg), { recursive: true })
+      settingsWindow.webContents.send('finish-deleting', arg)
+      settingsManager.updateSettings({
+        [arg]: false
+      })
+    })
   }
 };

@@ -55,7 +55,10 @@
     ]
   },
   "pkg": {
-    "targets": [ "latest-linux-arm64", "latest-win-arm64" ],
+    "targets": [
+      "latest-linux-arm64",
+      "latest-win-arm64"
+    ],
     "outputPath": "pkgdist"
   },
   "devDependencies": {
@@ -63,6 +66,7 @@
     "@types/electron-prompt": "^1.6.1",
     "@types/express": "^5.0.0",
     "@types/node": "^18.13.0",
+    "@types/unzipper": "^0.10.10",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "@yao-pkg/pkg": "^5.15.0",
@@ -84,6 +88,7 @@
     "electron-prompt": "^1.7.0",
     "electron-store": "^8.1.0",
     "electron-updater": "^5.3.0",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "unzipper": "^0.12.3"
   }
 }

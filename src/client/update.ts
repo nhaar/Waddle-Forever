@@ -3,7 +3,7 @@ import fs from 'fs';
 import { exec } from 'child_process';
 import { BrowserWindow, dialog } from 'electron';
 import { postJSON } from "../common/utils";
-import { downloadFile } from './download';
+import { download } from './download';
 import { VERSION } from '../common/version';
 import { showWarning } from './warning';
 
@@ -92,16 +92,16 @@ export async function update(mainWindow: BrowserWindow) {
     return
   }
 
-  await downloadFile(clientInfo.filename, path.join(UPDATE_PATH, 'client.zip'), CLIENT_DOWNLOAD_NUMBER, downloadNumber);
+  await download(clientInfo.filename, path.join(UPDATE_PATH, 'client.zip'), { current: CLIENT_DOWNLOAD_NUMBER, total: downloadNumber});
 
   for (const i in mediaFiles) {
     const file = mediaFiles[i];
-    await downloadFile(file.filename, path.join(UPDATE_PATH, file.name + '.zip'), Number(i) + MEDIA_DOWNLOAD_START, downloadNumber);
+    await download(file.filename, path.join(UPDATE_PATH, file.name + '.zip'), { current: Number(i) + MEDIA_DOWNLOAD_START, total: downloadNumber});
   }
 
   const updaterPath = path.join(UPDATE_PATH, 'update.exe');
 
-  await downloadFile(updaterInfo.filename, updaterPath, downloadNumber, downloadNumber);
+  await download(updaterInfo.filename, updaterPath, { current: downloadNumber, total: downloadNumber });
 
   fs.writeFileSync(path.join(UPDATE_PATH, 'version'), VERSION);
 
