@@ -20,6 +20,7 @@ handler.xt('m#sm', (client, id, message) => {
     const numberMatch = message.match(/!ac\s+(\d+)/);
     if (numberMatch !== null) {
       client.addCoins(Number(numberMatch[1]));
+      client.sendPenguinInfo();
     }
   } else if (message.startsWith('!jr')) {
     const numberMatch = message.match(/!jr\s+(\d+)/);
