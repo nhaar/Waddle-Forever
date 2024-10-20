@@ -345,4 +345,14 @@ export class Client {
     })
     this.update()
   }
+
+  unequipPuffle(): void {
+    const puffles = [
+      750, 751, 752, 753, 754, 755, 756, 757, 758, 759
+    ];
+    if (puffles.includes(this.penguin.hand)) {
+      this.penguin.hand = 0;
+      this.update();
+    }
+  }
 }

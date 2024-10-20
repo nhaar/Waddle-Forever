@@ -4,6 +4,8 @@ import { Room } from '../../game/rooms';
 const handler = new XtHandler();
 
 handler.xt('j#js', (client) => {
+  // penguins don't keep the puffle from previous session
+  client.unequipPuffle();
   /*
   TODO: find what second number is
   Figure out how moderators will be handled
