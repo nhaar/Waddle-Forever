@@ -22,6 +22,9 @@ export enum Room {
   Mission5 = 914,
   Mission6 = 915,
   AquaGrabber = 916,
+  MyPuffle = 917,
+  BurntOutBulbs = 918,
+  LimeGreenDojoClean = 919,
   Mission7 = 920,
   Mission8 = 921,
   Mission9 = 922,
@@ -45,6 +48,9 @@ const gameRooms = [
   Room.CatchinWaves,
   Room.AquaGrabber,
   Room.DJ3K,
+  Room.MyPuffle,
+  Room.BurntOutBulbs,
+  Room.LimeGreenDojoClean,
   Room.Mission1,
   Room.Mission2,
   Room.Mission3,
@@ -204,7 +210,10 @@ export const isLiteralScoreGame = (room: Room): boolean => {
     Room.JetPackAdventure,
     Room.CatchinWaves,
     Room.AquaGrabber,
-    Room.DanceContest
+    Room.DanceContest,
+    Room.MyPuffle,
+    Room.BurntOutBulbs,
+    Room.LimeGreenDojoClean
   ].includes(room);
 }
 
