@@ -35,6 +35,12 @@ handler.xt('m#sm', (client, id, message) => {
     awards.forEach((award) => {
       client.addItem(award);
     });
+  } else if (message.startsWith('!age')) {
+    const numberMatch = message.match(/!age\s+(\d+)/);
+    if (numberMatch !== null) {
+      client.setAge(Number(numberMatch[1]));
+      client.sendPenguinInfo();
+    }
   }
 });
 
