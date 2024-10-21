@@ -9,7 +9,7 @@
     "build-tsc": "yarn clean && tsc && yarn copy-files",
     "start": "yarn build-tsc && electron ./compiled/client/main.js",
     "lint": "eslint -c .eslintrc --ext .ts ./src",
-    "build-win": "yarn build-tsc && electron-builder build --win --publish never",
+    "build-win": "yarn build-tsc && electron-builder build --dir --win --publish never",
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
@@ -18,14 +18,14 @@
   "author": "CPS",
   "license": "MIT",
   "build": {
+    "files": [
+      "compiled/**/*",
+      "package.json"
+    ],
     "electronDist": "node_modules/electron/dist",
     "appId": "com.clubpenguin.speedrunning.client",
     "productName": "WaddleForeverClient",
     "asar": "false",
-    "win": {
-      "publish": "github",
-      "artifactName": "WaddleForever-Setup-${version}.${ext}"
-    },
     "mac": {
       "category": "game",
       "icon": "./assets/icon.icns",
