@@ -8,6 +8,7 @@ const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-inp
 const myPuffleInput = document.querySelector<HTMLInputElement>('.js-my-puffle-input');
 const idleInput = document.querySelector<HTMLInputElement>('.js-idle-input');
 const jpaInput = document.querySelector<HTMLInputElement>('.js-jpa-level-input');
+const danceInput = document.querySelector<HTMLInputElement>('.js-dance-arrow-input');
 
 fpsInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
@@ -62,6 +63,13 @@ jpaInput.addEventListener('change', (e) => {
   }
 })
 
+danceInput.addEventListener('change', (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    api.update({ swap_dance_arrow: e.target.checked })
+    api.clearCache();
+  }
+})
+
 window.addEventListener('receive-settings', (e: any) => {
   const settings = e.detail;
   fpsInput.checked = settings['fps30'];
@@ -69,7 +77,8 @@ window.addEventListener('receive-settings', (e: any) => {
   clothingInput.checked = settings['clothing'];
   myPuffleInput.checked = settings['modern_my_puffle'];
   idleInput.checked = settings['remove_idle'];
-  jpaInput.checked = settings['jpa_level_selector']
+  jpaInput.checked = settings['jpa_level_selector'];
+  danceInput.checked = settings['swap_dance_arrow'];
 });
 
 window.addEventListener('finish-download', (e: any) => {

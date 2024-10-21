@@ -104,6 +104,11 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     res.sendFile(path.join(process.cwd(), `media/special/ThinIce${suffix}.swf`));
   });
 
+  server.get('/play/v2/games/dancing/dance.swf', (_, res) => {
+    const file = settingsManager.settings.swap_dance_arrow ? 'swapped' : 'vanilla';
+    res.sendFile(path.join(process.cwd(), `media/special/dance_contest/${file}.swf`));
+  })
+
   server.get('/', (_, res) => {
     res.sendFile(path.join(process.cwd(), 'media/special/index.html'));
   });
