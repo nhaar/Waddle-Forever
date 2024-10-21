@@ -6,11 +6,12 @@ const fpsInput = document.querySelector<HTMLInputElement>('.js-fps-input');
 const thinIceIgtInput = document.querySelector<HTMLInputElement>('.js-thin-ice-igt-input');
 const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input');
 const myPuffleInput = document.querySelector<HTMLInputElement>('.js-my-puffle-input');
+const idleInput = document.querySelector<HTMLInputElement>('.js-idle-input');
 
 fpsInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
     api.update({ fps30: e.target.checked });
-    api.reloadCachless();
+    api.reloadCacheless();
   }
 });
 
@@ -43,6 +44,13 @@ myPuffleInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
     api.update({ modern_my_puffle: e.target.checked });
     api.clearCache();
+  }
+})
+
+idleInput.addEventListener('change', (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    api.update({ remove_idle: e.target.checked });
+    api.reloadCacheless();
   }
 })
 

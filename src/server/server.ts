@@ -129,6 +129,11 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     }
   })
 
+  server.get('/play/v2/client/shell.swf', (_, res) => {
+    const file = settingsManager.settings.remove_idle ? 'no_idle' : 'vanilla'
+    res.sendFile(path.join(process.cwd(), `media/special/shell/${file}.swf`))
+  })
+
   server.use(express.static('media/static'));
 
   await new Promise<void>((resolve, reject) => {

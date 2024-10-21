@@ -16,7 +16,7 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
   } else {
     settingsManager.isEditting = true;
     const settingsWindow = new BrowserWindow({
-      width: 400,
+      width: 500,
       height: 300,
       title: "Settings",
       webPreferences: {
