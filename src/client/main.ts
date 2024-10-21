@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 import log from "electron-log";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
@@ -7,6 +7,7 @@ import createStore from "./store";
 import createWindow from "./window";
 import startServer from "../server/server";
 import settingsManager from "../server/settings";
+import { showWarning } from "./warning";
 
 log.initialize();
 
@@ -26,7 +27,21 @@ loadFlashPlugin(app);
 let mainWindow: BrowserWindow;
 
 app.on('ready', async () => {
-  startServer(settingsManager);
+  try {
+    await startServer(settingsManager);
+  } catch (error) {
+    const result = await dialog.showMessageBox(mainWindow, {
+      buttons: ['Boot Serverless', 'Check out error'],
+      title: 'Server Error',
+      message: `It was not possible to start the server. Would you like to open the client serverless, or check out the error?`,
+      defaultId: 1,
+      cancelId: 0
+    });
+    
+    if (result.response === 1) {
+      await showWarning(mainWindow, 'Error', error.message + '\n' + error.stack)
+    }
+  }
 
   mainWindow = await createWindow(store);
 
