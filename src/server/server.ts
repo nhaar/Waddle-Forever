@@ -7,7 +7,7 @@ import { XtPacket } from '.';
 import { XtHandler } from './handlers';
 import loginHandler from './handlers/play/login';
 import navigationHandler from './handlers/play/navigation';
-import serverList, { WORLD_PORT } from './servers';
+import serverList, { getServerPopulation, WORLD_PORT } from './servers';
 import commandsHandler from './handlers/commands';
 import itemHandler from './handlers/play/item';
 import stampHandler from './handlers/play/stamp';
@@ -49,7 +49,8 @@ const createServer = (type: string, port: number, handlers: XtHandler): void => 
             */
             // information regarding how many populations are in each server
             client.sendXt('l', client.id, client.id, '', serverList.map((server) => {
-              return `${server.id},5`;
+              const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
+              return `${server.id},${population}`;
             }).join('|'));
 
             /** TODO puffle stuff */
