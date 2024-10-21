@@ -7,7 +7,7 @@ import { XtPacket } from '.';
 import { XtHandler } from './handlers';
 import loginHandler from './handlers/play/login';
 import navigationHandler from './handlers/play/navigation';
-import serverList from './servers';
+import serverList, { WORLD_PORT } from './servers';
 import commandsHandler from './handlers/commands';
 import itemHandler from './handlers/play/item';
 import stampHandler from './handlers/play/stamp';
@@ -134,9 +134,7 @@ const startServer = (settingsManager: SettingsManager): void => {
   worldListener.use(epfHandler);
   worldListener.use(mailHandler);
   createServer('Login', 6112, new XtHandler());
-  serverList.forEach((server) => {
-    createServer(server.name, Number(server.port), worldListener);
-  });
+  createServer('World', WORLD_PORT, worldListener);
 };
 
 export default startServer;
