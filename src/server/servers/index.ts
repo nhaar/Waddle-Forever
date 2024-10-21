@@ -221,8 +221,6 @@ const serverList: PenguinServer[] = locales.reduce((accumulator, currentValue) =
   return [ ...accumulator, ...currentValue.servers]
 }, [])
 
-console.log(serverList)
-
 const serversXml = `
 <?xml version="1.0" encoding="UTF-8"?>
 <servers>
