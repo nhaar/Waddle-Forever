@@ -41,6 +41,12 @@ handler.xt('m#sm', (client, id, message) => {
       client.setAge(Number(numberMatch[1]));
       client.sendPenguinInfo();
     }
+  } else if (message.startsWith('!rename')) {
+    const nameMatch = message.match(/!rename\s+([\d\w]+)/);
+    if (nameMatch !== null) {
+      client.setName(nameMatch[1]);
+      client.sendPenguinInfo();
+    }
   }
 });
 

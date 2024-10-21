@@ -376,4 +376,9 @@ export class Client {
     */
     this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, 1727536687000, this.age, 0, this.penguin.minutes_played, -1, 7, 1, 4, 3);
   }
+
+  setName(name: string): void {
+    this.penguin.name = name;
+    this.update();
+  }
 }
