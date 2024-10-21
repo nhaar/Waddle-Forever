@@ -5,6 +5,7 @@ const api = (window as any).api;
 const fpsInput = document.querySelector<HTMLInputElement>('.js-fps-input');
 const thinIceIgtInput = document.querySelector<HTMLInputElement>('.js-thin-ice-igt-input');
 const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input');
+const myPuffleInput = document.querySelector<HTMLInputElement>('.js-my-puffle-input');
 
 fpsInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
@@ -35,6 +36,13 @@ clothingInput.addEventListener('change', (e) => {
       }
       e.target.checked = true;
     }
+  }
+})
+
+myPuffleInput.addEventListener('change', (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    api.update({ modern_my_puffle: e.target.checked });
+    api.clearCache();
   }
 })
 

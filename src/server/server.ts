@@ -108,6 +108,12 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     res.sendFile(path.join(process.cwd(), 'media/special/index.html'));
   });
 
+  server.get('/play/v2/games/book1/bootstrap.swf', (_, res) => {
+    const file = settingsManager.settings.modern_my_puffle ? '2013' : 'original'
+
+    res.sendFile(path.join(process.cwd(), `media/special/my_puffle/${file}.swf`))
+  })
+
   server.get('/play/v2/content/global/clothing/*', (req: Request, res) => {
     const clothingPath = req.params[0];
     const specialPath = path.join(process.cwd(), 'media/clothing', clothingPath);
