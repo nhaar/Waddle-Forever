@@ -16,6 +16,12 @@ body > * {
 .settings {
   grid-template-columns: 1fr 1fr;
   display: grid;
+  row-gap: 4px;
+  margin: 10px 0;
+}
+
+.settings-header {
+  font-weight: bolder;
 }
 
 input[type="checkbox"] {

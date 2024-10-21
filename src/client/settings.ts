@@ -17,7 +17,7 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
     settingsManager.isEditting = true;
     const settingsWindow = new BrowserWindow({
       width: 500,
-      height: 300,
+      height: 500,
       title: "Settings",
       webPreferences: {
         preload: path.join(__dirname, 'preload/settings-preload.js')
