@@ -19,5 +19,8 @@ events.forEach(dispatchEvent);
 (window as any).api = {
   update: (updateSettings: any) => ipcRenderer.send('update-settings', updateSettings),
   download: (pack: string) => ipcRenderer.send('download-package', pack),
-  delete: (pack: string) => ipcRenderer.send('delete-package', pack)
+  delete: (pack: string) => ipcRenderer.send('delete-package', pack),
+  reload: () => ipcRenderer.send('reload-window'),
+  clearCache: () => ipcRenderer.send('clear-cache'),
+  reloadCacheless: () => ipcRenderer.send('reload-cache')
 };

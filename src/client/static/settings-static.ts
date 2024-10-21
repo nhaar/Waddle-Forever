@@ -9,12 +9,14 @@ const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-inp
 fpsInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
     api.update({ fps30: e.target.checked });
+    api.reloadCachless();
   }
 });
 
 thinIceIgtInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
     api.update({ thin_ice_igt: e.target.checked });
+    api.clearCache();
   }
 });
 

@@ -63,5 +63,17 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
         [arg]: false
       })
     })
+
+    ipcMain.on('reload-window', () => {
+      mainWindow.reload();
+    })
+
+    ipcMain.on('clear-cache', () => {
+      mainWindow.webContents.session.clearCache();
+    })
+
+    ipcMain.on('reload-cache', () => {
+      mainWindow.webContents.reloadIgnoringCache();
+    })
   }
 };
