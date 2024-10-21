@@ -59,3 +59,7 @@ window.addEventListener('finish-deleting', (e: any) => {
     clothingInput.checked = false;
   }
 })
+
+window.addEventListener('download-fail', () => {
+  window.alert('Can\'t download the package. Please check your internet connection or if the Waddle Forever webservices are functioning.')
+})

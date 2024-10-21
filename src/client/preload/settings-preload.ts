@@ -10,7 +10,8 @@ function dispatchEvent(name: string) {
 const events = [
   'receive-settings',
   'finish-download',
-  'finish-deleting'
+  'finish-deleting',
+  'download-fail'
 ];
 
 events.forEach(dispatchEvent);

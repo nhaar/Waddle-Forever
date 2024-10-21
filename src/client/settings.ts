@@ -43,12 +43,16 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
         const zipName = String(Date.now()) + '.zip'
         const mediaDir = path.join(process.cwd(), 'media');
         const zipDir = path.join(mediaDir, zipName)
-        await download(`${arg}-${VERSION}.zip`, zipDir)
-        await unzip(zipDir, path.join(mediaDir, arg))
-        settingsWindow.webContents.send('finish-download', arg)
-        settingsManager.updateSettings({
-          [arg]: true
-        })
+        const success = await download(`${arg}-${VERSION}.zip`, zipDir)
+        if (success) {
+          await unzip(zipDir, path.join(mediaDir, arg))
+          settingsWindow.webContents.send('finish-download', arg)
+          settingsManager.updateSettings({
+            [arg]: true
+          })
+        } else {
+          settingsWindow.webContents.send('download-fail')
+        }
       })()
     })
 

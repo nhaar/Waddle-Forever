@@ -31,10 +31,10 @@ function setProgress(value: number, window: BrowserWindow) {
 
 export type ProgressCallback = (progress: number) => void
 
-export async function showProgress(message: string, task: (progress: ProgressCallback, end: () => void) => Promise<void>) {
+export async function showProgress(message: string, task: (progress: ProgressCallback, end: () => void) => Promise<boolean>): Promise<boolean> {
   const progressWin = createProgressBarWindow(message)
   let lastUpdate = Date.now();
-  await task((progress: number) => {
+  return await task((progress: number) => {
     const cur = Date.now();
     if (cur > lastUpdate + 1000) {
       lastUpdate = cur

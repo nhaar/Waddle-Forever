@@ -28,10 +28,10 @@ function unzipFile(zipDir: string, outDir: string, progress: ProgressCallback, e
 
 export async function unzip(zipDir: string, outDir: string) {
   await showProgress('Extracting file', async (progress, end) => {
-    await new Promise<void>((resolve) => {
+    return await new Promise<boolean>((resolve) => {
       unzipFile(zipDir, outDir, progress, () => {
         end();
-        resolve();
+        resolve(true);
       })
     })
   })

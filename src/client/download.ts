@@ -15,7 +15,7 @@ async function downloadFile(filename: string, destination: string, update: (prog
 
   const module = protocol === 'http' ? http : https
 
-  await new Promise<void>((resolve, reject) => {
+  return await new Promise<boolean>((resolve, reject) => {
     module.get(url, (response) => {
         const totalSize = Number(response.headers['content-length'])
         let downloadedSize = 0;
@@ -30,12 +30,13 @@ async function downloadFile(filename: string, destination: string, update: (prog
         file.on('finish', () => {
           file.close();
           finish();
-          resolve();
+          resolve(true);
         });
     }).on('error', (err) => {
         fs.unlink(destination, () => {});
-        console.error(`Error: ${err.message}`);
-        reject(err);
+        // file.close();
+        finish();
+        resolve(false);
     });
   })
 }
@@ -45,14 +46,14 @@ interface ProgressObject {
   total: number
 }
 
-export async function download(filename: string, destination: string, progress?: ProgressObject) {
+export async function download(filename: string, destination: string, progress?: ProgressObject): Promise<boolean> {
   let message = 'Downloading files'
   if (progress !== undefined) {
     message += ` (${progress.current} out of ${progress.total})`
   }
   message += ': '
   
-  await showProgress(message, async (progress, end) => {
-    await downloadFile(filename, destination, progress, end)
+  return await showProgress(message, async (progress, end) => {
+    return await downloadFile(filename, destination, progress, end)
   })
 }
