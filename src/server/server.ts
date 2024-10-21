@@ -134,6 +134,11 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     res.sendFile(path.join(process.cwd(), `media/special/shell/${file}.swf`))
   })
 
+  server.get('/play/v2/games/jetpack/JetpackAdventures.swf', (_, res) => {
+    const file = settingsManager.settings.jpa_level_selector ? 'level_selector' : 'vanilla'
+    res.sendFile(path.join(process.cwd(), `media/special/jet_pack_adventure/${file}.swf`))
+  })
+
   server.use(express.static('media/static'));
 
   await new Promise<void>((resolve, reject) => {

@@ -7,6 +7,7 @@ const thinIceIgtInput = document.querySelector<HTMLInputElement>('.js-thin-ice-i
 const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input');
 const myPuffleInput = document.querySelector<HTMLInputElement>('.js-my-puffle-input');
 const idleInput = document.querySelector<HTMLInputElement>('.js-idle-input');
+const jpaInput = document.querySelector<HTMLInputElement>('.js-jpa-level-input');
 
 fpsInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
@@ -54,10 +55,21 @@ idleInput.addEventListener('change', (e) => {
   }
 })
 
+jpaInput.addEventListener('change', (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    api.update({ jpa_level_selector: e.target.checked })
+    api.clearCache();
+  }
+})
+
 window.addEventListener('receive-settings', (e: any) => {
   const settings = e.detail;
   fpsInput.checked = settings['fps30'];
   thinIceIgtInput.checked = settings['thin_ice_igt'];
+  clothingInput.checked = settings['clothing'];
+  myPuffleInput.checked = settings['modern_my_puffle'];
+  idleInput.checked = settings['remove_idle'];
+  jpaInput.checked = settings['jpa_level_selector']
 });
 
 window.addEventListener('finish-download', (e: any) => {

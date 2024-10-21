@@ -7,6 +7,7 @@ interface Settings {
   clothing: boolean
   modern_my_puffle: boolean
   remove_idle: boolean
+  jpa_level_selector: boolean
 }
 
 type PartialSettings = Partial<Settings>
@@ -30,7 +31,8 @@ export class SettingsManager {
       thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false),
       clothing: this.readBoolean(settingsJson, 'clothing', false),
       modern_my_puffle: this.readBoolean(settingsJson, 'modern_my_puffle', false),
-      remove_idle: this.readBoolean(settingsJson, 'remove_idle', false)
+      remove_idle: this.readBoolean(settingsJson, 'remove_idle', false),
+      jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false)
     };
 
     this.updateSettings({});
