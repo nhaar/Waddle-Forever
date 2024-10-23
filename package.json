@@ -1,6 +1,6 @@
 {
   "name": "waddle-forever",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
@@ -9,11 +9,14 @@
     "build-tsc": "yarn clean && tsc && yarn copy-files",
     "start": "yarn build-tsc && electron ./compiled/client/main.js",
     "lint": "eslint -c .eslintrc --ext .ts ./src",
-    "build-win": "yarn build-tsc && electron-builder build --dir --win --publish never",
+    "build-client-win": "yarn build-tsc && electron-builder build --dir --win --publish never",
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
-    "build-server": "tsc&&pkg compiled/server/main.js -o WaddleForeverServer -t node20-linux-x64,node20-win-x64"
+    "build-server-win": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win-x64",
+    "build-server-linux": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64",
+    "build-media": "node scripts/zip-media",
+    "build-win": "yarn build-server-win&&yarn build-client-win&&node scripts/zip-win"
   },
   "author": "CPS",
   "license": "MIT",
@@ -70,6 +73,7 @@
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "@yao-pkg/pkg": "^5.15.0",
+    "archiver": "^7.0.1",
     "copyfiles": "^2.4.1",
     "electron": "^10.0.0",
     "electron-builder": "23.0.2",
