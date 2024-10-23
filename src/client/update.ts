@@ -76,7 +76,10 @@ export async function update(mainWindow: BrowserWindow) {
 
   downloadNumber++;
   const CLIENT_DOWNLOAD_NUMBER = downloadNumber;
+  downloadNumber++;
+  const SERVER_DOWNLOAD_NUMBER = downloadNumber;
   const clientInfo = await getOSFile('/api/client');
+  const serverInfo = await getOSFile('/api/server');
 
   const settingsJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'settings.json'), { encoding: 'utf-8'}))
 
@@ -87,12 +90,14 @@ export async function update(mainWindow: BrowserWindow) {
   const updaterInfo = await getOSFile('/api/updater')
   downloadNumber += 1;
 
-  if (clientInfo === undefined || updaterInfo === undefined) {
+  if (clientInfo === undefined || updaterInfo === undefined || serverInfo === undefined) {
     showWarning(mainWindow, 'Error', 'Your platform or architecture is not supported')
     return
   }
 
   await download(clientInfo.filename, path.join(UPDATE_PATH, 'client.zip'), { current: CLIENT_DOWNLOAD_NUMBER, total: downloadNumber});
+
+  await download(serverInfo.filename, path.join(UPDATE_PATH, 'server.zip'), { current: SERVER_DOWNLOAD_NUMBER, total: downloadNumber });
 
   for (const i in mediaFiles) {
     const file = mediaFiles[i];
