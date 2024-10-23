@@ -1,0 +1,22 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #2e2c29;
+  color: white;
+  margin: 0;
+}
+.progress-container {
+  width: 80%;
+  background-color: #333;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 20px;
+  width: 0;
+  background-color: #76c7c0;
+  transition: width 0.5s;
+}

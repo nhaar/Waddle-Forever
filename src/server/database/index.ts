@@ -88,6 +88,15 @@ const db = new JsonDatabase(databaseFolder);
 
 db.createDatabase(Databases.Penguins);
 
+export interface Puffle {
+  id: number
+  name: string
+  type: number
+  clean: number
+  food: number
+  rest: number
+}
+
 export interface Penguin {
   name: string
   is_agent: boolean
@@ -99,12 +108,53 @@ export interface Penguin {
   body: number
   hand: number
   feet: number
-  flag: number
+  pin: number
   background: number
   coins: number
   registration_date: number
   minutes_played: number,
-  inventory: number[]
+  inventory: number[],
+  stamps: number[],
+  pins: number[],
+  stampbook: {
+    color: number,
+    highlight: number,
+    pattern: number,
+    icon: number,
+    stamps: Array<{
+      stamp: number,
+      x: number,
+      y: number,
+      rotation: number,
+      depth: number
+    }>,
+    recent_stamps: number[]
+  },
+  puffleSeq: number
+  puffles: Puffle[],
+  igloo: {
+    type: number,
+    music: number,
+    flooring: number,
+    furniture: Array<{
+      id: number,
+      x: number,
+      y: number,
+      rotation: number,
+      frame: number
+    }>
+  },
+  mail: Array<{
+    sender: { name: string, id: number },
+    postcard: {
+      postcardId: number
+      details: string
+      timestamp: number
+      uid: number
+      read: boolean
+    }
+  }>,
+  mailSeq: number
 }
 
 export default db;

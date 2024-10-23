@@ -4,6 +4,11 @@ import path from 'path';
 interface Settings {
   fps30: boolean
   thin_ice_igt: boolean
+  clothing: boolean
+  modern_my_puffle: boolean
+  remove_idle: boolean
+  jpa_level_selector: boolean
+  swap_dance_arrow: boolean
 }
 
 type PartialSettings = Partial<Settings>
@@ -24,7 +29,12 @@ export class SettingsManager {
 
     this.settings = {
       fps30: this.readBoolean(settingsJson, 'fps30', false),
-      thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false)
+      thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false),
+      clothing: this.readBoolean(settingsJson, 'clothing', false),
+      modern_my_puffle: this.readBoolean(settingsJson, 'modern_my_puffle', false),
+      remove_idle: this.readBoolean(settingsJson, 'remove_idle', false),
+      jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false),
+      swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false)
     };
 
     this.updateSettings({});

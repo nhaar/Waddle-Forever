@@ -1,8 +1,7 @@
 import net from 'net';
 
-import { isGameRoom, Room } from './game/rooms';
-import db, { Penguin, Databases } from './database';
-import { Item } from './game/items';
+import { isGameRoom, Room, roomStamps } from './game/rooms';
+import db, { Penguin, Databases, Puffle } from './database';
 
 export class Client {
   socket: net.Socket;
@@ -10,6 +9,16 @@ export class Client {
   id: number;
   x: number;
   y: number;
+  currentRoom: number;
+
+  /**
+   * Temporary variable to keep track of stamps collected used to know
+   * which ones someone collected when ending a game
+   */
+  sessionStamps: number[];
+
+  /** ID of puffle that player is walking */
+  walkingPuffle: number;
 
   constructor (socket: net.Socket) {
     this.socket = socket;
@@ -17,6 +26,9 @@ export class Client {
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
+  
+    this.sessionStamps = [];
+    this.walkingPuffle = NaN;
   }
 
   send (message: string): void {
@@ -40,7 +52,7 @@ export class Client {
       this.penguin.body,
       this.penguin.hand,
       this.penguin.feet,
-      this.penguin.flag,
+      this.penguin.pin,
       this.penguin.background,
       this.x,
       this.y,
@@ -76,6 +88,7 @@ export class Client {
       this.sendXt('jr', room, string);
       this.sendXt('ap', string);
     }
+    this.currentRoom = room;
   }
 
   update (): void {
@@ -110,19 +123,39 @@ export class Client {
       name: '',
       mascot: 0,
       is_agent: false,
-      color: Item.Blue,
-      head: Item.Nothing,
-      face: Item.Nothing,
-      neck: Item.Nothing,
-      body: Item.Nothing,
-      hand: Item.Nothing,
-      feet: Item.Nothing,
-      flag: Item.Nothing,
-      background: Item.Nothing,
+      color: 1,
+      head: 0,
+      face: 0,
+      neck: 0,
+      body: 0,
+      hand: 0,
+      feet: 0,
+      background: 0,
+      pin: 0,
       registration_date: Date.now(),
       coins: 500,
       minutes_played: 0,
-      inventory: [Item.Blue]
+      inventory: [1],
+      stamps: [],
+      pins: [],
+      stampbook: { // TODO: enums for the options
+        color: 1,
+        highlight: 1,
+        pattern: 0,
+        icon: 1,
+        stamps: [],
+        recent_stamps: []
+      },
+      puffleSeq: 0,
+      puffles: [],
+      igloo: {
+        type: 0,
+        music: 0,
+        flooring: 0,
+        furniture: []
+      },
+      mail: [],
+      mailSeq: 0
     };
   }
 
@@ -145,5 +178,207 @@ export class Client {
     this.penguin.color = color;
     this.update();
     this.sendXt('upc', this.id, color);
+  }
+
+  sendStamps (): void {
+    this.sendXt('gps', this.id, this.penguin.stamps.join('|'));
+  }
+
+  getPinString (): string {
+    const pins = this.penguin.pins.map((pin) => {
+      // TODO -> middle is "date", third is member
+      // Proper pin objects and information
+      return [pin, 0, 0].join('|');
+    });
+    return pins.join('%');
+  }
+
+  getStampbookCoverString (): string {
+    const cover = [
+      this.penguin.stampbook.color,
+      this.penguin.stampbook.highlight,
+      this.penguin.stampbook.pattern,
+      this.penguin.stampbook.icon
+    ].map((n) => String(n));
+
+    this.penguin.stampbook.stamps.forEach((info) => {
+      cover.push([
+        0, info.stamp, info.x, info.y, info.rotation, info.depth
+      ].join('|'));
+    });
+
+    return cover.join('%');
+  }
+
+  getRecentStampsString (): string {
+    const recentStamps = this.penguin.stampbook.recent_stamps.join('|');
+    this.penguin.stampbook.recent_stamps = [];
+    this.update();
+    return recentStamps;
+  }
+
+  getEndgameStampsInformation (): [string, number, number, number] {
+    const info: [string, number, number, number] = ['', 0, 0, 0];
+
+    if (this.currentRoom in roomStamps) {
+      const stamps = roomStamps[this.currentRoom];
+      const gameSessionStamps: number[] = [];
+      this.sessionStamps.forEach((stamp) => {
+        if (stamps.includes(stamp)) {
+          gameSessionStamps.push(stamp);
+        }
+      });
+      // string of recently collected stamps
+      info[0] = gameSessionStamps.join('|');
+      // total number of stamps collected in this game
+      info[1] = stamps.filter((stamp) => this.penguin.stamps.includes(stamp)).length;
+      // total number of stamps the game has
+      info[2] = stamps.length;
+
+      // TODO check what this is used for
+      info[3] = 0;
+    }
+
+    this.sessionStamps = [];
+
+    return info;
+  }
+
+  addStamp (stamp: number): void {
+    this.penguin.stamps.push(stamp);
+    this.penguin.stampbook.recent_stamps.push(stamp);
+    this.sessionStamps.push(stamp);
+    this.update();
+  }
+  
+  addCoins (amount: number): void {
+    this.penguin.coins += amount;
+    this.update();
+  }
+
+  removeCoins (amount: number): void {
+    this.penguin.coins -= amount
+    this.update()
+  }
+
+  addPuffle (type: number, name: string): Puffle {
+    this.penguin.puffleSeq += 1;
+    const puffle = {
+      id: this.penguin.puffleSeq,
+      name,
+      type,
+      clean: 100,
+      rest: 100,
+      food: 100
+    };
+    this.penguin.puffles.push(puffle);
+    this.update()
+    return puffle
+  }
+
+  getIglooString (): string {
+    const furnitureString = this.penguin.igloo.furniture.map((furniture) => {
+      return [
+        furniture.id,
+        furniture.x,
+        furniture.y,
+        furniture.rotation,
+        furniture.frame
+      ].join('|')
+    }).join(',')
+
+    return [
+      this.penguin.igloo.type,
+      this.penguin.igloo.music,
+      this.penguin.igloo.flooring,
+      furnitureString
+    ].join('%');
+  }
+
+  walkPuffle (puffle: number) {
+    this.walkingPuffle = puffle;
+  }
+
+  makeAgent (): void {
+    this.penguin.is_agent = true;
+    this.update();
+  }
+
+  sendPuffles (): void {
+    const puffles = this.penguin.puffles.map((puffle) => {
+      return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
+    })
+    this.sendXt('pgu', ...puffles);
+  }
+
+  addPostcard (postcard: number, info: {
+    senderId?: number
+    senderName?: string
+    details?: string    
+  }): void {
+    this.penguin.mailSeq += 1;
+    const senderName = info.senderName ?? 'sys';
+    const senderId = info.senderId ?? 0;
+    const details = info.details ?? '';
+    const timestamp = Date.now();
+    this.penguin.mail.push({
+      sender: {
+        name: senderName,
+        id: senderId
+      },
+      postcard: {
+        postcardId: postcard,
+        uid: this.penguin.mailSeq,
+        details,
+        timestamp,
+        read: false
+      }
+    })
+    this.sendXt('mr', senderName, senderId, postcard, details, timestamp, this.penguin.mailSeq);
+    this.update();
+  }
+
+  setMailRead(): void {
+    this.penguin.mail = this.penguin.mail.map((mail) => {
+      const postcard = { ...mail.postcard, read: true };
+      return { ...mail, postcard: postcard }
+    })
+    this.update()
+  }
+
+  unequipPuffle(): void {
+    const puffles = [
+      750, 751, 752, 753, 754, 755, 756, 757, 758, 759
+    ];
+    if (puffles.includes(this.penguin.hand)) {
+      this.penguin.hand = 0;
+      this.update();
+    }
+  }
+
+  setAge(days: number): void {
+    this.penguin.registration_date = Date.now() - days * 3600 * 24 * 1000;
+    this.update();
+  }
+
+  sendPenguinInfo(): void {
+    /*
+    TODO safe chat (after coins) will ever be required?
+    TODO after safechat, what is that variable
+    TODO after age, what is it?
+    TODO how to implement penguin time zone?
+    TODO what is last?
+    TODO -1: membership days remain is useful?
+    TODO 7: how to handle offset
+    TODO 1: how to handle opened played cards
+    TODO 4: map category how to handle
+    TODO 3: how to handle status field
+    */
+    this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, 1727536687000, this.age, 0, this.penguin.minutes_played, -1, 7, 1, 4, 3);
+  }
+
+  setName(name: string): void {
+    this.penguin.name = name;
+    this.update();
   }
 }
