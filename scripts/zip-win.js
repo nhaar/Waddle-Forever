@@ -3,5 +3,5 @@ const VERSION = require('../package.json').version;
 
 createOut();
 
-zip('dist/win-unpacked', `${OUT_DIR}/client-${VERSION}.zip`)
-zip('dist/WaddleForeverServer.exe', `${OUT_DIR}/server-${VERSION}.zip`)
+zip('dist/win-unpacked', `${OUT_DIR}/client-${VERSION}-win.zip`)
+zip('dist/WaddleForeverServer.exe', `${OUT_DIR}/server-${VERSION}-win.zip`)
