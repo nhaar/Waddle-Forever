@@ -5,7 +5,7 @@ Waddle Forever is composed of a localhost server emulator for Club Penguin and a
 It's main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival of parties and events.
 
 > [!IMPORTANT]  
-> Users, check the [download tutorial](https://github.com/nhaar/Waddle-Forever/blob/main/guide/GUIDE.md)! It is very simple
+> Download links are available in the [website!](https://waddleforever.com/)
 
 # Progress
 
@@ -55,17 +55,12 @@ For running the server in development, run
 
 ```yarn dev```
 
-To build the client (windows):
+The game is built into zip files which are placed in the website. To build the zip files:
 
+```yarn build-media```
 ```yarn build-win```
 
-It will be in `dist`, but you need to move the media folder to the win-unpacked folder as well
-
-To build the server (windows):
-
-```yarn build-server```
-
-The server executable will be generated, it also needs to be in the same folder as the media folder
+Will leave all the files in the folder `zip`
 
 # Credits
 
@@ -76,3 +71,5 @@ The server is based in solero's works in reverse engineering the Club Penguin se
 Thanks for Levi for help with the Linux version.
 
 Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunning client.
+
+Special thanks to supermanover for support and eventual help.
