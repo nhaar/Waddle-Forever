@@ -17,6 +17,7 @@ import epfHandler from './handlers/play/epf';
 import mailHandler from './handlers/play/mail';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
+import { HttpServer } from './http';
 
 const createServer = async (type: string, port: number, handlers: XtHandler): Promise<void> => {
   await new Promise<void>((resolve) => {
@@ -88,61 +89,45 @@ const createServer = async (type: string, port: number, handlers: XtHandler): Pr
 const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   const server = express();
 
-  // entrypoint for as2 client
-  server.get('/boots.swf', (_, res) => {
-    const fps = settingsManager.settings.fps30 ? '30' : '24';
-    res.sendFile(path.join(process.cwd(), `media/special/boots${fps}.swf`));
-  });
+  const httpServer = new HttpServer(settingsManager);
 
   // TODO a better system for handling these special medias
-
-  server.get('/play/v2/games/thinice/ThinIce.swf', (_, res) => {
-    let suffix = settingsManager.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
-    if (settingsManager.settings.thin_ice_igt) {
-      suffix += settingsManager.settings.fps30 ? '30' : '24';
-    }
-    res.sendFile(path.join(process.cwd(), `media/special/ThinIce${suffix}.swf`));
+  // entrypoint for as2 client
+  httpServer.get('/boots.swf', (s) => {
+    return `special/boots${s.settings.fps30 ? '30' : '24'}.swf`
   });
 
-  server.get('/play/v2/games/dancing/dance.swf', (_, res) => {
-    const file = settingsManager.settings.swap_dance_arrow ? 'swapped' : 'vanilla';
-    res.sendFile(path.join(process.cwd(), `media/special/dance_contest/${file}.swf`));
-  })
-
-  server.get('/', (_, res) => {
-    res.sendFile(path.join(process.cwd(), 'media/special/index.html'));
+  httpServer.get('/play/v2/games/thinice/ThinIce.swf', (s) => {
+    let suffix = s.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
+    if (s.settings.thin_ice_igt) {
+      suffix += s.settings.fps30 ? '30' : '24'
+    }
+    return `special/ThinIce${suffix}.swf`
   });
 
-  server.get('/play/v2/games/book1/bootstrap.swf', (_, res) => {
-    const file = settingsManager.settings.modern_my_puffle ? '2013' : 'original'
+  httpServer.get('/play/v2/games/dancing/dance.swf', (s) => {
+    return `special/dance_contest/${s.settings.swap_dance_arrow ? 'swapped' : 'vanilla'}.swf`;
+  });
 
-    res.sendFile(path.join(process.cwd(), `media/special/my_puffle/${file}.swf`))
+  httpServer.get('/', () => `special/index.html`);
+
+  httpServer.get('/play/v2/games/book1/bootstrap.swf', (s) => {
+    return `special/my_puffle/${s.settings.modern_my_puffle ? '2013' : 'original'}.swf`
+  });
+
+  httpServer.dir('/play/v2/content/global/clothing', (s, d) => {
+    return s.settings.clothing ? path.join('clothing', d) : undefined;
   })
 
-  server.get('/play/v2/content/global/clothing/*', (req: Request, res) => {
-    const clothingPath = req.params[0];
-    const specialPath = path.join(process.cwd(), 'media/clothing', clothingPath);
-    if (settingsManager.settings.clothing && fs.existsSync(specialPath)) {
-      res.sendFile(specialPath);
-    } else {
-      const staticPath = path.join(process.cwd(), 'media/static', req.url);
-      if (fs.existsSync(staticPath)) {
-        res.sendFile(staticPath);
-      } else {
-        res.sendStatus(404);
-      }
-    }
-  })
+  httpServer.get('/play/v2/client/shell.swf', (s) => {
+    return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
+  });
 
-  server.get('/play/v2/client/shell.swf', (_, res) => {
-    const file = settingsManager.settings.remove_idle ? 'no_idle' : 'vanilla'
-    res.sendFile(path.join(process.cwd(), `media/special/shell/${file}.swf`))
-  })
+  httpServer.get('/play/v2/games/jetpack/JetpackAdventures.swf', (s) => {
+    return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
+  });
 
-  server.get('/play/v2/games/jetpack/JetpackAdventures.swf', (_, res) => {
-    const file = settingsManager.settings.jpa_level_selector ? 'level_selector' : 'vanilla'
-    res.sendFile(path.join(process.cwd(), `media/special/jet_pack_adventure/${file}.swf`))
-  })
+  server.use(httpServer.router);
 
   server.use(express.static('media/static'));
 
