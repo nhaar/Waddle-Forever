@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { exec } from 'child_process';
-import { BrowserWindow, dialog } from 'electron';
+import { BrowserWindow, dialog, shell } from 'electron';
 import { postJSON } from "../common/utils";
 import { download } from './download';
 import { VERSION } from '../common/version';
@@ -50,7 +50,19 @@ export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
     status = 'unknown'
   }
 
-  if (status === 'old') {
+  if (process.platform === 'linux' && (status === 'old' || status === 'unsupported')) {
+    const result = await dialog.showMessageBox(mainWindow, {
+      buttons: ['Ignore', 'Update'],
+      title: 'New version available',
+      message: `A new version is available. Please check the instructions on how to update it.`,
+      defaultId: 1,
+      cancelId: 0
+    });
+
+    if (result.response === 1) {
+      shell.openExternal('https://waddleforever.com/linux-update')
+    }
+  } else if (status === 'old') {
     const result = await dialog.showMessageBox(mainWindow, {
       buttons: ['Ignore', 'Update'],
       title: 'New version available',
