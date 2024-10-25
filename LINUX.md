@@ -10,13 +10,19 @@ The game uses an AppImage, so you need to install FUSE in order to run it. In so
 
 After installing, you must first open the folder you installed and then open the terminal, and then run these commands:
 
-```chmod +x ./WaddleForeverServer```
-```chmod +x ./WaddleForeverClient.AppImage```
+```bash
+chmod +x ./WaddleForeverServer
+```
+```bash
+chmod +x ./WaddleForeverClient.AppImage
+```
 
 # Running the game
 
 Everytime you want to run, you must first open a terminal in the game folder and run:
 
-```sudo ./WaddleForeverServer```
+```bash
+sudo ./WaddleForeverServer
+```
 
 After that is running, then you can go ahead and run the game, which is located in `WaddleForeverClient.AppImage`. A message will pop up. Click to run it serverless.
