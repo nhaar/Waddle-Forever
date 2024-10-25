@@ -3,6 +3,8 @@
 # Installation
 Installation can be done with the file found in the [website](https://waddleforever.com/). If the installer doesn't work in your linux distribution, a secondary option is to run this command (you need `curl` installed):
 
+(Please make sure to run this command in the terminal inside the folder you want the game to be installed on"
+
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/nhaar/waddle-forever-installer/master/install.sh)
 ```
