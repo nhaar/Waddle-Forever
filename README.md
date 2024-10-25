@@ -9,7 +9,7 @@ It's main goals are accessible speedrunning, accessible sandbox Club Penguin and
 
 # Progress
 
-At the moment, the program is very basic and all you can do is walk around the island and play some minigames.
+At the moment, the program is at an early stage. A basic "AS2" gameplay is currently supported, including minigame, stamps and penguin customization.
 
 The client has ambitious goals, so it is uncertain if they will be met. The main goals include:
 
