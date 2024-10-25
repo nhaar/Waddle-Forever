@@ -1,6 +1,11 @@
 # Playing Waddle Forever in Linux
 
-This is a tutorial which assumes you have already installed the game, if you haven't done it, do so in https://waddleforever.com/.
+# Installation
+Installation can be done with the file found in the [website](https://waddleforever.com/). If the installer doesn't work in your linux distribution, a secondary option is to run this command (you need `curl` installed):
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/nhaar/waddle-forever-installer/master/install.sh)
+```
 
 # Requirements
 
