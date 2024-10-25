@@ -20,6 +20,9 @@ mods like this (and they will be possibly lost if you update the game), so it is
 
 # CPSC Mod Manager
 
+> [!CAUTION]
+> If you had mods on CPSC, they will not work imediately, since Waddle Forever has a `static` folder you need to add.
+
 The CPSC Mod Manager is a simple to use program (only available for Windows). This is how you set it up:
 
 Go to where your game is located (you can reach that by right clicking -> Open file location in the shorcut), and then you will find a folder called `media`:
