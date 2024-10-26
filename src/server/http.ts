@@ -12,9 +12,9 @@ export class HttpServer {
     this.router = Router();
   }
 
-  get (route: string, handler: (settings: SettingsManager) => string) {
+  get (route: string, handler: (settings: SettingsManager, route: string) => string) {
     this.router.get(route, (_, res) => {
-      res.sendFile(path.join(process.cwd(), 'media', handler(this.settingsManager)))
+      res.sendFile(path.join(process.cwd(), 'media', handler(this.settingsManager, route)))
     })
   }
 

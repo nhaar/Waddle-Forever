@@ -135,10 +135,9 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     }
   })
 
-  httpServer.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
-    console.log('seen')
+  httpServer.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s, r) => {
     if (s.settings.version === '2010-Nov-24') {
-      return undefined;
+      return `static/${r}`;
     } else {
       return `versions/2010/halloween/global_crumbs.swf`
     }
@@ -159,9 +158,9 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     return `versions/2010/halloween/membership_party3.swf`
   })
 
-  httpServer.get('/play/v2/content/global/content/map.swf', (s) => {
+  httpServer.get('/play/v2/content/global/content/map.swf', (s, r) => {
     if (s.settings.version === '2010-Nov-24') {
-      return undefined;
+      return `static/${r}`;
     } else {
       return 'versions/2010/halloween/map.swf'
     }
@@ -232,6 +231,19 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
 
     return undefined;
   })
+
+  httpServer.get('/play/v2/content/local/en/news/news_crumbs.swf', (s) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return 'versions/2010/nov-24/news_crumbs.swf'
+    } else if (s.settings.version === '2010-Oct-28') {
+      return 'versions/2010/halloween/news_crumbs.swf'
+    }
+  })
+
+  httpServer.dir('/play/v2/content/local/en/news', (_, d) => {
+    return `newspapers/${d}`;
+  })
+
 
   server.use(httpServer.router);
 
