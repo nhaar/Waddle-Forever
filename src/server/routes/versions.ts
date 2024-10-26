@@ -62,7 +62,7 @@ export function isGreater(left: GameVersion, right: GameVersion): boolean {
 }
 
 export function isGreaterOrEqual(left: GameVersion, right: GameVersion): boolean {
-  return left === right && isGreater(left, right);
+  return left === right || isGreater(left, right);
 }
 
 export function isLower(left: GameVersion, right: GameVersion) {

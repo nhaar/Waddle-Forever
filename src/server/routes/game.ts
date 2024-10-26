@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { isLower } from './versions';
+import { isGreaterOrEqual, isLower } from './versions';
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -44,7 +44,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
 
   server.get('/play/v2/content/global/rooms/stage.swf', (s) => {
-    if (isLower(s.settings.version, '2010-Nov-24')) {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Oct-23')) {
+      return `versions/stage/fairy/stage.swf`
+    } else if (isLower(s.settings.version, '2010-Nov-24')) {
       return `versions/stage/bamboo/stage.swf`
     } else {
       return `versions/stage/planety/stage.swf`
@@ -54,19 +56,25 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
 
   server.get('/play/v2/content/global/rooms/plaza.swf', (s) => {
-    if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/rooms/plaza.swf`;
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/rooms/plaza.swf`;
+    }
+
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Oct-23')) {
+      return `versions/stage/fairy/plaza.swf`
     } else if (isLower(s.settings.version, '2010-Nov-24')) {
       return `versions/stage/bamboo/plaza.swf`
     } else {
-      return `versions/stage/bamboo/planety.swf`
+      return `versions/stage/planety/plaza.swf`
     }
 
     throw new Error('Not implemented');
   })
 
   server.get('/play/v2/content/local/en/catalogues/costume.swf', (s) => {
-    if (isLower(s.settings.version, '2010-Nov-24')) {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Oct-23')) {
+      return `versions/stage/fairy/costume.swf`
+    } else if (isLower(s.settings.version, '2010-Nov-24')) {
       return `versions/stage/bamboo/costume.swf`
     } else {
       return `versions/stage/planety/costume.swf`
@@ -75,18 +83,36 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
+  server.get('/play/v2/content/global/rooms/rink.swf', (s) => {    
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/rooms/rink.swf`;
+    }
+
+    console.log(s.settings.version);
+    console.log(isGreaterOrEqual(s.settings.version, '2010-Sep-24'))
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Nov-24')) {
+      return `versions/2010/stadium_games/rink.swf`;
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  server.get('/play/v2/content/local/en/catalogues/sport.swf', () => {
+    return `versions/2010/stadium_games/sport.swf`;
+  })
+
   server.dir('/play/v2/content/global/rooms', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Nov-24': return undefined;
       case '2010-Oct-23': return `versions/2010/anniversary/rooms/${d}`;
       case '2010-Oct-28': return `versions/2010/halloween/rooms/${d}`;
-      default: throw new Error('Not implemented');
+      default: return undefined;
     }
   })
 
   server.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s, r) => {
     switch (s.settings.version) {
-      case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`
+      case '2010-Sep-24': return `versions/2010/stadium_games/global_crumbs.swf`;
+      case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`;
       case '2010-Oct-28': return `versions/2010/halloween/global_crumbs.swf`;
       default: return `static/${r}`;
     }
@@ -175,7 +201,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.get('/play/v2/content/local/en/news/news_crumbs.swf', (s) => {
     switch (s.settings.version) {
-      case '2010-Oct-23': return 'versions/2010/anniversary/news_crumbs.swf'
+      case '2010-Sep-24': return 'versions/2010/stadium_games/news_crumbs.swf';
+      case '2010-Oct-23': return 'versions/2010/anniversary/news_crumbs.swf';
       case '2010-Oct-28': return 'versions/2010/halloween/news_crumbs.swf';
       case '2010-Nov-24': return 'versions/2010/nov-24/news_crumbs.swf'
       default: throw new Error('Not implemented');
