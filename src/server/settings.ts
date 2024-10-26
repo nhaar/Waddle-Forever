@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-type GameVersion = '2010-Oct-28' | '2010-Nov-24';
+export type GameVersion = '2010-Oct-23' | '2010-Oct-28' | '2010-Nov-24';
 
 interface Settings {
   fps30: boolean

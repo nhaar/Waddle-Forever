@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
+import { isLower } from './versions';
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -42,26 +43,58 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
   });
 
-  server.dir('/play/v2/content/global/rooms', (s, d) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return undefined;
+  server.get('/play/v2/content/global/rooms/stage.swf', (s) => {
+    if (isLower(s.settings.version, '2010-Nov-24')) {
+      return `versions/stage/bamboo/stage.swf`
     } else {
-      return `versions/2010/halloween/rooms/${d}`;
+      return `versions/stage/planety/stage.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  server.get('/play/v2/content/global/rooms/plaza.swf', (s) => {
+    if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/rooms/plaza.swf`;
+    } else if (isLower(s.settings.version, '2010-Nov-24')) {
+      return `versions/stage/bamboo/plaza.swf`
+    } else {
+      return `versions/stage/bamboo/planety.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  server.get('/play/v2/content/local/en/catalogues/costume.swf', (s) => {
+    if (isLower(s.settings.version, '2010-Nov-24')) {
+      return `versions/stage/bamboo/costume.swf`
+    } else {
+      return `versions/stage/planety/costume.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  server.dir('/play/v2/content/global/rooms', (s, d) => {
+    switch (s.settings.version) {
+      case '2010-Nov-24': return undefined;
+      case '2010-Oct-23': return `versions/2010/anniversary/rooms/${d}`;
+      case '2010-Oct-28': return `versions/2010/halloween/rooms/${d}`;
+      default: throw new Error('Not implemented');
     }
   })
 
   server.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s, r) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return `static/${r}`;
-    } else {
-      return `versions/2010/halloween/global_crumbs.swf`
+    switch (s.settings.version) {
+      case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`
+      case '2010-Oct-28': return `versions/2010/halloween/global_crumbs.swf`;
+      default: return `static/${r}`;
     }
   })
 
   server.dir('/play/v2/content/global/music', (s, d) => {
     const mediaPath = `music/${d}`;
     const file = path.join(process.cwd(), 'media', mediaPath);
-    console.log(file);
     if (fs.existsSync(file)) {
       return mediaPath
     } else {
@@ -74,10 +107,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
 
   server.get('/play/v2/content/global/content/map.swf', (s, r) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return `static/${r}`;
-    } else {
-      return 'versions/2010/halloween/map.swf'
+    switch (s.settings.version) {
+      case '2010-Oct-28': return 'versions/2010/halloween/map.swf';
+      default: return `static/${r}`;
     }
   })
 
@@ -86,72 +118,67 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
 
   server.dir('/play/v2/content/local/en/catalogues', (s, d) => {
-    if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/catalogues/${d}`
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/catalogues/${d}`;
+      default: return undefined;
     }
-
-    return undefined;
   })
 
   server.dir('/play/v2/content/local/en/login', (s, d) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return undefined;
-    } else if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/login/${d}`
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/login/${d}`
+      default: return undefined;
     }
   })
 
   server.dir('/play/v2/content/global/binoculars', (s, d) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return undefined;
-    } else if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/binoculars/${d}`
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/binoculars/${d}`;
+      default: return undefined;
     }
   })
 
   server.dir('/play/v2/content/global/telescope', (s, d) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return undefined;
-    } else if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/telescope/${d}`
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/telescope/${d}`
+      default: return undefined;
     }
   })
 
   server.get('/play/v2/content/global/igloo/assets/igloo_background.swf', (s) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return undefined;
-    } else {
-      return 'versions/2010/halloween/igloo_background.swf'
+    switch (s.settings.version) {
+      case '2010-Oct-28': return 'versions/2010/halloween/igloo_background.swf';
+      default: undefined;
     }
   })
 
   server.dir('/play/v2/client', (s, d) => {
-    if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/client/${d}`
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/client/${d}`;
+      default: return undefined;
     }
-    return undefined;
   })
 
   server.dir('/play/v2/content/global/scavenger_hunt', (s, d) => {
-    if (s.settings.version === '2010-Oct-28') {
-      return `versions/2010/halloween/scavenger_hunt/${d}`
+    switch (s.settings.version) {
+      case '2010-Oct-28': return `versions/2010/halloween/scavenger_hunt/${d}`;
+      default: return undefined;
     }
-    return undefined;
   })
 
   server.get('/web_service/worldachievements.xml', (s) => {
-    if (s.settings.version === '2010-Oct-28') {
-      return 'versions/2010/halloween/worldachievements.xml'
+    switch (s.settings.version) {
+      case '2010-Oct-28': return 'versions/2010/halloween/worldachievements.xml';
+      default: return undefined;
     }
-
-    return undefined;
   })
 
   server.get('/play/v2/content/local/en/news/news_crumbs.swf', (s) => {
-    if (s.settings.version === '2010-Nov-24') {
-      return 'versions/2010/nov-24/news_crumbs.swf'
-    } else if (s.settings.version === '2010-Oct-28') {
-      return 'versions/2010/halloween/news_crumbs.swf'
+    switch (s.settings.version) {
+      case '2010-Oct-23': return 'versions/2010/anniversary/news_crumbs.swf'
+      case '2010-Oct-28': return 'versions/2010/halloween/news_crumbs.swf';
+      case '2010-Nov-24': return 'versions/2010/nov-24/news_crumbs.swf'
+      default: throw new Error('Not implemented');
     }
   })
 
