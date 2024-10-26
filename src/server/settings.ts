@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+type GameVersion = '2010-Oct-28' | '2010-Nov-24';
+
 interface Settings {
   fps30: boolean
   thin_ice_igt: boolean
@@ -9,6 +11,7 @@ interface Settings {
   remove_idle: boolean
   jpa_level_selector: boolean
   swap_dance_arrow: boolean
+  version: GameVersion
 }
 
 type PartialSettings = Partial<Settings>
@@ -34,10 +37,20 @@ export class SettingsManager {
       modern_my_puffle: this.readBoolean(settingsJson, 'modern_my_puffle', false),
       remove_idle: this.readBoolean(settingsJson, 'remove_idle', false),
       jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false),
-      swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false)
+      swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false),
+      version: this.readVersion(settingsJson)
     };
 
     this.updateSettings({});
+  }
+
+  readVersion(object: any): GameVersion {
+    const value = object['version'];
+    if (value === undefined) {
+      return '2010-Nov-24';
+    } else {
+      return value;
+    }
   }
 
   readBoolean(object: any, property: string, default_value: boolean): boolean {
@@ -50,9 +63,7 @@ export class SettingsManager {
   }
 
   updateSettings(partial: PartialSettings): void {
-    for (const key in partial) {
-      this.settings[key as keyof Settings] = partial[key as keyof PartialSettings];
-    }
+    this.settings = { ...this.settings, ...partial};
     fs.writeFileSync(settingsPath, JSON.stringify(this.settings));
   }
 }

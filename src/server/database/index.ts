@@ -99,6 +99,7 @@ export interface Puffle {
 
 export interface Penguin {
   name: string
+  is_member: boolean
   is_agent: boolean
   mascot: number
   color: number

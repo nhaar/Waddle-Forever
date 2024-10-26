@@ -1,0 +1,71 @@
+{
+	
+	boot: [
+		{
+			id: 'servers',
+			title: 'Communication'
+		},
+		{
+			id: 'airtower',
+			title: 'Communication'
+		},
+		{
+			id: 'sentry',
+			title: 'Communication'
+		}
+	],
+	
+	login: [
+		{
+			id: 'login',
+			title: 'Login Screen'
+		}
+	],
+	
+	join: [
+		{
+			id: 'engine',
+			title: 'Engine'
+		},
+		{
+			id: 'interface',
+			title: 'Interface'
+		},
+		{
+			id: 'scavenger_hunt',
+			title: 'Interface'
+		},
+		{
+			id: 'gridview',
+			title: 'Gridview'
+		},
+		{
+			id: 'mail',
+			title: 'Mail'
+		},
+		{
+			id: 'book',
+			title: 'Mail'
+		},
+		{
+			id: 'stampbook',
+			title: 'StampBook'
+		}
+	],
+	
+	create: [
+		{
+			id: 'create',
+			title: 'Create Penguin'
+		}
+	],
+	
+	merch: [
+		{
+			id: 'app',
+			folder: 'merch/',
+			title: 'Communication'
+		}
+	]
+	
+}

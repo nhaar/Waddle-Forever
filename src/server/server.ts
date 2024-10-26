@@ -127,6 +127,104 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
   });
 
+  httpServer.dir('/play/v2/content/global/rooms', (s, d) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else {
+      return `versions/2010/halloween/rooms/${d}`;
+    }
+  })
+
+  httpServer.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
+    console.log('seen')
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else {
+      return `versions/2010/halloween/global_crumbs.swf`
+    }
+  })
+
+  httpServer.dir('/play/v2/content/global/music', (s, d) => {
+    const mediaPath = `music/${d}`;
+    const file = path.join(process.cwd(), 'media', mediaPath);
+    console.log(file);
+    if (fs.existsSync(file)) {
+      return mediaPath
+    } else {
+      return undefined;
+    }
+  })
+
+  httpServer.get('/play/v2/content/local/en/membership/party3.swf', () => {
+    return `versions/2010/halloween/membership_party3.swf`
+  })
+
+  httpServer.get('/play/v2/content/global/content/map.swf', (s) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else {
+      return 'versions/2010/halloween/map.swf'
+    }
+  })
+
+  httpServer.get('/play/v2/content/local/en/close_ups/halloweenposter.swf', () => {
+    return 'versions/2010/halloween/poster.swf'
+  })
+
+  httpServer.dir('/play/v2/content/local/en/catalogues', (s, d) => {
+    if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/catalogues/${d}`
+    }
+
+    return undefined;
+  })
+
+  httpServer.dir('/play/v2/content/local/en/login', (s, d) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/login/${d}`
+    }
+  })
+
+  httpServer.dir('/play/v2/content/global/binoculars', (s, d) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/binoculars/${d}`
+    }
+  })
+
+  httpServer.dir('/play/v2/content/global/telescope', (s, d) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/telescope/${d}`
+    }
+  })
+
+  httpServer.get('/play/v2/content/global/igloo/assets/igloo_background.swf', (s) => {
+    if (s.settings.version === '2010-Nov-24') {
+      return undefined;
+    } else {
+      return 'versions/2010/halloween/igloo_background.swf'
+    }
+  })
+
+  httpServer.dir('/play/v2/client', (s, d) => {
+    if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/client/${d}`
+    }
+    return undefined;
+  })
+
+  httpServer.dir('/play/v2/content/global/scavenger_hunt', (s, d) => {
+    if (s.settings.version === '2010-Oct-28') {
+      return `versions/2010/halloween/scavenger_hunt/${d}`
+    }
+    return undefined;
+  })
+
   server.use(httpServer.router);
 
   server.use(express.static('media/static'));

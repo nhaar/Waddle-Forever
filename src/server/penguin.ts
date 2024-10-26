@@ -57,7 +57,7 @@ export class Client {
       this.x,
       this.y,
       1, // TODO, figure what this "frame" means
-      1, // TODO this is for members, in the future a non-member option?,
+      this.penguin.is_member ? 1 : 0,
       this.memberAge,
       0, // TODO figure out what this "avatar" is
       0, // TODO figure out what penguin state is
@@ -122,6 +122,7 @@ export class Client {
     return {
       name: '',
       mascot: 0,
+      is_member: true,
       is_agent: false,
       color: 1,
       head: 0,
