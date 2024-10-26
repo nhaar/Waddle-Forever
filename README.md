@@ -72,4 +72,4 @@ Thanks for Levi for help with the Linux version.
 
 Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunning client.
 
-Special thanks to supermanover for support and eventual help.
+Special thanks to supermanover, Blue Kirby, Resol van Lemmy for the continued support and help during development.
