@@ -13,8 +13,8 @@
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
-    "build-server-win": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win-x64",
-    "build-server-linux": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64",
+    "build-server-win": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win",
+    "build-server-linux": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux",
     "build-media": "node scripts/zip-media",
     "build-win": "yarn build-server-win&&yarn build-client-win&&node scripts/zip-win"
   },
