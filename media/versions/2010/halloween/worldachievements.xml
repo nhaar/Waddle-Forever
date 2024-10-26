@@ -441,6 +441,19 @@
 		<result>stampEarned 184</result> 
 	</achievement> 
  
+    <!-- ~~~ 187 - Monster Mash ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
+ 
+	<achievement name="Monster Mash" id="187">
+        <!-- This stamp expires on Thu, 03 Nov 2011 05:00:00 GMT     --> 
+        <!-- <expiryDate>1320296400</expiryDate> --> 
+        
+		<event>every 2 seconds</event> 
+ 
+		<optionalCondition>user wearing 244</optionalCondition> <!-- Ghost Costume --> 
+		
+		<result>stampEarned 187</result> 
+	</achievement> 
+ 
    	<!-- ~~~ 189 - Construction ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
     
     <!-- <achievement name="Construction" id="189"> -->

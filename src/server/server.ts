@@ -225,6 +225,14 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
     return undefined;
   })
 
+  httpServer.get('/web_service/worldachievements.xml', (s) => {
+    if (s.settings.version === '2010-Oct-28') {
+      return 'versions/2010/halloween/worldachievements.xml'
+    }
+
+    return undefined;
+  })
+
   server.use(httpServer.router);
 
   server.use(express.static('media/static'));
