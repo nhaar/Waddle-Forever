@@ -21,4 +21,19 @@ handler.xt('g#af', (client, furniture, cost) => {
   client.addFurniture(Number(furniture), Number(cost));
 })
 
+// saving client new igloo
+handler.xt('g#ur', (client, ...furnitureItems) => {
+  const igloo = furnitureItems.map((furnitureString) => {
+    const [furniture, x, y, rotation, frame] = furnitureString.split('|').map((str) => Number(str))
+    return {
+      id: furniture,
+      x,
+      y,
+      rotation,
+      frame
+    }
+  })
+  client.updateIglooFurniture(igloo);
+})
+
 export default handler;

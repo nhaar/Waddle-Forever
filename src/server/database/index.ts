@@ -97,6 +97,14 @@ export interface Puffle {
   rest: number
 }
 
+export type IglooFurniture = Array<{
+  id: number,
+  x: number,
+  y: number,
+  rotation: number,
+  frame: number
+}>
+
 type FurnitureId = number
 type FurnitureAmount = number
 
@@ -140,13 +148,7 @@ export interface Penguin {
     type: number,
     music: number,
     flooring: number,
-    furniture: Array<{
-      id: number,
-      x: number,
-      y: number,
-      rotation: number,
-      frame: number
-    }>
+    furniture: IglooFurniture
   },
   furniture: Record<FurnitureId, FurnitureAmount>
   mail: Array<{

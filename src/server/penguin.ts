@@ -1,7 +1,7 @@
 import net from 'net';
 
 import { isGameRoom, Room, roomStamps } from './game/rooms';
-import db, { Penguin, Databases, Puffle } from './database';
+import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
 import { isLower } from './routes/versions';
@@ -435,5 +435,10 @@ export class Client {
 
     this.update();
     this.sendXt('af', furniture, this.penguin.coins);
+  }
+
+  updateIglooFurniture(furniture: IglooFurniture): void {
+    this.penguin.igloo.furniture = furniture;
+    this.update();
   }
 }
