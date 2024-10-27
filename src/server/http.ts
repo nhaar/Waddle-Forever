@@ -13,8 +13,14 @@ export class HttpServer {
   }
 
   get (route: string, handler: (settings: SettingsManager, route: string) => string) {
-    this.router.get(route, (_, res) => {
-      res.sendFile(path.join(process.cwd(), 'media', handler(this.settingsManager, route)))
+
+    this.router.get(route, (_, res, next) => {
+      const handled = handler(this.settingsManager, route);
+      if (handled === undefined) {
+        next();
+      } else {
+        res.sendFile(path.join(process.cwd(), 'media', handled))
+      }
     })
   }
 
