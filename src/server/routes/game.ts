@@ -254,7 +254,17 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
 
   server.get('/play/v2/content/local/en/catalogues/furniture.swf', (s) => {
-    return `versions/igloo/2010_11_12/furniture.swf`
+    let date = ''
+    if (isLower(s.settings.version, '2010-Sep-24')) {
+      date = '2010_08_20'
+    } else if (isLower(s.settings.version, '2010-Oct-23')) {
+      date = '2010_09_24'
+    } else if (isLower(s.settings.version, '2010-Nov-24')) {
+      date = '2010_10_15'
+    } else {
+      date = '2010_11_12'
+    }
+    return `versions/igloo/${date}/furniture.swf`;
   })
 
   server.dir('/play/v2/content/global/furniture', (_, d) => {
