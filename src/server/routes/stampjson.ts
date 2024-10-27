@@ -1426,10 +1426,7 @@ function addStamps(category: Category, stamps: Stamp[]) {
 export function getStampbook(version: GameVersion): string {
   const newStampbook = JSON.parse(JSON.stringify(originalStampbook)) as Stampbook
 
-  console.log(version)
   if (isGreaterOrEqual(version, '2010-Sep-03')) {
-    console.log('isgreater!')
-    console.log()
     addStamps(newStampbook[CategoryID.Party] as Category, [
       {
         "stamp_id": 184,

@@ -10,7 +10,6 @@ handler.xt('i#gi', (client) => {
 // giving item
 // NOTICE: COST here is NOT part of vanilla shell, MUST be modded
 handler.xt('i#ai', (client, item, cost) => {
-  console.log(cost)
   const id = Number(item);
   if (client.hasItem(id)) {
     // TODO
