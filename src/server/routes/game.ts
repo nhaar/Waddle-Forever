@@ -101,17 +101,21 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       case '2010-Oct-28': return `versions/2010/halloween/rooms/rink.swf`;
     }
 
-    console.log(s.settings.version);
-    console.log(isGreaterOrEqual(s.settings.version, '2010-Sep-24'))
-    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Nov-24')) {
+    if (isLower(s.settings.version, '2010-Sep-24')) {
+      return `versions/stadium/2010_05/rink.swf`
+    } else {
       return `versions/2010/stadium_games/rink.swf`;
     }
 
     throw new Error('Not implemented');
   })
 
-  server.get('/play/v2/content/local/en/catalogues/sport.swf', () => {
-    return `versions/2010/stadium_games/sport.swf`;
+  server.get('/play/v2/content/local/en/catalogues/sport.swf', (s) => {
+    if (isLower(s.settings.version, '2010-Sep-24')) {
+      return `versions/stadium/2010_05/sport.swf`;
+    } else {
+      return `versions/2010/stadium_games/sport.swf`;
+    }
   })
 
   server.dir('/play/v2/content/global/rooms', (s, d) => {
