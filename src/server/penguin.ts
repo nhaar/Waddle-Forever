@@ -410,4 +410,9 @@ export class Client {
     this.penguin.name = name;
     this.update();
   }
+
+  swapMember(): void {
+    this.penguin.is_member = !this.penguin.is_member;
+    this.update();
+  }
 }
