@@ -44,7 +44,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
 
   server.get('/play/v2/content/global/rooms/stage.swf', (s) => {
-    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Oct-23')) {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
+      return `versions/stage/squidzoid/2009_10/stage.swf`
+    } else if (isLower(s.settings.version, '2010-Oct-23')) {
       return `versions/stage/fairy/stage.swf`
     } else if (isLower(s.settings.version, '2010-Nov-24')) {
       return `versions/stage/bamboo/stage.swf`
@@ -81,7 +83,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
 
   server.get('/play/v2/content/local/en/catalogues/costume.swf', (s) => {
-    if (isGreaterOrEqual(s.settings.version, '2010-Sep-24') && isLower(s.settings.version, '2010-Oct-23')) {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
+      return `versions/stage/squidzoid/2011_03/costume.swf`
+    } else if (isLower(s.settings.version, '2010-Oct-23')) {
       return `versions/stage/fairy/costume.swf`
     } else if (isLower(s.settings.version, '2010-Nov-24')) {
       return `versions/stage/bamboo/costume.swf`
