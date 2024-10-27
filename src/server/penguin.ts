@@ -2,6 +2,9 @@ import net from 'net';
 
 import { isGameRoom, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, Puffle } from './database';
+import { GameVersion } from './settings';
+import { Stamp } from './game/stamps';
+import { isLower } from './routes/versions';
 
 export class Client {
   socket: net.Socket;
@@ -10,6 +13,7 @@ export class Client {
   x: number;
   y: number;
   currentRoom: number;
+  version: GameVersion;
 
   /**
    * Temporary variable to keep track of stamps collected used to know
@@ -20,8 +24,9 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
-  constructor (socket: net.Socket) {
+  constructor (socket: net.Socket, version: GameVersion) {
     this.socket = socket;
+    this.version = version;
     this.penguin = Client.getDefault();
     /* TODO, x and y random generation at the start? */
     this.x = 100;
@@ -222,7 +227,30 @@ export class Client {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
     if (this.currentRoom in roomStamps) {
-      const stamps = roomStamps[this.currentRoom];
+      let gameStamps = roomStamps[this.currentRoom];
+      // manually removing stamps if using a version before it was available
+      if (this.currentRoom === Room.JetPackAdventure) {
+        if (isLower(this.version, '2010-Sep-24')) {
+          gameStamps = [
+            Stamp.LiftOff,
+            Stamp.FuelRank1,
+            Stamp.JetPack5,
+            Stamp.Crash,
+            Stamp.FuelRank2,
+            Stamp.FuelRank3,
+            Stamp.FuelRank4,
+            Stamp.FuelRank5,
+            Stamp.OneUpLeader,
+            Stamp.Kerching,
+            Stamp.FuelCommand,
+            Stamp.FuelWings,
+            Stamp.OneUpCaptain,
+            Stamp.AcePilot,
+          ]
+        }
+      }
+      const stamps = gameStamps;
+
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {
         if (stamps.includes(stamp)) {

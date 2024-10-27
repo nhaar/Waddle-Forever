@@ -3,6 +3,7 @@ import fs from 'fs';
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { isGreaterOrEqual, isLower } from './versions';
+import { getStampbook } from './stampjson';
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -12,6 +13,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/boots.swf', (s) => {
     return `special/boots${s.settings.fps30 ? '30' : '24'}.swf`
   });
+
+  server.router.get('/en/web_service/stamps.json', (_, res) => {
+    res.send(getStampbook(server.settingsManager.settings.version))
+  })
 
   server.get('/play/v2/games/thinice/ThinIce.swf', (s) => {
     let suffix = s.settings.thin_ice_igt ? 'IGT' : 'Vanilla';

@@ -19,12 +19,12 @@ import { Client } from './penguin';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 
-const createServer = async (type: string, port: number, handlers: XtHandler): Promise<void> => {
+const createServer = async (type: string, port: number, handlers: XtHandler, settingsManager: SettingsManager): Promise<void> => {
   await new Promise<void>((resolve) => {
     net.createServer((socket) => {
       socket.setEncoding('utf8');
   
-      const client = new Client(socket);
+      const client = new Client(socket, settingsManager.settings.version);
   
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];
@@ -115,8 +115,8 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   worldListener.use(iglooHandler);
   worldListener.use(epfHandler);
   worldListener.use(mailHandler);
-  await createServer('Login', 6112, new XtHandler());
-  await createServer('World', WORLD_PORT, worldListener);
+  await createServer('Login', 6112, new XtHandler(), settingsManager);
+  await createServer('World', WORLD_PORT, worldListener, settingsManager);
 };
 
 export default startServer;
