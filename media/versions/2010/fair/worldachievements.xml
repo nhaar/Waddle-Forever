@@ -435,8 +435,8 @@
         <!-- <expiryDate>1328137200</expiryDate> --> 
 		
 		<event>user sendEmote</event> 
-		<condition>user in 200 or 800 or 810</condition> 
-		<condition>user hits snackShack_mc or shipfront_mc or popcornsign_mc</condition>
+		<condition>user in 810</condition> 
+		<condition>user hits or popcornsign_mc</condition>
 		<condition>event hasEmoteID 13 or 24 or 28 or 29 or 26 or 27</condition> 
 		<result>stampEarned 184</result> 
 	</achievement> 
