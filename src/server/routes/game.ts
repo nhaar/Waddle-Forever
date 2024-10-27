@@ -253,5 +253,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `newspapers/${d}`;
   })
 
+  server.get('/play/v2/content/local/en/catalogues/furniture.swf', (s) => {
+    return `versions/igloo/2010_11_12/furniture.swf`
+  })
+
+  server.dir('/play/v2/content/global/furniture', (_, d) => {
+    return `furniture/${d}`
+  })
+
   return server
 }

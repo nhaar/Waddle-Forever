@@ -97,6 +97,9 @@ export interface Puffle {
   rest: number
 }
 
+type FurnitureId = number
+type FurnitureAmount = number
+
 export interface Penguin {
   name: string
   is_member: boolean
@@ -145,6 +148,7 @@ export interface Penguin {
       frame: number
     }>
   },
+  furniture: Record<FurnitureId, FurnitureAmount>
   mail: Array<{
     sender: { name: string, id: number },
     postcard: {

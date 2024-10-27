@@ -160,6 +160,7 @@ export class Client {
         flooring: 0,
         furniture: []
       },
+      furniture: {},
       mail: [],
       mailSeq: 0
     };
@@ -415,5 +416,24 @@ export class Client {
   swapMember(): void {
     this.penguin.is_member = !this.penguin.is_member;
     this.update();
+  }
+
+  getFurnitureString(): string {
+    const furniture = []
+    for (const id in this.penguin.furniture) {
+      furniture.push([id, this.penguin.furniture[id]].join('|'))
+    }
+    return furniture.join('%')
+  }
+
+  addFurniture(furniture: number, cost: number = 0): void {
+    this.removeCoins(cost);
+    if (!(furniture in this.penguin.furniture)) {
+      this.penguin.furniture[furniture] = 0;
+    }
+    this.penguin.furniture[furniture] += 1;
+
+    this.update();
+    this.sendXt('af', furniture, this.penguin.coins);
   }
 }
