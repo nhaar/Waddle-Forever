@@ -174,8 +174,9 @@ export class Client {
     return true;
   }
 
-  addItem (item: number): void {
+  addItem (item: number, cost: number = 0): void {
     this.penguin.inventory.push(item);
+    this.removeCoins(cost);
     this.update();
     this.sendXt('ai', item, this.penguin.coins);
   }
