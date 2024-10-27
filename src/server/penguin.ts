@@ -436,18 +436,26 @@ export class Client {
   }
 
   addFurniture(furniture: number, cost: number = 0): void {
-    this.removeCoins(cost);
     if (!(furniture in this.penguin.furniture)) {
       this.penguin.furniture[furniture] = 0;
     }
-    this.penguin.furniture[furniture] += 1;
-
-    this.update();
+    if (this.penguin.furniture[furniture] >= 99) {
+      this.removeCoins(cost);
+      this.sendError(10006);
+    } else {
+      this.penguin.furniture[furniture] += 1;
+  
+      this.update();
+    }
     this.sendXt('af', furniture, this.penguin.coins);
   }
 
   updateIglooFurniture(furniture: IglooFurniture): void {
     this.penguin.igloo.furniture = furniture;
     this.update();
+  }
+
+  sendError(error: number, ...args: string[]): void {
+    this.sendXt('e', error, ...args)
   }
 }
