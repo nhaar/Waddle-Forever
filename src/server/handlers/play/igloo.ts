@@ -33,6 +33,10 @@ handler.xt('g#ur', (client, ...furnitureItems) => {
       frame
     }
   })
+  if (igloo.length === 99) {
+    // FULL HOUSE
+    client.giveStamp(23);
+  }
   client.updateIglooFurniture(igloo);
 })
 

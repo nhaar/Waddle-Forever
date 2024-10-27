@@ -4,7 +4,9 @@ import { isGameRoom, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
-import { isLower } from './routes/versions';
+import { isGreaterOrEqual, isLower } from './routes/versions';
+
+const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
 
 export class Client {
   socket: net.Socket;
@@ -275,11 +277,18 @@ export class Client {
     return info;
   }
 
-  addStamp (stamp: number): void {
-    this.penguin.stamps.push(stamp);
-    this.penguin.stampbook.recent_stamps.push(stamp);
-    this.sessionStamps.push(stamp);
-    this.update();
+  addStamp (stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
+    if (isGreaterOrEqual(this.version, releaseVersion)) {
+      this.penguin.stamps.push(stamp);
+      this.penguin.stampbook.recent_stamps.push(stamp);
+      this.sessionStamps.push(stamp);
+      this.update();
+    }
+  }
+
+  giveStamp(stamp: number): void {
+    this.addStamp(stamp);
+    this.sendXt('aabs', stamp);
   }
   
   addCoins (amount: number): void {
