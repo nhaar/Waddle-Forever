@@ -123,6 +123,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/2010/fair/tickets.swf`
   })
 
+  server.get('/play/v2/content/global/ticket_icon.swf', () => {
+    return `versions/2010/fair/ticket_icon.swf`
+  })
+
   server.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s, r) => {
     switch (s.settings.version) {
       case '2010-Sep-03': return `versions/2010/fair/global_crumbs.swf`
