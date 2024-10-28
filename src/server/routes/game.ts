@@ -302,5 +302,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/igloo.swf`;
   })
 
+  server.get('/play/v2/content/local/en/forms/library.swf', (s) => {
+    if (isLower(s.settings.version, '2010-Oct-23')) {
+      return `versions/library/2009_10_24.swf`
+    } else {
+      return `versions/library/2010_10_23.swf`
+    }
+  })
+
   return server
 }
