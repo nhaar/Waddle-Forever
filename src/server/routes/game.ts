@@ -318,5 +318,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
+  server.get('/play/v2/content/local/en/catalogues/ninja.swf', (s) => {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
+      return `versions/ninja/2009_11_13/ninja.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
   return server
 }
