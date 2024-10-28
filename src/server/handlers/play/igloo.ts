@@ -1,3 +1,4 @@
+import { getFlooringCost, getIglooCost } from "../../game/iglooItems";
 import { XtHandler } from "..";
 
 const handler = new XtHandler();
@@ -49,7 +50,10 @@ handler.xt('g#um', (client, music) => {
 
 // buying flooring
 handler.xt('g#ag', (client, floor) => {
-  client.penguin.igloo.flooring = Number(floor);
+  const flooring = Number(floor);
+  const cost = getFlooringCost(flooring);
+  client.removeCoins(cost);
+  client.penguin.igloo.flooring = flooring;
   client.update();
 
   client.sendXt('ag', floor, client.penguin.coins);
@@ -57,8 +61,10 @@ handler.xt('g#ag', (client, floor) => {
 
 // buying igloo
 handler.xt('g#au', (client, igloo) => {
+  const cost = getIglooCost(Number(igloo));
+  client.removeCoins(cost);
   client.penguin.iglooTypes[igloo] = true;
-  
+  client.update();
   client.sendXt('au', igloo, client.penguin.coins);
 })
 
