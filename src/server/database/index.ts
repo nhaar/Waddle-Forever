@@ -107,6 +107,7 @@ export type IglooFurniture = Array<{
 
 type FurnitureId = number
 type FurnitureAmount = number
+type ItemId = number
 
 export interface Penguin {
   name: string
@@ -125,7 +126,8 @@ export interface Penguin {
   coins: number
   registration_date: number
   minutes_played: number,
-  inventory: number[],
+  // these records act as hash sets
+  inventory: Record<ItemId, 1>,
   stamps: number[],
   pins: number[],
   stampbook: {
@@ -151,7 +153,7 @@ export interface Penguin {
     furniture: IglooFurniture
   },
   furniture: Record<FurnitureId, FurnitureAmount>
-  iglooTypes: Record<string, boolean>
+  iglooTypes: Record<string, 1>
   mail: Array<{
     sender: { name: string, id: number },
     postcard: {

@@ -12,7 +12,7 @@ handler.xt('i#qpp', (client, id) => {
 // getting mission stamps
 handler.xt('i#qpa', (client) => {
   const awards = [];
-  for (const item of client.penguin.inventory) {
+  for (const item in client.penguin.inventory) {
     if (items[item].type === ItemType.Award) {
       awards.push(item);
     }

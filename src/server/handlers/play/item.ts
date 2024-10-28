@@ -4,7 +4,7 @@ const handler = new XtHandler();
 
 // sending inventory to player
 handler.xt('i#gi', (client) => {
-  client.sendXt('gi', client.penguin.inventory.join('%'));
+  client.sendXt('gi', Object.keys(client.penguin.inventory).join('%'));
 });
 
 // giving item

@@ -145,7 +145,9 @@ export class Client {
       registration_date: Date.now(),
       coins: 500,
       minutes_played: 0,
-      inventory: [1],
+      inventory: {
+        1: 1
+      },
       stamps: [],
       pins: [],
       stampbook: { // TODO: enums for the options
@@ -166,7 +168,7 @@ export class Client {
       },
       furniture: {},
       iglooTypes: {
-        1: true
+        1: 1
       },
       mail: [],
       mailSeq: 0
@@ -174,7 +176,7 @@ export class Client {
   }
 
   hasItem (item: number): boolean {
-    return this.penguin.inventory.includes(item);
+    return item in this.penguin.inventory;
   }
 
   canBuy (item: number): boolean {
@@ -183,7 +185,7 @@ export class Client {
   }
 
   addItem (item: number, cost: number = 0): void {
-    this.penguin.inventory.push(item);
+    this.penguin.inventory[item] = 1;
     this.removeCoins(cost);
     this.update();
     this.sendXt('ai', item, this.penguin.coins);

@@ -63,7 +63,7 @@ handler.xt('g#ag', (client, floor) => {
 handler.xt('g#au', (client, igloo) => {
   const cost = getIglooCost(Number(igloo));
   client.removeCoins(cost);
-  client.penguin.iglooTypes[igloo] = true;
+  client.penguin.iglooTypes[igloo] = 1;
   client.update();
   client.sendXt('au', igloo, client.penguin.coins);
 })
