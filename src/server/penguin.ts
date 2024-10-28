@@ -16,6 +16,7 @@ export class Client {
   y: number;
   currentRoom: number;
   version: GameVersion;
+  sessionStart: number;
 
   /**
    * Temporary variable to keep track of stamps collected used to know
@@ -33,6 +34,7 @@ export class Client {
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
+    this.sessionStart = Date.now();
   
     this.sessionStamps = [];
     this.walkingPuffle = NaN;
@@ -462,5 +464,12 @@ export class Client {
 
   sendError(error: number, ...args: string[]): void {
     this.sendXt('e', error, ...args)
+  }
+
+  disconnect(): void {
+    const delta = Date.now() - this.sessionStart;
+    const minutesDelta = delta / 1000 / 60;
+    this.penguin.minutes_played += minutesDelta;
+    this.update();
   }
 }
