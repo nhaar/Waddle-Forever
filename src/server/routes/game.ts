@@ -273,7 +273,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.get('/play/v2/content/global/content/igloo_music.swf', (s) => {
     let date = ''
-    if (isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
+    if (isLower(s.settings.version, '2010-Nov-24')) {
+      date = '2010_08_20';
+    } else if (s.settings.version === '2010-Nov-24') {
       date = '2010_11_12';
     } else {
       date = '2011_05_13'
