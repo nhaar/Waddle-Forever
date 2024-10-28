@@ -6,6 +6,7 @@ import { Store } from "./store";
 import { toggleFullScreen } from "./window";
 import { createSettingsWindow } from "./settings";
 import { SettingsManager } from "../server/settings";
+import { createTimelinePicker } from "./timeline";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, settingsManager: SettingsManager): MenuItemConstructorOptions[] => {
   const options: MenuItemConstructorOptions = {
@@ -15,6 +16,10 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, settingsMan
       {
         label: 'Open Settings',
         click: () => { createSettingsWindow(settingsManager, mainWindow); }
+      },
+      {
+        label: 'Open Timeline Picker',
+        click: () => { createTimelinePicker(settingsManager, mainWindow) }
       },
       {
         label: 'Clear Cache',
