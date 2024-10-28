@@ -73,7 +73,9 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
       });
   
       socket.on('close', () => {
-        client.disconnect();
+        for (const method of handlers.disonnectListeners) {
+          method(client);
+        }
         console.log('A client has disconnected');
       });
   
