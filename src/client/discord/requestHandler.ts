@@ -34,32 +34,7 @@ export const getRoomsJsonFromParams = async (store: Store, mainWindow: BrowserWi
     plainResponseBody = response.body;
   }
 
-  if (!url.includes('/en/')) {
-    localizedResponseBody = plainResponseBody;
-
-    // https://media1.cpbrasil.pw/play/en/web_service/game_configs/rooms.jsonp?v=1.3.64&callback=cp_rooms
-    // https://play.newcp.net//pt/web_service/game_configs/rooms.jsonp?v=1.3.63&callback=cp_rooms
-    
-    const webServiceIndex = url.indexOf('/web_service/');
-
-    const urlStart = url.substring(0, webServiceIndex);
-
-    const langIndex = urlStart.lastIndexOf('/');
-
-    const lang = urlStart.substring(langIndex + 1);
-
-    setLanguageInStore(store, lang);
-
-    const enUrl = url.replace(lang, 'en');
-
-    const enResponse = await fetch(enUrl);
-
-    const enResponseBuffer = await enResponse.buffer();
-    
-    plainResponseBody = enResponseBuffer.toString();
-  } else {
-    setLanguageInStore(store, 'en');
-  }
+  setLanguageInStore(store, 'en');
 
   return {
     roomsJson: parseJSONP(plainResponseBody, ROOMS_JSONP_NAME),

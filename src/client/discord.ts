@@ -271,7 +271,7 @@ const setDefaultRooms = async (store: Store) => {
   
   const result: RoomsResponse = {
     roomsJson: parseJSONP(enRooms, ROOMS_JSONP_NAME),
-    localizedJson: parseJSONP(ptRooms, ROOMS_JSONP_NAME),
+    localizedJson: parseJSONP(enRooms, ROOMS_JSONP_NAME),
   };
 
   updateRooms(store, result);

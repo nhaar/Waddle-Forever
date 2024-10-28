@@ -8,12 +8,16 @@ import createWindow from "./window";
 import startServer from "../server/server";
 import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
+import { setLanguageInStore } from "./discord/localization/localization";
 
 log.initialize();
 
 console.log = log.log;
 
 const store = createStore();
+
+setLanguageInStore(store, 'en')
+
 
 if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
