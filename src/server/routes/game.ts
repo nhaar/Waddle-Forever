@@ -310,5 +310,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
+  server.get('/play/v2/content/local/en/catalogues/pets.swf', (s) => {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
+      return `versions/puffle/2010_03_19/pets.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
   return server
 }
