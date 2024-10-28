@@ -167,8 +167,15 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/play/v2/content/global/content/map.swf', (s, r) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return 'versions/2010/halloween/map.swf';
-      default: return `static/${r}`;
     }
+
+    if (isLower(s.settings.version, '2010-Sep-24')) {
+      return undefined;
+    } else {
+      return `versions/map/2010_09_24.swf`;
+    }
+
+    throw new Error('Not implemented');
   })
 
   server.get('/play/v2/content/local/en/close_ups/poster.swf', () => {
