@@ -40,4 +40,10 @@ handler.xt('g#ur', (client, ...furnitureItems) => {
   client.updateIglooFurniture(igloo);
 })
 
+// save the igloo music
+handler.xt('g#um', (client, music) => {
+  client.penguin.igloo.music = Number(music);
+  client.update();
+})
+
 export default handler;
