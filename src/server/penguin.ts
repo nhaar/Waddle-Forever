@@ -163,6 +163,9 @@ export class Client {
         furniture: []
       },
       furniture: {},
+      iglooTypes: {
+        1: true
+      },
       mail: [],
       mailSeq: 0
     };

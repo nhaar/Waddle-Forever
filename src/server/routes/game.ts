@@ -284,5 +284,16 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/igloo_music.swf`;
   })
 
+  server.get('/play/v2/content/local/en/catalogues/igloo.swf', (s) => {
+    let date = ''
+    if (isLower(s.settings.version, '2010-Nov-24')) {
+      date = '2010_08_20';
+    } else {
+      date = '2010_11_12';
+    }
+
+    return `versions/igloo/${date}/igloo.swf`;
+  })
+
   return server
 }

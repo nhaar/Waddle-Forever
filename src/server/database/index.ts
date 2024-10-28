@@ -151,6 +151,7 @@ export interface Penguin {
     furniture: IglooFurniture
   },
   furniture: Record<FurnitureId, FurnitureAmount>
+  iglooTypes: Record<string, boolean>
   mail: Array<{
     sender: { name: string, id: number },
     postcard: {

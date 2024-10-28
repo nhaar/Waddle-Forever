@@ -7,9 +7,10 @@ handler.xt('g#gm', (client, id) => {
   client.sendXt('gm', id, client.getIglooString());
 })
 
-// unsure what this does atm
+// get all owned igloo types
 handler.xt('g#go', (client) => {
-  client.sendXt('go', '0')
+  const iglooTypes = Object.keys(client.penguin.iglooTypes)
+  client.sendXt('go', iglooTypes.join('|'))
 })
 
 handler.xt('g#gf', (client) => {
@@ -43,6 +44,27 @@ handler.xt('g#ur', (client, ...furnitureItems) => {
 // save the igloo music
 handler.xt('g#um', (client, music) => {
   client.penguin.igloo.music = Number(music);
+  client.update();
+})
+
+// buying flooring
+handler.xt('g#ag', (client, floor) => {
+  client.penguin.igloo.flooring = Number(floor);
+  client.update();
+
+  client.sendXt('ag', floor, client.penguin.coins);
+})
+
+// buying igloo
+handler.xt('g#au', (client, igloo) => {
+  client.penguin.iglooTypes[igloo] = true;
+  
+  client.sendXt('au', igloo, client.penguin.coins);
+})
+
+// saving igloo type
+handler.xt('g#ao', (client, igloo) => {
+  client.penguin.igloo.type = Number(igloo);
   client.update();
 })
 
