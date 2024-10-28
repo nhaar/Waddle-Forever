@@ -289,9 +289,11 @@ export class Client {
     }
   }
 
-  giveStamp(stamp: number): void {
-    this.addStamp(stamp);
-    this.sendXt('aabs', stamp);
+  giveStamp(stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
+    if (isGreaterOrEqual(this.version, releaseVersion)) {
+      this.addStamp(stamp);
+      this.sendXt('aabs', stamp);
+    }
   }
   
   addCoins (amount: number): void {
