@@ -449,9 +449,9 @@ export class Client {
       this.penguin.furniture[furniture] = 0;
     }
     if (this.penguin.furniture[furniture] >= 99) {
-      this.removeCoins(cost);
       this.sendError(10006);
     } else {
+      this.removeCoins(cost);
       this.penguin.furniture[furniture] += 1;
   
       this.update();
