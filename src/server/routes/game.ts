@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { isGreaterOrEqual, isLower } from './versions';
+import { isGreaterOrEqual, isLower, isLowerOrEqual } from './versions';
 import { getStampbook } from './stampjson';
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
@@ -269,6 +269,17 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.dir('/play/v2/content/global/furniture', (_, d) => {
     return `furniture/${d}`
+  })
+
+  server.get('/play/v2/content/global/content/igloo_music.swf', (s) => {
+    let date = ''
+    if (isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
+      date = '2010_11_12';
+    } else {
+      date = '2011_05_13'
+    }
+
+    return `versions/igloo/${date}/igloo_music.swf`;
   })
 
   return server
