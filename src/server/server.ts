@@ -18,6 +18,7 @@ import mailHandler from './handlers/play/mail';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
+import db from './database';
 
 const createServer = async (type: string, port: number, handlers: XtHandler, settingsManager: SettingsManager): Promise<void> => {
   await new Promise<void>((resolve) => {
@@ -90,6 +91,8 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
 };
 
 const startServer = async (settingsManager: SettingsManager): Promise<void> => {
+  db.loadDatabase();
+
   const server = express();
 
   const httpServer = createHttpServer(settingsManager);

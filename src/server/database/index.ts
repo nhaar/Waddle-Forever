@@ -1,5 +1,6 @@
 import path from 'path';
 import fs, { writeFileSync } from 'fs';
+import { VERSION } from '../../common/version';
 
 export enum Databases {
   Penguins = 'penguins'
@@ -8,9 +9,8 @@ export enum Databases {
 type JsonProperty = string | number | boolean
 
 const databaseFolder = path.join(process.cwd(), 'data');
-if (!fs.existsSync(databaseFolder)) {
-  fs.mkdirSync(databaseFolder, {});
-}
+
+const versionFile = path.join(databaseFolder, '.version');
 
 /**
  * A replacement to sqlite since it was not working with the electron dependencies
@@ -22,9 +22,6 @@ class JsonDatabase {
   root: string;
 
   constructor (rootDir: string) {
-    if (!fs.existsSync(rootDir)) {
-      fs.mkdirSync(rootDir);
-    }
     this.root = rootDir;
   }
 
@@ -36,7 +33,67 @@ class JsonDatabase {
     return path.join(this.root, name, 'seq');
   }
 
-  createDatabase(database: Databases) {
+  loadDatabase() {
+    if (fs.existsSync(databaseFolder)) { // migrate or leave it
+      const version = fs.existsSync(versionFile) ? (
+        fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim()
+      ) : '0.2.0' // version 0.2.0 didnt have a .version file
+      // any version before is not compatible with
+      if (version !== VERSION) {
+        this.migrateDatabase(version);
+      }
+    } else { // create
+      this.createDatabase();
+    }
+  }
+
+  private migrate_0_2_0(): void {
+    const penguinsDir = path.join(databaseFolder, 'penguins')
+    const penguins = fs.readdirSync(penguinsDir)
+    for (const penguin of penguins) {
+      if (penguin.match(/\d+\.json/) !== null) {
+        const penguinDir = path.join(penguinsDir, penguin)
+        const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
+        content.is_member = true;
+        const inventory: any = {}
+        for (const item of content.inventory) {
+          inventory[item] = 1
+        }
+        content.inventory = inventory
+        content.furniture = {}
+        content.iglooTypes = { 1: 1 }
+        fs.writeFileSync(penguinDir, JSON.stringify(content))
+      }
+    }
+  }
+
+  private migrateVersion(version: string): string | undefined {
+    switch (version) {
+      case '0.2.0':
+        this.migrate_0_2_0()
+        return '0.2.1';
+      default:
+        throw new Error('Invalid database version: ' + version);
+    }
+  }
+
+  migrateDatabase(version: string): void {
+    let curVersion = version
+    while (curVersion !== VERSION) {
+      curVersion = this.migrateVersion(version);
+    }
+    fs.writeFileSync(versionFile, VERSION);
+  }
+
+  createDatabase(): void {
+    if (!fs.existsSync(databaseFolder)) {
+      fs.mkdirSync(databaseFolder)
+    }
+    db.createSubDatabase(Databases.Penguins);
+    fs.writeFileSync(versionFile, VERSION);
+  }
+
+  createSubDatabase(database: Databases) {
     const subDir = this.getSubDatabaseDir(database);
     if (!fs.existsSync(subDir)) {
       fs.mkdirSync(subDir);
@@ -85,8 +142,6 @@ class JsonDatabase {
 }
 
 const db = new JsonDatabase(databaseFolder);
-
-db.createDatabase(Databases.Penguins);
 
 export interface Puffle {
   id: number
