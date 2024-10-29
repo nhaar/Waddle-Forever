@@ -326,5 +326,17 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
+  server.get('/play/v2/content/local/en/catalogues/clothing.swf', (s) => {
+    let date = ''
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Oct-23')) {
+      date = '2010_09_03'
+    } else if (isLower(s.settings.version, '2010-Nov-24')) {
+      date = '2010_10_01'
+    } else {
+      date = '2010_11_05'
+    }
+    return `versions/clothing/${date}.swf`
+  })
+
   return server
 }
