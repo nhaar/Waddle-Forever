@@ -72,5 +72,6 @@ export class XtHandler {
         this.listeners.set(name, [...existingCallbacks, ...callbacks]);
       }
     });
+    this.disonnectListeners = [...this.disonnectListeners, ...handler.disonnectListeners];
   }
 }
