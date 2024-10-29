@@ -36,4 +36,8 @@ handler.xt('j#jp', (client, fakeId) => {
   client.joinRoom(Number(fakeId));
 })
 
+handler.disconnect((client) => {
+  client.disconnect();
+})
+
 export default handler;

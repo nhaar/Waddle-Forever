@@ -53,6 +53,11 @@ handler.xt('p#pg', (client, id) => {
     ].join('|')
   })
 
+  if (puffles.length >= 16) {
+    // PUFFLE OWNER
+    client.giveStamp(21);
+  }
+
   client.sendXt('pg', ...puffles);
 })
 

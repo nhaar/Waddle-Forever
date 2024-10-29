@@ -4,18 +4,19 @@ const handler = new XtHandler();
 
 // sending inventory to player
 handler.xt('i#gi', (client) => {
-  client.sendXt('gi', client.penguin.inventory.join('%'));
+  client.sendXt('gi', Object.keys(client.penguin.inventory).join('%'));
 });
 
 // giving item
-handler.xt('i#ai', (client, item) => {
+// NOTICE: COST here is NOT part of vanilla shell, MUST be modded
+handler.xt('i#ai', (client, item, cost) => {
   const id = Number(item);
   if (client.hasItem(id)) {
     // TODO
   } else if (!client.canBuy(id)) {
     // TODO
   } else {
-    client.addItem(id);
+    client.addItem(id, Number(cost));
   }
 });
 

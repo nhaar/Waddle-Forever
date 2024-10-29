@@ -17,13 +17,15 @@ import epfHandler from './handlers/play/epf';
 import mailHandler from './handlers/play/mail';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
+import { createHttpServer } from './routes/game';
+import db from './database';
 
-const createServer = async (type: string, port: number, handlers: XtHandler): Promise<void> => {
+const createServer = async (type: string, port: number, handlers: XtHandler, settingsManager: SettingsManager): Promise<void> => {
   await new Promise<void>((resolve) => {
     net.createServer((socket) => {
       socket.setEncoding('utf8');
   
-      const client = new Client(socket);
+      const client = new Client(socket, settingsManager.settings.version);
   
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];
@@ -72,6 +74,9 @@ const createServer = async (type: string, port: number, handlers: XtHandler): Pr
       });
   
       socket.on('close', () => {
+        for (const method of handlers.disonnectListeners) {
+          method(client);
+        }
         console.log('A client has disconnected');
       });
   
@@ -86,63 +91,13 @@ const createServer = async (type: string, port: number, handlers: XtHandler): Pr
 };
 
 const startServer = async (settingsManager: SettingsManager): Promise<void> => {
+  db.loadDatabase();
+
   const server = express();
 
-  // entrypoint for as2 client
-  server.get('/boots.swf', (_, res) => {
-    const fps = settingsManager.settings.fps30 ? '30' : '24';
-    res.sendFile(path.join(process.cwd(), `media/special/boots${fps}.swf`));
-  });
+  const httpServer = createHttpServer(settingsManager);
 
-  // TODO a better system for handling these special medias
-
-  server.get('/play/v2/games/thinice/ThinIce.swf', (_, res) => {
-    let suffix = settingsManager.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
-    if (settingsManager.settings.thin_ice_igt) {
-      suffix += settingsManager.settings.fps30 ? '30' : '24';
-    }
-    res.sendFile(path.join(process.cwd(), `media/special/ThinIce${suffix}.swf`));
-  });
-
-  server.get('/play/v2/games/dancing/dance.swf', (_, res) => {
-    const file = settingsManager.settings.swap_dance_arrow ? 'swapped' : 'vanilla';
-    res.sendFile(path.join(process.cwd(), `media/special/dance_contest/${file}.swf`));
-  })
-
-  server.get('/', (_, res) => {
-    res.sendFile(path.join(process.cwd(), 'media/special/index.html'));
-  });
-
-  server.get('/play/v2/games/book1/bootstrap.swf', (_, res) => {
-    const file = settingsManager.settings.modern_my_puffle ? '2013' : 'original'
-
-    res.sendFile(path.join(process.cwd(), `media/special/my_puffle/${file}.swf`))
-  })
-
-  server.get('/play/v2/content/global/clothing/*', (req: Request, res) => {
-    const clothingPath = req.params[0];
-    const specialPath = path.join(process.cwd(), 'media/clothing', clothingPath);
-    if (settingsManager.settings.clothing && fs.existsSync(specialPath)) {
-      res.sendFile(specialPath);
-    } else {
-      const staticPath = path.join(process.cwd(), 'media/static', req.url);
-      if (fs.existsSync(staticPath)) {
-        res.sendFile(staticPath);
-      } else {
-        res.sendStatus(404);
-      }
-    }
-  })
-
-  server.get('/play/v2/client/shell.swf', (_, res) => {
-    const file = settingsManager.settings.remove_idle ? 'no_idle' : 'vanilla'
-    res.sendFile(path.join(process.cwd(), `media/special/shell/${file}.swf`))
-  })
-
-  server.get('/play/v2/games/jetpack/JetpackAdventures.swf', (_, res) => {
-    const file = settingsManager.settings.jpa_level_selector ? 'level_selector' : 'vanilla'
-    res.sendFile(path.join(process.cwd(), `media/special/jet_pack_adventure/${file}.swf`))
-  })
+  server.use(httpServer.router);
 
   server.use(express.static('media/static'));
 
@@ -166,8 +121,8 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   worldListener.use(iglooHandler);
   worldListener.use(epfHandler);
   worldListener.use(mailHandler);
-  await createServer('Login', 6112, new XtHandler());
-  await createServer('World', WORLD_PORT, worldListener);
+  await createServer('Login', 6112, new XtHandler(), settingsManager);
+  await createServer('World', WORLD_PORT, worldListener, settingsManager);
 };
 
 export default startServer;

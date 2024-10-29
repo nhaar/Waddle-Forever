@@ -1,7 +1,12 @@
 import net from 'net';
 
 import { isGameRoom, Room, roomStamps } from './game/rooms';
-import db, { Penguin, Databases, Puffle } from './database';
+import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
+import { GameVersion } from './settings';
+import { Stamp } from './game/stamps';
+import { isGreaterOrEqual, isLower } from './routes/versions';
+
+const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
 
 export class Client {
   socket: net.Socket;
@@ -10,6 +15,8 @@ export class Client {
   x: number;
   y: number;
   currentRoom: number;
+  version: GameVersion;
+  sessionStart: number;
 
   /**
    * Temporary variable to keep track of stamps collected used to know
@@ -20,12 +27,14 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
-  constructor (socket: net.Socket) {
+  constructor (socket: net.Socket, version: GameVersion) {
     this.socket = socket;
+    this.version = version;
     this.penguin = Client.getDefault();
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
+    this.sessionStart = Date.now();
   
     this.sessionStamps = [];
     this.walkingPuffle = NaN;
@@ -57,7 +66,7 @@ export class Client {
       this.x,
       this.y,
       1, // TODO, figure what this "frame" means
-      1, // TODO this is for members, in the future a non-member option?,
+      this.penguin.is_member ? 1 : 0,
       this.memberAge,
       0, // TODO figure out what this "avatar" is
       0, // TODO figure out what penguin state is
@@ -122,6 +131,7 @@ export class Client {
     return {
       name: '',
       mascot: 0,
+      is_member: true,
       is_agent: false,
       color: 1,
       head: 0,
@@ -135,7 +145,9 @@ export class Client {
       registration_date: Date.now(),
       coins: 500,
       minutes_played: 0,
-      inventory: [1],
+      inventory: {
+        1: 1
+      },
       stamps: [],
       pins: [],
       stampbook: { // TODO: enums for the options
@@ -154,13 +166,17 @@ export class Client {
         flooring: 0,
         furniture: []
       },
+      furniture: {},
+      iglooTypes: {
+        1: 1
+      },
       mail: [],
       mailSeq: 0
     };
   }
 
   hasItem (item: number): boolean {
-    return this.penguin.inventory.includes(item);
+    return item in this.penguin.inventory;
   }
 
   canBuy (item: number): boolean {
@@ -168,8 +184,9 @@ export class Client {
     return true;
   }
 
-  addItem (item: number): void {
-    this.penguin.inventory.push(item);
+  addItem (item: number, cost: number = 0): void {
+    this.penguin.inventory[item] = 1;
+    this.removeCoins(cost);
     this.update();
     this.sendXt('ai', item, this.penguin.coins);
   }
@@ -221,7 +238,30 @@ export class Client {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
     if (this.currentRoom in roomStamps) {
-      const stamps = roomStamps[this.currentRoom];
+      let gameStamps = roomStamps[this.currentRoom];
+      // manually removing stamps if using a version before it was available
+      if (this.currentRoom === Room.JetPackAdventure) {
+        if (isLower(this.version, '2010-Sep-24')) {
+          gameStamps = [
+            Stamp.LiftOff,
+            Stamp.FuelRank1,
+            Stamp.JetPack5,
+            Stamp.Crash,
+            Stamp.FuelRank2,
+            Stamp.FuelRank3,
+            Stamp.FuelRank4,
+            Stamp.FuelRank5,
+            Stamp.OneUpLeader,
+            Stamp.Kerching,
+            Stamp.FuelCommand,
+            Stamp.FuelWings,
+            Stamp.OneUpCaptain,
+            Stamp.AcePilot,
+          ]
+        }
+      }
+      const stamps = gameStamps;
+
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {
         if (stamps.includes(stamp)) {
@@ -244,11 +284,20 @@ export class Client {
     return info;
   }
 
-  addStamp (stamp: number): void {
-    this.penguin.stamps.push(stamp);
-    this.penguin.stampbook.recent_stamps.push(stamp);
-    this.sessionStamps.push(stamp);
-    this.update();
+  addStamp (stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
+    if (isGreaterOrEqual(this.version, releaseVersion)) {
+      this.penguin.stamps.push(stamp);
+      this.penguin.stampbook.recent_stamps.push(stamp);
+      this.sessionStamps.push(stamp);
+      this.update();
+    }
+  }
+
+  giveStamp(stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
+    if (isGreaterOrEqual(this.version, releaseVersion)) {
+      this.addStamp(stamp);
+      this.sendXt('aabs', stamp);
+    }
   }
   
   addCoins (amount: number): void {
@@ -379,6 +428,50 @@ export class Client {
 
   setName(name: string): void {
     this.penguin.name = name;
+    this.update();
+  }
+
+  swapMember(): void {
+    this.penguin.is_member = !this.penguin.is_member;
+    this.update();
+  }
+
+  getFurnitureString(): string {
+    const furniture = []
+    for (const id in this.penguin.furniture) {
+      furniture.push([id, this.penguin.furniture[id]].join('|'))
+    }
+    return furniture.join('%')
+  }
+
+  addFurniture(furniture: number, cost: number = 0): void {
+    if (!(furniture in this.penguin.furniture)) {
+      this.penguin.furniture[furniture] = 0;
+    }
+    if (this.penguin.furniture[furniture] >= 99) {
+      this.sendError(10006);
+    } else {
+      this.removeCoins(cost);
+      this.penguin.furniture[furniture] += 1;
+  
+      this.update();
+    }
+    this.sendXt('af', furniture, this.penguin.coins);
+  }
+
+  updateIglooFurniture(furniture: IglooFurniture): void {
+    this.penguin.igloo.furniture = furniture;
+    this.update();
+  }
+
+  sendError(error: number, ...args: string[]): void {
+    this.sendXt('e', error, ...args)
+  }
+
+  disconnect(): void {
+    const delta = Date.now() - this.sessionStart;
+    const minutesDelta = delta / 1000 / 60;
+    this.penguin.minutes_played += minutesDelta;
     this.update();
   }
 }

@@ -31,6 +31,13 @@ export enum Room {
   Mission10 = 923,
   DJ3K = 926,
   Mission11 = 927,
+  PuffleSoaker = 941,
+  BalloonPop = 942,
+  RingTheBell = 943,
+  FeedAPuffle = 944,
+  MemoryCardGame = 945,
+  PufflePaddle = 946,
+  PuffleShuffle = 947,
   PuffleRescue = 949,
   DanceContest = 952
 }
@@ -63,7 +70,14 @@ const gameRooms = [
   Room.Mission10,
   Room.Mission11,
   Room.PuffleRescue,
-  Room.DanceContest
+  Room.DanceContest,
+  Room.PuffleSoaker,
+  Room.BalloonPop,
+  Room.RingTheBell,
+  Room.FeedAPuffle,
+  Room.MemoryCardGame,
+  Room.PufflePaddle,
+  Room.PuffleShuffle,
 ];
 export const roomStamps: Record<number, number[]> = {
   [Room.JetPackAdventure]: [

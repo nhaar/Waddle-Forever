@@ -8,12 +8,16 @@ import createWindow from "./window";
 import startServer from "../server/server";
 import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
+import { setLanguageInStore } from "./discord/localization/localization";
 
 log.initialize();
 
 console.log = log.log;
 
 const store = createStore();
+
+setLanguageInStore(store, 'en')
+
 
 if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
@@ -29,6 +33,13 @@ let mainWindow: BrowserWindow;
 app.on('ready', async () => {
   try {
     await startServer(settingsManager);
+
+    // this message box is useless, but for some reason, it is the only way for auto reload to work
+    await dialog.showMessageBox(mainWindow, {
+      buttons: ['Start'],
+      title: 'Ready',
+      message: `Waddle Forever is Ready!`
+    });
   } catch (error) {
     const result = await dialog.showMessageBox(mainWindow, {
       buttons: ['Boot Serverless', 'Check out error'],

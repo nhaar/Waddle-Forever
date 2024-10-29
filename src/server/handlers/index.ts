@@ -5,9 +5,11 @@ type XTCallback = (client: Client, ...args: string[]) => void
 
 export class XtHandler {
   listeners: Map<string, XTCallback[]>;
+  disonnectListeners: XTCallback[];
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
+    this.disonnectListeners = [];
   }
   xt (extension: string, code: string, method: XTCallback): void
   xt (code: string, method: XTCallback): void
@@ -49,6 +51,10 @@ export class XtHandler {
     }
   }
 
+  disconnect (method: XTCallback): void {
+    this.disonnectListeners.push(method);
+  }
+
   private getPacketName (code: string, extension: string): string {
     return `${extension}%${code}`;
   }
@@ -66,5 +72,6 @@ export class XtHandler {
         this.listeners.set(name, [...existingCallbacks, ...callbacks]);
       }
     });
+    this.disonnectListeners = [...this.disonnectListeners, ...handler.disonnectListeners];
   }
 }

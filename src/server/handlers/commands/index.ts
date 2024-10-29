@@ -47,6 +47,9 @@ handler.xt('m#sm', (client, id, message) => {
       client.setName(nameMatch[1]);
       client.sendPenguinInfo();
     }
+  } else if (message.startsWith('!member')) {
+    client.swapMember();
+    client.sendPenguinInfo();
   }
 });
 
