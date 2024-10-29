@@ -1,14 +1,3 @@
-body {
-  background-color: #005bbb;
-  color: white;
-
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-
-  user-select: none;
-}
-
 body > * {
   text-align: center;
 }
