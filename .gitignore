@@ -70,3 +70,6 @@ settings.json
 
 # zip files output
 /zip
+
+# crumbs output
+/crumbs/out
