@@ -4,7 +4,7 @@ window.addEventListener('receive-mods', (e: any) => {
   let html = ''
   for (const mod in e.detail) {
     html += `
-    <input type="checkbox" id="${mod}" checked="${e.detail[mod]}" />
+    <input type="checkbox" id="${mod}" ${e.detail[mod] ? 'checked="true"' : ''} />
     <span>${mod}</span>
     `;
   }
