@@ -36,6 +36,16 @@ handler.xt('j#jp', (client, fakeId) => {
   client.joinRoom(Number(fakeId));
 })
 
+handler.xt('u#sf', (client, frame) => {
+  // TODO multiplayer logic
+  client.sendXt('sf', client.id, frame);
+})
+
+handler.xt('u#sp', (client, x, y) => {
+  // TODO multiplayer logic
+  client.sendXt('sp', client.id, x, y);
+})
+
 handler.disconnect((client) => {
   client.disconnect();
 })
