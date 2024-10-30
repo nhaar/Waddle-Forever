@@ -13,7 +13,8 @@ handler.xt('i#qpp', (client, id) => {
 handler.xt('i#qpa', (client) => {
   const awards = [];
   for (const item in client.penguin.inventory) {
-    if (items[item].type === ItemType.Award) {
+    const itemInfo = items[item]
+    if (itemInfo !== undefined && items[item].type === ItemType.Award) {
       awards.push(item);
     }
   }
