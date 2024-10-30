@@ -73,3 +73,6 @@ settings.json
 
 # crumbs output
 /crumbs/out
+
+# mods folder
+/mods

@@ -19,6 +19,7 @@ import { Client } from './penguin';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';
+import { getModRouter } from './settings';
 
 const createServer = async (type: string, port: number, handlers: XtHandler, settingsManager: SettingsManager): Promise<void> => {
   await new Promise<void>((resolve) => {
@@ -94,6 +95,10 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   db.loadDatabase();
 
   const server = express();
+
+  if (settingsManager.usingMods) {
+    server.use(getModRouter(settingsManager));
+  }
 
   const httpServer = createHttpServer(settingsManager);
 
