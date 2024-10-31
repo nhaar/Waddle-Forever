@@ -5,6 +5,7 @@ import { Room } from "../../game/rooms";
 
 const handler = new XtHandler();
 
+// TODO better system here
 handler.xt('m#sm', (client, id, message) => {
   if (message.startsWith('!ai')) {
     if (message.match(/!ai\s+all/) !== null) {
@@ -51,6 +52,22 @@ handler.xt('m#sm', (client, id, message) => {
   } else if (message.startsWith('!member')) {
     client.swapMember();
     client.sendPenguinInfo();
+  } else if (message.startsWith('!af')) {
+    // add 1 in-case there was no amount supplied
+    const numberMatches = (message + ' 1').match(/!af\s+(\d+)\s+(\d+)/)
+    if (numberMatches !== null) {
+      const furniture = Number(numberMatches[1])
+      const amount = Number(numberMatches[2])
+      if (client.penguin.furniture[furniture] === undefined) {
+        client.penguin.furniture[furniture] = 0
+      }
+      const addAmount = Math.max(Math.min(amount, 99 - client.penguin.furniture[furniture]), 0);
+      client.penguin.furniture[furniture] += addAmount;
+      client.update();
+      for (let i = 0; i < addAmount; i++) {
+        client.sendXt('af', furniture, client.penguin.coins);
+      }
+    }
   }
 });
 
