@@ -191,6 +191,23 @@ export class Client {
     this.sendXt('ai', item, this.penguin.coins);
   }
 
+  sendInventory(): void {
+    this.sendXt('gi', Object.keys(this.penguin.inventory).join('%'));
+  }
+
+  addItems (items: number[]): void {
+    const newItems: Record<number, 1> = {}
+    for (const item of items) {
+      newItems[item] = 1;
+    }
+
+    this.penguin.inventory = { ...this.penguin.inventory, ...newItems };
+
+    this.update();
+    this.sendInventory();
+    this.sendPenguinInfo();
+  }
+
   updateColor (color: number): void {
     this.penguin.color = color;
     this.update();
