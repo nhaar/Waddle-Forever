@@ -365,5 +365,11 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/paddle/white.swf`;
   })
 
+  server.get('/play/v2/content/global/telescope/empty.swf', (s) => {
+    if (s.settings.version === '2010-Oct-23') {
+      return `versions/telescope/storm_on_horizon.swf`;
+    }
+  })
+
   return server
 }
