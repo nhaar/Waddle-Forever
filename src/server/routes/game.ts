@@ -64,7 +64,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.get('/play/v2/content/global/rooms/plaza.swf', (s) => {
     switch (s.settings.version) {
-      case '2010-Sep-03': return `versions/2010/fair/rooms/plaza.swf`
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/rooms/plaza.swf`
       case '2010-Oct-28': return `versions/2010/halloween/rooms/plaza.swf`;
     }
 
@@ -79,12 +81,21 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  server.get('/play/v2/content/local/en/catalogues/prizebooth.swf', () => {
-    return `versions/2010/fair/prizebooth.swf`
+  server.get('/play/v2/content/local/en/catalogues/prizebooth.swf', (s) => {
+    
+    if (s.settings.version === '2010-Sep-03') {
+      return `versions/2010/fair/start/prizebooth.swf`
+    } else if (s.settings.version === '2010-Sep-10') {
+      return `versions/2010/fair/end/prizebooth.swf`
+    }
   })
 
-  server.get('/play/v2/content/local/en/catalogues/prizeboothmember.swf', () => {
-    return `versions/2010/fair/prizeboothmember.swf`
+  server.get('/play/v2/content/local/en/catalogues/prizeboothmember.swf', (s) => {
+    if (s.settings.version === '2010-Sep-03') {
+      return `versions/2010/fair/start/prizeboothmember.swf`
+    } else if (s.settings.version === '2010-Sep-10') {
+      return `versions/2010/fair/end/prizeboothmember.swf`
+    }
   })
 
   server.get('/play/v2/content/local/en/catalogues/costume.swf', (s) => {
@@ -125,7 +136,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.dir('/play/v2/content/global/rooms', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Sep-03': return `versions/2010/fair/rooms/${d}`;
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/rooms/${d}`;
       case '2010-Oct-23': return `versions/2010/anniversary/rooms/${d}`;
       case '2010-Oct-28': return `versions/2010/halloween/rooms/${d}`;
       default: return undefined;
@@ -142,7 +155,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s, r) => {
     switch (s.settings.version) {
-      case '2010-Sep-03': return `versions/2010/fair/global_crumbs.swf`
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/global_crumbs.swf`
       case '2010-Sep-24': return `versions/2010/stadium_games/global_crumbs.swf`;
       case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`;
       case '2010-Oct-28': return `versions/2010/halloween/global_crumbs.swf`;
@@ -195,7 +210,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.dir('/play/v2/content/local/en/login', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Sep-03': return `versions/2010/fair/login/${d}`
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/login/${d}`
       case '2010-Oct-28': return `versions/2010/halloween/login/${d}`
       default: return undefined;
     }
@@ -224,7 +241,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.dir('/play/v2/client', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Sep-03': return `versions/2010/fair/client/${d}`;
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/client/${d}`;
       case '2010-Oct-28': return `versions/2010/halloween/client/${d}`;
       default: return undefined;
     }
@@ -239,7 +258,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.get('/web_service/worldachievements.xml', (s) => {
     switch (s.settings.version) {
-      case '2010-Sep-03': return 'versions/2010/fair/worldachievements.xml';
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return 'versions/2010/fair/worldachievements.xml';
       case '2010-Oct-28': return 'versions/2010/halloween/worldachievements.xml';
       default: return undefined;
     }
@@ -248,6 +269,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/play/v2/content/local/en/news/news_crumbs.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03': return 'versions/news_crumbs/2010_09_02.swf'
+      case '2010-Sep-10': return 'versions/news_crumbs/2010_09_09.swf'
       case '2010-Sep-24': return 'versions/news_crumbs/2010_09_23.swf';
       case '2010-Oct-23': return 'versions/news_crumbs/2010_10_21.swf';
       case '2010-Oct-28': return 'versions/news_crumbs/2010_10_28.swf';

@@ -1447,7 +1447,7 @@ export function getStampbook(version: GameVersion): string {
     ])
   }
 
-  if (isGreaterOrEqual(version, '2010-Sep-24')) {
+  if (isGreaterOrEqual(version, '2010-Sep-10')) {
     addStamps(newStampbook[CategoryID.Activities] as Category, [
       {
         "stamp_id": 197,
@@ -1490,6 +1490,9 @@ export function getStampbook(version: GameVersion): string {
         "rank_token": "extreme"
       }
     ])
+  }
+
+  if (isGreaterOrEqual(version, '2010-Sep-24')) {
     addStamps(newStampbook[CategoryID.JetPackAdventure] as Category, [
       {
         "stamp_id": 202,
