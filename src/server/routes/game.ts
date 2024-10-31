@@ -338,5 +338,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/clothing/${date}.swf`
   })
 
+  server.get('/play/v2/games/paddle/paddle.swf', (s) => {
+    // orange puffle was already in-game but seems like it wasnt in Fair 2010
+    return `versions/paddle/white.swf`;
+  })
+
   return server
 }
