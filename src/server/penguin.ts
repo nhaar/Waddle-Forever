@@ -27,10 +27,11 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
-  constructor (socket: net.Socket, version: GameVersion) {
+  constructor (socket: net.Socket, version: GameVersion, member: boolean) {
     this.socket = socket;
     this.version = version;
     this.penguin = Client.getDefault();
+    this.penguin.is_member = member;
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;

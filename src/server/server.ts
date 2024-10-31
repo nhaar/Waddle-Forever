@@ -26,7 +26,7 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
     net.createServer((socket) => {
       socket.setEncoding('utf8');
   
-      const client = new Client(socket, settingsManager.settings.version);
+      const client = new Client(socket, settingsManager.settings.version, settingsManager.settings.always_member);
   
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];

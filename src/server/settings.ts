@@ -18,6 +18,7 @@ interface Settings {
   jpa_level_selector: boolean
   swap_dance_arrow: boolean
   version: GameVersion
+  always_member: boolean
 }
 
 type PartialSettings = Partial<Settings>
@@ -91,7 +92,8 @@ export class SettingsManager {
       remove_idle: this.readBoolean(settingsJson, 'remove_idle', false),
       jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false),
       swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false),
-      version: this.readVersion(settingsJson)
+      version: this.readVersion(settingsJson),
+      always_member: this.readBoolean(settingsJson, 'always_member', true)
     };
 
     this.updateSettings({});
