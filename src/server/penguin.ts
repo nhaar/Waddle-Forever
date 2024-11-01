@@ -5,6 +5,9 @@ import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
 import { isGreaterOrEqual, isLower } from './routes/versions';
+import { items } from './game/item';
+import { ItemType } from './game/items';
+import { isFlag } from './game/flags';
 
 const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
 
@@ -220,11 +223,14 @@ export class Client {
   }
 
   getPinString (): string {
-    const pins = this.penguin.pins.map((pin) => {
-      // TODO -> middle is "date", third is member
-      // Proper pin objects and information
-      return [pin, 0, 0].join('|');
-    });
+    const pins = Object.keys(this.penguin.inventory).filter((item) => {
+      const id = Number(item)
+      return items[id].type === ItemType.Pin && !isFlag(id);
+    }).map((pin) => {
+      const item = items[Number(pin)];
+      return [item.id, (new Date(`${item.releaseDate}T12:00:00`)).getTime() / 1000, item.isMember ? 1 : 0].join('|');
+    })
+
     return pins.join('%');
   }
 
