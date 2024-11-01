@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { HttpServer } from "../http";
+import { HttpRouter, HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { isGreaterOrEqual, isLower, isLowerOrEqual } from './versions';
 import { getStampbook } from './stampjson';
@@ -8,47 +8,68 @@ import { getStampbook } from './stampjson';
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
+  const v2 = new HttpRouter();
+
+  const games = new HttpRouter();
+
+  const content = new HttpRouter();
+
+  const globalContent = new HttpRouter();
+
+  const globalContentContent = new HttpRouter();
+
+  const telescope = new HttpRouter();
+
+  const localContent = new HttpRouter();
+
+  const localContentEn = new HttpRouter();
+
+  const client = new HttpRouter();
+
+  const rooms = new HttpRouter();
+
+  const localEnCatalogues = new HttpRouter();
+
+  const enCloseUps = new HttpRouter();
+
+  const enNews = new HttpRouter();
+  
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
   server.get('/boots.swf', (s) => {
     return `special/boots${s.settings.fps30 ? '30' : '24'}.swf`
   });
-
+  
   server.router.get('/en/web_service/stamps.json', (_, res) => {
     res.send(getStampbook(server.settingsManager.settings.version))
   })
 
-  server.get('/play/v2/games/thinice/ThinIce.swf', (s) => {
+  games.get('/thinice/ThinIce.swf', (s) => {
     let suffix = s.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
     if (s.settings.thin_ice_igt) {
       suffix += s.settings.fps30 ? '30' : '24'
     }
     return `special/ThinIce${suffix}.swf`
-  });
+  })
 
-  server.get('/play/v2/games/dancing/dance.swf', (s) => {
+  games.get('/dancing/dance.swf', (s) => {
     return `special/dance_contest/${s.settings.swap_dance_arrow ? 'swapped' : 'vanilla'}.swf`;
   });
 
-  server.get('/', () => `special/index.html`);
-
-  server.get('/play/v2/games/book1/bootstrap.swf', (s) => {
+  games.get('/book1/bootstrap.swf', (s) => {
     return `special/my_puffle/${s.settings.modern_my_puffle ? '2013' : 'original'}.swf`
   });
 
-  server.dir('/play/v2/content/global/clothing', (s, d) => {
-    return s.settings.clothing ? path.join('clothing', d) : undefined;
-  })
-
-  server.get('/play/v2/client/shell.swf', (s) => {
-    return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
-  });
-
-  server.get('/play/v2/games/jetpack/JetpackAdventures.swf', (s) => {
+  games.get('/jetpack/JetpackAdventures.swf', (s) => {
     return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
   });
 
-  server.get('/play/v2/content/global/rooms/stage.swf', (s) => {
+  games.get('/paddle/paddle.swf', (s) => {
+    // orange puffle was already in-game but seems like it wasnt in Fair 2010
+    return `versions/paddle/white.swf`;
+  });
+
+  rooms.get('/stage.swf', (s) => {
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
       return `versions/stage/squidzoid/2009_10/stage.swf`
     } else if (isLower(s.settings.version, '2010-Oct-23')) {
@@ -62,7 +83,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  server.get('/play/v2/content/global/rooms/plaza.swf', (s) => {
+  rooms.get('/plaza.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
@@ -81,38 +102,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  server.get('/play/v2/content/local/en/catalogues/prizebooth.swf', (s) => {
-    
-    if (s.settings.version === '2010-Sep-03') {
-      return `versions/2010/fair/start/prizebooth.swf`
-    } else if (s.settings.version === '2010-Sep-10') {
-      return `versions/2010/fair/end/prizebooth.swf`
-    }
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/prizeboothmember.swf', (s) => {
-    if (s.settings.version === '2010-Sep-03') {
-      return `versions/2010/fair/start/prizeboothmember.swf`
-    } else if (s.settings.version === '2010-Sep-10') {
-      return `versions/2010/fair/end/prizeboothmember.swf`
-    }
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/costume.swf', (s) => {
-    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
-      return `versions/stage/squidzoid/2011_03/costume.swf`
-    } else if (isLower(s.settings.version, '2010-Oct-23')) {
-      return `versions/stage/fairy/costume.swf`
-    } else if (isLower(s.settings.version, '2010-Nov-24')) {
-      return `versions/stage/bamboo/costume.swf`
-    } else {
-      return `versions/stage/planety/costume.swf`
-    }
-
-    throw new Error('Not implemented');
-  })
-
-  server.get('/play/v2/content/global/rooms/rink.swf', (s) => {    
+  rooms.get('/rink.swf', (s) => {    
     switch (s.settings.version) {
       case '2010-Oct-28': return `versions/2010/halloween/rooms/rink.swf`;
     }
@@ -126,60 +116,44 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  server.get('/play/v2/content/local/en/catalogues/sport.swf', (s) => {
-    if (isLower(s.settings.version, '2010-Sep-24')) {
-      return `versions/stadium/2010_05/sport.swf`;
-    } else {
-      return `versions/2010/stadium_games/sport.swf`;
-    }
-  })
-
-  server.dir('/play/v2/content/global/rooms', (s, d) => {
+  rooms.dir('', (s, d) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
-        return `versions/2010/fair/rooms/${d}`;
-      case '2010-Oct-23': return `versions/2010/anniversary/rooms/${d}`;
-      case '2010-Oct-28': return `versions/2010/halloween/rooms/${d}`;
+        return `versions/2010/fair/rooms${d}`;
+      case '2010-Oct-23': return `versions/2010/anniversary/rooms${d}`;
+      case '2010-Oct-28': return `versions/2010/halloween/rooms${d}`;
       default: return undefined;
     }
   })
 
-  server.get('/play/v2/content/global/tickets.swf', () => {
-    return `versions/2010/fair/tickets.swf`
+  telescope.get('/empty.swf', (s) => {
+    if (s.settings.version === '2010-Oct-23') {
+      return `versions/telescope/storm_on_horizon.swf`;
+    }
   })
 
-  server.get('/play/v2/content/global/ticket_icon.swf', () => {
-    return `versions/2010/fair/ticket_icon.swf`
-  })
-
-  server.get('/play/v2/content/global/crumbs/global_crumbs.swf', (s, r) => {
+  telescope.dir('', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Sep-03':
-      case '2010-Sep-10':
-        return `versions/2010/fair/global_crumbs.swf`
-      case '2010-Sep-24': return `versions/2010/stadium_games/global_crumbs.swf`;
-      case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`;
-      case '2010-Oct-28': return `versions/2010/halloween/global_crumbs.swf`;
-      default: return `static/${r}`;
+      case '2010-Oct-28': return `versions/2010/halloween/telescope/${d}`
+      default: return undefined;
     }
   })
 
-  server.dir('/play/v2/content/global/music', (s, d) => {
-    const mediaPath = `music/${d}`;
-    const file = path.join(process.cwd(), 'media', mediaPath);
-    if (fs.existsSync(file)) {
-      return mediaPath
+  globalContentContent.get('/igloo_music.swf', (s) => {
+    let date = ''
+    if (isLower(s.settings.version, '2010-Nov-24')) {
+      date = '2010_08_20';
+    } else if (s.settings.version === '2010-Nov-24') {
+      date = '2010_11_12';
     } else {
-      return undefined;
+      date = '2011_05_13'
     }
+
+    return `versions/igloo/${date}/igloo_music.swf`;
   })
 
-  server.get('/play/v2/content/local/en/membership/party3.swf', () => {
-    return `versions/2010/halloween/membership_party3.swf`
-  })
-
-  server.get('/play/v2/content/global/content/map.swf', (s, r) => {
+  globalContentContent.get('/map.swf', (s, r) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return 'versions/2010/halloween/map.swf';
     }
@@ -193,96 +167,117 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  server.get('/play/v2/content/local/en/close_ups/poster.swf', () => {
-    return 'versions/2010/fair/poster.swf'
+  globalContent.get('/tickets.swf', () => {
+    return `versions/2010/fair/tickets.swf`
   })
 
-  server.get('/play/v2/content/local/en/close_ups/halloweenposter.swf', () => {
-    return 'versions/2010/halloween/poster.swf'
+  globalContent.get('/ticket_icon.swf', () => {
+    return `versions/2010/fair/ticket_icon.swf`
   })
 
-  server.dir('/play/v2/content/local/en/catalogues', (s, d) => {
-    switch (s.settings.version) {
-      case '2010-Oct-28': return `versions/2010/halloween/catalogues/${d}`;
-      default: return undefined;
-    }
-  })
-
-  server.dir('/play/v2/content/local/en/login', (s, d) => {
+  globalContent.get('/crumbs/global_crumbs.swf', (s, r) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
-        return `versions/2010/fair/login/${d}`
-      case '2010-Oct-28': return `versions/2010/halloween/login/${d}`
-      default: return undefined;
+        return `versions/2010/fair/global_crumbs.swf`
+      case '2010-Sep-24': return `versions/2010/stadium_games/global_crumbs.swf`;
+      case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`;
+      case '2010-Oct-28': return `versions/2010/halloween/global_crumbs.swf`;
+      default: return `static/${r}`;
     }
   })
 
-  server.dir('/play/v2/content/global/binoculars', (s, d) => {
+  globalContent.dir('/clothing/', (s, d) => {
+    return s.settings.clothing ? path.join('clothing', d) : undefined;
+  })
+
+  globalContent.use('/rooms', rooms);
+
+  globalContent.dir('/music/', (s, d) => {
+    const mediaPath = `music/${d}`;
+    const file = path.join(process.cwd(), 'media', mediaPath);
+    if (fs.existsSync(file)) {
+      return mediaPath
+    } else {
+      return undefined;
+    }
+  })
+
+  globalContent.dir('/binoculars/', (s, d) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return `versions/2010/halloween/binoculars/${d}`;
       default: return undefined;
     }
   })
 
-  server.dir('/play/v2/content/global/telescope', (s, d) => {
-    switch (s.settings.version) {
-      case '2010-Oct-28': return `versions/2010/halloween/telescope/${d}`
-      default: return undefined;
-    }
-  })
+  globalContent.use('/content', globalContentContent);
 
-  server.get('/play/v2/content/global/igloo/assets/igloo_background.swf', (s) => {
+  globalContent.use('/telescope', telescope);
+
+  globalContent.get('/igloo/assets/igloo_background.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return 'versions/2010/halloween/igloo_background.swf';
       default: undefined;
     }
   })
 
-  server.dir('/play/v2/client', (s, d) => {
-    switch (s.settings.version) {
-      case '2010-Sep-03':
-      case '2010-Sep-10':
-        return `versions/2010/fair/client/${d}`;
-      case '2010-Oct-28': return `versions/2010/halloween/client/${d}`;
-      default: return undefined;
-    }
-  })
-
-  server.dir('/play/v2/content/global/scavenger_hunt', (s, d) => {
+  globalContent.dir('/scavenger_hunt/', (s, d) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return `versions/2010/halloween/scavenger_hunt/${d}`;
       default: return undefined;
     }
   })
 
-  server.get('/web_service/worldachievements.xml', (s) => {
+  globalContent.dir('/furniture/', (_, d) => {
+    return `furniture/${d}`
+  })
+
+  localEnCatalogues.get('/prizebooth.swf', (s) => {
+    if (s.settings.version === '2010-Sep-03') {
+      return `versions/2010/fair/start/prizebooth.swf`
+    } else if (s.settings.version === '2010-Sep-10') {
+      return `versions/2010/fair/end/prizebooth.swf`
+    }
+  })
+
+  localEnCatalogues.get('/prizeboothmember.swf', (s) => {
+    if (s.settings.version === '2010-Sep-03') {
+      return `versions/2010/fair/start/prizeboothmember.swf`
+    } else if (s.settings.version === '2010-Sep-10') {
+      return `versions/2010/fair/end/prizeboothmember.swf`
+    }
+  })
+
+  localEnCatalogues.get('/costume.swf', (s) => {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
+      return `versions/stage/squidzoid/2011_03/costume.swf`
+    } else if (isLower(s.settings.version, '2010-Oct-23')) {
+      return `versions/stage/fairy/costume.swf`
+    } else if (isLower(s.settings.version, '2010-Nov-24')) {
+      return `versions/stage/bamboo/costume.swf`
+    } else {
+      return `versions/stage/planety/costume.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  localEnCatalogues.get('/sport.swf', (s) => {
+    if (isLower(s.settings.version, '2010-Sep-24')) {
+      return `versions/stadium/2010_05/sport.swf`;
+    } else {
+      return `versions/2010/stadium_games/sport.swf`;
+    }
+  })
+
+  localEnCatalogues.dir('', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Sep-03':
-      case '2010-Sep-10':
-        return 'versions/2010/fair/worldachievements.xml';
-      case '2010-Oct-28': return 'versions/2010/halloween/worldachievements.xml';
+      case '2010-Oct-28': return `versions/2010/halloween/catalogues/${d}`;
       default: return undefined;
     }
   })
 
-  server.get('/play/v2/content/local/en/news/news_crumbs.swf', (s) => {
-    switch (s.settings.version) {
-      case '2010-Sep-03': return 'versions/news_crumbs/2010_09_02.swf'
-      case '2010-Sep-10': return 'versions/news_crumbs/2010_09_09.swf'
-      case '2010-Sep-24': return 'versions/news_crumbs/2010_09_23.swf';
-      case '2010-Oct-23': return 'versions/news_crumbs/2010_10_21.swf';
-      case '2010-Oct-28': return 'versions/news_crumbs/2010_10_28.swf';
-      case '2010-Nov-24': return 'versions/news_crumbs/2010_09_30.swf';
-      default: throw new Error('Not implemented');
-    }
-  })
-
-  server.dir('/play/v2/content/local/en/news', (_, d) => {
-    return `newspapers/${d}`;
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/furniture.swf', (s) => {
+  localEnCatalogues.get('/furniture.swf', (s) => {
     let date = ''
     if (isLower(s.settings.version, '2010-Sep-24')) {
       date = '2010_08_20'
@@ -296,59 +291,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/furniture.swf`;
   })
 
-  server.dir('/play/v2/content/global/furniture', (_, d) => {
-    return `furniture/${d}`
-  })
-
-  server.get('/play/v2/content/global/content/igloo_music.swf', (s) => {
-    let date = ''
-    if (isLower(s.settings.version, '2010-Nov-24')) {
-      date = '2010_08_20';
-    } else if (s.settings.version === '2010-Nov-24') {
-      date = '2010_11_12';
-    } else {
-      date = '2011_05_13'
-    }
-
-    return `versions/igloo/${date}/igloo_music.swf`;
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/igloo.swf', (s) => {
-    let date = ''
-    if (isLower(s.settings.version, '2010-Nov-24')) {
-      date = '2010_08_20';
-    } else {
-      date = '2010_11_12';
-    }
-
-    return `versions/igloo/${date}/igloo.swf`;
-  })
-
-  server.get('/play/v2/content/local/en/forms/library.swf', (s) => {
-    if (isLower(s.settings.version, '2010-Oct-23')) {
-      return `versions/library/2009_10_24.swf`
-    } else {
-      return `versions/library/2010_10_23.swf`
-    }
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/pets.swf', (s) => {
-    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
-      return `versions/puffle/2010_03_19/pets.swf`
-    }
-
-    throw new Error('Not implemented');
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/ninja.swf', (s) => {
-    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
-      return `versions/ninja/2009_11_13/ninja.swf`
-    }
-
-    throw new Error('Not implemented');
-  })
-
-  server.get('/play/v2/content/local/en/catalogues/clothing.swf', (s) => {
+  localEnCatalogues.get('/clothing.swf', (s) => {
     let date = ''
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Oct-23')) {
       date = '2010_09_03'
@@ -360,14 +303,122 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/clothing/${date}.swf`
   })
 
-  server.get('/play/v2/games/paddle/paddle.swf', (s) => {
-    // orange puffle was already in-game but seems like it wasnt in Fair 2010
-    return `versions/paddle/white.swf`;
+  localEnCatalogues.get('/igloo.swf', (s) => {
+    let date = ''
+    if (isLower(s.settings.version, '2010-Nov-24')) {
+      date = '2010_08_20';
+    } else {
+      date = '2010_11_12';
+    }
+
+    return `versions/igloo/${date}/igloo.swf`;
   })
 
-  server.get('/play/v2/content/global/telescope/empty.swf', (s) => {
-    if (s.settings.version === '2010-Oct-23') {
-      return `versions/telescope/storm_on_horizon.swf`;
+  localEnCatalogues.get('/pets.swf', (s) => {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
+      return `versions/puffle/2010_03_19/pets.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  localEnCatalogues.get('/ninja.swf', (s) => {
+    if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
+      return `versions/ninja/2009_11_13/ninja.swf`
+    }
+
+    throw new Error('Not implemented');
+  })
+
+  enNews.get('/news_crumbs.swf', (s) => {
+    switch (s.settings.version) {
+      case '2010-Sep-03': return 'versions/news_crumbs/2010_09_02.swf'
+      case '2010-Sep-10': return 'versions/news_crumbs/2010_09_09.swf'
+      case '2010-Sep-24': return 'versions/news_crumbs/2010_09_23.swf';
+      case '2010-Oct-23': return 'versions/news_crumbs/2010_10_21.swf';
+      case '2010-Oct-28': return 'versions/news_crumbs/2010_10_28.swf';
+      case '2010-Nov-24': return 'versions/news_crumbs/2010_09_30.swf';
+      default: throw new Error('Not implemented');
+    }
+  })
+
+  enNews.dir('', (_, d) => {
+    return `newspapers/${d}`;
+  })
+  
+  localContentEn.get('/membership/party3.swf', () => {
+    return `versions/2010/halloween/membership_party3.swf`
+  })
+
+  localContentEn.use('/news', enNews);
+
+  localContentEn.use('/catalogues', localEnCatalogues);
+
+  enCloseUps.get('/poster.swf', () => {
+    return 'versions/2010/fair/poster.swf'
+  })
+
+  enCloseUps.get('/halloweenposter.swf', () => {
+    return 'versions/2010/halloween/poster.swf'
+  })
+
+  localContentEn.dir('/login/', (s, d) => {
+    switch (s.settings.version) {
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/login/${d}`
+      case '2010-Oct-28': return `versions/2010/halloween/login/${d}`
+      default: return undefined;
+    }
+  })
+
+  localContentEn.get('/forms/library.swf', (s) => {
+    if (isLower(s.settings.version, '2010-Oct-23')) {
+      return `versions/library/2009_10_24.swf`
+    } else {
+      return `versions/library/2010_10_23.swf`
+    }
+  })
+
+  localContentEn.use('/close_ups', enCloseUps)
+
+  localContent.use('/en', localContentEn);
+
+  content.use('/global', globalContent);
+
+  content.use('/local', localContent);
+
+  client.get('/shell.swf', (s) => {
+    return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
+  })
+
+  client.dir('', (s, d) => {
+    switch (s.settings.version) {
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return `versions/2010/fair/client/${d}`;
+      case '2010-Oct-28': return `versions/2010/halloween/client/${d}`;
+      default: return undefined;
+    }
+  })
+
+  v2.use('/content', content);
+  
+  v2.use('/client', client);
+
+  v2.use('/games', games);
+
+  server.use('/play/v2', v2);
+  
+  server.get('/', () => `special/index.html`);
+
+  server.get('/web_service/worldachievements.xml', (s) => {
+    switch (s.settings.version) {
+      case '2010-Sep-03':
+      case '2010-Sep-10':
+        return 'versions/2010/fair/worldachievements.xml';
+      case '2010-Oct-28': return 'versions/2010/halloween/worldachievements.xml';
+      default: return undefined;
     }
   })
 
