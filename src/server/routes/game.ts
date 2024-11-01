@@ -1,5 +1,3 @@
-import path from 'path';
-import fs from 'fs';
 import { HttpRouter, HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { isGreaterOrEqual, isLower, isLowerOrEqual } from './versions';
@@ -120,9 +118,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
-        return `versions/2010/fair/rooms${d}`;
-      case '2010-Oct-23': return `versions/2010/anniversary/rooms${d}`;
-      case '2010-Oct-28': return `versions/2010/halloween/rooms${d}`;
+        return `versions/2010/fair/rooms`;
+      case '2010-Oct-23': return `versions/2010/anniversary/rooms`;
+      case '2010-Oct-28': return `versions/2010/halloween/rooms`;
       default: return undefined;
     }
   })
@@ -135,7 +133,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   telescope.dir('', (s, d) => {
     switch (s.settings.version) {
-      case '2010-Oct-28': return `versions/2010/halloween/telescope/${d}`
+      case '2010-Oct-28': return `versions/2010/halloween/telescope`
       default: return undefined;
     }
   })
@@ -153,7 +151,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/igloo_music.swf`;
   })
 
-  globalContentContent.get('/map.swf', (s, r) => {
+  globalContentContent.get('/map.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return 'versions/2010/halloween/map.swf';
     }
@@ -175,7 +173,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/2010/fair/ticket_icon.swf`
   })
 
-  globalContent.get('/crumbs/global_crumbs.swf', (s, r) => {
+  globalContent.get('/crumbs/global_crumbs.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
@@ -183,29 +181,23 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       case '2010-Sep-24': return `versions/2010/stadium_games/global_crumbs.swf`;
       case '2010-Oct-23': return `versions/2010/anniversary/global_crumbs.swf`;
       case '2010-Oct-28': return `versions/2010/halloween/global_crumbs.swf`;
-      default: return `static/${r}`;
+      default: return undefined;
     }
   })
 
-  globalContent.dir('/clothing/', (s, d) => {
-    return s.settings.clothing ? path.join('clothing', d) : undefined;
+  globalContent.dir('/clothing/', (s) => {
+    return s.settings.clothing ? 'clothing' : undefined;
   })
 
   globalContent.use('/rooms', rooms);
 
-  globalContent.dir('/music/', (s, d) => {
-    const mediaPath = `music/${d}`;
-    const file = path.join(process.cwd(), 'media', mediaPath);
-    if (fs.existsSync(file)) {
-      return mediaPath
-    } else {
-      return undefined;
-    }
+  globalContent.dir('/music/', () => {
+    return 'music'
   })
 
-  globalContent.dir('/binoculars/', (s, d) => {
+  globalContent.dir('/binoculars/', (s) => {
     switch (s.settings.version) {
-      case '2010-Oct-28': return `versions/2010/halloween/binoculars/${d}`;
+      case '2010-Oct-28': return `versions/2010/halloween/binoculars`;
       default: return undefined;
     }
   })
@@ -221,15 +213,15 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  globalContent.dir('/scavenger_hunt/', (s, d) => {
+  globalContent.dir('/scavenger_hunt/', (s) => {
     switch (s.settings.version) {
-      case '2010-Oct-28': return `versions/2010/halloween/scavenger_hunt/${d}`;
+      case '2010-Oct-28': return `versions/2010/halloween/scavenger_hunt`;
       default: return undefined;
     }
   })
 
-  globalContent.dir('/furniture/', (_, d) => {
-    return `furniture/${d}`
+  globalContent.dir('/furniture/', () => {
+    return `furniture`
   })
 
   localEnCatalogues.get('/prizebooth.swf', (s) => {
@@ -270,9 +262,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  localEnCatalogues.dir('', (s, d) => {
+  localEnCatalogues.dir('', (s) => {
     switch (s.settings.version) {
-      case '2010-Oct-28': return `versions/2010/halloween/catalogues/${d}`;
+      case '2010-Oct-28': return `versions/2010/halloween/catalogues`;
       default: return undefined;
     }
   })
@@ -342,8 +334,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  enNews.dir('', (_, d) => {
-    return `newspapers/${d}`;
+  enNews.dir('', () => {
+    return 'newspapers';
   })
   
   localContentEn.get('/membership/party3.swf', () => {
@@ -362,12 +354,12 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return 'versions/2010/halloween/poster.swf'
   })
 
-  localContentEn.dir('/login/', (s, d) => {
+  localContentEn.dir('/login/', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
-        return `versions/2010/fair/login/${d}`
-      case '2010-Oct-28': return `versions/2010/halloween/login/${d}`
+        return 'versions/2010/fair/login'
+      case '2010-Oct-28': return 'versions/2010/halloween/login'
       default: return undefined;
     }
   })
@@ -392,12 +384,12 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
   })
 
-  client.dir('', (s, d) => {
+  client.dir('', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
-        return `versions/2010/fair/client/${d}`;
-      case '2010-Oct-28': return `versions/2010/halloween/client/${d}`;
+        return 'versions/2010/fair/client';
+      case '2010-Oct-28': return 'versions/2010/halloween/client';
       default: return undefined;
     }
   })

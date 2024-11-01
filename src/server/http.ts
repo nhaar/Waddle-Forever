@@ -62,7 +62,7 @@ export class HttpServer {
       if (specialPath === undefined) {
         next();
       } else {
-        const filePath = path.join(process.cwd(), 'media', specialPath);
+        const filePath = path.join(process.cwd(), 'media', specialPath, dirPath);
         if (fs.existsSync(filePath)) {
           res.sendFile(filePath);
         } else {
