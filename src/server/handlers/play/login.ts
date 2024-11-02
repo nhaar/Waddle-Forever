@@ -26,6 +26,8 @@ handler.xt('j#js', (client) => {
   client.sendStamps();
 
   client.sendPuffles();
+
+  client.checkAgeStamps();
 });
 
 handler.xt('b#gb', (client) => {

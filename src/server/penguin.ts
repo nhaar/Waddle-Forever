@@ -310,10 +310,12 @@ export class Client {
 
   addStamp (stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
     if (isGreaterOrEqual(this.version, releaseVersion)) {
-      this.penguin.stamps.push(stamp);
-      this.penguin.stampbook.recent_stamps.push(stamp);
-      this.sessionStamps.push(stamp);
-      this.update();
+      if (!this.penguin.stamps.includes(stamp)) {
+        this.penguin.stamps.push(stamp);
+        this.penguin.stampbook.recent_stamps.push(stamp);
+        this.sessionStamps.push(stamp);
+        this.update();
+      }
     }
   }
 
@@ -497,5 +499,16 @@ export class Client {
     const minutesDelta = delta / 1000 / 60;
     this.penguin.minutes_played += minutesDelta;
     this.update();
+  }
+
+  checkAgeStamps(): void {
+    const delta = Date.now() - this.penguin.registration_date;
+    const days = delta / 1000 / 86400;
+    if (days >= 183) {
+      this.giveStamp(14);
+      if (days >= 365) {
+        this.giveStamp(20);        
+      }
+    }
   }
 }
