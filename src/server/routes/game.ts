@@ -6,35 +6,35 @@ import { getStampbook } from './stampjson';
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
-  const v2 = new HttpRouter('/play/v2', server);
+  const v2 = new HttpRouter(['play', 'v2'], server);
 
-  const games = new HttpRouter('/games', v2);
+  const games = new HttpRouter('games', v2);
 
-  const content = new HttpRouter('/content', v2);
+  const content = new HttpRouter('content', v2);
 
-  const globalContent = new HttpRouter('/global', content);
+  const globalContent = new HttpRouter('global', content);
 
-  const globalContentContent = new HttpRouter('/content', globalContent);
+  const globalContentContent = new HttpRouter('content', globalContent);
 
-  const telescope = new HttpRouter('/telescope', globalContent);
+  const telescope = new HttpRouter('telescope', globalContent);
 
-  const localContent = new HttpRouter('/local', content);
+  const localContent = new HttpRouter('local', content);
 
-  const localContentEn = new HttpRouter('/en', localContent);
+  const localContentEn = new HttpRouter('en', localContent);
 
-  const client = new HttpRouter('/client', v2);
+  const client = new HttpRouter('client', v2);
 
-  const rooms = new HttpRouter('/rooms', globalContent);
+  const rooms = new HttpRouter('rooms', globalContent);
 
-  const localEnCatalogues = new HttpRouter('/catalogues', localContentEn);
+  const localEnCatalogues = new HttpRouter('catalogues', localContentEn);
 
-  const enCloseUps = new HttpRouter('/close_ups', localContentEn);
+  const enCloseUps = new HttpRouter('close_ups', localContentEn);
 
-  const enNews = new HttpRouter('/news', localContentEn);
+  const enNews = new HttpRouter('news', localContentEn);
   
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
-  server.get('/boots.swf', (s) => {
+  server.get('boots.swf', (s) => {
     return `special/boots${s.settings.fps30 ? '30' : '24'}.swf`
   });
   
@@ -42,7 +42,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     res.send(getStampbook(server.settingsManager.settings.version))
   })
 
-  games.get('/thinice/ThinIce.swf', (s) => {
+  games.get(['thinice', 'ThinIce.swf'], (s) => {
     let suffix = s.settings.thin_ice_igt ? 'IGT' : 'Vanilla';
     if (s.settings.thin_ice_igt) {
       suffix += s.settings.fps30 ? '30' : '24'
@@ -50,24 +50,24 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/ThinIce${suffix}.swf`
   })
 
-  games.get('/dancing/dance.swf', (s) => {
+  games.get(['dancing', 'dance.swf'], (s) => {
     return `special/dance_contest/${s.settings.swap_dance_arrow ? 'swapped' : 'vanilla'}.swf`;
   });
 
-  games.get('/book1/bootstrap.swf', (s) => {
+  games.get(['book1', 'bootstrap.swf'], (s) => {
     return `special/my_puffle/${s.settings.modern_my_puffle ? '2013' : 'original'}.swf`
   });
 
-  games.get('/jetpack/JetpackAdventures.swf', (s) => {
+  games.get(['jetpack', 'JetpackAdventures.swf'], (s) => {
     return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
   });
 
-  games.get('/paddle/paddle.swf', (s) => {
+  games.get(['paddle',' paddle.swf'], (s) => {
     // orange puffle was already in-game but seems like it wasnt in Fair 2010
     return `versions/paddle/white.swf`;
   });
 
-  rooms.get('/stage.swf', (s) => {
+  rooms.get('stage.swf', (s) => {
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
       return `versions/stage/squidzoid/2009_10/stage.swf`
     } else if (isLower(s.settings.version, '2010-Oct-23')) {
@@ -81,7 +81,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  rooms.get('/plaza.swf', (s) => {
+  rooms.get('plaza.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
@@ -100,7 +100,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  rooms.get('/rink.swf', (s) => {    
+  rooms.get('rink.swf', (s) => {    
     switch (s.settings.version) {
       case '2010-Oct-28': return `versions/2010/halloween/rooms/rink.swf`;
     }
@@ -125,7 +125,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  telescope.get('/empty.swf', (s) => {
+  telescope.get('empty.swf', (s) => {
     if (s.settings.version === '2010-Oct-23') {
       return `versions/telescope/storm_on_horizon.swf`;
     }
@@ -138,7 +138,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  globalContentContent.get('/igloo_music.swf', (s) => {
+  globalContentContent.get('igloo_music.swf', (s) => {
     let date = ''
     if (isLower(s.settings.version, '2010-Nov-24')) {
       date = '2010_08_20';
@@ -151,7 +151,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/igloo_music.swf`;
   })
 
-  globalContentContent.get('/map.swf', (s) => {
+  globalContentContent.get('map.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return 'versions/2010/halloween/map.swf';
     }
@@ -165,15 +165,15 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  globalContent.get('/tickets.swf', () => {
+  globalContent.get('tickets.swf', () => {
     return `versions/2010/fair/tickets.swf`
   })
 
-  globalContent.get('/ticket_icon.swf', () => {
+  globalContent.get('ticket_icon.swf', () => {
     return `versions/2010/fair/ticket_icon.swf`
   })
 
-  globalContent.get('/crumbs/global_crumbs.swf', (s) => {
+  globalContent.get(['crumbs', 'global_crumbs.swf'], (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
@@ -185,40 +185,40 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  globalContent.dir('/clothing/', (s) => {
+  globalContent.dir('clothing', (s) => {
     return s.settings.clothing ? 'clothing' : undefined;
   })
 
-  globalContent.dir('/music/', () => {
+  globalContent.dir('music', () => {
     return 'music'
   })
 
-  globalContent.dir('/binoculars/', (s) => {
+  globalContent.dir('binoculars', (s) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return `versions/2010/halloween/binoculars`;
       default: return undefined;
     }
   })
 
-  globalContent.get('/igloo/assets/igloo_background.swf', (s) => {
+  globalContent.get(['igloo', 'assets', 'igloo_background.swf'], (s) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return 'versions/2010/halloween/igloo_background.swf';
       default: undefined;
     }
   })
 
-  globalContent.dir('/scavenger_hunt/', (s) => {
+  globalContent.dir('scavenger_hunt', (s) => {
     switch (s.settings.version) {
       case '2010-Oct-28': return `versions/2010/halloween/scavenger_hunt`;
       default: return undefined;
     }
   })
 
-  globalContent.dir('/furniture/', () => {
+  globalContent.dir('furniture', () => {
     return `furniture`
   })
 
-  localEnCatalogues.get('/prizebooth.swf', (s) => {
+  localEnCatalogues.get('prizebooth.swf', (s) => {
     if (s.settings.version === '2010-Sep-03') {
       return `versions/2010/fair/start/prizebooth.swf`
     } else if (s.settings.version === '2010-Sep-10') {
@@ -226,7 +226,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  localEnCatalogues.get('/prizeboothmember.swf', (s) => {
+  localEnCatalogues.get('prizeboothmember.swf', (s) => {
     if (s.settings.version === '2010-Sep-03') {
       return `versions/2010/fair/start/prizeboothmember.swf`
     } else if (s.settings.version === '2010-Sep-10') {
@@ -234,7 +234,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  localEnCatalogues.get('/costume.swf', (s) => {
+  localEnCatalogues.get('costume.swf', (s) => {
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Sep-24')) {
       return `versions/stage/squidzoid/2011_03/costume.swf`
     } else if (isLower(s.settings.version, '2010-Oct-23')) {
@@ -248,7 +248,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  localEnCatalogues.get('/sport.swf', (s) => {
+  localEnCatalogues.get('sport.swf', (s) => {
     if (isLower(s.settings.version, '2010-Sep-24')) {
       return `versions/stadium/2010_05/sport.swf`;
     } else {
@@ -263,7 +263,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  localEnCatalogues.get('/furniture.swf', (s) => {
+  localEnCatalogues.get('furniture.swf', (s) => {
     let date = ''
     if (isLower(s.settings.version, '2010-Sep-24')) {
       date = '2010_08_20'
@@ -277,7 +277,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/furniture.swf`;
   })
 
-  localEnCatalogues.get('/clothing.swf', (s) => {
+  localEnCatalogues.get('clothing.swf', (s) => {
     let date = ''
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') && isLower(s.settings.version, '2010-Oct-23')) {
       date = '2010_09_03'
@@ -289,7 +289,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/clothing/${date}.swf`
   })
 
-  localEnCatalogues.get('/igloo.swf', (s) => {
+  localEnCatalogues.get('igloo.swf', (s) => {
     let date = ''
     if (isLower(s.settings.version, '2010-Nov-24')) {
       date = '2010_08_20';
@@ -300,7 +300,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/igloo/${date}/igloo.swf`;
   })
 
-  localEnCatalogues.get('/pets.swf', (s) => {
+  localEnCatalogues.get('pets.swf', (s) => {
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
       return `versions/puffle/2010_03_19/pets.swf`
     }
@@ -308,7 +308,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  localEnCatalogues.get('/ninja.swf', (s) => {
+  localEnCatalogues.get('ninja.swf', (s) => {
     if (isGreaterOrEqual(s.settings.version, '2010-Sep-03') || isLowerOrEqual(s.settings.version, '2010-Nov-24')) {
       return `versions/ninja/2009_11_13/ninja.swf`
     }
@@ -316,7 +316,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     throw new Error('Not implemented');
   })
 
-  enNews.get('/news_crumbs.swf', (s) => {
+  enNews.get('news_crumbs.swf', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03': return 'versions/news_crumbs/2010_09_02.swf'
       case '2010-Sep-10': return 'versions/news_crumbs/2010_09_09.swf'
@@ -332,19 +332,19 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return 'newspapers';
   })
   
-  localContentEn.get('/membership/party3.swf', () => {
+  localContentEn.get(['membership', 'party3.swf'], () => {
     return `versions/2010/halloween/membership_party3.swf`
   })
 
-  enCloseUps.get('/poster.swf', () => {
+  enCloseUps.get('poster.swf', () => {
     return 'versions/2010/fair/poster.swf'
   })
 
-  enCloseUps.get('/halloweenposter.swf', () => {
+  enCloseUps.get('halloweenposter.swf', () => {
     return 'versions/2010/halloween/poster.swf'
   })
 
-  localContentEn.dir('/login/', (s) => {
+  localContentEn.dir('login', (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':
@@ -354,7 +354,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  localContentEn.get('/forms/library.swf', (s) => {
+  localContentEn.get(['forms', 'library.swf'], (s) => {
     if (isLower(s.settings.version, '2010-Oct-23')) {
       return `versions/library/2009_10_24.swf`
     } else {
@@ -362,7 +362,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  client.get('/shell.swf', (s) => {
+  client.get('shell.swf', (s) => {
     return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
   })
 
@@ -376,9 +376,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
   
-  server.get('/', () => `special/index.html`);
+  server.get('', () => `special/index.html`);
 
-  server.get('/web_service/worldachievements.xml', (s) => {
+  server.get(['web_service', 'worldachievements.xml'], (s) => {
     switch (s.settings.version) {
       case '2010-Sep-03':
       case '2010-Sep-10':

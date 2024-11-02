@@ -7,21 +7,35 @@ type GetCallback = (settings: SettingsManager, route: string) => string
 
 type DirCallback = (settings: SettingsManager, dirPath: string) => string | undefined
 
+type PathRepresentation = string | string[]
+
+function processPathRepresentation(repr: PathRepresentation): string[] {
+  if (typeof repr === 'string') {
+    return [repr];
+  }
+  return repr;
+}
+
+function getExpressRoute(route: string[]): string {
+  // filter emptys to avoid extraneous routes like '//'
+  return '/' + route.filter((value) => value !== '').join('/');
+}
+
 export class HttpRouter {
   parent: HttpServer | HttpRouter
-  route: string
+  route: string[]
 
-  constructor(route: string, parent: HttpServer | HttpRouter) {
+  constructor(route: PathRepresentation, parent: HttpServer | HttpRouter) {
     this.parent = parent;
-    this.route = route;
+    this.route = processPathRepresentation(route);
   }
 
-  get (route: string, handler: GetCallback) {
-    this.parent.get(this.route + route, handler);
+  get (route: PathRepresentation, handler: GetCallback) {
+    this.parent.get([...this.route, ...processPathRepresentation(route)], handler);
   }
 
-  dir (route: string, handler: DirCallback) {
-    this.parent.dir(this.route + route, handler);
+  dir (route: PathRepresentation, handler: DirCallback) {
+    this.parent.dir([...this.route, ...processPathRepresentation(route)], handler);
   }
 }
 
@@ -34,10 +48,10 @@ export class HttpServer {
     this.router = Router();
   }
 
-  get (route: string, handler: GetCallback) {
-
-    this.router.get(route, (_, res, next) => {
-      const handled = handler(this.settingsManager, route);
+  get (route: PathRepresentation, handler: GetCallback) {
+    const expressRoute = getExpressRoute(processPathRepresentation(route))
+    this.router.get(expressRoute, (_, res, next) => {
+      const handled = handler(this.settingsManager, expressRoute);
       if (handled === undefined) {
         next();
       } else {
@@ -46,9 +60,10 @@ export class HttpServer {
     })
   }
 
-  dir (route: string, handler: DirCallback) {
-    this.router.get(`${route}*`, (req: Request, res, next) => {
+  dir (route: PathRepresentation, handler: DirCallback) {
+    this.router.get(`${getExpressRoute(processPathRepresentation(route))}*`, (req: Request, res, next) => {
       const dirPath = req.params[0];
+      console.log(dirPath)
       const specialPath = handler(this.settingsManager, dirPath);
       if (specialPath === undefined) {
         next();
