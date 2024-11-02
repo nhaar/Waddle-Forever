@@ -7,6 +7,8 @@ type GetCallback = (settings: SettingsManager, route: string) => string
 
 type DirCallback = (settings: SettingsManager, dirPath: string) => string | undefined
 
+type DataCallback = (settings: SettingsManager) => string
+
 type PathRepresentation = string | string[]
 
 function processPathRepresentation(repr: PathRepresentation): string[] {
@@ -46,6 +48,12 @@ export class HttpServer {
   constructor (settingsManager: SettingsManager) {
     this.settingsManager = settingsManager;
     this.router = Router();
+  }
+
+  getData (route: PathRepresentation, handler: DataCallback) {
+    this.router.get(getExpressRoute(processPathRepresentation(route)), (_, res) => {
+      res.send(handler(this.settingsManager));
+    })
   }
 
   get (route: PathRepresentation, handler: GetCallback) {

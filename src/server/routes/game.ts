@@ -38,8 +38,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/boots${s.settings.fps30 ? '30' : '24'}.swf`
   });
   
-  server.router.get('/en/web_service/stamps.json', (_, res) => {
-    res.send(getStampbook(server.settingsManager.settings.version))
+  server.getData(['en', 'web_service', 'stamps.json'], (s) => {
+    return getStampbook(s.settings.version);
   })
 
   games.get(['thinice', 'ThinIce.swf'], (s) => {
