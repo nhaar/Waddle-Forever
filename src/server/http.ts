@@ -8,29 +8,20 @@ type GetCallback = (settings: SettingsManager, route: string) => string
 type DirCallback = (settings: SettingsManager, dirPath: string) => string | undefined
 
 export class HttpRouter {
-  gets: Map<string, GetCallback>
-  dirs: Map<string, DirCallback>
+  parent: HttpServer | HttpRouter
+  route: string
 
-  constructor() {
-    this.gets = new Map<string, GetCallback>();
-    this.dirs = new Map<string, DirCallback>();
+  constructor(route: string, parent: HttpServer | HttpRouter) {
+    this.parent = parent;
+    this.route = route;
   }
 
   get (route: string, handler: GetCallback) {
-    this.gets.set(route, handler);
+    this.parent.get(this.route + route, handler);
   }
 
   dir (route: string, handler: DirCallback) {
-    this.dirs.set(route, handler);
-  }
-
-  use (route: string, router: HttpRouter) {
-    router.dirs.forEach((handler, key) => {
-      this.dirs.set(route + key, handler);
-    })
-    router.gets.forEach((handler, key) => {
-      this.gets.set(route + key, handler);
-    })
+    this.parent.dir(this.route + route, handler);
   }
 }
 
@@ -69,15 +60,6 @@ export class HttpServer {
           next();
         }
       }
-    })
-  }
-
-  use (path: string, router: HttpRouter) {
-    router.dirs.forEach((handler, route) => {
-      this.dir(path + route, handler);
-    })
-    router.gets.forEach((handler, route) => {
-      this.get(path + route, handler);
     })
   }
 }

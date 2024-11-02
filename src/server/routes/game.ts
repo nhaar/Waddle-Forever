@@ -6,31 +6,31 @@ import { getStampbook } from './stampjson';
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
-  const v2 = new HttpRouter();
+  const v2 = new HttpRouter('/play/v2', server);
 
-  const games = new HttpRouter();
+  const games = new HttpRouter('/games', v2);
 
-  const content = new HttpRouter();
+  const content = new HttpRouter('/content', v2);
 
-  const globalContent = new HttpRouter();
+  const globalContent = new HttpRouter('/global', content);
 
-  const globalContentContent = new HttpRouter();
+  const globalContentContent = new HttpRouter('/content', globalContent);
 
-  const telescope = new HttpRouter();
+  const telescope = new HttpRouter('/telescope', globalContent);
 
-  const localContent = new HttpRouter();
+  const localContent = new HttpRouter('/local', content);
 
-  const localContentEn = new HttpRouter();
+  const localContentEn = new HttpRouter('/en', localContent);
 
-  const client = new HttpRouter();
+  const client = new HttpRouter('/client', v2);
 
-  const rooms = new HttpRouter();
+  const rooms = new HttpRouter('/rooms', globalContent);
 
-  const localEnCatalogues = new HttpRouter();
+  const localEnCatalogues = new HttpRouter('/catalogues', localContentEn);
 
-  const enCloseUps = new HttpRouter();
+  const enCloseUps = new HttpRouter('/close_ups', localContentEn);
 
-  const enNews = new HttpRouter();
+  const enNews = new HttpRouter('/news', localContentEn);
   
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
@@ -189,8 +189,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return s.settings.clothing ? 'clothing' : undefined;
   })
 
-  globalContent.use('/rooms', rooms);
-
   globalContent.dir('/music/', () => {
     return 'music'
   })
@@ -201,10 +199,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       default: return undefined;
     }
   })
-
-  globalContent.use('/content', globalContentContent);
-
-  globalContent.use('/telescope', telescope);
 
   globalContent.get('/igloo/assets/igloo_background.swf', (s) => {
     switch (s.settings.version) {
@@ -342,10 +336,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `versions/2010/halloween/membership_party3.swf`
   })
 
-  localContentEn.use('/news', enNews);
-
-  localContentEn.use('/catalogues', localEnCatalogues);
-
   enCloseUps.get('/poster.swf', () => {
     return 'versions/2010/fair/poster.swf'
   })
@@ -372,14 +362,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }
   })
 
-  localContentEn.use('/close_ups', enCloseUps)
-
-  localContent.use('/en', localContentEn);
-
-  content.use('/global', globalContent);
-
-  content.use('/local', localContent);
-
   client.get('/shell.swf', (s) => {
     return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
   })
@@ -393,14 +375,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       default: return undefined;
     }
   })
-
-  v2.use('/content', content);
-  
-  v2.use('/client', client);
-
-  v2.use('/games', games);
-
-  server.use('/play/v2', v2);
   
   server.get('/', () => `special/index.html`);
 
