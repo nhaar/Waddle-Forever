@@ -51841,6 +51841,14 @@ SetMember
 Push "global_path", 0, "Object"
 NewObject
 DefineLocal
+Push "global_path"
+GetVariable
+Push "ninja_water_video", "close_ups/ninja_water_video.swf"
+SetMember
+Push "global_path"
+GetVariable
+Push "ninja_fire_video", "close_ups/ninja_fire_video.swf"
+SetMember
 Push "blocked_prefixes", 0, "Array"
 NewObject
 DefineLocal

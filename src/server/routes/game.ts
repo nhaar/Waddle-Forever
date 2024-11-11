@@ -31,6 +31,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const rink = new HttpRouter('rink.swf', rooms);
 
+  const dojoCourtyard = new HttpRouter('dojoext.swf', rooms);
+
   const globalCrumbs = new HttpRouter(['crumbs', 'global_crumbs.swf'], globalContent);
 
   const map = new HttpRouter('map.swf', globalContentContent);
@@ -174,6 +176,14 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       ['2010-Sep-24', 'versions/2010/stadium_games/rink.swf']
     ]
   );
+
+  alternating(
+    [dojoCourtyard],
+    [
+      ['2010-Sep-03', 'versions/cardjitsu/fireext.swf'],
+      ['2010-Nov-24', 'versions/cardjitsu/waterext.swf']
+    ]
+  )
 
   range('2010-Oct-23', '2010-Oct-28', [
     [emptyTelescope, 'versions/telescope/storm_on_horizon.swf']
