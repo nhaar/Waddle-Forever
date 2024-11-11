@@ -19,6 +19,7 @@ interface Settings {
   swap_dance_arrow: boolean
   version: GameVersion
   always_member: boolean
+  minified_website: boolean
 }
 
 type PartialSettings = Partial<Settings>
@@ -93,7 +94,8 @@ export class SettingsManager {
       jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false),
       swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false),
       version: this.readVersion(settingsJson),
-      always_member: this.readBoolean(settingsJson, 'always_member', true)
+      always_member: this.readBoolean(settingsJson, 'always_member', true),
+      minified_website: this.readBoolean(settingsJson, 'minified_website', false)
     };
 
     this.updateSettings({});

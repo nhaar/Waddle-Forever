@@ -302,7 +302,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
   })
   
-  server.get('', () => `special/index.html`);
+  server.get('', (s) => {
+    return `special/index.html/${s.settings.minified_website ? 'minified' : 'as2-website'}.html`
+  });
 
   return server
 }

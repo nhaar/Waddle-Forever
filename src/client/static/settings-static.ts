@@ -10,6 +10,7 @@ const idleInput = document.querySelector<HTMLInputElement>('.js-idle-input');
 const jpaInput = document.querySelector<HTMLInputElement>('.js-jpa-level-input');
 const danceInput = document.querySelector<HTMLInputElement>('.js-dance-arrow-input');
 const memberInput = document.querySelector<HTMLInputElement>('.js-member-input');
+const websiteInput = document.querySelector<HTMLInputElement>('.js-website-input');
 
 fpsInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
@@ -77,6 +78,13 @@ memberInput.addEventListener('change', (e) => {
   }
 })
 
+websiteInput.addEventListener('change', (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    api.update({ minified_website: e.target.checked });
+    api.reload();
+  }
+})
+
 window.addEventListener('receive-settings', (e: any) => {
   const settings = e.detail;
   fpsInput.checked = settings['fps30'];
@@ -87,6 +95,7 @@ window.addEventListener('receive-settings', (e: any) => {
   jpaInput.checked = settings['jpa_level_selector'];
   danceInput.checked = settings['swap_dance_arrow'];
   memberInput.checked = settings['always_member'];
+  websiteInput.checked = settings['minified_website'];
 });
 
 window.addEventListener('finish-download', (e: any) => {
