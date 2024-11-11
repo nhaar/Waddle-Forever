@@ -157,6 +157,10 @@ const crumbs: Array<{
       'party2': 221,
       'party3': 221
     },
+    prices: {
+      5077: 0,
+      6052: 0
+    },
     globalPaths: {
       'tickets': 'tickets.swf',
       'ticket_icon': 'ticket_icon.swf'
