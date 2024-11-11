@@ -687,7 +687,7 @@ InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "dojowater", "room_id", 816, "music_id", 406, "path", "dojowater.swf", "is_member", true, 4
+Push "dojowater", "room_id", 816, "music_id", 24, "path", "dojowater.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
@@ -822,12 +822,12 @@ InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "cavemine", "room_id", 813, "music_id", 532, "path", "cavemine.swf", 3
+Push "cavemine", "room_id", 813, "music_id", 0, "path", "cavemine.swf", 3
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "lake", "room_id", 814, "music_id", 666, "path", "lake.swf", 3
+Push "lake", "room_id", 814, "music_id", 0, "path", "lake.swf", 3
 InitObject
 SetMember
 Push "room_crumbs"
