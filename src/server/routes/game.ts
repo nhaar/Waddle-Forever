@@ -280,7 +280,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     ['2010-Sep-24', 'versions/news_crumbs/2010_09_23.swf'],
     ['2010-Oct-23', 'versions/news_crumbs/2010_10_21.swf'],
     ['2010-Oct-28', 'versions/news_crumbs/2010_10_28.swf'],
-    ['2010-Nov-24', 'versions/news_crumbs/2010_09_30.swf']
+    ['2010-Nov-24', 'versions/news_crumbs/2010_11_11.swf']
   ])
 
   enNews.dir('', () => {
