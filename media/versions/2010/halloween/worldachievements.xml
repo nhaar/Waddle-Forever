@@ -102,12 +102,12 @@
  
     <!-- ~~~ 14 - 183 days! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
 	
-	<achievement name="183 days!" id="14"> 
-		<event>user enterRoom</event> 
+	<!-- <achievement name="183 days!" id="14"> 
+		<event>user enterRoom</event>  -->
 		<!-- player object meets the age requirement:                                     --> 
-		<condition>user hasProperty created_date greaterThan 182</condition> 
+		<!-- <condition>user hasProperty created_date greaterThan 182</condition> 
 		<result>stampEarned 14</result> 
-	</achievement> 
+	</achievement>  -->
     
     <!-- ~~~ 15 - Going Places ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
 	
@@ -168,12 +168,12 @@
  
     <!-- ~~~ 20 - 365 days! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
 	
-	<achievement name="365 days!" id="20"> 
-		<event>user enterRoom</event> 
+	<!-- <achievement name="365 days!" id="20"> 
+		<event>user enterRoom</event>  -->
 		<!-- player object meets the age requirement:                                     --> 
-		<condition>user hasProperty created_date greaterThan 364</condition> 
+		<!-- <condition>user hasProperty created_date greaterThan 364</condition> 
 		<result>stampEarned 20</result> 
-	</achievement> 
+	</achievement>  -->
     
     <!-- ~~~ 21 - Puffle Owner ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --> 
 	

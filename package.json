@@ -1,6 +1,6 @@
 {
   "name": "waddle-forever",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "build-server-win-arm64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64.exe -t node20-win-arm64",
     "build-server-linux-arm64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
     "build-media": "node scripts/zip-media",
-    "build-win": "yarn build-server-win-x64&&yarn build-client-win&&node scripts/zip-win"
+    "build-win": "yarn build-server-win-x64&&yarn build-client-win&&node scripts/zip-win",
+    "crumbs": "ts-node crumbs/global-crumbs.ts"
   },
   "author": "CPS",
   "license": "MIT",

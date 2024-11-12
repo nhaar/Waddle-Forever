@@ -70,3 +70,9 @@ settings.json
 
 # zip files output
 /zip
+
+# crumbs output
+/crumbs/out
+
+# mods folder
+/mods

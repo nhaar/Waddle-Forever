@@ -5,6 +5,9 @@ import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
 import { isGreaterOrEqual, isLower } from './routes/versions';
+import { items } from './game/item';
+import { ItemType } from './game/items';
+import { isFlag } from './game/flags';
 
 const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
 
@@ -27,10 +30,11 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
-  constructor (socket: net.Socket, version: GameVersion) {
+  constructor (socket: net.Socket, version: GameVersion, member: boolean) {
     this.socket = socket;
     this.version = version;
     this.penguin = Client.getDefault();
+    this.penguin.is_member = member;
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
@@ -191,6 +195,23 @@ export class Client {
     this.sendXt('ai', item, this.penguin.coins);
   }
 
+  sendInventory(): void {
+    this.sendXt('gi', Object.keys(this.penguin.inventory).join('%'));
+  }
+
+  addItems (items: number[]): void {
+    const newItems: Record<number, 1> = {}
+    for (const item of items) {
+      newItems[item] = 1;
+    }
+
+    this.penguin.inventory = { ...this.penguin.inventory, ...newItems };
+
+    this.update();
+    this.sendInventory();
+    this.sendPenguinInfo();
+  }
+
   updateColor (color: number): void {
     this.penguin.color = color;
     this.update();
@@ -202,11 +223,14 @@ export class Client {
   }
 
   getPinString (): string {
-    const pins = this.penguin.pins.map((pin) => {
-      // TODO -> middle is "date", third is member
-      // Proper pin objects and information
-      return [pin, 0, 0].join('|');
-    });
+    const pins = Object.keys(this.penguin.inventory).filter((item) => {
+      const id = Number(item)
+      return items[id].type === ItemType.Pin && !isFlag(id);
+    }).map((pin) => {
+      const item = items[Number(pin)];
+      return [item.id, (new Date(`${item.releaseDate}T12:00:00`)).getTime() / 1000, item.isMember ? 1 : 0].join('|');
+    })
+
     return pins.join('%');
   }
 
@@ -286,10 +310,12 @@ export class Client {
 
   addStamp (stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
     if (isGreaterOrEqual(this.version, releaseVersion)) {
-      this.penguin.stamps.push(stamp);
-      this.penguin.stampbook.recent_stamps.push(stamp);
-      this.sessionStamps.push(stamp);
-      this.update();
+      if (!this.penguin.stamps.includes(stamp)) {
+        this.penguin.stamps.push(stamp);
+        this.penguin.stampbook.recent_stamps.push(stamp);
+        this.sessionStamps.push(stamp);
+        this.update();
+      }
     }
   }
 
@@ -473,5 +499,16 @@ export class Client {
     const minutesDelta = delta / 1000 / 60;
     this.penguin.minutes_played += minutesDelta;
     this.update();
+  }
+
+  checkAgeStamps(): void {
+    const delta = Date.now() - this.penguin.registration_date;
+    const days = delta / 1000 / 86400;
+    if (days >= 183) {
+      this.giveStamp(14);
+      if (days >= 365) {
+        this.giveStamp(20);        
+      }
+    }
   }
 }

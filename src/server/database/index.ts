@@ -72,6 +72,8 @@ class JsonDatabase {
       case '0.2.0':
         this.migrate_0_2_0()
         return '0.2.1';
+      case '0.2.1':
+        return '0.2.2';
       default:
         throw new Error('Invalid database version: ' + version);
     }
