@@ -79,6 +79,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const library = new HttpRouter(['forms', 'library.swf'], localContentEn);
 
+  const puffleAdoptionPostcard = new HttpRouter(['postcards', '111.swf'], localContentEn);
+
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
   server.get('boots.swf', (s) => {
@@ -262,6 +264,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   alternating([petFurnitureCatalogue], [
     ['2010-Sep-03', 'versions/puffle/2010_03_19/pets.swf']
+  ])
+
+  alternating([puffleAdoptionPostcard], [
+    ['2010-Sep-03', 'versions/puffle/2010_02_25/111.swf']
   ])
 
   alternating([ninjaCatalogue], [
