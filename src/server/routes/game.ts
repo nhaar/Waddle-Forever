@@ -53,7 +53,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const worldAchievements = new HttpRouter(['web_service', 'worldachievements.xml'], server);
 
-  const emptyTelescope = new HttpRouter('empty.swf', telescope);
+  const emptyBinoculars = new HttpRouter('empty.swf', binoculars);
 
   const iglooMusic = new HttpRouter('igloo_music.swf', globalContentContent);
 
@@ -78,6 +78,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const newCrumbs = new HttpRouter('news_crumbs.swf', enNews);
 
   const library = new HttpRouter(['forms', 'library.swf'], localContentEn);
+
+  const puffleAdoptionPostcard = new HttpRouter(['postcards', '111.swf'], localContentEn);
 
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
@@ -109,7 +111,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
   });
 
-  games.get(['paddle',' paddle.swf'], (s) => {
+  games.get(['paddle', 'paddle.swf'], (s) => {
     // orange puffle was already in-game but seems like it wasnt in Fair 2010
     return `versions/paddle/white.swf`;
   });
@@ -186,7 +188,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   )
 
   range('2010-Oct-23', '2010-Oct-28', [
-    [emptyTelescope, 'versions/telescope/storm_on_horizon.swf']
+    [emptyBinoculars, 'versions/binoculars/storm_on_horizon.swf']
   ])
 
   alternating([iglooMusic],
@@ -264,6 +266,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     ['2010-Sep-03', 'versions/puffle/2010_03_19/pets.swf']
   ])
 
+  alternating([puffleAdoptionPostcard], [
+    ['2010-Sep-03', 'versions/puffle/2010_02_25/111.swf']
+  ])
+
   alternating([ninjaCatalogue], [
     ['2010-Sep-03', 'versions/ninja/2009_11_13/ninja.swf']
   ])
@@ -274,7 +280,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     ['2010-Sep-24', 'versions/news_crumbs/2010_09_23.swf'],
     ['2010-Oct-23', 'versions/news_crumbs/2010_10_21.swf'],
     ['2010-Oct-28', 'versions/news_crumbs/2010_10_28.swf'],
-    ['2010-Nov-24', 'versions/news_crumbs/2010_09_30.swf']
+    ['2010-Nov-24', 'versions/news_crumbs/2010_11_11.swf']
   ])
 
   enNews.dir('', () => {
