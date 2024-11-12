@@ -109,7 +109,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/jet_pack_adventure/${s.settings.jpa_level_selector ? 'level_selector' : 'vanilla'}.swf`;
   });
 
-  games.get(['paddle',' paddle.swf'], (s) => {
+  games.get(['paddle', 'paddle.swf'], (s) => {
     // orange puffle was already in-game but seems like it wasnt in Fair 2010
     return `versions/paddle/white.swf`;
   });
