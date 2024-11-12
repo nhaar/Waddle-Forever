@@ -53,7 +53,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const worldAchievements = new HttpRouter(['web_service', 'worldachievements.xml'], server);
 
-  const emptyTelescope = new HttpRouter('empty.swf', telescope);
+  const emptyBinoculars = new HttpRouter('empty.swf', binoculars);
 
   const iglooMusic = new HttpRouter('igloo_music.swf', globalContentContent);
 
@@ -186,7 +186,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   )
 
   range('2010-Oct-23', '2010-Oct-28', [
-    [emptyTelescope, 'versions/telescope/storm_on_horizon.swf']
+    [emptyBinoculars, 'versions/binoculars/storm_on_horizon.swf']
   ])
 
   alternating([iglooMusic],
