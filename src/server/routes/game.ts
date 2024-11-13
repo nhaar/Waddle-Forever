@@ -144,8 +144,14 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   ])
 
   // WINTER LUAU
-  range('2006-Jan-27', '2010-Sep-03', [
+  range('2006-Jan-27', '2006-Feb-14', [
     [oldRooms, 'versions/2006/winter_luau']
+  ])
+
+  // VALENTINE'S DAY CELEBRATIOn
+
+  range('2006-Feb-14', '2010-Sep-03', [
+    [oldRooms, 'versions/2006/valentine_day']
   ])
 
   // HALLOWEEN PARTY 2010
