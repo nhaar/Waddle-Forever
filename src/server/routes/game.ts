@@ -128,8 +128,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   ])
 
   // HALLOWEEN PARTY 2005
-  range('2005-Oct-27', '2010-Sep-03', [
+  range('2005-Oct-27', '2005-Nov-15', [
     [oldRooms, 'versions/2005/halloween']
+  ])
+
+  // PUFFLE DISCOVERY
+  range('2005-Nov-15', '2010-Sep-03', [
+    [oldRooms, 'versions/2005/puffle_discovery']
   ])
 
   // HALLOWEEN PARTY 2010
