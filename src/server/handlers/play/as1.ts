@@ -48,6 +48,11 @@ handler.xt('up', (client, color, head, face, neck, body, hand, feet, pin, backgr
   client.update();
   client.sendXt('up', client.penguinString)
 })
+
+handler.xt('k', 'spy', (client) => {
+  client.addItem(800);
+})
+
 handler.xt('il', (client) => {
   client.sendInventory();
 }, { once: true })
