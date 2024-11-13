@@ -9,6 +9,7 @@ import startServer from "../server/server";
 import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
+import electronIsDev from "electron-is-dev";
 
 log.initialize();
 
@@ -61,7 +62,9 @@ app.on('ready', async () => {
 
   startMenu(store, mainWindow, settingsManager);
 
-  startDiscordRPC(store, mainWindow);
+  if (!electronIsDev) {
+    startDiscordRPC(store, mainWindow);
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null;
