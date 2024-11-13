@@ -2,6 +2,7 @@ import express, { Request } from "express";
 import { alternating, HttpRouter, HttpServer, range, spaced } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
+import { isLower } from "./versions";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -84,6 +85,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const music = new HttpRouter('music', server);
 
+  const oldRooms = new HttpRouter(['artwork', 'rooms'], server);
+
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
   server.get('boots.swf', (s) => {
@@ -118,6 +121,11 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     // orange puffle was already in-game but seems like it wasnt in Fair 2010
     return `versions/paddle/white.swf`;
   });
+
+  // BETA TEST PARTY
+  range('2005-Sep-21', '2010-Sep-03', [
+    [oldRooms, 'versions/2005/beta']
+  ])
 
   // HALLOWEEN PARTY 2010
   range('2010-Oct-28', '2010-Nov-24',
@@ -319,22 +327,26 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   client.get('shell.swf', (s) => {
     return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
   })
+
+  const root = new HttpRouter('', server);
   
   server.get('', (s) => {
-    if (s.settings.version === '2005-Aug-22') {
+    if (isLower(s.settings.version, '2010-Sep-03')) {
       return 'special/index.html/as1-website.html';
+    } else {
+      return `special/index.html/${s.settings.minified_website ? 'minified' : 'as2-website'}.html`
     }
-    return `special/index.html/${s.settings.minified_website ? 'minified' : 'as2-website'}.html`
   });
+
+  server.dir(['artwork', 'items'], () => {
+    return 'clothing/sprites'
+  })
   
   // STATIC SERVING
-  server.dir('', (s) => {
-    if (s.settings.version === '2005-Aug-22') {
-      return 'versions/as1'
-    } else {
-      return 'static'
-    }
-  })
+  alternating([root], [
+    ['2005-Aug-22', 'versions/as1'],
+    ['2010-Sep-03', 'static']
+  ])
   
   return server
 }

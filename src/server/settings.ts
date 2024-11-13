@@ -3,6 +3,7 @@ import path from 'path';
 import { Router, Request } from "express";
 
 export type GameVersion = '2005-Aug-22'
+  | '2005-Sep-21'
   | '2010-Sep-03'
   | '2010-Sep-10'
   | '2010-Sep-24'

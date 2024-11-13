@@ -65,6 +65,12 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-09-21',
+    events: {
+      partyStart: 'Beta Test Party'
+    }
+  },
+  {
     value: '2010-09-03',
     events: {
       partyStart: 'The Fair 2010'
