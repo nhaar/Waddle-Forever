@@ -82,6 +82,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const puffleAdoptionPostcard = new HttpRouter(['postcards', '111.swf'], localContentEn);
 
+  const music = new HttpRouter('music', server);
+
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
   server.get('boots.swf', (s) => {
@@ -222,6 +224,15 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
 
   globalContent.dir('music', () => {
+    return 'music'
+  })
+
+  // as1 music
+  music.dir('', () => {
+    return 'static/play/v2/content/global/music'
+  })
+
+  music.dir('', () => {
     return 'music'
   })
 

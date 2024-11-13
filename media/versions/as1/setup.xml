@@ -28,12 +28,12 @@
       </Book>
       <Dance>
          <File>dance10</File>
-         <Music>5</Music>
+         <Music>2</Music>
          <Frame>1</Frame>
       </Dance>
       <Lounge>
          <File>lounge10</File>
-         <Music>6</Music>
+         <Music>0</Music>
          <Frame>1</Frame>
       </Lounge>
       <Shop>
