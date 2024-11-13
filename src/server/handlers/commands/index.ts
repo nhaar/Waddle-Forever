@@ -1,12 +1,13 @@
+import { Client } from "../../../server/penguin";
 import { XtHandler } from "..";
 import { items } from "../../game/item";
 import { Room } from "../../game/rooms";
+import { isAs1 } from "../../../server/routes/versions";
 
 
 const handler = new XtHandler();
 
-// TODO better system here
-handler.xt('m#sm', (client, id, message) => {
+export const commandsHandler = (client: Client, id: string, message: string) => {
   if (message.startsWith('!ai')) {
     if (message.match(/!ai\s+all/) !== null) {
       const allItems = Object.values(items);
@@ -22,7 +23,11 @@ handler.xt('m#sm', (client, id, message) => {
     const numberMatch = message.match(/!ac\s+(\d+)/);
     if (numberMatch !== null) {
       client.addCoins(Number(numberMatch[1]));
-      client.sendPenguinInfo();
+      if (isAs1(client.version)) {
+        client.sendAs1Coins();
+      } else {
+        client.sendPenguinInfo();
+      }
     }
   } else if (message.startsWith('!jr')) {
     const numberMatch = message.match(/!jr\s+(\d+)/);
@@ -69,6 +74,9 @@ handler.xt('m#sm', (client, id, message) => {
       }
     }
   }
-});
+}
+
+// TODO better system here
+handler.xt('m#sm', commandsHandler);
 
 export default handler;

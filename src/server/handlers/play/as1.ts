@@ -2,6 +2,7 @@ import { Client } from '../../../server/penguin';
 import { XtHandler } from '..';
 import { Room } from '../../game/rooms';
 import { getDateString } from '../../../common/utils';
+import { commandsHandler } from '../commands';
 
 const handler = new XtHandler();
 
@@ -25,8 +26,9 @@ handler.xt('z', 'zo', (client, score) => {
   client.sendXt('zo');
 })
 
+// update client's coins
 handler.xt('ac', (client) => {
-  client.sendXt('ac', client.penguin.coins);
+  client.sendAs1Coins();
 })
 
 handler.xt('ai', (client, item) => {
@@ -57,11 +59,12 @@ handler.xt('il', (client) => {
   client.sendInventory();
 }, { once: true })
 
+handler.xt('m', 'sm', commandsHandler);
 
 // Logging in
 handler.post('/php/login.php', (body) => {
   const { Username } = body;
-  const [penguin, id] = Client.getPenguinFromName(Username);
+  let [penguin, id] = Client.getPenguinFromName(Username);
 
   const params: Record<string, number | string> = {
     crumb: Client.as1Crumb(penguin ,id),

@@ -4,7 +4,7 @@ import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
-import { isGreaterOrEqual, isLower } from './routes/versions';
+import { isAs1, isGreaterOrEqual, isLower } from './routes/versions';
 import { items } from './game/item';
 import { ItemType } from './game/items';
 import { isFlag } from './game/flags';
@@ -79,7 +79,7 @@ export class Client {
   }
 
   get penguinString (): string {
-    if (isLower(this.version, '2010-Sep-03')) {
+    if (isAs1(this.version)) {
       return Client.as1Crumb(this.penguin, this.id);
     } else {
       return [
@@ -548,5 +548,9 @@ export class Client {
     ) : (
       Math.floor(Number(score) / 10)
     );
+  }
+
+  sendAs1Coins(): void {
+    this.sendXt('ac', this.penguin.coins);
   }
 }

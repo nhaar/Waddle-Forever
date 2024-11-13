@@ -72,3 +72,7 @@ export function isLower(left: GameVersion, right: GameVersion) {
 export function isLowerOrEqual(left: GameVersion, right: GameVersion): boolean {
   return !isGreater(left, right)
 }
+
+export function isAs1(version: GameVersion): boolean {
+  return isLower(version, '2010-Sep-03')
+}

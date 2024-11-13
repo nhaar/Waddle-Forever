@@ -2,7 +2,7 @@ import express, { Request } from "express";
 import { alternating, HttpRouter, HttpServer, range, spaced } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
-import { isLower } from "./versions";
+import { isAs1 } from "./versions";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -331,7 +331,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const root = new HttpRouter('', server);
   
   server.get('', (s) => {
-    if (isLower(s.settings.version, '2010-Sep-03')) {
+    if (isAs1(s.settings.version)) {
       return 'special/index.html/as1-website.html';
     } else {
       return `special/index.html/${s.settings.minified_website ? 'minified' : 'as2-website'}.html`
@@ -343,10 +343,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
   
   // STATIC SERVING
-  alternating([root], [
-    ['2005-Aug-22', 'versions/as1'],
-    ['2010-Sep-03', 'static']
-  ])
+  server.dir('', (s) => {
+    if (isAs1(s.settings.version)) {
+      return 'versions/as1'
+    } else {
+      return 'static'
+    }
+  })
   
   return server
 }
