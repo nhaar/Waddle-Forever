@@ -137,32 +137,28 @@ export class Client {
     db.update<Penguin>(Databases.Penguins, this.id, this.penguin);
   }
 
-  static getPenguinFromName (name: string): [Penguin, number] | undefined {
+  static getPenguinFromName (name: string): [Penguin, number] {
     const data = db.get<Penguin>(Databases.Penguins, 'name', name);
+
+    if (data === undefined) {
+      return Client.create(name);
+    }
     return data
   }
 
-  private setPenguinFromName (name: string): boolean {
+  setPenguinFromName (name: string): void {
     const data = Client.getPenguinFromName(name)
-    if (data === undefined) {
-      return false;
-    } else {
-      const [penguin, id] = data;
-      this.penguin = penguin;
-      this.id = id;
-      return true;
-    }
+    const [penguin, id] = data;
+    this.penguin = penguin;
+    this.id = id;
   }
 
-  create (name: string, mascot = 0): void {
-    const found = this.setPenguinFromName(name);
-    if (!found) {
-      [this.penguin, this.id] = db.add<Penguin>(Databases.Penguins, {
-        ...this.penguin,
-        name,
-        mascot
-      });
-    }
+  static create (name: string, mascot = 0): [Penguin, number] {
+    return db.add<Penguin>(Databases.Penguins, {
+      ...Client.getDefault(),
+      name,
+      mascot
+    });
   }
 
   static getDefault (): Penguin {

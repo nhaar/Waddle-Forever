@@ -45,7 +45,7 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
               socket.end('');
             } else {
               const name = dataMatch[1];
-              client.create(name);
+              client.setPenguinFromName(name);
               /*
               TODO
               will key be required?
