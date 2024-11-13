@@ -16,6 +16,20 @@ handler.xt('jr', (client, room) => {
   client.joinRoom(Number(room));
 })
 
+// Paying after minigame
+handler.xt('z', 'zo', (client, score) => {
+  const coins = client.getCoinsFromScore(Number(score));
+  client.addCoins(coins);
+  client.update();
+
+  client.sendXt('zo');
+})
+
+handler.xt('ac', (client) => {
+  client.sendXt('ac', client.penguin.coins);
+})
+
+// Logging in
 handler.post('/php/login.php', (body) => {
   const { Username } = body;
   const [penguin, id] = Client.getPenguinFromName(Username);

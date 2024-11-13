@@ -1,6 +1,6 @@
 import net from 'net';
 
-import { isGameRoom, Room, roomStamps } from './game/rooms';
+import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
@@ -535,5 +535,13 @@ export class Client {
         this.giveStamp(20);        
       }
     }
+  }
+
+  getCoinsFromScore(score: number): number {
+    return isLiteralScoreGame(this.currentRoom) ? (
+      Number(score)
+    ) : (
+      Math.floor(Number(score) / 10)
+    );
   }
 }
