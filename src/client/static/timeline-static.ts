@@ -40,6 +40,8 @@ function getDescription(version: Version): string {
     return `Party "${version.events.partyEnd}" ends`
   } else if (version.events.partyUpdate !== undefined) {
     return version.events.partyUpdate
+  } else if (version.events.other !== undefined) {
+    return version.events.other
   }
 
   return ''
@@ -51,10 +53,17 @@ type Version = {
     partyStart?: string
     partyEnd?: string
     partyUpdate?: string
+    other?: string
   }
 }
 
 const versions: Version[] = [
+  {
+    value: '2005-08-22',
+    events: {
+      other: 'Beta release'
+    }
+  },
   {
     value: '2010-09-03',
     events: {
