@@ -1,15 +1,20 @@
 import { XtPacket } from '..';
 import { Client } from '../penguin';
+import express, { Express } from 'express';
 
 type XTCallback = (client: Client, ...args: string[]) => void
+
+type PostCallback = (body: any) => string
 
 export class XtHandler {
   listeners: Map<string, XTCallback[]>;
   disonnectListeners: XTCallback[];
+  phpListeners: Map<string, PostCallback>;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
     this.disonnectListeners = [];
+    this.phpListeners = new Map<string, PostCallback>();
   }
   xt (extension: string, code: string, method: XTCallback): void
   xt (code: string, method: XTCallback): void
@@ -51,6 +56,10 @@ export class XtHandler {
     }
   }
 
+  post (path: string, method: PostCallback): void {
+    this.phpListeners.set(path, method);
+  }
+
   disconnect (method: XTCallback): void {
     this.disonnectListeners.push(method);
   }
@@ -73,5 +82,17 @@ export class XtHandler {
       }
     });
     this.disonnectListeners = [...this.disonnectListeners, ...handler.disonnectListeners];
+    handler.phpListeners.forEach((callback, name) => {
+      this.phpListeners.set(name, callback);
+    })
+  }
+
+  useEndpoints (server: Express) {
+    server.use(express.urlencoded({ extended: true }))
+    this.phpListeners.forEach((callback, path) => {
+      server.post(path, (req, res) => {
+        res.send(callback(req.body))
+      })
+    })
   }
 }

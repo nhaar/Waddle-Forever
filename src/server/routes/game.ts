@@ -316,15 +316,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/index.html/${s.settings.minified_website ? 'minified' : 'as2-website'}.html`
   });
   
-  // TODO properly do this
-  server.router.use(express.urlencoded({ extended: true }))
-  server.router.post('/php/login.php', (req: Request, res) => {
-    const { Username } = req.body;
-    
-    
-    res.send(`&crumb=1|${Username}|4|0|0|0|0|0|0|0|0|0|0|0|1&k1=5be3974f6273d995bfc7e5c45d26462a&c=500&s=0&jd=2024-11-12&ed=10000-1-1&h=&w=100|0&m=`)
-  })
-  
   // STATIC SERVING
   server.dir('', (s) => {
     if (s.settings.version === '2005-Aug-22') {

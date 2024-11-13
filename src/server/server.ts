@@ -129,6 +129,8 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   const as1Listener = new XtHandler();
   as1Listener.use(as1Handler);
 
+  as1Handler.useEndpoints(server);
+
   await createServer('Login', 6112, new XtHandler(), settingsManager);
   await createServer('World', WORLD_PORT, worldListener, settingsManager);
   await createServer('Old', 6114, as1Listener, settingsManager);

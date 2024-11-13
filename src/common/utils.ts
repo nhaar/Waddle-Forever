@@ -83,3 +83,13 @@ export const postJSON = async (path: string, body: any, errorCallback?: (data: a
     req.end();
   });
 };
+
+export function getDateString(timestamp: number): string {
+  const date = new Date(timestamp);
+
+  const year = date.getUTCFullYear()
+  const month = date.getUTCMonth() + 1
+  const day = date.getUTCDate()
+
+  return `${year}-${month}-${day}`
+}

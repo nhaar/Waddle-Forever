@@ -53,6 +53,26 @@ export class Client {
     this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
   }
 
+  static as1Crumb (penguin: Penguin, id: Number): string {
+    return [
+      id,
+      penguin.name,
+      penguin.color,
+      penguin.head,
+      penguin.face,
+      penguin.neck,
+      penguin.body,
+      penguin.hand,
+      penguin.feet,
+      penguin.pin,
+      penguin.background,
+      0, // X
+      0, // y
+      0, // TODO frame
+      penguin.is_member ? 1 : 0
+    ].join('|')
+  }
+
   get penguinString (): string {
     return [
       this.id,
@@ -108,8 +128,13 @@ export class Client {
     db.update<Penguin>(Databases.Penguins, this.id, this.penguin);
   }
 
-  private getPenguinFromName (name: string): boolean {
+  static getPenguinFromName (name: string): [Penguin, number] | undefined {
     const data = db.get<Penguin>(Databases.Penguins, 'name', name);
+    return data
+  }
+
+  private setPenguinFromName (name: string): boolean {
+    const data = Client.getPenguinFromName(name)
     if (data === undefined) {
       return false;
     } else {
@@ -121,7 +146,7 @@ export class Client {
   }
 
   create (name: string, mascot = 0): void {
-    const found = this.getPenguinFromName(name);
+    const found = this.setPenguinFromName(name);
     if (!found) {
       [this.penguin, this.id] = db.add<Penguin>(Databases.Penguins, {
         ...this.penguin,
