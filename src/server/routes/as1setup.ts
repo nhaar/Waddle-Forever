@@ -108,6 +108,13 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
+  if (version === '2006-Jan-27') {
+    patchMusic(rooms, {
+      'Dock': 10,
+      'Forts': 11
+    })
+  }
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 
 <setup>

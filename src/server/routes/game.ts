@@ -139,8 +139,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   ])
 
   // CHRISTMAS 2005
-  range('2005-Dec-22', '2010-Sep-03', [
+  range('2005-Dec-22', '2006-Jan-27', [
     [oldRooms, 'versions/2005/christmas']
+  ])
+
+  // WINTER LUAU
+  range('2006-Jan-27', '2010-Sep-03', [
+    [oldRooms, 'versions/2006/winter_luau']
   ])
 
   // HALLOWEEN PARTY 2010
