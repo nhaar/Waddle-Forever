@@ -21,6 +21,8 @@ export class Client {
   version: GameVersion;
   sessionStart: number;
 
+  handledXts: Map<string, boolean>
+
   /**
    * Temporary variable to keep track of stamps collected used to know
    * which ones someone collected when ending a game
@@ -39,9 +41,12 @@ export class Client {
     this.x = 100;
     this.y = 100;
     this.sessionStart = Date.now();
-  
+    
     this.sessionStamps = [];
     this.walkingPuffle = NaN;
+
+    // For "only once" listeners
+    this.handledXts = new Map<string, boolean>();
   }
 
   send (message: string): void {
@@ -74,33 +79,37 @@ export class Client {
   }
 
   get penguinString (): string {
-    return [
-      this.id,
-      this.penguin.name,
-      1, // meant to be approval, but always approved
-      this.penguin.color,
-      this.penguin.head,
-      this.penguin.face,
-      this.penguin.neck,
-      this.penguin.body,
-      this.penguin.hand,
-      this.penguin.feet,
-      this.penguin.pin,
-      this.penguin.background,
-      this.x,
-      this.y,
-      1, // TODO, figure what this "frame" means
-      this.penguin.is_member ? 1 : 0,
-      this.memberAge,
-      0, // TODO figure out what this "avatar" is
-      0, // TODO figure out what penguin state is
-      0, // TODO figure out what party state is
-      0, // TODO figure out what puffle state is
-      '', // TODO figure out what empty strings are for (and if are necessary)
-      '',
-      '',
-      ''
-    ].join('|');
+    if (isLower(this.version, '2010-Sep-03')) {
+      return Client.as1Crumb(this.penguin, this.id);
+    } else {
+      return [
+        this.id,
+        this.penguin.name,
+        1, // meant to be approval, but always approved
+        this.penguin.color,
+        this.penguin.head,
+        this.penguin.face,
+        this.penguin.neck,
+        this.penguin.body,
+        this.penguin.hand,
+        this.penguin.feet,
+        this.penguin.pin,
+        this.penguin.background,
+        this.x,
+        this.y,
+        1, // TODO, figure what this "frame" means
+        this.penguin.is_member ? 1 : 0,
+        this.memberAge,
+        0, // TODO figure out what this "avatar" is
+        0, // TODO figure out what penguin state is
+        0, // TODO figure out what party state is
+        0, // TODO figure out what puffle state is
+        '', // TODO figure out what empty strings are for (and if are necessary)
+        '',
+        '',
+        ''
+      ].join('|');
+    }
   }
 
   get age (): number {

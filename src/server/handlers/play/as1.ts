@@ -29,6 +29,30 @@ handler.xt('ac', (client) => {
   client.sendXt('ac', client.penguin.coins);
 })
 
+handler.xt('ai', (client, item) => {
+  // TODO remove coins logic
+  client.addItem(Number(item));
+})
+
+// updating penguin
+handler.xt('up', (client, color, head, face, neck, body, hand, feet, pin, background) => {
+  client.penguin.color = Number(color)
+  client.penguin.head = Number(head);
+  client.penguin.face = Number(face);
+  client.penguin.neck = Number(neck);
+  client.penguin.body = Number(body);
+  client.penguin.hand = Number(hand);
+  client.penguin.feet = Number(feet);
+  client.penguin.pin = Number(pin);
+  client.penguin.background = Number(background);
+  client.update();
+  client.sendXt('up', client.penguinString)
+})
+handler.xt('il', (client) => {
+  client.sendInventory();
+}, { once: true })
+
+
 // Logging in
 handler.post('/php/login.php', (body) => {
   const { Username } = body;
