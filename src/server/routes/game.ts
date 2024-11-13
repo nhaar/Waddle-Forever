@@ -123,8 +123,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
 
   // BETA TEST PARTY
-  range('2005-Sep-21', '2010-Sep-03', [
+  range('2005-Sep-21', '2005-Oct-27', [
     [oldRooms, 'versions/2005/beta']
+  ])
+
+  // HALLOWEEN PARTY 2005
+  range('2005-Oct-27', '2010-Sep-03', [
+    [oldRooms, 'versions/2005/halloween']
   ])
 
   // HALLOWEEN PARTY 2010
