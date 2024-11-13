@@ -3,6 +3,7 @@ import { alternating, HttpRouter, HttpServer, range, spaced } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
 import { isAs1 } from "./versions";
+import { getSetupXml } from "./as1setup";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -133,8 +134,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   ])
 
   // PUFFLE DISCOVERY
-  range('2005-Nov-15', '2010-Sep-03', [
+  range('2005-Nov-15', '2005-Dec-22', [
     [oldRooms, 'versions/2005/puffle_discovery']
+  ])
+
+  // CHRISTMAS 2005
+  range('2005-Dec-22', '2010-Sep-03', [
+    [oldRooms, 'versions/2005/christmas']
   ])
 
   // HALLOWEEN PARTY 2010
@@ -350,6 +356,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.dir(['artwork', 'items'], () => {
     return 'clothing/sprites'
+  })
+
+  server.getData('setup.xml', (s) => {
+    return getSetupXml(s.settings.version);
   })
   
   // STATIC SERVING
