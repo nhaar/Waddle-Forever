@@ -176,6 +176,18 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
+  const clothing = findProperInterval<string>(version, [
+    ['2005-Aug-22', '0508'],
+    ['2005-Sep-21', '0509'],
+    ['2005-Oct-24', '0510'],
+    ['2005-Nov-01', '0511'],
+    ['2005-Dec-01', '0512'],
+    ['2006-Jan-01', '0601'],
+    ['2006-Feb-03', '0602'],
+    ['2006-Mar-03', '0603'],
+    ['2006-Apr-07', '0604']
+  ])
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 
 <setup>
@@ -240,7 +252,7 @@ export function getSetupXml(version: GameVersion) {
 
    <Catalogues>
       <Clothing>
-         <File>clothing0604</File>
+         <File>clothing${clothing}</File>
       </Clothing>
       <Furntiture>
          <File>furniture0603</File>

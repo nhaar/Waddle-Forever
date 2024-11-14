@@ -46,6 +46,8 @@ function getDescription(version: Version): string {
     return `Room "${version.events.roomOpen}" opens`
   } else if (version.events.minigameRelease !== undefined) {
     return `New minigame: "${version.events.minigameRelease}"`
+  } else if (version.events.newClothing === true) {
+    return 'New Clothing Catalogue'
   } else if (version.events.newIssue !== undefined) {
     return `CPT Issue ${version.events.newIssue} released`
   }
@@ -63,6 +65,7 @@ type Version = {
     newIssue?: number | string
     roomOpen?: string
     minigameRelease?: string
+    newClothing?: boolean
   }
 }
 
@@ -70,7 +73,8 @@ const versions: Version[] = [
   {
     value: '2005-08-22',
     events: {
-      other: 'Beta release'
+      other: 'Beta release',
+      newClothing: true
     }
   },
   {
@@ -82,7 +86,8 @@ const versions: Version[] = [
   {
     value: '2005-09-21',
     events: {
-      partyStart: 'Beta Test Party'
+      partyStart: 'Beta Test Party',
+      newClothing: true
     }
   },
   {
@@ -94,7 +99,8 @@ const versions: Version[] = [
   {
     value: '2005-10-24',
     events: {
-      newIssue: 1
+      newIssue: 1,
+      newClothing: true
     }
   },
   {
@@ -112,7 +118,8 @@ const versions: Version[] = [
   {
     value: '2005-11-01',
     events: {
-      partyEnd: 'Halloween Party 2005'
+      partyEnd: 'Halloween Party 2005',
+      newClothing: true
     }
   },
   {
@@ -161,7 +168,8 @@ const versions: Version[] = [
   {
     value: '2005-12-01',
     events: {
-      newIssue: 7
+      newIssue: 7,
+      newClothing: true
     }
   },
   {
@@ -209,6 +217,12 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2006-01-01',
+    events: {
+      newClothing: true
+    }
+  },
+  {
     value: '2006-01-05',
     events: {
       newIssue: 12
@@ -248,6 +262,12 @@ const versions: Version[] = [
     value: '2006-02-02',
     events: {
       newIssue: 16
+    }
+  },
+  {
+    value: '2006-02-03',
+    events: {
+      newClothing: true
     }
   },
   {
@@ -297,6 +317,12 @@ const versions: Version[] = [
     value: '2006-03-02',
     events: {
       newIssue: 20
+    }
+  },
+  {
+    value: '2006-03-03',
+    events: {
+      newClothing: true
     }
   },
   {
@@ -351,6 +377,12 @@ const versions: Version[] = [
     value: '2006-04-06',
     events: {
       newIssue: 25
+    }
+  },
+  {
+    value: '2006-04-07',
+    events: {
+      newClothing: true
     }
   },
   {
