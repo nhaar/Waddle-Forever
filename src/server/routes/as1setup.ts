@@ -4,12 +4,21 @@ type As1Room = {
   name: string,
   file: string
   music?: number,
+  frame?: number
 };
 
 function patchMusic(rooms: As1Room[], music: Record<string, number>) {
   for (const room of rooms) {
     if (music[room.name] !== undefined) {
       room.music = music[room.name]
+    }
+  }
+}
+
+function patchFrame(rooms: As1Room[], frames: Record<string, number>) {
+  for (const room of rooms) {
+    if (frames[room.name] !== undefined) {
+      room.frame = frames[room.name]
     }
   }
 }
@@ -116,6 +125,26 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
+  if (version === '2006-Feb-24') {
+    patchFrame(rooms, {
+      'Town': 2
+    })
+  }
+
+  if (version === '2006-Mar-31') {
+    patchMusic(rooms, {
+      'Dance': 201,
+      'Forts': 201,
+      'Rink': 201,
+      'Town': 201,
+      'Plaza': 201
+    })
+
+    patchFrame(rooms, {
+      'Plaza': 3
+    })
+  }
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 
 <setup>
@@ -134,7 +163,7 @@ export function getSetupXml(version: GameVersion) {
         <${room.name}>
             <File>${room.file}</File>
             <Music>${room.music ?? 0}</Music>
-            <Frame>1</Frame>
+            <Frame>${room.frame ?? 1}</Frame>
         </${room.name}>
         `
       }).join('')}

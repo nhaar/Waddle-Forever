@@ -154,8 +154,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   ])
 
   // PIZZA PARLOR OPENING PARTY
-  range('2006-Feb-24', '2010-Sep-03', [
+  range('2006-Feb-24', '2006-Mar-31', [
     [oldRooms, 'versions/2006/pizza_party']
+  ])
+
+  // APRIL FOOLS PARTY 2006
+  range('2006-Mar-31', '2010-Sep-03', [
+    [oldRooms, 'versions/2006/april_fools']
   ])
 
   // HALLOWEEN PARTY 2010
