@@ -42,6 +42,8 @@ function getDescription(version: Version): string {
     return version.events.partyUpdate
   } else if (version.events.other !== undefined) {
     return version.events.other
+  } else if (version.events.newIssue !== undefined) {
+    return `CPT Issue ${version.events.newIssue} released`
   }
 
   return ''
@@ -54,6 +56,7 @@ type Version = {
     partyEnd?: string
     partyUpdate?: string
     other?: string
+    newIssue?: number | string
   }
 }
 
@@ -77,9 +80,21 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-10-24',
+    events: {
+      newIssue: 1
+    }
+  },
+  {
     value: '2005-10-27',
     events: {
       partyStart: 'Halloween Party 2005'
+    }
+  },
+  {
+    value: '2005-10-28',
+    events: {
+      newIssue: 'fan'
     }
   },
   {
@@ -89,9 +104,45 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-11-03',
+    events: {
+      newIssue: 2
+    }
+  },
+  {
+    value: '2005-11-08',
+    events: {
+      newIssue: 3
+    }
+  },
+  {
+    value: '2005-11-11',
+    events: {
+      newIssue: 4
+    }
+  },
+  {
     value: '2005-11-15',
     events: {
       partyStart: 'Puffle Discovery'
+    }
+  },
+  {
+    value: '2005-11-16',
+    events: {
+      newIssue: 5
+    }
+  },
+  {
+    value: '2005-11-21',
+    events: {
+      newIssue: 6
+    }
+  },
+  {
+    value: '2005-12-01',
+    events: {
+      newIssue: 7
     }
   },
   {
@@ -101,15 +152,58 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-12-08',
+    events: {
+      newIssue: 8
+    }
+  },
+  {
+    value: '2005-12-15',
+    events: {
+      newIssue: 9
+    }
+  },
+  {
     value: '2005-12-22',
     events: {
-      partyStart: 'Christmas Party 2005'
+      partyStart: 'Christmas Party 2005',
+      newIssue: 10
     }
   },
   {
     value: '2005-12-26',
     events: {
       partyEnd: 'Christmas Party 2005'
+    }
+  },
+  {
+    value: '2005-12-29',
+    events: {
+      newIssue: 11
+    }
+  },
+  {
+    value: '2006-01-05',
+    events: {
+      newIssue: 12
+    }
+  },
+  {
+    value: '2006-01-12',
+    events: {
+      newIssue: 13
+    }
+  },
+  {
+    value: '2006-01-19',
+    events: {
+      newIssue: 14
+    }
+  },
+  {
+    value: '2006-01-26',
+    events: {
+      newIssue: 15
     }
   },
   {
@@ -125,6 +219,18 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2006-02-02',
+    events: {
+      newIssue: 16
+    }
+  },
+  {
+    value: '2006-02-09',
+    events: {
+      newIssue: 17
+    }
+  },
+  {
     value: '2006-02-14',
     events: {
       partyStart: 'Valentine\'s Day Celebration'
@@ -134,6 +240,18 @@ const versions: Version[] = [
     value: '2006-02-15',
     events: {
       partyEnd: 'Valentine\'s Day Celebration'
+    }
+  },
+  {
+    value: '2006-02-16',
+    events: {
+      newIssue: 18
+    }
+  },
+  {
+    value: '2006-02-23',
+    events: {
+      newIssue: 19
     }
   },
   {
@@ -149,6 +267,36 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2006-03-02',
+    events: {
+      newIssue: 20
+    }
+  },
+  {
+    value: '2006-03-09',
+    events: {
+      newIssue: 21
+    }
+  },
+  {
+    value: '2006-03-16',
+    events: {
+      newIssue: 22
+    }
+  },
+  {
+    value: '2006-03-23',
+    events: {
+      newIssue: 23
+    }
+  },
+  {
+    value: '2006-03-30',
+    events: {
+      newIssue: 24
+    }
+  },
+  {
     value: '2006-03-31',
     events: {
       partyStart: 'April Fools Party 2006'
@@ -158,6 +306,18 @@ const versions: Version[] = [
     value: '2006-04-03',
     events: {
       partyEnd: 'April Fools Party 2006'
+    }
+  },
+  {
+    value: '2006-04-06',
+    events: {
+      newIssue: 25
+    }
+  },
+  {
+    value: '2006-04-13',
+    events: {
+      newIssue: 26
     }
   },
   {

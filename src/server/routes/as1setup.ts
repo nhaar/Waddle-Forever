@@ -1,4 +1,5 @@
 import { GameVersion } from "../settings";
+import { findProperInterval, inInterval } from "./versions";
 
 type As1Room = {
   name: string,
@@ -24,6 +25,36 @@ function patchFrame(rooms: As1Room[], frames: Record<string, number>) {
 }
 
 export function getSetupXml(version: GameVersion) {
+  let news = findProperInterval<string | number>(version, [
+    ['2005-Oct-24', 1],
+    ['2005-Oct-28', 'fan'],
+    ['2005-Nov-03', 2],
+    ['2005-Nov-08', 3],
+    ['2005-Nov-11', 4],
+    ['2005-Nov-16', 5],
+    ['2005-Nov-21', 6],
+    ['2005-Dec-01', 7],
+    ['2005-Dec-08', 8],
+    ['2005-Dec-15', 9],
+    ['2005-Dec-22', 10],
+    ['2005-Dec-29', 11],
+    ['2006-Jan-05', 12],
+    ['2006-Jan-12', 13],
+    ['2006-Jan-19', 14],
+    ['2006-Jan-26', 15],
+    ['2006-Feb-02', 16],
+    ['2006-Feb-09', 17],
+    ['2006-Feb-16', 18],
+    ['2006-Feb-23', 19],
+    ['2006-Mar-02', 20],
+    ['2006-Mar-09', 21],
+    ['2006-Mar-16', 22],
+    ['2006-Mar-23', 23],
+    ['2006-Mar-30', 24],
+    ['2006-Apr-06', 25],
+    ['2006-Apr-13', 26]
+  ])
+
   const rooms: As1Room[] = [
     {
       name: 'Town',
@@ -106,7 +137,7 @@ export function getSetupXml(version: GameVersion) {
     }
   ]
 
-  if (version === '2005-Dec-22') {
+  if (inInterval(version, '2005-Dec-22', '2005-Dec-26')) {
     patchMusic(rooms, {
       'Town': 200,
       'Coffee': 200,
@@ -118,20 +149,20 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
-  if (version === '2006-Jan-27') {
+  if (inInterval(version, '2006-Jan-26', '2006-Jan-30')) {
     patchMusic(rooms, {
       'Dock': 10,
       'Forts': 11
     })
   }
 
-  if (version === '2006-Feb-24') {
+  if (inInterval(version, '2006-Feb-24', '2006-Feb-28')) {
     patchFrame(rooms, {
       'Town': 2
     })
   }
 
-  if (version === '2006-Mar-31') {
+  if (inInterval(version, '2006-Mar-31', '2006-Apr-03')) {
     patchMusic(rooms, {
       'Dance': 201,
       'Forts': 201,
@@ -235,7 +266,7 @@ export function getSetupXml(version: GameVersion) {
    </Maps>
 
    <News>
-      <File>news25</File>
+      <File>news${news}</File>
    </News>
 
    <Penguin>penguin</Penguin>

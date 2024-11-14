@@ -88,6 +88,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const oldRooms = new HttpRouter(['artwork', 'rooms'], server);
 
+  const chat = new HttpRouter('chat291.swf', server);
+
   // TODO a better system for handling these special medias
   // entrypoint for as2 client
   server.get('boots.swf', (s) => {
@@ -364,7 +366,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return `special/shell/${s.settings.remove_idle ? 'no_idle' : 'vanilla'}.swf`
   })
 
-  const root = new HttpRouter('', server);
+  alternating([chat], [
+    ['2005-Aug-22', 'versions/chat/chat_early.swf'],
+    ['2005-Oct-24', 'versions/chat/chat291.swf']
+  ])
   
   server.get('', (s) => {
     if (isAs1(s.settings.version)) {

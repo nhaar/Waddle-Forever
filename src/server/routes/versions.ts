@@ -76,3 +76,42 @@ export function isLowerOrEqual(left: GameVersion, right: GameVersion): boolean {
 export function isAs1(version: GameVersion): boolean {
   return isLower(version, '2010-Sep-03')
 }
+
+type VersionMap<T> = Array<[GameVersion, T]>
+
+export function findProperInterval<T>(version:GameVersion, map: VersionMap<T>): T {
+  if (isLower(version, map[0][0])) {
+    return map[0][1]
+  }
+  console.log('check version: ', version)
+  for (let i = 0; i < map.length - 1; i++) {
+    if (isLower(version, map[i + 1][0])) {
+      console.log('is lower', map[i+1][0], 'returning ', map[i][1]);
+      return map[i][1];
+    }
+  }
+
+  return map.slice(-1)[0][1];
+}
+
+export function inInterval(version: GameVersion, start: GameVersion, end: GameVersion, params?: {
+  startOpen?: boolean,
+  endOpen?: boolean
+}): boolean {
+  const startOpen = params?.startOpen ?? false;
+  const endOpen = params?.endOpen ?? true;
+
+  if (isLower(version, start)) {
+    return false
+  }
+  if (!startOpen && version === start) {
+    return true
+  }
+  if (isLower(version, end)) {
+    return true
+  }
+  if (!endOpen && version === end) {
+    return true
+  }
+  return false
+}
