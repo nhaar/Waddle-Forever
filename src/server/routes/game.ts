@@ -148,10 +148,14 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     [oldRooms, 'versions/2006/winter_luau']
   ])
 
-  // VALENTINE'S DAY CELEBRATIOn
-
-  range('2006-Feb-14', '2010-Sep-03', [
+  // VALENTINE'S DAY CELEBRATION
+  range('2006-Feb-14', '2006-Feb-24', [
     [oldRooms, 'versions/2006/valentine_day']
+  ])
+
+  // PIZZA PARLOR OPENING PARTY
+  range('2006-Feb-24', '2010-Sep-03', [
+    [oldRooms, 'versions/2006/pizza_party']
   ])
 
   // HALLOWEEN PARTY 2010

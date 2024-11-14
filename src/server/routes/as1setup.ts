@@ -72,7 +72,8 @@ export function getSetupXml(version: GameVersion) {
     },
     {
       name: 'Pizza',
-      file: 'pizza12'
+      file: 'pizza12',
+      music: 20
     },
     {
       name: 'Dock',
