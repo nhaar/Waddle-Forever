@@ -88,6 +88,16 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const oldRooms = new HttpRouter(['artwork', 'rooms'], server);
 
+  const oldMap = new HttpRouter(['artwork', 'maps', 'island5.swf'], server);
+
+  const oldTown = new HttpRouter('town10.swf', oldRooms);
+
+  const oldPlaza = new HttpRouter('plaza12.swf', oldRooms);
+
+  const oldForts = new HttpRouter('forts12.swf', oldRooms);
+
+  const oldVillage = new HttpRouter('village11.swf', oldRooms);
+
   const chat = new HttpRouter('chat291.swf', server);
 
   // TODO a better system for handling these special medias
@@ -370,7 +380,37 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     ['2005-Aug-22', 'versions/chat/chat_early.swf'],
     ['2005-Oct-24', 'versions/chat/chat291.swf']
   ])
+
+  alternating([oldTown], [
+    ['2005-Aug-22', 'versions/rooms/town/town_no_snow_forts.swf'],
+    ['2005-Sep-12', 'versions/rooms/town/town10.swf']
+  ])
+
+  alternating([oldPlaza], [
+    ['2006-Feb-24', 'versions/rooms/plaza/plaza_pre_pet.swf'],
+    ['2006-Mar-17', 'versions/rooms/plaza/plaza12.swf']
+  ])
+
+  alternating([oldMap], [
+    ['2005-Aug-22', 'versions/map/island_original.swf'],
+    ['2005-Sep-12', 'versions/map/island3.swf'],
+    ['2006-Feb-28', 'versions/map/island5_pre_berg.swf'],
+    ['2006-Mar-29', 'versions/map/island5.swf']
+  ])
+
+  alternating([oldVillage], [
+    ['2005-Aug-22', 'versions/rooms/village/village_only_dock.swf'],
+    ['2005-Nov-03', 'versions/rooms/village/village_pre_mountain.swf'],
+    ['2005-Nov-18', 'versions/rooms/village/village_pre_lodge.swf'],
+    ['2005-Dec-22', 'versions/rooms/village/village11.swf']
+  ])
   
+  alternating([oldForts], [
+    ['2005-Aug-22', 'versions/rooms/forts/forts_original.swf'],
+    ['2005-Dec-14', 'versions/rooms/forts/forts3.swf'],
+    ['2006-Feb-24', 'versions/rooms/forts/forts12.swf']
+  ])
+
   server.get('', (s) => {
     if (isAs1(s.settings.version)) {
       return 'special/index.html/as1-website.html';

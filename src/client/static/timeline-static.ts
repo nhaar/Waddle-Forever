@@ -42,6 +42,10 @@ function getDescription(version: Version): string {
     return version.events.partyUpdate
   } else if (version.events.other !== undefined) {
     return version.events.other
+  } else if (version.events.roomOpen !== undefined) {
+    return `Room "${version.events.roomOpen}" opens`
+  } else if (version.events.minigameRelease !== undefined) {
+    return `New minigame: "${version.events.minigameRelease}"`
   } else if (version.events.newIssue !== undefined) {
     return `CPT Issue ${version.events.newIssue} released`
   }
@@ -57,6 +61,8 @@ type Version = {
     partyUpdate?: string
     other?: string
     newIssue?: number | string
+    roomOpen?: string
+    minigameRelease?: string
   }
 }
 
@@ -65,6 +71,12 @@ const versions: Version[] = [
     value: '2005-08-22',
     events: {
       other: 'Beta release'
+    }
+  },
+  {
+    value: '2005-09-12',
+    events: {
+      roomOpen: 'Snow Forts'
     }
   },
   {
@@ -106,6 +118,7 @@ const versions: Version[] = [
   {
     value: '2005-11-03',
     events: {
+      roomOpen: 'Sport Shop',
       newIssue: 2
     }
   },
@@ -134,6 +147,12 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-11-18',
+    events: {
+      roomOpen: 'Mountain'
+    }
+  },
+  {
     value: '2005-11-21',
     events: {
       newIssue: 6
@@ -158,6 +177,12 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-12-14',
+    events: {
+      minigameRelease: 'Puffle Roundup'
+    }
+  },
+  {
     value: '2005-12-15',
     events: {
       newIssue: 9
@@ -167,6 +192,7 @@ const versions: Version[] = [
     value: '2005-12-22',
     events: {
       partyStart: 'Christmas Party 2005',
+      roomOpen: 'Ski Lodge',
       newIssue: 10
     }
   },
@@ -257,7 +283,8 @@ const versions: Version[] = [
   {
     value: '2006-02-24',
     events: {
-      partyStart: 'Pizza Parlor Opening Party'
+      partyStart: 'Pizza Parlor Opening Party',
+      roomOpen: 'Plaza, Pizza Parlor'
     }
   },
   {
@@ -285,9 +312,21 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2006-03-17',
+    events: {
+      roomOpen: 'Pet Shop'
+    }
+  },
+  {
     value: '2006-03-23',
     events: {
       newIssue: 23
+    }
+  },
+  {
+    value: '2006-03-29',
+    events: {
+      roomOpen: 'Iceberg'
     }
   },
   {
