@@ -221,7 +221,8 @@ const serverList: PenguinServer[] = locales.reduce((accumulator, currentValue) =
   return [ ...accumulator, ...currentValue.servers]
 }, [])
 
-const serversXml = `
+export function getServersXml(): string {
+  return `
 <?xml version="1.0" encoding="UTF-8"?>
 <servers>
    <environment name="live">
@@ -238,8 +239,7 @@ const serversXml = `
       }).join('')}
     </environment>
 </servers>
-`;
-
-fs.writeFileSync(path.join(process.cwd(), 'media/static/servers.xml'), serversXml);
+`
+}
 
 export default serverList;
