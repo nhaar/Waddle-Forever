@@ -71,9 +71,21 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-09-22',
+    events: {
+      partyEnd: 'Beta Test Party'
+    }
+  },
+  {
     value: '2005-10-27',
     events: {
       partyStart: 'Halloween Party 2005'
+    }
+  },
+  {
+    value: '2005-11-01',
+    events: {
+      partyEnd: 'Halloween Party 2005'
     }
   },
   {
@@ -83,9 +95,21 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2005-12-05',
+    events: {
+      partyEnd: 'Puffle Discovery'
+    }
+  },
+  {
     value: '2005-12-22',
     events: {
       partyStart: 'Christmas Party 2005'
+    }
+  },
+  {
+    value: '2005-12-26',
+    events: {
+      partyEnd: 'Christmas Party 2005'
     }
   },
   {
@@ -95,9 +119,21 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2006-01-30',
+    events: {
+      partyEnd: 'Winter Luau'
+    }
+  },
+  {
     value: '2006-02-14',
     events: {
       partyStart: 'Valentine\'s Day Celebration'
+    }
+  },
+  {
+    value: '2006-02-15',
+    events: {
+      partyEnd: 'Valentine\'s Day Celebration'
     }
   },
   {
@@ -107,9 +143,21 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2006-02-28',
+    events: {
+      partyEnd: 'Pizza Parlor Opening Party'
+    }
+  },
+  {
     value: '2006-03-31',
     events: {
       partyStart: 'April Fools Party 2006'
+    }
+  },
+  {
+    value: '2006-04-03',
+    events: {
+      partyEnd: 'April Fools Party 2006'
     }
   },
   {

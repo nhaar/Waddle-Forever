@@ -124,42 +124,42 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
 
   // BETA TEST PARTY
-  range('2005-Sep-21', '2005-Oct-27', [
+  range('2005-Sep-21', '2005-Sep-22', [
     [oldRooms, 'versions/2005/beta']
   ])
 
   // HALLOWEEN PARTY 2005
-  range('2005-Oct-27', '2005-Nov-15', [
+  range('2005-Oct-27', '2005-Nov-01', [
     [oldRooms, 'versions/2005/halloween']
   ])
 
   // PUFFLE DISCOVERY
-  range('2005-Nov-15', '2005-Dec-22', [
+  range('2005-Nov-15', '2005-Dec-05', [
     [oldRooms, 'versions/2005/puffle_discovery']
   ])
 
   // CHRISTMAS 2005
-  range('2005-Dec-22', '2006-Jan-27', [
+  range('2005-Dec-22', '2005-Dec-26', [
     [oldRooms, 'versions/2005/christmas']
   ])
 
   // WINTER LUAU
-  range('2006-Jan-27', '2006-Feb-14', [
+  range('2006-Jan-27', '2006-Jan-30', [
     [oldRooms, 'versions/2006/winter_luau']
   ])
 
   // VALENTINE'S DAY CELEBRATION
-  range('2006-Feb-14', '2006-Feb-24', [
+  range('2006-Feb-14', '2006-Feb-15', [
     [oldRooms, 'versions/2006/valentine_day']
   ])
 
   // PIZZA PARLOR OPENING PARTY
-  range('2006-Feb-24', '2006-Mar-31', [
+  range('2006-Feb-24', '2006-Feb-28', [
     [oldRooms, 'versions/2006/pizza_party']
   ])
 
   // APRIL FOOLS PARTY 2006
-  range('2006-Mar-31', '2010-Sep-03', [
+  range('2006-Mar-31', '2006-Apr-03', [
     [oldRooms, 'versions/2006/april_fools']
   ])
 
