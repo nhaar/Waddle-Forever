@@ -15,5 +15,6 @@ events.forEach(dispatchEvent);
 
 (window as any).api = {
   setActive: (mod: string) => ipcRenderer.send('set-mod-active', mod),
-  setInactive: (mod: string) => ipcRenderer.send('set-mod-inactive', mod)
+  setInactive: (mod: string) => ipcRenderer.send('set-mod-inactive', mod),
+  openModsFolder: () => ipcRenderer.send('open-mods-folder')
 };

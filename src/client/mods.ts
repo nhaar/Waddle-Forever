@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow, ipcMain, shell } from "electron";
 import { SettingsManager } from "../server/settings";
 import path from "path";
 
@@ -32,4 +32,8 @@ export const createModsWindow = async (settingsManager: SettingsManager, mainWin
     settingsManager.setModInactive(arg);
     mainWindow.webContents.reloadIgnoringCache();
   })
+
+  ipcMain.on('open-mods-folder', () => {
+    shell.openPath(path.join(process.cwd(), 'mods'));
+  });
 };

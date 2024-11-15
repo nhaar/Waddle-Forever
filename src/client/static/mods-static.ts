@@ -25,4 +25,8 @@ window.addEventListener('receive-mods', (e: any) => {
       })
     }
   }
+
+  document.getElementById('open-mods-folder')?.addEventListener('click', () => {
+    modsApi.openModsFolder();
+  });
 })
