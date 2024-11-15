@@ -3,7 +3,7 @@ import clearCache from "./cache";
 import openDevTools from "./dev-tools";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
-import { toggleFullScreen } from "./window";
+import { loadMain, toggleFullScreen } from "./window";
 import { createSettingsWindow } from "./settings";
 import { SettingsManager } from "../server/settings";
 import { createTimelinePicker } from "./timeline";
@@ -38,7 +38,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, settingsMan
       {
         label: 'Reload',
         accelerator: 'F5',
-        role: 'reload',
+        click: () => loadMain(mainWindow)
       },
       {
         label: 'Reload Clear Cache',

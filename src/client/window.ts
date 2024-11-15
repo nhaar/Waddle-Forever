@@ -11,6 +11,10 @@ export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   mainWindow.setFullScreen(fullScreen);
 };
 
+export const loadMain = (window: BrowserWindow) => {
+  window.loadURL('http://localhost')
+}
+
 interface FiveIconByPlatforms {
   [key: string]: () => void;
 }
@@ -44,7 +48,7 @@ const createWindow = async (store: Store) => {
   
   await checkUpdates(mainWindow);
 
-  mainWindow.loadURL('http://localhost');
+  loadMain(mainWindow);
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (!url.includes("localhost")) {
