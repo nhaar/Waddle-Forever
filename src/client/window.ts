@@ -1,5 +1,5 @@
 import path from 'path';
-import { BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow, dialog, Notification } from "electron";
 import { Store } from "./store";
 import { checkUpdates, update } from "./update";
 
@@ -45,6 +45,17 @@ const createWindow = async (store: Store) => {
   await checkUpdates(mainWindow);
 
   mainWindow.loadURL('http://localhost');
+
+  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+    if (process.platform === 'win32') {
+      app.setAppUserModelId(app.name)
+    }
+    new Notification({
+      title: 'Failed to load!',
+      body: `Failed to load ${validatedURL}, taking you back!`,
+    }).show();
+    mainWindow.loadURL('http://localhost');
+  });
   
   return mainWindow;
 };
