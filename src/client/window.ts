@@ -1,5 +1,5 @@
 import path from 'path';
-import { BrowserWindow, dialog } from "electron";
+import { BrowserWindow, dialog, shell } from "electron";
 import { Store } from "./store";
 import { checkUpdates, update } from "./update";
 
@@ -45,7 +45,13 @@ const createWindow = async (store: Store) => {
   await checkUpdates(mainWindow);
 
   mainWindow.loadURL('http://localhost');
-  
+
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (!url.includes("localhost")) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });  
   return mainWindow;
 };
 
