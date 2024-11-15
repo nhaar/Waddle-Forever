@@ -83,10 +83,8 @@ export function findProperInterval<T>(version:GameVersion, map: VersionMap<T>): 
   if (isLower(version, map[0][0])) {
     return map[0][1]
   }
-  console.log('check version: ', version)
   for (let i = 0; i < map.length - 1; i++) {
     if (isLower(version, map[i + 1][0])) {
-      console.log('is lower', map[i+1][0], 'returning ', map[i][1]);
       return map[i][1];
     }
   }
