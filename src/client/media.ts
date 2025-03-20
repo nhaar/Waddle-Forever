@@ -4,6 +4,7 @@ import fs from 'fs'
 import electronIsDev from "electron-is-dev";
 
 import { VERSION } from '../common/version';
+import settingsManager from '../server/settings';
 import { download } from './download';
 import { unzip } from './unzip';
 
@@ -36,6 +37,34 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
   }
 }
 
+const checkMedia = async (mediaName: string): Promise<boolean> => {
+  let isUpToDate = true;
+
+  const TARGET_DIRECTORY = path.join(MEDIA_DIRECTORY, mediaName);
+  if (!fs.existsSync(TARGET_DIRECTORY)) {
+    isUpToDate = false;
+    fs.mkdirSync(TARGET_DIRECTORY);
+  }
+
+  const versionFile = path.join(TARGET_DIRECTORY, '.version');
+  if (!fs.existsSync(versionFile)) {
+    isUpToDate = false;
+  } else {
+    const version = fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim();
+    if (version !== VERSION) {
+      isUpToDate = false;
+    }
+  }
+
+  let success = true;
+  if (!isUpToDate) {
+    fs.rmdirSync(TARGET_DIRECTORY, { recursive: true })
+    await downloadMediaFolder(mediaName, () => {}, () => { success = false });
+  }
+
+  return success;
+}
+
 /**
  * Initializes the media folders, downloading when needed to update things
  * @returns Whether the checks and downloads were successful
@@ -50,30 +79,21 @@ export const startMedia = async (): Promise<boolean> => {
     fs.mkdirSync(MEDIA_DIRECTORY);
   }
 
-  let isUpToDate = true;
-
-  // checking the mandatory media
-  const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');
-  if (!fs.existsSync(DEFAULT_DIRECTORY)) {
-    isUpToDate = false;
-    fs.mkdirSync(DEFAULT_DIRECTORY);
-  }
-
-  const versionFile = path.join(DEFAULT_DIRECTORY, '.version');
-  if (!fs.existsSync(versionFile)) {
-    isUpToDate = false;
-  } else {
-    const version = fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim();
-    if (version !== VERSION) {
-      isUpToDate = false;
+  // check media of name "string" if the "boolean" is true
+  const mediaConditions: [string, boolean][] = [
+    ['default', true], // mandatory check
+    ['clothing', settingsManager.settings.clothing]
+  ];
+  
+  // built so it aborts the moment something goes wrong
+  for (const mediaCondition of mediaConditions) {
+    const [name, mustCheck] = mediaCondition;
+    if (mustCheck) {
+      if ((await checkMedia(name)) === false) {
+        return false;
+      }
     }
   }
 
-  let success = true;
-  if (!isUpToDate) {
-    fs.rmdirSync(DEFAULT_DIRECTORY, { recursive: true })
-    await downloadMediaFolder('default', () => {}, () => { success = false });
-  }
-
-  return success;
+  return true;
 }
