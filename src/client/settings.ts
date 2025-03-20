@@ -49,7 +49,10 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
     })
 
     ipcMain.on('delete-package', (e, arg) => {
-      fs.rmdirSync(path.join(process.cwd(), 'media', arg), { recursive: true })
+      // must not remove packages in development, as that would greatly disturb git
+      if (!electronIsDev) {
+        fs.rmdirSync(path.join(process.cwd(), 'media', arg), { recursive: true })
+      }
       settingsWindow.webContents.send('finish-deleting', arg)
       settingsManager.updateSettings({
         [arg]: false

@@ -17,6 +17,13 @@ const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
  * @param onFail Function for running if it fails
  */
 export const downloadMediaFolder = async (mediaName: string, onSuccess: () => void, onFail: () => void) => {
+  // in dev, the medias are always installed
+  // can only test this in production builds
+  if (electronIsDev) {
+    onSuccess();
+    return;
+  }
+
   // use date to avoid collision (unlink only deletes after the app is closed)
   const zipName = String(Date.now()) + '.zip';
   const zipDir = path.join(MEDIA_DIRECTORY, zipName);
