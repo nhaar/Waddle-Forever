@@ -2,9 +2,7 @@ import { BrowserWindow, ipcMain, dialog } from "electron";
 import { SettingsManager } from "../server/settings";
 import path from "path";
 import fs from 'fs';
-import { download } from "./download";
-import { VERSION } from "../common/version";
-import { unzip } from "./unzip";
+import { downloadMediaFolder } from "./media";
 
 export const createSettingsWindow = async (settingsManager: SettingsManager, mainWindow: BrowserWindow) => {
   if (settingsManager.isEditting) {
@@ -39,20 +37,14 @@ export const createSettingsWindow = async (settingsManager: SettingsManager, mai
 
     ipcMain.on('download-package', (e, arg) => {
       (async () => {
-        // avoid collision (unlink only deletes after the app is closed)
-        const zipName = String(Date.now()) + '.zip'
-        const mediaDir = path.join(process.cwd(), 'media');
-        const zipDir = path.join(mediaDir, zipName)
-        const success = await download(`${arg}-${VERSION}.zip`, zipDir)
-        if (success) {
-          await unzip(zipDir, path.join(mediaDir, arg))
+        downloadMediaFolder(arg, () => {
           settingsWindow.webContents.send('finish-download', arg)
           settingsManager.updateSettings({
             [arg]: true
           })
-        } else {
+        }, () => {
           settingsWindow.webContents.send('download-fail')
-        }
+        })
       })()
     })
 

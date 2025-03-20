@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { app, BrowserWindow, dialog } from "electron";
 import log from "electron-log";
 import { startDiscordRPC } from "./discord";
@@ -10,6 +12,7 @@ import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
+import { startMedia } from "./media";
 
 log.initialize();
 
@@ -32,6 +35,25 @@ loadFlashPlugin(app);
 let mainWindow: BrowserWindow;
 
 app.on('ready', async () => {
+  // setup window is necessary so that in case we need to
+  // download media, closing the windows won't abort and close the program
+  const setupWindow = new BrowserWindow({
+    width: 200,
+    height: 200,
+    title: "Starting...",
+  });
+  setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
+
+  const mediaSuccess = await startMedia();
+  if (!mediaSuccess) {
+    await dialog.showMessageBox(setupWindow, {
+      buttons: ['Ok'],
+      title: 'Download Error',
+      message: 'It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.'
+    })
+
+    app.quit();
+  }
   try {
     await startServer(settingsManager);
 
@@ -56,6 +78,9 @@ app.on('ready', async () => {
   }
 
   mainWindow = await createWindow(store);
+  // release window since the main window now serves as
+  // the window that will remain open
+  setupWindow.close();
 
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
