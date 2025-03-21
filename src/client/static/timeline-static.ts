@@ -7,17 +7,6 @@ function updateVersion(version: string) {
   post('update', { version });
 }
 
-getSettings().then((settings) => {
-  const { version } = settings;
-  for (const button of radioButtons) {
-    if (button instanceof HTMLInputElement) {
-      if (button.value === version) {
-        button.checked = true;
-      }
-    }
-  }
-})
-
 function getMonthName(month: number): string {
   return [
     'January',
@@ -447,25 +436,49 @@ const versions: Version[] = [
   }
 ]
 
+// saving selected version globally
+let currentVersion = '';
+
 const timelineElement = document.getElementById('timeline')!;
+const yearElement = document.getElementById('year')! as HTMLSelectElement;
 
-timelineElement.innerHTML = versions.map((version) => {
-  return `
-      <input type="radio" id="${version.value}" name="version" value="${getGameVersion(version.value)}">
-      <label for="${version.value}">${getFullDate(version.value)} (${getDescription(version)})</label><br>
-  `
-}).join('')
+function updateTimeline() {
+  timelineElement.innerHTML = versions.filter((version) => {
+    return version.value.slice(0, 4) === yearElement.value;
+  }).map((version) => {
+    return `
+        <input type="radio" id="${version.value}" name="version" value="${getGameVersion(version.value)}">
+        <label for="${version.value}">${getFullDate(version.value)} (${getDescription(version)})</label><br>
+    `
+  }).join('')
 
-const radioButtons = document.querySelectorAll('input[name="version"]');
+  const radioButtons = document.querySelectorAll('input[name="version"]');
 
-// Add an event listener to each radio button
-radioButtons.forEach((radio) => {
-  radio.addEventListener('change', (event) => {
-    if (event.target instanceof HTMLInputElement) {
-      if (event.target.checked) {
-        updateVersion(event.target.value);
-        timelineApi.update();
+  // Add an event listener to each radio button
+  radioButtons.forEach((radio) => {
+    radio.addEventListener('change', (event) => {
+      if (event.target instanceof HTMLInputElement) {
+        if (event.target.checked) {
+          updateVersion(event.target.value);
+          currentVersion = event.target.value;
+          timelineApi.update();
+        }
+      }
+    });
+  });
+
+  for (const button of radioButtons) {
+    if (button instanceof HTMLInputElement) {
+      if (button.value === currentVersion) {
+        button.checked = true;
       }
     }
-  });
-});
+  }
+}
+
+getSettings().then((settings) => {
+  currentVersion = settings.version;
+  updateTimeline();
+})
+
+yearElement.addEventListener('change', updateTimeline);
