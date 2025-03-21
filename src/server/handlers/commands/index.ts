@@ -34,6 +34,10 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
     if (numberMatch !== null) {
       client.joinRoom(Number(numberMatch[1]));
     }
+  } else if (message.startsWith('!systemdefender')) {
+    client.joinRoom(950);
+  } else if (message.startsWith('!pufflelaunch')) {
+    client.joinRoom(955);
   } else if (message.startsWith('!epf')) {
     client.joinRoom(Room.VRRoom);
   } else if (message.startsWith('!awards')) {

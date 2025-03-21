@@ -223,7 +223,8 @@ export interface Penguin {
       read: boolean
     }
   }>,
-  mailSeq: number
+  mailSeq: number,
+  puffleLaunchGameData: string
 }
 
 export default db;

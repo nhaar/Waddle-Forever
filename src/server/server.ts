@@ -15,6 +15,7 @@ import puffleHandler from './handlers/play/puffle';
 import iglooHandler from './handlers/play/igloo';
 import epfHandler from './handlers/play/epf';
 import mailHandler from './handlers/play/mail';
+import gameHandler from './handlers/play/game';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
@@ -128,6 +129,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   worldListener.use(iglooHandler);
   worldListener.use(epfHandler);
   worldListener.use(mailHandler);
+  worldListener.use(gameHandler);
 
   const as1Listener = new XtHandler();
   as1Listener.use(as1Handler);

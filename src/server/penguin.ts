@@ -205,7 +205,8 @@ export class Client {
         1: 1
       },
       mail: [],
-      mailSeq: 0
+      mailSeq: 0,
+      puffleLaunchGameData: ''
     };
   }
 
@@ -552,5 +553,10 @@ export class Client {
 
   sendAs1Coins(): void {
     this.sendXt('ac', this.penguin.coins);
+  }
+
+  saveGameData(data: string): void {
+    this.penguin.puffleLaunchGameData = data;
+    this.update();
   }
 }
