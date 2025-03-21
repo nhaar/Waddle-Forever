@@ -6,5 +6,8 @@ body {
   flex-direction: column;
   row-gap: 20px;
 
+  font-size: medium;
+  font-family: Arial, sans-serif;
+
   user-select: none;
 }

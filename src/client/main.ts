@@ -46,8 +46,9 @@ app.on('ready', async () => {
   // download media, closing the windows won't abort and close the program
   const setupWindow = new BrowserWindow({
     width: 200,
-    height: 200,
-    title: "Starting...",
+    height: 100,
+    frame: false,
+    resizable: false
   });
   setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
 
