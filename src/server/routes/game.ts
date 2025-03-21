@@ -31,6 +31,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   const stage = new HttpRouter('stage.swf', rooms);
 
+  const town = new HttpRouter('town.swf', rooms);
+
+  const forts = new HttpRouter('forts.swf', rooms);
+
   const plaza = new HttpRouter('plaza.swf', rooms);
 
   const rink = new HttpRouter('rink.swf', rooms);
@@ -238,6 +242,20 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       ['2010-Sep-24', 'default/parties/2010/stadium_games/rink.swf']
     ]
   );
+
+  alternating(
+    [town],
+    [
+      ['2010-Sep-24', 'default/parties/2010/stadium_games/town.swf']
+    ]
+  )
+
+  alternating(
+    [forts],
+    [
+      ['2010-Sep-24', 'default/parties/2010/stadium_games/forts.swf']
+    ]
+  )
 
   alternating(
     [dojoCourtyard],
