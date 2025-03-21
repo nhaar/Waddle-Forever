@@ -478,6 +478,8 @@ function updateTimeline() {
 
 getSettings().then((settings) => {
   currentVersion = settings.version;
+  const year = currentVersion.slice(0, 4);
+  yearElement.value = year;
   updateTimeline();
 })
 
