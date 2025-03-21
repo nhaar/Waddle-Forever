@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rimraf compiled/",
     "copy-files": "copyfiles -u 1 assets/**/* assets/* assets/flash/PepperFlashPlayer.plugin/Contents/* assets/flash/PepperFlashPlayer.plugin/Contents/_CodeSignature/* assets/flash/PepperFlashPlayer.plugin/Contents/MacOs/* compiled/assets/ && copyfiles -u 3 src/client/views/**/* compiled/client/views/",
-    "build-tsc": "yarn clean && tsc && yarn copy-files",
+    "build-browser": "tsc --project tsconfig.esm.json",
+    "build-tsc": "yarn clean && tsc && yarn build-browser && yarn copy-files",
     "start": "yarn build-tsc && electron ./compiled/client/main.js",
     "lint": "eslint -c .eslintrc --ext .ts ./src",
     "build-client-win-nosetup": "yarn build-tsc && electron-builder build --dir --win --publish never",

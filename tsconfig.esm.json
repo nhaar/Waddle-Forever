@@ -2,11 +2,11 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "target": "ES6",
-    "module": "commonjs",
+    "module": "ES6",
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "compiled",
+    "outDir": "compiled/client/static",
     "baseUrl": ".",
     "paths": {
       "*": [
@@ -15,10 +15,9 @@
     }
   },
   "include": [
-    "src/**/*"
+    "src/client/static/**/*"
   ],
   "exclude": [
-    "src/client/static/**/*",
     "/dist/**/*",
     "/compiled/**/*"
   ]

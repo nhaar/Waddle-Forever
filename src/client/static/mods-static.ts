@@ -1,15 +1,33 @@
+import { getJson, post } from "./common-static.js";
+
 const modsApi = (window as any).api;
 
-window.addEventListener('receive-mods', (e: any) => {
+async function getMods() {
+  return await getJson('mod/get');
+}
+
+async function updateMod(name: string, active: boolean) {
+  await post('mod/update', { name, active })
+}
+
+async function setModActive(mod: string) {
+  await updateMod(mod, true);
+}
+
+async function setModInactive(mod: string) {
+  await updateMod(mod, false);
+}
+
+getMods().then((mods) => {
   let html = ''
-  for (const mod in e.detail) {
+  for (const mod in mods) {
     html += `
-    <input type="checkbox" id="${mod}" ${e.detail[mod] ? 'checked="true"' : ''} />
+    <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
     <span>${mod}</span>
     `;
   }
 
-  document.querySelector('.mods').innerHTML = html;
+  document.querySelector('.mods')!.innerHTML = html;
 
   const inputs = document.querySelectorAll('input');
   for (const input of inputs) {
@@ -17,10 +35,11 @@ window.addEventListener('receive-mods', (e: any) => {
       input.addEventListener('change', (e) => {
         if (e.target instanceof HTMLInputElement) {
           if (e.target.checked) {
-            modsApi.setActive(input.id);
+            setModActive(input.id);
           } else {
-            modsApi.setInactive(input.id);
+            setModInactive(input.id);
           }
+          modsApi.updateMod();
         }
       })
     }

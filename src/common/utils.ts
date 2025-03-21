@@ -2,6 +2,10 @@ import http from 'http';
 import https from 'https';
 import { WEBSITE } from './website';
 
+export type GlobalSettings = {
+  isEditting: boolean
+};
+
 export function parseURL(url: string): {
   protocol: 'http' | 'https',
   host: string,

@@ -21,6 +21,7 @@ import { createHttpServer } from './routes/game';
 import db from './database';
 import { getModRouter } from './settings';
 import as1Handler from './handlers/play/as1';
+import { setApiServer } from './settings-api';
 
 const createServer = async (type: string, port: number, handlers: XtHandler, settingsManager: SettingsManager): Promise<void> => {
   await new Promise<void>((resolve) => {
@@ -104,6 +105,8 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   const httpServer = createHttpServer(settingsManager);
 
   server.use(httpServer.router);
+
+  setApiServer(settingsManager, server);
 
   await new Promise<void>((resolve, reject) => {
     const HTTP_PORT = 80

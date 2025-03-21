@@ -1,4 +1,22 @@
+import { getSettings, post } from "./common-static.js";
+
 const timelineApi = (window as any).api;
+
+/** Update the timeline version */
+function updateVersion(version: string) {
+  post('update', { version });
+}
+
+getSettings().then((settings) => {
+  const { version } = settings;
+  for (const button of radioButtons) {
+    if (button instanceof HTMLInputElement) {
+      if (button.value === version) {
+        button.checked = true;
+      }
+    }
+  }
+})
 
 function getMonthName(month: number): string {
   return [
@@ -429,7 +447,7 @@ const versions: Version[] = [
   }
 ]
 
-const timelineElement = document.getElementById('timeline');
+const timelineElement = document.getElementById('timeline')!;
 
 timelineElement.innerHTML = versions.map((version) => {
   return `
@@ -445,18 +463,9 @@ radioButtons.forEach((radio) => {
   radio.addEventListener('change', (event) => {
     if (event.target instanceof HTMLInputElement) {
       if (event.target.checked) {
-        timelineApi.update(event.target.value);
+        updateVersion(event.target.value);
+        timelineApi.update();
       }
     }
   });
 });
-
-window.addEventListener('receive-version', (e: any) => {
-  for (const button of radioButtons) {
-    if (button instanceof HTMLInputElement) {
-      if (button.value === e.detail) {
-        button.checked = true;
-      }
-    }
-  }
-})

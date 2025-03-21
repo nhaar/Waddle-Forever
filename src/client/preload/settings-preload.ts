@@ -8,7 +8,6 @@ function dispatchEvent(name: string) {
 }
 
 const events = [
-  'receive-settings',
   'finish-download',
   'finish-deleting',
   'download-fail'
@@ -17,7 +16,6 @@ const events = [
 events.forEach(dispatchEvent);
 
 (window as any).api = {
-  update: (updateSettings: any) => ipcRenderer.send('update-settings', updateSettings),
   download: (pack: string) => ipcRenderer.send('download-package', pack),
   delete: (pack: string) => ipcRenderer.send('delete-package', pack),
   reload: () => ipcRenderer.send('reload-window'),

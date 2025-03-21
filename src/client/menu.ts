@@ -5,26 +5,26 @@ import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } 
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
 import { createSettingsWindow } from "./settings";
-import { SettingsManager } from "../server/settings";
+import { GlobalSettings } from "../common/utils";
 import { createTimelinePicker } from "./timeline";
 import { createModsWindow } from "./mods";
 
-const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, settingsManager: SettingsManager): MenuItemConstructorOptions[] => {
+const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings): MenuItemConstructorOptions[] => {
   const options: MenuItemConstructorOptions = {
     id: '1',
     label: 'Options',
     submenu: [
       {
         label: 'Open Settings',
-        click: () => { createSettingsWindow(settingsManager, mainWindow); }
+        click: () => { createSettingsWindow(globalSettings, mainWindow); }
       },
       {
         label: 'Open Timeline Picker',
-        click: () => { createTimelinePicker(settingsManager, mainWindow) }
+        click: () => { createTimelinePicker(mainWindow) }
       },
       {
         label: 'Open Mods',
-        click: () => { createModsWindow(settingsManager, mainWindow) }
+        click: () => { createModsWindow(mainWindow) }
       },
       {
         label: 'Clear Cache',
@@ -90,8 +90,8 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, settingsMan
   ];
 };
 
-const startMenu = (store: Store, mainWindow: BrowserWindow, settingsManager: SettingsManager) => {
-  const menuTemplate = createMenuTemplate(store, mainWindow, settingsManager);
+const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings) => {
+  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings);
 
   buildMenu(menuTemplate);
 };

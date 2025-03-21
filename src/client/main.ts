@@ -13,6 +13,7 @@ import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { startMedia } from "./media";
+import { GlobalSettings } from '../common/utils';
 
 log.initialize();
 
@@ -33,6 +34,12 @@ loadFlashPlugin(app);
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow;
+
+/** An object to keep global variables in memory across windows */
+let globalSettings : GlobalSettings = {
+  /** In order to limit the number of setting windows */
+  isEditting: false
+};
 
 app.on('ready', async () => {
   // setup window is necessary so that in case we need to
@@ -85,7 +92,7 @@ app.on('ready', async () => {
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, settingsManager);
+  startMenu(store, mainWindow, globalSettings);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
