@@ -38,6 +38,14 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
     client.joinRoom(950);
   } else if (message.startsWith('!pufflelaunch')) {
     client.joinRoom(955);
+  } else if (message.startsWith('!plunlocklevels')) {
+    client.unlockPuffleLaunchLevels();
+  } else if(message.startsWith('!plunlocktimeattack')) {
+    client.unlockPuffleLaunchTimeAttack();
+  } else if (message.startsWith('!plunlockturbo')) {
+    client.unlockTurboMode();
+  } else if (message.startsWith('!plunlockslowmode')) {
+    client.unlockSlowMode();
   } else if (message.startsWith('!epf')) {
     client.joinRoom(Room.VRRoom);
   } else if (message.startsWith('!awards')) {

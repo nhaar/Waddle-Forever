@@ -8,6 +8,7 @@ import { isAs1, isGreaterOrEqual, isLower } from './routes/versions';
 import { items } from './game/item';
 import { ItemType } from './game/items';
 import { isFlag } from './game/flags';
+import PuffleLaunchGameSet from './game/pufflelaunch';
 
 const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
 
@@ -560,9 +561,48 @@ export class Client {
     return binary.toString();
   }
 
+  /**
+   * Updates the puffle launch game data given the binary data, but doesn't save
+   * the data, mostly due to the commands which may use this and the player may regret using
+   * */
+  setGameData(data: Buffer): void {
+    this.penguin.puffleLaunchGameData = data.toString('base64');
+  }
+
   saveGameData(data: string): void {
     const binary = Buffer.from(data);
-    this.penguin.puffleLaunchGameData = binary.toString('base64');
+    this.setGameData(binary);
     this.update();
+  }
+
+  private setPuffleLaunchGameData(data: PuffleLaunchGameSet): void {
+    this.setGameData(data.get());
+  }
+
+  /** Set game data with all Puffle Launch levels unlocked */
+  unlockPuffleLaunchLevels() {
+    this.setPuffleLaunchGameData(new PuffleLaunchGameSet((new Array<number>(36)).fill(0x1), [], []));
+  }
+
+  /** Set game data with the Puffle Launch time attack mode unlocked (all levels have max puffle o's) */
+  unlockPuffleLaunchTimeAttack(times: number[] = [], turboStatuses: boolean[] = []) {
+    this.setPuffleLaunchGameData(new PuffleLaunchGameSet([
+      34, 46, 99, 90, 115, 39,
+      84, 42, 120, 123, 183, 54,
+      59, 75, 243, 88, 203, 135,
+      113, 284, 122, 153, 172, 69,
+      44, 48, 103, 97, 86, 144,
+      318, 165, 219, 87, 277, 33
+    ], times, turboStatuses));
+  }
+
+  /** Set game data with Puffle Launch turbo mode unlocked (all times will be 1 second) */
+  unlockTurboMode(turboStatuses: boolean[] = []) {
+    this.unlockPuffleLaunchTimeAttack((new Array<number>(36)).fill(1), turboStatuses);
+  }
+
+  /** Set game data with Puffle Launch slow mode unlocked (all times will be 1 second) */
+  unlockSlowMode() {
+    this.unlockTurboMode((new Array<boolean>(36)).fill(true));
   }
 }
