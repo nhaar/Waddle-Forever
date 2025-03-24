@@ -555,8 +555,14 @@ export class Client {
     this.sendXt('ac', this.penguin.coins);
   }
 
+  getGameData(): string {
+    const binary = Buffer.from(this.penguin.puffleLaunchGameData, 'base64');
+    return binary.toString();
+  }
+
   saveGameData(data: string): void {
-    this.penguin.puffleLaunchGameData = data;
+    const binary = Buffer.from(data);
+    this.penguin.puffleLaunchGameData = binary.toString('base64');
     this.update();
   }
 }
