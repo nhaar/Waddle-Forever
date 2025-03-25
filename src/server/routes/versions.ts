@@ -1,49 +1,86 @@
 import { GameVersion } from "../settings";
 
-function getVersionDetails(version: GameVersion): {
+/** Valid month initials for versions (same capitalization must be used) */
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
+
+/** Returns undefined if an invalid version, otherwise an array [year, month, day] */
+function decomposeVersion(version: string): [number, number, number] | undefined {
+  if (version.length !== 11) {
+    return;
+  }
+
+  const year = Number(version.slice(0, 4));
+  const month = version.slice(5, 8);
+  const day = Number(version.slice(9, 11));
+
+  if (isNaN(year) || isNaN(day)) {
+    return;
+  }
+  const monthIndex = MONTHS.indexOf(month);
+  if (monthIndex === -1) {
+    return;
+  }
+
+  if (year < 2005 || year > 2017) {
+    return;
+  }
+
+  const date = new Date(year, monthIndex, day);
+  if (isNaN(date.getTime())) {
+    return;
+  }
+
+  return [year, monthIndex + 1, day];
+}
+
+/** Get object with year, month and day of the version */
+function getVersionDetails(version: string): {
   year: number,
   month: number,
   day: number
 } {
-  const year = version.slice(0, 4);
-  const month = version.slice(5, 8);
-  const day = version.slice(9, 11);
-  let monthNum = 0;
+  const decomposed = decomposeVersion(version);
 
-  if (month === 'Jan') {
-    monthNum = 1;
-  } else if (month === 'Feb') {
-    monthNum = 2;
-  } else if (month === 'Mar') {
-    monthNum = 3;
-  } else if (month === 'Apr') {
-    monthNum = 4;
-  } else if (month === 'May') {
-    monthNum = 5;
-  } else if (month === 'Jun') {
-    monthNum = 6;
-  } else if (month === 'Jul') {
-    monthNum = 7;
-  } else if (month === 'Aug') {
-    monthNum = 8;
-  } else if (month === 'Sep') {
-    monthNum = 9;
-  } else if (month === 'Oct') {
-    monthNum = 10;
-  } else if (month === 'Nov') {
-    monthNum = 11;
-  } else if (month === 'Dec') {
-    monthNum = 12;
+  if (decomposed === undefined) {
+    throw new Error(`Invalid version date being processed: ${version}`);
   }
 
+  const [year, month, day] = decomposed;
+
   return {
-    year: Number(year),
-    month: monthNum,
-    day: Number(day)
+    year,
+    month,
+    day
   };
 }
 
-export function isGreater(left: GameVersion, right: GameVersion): boolean {
+/** Sort an array of versions from earliest to latest */
+export function sortVersions(versions: string[]): void {
+  versions.sort((a, b) => {
+    if (isLower(a, b)) {
+      return -1;
+    } else if (a === b) {
+      return 0;
+    } else {
+      return 1;
+    }
+  })
+}
+
+export function isGreater(left: string, right: string): boolean {
   const leftDetails = getVersionDetails(left);
   const rightDetails = getVersionDetails(right);
 
@@ -61,15 +98,15 @@ export function isGreater(left: GameVersion, right: GameVersion): boolean {
   return false;
 }
 
-export function isGreaterOrEqual(left: GameVersion, right: GameVersion): boolean {
+export function isGreaterOrEqual(left: string, right: string): boolean {
   return left === right || isGreater(left, right);
 }
 
-export function isLower(left: GameVersion, right: GameVersion) {
+export function isLower(left: string, right: string) {
   return !isGreaterOrEqual(left, right);
 }
 
-export function isLowerOrEqual(left: GameVersion, right: GameVersion): boolean {
+export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
 }
 

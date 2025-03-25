@@ -8,7 +8,9 @@ import settingsManager from '../server/settings';
 import { download } from './download';
 import { unzip } from './unzip';
 
-const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
+export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
+
+export const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');
 
 /**
  * Downloads and extracts a media folder from the website
