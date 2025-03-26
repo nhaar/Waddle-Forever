@@ -22,8 +22,10 @@ getMods().then((mods) => {
   let html = ''
   for (const mod in mods) {
     html += `
-    <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
-    <span>${mod}</span>
+    <div>
+      <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
+      <span>${mod}</span>
+    </div>
     `;
   }
 
