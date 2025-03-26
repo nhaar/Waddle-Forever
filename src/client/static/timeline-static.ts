@@ -254,18 +254,6 @@ const versions: Version[] = [
     }
   },
   {
-    value: '2006-01-27',
-    events: {
-      partyStart: 'Winter Luau'
-    }
-  },
-  {
-    value: '2006-01-30',
-    events: {
-      partyEnd: 'Winter Luau'
-    }
-  },
-  {
     value: '2006-02-02',
     events: {
       newIssue: 16

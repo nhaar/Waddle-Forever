@@ -47,7 +47,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     ['2005/halloween_2005', '2005-Oct-27', '2005-Nov-01'],
     ['2005/puffle_discovery', '2005-Nov-15', '2005-Dec-05'],
     ['2005/christmas_2005', '2005-Dec-22', '2005-Dec-26'],
-    ['2006/winter_luau', '2006-Jan-27', '2006-Jan-30'],
     ['2006/valentine_day_celebration', '2006-Feb-14', '2006-Feb-15'],
     ['2006/pizza_parlor_opening_party', '2006-Feb-24', '2006-Feb-28'],
     ['2006/april_fools_2006', '2006-Mar-31', '2006-Apr-03'],
