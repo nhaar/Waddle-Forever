@@ -149,13 +149,6 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
-  if (inInterval(version, '2006-Jan-26', '2006-Jan-30')) {
-    patchMusic(rooms, {
-      'Dock': 10,
-      'Forts': 11
-    })
-  }
-
   if (inInterval(version, '2006-Feb-24', '2006-Feb-28')) {
     patchFrame(rooms, {
       'Town': 2
