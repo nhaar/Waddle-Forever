@@ -111,7 +111,7 @@ export function isLowerOrEqual(left: string, right: string): boolean {
 }
 
 export function isAs1(version: GameVersion): boolean {
-  return isLower(version, '2010-Sep-03')
+  return isLower(version, '2008-Jan-01')
 }
 
 type VersionMap<T> = Array<[GameVersion, T]>
