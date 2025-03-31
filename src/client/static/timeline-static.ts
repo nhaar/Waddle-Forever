@@ -387,6 +387,12 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2010-08-12',
+    events: {
+      partyStart: 'Mountain Expedition'
+    }
+  },
+  {
     value: '2010-09-03',
     events: {
       partyStart: 'The Fair 2010'

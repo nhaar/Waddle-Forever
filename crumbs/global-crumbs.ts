@@ -82,6 +82,14 @@ const crumbs: Array<{
   filename: string,
   changes?: Modifications
 }> = [
+  { filename: '2010-MountainExpedition', changes: {
+    music: {
+      'party2': 294,
+      'party3': 295,
+      'party4': 295,
+      'party6': 256
+    }
+  } },
   { filename: '2010-Nov-24' },
   { filename: '2010-Halloween', changes: {
       music: {
@@ -170,7 +178,7 @@ const crumbs: Array<{
     music: {
       'stage': 39
     }
-  }}
+  }},
 ]
 
 const outDir = path.join(__dirname, 'out')
