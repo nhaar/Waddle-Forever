@@ -297,30 +297,6 @@ const originalStampbook = {
       }
     }
   },
-  "23": {
-    "name": "Party",
-    "description": "Party Stamps",
-    "parent_group_id": 5,
-    "display": "Events : Party",
-    "stamps": {
-      "183": {
-        "stamp_id": 183,
-        "name": "Party Puzzle",
-        "is_member": true,
-        "rank": 2,
-        "description": "Solve a puzzle at a party",
-        "rank_token": "medium"
-      },
-      "182": {
-        "stamp_id": 182,
-        "name": "Happy Room",
-        "is_member": false,
-        "rank": 2,
-        "description": "Make 10 penguins smile in a room",
-        "rank_token": "medium"
-      }
-    }
-  },
   "8": {
     "name": "Games",
     "description": "Parent group only",
@@ -904,414 +880,6 @@ const originalStampbook = {
       }
     }
   },
-  "22": {
-    "name": "Missions",
-    "description": "PSA Missions 1 to 11",
-    "parent_group_id": 8,
-    "display": "Games : Missions",
-    "stamps": {
-      "160": {
-        "stamp_id": 160,
-        "name": "Aunt Arctic Letter",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 1",
-        "rank_token": "none specified"
-      },
-      "170": {
-        "stamp_id": 170,
-        "name": "Blueprint",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 6",
-        "rank_token": "none specified"
-      },
-      "176": {
-        "stamp_id": 176,
-        "name": "Chocolate Box",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 9",
-        "rank_token": "none specified"
-      },
-      "174": {
-        "stamp_id": 174,
-        "name": "Cool Gift",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 8",
-        "rank_token": "none specified"
-      },
-      "178": {
-        "stamp_id": 178,
-        "name": "Employee Award",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 10",
-        "rank_token": "none specified"
-      },
-      "162": {
-        "stamp_id": 162,
-        "name": "G's Letter",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 2",
-        "rank_token": "none specified"
-      },
-      "166": {
-        "stamp_id": 166,
-        "name": "Handy Award",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 4",
-        "rank_token": "none specified"
-      },
-      "159": {
-        "stamp_id": 159,
-        "name": "Mission 1 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Case of the Missing Puffles",
-        "rank_token": "none specified"
-      },
-      "177": {
-        "stamp_id": 177,
-        "name": "Mission 10 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Waddle Squad",
-        "rank_token": "none specified"
-      },
-      "179": {
-        "stamp_id": 179,
-        "name": "Mission 11 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete The Veggie Villain",
-        "rank_token": "none specified"
-      },
-      "161": {
-        "stamp_id": 161,
-        "name": "Mission 2 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete G's Secret Mission",
-        "rank_token": "none specified"
-      },
-      "163": {
-        "stamp_id": 163,
-        "name": "Mission 3 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Case of the Missing Coins",
-        "rank_token": "none specified"
-      },
-      "165": {
-        "stamp_id": 165,
-        "name": "Mission 4 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Avalanche Rescue",
-        "rank_token": "none specified"
-      },
-      "167": {
-        "stamp_id": 167,
-        "name": "Mission 5 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Secret of the Fur",
-        "rank_token": "none specified"
-      },
-      "169": {
-        "stamp_id": 169,
-        "name": "Mission 6 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Questions for a Crab",
-        "rank_token": "none specified"
-      },
-      "171": {
-        "stamp_id": 171,
-        "name": "Mission 7 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Clockwork Repairs",
-        "rank_token": "none specified"
-      },
-      "173": {
-        "stamp_id": 173,
-        "name": "Mission 8 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Mysterious Tremors",
-        "rank_token": "none specified"
-      },
-      "175": {
-        "stamp_id": 175,
-        "name": "Mission 9 Medal",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete Operation: Spy and Seek",
-        "rank_token": "none specified"
-      },
-      "172": {
-        "stamp_id": 172,
-        "name": "Pennant",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 7",
-        "rank_token": "none specified"
-      },
-      "168": {
-        "stamp_id": 168,
-        "name": "Pizza Box",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 5",
-        "rank_token": "none specified"
-      },
-      "180": {
-        "stamp_id": 180,
-        "name": "Snow Globe",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 11",
-        "rank_token": "none specified"
-      },
-      "164": {
-        "stamp_id": 164,
-        "name": "Thank You Card",
-        "is_member": false,
-        "rank": 0,
-        "description": "Complete the secret task in Mission 3",
-        "rank_token": "none specified"
-      }
-    }
-  },
-  "19": {
-    "name": "Puffle Rescue",
-    "description": "Puffle Rescue Stamps",
-    "parent_group_id": 8,
-    "display": "Games : Puffle Rescue",
-    "stamps": {
-      "132": {
-        "stamp_id": 132,
-        "name": "1 Coin Bag",
-        "is_member": false,
-        "rank": 1,
-        "description": "Find 1 coin bag in the snow levels",
-        "rank_token": "easy"
-      },
-      "155": {
-        "stamp_id": 155,
-        "name": "1 Coin Bubble",
-        "is_member": true,
-        "rank": 1,
-        "description": "Find 1 coin bag in a bubble in the sea levels",
-        "rank_token": "easy"
-      },
-      "152": {
-        "stamp_id": 152,
-        "name": "10 Sea Levels",
-        "is_member": true,
-        "rank": 2,
-        "description": "Reach 10 sea levels with 5 full lives",
-        "rank_token": "medium"
-      },
-      "133": {
-        "stamp_id": 133,
-        "name": "2 Coin Bags ",
-        "is_member": false,
-        "rank": 2,
-        "description": "Find 2 coin bags in the snow levels",
-        "rank_token": "medium"
-      },
-      "156": {
-        "stamp_id": 156,
-        "name": "2 Coin Bubbles",
-        "is_member": true,
-        "rank": 2,
-        "description": "Find 2 coin bags in a bubble in the sea levels",
-        "rank_token": "medium"
-      },
-      "153": {
-        "stamp_id": 153,
-        "name": "20 Sea Levels",
-        "is_member": true,
-        "rank": 3,
-        "description": "Reach 20 sea levels with 5 full lives",
-        "rank_token": "hard"
-      },
-      "134": {
-        "stamp_id": 134,
-        "name": "3 Coin Bags",
-        "is_member": false,
-        "rank": 3,
-        "description": "Find 3 coin bags in the snow levels",
-        "rank_token": "hard"
-      },
-      "157": {
-        "stamp_id": 157,
-        "name": "3 Coin Bubbles",
-        "is_member": true,
-        "rank": 3,
-        "description": "Find 3 coin bags in a bubble in the sea levels",
-        "rank_token": "hard"
-      },
-      "154": {
-        "stamp_id": 154,
-        "name": "30 Sea Levels",
-        "is_member": true,
-        "rank": 4,
-        "description": "Reach 30 sea levels with 5 full lives",
-        "rank_token": "extreme"
-      },
-      "138": {
-        "stamp_id": 138,
-        "name": "Cave Coins",
-        "is_member": true,
-        "rank": 2,
-        "description": "Find hidden coins on level 1 in the caves",
-        "rank_token": "medium"
-      },
-      "140": {
-        "stamp_id": 140,
-        "name": "Cave Coins Max",
-        "is_member": true,
-        "rank": 3,
-        "description": "Find hidden coins on Level 7 in the caves",
-        "rank_token": "hard"
-      },
-      "139": {
-        "stamp_id": 139,
-        "name": "Cave Coins Plus",
-        "is_member": true,
-        "rank": 2,
-        "description": "Find hidden coins on level 4 in the caves",
-        "rank_token": "medium"
-      },
-      "148": {
-        "stamp_id": 148,
-        "name": "Close Call",
-        "is_member": true,
-        "rank": 2,
-        "description": "Dodge the giant snowball",
-        "rank_token": "medium"
-      },
-      "145": {
-        "stamp_id": 145,
-        "name": "Easy Cannon",
-        "is_member": true,
-        "rank": 2,
-        "description": "Destroy 8 snowball cannons in cave levels",
-        "rank_token": "medium"
-      },
-      "144": {
-        "stamp_id": 144,
-        "name": "Expert Catch",
-        "is_member": true,
-        "rank": 3,
-        "description": "Catch 3 coin bags before they fall",
-        "rank_token": "hard"
-      },
-      "150": {
-        "stamp_id": 150,
-        "name": "Express Rescue",
-        "is_member": true,
-        "rank": 2,
-        "description": "Complete 10 sea levels in 30 seconds each",
-        "rank_token": "medium"
-      },
-      "147": {
-        "stamp_id": 147,
-        "name": "Extreme Cannon",
-        "is_member": true,
-        "rank": 4,
-        "description": "Destroy 15 snowball cannons in cave levels",
-        "rank_token": "extreme"
-      },
-      "151": {
-        "stamp_id": 151,
-        "name": "Extreme Rescue",
-        "is_member": true,
-        "rank": 3,
-        "description": "Complete 20 sea levels in 30 seconds each",
-        "rank_token": "hard"
-      },
-      "141": {
-        "stamp_id": 141,
-        "name": "Quick Catch",
-        "is_member": true,
-        "rank": 1,
-        "description": "Catch 1 coin bag before it falls",
-        "rank_token": "easy"
-      },
-      "149": {
-        "stamp_id": 149,
-        "name": "Rapid Rescue",
-        "is_member": true,
-        "rank": 1,
-        "description": "Complete 5 sea levels in 30 seconds each",
-        "rank_token": "easy"
-      },
-      "130": {
-        "stamp_id": 130,
-        "name": "SOS 30",
-        "is_member": false,
-        "rank": 2,
-        "description": "Rescue 30 puffles in snow levels",
-        "rank_token": "medium"
-      },
-      "131": {
-        "stamp_id": 131,
-        "name": "SOS 60",
-        "is_member": false,
-        "rank": 3,
-        "description": "Rescue 60 Puffles in snow levels",
-        "rank_token": "hard"
-      },
-      "137": {
-        "stamp_id": 137,
-        "name": "Snow Hero",
-        "is_member": false,
-        "rank": 4,
-        "description": "Complete 9 snow levels in no more than 270 moves",
-        "rank_token": "extreme"
-      },
-      "136": {
-        "stamp_id": 136,
-        "name": "Snow Master",
-        "is_member": false,
-        "rank": 3,
-        "description": "Complete 6 snow levels in no more than 160 moves",
-        "rank_token": "hard"
-      },
-      "135": {
-        "stamp_id": 135,
-        "name": "Snow Student",
-        "is_member": false,
-        "rank": 2,
-        "description": "Complete 3 snow levels in no more than 70 moves",
-        "rank_token": "medium"
-      },
-      "146": {
-        "stamp_id": 146,
-        "name": "Super Cannon",
-        "is_member": true,
-        "rank": 3,
-        "description": "Destroy 12 snowball cannons in cave levels",
-        "rank_token": "hard"
-      },
-      "142": {
-        "stamp_id": 142,
-        "name": "Super Catch",
-        "is_member": true,
-        "rank": 2,
-        "description": "Catch 2 coin bags before they fall",
-        "rank_token": "medium"
-      }
-    }
-  },
   "16": {
     "name": "Thin Ice",
     "description": "Don't fall through!",
@@ -1402,6 +970,8 @@ enum CategoryID {
   Games = "8",
   AquaGrabber = "13",
   JetPackAdventure = "11",
+  PuffleRescue = "19",
+  PSAMissions = "22",
   VideoGames = "25",
   GameDay = "26",
   CartSurfer = "28",
@@ -1425,6 +995,444 @@ function addStamps(category: Category, stamps: Stamp[]) {
 
 export function getStampbook(version: GameVersion): string {
   const newStampbook = JSON.parse(JSON.stringify(originalStampbook)) as Stampbook
+
+  if (isGreaterOrEqual(version, '2010-Aug-12')) {
+    newStampbook[CategoryID.Party] = {
+      "name": "Party",
+      "description": "Party Stamps",
+      "parent_group_id": 5,
+      "display": "Events : Party",
+      "stamps": {
+        "183": {
+          "stamp_id": 183,
+          "name": "Party Puzzle",
+          "is_member": true,
+          "rank": 2,
+          "description": "Solve a puzzle at a party",
+          "rank_token": "medium"
+        },
+        "182": {
+          "stamp_id": 182,
+          "name": "Happy Room",
+          "is_member": false,
+          "rank": 2,
+          "description": "Make 10 penguins smile in a room",
+          "rank_token": "medium"
+        }
+      }
+    }
+  }
+
+  if (isGreaterOrEqual(version, '2010-Aug-31')) {
+    newStampbook[CategoryID.PSAMissions] = {
+      "name": "Missions",
+      "description": "PSA Missions 1 to 11",
+      "parent_group_id": 8,
+      "display": "Games : Missions",
+      "stamps": {
+        "160": {
+          "stamp_id": 160,
+          "name": "Aunt Arctic Letter",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 1",
+          "rank_token": "none specified"
+        },
+        "170": {
+          "stamp_id": 170,
+          "name": "Blueprint",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 6",
+          "rank_token": "none specified"
+        },
+        "176": {
+          "stamp_id": 176,
+          "name": "Chocolate Box",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 9",
+          "rank_token": "none specified"
+        },
+        "174": {
+          "stamp_id": 174,
+          "name": "Cool Gift",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 8",
+          "rank_token": "none specified"
+        },
+        "178": {
+          "stamp_id": 178,
+          "name": "Employee Award",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 10",
+          "rank_token": "none specified"
+        },
+        "162": {
+          "stamp_id": 162,
+          "name": "G's Letter",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 2",
+          "rank_token": "none specified"
+        },
+        "166": {
+          "stamp_id": 166,
+          "name": "Handy Award",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 4",
+          "rank_token": "none specified"
+        },
+        "159": {
+          "stamp_id": 159,
+          "name": "Mission 1 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Case of the Missing Puffles",
+          "rank_token": "none specified"
+        },
+        "177": {
+          "stamp_id": 177,
+          "name": "Mission 10 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Waddle Squad",
+          "rank_token": "none specified"
+        },
+        "179": {
+          "stamp_id": 179,
+          "name": "Mission 11 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete The Veggie Villain",
+          "rank_token": "none specified"
+        },
+        "161": {
+          "stamp_id": 161,
+          "name": "Mission 2 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete G's Secret Mission",
+          "rank_token": "none specified"
+        },
+        "163": {
+          "stamp_id": 163,
+          "name": "Mission 3 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Case of the Missing Coins",
+          "rank_token": "none specified"
+        },
+        "165": {
+          "stamp_id": 165,
+          "name": "Mission 4 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Avalanche Rescue",
+          "rank_token": "none specified"
+        },
+        "167": {
+          "stamp_id": 167,
+          "name": "Mission 5 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Secret of the Fur",
+          "rank_token": "none specified"
+        },
+        "169": {
+          "stamp_id": 169,
+          "name": "Mission 6 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Questions for a Crab",
+          "rank_token": "none specified"
+        },
+        "171": {
+          "stamp_id": 171,
+          "name": "Mission 7 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Clockwork Repairs",
+          "rank_token": "none specified"
+        },
+        "173": {
+          "stamp_id": 173,
+          "name": "Mission 8 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Mysterious Tremors",
+          "rank_token": "none specified"
+        },
+        "175": {
+          "stamp_id": 175,
+          "name": "Mission 9 Medal",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete Operation: Spy and Seek",
+          "rank_token": "none specified"
+        },
+        "172": {
+          "stamp_id": 172,
+          "name": "Pennant",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 7",
+          "rank_token": "none specified"
+        },
+        "168": {
+          "stamp_id": 168,
+          "name": "Pizza Box",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 5",
+          "rank_token": "none specified"
+        },
+        "180": {
+          "stamp_id": 180,
+          "name": "Snow Globe",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 11",
+          "rank_token": "none specified"
+        },
+        "164": {
+          "stamp_id": 164,
+          "name": "Thank You Card",
+          "is_member": false,
+          "rank": 0,
+          "description": "Complete the secret task in Mission 3",
+          "rank_token": "none specified"
+        }
+      }
+    }
+    newStampbook[CategoryID.PuffleRescue] = {
+      "name": "Puffle Rescue",
+      "description": "Puffle Rescue Stamps",
+      "parent_group_id": 8,
+      "display": "Games : Puffle Rescue",
+      "stamps": {
+        "132": {
+          "stamp_id": 132,
+          "name": "1 Coin Bag",
+          "is_member": false,
+          "rank": 1,
+          "description": "Find 1 coin bag in the snow levels",
+          "rank_token": "easy"
+        },
+        "155": {
+          "stamp_id": 155,
+          "name": "1 Coin Bubble",
+          "is_member": true,
+          "rank": 1,
+          "description": "Find 1 coin bag in a bubble in the sea levels",
+          "rank_token": "easy"
+        },
+        "152": {
+          "stamp_id": 152,
+          "name": "10 Sea Levels",
+          "is_member": true,
+          "rank": 2,
+          "description": "Reach 10 sea levels with 5 full lives",
+          "rank_token": "medium"
+        },
+        "133": {
+          "stamp_id": 133,
+          "name": "2 Coin Bags ",
+          "is_member": false,
+          "rank": 2,
+          "description": "Find 2 coin bags in the snow levels",
+          "rank_token": "medium"
+        },
+        "156": {
+          "stamp_id": 156,
+          "name": "2 Coin Bubbles",
+          "is_member": true,
+          "rank": 2,
+          "description": "Find 2 coin bags in a bubble in the sea levels",
+          "rank_token": "medium"
+        },
+        "153": {
+          "stamp_id": 153,
+          "name": "20 Sea Levels",
+          "is_member": true,
+          "rank": 3,
+          "description": "Reach 20 sea levels with 5 full lives",
+          "rank_token": "hard"
+        },
+        "134": {
+          "stamp_id": 134,
+          "name": "3 Coin Bags",
+          "is_member": false,
+          "rank": 3,
+          "description": "Find 3 coin bags in the snow levels",
+          "rank_token": "hard"
+        },
+        "157": {
+          "stamp_id": 157,
+          "name": "3 Coin Bubbles",
+          "is_member": true,
+          "rank": 3,
+          "description": "Find 3 coin bags in a bubble in the sea levels",
+          "rank_token": "hard"
+        },
+        "154": {
+          "stamp_id": 154,
+          "name": "30 Sea Levels",
+          "is_member": true,
+          "rank": 4,
+          "description": "Reach 30 sea levels with 5 full lives",
+          "rank_token": "extreme"
+        },
+        "138": {
+          "stamp_id": 138,
+          "name": "Cave Coins",
+          "is_member": true,
+          "rank": 2,
+          "description": "Find hidden coins on level 1 in the caves",
+          "rank_token": "medium"
+        },
+        "140": {
+          "stamp_id": 140,
+          "name": "Cave Coins Max",
+          "is_member": true,
+          "rank": 3,
+          "description": "Find hidden coins on Level 7 in the caves",
+          "rank_token": "hard"
+        },
+        "139": {
+          "stamp_id": 139,
+          "name": "Cave Coins Plus",
+          "is_member": true,
+          "rank": 2,
+          "description": "Find hidden coins on level 4 in the caves",
+          "rank_token": "medium"
+        },
+        "148": {
+          "stamp_id": 148,
+          "name": "Close Call",
+          "is_member": true,
+          "rank": 2,
+          "description": "Dodge the giant snowball",
+          "rank_token": "medium"
+        },
+        "145": {
+          "stamp_id": 145,
+          "name": "Easy Cannon",
+          "is_member": true,
+          "rank": 2,
+          "description": "Destroy 8 snowball cannons in cave levels",
+          "rank_token": "medium"
+        },
+        "144": {
+          "stamp_id": 144,
+          "name": "Expert Catch",
+          "is_member": true,
+          "rank": 3,
+          "description": "Catch 3 coin bags before they fall",
+          "rank_token": "hard"
+        },
+        "150": {
+          "stamp_id": 150,
+          "name": "Express Rescue",
+          "is_member": true,
+          "rank": 2,
+          "description": "Complete 10 sea levels in 30 seconds each",
+          "rank_token": "medium"
+        },
+        "147": {
+          "stamp_id": 147,
+          "name": "Extreme Cannon",
+          "is_member": true,
+          "rank": 4,
+          "description": "Destroy 15 snowball cannons in cave levels",
+          "rank_token": "extreme"
+        },
+        "151": {
+          "stamp_id": 151,
+          "name": "Extreme Rescue",
+          "is_member": true,
+          "rank": 3,
+          "description": "Complete 20 sea levels in 30 seconds each",
+          "rank_token": "hard"
+        },
+        "141": {
+          "stamp_id": 141,
+          "name": "Quick Catch",
+          "is_member": true,
+          "rank": 1,
+          "description": "Catch 1 coin bag before it falls",
+          "rank_token": "easy"
+        },
+        "149": {
+          "stamp_id": 149,
+          "name": "Rapid Rescue",
+          "is_member": true,
+          "rank": 1,
+          "description": "Complete 5 sea levels in 30 seconds each",
+          "rank_token": "easy"
+        },
+        "130": {
+          "stamp_id": 130,
+          "name": "SOS 30",
+          "is_member": false,
+          "rank": 2,
+          "description": "Rescue 30 puffles in snow levels",
+          "rank_token": "medium"
+        },
+        "131": {
+          "stamp_id": 131,
+          "name": "SOS 60",
+          "is_member": false,
+          "rank": 3,
+          "description": "Rescue 60 Puffles in snow levels",
+          "rank_token": "hard"
+        },
+        "137": {
+          "stamp_id": 137,
+          "name": "Snow Hero",
+          "is_member": false,
+          "rank": 4,
+          "description": "Complete 9 snow levels in no more than 270 moves",
+          "rank_token": "extreme"
+        },
+        "136": {
+          "stamp_id": 136,
+          "name": "Snow Master",
+          "is_member": false,
+          "rank": 3,
+          "description": "Complete 6 snow levels in no more than 160 moves",
+          "rank_token": "hard"
+        },
+        "135": {
+          "stamp_id": 135,
+          "name": "Snow Student",
+          "is_member": false,
+          "rank": 2,
+          "description": "Complete 3 snow levels in no more than 70 moves",
+          "rank_token": "medium"
+        },
+        "146": {
+          "stamp_id": 146,
+          "name": "Super Cannon",
+          "is_member": true,
+          "rank": 3,
+          "description": "Destroy 12 snowball cannons in cave levels",
+          "rank_token": "hard"
+        },
+        "142": {
+          "stamp_id": 142,
+          "name": "Super Catch",
+          "is_member": true,
+          "rank": 2,
+          "description": "Catch 2 coin bags before they fall",
+          "rank_token": "medium"
+        }
+      }
+    }
+  }
 
   if (isGreaterOrEqual(version, '2010-Sep-03')) {
     addStamps(newStampbook[CategoryID.Party] as Category, [
