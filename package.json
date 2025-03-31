@@ -21,7 +21,8 @@
     "build-server-linux-arm64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
     "build-media": "node scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
-    "crumbs": "ts-node crumbs/global-crumbs.ts"
+    "global-crumbs": "ts-node crumbs/global-crumbs.ts",
+    "news-crumbs": "ts-node crumbs/news-crumbs.ts"
   },
   "author": "CPS",
   "license": "MIT",
