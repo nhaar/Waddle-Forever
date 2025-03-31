@@ -30,7 +30,8 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
   const zipName = String(Date.now()) + '.zip';
   const zipDir = path.join(MEDIA_DIRECTORY, zipName);
   // using the "media file name convention"
-  const success = await download(`${mediaName}-${VERSION}.zip`, zipDir);
+  // the media/ is to access the proper API route
+  const success = await download(`media/${mediaName}-${VERSION}.zip`, zipDir);
   if (success) {
     const folderDestination = path.join(MEDIA_DIRECTORY, mediaName);
     try {
