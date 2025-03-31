@@ -76,6 +76,8 @@ class JsonDatabase {
         return '0.2.2';
       case '0.2.2':
         return '0.2.3';
+      case '0.2.3':
+        return '0.3.0';
       default:
         throw new Error('Invalid database version: ' + version);
     }
@@ -224,7 +226,7 @@ export interface Penguin {
     }
   }>,
   mailSeq: number,
-  puffleLaunchGameData: string
+  puffleLaunchGameData?: string // undefined: hasn't played
 }
 
 export default db;

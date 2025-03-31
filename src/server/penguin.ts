@@ -206,8 +206,7 @@ export class Client {
         1: 1
       },
       mail: [],
-      mailSeq: 0,
-      puffleLaunchGameData: ''
+      mailSeq: 0
     };
   }
 
@@ -557,7 +556,7 @@ export class Client {
   }
 
   getGameData(): string {
-    const binary = Buffer.from(this.penguin.puffleLaunchGameData, 'base64');
+    const binary = Buffer.from(this.penguin.puffleLaunchGameData ?? '', 'base64');
     return binary.toString();
   }
 
