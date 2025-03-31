@@ -1,33 +1,14 @@
 import path from 'path';
-import fs from 'fs';
-import { exec } from 'child_process';
+import fs, { read } from 'fs';
 import { BrowserWindow, dialog, shell } from 'electron';
 import { postJSON } from "../common/utils";
-import { download } from './download';
 import { VERSION } from '../common/version';
 import { showWarning } from './warning';
 
-type VersionStatus = 'unsupported' | 'old' | 'current' | 'unknown'
+// there used to be other versions, but it's been deprecated
+type VersionStatus = 'current' | 'notcurrent'
 
 const UPDATE_PATH = path.join(process.cwd(), 'tempupdate');
-
-async function getOSFile (url: string): Promise<{
-  filename: string,
-  name: string
-} | undefined> {
-  const response = await postJSON(url, {
-    platform: process.platform,
-    arch: process.arch
-  })
-  if (response.exists === true) {
-    return {
-      filename: response.filename,
-      name: response.name
-    }
-  } else {
-    return undefined;
-  }
-}
 
 export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
   if (fs.existsSync(UPDATE_PATH)) {
@@ -44,85 +25,27 @@ export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
 
   const readStatus = versionStatus.status
   let status: VersionStatus
-  if (typeof readStatus === 'string' && (readStatus === 'unsupported' || readStatus === 'old' || readStatus === 'current')) {
+  if (readStatus === 'current') {
     status = readStatus
   } else {
-    status = 'unknown'
+    status = 'notcurrent'
   }
-
-  if (process.platform === 'linux' && (status === 'old' || status === 'unsupported')) {
-    const result = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Ignore', 'Update'],
-      title: 'New version available',
-      message: `A new version is available. Please check the instructions on how to update it.`,
-      defaultId: 1,
-      cancelId: 0
-    });
-
-    if (result.response === 1) {
-      shell.openExternal('https://waddleforever.com/linux-update')
-    }
-  } else if (status === 'old') {
-    const result = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Ignore', 'Update'],
-      title: 'New version available',
-      message: `A new version is available.`,
-      defaultId: 1,
-      cancelId: 0
-    });
-    
-    if (result.response === 1) {
-      await update(mainWindow);
-    }
-  } else if (status === 'unsupported') {
-    await showWarning(mainWindow, 'New version available', `A new version is available, but it is not compatible with this version.\nPlease download Waddle Forever again to update it.`)
-  }
-}
-
-export async function update(mainWindow: BrowserWindow) {
-  let downloadNumber = 0;
   
-  if (!fs.existsSync(UPDATE_PATH)) {
-    fs.mkdirSync(UPDATE_PATH);
-  }
-
-  downloadNumber++;
-  const CLIENT_DOWNLOAD_NUMBER = downloadNumber;
-  downloadNumber++;
-  const SERVER_DOWNLOAD_NUMBER = downloadNumber;
-  const clientInfo = await getOSFile('/api/client');
-  const serverInfo = await getOSFile('/api/server');
-
-  const settingsJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'settings.json'), { encoding: 'utf-8'}))
-
-  const mediaFiles = (await postJSON('/api/media', settingsJson)).filenames
-  const MEDIA_DOWNLOAD_START = downloadNumber + 1;
-  downloadNumber += mediaFiles.length;
+  if (status !== 'current') {
+    if (process.platform === 'linux') {
+      const result = await dialog.showMessageBox(mainWindow, {
+        buttons: ['Ignore', 'Update'],
+        title: 'New version available',
+        message: `A new version is available. Please redownload the game.`,
+        defaultId: 1,
+        cancelId: 0
+      });
   
-  const updaterInfo = await getOSFile('/api/updater')
-  downloadNumber += 1;
-
-  if (clientInfo === undefined || updaterInfo === undefined || serverInfo === undefined) {
-    showWarning(mainWindow, 'Error', 'Your platform or architecture is not supported')
-    return
+      if (result.response === 1) {
+        shell.openExternal('https://waddleforever.com/linux')
+      }
+    } else {
+      await showWarning(mainWindow, 'New version available', `A new version is available and being downloaded.\n\nOnce the download is complete, you will be notified, and you can update by restarting the game (it may have finished already!).\n\nIf the notification or update doesn't come through, please redownload the game.`)
+    }
   }
-
-  await download(clientInfo.filename, path.join(UPDATE_PATH, 'client.zip'), { current: CLIENT_DOWNLOAD_NUMBER, total: downloadNumber});
-
-  await download(serverInfo.filename, path.join(UPDATE_PATH, 'server.zip'), { current: SERVER_DOWNLOAD_NUMBER, total: downloadNumber });
-
-  for (const i in mediaFiles) {
-    const file = mediaFiles[i];
-    await download(file.filename, path.join(UPDATE_PATH, file.name + '.zip'), { current: Number(i) + MEDIA_DOWNLOAD_START, total: downloadNumber});
-  }
-
-  const updaterPath = path.join(UPDATE_PATH, 'update.exe');
-
-  await download(updaterInfo.filename, updaterPath, { current: downloadNumber, total: downloadNumber });
-
-  fs.writeFileSync(path.join(UPDATE_PATH, 'version'), VERSION);
-
-  await new Promise<void>((resolve) => {
-    exec(`"${updaterPath}"`, () => resolve());
-  })
 }

@@ -1,7 +1,7 @@
 import path from 'path';
-import { BrowserWindow, dialog, shell } from "electron";
+import { BrowserWindow, shell } from "electron";
 import { Store } from "./store";
-import { checkUpdates, update } from "./update";
+import { checkUpdates } from "./update";
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   const fullScreen = !store.private.get("fullScreen");
