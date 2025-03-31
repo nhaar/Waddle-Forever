@@ -26,6 +26,7 @@
   },
   "author": "CPS",
   "license": "MIT",
+  "repository": "https://github.com/nhaar/Waddle-Forever",
   "build": {
     "files": [
       "compiled/**/*",

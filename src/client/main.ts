@@ -2,6 +2,7 @@ import path from 'path'
 
 import { app, BrowserWindow, dialog } from "electron";
 import log from "electron-log";
+import { autoUpdater } from "electron-updater";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
@@ -30,6 +31,11 @@ if (process.platform === 'linux') {
 
 
 loadFlashPlugin(app);
+
+// autoupdater (windows only)
+if (process.platform === 'win32') {
+  autoUpdater.checkForUpdatesAndNotify();
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
