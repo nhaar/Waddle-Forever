@@ -11,10 +11,10 @@ DEFAULT_ZIP="default.zip"
 
 mkdir $DEST_FOLDER
 
-curl -o "$DEST_FOLDER/WaddleForeverClient.AppImage" "$CLIENT_URL"
-curl -o "$DEST_FOLDER/WaddleForeverServer" "$SERVER_URL"
+curl -o "$DEST_FOLDER/WaddleForeverClient.AppImage" "$CLIENT_URL" -L
+curl -o "$DEST_FOLDER/WaddleForeverServer" "$SERVER_URL" -L
 
-curl -o "$DEFAULT_ZIP" "$DEFAULT_URL"
+curl -o "$DEFAULT_ZIP" "$DEFAULT_URL" -L
 mkdir -p "$DEST_FOLDER/media"
 mkdir -p "$DEST_FOLDER/media/default"
 unzip "$DEFAULT" -d "$DEST_FOLDER/media/default"
