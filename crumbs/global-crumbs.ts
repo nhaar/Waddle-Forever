@@ -1,8 +1,10 @@
 import fs from 'fs'
 import path from 'path'
+import { replacePcode } from '../src/common/ffdec/ffdec';
+import { DEFAULT_DIRECTORY } from '../src/common/utils'
 
 function loadBaseCrumbs(): string {
-  return fs.readFileSync(path.join(__dirname, 'base_global_crumbs'), { encoding: 'utf-8' })
+  return fs.readFileSync(path.join(__dirname, 'base_global_crumbs.pcode'), { encoding: 'utf-8' })
 }
 
 function changeRoomMusic(crumbs: string, roomName: string, newMusicId: number): string {
@@ -79,10 +81,10 @@ type Modifications = {
 }
 
 const crumbs: Array<{
-  filename: string,
+  path: string,
   changes?: Modifications
 }> = [
-  { filename: '2010-MountainExpedition', changes: {
+  { path: 'event/2010/mountain_expedition/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
     music: {
       'party2': 294,
       'party3': 295,
@@ -90,8 +92,8 @@ const crumbs: Array<{
       'party6': 256
     }
   } },
-  { filename: '2010-Nov-24' },
-  { filename: '2010-Halloween', changes: {
+  { path: 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Nov-24.swf' },
+  { path: 'event/2010/halloween_party_2010/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
       music: {
         'town': 251,
         'coffe': 252,
@@ -135,7 +137,7 @@ const crumbs: Array<{
       }
     }
   },
-  { filename: '2010-Anniversary', changes: {
+  { path: 'event/2010/5th_anniversary_party/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
     music: {
       'town': 218,
       'coffee': 218,
@@ -143,7 +145,7 @@ const crumbs: Array<{
       'stage': 43
     }
   }},
-  { filename: '2010-Fair', changes: {
+  { path: 'event/2010/fair_2010/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
     music: {
       'town': 297,
       'coffee': 221,
@@ -174,41 +176,47 @@ const crumbs: Array<{
       'ticket_icon': 'ticket_icon.swf'
     }
   }},
-  { filename: '2010-StadiumGames', changes: {
+  { path: 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Sep-24.swf', changes: {
     music: {
       'stage': 39
     }
   }},
 ]
 
-const outDir = path.join(__dirname, 'out')
-if (!fs.existsSync(outDir)) {
-  fs.mkdirSync(outDir);
-}
+const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 
+console.log('Beginning exporting');
 
-for (const crumb of crumbs) {
-  let newCrumbs = loadBaseCrumbs();
-  if (crumb.changes !== undefined) {
-    if (crumb.changes.music !== undefined) {
-      for (const room in crumb.changes.music) {
-        newCrumbs = changeRoomMusic(newCrumbs, room, crumb.changes.music[room]);
+(async () => {
+  for (const crumb of crumbs) {
+    console.log(`Exporting crumbs to the path: ${crumb.path}`);
+    let newCrumbs = loadBaseCrumbs();
+    if (crumb.changes !== undefined) {
+      if (crumb.changes.music !== undefined) {
+        for (const room in crumb.changes.music) {
+          newCrumbs = changeRoomMusic(newCrumbs, room, crumb.changes.music[room]);
+        }
+      }
+  
+      if (crumb.changes.prices !== undefined) {
+        for (const item in crumb.changes.prices) {
+          newCrumbs = changeItemCost(newCrumbs, Number(item), crumb.changes.prices[item]);
+        }
+      }
+  
+      if (crumb.changes.globalPaths !== undefined) {
+        for (const path in crumb.changes.globalPaths) {
+          newCrumbs = addGlobalPath(newCrumbs, path, crumb.changes.globalPaths[path]);
+        }
       }
     }
+  
+    const outputPath = path.join(DEFAULT_DIRECTORY, crumb.path);
 
-    if (crumb.changes.prices !== undefined) {
-      for (const item in crumb.changes.prices) {
-        newCrumbs = changeItemCost(newCrumbs, Number(item), crumb.changes.prices[item]);
-      }
+    if (!fs.existsSync(outputPath)) {
+      throw new Error(`Global crumbs file path is invalid: ${outputPath}`);
     }
-
-    if (crumb.changes.globalPaths !== undefined) {
-      for (const path in crumb.changes.globalPaths) {
-        newCrumbs = addGlobalPath(newCrumbs, path, crumb.changes.globalPaths[path]);
-      }
-    }
+  
+    await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', newCrumbs);
   }
-
-
-  fs.writeFileSync(path.join(outDir, crumb.filename), newCrumbs);
-}
+})();
