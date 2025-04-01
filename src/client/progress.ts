@@ -6,7 +6,7 @@ function createProgressBarWindow(prompt: string) {
       width: 300,
       height: 100,
       frame: false, // cleaner look
-      alwaysOnTop: true,
+      alwaysOnTop: false,
       resizable: false,
       webPreferences: {
           nodeIntegration: true,

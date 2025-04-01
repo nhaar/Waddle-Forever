@@ -1,6 +1,11 @@
 import http from 'http';
 import https from 'https';
+import path from 'path';
 import { WEBSITE } from './website';
+
+export type GlobalSettings = {
+  isEditting: boolean
+};
 
 export function parseURL(url: string): {
   protocol: 'http' | 'https',
@@ -83,3 +88,17 @@ export const postJSON = async (path: string, body: any, errorCallback?: (data: a
     req.end();
   });
 };
+
+export function getDateString(timestamp: number): string {
+  const date = new Date(timestamp);
+
+  const year = date.getUTCFullYear()
+  const month = date.getUTCMonth() + 1
+  const day = date.getUTCDate()
+
+  return `${year}-${month}-${day}`
+}
+
+export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
+
+export const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');

@@ -2,7 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import { Request, Router } from "express";
 import { GameVersion, SettingsManager } from "./settings";
-import { isGreaterOrEqual, isLower } from './routes/versions';
+import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
+import { DEFAULT_DIRECTORY } from '../common/utils';
 
 type GetCallback = (settings: SettingsManager, route: string) => string
 
@@ -14,13 +15,15 @@ type PathRepresentation = string | string[]
 
 type RouteMap = Array<[HttpRouter, string]>
 
-type Alternator = [GameVersion, ...string[]]
+type Alternator = [string, ...string[]]
 
-type AlternatorMap = Array<[GameVersion, string]>
+type AlternatorMap = Array<[string, string]>
 
 type Spacer = [GameVersion, GameVersion, ...string[]]
 
 type SpacerMap = Array<[GameVersion, GameVersion, string]>
+
+const SEASONAL_NAME = 'seasonal';
 
 /** Assigns files to date intervals that start when the previous ends */
 export function alternating(routers: HttpRouter[], alternators: Alternator[]) {
@@ -121,7 +124,8 @@ export function range(start: GameVersion, end: GameVersion, routeMaps: RouteMap)
 
 function processPathRepresentation(repr: PathRepresentation): string[] {
   if (typeof repr === 'string') {
-    return [repr];
+    // considering both forward and backward slashes
+    return repr.split(/[/\\]/);
   }
   return repr;
 }
@@ -155,6 +159,23 @@ export class HttpRouter {
   }
 }
 
+/**
+ * First element is the path of the folder for the event files inside the events folder
+ * 
+ * Second element is the start date (event includes start)
+ * 
+ * Third element is the end date (event doesn't include end)
+ */
+type EventInfo = [string, string, string];
+
+/**
+ * First element is the path to the file in the media server
+ * 
+ * Second element is a function that takes the settings object and returns
+ * the file name (no extension) depending on the settings
+ */
+type SpecialInfo = [string, (s: SettingsManager) => string];
+
 export class HttpServer {
   settingsManager: SettingsManager
   router: Router
@@ -162,6 +183,126 @@ export class HttpServer {
   constructor (settingsManager: SettingsManager) {
     this.settingsManager = settingsManager;
     this.router = Router();
+  }
+
+  /** Supplies all the files for an event in its date range */
+  private addEvent(event: EventInfo) {
+    const rootPath = 'default/event/' + event[0];
+    this.dir('', (s) => {
+      if (isGreaterOrEqual(s.settings.version, event[1]) && isLower(s.settings.version, event[2])) {
+        return rootPath;
+      } else {
+        return undefined;
+      }
+    });
+  }
+
+  /**
+   * Sets up a list of events each with its info.
+   * 
+   * Events are periods of time where a static folder is served with most priority,
+   * it is used mostly for parties, and they are stored in the default/event directory
+   * of the media folders
+   */
+  addEvents(...events: Array<EventInfo>) {
+    for (const event of events) {
+      this.addEvent(event);
+    }
+  }
+
+  /**
+   * Redirect many directories to other paths in the media folder
+   * 
+   * Supply a list of tuples, where the first element is the path for a route
+   * in the media server that serves a directory (eg play/v2/games),
+   * and the second element is the path inside the media folder
+   */
+  redirectDirs(...redirects: Array<[string, string]>) {
+    for (const redirect of redirects) {
+      const [origin, destination] = redirect;
+      this.dir(origin, () => destination);
+    }
+  }
+
+  /** Set handler for a special file */
+  private addSpecial(special: SpecialInfo) {
+    let origin = special[0];
+    const callback = special[1];
+    const extension = '.' + origin.split('.').pop();
+    const destiny = origin;
+
+    // exceptional case because can't provide a non empty folder path
+    if (origin === 'index.html') {
+      origin = '';
+    }
+
+    this.get(origin, () => {
+      const specialPath = callback(this.settingsManager);
+      return path.join('default/special', destiny, specialPath + extension);
+    })
+  }
+
+  /**
+   * Sets up special handled media
+   * 
+   * These media are files in which depending on the settings,
+   * different files are served
+   */
+  addSpecials(...specials: Array<SpecialInfo>) {
+    for (const special of specials) {
+      this.addSpecial(special);
+    }
+  }
+  
+  /** Given the route to a file, sets up a seasonal handler */
+  private addSeasonal(route: string) {
+    const extension = '.' + route.split('.').pop();
+    const files = fs.readdirSync(path.join(DEFAULT_DIRECTORY, SEASONAL_NAME, route));
+    const fileDates = files.filter((f) => f.endsWith(extension)).map((f) => f.slice(0, -extension.length));
+    try {
+      sortVersions(fileDates);
+    } catch {
+      throw Error(`Seasonal included files not named after versions in path ${route}`);
+    }
+
+    const router = new HttpRouter(route, this);
+    alternating(
+      [router],
+      fileDates.map((fileDate) => {
+        return [fileDate, path.join('default', SEASONAL_NAME, route, fileDate + extension)]
+      })
+    )
+  }
+
+  /**
+   * Automatically set up all seasonals, which are files which change frequently
+   * and are stored in the default/seasonal media folder
+   */
+  addSeasonals() {
+    // use current dir to carry a relative path, original dir to maintain the absolute path
+    const walk = (originDir: string, currentDir: string = ''): string[] => {
+        const entries = fs.readdirSync(path.join(originDir, currentDir), { withFileTypes: true });
+
+        // if children are directories, recursively reach out to everything
+        // if the children arent, then we reached where we wanted to reach (the file path)
+        const isDirChildren = entries.every((value) => value.isDirectory());
+        let files: string[];
+        if (isDirChildren) {
+          const recursiveFiles = entries.map((entry => {
+            const newRelativePath = path.join(currentDir, entry.name);
+            return walk(originDir, newRelativePath);
+          }));
+          files = recursiveFiles.flat(); 
+        } else {
+          files = [currentDir];
+        }
+        return files;
+    }
+
+    const dirs = walk(path.join(DEFAULT_DIRECTORY, SEASONAL_NAME));
+    for (const dir of dirs) {
+      this.addSeasonal(dir);
+    }
   }
 
   getData (route: PathRepresentation, handler: DataCallback) {

@@ -1,8 +1,8 @@
-import { BrowserWindow, ipcMain } from "electron";
-import { SettingsManager } from "../server/settings";
+import { BrowserWindow, ipcMain, shell } from "electron";
+import electronIsDev from "electron-is-dev";
 import path from "path";
 
-export const createModsWindow = async (settingsManager: SettingsManager, mainWindow: BrowserWindow) => {
+export const createModsWindow = async (mainWindow: BrowserWindow) => {
   const modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
@@ -14,22 +14,16 @@ export const createModsWindow = async (settingsManager: SettingsManager, mainWin
 
   modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
   modsWindow.webContents.on('did-finish-load', () => {
-    const activeMods = settingsManager.activeMods;
-    const mods = settingsManager.installedMods;
-    const modsRelation: Record<string, boolean> = {};
-    for (const mod of mods) {
-      modsRelation[mod] = activeMods.includes(mod);
+    if (electronIsDev) {
+      modsWindow.webContents.openDevTools();
     }
-    modsWindow.webContents.send('receive-mods', modsRelation);
   });
 
-  ipcMain.on('set-mod-active', (e, arg) => {
-    settingsManager.setModActive(arg);
+  ipcMain.on('update-mod', () => {
     mainWindow.webContents.reloadIgnoringCache();
   })
 
-  ipcMain.on('set-mod-inactive', (e, arg) => {
-    settingsManager.setModInactive(arg);
-    mainWindow.webContents.reloadIgnoringCache();
-  })
+  ipcMain.on('open-mods-folder', () => {
+    shell.openPath(path.join(process.cwd(), 'mods'));
+  });
 };

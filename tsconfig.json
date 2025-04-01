@@ -18,6 +18,7 @@
     "src/**/*"
   ],
   "exclude": [
+    "src/client/static/**/*",
     "/dist/**/*",
     "/compiled/**/*"
   ]

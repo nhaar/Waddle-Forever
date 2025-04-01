@@ -39,7 +39,9 @@ export enum Room {
   PufflePaddle = 946,
   PuffleShuffle = 947,
   PuffleRescue = 949,
-  DanceContest = 952
+  SystemDefender = 950,
+  DanceContest = 952,
+  PuffleLaunch = 955
 }
 
 const gameRooms = [
@@ -78,6 +80,8 @@ const gameRooms = [
   Room.MemoryCardGame,
   Room.PufflePaddle,
   Room.PuffleShuffle,
+  Room.SystemDefender,
+  Room.PuffleLaunch
 ];
 export const roomStamps: Record<number, number[]> = {
   [Room.JetPackAdventure]: [

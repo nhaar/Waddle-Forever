@@ -1,13 +1,14 @@
 import net from 'net';
 
-import { isGameRoom, Room, roomStamps } from './game/rooms';
+import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
-import { isGreaterOrEqual, isLower } from './routes/versions';
+import { isAs1, isGreaterOrEqual, isLower } from './routes/versions';
 import { items } from './game/item';
 import { ItemType } from './game/items';
 import { isFlag } from './game/flags';
+import PuffleLaunchGameSet from './game/pufflelaunch';
 
 const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
 
@@ -20,6 +21,8 @@ export class Client {
   currentRoom: number;
   version: GameVersion;
   sessionStart: number;
+
+  handledXts: Map<string, boolean>
 
   /**
    * Temporary variable to keep track of stamps collected used to know
@@ -39,9 +42,12 @@ export class Client {
     this.x = 100;
     this.y = 100;
     this.sessionStart = Date.now();
-  
+    
     this.sessionStamps = [];
     this.walkingPuffle = NaN;
+
+    // For "only once" listeners
+    this.handledXts = new Map<string, boolean>();
   }
 
   send (message: string): void {
@@ -53,34 +59,58 @@ export class Client {
     this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
   }
 
-  get penguinString (): string {
+  static as1Crumb (penguin: Penguin, id: Number): string {
     return [
-      this.id,
-      this.penguin.name,
-      1, // meant to be approval, but always approved
-      this.penguin.color,
-      this.penguin.head,
-      this.penguin.face,
-      this.penguin.neck,
-      this.penguin.body,
-      this.penguin.hand,
-      this.penguin.feet,
-      this.penguin.pin,
-      this.penguin.background,
-      this.x,
-      this.y,
-      1, // TODO, figure what this "frame" means
-      this.penguin.is_member ? 1 : 0,
-      this.memberAge,
-      0, // TODO figure out what this "avatar" is
-      0, // TODO figure out what penguin state is
-      0, // TODO figure out what party state is
-      0, // TODO figure out what puffle state is
-      '', // TODO figure out what empty strings are for (and if are necessary)
-      '',
-      '',
-      ''
-    ].join('|');
+      id,
+      penguin.name,
+      penguin.color,
+      penguin.head,
+      penguin.face,
+      penguin.neck,
+      penguin.body,
+      penguin.hand,
+      penguin.feet,
+      penguin.pin,
+      penguin.background,
+      0, // X
+      0, // y
+      0, // TODO frame
+      penguin.is_member ? 1 : 0
+    ].join('|')
+  }
+
+  get penguinString (): string {
+    if (isAs1(this.version)) {
+      return Client.as1Crumb(this.penguin, this.id);
+    } else {
+      return [
+        this.id,
+        this.penguin.name,
+        1, // meant to be approval, but always approved
+        this.penguin.color,
+        this.penguin.head,
+        this.penguin.face,
+        this.penguin.neck,
+        this.penguin.body,
+        this.penguin.hand,
+        this.penguin.feet,
+        this.penguin.pin,
+        this.penguin.background,
+        this.x,
+        this.y,
+        1, // TODO, figure what this "frame" means
+        this.penguin.is_member ? 1 : 0,
+        this.memberAge,
+        0, // TODO figure out what this "avatar" is
+        0, // TODO figure out what penguin state is
+        0, // TODO figure out what party state is
+        0, // TODO figure out what puffle state is
+        '', // TODO figure out what empty strings are for (and if are necessary)
+        '',
+        '',
+        ''
+      ].join('|');
+    }
   }
 
   get age (): number {
@@ -108,27 +138,28 @@ export class Client {
     db.update<Penguin>(Databases.Penguins, this.id, this.penguin);
   }
 
-  private getPenguinFromName (name: string): boolean {
+  static getPenguinFromName (name: string): [Penguin, number] {
     const data = db.get<Penguin>(Databases.Penguins, 'name', name);
+
     if (data === undefined) {
-      return false;
-    } else {
-      const [penguin, id] = data;
-      this.penguin = penguin;
-      this.id = id;
-      return true;
+      return Client.create(name);
     }
+    return data
   }
 
-  create (name: string, mascot = 0): void {
-    const found = this.getPenguinFromName(name);
-    if (!found) {
-      [this.penguin, this.id] = db.add<Penguin>(Databases.Penguins, {
-        ...this.penguin,
-        name,
-        mascot
-      });
-    }
+  setPenguinFromName (name: string): void {
+    const data = Client.getPenguinFromName(name)
+    const [penguin, id] = data;
+    this.penguin = penguin;
+    this.id = id;
+  }
+
+  static create (name: string, mascot = 0): [Penguin, number] {
+    return db.add<Penguin>(Databases.Penguins, {
+      ...Client.getDefault(),
+      name,
+      mascot
+    });
   }
 
   static getDefault (): Penguin {
@@ -510,5 +541,67 @@ export class Client {
         this.giveStamp(20);        
       }
     }
+  }
+
+  getCoinsFromScore(score: number): number {
+    return isLiteralScoreGame(this.currentRoom) ? (
+      Number(score)
+    ) : (
+      Math.floor(Number(score) / 10)
+    );
+  }
+
+  sendAs1Coins(): void {
+    this.sendXt('ac', this.penguin.coins);
+  }
+
+  getGameData(): string {
+    const binary = Buffer.from(this.penguin.puffleLaunchGameData ?? '', 'base64');
+    return binary.toString();
+  }
+
+  /**
+   * Updates the puffle launch game data given the binary data, but doesn't save
+   * the data, mostly due to the commands which may use this and the player may regret using
+   * */
+  setGameData(data: Buffer): void {
+    this.penguin.puffleLaunchGameData = data.toString('base64');
+  }
+
+  saveGameData(data: string): void {
+    const binary = Buffer.from(data);
+    this.setGameData(binary);
+    this.update();
+  }
+
+  private setPuffleLaunchGameData(data: PuffleLaunchGameSet): void {
+    this.setGameData(data.get());
+  }
+
+  /** Set game data with all Puffle Launch levels unlocked */
+  unlockPuffleLaunchLevels() {
+    this.setPuffleLaunchGameData(new PuffleLaunchGameSet((new Array<number>(36)).fill(0x1), [], []));
+  }
+
+  /** Set game data with the Puffle Launch time attack mode unlocked (all levels have max puffle o's) */
+  unlockPuffleLaunchTimeAttack(times: number[] = [], turboStatuses: boolean[] = []) {
+    this.setPuffleLaunchGameData(new PuffleLaunchGameSet([
+      34, 46, 99, 90, 115, 39,
+      84, 42, 120, 123, 183, 54,
+      59, 75, 243, 88, 203, 135,
+      113, 284, 122, 153, 172, 69,
+      44, 48, 103, 97, 86, 144,
+      318, 165, 219, 87, 277, 33
+    ], times, turboStatuses));
+  }
+
+  /** Set game data with Puffle Launch turbo mode unlocked (all times will be 1 second) */
+  unlockTurboMode(turboStatuses: boolean[] = []) {
+    this.unlockPuffleLaunchTimeAttack((new Array<number>(36)).fill(1), turboStatuses);
+  }
+
+  /** Set game data with Puffle Launch slow mode unlocked (all times will be 1 second) */
+  unlockSlowMode() {
+    this.unlockTurboMode((new Array<boolean>(36)).fill(true));
   }
 }

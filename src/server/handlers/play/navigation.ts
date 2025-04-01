@@ -1,4 +1,3 @@
-import { isLiteralScoreGame } from '../../game/rooms';
 import { XtHandler } from '..';
 
 const handler = new XtHandler();
@@ -13,11 +12,7 @@ handler.xt('j#jr', (client, destinationRoom, x, y) => {
 // client requesting to leave a minigame
 handler.xt('z', 'zo', (client, score) => {
   const stampInfo = client.getEndgameStampsInformation();
-  let coins = isLiteralScoreGame(client.currentRoom) ? (
-    Number(score)
-  ) : (
-    Math.floor(Number(score) / 10)
-  );
+  let coins = client.getCoinsFromScore(Number(score));
 
   // stamps double coins
   if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {

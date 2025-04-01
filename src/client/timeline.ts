@@ -1,9 +1,8 @@
 import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
-import { SettingsManager } from "../server/settings";
 
-export function createTimelinePicker (settingsManager: SettingsManager, mainWindow: BrowserWindow) {
+export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
     width: 500,
     height: 500,
@@ -13,12 +12,8 @@ export function createTimelinePicker (settingsManager: SettingsManager, mainWind
     }
   });
   timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
-  timelinePicker.webContents.on('did-finish-load', () => {
-    timelinePicker.webContents.send('receive-version', settingsManager.settings.version);
-  });
 
-  ipcMain.on('update-version', (e, arg) => {
-    settingsManager.updateSettings({ version: arg });
+  ipcMain.on('update-version', () => {
     mainWindow.webContents.reloadIgnoringCache();
   });
 }

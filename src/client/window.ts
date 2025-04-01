@@ -1,7 +1,7 @@
 import path from 'path';
-import { BrowserWindow, dialog } from "electron";
+import { BrowserWindow, shell } from "electron";
 import { Store } from "./store";
-import { checkUpdates, update } from "./update";
+import { checkUpdates } from "./update";
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   const fullScreen = !store.private.get("fullScreen");
@@ -10,6 +10,10 @@ export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
 
   mainWindow.setFullScreen(fullScreen);
 };
+
+export const loadMain = (window: BrowserWindow) => {
+  window.loadURL('http://localhost')
+}
 
 interface FiveIconByPlatforms {
   [key: string]: () => void;
@@ -31,7 +35,7 @@ const createWindow = async (store: Store) => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
-    title: "Starting...",
+    title: "Loading...",
     webPreferences: {
       plugins: true,
     },
@@ -44,8 +48,14 @@ const createWindow = async (store: Store) => {
   
   await checkUpdates(mainWindow);
 
-  mainWindow.loadURL('http://localhost');
-  
+  loadMain(mainWindow);
+
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (!url.includes("localhost")) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });  
   return mainWindow;
 };
 

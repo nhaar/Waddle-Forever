@@ -1,28 +1,33 @@
 {
   "name": "waddle-forever",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
     "clean": "rimraf compiled/",
+    "clean-client": "rimraf compiled/client/",
     "copy-files": "copyfiles -u 1 assets/**/* assets/* assets/flash/PepperFlashPlayer.plugin/Contents/* assets/flash/PepperFlashPlayer.plugin/Contents/_CodeSignature/* assets/flash/PepperFlashPlayer.plugin/Contents/MacOs/* compiled/assets/ && copyfiles -u 3 src/client/views/**/* compiled/client/views/",
-    "build-tsc": "yarn clean && tsc && yarn copy-files",
+    "build-browser": "tsc --project tsconfig.esm.json",
+    "build-tsc": "yarn clean && tsc && yarn build-browser && yarn copy-files",
     "start": "yarn build-tsc && electron ./compiled/client/main.js",
     "lint": "eslint -c .eslintrc --ext .ts ./src",
-    "build-client-win": "yarn build-tsc && electron-builder build --dir --win --publish never",
+    "build-client-win-nosetup": "yarn build-tsc && electron-builder build --dir --win --publish never",
+    "build-client-win": "yarn build-tsc && electron-builder build --win --publish never",
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "nodemon src/server/main.ts",
-    "build-server-win-x64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win-x64",
-    "build-server-linux-x64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64",
-    "build-server-win-arm64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64.exe -t node20-win-arm64",
-    "build-server-linux-arm64": "tsc&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
+    "build-server-win-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win-x64",
+    "build-server-linux-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64",
+    "build-server-win-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64.exe -t node20-win-arm64",
+    "build-server-linux-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
     "build-media": "node scripts/zip-media",
-    "build-win": "yarn build-server-win-x64&&yarn build-client-win&&node scripts/zip-win",
-    "crumbs": "ts-node crumbs/global-crumbs.ts"
+    "build-win": "yarn build-client-win&&node scripts/zip-win",
+    "global-crumbs": "ts-node crumbs/global-crumbs.ts",
+    "news-crumbs": "ts-node crumbs/news-crumbs.ts"
   },
   "author": "CPS",
   "license": "MIT",
+  "repository": "https://github.com/nhaar/Waddle-Forever",
   "build": {
     "files": [
       "compiled/**/*",
@@ -30,8 +35,16 @@
     ],
     "electronDist": "node_modules/electron/dist",
     "appId": "com.clubpenguin.speedrunning.client",
-    "productName": "WaddleForeverClient",
+    "productName": "Waddle Forever",
     "asar": "false",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "publish": "github",
+      "artifactName": "WaddleForever-Setup-${version}.${ext}"
+    },
     "mac": {
       "category": "game",
       "icon": "./assets/icon.icns",

@@ -857,7 +857,7 @@ InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party", "room_id", 899, "music_id", 281, "path", "party.swf", "is_member", true, 4
+Push "party", "room_id", 899, "music_id", 0, "path", "party.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
@@ -877,52 +877,52 @@ InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party4", "room_id", 854, "music_id", 266, "path", "party4.swf", "is_member", true, 4
+Push "party4", "room_id", 854, "music_id", 0, "path", "party4.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party5", "room_id", 855, "music_id", 266, "path", "party5.swf", "is_member", true, 4
+Push "party5", "room_id", 855, "music_id", 0, "path", "party5.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party6", "room_id", 856, "music_id", 266, "path", "party6.swf", "is_member", true, 4
+Push "party6", "room_id", 856, "music_id", 0, "path", "party6.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party7", "room_id", 857, "music_id", 266, "path", "party7.swf", "is_member", true, 4
+Push "party7", "room_id", 857, "music_id", 0, "path", "party7.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party8", "room_id", 858, "music_id", 266, "path", "party8.swf", "is_member", true, 4
+Push "party8", "room_id", 858, "music_id", 0, "path", "party8.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party9", "room_id", 859, "music_id", 266, "path", "party9.swf", "is_member", true, 4
+Push "party9", "room_id", 859, "music_id", 0, "path", "party9.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party10", "room_id", 860, "music_id", 266, "path", "party10.swf", "is_member", true, 4
+Push "party10", "room_id", 860, "music_id", 0, "path", "party10.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party11", "room_id", 861, "music_id", 266, "path", "party11.swf", "is_member", true, 4
+Push "party11", "room_id", 861, "music_id", 0, "path", "party11.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party12", "room_id", 862, "music_id", 266, "path", "party12.swf", "is_member", true, 4
+Push "party12", "room_id", 862, "music_id", 0, "path", "party12.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "room_crumbs"
 GetVariable
-Push "party13", "room_id", 863, "music_id", 265, "path", "party13.swf", "is_member", true, 4
+Push "party13", "room_id", 863, "music_id", 0, "path", "party13.swf", "is_member", true, 4
 InitObject
 SetMember
 Push "puffle_crumbs", 0, "Object"

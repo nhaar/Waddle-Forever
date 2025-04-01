@@ -15,11 +15,14 @@ import puffleHandler from './handlers/play/puffle';
 import iglooHandler from './handlers/play/igloo';
 import epfHandler from './handlers/play/epf';
 import mailHandler from './handlers/play/mail';
+import gameHandler from './handlers/play/game';
 import { Client } from './penguin';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';
 import { getModRouter } from './settings';
+import as1Handler from './handlers/play/as1';
+import { setApiServer } from './settings-api';
 
 const createServer = async (type: string, port: number, handlers: XtHandler, settingsManager: SettingsManager): Promise<void> => {
   await new Promise<void>((resolve) => {
@@ -34,7 +37,7 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
         if (dataStr.startsWith('<')) {
           if (dataStr === '<policy-file-request/>') {
             socket.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
-          } else if (dataStr === "<msg t='sys'><body action='verChk' r='0'><ver v='153' /></body></msg>") {
+          } else if (dataStr.includes('verChk')) {
             client.send('<msg t="sys"><body action="apiOK" r="0"></body></msg>');
           } else if (dataStr === "<msg t='sys'><body action='rndK' r='-1'></body></msg>") {
             client.send('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>');
@@ -44,7 +47,7 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
               socket.end('');
             } else {
               const name = dataMatch[1];
-              client.create(name);
+              client.setPenguinFromName(name);
               /*
               TODO
               will key be required?
@@ -65,7 +68,7 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
           const packet = new XtPacket(dataStr);
           const callbacks = handlers.getCallback(packet);
           if (callbacks === undefined) {
-            console.log('unhandled XT: ', packet);
+            console.log('unhandled XT: ', packet, port);
           } else {
             callbacks.forEach((callback) => {
               callback(client, ...packet.args);
@@ -104,7 +107,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
 
   server.use(httpServer.router);
 
-  server.use(express.static('media/static'));
+  setApiServer(settingsManager, server);
 
   await new Promise<void>((resolve, reject) => {
     const HTTP_PORT = 80
@@ -126,8 +129,16 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   worldListener.use(iglooHandler);
   worldListener.use(epfHandler);
   worldListener.use(mailHandler);
+  worldListener.use(gameHandler);
+
+  const as1Listener = new XtHandler();
+  as1Listener.use(as1Handler);
+
+  as1Handler.useEndpoints(server);
+
   await createServer('Login', 6112, new XtHandler(), settingsManager);
   await createServer('World', WORLD_PORT, worldListener, settingsManager);
+  await createServer('Old', 6114, as1Listener, settingsManager);
 };
 
 export default startServer;

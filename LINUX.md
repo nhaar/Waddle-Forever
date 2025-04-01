@@ -6,7 +6,7 @@ Run this command (you need `curl` installed):
 (Please make sure to run this command in the terminal inside the folder you want the game to be installed on)
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/nhaar/waddle-forever-installer/master/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/nhaar/Waddle-Forever/master/linux.sh)
 ```
 
 # Requirements
@@ -33,3 +33,7 @@ sudo ./WaddleForeverServer
 ```
 
 After that is running, then you can go ahead and run the game, which is located in `WaddleForeverClient.AppImage`. A message will pop up. Click to run it serverless.
+
+# Porting your data
+
+Currently, the linux installation script will be using different folders for each new version. If you wish to keep your penguin data, refer to the [database guide](./guide/DATABASE.md).
