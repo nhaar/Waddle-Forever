@@ -30,9 +30,9 @@ rm "$CLIENT_ZIP"
 rm "$SERVER_ZIP"
 rm "$DEFAULT_ZIP"
 
-echo "{}" > "settings.json"
+echo "{}" > "$DEST_FOLDER/settings.json"
 
-mkrdir "$DEST_FOLDER/mods"
+mkdir "$DEST_FOLDER/mods"
 echo "" > "$DEST_FOLDER/mods/.active_mods"
 
 echo "Installation finished! Please check details in https://waddleforever.com/linux on how to run the game."
