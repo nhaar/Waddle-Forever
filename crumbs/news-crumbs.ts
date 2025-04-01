@@ -1,5 +1,7 @@
 import path from 'path'
 import fs from 'fs'
+import { replacePcode } from '../src/common/ffdec/ffdec';
+import { DEFAULT_DIRECTORY } from '../src/common/utils';
 
 type Newspaper = {
   year: number,
@@ -169,6 +171,28 @@ function getFullDate(news: Newspaper): string {
   return `${monthname} ${news.day}, ${news.year}`
 }
 
+function getDateFileName(news: Newspaper): string {
+  const month = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ][news.month - 1];
+
+  // must be 2 digits for day
+  const day = news.day < 10 ? '0' + String(news.day) : news.day;
+
+  return `${news.year}-${month}-${day}`;
+}
+
 function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
   let varname = ''
   if (n === -1) {
@@ -252,6 +276,10 @@ if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir);
 }
 
+const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
+
+console.log('Beginning exporting...');
+
 for (const newspaper of newspapers) {
   currentThings.push(newspaper)
   issueNumber++;
@@ -263,6 +291,9 @@ for (const newspaper of newspapers) {
     const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
     
     const recent = currentThings[6]
-    fs.writeFileSync(path.join(__dirname, 'news', getFileDate(recent)), filecontent)
+    const fileName = getDateFileName(recent) + '.swf';
+    const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
+    console.log(`Exporting: ${fileName}`);
+    replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
   }
 }
