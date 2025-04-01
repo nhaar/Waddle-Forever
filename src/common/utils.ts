@@ -2,6 +2,7 @@ import http from 'http';
 import https from 'https';
 import path from 'path';
 import { WEBSITE } from './website';
+import { exec } from 'child_process';
 
 export type GlobalSettings = {
   isEditting: boolean
@@ -97,6 +98,19 @@ export function getDateString(timestamp: number): string {
   const day = date.getUTCDate()
 
   return `${year}-${month}-${day}`
+}
+
+/** Runs a command in the current shell, asynchronously. */
+export async function runCommand(command: string): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    exec(command, (err, stdout, stder) => {
+      if (err === null) {
+        resolve();
+      } else {
+        reject(err);
+      }
+    });
+  });
 }
 
 export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
