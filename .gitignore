@@ -74,3 +74,6 @@ settings.json
 
 # mods folder
 /mods
+
+# FFDEC path depends on your local installation
+ffdec-path.ts
