@@ -34,5 +34,6 @@ echo "{}" > "$DEST_FOLDER/settings.json"
 
 mkdir "$DEST_FOLDER/mods"
 echo "" > "$DEST_FOLDER/mods/.active_mods"
+echo "$VERSION" > "$DEST_FOLDER/media/default/.version"
 
 echo "Installation finished! Please check details in https://waddleforever.com/linux on how to run the game."
