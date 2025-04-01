@@ -6,7 +6,7 @@ Run this command (you need `curl` installed):
 (Please make sure to run this command in the terminal inside the folder you want the game to be installed on)
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/nhaar/waddle-forever-installer/master/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/nhaar/Waddle-Forever/master/linux.sh)
 ```
 
 # Requirements
