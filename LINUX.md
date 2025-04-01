@@ -33,3 +33,7 @@ sudo ./WaddleForeverServer
 ```
 
 After that is running, then you can go ahead and run the game, which is located in `WaddleForeverClient.AppImage`. A message will pop up. Click to run it serverless.
+
+# Porting your data
+
+Currently, the linux installation script will be using different folders for each new version. If you wish to keep your penguin data, refer to the [database guide](./guide/DATABASE.md).
