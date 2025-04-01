@@ -1,5 +1,6 @@
 import http from 'http';
 import https from 'https';
+import path from 'path';
 import { WEBSITE } from './website';
 
 export type GlobalSettings = {
@@ -97,3 +98,7 @@ export function getDateString(timestamp: number): string {
 
   return `${year}-${month}-${day}`
 }
+
+export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
+
+export const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');

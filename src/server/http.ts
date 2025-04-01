@@ -3,7 +3,7 @@ import fs from 'fs';
 import { Request, Router } from "express";
 import { GameVersion, SettingsManager } from "./settings";
 import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
-import { DEFAULT_DIRECTORY } from '../client/media';
+import { DEFAULT_DIRECTORY } from '../common/utils';
 
 type GetCallback = (settings: SettingsManager, route: string) => string
 
