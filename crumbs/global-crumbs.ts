@@ -1,10 +1,12 @@
 import fs from 'fs'
 import path from 'path'
-import { replacePcode } from '../src/common/ffdec/ffdec';
+import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils'
 
-function loadBaseCrumbs(): string {
-  return fs.readFileSync(path.join(__dirname, 'base_global_crumbs.pcode'), { encoding: 'utf-8' })
+const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
+
+async function loadBaseCrumbs(): Promise<string> {
+  return await extractPcode(BASE_GLOBAL_CRUMBS, 'frame_1/DoAction.pcode');
 }
 
 function changeRoomMusic(crumbs: string, roomName: string, newMusicId: number): string {
@@ -183,14 +185,14 @@ const crumbs: Array<{
   }},
 ]
 
-const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
-
 console.log('Beginning exporting');
 
 (async () => {
+  const ORIGINAL_CRUMBS = await loadBaseCrumbs();
+  fs.writeFileSync(path.join(__dirname, 'testcrumbs.pcode'), ORIGINAL_CRUMBS);
   for (const crumb of crumbs) {
     console.log(`Exporting crumbs to the path: ${crumb.path}`);
-    let newCrumbs = loadBaseCrumbs();
+    let newCrumbs = ORIGINAL_CRUMBS;
     if (crumb.changes !== undefined) {
       if (crumb.changes.music !== undefined) {
         for (const room in crumb.changes.music) {
