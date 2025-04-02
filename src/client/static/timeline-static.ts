@@ -393,6 +393,12 @@ const versions: Version[] = [
     }
   },
   {
+    value: '2010-07-05',
+    events: {
+      partyUpdate: 'July 4th Fireworks Removed'
+    }
+  },
+  {
     value: '2010-08-12',
     events: {
       partyStart: 'Mountain Expedition'
