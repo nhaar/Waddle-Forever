@@ -130,10 +130,19 @@ type CrumbsTimeline = Array<SeasonalCrumbsChange | PartyCrumbsChange>;
 const CRUMBS_TIMELINE: CrumbsTimeline = [
   {
     type: 'seasonal',
-    version: '2010-May-27',
+    version: '2010-Jun-10',
     changes: {
       music: {
-        'stage': 39
+        'stage': 37
+      }
+    }
+  },
+  {
+    type: 'seasonal',
+    version: '2010-Jul-21',
+    changes: {
+      music: {
+        'stage': 230
       }
     }
   },
@@ -170,6 +179,15 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
+    type: 'seasonal',
+    version: '2010-Aug-26',
+    changes: {
+      music: {
+        'stage': 32
+      }
+    }
+  },
+  {
     type: 'party',
     event: '2010/fair_2010',
     changes: {
@@ -179,7 +197,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
         'dance': 243,
         'lounge': 243,
         'plaza': 297,
-        'stage': 32,
         'village': 297,
         'mtn': 297,
         'forts': 297,
@@ -201,6 +218,24 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
       globalPaths: {
         'tickets': 'tickets.swf',
         'ticket_icon': 'ticket_icon.swf'
+      }
+    }
+  },
+  {
+    type: 'seasonal',
+    version: '2010-Sep-16',
+    changes: {
+      music: {
+        'stage': 39
+      }
+    }
+  },
+  {
+    type: 'seasonal',
+    version: '2010-Oct-08',
+    changes: {
+      music: {
+        'stage': 43
       }
     }
   },
@@ -230,7 +265,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
         'plaza': 251,
         'pet': 252,
         'pizza': 253,
-        'stage': 43,
         'village': 251,
         'lodge': 252,
         'attic': 252,
@@ -265,8 +299,12 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
   },
   {
     type: 'seasonal',
-    version: '2010-Nov-24',
-    changes: {}
+    version: '2010-Nov-18',
+    changes: {
+      music: {
+        'stage': 38
+      }
+    }
   }
 ]
 
