@@ -192,9 +192,9 @@ export const enableOrDisableDiscordRPC = async (store: Store, mainWindow: Browse
 
   if (!getDiscordRPCEnabledFromStore(store)) {
     const confirmationEnableResult = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Sim', 'Não', 'Cancelar'],
-      title: 'Você deseja ativar o Discord Reach Presence?',
-      message: `Essa alteração precisa recarregar a página para ser efetiva (somente se o rastreamento de sala estivar ativo).`,
+      buttons: ['Yes', 'No', 'Cancel'],
+      title: 'Would you like to activate Discord Rich Presence?',
+      message: `This changes must reload the page in order to be applied (only if room tracking is active).`,
     });
 
     if (confirmationEnableResult.response !== 0) {
@@ -217,9 +217,10 @@ export const enableOrDisableDiscordRPC = async (store: Store, mainWindow: Browse
   }
 
   const confirmationTrackingEnableResult = await dialog.showMessageBox(mainWindow, {
-    buttons: ['Sim', 'Não', 'Cancelar'],
-    title: 'Você deseja ativar o rastreamento de sala para o Discord Reach Presence?',
-    message: `A localização do seu pinguim será exposta no discord.`,
+    buttons: ['Yes', 'No', 'Cancel'],
+    title: 'Would you like to activate room tracking for Discord Rich Presence?',
+    // kind of out of place for an offline client
+    message: `The location of your penguin will be exposed on Discord.`,
   });
 
   if (confirmationTrackingEnableResult.response !== 0) {
@@ -236,9 +237,9 @@ export const enableOrDisableDiscordRPC = async (store: Store, mainWindow: Browse
 export const enableOrDisableDiscordRPCLocationTracking = async (store: Store, mainWindow: BrowserWindow) => {
   if (!getDiscordRPCTrackingEnabledFromStore(store)) {
     const confirmationTrackingEnableResult = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Sim', 'Não', 'Cancelar'],
-      title: 'Você deseja ativar o rastreamento de sala para o Discord Reach Presence?',
-      message: `A localização do seu pinguim será exposta no discord.`,
+      buttons: ['Yes', 'No', 'Cancel'],
+      title: 'Would you like to activate room tracking for Discord Rich Presence',
+      message: `The location of your penguin will be exposed on Discord.`,
     });
 
     if (confirmationTrackingEnableResult.response !== 0) {
