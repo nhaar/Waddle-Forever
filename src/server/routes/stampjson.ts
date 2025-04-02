@@ -1,5 +1,5 @@
 import { GameVersion } from "../settings"
-import { isGreaterOrEqual } from "./versions"
+import { isGreaterOrEqual, isLower } from "./versions"
 
 type Category = {
   name: string
@@ -994,6 +994,10 @@ function addStamps(category: Category, stamps: Stamp[]) {
 }
 
 export function getStampbook(version: GameVersion): string {
+  if (isLower(version, '2010-Jul-26')) {
+    return '{}'
+  }
+  
   const newStampbook = JSON.parse(JSON.stringify(originalStampbook)) as Stampbook
 
   if (isGreaterOrEqual(version, '2010-Aug-12')) {
