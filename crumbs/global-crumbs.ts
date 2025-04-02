@@ -205,7 +205,6 @@ console.log('Beginning exporting');
 
 (async () => {
   const ORIGINAL_CRUMBS = await loadBaseCrumbs();
-  fs.writeFileSync(path.join(__dirname, 'testcrumbs.pcode'), ORIGINAL_CRUMBS);
   for (const crumb of crumbs) {
     console.log(`Exporting crumbs to the path: ${crumb.path}`);
     let newCrumbs = ORIGINAL_CRUMBS;
