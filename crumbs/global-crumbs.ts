@@ -178,7 +178,7 @@ const crumbs: Array<{
       'ticket_icon': 'ticket_icon.swf'
     }
   }},
-  { path: 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Sep-24.swf', changes: {
+  { path: 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-May-27.swf', changes: {
     music: {
       'stage': 39
     }
