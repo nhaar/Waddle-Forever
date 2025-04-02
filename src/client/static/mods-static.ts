@@ -18,36 +18,44 @@ async function setModInactive(mod: string) {
   await updateMod(mod, false);
 }
 
-getMods().then((mods) => {
-  let html = ''
-  for (const mod in mods) {
-    html += `
-    <div>
-      <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
-      <span>${mod}</span>
-    </div>
-    `;
-  }
-
-  document.querySelector('.mods')!.innerHTML = html;
-
-  const inputs = document.querySelectorAll('input');
-  for (const input of inputs) {
-    if (input instanceof HTMLInputElement) {
-      input.addEventListener('change', (e) => {
-        if (e.target instanceof HTMLInputElement) {
-          if (e.target.checked) {
-            setModActive(input.id);
-          } else {
-            setModInactive(input.id);
-          }
-          modsApi.updateMod();
-        }
-      })
+function setupPage() {
+  getMods().then((mods) => {
+    let html = ''
+    for (const mod in mods) {
+      html += `
+      <div>
+        <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
+        <span>${mod}</span>
+      </div>
+      `;
     }
-  }
+  
+    document.querySelector('.mods')!.innerHTML = html;
+  
+    const inputs = document.querySelectorAll('input');
+    for (const input of inputs) {
+      if (input instanceof HTMLInputElement) {
+        input.addEventListener('change', (e) => {
+          if (e.target instanceof HTMLInputElement) {
+            if (e.target.checked) {
+              setModActive(input.id);
+            } else {
+              setModInactive(input.id);
+            }
+            modsApi.updateMod();
+          }
+        })
+      }
+    }
+  
+    document.getElementById('open-mods-folder')?.addEventListener('click', () => {
+      modsApi.openModsFolder();
+    });
+  
+    document.getElementById('update-mods')?.addEventListener('click', () => {
+      setupPage();
+    });
+  })
+}
 
-  document.getElementById('open-mods-folder')?.addEventListener('click', () => {
-    modsApi.openModsFolder();
-  });
-})
+setupPage();
