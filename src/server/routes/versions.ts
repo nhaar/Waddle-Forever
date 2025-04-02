@@ -22,14 +22,19 @@ function decomposeVersion(version: string): [number, number, number] | undefined
     return;
   }
 
-  const year = Number(version.slice(0, 4));
-  const month = version.slice(5, 8);
-  const day = Number(version.slice(9, 11));
+  const yearText = version.slice(0, 4);
+  const monthText = version.slice(5, 8);
+  const dayText = version.slice(9, 11);
+
+  const year = Number(yearText);
+  // XX day marks that we don't know the exact day, we assume first of the month.
+  const day = dayText === 'XX' ? 1 : Number(dayText);
 
   if (isNaN(year) || isNaN(day)) {
     return;
   }
-  const monthIndex = MONTHS.indexOf(month);
+  // same as above, but with three 'X' for the month
+  const monthIndex = monthText === 'XXX' ? 0 : MONTHS.indexOf(monthText);
   if (monthIndex === -1) {
     return;
   }
