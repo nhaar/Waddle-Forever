@@ -11,9 +11,75 @@ type Newspaper = {
 }
 
 // issue number of the very first newspaper in the list below
-const FIRST_ISSUE_NUMBER = 246;
+const FIRST_ISSUE_NUMBER = 235;
 
 const newspapers: Newspaper[] = [
+  {
+    year: 2010,
+    month: 4,
+    day: 15,
+    headline: 'CELEBRATE EARTH DAY!'
+  },
+  {
+    year: 2010,
+    month: 4,
+    day: 22,
+    headline: 'EARTH DAY CELEBRATIONS BEGIN!'
+  },
+  {
+    year: 2010,
+    month: 4,
+    day: 29,
+    headline: 'YE PENGUIN STYLE'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 6,
+    headline: 'MEDIEVAL PARTY'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 13,
+    headline: 'YOUR IGLOO-MEDIEVAL STYLE'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 20,
+    headline: 'POPCORN EVERYWHERE AT SPORT SHOP'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 27,
+    headline: 'SKI VILLAGE UNDER CONSTRUCTION'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 3,
+    headline: 'PENGUINS SEEKING ADVENTURE'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 10,
+    headline: 'ISLAND ADVENTURE PLANS REVEALED'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 17,
+    headline: 'THE ADVENTURE BEGINS!'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 24,
+    headline: 'CONTINUE YOUR ADVENTURE!'
+  },
   {
     year: 2010,
     month: 7,
