@@ -86,6 +86,22 @@ const crumbs: Array<{
   path: string,
   changes?: Modifications
 }> = [
+  { path: 'event/2010/music_jam/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
+    music: {
+      'lounge': 271,
+      'berg': 244,
+      'mine': 247,
+      'dance': 242,
+      'pizza': 271,
+      'plaza': 271,
+      'forts': 271,
+      'rink': 240,
+      'village': 292,
+      'town': 271,
+      'party3': 293,
+      'coffee': 0
+    }
+  } },
   { path: 'event/2010/mountain_expedition/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
     music: {
       'party2': 294,
@@ -215,7 +231,7 @@ console.log('Beginning exporting');
   
     const outputPath = path.join(DEFAULT_DIRECTORY, crumb.path);
 
-    if (!fs.existsSync(outputPath)) {
+    if (!fs.existsSync(path.dirname(outputPath))) {
       throw new Error(`Global crumbs file path is invalid: ${outputPath}`);
     }
   
