@@ -181,16 +181,46 @@ export function getSetupXml(version: GameVersion) {
     ['2006-Apr-07', '0604']
   ])
 
+  const servers = [
+    'Blizzard',
+    'Slushy',
+    'Ice Berg',
+    'Flurry',
+    'White Out',
+    'Snow Angel',
+    'Snow Day',
+    'Frostbite',
+    'Icicle',
+    'Tundra',
+    'Snow Cone',
+    'Alpine',
+    'North Pole',
+    'Glacier',
+    'Aurora',
+    'Deep Freeze',
+    'Frozen',
+    'Cold Front',
+    'Snow Flake',
+    'Frosty',
+    'South Pole',
+    'Big Surf'
+  ];
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 
 <setup>
 
    <Worlds>
-      <Blizzard>
-         <IP>localhost</IP>
-         <Port>6114</Port>
-         <Zone>w1</Zone>
-      </Blizzard>
+      ${servers.map((server) => {
+        server = server.replace(' ', ''); // it doesn't like spaces
+        return `
+      <${server}>
+        <IP>localhost</IP>
+        <Port>6114</Port>
+        <Zone>w1</Zone>
+      </${server}>
+        `
+      }).join('')}
    </Worlds>
 
    <Rooms>
