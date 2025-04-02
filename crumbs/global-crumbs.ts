@@ -1,4 +1,10 @@
-import fs from 'fs'
+/**
+ * This script is used for generating global_crumbs.swf
+ * 
+ * If you want to create or edit a crumb file, what you want to
+ * change is `CRUMBS_TIMELINE`
+ */
+
 import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils'
@@ -82,36 +88,138 @@ type Modifications = {
   globalPaths?: Record<string, string>
 }
 
-const crumbs: Array<{
-  path: string,
-  changes?: Modifications
-}> = [
-  { path: 'event/2010/music_jam/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
-    music: {
-      'lounge': 271,
-      'berg': 244,
-      'mine': 247,
-      'dance': 242,
-      'pizza': 271,
-      'plaza': 271,
-      'forts': 271,
-      'rink': 240,
-      'village': 292,
-      'town': 271,
-      'party3': 293,
-      'coffee': 0
+function applyChanges(crumbs: string, changes: Modifications): string {
+  let newCrumbs = crumbs;
+  if (changes.music !== undefined) {
+    for (const room in changes.music) {
+      newCrumbs = changeRoomMusic(newCrumbs, room, changes.music[room]);
     }
-  } },
-  { path: 'event/2010/mountain_expedition/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
-    music: {
-      'party2': 294,
-      'party3': 295,
-      'party4': 295,
-      'party6': 256
+  }
+
+  if (changes.prices !== undefined) {
+    for (const item in changes.prices) {
+      newCrumbs = changeItemCost(newCrumbs, Number(item), changes.prices[item]);
     }
-  } },
-  { path: 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Nov-24.swf' },
-  { path: 'event/2010/halloween_party_2010/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
+  }
+
+  if (changes.globalPaths !== undefined) {
+    for (const path in changes.globalPaths) {
+      newCrumbs = addGlobalPath(newCrumbs, path, changes.globalPaths[path]);
+    }
+  }
+
+  return newCrumbs;
+}
+
+type SeasonalCrumbsChange = {
+  type: 'seasonal',
+  /** Valid version string */
+  version: string
+  changes: Modifications
+};
+type PartyCrumbsChange = {
+  type: 'party',
+  /** Path to event eg 2010/music_jam */
+  event: string
+  changes: Modifications
+};
+
+type CrumbsTimeline = Array<SeasonalCrumbsChange | PartyCrumbsChange>;
+
+/** Timeline with all updates to global_crumbs, must be included in CHRONOLOGICAL ORDER! */
+const CRUMBS_TIMELINE: CrumbsTimeline = [
+  {
+    type: 'seasonal',
+    version: '2010-May-27',
+    changes: {
+      music: {
+        'stage': 39
+      }
+    }
+  },
+  {
+    type: 'party',
+    event: '2010/music_jam',
+    changes: {
+      music: {
+        'lounge': 271,
+        'berg': 244,
+        'mine': 247,
+        'dance': 242,
+        'pizza': 271,
+        'plaza': 271,
+        'forts': 271,
+        'rink': 240,
+        'village': 292,
+        'town': 271,
+        'party3': 293,
+        'coffee': 0
+      }
+    }
+  },
+  {
+    type: 'party',
+    event: '2010/mountain_expedition',
+    changes: {
+      music: {
+        'party2': 294,
+        'party3': 295,
+        'party4': 295,
+        'party6': 256
+      }
+    }
+  },
+  {
+    type: 'party',
+    event: '2010/fair_2010',
+    changes: {
+      music: {
+        'town': 297,
+        'coffee': 221,
+        'dance': 243,
+        'lounge': 243,
+        'plaza': 297,
+        'stage': 32,
+        'village': 297,
+        'mtn': 297,
+        'forts': 297,
+        'dock': 297,
+        'beach': 297,
+        'beacon': 221,
+        'forest': 297,
+        'berg': 297,
+        'cove': 297,
+        'party': 221,
+        'party1': 221,
+        'party2': 221,
+        'party3': 221
+      },
+      prices: {
+        5077: 0,
+        6052: 0
+      },
+      globalPaths: {
+        'tickets': 'tickets.swf',
+        'ticket_icon': 'ticket_icon.swf'
+      }
+    }
+  },
+  {
+    type: 'party',
+    event: '2010/5th_anniversary_party',
+    changes: {
+      music: {
+        'town': 218,
+        'coffee': 218,
+        'book': 218,
+        'stage': 43
+      }
+    }
+  },
+  {
+    type: 'party',
+    event: '2010/halloween_party_2010',
+    changes: {
       music: {
         'town': 251,
         'coffe': 252,
@@ -155,85 +263,38 @@ const crumbs: Array<{
       }
     }
   },
-  { path: 'event/2010/5th_anniversary_party/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
-    music: {
-      'town': 218,
-      'coffee': 218,
-      'book': 218,
-      'stage': 43
-    }
-  }},
-  { path: 'event/2010/fair_2010/play/v2/content/global/crumbs/global_crumbs.swf', changes: {
-    music: {
-      'town': 297,
-      'coffee': 221,
-      'dance': 243,
-      'lounge': 243,
-      'plaza': 297,
-      'stage': 32,
-      'village': 297,
-      'mtn': 297,
-      'forts': 297,
-      'dock': 297,
-      'beach': 297,
-      'beacon': 221,
-      'forest': 297,
-      'berg': 297,
-      'cove': 297,
-      'party': 221,
-      'party1': 221,
-      'party2': 221,
-      'party3': 221
-    },
-    prices: {
-      5077: 0,
-      6052: 0
-    },
-    globalPaths: {
-      'tickets': 'tickets.swf',
-      'ticket_icon': 'ticket_icon.swf'
-    }
-  }},
-  { path: 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-May-27.swf', changes: {
-    music: {
-      'stage': 39
-    }
-  }},
+  {
+    type: 'seasonal',
+    version: '2010-Nov-24',
+    changes: {}
+  }
 ]
 
-console.log('Beginning exporting');
+const SEASONAL_CRUMBS_PATH = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf');
+
+/**
+ * Creates a new global_crumbs.swf file
+ * @param outputPath Path the SWF will be saved in
+ * @param crumbsContent The P-Code code content of the file
+ */
+function createCrumbs(outputPath: string, crumbsContent: string): void {
+  replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
+}
 
 (async () => {
-  const ORIGINAL_CRUMBS = await loadBaseCrumbs();
-  for (const crumb of crumbs) {
-    console.log(`Exporting crumbs to the path: ${crumb.path}`);
-    let newCrumbs = ORIGINAL_CRUMBS;
-    if (crumb.changes !== undefined) {
-      if (crumb.changes.music !== undefined) {
-        for (const room in crumb.changes.music) {
-          newCrumbs = changeRoomMusic(newCrumbs, room, crumb.changes.music[room]);
-        }
-      }
-  
-      if (crumb.changes.prices !== undefined) {
-        for (const item in crumb.changes.prices) {
-          newCrumbs = changeItemCost(newCrumbs, Number(item), crumb.changes.prices[item]);
-        }
-      }
-  
-      if (crumb.changes.globalPaths !== undefined) {
-        for (const path in crumb.changes.globalPaths) {
-          newCrumbs = addGlobalPath(newCrumbs, path, crumb.changes.globalPaths[path]);
-        }
-      }
+  console.log('Beginning exporting');
+  let permanentCrumbs = await loadBaseCrumbs();
+  for (const update of CRUMBS_TIMELINE) {
+    if (update.type === 'seasonal') {
+      console.log(`Exporting changes for day ${update.version}`);
+      permanentCrumbs = applyChanges(permanentCrumbs, update.changes);
+      const filePath = path.join(SEASONAL_CRUMBS_PATH, update.version + '.swf');
+      createCrumbs(filePath, permanentCrumbs);
+    } else {
+      console.log(`Exporting changes for event "${update.event}"`);
+      const partyCrumbs = applyChanges(permanentCrumbs, update.changes);
+      const filePath = path.join(DEFAULT_DIRECTORY, 'event', update.event, 'play/v2/content/global/crumbs/global_crumbs.swf');
+      createCrumbs(filePath, partyCrumbs);
     }
-  
-    const outputPath = path.join(DEFAULT_DIRECTORY, crumb.path);
-
-    if (!fs.existsSync(path.dirname(outputPath))) {
-      throw new Error(`Global crumbs file path is invalid: ${outputPath}`);
-    }
-  
-    await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', newCrumbs);
   }
 })();
