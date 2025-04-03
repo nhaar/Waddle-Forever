@@ -3,7 +3,7 @@ import fs from 'fs';
 import { Request, Router } from "express";
 import { GameVersion, SettingsManager } from "./settings";
 import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
-import { DEFAULT_DIRECTORY } from '../common/utils';
+import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 
 type GetCallback = (settings: SettingsManager, route: string) => string
 
@@ -318,7 +318,7 @@ export class HttpServer {
       if (handled === undefined) {
         next();
       } else {
-        res.sendFile(path.join(process.cwd(), 'media', handled))
+        res.sendFile(path.join(MEDIA_DIRECTORY, handled))
       }
     })
   }
@@ -330,7 +330,7 @@ export class HttpServer {
       if (specialPath === undefined) {
         next();
       } else {
-        const filePath = path.join(process.cwd(), 'media', specialPath, dirPath);
+        const filePath = path.join(MEDIA_DIRECTORY, specialPath, dirPath);
         if (fs.existsSync(filePath)) {
           res.sendFile(filePath);
         } else {
