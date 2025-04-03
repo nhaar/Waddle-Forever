@@ -138,15 +138,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    type: 'seasonal',
-    version: '2010-Jul-21',
-    changes: {
-      music: {
-        'stage': 230
-      }
-    }
-  },
-  {
     type: 'party',
     event: '2010/music_jam',
     changes: {
@@ -163,6 +154,15 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
         'town': 271,
         'party3': 293,
         'coffee': 0
+      }
+    }
+  },
+  {
+    type: 'seasonal',
+    version: '2010-Jul-21',
+    changes: {
+      music: {
+        'stage': 230
       }
     }
   },
@@ -315,8 +315,8 @@ const SEASONAL_CRUMBS_PATH = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/cont
  * @param outputPath Path the SWF will be saved in
  * @param crumbsContent The P-Code code content of the file
  */
-function createCrumbs(outputPath: string, crumbsContent: string): void {
-  replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
+async function createCrumbs(outputPath: string, crumbsContent: string): Promise<void> {
+  await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
 (async () => {
