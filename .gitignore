@@ -77,3 +77,6 @@ settings.json
 
 # FFDEC path depends on your local installation
 ffdec-path.ts
+
+# production logs
+/logs

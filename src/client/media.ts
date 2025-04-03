@@ -7,7 +7,7 @@ import { VERSION } from '../common/version';
 import settingsManager from '../server/settings';
 import { download } from './download';
 import { unzip } from './unzip';
-import { MEDIA_DIRECTORY, postJSON } from '../common/utils';
+import { logError, MEDIA_DIRECTORY, postJSON } from '../common/utils';
 
 /**
  * Downloads and extracts a media folder from the website
@@ -33,7 +33,8 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
     const folderDestination = path.join(MEDIA_DIRECTORY, mediaName);
     try {
       await unzip(zipDir, folderDestination);
-    } catch {
+    } catch (error) {
+      logError('Error unzipping: ', error);
       onFail();
       return;
     }

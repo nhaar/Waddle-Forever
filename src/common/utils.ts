@@ -1,6 +1,7 @@
 import http from 'http';
 import https from 'https';
 import path from 'path';
+import fs from 'fs';
 import { WEBSITE } from './website';
 import { exec } from 'child_process';
 
@@ -119,6 +120,16 @@ export async function runCommand(command: string): Promise<void> {
       }
     });
   });
+}
+
+/** Function for logging more silent errors in production */
+export const logError = (message: string, error: any): void => {
+  const logDir = path.join(process.cwd(), 'logs');
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+  }
+  const logFile = path.join(logDir, 'logs.txt');
+  fs.appendFileSync(logFile, `${message}: ${error}\n`);
 }
 
 export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
