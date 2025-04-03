@@ -70,9 +70,16 @@ export const postJSON = async (path: string, body: any, errorCallback?: (data: a
       });
   
       res.on('end', () => {
-        const obj = JSON.parse(output);
-  
-        resolve(obj);
+        if (res.statusCode !== 200) {
+          reject(new Error(`Request failed with status ${res.statusCode}: ${output}`));
+          return;
+        }
+        try {
+          const obj = JSON.parse(output);
+          resolve(obj);
+        } catch (error) {
+          reject(`The endpoint was successful but returned invalid JSON data: ${output}`);
+        }
       });
     });
   
