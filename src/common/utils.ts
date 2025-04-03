@@ -44,57 +44,58 @@ export function parseURL(url: string): {
   }
 }
 
-export const postJSON = async (path: string, body: any, errorCallback?: (data: any) => any) => {
+export const postJSON = async (path: string, body: any) => {
   const urlData = parseURL(`${WEBSITE}${path}`);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return await new Promise<any>((resolve, reject) => {
-    let output = '';
-
-    const requestModule = urlData.protocol === 'https' ? https : http;
-
-    const req = requestModule.request({
-      host: urlData.host,
-      path: urlData.path,
-      port: urlData.port,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Nodejs'
-      }
-    }, (res) => {
-      res.setEncoding('utf8');
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await new Promise<any>((resolve, reject) => {
+      let output = '';
   
-      res.on('data', (chunk) => {
-        output += chunk;
-      });
+      const requestModule = urlData.protocol === 'https' ? https : http;
   
-      res.on('end', () => {
-        if (res.statusCode !== 200) {
-          reject(new Error(`Request failed with status ${res.statusCode}: ${output}`));
-          return;
+      const req = requestModule.request({
+        host: urlData.host,
+        path: urlData.path,
+        port: urlData.port,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Nodejs'
         }
-        try {
-          const obj = JSON.parse(output);
-          resolve(obj);
-        } catch (error) {
-          reject(`The endpoint was successful but returned invalid JSON data: ${output}`);
-        }
+      }, (res) => {
+        res.setEncoding('utf8');
+    
+        res.on('data', (chunk) => {
+          output += chunk;
+        });
+    
+        res.on('end', () => {
+          if (res.statusCode !== 200) {
+            reject(new Error(`Request failed with status ${res.statusCode}: ${output}`));
+            return;
+          }
+          try {
+            const obj = JSON.parse(output);
+            resolve(obj);
+          } catch (error) {
+            reject(`The endpoint was successful but returned invalid JSON data: ${output}`);
+          }
+        });
       });
-    });
-  
-    req.on('error', (err) => {
-      try {
-        resolve(errorCallback(err));
-      } catch {
+    
+      req.on('error', (err) => {
         reject(err);
-      }
-    });
-
-    req.write(JSON.stringify(body));
+      });
   
-    req.end();
-  });
+      req.write(JSON.stringify(body));
+    
+      req.end();
+    });
+  } catch (error) {
+    console.log(`There was an error with the POST request to path ${path}: ${error}`);
+    return undefined;
+  }
 };
 
 export function getDateString(timestamp: number): string {
