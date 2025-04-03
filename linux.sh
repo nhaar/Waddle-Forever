@@ -7,6 +7,7 @@ CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/
 SERVER_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverServer-linux-$VERSION"
 DEFAULT_URL="$URL/media/$DEFAULT-$VERSION.zip"
 DEST_FOLDER="./Waddle-Forever-$VERSION"
+DATA_FOLDER="~/.waddleforever"
 DEFAULT_ZIP="default.zip"
 
 mkdir $DEST_FOLDER
@@ -21,9 +22,18 @@ unzip "$DEFAULT" -d "$DEST_FOLDER/media/default"
 echo "$VERSION" > "$DEST_FOLDER/media/default/.version"
 rm "$DEFAULT_ZIP"
 
-echo "{}" > "$DEST_FOLDER/settings.json"
+mkdir $DATA_FOLDER
 
-mkdir "$DEST_FOLDER/mods"
-echo "" > "$DEST_FOLDER/mods/.active_mods"
+SETTINGS_PATH="$DATA_FOLDER/settings.json"
+if [ ! -f $SETTINGS_PATH ]; then
+    echo "{}" > $SETTINGS_PATH
+fi
+
+mkdir "$DATA_FOLDER/mods"
+
+ACTIVE_MODS_PATH="$DATA_FOLDER/mods/.active_mods"
+if [ ! -f $ACTIVE_MODS_PATH ]; then
+    echo "" > $ACTIVE_MODS_PATH
+fi
 
 echo "Installation finished! Please check details in https://waddleforever.com/linux on how to run the game."

@@ -1,6 +1,7 @@
 import path from 'path';
 import fs, { writeFileSync } from 'fs';
 import { VERSION } from '../../common/version';
+import { DATABASE_DIRECTORY } from '../../common/paths';
 
 export enum Databases {
   Penguins = 'penguins'
@@ -8,9 +9,7 @@ export enum Databases {
 
 type JsonProperty = string | number | boolean
 
-const databaseFolder = path.join(process.cwd(), 'data');
-
-const versionFile = path.join(databaseFolder, '.version');
+const versionFile = path.join(DATABASE_DIRECTORY, '.version');
 
 /**
  * A replacement to sqlite since it was not working with the electron dependencies
@@ -34,7 +33,7 @@ class JsonDatabase {
   }
 
   loadDatabase() {
-    if (fs.existsSync(databaseFolder)) { // migrate or leave it
+    if (fs.existsSync(DATABASE_DIRECTORY)) { // migrate or leave it
       const version = fs.existsSync(versionFile) ? (
         fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim()
       ) : '0.2.0' // version 0.2.0 didnt have a .version file
@@ -48,7 +47,7 @@ class JsonDatabase {
   }
 
   private migrate_0_2_0(): void {
-    const penguinsDir = path.join(databaseFolder, 'penguins')
+    const penguinsDir = path.join(DATABASE_DIRECTORY, 'penguins')
     const penguins = fs.readdirSync(penguinsDir)
     for (const penguin of penguins) {
       if (penguin.match(/\d+\.json/) !== null) {
@@ -94,8 +93,8 @@ class JsonDatabase {
   }
 
   createDatabase(): void {
-    if (!fs.existsSync(databaseFolder)) {
-      fs.mkdirSync(databaseFolder)
+    if (!fs.existsSync(DATABASE_DIRECTORY)) {
+      fs.mkdirSync(DATABASE_DIRECTORY)
     }
     db.createSubDatabase(Databases.Penguins);
     fs.writeFileSync(versionFile, VERSION);
@@ -149,7 +148,7 @@ class JsonDatabase {
   }
 }
 
-const db = new JsonDatabase(databaseFolder);
+const db = new JsonDatabase(DATABASE_DIRECTORY);
 
 export interface Puffle {
   id: number

@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain, shell } from "electron";
 import electronIsDev from "electron-is-dev";
 import path from "path";
+import { MODS_DIRECTORY } from "../common/paths";
 
 export const createModsWindow = async (mainWindow: BrowserWindow) => {
   const modsWindow = new BrowserWindow({
@@ -24,6 +25,6 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
   })
 
   ipcMain.on('open-mods-folder', () => {
-    shell.openPath(path.join(process.cwd(), 'mods'));
+    shell.openPath(MODS_DIRECTORY);
   });
 };
