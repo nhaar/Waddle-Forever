@@ -295,7 +295,10 @@ export class Client {
     if (this.currentRoom in roomStamps) {
       let gameStamps = roomStamps[this.currentRoom];
       // manually removing stamps if using a version before it was available
-      if (this.currentRoom === Room.JetPackAdventure) {
+      if (isLower(this.version, '2010-Jul-26')) {
+        gameStamps = [];
+      } else if (this.currentRoom === Room.JetPackAdventure) {
+        // Before puffle stamps
         if (isLower(this.version, '2010-Sep-24')) {
           gameStamps = [
             Stamp.LiftOff,

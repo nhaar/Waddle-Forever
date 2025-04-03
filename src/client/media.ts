@@ -7,7 +7,7 @@ import { VERSION } from '../common/version';
 import settingsManager from '../server/settings';
 import { download } from './download';
 import { unzip } from './unzip';
-import { MEDIA_DIRECTORY } from '../common/utils';
+import { logError, MEDIA_DIRECTORY, postJSON } from '../common/utils';
 
 /**
  * Downloads and extracts a media folder from the website
@@ -33,7 +33,8 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
     const folderDestination = path.join(MEDIA_DIRECTORY, mediaName);
     try {
       await unzip(zipDir, folderDestination);
-    } catch {
+    } catch (error) {
+      logError('Error unzipping: ', error);
       onFail();
       return;
     }
@@ -57,9 +58,27 @@ const checkMedia = async (mediaName: string): Promise<boolean> => {
   if (!fs.existsSync(versionFile)) {
     isUpToDate = false;
   } else {
-    const version = fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim();
-    if (version !== VERSION) {
-      isUpToDate = false;
+    const previousVersion = fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim();
+    if (previousVersion === VERSION) {
+      isUpToDate = true;
+    } else {
+      // even though the versions are different,
+      // the contents may be the same, so we can skip
+      // downloading a new file if they are equivalent
+      const response = await postJSON('/compare-versions', { oldVersion: previousVersion, newVersion: VERSION, media: mediaName });
+      if (response !== undefined) {
+        if (response.isEquivalent) {
+          fs.writeFileSync(versionFile, VERSION);
+          isUpToDate = true;
+        } else {
+          isUpToDate = false;
+        }
+      } else {
+        // API error on server, we assume there's no equivalence
+        // this scenario shouldn't happen, and if it does
+        // we might get an error trying to download anyways
+        isUpToDate = false;
+      }
     }
   }
 

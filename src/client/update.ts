@@ -17,7 +17,7 @@ export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
 
   const versionStatus = await postJSON(`/api/version`, {
     version: VERSION
-  }, () => undefined)
+  })
 
   if (versionStatus === undefined) {
     return;

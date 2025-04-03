@@ -1,5 +1,7 @@
 import path from 'path'
 import fs from 'fs'
+import { replacePcode } from '../src/common/ffdec/ffdec';
+import { DEFAULT_DIRECTORY } from '../src/common/utils';
 
 type Newspaper = {
   year: number,
@@ -9,9 +11,75 @@ type Newspaper = {
 }
 
 // issue number of the very first newspaper in the list below
-const FIRST_ISSUE_NUMBER = 246;
+const FIRST_ISSUE_NUMBER = 235;
 
 const newspapers: Newspaper[] = [
+  {
+    year: 2010,
+    month: 4,
+    day: 15,
+    headline: 'CELEBRATE EARTH DAY!'
+  },
+  {
+    year: 2010,
+    month: 4,
+    day: 22,
+    headline: 'EARTH DAY CELEBRATIONS BEGIN!'
+  },
+  {
+    year: 2010,
+    month: 4,
+    day: 29,
+    headline: 'YE PENGUIN STYLE'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 6,
+    headline: 'MEDIEVAL PARTY'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 13,
+    headline: 'YOUR IGLOO-MEDIEVAL STYLE'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 20,
+    headline: 'POPCORN EVERYWHERE AT SPORT SHOP'
+  },
+  {
+    year: 2010,
+    month: 5,
+    day: 27,
+    headline: 'SKI VILLAGE UNDER CONSTRUCTION'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 3,
+    headline: 'PENGUINS SEEKING ADVENTURE'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 10,
+    headline: 'ISLAND ADVENTURE PLANS REVEALED'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 17,
+    headline: 'THE ADVENTURE BEGINS!'
+  },
+  {
+    year: 2010,
+    month: 6,
+    day: 24,
+    headline: 'CONTINUE YOUR ADVENTURE!'
+  },
   {
     year: 2010,
     month: 7,
@@ -169,6 +237,28 @@ function getFullDate(news: Newspaper): string {
   return `${monthname} ${news.day}, ${news.year}`
 }
 
+function getDateFileName(news: Newspaper): string {
+  const month = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ][news.month - 1];
+
+  // must be 2 digits for day
+  const day = news.day < 10 ? '0' + String(news.day) : news.day;
+
+  return `${news.year}-${month}-${day}`;
+}
+
 function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
   let varname = ''
   if (n === -1) {
@@ -252,6 +342,10 @@ if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir);
 }
 
+const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
+
+console.log('Beginning exporting...');
+
 for (const newspaper of newspapers) {
   currentThings.push(newspaper)
   issueNumber++;
@@ -263,6 +357,9 @@ for (const newspaper of newspapers) {
     const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
     
     const recent = currentThings[6]
-    fs.writeFileSync(path.join(__dirname, 'news', getFileDate(recent)), filecontent)
+    const fileName = getDateFileName(recent) + '.swf';
+    const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
+    console.log(`Exporting: ${fileName}`);
+    replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
   }
 }

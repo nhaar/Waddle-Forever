@@ -122,8 +122,6 @@ export class SettingsManager {
 
   activeMods: string[] = [];
 
-  installedMods: string[];
-
   constructor () {
     let settingsJson: any = {};
 
@@ -132,8 +130,7 @@ export class SettingsManager {
     }
 
     this.activeMods = getActiveMods();
-    this.installedMods = getMods();
-    this.usingMods = this.installedMods.length > 0;
+    this.getMods();
 
     this.settings = {
       fps30: this.readBoolean(settingsJson, 'fps30', false),
@@ -183,6 +180,12 @@ export class SettingsManager {
     this.activeMods = this.activeMods.filter((mod) => mod !== name);
     fs.writeFileSync(modsSettingsPath, this.activeMods.join('\n'));
  }
+
+  getMods(): string[] {
+    const mods = getMods();
+    this.usingMods = mods.length > 0
+    return mods;
+  }
 }
 
 const settingsManager = new SettingsManager();

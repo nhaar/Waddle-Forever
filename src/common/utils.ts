@@ -1,7 +1,9 @@
 import http from 'http';
 import https from 'https';
 import path from 'path';
+import fs from 'fs';
 import { WEBSITE } from './website';
+import { exec } from 'child_process';
 
 export type GlobalSettings = {
   isEditting: boolean
@@ -43,50 +45,58 @@ export function parseURL(url: string): {
   }
 }
 
-export const postJSON = async (path: string, body: any, errorCallback?: (data: any) => any) => {
+export const postJSON = async (path: string, body: any) => {
   const urlData = parseURL(`${WEBSITE}${path}`);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return await new Promise<any>((resolve, reject) => {
-    let output = '';
-
-    const requestModule = urlData.protocol === 'https' ? https : http;
-
-    const req = requestModule.request({
-      host: urlData.host,
-      path: urlData.path,
-      port: urlData.port,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Nodejs'
-      }
-    }, (res) => {
-      res.setEncoding('utf8');
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return await new Promise<any>((resolve, reject) => {
+      let output = '';
   
-      res.on('data', (chunk) => {
-        output += chunk;
+      const requestModule = urlData.protocol === 'https' ? https : http;
+  
+      const req = requestModule.request({
+        host: urlData.host,
+        path: urlData.path,
+        port: urlData.port,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Nodejs'
+        }
+      }, (res) => {
+        res.setEncoding('utf8');
+    
+        res.on('data', (chunk) => {
+          output += chunk;
+        });
+    
+        res.on('end', () => {
+          if (res.statusCode !== 200) {
+            reject(new Error(`Request failed with status ${res.statusCode}: ${output}`));
+            return;
+          }
+          try {
+            const obj = JSON.parse(output);
+            resolve(obj);
+          } catch (error) {
+            reject(`The endpoint was successful but returned invalid JSON data: ${output}`);
+          }
+        });
       });
-  
-      res.on('end', () => {
-        const obj = JSON.parse(output);
-  
-        resolve(obj);
-      });
-    });
-  
-    req.on('error', (err) => {
-      try {
-        resolve(errorCallback(err));
-      } catch {
+    
+      req.on('error', (err) => {
         reject(err);
-      }
-    });
-
-    req.write(JSON.stringify(body));
+      });
   
-    req.end();
-  });
+      req.write(JSON.stringify(body));
+    
+      req.end();
+    });
+  } catch (error) {
+    console.log(`There was an error with the POST request to path ${path}: ${error}`);
+    return undefined;
+  }
 };
 
 export function getDateString(timestamp: number): string {
@@ -97,6 +107,29 @@ export function getDateString(timestamp: number): string {
   const day = date.getUTCDate()
 
   return `${year}-${month}-${day}`
+}
+
+/** Runs a command in the current shell, asynchronously. */
+export async function runCommand(command: string): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    exec(command, (err, stdout, stder) => {
+      if (err === null) {
+        resolve();
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+/** Function for logging more silent errors in production */
+export const logError = (message: string, error: any): void => {
+  const logDir = path.join(process.cwd(), 'logs');
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+  }
+  const logFile = path.join(logDir, 'logs.txt');
+  fs.appendFileSync(logFile, `${message}: ${error}\n`);
 }
 
 export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');

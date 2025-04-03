@@ -34,7 +34,7 @@ export const setApiServer = (s: SettingsManager, server: Express): void => {
 
   router.get('/mod/get', (_, res) => {
     const activeMods = s.activeMods;
-    const mods = s.installedMods;
+    const mods = s.getMods();
     const modsRelation: Record<string, boolean> = {};
     for (const mod of mods) {
       modsRelation[mod] = activeMods.includes(mod);

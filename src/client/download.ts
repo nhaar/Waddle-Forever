@@ -2,7 +2,7 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 
-import { parseURL } from '../common/utils';
+import { logError, parseURL } from '../common/utils';
 import { WEBSITE } from '../common/website';
 import { showProgress } from './progress';
 
@@ -34,7 +34,7 @@ async function downloadFile(filename: string, destination: string, update: (prog
         });
     }).on('error', (err) => {
         fs.unlink(destination, () => {});
-        // file.close();
+        logError('Error downloading', err);
         finish();
         resolve(false);
     });
