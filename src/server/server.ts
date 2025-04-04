@@ -99,9 +99,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
 
   const server = express();
 
-  if (settingsManager.usingMods) {
-    server.use(getModRouter(settingsManager));
-  }
+  server.use(getModRouter(settingsManager));
 
   const httpServer = createHttpServer(settingsManager);
 
