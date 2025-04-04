@@ -122,12 +122,19 @@ export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
 }
 
+const AS1_CUTOFF = '2008-XXX-XX';
+const AS3_CUTOFF = '2012-XXX-XX';
+
 export function isAs1(version: GameVersion): boolean {
-  return isLower(version, '2008-Jan-01')
+  return isLower(version, AS1_CUTOFF)
+}
+
+export function isAs2(version: GameVersion): boolean {
+  return isGreaterOrEqual(version, AS1_CUTOFF) && isLower(version, AS3_CUTOFF);
 }
 
 export function isAs3(version:GameVersion): boolean {
-  return isGreater(version, '2012-Jan-01');
+  return isGreaterOrEqual(version, '2012-Jan-01');
 }
 
 type VersionMap<T> = Array<[GameVersion, T]>

@@ -1,7 +1,7 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
-import { isAs1 } from "./versions";
+import { isAs1, isAs2, isAs3 } from "./versions";
 import { getSetupXml } from "./as1setup";
 import { getServersXml } from "../servers";
 
@@ -102,6 +102,12 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       return 'default/static/as3';
     } else {
       return 'default/static/as2'
+    }
+  })
+  // SECOND LAYER FALLBACK
+  server.dir('', (s) => {
+    if (isAs3(s.settings.version) || isAs2(s.settings.version)) {
+      return 'default/static/as2_as3';
     }
   })
   
