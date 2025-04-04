@@ -7,7 +7,7 @@ CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/
 SERVER_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverServer-linux-$VERSION"
 DEFAULT_URL="$URL/media/$DEFAULT-$VERSION.zip"
 DEST_FOLDER="./Waddle-Forever-$VERSION"
-DATA_FOLDER="~/.waddleforever"
+DATA_FOLDER="$HOME/.waddleforever"
 DEFAULT_ZIP="default.zip"
 
 mkdir $DEST_FOLDER
