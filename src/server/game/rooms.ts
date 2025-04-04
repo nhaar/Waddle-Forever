@@ -44,45 +44,6 @@ export enum Room {
   PuffleLaunch = 955
 }
 
-const gameRooms = [
-  Room.AstroBarrier,
-  Room.BeanCounters,
-  Room.PuffleRoundup,
-  Room.HydroHopper,
-  Room.IceFishing,
-  Room.CartSurfer,
-  Room.JetPackAdventure,
-  Room.ThinIce,
-  Room.Pizzatron,
-  Room.CatchinWaves,
-  Room.AquaGrabber,
-  Room.DJ3K,
-  Room.MyPuffle,
-  Room.BurntOutBulbs,
-  Room.LimeGreenDojoClean,
-  Room.Mission1,
-  Room.Mission2,
-  Room.Mission3,
-  Room.Mission4,
-  Room.Mission5,
-  Room.Mission6,
-  Room.Mission7,
-  Room.Mission8,
-  Room.Mission9,
-  Room.Mission10,
-  Room.Mission11,
-  Room.PuffleRescue,
-  Room.DanceContest,
-  Room.PuffleSoaker,
-  Room.BalloonPop,
-  Room.RingTheBell,
-  Room.FeedAPuffle,
-  Room.MemoryCardGame,
-  Room.PufflePaddle,
-  Room.PuffleShuffle,
-  Room.SystemDefender,
-  Room.PuffleLaunch
-];
 export const roomStamps: Record<number, number[]> = {
   [Room.JetPackAdventure]: [
     Stamp.LiftOff,
@@ -236,5 +197,6 @@ export const isLiteralScoreGame = (room: Room): boolean => {
 }
 
 export const isGameRoom = (room: Room): boolean => {
-  return gameRooms.includes(room);
+  // from what I know, 900 and forward is only minigames
+  return room >= 900;
 };
