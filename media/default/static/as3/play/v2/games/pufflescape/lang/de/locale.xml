@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locale game="Pufflescape Eishöhlen" language="English" version="1.0">
+	<entry id="title_icecaves_text" value="Eishöhlen"/>
+	<entry id="title_playbutton_text" value="Spielen"/>
+	<entry id="title_instructbutton_text" value="Anleitung"/>
+	
+	<entry id="puffleselect_choose" value="Wähle&#10;"/>
+	<entry id="puffleselect_yourpuffle" value="Deinen Puffle"/>
+	<entry id="puffleselect_nextbutton" value="Start"/>
+	
+	<entry id="instructions_instructions_text" value="Anleitung"/>
+	<entry id="instructions_tomove_text" value="Bewegen"/>
+	<entry id="instructions_move_text" value="Drücke die linke und rechte Pfeiltaste, &#10;um deinen Puffle zu bewegen."/>
+	<entry id="instructions_AND_text" value="UND"/>
+	<entry id="instructions_tointeract_text" value="Zusammenspiel"/>
+	<entry id="instructions_interact_text" value="Benutze die Maus, um Gegenstände &#10;zu bewegen und zu drehen."/>
+	<entry id="instructions_buddy_text" value="Mache beides zur gleichen Zeit oder arbeite zusammen mit einem Freund!"/>
+	<entry id="instructions_togoodstuff_text" value="Sammeln"/>
+	<entry id="instructions_goodstuff_text" value="Hol dir den Schlüssel, um die Tür zu öffnen. Sammle Puffle-Os für extra &#10;Münzen und den Puffle-O-Zweig für &#10;den Extrem-Modus."/>
+	<entry id="instructions_tohints_text" value="Tipps"/>
+	<entry id="instructions_hints_text" value="Sammle einen Puffle-O und klicke die Hinweis-Taste, um bewegliche Gegenstände und Level-Hinweise anzuzeigen."/>
+	<entry id="instructions_unlock_text" value="Puffle-Os schalten Hinweise und den Extrem-Modus frei. Sammle alle Puffle-Os!"/>
+	<entry id="instructions_playbutton_text" value="Spielen"/>
+	
+	<entry id="levelstart_message_text" value="LOS!"/>
+
+	<entry id="levelselect_icecaves_text" value="Eishöhlen"/>
+	<entry id="levelselect_part1_text" value="Eingang"/>
+	<entry id="levelselect_part2_text" value="In den Tiefen"/>
+	<entry id="levelselect_part3_text" value="Legende"/>
+	<entry id="levelselect_instructions_button_text" value="Anleitung"/>
+	
+	<entry id="pausescreen_levelnum_text" value="Level "/>
+	
+	<entry id="keyexpired_timesup_text" value="Zeit abgelaufen!"/>
+	
+	<entry id="winscreen_level_text" value="Level "/>
+	<entry id="winscreen_complete_text" value=" abgeschlossen!"/>
+	<entry id="winscreen_unlock_text" value="Extrem-Level freigeschaltet!"/>
+	<entry id="winscreen_goal_text" value="Getroffen!"/>
+	<entry id="winscreen_congratulations_text" value="Glückwunsch!"/>
+	
+	<entry id="finalscreen_congratulations_text" value="GLÜCKWUNSCH!"/>
+</locale>

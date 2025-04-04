@@ -41,6 +41,12 @@ handler.xt('u#sp', (client, x, y) => {
   client.sendXt('sp', client.id, x, y);
 })
 
+// refreshing room (required for bits and bolts, maybe other places)
+handler.xt('j#grs', (client) => {
+  // TODO multiplayer logic
+  client.sendXt('grs', client.id, client.penguinString);
+})
+
 handler.disconnect((client) => {
   client.disconnect();
 })

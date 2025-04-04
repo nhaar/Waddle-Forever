@@ -1,0 +1,26 @@
+  <?xml version="1.0" encoding="UTF-8" ?> 
+<locale game="Tuercas y tornillos" language="Spanish" version="1.0">
+  <entry id="copyright_text" value="BOLAS DE NIEVE v. 2011" /> 
+  <entry id="help1_text" value="Haz clic en los tornillos y combínalos para que coincidan con el número." /> 
+  <entry id="help2_text" value="Combina los múltiplos correctos para armar una parte del robot." /> 
+  <entry id="help2b_text" value="SOLO" /> 
+  <entry id="help3_text" value="Usa el balón explosivo para limpiar la pantalla." /> 
+  <entry id="help4_text" value="Algunos robots necesitan 1 cant. especial de tornillos: hay pares, impares y primos." /> 
+  <entry id="help4b_text" value="CUALQ." /> 
+  <entry id="score_label_text" value="PUNTOS" /> 
+  <entry id="level_label_text" value="NIVEL" /> 
+  <entry id="botparts_label_text" value="PARTES" /> 
+  <entry id="cleared_label_text" value="PIEZAS BORRADAS" /> 
+  <entry id="time_label_text" value="TIEMPO" /> 
+  <entry id="part_only_label_text" value="SOLO" /> 
+  <entry id="part_any_label_text" value="CUALQ." /> 
+  <entry id="start_label_text" value="INICIO" /> 
+  <entry id="instructions_label_text" value="CÓMO JUGAR" /> 
+  <entry id="play_now_label_text" value="JUGAR" /> 
+  <entry id="done_label_text" value="LISTO" />
+  <entry id="continue_score_text" value="PUNTAJE ACTUAL"/>
+  <entry id="continue_button_label_text" value="CONTINUAR"/>
+  <entry id="pause_text" value="EN PAUSA"/>
+  </locale>
+
+

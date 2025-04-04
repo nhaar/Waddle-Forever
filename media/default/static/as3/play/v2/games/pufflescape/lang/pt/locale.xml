@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locale game="Patinuffle Ice Caves" language="English" version="1.0">
+	<entry id="title_icecaves_text" value="cavernas geladas"/>
+	<entry id="title_playbutton_text" value="Jogar"/>
+	<entry id="title_instructbutton_text" value="Instruções"/>
+	
+	<entry id="puffleselect_choose" value="Escolha&#10;"/>
+	<entry id="puffleselect_yourpuffle" value="Seu Puffle"/>
+	<entry id="puffleselect_nextbutton" value="Jogar"/>
+	
+	<entry id="instructions_instructions_text" value="Instruções"/>
+	<entry id="instructions_tomove_text" value="Mover"/>
+	<entry id="instructions_move_text" value="Use as setas para a esquerda e direita &#10;para mover o seu puffle."/>
+	<entry id="instructions_AND_text" value="E"/>
+	<entry id="instructions_tointeract_text" value="Interagir"/>
+	<entry id="instructions_interact_text" value="Use o cursor para arrastar e &#10;girar objetos."/>
+	<entry id="instructions_buddy_text" value="Faça ambos ao mesmo tempo, ou trabalhe junto com um amigo!"/>
+	<entry id="instructions_togoodstuff_text" value="Colecionar"/>
+	<entry id="instructions_goodstuff_text" value="Pegue a chave para abrir a porta.&#10;Colecione Puffitos para moedas &#10;extras; o Monte de  Puffitos para &#10;destravar o Modo Extremo."/>
+	<entry id="instructions_tohints_text" value="Dicas"/>
+	<entry id="instructions_hints_text" value="Colecione um Puffito para destravar o &#10;Modo Dicas. Clique no botão Dicas para&#10;ver objetos móveis e dicas para o nível."/>
+	<entry id="instructions_unlock_text" value="Puffitos destravam o Modo Dicas e o Modo Extremo, colecione todos!"/>
+	<entry id="instructions_playbutton_text" value="JOGAR"/>
+	
+	<entry id="levelstart_message_text" value="VAI!"/>
+
+	<entry id="levelselect_icecaves_text" value="cavernas geladas"/>
+	<entry id="levelselect_part1_text" value="Entrada"/>
+	<entry id="levelselect_part2_text" value="Profundezas"/>
+	<entry id="levelselect_part3_text" value="Lenda"/>
+	<entry id="levelselect_instructions_button_text" value="Instruções"/>
+	
+	<entry id="pausescreen_levelnum_text" value="Nível "/>
+	
+	<entry id="keyexpired_timesup_text" value="Acabou!"/>
+	
+	<entry id="winscreen_level_text" value="Nível "/>
+	<entry id="winscreen_complete_text" value=" Completo!"/>
+	<entry id="winscreen_unlock_text" value="Modo Extremo Destravado!"/>
+	<entry id="winscreen_goal_text" value="Boa!"/>
+	<entry id="winscreen_congratulations_text" value="PARABÉNS!"/>
+	
+	<entry id="finalscreen_congratulations_text" value="PARABÉNS!"/>
+</locale>

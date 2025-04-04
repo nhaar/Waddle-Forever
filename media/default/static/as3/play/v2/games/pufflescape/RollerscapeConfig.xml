@@ -1,0 +1,299 @@
+<CollisionCourseConfig Path = "">
+	<Act Name = "Tab0">	
+		<Level Name = "Level1" 
+		NumberOfNormalPuffleOs="1"
+		HardCollectableGUID="BBFFED49-6495-F502-E459-F31C655B0070"
+		CompletedGUID="F47F4B2F-65B7-73EB-30ED-8FACEB973A35"
+		HudUsedGUID="A8DCA622-AD65-0F05-6982-ABBF52CB5976"/>
+		
+		<Level Name = "Level1Reverse"
+		NumberOfNormalPuffleOs="1"
+		HardCollectableGUID="ED017B39-2AC7-47C4-AFB8-D5AC5B56894F"
+		CompletedGUID="22DFC586-3BC0-23DC-84E4-6C238D5BD62E"
+		HudUsedGUID="DCDFE690-E8B5-FB4A-E0EA-7526381429C9"/>
+
+		<Level Name = "LevelChooseTunnel" PuffleScale = "0.6" ExitToLeft="true"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="F6BC1093-95A0-EB20-FB28-2045D6245399"
+		CompletedGUID="43E63702-007B-B827-1B4F-79AA0F895554"
+		HudUsedGUID="A4933902-5692-B323-E05C-F9160F37F912"/>
+
+		<Level Name = "LevelEasy2" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="4C822EF8-1ABE-966A-E21C-067290615DEE"
+		CompletedGUID="4EDC189C-0C36-7044-9C38-0132426D0C2B"
+		HudUsedGUID="5FF1B000-7136-589F-0CC8-2BCB07B07F56"/>
+
+		<Level Name = "Level5"
+		NumberOfNormalPuffleOs="1"
+		HardCollectableGUID="2C12DC6B-7F9A-C5A5-1387-678F5648D0A3"
+		CompletedGUID="5D292F18-6CB8-545E-E830-89F803A6F2FC"
+		HudUsedGUID="EAB778F0-E009-8F91-DB0F-A40D84230216"/>
+
+		<Level Name = "LevelWaterIntro"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="E5C737D5-49CB-3AD3-01EE-4EED2555B9D1"
+		CompletedGUID="834D0A11-B740-5191-A8B2-110602EE9932"
+		HudUsedGUID="CD6EC8B8-98E4-092B-BC62-D4064CED4BE5"/>
+		
+		<Level Name = "LevelWaterLoop" PuffleScale = "0.7"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="C960314C-860B-C981-0BBF-166A37197559"
+		CompletedGUID="281343C1-48FF-B098-39FB-C78F1956E8E7"
+		HudUsedGUID="60DCA362-F5C4-33DD-8BCB-F22ACC5BBC0E"/>
+
+		<Level Name = "LevelFrozenWater"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="5C0EBEF0-061B-5175-4E3E-B30B98925D51"
+		CompletedGUID="B1A2C8D5-84C3-FACB-F1A2-18E53543657A"
+		HudUsedGUID="31FEC1A4-B35B-53F4-9F6E-C7B0E1F1AE95"/>
+		
+		
+		
+		<Level Name = "Level1Challenge" 
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="BBFFED49-6495-F502-E459-F31C655B0070"
+		CompletedGUID="F47F4B2F-65B7-73EB-30ED-8FACEB973A35"
+		HudUsedGUID="A8DCA622-AD65-0F05-6982-ABBF52CB5976"/>
+		
+		<Level Name = "Level1ReverseChallenge"
+		NumberOfNormalPuffleOs="1"
+		HardCollectableGUID="ED017B39-2AC7-47C4-AFB8-D5AC5B56894F"
+		CompletedGUID="22DFC586-3BC0-23DC-84E4-6C238D5BD62E"
+		HudUsedGUID="DCDFE690-E8B5-FB4A-E0EA-7526381429C9"/>
+
+		<Level Name = "LevelChooseTunnelChallenge" PuffleScale = "0.6" ExitToLeft="true"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="F6BC1093-95A0-EB20-FB28-2045D6245399"
+		CompletedGUID="43E63702-007B-B827-1B4F-79AA0F895554"
+		HudUsedGUID="A4933902-5692-B323-E05C-F9160F37F912"/>
+
+		<Level Name = "LevelEasy2Challenge" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="4C822EF8-1ABE-966A-E21C-067290615DEE"
+		CompletedGUID="4EDC189C-0C36-7044-9C38-0132426D0C2B"
+		HudUsedGUID="5FF1B000-7136-589F-0CC8-2BCB07B07F56"/>
+
+		<Level Name = "Level5Challenge"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="2C12DC6B-7F9A-C5A5-1387-678F5648D0A3"
+		CompletedGUID="5D292F18-6CB8-545E-E830-89F803A6F2FC"
+		HudUsedGUID="EAB778F0-E009-8F91-DB0F-A40D84230216"/>
+
+		<Level Name = "LevelWaterIntroChallenge"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="E5C737D5-49CB-3AD3-01EE-4EED2555B9D1"
+		CompletedGUID="834D0A11-B740-5191-A8B2-110602EE9932"
+		HudUsedGUID="CD6EC8B8-98E4-092B-BC62-D4064CED4BE5"/>
+		
+		<Level Name = "LevelWaterLoopChallenge" PuffleScale = "0.7"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="C960314C-860B-C981-0BBF-166A37197559"
+		CompletedGUID="281343C1-48FF-B098-39FB-C78F1956E8E7"
+		HudUsedGUID="60DCA362-F5C4-33DD-8BCB-F22ACC5BBC0E"/>
+
+		<Level Name = "LevelFrozenWaterChallenge"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="5C0EBEF0-061B-5175-4E3E-B30B98925D51"
+		CompletedGUID="B1A2C8D5-84C3-FACB-F1A2-18E53543657A"
+		HudUsedGUID="31FEC1A4-B35B-53F4-9F6E-C7B0E1F1AE95"/>
+	</Act>
+	<Act Name = "Tab1">	
+		<Level Name = "Level4"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="D2D77FB4-0B32-5A0B-9FC6-7CD87E206CCC"
+		CompletedGUID="09AF27EC-1D36-6EBD-2E07-B04A5DD75A65"
+		HudUsedGUID="3AEA4DA8-FA2F-B5A3-C13D-A03CBE929881"/>
+
+		<Level Name = "LevelIceWall2" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="6CFE4995-4F54-E243-CB41-58F99343FBE7"
+		CompletedGUID="28B2C2F6-3BFF-5D17-0D62-8BF6C45EBFC6"
+		HudUsedGUID="16D34F25-D980-2DE3-932B-46B15300E0B6"/>
+
+		<Level Name = "LevelEasyTangram"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="088EA72C-8957-4059-486D-BB314FA07EEB"
+		CompletedGUID="B497E6AE-3527-7309-54F8-DE3D9B6FAAAB"
+		HudUsedGUID="CC8B4FDA-4B47-FFEA-3EF0-09F2EF5BE905"/>
+
+		<Level Name = "LevelFunHole"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="09D1FDD3-B6E0-3ADE-188D-F90D8D9C0B99"
+		CompletedGUID="C072E5D6-45E5-5A66-A380-DB15982E50AC"
+		HudUsedGUID="0E96EA47-B68F-F6B0-9393-C25E24BEC83A"/>
+
+		<Level Name = "LevelBlockPath"  PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="D742DD42-23C0-9733-2925-6302CF7B3045"
+		CompletedGUID="BFCD6A92-9AED-B9EE-C689-3FFF52B14B8D"
+		HudUsedGUID="0648BDB0-19A0-2013-EC10-A15395ACA570"/>
+
+		<Level Name = "LevelBigRamp" PuffleScale = "0.7" ExitToLeft="true"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="3B46B70D-818F-1F2D-FDDA-757F1A879A42"
+		CompletedGUID="540C0F12-F951-1684-FBD3-55CEA5655DED"
+		HudUsedGUID="4914C543-CA52-2A61-C94E-7D0DE1630412"/>
+
+		<Level Name = "LevelAlternatingRamp"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="5756CC41-2015-D5F0-1256-4C047B858E0C" ExitToLeft="true"
+		CompletedGUID="DBDB739F-6566-605A-4B4A-68AC01F6E0EF"
+		HudUsedGUID="F869E58D-B6D3-4617-593F-45C9EDD3D845"/>
+
+		<Level Name = "LevelCompanionRamp" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="4B52918A-DD34-12E7-E5F6-1ED16E5391D0"
+		CompletedGUID="290558B1-A2B5-CBAE-A8F3-DA2A594F1176"
+		HudUsedGUID="A1EA60CA-61DF-773E-0DEF-E299E20A96C3"/>
+		
+		
+		
+		<Level Name = "Level4Challenge"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="D2D77FB4-0B32-5A0B-9FC6-7CD87E206CCC"
+		CompletedGUID="09AF27EC-1D36-6EBD-2E07-B04A5DD75A65"
+		HudUsedGUID="3AEA4DA8-FA2F-B5A3-C13D-A03CBE929881"/>
+
+		<Level Name = "LevelIceWall2Challenge" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="6CFE4995-4F54-E243-CB41-58F99343FBE7"
+		CompletedGUID="28B2C2F6-3BFF-5D17-0D62-8BF6C45EBFC6"
+		HudUsedGUID="16D34F25-D980-2DE3-932B-46B15300E0B6"/>
+
+		<Level Name = "LevelEasyTangramChallenge"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="088EA72C-8957-4059-486D-BB314FA07EEB"
+		CompletedGUID="B497E6AE-3527-7309-54F8-DE3D9B6FAAAB"
+		HudUsedGUID="CC8B4FDA-4B47-FFEA-3EF0-09F2EF5BE905"/>
+
+		<Level Name = "LevelFunHoleChallenge"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="09D1FDD3-B6E0-3ADE-188D-F90D8D9C0B99"
+		CompletedGUID="C072E5D6-45E5-5A66-A380-DB15982E50AC"
+		HudUsedGUID="0E96EA47-B68F-F6B0-9393-C25E24BEC83A"/>
+
+		<Level Name = "LevelBlockPathChallenge"  PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="3B46B70D-818F-1F2D-FDDA-757F1A879A42"
+		CompletedGUID="540C0F12-F951-1684-FBD3-55CEA5655DED"
+		HudUsedGUID="4914C543-CA52-2A61-C94E-7D0DE1630412"/>
+
+		<Level Name = "LevelBigRampChallenge" PuffleScale = "0.7" ExitToLeft="true"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="3B46B70D-818F-1F2D-FDDA-757F1A879A42"
+		CompletedGUID="540C0F12-F951-1684-FBD3-55CEA5655DED"
+		HudUsedGUID="4914C543-CA52-2A61-C94E-7D0DE1630412"/>
+
+		<Level Name = "LevelAlternatingRampChallenge"
+		HardCollectableGUID="5756CC41-2015-D5F0-1256-4C047B858E0C" ExitToLeft="true"
+		NumberOfNormalPuffleOs="2"
+		CompletedGUID="DBDB739F-6566-605A-4B4A-68AC01F6E0EF"
+		HudUsedGUID="F869E58D-B6D3-4617-593F-45C9EDD3D845"/>
+
+		<Level Name = "LevelCompanionRampChallenge" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="4B52918A-DD34-12E7-E5F6-1ED16E5391D0"
+		CompletedGUID="290558B1-A2B5-CBAE-A8F3-DA2A594F1176"
+		HudUsedGUID="A1EA60CA-61DF-773E-0DEF-E299E20A96C3"/>
+	</Act>
+	<Act Name = "Tab2">	
+		<Level Name = "LevelComposite"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="D1A60A13-BD25-F27E-8C0B-82AE1378B0DC"
+		CompletedGUID="FAC77954-9DC6-9034-7B45-BAA34AAC49D6"
+		HudUsedGUID="0C74E71F-6743-7EC8-64BA-C65E790FC1AF"/>
+
+		<Level Name = "LevelMountainTops" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="E5EDF093-3A80-B9B7-F480-A136FC83C3E1"
+		CompletedGUID="48A1DBEC-E004-0B99-B68E-81FE0B820B71"
+		HudUsedGUID="6B4411D8-402E-1796-E5B3-F7356AD9CB5E"/>
+
+		<Level Name = "LevelMountainTops2" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="9BC8F76E-4486-B6D6-B9B7-A06BEA8B7717"
+		CompletedGUID="79833359-1A9C-3117-9BC7-8E820A63104E"
+		HudUsedGUID="31D1DFFE-F59A-649A-57C8-2054C3471354"/>
+
+		<Level Name = "LevelFrictionFlip" PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="ADE3321D-ED50-0CAA-7EBC-DFDAC530C229"
+		CompletedGUID="1B14C03A-D626-D4D3-1A9B-7690F3F0F4F5"
+		HudUsedGUID="BEF77A77-FCF1-6CB7-41FB-F2F9018DDA7F"/>
+
+		<Level Name = "LevelSawtooth" PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="A0FCD73C-406E-1927-432B-F297B50EC0D4"
+		CompletedGUID="7A43BFF2-F57B-7F51-4FD3-B6DDDC354BA9"
+		HudUsedGUID="652CE874-8FDB-A100-FE72-3174937AEA9D"/>
+
+		<Level Name = "LevelBridges" PuffleScale = "0.6" ExitToLeft="true"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="FAC8ECE3-12BF-F043-0870-41C913EC35D0"
+		CompletedGUID="43908C13-199D-5141-8E2C-2F6D475EDCE1"
+		HudUsedGUID="E11E088B-0451-FFE6-0333-C13AB2AA4168"/>
+
+		<Level Name = "LevelFinal1" PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="21"
+		HardCollectableGUID=""
+		CompletedGUID="AD8DEA7D-3882-B2B6-6C4D-BAFE1DF42916"
+		HudUsedGUID=""/>
+
+		<Level Name = "LevelFinal2" PuffleScale = "0.55"
+		HardCollectableGUID=""
+		CompletedGUID="251ED7CA-09C5-03DC-58FA-0FB25B663A9A"
+		HudUsedGUID=""/>
+
+		<Level Name = "LevelFinal3" PuffleScale = "0.55"
+		HardCollectableGUID=""
+		CompletedGUID="246DF94B-5BAF-4B94-1B4D-A55D13A98E49"
+		HudUsedGUID=""/>
+		
+		
+		
+		<Level Name = "LevelCompositeChallenge"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="D1A60A13-BD25-F27E-8C0B-82AE1378B0DC"
+		CompletedGUID="FAC77954-9DC6-9034-7B45-BAA34AAC49D6"
+		HudUsedGUID="0C74E71F-6743-7EC8-64BA-C65E790FC1AF"/>
+
+		<Level Name = "LevelMountainTopsChallenge" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="E5EDF093-3A80-B9B7-F480-A136FC83C3E1"
+		CompletedGUID="48A1DBEC-E004-0B99-B68E-81FE0B820B71"
+		HudUsedGUID="6B4411D8-402E-1796-E5B3-F7356AD9CB5E"/>
+
+		<Level Name = "LevelMountainTops2Challenge" PuffleScale = "0.6"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="9BC8F76E-4486-B6D6-B9B7-A06BEA8B7717"
+		CompletedGUID="79833359-1A9C-3117-9BC7-8E820A63104E"
+		HudUsedGUID="31D1DFFE-F59A-649A-57C8-2054C3471354"/>
+
+		<Level Name = "LevelFrictionFlipChallenge" PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="ADE3321D-ED50-0CAA-7EBC-DFDAC530C229"
+		CompletedGUID="1B14C03A-D626-D4D3-1A9B-7690F3F0F4F5"
+		HudUsedGUID="BEF77A77-FCF1-6CB7-41FB-F2F9018DDA7F"/>
+
+		<Level Name = "LevelSawtoothChallenge" PuffleScale = "0.55"
+		NumberOfNormalPuffleOs="2"
+		HardCollectableGUID="A0FCD73C-406E-1927-432B-F297B50EC0D4"
+		CompletedGUID="7A43BFF2-F57B-7F51-4FD3-B6DDDC354BA9"
+		HudUsedGUID="652CE874-8FDB-A100-FE72-3174937AEA9D"/>
+
+		<Level Name = "LevelBridgesChallenge" PuffleScale = "0.6" ExitToLeft="true"
+		NumberOfNormalPuffleOs="3"
+		HardCollectableGUID="FAC8ECE3-12BF-F043-0870-41C913EC35D0"
+		CompletedGUID="43908C13-199D-5141-8E2C-2F6D475EDCE1"
+		HudUsedGUID="E11E088B-0451-FFE6-0333-C13AB2AA4168"/>
+	</Act >
+	<!-- 
+
+	REGEX
+
+	F: Name = "(\w*)"
+	R: Name = "\1Challenge"
+
+	-->
+</CollisionCourseConfig>

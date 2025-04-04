@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locale game="Rollerscape Ice Caves" language="English" version="1.0">
+	<entry id="title_icecaves_text" value="ice caves"/>
+	<entry id="title_playbutton_text" value="Play"/>
+	<entry id="title_instructbutton_text" value="Instructions"/>
+	
+	<entry id="puffleselect_choose" value="Choose&#10;"/>
+	<entry id="puffleselect_yourpuffle" value="Your Puffle"/>
+	<entry id="puffleselect_nextbutton" value="Start"/>
+	
+	<entry id="instructions_instructions_text" value="Instructions"/>
+	<entry id="instructions_tomove_text" value="Move"/>
+	<entry id="instructions_move_text" value="Press the left and right arrow keys &#10;to move your puffle."/>
+	<entry id="instructions_AND_text" value="AND"/>
+	<entry id="instructions_tointeract_text" value="Interact"/>
+	<entry id="instructions_interact_text" value="Use the mouse to drag and &#10;rotate movable objects."/>
+	<entry id="instructions_buddy_text" value="Do both at the same time, or work together with a friend!"/>
+	<entry id="instructions_togoodstuff_text" value="Collect"/>
+	<entry id="instructions_goodstuff_text" value="Get the key to unlock the door. &#10;Collect Puffle O’s for extra coins. &#10;Collect the Puffle O Bunch to &#10;unlock Extreme mode."/>
+	<entry id="instructions_tohints_text" value="Hints"/>
+	<entry id="instructions_hints_text" value="Earn a Puffle O to unlock hint mode. &#10;Click the Hint button to show movable objects and level tips."/>
+	<entry id="instructions_unlock_text" value="Puffle O's unlock hints and extreme mode, collect them all!"/>
+	<entry id="instructions_playbutton_text" value="Play"/>
+	
+	<entry id="levelstart_message_text" value="GO!"/>
+
+	<entry id="levelselect_icecaves_text" value="ice caves"/>
+	<entry id="levelselect_part1_text" value="Entrance"/>
+	<entry id="levelselect_part2_text" value="Depths"/>
+	<entry id="levelselect_part3_text" value="Legend"/>
+	<entry id="levelselect_instructions_button_text" value="Instructions"/>
+	
+	<entry id="pausescreen_levelnum_text" value="Level "/>
+	
+	<entry id="keyexpired_timesup_text" value="Time's Up!"/>
+	
+
+	<entry id="winscreen_level_text" value="Level "/>
+	<entry id="winscreen_complete_text" value=" Complete!"/>
+	<entry id="winscreen_unlock_text" value="Extreme Level Unlocked!"/>
+	<entry id="winscreen_goal_text" value="Goal!"/>
+	<entry id="winscreen_congratulations_text" value="Congratulations!"/>
+	
+	<entry id="finalscreen_congratulations_text" value="CONGRATULATIONS!"/>
+</locale>
