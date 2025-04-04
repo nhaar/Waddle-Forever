@@ -120,6 +120,17 @@ class JsonDatabase {
     fs.writeFileSync(path.join(subDir, `${id}.json`), JSON.stringify(data));
   }
 
+  getById<T>(database: Databases, id: number): T | undefined {
+    const subDir = this.getSubDatabaseDir(database);
+    const filePath = path.join(subDir, String(id) + '.json');
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, { encoding: 'utf-8' });
+      return JSON.parse(content);
+    } else {
+      return undefined;
+    }
+  }
+
   get<T>(database: Databases, property: string, value: JsonProperty): [T, number] | undefined {
     const isString = typeof value === 'string';
     const subDir = this.getSubDatabaseDir(database);
@@ -219,7 +230,9 @@ export interface Penguin {
     furniture: IglooFurniture
   },
   furniture: Record<FurnitureId, FurnitureAmount>
-  iglooTypes: Record<string, 1>
+  iglooTypes: Record<string, 1>,
+  iglooLocations: Record<string, 1>,
+  iglooFloorings: Record<string, 1>,
   mail: Array<{
     sender: { name: string, id: number },
     postcard: {

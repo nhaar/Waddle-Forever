@@ -58,7 +58,8 @@ export type GameVersion = '2005-Aug-22'
   | '2010-Sep-24'
   | '2010-Oct-23'
   | '2010-Oct-28'
-  | '2010-Nov-24';
+  | '2010-Nov-24'
+  | '2016-Jan-01';
 
 interface Settings {
   fps30: boolean

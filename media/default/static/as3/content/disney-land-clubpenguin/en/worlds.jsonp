@@ -1,0 +1,12 @@
+worldsData({
+	"1000" : {
+		"world_id" : "1000",
+		"world_name" : "Avalanche",
+		"is_safe" : "0"
+	},
+	"1001" : {
+		"world_id" : "1001",
+		"world_name" : "Blizzard",
+		"is_safe" : "1"
+	}
+});

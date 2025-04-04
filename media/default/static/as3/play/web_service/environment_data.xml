@@ -1,0 +1,12 @@
+<environmentData>
+
+	<!-- CP General Environment -->
+	<data name="play" value="http://localhost/play/"></data>
+	<data name="client" value="http://localhost/play/v2/client/"></data>
+	<data name="content" value="http://localhost/play/v2/content/"></data>
+	<data name="games" value="http://localhost/play/v2/games/"></data>
+	<data name="drupal" value="http://localhost/"></data>
+	<data name="secured" value="https://localhost/"></data>
+	<data name="config" value="http://localhost/play/"></data>
+
+</environmentData>

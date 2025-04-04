@@ -86,7 +86,7 @@ export class Client {
       return [
         this.id,
         this.penguin.name,
-        1, // meant to be approval, but always approved
+        1, // meant to be approval, but always approved, TODO: non approved names in the future
         this.penguin.color,
         this.penguin.head,
         this.penguin.face,
@@ -154,6 +154,13 @@ export class Client {
     this.id = id;
   }
 
+  setPenguinFromId (id: number): void {
+    const data = db.getById<Penguin>(Databases.Penguins, id);
+    const penguin = data;
+    this.penguin = penguin;
+    this.id = id;
+  }
+
   static create (name: string, mascot = 0): [Penguin, number] {
     return db.add<Penguin>(Databases.Penguins, {
       ...Client.getDefault(),
@@ -198,11 +205,15 @@ export class Client {
       igloo: {
         type: 0,
         music: 0,
-        flooring: 0,
+        flooring: 0, // in the past, you could have only one flooring active
         furniture: []
       },
       furniture: {},
+      iglooFloorings: {}, // floorings inventory is a modern feature
       iglooTypes: {
+        1: 1
+      },
+      iglooLocations: {
         1: 1
       },
       mail: [],

@@ -8,6 +8,11 @@ import { getServersXml } from "../servers";
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
+  // AS3 login page requires this URL
+  server.get('/#/login', () => {
+    return `default/special/index.html/as3.html`;
+  })
+
   // setting dependent media
   server.addSpecials(
     ['boots.swf', (s) => {
@@ -30,11 +35,16 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       return s.settings.jpa_level_selector ? 'level_selector' : 'vanilla';
     }],
     ['play/v2/client/shell.swf', (s) => {
+      if (isAs3(s.settings.version)) {
+        return 'as3';
+      }
       return s.settings.remove_idle ? 'no_idle' : 'vanilla';
     }],
     ['index.html', (s) => {
       if (isAs1(s.settings.version)) {
         return 'as1';
+      } else if (isAs3(s.settings.version)) {
+        return 'as3';
       } else {
         return s.settings.minified_website ? 'minified-as2' : 'as2';
       }
@@ -88,6 +98,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.dir('', (s) => {
     if (isAs1(s.settings.version)) {
       return 'default/static/as1'
+    } else if (isAs3(s.settings.version)) {
+      return 'default/static/as3';
     } else {
       return 'default/static/as2'
     }
