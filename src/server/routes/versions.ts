@@ -77,12 +77,19 @@ export function sortVersions(versions: string[]): void {
   versions.sort((a, b) => {
     if (isLower(a, b)) {
       return -1;
-    } else if (a === b) {
+    } else if (isEqual(a, b)) {
       return 0;
     } else {
       return 1;
     }
   })
+}
+
+function isEqual(left: string, right: string): boolean {
+  const leftDetails = getVersionDetails(left);
+  const rightDetails = getVersionDetails(right);
+
+  return leftDetails.year === rightDetails.year && leftDetails.day === rightDetails.day && leftDetails.month === rightDetails.month
 }
 
 export function isGreater(left: string, right: string): boolean {
@@ -104,7 +111,7 @@ export function isGreater(left: string, right: string): boolean {
 }
 
 export function isGreaterOrEqual(left: string, right: string): boolean {
-  return left === right || isGreater(left, right);
+  return isEqual(left, right) || isGreater(left, right);
 }
 
 export function isLower(left: string, right: string) {
@@ -117,6 +124,10 @@ export function isLowerOrEqual(left: string, right: string): boolean {
 
 export function isAs1(version: GameVersion): boolean {
   return isLower(version, '2008-Jan-01')
+}
+
+export function isAs3(version:GameVersion): boolean {
+  return isGreater(version, '2012-Jan-01');
 }
 
 type VersionMap<T> = Array<[GameVersion, T]>
@@ -144,13 +155,13 @@ export function inInterval(version: GameVersion, start: GameVersion, end: GameVe
   if (isLower(version, start)) {
     return false
   }
-  if (!startOpen && version === start) {
+  if (!startOpen && isEqual(version, start)) {
     return true
   }
   if (isLower(version, end)) {
     return true
   }
-  if (!endOpen && version === end) {
+  if (!endOpen && isEqual(version, end)) {
     return true
   }
   return false
