@@ -89,7 +89,7 @@ class JsonDatabase {
   migrateDatabase(version: string): void {
     let curVersion = version
     while (curVersion !== VERSION) {
-      curVersion = this.migrateVersion(version);
+      curVersion = this.migrateVersion(curVersion);
     }
     fs.writeFileSync(versionFile, VERSION);
   }
