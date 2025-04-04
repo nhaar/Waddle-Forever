@@ -12,7 +12,7 @@ const IS_DEV = process.env.NODE_ENV === 'dev';
  * game data if they REALLY want to (just so that it can be possible for multipl versions to
  * exist in the same computer)
  */
-const useGameFolder = IS_DEV || fs.existsSync('.uselocal');
+const useGameFolder = IS_DEV || fs.existsSync(path.join(process.cwd(), '.uselocal'));
 
 /** Folder where all the WF user data is kept */
 const USER_DATA_FOLDER = useGameFolder ? process.cwd() : {
