@@ -81,6 +81,8 @@ class JsonDatabase {
         return '0.3.1';
       case '0.3.1':
         return '0.3.2';
+      case '0.3.2':
+        return '0.3.3';
       default:
         throw new Error('Invalid database version: ' + version);
     }
@@ -89,7 +91,7 @@ class JsonDatabase {
   migrateDatabase(version: string): void {
     let curVersion = version
     while (curVersion !== VERSION) {
-      curVersion = this.migrateVersion(version);
+      curVersion = this.migrateVersion(curVersion);
     }
     fs.writeFileSync(versionFile, VERSION);
   }

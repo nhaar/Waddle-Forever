@@ -96,6 +96,10 @@ export function getModRouter(s: SettingsManager): Router {
   const router = Router();
   
   router.get('/*', (req: Request, res, next) => {
+    if (!s.usingMods) {
+      next();
+      return;
+    }
     for (const mod of s.activeMods) {
       const modFilePath = path.join(MODS_DIRECTORY, mod, req.params[0]);
       if (fs.existsSync(modFilePath)) {

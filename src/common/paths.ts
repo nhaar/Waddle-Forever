@@ -12,22 +12,22 @@ const IS_DEV = process.env.NODE_ENV === 'dev';
  * game data if they REALLY want to (just so that it can be possible for multipl versions to
  * exist in the same computer)
  */
-const useGameFolder = IS_DEV || fs.existsSync('.uselocal');
+const useGameFolder = IS_DEV || fs.existsSync(path.join(process.cwd(), '.uselocal'));
+
+/** Get the data folder location for each OS */
+function getOsDataFolder() {
+  switch (process.platform) {
+    case 'win32':
+      return path.join(process.env.APPDATA, 'WaddleForever');
+    case 'linux':
+      return path.join(os.homedir(), '.waddleforever');
+    default:
+      break;
+  }
+}
 
 /** Folder where all the WF user data is kept */
-const USER_DATA_FOLDER = useGameFolder ? process.cwd() : {
-  'win32': path.join(process.env.APPDATA, 'WaddleForever'),
-  'linux': path.join(os.homedir(), '.waddleforever'),
-  'darwin': undefined,
-  'aix': undefined,
-  'android': undefined,
-  'cygwin': undefined,
-  'sunos': undefined,
-  'openbsd': undefined,
-  'netbsd': undefined,
-  'freebsd': undefined,
-  'haiku': undefined
-}[process.platform];
+const USER_DATA_FOLDER = useGameFolder ? process.cwd() : getOsDataFolder();
 
 export const DATABASE_DIRECTORY = path.join(USER_DATA_FOLDER, 'data');
 export const MODS_DIRECTORY = path.join(USER_DATA_FOLDER, 'mods');

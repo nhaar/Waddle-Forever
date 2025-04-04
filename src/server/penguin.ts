@@ -10,7 +10,7 @@ import { ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 
-const STAMP_RELEASE_VERSION : GameVersion = '2010-Sep-03'
+const STAMP_RELEASE_VERSION : string = '2010-Jul-26'
 
 export class Client {
   socket: net.Socket;
@@ -342,7 +342,7 @@ export class Client {
     return info;
   }
 
-  addStamp (stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
+  addStamp (stamp: number, releaseVersion: string = STAMP_RELEASE_VERSION): void {
     if (isGreaterOrEqual(this.version, releaseVersion)) {
       if (!this.penguin.stamps.includes(stamp)) {
         this.penguin.stamps.push(stamp);
@@ -353,7 +353,7 @@ export class Client {
     }
   }
 
-  giveStamp(stamp: number, releaseVersion: GameVersion = STAMP_RELEASE_VERSION): void {
+  giveStamp(stamp: number, releaseVersion: string = STAMP_RELEASE_VERSION): void {
     if (isGreaterOrEqual(this.version, releaseVersion)) {
       this.addStamp(stamp);
       this.sendXt('aabs', stamp);
