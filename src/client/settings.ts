@@ -3,7 +3,7 @@ import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from 'fs';
 import { downloadMediaFolder } from "./media";
-import { GlobalSettings } from "../common/utils";
+import { GlobalSettings, MEDIA_DIRECTORY } from "../common/utils";
 
 // preventing garbage collection
 let settingsWindow: BrowserWindow;
@@ -51,7 +51,7 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
     ipcMain.on('delete-package', (e, arg) => {
       // must not remove packages in development, as that would greatly disturb git
       if (!electronIsDev) {
-        fs.rmdirSync(path.join(process.cwd(), 'media', arg), { recursive: true })
+        fs.rmdirSync(path.join(MEDIA_DIRECTORY, arg), { recursive: true })
       }
       settingsWindow.webContents.send('finish-deleting', arg)
     })

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Router, Request } from "express";
+import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
 
 export type GameVersion = '2005-Aug-22'
   | '2005-Sep-12'
@@ -74,14 +75,10 @@ interface Settings {
 
 type PartialSettings = Partial<Settings>
 
-const settingsPath = path.join(process.cwd(), 'settings.json');
+const modsSettingsPath = path.join(MODS_DIRECTORY, '.active_mods');
 
-const modsPath = path.join(process.cwd(), 'mods');
-
-const modsSettingsPath = path.join(modsPath, '.active_mods');
-
-if (!fs.existsSync(modsPath)) {
-  fs.mkdirSync(modsPath);
+if (!fs.existsSync(MODS_DIRECTORY)) {
+  fs.mkdirSync(MODS_DIRECTORY);
 }
 if (!fs.existsSync(modsSettingsPath)) {
   fs.writeFileSync(modsSettingsPath, '');
@@ -92,7 +89,7 @@ function getActiveMods(): string[] {
 }
 
 function getMods(): string[] {
-  return fs.readdirSync(modsPath).filter((name) => name !== '.active_mods');
+  return fs.readdirSync(MODS_DIRECTORY).filter((name) => name !== '.active_mods');
 }
 
 export function getModRouter(s: SettingsManager): Router {
@@ -100,7 +97,7 @@ export function getModRouter(s: SettingsManager): Router {
   
   router.get('/*', (req: Request, res, next) => {
     for (const mod of s.activeMods) {
-      const modFilePath = path.join(modsPath, mod, req.params[0]);
+      const modFilePath = path.join(MODS_DIRECTORY, mod, req.params[0]);
       if (fs.existsSync(modFilePath)) {
         res.sendFile(modFilePath);
         return;
@@ -125,8 +122,8 @@ export class SettingsManager {
   constructor () {
     let settingsJson: any = {};
 
-    if (fs.existsSync(settingsPath)) {
-      settingsJson = JSON.parse(fs.readFileSync(settingsPath, { encoding: 'utf-8' }));
+    if (fs.existsSync(SETTINGS_PATH)) {
+      settingsJson = JSON.parse(fs.readFileSync(SETTINGS_PATH, { encoding: 'utf-8' }));
     }
 
     this.activeMods = getActiveMods();
@@ -168,7 +165,7 @@ export class SettingsManager {
 
   updateSettings(partial: PartialSettings): void {
     this.settings = { ...this.settings, ...partial};
-    fs.writeFileSync(settingsPath, JSON.stringify(this.settings));
+    fs.writeFileSync(SETTINGS_PATH, JSON.stringify(this.settings));
   }
 
   setModActive(name: string): void {
