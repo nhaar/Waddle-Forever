@@ -30,6 +30,11 @@ const createServer = async (type: string, port: number, handlers: XtHandler, set
       socket.setEncoding('utf8');
   
       const client = new Client(socket, settingsManager.settings.version, settingsManager.settings.always_member);
+
+      console.log('Client connected');
+      for (const method of handlers.connectListeners) {
+        method(client);
+      }
   
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];

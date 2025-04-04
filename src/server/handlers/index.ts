@@ -23,11 +23,13 @@ function oncePerPacket(packetName: string, originalMethod: (client: Client, ...a
 export class XtHandler {
   listeners: Map<string, XTCallback[]>;
   disonnectListeners: XTCallback[];
+  connectListeners: XTCallback[];
   phpListeners: Map<string, PostCallback>;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
     this.disonnectListeners = [];
+    this.connectListeners = [];
     this.phpListeners = new Map<string, PostCallback>();
   }
   xt (extension: string, code: string, method: XTCallback, params?: XtParams): void
@@ -88,6 +90,10 @@ export class XtHandler {
     this.disonnectListeners.push(method);
   }
 
+  connect (method: XTCallback): void {
+    this.connectListeners.push(method);
+  }
+
   private getPacketName (code: string, extension: string): string {
     return `${extension}%${code}`;
   }
@@ -106,6 +112,7 @@ export class XtHandler {
       }
     });
     this.disonnectListeners = [...this.disonnectListeners, ...handler.disonnectListeners];
+    this.connectListeners = [...this.connectListeners, ...handler.connectListeners];
     handler.phpListeners.forEach((callback, name) => {
       this.phpListeners.set(name, callback);
     })
