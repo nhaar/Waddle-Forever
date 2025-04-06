@@ -1,6 +1,5 @@
-import { items } from "../../game/item";
+import { ITEMS, ItemType } from "../../game/items";
 import { XtHandler } from "..";
-import { ItemType } from "../../game/items";
 
 const handler = new XtHandler();
 
@@ -13,8 +12,8 @@ handler.xt('i#qpp', (client, id) => {
 handler.xt('i#qpa', (client) => {
   const awards = [];
   for (const item in client.penguin.inventory) {
-    const itemInfo = items[item]
-    if (itemInfo !== undefined && items[item].type === ItemType.Award) {
+    const itemInfo = ITEMS.get(Number(item));
+    if (itemInfo !== undefined && itemInfo.type === ItemType.Award) {
       awards.push(item);
     }
   }

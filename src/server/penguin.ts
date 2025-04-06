@@ -5,8 +5,7 @@ import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
 import { isAs1, isGreaterOrEqual, isLower } from './routes/versions';
-import { items } from './game/item';
-import { ItemType } from './game/items';
+import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 
@@ -267,9 +266,9 @@ export class Client {
   getPinString (): string {
     const pins = Object.keys(this.penguin.inventory).filter((item) => {
       const id = Number(item)
-      return items[id].type === ItemType.Pin && !isFlag(id);
+      return ITEMS.get(id).type === ItemType.Pin && !isFlag(id);
     }).map((pin) => {
-      const item = items[Number(pin)];
+      const item = ITEMS.get(Number(pin));
       return [item.id, (new Date(`${item.releaseDate}T12:00:00`)).getTime() / 1000, item.isMember ? 1 : 0].join('|');
     })
 

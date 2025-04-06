@@ -1,6 +1,6 @@
 import { Client } from "../../../server/penguin";
 import { XtHandler } from "..";
-import { items } from "../../game/item";
+import { ITEMS } from "../../game/items";
 import { Room } from "../../game/rooms";
 import { isAs1 } from "../../../server/routes/versions";
 
@@ -12,7 +12,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
   const commands: Record<string, () => void> = {
     'ai': () => {
       if (message.match(/!ai\s+all/) !== null) {
-        const allItems = Object.values(items);
+        const allItems = ITEMS.rows;
         client.addItems(allItems.map((item) => item.id));
       } else {
         const numberMatch = message.match(/!ai\s+(\d+)/);

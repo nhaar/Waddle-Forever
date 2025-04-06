@@ -1,6 +1,4 @@
-export type ItemId = number;
-
-export type ItemName = string;
+import { StaticDataTable } from "../../common/static-table";
 
 export enum ItemType {
   Head,
@@ -16,34 +14,42 @@ export enum ItemType {
   Nothing
 };
 
-export type ItemAs2 = boolean;
+type Item = {
+  id: number
+  name: string
+  isMember: boolean
+  type: ItemType
+  isAs2: boolean
+  isAs3: boolean
+  isEPF: boolean
+  releaseDate: string
+  isTour: boolean
+  isTreasure: boolean
+};
 
-export type ItemAs3 = boolean;
-
-export type ItemMember = boolean;
-
-export type ItemEpf = boolean;
-
-export type ItemTour = boolean;
-
-export type ItemTreasure = boolean;
-
-export type ItemReleaseDate = string;
-
-export type ItemData = [
-  ItemId,
-  ItemName,
-  ItemType,
-  ItemMember,
-  ItemAs2,
-  ItemAs3,
-  ItemEpf,
-  ItemTour,
-  ItemTreasure,
-  ItemReleaseDate
-];
-
-export const itemDatas: ItemData[] = [
+export const ITEMS = new StaticDataTable<Item, [
+  'id',
+  'name',
+  'type',
+  'isMember',
+  'isAs2',
+  'isAs3',
+  'isEPF',
+  'isTour',
+  'isTreasure',
+  'releaseDate'
+]>([
+  'id',
+  'name',
+  'type',
+  'isMember',
+  'isAs2',
+  'isAs3',
+  'isEPF',
+  'isTour',
+  'isTreasure',
+  'releaseDate'
+], [
   [0, 'Nothing', ItemType.Nothing, false, true, true, false, false, false, '2017-03-30'],
   [1, 'Blue', ItemType.Color, false, false, false, false, false, false, '2017-03-30'],
   [2, 'Green', ItemType.Color, false, false, false, false, false, false, '2017-03-30'],
@@ -5344,4 +5350,4 @@ export const itemDatas: ItemData[] = [
   [34175, 'Merry Walrus Medal', ItemType.Neck, false, false, false, false, false, false, '2017-03-30'],
   [34206, 'Be Heard Campaign Shirt', ItemType.Body, false, false, false, false, false, false, '2017-03-30'],
   [90000, 'Elsa\'s Braid', ItemType.Head, true, false, false, false, false, false, '2017-03-30'],
-]
+]);
