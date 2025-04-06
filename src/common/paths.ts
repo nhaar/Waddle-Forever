@@ -20,7 +20,12 @@ function getOsDataFolder() {
     case 'win32':
       return path.join(process.env.APPDATA, 'WaddleForever');
     case 'linux':
-      return path.join(os.homedir(), '.waddleforever');
+      // in sudo, os.homedir() returns the root, which we don't want
+      // SUDO_USER variable informs us the user, so we can manually get the directory
+      const home = process.env.SUDO_USER === undefined
+        ? os.homedir()
+        : `/home/${process.env.SUDO_USER}`;
+      return path.join(home, '.waddleforever');
     default:
       break;
   }
