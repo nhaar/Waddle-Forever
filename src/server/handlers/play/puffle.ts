@@ -1,9 +1,14 @@
-import { Puffle } from "../../database";
+import { PlayerPuffle } from "../../database";
 import { XtHandler } from "..";
+import { isAs2, isAs3 } from "../../../server/routes/versions";
+import { PUFFLES } from "../../../server/game/puffle";
 
 const handler = new XtHandler()
 
-const getPuffleString = (puffle: Puffle): string => {
+/** Brush, bath, sleep, basically functionalities disguised as items */
+const BASE_CARE_INVENTORY = [1, 8, 37];
+
+const getPuffleString = (puffle: PlayerPuffle): string => {
   return [
     puffle.id,
     puffle.name,
@@ -18,6 +23,9 @@ const getPuffleString = (puffle: Puffle): string => {
 }
 
 handler.xt('p#pn', (client, puffleType, puffleName) => {
+  if (!isAs2(client.version)) {
+    return;
+  }
   const PUFFLE_COST = 800
   if (client.penguin.coins < PUFFLE_COST) {
     // TODO no coins error
@@ -32,6 +40,52 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
   // TODO favorite item code in houdini?
   // TODO 'pgu' is necessary?
 })
+
+// seemingly the format in which client usually wants the puffle IDs
+function getClientPuffleIds(puffleId: number) {
+  const parentId = PUFFLES.get(puffleId).parentId;
+  if (parentId === undefined) {
+    return [puffleId, ''];
+  } else {
+    return [parentId, puffleId];
+  }
+}
+
+handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
+  if (!isAs3(client.version)) {
+    return;
+  }
+
+  // TODO dynamic cost for eg creatures, changing to 800 for earlier times
+  const PUFFLE_COST = 400;
+
+  const puffleId = Number(puffleSubType === '0' ? puffleType : puffleSubType);
+  const puffle = PUFFLES.get(puffleId);
+
+  if (puffleType === '10') {
+    // TODO rainbow puffle
+  } else if (puffleType === '11') {
+    // TODO gold puffle
+  } else if (puffleSubType === '0') {
+    client.addPuffleItem(3, 0, 5);
+    client.addPuffleItem(79, 0, 1);
+    client.addPuffleItem(puffle.favouriteToy, 0, 1);
+  }
+
+  client.removeCoins(PUFFLE_COST);
+  const playerPuffle = client.addPuffle(puffleId, puffleName);
+
+  client.sendXt('pn', client.penguin.coins, [
+    playerPuffle.id,
+    ...getClientPuffleIds(puffle.id),
+    puffle.name,
+    Math.floor(Date.now() / 1000),
+    100, 100, 100, 100, 0, 0 // TODO no clue what these number are
+  ].join('|'));
+  client.addPostcard(111, { details: playerPuffle.name });
+
+  // TODO backyward relocations, etc.
+});
 
 // get puffles in igloo
 handler.xt('p#pg', (client, id) => {
@@ -61,8 +115,11 @@ handler.xt('p#pg', (client, id) => {
   client.sendXt('pg', ...puffles);
 })
 
-// walking puffle
+// walking puffle AS2
 handler.xt('p#pw', (client, puffleId, walking) => {
+  if (!isAs2(client.version)) {
+    return;
+  }
   const id = Number(puffleId);
   const isWalking = walking === '1';
 
@@ -72,6 +129,30 @@ handler.xt('p#pw', (client, puffleId, walking) => {
 
   // TODO make the room send XT to everyone
   client.sendXt('pw', client.id, `${id}||||||||||||${walking}`);
+})
+// walking puffle AS3
+handler.xt('p#pw', (client, penguinPuffleId, walking) => {
+  if (!isAs3(client.version)) {
+    return;
+  }
+  const playerPuffle = client.penguin.puffles.find((puffle) => puffle.id === Number(penguinPuffleId));
+  client.sendXt('pw', client.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
+  // TODO removing puffle, other cases, properly walking puffle in penguin
+})
+
+// AS3 puffle name check
+handler.xt('p#checkpufflename', (client, puffleName) => {
+  // last argument is integer boolean
+  client.sendXt('checkpufflename', puffleName, 1);
+})
+
+// get inventory for pet care items
+handler.xt('p#pgpi', (client) => {
+  client.sendXt(
+    'pgpi',
+    ...BASE_CARE_INVENTORY.map((item) => `${item}|1`),
+    ...Object.entries(client.penguin.puffleItems).map((entry) => `${entry[0]}|${entry[1]}`)
+  );
 })
 
 export default handler

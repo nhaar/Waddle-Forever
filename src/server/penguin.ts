@@ -1,13 +1,14 @@
 import net from 'net';
 
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
-import db, { Penguin, Databases, Puffle, IglooFurniture } from './database';
+import db, { Penguin, Databases, PlayerPuffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
 import { isAs1, isGreaterOrEqual, isLower } from './routes/versions';
 import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
+import { PUFFLE_ITEMS } from './game/puffle-item';
 
 const STAMP_RELEASE_VERSION : string = '2010-Jul-26'
 
@@ -201,6 +202,7 @@ export class Client {
       },
       puffleSeq: 0,
       puffles: [],
+      puffleItems: {},
       igloo: {
         type: 0,
         music: 0,
@@ -380,7 +382,7 @@ export class Client {
     this.update()
   }
 
-  addPuffle (type: number, name: string): Puffle {
+  addPuffle (type: number, name: string): PlayerPuffle {
     this.penguin.puffleSeq += 1;
     const puffle = {
       id: this.penguin.puffleSeq,
@@ -616,5 +618,23 @@ export class Client {
   /** Set game data with Puffle Launch slow mode unlocked (all times will be 1 second) */
   unlockSlowMode() {
     this.unlockTurboMode((new Array<boolean>(36)).fill(true));
+  }
+
+  /** Add a "puffle care item" to the inventory */
+  addPuffleItem(itemId: number, cost: number, amount: number) {
+    const item = PUFFLE_ITEMS.get(itemId);
+    const parentItem = PUFFLE_ITEMS.get(item.parentId);
+  
+    const totalAmount = amount * item.quantity;
+
+    if (parentItem.id in this.penguin.puffleItems) {
+      this.penguin.puffleItems[parentItem.id] += totalAmount;
+    } else {
+      this.penguin.puffleItems[parentItem.id] = totalAmount;
+    }
+    this.penguin.coins -= cost;
+    this.update();
+
+    this.sendXt('papi', this.penguin.coins, itemId, this.penguin.puffleItems[parentItem.id]);
   }
 }

@@ -165,7 +165,7 @@ class JsonDatabase {
 
 const db = new JsonDatabase(DATABASE_DIRECTORY);
 
-export interface Puffle {
+export interface PlayerPuffle {
   id: number
   name: string
   type: number
@@ -222,7 +222,8 @@ export interface Penguin {
     recent_stamps: number[]
   },
   puffleSeq: number
-  puffles: Puffle[],
+  puffles: PlayerPuffle[],
+  puffleItems: Record<number, number>,
   igloo: {
     type: number,
     music: number,
