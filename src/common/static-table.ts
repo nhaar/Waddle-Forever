@@ -32,14 +32,14 @@ type RowFromKeys<T extends BaseRow, K extends (keyof T)[]> = {
  * in the constructor argument.
  */
 export class StaticDataTable<T extends BaseRow, K extends (keyof T)[]> {
-  private data: T[];
+  private map: Map<number, T>;
 
   /**
    * @param keys This should be the exact same as the second type argument
    * @param data An array, where each element is another array, containing elements for each property, in the order you have defined the properties of the type T
    */
   constructor(keys: K, data: RowFromKeys<T, K>[]) {
-    this.data = [];
+    this.map = new Map<number, T>();
 
     for (const row of data) {
       const object = {} as T;
@@ -48,12 +48,16 @@ export class StaticDataTable<T extends BaseRow, K extends (keyof T)[]> {
         object[keys[i]] = row[i];
       }
 
-      this.data.push(object);
+      this.map.set(object.id, object);
     }
   }
 
   /** Given an ID number, get an item in the database. */
   public get(id: number): T {
-    return this.data.find((item) => item.id === id);
+    return this.map.get(id);
+  }
+
+  get rows(): T[] {
+    return Array.from(this.map.values());
   }
 }
