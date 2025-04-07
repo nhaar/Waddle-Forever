@@ -4,11 +4,13 @@ import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { Penguin, Databases, PlayerPuffle, IglooFurniture } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
-import { isAs1, isGreaterOrEqual, isLower } from './routes/versions';
+import { isAs1, isAs2, isAs3, isGreaterOrEqual, isLower } from './routes/versions';
 import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 import { PUFFLE_ITEMS } from './game/puffle-item';
+
+type ServerType = 'Login' | 'World';
 
 const STAMP_RELEASE_VERSION : string = '2010-Jul-26'
 
@@ -21,7 +23,7 @@ export class Client {
   currentRoom: number;
   version: GameVersion;
   sessionStart: number;
-
+  serverType: ServerType
   handledXts: Map<string, boolean>
 
   /**
@@ -33,9 +35,10 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
-  constructor (socket: net.Socket, version: GameVersion, member: boolean) {
+  constructor (socket: net.Socket, version: GameVersion, member: boolean, type: ServerType) {
     this.socket = socket;
     this.version = version;
+    this.serverType = type;
     this.penguin = Client.getDefault();
     this.penguin.is_member = member;
     /* TODO, x and y random generation at the start? */
