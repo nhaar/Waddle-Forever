@@ -20,6 +20,8 @@ const createServer = async (type: string, port: number, handler: XtHandler, sett
     net.createServer((socket) => {
       socket.setEncoding('utf8');
   
+      console.log(`A client has connected to ${type}`);
+
       const client = new Client(
         socket,
         settingsManager.settings.version,
@@ -28,7 +30,6 @@ const createServer = async (type: string, port: number, handler: XtHandler, sett
       );
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];
-        console.log('incoming data!', dataStr);
         handler.handle(client, dataStr);
       });
   

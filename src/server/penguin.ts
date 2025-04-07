@@ -58,7 +58,7 @@ export class Client {
   }
 
   sendXt (handler: string, ...args: Array<number | string>): void {
-    console.log('xt: ', `%xt%${handler}%-1%` + args.join('%') + '%');
+    console.log('\x1b[32mSending XT:\x1b[0m ', handler, args);
     this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
   }
 

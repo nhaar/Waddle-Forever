@@ -29,6 +29,7 @@ handler.xml('login', (client, data) => {
     } else {
       client.setPenguinFromName(name);
     }
+    console.log(`${client.penguin.name} is logging in`);
     /*
     TODO
     buddies

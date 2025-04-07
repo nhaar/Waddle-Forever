@@ -117,6 +117,7 @@ export class XtHandler {
 
   /** Handles responding to XML data */
   private handleXml (client: Client, data: string) {
+    console.log('Incoming XML data: ', data);
     if (data === '<policy-file-request/>') {
       // policy file request must terminate connection (not fully sure of the details for that)
       client.socket.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
@@ -142,8 +143,9 @@ export class XtHandler {
     const packet = new XtPacket(data);
     const callbacks = this.getCallback(packet);
     if (callbacks === undefined) {
-      console.log('unhandled XT: ', packet);
+      console.log('\x1b[31mUnhandled XT:\x1b[0m ', packet);
     } else {
+      console.log('\x1b[33mHandled XT:\x1b[0m ', packet);
       callbacks.forEach((callback) => {
         callback(client, ...packet.args);
       });
