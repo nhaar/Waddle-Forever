@@ -1,10 +1,10 @@
 import { Client } from '../../../server/penguin';
-import { XtHandler } from '..';
+import { Handler } from '..';
 import { Room } from '../../game/rooms';
 import { getDateString } from '../../../common/utils';
 import { commandsHandler } from '../commands';
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // Joining server
 handler.xt('js', (client) => {

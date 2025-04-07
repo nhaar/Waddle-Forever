@@ -1,6 +1,6 @@
-import { XtHandler } from "..";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // sending inventory to player
 handler.xt('i#gi', (client) => {

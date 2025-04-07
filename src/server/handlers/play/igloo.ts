@@ -1,7 +1,7 @@
 import { getFlooringCost, getIglooCost } from "../../game/iglooItems";
-import { XtHandler } from "..";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // get igloo information
 handler.xt('g#gm', (client, id) => {

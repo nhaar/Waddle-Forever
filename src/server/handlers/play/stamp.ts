@@ -1,7 +1,7 @@
 import { ITEMS, ItemType } from "../../game/items";
-import { XtHandler } from "..";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // getting pin information opening stampbook
 handler.xt('i#qpp', (client, id) => {

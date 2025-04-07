@@ -1,7 +1,7 @@
 import connectHandler from './play/connect';
-import { XtHandler } from '.';
+import { Handler } from '.';
 
-const handler = new XtHandler();
+const handler = new Handler();
 handler.use(connectHandler);
 
 export default handler;

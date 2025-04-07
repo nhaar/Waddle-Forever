@@ -1,7 +1,7 @@
 import { isAs2, isAs3 } from '../../../server/routes/versions';
-import { XtHandler } from '..';
+import { Handler } from '..';
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // client requesting to join room
 handler.xt('j#jr', (client, destinationRoom, x, y) => {

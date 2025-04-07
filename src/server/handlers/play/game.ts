@@ -1,6 +1,6 @@
-import { XtHandler } from "..";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // currently only supporting puffle launch. There may be other games that use this
 // get game data

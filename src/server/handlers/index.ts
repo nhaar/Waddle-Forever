@@ -21,16 +21,16 @@ function oncePerPacket(packetName: string, originalMethod: (client: Client, ...a
   };
 }
 
-export class XtHandler {
+export class Handler {
   listeners: Map<string, XTCallback[]>;
-  disonnectListeners: XTCallback[];
+  disconnectListeners: XTCallback[];
   loginListeners: XTCallback[];
   phpListeners: Map<string, PostCallback>;
   xmlListeners: Map<string, XMLCallback>;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
-    this.disonnectListeners = [];
+    this.disconnectListeners = [];
     this.loginListeners = [];
     this.phpListeners = new Map<string, PostCallback>();
     this.xmlListeners = new Map<string, XMLCallback>();
@@ -95,7 +95,7 @@ export class XtHandler {
   }
 
   disconnect (method: XTCallback): void {
-    this.disonnectListeners.push(method);
+    this.disconnectListeners.push(method);
   }
 
   private getPacketName (code: string, extension: string): string {
@@ -152,7 +152,7 @@ export class XtHandler {
     }
   }
 
-  use (handler: XtHandler): void {
+  use (handler: Handler): void {
     handler.listeners.forEach((callbacks, name) => {
       const existingCallbacks = this.listeners.get(name);
       if (existingCallbacks === undefined) {
@@ -161,7 +161,7 @@ export class XtHandler {
         this.listeners.set(name, [...existingCallbacks, ...callbacks]);
       }
     });
-    this.disonnectListeners = [...this.disonnectListeners, ...handler.disonnectListeners];
+    this.disconnectListeners = [...this.disconnectListeners, ...handler.disconnectListeners];
     this.loginListeners = [...this.loginListeners, ...handler.loginListeners];
     handler.phpListeners.forEach((callback, name) => {
       this.phpListeners.set(name, callback);

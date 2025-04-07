@@ -1,9 +1,9 @@
 import { isAs3 } from '../../../server/routes/versions';
-import { XtHandler } from '..';
+import { Handler } from '..';
 import { Room } from '../../game/rooms';
 import { getClientPuffleIds } from './puffle';
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 handler.xt('j#js', (client) => {
   if (isAs3(client.version)) {

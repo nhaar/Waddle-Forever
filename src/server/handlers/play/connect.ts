@@ -1,8 +1,8 @@
 import serverList, { getServerPopulation } from "../../../server/servers";
-import { XtHandler } from "..";
+import { Handler } from "..";
 import { isAs3 } from "../../../server/routes/versions";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 handler.xml('verChk', (client) => {
   // version checking

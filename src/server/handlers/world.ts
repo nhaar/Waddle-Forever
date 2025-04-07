@@ -9,9 +9,9 @@ import iglooHandler from './play/igloo';
 import epfHandler from './play/epf';
 import mailHandler from './play/mail';
 import gameHandler from './play/game';
-import { XtHandler } from '.';
+import { Handler } from '.';
 
-const handler = new XtHandler();
+const handler = new Handler();
 handler.use(connectHandler);
 handler.use(loginHandler);
 handler.use(navigationHandler);

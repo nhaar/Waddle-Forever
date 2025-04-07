@@ -1,6 +1,6 @@
-import { XtHandler } from "..";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // check if is an epf agent
 handler.xt('f#epfga', (client) => {

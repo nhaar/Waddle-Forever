@@ -1,11 +1,11 @@
 import { Client } from "../../../server/penguin";
-import { XtHandler } from "..";
+import { Handler } from "..";
 import { ITEMS } from "../../game/items";
 import { Room } from "../../game/rooms";
 import { isAs1 } from "../../../server/routes/versions";
 
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 export const commandsHandler = (client: Client, id: string, message: string) => {
   // Map the name of the command, and the function that runs when it is called

@@ -1,9 +1,9 @@
 import { PlayerPuffle } from "../../database";
-import { XtHandler } from "..";
+import { Handler } from "..";
 import { isAs2, isAs3 } from "../../../server/routes/versions";
 import { PUFFLES } from "../../../server/game/puffle";
 
-const handler = new XtHandler()
+const handler = new Handler()
 
 /** Brush, bath, sleep, basically functionalities disguised as items */
 const BASE_CARE_INVENTORY = [1, 8, 37];

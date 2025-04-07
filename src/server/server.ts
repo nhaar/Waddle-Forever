@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import net from 'net';
 
-import { XtHandler } from './handlers';
+import { Handler } from './handlers';
 import { WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
 import oldHandler from './handlers/old'
@@ -13,7 +13,7 @@ import db from './database';
 import { getModRouter } from './settings';
 import { setApiServer } from './settings-api';
 
-const createServer = async (type: string, port: number, handler: XtHandler, settingsManager: SettingsManager, server: Express): Promise<void> => {
+const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<void> => {
   handler.useEndpoints(server);
 
   await new Promise<void>((resolve) => {
@@ -34,7 +34,7 @@ const createServer = async (type: string, port: number, handler: XtHandler, sett
       });
   
       socket.on('close', () => {
-        for (const method of handler.disonnectListeners) {
+        for (const method of handler.disconnectListeners) {
           method(client);
         }
         console.log('A client has disconnected');
