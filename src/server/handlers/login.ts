@@ -1,7 +1,7 @@
-import connectHandler from './play/connect';
+import loginHandler from './play/login';
 import { Handler } from '.';
 
 const handler = new Handler();
-handler.use(connectHandler);
+handler.use(loginHandler);
 
 export default handler;

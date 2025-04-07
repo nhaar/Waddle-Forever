@@ -1,5 +1,5 @@
+import joinHandler from './play/join';
 import loginHandler from './play/login';
-import connectHandler from './play/connect';
 import navigationHandler from './play/navigation';
 import commandsHandler from './commands';
 import itemHandler from './play/item';
@@ -12,8 +12,8 @@ import gameHandler from './play/game';
 import { Handler } from '.';
 
 const handler = new Handler();
-handler.use(connectHandler);
 handler.use(loginHandler);
+handler.use(joinHandler);
 handler.use(navigationHandler);
 handler.use(commandsHandler);
 handler.use(itemHandler);
