@@ -1,6 +1,7 @@
 import { isAs3 } from '../../../server/routes/versions';
 import { XtHandler } from '..';
 import { Room } from '../../game/rooms';
+import { getClientPuffleIds } from './puffle';
 
 const handler = new XtHandler();
 
@@ -50,6 +51,21 @@ handler.xt('j#js', (client, id) => {
   client.sendPenguinInfo();
   client.joinRoom(Room.Town);
   client.sendStamps();
+
+  // loading puffle inventory
+  // this is important for things like identifying which puffles belong to you
+  client.sendXt('pgu', ...client.penguin.puffles.map((puffle) => [
+    puffle.id,
+    ...getClientPuffleIds(puffle.type),
+    puffle.name,
+    10, // TODO, adoption date
+    puffle.food,
+    100, // TODO puffle play stat
+    puffle.rest,
+    puffle.clean,
+    0, // TODO puffle hat
+    0 // TODO unknown what this last one is
+  ].join('|')));
 
   // TODO refactor these
   client.send('%xt%nxquestsettings%-1%{"ver":1,"spawnRoomId":800,"quests":[{"id":1,"name":"shopping","awards":[{"id":24023,"type":"penguinItem","n":1}],"tasks":[{"type":"room","description":"Visit the Clothes Shop","data":130}]},{"id":3,"name":"igloo","awards":[{"id":2166,"type":"furnitureItem","n":1}],"tasks":[{"type":"","description":"Visit your Igloo","data":null}]},{"id":2,"name":"puffle","awards":[{"id":70,"type":"puffleItem","n":1}],"tasks":[{"type":"room","description":"Visit the Pet Shop","data":310}]}]}%')

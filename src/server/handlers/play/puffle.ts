@@ -42,7 +42,7 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
 })
 
 // seemingly the format in which client usually wants the puffle IDs
-function getClientPuffleIds(puffleId: number) {
+export function getClientPuffleIds(puffleId: number) {
   const parentId = PUFFLES.get(puffleId).parentId;
   if (parentId === undefined) {
     return [puffleId, ''];
@@ -89,30 +89,49 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 
 // get puffles in igloo
 handler.xt('p#pg', (client, id) => {
-  const puffles = client.penguin.puffles.map((puffle) => {
-    return [
-      puffle.id,
-      puffle.name,
-      puffle.type,
-      puffle.clean,
-      puffle.food,
-      puffle.rest,
-      100,
-      100,
-      100,
-      0,
-      0,
-      0,
-      puffle.id === client.walkingPuffle ? 1 : 0
-    ].join('|')
-  })
-
-  if (puffles.length >= 16) {
-    // PUFFLE OWNER
-    client.giveStamp(21);
+  if (isAs2(client.version)) {
+    const puffles = client.penguin.puffles.map((puffle) => {
+      return [
+        puffle.id,
+        puffle.name,
+        puffle.type,
+        puffle.clean,
+        puffle.food,
+        puffle.rest,
+        100,
+        100,
+        100,
+        0,
+        0,
+        0,
+        puffle.id === client.walkingPuffle ? 1 : 0
+      ].join('|')
+    })
+  
+    if (puffles.length >= 16) {
+      // PUFFLE OWNER
+      client.giveStamp(21);
+    }
+  
+    client.sendXt('pg', ...puffles);
+  } else if (isAs3(client.version)) {
+    const puffles = client.penguin.puffles.map((puffle) => {
+      return [
+        puffle.id,
+        ...getClientPuffleIds(puffle.type),
+        puffle.name,
+        Math.round(Date.now()), // TODO puffle adoption date in puffle
+        puffle.food,
+        100, // TODO puffle play
+        puffle.rest,
+        puffle.clean,
+        0, // TODO puffle hat
+        0, 0, // TODO what are these 0?
+        puffle.id === client.walkingPuffle ? 1 : 0
+      ].join('|')
+    })
+    client.sendXt('pg', puffles.length, ...puffles);
   }
-
-  client.sendXt('pg', ...puffles);
 })
 
 // walking puffle AS2

@@ -1,3 +1,4 @@
+import { isAs2, isAs3 } from '../../../server/routes/versions';
 import { XtHandler } from '..';
 
 const handler = new XtHandler();
@@ -27,8 +28,19 @@ handler.xt('z', 'zo', (client, score) => {
 
 // Joining player igloo
 handler.xt('j#jp', (client, fakeId) => {
-  // TODO room ID is currently useless here
-  client.joinRoom(Number(fakeId));
+  let iglooId: number
+
+  // in AS2 client, the ID given is played ID + 1000,
+  // while in AS3 the proper player ID is given
+  // to avoid any potential conflicts with game rooms
+  // here we use >2000 for igloo IDs
+  if (isAs2(client.version)) {
+    iglooId = Number(fakeId) + 1000;
+  } else if (isAs3(client.version)) {
+    iglooId = Number(fakeId) + 2000;
+  }
+  client.sendXt('jp', iglooId, iglooId, 'igloo');
+  client.joinRoom(iglooId);
 })
 
 handler.xt('u#sf', (client, frame) => {

@@ -126,7 +126,8 @@ export class Client {
     return this.age;
   }
 
-  joinRoom (room: Room): void {
+  joinRoom (room: number): void {
+    // TODO multiplayer logic
     const string = this.penguinString;
     if (isGameRoom(room)) {
       this.sendXt('jg', room);
@@ -410,13 +411,32 @@ export class Client {
         furniture.frame
       ].join('|')
     }).join(',')
-
-    return [
-      this.penguin.igloo.type,
-      this.penguin.igloo.music,
-      this.penguin.igloo.flooring,
-      furnitureString
-    ].join('%');
+    if (isAs2(this.version)) {
+      return [
+        this.penguin.igloo.type,
+        this.penguin.igloo.music,
+        this.penguin.igloo.flooring,
+        furnitureString
+      ].join('%');
+    } else if (isAs3(this.version)) {
+      // TODO making this dynamic
+      const locked = true;
+      // TODO like stuff
+      const likeCount = 0;
+      const iglooLocation = 1;
+      const iglooType = 1; // TODO Seems to be different compared to legacy? eg 0 vs 1
+      return [
+        this.id, // TODO might have to do with igloo id?
+        1, 0, // TODO don't know what these are
+        locked ? 1 : 0,
+        this.penguin.igloo.music,
+        this.penguin.igloo.flooring,
+        iglooLocation,
+        iglooType,
+        likeCount,
+        furnitureString
+      ].join(':');
+    }
   }
 
   walkPuffle (puffle: number) {

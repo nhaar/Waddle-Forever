@@ -74,4 +74,31 @@ handler.xt('g#ao', (client, igloo) => {
   client.update();
 })
 
+handler.xt('musictrack#getmymusictracks', (client) => {
+  const playerTracks: string[] = []; // TODO player tracks
+  client.sendXt('getmymusictracks', playerTracks.length, playerTracks.join(','));
+})
+
+// get igloo likes
+handler.xt('g#gili', (client) => {
+  const id = 1; // TODO Unsure what this ID is
+  const likeCount = 0; // TODO like system
+  // TODO unsure what this 200 is
+  client.sendXt('gili', id, 200, JSON.stringify({
+    likedby: {
+      counts: {
+        count: likeCount,
+        maxCount: likeCount,
+        accumCount: likeCount
+      },
+      IDs: []
+    }
+  }));
+})
+
+// get DJ3K tracks
+handler.xt('g#ggd', (client) => {
+  client.sendXt('ggd', '');
+})
+
 export default handler;
