@@ -27,6 +27,13 @@ export class Client {
   handledXts: Map<string, boolean>
 
   /**
+   * Map XT names to the timestamp of the next time you're allowed to call them
+   * 
+   * This is used to enforce cooldown on packets
+   */
+  xtTimestamps: Map<string, number>
+
+  /**
    * Temporary variable to keep track of stamps collected used to know
    * which ones someone collected when ending a game
    */
@@ -51,6 +58,8 @@ export class Client {
 
     // For "only once" listeners
     this.handledXts = new Map<string, boolean>();
+
+    this.xtTimestamps = new Map<string, number>();
   }
 
   send (message: string): void {

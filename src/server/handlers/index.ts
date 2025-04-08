@@ -9,6 +9,11 @@ type PostCallback = (body: any) => string
 
 type XtParams = {
   once?: boolean
+  /**
+   * In miliseconds, how much to wait before accepting the next packet
+   * from the same client
+   */
+  cooldown?: number
 }
 
 function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => void) {
@@ -19,6 +24,21 @@ function oncePerPacket(packetName: string, originalMethod: (client: Client, ...a
       originalMethod(client, ...args);
     }
   };
+}
+
+/** Wraps XT callback so that it respects the cooldown */
+function timestampWrapper(packetName: string, cooldown: number, originalMethod: XTCallback) {
+  return (client: Client, ...args: string[]) => {
+    const now = Date.now()
+    const timestamp = client.xtTimestamps.get(packetName);
+    // check if has a record or if we are past the allowed time
+    if (timestamp === undefined || timestamp < now) {
+      client.xtTimestamps.set(packetName, now + cooldown);
+      originalMethod(client, ...args);
+    } else {
+      console.log(`Packet ${packetName} canceled due to spam`);
+    }
+  }
 }
 
 export class Handler {
@@ -75,6 +95,9 @@ export class Handler {
     const packetName = this.getPacketName(code, extension);
     if (params.once === true) {
       method = oncePerPacket(packetName, method);
+    }
+    if (params.cooldown !== undefined) {
+      method = timestampWrapper(packetName, params.cooldown, method);
     }
 
     const callbacks = this.listeners.get(packetName);
