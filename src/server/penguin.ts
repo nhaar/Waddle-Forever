@@ -444,6 +444,10 @@ export class Client {
     this.walkingPuffle = puffle;
   }
 
+  unwalkPuffle() {
+    this.walkingPuffle = NaN;
+  }
+
   makeAgent (): void {
     this.penguin.is_agent = true;
     this.update();

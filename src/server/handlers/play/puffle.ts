@@ -147,6 +147,7 @@ handler.xt('p#pw', (client, puffleId, walking) => {
   const isWalking = walking === '1';
 
   // TODO add puffle refusing to walk
+  // TODO add removing puffle
 
   client.walkPuffle(id);
 
@@ -158,7 +159,15 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
   if (!isAs3(client.version)) {
     return;
   }
+
   const playerPuffle = client.penguin.puffles.find((puffle) => puffle.id === Number(penguinPuffleId));
+
+  if (walking === '1') {
+    client.walkPuffle(playerPuffle.id);
+  } else {
+    client.unwalkPuffle();
+  }
+
   client.sendXt('pw', client.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
   // TODO removing puffle, other cases, properly walking puffle in penguin
 })
