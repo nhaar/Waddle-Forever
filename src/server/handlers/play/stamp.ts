@@ -44,9 +44,11 @@ handler.xt('st#ssbcd', (client, color, highlight, pattern, icon) => {
   client.update();
 });
 
-// earn stamp
+// earn client side stamp
 handler.xt('st#sse', (client, stamp) => {
-  client.addStamp(Number(stamp));
+  // for this endpoint notifying is unecessary since it's the one
+  // that the client sends
+  client.giveStamp(Number(stamp), { notify: false });
 });
 
 export default handler;

@@ -20,7 +20,7 @@ handler.xt('g#gf', (client) => {
 
 // COST is not in normal files, needs to be added manually to client
 handler.xt('g#af', (client, furniture, cost) => {
-  client.addFurniture(Number(furniture), Number(cost));
+  client.addFurniture(Number(furniture), { cost: Number(cost) });
 })
 
 // saving client new igloo

@@ -245,11 +245,21 @@ export class Client {
     return true;
   }
 
-  addItem (item: number, cost: number = 0): void {
-    this.penguin.inventory[item] = 1;
+  /**
+   * Add a new item to a player
+   * @param itemId
+   * @param params.cost Cost of the item (default 0)
+   * @param params.notify Whether or not to notify the client (default false)
+   */
+  addItem (itemId: number, params: { cost?: number, notify?: boolean } = {}): void {
+    const cost = params.cost ?? 0;
+    const notify = params.notify ?? true;
+    this.penguin.inventory[itemId] = 1;
     this.removeCoins(cost);
     this.update();
-    this.sendXt('ai', item, this.penguin.coins);
+    if (notify) {
+      this.sendXt('ai', itemId, this.penguin.coins);
+    }
   }
 
   sendInventory(): void {
@@ -368,21 +378,25 @@ export class Client {
     return info;
   }
 
-  addStamp (stamp: number, releaseVersion: string = STAMP_RELEASE_VERSION): void {
-    if (isGreaterOrEqual(this.version, releaseVersion)) {
-      if (!this.penguin.stamps.includes(stamp)) {
-        this.penguin.stamps.push(stamp);
-        this.penguin.stampbook.recent_stamps.push(stamp);
-        this.sessionStamps.push(stamp);
+  /**
+   * Give a stamp to a player
+   * @param stampId 
+   * @param params.notify Default `true` - Whether to notify the client or not
+   * @param params.release Proper version string for when the stamp released (defaults to the stamp release date) 
+   */
+  giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
+    const notify = params.notify ?? true;
+    const releaseDate = params.release ?? STAMP_RELEASE_VERSION;
+    if (isGreaterOrEqual(this.version, releaseDate)) {
+      if (!this.penguin.stamps.includes(stampId)) {
+        this.penguin.stamps.push(stampId);
+        this.penguin.stampbook.recent_stamps.push(stampId);
+        this.sessionStamps.push(stampId);
         this.update();
       }
-    }
-  }
-
-  giveStamp(stamp: number, releaseVersion: string = STAMP_RELEASE_VERSION): void {
-    if (isGreaterOrEqual(this.version, releaseVersion)) {
-      this.addStamp(stamp);
-      this.sendXt('aabs', stamp);
+      if (notify) {
+        this.sendXt('aabs', stampId);
+      }
     }
   }
   
@@ -557,19 +571,29 @@ export class Client {
     return furniture.join('%')
   }
 
-  addFurniture(furniture: number, cost: number = 0): void {
-    if (!(furniture in this.penguin.furniture)) {
-      this.penguin.furniture[furniture] = 0;
+  /**
+   * Add a furniture item to the inventory
+   * @param furnitureId 
+   * @param params.cost Default `0` - Cost of furniture
+   * @param params.notify Default `true` - Whether to notify the client or not
+   */
+  addFurniture(furnitureId: number, params: { cost?: number, notify?: boolean } = {}): void {
+    const cost = params.cost ?? 0;
+    const notify = params.notify ?? true;
+    if (!(furnitureId in this.penguin.furniture)) {
+      this.penguin.furniture[furnitureId] = 0;
     }
-    if (this.penguin.furniture[furniture] >= 99) {
+    if (this.penguin.furniture[furnitureId] >= 99) {
       this.sendError(10006);
     } else {
       this.removeCoins(cost);
-      this.penguin.furniture[furniture] += 1;
+      this.penguin.furniture[furnitureId] += 1;
   
       this.update();
     }
-    this.sendXt('af', furniture, this.penguin.coins);
+    if (notify) {
+      this.sendXt('af', furnitureId, this.penguin.coins);
+    }
   }
 
   updateIglooFurniture(furniture: IglooFurniture): void {

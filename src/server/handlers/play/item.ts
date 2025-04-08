@@ -16,7 +16,7 @@ handler.xt('i#ai', (client, item, cost) => {
   } else if (!client.canBuy(id)) {
     // TODO
   } else {
-    client.addItem(id, Number(cost));
+    client.addItem(id, { cost: Number(cost) });
   }
 });
 
