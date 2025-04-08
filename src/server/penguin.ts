@@ -457,6 +457,10 @@ export class Client {
     this.walkingPuffle = NaN;
   }
 
+  swapPuffleFromIglooAndBackyard(playerPuffleId: number, goingToBackyard: boolean) {
+    this.penguin.backyard[playerPuffleId] = goingToBackyard ? 1 : undefined;
+  }
+
   makeAgent (): void {
     this.penguin.is_agent = true;
     this.update();

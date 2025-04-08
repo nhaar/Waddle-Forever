@@ -84,7 +84,16 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
   ].join('|'));
   client.addPostcard(111, { details: playerPuffle.name });
 
-  // TODO backyward relocations, etc.
+  // TODO: this has two assumptions about how backyard reallocation worked. If possible it would be nice to verify them
+  // assumption 1: if you have 10 puffles and adopt one, a backyward slot is immediately freed
+  // even before the walking puffle is sent to the igloo
+  // assumption 2: the puffle to be reallocated is chosen as the first puffle you've adopted that is not in the backyard
+  const pufflesInIgloo = client.penguin.puffles.filter((puffle) => client.penguin.backyard[puffle.id] !== 1);
+  if (pufflesInIgloo.length > 10) {
+    client.swapPuffleFromIglooAndBackyard(pufflesInIgloo[0].id, true);
+  }
+}, {
+  cooldown: 2000
 });
 
 // get puffles in igloo
@@ -189,7 +198,7 @@ handler.xt('p#pgpi', (client) => {
 
 // send a puffle to or from the backyard
 handler.xt('p#puffleswap', (client, playerPuffleId, destination) => {
-  client.penguin.backyard[Number(playerPuffleId)] = destination === 'backyard' ? 1 : undefined;
+  client.swapPuffleFromIglooAndBackyard(Number(playerPuffleId), destination === 'backyard');
   client.update();
   client.sendXt('puffleswap', playerPuffleId, destination);
 })
