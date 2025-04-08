@@ -93,6 +93,9 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
     client.swapPuffleFromIglooAndBackyard(pufflesInIgloo[0].id, true);
   }
 }, {
+  // without cooldown, this can be spammed in the AS3 client,
+  // allowing a second puffle to be bought
+  // It is unknown if the original had this issue so we are correcting it
   cooldown: 2000
 });
 
