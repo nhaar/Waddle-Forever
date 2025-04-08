@@ -206,6 +206,7 @@ export class Client {
       },
       puffleSeq: 0,
       puffles: [],
+      backyard: {},
       puffleItems: {},
       igloo: {
         type: 0,

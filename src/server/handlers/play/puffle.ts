@@ -88,7 +88,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 });
 
 // get puffles in igloo
-handler.xt('p#pg', (client, id) => {
+handler.xt('p#pg', (client, id, iglooType) => {
   if (isAs2(client.version)) {
     const puffles = client.penguin.puffles.map((puffle) => {
       return [
@@ -115,7 +115,11 @@ handler.xt('p#pg', (client, id) => {
   
     client.sendXt('pg', ...puffles);
   } else if (isAs3(client.version)) {
-    const puffles = client.penguin.puffles.map((puffle) => {
+    const isBackyard = iglooType === 'backyard';
+    const puffles = client.penguin.puffles.filter((puffle) => {
+      // filtering for backyard or igloo puffles
+      return (client.penguin.backyard[puffle.id] === 1) === isBackyard;
+    }).map((puffle) => {
       return [
         puffle.id,
         ...getClientPuffleIds(puffle.type),
@@ -172,6 +176,13 @@ handler.xt('p#pgpi', (client) => {
     ...BASE_CARE_INVENTORY.map((item) => `${item}|1`),
     ...Object.entries(client.penguin.puffleItems).map((entry) => `${entry[0]}|${entry[1]}`)
   );
+})
+
+// send a puffle to or from the backyard
+handler.xt('p#puffleswap', (client, playerPuffleId, destination) => {
+  client.penguin.backyard[Number(playerPuffleId)] = destination === 'backyard' ? 1 : undefined;
+  client.update();
+  client.sendXt('puffleswap', playerPuffleId, destination);
 })
 
 export default handler

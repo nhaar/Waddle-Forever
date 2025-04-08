@@ -198,6 +198,6 @@ export const isLiteralScoreGame = (room: Room): boolean => {
 
 export const isGameRoom = (room: Room): boolean => {
   // from what I know, 900 and forward is only minigames
-  // 2000 and above however is reserved for igloos
-  return room >= 900 && room < 2000;
+  // 1000 and above however is reserved for igloos
+  return room >= 900 && room < 1000;
 };

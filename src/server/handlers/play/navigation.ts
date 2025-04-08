@@ -26,21 +26,31 @@ handler.xt('z', 'zo', (client, score) => {
   client.sendXt('zo', String(client.penguin.coins), ...stampInfo);
 });
 
-// Joining player igloo
 handler.xt('j#jp', (client, fakeId) => {
-  let iglooId: number
-
-  // in AS2 client, the ID given is played ID + 1000,
-  // while in AS3 the proper player ID is given
-  // to avoid any potential conflicts with game rooms
-  // here we use >2000 for igloo IDs
-  if (isAs2(client.version)) {
-    iglooId = Number(fakeId) + 1000;
-  } else if (isAs3(client.version)) {
-    iglooId = Number(fakeId) + 2000;
+  if (!isAs2(client.version)) {
+    return;
   }
-  client.sendXt('jp', iglooId, iglooId, 'igloo');
+  // for some reason the ID given is the player + 1000
+  // in WF igloo room IDs are playerID + 2000
+  const iglooId = Number(fakeId) + 1000;
   client.joinRoom(iglooId);
+})
+
+// Joining player igloo
+handler.xt('j#jp', (client, playerId, roomType) => {
+  if (!isAs3(client.version)) {
+    return;
+  }
+  if (roomType === 'igloo') {
+    // in WF igloo room IDs are playeId + 2000
+    const iglooId = Number(playerId) + 2000;
+    client.sendXt('jp', iglooId, iglooId, roomType);
+    client.joinRoom(iglooId);
+  } else if (roomType === 'backyard') {
+    const backyardId = 1000;
+    client.sendXt('jp', backyardId, backyardId, roomType);
+    client.joinRoom(backyardId);
+  }
 })
 
 handler.xt('u#sf', (client, frame) => {

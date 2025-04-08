@@ -223,6 +223,7 @@ export interface Penguin {
   },
   puffleSeq: number
   puffles: PlayerPuffle[],
+  backyard: Record<number, 1>,
   puffleItems: Record<number, number>,
   igloo: {
     type: number,
