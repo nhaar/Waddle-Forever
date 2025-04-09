@@ -219,6 +219,11 @@ export class Client {
       puffleItems: {},
       hasDug: false,
       treasureFinds: [],
+      rainbow: {
+        adoptability: false,
+        currentTask: 0,
+        coinsCollected: {}
+      },
       igloo: {
         type: 0,
         music: 0,

@@ -510,6 +510,11 @@ handler.xt('p#checkpufflename', (client, puffleName) => {
   client.sendXt('checkpufflename', puffleName, 1);
 })
 
+// endpoint that checks name used by rainbow puffle
+handler.xt('p#pcn', (client, puffleName) => {
+  client.sendXt('pcn', puffleName, 1);
+})
+
 // get inventory for pet care items
 handler.xt('p#pgpi', (client) => {
   client.sendXt(

@@ -227,6 +227,16 @@ export interface Penguin {
   puffleItems: Record<number, number>,
   hasDug: boolean, // if has dug with puffle
   treasureFinds: number[], // array to keep track of the times a treasure was found in the last 24hrs
+  rainbow: {
+    /** If can adopt rainbow puffle */
+    adoptability: boolean
+    /** Current rainbow puffle task */
+    currentTask: number
+    /** Timestamp of when last task was completed */
+    latestTaskCompletionTime?: number
+    /** Saves if have collected coins for each task and for the bonus */
+    coinsCollected: Record<string, boolean>
+  },
   igloo: {
     type: number,
     music: number,
