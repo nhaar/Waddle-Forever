@@ -62,7 +62,9 @@ handler.xt('g#ag', (client, floor) => {
 // buying igloo
 handler.xt('g#au', (client, igloo) => {
   const cost = getIglooCost(Number(igloo));
-  client.removeCoins(cost);
+  if (cost !== undefined) {
+    client.removeCoins(cost);
+  }
   client.penguin.iglooTypes[igloo] = 1;
   client.update();
   client.sendXt('au', igloo, client.penguin.coins);

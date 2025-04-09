@@ -53,7 +53,7 @@ export class StaticDataTable<T extends BaseRow, K extends (keyof T)[]> {
   }
 
   /** Given an ID number, get an item in the database. */
-  public get(id: number): T {
+  public get(id: number): T | undefined {
     return this.map.get(id);
   }
 

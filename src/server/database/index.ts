@@ -66,7 +66,7 @@ class JsonDatabase {
     }
   }
 
-  private migrateVersion(version: string): string | undefined {
+  private migrateVersion(version: string): string {
     switch (version) {
       case '0.2.0':
         this.migrate_0_2_0()
@@ -140,7 +140,12 @@ class JsonDatabase {
       if (file === 'seq') {
         continue;
       }
-      const id = Number(file.match(/\d+/)[0]);
+      const idMatch = file.match(/\d+/);
+      if (idMatch === null) {
+        // invalid file, not an ID
+        continue;
+      }
+      const id = Number(idMatch[0]);
       const content = fs.readFileSync(path.join(subDir, file), { encoding: 'utf-8' });
       const data = JSON.parse(content);
       if (isString && data[property].toLowerCase() === value.toLowerCase()) {

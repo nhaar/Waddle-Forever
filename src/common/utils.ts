@@ -24,6 +24,10 @@ export function parseURL(url: string): {
   const slashSplit = rest.split('/')
   const urlBody = slashSplit.shift()
 
+  if (urlBody === undefined) {
+    throw new Error('This error should be impossible.');
+  }
+
   const portSplit = urlBody.split(':')
   const host = portSplit[0]
   const portString = portSplit[1]

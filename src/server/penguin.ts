@@ -43,6 +43,9 @@ export class Client {
   walkingPuffle: number;
 
   constructor (socket: net.Socket, version: GameVersion, member: boolean, type: ServerType) {
+    this.id = -1;
+    this.currentRoom = -1;
+    
     this.socket = socket;
     this.version = version;
     this.serverType = type;
@@ -170,6 +173,9 @@ export class Client {
   setPenguinFromId (id: number): void {
     const data = db.getById<Penguin>(Databases.Penguins, id);
     const penguin = data;
+    if (penguin === undefined) {
+      throw new Error(`Could not find penguin of ID ${id}`);
+    }
     this.penguin = penguin;
     this.id = id;
   }
@@ -299,9 +305,12 @@ export class Client {
   getPinString (): string {
     const pins = Object.keys(this.penguin.inventory).filter((item) => {
       const id = Number(item)
-      return ITEMS.get(id).type === ItemType.Pin && !isFlag(id);
+      return ITEMS.get(id)?.type === ItemType.Pin && !isFlag(id);
     }).map((pin) => {
       const item = ITEMS.get(Number(pin));
+      if (item === undefined) {
+        throw new Error(`Pin ${pin} in inventory doesn't exist`);
+      }
       return [item.id, (new Date(`${item.releaseDate}T12:00:00`)).getTime() / 1000, item.isMember ? 1 : 0].join('|');
     })
 
@@ -453,7 +462,9 @@ export class Client {
         this.penguin.igloo.flooring,
         furnitureString
       ].join('%');
-    } else if (isAs3(this.version)) {
+    } else {
+      // This is AS3
+
       // TODO making this dynamic
       const locked = true;
       // TODO like stuff
@@ -483,7 +494,11 @@ export class Client {
   }
 
   swapPuffleFromIglooAndBackyard(playerPuffleId: number, goingToBackyard: boolean) {
-    this.penguin.backyard[playerPuffleId] = goingToBackyard ? 1 : undefined;
+    if (goingToBackyard) {
+      this.penguin.backyard[playerPuffleId] = 1;  
+    } else {
+      delete this.penguin.backyard[playerPuffleId];
+    }
   }
 
   makeAgent (): void {
@@ -699,7 +714,13 @@ export class Client {
   /** Add a "puffle care item" to the inventory */
   addPuffleItem(itemId: number, cost: number, amount: number) {
     const item = PUFFLE_ITEMS.get(itemId);
+    if (item === undefined) {
+      throw new Error(`Tried to add puffle item that doesn't exist: ${itemId}`);
+    }
     const parentItem = PUFFLE_ITEMS.get(item.parentId);
+    if (parentItem === undefined) {
+      throw new Error(`Puffle item ${item} doesn't have a valid parent ID (${item.parentId})`);
+    }
   
     const totalAmount = amount * item.quantity;
 

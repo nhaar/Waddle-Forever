@@ -5,7 +5,7 @@ import { GameVersion, SettingsManager } from "./settings";
 import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 
-type GetCallback = (settings: SettingsManager, route: string) => string
+type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
 type DirCallback = (settings: SettingsManager, dirPath: string) => string | undefined
 

@@ -259,6 +259,9 @@ function dig(client: Client, onCommand: boolean) {
   const options = [];
 
   const playerPuffle = client.penguin.puffles.find((puffle) => puffle.id === client.walkingPuffle);
+  if (playerPuffle === undefined) {
+    throw new Error(`Player is walking puffle ${client.walkingPuffle} which they don't have`);
+  }
   const puffleType = playerPuffle.type;
 
   // It is unknown what happens exactly if you reach the limit of items in a category
@@ -302,7 +305,7 @@ function dig(client: Client, onCommand: boolean) {
   // TODO golden puffles
 
   const option = choose(options);
-  if (option === TreasureType.Clothing || TreasureType.Furniture) {
+  if (option === TreasureType.Clothing || option === TreasureType.Furniture) {
     // Treasure Box stamp, find item in dig
     // wiki claims that furnitures are included, no solid evidence though
     client.giveStamp(494);
@@ -316,7 +319,7 @@ function dig(client: Client, onCommand: boolean) {
     const foodId = canDigFood[randomInt(0, canDigFood.length - 1)];
     // TODO notify = false?
     client.addPuffleItem(foodId, 0, 1);
-    if (foodId === PUFFLES.get(playerPuffle.type).favouriteFood) {
+    if (foodId === PUFFLES.get(playerPuffle.type)?.favouriteFood) {
       // Tasty Treasure stamp
       client.giveStamp(495);
     }
@@ -363,7 +366,7 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
 
 // seemingly the format in which client usually wants the puffle IDs
 export function getClientPuffleIds(puffleId: number) {
-  const parentId = PUFFLES.get(puffleId).parentId;
+  const parentId = PUFFLES.get(puffleId)?.parentId;
   if (parentId === undefined) {
     return [puffleId, ''];
   } else {
@@ -381,12 +384,18 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 
   const puffleId = Number(puffleSubType === '0' ? puffleType : puffleSubType);
   const puffle = PUFFLES.get(puffleId);
+  if (puffle === undefined) {
+    throw new Error(`Puffle of ID ${puffleId} was not found in the database`);
+  }
 
   if (puffleType === '10') {
     // TODO rainbow puffle
   } else if (puffleType === '11') {
     // TODO gold puffle
   } else if (puffleSubType === '0') {
+    if (puffle.favouriteToy === undefined) {
+      throw new Error(`Non creature puffle did not have a favorite toy: ${puffle}`);
+    }
     client.addPuffleItem(3, 0, 5);
     client.addPuffleItem(79, 0, 1);
     client.addPuffleItem(puffle.favouriteToy, 0, 1);
@@ -493,6 +502,9 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
   }
 
   const playerPuffle = client.penguin.puffles.find((puffle) => puffle.id === Number(penguinPuffleId));
+  if (playerPuffle === undefined) {
+    throw new Error(`Walk puffle: could not find puffle in inventory: ${penguinPuffleId}`);
+  }
 
   if (walking === '1') {
     client.walkPuffle(playerPuffle.id);

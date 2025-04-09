@@ -22,7 +22,7 @@ export function getServerPopulation(): number {
 
 type PenguinServer = {
   name: string
-  id: string
+  id: number
 }
 
 type ServerLang = 'en' | 'pt' | 'fr' | 'es'
@@ -217,7 +217,7 @@ const locales: LanguageServerID = Languages.map((locale) => {
   }
 })
 
-const serverList: PenguinServer[] = locales.reduce((accumulator, currentValue) => {
+const serverList: PenguinServer[] = locales.reduce<PenguinServer[]>((accumulator, currentValue) => {
   return [ ...accumulator, ...currentValue.servers]
 }, [])
 
