@@ -135,3 +135,13 @@ export const logError = (message: string, error: any): void => {
 export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
 
 export const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');
+
+/** Gets a random integer between minimum and max, both included */
+export function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+/** Gets random element from an array */
+export function choose<T>(array: T[]): T {
+  return array[randomInt(0, array.length)];
+}

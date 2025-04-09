@@ -225,6 +225,7 @@ export interface Penguin {
   puffles: PlayerPuffle[],
   backyard: Record<number, 1>,
   puffleItems: Record<number, number>,
+  hasDug: boolean, // if has dug with puffle
   igloo: {
     type: number,
     music: number,

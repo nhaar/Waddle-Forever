@@ -217,6 +217,7 @@ export class Client {
       puffles: [],
       backyard: {},
       puffleItems: {},
+      hasDug: false,
       igloo: {
         type: 0,
         music: 0,
