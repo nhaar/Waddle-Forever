@@ -193,6 +193,25 @@ function dig(client: Client, onCommand: boolean) {
   // for them to make an exception in the code for this
   client.giveStamp(489);
 
+  // dig all day stamp, which reportedly kept track of everything in the past 24hrs
+  // it is likely that it persisted sessions although there's no concrete evidence
+  // (finding evidence for this would be very hard)
+  // there is also no evidence saying that coins count but judging by the
+  // difficulty being yellow it most certainly did count
+  const DIG_ALL_DAY_STAMP = 492;
+  if (!client.hasStamp(DIG_ALL_DAY_STAMP)) {
+    const now = Date.now()
+    client.penguin.treasureFinds.push(now);
+    client.penguin.treasureFinds = client.penguin.treasureFinds.filter((timestamp) => {
+      return now - timestamp < 24 * 60 * 60 * 1000;
+    })
+    if (client.penguin.treasureFinds.length >= 5) {
+      client.giveStamp(DIG_ALL_DAY_STAMP);
+      client.penguin.treasureFinds = [];
+    }
+    client.update();
+  }
+
   // Save that have done digging
   if (!client.penguin.hasDug) {
     client.penguin.hasDug = true;

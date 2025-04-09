@@ -226,6 +226,7 @@ export interface Penguin {
   backyard: Record<number, 1>,
   puffleItems: Record<number, number>,
   hasDug: boolean, // if has dug with puffle
+  treasureFinds: number[], // array to keep track of the times a treasure was found in the last 24hrs
   igloo: {
     type: number,
     music: number,

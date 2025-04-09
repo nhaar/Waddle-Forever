@@ -218,6 +218,7 @@ export class Client {
       backyard: {},
       puffleItems: {},
       hasDug: false,
+      treasureFinds: [],
       igloo: {
         type: 0,
         music: 0,
@@ -399,6 +400,10 @@ export class Client {
         this.sendXt('aabs', stampId);
       }
     }
+  }
+
+  hasStamp(stampId: number): boolean {
+    return this.penguin.stamps.includes(stampId);
   }
   
   addCoins (amount: number): void {
