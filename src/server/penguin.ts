@@ -1,10 +1,10 @@
 import net from 'net';
 
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
-import db, { Penguin, Databases, PlayerPuffle, IglooFurniture } from './database';
+import db, { PenguinData, Databases, PlayerPuffle, IglooFurniture, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
 import { GameVersion } from './settings';
 import { Stamp } from './game/stamps';
-import { isAs1, isAs2, isAs3, isGreaterOrEqual, isLower } from './routes/versions';
+import { isAs1, isAs2, isGreaterOrEqual, isLower } from './routes/versions';
 import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
@@ -14,10 +14,556 @@ type ServerType = 'Login' | 'World';
 
 const STAMP_RELEASE_VERSION : string = '2010-Jul-26'
 
+class Penguin {
+  private _id: number;
+  private _name: string;
+  private _isMember: boolean;
+  private _isAgent: boolean;
+  private _mascot: number;
+  private _equipped: {
+    color: number
+    head: number
+    face: number
+    neck: number
+    body: number
+    hand: number
+    feet: number
+    pin: number
+    background: number  
+  };
+  private _coins: number;
+  private _registrationTimestamp: number;
+  private _minutesPlayed: number;
+  private _inventory: Set<number>;
+  private _stamps: Set<number>;
+  private _stampbook: Stampbook;
+  private _puffleSeq: number;
+  private _puffles: Map<number, PlayerPuffle>;
+  private _backyard: Set<number>;
+  private _puffleItems: Map<number, number>;
+  private _hasDug: boolean;
+  private _treasureFinds: number[];
+  private _rainbow: {
+    adoptability: boolean;
+    currentTask: number;
+    latestTaskCompletionTime?: number;
+    coinsCollected: Set<RainbowPuffleStage>;
+  }
+  private _furnitureInventory: Map<number, number>;
+  private _iglooTypes: Set<number>;
+  private _iglooLocations: Set<number>;
+  private _iglooFloorings: Set<number>;
+  private _mailSeq: number;
+  private _puffleLaunchGameData: Buffer;
+  private _mail: Array<Mail>;
+  private _igloo: Igloo;
+
+  constructor(id: number, data: PenguinData) {
+    this._id = id;
+    this._name = data.name;
+    this._isMember = data.is_member;
+    this._isAgent = data.is_agent;
+    this._mascot = data.mascot;
+    this._equipped = {
+      color: data.color,
+      head: data.head,
+      face: data.face,
+      neck: data.neck,
+      body: data.body,
+      hand: data.hand,
+      feet: data.feet,
+      pin: data.pin,
+      background: data.background
+    };
+    this._coins = data.coins;
+    this._registrationTimestamp = data.registration_date;
+    this._minutesPlayed = data.minutes_played;
+    this._inventory = parseJsonSet(data.inventory);
+    this._stamps = parseJsonSet(data.stamps);
+    this._stampbook = data.stampbook;
+    this._puffleSeq = data.puffleSeq;
+    this._puffles = parseJsonRows(data.puffles);
+    this._backyard = parseJsonSet(data.backyard);
+    this._puffleItems = parseJsonMap(data.puffleItems);
+    this._hasDug = data.hasDug;
+    this._treasureFinds = data.treasureFinds;
+    this._rainbow = {
+      adoptability: data.rainbow.adoptability,
+      currentTask: data.rainbow.currentTask,
+      latestTaskCompletionTime: data.rainbow.latestTaskCompletionTime,
+      coinsCollected: parseJsonSet(data.rainbow.coinsCollected.filter<RainbowPuffleStage>(((value): value is RainbowPuffleStage => {
+        return isRainbowStage(value);
+      })))
+    },
+    this._furnitureInventory = parseJsonMap(data.furniture);
+    this._iglooTypes = parseJsonSet(data.iglooTypes);
+    this._iglooLocations = parseJsonSet(data.iglooLocations);
+    this._iglooFloorings = parseJsonSet(data.iglooFloorings);
+    this._mailSeq = data.mailSeq;
+    this._puffleLaunchGameData = Buffer.from(data.puffleLaunchGameData ?? '', 'base64');
+    this._mail = data.mail;
+    this._igloo = data.igloo;
+  }
+
+  serialize(): PenguinData {
+    return {
+      name: this._name,
+      is_member: this._isMember,
+      is_agent: this._isAgent,
+      mascot: this._mascot,
+      color: this._equipped.color,
+      head: this._equipped.head,
+      face: this._equipped.face,
+      neck: this._equipped.neck,
+      body: this._equipped.body,
+      hand: this._equipped.hand,
+      feet: this._equipped.feet,
+      pin: this._equipped.pin,
+      background: this._equipped.background,
+      coins: this._coins,
+      registration_date: this._registrationTimestamp,
+      minutes_played: this._minutesPlayed,
+      inventory: dumpJsonSet(this._inventory),
+      stamps: dumpJsonSet(this._stamps),
+      stampbook: this._stampbook,
+      puffleSeq: this._puffleSeq,
+      puffles: dumpJsonRows(this._puffles),
+      backyard: dumpJsonSet(this._backyard),
+      puffleItems: dumpJsonMap(this._puffleItems),
+      hasDug: this._hasDug,
+      treasureFinds: this._treasureFinds,
+      rainbow: {
+        adoptability: this._rainbow.adoptability,
+        currentTask: this._rainbow.currentTask,
+        latestTaskCompletionTime: this._rainbow.latestTaskCompletionTime,
+        coinsCollected: dumpJsonSet(this._rainbow.coinsCollected)
+      },
+      furniture: dumpJsonMap(this._furnitureInventory),
+      iglooFloorings: dumpJsonSet(this._iglooFloorings),
+      iglooLocations: dumpJsonSet(this._iglooLocations),
+      iglooTypes: dumpJsonSet(this._iglooTypes),
+      mailSeq: this._mailSeq,
+      puffleLaunchGameData: this._puffleLaunchGameData.toString('base64'),
+      igloo: this._igloo,
+      mail: this._mail
+    }
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  get color() {
+    return this._equipped.color;
+  }
+
+  get head() {
+    return this._equipped.head;
+  }
+
+  get face() {
+    return this._equipped.face;
+  }
+
+  get neck() {
+    return this._equipped.neck;
+  }
+
+  get body() {
+    return this._equipped.body;
+  }
+
+  get hand() {
+    return this._equipped.hand;
+  }
+
+  get feet() {
+    return this._equipped.feet;
+  }
+
+  get pin() {
+    return this._equipped.pin;
+  }
+
+  get background() {
+    return this._equipped.background;
+  }
+
+  get isMember() {
+    return this._isMember;
+  }
+
+  get registrationTimestamp() {
+    return this._registrationTimestamp;
+  }
+
+  get coins() {
+    return this._coins;
+  }
+
+  set color(id: number) {
+    this._equipped.color = id;
+  }
+
+  set head(id: number) {
+    this._equipped.head = id;
+  }
+
+  set face(id: number) {
+    this._equipped.face = id;
+  }
+
+  set neck(id: number) {
+    this._equipped.neck = id;
+  }
+
+  set body(id: number) {
+    this._equipped.body = id;
+  }
+
+  set hand(id: number) {
+    this._equipped.hand = id;
+  }
+
+  set feet(id: number) {
+    this._equipped.feet = id;
+  }
+
+  set pin(id: number) {
+    this._equipped.pin = id;
+  }
+
+  set background(id: number) {
+    this._equipped.background = id;
+  }
+
+  get stampbook() {
+    return this._stampbook;
+  }
+
+  get igloo() {
+    return this._igloo;
+  }
+
+  get mascot() {
+    return this._mascot;
+  }
+
+  get isAgent() {
+    return this._isAgent;
+  }
+
+  get hasDug() {
+    return this._hasDug;
+  }
+
+  get rainbowQuestInfo() {
+    return this._rainbow;
+  }
+
+  changeName(name: string): void {
+    this._name = name;
+  }
+
+  swapMember(): void {
+    this._isMember = !this._isMember;
+  }
+
+  setAge(days: number): void {
+    this._registrationTimestamp = Date.now() - days * 3600 * 24 * 1000;
+  }
+
+  getItems(): number[] {
+    return Array.from(this._inventory.values());
+  }
+
+  getStamps(): number[] {
+    return Array.from(this._stamps.values());
+  }
+
+  hasStamp(stamp: number): boolean {
+    return this._stamps.has(stamp);
+  }
+
+  addStamp(stamp: number): void {
+    this._stamps.add(stamp);
+  }
+
+  addItem(item: number): void {
+    this._inventory.add(item);
+  }
+
+  hasItem(item: number): boolean {
+    return this._inventory.has(item);
+  }
+
+  addCoins (amount: number): void {
+    this._coins += amount;
+  }
+
+  addIgloo(type: number): void {
+    this._iglooTypes.add(type);
+  }
+
+  removeCoins (amount: number): void {
+    this._coins -= amount
+  }
+
+  addPuffle(name: string, puffleType: number): PlayerPuffle {
+    this._puffleSeq += 1;
+    const id = this._puffleSeq;
+    const puffle = {
+      id,
+      name,
+      type: puffleType,
+      clean: 100,
+      rest: 100,
+      food: 100
+    }
+    this._puffles.set(id, puffle);
+
+    return puffle;
+  }
+
+  addToBackyard(puffle: number) {
+    this._backyard.add(puffle);
+  }
+
+  removeFromBackyard(puffle: number) {
+    this._backyard.delete(puffle);
+  }
+
+  isInBackyard(puffle: number): boolean {
+    return this._backyard.has(puffle);
+  }
+
+  makeAgent (): void {
+    this._isAgent = true;
+  }
+
+  getPuffles(): PlayerPuffle[] {
+    return Array.from(this._puffles.values());
+  }
+
+  get minutesPlayed() {
+    return this._minutesPlayed;
+  }
+
+  receivePostcard(postcard: number, info: {
+    senderId?: number
+    senderName?: string
+    details?: string    
+  }): Mail {
+    this._mailSeq += 1;
+    const uid = this._mailSeq;
+    const senderName = info.senderName ?? 'sys';
+    const senderId = info.senderId ?? 0;
+    const details = info.details ?? '';
+    const timestamp = Date.now();
+    const mail = {
+      sender: {
+        name: senderName,
+        id: senderId
+      },
+      postcard: {
+        postcardId: postcard,
+        uid,
+        details,
+        timestamp,
+        read: false
+      }
+    };
+    this._mail.push(mail);
+    return mail;
+  }
+
+  setAllMailAsRead(): void {
+    this._mail = this._mail.map((mail) => {
+      const postcard = { ...mail.postcard, read: true };
+      return { ...mail, postcard: postcard }
+    })
+  }
+
+  getUnreadMailTotal(): number {
+    return this._mail.filter((mail) => !mail.postcard.read).length;
+  }
+
+  getMailTotal(): number {
+    return this._mail.length;
+  }
+
+  getAllMail(): Mail[] {
+    return this._mail;
+  }
+
+  addFurniture(furniture: number, amount: number): boolean {
+    if (amount < 0 || isNaN(amount) || !Number.isInteger(amount)) {
+      throw new Error(`Invalid amount of furniture being added: ${amount}`);
+    }
+    let amountOwned = this._furnitureInventory.get(furniture);
+    if (amountOwned === undefined) {
+      amountOwned = 0;
+    }
+
+    const newAmount = amountOwned + amount;
+    if (newAmount > 99) {
+      return false;
+    } 
+
+    this._furnitureInventory.set(furniture, newAmount);
+    return true;
+  }
+
+  getAllFurniture(): Array<[number, number]> {
+    return Array.from(this._furnitureInventory.entries());
+  }
+
+  getFurnitureOwnedAmount(furniture: number): number {
+    return this._furnitureInventory.get(furniture) ?? 0;
+  }
+
+  getIglooFloorings(): number[] {
+    return Array.from(this._iglooFloorings.values());
+  }
+
+  getIglooTypes(): number[] {
+    return Array.from(this._iglooTypes.values());
+  }
+
+  getIglooLocations(): number[] {
+    return Array.from(this._iglooLocations.values());
+  }
+
+  incrementPlayTime(minutes: number) {
+    if (minutes < 0) {
+      throw new Error(`Invalid play time increment: ${minutes} minutes`);
+    }
+
+    this._minutesPlayed += minutes;
+  }
+
+  getGameData(): Buffer {
+    return this._puffleLaunchGameData;
+  }
+
+  setGameData(data: Buffer): void {
+    this._puffleLaunchGameData = data;
+  }
+
+  addPuffleItem(itemId: number, amount: number): number {
+    const item = PUFFLE_ITEMS.get(itemId);
+    if (item === undefined) {
+      throw new Error(`Tried to add puffle item that doesn't exist: ${itemId}`);
+    }
+    const parentItem = PUFFLE_ITEMS.get(item.parentId);
+    if (parentItem === undefined) {
+      throw new Error(`Puffle item ${item} doesn't have a valid parent ID (${item.parentId})`);
+    }
+    
+    if (amount < 0 || !Number.isInteger(amount)) {
+      throw new Error(`Invalid amount of puffle items added: ${amount}`);
+    }
+
+    const totalAmount = amount * item.quantity;
+
+    const ownedAmount = this._puffleItems.get(parentItem.id) ?? 0;
+    const newAmount = ownedAmount + totalAmount;
+    this._puffleItems.set(parentItem.id, newAmount);
+
+    return newAmount;
+  }
+
+  addTreasureFind(): void {
+    const now = Date.now();
+    this._treasureFinds.push(now);
+    // only track times you found a treasure in the last 24 hrs
+    this._treasureFinds = this._treasureFinds.filter((timestamp) => {
+      return now - timestamp < 24 * 60 * 60 * 1000;
+    })
+  }
+
+  getTreasureFindsInLastDay(): number {
+    return this._treasureFinds.length;
+  }
+
+  clearTreasureFinds(): void {
+    this._treasureFinds = [];
+  }
+
+  setHaveDug(): void {
+    this._hasDug = true;
+  }
+
+  getPuffleItemOwnedAmount(itemId: number): number {
+    return this._puffleItems.get(itemId) ?? 0;
+  }
+
+  getAllPuffleItems(): Array<[number, number]> {
+    return Array.from(this._puffleItems.entries());
+  }
+
+  static getDefault(id: number, name: string, isMember: boolean): Penguin {
+    return new Penguin(id, {
+      name,
+      is_member: isMember,
+      is_agent: false,
+      mascot: 0,
+      color: 1,
+      head: 0,
+      face: 0,
+      neck: 0,
+      body: 0,
+      hand: 0,
+      feet: 0,
+      pin: 0,
+      background: 0,
+      coins: 500,
+      registration_date: Date.now(),
+      minutes_played: 0,
+      inventory: [1],
+      stamps: [],
+      stampbook: { // TODO: enums for the options
+        color: 1,
+        highlight: 1,
+        pattern: 0,
+        icon: 1,
+        stamps: [],
+        recent_stamps: []
+      },
+      puffleSeq: 0,
+      puffles: [],
+      backyard: [],
+      puffleItems: {},
+      hasDug: false,
+      treasureFinds: [],
+      rainbow: {
+        adoptability: false,
+        currentTask: 0,
+        coinsCollected: []
+      },
+      igloo: {
+        type: 0,
+        music: 0,
+        flooring: 0, // in the past, you could have only one flooring active
+        furniture: []
+      },
+      furniture: {},
+      iglooFloorings: [], // floorings inventory is a modern feature
+      iglooTypes: [1],
+      iglooLocations: [1],
+      mail: [],
+      mailSeq: 0
+    })
+  }
+}
+
 export class Client {
   socket: net.Socket;
   penguin: Penguin;
-  id: number;
   x: number;
   y: number;
   currentRoom: number;
@@ -43,14 +589,12 @@ export class Client {
   walkingPuffle: number;
 
   constructor (socket: net.Socket, version: GameVersion, member: boolean, type: ServerType) {
-    this.id = -1;
     this.currentRoom = -1;
     
     this.socket = socket;
     this.version = version;
     this.serverType = type;
-    this.penguin = Client.getDefault();
-    this.penguin.is_member = member;
+    this.penguin = Penguin.getDefault(-1, '', member);
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
@@ -74,9 +618,9 @@ export class Client {
     this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
   }
 
-  static as1Crumb (penguin: Penguin, id: Number): string {
+  static as1Crumb (penguin: Penguin): string {
     return [
-      id,
+      penguin.id,
       penguin.name,
       penguin.color,
       penguin.head,
@@ -90,16 +634,16 @@ export class Client {
       0, // X
       0, // y
       0, // TODO frame
-      penguin.is_member ? 1 : 0
+      penguin.isMember ? 1 : 0
     ].join('|')
   }
 
   get penguinString (): string {
     if (isAs1(this.version)) {
-      return Client.as1Crumb(this.penguin, this.id);
+      return Client.as1Crumb(this.penguin);
     } else {
       return [
-        this.id,
+        this.penguin.id,
         this.penguin.name,
         1, // meant to be approval, but always approved, TODO: non approved names in the future
         this.penguin.color,
@@ -114,7 +658,7 @@ export class Client {
         this.x,
         this.y,
         1, // TODO, figure what this "frame" means
-        this.penguin.is_member ? 1 : 0,
+        this.penguin.isMember ? 1 : 0,
         this.memberAge,
         0, // TODO figure out what this "avatar" is
         0, // TODO figure out what penguin state is
@@ -130,7 +674,7 @@ export class Client {
 
   get age (): number {
     // difference converted into days
-    return Math.floor((Date.now() - this.penguin.registration_date) / 1000 / 86400);
+    return Math.floor((Date.now() - this.penguin.registrationTimestamp) / 1000 / 86400);
   }
 
   get memberAge (): number {
@@ -151,106 +695,41 @@ export class Client {
   }
 
   update (): void {
-    db.update<Penguin>(Databases.Penguins, this.id, this.penguin);
+    db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
   }
 
-  static getPenguinFromName (name: string): [Penguin, number] {
-    const data = db.get<Penguin>(Databases.Penguins, 'name', name);
+  static getPenguinFromName (name: string): Penguin {
+    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
 
     if (data === undefined) {
-      return Client.create(name);
+      data = Client.create(name);
     }
-    return data
+
+    const [penguinData, id] = data;
+
+    return new Penguin(id, penguinData);
   }
 
   setPenguinFromName (name: string): void {
-    const data = Client.getPenguinFromName(name)
-    const [penguin, id] = data;
-    this.penguin = penguin;
-    this.id = id;
+    this.penguin = Client.getPenguinFromName(name)
   }
 
   setPenguinFromId (id: number): void {
-    const data = db.getById<Penguin>(Databases.Penguins, id);
+    const data = db.getById<PenguinData>(Databases.Penguins, id);
     const penguin = data;
     if (penguin === undefined) {
       throw new Error(`Could not find penguin of ID ${id}`);
     }
-    this.penguin = penguin;
-    this.id = id;
+    this.penguin = new Penguin(id, penguin);
   }
 
-  static create (name: string, mascot = 0): [Penguin, number] {
-    return db.add<Penguin>(Databases.Penguins, {
-      ...Client.getDefault(),
+  static create (name: string, mascot = 0): [PenguinData, number] {
+    const defaultPenguin = Penguin.getDefault(0, name, true).serialize();
+    return db.add<PenguinData>(Databases.Penguins, {
+      ...defaultPenguin,
       name,
       mascot
     });
-  }
-
-  static getDefault (): Penguin {
-    return {
-      name: '',
-      mascot: 0,
-      is_member: true,
-      is_agent: false,
-      color: 1,
-      head: 0,
-      face: 0,
-      neck: 0,
-      body: 0,
-      hand: 0,
-      feet: 0,
-      background: 0,
-      pin: 0,
-      registration_date: Date.now(),
-      coins: 500,
-      minutes_played: 0,
-      inventory: {
-        1: 1
-      },
-      stamps: [],
-      pins: [],
-      stampbook: { // TODO: enums for the options
-        color: 1,
-        highlight: 1,
-        pattern: 0,
-        icon: 1,
-        stamps: [],
-        recent_stamps: []
-      },
-      puffleSeq: 0,
-      puffles: [],
-      backyard: {},
-      puffleItems: {},
-      hasDug: false,
-      treasureFinds: [],
-      rainbow: {
-        adoptability: false,
-        currentTask: 0,
-        coinsCollected: {}
-      },
-      igloo: {
-        type: 0,
-        music: 0,
-        flooring: 0, // in the past, you could have only one flooring active
-        furniture: []
-      },
-      furniture: {},
-      iglooFloorings: {}, // floorings inventory is a modern feature
-      iglooTypes: {
-        1: 1
-      },
-      iglooLocations: {
-        1: 1
-      },
-      mail: [],
-      mailSeq: 0
-    };
-  }
-
-  hasItem (item: number): boolean {
-    return item in this.penguin.inventory;
   }
 
   canBuy (item: number): boolean {
@@ -264,46 +743,43 @@ export class Client {
    * @param params.cost Cost of the item (default 0)
    * @param params.notify Whether or not to notify the client (default false)
    */
-  addItem (itemId: number, params: { cost?: number, notify?: boolean } = {}): void {
+  buyItem (itemId: number, params: { cost?: number, notify?: boolean } = {}): void {
+    this.penguin.addItem(itemId);
     const cost = params.cost ?? 0;
     const notify = params.notify ?? true;
-    this.penguin.inventory[itemId] = 1;
-    this.removeCoins(cost);
-    this.update();
+    this.penguin.removeCoins(cost);
     if (notify) {
       this.sendXt('ai', itemId, this.penguin.coins);
     }
+    this.update();
   }
 
   sendInventory(): void {
-    this.sendXt('gi', Object.keys(this.penguin.inventory).join('%'));
+    this.sendXt('gi', this.penguin.getItems().join('%'));
   }
 
   addItems (items: number[]): void {
-    const newItems: Record<number, 1> = {}
     for (const item of items) {
-      newItems[item] = 1;
+      this.penguin.addItem(item);
     }
 
-    this.penguin.inventory = { ...this.penguin.inventory, ...newItems };
-
-    this.update();
     this.sendInventory();
     this.sendPenguinInfo();
+    this.update();
   }
 
   updateColor (color: number): void {
     this.penguin.color = color;
     this.update();
-    this.sendXt('upc', this.id, color);
+    this.sendXt('upc', this.penguin.id, color);
   }
 
   sendStamps (): void {
-    this.sendXt('gps', this.id, this.penguin.stamps.join('|'));
+    this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
   }
 
   getPinString (): string {
-    const pins = Object.keys(this.penguin.inventory).filter((item) => {
+    const pins = this.penguin.getItems().filter((item) => {
       const id = Number(item)
       return ITEMS.get(id)?.type === ItemType.Pin && !isFlag(id);
     }).map((pin) => {
@@ -381,7 +857,7 @@ export class Client {
       // string of recently collected stamps
       info[0] = gameSessionStamps.join('|');
       // total number of stamps collected in this game
-      info[1] = stamps.filter((stamp) => this.penguin.stamps.includes(stamp)).length;
+      info[1] = stamps.filter((stamp) => this.penguin.hasStamp(stamp)).length;
       // total number of stamps the game has
       info[2] = stamps.length;
 
@@ -404,8 +880,8 @@ export class Client {
     const notify = params.notify ?? true;
     const releaseDate = params.release ?? STAMP_RELEASE_VERSION;
     if (isGreaterOrEqual(this.version, releaseDate)) {
-      if (!this.penguin.stamps.includes(stampId)) {
-        this.penguin.stamps.push(stampId);
+      if (!this.penguin.hasStamp(stampId)) {
+        this.penguin.addStamp(stampId);
         this.penguin.stampbook.recent_stamps.push(stampId);
         this.sessionStamps.push(stampId);
         this.update();
@@ -414,35 +890,6 @@ export class Client {
         this.sendXt('aabs', stampId);
       }
     }
-  }
-
-  hasStamp(stampId: number): boolean {
-    return this.penguin.stamps.includes(stampId);
-  }
-  
-  addCoins (amount: number): void {
-    this.penguin.coins += amount;
-    this.update();
-  }
-
-  removeCoins (amount: number): void {
-    this.penguin.coins -= amount
-    this.update()
-  }
-
-  addPuffle (type: number, name: string): PlayerPuffle {
-    this.penguin.puffleSeq += 1;
-    const puffle = {
-      id: this.penguin.puffleSeq,
-      name,
-      type,
-      clean: 100,
-      rest: 100,
-      food: 100
-    };
-    this.penguin.puffles.push(puffle);
-    this.update()
-    return puffle
   }
 
   getIglooString (): string {
@@ -472,7 +919,7 @@ export class Client {
       const iglooLocation = 1;
       const iglooType = 1; // TODO Seems to be different compared to legacy? eg 0 vs 1
       return [
-        this.id, // TODO might have to do with igloo id?
+        this.penguin.id, // TODO might have to do with igloo id?
         1, 0, // TODO don't know what these are
         locked ? 1 : 0,
         this.penguin.igloo.music,
@@ -495,19 +942,14 @@ export class Client {
 
   swapPuffleFromIglooAndBackyard(playerPuffleId: number, goingToBackyard: boolean) {
     if (goingToBackyard) {
-      this.penguin.backyard[playerPuffleId] = 1;  
+      this.penguin.addToBackyard(playerPuffleId);
     } else {
-      delete this.penguin.backyard[playerPuffleId];
+      this.penguin.removeFromBackyard(playerPuffleId);
     }
   }
 
-  makeAgent (): void {
-    this.penguin.is_agent = true;
-    this.update();
-  }
-
   sendPuffles (): void {
-    const puffles = this.penguin.puffles.map((puffle) => {
+    const puffles = this.penguin.getPuffles().map((puffle) => {
       return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
     })
     this.sendXt('pgu', ...puffles);
@@ -518,34 +960,9 @@ export class Client {
     senderName?: string
     details?: string    
   }): void {
-    this.penguin.mailSeq += 1;
-    const senderName = info.senderName ?? 'sys';
-    const senderId = info.senderId ?? 0;
-    const details = info.details ?? '';
-    const timestamp = Date.now();
-    this.penguin.mail.push({
-      sender: {
-        name: senderName,
-        id: senderId
-      },
-      postcard: {
-        postcardId: postcard,
-        uid: this.penguin.mailSeq,
-        details,
-        timestamp,
-        read: false
-      }
-    })
-    this.sendXt('mr', senderName, senderId, postcard, details, timestamp, this.penguin.mailSeq);
+    const mail = this.penguin.receivePostcard(postcard, info);
+    this.sendXt('mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
     this.update();
-  }
-
-  setMailRead(): void {
-    this.penguin.mail = this.penguin.mail.map((mail) => {
-      const postcard = { ...mail.postcard, read: true };
-      return { ...mail, postcard: postcard }
-    })
-    this.update()
   }
 
   unequipPuffle(): void {
@@ -556,11 +973,6 @@ export class Client {
       this.penguin.hand = 0;
       this.update();
     }
-  }
-
-  setAge(days: number): void {
-    this.penguin.registration_date = Date.now() - days * 3600 * 24 * 1000;
-    this.update();
   }
 
   sendPenguinInfo(): void {
@@ -576,25 +988,13 @@ export class Client {
     TODO 4: map category how to handle
     TODO 3: how to handle status field
     */
-    this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, 1727536687000, this.age, 0, this.penguin.minutes_played, -1, 7, 1, 4, 3);
-  }
-
-  setName(name: string): void {
-    this.penguin.name = name;
-    this.update();
-  }
-
-  swapMember(): void {
-    this.penguin.is_member = !this.penguin.is_member;
-    this.update();
+    this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, 1727536687000, this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }
 
   getFurnitureString(): string {
-    const furniture = []
-    for (const id in this.penguin.furniture) {
-      furniture.push([id, this.penguin.furniture[id]].join('|'))
-    }
-    return furniture.join('%')
+    return this.penguin.getAllFurniture().map((pair) => {
+      return pair.join('|');
+    }).join('%');
   }
 
   /**
@@ -603,19 +1003,15 @@ export class Client {
    * @param params.cost Default `0` - Cost of furniture
    * @param params.notify Default `true` - Whether to notify the client or not
    */
-  addFurniture(furnitureId: number, params: { cost?: number, notify?: boolean } = {}): void {
+  buyFurniture(furnitureId: number, params: { cost?: number, notify?: boolean } = {}): void {
     const cost = params.cost ?? 0;
     const notify = params.notify ?? true;
-    if (!(furnitureId in this.penguin.furniture)) {
-      this.penguin.furniture[furnitureId] = 0;
-    }
-    if (this.penguin.furniture[furnitureId] >= 99) {
+    const canAdd = this.penguin.addFurniture(furnitureId, 1);
+    if (!canAdd) {
+      // 99 items limit
       this.sendError(10006);
     } else {
-      this.removeCoins(cost);
-      this.penguin.furniture[furnitureId] += 1;
-  
-      this.update();
+      this.penguin.removeCoins(cost);
     }
     if (notify) {
       this.sendXt('af', furnitureId, this.penguin.coins);
@@ -634,13 +1030,12 @@ export class Client {
   disconnect(): void {
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
-    this.penguin.minutes_played += minutesDelta;
+    this.penguin.incrementPlayTime(minutesDelta);
     this.update();
   }
 
   checkAgeStamps(): void {
-    const delta = Date.now() - this.penguin.registration_date;
-    const days = delta / 1000 / 86400;
+    const days = this.age;
     if (days >= 183) {
       this.giveStamp(14);
       if (days >= 365) {
@@ -661,27 +1056,8 @@ export class Client {
     this.sendXt('ac', this.penguin.coins);
   }
 
-  getGameData(): string {
-    const binary = Buffer.from(this.penguin.puffleLaunchGameData ?? '', 'base64');
-    return binary.toString();
-  }
-
-  /**
-   * Updates the puffle launch game data given the binary data, but doesn't save
-   * the data, mostly due to the commands which may use this and the player may regret using
-   * */
-  setGameData(data: Buffer): void {
-    this.penguin.puffleLaunchGameData = data.toString('base64');
-  }
-
-  saveGameData(data: string): void {
-    const binary = Buffer.from(data);
-    this.setGameData(binary);
-    this.update();
-  }
-
   private setPuffleLaunchGameData(data: PuffleLaunchGameSet): void {
-    this.setGameData(data.get());
+    this.penguin.setGameData(data.get());
   }
 
   /** Set game data with all Puffle Launch levels unlocked */
@@ -712,26 +1088,9 @@ export class Client {
   }
 
   /** Add a "puffle care item" to the inventory */
-  addPuffleItem(itemId: number, cost: number, amount: number) {
-    const item = PUFFLE_ITEMS.get(itemId);
-    if (item === undefined) {
-      throw new Error(`Tried to add puffle item that doesn't exist: ${itemId}`);
-    }
-    const parentItem = PUFFLE_ITEMS.get(item.parentId);
-    if (parentItem === undefined) {
-      throw new Error(`Puffle item ${item} doesn't have a valid parent ID (${item.parentId})`);
-    }
-  
-    const totalAmount = amount * item.quantity;
-
-    if (parentItem.id in this.penguin.puffleItems) {
-      this.penguin.puffleItems[parentItem.id] += totalAmount;
-    } else {
-      this.penguin.puffleItems[parentItem.id] = totalAmount;
-    }
-    this.penguin.coins -= cost;
-    this.update();
-
-    this.sendXt('papi', this.penguin.coins, itemId, this.penguin.puffleItems[parentItem.id]);
+  buyPuffleItem(itemId: number, cost: number, amount: number) {
+    const owned = this.penguin.addPuffleItem(itemId, amount);
+    this.penguin.removeCoins(cost);
+    this.sendXt('papi', this.penguin.coins, itemId, owned);
   }
 }

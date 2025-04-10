@@ -19,7 +19,7 @@ handler.xt('j#js', (client) => {
   */
   const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
   // initializing penguin data
-  client.sendXt('js', client.penguin.is_agent ? 1 : 0, 0, moderatorStatus, 0);
+  client.sendXt('js', client.penguin.isAgent ? 1 : 0, 0, moderatorStatus, 0);
 
   client.sendPenguinInfo();
 
@@ -44,7 +44,7 @@ handler.xt('j#js', (client, id) => {
   client.setPenguinFromId(Number(id));
   const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
   // // initializing penguin data
-  client.sendXt('js', client.penguin.is_agent ? 1 : 0, 0, moderatorStatus, 0);
+  client.sendXt('js', client.penguin.isAgent ? 1 : 0, 0, moderatorStatus, 0);
 
   // unsure what this is for, seemingly uneeded
   // client.sendXt('activefeatures');
@@ -54,7 +54,7 @@ handler.xt('j#js', (client, id) => {
 
   // loading puffle inventory
   // this is important for things like identifying which puffles belong to you
-  client.sendXt('pgu', ...client.penguin.puffles.map((puffle) => [
+  client.sendXt('pgu', ...client.penguin.getPuffles().map((puffle) => [
     puffle.id,
     ...getClientPuffleIds(puffle.type),
     puffle.name,
@@ -104,16 +104,16 @@ handler.xt('u#h', (client) => {
 });
 
 handler.xt('g#gii', (client) => {
-  const furnitureInfo = [];
   // No idea what these zeros are used for
   const zeros = '0000000000';
-  for (const furnitureId in client.penguin.furniture) {
-    const amount = client.penguin.furniture[furnitureId];
-    furnitureInfo.push(`${furnitureId}|${zeros}|${amount}`);
-  }
-  const floorings = Object.keys(client.penguin.iglooFloorings);
-  const igloos = Object.keys(client.penguin.iglooTypes);
-  const locations = Object.keys(client.penguin.iglooLocations);
+  const furnitureInfo = client.penguin.getAllFurniture().map((pair) => {
+    const [id, amount] = pair;
+    return `${id}|${zeros}|${amount}`;
+  });
+  
+  const floorings = Object.keys(client.penguin.getIglooFloorings());
+  const igloos = Object.keys(client.penguin.getIglooTypes());
+  const locations = Object.keys(client.penguin.getIglooLocations());
   const information = [
     furnitureInfo,
     // this ... is for the other types which don't have "amount"

@@ -10,7 +10,7 @@ handler.xt('g#gm', (client, id) => {
 
 // get all owned igloo types
 handler.xt('g#go', (client) => {
-  const iglooTypes = Object.keys(client.penguin.iglooTypes)
+  const iglooTypes = client.penguin.getIglooTypes()
   client.sendXt('go', iglooTypes.join('|'))
 })
 
@@ -20,7 +20,7 @@ handler.xt('g#gf', (client) => {
 
 // COST is not in normal files, needs to be added manually to client
 handler.xt('g#af', (client, furniture, cost) => {
-  client.addFurniture(Number(furniture), { cost: Number(cost) });
+  client.buyFurniture(Number(furniture), { cost: Number(cost) });
 })
 
 // saving client new igloo
@@ -52,22 +52,24 @@ handler.xt('g#um', (client, music) => {
 handler.xt('g#ag', (client, floor) => {
   const flooring = Number(floor);
   const cost = getFlooringCost(flooring);
-  client.removeCoins(cost);
+  client.penguin.removeCoins(cost);
   client.penguin.igloo.flooring = flooring;
-  client.update();
-
+  
   client.sendXt('ag', floor, client.penguin.coins);
+  client.update();
 })
 
 // buying igloo
 handler.xt('g#au', (client, igloo) => {
-  const cost = getIglooCost(Number(igloo));
+  const iglooId = Number(igloo);
+  // TODO refactoring igloo cost
+  const cost = getIglooCost(iglooId);
   if (cost !== undefined) {
-    client.removeCoins(cost);
+    client.penguin.removeCoins(cost);
   }
-  client.penguin.iglooTypes[igloo] = 1;
-  client.update();
+  client.penguin.addIgloo(iglooId);
   client.sendXt('au', igloo, client.penguin.coins);
+  client.update();
 })
 
 // saving igloo type

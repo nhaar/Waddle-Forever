@@ -11,12 +11,12 @@ handler.xt('i#gi', (client) => {
 // NOTICE: COST here is NOT part of vanilla shell, MUST be modded
 handler.xt('i#ai', (client, item, cost) => {
   const id = Number(item);
-  if (client.hasItem(id)) {
+  if (client.penguin.hasItem(id)) {
     // TODO
   } else if (!client.canBuy(id)) {
     // TODO
   } else {
-    client.addItem(id, { cost: Number(cost) });
+    client.buyItem(id, { cost: Number(cost) });
   }
 });
 
@@ -27,7 +27,7 @@ const addBodyPartUpdater = (xtCode: string, name: BodyPartName) => {
     const itemId = Number(id);
     client.penguin[name] = Number(itemId);
     client.update();
-    client.sendXt(xtCode, client.id, itemId);
+    client.sendXt(xtCode, client.penguin.id, itemId);
   })
 }
 

@@ -20,10 +20,10 @@ handler.xt('jr', (client, room) => {
 // Paying after minigame
 handler.xt('z', 'zo', (client, score) => {
   const coins = client.getCoinsFromScore(Number(score));
-  client.addCoins(coins);
-  client.update();
-
+  client.penguin.addCoins(coins);
+  
   client.sendXt('zo');
+  client.update();
 })
 
 // update client's coins
@@ -33,7 +33,7 @@ handler.xt('ac', (client) => {
 
 handler.xt('ai', (client, item) => {
   // TODO remove coins logic
-  client.addItem(Number(item));
+  client.buyItem(Number(item));
 })
 
 // updating penguin
@@ -52,7 +52,7 @@ handler.xt('up', (client, color, head, face, neck, body, hand, feet, pin, backgr
 })
 
 handler.xt('k', 'spy', (client) => {
-  client.addItem(800);
+  client.buyItem(800);
 })
 
 handler.xt('il', (client) => {
@@ -64,14 +64,14 @@ handler.xt('m', 'sm', commandsHandler);
 // Logging in
 handler.post('/php/login.php', (body) => {
   const { Username } = body;
-  let [penguin, id] = Client.getPenguinFromName(Username);
+  const penguin = Client.getPenguinFromName(Username);
 
   const params: Record<string, number | string> = {
-    crumb: Client.as1Crumb(penguin ,id),
+    crumb: Client.as1Crumb(penguin),
     k1: 'a',
     c: penguin.coins,
     s: 0, // SAFE MODE TODO in future?
-    jd: getDateString(penguin.registration_date),
+    jd: getDateString(penguin.registrationTimestamp),
     ed: '10000-1-1', // EXPIRACY DATE TODO what is it for?
     h: '', // TODO what is?
     w: '100|0', // TODO what is?

@@ -11,13 +11,13 @@ handler.xt('i#qpp', (client, id) => {
 // getting mission stamps
 handler.xt('i#qpa', (client) => {
   const awards = [];
-  for (const item in client.penguin.inventory) {
+  for (const item of client.penguin.getItems()) {
     const itemInfo = ITEMS.get(Number(item));
     if (itemInfo !== undefined && itemInfo.type === ItemType.Award) {
       awards.push(item);
     }
   }
-  client.sendXt('qpa', client.id, awards.join('|'));
+  client.sendXt('qpa', client.penguin.id, awards.join('|'));
 });
 
 // stampbook cover information

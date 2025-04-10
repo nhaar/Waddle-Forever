@@ -20,10 +20,10 @@ handler.xt('z', 'zo', (client, score) => {
     coins *= 2;
   }
 
-  client.penguin.coins += coins;
-  void client.update();
-
+  client.penguin.addCoins(coins);
+  
   client.sendXt('zo', String(client.penguin.coins), ...stampInfo);
+  void client.update();
 });
 
 handler.xt('j#jp', (client, fakeId) => {
@@ -55,18 +55,18 @@ handler.xt('j#jp', (client, playerId, roomType) => {
 
 handler.xt('u#sf', (client, frame) => {
   // TODO multiplayer logic
-  client.sendXt('sf', client.id, frame);
+  client.sendXt('sf', client.penguin.id, frame);
 })
 
 handler.xt('u#sp', (client, x, y) => {
   // TODO multiplayer logic
-  client.sendXt('sp', client.id, x, y);
+  client.sendXt('sp', client.penguin.id, x, y);
 })
 
 // refreshing room (required for bits and bolts, maybe other places)
 handler.xt('j#grs', (client) => {
   // TODO multiplayer logic
-  client.sendXt('grs', client.id, client.penguinString);
+  client.sendXt('grs', client.penguin.id, client.penguinString);
 })
 
 handler.disconnect((client) => {

@@ -170,6 +170,46 @@ class JsonDatabase {
 
 const db = new JsonDatabase(DATABASE_DIRECTORY);
 
+export function parseJsonSet<T>(array: T[]): Set<T> {
+  return new Set<T>(array);
+}
+
+export function dumpJsonSet<T>(set: Set<T>): T[] {
+  return Array.from(set.values());
+}
+
+export function parseJsonMap<T extends string | number, K>(obj: Record<T, K>): Map<T, K> {
+  const map = new Map<T, K>();
+  for (const key in obj) {
+    map.set(key, obj[key]);
+  }
+  return map;
+}
+
+export function dumpJsonMap<T extends string | number, K>(map: Map<T, K>): Record<T, K> {
+  const obj: Record<string | number, K> = {};
+  map.forEach((value, key) => {
+    obj[key] = value;
+  });
+  return obj;
+}
+
+export function parseJsonRows<T extends { id: number }>(rows: T[]): Map<number, T> {
+  const map = new Map<number, T>();
+  for (const row of rows) {
+    map.set(row.id, row);
+  }
+  return map;
+}
+
+export function dumpJsonRows<T extends { id: number }>(map: Map<number, T>): T[] {
+  return Array.from(map.values());
+}
+
+export function isRainbowStage(str: string): str is RainbowPuffleStage {
+  return str === '0' || str === '1' || str === '2' || str === '3' || str === 'bonus';
+}
+
 export interface PlayerPuffle {
   id: number
   name: string
@@ -191,7 +231,42 @@ type FurnitureId = number
 type FurnitureAmount = number
 type ItemId = number
 
-export interface Penguin {
+export type Stampbook = {
+  color: number,
+  highlight: number,
+  pattern: number,
+  icon: number,
+  stamps: Array<{
+    stamp: number,
+    x: number,
+    y: number,
+    rotation: number,
+    depth: number
+  }>,
+  recent_stamps: number[]
+};
+
+export type Mail = {
+  sender: { name: string, id: number },
+  postcard: {
+    postcardId: number
+    details: string
+    timestamp: number
+    uid: number
+    read: boolean
+  }
+};
+
+export type Igloo = {
+  type: number,
+  music: number,
+  flooring: number,
+  furniture: IglooFurniture
+};
+
+export type RainbowPuffleStage = '0' | '1' | '2' | '3' | 'bonus';
+
+export interface PenguinData {
   name: string
   is_member: boolean
   is_agent: boolean
@@ -209,26 +284,12 @@ export interface Penguin {
   registration_date: number
   minutes_played: number,
   // these records act as hash sets
-  inventory: Record<ItemId, 1>,
+  inventory: number[],
   stamps: number[],
-  pins: number[],
-  stampbook: {
-    color: number,
-    highlight: number,
-    pattern: number,
-    icon: number,
-    stamps: Array<{
-      stamp: number,
-      x: number,
-      y: number,
-      rotation: number,
-      depth: number
-    }>,
-    recent_stamps: number[]
-  },
+  stampbook: Stampbook,
   puffleSeq: number
   puffles: PlayerPuffle[],
-  backyard: Record<number, 1>,
+  backyard: number[],
   puffleItems: Record<number, number>,
   hasDug: boolean, // if has dug with puffle
   treasureFinds: number[], // array to keep track of the times a treasure was found in the last 24hrs
@@ -240,28 +301,14 @@ export interface Penguin {
     /** Timestamp of when last task was completed */
     latestTaskCompletionTime?: number
     /** Saves if have collected coins for each task and for the bonus */
-    coinsCollected: Record<string, boolean>
+    coinsCollected: RainbowPuffleStage[]
   },
-  igloo: {
-    type: number,
-    music: number,
-    flooring: number,
-    furniture: IglooFurniture
-  },
+  igloo: Igloo,
   furniture: Record<FurnitureId, FurnitureAmount>
-  iglooTypes: Record<string, 1>,
-  iglooLocations: Record<string, 1>,
-  iglooFloorings: Record<string, 1>,
-  mail: Array<{
-    sender: { name: string, id: number },
-    postcard: {
-      postcardId: number
-      details: string
-      timestamp: number
-      uid: number
-      read: boolean
-    }
-  }>,
+  iglooTypes: number[],
+  iglooLocations: number[],
+  iglooFloorings: number[],
+  mail: Array<Mail>,
   mailSeq: number,
   puffleLaunchGameData?: string // undefined: hasn't played
 }

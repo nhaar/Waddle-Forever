@@ -154,7 +154,7 @@ function sendPuffleDig(client: Client, treasureType: TreasureType, target: numbe
     itemId = target;
   }
   // TODO multiplayer logic so it sneds to everyone in room
-  client.sendXt('puffledig', client.id, client.walkingPuffle, treasureType, itemId, coins, client.penguin.hasDug ? 0 : 1);
+  client.sendXt('puffledig', client.penguin.id, client.walkingPuffle, treasureType, itemId, coins, client.penguin.hasDug ? 0 : 1);
 }
 
 /**
@@ -181,7 +181,7 @@ function dig(client: Client, onCommand: boolean) {
   if (!onCommand) {
     if (Math.random() > 0.5) {
       // TODO Not sure what the last 1 is
-      client.sendXt('nodig', client.id, 1);
+      client.sendXt('nodig', client.penguin.id, 1);
       return;
     }
   }
@@ -199,23 +199,18 @@ function dig(client: Client, onCommand: boolean) {
   // there is also no evidence saying that coins count but judging by the
   // difficulty being yellow it most certainly did count
   const DIG_ALL_DAY_STAMP = 492;
-  if (!client.hasStamp(DIG_ALL_DAY_STAMP)) {
-    const now = Date.now()
-    client.penguin.treasureFinds.push(now);
-    client.penguin.treasureFinds = client.penguin.treasureFinds.filter((timestamp) => {
-      return now - timestamp < 24 * 60 * 60 * 1000;
-    })
-    if (client.penguin.treasureFinds.length >= 5) {
+  if (!client.penguin.hasStamp(DIG_ALL_DAY_STAMP)) {
+    client.penguin.addTreasureFind();
+
+    if (client.penguin.getTreasureFindsInLastDay() >= 5) {
       client.giveStamp(DIG_ALL_DAY_STAMP);
-      client.penguin.treasureFinds = [];
+      client.penguin.clearTreasureFinds();
     }
-    client.update();
   }
 
   // Save that have done digging
   if (!client.penguin.hasDug) {
-    client.penguin.hasDug = true;
-    client.update();
+    client.penguin.setHaveDug();
   }
 
   // # Probability of each dig type
@@ -242,7 +237,7 @@ function dig(client: Client, onCommand: boolean) {
   // NOTE/TODO: There are certain footages that may indicate that puffle creatures are less likely
   // to get coins, while normal puffle might have as high as 80% coin rate, but this is still
   // not founded with great evidence
-  if (!client.penguin.is_member || Math.random() > 0.5) {
+  if (!client.penguin.isMember || Math.random() > 0.5) {
     // this video shows that on a fresh account you can get up to 256 coins
     // https://youtu.be/EKf9E9Wg058?t=419
     // On the wiki sits an image of someone receiveing 1133 coins, but it is likely not a fresh Puffle
@@ -258,7 +253,7 @@ function dig(client: Client, onCommand: boolean) {
   // array randomly with equal chances since we don't know if there are specific chance
   const options = [];
 
-  const playerPuffle = client.penguin.puffles.find((puffle) => puffle.id === client.walkingPuffle);
+  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === client.walkingPuffle);
   if (playerPuffle === undefined) {
     throw new Error(`Player is walking puffle ${client.walkingPuffle} which they don't have`);
   }
@@ -275,10 +270,10 @@ function dig(client: Client, onCommand: boolean) {
   // Puffle creatures (ID of 1000 and forward) can't get food
   if (puffleType < 1000) {
     canDigFood = PUFFLE_FOOD.filter((food) => {
-      const inInventory = client.penguin.puffleItems[food];
+      const ownedAmount = client.penguin.getPuffleItemOwnedAmount(food);
       // can only hold one of each, even though that is not true
       // for puffle items in general
-      return inInventory === undefined || inInventory === 0;   
+      return ownedAmount === 0;
     });
     if (canDigFood.length > 0) {
       options.push(TreasureType.Food);
@@ -287,8 +282,8 @@ function dig(client: Client, onCommand: boolean) {
 
   const furnitureSample = puffleType < 1000 ? REGULAR_PUFFLE_FURNITURE : PUFFLE_CREATURE_FURNITURE;
   const canDigFurniture = furnitureSample.filter((furniture) => {
-    const inInventory = client.penguin.furniture[furniture];
-    return inInventory !== 99;
+    const ownedAmount = client.penguin.getFurnitureOwnedAmount(furniture);
+    return ownedAmount !== 99;
   });
   if (canDigFurniture.length > 0) {
     options.push(TreasureType.Furniture);
@@ -296,7 +291,7 @@ function dig(client: Client, onCommand: boolean) {
 
   const clothingSample = puffleType < 1000 ? REGULAR_PUFFLE_CLOTHING : PUFFLE_CREATURE_CLOTHING;
   const canDigClothing = clothingSample.filter((clothing) => {
-    return client.penguin.inventory[clothing] === undefined;
+    return !client.penguin.hasItem(clothing);
   });
   if (canDigClothing.length > 0) {
     options.push(TreasureType.Clothing);
@@ -313,12 +308,12 @@ function dig(client: Client, onCommand: boolean) {
 
   if (option === TreasureType.Clothing) {
     const itemId = choose(canDigClothing);
-    client.addItem(itemId, { notify: false });
+    client.buyItem(itemId, { notify: false });
     sendPuffleDig(client, option, itemId);
   } else if (option === TreasureType.Food) {
     const foodId = canDigFood[randomInt(0, canDigFood.length - 1)];
     // TODO notify = false?
-    client.addPuffleItem(foodId, 0, 1);
+    client.buyPuffleItem(foodId, 0, 1);
     if (foodId === PUFFLES.get(playerPuffle.type)?.favouriteFood) {
       // Tasty Treasure stamp
       client.giveStamp(495);
@@ -326,7 +321,7 @@ function dig(client: Client, onCommand: boolean) {
     sendPuffleDig(client, option, foodId);
   } else if (option === TreasureType.Furniture) {
     const furnitureId = canDigFurniture[randomInt(0, canDigFurniture.length - 1)];
-    client.addFurniture(furnitureId, { notify: false });
+    client.buyFurniture(furnitureId, { notify: false });
     sendPuffleDig(client, option, furnitureId);
   }
 }
@@ -355,11 +350,12 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
   } else if (false) {
     // TODO too many puffles error
   }
-  client.removeCoins(PUFFLE_COST)
-  const puffle = client.addPuffle(Number(puffleType), puffleName);
+  client.penguin.removeCoins(PUFFLE_COST)
+  const puffle = client.penguin.addPuffle(puffleName, Number(puffleType));
   client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
 
   client.addPostcard(111, { details: puffleName });
+  client.update();
   // TODO favorite item code in houdini?
   // TODO 'pgu' is necessary?
 })
@@ -396,13 +392,13 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
     if (puffle.favouriteToy === undefined) {
       throw new Error(`Non creature puffle did not have a favorite toy: ${puffle}`);
     }
-    client.addPuffleItem(3, 0, 5);
-    client.addPuffleItem(79, 0, 1);
-    client.addPuffleItem(puffle.favouriteToy, 0, 1);
+    client.buyPuffleItem(3, 0, 5);
+    client.buyPuffleItem(79, 0, 1);
+    client.buyPuffleItem(puffle.favouriteToy, 0, 1);
   }
 
-  client.removeCoins(PUFFLE_COST);
-  const playerPuffle = client.addPuffle(puffleId, puffleName);
+  client.penguin.removeCoins(PUFFLE_COST);
+  const playerPuffle = client.penguin.addPuffle(puffleName, puffleId);
 
   client.sendXt('pn', client.penguin.coins, [
     playerPuffle.id,
@@ -417,7 +413,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
   // assumption 1: if you have 10 puffles and adopt one, a backyward slot is immediately freed
   // even before the walking puffle is sent to the igloo
   // assumption 2: the puffle to be reallocated is chosen as the first puffle you've adopted that is not in the backyard
-  const pufflesInIgloo = client.penguin.puffles.filter((puffle) => client.penguin.backyard[puffle.id] !== 1);
+  const pufflesInIgloo = client.penguin.getPuffles().filter((puffle) => !client.penguin.isInBackyard(puffle.id));
   if (pufflesInIgloo.length > 10) {
     client.swapPuffleFromIglooAndBackyard(pufflesInIgloo[0].id, true);
   }
@@ -431,7 +427,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 // get puffles in igloo
 handler.xt('p#pg', (client, id, iglooType) => {
   if (isAs2(client.version)) {
-    const puffles = client.penguin.puffles.map((puffle) => {
+    const puffles = client.penguin.getPuffles().map((puffle) => {
       return [
         puffle.id,
         puffle.name,
@@ -457,9 +453,9 @@ handler.xt('p#pg', (client, id, iglooType) => {
     client.sendXt('pg', ...puffles);
   } else if (isAs3(client.version)) {
     const isBackyard = iglooType === 'backyard';
-    const puffles = client.penguin.puffles.filter((puffle) => {
+    const puffles = client.penguin.getPuffles().filter((puffle) => {
       // filtering for backyard or igloo puffles
-      return (client.penguin.backyard[puffle.id] === 1) === isBackyard;
+      return client.penguin.isInBackyard(puffle.id) === isBackyard;
     }).map((puffle) => {
       return [
         puffle.id,
@@ -493,7 +489,7 @@ handler.xt('p#pw', (client, puffleId, walking) => {
   client.walkPuffle(id);
 
   // TODO make the room send XT to everyone
-  client.sendXt('pw', client.id, `${id}||||||||||||${walking}`);
+  client.sendXt('pw', client.penguin.id, `${id}||||||||||||${walking}`);
 })
 // walking puffle AS3
 handler.xt('p#pw', (client, penguinPuffleId, walking) => {
@@ -501,7 +497,7 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
     return;
   }
 
-  const playerPuffle = client.penguin.puffles.find((puffle) => puffle.id === Number(penguinPuffleId));
+  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === Number(penguinPuffleId));
   if (playerPuffle === undefined) {
     throw new Error(`Walk puffle: could not find puffle in inventory: ${penguinPuffleId}`);
   }
@@ -512,7 +508,7 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
     client.unwalkPuffle();
   }
 
-  client.sendXt('pw', client.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
+  client.sendXt('pw', client.penguin.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
   // TODO removing puffle, other cases, properly walking puffle in penguin
 })
 
@@ -532,7 +528,7 @@ handler.xt('p#pgpi', (client) => {
   client.sendXt(
     'pgpi',
     ...BASE_CARE_INVENTORY.map((item) => `${item}|1`),
-    ...Object.entries(client.penguin.puffleItems).map((entry) => `${entry[0]}|${entry[1]}`)
+    ...client.penguin.getAllPuffleItems().map((entry) => `${entry[0]}|${entry[1]}`)
   );
 })
 

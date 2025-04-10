@@ -18,14 +18,15 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
         const numberMatch = message.match(/!ai\s+(\d+)/);
         if (numberMatch !== null) {
           const itemId = Number(numberMatch[1]);
-          client.addItem(itemId);
+          client.buyItem(itemId);
         }
       }
     },
     'ac': () => {
       const numberMatch = message.match(/!ac\s+(\d+)/);
+      // TODO user data validation! (in all commands)
       if (numberMatch !== null) {
-        client.addCoins(Number(numberMatch[1]));
+        client.penguin.addCoins(Number(numberMatch[1]));
         if (isAs1(client.version)) {
           client.sendAs1Coins();
         } else {
@@ -64,25 +65,25 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
       // grant m7-m11 awards for speedrunning
       const awards = [815, 817, 819, 822, 8007];
       awards.forEach((award) => {
-        client.addItem(award);
+        client.buyItem(award);
       });
     },
     'age': () => {
       const numberMatch = message.match(/!age\s+(\d+)/);
       if (numberMatch !== null) {
-        client.setAge(Number(numberMatch[1]));
+        client.penguin.setAge(Number(numberMatch[1]));
         client.sendPenguinInfo();
       }
     },
     'rename': () => {
       const nameMatch = message.match(/!rename\s+([\d\w]+)/);
       if (nameMatch !== null) {
-        client.setName(nameMatch[1]);
+        client.penguin.changeName(nameMatch[1]);
         client.sendPenguinInfo();
       }
     },
     'member': () => {
-      client.swapMember();
+      client.penguin.swapMember();
       client.sendPenguinInfo();
     },
     'af': () => {
@@ -91,11 +92,10 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
       if (numberMatches !== null) {
         const furniture = Number(numberMatches[1])
         const amount = Number(numberMatches[2])
-        if (client.penguin.furniture[furniture] === undefined) {
-          client.penguin.furniture[furniture] = 0
-        }
-        const addAmount = Math.max(Math.min(amount, 99 - client.penguin.furniture[furniture]), 0);
-        client.penguin.furniture[furniture] += addAmount;
+
+        const ownedAmount = client.penguin.getFurnitureOwnedAmount(furniture);
+        const addAmount = Math.max(Math.min(amount, 99 - ownedAmount), 0);
+        client.penguin.addFurniture(furniture, addAmount);
         client.update();
         for (let i = 0; i < addAmount; i++) {
           client.sendXt('af', furniture, client.penguin.coins);

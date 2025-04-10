@@ -36,7 +36,7 @@ handler.xml('login', (client, data) => {
     how will server size be handled after NPCs?
     */
     // information regarding how many populations are in each server
-    client.sendXt('l', client.id, client.id, '', serverList.map((server) => {
+    client.sendXt('l', client.penguin.id, client.penguin.id, '', serverList.map((server) => {
       const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
       return `${server.id},${population}`;
     }).join('|'));

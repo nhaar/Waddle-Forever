@@ -4,7 +4,7 @@ const handler = new Handler();
 
 // check if is an epf agent
 handler.xt('f#epfga', (client) => {
-  client.sendXt('epfga', client.penguin.is_agent ? 1 : 0);
+  client.sendXt('epfga', client.penguin.isAgent ? 1 : 0);
 });
 
 // check if there is an active field ops
@@ -23,8 +23,9 @@ handler.xt('f#epfgr', (client) => {
 
 // becoming an agent
 handler.xt('f#epfsa', (client) => {
-  client.makeAgent();
+  client.penguin.makeAgent();
   client.sendXt('epfsa', 1); // 1 is "true" for being agent
+  client.update();
 })
 
 export default handler
