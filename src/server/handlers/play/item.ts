@@ -18,6 +18,7 @@ handler.xt('i#ai', (client, item, cost) => {
   } else {
     client.buyItem(id, { cost: Number(cost) });
   }
+  client.update();
 });
 
 type BodyPartName = 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background';
@@ -26,14 +27,15 @@ const addBodyPartUpdater = (xtCode: string, name: BodyPartName) => {
   handler.xt(`s#${xtCode}`, (client, id) => {
     const itemId = Number(id);
     client.penguin[name] = Number(itemId);
-    client.update();
     client.sendXt(xtCode, client.penguin.id, itemId);
+    client.update();
   })
 }
 
 // equipping color
 handler.xt('s#upc', (client, color) => {
   client.updateColor(Number(color));
+  client.update();
 });
 
 addBodyPartUpdater('upa', 'hand');

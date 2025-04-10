@@ -246,6 +246,7 @@ function dig(client: Client, onCommand: boolean) {
     // TODO: Add a system which would increase coins with bigger age. (Granted, it wouldn't be very useful in a singleplayer client)
     const coins = randomInt(1, 256);
     sendPuffleDig(client, TreasureType.Coins, coins);
+    client.update();
     return;
   }
 
@@ -324,6 +325,8 @@ function dig(client: Client, onCommand: boolean) {
     client.buyFurniture(furnitureId, { notify: false });
     sendPuffleDig(client, option, furnitureId);
   }
+
+  client.update();
 }
 
 const getPuffleString = (puffle: PlayerPuffle): string => {
@@ -417,6 +420,8 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
   if (pufflesInIgloo.length > 10) {
     client.swapPuffleFromIglooAndBackyard(pufflesInIgloo[0].id, true);
   }
+
+  client.update();
 }, {
   // without cooldown, this can be spammed in the AS3 client,
   // allowing a second puffle to be bought
@@ -490,6 +495,7 @@ handler.xt('p#pw', (client, puffleId, walking) => {
 
   // TODO make the room send XT to everyone
   client.sendXt('pw', client.penguin.id, `${id}||||||||||||${walking}`);
+  client.update();
 })
 // walking puffle AS3
 handler.xt('p#pw', (client, penguinPuffleId, walking) => {
@@ -509,6 +515,7 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
   }
 
   client.sendXt('pw', client.penguin.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
+  client.update();
   // TODO removing puffle, other cases, properly walking puffle in penguin
 })
 
@@ -535,8 +542,8 @@ handler.xt('p#pgpi', (client) => {
 // send a puffle to or from the backyard
 handler.xt('p#puffleswap', (client, playerPuffleId, destination) => {
   client.swapPuffleFromIglooAndBackyard(Number(playerPuffleId), destination === 'backyard');
-  client.update();
   client.sendXt('puffleswap', playerPuffleId, destination);
+  client.update();
 })
 
 // puffle dig no command

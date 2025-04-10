@@ -25,6 +25,7 @@ handler.xt('l#mg', (client) => {
 // opened the postcards
 handler.xt('l#mc', (client) => {
   client.penguin.setAllMailAsRead();
+  client.update();
 })
 
 export default handler;

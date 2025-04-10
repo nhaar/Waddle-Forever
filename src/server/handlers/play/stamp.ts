@@ -49,6 +49,7 @@ handler.xt('st#sse', (client, stamp) => {
   // for this endpoint notifying is unecessary since it's the one
   // that the client sends
   client.giveStamp(Number(stamp), { notify: false });
+  client.update();
 });
 
 export default handler;

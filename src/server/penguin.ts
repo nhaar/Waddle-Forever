@@ -751,7 +751,6 @@ export class Client {
     if (notify) {
       this.sendXt('ai', itemId, this.penguin.coins);
     }
-    this.update();
   }
 
   sendInventory(): void {
@@ -765,12 +764,10 @@ export class Client {
 
     this.sendInventory();
     this.sendPenguinInfo();
-    this.update();
   }
 
   updateColor (color: number): void {
     this.penguin.color = color;
-    this.update();
     this.sendXt('upc', this.penguin.id, color);
   }
 
@@ -813,7 +810,6 @@ export class Client {
   getRecentStampsString (): string {
     const recentStamps = this.penguin.stampbook.recent_stamps.join('|');
     this.penguin.stampbook.recent_stamps = [];
-    this.update();
     return recentStamps;
   }
 
@@ -884,7 +880,6 @@ export class Client {
         this.penguin.addStamp(stampId);
         this.penguin.stampbook.recent_stamps.push(stampId);
         this.sessionStamps.push(stampId);
-        this.update();
       }
       if (notify) {
         this.sendXt('aabs', stampId);
@@ -962,7 +957,6 @@ export class Client {
   }): void {
     const mail = this.penguin.receivePostcard(postcard, info);
     this.sendXt('mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
-    this.update();
   }
 
   unequipPuffle(): void {
@@ -971,7 +965,6 @@ export class Client {
     ];
     if (puffles.includes(this.penguin.hand)) {
       this.penguin.hand = 0;
-      this.update();
     }
   }
 
@@ -1020,7 +1013,6 @@ export class Client {
 
   updateIglooFurniture(furniture: IglooFurniture): void {
     this.penguin.igloo.furniture = furniture;
-    this.update();
   }
 
   sendError(error: number, ...args: string[]): void {
@@ -1031,7 +1023,6 @@ export class Client {
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
     this.penguin.incrementPlayTime(minutesDelta);
-    this.update();
   }
 
   checkAgeStamps(): void {

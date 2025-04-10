@@ -21,6 +21,7 @@ handler.xt('g#gf', (client) => {
 // COST is not in normal files, needs to be added manually to client
 handler.xt('g#af', (client, furniture, cost) => {
   client.buyFurniture(Number(furniture), { cost: Number(cost) });
+  client.update();
 })
 
 // saving client new igloo
@@ -40,6 +41,7 @@ handler.xt('g#ur', (client, ...furnitureItems) => {
     client.giveStamp(23);
   }
   client.updateIglooFurniture(igloo);
+  client.update();
 })
 
 // save the igloo music

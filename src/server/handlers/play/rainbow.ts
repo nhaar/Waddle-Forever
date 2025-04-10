@@ -137,6 +137,7 @@ handler.xt('rpq#rpqcc', (client, task) => {
 handler.xt('rpq#rpqic', (client, task) => {
   client.buyItem(RAINBOW_QUEST_REWARDS[Number(task)], { notify: false });
   client.sendXt('rpqic', task, ItemStatus.Collected);
+  client.update();
 });
 
 // rainbow puffle quest bonus collect

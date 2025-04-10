@@ -34,6 +34,7 @@ handler.xt('ac', (client) => {
 handler.xt('ai', (client, item) => {
   // TODO remove coins logic
   client.buyItem(Number(item));
+  client.update();
 })
 
 // updating penguin
@@ -47,12 +48,13 @@ handler.xt('up', (client, color, head, face, neck, body, hand, feet, pin, backgr
   client.penguin.feet = Number(feet);
   client.penguin.pin = Number(pin);
   client.penguin.background = Number(background);
-  client.update();
   client.sendXt('up', client.penguinString)
+  client.update();
 })
 
 handler.xt('k', 'spy', (client) => {
   client.buyItem(800);
+  client.update();
 })
 
 handler.xt('il', (client) => {

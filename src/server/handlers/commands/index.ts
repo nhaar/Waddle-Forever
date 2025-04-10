@@ -21,6 +21,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
           client.buyItem(itemId);
         }
       }
+      client.update();
     },
     'ac': () => {
       const numberMatch = message.match(/!ac\s+(\d+)/);
@@ -33,6 +34,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
           client.sendPenguinInfo();
         }
       }
+      client.update();
     },
     'jr': () => {
       const numberMatch = message.match(/!jr\s+(\d+)/);
@@ -67,6 +69,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
       awards.forEach((award) => {
         client.buyItem(award);
       });
+      client.update();
     },
     'age': () => {
       const numberMatch = message.match(/!age\s+(\d+)/);
@@ -74,6 +77,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
         client.penguin.setAge(Number(numberMatch[1]));
         client.sendPenguinInfo();
       }
+      client.update();
     },
     'rename': () => {
       const nameMatch = message.match(/!rename\s+([\d\w]+)/);
@@ -81,10 +85,12 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
         client.penguin.changeName(nameMatch[1]);
         client.sendPenguinInfo();
       }
+      client.update();
     },
     'member': () => {
       client.penguin.swapMember();
       client.sendPenguinInfo();
+      client.update();
     },
     'af': () => {
       // add 1 in-case there was no amount supplied
@@ -101,6 +107,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
           client.sendXt('af', furniture, client.penguin.coins);
         }
       }
+      client.update();
     }
   }
 

@@ -71,6 +71,7 @@ handler.xt('j#grs', (client) => {
 
 handler.disconnect((client) => {
   client.disconnect();
+  client.update();
 })
 
 export default handler;
