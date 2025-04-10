@@ -506,6 +506,14 @@ class Penguin {
     return Array.from(this._puffleItems.entries());
   }
 
+  resetRainbowQuest(): void {
+    this._rainbow = {
+      adoptability: false,
+      currentTask: 0,
+      coinsCollected: new Set<RainbowPuffleStage>(),
+    };
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,

@@ -50,7 +50,8 @@ const RAINBOW_BONUS_REWARD = 5220;
 // sending the rainbow puffle quest data
 handler.xt('rpq#rpqd', (client) => {
   // time in minutes between each task
-  // TODO this changed with time
+  // TODO this changed with time, by 2014 it was already 20 minutes
+  // but at some point in 2013 it was 18 hours
   const waitTime = client.settings.no_rainbow_quest_wait ? 0 : 20;
 
   let currentTask = client.penguin.rainbowQuestInfo.currentTask;
@@ -142,8 +143,15 @@ handler.xt('rpq#rpqic', (client, task) => {
 
 // rainbow puffle quest bonus collect
 handler.xt('rpq#rpqbc', (client) => {
-  // TODO quest can be restarted?
-  client.buyItem(RAINBOW_BONUS_REWARD);
+  // if have item, already completed the quest once
+  if (client.penguin.hasItem(RAINBOW_BONUS_REWARD)) {
+    // TODO get evidence this reward amount is correct
+    client.penguin.addCoins(500);
+    // TODO unsure why these 2 zeros
+    client.sendXt('rpqbc', 0, 0, client.penguin.coins);
+  } else {
+    client.buyItem(RAINBOW_BONUS_REWARD);
+  }
   client.penguin.rainbowQuestInfo.coinsCollected.add('bonus');
   client.update();
 })

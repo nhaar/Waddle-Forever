@@ -388,7 +388,10 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
   }
 
   if (puffleType === '10') {
-    // TODO rainbow puffle
+    // rainbow puffle
+    // upon adopting a puffle, its progress resests meaning
+    // you'd need to redo the quest for a new one
+    client.penguin.resetRainbowQuest();
   } else if (puffleType === '11') {
     // TODO gold puffle
   } else if (puffleSubType === '0') {
