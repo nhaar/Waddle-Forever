@@ -147,5 +147,5 @@ export function randomInt(min: number, max: number) {
 
 /** Gets random element from an array */
 export function choose<T>(array: T[]): T {
-  return array[randomInt(0, array.length)];
+  return array[randomInt(0, array.length - 1)];
 }
