@@ -1,5 +1,6 @@
-import { randomInt } from "../../../common/utils";
+import { choose } from "../../../common/utils";
 import { Handler } from "..";
+import { SPY_DRILLS_DATA } from "../../../server/game/spy-drills";
 
 const handler = new Handler();
 
@@ -18,21 +19,27 @@ handler.xt('z', 'sgd', (client, data) => {
 // this is seemingly the same endpoint used in dance contest
 // there may be conflict, but this is for spy drills
 handler.xt('z', 'zr', (client) => {
-  // array containing 1...10
-  const games = [...Array(10).keys()].map((i) => i + 1);
+  // The original algorithm is unknown, so we are using experimental data to simulate it
+  const randomOption = choose(SPY_DRILLS_DATA);
+  const [games, medalCount] = randomOption;
+  
+  /*
+  Regarding the generation, it would pick 3 random spy drill games and then assign a medal count to them.
+  We don't know how either of those processes worked exactly
 
-  // pick 3 games randomly
-  const picks = [];
-  const totalPicks = 3;
-  for (let i = 0; i < totalPicks; i++) {
-    const pick = randomInt(0, games.length - 1);
-    picks.push(...games.splice(pick, 1));
-  }
+  # Minigame picking
+  At first you would think it is random, but there seems to be a clear relation with how the games are picked.
+  The algorithm seems to have a difficulty preference and it tries to increase the difficulty each time.
+  It is not exactly known what algorithm is used for this, however
 
-  // TODO look into original algorithm
-  const medalsReward = 1;
+  # Medals Calculation
+  The medals number is deterministic, meaning the same minigames always give the same medals.
+  It is likely that it just follows a simple point system, but the points are likely decimal, which make it
+  hard to predict their values since they would get rounded into an integer, and we lose a lot
+  of information because of that
+  */
 
-  client.sendXt('zr', picks.join(','), medalsReward);
+  client.sendXt('zr', games.join(','), medalCount);
 })
 
 export default handler;
