@@ -193,6 +193,22 @@ function dig(client: Client, onCommand: boolean) {
   // for them to make an exception in the code for this
   client.giveStamp(489);
 
+  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === client.walkingPuffle);
+  if (playerPuffle === undefined) {
+    throw new Error(`Player is walking puffle ${client.walkingPuffle} which they don't have`);
+  }
+  const puffleType = playerPuffle.type;
+
+  // every color stamp, which requires you to dig with
+  // 11 different color puffles (excludes puffle creatures)
+  // it is unknown if this is per session
+  // or not, unless evidence is found otherwise
+  // it will remain in session
+  client.addDugPuffleColor(puffleType);
+  if (client.getTotalColorsDug() >= 11) {
+    client.giveStamp(491);
+  }
+
   // dig all day stamp, which reportedly kept track of everything in the past 24hrs
   // it is likely that it persisted sessions although there's no concrete evidence
   // (finding evidence for this would be very hard)
@@ -253,12 +269,6 @@ function dig(client: Client, onCommand: boolean) {
   // Options array will store all the possible remaining item types and the option will be chosen from this
   // array randomly with equal chances since we don't know if there are specific chance
   const options = [];
-
-  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === client.walkingPuffle);
-  if (playerPuffle === undefined) {
-    throw new Error(`Player is walking puffle ${client.walkingPuffle} which they don't have`);
-  }
-  const puffleType = playerPuffle.type;
 
   // It is unknown what happens exactly if you reach the limit of items in a category
   // Eg, if you have all possible clothing, does the clothing probability not get accounted, eg.

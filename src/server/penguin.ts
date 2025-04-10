@@ -9,6 +9,7 @@ import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 import { PUFFLE_ITEMS } from './game/puffle-item';
+import { PUFFLES } from './game/puffle';
 
 type ServerType = 'Login' | 'World';
 
@@ -596,6 +597,9 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
+  /** Keep track of all the puffle colors used to dig in this session */
+  private _puffleColorsDug = new Set<number>();
+
   constructor (socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
     this.currentRoom = -1;
     
@@ -1099,5 +1103,18 @@ export class Client {
     const owned = this.penguin.addPuffleItem(itemId, amount);
     this.penguin.removeCoins(cost);
     this.sendXt('papi', this.penguin.coins, itemId, owned);
+  }
+
+  /** Set a puffle color has having been dug */
+  addDugPuffleColor(puffleType: number): void {
+    const puffle = PUFFLES.get(puffleType);
+    // filter invalid IDs and only ones we want are 0-11
+    if (puffle !== undefined && puffleType < 12) {
+      this._puffleColorsDug.add(puffleType);
+    }
+  }
+
+  getTotalColorsDug(): number {
+    return Array.from(this._puffleColorsDug.values()).length;
   }
 }
