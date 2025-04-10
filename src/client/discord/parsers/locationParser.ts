@@ -71,7 +71,7 @@ export const parseAndUpdateLocation = async (store: Store, params: any) => {
     return;
   }
 
-  const location = state.trackedLocations.filter(location => {
+  const location = state.trackedLocations?.filter(location => {
     return location.match === match.toLowerCase();
   })[0];
 

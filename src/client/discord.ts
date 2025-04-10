@@ -44,7 +44,7 @@ export const setLocationsInStore = (store: Store, locations: CPLocation[]) => {
 export const setUnloggedStatus = (store: Store) => {
   const state = getDiscordStateFromStore(store);
 
-  return state.client.setActivity({
+  return state.client?.setActivity({
     details: state.gameName,
     state: getLocalizedUnlogged(store),
     startTimestamp: state.startTimestamp,
@@ -55,7 +55,7 @@ export const setUnloggedStatus = (store: Store) => {
 const setWaddlingStatus = (store: Store) => {
   const state = getDiscordStateFromStore(store);
 
-  return state.client.setActivity({
+  return state.client?.setActivity({
     details: state.gameName,
     state: getLocalizedWaddling(store),
     startTimestamp: state.startTimestamp,
@@ -67,7 +67,7 @@ export const setUnknownLocationStatus = (store: Store, state: DiscordState, matc
   const result = match.replace(/([A-Z])/g, " $1");
   const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
 
-  return state.client.setActivity({
+  return state.client?.setActivity({
     details: state.gameName,
     state: `${getLocalizedWaddlingAt(store)} ${finalResult}`,
     startTimestamp: state.startTimestamp,
@@ -79,18 +79,18 @@ export const setLocationStatus = (store: Store, state: DiscordState, location: C
   let msgPrefix: string;
 
   if (location.match.toLowerCase().includes('sensei')) {
-    msgPrefix = getLocalizedTalkingWith(store);
+    msgPrefix = getLocalizedTalkingWith(store) ?? '';
   } else if (location.type === CPLocationType.Game) {
-    msgPrefix = getLocalizedPlaying(store);
+    msgPrefix = getLocalizedPlaying(store) ?? '';
   } else if (location.match.toLowerCase().includes('igloo')) {
-    msgPrefix = getLocalizedVisiting(store);
+    msgPrefix = getLocalizedVisiting(store) ?? '';
   } else {
-    msgPrefix = getLocalizedWaddlingAt(store);
+    msgPrefix = getLocalizedWaddlingAt(store) ?? '';
   }
 
   const locationMsg = msgPrefix + ' ' + location.name;
 
-  return state.client.setActivity({
+  return state.client?.setActivity({
     details: state.gameName,
     state: locationMsg,
     startTimestamp: state.startTimestamp,

@@ -26,7 +26,7 @@ export class MemoryStore<T extends Record<string, unknown>> extends BaseStore<T>
     this.store = createPlainObject();
   }
 
-  get<Key extends keyof T>(key: Key): T[Key] {
+  get<Key extends keyof T>(key: Key): T[Key] | undefined {
     const { store } = this;
 
     return key in store ? store[key] : undefined;

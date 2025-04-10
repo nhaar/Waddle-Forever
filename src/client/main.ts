@@ -87,7 +87,13 @@ app.on('ready', async () => {
     });
     
     if (result.response === 1) {
-      await showWarning(mainWindow, 'Error', error.message + '\n' + error.stack)
+      let message = '';
+      let stack: string | undefined = '';
+      if (error instanceof Error) {
+        message = error.message;
+        stack = error.stack;
+      }
+      await showWarning(mainWindow, 'Error', message + '\n' + stack)
     }
   }
 
@@ -104,10 +110,6 @@ app.on('ready', async () => {
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
   }
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
 });
 
 app.on('window-all-closed', async () => {
