@@ -50,8 +50,8 @@ const RAINBOW_BONUS_REWARD = 5220;
 // sending the rainbow puffle quest data
 handler.xt('rpq#rpqd', (client) => {
   // time in minutes between each task
-  // TODO this changed with time + ability to remove this
-  const waitTime = 20;
+  // TODO this changed with time
+  const waitTime = client.settings.no_rainbow_quest_wait ? 0 : 20;
 
   let currentTask = client.penguin.rainbowQuestInfo.currentTask;
 

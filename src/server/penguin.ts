@@ -2,7 +2,7 @@ import net from 'net';
 
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { PenguinData, Databases, PlayerPuffle, IglooFurniture, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
-import { GameVersion } from './settings';
+import { GameVersion, Settings, SettingsManager } from './settings';
 import { Stamp } from './game/stamps';
 import { isAs1, isAs2, isGreaterOrEqual, isLower } from './routes/versions';
 import { ITEMS, ItemType } from './game/items';
@@ -567,7 +567,7 @@ export class Client {
   x: number;
   y: number;
   currentRoom: number;
-  version: GameVersion;
+  private _settingsManager: SettingsManager
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -588,13 +588,13 @@ export class Client {
   /** ID of puffle that player is walking */
   walkingPuffle: number;
 
-  constructor (socket: net.Socket, version: GameVersion, member: boolean, type: ServerType) {
+  constructor (socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
     this.currentRoom = -1;
     
     this.socket = socket;
-    this.version = version;
+    this._settingsManager = settingsManager;
     this.serverType = type;
-    this.penguin = Penguin.getDefault(-1, '', member);
+    this.penguin = Penguin.getDefault(-1, '', this._settingsManager.settings.always_member);
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
@@ -607,6 +607,14 @@ export class Client {
     this.handledXts = new Map<string, boolean>();
 
     this.xtTimestamps = new Map<string, number>();
+  }
+
+  get version(): GameVersion {
+    return this._settingsManager.settings.version;
+  }
+
+  get settings(): Settings {
+    return this._settingsManager.settings;
   }
 
   send (message: string): void {

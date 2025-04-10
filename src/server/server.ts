@@ -24,9 +24,8 @@ const createServer = async (type: string, port: number, handler: Handler, settin
 
       const client = new Client(
         socket,
-        settingsManager.settings.version,
-        settingsManager.settings.always_member,
-        type === 'Login' ? 'Login' : 'World'
+        type === 'Login' ? 'Login' : 'World',
+        settingsManager
       );
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];

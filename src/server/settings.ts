@@ -61,7 +61,7 @@ export type GameVersion = '2005-Aug-22'
   | '2010-Nov-24'
   | '2016-Jan-01';
 
-interface Settings {
+export interface Settings {
   fps30: boolean
   thin_ice_igt: boolean
   clothing: boolean
@@ -72,6 +72,7 @@ interface Settings {
   version: GameVersion
   always_member: boolean
   minified_website: boolean
+  no_rainbow_quest_wait: boolean
 }
 
 type PartialSettings = Partial<Settings>
@@ -144,7 +145,8 @@ export class SettingsManager {
       swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false),
       version: this.readVersion(settingsJson),
       always_member: this.readBoolean(settingsJson, 'always_member', true),
-      minified_website: this.readBoolean(settingsJson, 'minified_website', false)
+      minified_website: this.readBoolean(settingsJson, 'minified_website', false),
+      no_rainbow_quest_wait: this.readBoolean(settingsJson, 'no_rainbow_quest_wait', false)
     };
 
     this.updateSettings({});
