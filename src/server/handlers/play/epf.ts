@@ -44,4 +44,10 @@ handler.xt('f#epfsa', (client) => {
   client.update();
 })
 
+// add medals from completing PSA mission
+handler.xt('f#epfgrantreward', (client, medals) => {
+  client.penguin.addEpfMedals(Number(medals));
+  client.update();
+});
+
 export default handler
