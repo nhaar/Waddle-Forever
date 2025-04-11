@@ -26,7 +26,7 @@ handler.xt('z', 'zo', (client, score) => {
 });
 
 handler.xt('j#jp', (client, fakeId) => {
-  if (!client.isAs2) {
+  if (!client.isEngine2) {
     return;
   }
   // for some reason the ID given is the player + 1000
@@ -37,7 +37,7 @@ handler.xt('j#jp', (client, fakeId) => {
 
 // Joining player igloo
 handler.xt('j#jp', (client, playerId, roomType) => {
-  if (!client.isAs3) {
+  if (!client.isEngine3) {
     return;
   }
   if (roomType === 'igloo') {

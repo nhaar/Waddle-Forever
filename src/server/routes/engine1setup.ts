@@ -1,14 +1,14 @@
 import { GameVersion } from "../settings";
 import { findProperInterval, inInterval } from "./versions";
 
-type As1Room = {
+type Engine1Room = {
   name: string,
   file: string
   music?: number,
   frame?: number
 };
 
-function patchMusic(rooms: As1Room[], music: Record<string, number>) {
+function patchMusic(rooms: Engine1Room[], music: Record<string, number>) {
   for (const room of rooms) {
     if (music[room.name] !== undefined) {
       room.music = music[room.name]
@@ -16,7 +16,7 @@ function patchMusic(rooms: As1Room[], music: Record<string, number>) {
   }
 }
 
-function patchFrame(rooms: As1Room[], frames: Record<string, number>) {
+function patchFrame(rooms: Engine1Room[], frames: Record<string, number>) {
   for (const room of rooms) {
     if (frames[room.name] !== undefined) {
       room.frame = frames[room.name]
@@ -55,7 +55,7 @@ export function getSetupXml(version: GameVersion) {
     ['2006-Apr-13', 26]
   ])
 
-  const rooms: As1Room[] = [
+  const rooms: Engine1Room[] = [
     {
       name: 'Town',
       file: 'town10'

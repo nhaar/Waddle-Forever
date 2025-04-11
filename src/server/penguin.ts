@@ -4,7 +4,7 @@ import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { PenguinData, Databases, PlayerPuffle, IglooFurniture, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
 import { GameVersion, Settings, SettingsManager } from './settings';
 import { Stamp } from './game/stamps';
-import { isAs1, isAs2, isAs3, isGreaterOrEqual, isLower } from './routes/versions';
+import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower } from './routes/versions';
 import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
@@ -698,7 +698,7 @@ export class Client {
     this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
   }
 
-  static as1Crumb (penguin: Penguin): string {
+  static engine1Crumb (penguin: Penguin): string {
     return [
       penguin.id,
       penguin.name,
@@ -719,8 +719,8 @@ export class Client {
   }
 
   get penguinString (): string {
-    if (isAs1(this.version)) {
-      return Client.as1Crumb(this.penguin);
+    if (isEngine1(this.version)) {
+      return Client.engine1Crumb(this.penguin);
     } else {
       return [
         this.penguin.id,
@@ -979,7 +979,7 @@ export class Client {
     }).join(',');
   }
 
-  static getAs3IglooString(igloo: Igloo, index: number, id: number): string {
+  static getEngine3IglooString(igloo: Igloo, index: number, id: number): string {
     // TODO like stuff
     const likeCount = 0;
     const furnitureString = Client.getFurnitureString(igloo.furniture);
@@ -999,7 +999,7 @@ export class Client {
 
   getIglooString (): string {
     const igloo = this.penguin.activeIgloo;
-    if (this.isAs2) {
+    if (this.isEngine2) {
       const furnitureString = Client.getFurnitureString(igloo.furniture);
       return [
         igloo.type,
@@ -1008,8 +1008,8 @@ export class Client {
         furnitureString
       ].join('%');
     } else {
-      // This is AS3
-      return Client.getAs3IglooString(igloo, 1, this.penguin.id);
+      // This is Engine 3
+      return Client.getEngine3IglooString(igloo, 1, this.penguin.id);
     }
   }
 
@@ -1125,7 +1125,7 @@ export class Client {
     );
   }
 
-  sendAs1Coins(): void {
+  sendEngine1Coins(): void {
     this.sendXt('ac', this.penguin.coins);
   }
 
@@ -1181,17 +1181,17 @@ export class Client {
   }
 
   /** Checks if the client is from the original engine (Pre-CPIP) */
-  get isAs1(): boolean {
-    return isAs1(this.version);
+  get isEngine1(): boolean {
+    return isEngine1(this.version);
   }
 
   /** Checks if the client is from the second engine (Post-CPIP) */
-  get isAs2(): boolean {
-    return isAs2(this.version);
+  get isEngine2(): boolean {
+    return isEngine2(this.version);
   }
 
   /** Checks if the client is from the latest engine */
-  get isAs3(): boolean {
-    return isAs3(this.version);
+  get isEngine3(): boolean {
+    return isEngine3(this.version);
   }
 }

@@ -1,16 +1,16 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
-import { isAs1, isAs2, isAs3 } from "./versions";
-import { getSetupXml } from "./as1setup";
+import { isEngine1, isEngine2, isEngine3 } from "./versions";
+import { getSetupXml } from "./engine1setup";
 import { getServersXml } from "../servers";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
-  // AS3 login page requires this URL
+  // Engine 3 login page requires this URL
   server.get('/#/login', () => {
-    return `default/special/index.html/as3.html`;
+    return `default/special/index.html/engine3.html`;
   })
 
   // setting dependent media
@@ -35,18 +35,18 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       return s.settings.jpa_level_selector ? 'level_selector' : 'vanilla';
     }],
     ['play/v2/client/shell.swf', (s) => {
-      if (isAs3(s.settings.version)) {
-        return 'as3';
+      if (isEngine3(s.settings.version)) {
+        return 'engine3';
       }
       return s.settings.remove_idle ? 'no_idle' : 'vanilla';
     }],
     ['index.html', (s) => {
-      if (isAs1(s.settings.version)) {
-        return 'as1';
-      } else if (isAs3(s.settings.version)) {
-        return 'as3';
+      if (isEngine1(s.settings.version)) {
+        return 'engine1';
+      } else if (isEngine3(s.settings.version)) {
+        return 'engine3';
       } else {
-        return s.settings.minified_website ? 'minified-as2' : 'as2';
+        return s.settings.minified_website ? 'minified-engine2' : 'engine2';
       }
     }]
   );
@@ -78,11 +78,11 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   // important redirects
   server.redirectDirs(
     ['play/v2/content/global/clothing', 'clothing'], // clothing is its own package due to its high size
-    ['play/v2/content/global/music', 'default/music'], // (as2) non fundamental music that may potentially become a package,
-    ['music', 'default/static/as2/play/v2/content/global/music'], // sharing the as1 and as2 music,
+    ['play/v2/content/global/music', 'default/music'], // (engine 2) non fundamental music that may potentially become a package,
+    ['music', 'default/static/engine2/play/v2/content/global/music'], // sharing the engine 1 and engine 2 music,
     ['music', 'default/music'], // same as the two above
     ['play/v2/content/global/furniture', 'default/furniture'], // furniture may become a package in the future
-    ['artwork/items', 'clothing/sprites'] // items in as1 (TODO try removing this, I thought items were in chat)
+    ['artwork/items', 'clothing/sprites'] // items in engine 1 (TODO try removing this, I thought items were in chat)
   );
 
   // text file generating
@@ -96,18 +96,18 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   
   // FALL BACK AND STATIC SERVING
   server.dir('', (s) => {
-    if (isAs1(s.settings.version)) {
-      return 'default/static/as1'
-    } else if (isAs3(s.settings.version)) {
-      return 'default/static/as3';
+    if (isEngine1(s.settings.version)) {
+      return 'default/static/engine1'
+    } else if (isEngine3(s.settings.version)) {
+      return 'default/static/engine3';
     } else {
-      return 'default/static/as2'
+      return 'default/static/engine2'
     }
   })
   // SECOND LAYER FALLBACK
   server.dir('', (s) => {
-    if (isAs3(s.settings.version) || isAs2(s.settings.version)) {
-      return 'default/static/as2_as3';
+    if (isEngine3(s.settings.version) || isEngine2(s.settings.version)) {
+      return 'default/static/engine2_3';
     }
   })
   

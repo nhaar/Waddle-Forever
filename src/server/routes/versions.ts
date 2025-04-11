@@ -122,18 +122,18 @@ export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
 }
 
-const AS1_CUTOFF = '2008-XXX-XX';
-const AS3_CUTOFF = '2012-XXX-XX';
+const ENGINE1_CUTOFF = '2008-XXX-XX';
+const ENGINE3_CUTOFF = '2012-XXX-XX';
 
-export function isAs1(version: GameVersion): boolean {
-  return isLower(version, AS1_CUTOFF)
+export function isEngine1(version: GameVersion): boolean {
+  return isLower(version, ENGINE1_CUTOFF)
 }
 
-export function isAs2(version: GameVersion): boolean {
-  return isGreaterOrEqual(version, AS1_CUTOFF) && isLower(version, AS3_CUTOFF);
+export function isEngine2(version: GameVersion): boolean {
+  return isGreaterOrEqual(version, ENGINE1_CUTOFF) && isLower(version, ENGINE3_CUTOFF);
 }
 
-export function isAs3(version:GameVersion): boolean {
+export function isEngine3(version:GameVersion): boolean {
   return isGreaterOrEqual(version, '2012-Jan-01');
 }
 

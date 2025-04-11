@@ -119,7 +119,7 @@ handler.xt('g#ggd', (client) => {
 // get all igloo layouts
 handler.xt('g#gail', (client) => {
   const layouts = client.penguin.getAllIglooLayouts().map((layout, index) => {
-    return Client.getAs3IglooString(layout, index, layout.id);
+    return Client.getEngine3IglooString(layout, index, layout.id);
   });
   // TODO unsure what the 0 is
   client.sendXt('gail', client.penguin.id, 0, ...layouts);

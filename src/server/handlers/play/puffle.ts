@@ -353,7 +353,7 @@ const getPuffleString = (puffle: PlayerPuffle): string => {
 }
 
 handler.xt('p#pn', (client, puffleType, puffleName) => {
-  if (!client.isAs2) {
+  if (!client.isEngine2) {
     return;
   }
   const PUFFLE_COST = 800
@@ -383,7 +383,7 @@ export function getClientPuffleIds(puffleId: number) {
 }
 
 handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
-  if (!client.isAs3) {
+  if (!client.isEngine3) {
     return;
   }
 
@@ -435,7 +435,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 
   client.update();
 }, {
-  // without cooldown, this can be spammed in the AS3 client,
+  // without cooldown, this can be spammed in the Engine 3 client,
   // allowing a second puffle to be bought
   // It is unknown if the original had this issue so we are correcting it
   cooldown: 2000
@@ -443,7 +443,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 
 // get puffles in igloo
 handler.xt('p#pg', (client, id, iglooType) => {
-  if (client.isAs2) {
+  if (client.isEngine2) {
     const puffles = client.penguin.getPuffles().map((puffle) => {
       return [
         puffle.id,
@@ -468,7 +468,7 @@ handler.xt('p#pg', (client, id, iglooType) => {
     }
   
     client.sendXt('pg', ...puffles);
-  } else if (client.isAs3) {
+  } else if (client.isEngine3) {
     const isBackyard = iglooType === 'backyard';
     const puffles = client.penguin.getPuffles().filter((puffle) => {
       // filtering for backyard or igloo puffles
@@ -492,9 +492,9 @@ handler.xt('p#pg', (client, id, iglooType) => {
   }
 })
 
-// walking puffle AS2
+// walking puffle engine 2
 handler.xt('p#pw', (client, puffleId, walking) => {
-  if (!client.isAs2) {
+  if (!client.isEngine2) {
     return;
   }
   const id = Number(puffleId);
@@ -509,9 +509,9 @@ handler.xt('p#pw', (client, puffleId, walking) => {
   client.sendXt('pw', client.penguin.id, `${id}||||||||||||${walking}`);
   client.update();
 })
-// walking puffle AS3
+// walking puffle Engine 3
 handler.xt('p#pw', (client, penguinPuffleId, walking) => {
-  if (!client.isAs3) {
+  if (!client.isEngine3) {
     return;
   }
 
@@ -531,7 +531,7 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
   // TODO removing puffle, other cases, properly walking puffle in penguin
 })
 
-// AS3 puffle name check
+// Engine 3 puffle name check
 handler.xt('p#checkpufflename', (client, puffleName) => {
   // last argument is integer boolean
   client.sendXt('checkpufflename', puffleName, 1);

@@ -1,4 +1,4 @@
-import { Client } from '../../../server/penguin';
+import { Client } from '../../penguin';
 import { Handler } from '..';
 import { Room } from '../../game/rooms';
 import { getDateString } from '../../../common/utils';
@@ -28,7 +28,7 @@ handler.xt('z', 'zo', (client, score) => {
 
 // update client's coins
 handler.xt('ac', (client) => {
-  client.sendAs1Coins();
+  client.sendEngine1Coins();
 })
 
 handler.xt('ai', (client, item) => {
@@ -69,7 +69,7 @@ handler.post('/php/login.php', (body) => {
   const penguin = Client.getPenguinFromName(Username);
 
   const params: Record<string, number | string> = {
-    crumb: Client.as1Crumb(penguin),
+    crumb: Client.engine1Crumb(penguin),
     k1: 'a',
     c: penguin.coins,
     s: 0, // SAFE MODE TODO in future?

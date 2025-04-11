@@ -26,8 +26,8 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
       // TODO user data validation! (in all commands)
       if (numberMatch !== null) {
         client.penguin.addCoins(Number(numberMatch[1]));
-        if (client.isAs1) {
-          client.sendAs1Coins();
+        if (client.isEngine1) {
+          client.sendEngine1Coins();
         } else {
           client.sendPenguinInfo();
         }

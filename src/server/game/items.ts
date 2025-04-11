@@ -20,8 +20,8 @@ type Item = {
   isMember: boolean
   type: ItemType
   cost: number
-  isAs2: boolean
-  isAs3: boolean
+  isEngine2: boolean
+  isEngine3: boolean
   isEPF: boolean
   releaseDate: string
   isTour: boolean
@@ -34,8 +34,8 @@ export const ITEMS = new StaticDataTable<Item, [
   'type',
   'cost',
   'isMember',
-  'isAs2',
-  'isAs3',
+  'isEngine2',
+  'isEngine3',
   'isEPF',
   'isTour',
   'isTreasure',
@@ -46,8 +46,8 @@ export const ITEMS = new StaticDataTable<Item, [
   'type',
   'cost',
   'isMember',
-  'isAs2',
-  'isAs3',
+  'isEngine2',
+  'isEngine3',
   'isEPF',
   'isTour',
   'isTreasure',

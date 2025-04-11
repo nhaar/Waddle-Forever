@@ -22,8 +22,8 @@ handler.xml('login', (client, data) => {
     client.socket.end('');
   } else {
     const name = nicknameMatch[1];
-    if (client.isAs3 && client.serverType === 'World') {
-      // in AS3 client, the world actually receives the ID instead of the name
+    if (client.isEngine3 && client.serverType === 'World') {
+      // in Engine 3 client, the world actually receives the ID instead of the name
       client.setPenguinFromId(Number(name));
     } else {
       client.setPenguinFromName(name);

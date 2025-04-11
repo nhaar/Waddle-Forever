@@ -5,7 +5,7 @@ import { getClientPuffleIds } from './puffle';
 const handler = new Handler();
 
 handler.xt('j#js', (client) => {
-  if (client.isAs3) {
+  if (client.isEngine3) {
     return;
   }
   // penguins don't keep the puffle from previous session
@@ -35,10 +35,10 @@ handler.xt('j#js', (client) => {
 });
 
 handler.xt('j#js', (client, id) => {
-  if (!client.isAs3) {
+  if (!client.isEngine3) {
     return;
   }
-  // in AS3, the client reconnects, thus losing the login data, the only thing
+  // in Engine 3, the client reconnects, thus losing the login data, the only thing
   // we have is the ID granted by this handler
   client.setPenguinFromId(Number(id));
   const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
@@ -72,7 +72,7 @@ handler.xt('j#js', (client, id) => {
 });
 
 handler.xt('b#gb', (client) => {
-  if (client.isAs3) {
+  if (client.isEngine3) {
     return;
   }
   client.sendXt('gb', '');
@@ -80,7 +80,7 @@ handler.xt('b#gb', (client) => {
 
 handler.xt('b#gb', (client) => {
   // TODO: buddy stuff
-  if (!client.isAs3) {
+  if (!client.isEngine3) {
     return;
   }
   client.sendXt('gs', 0, 0, 1, 0);
