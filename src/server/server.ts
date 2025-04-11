@@ -6,7 +6,7 @@ import { WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
 import oldHandler from './handlers/old'
 import loginHandler from './handlers/login'
-import { Client } from './penguin';
+import { Client } from './client';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';

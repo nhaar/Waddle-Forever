@@ -1,6 +1,6 @@
 import { getFlooringCost, getIglooCost } from "../../game/iglooItems";
 import { Handler } from "..";
-import { Client } from "../../../server/penguin";
+import { Client } from "../../../server/client";
 import { IglooFurniture } from "../../../server/database";
 
 const handler = new Handler();

@@ -1,7 +1,7 @@
 import { PlayerPuffle } from "../../database";
 import { Handler } from "..";
 import { PUFFLES } from "../../../server/game/puffle";
-import { Client } from "../../../server/penguin";
+import { Client } from "../../../server/client";
 import { choose, randomInt } from "../../../common/utils";
 
 const handler = new Handler()

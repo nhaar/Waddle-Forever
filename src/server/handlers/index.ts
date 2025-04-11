@@ -1,5 +1,5 @@
 import { XtPacket } from '..';
-import { Client } from '../penguin';
+import { Client } from '../client';
 import express, { Express } from 'express';
 
 type XTCallback = (client: Client, ...args: string[]) => void

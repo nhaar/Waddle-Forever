@@ -1,4 +1,4 @@
-import { Client } from '../../penguin';
+import { Client } from '../../client';
 import { Handler } from '..';
 import { Room } from '../../game/rooms';
 import { getDateString } from '../../../common/utils';

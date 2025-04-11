@@ -1,4 +1,4 @@
-import { Client } from "../../../server/penguin";
+import { Client } from "../../../server/client";
 import { Handler } from "..";
 import { ITEMS } from "../../game/items";
 import { Room } from "../../game/rooms";
