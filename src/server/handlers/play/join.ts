@@ -110,9 +110,9 @@ handler.xt('g#gii', (client) => {
     return `${id}|${zeros}|${amount}`;
   });
   
-  const floorings = Object.keys(client.penguin.getIglooFloorings());
-  const igloos = Object.keys(client.penguin.getIglooTypes());
-  const locations = Object.keys(client.penguin.getIglooLocations());
+  const floorings = client.penguin.getIglooFloorings();
+  const igloos = client.penguin.getIglooTypes();
+  const locations = client.penguin.getIglooLocations();
   const information = [
     furnitureInfo,
     // this ... is for the other types which don't have "amount"

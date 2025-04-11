@@ -57,7 +57,8 @@ class Penguin {
   private _mailSeq: number;
   private _puffleLaunchGameData: Buffer;
   private _mail: Array<Mail>;
-  private _igloo: Igloo;
+  private _igloos: Map<number, Igloo>;
+  private _igloo: number;
   private _ownedMedals: number;
   private _careerMedals: number;
 
@@ -106,6 +107,7 @@ class Penguin {
     this._puffleLaunchGameData = Buffer.from(data.puffleLaunchGameData ?? '', 'base64');
     this._mail = data.mail;
     this._igloo = data.igloo;
+    this._igloos = parseJsonRows(data.igloos);
     this._ownedMedals = data.ownedMedals;
     this._careerMedals = data.careerMedals;
   }
@@ -150,6 +152,7 @@ class Penguin {
       mailSeq: this._mailSeq,
       puffleLaunchGameData: this._puffleLaunchGameData.toString('base64'),
       igloo: this._igloo,
+      igloos: dumpJsonRows(this._igloos),
       mail: this._mail,
       ownedMedals: this._ownedMedals,
       careerMedals: this._careerMedals
@@ -250,10 +253,6 @@ class Penguin {
 
   get stampbook() {
     return this._stampbook;
-  }
-
-  get igloo() {
-    return this._igloo;
   }
 
   get mascot() {
@@ -549,6 +548,27 @@ class Penguin {
     }
   }
 
+  get activeIgloo(): Igloo {
+    return this.getIglooLayout(this._igloo);
+  }
+
+  updateIgloo(features: Partial<Igloo>): void {
+    const igloo = this.activeIgloo;
+    this._igloos.set(this._igloo, { ...igloo, ...features });
+  }
+
+  getIglooLayout(id: number): Igloo {
+    const igloo = this._igloos.get(id);
+    if (igloo === undefined) {
+      throw new Error(`Unexistent igloo ID: ${id}`);
+    }
+    return igloo;
+  }
+
+  getAllIglooLayouts(): Igloo[] {
+    return Array.from(this._igloos.values());
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,
@@ -588,12 +608,16 @@ class Penguin {
         currentTask: 0,
         coinsCollected: []
       },
-      igloo: {
-        type: 0,
+      igloo: 1,
+      igloos: [{
+        type: 1,
         music: 0,
-        flooring: 0, // in the past, you could have only one flooring active
-        furniture: []
-      },
+        flooring: 0,
+        furniture: [],
+        locked: true,
+        location: 1,
+        id: 1
+      }],
       furniture: {},
       iglooFloorings: [], // floorings inventory is a modern feature
       iglooTypes: [1],
@@ -943,8 +967,8 @@ export class Client {
     }
   }
 
-  getIglooString (): string {
-    const furnitureString = this.penguin.igloo.furniture.map((furniture) => {
+  static getFurnitureString(furniture: IglooFurniture): string {
+    return furniture.map((furniture) => {
       return [
         furniture.id,
         furniture.x,
@@ -952,34 +976,40 @@ export class Client {
         furniture.rotation,
         furniture.frame
       ].join('|')
-    }).join(',')
-    if (isAs2(this.version)) {
+    }).join(',');
+  }
+
+  static getAs3IglooString(igloo: Igloo, index: number, id: number): string {
+    // TODO like stuff
+    const likeCount = 0;
+    const furnitureString = Client.getFurnitureString(igloo.furniture);
+    return [
+      id, // TODO might have to do with igloo id?
+      index,
+      0, // TODO don't know what this is
+      igloo.locked ? 1 : 0,
+      igloo.music,
+      igloo.flooring,
+      igloo.location,
+      igloo.type,
+      likeCount,
+      furnitureString
+    ].join(':');
+  }
+
+  getIglooString (): string {
+    const igloo = this.penguin.activeIgloo;
+    if (this.isAs2) {
+      const furnitureString = Client.getFurnitureString(igloo.furniture);
       return [
-        this.penguin.igloo.type,
-        this.penguin.igloo.music,
-        this.penguin.igloo.flooring,
+        igloo.type,
+        igloo.music,
+        igloo.flooring,
         furnitureString
       ].join('%');
     } else {
       // This is AS3
-
-      // TODO making this dynamic
-      const locked = true;
-      // TODO like stuff
-      const likeCount = 0;
-      const iglooLocation = 1;
-      const iglooType = 1; // TODO Seems to be different compared to legacy? eg 0 vs 1
-      return [
-        this.penguin.id, // TODO might have to do with igloo id?
-        1, 0, // TODO don't know what these are
-        locked ? 1 : 0,
-        this.penguin.igloo.music,
-        this.penguin.igloo.flooring,
-        iglooLocation,
-        iglooType,
-        likeCount,
-        furnitureString
-      ].join(':');
+      return Client.getAs3IglooString(igloo, 1, this.penguin.id);
     }
   }
 
@@ -1065,10 +1095,6 @@ export class Client {
     if (notify) {
       this.sendXt('af', furnitureId, this.penguin.coins);
     }
-  }
-
-  updateIglooFurniture(furniture: IglooFurniture): void {
-    this.penguin.igloo.furniture = furniture;
   }
 
   sendError(error: number, ...args: string[]): void {

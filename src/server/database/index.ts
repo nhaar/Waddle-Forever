@@ -258,10 +258,13 @@ export type Mail = {
 };
 
 export type Igloo = {
+  id: number,
   type: number,
   music: number,
   flooring: number,
-  furniture: IglooFurniture
+  furniture: IglooFurniture,
+  locked: boolean,
+  location: number
 };
 
 export type RainbowPuffleStage = '0' | '1' | '2' | '3' | 'bonus';
@@ -303,7 +306,8 @@ export interface PenguinData {
     /** Saves if have collected coins for each task and for the bonus */
     coinsCollected: RainbowPuffleStage[]
   },
-  igloo: Igloo,
+  igloo: number,
+  igloos: Igloo[],
   furniture: Record<FurnitureId, FurnitureAmount>
   iglooTypes: number[],
   iglooLocations: number[],

@@ -1,5 +1,7 @@
 import { getFlooringCost, getIglooCost } from "../../game/iglooItems";
 import { Handler } from "..";
+import { Client } from "../../../server/penguin";
+import { IglooFurniture } from "../../../server/database";
 
 const handler = new Handler();
 
@@ -24,9 +26,8 @@ handler.xt('g#af', (client, furniture, cost) => {
   client.update();
 })
 
-// saving client new igloo
-handler.xt('g#ur', (client, ...furnitureItems) => {
-  const igloo = furnitureItems.map((furnitureString) => {
+function processFurniture(furnitureItems: string[]): IglooFurniture {
+  return furnitureItems.map((furnitureString) => {
     const [furniture, x, y, rotation, frame] = furnitureString.split('|').map((str) => Number(str))
     return {
       id: furniture,
@@ -36,17 +37,25 @@ handler.xt('g#ur', (client, ...furnitureItems) => {
       frame
     }
   })
+}
+
+function addFullHouseStamp(client: Client) {
+  client.giveStamp(23);
+}
+
+// saving client new igloo
+handler.xt('g#ur', (client, ...furnitureItems) => {
+  const igloo = processFurniture(furnitureItems);
   if (igloo.length === 99) {
-    // FULL HOUSE
-    client.giveStamp(23);
+    addFullHouseStamp(client);
   }
-  client.updateIglooFurniture(igloo);
+  client.penguin.updateIgloo({ furniture: igloo });
   client.update();
 })
 
-// save the igloo music
+// save the igloo music (v2)
 handler.xt('g#um', (client, music) => {
-  client.penguin.igloo.music = Number(music);
+  client.penguin.updateIgloo({ music: Number(music) });
   client.update();
 })
 
@@ -55,7 +64,7 @@ handler.xt('g#ag', (client, floor) => {
   const flooring = Number(floor);
   const cost = getFlooringCost(flooring);
   client.penguin.removeCoins(cost);
-  client.penguin.igloo.flooring = flooring;
+  client.penguin.updateIgloo({ flooring });
   
   client.sendXt('ag', floor, client.penguin.coins);
   client.update();
@@ -76,7 +85,7 @@ handler.xt('g#au', (client, igloo) => {
 
 // saving igloo type
 handler.xt('g#ao', (client, igloo) => {
-  client.penguin.igloo.type = Number(igloo);
+  client.penguin.updateIgloo({ type: Number(igloo)});
   client.update();
 })
 
@@ -106,5 +115,26 @@ handler.xt('g#gili', (client) => {
 handler.xt('g#ggd', (client) => {
   client.sendXt('ggd', '');
 })
+
+// get all igloo layouts
+handler.xt('g#gail', (client) => {
+  const layouts = client.penguin.getAllIglooLayouts().map((layout, index) => {
+    return Client.getAs3IglooString(layout, index, layout.id);
+  });
+  // TODO unsure what the 0 is
+  client.sendXt('gail', client.penguin.id, 0, ...layouts);
+})
+
+// update igloo (v3)
+handler.xt('g#uic', (client, layoutId, type, flooring, location, music, furnitureData) => {
+  // add full house stamp
+  // TODO is layoutId useless for us?
+  const furniture = processFurniture(furnitureData.split(','));
+  if (furniture.length >= 99) {
+    addFullHouseStamp(client);
+  }
+  client.penguin.updateIgloo({ type: Number(type), music: Number(music), flooring: Number(flooring), location: Number(location), furniture });
+  client.update();
+});
 
 export default handler;
