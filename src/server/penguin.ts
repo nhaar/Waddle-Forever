@@ -538,6 +538,17 @@ class Penguin {
     this._careerMedals += amount;
   }
 
+  removeEpfMedals(amount: number): void {
+    if (amount < 0 || !Number.isInteger(amount) || isNaN(amount)) {
+      throw new Error (`Incorrect amount of EPF medals removed: ${amount}`);
+    }
+
+    this._ownedMedals -= amount;
+    if (this._ownedMedals < 0) {
+      this._ownedMedals = 0;
+    }
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,

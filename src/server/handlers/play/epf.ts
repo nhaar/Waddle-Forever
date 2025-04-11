@@ -1,3 +1,4 @@
+import { ITEMS } from "../../../server/game/items";
 import { Handler } from "..";
 
 const handler = new Handler();
@@ -18,6 +19,21 @@ handler.xt('f#epfgf', (client) => {
 handler.xt('f#epfgr', (client) => {
   client.sendXt('epfgr', client.penguin.careerMedals, client.penguin.ownedMedals);
 });
+
+handler.xt('f#epfai', (client, itemId) => {
+  const item = ITEMS.get(Number(itemId));
+  if (item === undefined) {
+    throw new Error(`Item not found in database ${itemId}`);
+  }
+  if (!item.isEPF) {
+    throw new Error(`Item ${itemId} is marked as not being from EPF, but is being bought through it`);
+  }
+
+  client.penguin.addItem(item.id);
+  client.penguin.removeEpfMedals(item.cost);
+
+  client.sendXt('epfai', client.penguin.ownedMedals);
+})
 
 // becoming an agent
 handler.xt('f#epfsa', (client) => {
