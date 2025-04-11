@@ -1,6 +1,5 @@
 import { PlayerPuffle } from "../../database";
 import { Handler } from "..";
-import { isAs2, isAs3 } from "../../../server/routes/versions";
 import { PUFFLES } from "../../../server/game/puffle";
 import { Client } from "../../../server/penguin";
 import { choose, randomInt } from "../../../common/utils";
@@ -354,7 +353,7 @@ const getPuffleString = (puffle: PlayerPuffle): string => {
 }
 
 handler.xt('p#pn', (client, puffleType, puffleName) => {
-  if (!isAs2(client.version)) {
+  if (!client.isAs2) {
     return;
   }
   const PUFFLE_COST = 800
@@ -384,7 +383,7 @@ export function getClientPuffleIds(puffleId: number) {
 }
 
 handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
-  if (!isAs3(client.version)) {
+  if (!client.isAs3) {
     return;
   }
 
@@ -444,7 +443,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 
 // get puffles in igloo
 handler.xt('p#pg', (client, id, iglooType) => {
-  if (isAs2(client.version)) {
+  if (client.isAs2) {
     const puffles = client.penguin.getPuffles().map((puffle) => {
       return [
         puffle.id,
@@ -469,7 +468,7 @@ handler.xt('p#pg', (client, id, iglooType) => {
     }
   
     client.sendXt('pg', ...puffles);
-  } else if (isAs3(client.version)) {
+  } else if (client.isAs3) {
     const isBackyard = iglooType === 'backyard';
     const puffles = client.penguin.getPuffles().filter((puffle) => {
       // filtering for backyard or igloo puffles
@@ -495,7 +494,7 @@ handler.xt('p#pg', (client, id, iglooType) => {
 
 // walking puffle AS2
 handler.xt('p#pw', (client, puffleId, walking) => {
-  if (!isAs2(client.version)) {
+  if (!client.isAs2) {
     return;
   }
   const id = Number(puffleId);
@@ -512,7 +511,7 @@ handler.xt('p#pw', (client, puffleId, walking) => {
 })
 // walking puffle AS3
 handler.xt('p#pw', (client, penguinPuffleId, walking) => {
-  if (!isAs3(client.version)) {
+  if (!client.isAs3) {
     return;
   }
 

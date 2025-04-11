@@ -1,4 +1,3 @@
-import { isAs3 } from '../../routes/versions';
 import { Handler } from '..';
 import { Room } from '../../game/rooms';
 import { getClientPuffleIds } from './puffle';
@@ -6,7 +5,7 @@ import { getClientPuffleIds } from './puffle';
 const handler = new Handler();
 
 handler.xt('j#js', (client) => {
-  if (isAs3(client.version)) {
+  if (client.isAs3) {
     return;
   }
   // penguins don't keep the puffle from previous session
@@ -36,7 +35,7 @@ handler.xt('j#js', (client) => {
 });
 
 handler.xt('j#js', (client, id) => {
-  if (!isAs3(client.version)) {
+  if (!client.isAs3) {
     return;
   }
   // in AS3, the client reconnects, thus losing the login data, the only thing
@@ -73,7 +72,7 @@ handler.xt('j#js', (client, id) => {
 });
 
 handler.xt('b#gb', (client) => {
-  if (isAs3(client.version)) {
+  if (client.isAs3) {
     return;
   }
   client.sendXt('gb', '');
@@ -81,7 +80,7 @@ handler.xt('b#gb', (client) => {
 
 handler.xt('b#gb', (client) => {
   // TODO: buddy stuff
-  if (!isAs3(client.version)) {
+  if (!client.isAs3) {
     return;
   }
   client.sendXt('gs', 0, 0, 1, 0);

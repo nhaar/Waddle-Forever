@@ -2,8 +2,6 @@ import { Client } from "../../../server/penguin";
 import { Handler } from "..";
 import { ITEMS } from "../../game/items";
 import { Room } from "../../game/rooms";
-import { isAs1 } from "../../../server/routes/versions";
-
 
 const handler = new Handler();
 
@@ -28,7 +26,7 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
       // TODO user data validation! (in all commands)
       if (numberMatch !== null) {
         client.penguin.addCoins(Number(numberMatch[1]));
-        if (isAs1(client.version)) {
+        if (client.isAs1) {
           client.sendAs1Coins();
         } else {
           client.sendPenguinInfo();

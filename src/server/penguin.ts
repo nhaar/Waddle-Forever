@@ -4,7 +4,7 @@ import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import db, { PenguinData, Databases, PlayerPuffle, IglooFurniture, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
 import { GameVersion, Settings, SettingsManager } from './settings';
 import { Stamp } from './game/stamps';
-import { isAs1, isAs2, isGreaterOrEqual, isLower } from './routes/versions';
+import { isAs1, isAs2, isAs3, isGreaterOrEqual, isLower } from './routes/versions';
 import { ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
@@ -657,7 +657,7 @@ export class Client {
     this.xtTimestamps = new Map<string, number>();
   }
 
-  get version(): GameVersion {
+  private get version(): GameVersion {
     return this._settingsManager.settings.version;
   }
 
@@ -1152,5 +1152,20 @@ export class Client {
 
   getTotalColorsDug(): number {
     return Array.from(this._puffleColorsDug.values()).length;
+  }
+
+  /** Checks if the client is from the original engine (Pre-CPIP) */
+  get isAs1(): boolean {
+    return isAs1(this.version);
+  }
+
+  /** Checks if the client is from the second engine (Post-CPIP) */
+  get isAs2(): boolean {
+    return isAs2(this.version);
+  }
+
+  /** Checks if the client is from the latest engine */
+  get isAs3(): boolean {
+    return isAs3(this.version);
   }
 }

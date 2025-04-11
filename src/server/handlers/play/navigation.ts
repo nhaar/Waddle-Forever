@@ -1,4 +1,3 @@
-import { isAs2, isAs3 } from '../../../server/routes/versions';
 import { Handler } from '..';
 
 const handler = new Handler();
@@ -27,7 +26,7 @@ handler.xt('z', 'zo', (client, score) => {
 });
 
 handler.xt('j#jp', (client, fakeId) => {
-  if (!isAs2(client.version)) {
+  if (!client.isAs2) {
     return;
   }
   // for some reason the ID given is the player + 1000
@@ -38,7 +37,7 @@ handler.xt('j#jp', (client, fakeId) => {
 
 // Joining player igloo
 handler.xt('j#jp', (client, playerId, roomType) => {
-  if (!isAs3(client.version)) {
+  if (!client.isAs3) {
     return;
   }
   if (roomType === 'igloo') {
