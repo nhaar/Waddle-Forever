@@ -14,11 +14,9 @@ handler.xt('f#epfgf', (client) => {
   client.sendXt('epfgf', 0);
 });
 
-// get the medals
+// client requesting epf medals
 handler.xt('f#epfgr', (client) => {
-  // TODO medals
-  // first value is all time, second is current
-  client.sendXt('epfgr', 0, 0);
+  client.sendXt('epfgr', client.penguin.careerMedals, client.penguin.ownedMedals);
 });
 
 // becoming an agent

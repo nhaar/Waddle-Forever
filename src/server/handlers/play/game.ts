@@ -42,4 +42,9 @@ handler.xt('z', 'zr', (client) => {
   client.sendXt('zr', games.join(','), medalCount);
 })
 
+// receive medals from spy drills
+handler.xt('z', 'zc', (client, medals) => {
+  client.penguin.addEpfMedals(Number(medals));
+});
+
 export default handler;

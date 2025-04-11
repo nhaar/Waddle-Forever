@@ -58,6 +58,8 @@ class Penguin {
   private _puffleLaunchGameData: Buffer;
   private _mail: Array<Mail>;
   private _igloo: Igloo;
+  private _ownedMedals: number;
+  private _careerMedals: number;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -104,6 +106,8 @@ class Penguin {
     this._puffleLaunchGameData = Buffer.from(data.puffleLaunchGameData ?? '', 'base64');
     this._mail = data.mail;
     this._igloo = data.igloo;
+    this._ownedMedals = data.ownedMedals;
+    this._careerMedals = data.careerMedals;
   }
 
   serialize(): PenguinData {
@@ -146,7 +150,9 @@ class Penguin {
       mailSeq: this._mailSeq,
       puffleLaunchGameData: this._puffleLaunchGameData.toString('base64'),
       igloo: this._igloo,
-      mail: this._mail
+      mail: this._mail,
+      ownedMedals: this._ownedMedals,
+      careerMedals: this._careerMedals
     }
   }
 
@@ -515,6 +521,23 @@ class Penguin {
     };
   }
 
+  get careerMedals(): number {
+    return this._careerMedals;
+  }
+
+  get ownedMedals(): number {
+    return this._ownedMedals;
+  }
+
+  addEpfMedals(amount: number): void {
+    if (amount < 0 || !Number.isInteger(amount) || isNaN(amount)) {
+      throw new Error(`Incorrect amount of EPF medals added: ${amount}`);
+    }
+
+    this._ownedMedals += amount;
+    this._careerMedals += amount;
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,
@@ -565,7 +588,9 @@ class Penguin {
       iglooTypes: [1],
       iglooLocations: [1],
       mail: [],
-      mailSeq: 0
+      mailSeq: 0,
+      ownedMedals: 0,
+      careerMedals: 0
     })
   }
 }

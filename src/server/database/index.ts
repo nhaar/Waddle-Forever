@@ -311,6 +311,8 @@ export interface PenguinData {
   mail: Array<Mail>,
   mailSeq: number,
   puffleLaunchGameData?: string // undefined: hasn't played
+  careerMedals: number
+  ownedMedals: number
 }
 
 export default db;
