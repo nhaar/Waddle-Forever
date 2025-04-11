@@ -20,6 +20,7 @@ handler.xt('f#epfgr', (client) => {
   client.sendXt('epfgr', client.penguin.careerMedals, client.penguin.ownedMedals);
 });
 
+// buying item from EPF catalogue
 handler.xt('f#epfai', (client, itemId) => {
   const item = ITEMS.get(Number(itemId));
   if (item === undefined) {
@@ -33,6 +34,7 @@ handler.xt('f#epfai', (client, itemId) => {
   client.penguin.removeEpfMedals(item.cost);
 
   client.sendXt('epfai', client.penguin.ownedMedals);
+  client.update();
 })
 
 // becoming an agent
