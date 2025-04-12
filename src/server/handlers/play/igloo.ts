@@ -63,9 +63,15 @@ handler.xt('g#um', (client, music) => {
 handler.xt('g#ag', (client, floor) => {
   const flooring = Number(floor);
   const cost = getFlooringCost(flooring);
+  if (client.isEngine2) {
+    // in this engine, flooring inventory did not exist
+    // and buying immediately applied the flooring
+    client.penguin.updateIgloo({ flooring });
+  } else {
+    client.penguin.addFlooring(flooring);
+  }
   client.penguin.removeCoins(cost);
-  client.penguin.updateIgloo({ flooring });
-  
+
   client.sendXt('ag', floor, client.penguin.coins);
   client.update();
 })
