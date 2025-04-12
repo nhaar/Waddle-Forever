@@ -45,6 +45,7 @@ export class Penguin {
   private _mail: Array<Mail>;
   private _igloos: Map<number, Igloo>;
   private _igloo: number;
+  private _iglooSeq: number;
   private _ownedMedals: number;
   private _careerMedals: number;
 
@@ -94,6 +95,7 @@ export class Penguin {
     this._mail = data.mail;
     this._igloo = data.igloo;
     this._igloos = parseJsonRows(data.igloos);
+    this._iglooSeq = data.iglooSeq;
     this._ownedMedals = data.ownedMedals;
     this._careerMedals = data.careerMedals;
   }
@@ -139,6 +141,7 @@ export class Penguin {
       puffleLaunchGameData: this._puffleLaunchGameData.toString('base64'),
       igloo: this._igloo,
       igloos: dumpJsonRows(this._igloos),
+      iglooSeq: this._iglooSeq,
       mail: this._mail,
       ownedMedals: this._ownedMedals,
       careerMedals: this._careerMedals
@@ -538,6 +541,10 @@ export class Penguin {
     return this.getIglooLayout(this._igloo);
   }
 
+  setActiveIgloo(id: number): void {
+    this._igloo = id;
+  }
+
   updateIgloo(features: Partial<Igloo>): void {
     const igloo = this.activeIgloo;
     this._igloos.set(this._igloo, { ...igloo, ...features });
@@ -553,6 +560,14 @@ export class Penguin {
 
   getAllIglooLayouts(): Igloo[] {
     return Array.from(this._igloos.values());
+  }
+
+  addIglooLayout(): Igloo {
+    this._iglooSeq++;
+    const id = this._iglooSeq;
+    const igloo = Penguin.getDefaultIgloo(id)
+    this._igloos.set(id, igloo);
+    return igloo;
   }
 
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
@@ -595,23 +610,28 @@ export class Penguin {
         coinsCollected: []
       },
       igloo: 1,
-      igloos: [{
-        type: 1,
-        music: 0,
-        flooring: 0,
-        furniture: [],
-        locked: true,
-        location: 1,
-        id: 1
-      }],
+      igloos: [Penguin.getDefaultIgloo(1)],
       furniture: {},
       iglooFloorings: [], // floorings inventory is a modern feature
       iglooTypes: [1],
       iglooLocations: [1],
+      iglooSeq: 1,
       mail: [],
       mailSeq: 0,
       ownedMedals: 0,
       careerMedals: 0
     })
+  }
+
+  static getDefaultIgloo(id: number): Igloo {
+    return {
+      type: 1,
+      music: 0,
+      flooring: 0,
+      furniture: [],
+      locked: true,
+      location: 1,
+      id
+    };
   }
 }

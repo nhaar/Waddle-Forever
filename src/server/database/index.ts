@@ -308,6 +308,7 @@ export interface PenguinData {
   },
   igloo: number,
   igloos: Igloo[],
+  iglooSeq: number,
   furniture: Record<FurnitureId, FurnitureAmount>
   iglooTypes: number[],
   iglooLocations: number[],

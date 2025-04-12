@@ -119,7 +119,7 @@ handler.xt('g#ggd', (client) => {
 // get all igloo layouts
 handler.xt('g#gail', (client) => {
   const layouts = client.penguin.getAllIglooLayouts().map((layout, index) => {
-    return Client.getEngine3IglooString(layout, index, layout.id);
+    return Client.getEngine3IglooString(layout, index);
   });
   // TODO unsure what the 0 is
   client.sendXt('gail', client.penguin.id, 0, ...layouts);
@@ -127,13 +127,32 @@ handler.xt('g#gail', (client) => {
 
 // update igloo (v3)
 handler.xt('g#uic', (client, layoutId, type, flooring, location, music, furnitureData) => {
-  // add full house stamp
-  // TODO is layoutId useless for us?
-  const furniture = processFurniture(furnitureData.split(','));
+  client.penguin.setActiveIgloo(Number(layoutId));
+
+  // if empty, the split function used will cause issues with ghost furniture
+  const furniture = furnitureData === '' ? [] : processFurniture(furnitureData.split(','));
   if (furniture.length >= 99) {
     addFullHouseStamp(client);
   }
   client.penguin.updateIgloo({ type: Number(type), music: Number(music), flooring: Number(flooring), location: Number(location), furniture });
+  client.update();
+});
+
+// add layout
+handler.xt('g#al', (client) => {
+  const igloo = client.penguin.addIglooLayout();
+  
+  // TODO document better what this slot-index is for in the engine 3 string
+  const slot = client.penguin.getAllIglooLayouts().length;
+  
+  client.sendXt('al', client.penguin.id, Client.getEngine3IglooString(igloo, slot));
+  client.update();
+});
+
+// update active igloo layout
+handler.xt('g#uiss', (client, layoutId) => {
+  // TODO what is 2nd argument for? (combination of slots and if they are locked)
+  client.penguin.setActiveIgloo(Number(layoutId));
   client.update();
 });
 

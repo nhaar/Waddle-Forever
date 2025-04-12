@@ -364,12 +364,12 @@ export class Client {
     }).join(',');
   }
 
-  static getEngine3IglooString(igloo: Igloo, index: number, id: number): string {
+  static getEngine3IglooString(igloo: Igloo, index: number): string {
     // TODO like stuff
     const likeCount = 0;
     const furnitureString = Client.getFurnitureString(igloo.furniture);
     return [
-      id, // TODO might have to do with igloo id?
+      igloo.id,
       index,
       0, // TODO don't know what this is
       igloo.locked ? 1 : 0,
@@ -394,7 +394,7 @@ export class Client {
       ].join('%');
     } else {
       // This is Engine 3
-      return Client.getEngine3IglooString(igloo, 1, this.penguin.id);
+      return Client.getEngine3IglooString(igloo, 1);
     }
   }
 
