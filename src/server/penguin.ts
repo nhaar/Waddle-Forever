@@ -1,3 +1,4 @@
+import { isPositiveInteger } from '../common/utils';
 import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
 import { PUFFLE_ITEMS } from './game/puffle-item';
 
@@ -48,6 +49,7 @@ export class Penguin {
   private _iglooSeq: number;
   private _ownedMedals: number;
   private _careerMedals: number;
+  private _nuggets: number;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -98,6 +100,7 @@ export class Penguin {
     this._iglooSeq = data.iglooSeq;
     this._ownedMedals = data.ownedMedals;
     this._careerMedals = data.careerMedals;
+    this._nuggets = data.nuggets;
   }
 
   serialize(): PenguinData {
@@ -144,7 +147,8 @@ export class Penguin {
       iglooSeq: this._iglooSeq,
       mail: this._mail,
       ownedMedals: this._ownedMedals,
-      careerMedals: this._careerMedals
+      careerMedals: this._careerMedals,
+      nuggets: this._nuggets
     }
   }
 
@@ -509,6 +513,14 @@ export class Penguin {
     return Array.from(this._puffleItems.entries());
   }
 
+  getPuffle(id: number): PlayerPuffle {
+    const puffle = this._puffles.get(id);
+    if (puffle === undefined) {
+      throw new Error(`Puffle not found in player: ${id}`);
+    }
+    return puffle;
+  }
+
   resetRainbowQuest(): void {
     this._rainbow = {
       adoptability: false,
@@ -578,6 +590,23 @@ export class Penguin {
     return igloo;
   }
 
+  get nuggets(): number {
+    return this._nuggets;
+  }
+
+  addNuggets(amount: number): void {
+    if (!isPositiveInteger(amount)) {
+      throw new Error(`Invalid nugget amount: ${amount}`);
+    }
+
+    this._nuggets += amount;
+  }
+
+  removeGoldPuffleNuggets(): void {
+    // Only way to lose nuggets is the price of the golden puffle
+    this._nuggets -= 15;
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,
@@ -627,7 +656,8 @@ export class Penguin {
       mail: [],
       mailSeq: 0,
       ownedMedals: 0,
-      careerMedals: 0
+      careerMedals: 0,
+      nuggets: 0
     })
   }
 

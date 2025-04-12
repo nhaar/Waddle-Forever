@@ -149,3 +149,7 @@ export function randomInt(min: number, max: number) {
 export function choose<T>(array: T[]): T {
   return array[randomInt(0, array.length - 1)];
 }
+
+export function isPositiveInteger(n: number): boolean {
+  return n > 0 && !isNaN(n) && Number.isInteger(n);
+}

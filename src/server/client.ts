@@ -45,6 +45,9 @@ export class Client {
   /** Keep track of all the puffle colors used to dig in this session */
   private _puffleColorsDug = new Set<number>();
 
+  // when digging gold nuggets for golden puffle
+  private _isGoldNuggetState = false;
+
   constructor (socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
     this.currentRoom = -1;
     
@@ -578,5 +581,17 @@ export class Client {
   /** Checks if the client is from the latest engine */
   get isEngine3(): boolean {
     return isEngine3(this.version);
+  }
+
+  get isGoldNuggetState(): boolean {
+    return this._isGoldNuggetState;
+  }
+
+  activateGoldNuggetState(): void {
+    this._isGoldNuggetState = true;
+  }
+
+  resetGoldNuggetState(): void {
+    this._isGoldNuggetState = false;
   }
 }

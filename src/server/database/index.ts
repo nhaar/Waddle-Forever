@@ -318,6 +318,7 @@ export interface PenguinData {
   puffleLaunchGameData?: string // undefined: hasn't played
   careerMedals: number
   ownedMedals: number
+  nuggets: number // Total number of golden nuggets in the gold puffle quest
 }
 
 export default db;

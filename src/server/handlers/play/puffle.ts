@@ -3,6 +3,7 @@ import { Handler } from "..";
 import { PUFFLES } from "../../../server/game/puffle";
 import { Client } from "../../../server/client";
 import { choose, randomInt } from "../../../common/utils";
+import { PUFFLE_ITEMS } from "../../../server/game/puffle-item";
 
 const handler = new Handler()
 
@@ -137,23 +138,34 @@ enum TreasureType {
   Coins = 0,
   Food = 1,
   Furniture = 2,
-  Clothing = 3
+  Clothing = 3,
+  Gold = 4
 };
 
-function sendPuffleDig(client: Client, treasureType: TreasureType.Coins, coins: number): void;
-function sendPuffleDig(client: Client, treasureType: TreasureType.Clothing | TreasureType.Furniture | TreasureType.Food, itemId: number): void;
 
-/** Send packet for client to dig */
+/**
+ * Send packet for client to dig
+ * @param target For coins, it is how many coins earned, for nuggets, how many nuggets, for items, the item ID
+ * */
 function sendPuffleDig(client: Client, treasureType: TreasureType, target: number): void {
   let coins: number = 0;
   let itemId: number = 0;
   if (treasureType === TreasureType.Coins) {
+    coins = target;
+  } else if (treasureType === TreasureType.Gold) {
+    // TODO not sure why 1.
+    itemId = 1;
     coins = target;
   } else {
     itemId = target;
   }
   // TODO multiplayer logic so it sneds to everyone in room
   client.sendXt('puffledig', client.penguin.id, client.walkingPuffle, treasureType, itemId, coins, client.penguin.hasDug ? 0 : 1);
+}
+
+function sendGoldNuggets(client: Client): void {
+  // TODO what is the first 1?
+  client.sendXt('currencies', `1|${client.penguin.nuggets}`);
 }
 
 /**
@@ -211,8 +223,9 @@ function dig(client: Client, onCommand: boolean) {
   // dig all day stamp, which reportedly kept track of everything in the past 24hrs
   // it is likely that it persisted sessions although there's no concrete evidence
   // (finding evidence for this would be very hard)
-  // there is also no evidence saying that coins count but judging by the
-  // difficulty being yellow it most certainly did count
+  // there is also no evidence saying that coins count but 
+  // it is known it counted with puffle nuggets, so it probably
+  // did count with coins too
   const DIG_ALL_DAY_STAMP = 492;
   if (!client.penguin.hasStamp(DIG_ALL_DAY_STAMP)) {
     client.penguin.addTreasureFind();
@@ -226,6 +239,22 @@ function dig(client: Client, onCommand: boolean) {
   // Save that have done digging
   if (!client.penguin.hasDug) {
     client.penguin.setHaveDug();
+  }
+
+  // digging for gold nuggets
+  // when you are in this state, only nuggets can show up. It seems that
+  // you can get 1-3 nuggets per dig (proven by client files)
+  // no concrete proof of the distribution but from looking at a few videos,
+  // it feels uniformly distributed
+  if (client.isGoldNuggetState) {
+    const nuggets = randomInt(1, 3);
+    client.penguin.addNuggets(nuggets);
+    
+    sendGoldNuggets(client);
+    sendPuffleDig(client, TreasureType.Gold, nuggets);
+    
+    client.update();
+    return;
   }
 
   // # Probability of each dig type
@@ -267,7 +296,10 @@ function dig(client: Client, onCommand: boolean) {
 
   // Options array will store all the possible remaining item types and the option will be chosen from this
   // array randomly with equal chances since we don't know if there are specific chance
-  const options = [];
+  // it's also unknown if golden puffle had
+  // equal odds for clothing and furniture
+  type PoolType = 'clothing' | 'furniture' | 'food';
+  const options: PoolType[] = [];
 
   // It is unknown what happens exactly if you reach the limit of items in a category
   // Eg, if you have all possible clothing, does the clothing probability not get accounted, eg.
@@ -275,66 +307,79 @@ function dig(client: Client, onCommand: boolean) {
   // and if you get clothing you just "fail" or it goes to coins or something?
   // We will be assuming the first. There's no evidence for either
 
-  // getting all food that can be found
-  let canDigFood: number[] = [];
-  // Puffle creatures (ID of 1000 and forward) can't get food
-  if (puffleType < 1000) {
-    canDigFood = PUFFLE_FOOD.filter((food) => {
+  // This map stores for each type all the possible values that can be chosen
+  const itemPools: Record<PoolType, number[]> = {
+    clothing: [],
+    furniture: [],
+    food: []
+  };
+  // Gold puffle only has its own gold items pool, and no food
+  if (puffleType === 11) {
+    itemPools.clothing = GOLD_PUFFLE_CLOTHING;
+    itemPools.furniture = GOLD_PUFFLE_FURNITURE;
+  } else if (puffleType > 1000) { // puffle creatures have a different item pool and no puffle food
+    itemPools.clothing = PUFFLE_CREATURE_CLOTHING;
+    itemPools.furniture = PUFFLE_CREATURE_FURNITURE;
+  } else {
+    itemPools.food = PUFFLE_FOOD;
+    itemPools.clothing = REGULAR_PUFFLE_CLOTHING;
+    itemPools.furniture = REGULAR_PUFFLE_FURNITURE;
+  }
+
+  // assign to each type of item a function that will check if the item in question
+  // CAN be found on this dig
+  const filters: Record<PoolType, (n: number) => boolean> = {
+    'food': (food) => {
       const ownedAmount = client.penguin.getPuffleItemOwnedAmount(food);
       // can only hold one of each, even though that is not true
       // for puffle items in general
       return ownedAmount === 0;
-    });
-    if (canDigFood.length > 0) {
-      options.push(TreasureType.Food);
+    },
+    'furniture': (furniture) => {
+      const ownedAmount = client.penguin.getFurnitureOwnedAmount(furniture);
+      return ownedAmount !== 99;
+    },
+    'clothing': (clothing) => {
+      return !client.penguin.hasItem(clothing);
     }
   }
 
-  const furnitureSample = puffleType < 1000 ? REGULAR_PUFFLE_FURNITURE : PUFFLE_CREATURE_FURNITURE;
-  const canDigFurniture = furnitureSample.filter((furniture) => {
-    const ownedAmount = client.penguin.getFurnitureOwnedAmount(furniture);
-    return ownedAmount !== 99;
-  });
-  if (canDigFurniture.length > 0) {
-    options.push(TreasureType.Furniture);
+  // going through everything, removing the items we can't get
+  // and adding to the random option if there's still items to get
+  for (const pool in itemPools) {
+    const itemPool = pool as PoolType
+    itemPools[itemPool] = itemPools[itemPool].filter(filters[itemPool]);
+    if (itemPools[itemPool].length > 0) {
+      options.push(itemPool);
+    }
   }
-
-  const clothingSample = puffleType < 1000 ? REGULAR_PUFFLE_CLOTHING : PUFFLE_CREATURE_CLOTHING;
-  const canDigClothing = clothingSample.filter((clothing) => {
-    return !client.penguin.hasItem(clothing);
-  });
-  if (canDigClothing.length > 0) {
-    options.push(TreasureType.Clothing);
-  }
-
-  // TODO golden puffles
 
   const option = choose(options);
-  if (option === TreasureType.Clothing || option === TreasureType.Furniture) {
+  const treasure = {
+    'furniture': TreasureType.Furniture,
+    'clothing': TreasureType.Clothing,
+    'food': TreasureType.Food
+  }[option];
+  const itemId = choose(itemPools[option]);
+  if (treasure === TreasureType.Clothing || treasure === TreasureType.Furniture) {
     // Treasure Box stamp, find item in dig
     // wiki claims that furnitures are included, no solid evidence though
     client.giveStamp(494);
   }
 
-  if (option === TreasureType.Clothing) {
-    const itemId = choose(canDigClothing);
+  if (treasure === TreasureType.Clothing) {
     client.buyItem(itemId, { notify: false });
-    sendPuffleDig(client, option, itemId);
-  } else if (option === TreasureType.Food) {
-    const foodId = canDigFood[randomInt(0, canDigFood.length - 1)];
+  } else if (treasure === TreasureType.Food) {
     // TODO notify = false?
-    client.buyPuffleItem(foodId, 0, 1);
-    if (foodId === PUFFLES.get(playerPuffle.type)?.favouriteFood) {
+    client.buyPuffleItem(itemId, 0, 1);
+    if (itemId === PUFFLES.get(playerPuffle.type)?.favouriteFood) {
       // Tasty Treasure stamp
       client.giveStamp(495);
     }
-    sendPuffleDig(client, option, foodId);
-  } else if (option === TreasureType.Furniture) {
-    const furnitureId = canDigFurniture[randomInt(0, canDigFurniture.length - 1)];
-    client.buyFurniture(furnitureId, { notify: false });
-    sendPuffleDig(client, option, furnitureId);
+  } else if (treasure === TreasureType.Furniture) {
+    client.buyFurniture(itemId, { notify: false });
   }
-
+  sendPuffleDig(client, treasure, itemId);
   client.update();
 }
 
@@ -382,13 +427,36 @@ export function getClientPuffleIds(puffleId: number) {
   }
 }
 
+enum PuffleCategory {
+  Normal,
+  Rainbow,
+  Gold,
+  Creature
+};
+
 handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
   if (!client.isEngine3) {
     return;
   }
 
+  let category: PuffleCategory;
+  if (puffleType === '10') {
+    category = PuffleCategory.Rainbow;
+  } else if (puffleType === '11') {
+    category = PuffleCategory.Gold;
+  } else if (puffleSubType === '0') {
+    category = PuffleCategory.Normal;
+  } else {
+    category = PuffleCategory.Creature;
+  }
   // TODO dynamic cost for eg creatures, changing to 800 for earlier times
-  const PUFFLE_COST = 400;
+  // gold puffles must be 0
+  let puffleCost = 400;
+  if (category === PuffleCategory.Creature) {
+    puffleCost = 800;
+  } else if (category === PuffleCategory.Gold) {
+    puffleCost = 0;
+  }
 
   const puffleId = Number(puffleSubType === '0' ? puffleType : puffleSubType);
   const puffle = PUFFLES.get(puffleId);
@@ -396,14 +464,15 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
     throw new Error(`Puffle of ID ${puffleId} was not found in the database`);
   }
 
-  if (puffleType === '10') {
+  if (category === PuffleCategory.Rainbow) {
     // rainbow puffle
     // upon adopting a puffle, its progress resests meaning
     // you'd need to redo the quest for a new one
     client.penguin.resetRainbowQuest();
-  } else if (puffleType === '11') {
-    // TODO gold puffle
-  } else if (puffleSubType === '0') {
+  } else if (category === PuffleCategory.Gold) {
+    client.resetGoldNuggetState();
+    client.penguin.removeGoldPuffleNuggets();
+  } else if (category === PuffleCategory.Creature) {
     if (puffle.favouriteToy === undefined) {
       throw new Error(`Non creature puffle did not have a favorite toy: ${puffle}`);
     }
@@ -412,7 +481,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
     client.buyPuffleItem(puffle.favouriteToy, 0, 1);
   }
 
-  client.penguin.removeCoins(PUFFLE_COST);
+  client.penguin.removeCoins(puffleCost);
   const playerPuffle = client.penguin.addPuffle(puffleName, puffleId);
 
   client.sendXt('pn', client.penguin.coins, [
@@ -537,7 +606,8 @@ handler.xt('p#checkpufflename', (client, puffleName) => {
   client.sendXt('checkpufflename', puffleName, 1);
 })
 
-// endpoint that checks name used by rainbow puffle
+// endpoint that checks name used by some puffles (rainbow puffle, gold puffle)
+// potentially a predecessor to the one above
 handler.xt('p#pcn', (client, puffleName) => {
   client.sendXt('pcn', puffleName, 1);
 })
@@ -567,5 +637,41 @@ handler.xt('p#puffledig', (client) => {
 handler.xt('p#puffledigoncommand', (client) => {
   dig(client, true);
 })
+
+// eating puffle care item
+handler.xt('p#pcid', (client, puffleId, puffleItemId) => {
+  const puffleItem = PUFFLE_ITEMS.get((Number(puffleItemId)));
+  const puffle = client.penguin.getPuffle(Number(puffleId));
+  if (puffleItem === undefined) {
+    throw new Error(`Puffle item not in the database: ${puffleItem}`);
+  }
+  // TODO non golden puffle handling
+  // code here only accounts for the gold puffle berry you get
+  client.sendXt('pcid', client.penguin.id, [
+    puffle.id,
+    puffle.food,
+    100, // TODO puffle.play
+    puffle.rest,
+    puffle.clean,
+    Number(false) // TODO "celebration" (apparently when puffle is maxed out?)
+  ].join('|'));
+  
+  // starting golden puffle quest
+  const goldBerry = PUFFLE_ITEMS.get(126);
+  if (puffleItem.id === goldBerry?.id) {
+    client.penguin.removeCoins(goldBerry.cost);
+
+    client.activateGoldNuggetState();
+    client.sendXt('oberry', client.penguin.id, client.walkingPuffle);
+    sendGoldNuggets(client);
+  }
+  client.update();
+});
+
+// make gold puffle appear in the mine
+handler.xt('p#revealgoldpuffle', (client) => {
+  // TODO multiplayer room logic
+  client.sendXt('revealgoldpuffle', client.penguin.id);
+});
 
 export default handler

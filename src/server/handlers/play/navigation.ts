@@ -68,6 +68,11 @@ handler.xt('j#grs', (client) => {
   client.sendXt('grs', client.penguin.id, client.penguinString);
 })
 
+// sending coins, used by some places to get coin count (golden puffle)
+handler.xt('r#gtc', (client) => {
+  client.sendXt('gtc', client.penguin.coins);
+})
+
 handler.disconnect((client) => {
   client.disconnect();
   client.update();
