@@ -162,4 +162,12 @@ handler.xt('g#uiss', (client, layoutId) => {
   client.update();
 });
 
+// add location
+handler.xt('g#aloc', (client, location) => {
+  // TODO adding cost deducting
+  client.penguin.addIglooLocation(Number(location));
+  client.sendXt('aloc', location, client.penguin.coins);
+  client.update();
+});
+
 export default handler;

@@ -417,6 +417,10 @@ export class Penguin {
     this._iglooFloorings.add(flooring);
   }
 
+  addIglooLocation(location: number): void {
+    this._iglooLocations.add(location);
+  }
+
   getAllFurniture(): Array<[number, number]> {
     return Array.from(this._furnitureInventory.entries());
   }
