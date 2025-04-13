@@ -4,6 +4,7 @@ import { Request, Router } from "express";
 import { GameVersion, SettingsManager } from "./settings";
 import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
+import { findCurrentParty, findCurrentUpdateInParty } from './game/parties';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -185,29 +186,35 @@ export class HttpServer {
     this.router = Router();
   }
 
-  /** Supplies all the files for an event in its date range */
-  private addEvent(event: EventInfo) {
-    const rootPath = 'default/event/' + event[0];
-    this.dir('', (s) => {
-      if (isGreaterOrEqual(s.settings.version, event[1]) && isLower(s.settings.version, event[2])) {
-        return rootPath;
+  /** Creates a router that listens for party files */
+  addParties() {
+    this.router.get('*', (req: Request, res, next) => {
+      const date = this.settingsManager.settings.version
+      const party = findCurrentParty(date);
+      // no active party
+      if (party === null) {
+        next();
       } else {
-        return undefined;
+        // find all possible paths the party serves
+        const paths = typeof party.paths === 'string' ? [party.paths] : party.paths;
+        if (party.updates !== undefined) {
+          const update = findCurrentUpdateInParty(date, party.updates);
+          paths.push(update.path);
+        }
+        for (const route of paths) {
+          // TODO async file check
+          // TODO optimizing: every file now has to check party first. Assembling a map of all changed files -> destination would be better
+          const filePath = path.join(DEFAULT_DIRECTORY, 'event', route, req.params[0]);
+          // server first route that one can find
+          if (fs.existsSync(filePath)) {
+            res.sendFile(filePath);
+            return;
+          }
+        }
+        // continue if could not find any file in any path
+        next();
       }
-    });
-  }
-
-  /**
-   * Sets up a list of events each with its info.
-   * 
-   * Events are periods of time where a static folder is served with most priority,
-   * it is used mostly for parties, and they are stored in the default/event directory
-   * of the media folders
-   */
-  addEvents(...events: Array<EventInfo>) {
-    for (const event of events) {
-      this.addEvent(event);
-    }
+    })
   }
 
   /**
