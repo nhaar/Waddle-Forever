@@ -4,6 +4,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES, PartyStage } from '../server/game/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
 import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
+import { OLD_CATALOGUES } from '../server/game/catalogues';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -28,7 +29,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2005-Aug-22',
         events: {
           other: 'Beta release',
-          newClothing: true
         }
       },
       {
@@ -38,27 +38,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2005-Sep-21',
-        events: {
-          newClothing: true
-        }
-      },
-      {
-        date: '2005-Oct-24',
-        events: {
-          newClothing: true
-        }
-      },
-      {
         date: '2005-Oct-28',
         events: {
           newIssue: 'fan'
-        }
-      },
-      {
-        date: '2005-Nov-01',
-        events: {
-          newClothing: true
         }
       },
       {
@@ -74,12 +56,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2005-Dec-01',
-        events: {
-          newClothing: true
-        }
-      },
-      {
         date: '2005-Dec-14',
         events: {
           minigameRelease: 'Puffle Roundup'
@@ -92,27 +68,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2006-Jan-01',
-        events: {
-          newClothing: true
-        }
-      },
-      {
-        date: '2006-Feb-03',
-        events: {
-          newClothing: true
-        }
-      },
-      {
         date: '2006-Feb-24',
         events: {
           roomOpen: 'Plaza, Pizza Parlor'
-        }
-      },
-      {
-        date: '2006-Mar-03',
-        events: {
-          newClothing: true
         }
       },
       {
@@ -125,12 +83,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2006-Mar-29',
         events: {
           roomOpen: 'Iceberg'
-        }
-      },
-      {
-        date: '2006-Apr-07',
-        events: {
-          newClothing: true
         }
       },
       {
@@ -251,9 +203,17 @@ function addNewspapers(map: DayMap): DayMap {
   return map;
 }
 
+function addCatalogues(map: DayMap): DayMap {
+  OLD_CATALOGUES.forEach((date) => {
+    addEvents(map, date, { newClothing: true });
+  });
+  return map;
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
   map = addNewspapers(map);
+  map = addCatalogues(map);
   return getDaysFromMap(map);
 }

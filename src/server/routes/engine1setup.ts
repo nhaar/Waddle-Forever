@@ -1,7 +1,8 @@
 import { findIndexLeftOf } from "../../common/utils";
+import { OLD_CATALOGUES } from "../game/catalogues";
 import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
 import { GameVersion } from "../settings";
-import { findProperInterval, inInterval, isGreaterOrEqual } from "./versions";
+import { decomposeVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
 
 type Engine1Room = {
   name: string,
@@ -24,6 +25,21 @@ function patchFrame(rooms: Engine1Room[], frames: Record<string, number>) {
       room.frame = frames[room.name]
     }
   }
+}
+
+/**
+ * Get clothing filename based on release of the  catalogue
+ * 
+ * Clothing filenames looked like 0508 (2005-August)
+ * */
+function getClothing(releaseVersion: Version) : string {
+  const decomposed = decomposeVersion(releaseVersion);
+  if (decomposed === undefined) {
+    throw new Error(`Invalid version: ${releaseVersion}`);
+  }
+  const [year, month] = decomposed;
+  // the last 2 numbers of year, and month with a 0 on front if needed
+  return `${String(year).slice(2)}${String(month).padStart(2, '0')}`;
 }
 
 export function getSetupXml(version: GameVersion) {
@@ -149,17 +165,8 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
-  const clothing = findProperInterval<string>(version, [
-    ['2005-Aug-22', '0508'],
-    ['2005-Sep-21', '0509'],
-    ['2005-Oct-24', '0510'],
-    ['2005-Nov-01', '0511'],
-    ['2005-Dec-01', '0512'],
-    ['2006-Jan-01', '0601'],
-    ['2006-Feb-03', '0602'],
-    ['2006-Mar-03', '0603'],
-    ['2006-Apr-07', '0604']
-  ])
+  const clothingIndex = findIndexLeftOf(version, OLD_CATALOGUES, (date, catalogues, i) => isGreaterOrEqual(date, catalogues[i]));
+  const clothing = getClothing(OLD_CATALOGUES[clothingIndex]);
 
   const servers = [
     'Blizzard',

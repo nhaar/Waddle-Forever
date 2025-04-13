@@ -20,7 +20,7 @@ const MONTHS = [
 ]
 
 /** Returns undefined if an invalid version, otherwise an array [year, month, day] */
-function decomposeVersion(version: string): [number, number, number] | undefined {
+export function decomposeVersion(version: string): [number, number, number] | undefined {
   if (version.length !== 11) {
     return;
   }
@@ -138,21 +138,6 @@ export function isEngine2(version: GameVersion): boolean {
 
 export function isEngine3(version:GameVersion): boolean {
   return isGreaterOrEqual(version, '2012-Jan-01');
-}
-
-type VersionMap<T> = Array<[GameVersion, T]>
-
-export function findProperInterval<T>(version:GameVersion, map: VersionMap<T>): T {
-  if (isLower(version, map[0][0])) {
-    return map[0][1]
-  }
-  for (let i = 0; i < map.length - 1; i++) {
-    if (isLower(version, map[i + 1][0])) {
-      return map[i][1];
-    }
-  }
-
-  return map.slice(-1)[0][1];
 }
 
 export function inInterval(version: GameVersion, start: GameVersion, end: GameVersion, params?: {
