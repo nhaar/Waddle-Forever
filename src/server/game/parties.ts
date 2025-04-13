@@ -1,4 +1,4 @@
-import { Version } from "../routes/versions";
+import { isGreater, isGreaterOrEqual, isLowerOrEqual, Version } from "../routes/versions";
 
 /** Object for documenting a party/event from Club Penguin */
 export type Party = {
@@ -110,3 +110,12 @@ export const PARTIES: Party[] = [
     end: '2010-Nov-04',
   }
 ];
+
+// code to enforce PARTIES being sorted, at runtime
+for (let i = 1; i < PARTIES.length; i++) {
+  const prev = PARTIES[i - 1];
+  const curr = PARTIES[i];
+  if (!isGreater(curr.start, prev.start)) {
+    throw new Error(`Party ${curr.name} is out of order`);
+  }
+}
