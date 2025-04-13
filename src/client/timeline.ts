@@ -38,12 +38,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2005-Oct-28',
-        events: {
-          newIssue: 'fan'
-        }
-      },
-      {
         date: '2005-Nov-03',
         events: {
           roomOpen: 'Sport Shop',
