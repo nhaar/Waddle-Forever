@@ -1,4 +1,4 @@
-import { isGreater, isGreaterOrEqual, isLowerOrEqual, Version } from "../routes/versions";
+import { isGreater, Version } from "../routes/versions";
 
 /** Object for documenting a party/event from Club Penguin */
 export type Party = {
@@ -10,6 +10,9 @@ export type Party = {
   end: Version | null;
   /** List of changes in the party */
   updates?: PartyStage[];
+
+  // TODO temporary features for while the timeline is not complete
+  hideEnd?: true;
 };
 
 export type PartyStage = {
@@ -36,7 +39,7 @@ export const PARTIES: Party[] = [
   {
     name: 'The Great Puffle Discovery',
     start: '2005-Nov-15',
-    end: '2005-Dec-14',
+    end: '2005-Dec-05',
   },
   {
     name: 'Christmas Party 2005',
@@ -75,16 +78,19 @@ export const PARTIES: Party[] = [
     name: 'Music Jam 2010',
     start: '2010-Jul-09',
     end: '2010-Jul-19',
+    hideEnd: true
   },
   {
     name: 'Mountain Expedition',
     start: '2010-Aug-12',
     end: '2010-Aug-19',
+    hideEnd: true
   },
   {
     name: 'The Fair 2010',
     start: '2010-Sep-03',
     end: '2010-Sep-13',
+    hideEnd: true,
     updates: [
       {
         update: {
@@ -95,19 +101,16 @@ export const PARTIES: Party[] = [
     ]
   },
   {
-    name: 'Stadium Games',
-    start: '2010-Sep-24',
-    end: '2010-Dec-20'
-  },
-  {
     name: '5th Anniversary',
     start: '2010-Oct-23',
     end: '2010-Oct-25',
+    hideEnd: true
   },
   {
     name: 'Halloween Party 2010',
     start: '2010-Oct-28',
     end: '2010-Nov-04',
+    hideEnd: true
   }
 ];
 

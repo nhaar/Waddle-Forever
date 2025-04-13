@@ -358,7 +358,9 @@ function addParties(days: Day[]): Day[] {
   for (let i = 0; i < PARTIES.length; i++) {
     const party = PARTIES[i];
     addEvents(map, party.start, { partyStart: party.name });
-    addEvents(map, party.end ?? PARTIES[i + 1].start , { partyEnd: party.name });
+    if (party.hideEnd !== true) {
+      addEvents(map, party.end ?? PARTIES[i + 1].start , { partyEnd: party.name });
+    }
 
     if (party.updates !== undefined) {
       for (const update of party.updates) {
