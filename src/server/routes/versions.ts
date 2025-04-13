@@ -1,5 +1,8 @@
 import { GameVersion } from "../settings";
 
+/** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
+export type Version = string;
+
 /** Valid month initials for versions (same capitalization must be used) */
 const MONTHS = [
   'Jan',
@@ -85,7 +88,7 @@ export function sortVersions(versions: string[]): void {
   })
 }
 
-function isEqual(left: string, right: string): boolean {
+export function isEqual(left: string, right: string): boolean {
   const leftDetails = getVersionDetails(left);
   const rightDetails = getVersionDetails(right);
 
