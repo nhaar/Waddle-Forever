@@ -351,35 +351,20 @@ function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
   }
 }
 
-/** Add new updates of a party to a map timeline */
-function addUpdates(map: Map<Version, Day>, updates: PartyStage[]) {
-  for (const update of updates) {
-    if (update.update !== null) {
-      addEvents(map, update.update.date, { partyUpdate: update.update.description });
-    }
-  }
-}
-
 /** Adds all the parties to a timeline */
 function addParties(days: Day[]): Day[] {
   const map = getDayMap(days);
   
-  for (const party of PARTIES) {
-    // start and end points
+  for (let i = 0; i < PARTIES.length; i++) {
+    const party = PARTIES[i];
     addEvents(map, party.start, { partyStart: party.name });
-    addEvents(map, party.end, { partyEnd: party.name });
+    addEvents(map, party.end ?? PARTIES[i + 1].start , { partyEnd: party.name });
 
     if (party.updates !== undefined) {
-      addUpdates(map, party.updates);
-    }
-
-    const pre = party.pre;
-    if (pre !== undefined) {
-      addEvents(map, pre.start, { partyStart: pre.name });
-      // end of a pre-party coincides with start of the party
-      addEvents(map, party.start, { partyEnd: pre.name });
-      if (pre.updates !== undefined) {
-        addUpdates(map, pre.updates);
+      for (const update of party.updates) {
+        if (update.update !== null) {
+          addEvents(map, update.update.date, { partyUpdate: update.update.description });
+        }
       }
     }
   }

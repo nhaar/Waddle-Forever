@@ -2,19 +2,15 @@ import { Version } from "../routes/versions";
 
 /** Object for documenting a party/event from Club Penguin */
 export type Party = {
-  /** If supplied, a pre-party is added, which could be for example a construction */
-  pre?: PreParty;
   /** Name of the party that will be displayed in the timeline */
   name: string;
   /** Date party starts */
   start: Version;
-  /** Date of the first day the party was removed */
-  end: Version;
+  /** Date of the first day the party was removed. If null, this party ends when the next starts. */
+  end: Version | null;
   /** List of changes in the party */
   updates?: PartyStage[];
 };
-
-type PreParty = Omit<Party, 'end'>;
 
 export type PartyStage = {
   // null was for a path implementation, will be effectively used later
@@ -63,21 +59,22 @@ export const PARTIES: Party[] = [
     end: '2006-Apr-03',
   },
   {
+    name: 'Music Jam 2010 Construction',
+    start: '2010-Jul-01',
+    end: null,
+    updates: [
+      {
+        update: {
+          description: '4th of July Fireworks Removed',
+          date: '2010-Jul-05'
+        },
+      }
+    ]
+  },
+  {
     name: 'Music Jam 2010',
     start: '2010-Jul-09',
     end: '2010-Jul-19',
-    pre: {
-      name: 'Music Jam 2010 Construction',
-      start: '2010-Jul-01',
-      updates: [
-        {
-          update: {
-            description: '4th of July Fireworks Removed',
-            date: '2010-Jul-05'
-          },
-        }
-      ]
-    }
   },
   {
     name: 'Mountain Expedition',
