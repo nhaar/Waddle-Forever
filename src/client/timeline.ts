@@ -3,6 +3,7 @@ import path from 'path'
 import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES, PartyStage } from '../server/game/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
+import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -45,7 +46,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2005-Oct-24',
         events: {
-          newIssue: 1,
           newClothing: true
         }
       },
@@ -65,25 +65,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2005-Nov-03',
         events: {
           roomOpen: 'Sport Shop',
-          newIssue: 2
-        }
-      },
-      {
-        date: '2005-Nov-08',
-        events: {
-          newIssue: 3
-        }
-      },
-      {
-        date: '2005-Nov-11',
-        events: {
-          newIssue: 4
-        }
-      },
-      {
-        date: '2005-Nov-16',
-        events: {
-          newIssue: 5
         }
       },
       {
@@ -93,22 +74,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2005-Nov-21',
-        events: {
-          newIssue: 6
-        }
-      },
-      {
         date: '2005-Dec-01',
         events: {
-          newIssue: 7,
           newClothing: true
-        }
-      },
-      {
-        date: '2005-Dec-08',
-        events: {
-          newIssue: 8
         }
       },
       {
@@ -118,22 +86,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2005-Dec-15',
-        events: {
-          newIssue: 9
-        }
-      },
-      {
         date: '2005-Dec-22',
         events: {
           roomOpen: 'Ski Lodge',
-          newIssue: 10
-        }
-      },
-      {
-        date: '2005-Dec-29',
-        events: {
-          newIssue: 11
         }
       },
       {
@@ -143,57 +98,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2006-Jan-05',
-        events: {
-          newIssue: 12
-        }
-      },
-      {
-        date: '2006-Jan-12',
-        events: {
-          newIssue: 13
-        }
-      },
-      {
-        date: '2006-Jan-19',
-        events: {
-          newIssue: 14
-        }
-      },
-      {
-        date: '2006-Jan-26',
-        events: {
-          newIssue: 15
-        }
-      },
-      {
-        date: '2006-Feb-02',
-        events: {
-          newIssue: 16
-        }
-      },
-      {
         date: '2006-Feb-03',
         events: {
           newClothing: true
-        }
-      },
-      {
-        date: '2006-Feb-09',
-        events: {
-          newIssue: 17
-        }
-      },
-      {
-        date: '2006-Feb-16',
-        events: {
-          newIssue: 18
-        }
-      },
-      {
-        date: '2006-Feb-23',
-        events: {
-          newIssue: 19
         }
       },
       {
@@ -203,27 +110,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2006-Mar-02',
-        events: {
-          newIssue: 20
-        }
-      },
-      {
         date: '2006-Mar-03',
         events: {
           newClothing: true
-        }
-      },
-      {
-        date: '2006-Mar-09',
-        events: {
-          newIssue: 21
-        }
-      },
-      {
-        date: '2006-Mar-16',
-        events: {
-          newIssue: 22
         }
       },
       {
@@ -233,39 +122,15 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2006-Mar-23',
-        events: {
-          newIssue: 23
-        }
-      },
-      {
         date: '2006-Mar-29',
         events: {
           roomOpen: 'Iceberg'
         }
       },
       {
-        date: '2006-Mar-30',
-        events: {
-          newIssue: 24
-        }
-      },
-      {
-        date: '2006-Apr-06',
-        events: {
-          newIssue: 25
-        }
-      },
-      {
         date: '2006-Apr-07',
         events: {
           newClothing: true
-        }
-      },
-      {
-        date: '2006-Apr-13',
-        events: {
-          newIssue: 26
         }
       },
       {
@@ -281,7 +146,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       }
     ]
-    timeline = addParties(timeline);
+    timeline = updateTimeline(timeline);
     timelinePicker.webContents.send('get-timeline', timeline);
   });
 }
@@ -312,6 +177,8 @@ type Day = {
   date: Version
   events: Events
 }
+
+type DayMap = Map<Version, Day>;
 
 /** Create a map of a day's date to their data */
 function getDayMap(days: Day[]): Map<Version, Day> {
@@ -352,9 +219,7 @@ function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
 }
 
 /** Adds all the parties to a timeline */
-function addParties(days: Day[]): Day[] {
-  const map = getDayMap(days);
-  
+function addParties(map: DayMap): DayMap {
   for (let i = 0; i < PARTIES.length; i++) {
     const party = PARTIES[i];
     addEvents(map, party.start, { partyStart: party.name });
@@ -371,5 +236,24 @@ function addParties(days: Day[]): Day[] {
     }
   }
 
+  return map;
+}
+
+function addNewspapers(map: DayMap): DayMap {
+  // fan issue, a CPT issue which didn't have a proper number
+  addEvents(map, FAN_ISSUE.date, { newIssue: FAN_ISSUE.name });
+
+  OLD_NEWSPAPERS.forEach((date, index) => {
+    const issue = index + 1;
+    addEvents(map, date, { newIssue: issue });
+  })
+
+  return map;
+}
+
+function updateTimeline(days: Day[]): Day[] {
+  let map = getDayMap(days);
+  map = addParties(map);
+  map = addNewspapers(map);
   return getDaysFromMap(map);
 }
