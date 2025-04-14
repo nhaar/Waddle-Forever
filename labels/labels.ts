@@ -1,6 +1,10 @@
 import readline from "readline"
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
+
+// for timing script execution
+const startTime = Date.now();
 
 /**
  * This module handles making sure every file in the game is properly labeled
@@ -10,14 +14,14 @@ import path from 'path';
 const MEDIA_DIRECTORY = path.join(__dirname, '..', 'media');
 
 /** Read a file path in the label style and get all files that are labeled in it */
-function processLabelFile(filePath: string): Promise<Set<string>> {
-  return new Promise<Set<string>>((resolve) => {
+function processLabelFile(filePath: string): Promise<Map<string, string>> {
+  return new Promise<Map<string, string>>((resolve) => {
 
     const lineReader = readline.createInterface({
       input: fs.createReadStream(filePath)
     });
   
-    const files = new Set<string>();
+    const files = new Map<string, string>();
   
     let number = 0;
     lineReader.on('line', (line) => {
@@ -30,15 +34,18 @@ function processLabelFile(filePath: string): Promise<Set<string>> {
         return;
       } else {
         // starts with file path and name (capture)
-        const fileMatch = line.match('^[\\w\\d\\_\\-/\\.]+');
+        // group 1 is the filepath
+        // group 2 is the md5 hash (separated via colon)
+        const fileMatch = line.match('^([\\w\\d\\_\\-/\\.]+)\\:([a-fA-F0-9]*)');
         
         // no match means the line doesn't conform to any thing we allow
         if (fileMatch === null) {
           throw new Error(`Invalid line for file ${filePath}, line ${number}: ${line}`);
         } else {
-          const fileName = fileMatch[0];
+          const fileName = fileMatch[1];
+          const hash = fileMatch[2];
           if (fs.existsSync(path.join(MEDIA_DIRECTORY, fileName))) {
-            files.add(fileName);
+            files.set(fileName, hash);
           } else {
             throw new Error(`Labeled file does not exist: ${fileName}`);
           }
@@ -70,10 +77,16 @@ function getFilesInDirectory(basePath: string, relativePath: string): string[] {
   return fileNames;
 }
 
-function getEveryMediaFile(): Set<string> {
+function getEveryMediaFile(): Map<string, string> {
   const files = getFilesInDirectory(MEDIA_DIRECTORY, '');
+  const map = new Map<string, string>();
+  files.forEach((file) => {
+    const hash = crypto.createHash('md5').update(fs.readFileSync(path.join(MEDIA_DIRECTORY, file), { encoding: 'utf-8' })).digest('hex')
+    const cleanName = file.replaceAll('\\', '/')
+    map.set(cleanName, hash);
+  });
 
-  return new Set(files.map((name) => name.replaceAll('\\', '/')));
+  return map;
 }
 
 const LABEL_FILES = [
@@ -84,28 +97,42 @@ const LABEL_FILES = [
   'recreations.txt', // files recreated (for Waddle Forever or not)
 ];
 
-const labeledFiles = new Set<string>();
+const labeledFiles = new Map<string, string>();
 
 async function addLabeledFiles(file: string): Promise<void> {
   const files = await processLabelFile(path.join(__dirname, file));
-  files.forEach((file) => { labeledFiles.add(file) });
+  files.forEach((hash, file) => { labeledFiles.set(file, hash) });
 }
 
 // adding all labeled files, once that's done we finish the process
 Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
   const everyFile = getEveryMediaFile();
-  const nonLabeledFiles = new Set<string>();
+  const nonLabeledFiles = new Map<string, string>();
   
-  everyFile.forEach((file) => {
-    if (!labeledFiles.has(file)) {
-      nonLabeledFiles.add(file);
+  everyFile.forEach((hash, file) => {
+    const labeledHash = labeledFiles.get(file);
+    // if file is not found, then it's unlabeled
+    if (labeledHash === undefined) {
+      nonLabeledFiles.set(file, hash);
+    } else {
+      // if found, check if it's the same file
+      if (hash !== labeledHash) {
+        nonLabeledFiles.set(file, hash);
+      }
     }
   });
   
-  const unlabeledArray = Array.from(nonLabeledFiles.values());
+  const unlabeledArray = Array.from(nonLabeledFiles.entries()).map((pair) => {
+    return `${pair[0]}:${pair[1]}`
+  });
   fs.writeFileSync(path.join(__dirname, 'unlabeled.txt'), unlabeledArray.join('\n'));
   
   const unlabeledAmount = unlabeledArray.length;
   const totalAmount = Array.from(everyFile.values()).length;
+  const endTime = Date.now();
+  const secondsTaken = (endTime - startTime) / 1000;
+  
   console.log(`Unlabeled search complete. ${unlabeledAmount} unlabeled files found out of ${totalAmount} (${unlabeledAmount}/${totalAmount})`);
+  console.log(`Total time taken: ${secondsTaken}`);
+
 });
