@@ -266,8 +266,51 @@ export class HttpServer {
     const extension = '.' + route.split('.').pop();
     const files = fs.readdirSync(path.join(DEFAULT_DIRECTORY, SEASONAL_NAME, route));
     const fileDates = files.filter((f) => f.endsWith(extension)).map((f) => f.slice(0, -extension.length));
+
+    // files that appeared multiple times can have multiple dates joined by a separator
+    // to preserve the information we will split all files in the dates array
+    // and create a map for their name and the original filename
+    const fileMap = new Map<string, string>();
+
+    // new array that will have all the dates
+    let flattenedFileDates = [];
+
+    // splitting multiple files
+    const SEPARATOR = ',';
+    for (const fileDate of fileDates) {
+      if (fileDate.includes(SEPARATOR)) {
+        const splitFiles = fileDate.split(SEPARATOR);
+        for (const splitFile of splitFiles) {
+          fileMap.set(splitFile, fileDate);
+        }
+        flattenedFileDates.push(...splitFiles);
+      } else {
+        flattenedFileDates.push(fileDate);
+      }
+    }
+
+    // placeholder prefixes are just to signal that a value is used in a date
+    // but it wasn't archived from that time, it's only being used because it's similar
+    const PLACEHOLDER_PREFIX = '[P]';
+    flattenedFileDates = flattenedFileDates.map((value) => {
+      if (value.startsWith(PLACEHOLDER_PREFIX)) {
+        const trimmed = value.replace(PLACEHOLDER_PREFIX, '');
+        const originalName = fileMap.get(value);
+        // no previous entry to this exists, adding it now
+        if (originalName === undefined) {
+          fileMap.set(trimmed, value);
+        } else {
+          fileMap.set(trimmed, originalName);
+        }
+
+        return trimmed;
+      } else {
+        return value;
+      }
+    })
+
     try {
-      sortVersions(fileDates);
+      sortVersions(flattenedFileDates);
     } catch {
       throw Error(`Seasonal included files not named after versions in path ${route}`);
     }
@@ -275,8 +318,9 @@ export class HttpServer {
     const router = new HttpRouter(route, this);
     alternating(
       [router],
-      fileDates.map((fileDate) => {
-        return [fileDate, path.join('default', SEASONAL_NAME, route, fileDate + extension)]
+      flattenedFileDates.map((fileDate) => {
+        const realFile = fileMap.get(fileDate) ?? fileDate;
+        return [fileDate, path.join('default', SEASONAL_NAME, route, realFile + extension)]
       })
     )
   }
