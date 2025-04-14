@@ -102,7 +102,7 @@ const LABEL_FILES = [
 const labeledFiles = new Map<string, string>();
 
 async function addLabeledFiles(file: string): Promise<void> {
-  const files = await processLabelFile(path.join(__dirname, file));
+  const files = await processLabelFile(path.join(__dirname, 'groups', file));
   files.forEach((hash, file) => {
     if (labeledFiles.has(file)) {
       throw new Error(`A file which has been labeled multiple times has been found: ${file}`);
