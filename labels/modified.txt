@@ -30,6 +30,9 @@ default/event/2005/puffle_discovery/artwork/rooms/rink10.swf:3a2193ee05daca96f61
 - Originally from archives.clubpenguinwiki.info/wiki/Puffle_Discovery
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
+default/event/2010/music_jam/play/v2/content/local/en/login/startscreen.xml:eb616b49b33d54dd37fb518ed23b2cf4
+- Manual modification of startscreen.xml from legacy media
+
 default/event/2010/mountain_expedition/play/v2/content/local/en/login/startscreen.xml:aab826086cad00c30fbd6b4b76037967
 - Manual modification of startscreen.xml from legacy media
 

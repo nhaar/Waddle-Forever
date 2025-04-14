@@ -1,3 +1,14 @@
+default/music/3.swf:768ca4c838e0bdf97cf75452e3035c72 - Music3_2.swf, the blue one
+default/music/8.swf:c3fd1cc6d4bb564e378c3d55a56c6a25
+default/music/32.swf:df1ab49c774046d0fc3b5e7eccf36282 - Music32.swf, the white one
+default/music/55.swf:d13227912556ad5f6b952e4bf0039504
+default/music/56.swf:1128404df56058918ed87cdcf9092990
+default/music/57.swf:6f3945ddc793d231e6af0aefccb535a2
+default/music/58.swf:8a8e9f93d70ec142eaa92f9110557354
+default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blue one in Organic Journey
+default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
+- Music from the page: https://archives.clubpenguinwiki.info/wiki/Music
+
 default/event/2006/valentine_day_celebration/artwork/rooms/dance10.swf:3966cdd68a38b3699054f480cd62b8af
 default/event/2006/valentine_day_celebration/artwork/rooms/lounge10.swf:5a998edeb35644f57cd7f5f21f161c5c
 - Valentine Day files above are all from https://archives.clubpenguinwiki.info/wiki/Valentine%27s_Day_Celebration
@@ -17,6 +28,16 @@ default/event/2006/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63
 default/event/2006/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
 
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/beach.swf:b1eca2c3d512e8257097b258fb1e7f9f
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/coffee.swf:f3c31a1b1e552aecc4145c98b2d3a358
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/cove.swf:12ff02b8f7d442eba24afb7ae1bcf11b
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/dock.swf:0d50cfcd191e4ddda39561d76b57f63b
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/forest.swf:f304935191d3d2a6d603e9023129951f
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/forts.swf:ecb080c85d4eb95894c290b2465ac921
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/light.swf:ac193121bb2060eb154c9cf091ad941c
+default/event/2010/music_jam_construction/play/v2/content/global/rooms/village.swf:47bd2850a25246c68c1c79edf2958d2f
+- All Music Jam 2010 construction files above are from https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
+
 default/event/2010/4th_of_july/play/v2/content/global/rooms/berg.swf:a3f479eb84f74bee145dabd9a277bb63
 - This is the Iceberg from the Music Jam 2010 construction grabbed from here https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
 - It has fireworks which are seemingly from 4th of July
@@ -24,6 +45,33 @@ default/event/2010/4th_of_july/play/v2/content/global/rooms/berg.swf:a3f479eb84f
 default/event/2010/4th_of_july/play/v2/content/global/rooms/mtn.swf:8ca4aa522a1b9fc3a10eb14b1210b432
 - This is actually from the 2010 New Years Fireworks Ski Hill room, grabbed from here https://archives.clubpenguinwiki.info/wiki/Fireworks
 - They appear to be the same file, and once that party is added, it should be moved away from 4th of July
+
+default/event/2010/music_jam/play/v2/content/global/rooms/beach.swf:b2ea234a9465e8f46e7354cccc84427e
+default/event/2010/music_jam/play/v2/content/global/rooms/berg.swf:dd304bfe0b4d9cba66a221fc879c6eb1
+default/event/2010/music_jam/play/v2/content/global/rooms/cave.swf:cecc47e59fdfc46bfa2aa25f4cf2e372
+default/event/2010/music_jam/play/v2/content/global/rooms/coffee.swf:9f317129dded1a429e217a511f4c87fa
+default/event/2010/music_jam/play/v2/content/global/rooms/cove.swf:eefe65437f6566e4313b8d70fb6e6c3b
+default/event/2010/music_jam/play/v2/content/global/rooms/dance.swf:e9f04031c2376d37ca8d4ea7334b3e37
+default/event/2010/music_jam/play/v2/content/global/rooms/dock.swf:c6abc6d38196db36ab908f314932f493
+default/event/2010/music_jam/play/v2/content/global/rooms/forest.swf:4070116e3f42dfd9b726e40c6106f614
+default/event/2010/music_jam/play/v2/content/global/rooms/forts.swf:87a0ec72de0b5982e0834094060e3b29
+default/event/2010/music_jam/play/v2/content/global/rooms/light.swf:74952b04eb4115fa086b90b47784fb66
+default/event/2010/music_jam/play/v2/content/global/rooms/lounge.swf:40988b82abf4d75c7afe12dd5bf047bc
+default/event/2010/music_jam/play/v2/content/global/rooms/mine.swf:5e1cd1246a876d5a048aa290470b730c
+default/event/2010/music_jam/play/v2/content/global/rooms/party.swf:70ae0b77a69b33fc329bd26e6bd9e5df
+default/event/2010/music_jam/play/v2/content/global/rooms/party2.swf:a9d18e3bef68352830d87bf1519d8efc
+default/event/2010/music_jam/play/v2/content/global/rooms/party3.swf:27d7de7be00c92a09ec5c9ec9286769c
+default/event/2010/music_jam/play/v2/content/global/rooms/party4.swf:82dea14dfc56eb131b427d042bf50687
+default/event/2010/music_jam/play/v2/content/global/rooms/pizza.swf:7ad49aa9c2a45e33cd9c610ee9c40a2b
+default/event/2010/music_jam/play/v2/content/global/rooms/plaza.swf:cdbec5eaad0b96964d004070235d09ae
+default/event/2010/music_jam/play/v2/content/global/rooms/rink.swf:7e232c955d5665ca58418f32f7356dc1
+default/event/2010/music_jam/play/v2/content/global/rooms/town.swf:40274e6ab503c52b00a1a976a89bf5eb
+default/event/2010/music_jam/play/v2/content/global/rooms/village.swf:0686283a74c32d589222162578d61faf
+default/event/2010/music_jam/play/v2/content/local/en/catalogues/merch.swf:3c64d35813029a81c2b506ae367efda7
+default/event/2010/music_jam/play/v2/content/local/en/close_ups/poster.swf:1e560d070a380996d2cc491d160557cd
+default/event/2010/music_jam/play/v2/content/local/en/login/backgrounds/musicjam1.swf:903cba090ea3186038c9ad7a2dc3e51f
+default/event/2010/music_jam/play/v2/content/local/en/login/backgrounds/musicjam2.swf:3c6d91a4afbe9c5aa70324cd6e3a5d2d
+- All files above from the Music Jam 2010 come from https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
 
 default/event/2010/mountain_expedition/play/v2/content/global/rooms/party1.swf:a662f6c44ad25c09dbc831ce97b54a3b
 default/event/2010/mountain_expedition/play/v2/content/global/rooms/party2.swf:f89fb8fd308caa7031b2552fc36dd489
