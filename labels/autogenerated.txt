@@ -1,0 +1,6 @@
+- Global Crumbs
+default/event/2010/music_jam/play/v2/content/global/crumbs/global_crumbs.swf:f83aa6f5e66aa82cbee1a315a325c3fc
+default/event/2010/mountain_expedition/play/v2/content/global/crumbs/global_crumbs.swf:3613956bc9a39a9e1b719a56de6ea8f4
+default/event/2010/fair_2010/play/v2/content/global/crumbs/global_crumbs.swf:fe8446e059d6f461862390216bdeb413
+default/event/2010/5th_anniversary_party/play/v2/content/global/crumbs/global_crumbs.swf:9671790640968735cb40c70abf420f45
+default/event/2010/halloween_party_2010/play/v2/content/global/crumbs/global_crumbs.swf:b2621386b56404c839e24f879fb22aad

@@ -1,0 +1,11 @@
+default/event/2010/halloween_party_2010/play/v2/content/global/scavenger_hunt/scavenger_hunt_icon.swf:460cea58fddc5082b85d9c41aad1f7ac
+- Icon that shows up in the Halloween Party 2010 for the Scavenger Hunt
+- Origin is unknown
+- I thought it was from a different party, but 2011 and 2007 which have the icon archive don't match
+- Then, I thought maybe it was the one in Ben's Scavenger Hunt mod, but that also doesn't match
+- So, we don't know its origins!
+
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/NOTLS3EN.swf:fe8d363c0678dd6bbc2bb61ef123a0f2
+- The Night of the living Sled 3 movie, unknown where this is from
+- This file was given by Resol, but he has no clue where it was fetched from
+- and the data does not match the 2009 one in the archives

@@ -1,0 +1,120 @@
+default/event/2006/valentine_day_celebration/artwork/rooms/dance10.swf:3966cdd68a38b3699054f480cd62b8af
+default/event/2006/valentine_day_celebration/artwork/rooms/lounge10.swf:5a998edeb35644f57cd7f5f21f161c5c
+- Valentine Day files above are all from https://archives.clubpenguinwiki.info/wiki/Valentine%27s_Day_Celebration
+
+default/event/2006/pizza_parlor_opening_party/artwork/rooms/forts12.swf:2f15c09916bbfee72f2c7acb6f26c6aa
+default/event/2006/pizza_parlor_opening_party/artwork/rooms/pizza12.swf:b51acd93071d8a6c3086465f91256176 - Pizza Parlor (1), or ArtworkRoomsPizza10.swf
+default/event/2006/pizza_parlor_opening_party/artwork/rooms/town10.swf:619bbab02d203a0bfa47bcbe98fc47d6 - Town (2), or ArtworkRoomsTown13.swf
+- Pizza Party files above are all from https://archives.clubpenguinwiki.info/wiki/Pizza_Party
+
+default/event/2006/april_fools_2006/artwork/rooms/dance10.swf:135f44a0c19815fa788e0d09e7871ff0
+default/event/2006/april_fools_2006/artwork/rooms/dojo10.swf:7afa1784b1a19b527eaff4fb5e51dd82
+default/event/2006/april_fools_2006/artwork/rooms/forts12.swf:0b9ebd02ea5aaa8b7873df0a2afcd0bf
+default/event/2006/april_fools_2006/artwork/rooms/lodge11.swf:5c05ce25eb1d690804b88a086267c9a2
+default/event/2006/april_fools_2006/artwork/rooms/plaza12.swf:4730d1a43cd5ff2533d4892981908b4f
+default/event/2006/april_fools_2006/artwork/rooms/rink10.swf:3f801ef0552e16e3af83d10169d48c44
+default/event/2006/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
+default/event/2006/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
+- April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+default/event/2010/4th_of_july/play/v2/content/global/rooms/berg.swf:a3f479eb84f74bee145dabd9a277bb63
+- This is the Iceberg from the Music Jam 2010 construction grabbed from here https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
+- It has fireworks which are seemingly from 4th of July
+
+default/event/2010/4th_of_july/play/v2/content/global/rooms/mtn.swf:8ca4aa522a1b9fc3a10eb14b1210b432
+- This is actually from the 2010 New Years Fireworks Ski Hill room, grabbed from here https://archives.clubpenguinwiki.info/wiki/Fireworks
+- They appear to be the same file, and once that party is added, it should be moved away from 4th of July
+
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/party1.swf:a662f6c44ad25c09dbc831ce97b54a3b
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/party2.swf:f89fb8fd308caa7031b2552fc36dd489
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/party3.swf:a3f16e0f47135fd57d4c7dd30ff51e20
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/party4.swf:3251ba31c695bdc70a722247d26a2dd5
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/party5.swf:d5fd8dd3fab55a2065d58a9af94c1f24
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/party6.swf:2eb63e471c1ac1ad73445ada1eee06c1
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/plaza.swf:8f2cd0bbeda8f7ac6eb9d631da066b56
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/town.swf:948e5fe36df307112244cc3b8e45dd6a
+default/event/2010/mountain_expedition/play/v2/content/global/rooms/village.swf:7c18d3e7e54a4d036e817a1cd8688683
+default/event/2010/mountain_expedition/play/v2/content/local/en/catalogues/merch.swf:2c56a20637c74b344dd3246265d01ebb
+default/event/2010/mountain_expedition/play/v2/content/local/en/login/backgrounds/expedition.swf:ca795af99fb1901c4350d14b5b6d0953
+default/event/2010/mountain_expedition/play/v2/content/local/en/membership/party3.swf:b6d2e46dd6735567be8631b938b89872
+- All Mountain Expedition files from https://archives.clubpenguinwiki.info/wiki/Mountain_Expedition
+
+default/event/2010/fair_2010/play/v2/content/global/rooms/beach.swf:22da7be695b81a03ee27db7e69cc60ac
+default/event/2010/fair_2010/play/v2/content/global/rooms/beacon.swf:43dfd22e7ae92ece37471551312a6b12
+default/event/2010/fair_2010/play/v2/content/global/rooms/berg.swf:5e1ee5cd147d850d7f48afa8a77a07c5
+default/event/2010/fair_2010/play/v2/content/global/rooms/coffee.swf:11a8efe74f2232774bf8556396958786
+default/event/2010/fair_2010/play/v2/content/global/rooms/cove.swf:6291fcefbe501a25898eeb294e092442
+default/event/2010/fair_2010/play/v2/content/global/rooms/dance.swf:8f6e77ac7dd97422e204501a82c45306
+default/event/2010/fair_2010/play/v2/content/global/rooms/dock.swf:117a9e3d2271b4926adb488784110aac
+default/event/2010/fair_2010/play/v2/content/global/rooms/forest.swf:8b0410be0a8ca9c8682ec1d2f4e6f061
+default/event/2010/fair_2010/play/v2/content/global/rooms/forts.swf:272ff75269bd6fb7dcb8c5cb8ac7b032
+default/event/2010/fair_2010/play/v2/content/global/rooms/lounge.swf:b95cc50863822dce69e553500384a098
+default/event/2010/fair_2010/play/v2/content/global/rooms/mtn.swf:c4f6aaad2b934dba97884cd8d9582eca
+default/event/2010/fair_2010/play/v2/content/global/rooms/party.swf:2c079943f2079cb285d568df3bb1e9b4
+default/event/2010/fair_2010/play/v2/content/global/rooms/party2.swf:3089ea5c27eb9ef2f4f423a40f63d5f5
+default/event/2010/fair_2010/play/v2/content/global/rooms/party3.swf:7a46326273273ed242619d9774e5e2d2
+default/event/2010/fair_2010/play/v2/content/global/rooms/plaza.swf:254730c421440cf91322f728d1b972c6
+default/event/2010/fair_2010/play/v2/content/global/rooms/town.swf:2416eda631296de2188211959a2255e6
+default/event/2010/fair_2010/play/v2/content/global/rooms/village.swf:f36d209c3fba8eb01b84b679f66f1dee
+default/event/2010/fair_2010/play/v2/content/local/en/login/backgrounds/fair.swf:ea52e1e246a775f5fbd57b42253f7441 - Login Screen #1, LoginFairParty2010.swf
+default/event/2010/fair_2010_start/play/v2/content/local/en/catalogues/prizebooth.swf:8cf6c0b7a910a4248efd80bd026316b7
+default/event/2010/fair_2010_start/play/v2/content/local/en/catalogues/prizeboothmember.swf:e66f6ad343da1c68e197d8b59f827908
+default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizebooth.swf:5960e0065516cf103b95519d7e819caf
+default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizeboothmember.swf:c7a4146d83bbb923d062628717f4f046
+- Files above from the Fair 2010 are all from https://archives.clubpenguinwiki.info/wiki/The_Fair_2010
+
+default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/book.swf:b21874fc4517d4db71eede09e675a55b
+default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/coffee.swf:b18d68cb94153875ec98d86b7ddc9d98
+default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/town.swf:51c989596c05160596a9d637f0a4fe81
+- Files above from the 5th Anniversary Party are all from https://archives.clubpenguinwiki.info/wiki/5th_Anniversary_Party
+
+default/event/2010/halloween_party_2010/play/v2/content/global/content/map.swf:f8c196c0e9f1d0375f1cef20a8babf39
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/attic.swf:022fb16ea04550126cb204ee9b1c9b4c
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/beach.swf:58874e6a60ba134ada5f5d926e669c4f
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/beacon.swf:4b367beba042d239caa354551ed08885
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/berg.swf:be6498557e314e24469bb27e58a4f456
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/book.swf:018773f21d48c9b08aedaaea549e8ee7
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/cave.swf:e9964a5b638bbd829e9bdb42336baa72
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/coffee.swf:07ded06ec70f9d821695bb1c033209c4
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/cove.swf:663f2c91ff470e49df44c2f08cb4c97a
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dance.swf:3a1067f603eb028ac73a1103ff447c38
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dock.swf:98fadc4ec792e8b67365941d1c5e7b95
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojo.swf:60ef00a9f4907e469a8e5f2240168131
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojoext.swf:a36d330825ae5427a576b351f9e9300f
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojofire.swf:186b8ccb11be8996783300a73c45f565
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojohide.swf:bd8db77dd98b2aaa8ff314995e2bb626
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/forest.swf:e8ae9d223e13e18c4436d233d8002e11
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/forts.swf:7702f781a9b656bcc27679b6b33885ec
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/light.swf:c7305209ee4c2420cc0af17ebc427570
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/lodge.swf:7c476f122c8ae193513de665b7a4c818
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/lounge.swf:f2a4560c84805d6d61b0138aff2ec592
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/mtn.swf:b98869fb2d2820013927ccbee6317d2d
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party1.swf:107291b43a92b2a5e02b6b3d0103817a
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party2.swf:84c52fb952f96ca50c8b79b6402cd3fa
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party3.swf:953dda12a5c786698edcaebe4061b0ff
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party4.swf:afb64e090a50946d0263fbd11c36481f
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party5.swf:692fb5fccbb5d6df20965e9afa2d5342
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/pet.swf:92560458d1f7fe2609729db2d4362fb9
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/pizza.swf:9309004558c7bc305feaf78c9b257133
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/plaza.swf:fc22bede362174e79e75cfec1163709b
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/rink.swf:3e51e1c28cb3a0869cd9e0268e6ef275
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/shack.swf:84f47cb75d9bc7c1481b58d3cbd368de
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/shop.swf:d21d0a7d406b1e4ef7d633bbe0847031
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/town.swf:c119c0d95e1208c30fce2fd6d88bfcaf
+default/event/2010/halloween_party_2010/play/v2/content/global/rooms/village.swf:4bf7ccf9e7ee9cab5c35302396113449
+default/event/2010/halloween_party_2010/play/v2/content/local/en/close_ups/halloweenposter.swf:9831304e63fa9cf5a06858b184c255a2
+default/event/2010/halloween_party_2010/play/v2/content/local/en/catalogues/party.swf:b3812c6ecb63c2e95d1dd215c3305b4e - Monster Maker catalogue
+default/event/2010/halloween_party_2010/play/v2/content/local/en/login/backgrounds/halloween1.swf:e1c783156a90d793897e5c99c3625e1c
+default/event/2010/halloween_party_2010/play/v2/content/local/en/login/backgrounds/halloween2.swf:d3f1a9e035d018a69390612d17adad07
+default/event/2010/halloween_party_2010/play/v2/content/local/en/login/backgrounds/halloween3.swf:d044139b121046421c523cbb9e78cd1f
+default/event/2010/halloween_party_2010/play/v2/content/local/en/membership/membership_party3.swf:2066a29d2ef24ee48be50eecb8b8b164
+- All files above from Halloween Party 2010 are from https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2010
+
+default/event/2010/halloween_party_2010/play/v2/content/global/binoculars/empty.swf:ca900078bd0161c06feb03246bec47ea
+- Binoculars from the 2007 party: https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2007
+- This should be moved to the 2007 folder when it gets added
+
+default/event/2010/halloween_party_2010/play/v2/content/global/igloo/assets/igloo_background.swf:3f764c82aea07c5a84766eeef925abc2
+- Igloo Background from the 2011 party: https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2011
+- This should be moved to the 2011 folder when it gets added
+
