@@ -10,41 +10,46 @@ import path from 'path';
 const MEDIA_DIRECTORY = path.join(__dirname, '..', 'media');
 
 /** Read a file path in the label style and get all files that are labeled in it */
-function processLabelFile(filePath: string): Set<string> {
-  const lineReader = readline.createInterface({
-    input: fs.createReadStream(filePath)
-  });
+function processLabelFile(filePath: string): Promise<Set<string>> {
+  return new Promise<Set<string>>((resolve) => {
 
-  const files = new Set<string>();
-
-  let number = 0;
-  lineReader.on('line', (line) => {
-    number++;
-    // three possible allowed lines in this file:
-    // 1. start with hyphen (comment, ignore)
-    if (line.startsWith('-')) {
-      return;
-    } else if (line.match(/^\s*$/) !== null) { // 2. white space only (ignore)
-      return;
-    } else {
-      // starts with file path and name (capture)
-      const fileMatch = line.match('^[\\w\\d_-/\\.]+');
-      
-      // no match means the line doesn't conform to any thing we allow
-      if (fileMatch === null) {
-        throw new Error(`Invalid line for file ${filePath}, line ${number}: ${line}`);
+    const lineReader = readline.createInterface({
+      input: fs.createReadStream(filePath)
+    });
+  
+    const files = new Set<string>();
+  
+    let number = 0;
+    lineReader.on('line', (line) => {
+      number++;
+      // three possible allowed lines in this file:
+      // 1. start with hyphen (comment, ignore)
+      if (line.startsWith('-')) {
+        return;
+      } else if (line.match(/^\s*$/) !== null) { // 2. white space only (ignore)
+        return;
       } else {
-        const fileName = fileMatch[0];
-        if (fs.existsSync(path.join(MEDIA_DIRECTORY, fileName))) {
-          files.add(fileName);
+        // starts with file path and name (capture)
+        const fileMatch = line.match('^[\\w\\d\\_\\-/\\.]+');
+        
+        // no match means the line doesn't conform to any thing we allow
+        if (fileMatch === null) {
+          throw new Error(`Invalid line for file ${filePath}, line ${number}: ${line}`);
         } else {
-          throw new Error(`Labeled file does not exist: ${fileName}`);
+          const fileName = fileMatch[0];
+          if (fs.existsSync(path.join(MEDIA_DIRECTORY, fileName))) {
+            files.add(fileName);
+          } else {
+            throw new Error(`Labeled file does not exist: ${fileName}`);
+          }
         }
       }
-    }
-  });
+    });
 
-  return files;
+    lineReader.on('close', () => {
+      resolve(files);
+    });
+  })
 }
 
 function getFilesInDirectory(basePath: string, relativePath: string): string[] {
@@ -80,23 +85,27 @@ const LABEL_FILES = [
 ];
 
 const labeledFiles = new Set<string>();
-for (const labelFile of LABEL_FILES) {
-  const files = processLabelFile(path.join(__dirname, labelFile));
+
+async function addLabeledFiles(file: string): Promise<void> {
+  const files = await processLabelFile(path.join(__dirname, file));
   files.forEach((file) => { labeledFiles.add(file) });
 }
 
-const everyFile = getEveryMediaFile();
-const nonLabeledFiles = new Set<string>();
-
-everyFile.forEach((file) => {
-  if (!labeledFiles.has(file)) {
-    nonLabeledFiles.add(file);
-  }
+// adding all labeled files, once that's done we finish the process
+Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
+  const everyFile = getEveryMediaFile();
+  const nonLabeledFiles = new Set<string>();
+  
+  everyFile.forEach((file) => {
+    if (!labeledFiles.has(file)) {
+      nonLabeledFiles.add(file);
+    }
+  });
+  
+  const unlabeledArray = Array.from(nonLabeledFiles.values());
+  fs.writeFileSync(path.join(__dirname, 'unlabeled.txt'), unlabeledArray.join('\n'));
+  
+  const unlabeledAmount = unlabeledArray.length;
+  const totalAmount = Array.from(everyFile.values()).length;
+  console.log(`Unlabeled search complete. ${unlabeledAmount} unlabeled files found out of ${totalAmount} (${unlabeledAmount}/${totalAmount})`);
 });
-
-const unlabeledArray = Array.from(nonLabeledFiles.values());
-fs.writeFileSync(path.join(__dirname, 'unlabeled.txt'), unlabeledArray.join('\n'));
-
-const unlabeledAmount = unlabeledArray.length;
-const totalAmount = Array.from(everyFile.values()).length;
-console.log(`Unlabeled search complete. ${unlabeledAmount} unlabeled files found out of ${totalAmount} (${unlabeledAmount}/${totalAmount})`);
