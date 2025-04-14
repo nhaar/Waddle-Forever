@@ -47,32 +47,28 @@ function processLabelFile(filePath: string): Set<string> {
   return files;
 }
 
+function getFilesInDirectory(basePath: string, relativePath: string): string[] {
+  const fileNames: string[] = [];
+  const absolutePath = path.join(basePath, relativePath);
+  const files = fs.readdirSync(absolutePath);
+  files.forEach((file) => {
+    const fileAbsolutePath = path.join(absolutePath, file);
+    const fileRelativePath = path.join(relativePath, file);
+    if (fs.lstatSync(fileAbsolutePath).isDirectory()) {
+      const childFiles = getFilesInDirectory(basePath, fileRelativePath);
+      fileNames.push(...childFiles);
+    } else {
+      fileNames.push(fileRelativePath);
+    }
+  })
+
+  return fileNames;
+}
+
 function getEveryMediaFile(): Set<string> {
-  let dirs: string[] = [''];
-  let dirsQueue: string[] = [];
-  const fileSet: string[] = [];
-  
-  // walking "recursively" through every directory
-  while (dirs.length > 0) {
-    dirs.forEach((dir) => {
-      const absoluteDirPath = path.join(MEDIA_DIRECTORY, dir);
-      const files = fs.readdirSync(absoluteDirPath);
-      files.forEach((file) => {
-        const absolutePath = path.join(absoluteDirPath, file);
-        const relativePath = path.join(dir, file);
-        if (fs.lstatSync(absolutePath).isDirectory()) {
-          dirsQueue.push(relativePath);
-        } else {
-          fileSet.push(relativePath);
-        }
-      })
-    })
-    dirs = dirsQueue;
-    dirsQueue = [];
-  }
+  const files = getFilesInDirectory(MEDIA_DIRECTORY, '');
 
-
-  return new Set(fileSet.map((name) => name.replaceAll('\\', '/')));
+  return new Set(files.map((name) => name.replaceAll('\\', '/')));
 }
 
 const LABEL_FILES = [
