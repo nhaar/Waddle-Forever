@@ -14,12 +14,19 @@ export enum ItemType {
   Nothing
 };
 
+/**
+ * If the cost never changed, a single number,
+ * if the cost changed, an array with the release value,
+ * and subsequent tuples representing updates of the value
+*/
+type ItemCost = number | [number, ...Array<[Version, number]>];
+
 type Item = {
   id: number
   name: string
   isMember: boolean
   type: ItemType
-  cost: number
+  cost: ItemCost
   isEngine2: boolean
   isEngine3: boolean
   isEPF: boolean
