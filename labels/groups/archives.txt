@@ -203,6 +203,10 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
 
+**2010**/island_adventure_construction/**rooms**/beach.swf:14adceb73e03a3ddab57eee7341a62ee - RoomsBeach-IslandAdventureParty2010Const.swf
+**2010**/island_adventure_construction/**rooms**/cove.swf:29dc95e58fe73bbcf46d48e241edc206 - IslandAdventureParty2011ConstCove.swf
+**2010**/island_adventure_construction/**rooms**/plaza.swf:c908e10da53cdaae7d0e9e3ab887f3cd - IslandAdventureParty2010Const.swf
+**2010**/island_adventure_construction/**rooms**/town.swf:c37953a92969d26163683bc91e26c50d - RoomsTown-IslandAdventureParty2010Pre.swf
 **2010**/island_adventure/**rooms**/beach.swf:c2d8d2c97c4bb9585c79829c270f4cef - RoomsBeach-IslandAdventureParty2010.swf
 **2010**/island_adventure/**rooms**/berg.swf:aba78fbb47261537d4da826bed338413 - RoomsBerg-IslandAdventureParty2010.swf
 **2010**/island_adventure/**rooms**/cove.swf:3db4125190e00657aada6fab6e3eb2dd - RoomsCove-IslandAdventureParty2010.swf
