@@ -9,362 +9,362 @@ default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blu
 default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
 - Music from the page: https://archives.clubpenguinwiki.info/wiki/Music
 
-default/seasonal/artwork/maps/island5.swf/2005-09-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
-default/seasonal/artwork/maps/island5.swf/2006-03-29.swf:73e28ad5f032ab87c147e6b3364fb0ad - ArtworkMapsIsland5.swf (second 2006 one)
+**seasonal**/artwork/maps/island5.swf/2005-09-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
+**seasonal**/artwork/maps/island5.swf/2006-03-29.swf:73e28ad5f032ab87c147e6b3364fb0ad - ArtworkMapsIsland5.swf (second 2006 one)
 - Maps above from the https://archives.clubpenguinwiki.info/wiki/Map
 
-default/seasonal/artwork/rooms/book11.swf/2006-##-##.swf:386d390746fa625d64e8bf117ed5ab12 - book11, ArtworkRoomsBook11.swf
+**seasonal**/artwork/rooms/book11.swf/2006-##-##.swf:386d390746fa625d64e8bf117ed5ab12 - book11, ArtworkRoomsBook11.swf
 - Book Room SWFs above from https://archives.clubpenguinwiki.info/wiki/Book_Room
 
-default/seasonal/artwork/rooms/forts12.swf/2006-02-24.swf:94312bc72ca3eb07a193ae80fef55c0f - forts12
-default/seasonal/play/v2/content/global/rooms/forts.swf/2010-05-27.swf:e62ebf662fc1e8d6b498b26849fcff84 - "2008-2010: Soccer Pitch", ESForts-SoccerPitch.swf
+**seasonal**/artwork/rooms/forts12.swf/2006-02-24.swf:94312bc72ca3eb07a193ae80fef55c0f - forts12
+**seasonal**/**rooms**/forts.swf/2010-05-27.swf:e62ebf662fc1e8d6b498b26849fcff84 - "2008-2010: Soccer Pitch", ESForts-SoccerPitch.swf
 - Snow Forts SWFs above from https://archives.clubpenguinwiki.info/wiki/Snow_Forts
 
-default/seasonal/artwork/rooms/plaza12.swf/2006-03-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-06-10.swf:5702f4ef453367bb8838e13c85edec59 - "2011-2012 ruby and the ruby", RoomsPlaza_2-Play8.swf
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-11-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-10-23.swf:8b42920f7346a373ec9ac11e982be244 - "2008-2011 Secrets Of The Bamboo Forest", RoomsPlaza-August2011.swf
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-09-24.swf:8576327bca974c9db9a187e69dbb62bb - 2008-2011 Fairy Fables, RoomsPlaza-Play10.swf
+**seasonal**/artwork/rooms/plaza12.swf/2006-03-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
+**seasonal**/**rooms**/plaza.swf/2010-06-10.swf:5702f4ef453367bb8838e13c85edec59 - "2011-2012 ruby and the ruby", RoomsPlaza_2-Play8.swf
+**seasonal**/**rooms**/plaza.swf/2010-11-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
+**seasonal**/**rooms**/plaza.swf/2010-10-23.swf:8b42920f7346a373ec9ac11e982be244 - "2008-2011 Secrets Of The Bamboo Forest", RoomsPlaza-August2011.swf
+**seasonal**/**rooms**/plaza.swf/2010-09-24.swf:8576327bca974c9db9a187e69dbb62bb - 2008-2011 Fairy Fables, RoomsPlaza-Play10.swf
 - Plaza SWFs above from https://archives.clubpenguinwiki.info/wiki/Plaza
 
-default/seasonal/artwork/rooms/plaza12.swf/2006-02-24.swf:e164bcaa2937eb1658265208b90320ef
+**seasonal**/artwork/rooms/plaza12.swf/2006-02-24.swf:e164bcaa2937eb1658265208b90320ef
 - Plaza SWF from https://archives.clubpenguinwiki.info/wiki/Pizza_Party
 
-default/seasonal/artwork/rooms/rink10.swf/2005-09-12.swf:783dd4564eeb8ceae6fe838d1d2baa7b - rink10
-default/seasonal/play/v2/content/global/rooms/rink.swf/2010-05-27.swf:238dfeddccf3d0f6bedd75a7adb10e0c - 2010 Soccer Pitch, RoomsRink-May2010.swf
-default/static/engine2/play/v2/content/global/rooms/rink.swf:6d6493dc71c4e9a82084f49c69fef712 - 2011 soccer pitch, RoomsRink-May2011.swf
+**seasonal**/artwork/rooms/rink10.swf/2005-09-12.swf:783dd4564eeb8ceae6fe838d1d2baa7b - rink10
+**seasonal**/**rooms**/rink.swf/2010-05-27.swf:238dfeddccf3d0f6bedd75a7adb10e0c - 2010 Soccer Pitch, RoomsRink-May2010.swf
+**engine2**/**rooms**/rink.swf:6d6493dc71c4e9a82084f49c69fef712 - 2011 soccer pitch, RoomsRink-May2011.swf
 - Stadium SWFs above from https://archives.clubpenguinwiki.info/wiki/Stadium
 
-default/seasonal/artwork/rooms/town10.swf/2005-09-12.swf:6e7c605099e1dfeaa4f6a059814b9755 - town10
-default/seasonal/play/v2/content/global/rooms/town.swf/2008-##-##.swf:34e49ae32a948b0e67cbd5a03576754f - 2008-2011 Soccer Pitch, RoomsTown_2.swf
+**seasonal**/artwork/rooms/town10.swf/2005-09-12.swf:6e7c605099e1dfeaa4f6a059814b9755 - town10
+**seasonal**/**rooms**/town.swf/2008-##-##.swf:34e49ae32a948b0e67cbd5a03576754f - 2008-2011 Soccer Pitch, RoomsTown_2.swf
 - Town SWFs above from https://archives.clubpenguinwiki.info/wiki/Town_Center
 
-default/seasonal/artwork/rooms/village11.swf/2005-12-22.swf:05463cbcd61720f82f6c8dc804df8b35 - village11
-default/static/engine2/play/v2/content/global/rooms/village.swf:8ed5cd3899856d54f4e20fa9c94fe895 - 2010-2012, RoomsVillage_2.swf
+**seasonal**/artwork/rooms/village11.swf/2005-12-22.swf:05463cbcd61720f82f6c8dc804df8b35 - village11
+**engine2**/**rooms**/village.swf:8ed5cd3899856d54f4e20fa9c94fe895 - 2010-2012, RoomsVillage_2.swf
 - Ski Village SWFs above from https://archives.clubpenguinwiki.info/wiki/Ski_Village
 
-default/seasonal/play/v2/content/global/rooms/berg.swf/2009-07-##.swf:df774dad12c2f7144a94d05fc2486ee6 - Summer 2009, "RoomsBerg.swf"
+**seasonal**/**rooms**/berg.swf/2009-07-##.swf:df774dad12c2f7144a94d05fc2486ee6 - Summer 2009, "RoomsBerg.swf"
 - Ice Berg SWFs above from https://archives.clubpenguinwiki.info/wiki/Ice_Berg
 
-default/seasonal/play/v2/content/global/rooms/cove.swf/2009-01-##.swf:7ac1f6c78de3ba5c4e53ec9d8cc745cd - "2009-2011", RoomsCove.swf
+**seasonal**/**rooms**/cove.swf/2009-01-##.swf:7ac1f6c78de3ba5c4e53ec9d8cc745cd - "2009-2011", RoomsCove.swf
 - Cove SWFs above from https://archives.clubpenguinwiki.info/wiki/Cove
 
-default/seasonal/play/v2/content/global/rooms/dock.swf/2009-##-##.swf:0cc55fd56704019b6ffcffb9ce680822 - "2009-2012", RoomsDock_1.swf
+**seasonal**/**rooms**/dock.swf/2009-##-##.swf:0cc55fd56704019b6ffcffb9ce680822 - "2009-2012", RoomsDock_1.swf
 - Dock SWFs above from https://archives.clubpenguinwiki.info/wiki/Dock
 
-default/seasonal/play/v2/content/global/rooms/dojoext.swf/2009-11-27.swf:e5fa027e233e024753b2d9901d1e9076 - "Nov. 2009-Nov. 2010", RoomsDojoext_2.swf
-default/seasonal/play/v2/content/global/rooms/dojoext.swf/2010-12-03.swf:e20a0d96a1f351f72d05d707dc4bb1f7 - "Nov. 2010-Nov. 2011", RoomsDojoext_3.swf
+**seasonal**/**rooms**/dojoext.swf/2009-11-27.swf:e5fa027e233e024753b2d9901d1e9076 - "Nov. 2009-Nov. 2010", RoomsDojoext_2.swf
+**seasonal**/**rooms**/dojoext.swf/2010-12-03.swf:e20a0d96a1f351f72d05d707dc4bb1f7 - "Nov. 2010-Nov. 2011", RoomsDojoext_3.swf
 - Dojo Courtyard SWFs above from https://archives.clubpenguinwiki.info/wiki/Dojo_Courtyard
 
-default/seasonal/play/v2/content/global/rooms/ship.swf/2008-##-##.swf:55b2ce742b38f4af851cd9c02eb03c89 - ship N/A, RoomsShip.swf
+**seasonal**/**rooms**/ship.swf/2008-##-##.swf:55b2ce742b38f4af851cd9c02eb03c89 - ship N/A, RoomsShip.swf
 - Pirate Ship SWFs above are from https://archives.clubpenguinwiki.info/wiki/Pirate_Ship
 
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-08-26.swf:17136c87052e7f6878360cadcd0006f3 - October 9, 2009, RoomsStage-October2009.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-06-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-11-24.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-10-23.swf:b90436acfadaa810c597556b156d81db - October 8, 2010, HalloweenParty2010Stage.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-09-24.swf:b89006589daad1ca8babb391aa6c7265 - June 12, 2009, RoomsStage-June2009.swf
+**seasonal**/**rooms**/stage.swf/2010-08-26.swf:17136c87052e7f6878360cadcd0006f3 - October 9, 2009, RoomsStage-October2009.swf
+**seasonal**/**rooms**/stage.swf/2010-06-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
+**seasonal**/**rooms**/stage.swf/2010-11-24.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
+**seasonal**/**rooms**/stage.swf/2010-10-23.swf:b90436acfadaa810c597556b156d81db - October 8, 2010, HalloweenParty2010Stage.swf
+**seasonal**/**rooms**/stage.swf/2010-09-24.swf:b89006589daad1ca8babb391aa6c7265 - June 12, 2009, RoomsStage-June2009.swf
 - Stage SWFs above are from https://archives.clubpenguinwiki.info/wiki/The_Stage
 
-default/static/engine2/play/v2/content/global/rooms/mine.swf:11345fd71ff764000c3fa8fe4dfed1aa - 2010-2013, RoomsMine_2.swf
+**engine2**/**rooms**/mine.swf:11345fd71ff764000c3fa8fe4dfed1aa - 2010-2013, RoomsMine_2.swf
 - Mine SWFs are from https://archives.clubpenguinwiki.info/wiki/Mine
 
-default/static/engine2/play/v2/content/global/rooms/shack.swf:9109f3a445ad2313446939d49132e50c - December 2011, RoomsShack-September2010.swf (weirdly mismatching)
+**engine2**/**rooms**/shack.swf:9109f3a445ad2313446939d49132e50c - December 2011, RoomsShack-September2010.swf (weirdly mismatching)
 - Mine Shack SWFs are from https://archives.clubpenguinwiki.info/wiki/Mine_Shack
 
-default/static/engine2/play/v2/content/global/rooms/agentcom.swf:652d2447ffca67913e0b43fde5795b4b - Agentcom June 15, 2010, RoomsAgentcom-June2010_3.swf
+**engine2**/**rooms**/agentcom.swf:652d2447ffca67913e0b43fde5795b4b - Agentcom June 15, 2010, RoomsAgentcom-June2010_3.swf
 - EPF room SWFs are from https://archives.clubpenguinwiki.info/wiki/EPF_Command_Room
 
-default/static/engine1/artwork/catalogue/clothing0509.swf:68259fe9af4e06741c856025b8769d21
-default/static/engine1/artwork/catalogue/clothing0510.swf:af6cabf52ba9ecbb9dd92b1a7c7ca697
-default/static/engine1/artwork/catalogue/clothing0511.swf:408594b6cfed023025408445fdf9d265
-default/static/engine1/artwork/catalogue/clothing0512.swf:bb19112170d67f0438ebf980a88e89be
-default/static/engine1/artwork/catalogue/clothing0601.swf:bf34d23ab24f836e3c8c6a71602885df
-default/static/engine1/artwork/catalogue/clothing0602.swf:5fa5ad1c0a91b767fe49f7ef7348bba0
-default/static/engine1/artwork/catalogue/clothing0603.swf:421dd6d9848374e8616d2114f953c5c3
-default/static/engine1/artwork/catalogue/clothing0604.swf:fc7b7810842cb66c6150704743b9e1f9
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-05-07.swf:91777170b6cb9a97a67587b612ceb4bc
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-11-05.swf:8d01e6020def98f6b48046dd18a4a4fc
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-10-01.swf:77c7c552d8ee8c02ab1f79ebdc06f754
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-09-03.swf:58042c37012177787ea0e34ff238fb49
+**engine1**/artwork/catalogue/clothing0509.swf:68259fe9af4e06741c856025b8769d21
+**engine1**/artwork/catalogue/clothing0510.swf:af6cabf52ba9ecbb9dd92b1a7c7ca697
+**engine1**/artwork/catalogue/clothing0511.swf:408594b6cfed023025408445fdf9d265
+**engine1**/artwork/catalogue/clothing0512.swf:bb19112170d67f0438ebf980a88e89be
+**engine1**/artwork/catalogue/clothing0601.swf:bf34d23ab24f836e3c8c6a71602885df
+**engine1**/artwork/catalogue/clothing0602.swf:5fa5ad1c0a91b767fe49f7ef7348bba0
+**engine1**/artwork/catalogue/clothing0603.swf:421dd6d9848374e8616d2114f953c5c3
+**engine1**/artwork/catalogue/clothing0604.swf:fc7b7810842cb66c6150704743b9e1f9
+**seasonal**/**local**/catalogues/clothing.swf/2010-05-07.swf:91777170b6cb9a97a67587b612ceb4bc
+**seasonal**/**local**/catalogues/clothing.swf/2010-11-05.swf:8d01e6020def98f6b48046dd18a4a4fc
+**seasonal**/**local**/catalogues/clothing.swf/2010-10-01.swf:77c7c552d8ee8c02ab1f79ebdc06f754
+**seasonal**/**local**/catalogues/clothing.swf/2010-09-03.swf:58042c37012177787ea0e34ff238fb49
 - Penguin Style SWFs are from https://archives.clubpenguinwiki.info/wiki/Penguin_Style
 
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-07-22.swf:2184c1ce32f14d0cdb416ef231d192a4 - May 2011, May2011UnderwaterAdventureCostume.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-06-10.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July 2009, July09Costume.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-09-24.swf:ce62e893ea30c32ebd145e92dc7485b2 - January 2010, Jan10Stage.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-11-24.swf:c440fd617a47326beb10db202e790a06 - November 2010, 2010SpacePlanetAdventureYCostumeTrunk.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-10-23.swf:9243410ff3743f5d48a664729efbe2bc - October 2010, October2010Costume.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-07-22.swf:2184c1ce32f14d0cdb416ef231d192a4 - May 2011, May2011UnderwaterAdventureCostume.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-06-10.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July 2009, July09Costume.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-09-24.swf:ce62e893ea30c32ebd145e92dc7485b2 - January 2010, Jan10Stage.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-11-24.swf:c440fd617a47326beb10db202e790a06 - November 2010, 2010SpacePlanetAdventureYCostumeTrunk.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-10-23.swf:9243410ff3743f5d48a664729efbe2bc - October 2010, October2010Costume.swf
 - Costume Trunk SWFs are from https://archives.clubpenguinwiki.info/wiki/Costume_Trunk
 
-default/static/engine1/artwork/catalogue/furniture0603.swf:e2990d551ea5b107edf1650dd6c28fa2
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-08-20.swf:a45abe51855c16e84e0d1bd518a6c86f
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-05-14.swf:a8c3ade6dbc407681fa5ea075b6602a0
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-11-12.swf:f5647ffcfcb283fd24572f94954ee66b
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-10-15.swf:cbac9013f8371c7eb0a3f41c15240068
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-09-24.swf:5ced224c6d77d52ff978fd817a38b825
+**engine1**/artwork/catalogue/furniture0603.swf:e2990d551ea5b107edf1650dd6c28fa2
+**seasonal**/**local**/catalogues/furniture.swf/2010-08-20.swf:a45abe51855c16e84e0d1bd518a6c86f
+**seasonal**/**local**/catalogues/furniture.swf/2010-05-14.swf:a8c3ade6dbc407681fa5ea075b6602a0
+**seasonal**/**local**/catalogues/furniture.swf/2010-11-12.swf:f5647ffcfcb283fd24572f94954ee66b
+**seasonal**/**local**/catalogues/furniture.swf/2010-10-15.swf:cbac9013f8371c7eb0a3f41c15240068
+**seasonal**/**local**/catalogues/furniture.swf/2010-09-24.swf:5ced224c6d77d52ff978fd817a38b825
 - Furniture Catalogues are from https://archives.clubpenguinwiki.info/wiki/Furniture_%26_Igloo_Catalog
 
-default/static/engine1/artwork/catalogue/igloo0604.swf:bfb78b45a72f09203502885452c98844
-default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-04-16.swf:35dccaf2c41f25936bd830d74f1a4851
-default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-08-20.swf:06eb5f424a68b57336591c45fd3b480d
-default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-11-12.swf:7729348915fce4f3221063db999f40de
+**engine1**/artwork/catalogue/igloo0604.swf:bfb78b45a72f09203502885452c98844
+**seasonal**/**local**/catalogues/igloo.swf/2010-04-16.swf:35dccaf2c41f25936bd830d74f1a4851
+**seasonal**/**local**/catalogues/igloo.swf/2010-08-20.swf:06eb5f424a68b57336591c45fd3b480d
+**seasonal**/**local**/catalogues/igloo.swf/2010-11-12.swf:7729348915fce4f3221063db999f40de
 - Igloo Catalogues are from https://archives.clubpenguinwiki.info/wiki/Igloo_Catalog
 
-default/seasonal/play/v2/content/local/en/catalogues/ninja.swf/2009-11-13.swf:38468d91e2d142375ff056e47b0a4593
+**seasonal**/**local**/catalogues/ninja.swf/2009-11-13.swf:38468d91e2d142375ff056e47b0a4593
 - Martial Artworks are from https://archives.clubpenguinwiki.info/wiki/Martial_Artworks
 
-default/seasonal/play/v2/content/local/en/catalogues/pets.swf/2010-03-19.swf:ef3b1151d688f85d2abab2a204414708
+**seasonal**/**local**/catalogues/pets.swf/2010-03-19.swf:ef3b1151d688f85d2abab2a204414708
 - Puffle Catalogs are from https://archives.clubpenguinwiki.info/wiki/Puffle_Catalog
 
-default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-05-27.swf:4f567e0b1274ae9acd8a124ed0a1d7be
-default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-09-24.swf:0f627c87e8cf21fa056a2be90871f599
+**seasonal**/**local**/catalogues/sport.swf/2010-05-27.swf:4f567e0b1274ae9acd8a124ed0a1d7be
+**seasonal**/**local**/catalogues/sport.swf/2010-09-24.swf:0f627c87e8cf21fa056a2be90871f599
 - Snow and Sports catalogs are from https://archives.clubpenguinwiki.info/wiki/Snow_%26_Sports
 
-default/seasonal/play/v2/content/local/en/catalogues/music.swf/2010-07-15.swf:49014021f747b00be152319e740fc8d5 - MusicJam2010UpdateInstruments.swf
+**seasonal**/**local**/catalogues/music.swf/2010-07-15.swf:49014021f747b00be152319e740fc8d5 - MusicJam2010UpdateInstruments.swf
 - Music Catalogs from https://archives.clubpenguinwiki.info/wiki/Music_Catalog
 
-default/seasonal/play/v2/content/local/en/forms/library.swf/2010-10-23.swf:6be47feb2a3e8af2e92a4f77bb405f6e
+**seasonal**/**local**/forms/library.swf/2010-10-23.swf:6be47feb2a3e8af2e92a4f77bb405f6e
 - Library SWFs are from https://archives.clubpenguinwiki.info/wiki/Library
 
-default/seasonal/play/v2/content/local/en/postcards/111.swf/2011-02-17.swf:b4642b5870486b4748193bdbfa3be74b
+**seasonal**/**local**/postcards/111.swf/2011-02-17.swf:b4642b5870486b4748193bdbfa3be74b
 - 111 Postcard is from https://archives.clubpenguinwiki.info/wiki/Postcards
 
-default/special/play/v2/games/book1/bootstrap.swf/2013.swf:484e64ea02f4963845bb5303fb336811
+**special**/**games**/book1/bootstrap.swf/2013.swf:484e64ea02f4963845bb5303fb336811
 - My Puffle SWF from https://archives.clubpenguinwiki.info/wiki/My_Puffle
 
-default/static/engine2/play/v2/games/quests/global/rooms/conclusion3.swf:728a6fc5a569fef0c27205de1cc3cc2a - conclusion 3
-default/static/engine2/play/v2/games/quests/q4/common/rooms/conclusion.swf:728a6fc5a569fef0c27205de1cc3cc2a - same file as above
-default/static/engine3/play/v2/games/quests/global/rooms/conclusion3.swf:d4d9d0d3540eeaecf936c0fd9ac890e5 - conclusion 2
-default/static/engine3/play/v2/games/quests/q4/common/rooms/conclusion.swf:d4d9d0d3540eeaecf936c0fd9ac890e5 - same file as above
+**engine2**/**games**/quests/global/rooms/conclusion3.swf:728a6fc5a569fef0c27205de1cc3cc2a - conclusion 3
+**engine2**/**games**/quests/q4/common/rooms/conclusion.swf:728a6fc5a569fef0c27205de1cc3cc2a - same file as above
+**engine3**/**games**/quests/global/rooms/conclusion3.swf:d4d9d0d3540eeaecf936c0fd9ac890e5 - conclusion 2
+**engine3**/**games**/quests/q4/common/rooms/conclusion.swf:d4d9d0d3540eeaecf936c0fd9ac890e5 - same file as above
 - PSA Misc SWFs from https://archives.clubpenguinwiki.info/wiki/PSA_Secret_Missions
 
-default/static/engine2_3/play/v2/games/mixmaster/ChooseSong.swf:655cb0da971508e7e4c209b7890581ae - ChooseSong (2), GamesMixmasterChooseSong_2011.swf
+**engine2_3**/**games**/mixmaster/ChooseSong.swf:655cb0da971508e7e4c209b7890581ae - ChooseSong (2), GamesMixmasterChooseSong_2011.swf
 - DJ3K SWFs from https://archives.clubpenguinwiki.info/wiki/DJ3K
 
-default/static/engine2_3/play/v2/games/bell/lang/en/backgroundText.swf:eb7bed45664cec0552434f1efd1e3c66 - BellEn_backgroundText.swf
-default/static/engine2_3/play/v2/games/bell/lang/en/javaBag.swf:5c8a790d61b851022a0c215202054f46 - BellEn_javaBag.swf
-default/static/engine2_3/play/v2/games/bell/lang/en/menu.swf:36a4020fc8d03c6f99ba83f77e2bb1a7 - BellEn_menu.swf
+**engine2_3**/**games**/bell/lang/en/backgroundText.swf:eb7bed45664cec0552434f1efd1e3c66 - BellEn_backgroundText.swf
+**engine2_3**/**games**/bell/lang/en/javaBag.swf:5c8a790d61b851022a0c215202054f46 - BellEn_javaBag.swf
+**engine2_3**/**games**/bell/lang/en/menu.swf:36a4020fc8d03c6f99ba83f77e2bb1a7 - BellEn_menu.swf
 - Ring the Bell SWFs from https://archives.clubpenguinwiki.info/wiki/Lunar_Launch
 
-default/event/2010/5th_anniversary_party/play/v2/content/global/binoculars/empty.swf:bcb238454dfbaf0bd86bed0cfc0fb2e0 - Storm_on_horizon.swf
+**2010**/5th_anniversary_party/**global**/binoculars/empty.swf:bcb238454dfbaf0bd86bed0cfc0fb2e0 - Storm_on_horizon.swf
 - Binoculars SWFs from https://archives.clubpenguinwiki.info/wiki/Binoculars
 
-default/static/engine1/artwork/news/news1.swf:4b8edb3cb969c2041ebde5763187f12a
-default/static/engine1/artwork/news/news10.swf:995f10c9c2c850a414d27eef07a4c43c
-default/static/engine1/artwork/news/news11.swf:7227d9a2e9d6dd9deadf5ae4c95f3d24
-default/static/engine1/artwork/news/news2.swf:95f7ec1b69876bd0731403f43abbb625
-default/static/engine1/artwork/news/news3.swf:fc4353621475ae4d2d9378cc06b7a04f
-default/static/engine1/artwork/news/news4.swf:76aff620a2ef084c1d99a9708e72580e
-default/static/engine1/artwork/news/news5.swf:2c43d2e0ff3e27367a049668964cc985
-default/static/engine1/artwork/news/news6.swf:7c47cf65bd9a0d501d92853d0394d200 - #6 21, News6.swf
-default/static/engine1/artwork/news/news7.swf:98bb7e9a6f08014bf08c9fbaed4082ef
-default/static/engine1/artwork/news/news8.swf:0f0ac9405b14e3ed9aa1227abac57198
-default/static/engine1/artwork/news/news9.swf:beb0792208e43a283d59eecf9219c3d0
-default/static/engine1/artwork/news/newsfan.swf:7197115a25c51621e71ce4a5975bdba4
-default/static/engine1/artwork/news/news12.swf:4b15eac8cd0e598321a0acc8d4bab6a6
-default/static/engine1/artwork/news/news13.swf:1fb60c280a4045ba4b605875d57ff768
-default/static/engine1/artwork/news/news14.swf:98f06cd57abd62cf79e0a9edd2a3ade5
-default/static/engine1/artwork/news/news15.swf:4a0a5662ed727c50d39422308a129f3e
-default/static/engine1/artwork/news/news16.swf:9d1cc6ac0db020f75b9e6665a76195b3
-default/static/engine1/artwork/news/news17.swf:9c1cccc667a65691c7ea20fe3e7f7dd1
-default/static/engine1/artwork/news/news18.swf:fbd5f9c8ac02e07012a414a29583cd6b
-default/static/engine1/artwork/news/news19.swf:3b953e45535cfb3d40f6ad4cb2ccce73
-default/static/engine1/artwork/news/news20.swf:62e1eb5fd408ba0f9a90ae67427ad53c
-default/static/engine1/artwork/news/news21.swf:165093b0a31f2acee6e8d70d6b3aff34
-default/static/engine1/artwork/news/news22.swf:b77fb8214b3a18b1d7ee56e45b455ef7
-default/static/engine1/artwork/news/news23.swf:4cf6d0f863d9c181aa9e304db3868899
-default/static/engine1/artwork/news/news24.swf:88558904c03190a38862f2819e9a6952
-default/static/engine1/artwork/news/news25.swf:0aeb09bf34d48f57c7f22f761ceabeeb
-default/static/engine1/artwork/news/news26.swf:23bc047cc88a8d89bc379a0c829d31f9
+**engine1**/artwork/news/news1.swf:4b8edb3cb969c2041ebde5763187f12a
+**engine1**/artwork/news/news10.swf:995f10c9c2c850a414d27eef07a4c43c
+**engine1**/artwork/news/news11.swf:7227d9a2e9d6dd9deadf5ae4c95f3d24
+**engine1**/artwork/news/news2.swf:95f7ec1b69876bd0731403f43abbb625
+**engine1**/artwork/news/news3.swf:fc4353621475ae4d2d9378cc06b7a04f
+**engine1**/artwork/news/news4.swf:76aff620a2ef084c1d99a9708e72580e
+**engine1**/artwork/news/news5.swf:2c43d2e0ff3e27367a049668964cc985
+**engine1**/artwork/news/news6.swf:7c47cf65bd9a0d501d92853d0394d200 - #6 21, News6.swf
+**engine1**/artwork/news/news7.swf:98bb7e9a6f08014bf08c9fbaed4082ef
+**engine1**/artwork/news/news8.swf:0f0ac9405b14e3ed9aa1227abac57198
+**engine1**/artwork/news/news9.swf:beb0792208e43a283d59eecf9219c3d0
+**engine1**/artwork/news/newsfan.swf:7197115a25c51621e71ce4a5975bdba4
+**engine1**/artwork/news/news12.swf:4b15eac8cd0e598321a0acc8d4bab6a6
+**engine1**/artwork/news/news13.swf:1fb60c280a4045ba4b605875d57ff768
+**engine1**/artwork/news/news14.swf:98f06cd57abd62cf79e0a9edd2a3ade5
+**engine1**/artwork/news/news15.swf:4a0a5662ed727c50d39422308a129f3e
+**engine1**/artwork/news/news16.swf:9d1cc6ac0db020f75b9e6665a76195b3
+**engine1**/artwork/news/news17.swf:9c1cccc667a65691c7ea20fe3e7f7dd1
+**engine1**/artwork/news/news18.swf:fbd5f9c8ac02e07012a414a29583cd6b
+**engine1**/artwork/news/news19.swf:3b953e45535cfb3d40f6ad4cb2ccce73
+**engine1**/artwork/news/news20.swf:62e1eb5fd408ba0f9a90ae67427ad53c
+**engine1**/artwork/news/news21.swf:165093b0a31f2acee6e8d70d6b3aff34
+**engine1**/artwork/news/news22.swf:b77fb8214b3a18b1d7ee56e45b455ef7
+**engine1**/artwork/news/news23.swf:4cf6d0f863d9c181aa9e304db3868899
+**engine1**/artwork/news/news24.swf:88558904c03190a38862f2819e9a6952
+**engine1**/artwork/news/news25.swf:0aeb09bf34d48f57c7f22f761ceabeeb
+**engine1**/artwork/news/news26.swf:23bc047cc88a8d89bc379a0c829d31f9
 - Newspapers are from https://archives.clubpenguinwiki.info/wiki/Club_Penguin_Times
 
-default/event/2006/valentine_day_celebration/artwork/rooms/dance10.swf:3966cdd68a38b3699054f480cd62b8af
-default/event/2006/valentine_day_celebration/artwork/rooms/lounge10.swf:5a998edeb35644f57cd7f5f21f161c5c
+**2006**/valentine_day_celebration/artwork/rooms/dance10.swf:3966cdd68a38b3699054f480cd62b8af
+**2006**/valentine_day_celebration/artwork/rooms/lounge10.swf:5a998edeb35644f57cd7f5f21f161c5c
 - Valentine Day files above are all from https://archives.clubpenguinwiki.info/wiki/Valentine%27s_Day_Celebration
 
-default/event/2006/pizza_parlor_opening_party/artwork/rooms/forts12.swf:2f15c09916bbfee72f2c7acb6f26c6aa
-default/event/2006/pizza_parlor_opening_party/artwork/rooms/pizza12.swf:b51acd93071d8a6c3086465f91256176 - Pizza Parlor (1), or ArtworkRoomsPizza10.swf
-default/event/2006/pizza_parlor_opening_party/artwork/rooms/town10.swf:619bbab02d203a0bfa47bcbe98fc47d6 - Town (2), or ArtworkRoomsTown13.swf
+**2006**/pizza_parlor_opening_party/artwork/rooms/forts12.swf:2f15c09916bbfee72f2c7acb6f26c6aa
+**2006**/pizza_parlor_opening_party/artwork/rooms/pizza12.swf:b51acd93071d8a6c3086465f91256176 - Pizza Parlor (1), or ArtworkRoomsPizza10.swf
+**2006**/pizza_parlor_opening_party/artwork/rooms/town10.swf:619bbab02d203a0bfa47bcbe98fc47d6 - Town (2), or ArtworkRoomsTown13.swf
 - Pizza Party files above are all from https://archives.clubpenguinwiki.info/wiki/Pizza_Party
 
-default/event/2006/april_fools_2006/artwork/rooms/dance10.swf:135f44a0c19815fa788e0d09e7871ff0
-default/event/2006/april_fools_2006/artwork/rooms/dojo10.swf:7afa1784b1a19b527eaff4fb5e51dd82
-default/event/2006/april_fools_2006/artwork/rooms/forts12.swf:0b9ebd02ea5aaa8b7873df0a2afcd0bf
-default/event/2006/april_fools_2006/artwork/rooms/lodge11.swf:5c05ce25eb1d690804b88a086267c9a2
-default/event/2006/april_fools_2006/artwork/rooms/plaza12.swf:4730d1a43cd5ff2533d4892981908b4f
-default/event/2006/april_fools_2006/artwork/rooms/rink10.swf:3f801ef0552e16e3af83d10169d48c44
-default/event/2006/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
-default/event/2006/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
+**2006**/april_fools_2006/artwork/rooms/dance10.swf:135f44a0c19815fa788e0d09e7871ff0
+**2006**/april_fools_2006/artwork/rooms/dojo10.swf:7afa1784b1a19b527eaff4fb5e51dd82
+**2006**/april_fools_2006/artwork/rooms/forts12.swf:0b9ebd02ea5aaa8b7873df0a2afcd0bf
+**2006**/april_fools_2006/artwork/rooms/lodge11.swf:5c05ce25eb1d690804b88a086267c9a2
+**2006**/april_fools_2006/artwork/rooms/plaza12.swf:4730d1a43cd5ff2533d4892981908b4f
+**2006**/april_fools_2006/artwork/rooms/rink10.swf:3f801ef0552e16e3af83d10169d48c44
+**2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
+**2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
 
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/beach.swf:b1eca2c3d512e8257097b258fb1e7f9f
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/coffee.swf:f3c31a1b1e552aecc4145c98b2d3a358
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/cove.swf:12ff02b8f7d442eba24afb7ae1bcf11b
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/dock.swf:0d50cfcd191e4ddda39561d76b57f63b
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/forest.swf:f304935191d3d2a6d603e9023129951f
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/forts.swf:ecb080c85d4eb95894c290b2465ac921
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/light.swf:ac193121bb2060eb154c9cf091ad941c
-default/event/2010/music_jam_construction/play/v2/content/global/rooms/village.swf:47bd2850a25246c68c1c79edf2958d2f
+**2010**/music_jam_construction/**rooms**/beach.swf:b1eca2c3d512e8257097b258fb1e7f9f
+**2010**/music_jam_construction/**rooms**/coffee.swf:f3c31a1b1e552aecc4145c98b2d3a358
+**2010**/music_jam_construction/**rooms**/cove.swf:12ff02b8f7d442eba24afb7ae1bcf11b
+**2010**/music_jam_construction/**rooms**/dock.swf:0d50cfcd191e4ddda39561d76b57f63b
+**2010**/music_jam_construction/**rooms**/forest.swf:f304935191d3d2a6d603e9023129951f
+**2010**/music_jam_construction/**rooms**/forts.swf:ecb080c85d4eb95894c290b2465ac921
+**2010**/music_jam_construction/**rooms**/light.swf:ac193121bb2060eb154c9cf091ad941c
+**2010**/music_jam_construction/**rooms**/village.swf:47bd2850a25246c68c1c79edf2958d2f
 - All Music Jam 2010 construction files above are from https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
 
-default/event/2010/4th_of_july/play/v2/content/global/rooms/berg.swf:a3f479eb84f74bee145dabd9a277bb63
+**2010**/4th_of_july/**rooms**/berg.swf:a3f479eb84f74bee145dabd9a277bb63
 - This is the Iceberg from the Music Jam 2010 construction grabbed from here https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
 - It has fireworks which are seemingly from 4th of July
 
-default/event/2010/4th_of_july/play/v2/content/global/rooms/mtn.swf:8ca4aa522a1b9fc3a10eb14b1210b432
+**2010**/4th_of_july/**rooms**/mtn.swf:8ca4aa522a1b9fc3a10eb14b1210b432
 - This is actually from the 2010 New Years Fireworks Ski Hill room, grabbed from here https://archives.clubpenguinwiki.info/wiki/Fireworks
 - They appear to be the same file, and once that party is added, it should be moved away from 4th of July
 
-default/event/2010/music_jam/play/v2/content/global/rooms/beach.swf:b2ea234a9465e8f46e7354cccc84427e
-default/event/2010/music_jam/play/v2/content/global/rooms/berg.swf:dd304bfe0b4d9cba66a221fc879c6eb1
-default/event/2010/music_jam/play/v2/content/global/rooms/cave.swf:cecc47e59fdfc46bfa2aa25f4cf2e372
-default/event/2010/music_jam/play/v2/content/global/rooms/coffee.swf:9f317129dded1a429e217a511f4c87fa
-default/event/2010/music_jam/play/v2/content/global/rooms/cove.swf:eefe65437f6566e4313b8d70fb6e6c3b
-default/event/2010/music_jam/play/v2/content/global/rooms/dance.swf:e9f04031c2376d37ca8d4ea7334b3e37
-default/event/2010/music_jam/play/v2/content/global/rooms/dock.swf:c6abc6d38196db36ab908f314932f493
-default/event/2010/music_jam/play/v2/content/global/rooms/forest.swf:4070116e3f42dfd9b726e40c6106f614
-default/event/2010/music_jam/play/v2/content/global/rooms/forts.swf:87a0ec72de0b5982e0834094060e3b29
-default/event/2010/music_jam/play/v2/content/global/rooms/light.swf:74952b04eb4115fa086b90b47784fb66
-default/event/2010/music_jam/play/v2/content/global/rooms/lounge.swf:40988b82abf4d75c7afe12dd5bf047bc
-default/event/2010/music_jam/play/v2/content/global/rooms/mine.swf:5e1cd1246a876d5a048aa290470b730c
-default/event/2010/music_jam/play/v2/content/global/rooms/party.swf:70ae0b77a69b33fc329bd26e6bd9e5df
-default/event/2010/music_jam/play/v2/content/global/rooms/party2.swf:a9d18e3bef68352830d87bf1519d8efc
-default/event/2010/music_jam/play/v2/content/global/rooms/party3.swf:27d7de7be00c92a09ec5c9ec9286769c
-default/event/2010/music_jam/play/v2/content/global/rooms/party4.swf:82dea14dfc56eb131b427d042bf50687
-default/event/2010/music_jam/play/v2/content/global/rooms/pizza.swf:7ad49aa9c2a45e33cd9c610ee9c40a2b
-default/event/2010/music_jam/play/v2/content/global/rooms/plaza.swf:cdbec5eaad0b96964d004070235d09ae
-default/event/2010/music_jam/play/v2/content/global/rooms/rink.swf:7e232c955d5665ca58418f32f7356dc1
-default/event/2010/music_jam/play/v2/content/global/rooms/town.swf:40274e6ab503c52b00a1a976a89bf5eb
-default/event/2010/music_jam/play/v2/content/global/rooms/village.swf:0686283a74c32d589222162578d61faf
-default/event/2010/music_jam/play/v2/content/local/en/catalogues/merch.swf:3c64d35813029a81c2b506ae367efda7
-default/event/2010/music_jam/play/v2/content/local/en/close_ups/poster.swf:1e560d070a380996d2cc491d160557cd
-default/event/2010/music_jam/play/v2/content/local/en/login/backgrounds/musicjam1.swf:903cba090ea3186038c9ad7a2dc3e51f
-default/event/2010/music_jam/play/v2/content/local/en/login/backgrounds/musicjam2.swf:3c6d91a4afbe9c5aa70324cd6e3a5d2d
+**2010**/music_jam/**rooms**/beach.swf:b2ea234a9465e8f46e7354cccc84427e
+**2010**/music_jam/**rooms**/berg.swf:dd304bfe0b4d9cba66a221fc879c6eb1
+**2010**/music_jam/**rooms**/cave.swf:cecc47e59fdfc46bfa2aa25f4cf2e372
+**2010**/music_jam/**rooms**/coffee.swf:9f317129dded1a429e217a511f4c87fa
+**2010**/music_jam/**rooms**/cove.swf:eefe65437f6566e4313b8d70fb6e6c3b
+**2010**/music_jam/**rooms**/dance.swf:e9f04031c2376d37ca8d4ea7334b3e37
+**2010**/music_jam/**rooms**/dock.swf:c6abc6d38196db36ab908f314932f493
+**2010**/music_jam/**rooms**/forest.swf:4070116e3f42dfd9b726e40c6106f614
+**2010**/music_jam/**rooms**/forts.swf:87a0ec72de0b5982e0834094060e3b29
+**2010**/music_jam/**rooms**/light.swf:74952b04eb4115fa086b90b47784fb66
+**2010**/music_jam/**rooms**/lounge.swf:40988b82abf4d75c7afe12dd5bf047bc
+**2010**/music_jam/**rooms**/mine.swf:5e1cd1246a876d5a048aa290470b730c
+**2010**/music_jam/**rooms**/party.swf:70ae0b77a69b33fc329bd26e6bd9e5df
+**2010**/music_jam/**rooms**/party2.swf:a9d18e3bef68352830d87bf1519d8efc
+**2010**/music_jam/**rooms**/party3.swf:27d7de7be00c92a09ec5c9ec9286769c
+**2010**/music_jam/**rooms**/party4.swf:82dea14dfc56eb131b427d042bf50687
+**2010**/music_jam/**rooms**/pizza.swf:7ad49aa9c2a45e33cd9c610ee9c40a2b
+**2010**/music_jam/**rooms**/plaza.swf:cdbec5eaad0b96964d004070235d09ae
+**2010**/music_jam/**rooms**/rink.swf:7e232c955d5665ca58418f32f7356dc1
+**2010**/music_jam/**rooms**/town.swf:40274e6ab503c52b00a1a976a89bf5eb
+**2010**/music_jam/**rooms**/village.swf:0686283a74c32d589222162578d61faf
+**2010**/music_jam/**local**/catalogues/merch.swf:3c64d35813029a81c2b506ae367efda7
+**2010**/music_jam/**local**/close_ups/poster.swf:1e560d070a380996d2cc491d160557cd
+**2010**/music_jam/**local**/login/backgrounds/musicjam1.swf:903cba090ea3186038c9ad7a2dc3e51f
+**2010**/music_jam/**local**/login/backgrounds/musicjam2.swf:3c6d91a4afbe9c5aa70324cd6e3a5d2d
 - All files above from the Music Jam 2010 come from https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
 
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/party1.swf:a662f6c44ad25c09dbc831ce97b54a3b
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/party2.swf:f89fb8fd308caa7031b2552fc36dd489
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/party3.swf:a3f16e0f47135fd57d4c7dd30ff51e20
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/party4.swf:3251ba31c695bdc70a722247d26a2dd5
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/party5.swf:d5fd8dd3fab55a2065d58a9af94c1f24
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/party6.swf:2eb63e471c1ac1ad73445ada1eee06c1
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/plaza.swf:8f2cd0bbeda8f7ac6eb9d631da066b56
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/town.swf:948e5fe36df307112244cc3b8e45dd6a
-default/event/2010/mountain_expedition/play/v2/content/global/rooms/village.swf:7c18d3e7e54a4d036e817a1cd8688683
-default/event/2010/mountain_expedition/play/v2/content/local/en/catalogues/merch.swf:2c56a20637c74b344dd3246265d01ebb
-default/event/2010/mountain_expedition/play/v2/content/local/en/login/backgrounds/expedition.swf:ca795af99fb1901c4350d14b5b6d0953
-default/event/2010/mountain_expedition/play/v2/content/local/en/membership/party3.swf:b6d2e46dd6735567be8631b938b89872
+**2010**/mountain_expedition/**rooms**/party1.swf:a662f6c44ad25c09dbc831ce97b54a3b
+**2010**/mountain_expedition/**rooms**/party2.swf:f89fb8fd308caa7031b2552fc36dd489
+**2010**/mountain_expedition/**rooms**/party3.swf:a3f16e0f47135fd57d4c7dd30ff51e20
+**2010**/mountain_expedition/**rooms**/party4.swf:3251ba31c695bdc70a722247d26a2dd5
+**2010**/mountain_expedition/**rooms**/party5.swf:d5fd8dd3fab55a2065d58a9af94c1f24
+**2010**/mountain_expedition/**rooms**/party6.swf:2eb63e471c1ac1ad73445ada1eee06c1
+**2010**/mountain_expedition/**rooms**/plaza.swf:8f2cd0bbeda8f7ac6eb9d631da066b56
+**2010**/mountain_expedition/**rooms**/town.swf:948e5fe36df307112244cc3b8e45dd6a
+**2010**/mountain_expedition/**rooms**/village.swf:7c18d3e7e54a4d036e817a1cd8688683
+**2010**/mountain_expedition/**local**/catalogues/merch.swf:2c56a20637c74b344dd3246265d01ebb
+**2010**/mountain_expedition/**local**/login/backgrounds/expedition.swf:ca795af99fb1901c4350d14b5b6d0953
+**2010**/mountain_expedition/**local**/membership/party3.swf:b6d2e46dd6735567be8631b938b89872
 - All Mountain Expedition files from https://archives.clubpenguinwiki.info/wiki/Mountain_Expedition
 
-default/event/2010/fair_2010/play/v2/content/global/rooms/beach.swf:22da7be695b81a03ee27db7e69cc60ac
-default/event/2010/fair_2010/play/v2/content/global/rooms/beacon.swf:43dfd22e7ae92ece37471551312a6b12
-default/event/2010/fair_2010/play/v2/content/global/rooms/berg.swf:5e1ee5cd147d850d7f48afa8a77a07c5
-default/event/2010/fair_2010/play/v2/content/global/rooms/coffee.swf:11a8efe74f2232774bf8556396958786
-default/event/2010/fair_2010/play/v2/content/global/rooms/cove.swf:6291fcefbe501a25898eeb294e092442
-default/event/2010/fair_2010/play/v2/content/global/rooms/dance.swf:8f6e77ac7dd97422e204501a82c45306
-default/event/2010/fair_2010/play/v2/content/global/rooms/dock.swf:117a9e3d2271b4926adb488784110aac
-default/event/2010/fair_2010/play/v2/content/global/rooms/forest.swf:8b0410be0a8ca9c8682ec1d2f4e6f061
-default/event/2010/fair_2010/play/v2/content/global/rooms/forts.swf:272ff75269bd6fb7dcb8c5cb8ac7b032
-default/event/2010/fair_2010/play/v2/content/global/rooms/lounge.swf:b95cc50863822dce69e553500384a098
-default/event/2010/fair_2010/play/v2/content/global/rooms/mtn.swf:c4f6aaad2b934dba97884cd8d9582eca
-default/event/2010/fair_2010/play/v2/content/global/rooms/party.swf:2c079943f2079cb285d568df3bb1e9b4
-default/event/2010/fair_2010/play/v2/content/global/rooms/party2.swf:3089ea5c27eb9ef2f4f423a40f63d5f5
-default/event/2010/fair_2010/play/v2/content/global/rooms/party3.swf:7a46326273273ed242619d9774e5e2d2
-default/event/2010/fair_2010/play/v2/content/global/rooms/plaza.swf:254730c421440cf91322f728d1b972c6
-default/event/2010/fair_2010/play/v2/content/global/rooms/town.swf:2416eda631296de2188211959a2255e6
-default/event/2010/fair_2010/play/v2/content/global/rooms/village.swf:f36d209c3fba8eb01b84b679f66f1dee
-default/event/2010/fair_2010/play/v2/content/local/en/login/backgrounds/fair.swf:ea52e1e246a775f5fbd57b42253f7441 - Login Screen #1, LoginFairParty2010.swf
-default/event/2010/fair_2010_start/play/v2/content/local/en/catalogues/prizebooth.swf:8cf6c0b7a910a4248efd80bd026316b7
-default/event/2010/fair_2010_start/play/v2/content/local/en/catalogues/prizeboothmember.swf:e66f6ad343da1c68e197d8b59f827908
-default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizebooth.swf:5960e0065516cf103b95519d7e819caf
-default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizeboothmember.swf:c7a4146d83bbb923d062628717f4f046
-default/event/2010/fair_2010/play/v2/content/global/tickets.swf:cc1aeb3a06e3ce1cf1055985cb83bf1b - Tickets-TheFair2009.swf
-default/event/2010/fair_2010/play/v2/content/global/ticket_icon.swf:a839678bef0d7e8671b6da6b4261c181 - Ticket_icon-TheFair2010.swf
-default/event/2010/fair_2010/play/v2/content/local/en/close_ups/poster.swf:78fe653a4e513cac77bdb874ae414d9c - Fair2010Poster.swf
+**2010**/fair_2010/**rooms**/beach.swf:22da7be695b81a03ee27db7e69cc60ac
+**2010**/fair_2010/**rooms**/beacon.swf:43dfd22e7ae92ece37471551312a6b12
+**2010**/fair_2010/**rooms**/berg.swf:5e1ee5cd147d850d7f48afa8a77a07c5
+**2010**/fair_2010/**rooms**/coffee.swf:11a8efe74f2232774bf8556396958786
+**2010**/fair_2010/**rooms**/cove.swf:6291fcefbe501a25898eeb294e092442
+**2010**/fair_2010/**rooms**/dance.swf:8f6e77ac7dd97422e204501a82c45306
+**2010**/fair_2010/**rooms**/dock.swf:117a9e3d2271b4926adb488784110aac
+**2010**/fair_2010/**rooms**/forest.swf:8b0410be0a8ca9c8682ec1d2f4e6f061
+**2010**/fair_2010/**rooms**/forts.swf:272ff75269bd6fb7dcb8c5cb8ac7b032
+**2010**/fair_2010/**rooms**/lounge.swf:b95cc50863822dce69e553500384a098
+**2010**/fair_2010/**rooms**/mtn.swf:c4f6aaad2b934dba97884cd8d9582eca
+**2010**/fair_2010/**rooms**/party.swf:2c079943f2079cb285d568df3bb1e9b4
+**2010**/fair_2010/**rooms**/party2.swf:3089ea5c27eb9ef2f4f423a40f63d5f5
+**2010**/fair_2010/**rooms**/party3.swf:7a46326273273ed242619d9774e5e2d2
+**2010**/fair_2010/**rooms**/plaza.swf:254730c421440cf91322f728d1b972c6
+**2010**/fair_2010/**rooms**/town.swf:2416eda631296de2188211959a2255e6
+**2010**/fair_2010/**rooms**/village.swf:f36d209c3fba8eb01b84b679f66f1dee
+**2010**/fair_2010/**local**/login/backgrounds/fair.swf:ea52e1e246a775f5fbd57b42253f7441 - Login Screen #1, LoginFairParty2010.swf
+**2010**/fair_2010_start/**local**/catalogues/prizebooth.swf:8cf6c0b7a910a4248efd80bd026316b7
+**2010**/fair_2010_start/**local**/catalogues/prizeboothmember.swf:e66f6ad343da1c68e197d8b59f827908
+**2010**/fair_2010_end/**local**/catalogues/prizebooth.swf:5960e0065516cf103b95519d7e819caf
+**2010**/fair_2010_end/**local**/catalogues/prizeboothmember.swf:c7a4146d83bbb923d062628717f4f046
+**2010**/fair_2010/**global**/tickets.swf:cc1aeb3a06e3ce1cf1055985cb83bf1b - Tickets-TheFair2009.swf
+**2010**/fair_2010/**global**/ticket_icon.swf:a839678bef0d7e8671b6da6b4261c181 - Ticket_icon-TheFair2010.swf
+**2010**/fair_2010/**local**/close_ups/poster.swf:78fe653a4e513cac77bdb874ae414d9c - Fair2010Poster.swf
 - Files above from the Fair 2010 are all from https://archives.clubpenguinwiki.info/wiki/The_Fair_2010
 
-default/seasonal/play/v2/content/global/rooms/forts.swf/2010-09-24.swf:76a96476022c1de7b997afceace8e95f
-default/seasonal/play/v2/content/global/content/map.swf/2010-09-24.swf:648cc3fae01c9d019c33354c886e0580
-default/seasonal/play/v2/content/global/rooms/rink.swf/2010-09-24.swf:d5254765c539fbb8bcb6e7ce7a1cc8d1
-default/seasonal/play/v2/content/global/rooms/town.swf/2010-09-24.swf:3330ffc10e68ac8a32dd80efef2be254
+**seasonal**/**rooms**/forts.swf/2010-09-24.swf:76a96476022c1de7b997afceace8e95f
+**seasonal**/**global**/content/map.swf/2010-09-24.swf:648cc3fae01c9d019c33354c886e0580
+**seasonal**/**rooms**/rink.swf/2010-09-24.swf:d5254765c539fbb8bcb6e7ce7a1cc8d1
+**seasonal**/**rooms**/town.swf/2010-09-24.swf:3330ffc10e68ac8a32dd80efef2be254
 - Files above from the Stadium Games party are from https://archives.clubpenguinwiki.info/wiki/Stadium_Games
 
-default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/book.swf:b21874fc4517d4db71eede09e675a55b
-default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/coffee.swf:b18d68cb94153875ec98d86b7ddc9d98
-default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/town.swf:51c989596c05160596a9d637f0a4fe81
+**2010**/5th_anniversary_party/**rooms**/book.swf:b21874fc4517d4db71eede09e675a55b
+**2010**/5th_anniversary_party/**rooms**/coffee.swf:b18d68cb94153875ec98d86b7ddc9d98
+**2010**/5th_anniversary_party/**rooms**/town.swf:51c989596c05160596a9d637f0a4fe81
 - Files above from the 5th Anniversary Party are all from https://archives.clubpenguinwiki.info/wiki/5th_Anniversary_Party
 
-default/event/2010/halloween_party_2010/play/v2/content/global/content/map.swf:f8c196c0e9f1d0375f1cef20a8babf39
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/attic.swf:022fb16ea04550126cb204ee9b1c9b4c
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/beach.swf:58874e6a60ba134ada5f5d926e669c4f
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/beacon.swf:4b367beba042d239caa354551ed08885
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/berg.swf:be6498557e314e24469bb27e58a4f456
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/book.swf:018773f21d48c9b08aedaaea549e8ee7
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/cave.swf:e9964a5b638bbd829e9bdb42336baa72
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/coffee.swf:07ded06ec70f9d821695bb1c033209c4
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/cove.swf:663f2c91ff470e49df44c2f08cb4c97a
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dance.swf:3a1067f603eb028ac73a1103ff447c38
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dock.swf:98fadc4ec792e8b67365941d1c5e7b95
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojo.swf:60ef00a9f4907e469a8e5f2240168131
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojoext.swf:a36d330825ae5427a576b351f9e9300f
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojofire.swf:186b8ccb11be8996783300a73c45f565
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/dojohide.swf:bd8db77dd98b2aaa8ff314995e2bb626
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/forest.swf:e8ae9d223e13e18c4436d233d8002e11
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/forts.swf:7702f781a9b656bcc27679b6b33885ec
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/light.swf:c7305209ee4c2420cc0af17ebc427570
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/lodge.swf:7c476f122c8ae193513de665b7a4c818
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/lounge.swf:f2a4560c84805d6d61b0138aff2ec592
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/mtn.swf:b98869fb2d2820013927ccbee6317d2d
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party1.swf:107291b43a92b2a5e02b6b3d0103817a
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party2.swf:84c52fb952f96ca50c8b79b6402cd3fa
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party3.swf:953dda12a5c786698edcaebe4061b0ff
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party4.swf:afb64e090a50946d0263fbd11c36481f
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/party5.swf:692fb5fccbb5d6df20965e9afa2d5342
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/pet.swf:92560458d1f7fe2609729db2d4362fb9
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/pizza.swf:9309004558c7bc305feaf78c9b257133
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/plaza.swf:fc22bede362174e79e75cfec1163709b
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/rink.swf:3e51e1c28cb3a0869cd9e0268e6ef275
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/shack.swf:84f47cb75d9bc7c1481b58d3cbd368de
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/shop.swf:d21d0a7d406b1e4ef7d633bbe0847031
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/town.swf:c119c0d95e1208c30fce2fd6d88bfcaf
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/village.swf:4bf7ccf9e7ee9cab5c35302396113449
-default/event/2010/halloween_party_2010/play/v2/content/local/en/close_ups/halloweenposter.swf:9831304e63fa9cf5a06858b184c255a2
-default/event/2010/halloween_party_2010/play/v2/content/local/en/catalogues/party.swf:b3812c6ecb63c2e95d1dd215c3305b4e - Monster Maker catalogue
-default/event/2010/halloween_party_2010/play/v2/content/local/en/login/backgrounds/halloween1.swf:e1c783156a90d793897e5c99c3625e1c
-default/event/2010/halloween_party_2010/play/v2/content/local/en/login/backgrounds/halloween2.swf:d3f1a9e035d018a69390612d17adad07
-default/event/2010/halloween_party_2010/play/v2/content/local/en/login/backgrounds/halloween3.swf:d044139b121046421c523cbb9e78cd1f
-default/event/2010/halloween_party_2010/play/v2/content/local/en/membership/membership_party3.swf:2066a29d2ef24ee48be50eecb8b8b164
+**2010**/halloween_party_2010/**global**/content/map.swf:f8c196c0e9f1d0375f1cef20a8babf39
+**2010**/halloween_party_2010/**rooms**/attic.swf:022fb16ea04550126cb204ee9b1c9b4c
+**2010**/halloween_party_2010/**rooms**/beach.swf:58874e6a60ba134ada5f5d926e669c4f
+**2010**/halloween_party_2010/**rooms**/beacon.swf:4b367beba042d239caa354551ed08885
+**2010**/halloween_party_2010/**rooms**/berg.swf:be6498557e314e24469bb27e58a4f456
+**2010**/halloween_party_2010/**rooms**/book.swf:018773f21d48c9b08aedaaea549e8ee7
+**2010**/halloween_party_2010/**rooms**/cave.swf:e9964a5b638bbd829e9bdb42336baa72
+**2010**/halloween_party_2010/**rooms**/coffee.swf:07ded06ec70f9d821695bb1c033209c4
+**2010**/halloween_party_2010/**rooms**/cove.swf:663f2c91ff470e49df44c2f08cb4c97a
+**2010**/halloween_party_2010/**rooms**/dance.swf:3a1067f603eb028ac73a1103ff447c38
+**2010**/halloween_party_2010/**rooms**/dock.swf:98fadc4ec792e8b67365941d1c5e7b95
+**2010**/halloween_party_2010/**rooms**/dojo.swf:60ef00a9f4907e469a8e5f2240168131
+**2010**/halloween_party_2010/**rooms**/dojoext.swf:a36d330825ae5427a576b351f9e9300f
+**2010**/halloween_party_2010/**rooms**/dojofire.swf:186b8ccb11be8996783300a73c45f565
+**2010**/halloween_party_2010/**rooms**/dojohide.swf:bd8db77dd98b2aaa8ff314995e2bb626
+**2010**/halloween_party_2010/**rooms**/forest.swf:e8ae9d223e13e18c4436d233d8002e11
+**2010**/halloween_party_2010/**rooms**/forts.swf:7702f781a9b656bcc27679b6b33885ec
+**2010**/halloween_party_2010/**rooms**/light.swf:c7305209ee4c2420cc0af17ebc427570
+**2010**/halloween_party_2010/**rooms**/lodge.swf:7c476f122c8ae193513de665b7a4c818
+**2010**/halloween_party_2010/**rooms**/lounge.swf:f2a4560c84805d6d61b0138aff2ec592
+**2010**/halloween_party_2010/**rooms**/mtn.swf:b98869fb2d2820013927ccbee6317d2d
+**2010**/halloween_party_2010/**rooms**/party1.swf:107291b43a92b2a5e02b6b3d0103817a
+**2010**/halloween_party_2010/**rooms**/party2.swf:84c52fb952f96ca50c8b79b6402cd3fa
+**2010**/halloween_party_2010/**rooms**/party3.swf:953dda12a5c786698edcaebe4061b0ff
+**2010**/halloween_party_2010/**rooms**/party4.swf:afb64e090a50946d0263fbd11c36481f
+**2010**/halloween_party_2010/**rooms**/party5.swf:692fb5fccbb5d6df20965e9afa2d5342
+**2010**/halloween_party_2010/**rooms**/pet.swf:92560458d1f7fe2609729db2d4362fb9
+**2010**/halloween_party_2010/**rooms**/pizza.swf:9309004558c7bc305feaf78c9b257133
+**2010**/halloween_party_2010/**rooms**/plaza.swf:fc22bede362174e79e75cfec1163709b
+**2010**/halloween_party_2010/**rooms**/rink.swf:3e51e1c28cb3a0869cd9e0268e6ef275
+**2010**/halloween_party_2010/**rooms**/shack.swf:84f47cb75d9bc7c1481b58d3cbd368de
+**2010**/halloween_party_2010/**rooms**/shop.swf:d21d0a7d406b1e4ef7d633bbe0847031
+**2010**/halloween_party_2010/**rooms**/town.swf:c119c0d95e1208c30fce2fd6d88bfcaf
+**2010**/halloween_party_2010/**rooms**/village.swf:4bf7ccf9e7ee9cab5c35302396113449
+**2010**/halloween_party_2010/**local**/close_ups/halloweenposter.swf:9831304e63fa9cf5a06858b184c255a2
+**2010**/halloween_party_2010/**local**/catalogues/party.swf:b3812c6ecb63c2e95d1dd215c3305b4e - Monster Maker catalogue
+**2010**/halloween_party_2010/**local**/login/backgrounds/halloween1.swf:e1c783156a90d793897e5c99c3625e1c
+**2010**/halloween_party_2010/**local**/login/backgrounds/halloween2.swf:d3f1a9e035d018a69390612d17adad07
+**2010**/halloween_party_2010/**local**/login/backgrounds/halloween3.swf:d044139b121046421c523cbb9e78cd1f
+**2010**/halloween_party_2010/**local**/membership/membership_party3.swf:2066a29d2ef24ee48be50eecb8b8b164
 - All files above from Halloween Party 2010 are from https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2010
 
-default/event/2010/halloween_party_2010/play/v2/content/global/binoculars/empty.swf:ca900078bd0161c06feb03246bec47ea
+**2010**/halloween_party_2010/**global**/binoculars/empty.swf:ca900078bd0161c06feb03246bec47ea
 - Binoculars from the 2007 party: https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2007
 - This should be moved to the 2007 folder when it gets added
 
-default/event/2010/halloween_party_2010/play/v2/content/global/igloo/assets/igloo_background.swf:3f764c82aea07c5a84766eeef925abc2
+**2010**/halloween_party_2010/**global**/igloo/assets/igloo_background.swf:3f764c82aea07c5a84766eeef925abc2
 - Igloo Background from the 2011 party: https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2011
 - This should be moved to the 2011 folder when it gets added
 
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/beach.swf:b89f3e3bffca0c3e3c937ee05c27a868
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/boiler.swf:8b9d607f3c9b973d862bb9de295a48f7
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/book.swf:66166a70b65d1a0579e0b0fa03bade18
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/cave.swf:a57b3af7860c7e153564c3606853bd63
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/cavemine.swf:bdc68fe7d2a1a7aa759ece926e84afd5
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/coffee.swf:be037e5ebb76e635a96334f10b34822a
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/cove.swf:725cd04d418121c2c86d458dcf58db36
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dock.swf:b08e63f7cff0487671438587952a8237
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dojoext.swf:0c1f0ddc363115596fbc2011bfe48f13
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dojohide.swf:fa39d0cdf79cfa8334afbca836ac61e9
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dojowater.swf:219d321be9ca042fd7665a4e9ca7826e
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/forest.swf:83cf6cb570c4dadd7612b21ee00a37a7
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/forts.swf:b90d95a02cc70fee521604e85eea151d
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/lake.swf:c37ac2fd78be3c8e8c35cdb7ddef74ea
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/lounge.swf:e3bc0b4638e79f6954fdb1e14bbb984e
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/mine.swf:28ef5ab8b8e5e575a891a7d2fc8d66c3
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/pet.swf:a17a084e252bf448fb733dd073a7db20
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/plaza.swf:827a74c59d84273670d10e2472f1be63
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/rink.swf:41f86f59c7e728f3c0f12cfa462c7d99
-default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/town.swf:1dee9b447e0dfea831011770d18822cc
-default/event/2010/water_scavenger_hunt/play/v2/content/global/scavenger_hunt/hunt_ui.swf:2337253c2f2beed9c7fdf32590bb71ee
-default/event/2010/water_scavenger_hunt/play/v2/content/global/scavenger_hunt/scavenger_hunt_icon.swf:b3387cc490ca009dc0fdce54f1dea846
+**2010**/water_scavenger_hunt/**rooms**/beach.swf:b89f3e3bffca0c3e3c937ee05c27a868
+**2010**/water_scavenger_hunt/**rooms**/boiler.swf:8b9d607f3c9b973d862bb9de295a48f7
+**2010**/water_scavenger_hunt/**rooms**/book.swf:66166a70b65d1a0579e0b0fa03bade18
+**2010**/water_scavenger_hunt/**rooms**/cave.swf:a57b3af7860c7e153564c3606853bd63
+**2010**/water_scavenger_hunt/**rooms**/cavemine.swf:bdc68fe7d2a1a7aa759ece926e84afd5
+**2010**/water_scavenger_hunt/**rooms**/coffee.swf:be037e5ebb76e635a96334f10b34822a
+**2010**/water_scavenger_hunt/**rooms**/cove.swf:725cd04d418121c2c86d458dcf58db36
+**2010**/water_scavenger_hunt/**rooms**/dock.swf:b08e63f7cff0487671438587952a8237
+**2010**/water_scavenger_hunt/**rooms**/dojoext.swf:0c1f0ddc363115596fbc2011bfe48f13
+**2010**/water_scavenger_hunt/**rooms**/dojohide.swf:fa39d0cdf79cfa8334afbca836ac61e9
+**2010**/water_scavenger_hunt/**rooms**/dojowater.swf:219d321be9ca042fd7665a4e9ca7826e
+**2010**/water_scavenger_hunt/**rooms**/forest.swf:83cf6cb570c4dadd7612b21ee00a37a7
+**2010**/water_scavenger_hunt/**rooms**/forts.swf:b90d95a02cc70fee521604e85eea151d
+**2010**/water_scavenger_hunt/**rooms**/lake.swf:c37ac2fd78be3c8e8c35cdb7ddef74ea
+**2010**/water_scavenger_hunt/**rooms**/lounge.swf:e3bc0b4638e79f6954fdb1e14bbb984e
+**2010**/water_scavenger_hunt/**rooms**/mine.swf:28ef5ab8b8e5e575a891a7d2fc8d66c3
+**2010**/water_scavenger_hunt/**rooms**/pet.swf:a17a084e252bf448fb733dd073a7db20
+**2010**/water_scavenger_hunt/**rooms**/plaza.swf:827a74c59d84273670d10e2472f1be63
+**2010**/water_scavenger_hunt/**rooms**/rink.swf:41f86f59c7e728f3c0f12cfa462c7d99
+**2010**/water_scavenger_hunt/**rooms**/town.swf:1dee9b447e0dfea831011770d18822cc
+**2010**/water_scavenger_hunt/**global**/scavenger_hunt/hunt_ui.swf:2337253c2f2beed9c7fdf32590bb71ee
+**2010**/water_scavenger_hunt/**global**/scavenger_hunt/scavenger_hunt_icon.swf:b3387cc490ca009dc0fdce54f1dea846
 - Water Scavenger Hunt: https://archives.clubpenguinwiki.info/wiki/Water_Scavenger_Hunt

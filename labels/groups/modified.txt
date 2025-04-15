@@ -1,145 +1,145 @@
-default/seasonal/artwork/rooms/book11.swf/2005-08-22.swf:10f72d00cde2728e44694b6531e37cae
+**seasonal**/artwork/rooms/book11.swf/2005-08-22.swf:10f72d00cde2728e44694b6531e37cae
 - Originally from https://archives.clubpenguinwiki.info/wiki/Beta_Test_Party (at least I think so)
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/event/2005/beta_test_party/artwork/rooms/town10.swf:4aa2a09f05108308be9fc88a481405cb
+**2005**/beta_test_party/artwork/rooms/town10.swf:4aa2a09f05108308be9fc88a481405cb
 - Originally from https://archives.clubpenguinwiki.info/wiki/Beta_Test_Party
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/seasonal/artwork/rooms/forts12.swf/2005-12-14.swf:db450a576841df5f64035ec3fd909e6e
+**seasonal**/artwork/rooms/forts12.swf/2005-12-14.swf:db450a576841df5f64035ec3fd909e6e
 - Originally "forts3" from https://archives.clubpenguinwiki.info/wiki/Snow_Forts
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/seasonal/artwork/rooms/rink10.swf/2005-08-22.swf:ccf5560bdedab05688349ad6f077e6ba
+**seasonal**/artwork/rooms/rink10.swf/2005-08-22.swf:ccf5560bdedab05688349ad6f077e6ba
 - Ice Rink with the door that leads to the Snow Forts disabled
 - It is likely that it opened the map instead of having nothing, but evidence is needed
 - It is made from the rink10 SWF from archives
 
-default/seasonal/artwork/rooms/town10.swf/2005-08-22.swf:aa98863f9cbd133e56fcdc36a27beb52
+**seasonal**/artwork/rooms/town10.swf/2005-08-22.swf:aa98863f9cbd133e56fcdc36a27beb52
 - Town, but with the Snow Forts trigger removed since it wasn't available yet
 - Made from town10 from archives
 
-default/seasonal/artwork/rooms/village11.swf/2005-08-22.swf:d6926a1fcf9484e2a60d7290dce93716
+**seasonal**/artwork/rooms/village11.swf/2005-08-22.swf:d6926a1fcf9484e2a60d7290dce93716
 - Ski Village with all triggers removed to simulate how it was before the Ski Lodge was added
 - and before the Ski Hill trigger was added
 - Made from the village11 SWF from archives
 
-default/seasonal/artwork/rooms/village11.swf/2005-11-03.swf:84ad907ae253d259606a335198978d85
+**seasonal**/artwork/rooms/village11.swf/2005-11-03.swf:84ad907ae253d259606a335198978d85
 - Ski Village but with triggers removed to only have Sport Shop to simulate how it was when
 - that shop opened
 - Made from the village11 SWF from archives
 
-default/seasonal/artwork/rooms/village11.swf/2005-11-18.swf:8b68d9e15ca824924a750a0c4da9ed7f
+**seasonal**/artwork/rooms/village11.swf/2005-11-18.swf:8b68d9e15ca824924a750a0c4da9ed7f
 - Ski Village with only the Ski Lodge trigger missing to simulate how it was when the Ski Hill trigger
 - was added
 - Made from the village11 SWF from archives
 
-default/seasonal/chat291.swf/2005-08-22.swf:7e834adfd358ad04c57d8f6a5d2b1a94
+**seasonal**/chat291.swf/2005-08-22.swf:7e834adfd358ad04c57d8f6a5d2b1a94
 - A copy of the 2005 Oct 24 file but with the newspaper button removed to simulate how
 - there was no newspapers yet
 - It is unknown if this is exactly how the game handled it
 
-default/seasonal/play/v2/content/global/content/igloo_music.swf/2010-08-20.swf:448f0d50f99493949a34fecdc35c8e70
-default/seasonal/play/v2/content/global/content/igloo_music.swf/2010-11-12.swf:10af717a96764b01073f5d522b7d8cb6
+**seasonal**/**global**/content/igloo_music.swf/2010-08-20.swf:448f0d50f99493949a34fecdc35c8e70
+**seasonal**/**global**/content/igloo_music.swf/2010-11-12.swf:10af717a96764b01073f5d522b7d8cb6
 - Igloo Music list recreations manually from the one in legacy media
 
-default/special/boots.swf/30.swf:e1e0b8b41a257524cc9850e5bc5022be
+**special**/boots.swf/30.swf:e1e0b8b41a257524cc9850e5bc5022be
 - Mod that makes the game 30 FPS
 - Just changed the framerate in the header
 
-default/special/index.html/minified-engine2.html:20fdda1a07423837dc02d5c1cdd21e63
+**special**/index.html/minified-engine2.html:20fdda1a07423837dc02d5c1cdd21e63
 - Modified HTML that just makes it minimalistic
 
-default/special/play/v2/client/shell.swf/vanilla.swf:f827492e64a611c4a282c5a77075340f
+**special**/**client**/shell.swf/vanilla.swf:f827492e64a611c4a282c5a77075340f
 - shell.swf from legacy media, slightly modded for some functionalities,
 - at least a change that sends the money via !ai, and maybe more changes
 
-default/special/play/v2/client/shell.swf/no_idle.swf:8c693194eb9c3cebcf37dfd70fffea2d
+**special**/**client**/shell.swf/no_idle.swf:8c693194eb9c3cebcf37dfd70fffea2d
 - The same as the vanilal one, but with the idle disconnect function removed
 
-default/special/play/v2/games/book1/bootstrap.swf/original.swf:d2f43f47e41ec813f8c8ceaf7b0a691d
+**special**/**games**/book1/bootstrap.swf/original.swf:d2f43f47e41ec813f8c8ceaf7b0a691d
 - My Puffle game, taken from legacy media, and modified to remove the domain check
 
-default/special/play/v2/games/dancing/dance.swf/swapped.swf:385740a5d7e129ea8ec94d2d34f2c9a7
+**special**/**games**/dancing/dance.swf/swapped.swf:385740a5d7e129ea8ec94d2d34f2c9a7
 - Made by supermanover
 - Dance Contest from legacy media and modified so that up and down are swapped
 
-default/special/play/v2/games/jetpack/JetpackAdventures.swf/level_selector.swf:57daf15b27f5e518df5bd9545b486346
+**special**/**games**/jetpack/JetpackAdventures.swf/level_selector.swf:57daf15b27f5e518df5bd9545b486346
 - Made by Randomno
 - Jet Pack Adventure level selector
 
-default/special/play/v2/games/thinice/ThinIce.swf/igt24.swf:983e95b5306368bf8f85373247e37040
-default/special/play/v2/games/thinice/ThinIce.swf/igt30.swf:f4cd316e72120dcfadeb7912047a698b
+**special**/**games**/thinice/ThinIce.swf/igt24.swf:983e95b5306368bf8f85373247e37040
+**special**/**games**/thinice/ThinIce.swf/igt30.swf:f4cd316e72120dcfadeb7912047a698b
 - Made by sharlot and nhaar
 - Thin Ice IGT mod, in 24 FPS and 30 FPS
 
-default/static/engine2/web_service/worldachievements.xml:dd1ce640ba7b7e56a919f80401dadd75
+**engine2**/web_service/worldachievements.xml:dd1ce640ba7b7e56a919f80401dadd75
 - File from legacy media, with a few stamps removed because they shouldn't be active
 
-default/static/engine2_3/play/v2/games/book2/BurntOutBulbs.swf:4c2d8afada8595b56f9c24498249927a
+**engine2_3**/**games**/book2/BurntOutBulbs.swf:4c2d8afada8595b56f9c24498249927a
 - File I believe from legacy media, maybe from archives, with security check removed
 
-default/event/2005/christmas_2005/artwork/rooms/coffee11.swf:42f11c86325f3d4245cd6816ff731d2a
-default/event/2005/christmas_2005/artwork/rooms/dance10.swf:9a0fa1c5b09fbe63a48c6597c90568ad
-default/event/2005/christmas_2005/artwork/rooms/lodge11.swf:92a72c47b9305ca0936914ab23640928
-default/event/2005/christmas_2005/artwork/rooms/rink10.swf:cc8fd7296abd92e7f1700fa93650073f - This is from Ice Rink [1]
-default/event/2005/christmas_2005/artwork/rooms/shop10.swf:022346678bea2b0bed6b5b6017945c4e
-default/event/2005/christmas_2005/artwork/rooms/town10.swf:bf369aa51e1df9fe7a0a177c62910e50
-default/event/2005/christmas_2005/artwork/rooms/village11.swf:f99b40ef9010e93583657d115827b3a1
+**2005**/christmas_2005/artwork/rooms/coffee11.swf:42f11c86325f3d4245cd6816ff731d2a
+**2005**/christmas_2005/artwork/rooms/dance10.swf:9a0fa1c5b09fbe63a48c6597c90568ad
+**2005**/christmas_2005/artwork/rooms/lodge11.swf:92a72c47b9305ca0936914ab23640928
+**2005**/christmas_2005/artwork/rooms/rink10.swf:cc8fd7296abd92e7f1700fa93650073f - This is from Ice Rink [1]
+**2005**/christmas_2005/artwork/rooms/shop10.swf:022346678bea2b0bed6b5b6017945c4e
+**2005**/christmas_2005/artwork/rooms/town10.swf:bf369aa51e1df9fe7a0a177c62910e50
+**2005**/christmas_2005/artwork/rooms/village11.swf:f99b40ef9010e93583657d115827b3a1
 - All Christmas 2005 files above:
 - Originally from https://archives.clubpenguinwiki.info/wiki/Christmas_Party_2005
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/event/2005/halloween_2005/artwork/rooms/book11.swf:1a387f06c2c0c533429476c72df9606c
-default/event/2005/halloween_2005/artwork/rooms/dance10.swf:5601a19c9a8df4d93b5b63323104169b
-default/event/2005/halloween_2005/artwork/rooms/dojo10.swf:edf552d7149b361728454950c1b73d34
-default/event/2005/halloween_2005/artwork/rooms/lounge10.swf:a9caf77aa16aaef28f39e33bcc07889b
-default/event/2005/halloween_2005/artwork/rooms/rink10.swf:ff1135dea7a80d66584747ea96ce945f
-default/event/2005/halloween_2005/artwork/rooms/town10.swf:4e5b009afd7cc3b2aa2d95302228bde7
+**2005**/halloween_2005/artwork/rooms/book11.swf:1a387f06c2c0c533429476c72df9606c
+**2005**/halloween_2005/artwork/rooms/dance10.swf:5601a19c9a8df4d93b5b63323104169b
+**2005**/halloween_2005/artwork/rooms/dojo10.swf:edf552d7149b361728454950c1b73d34
+**2005**/halloween_2005/artwork/rooms/lounge10.swf:a9caf77aa16aaef28f39e33bcc07889b
+**2005**/halloween_2005/artwork/rooms/rink10.swf:ff1135dea7a80d66584747ea96ce945f
+**2005**/halloween_2005/artwork/rooms/town10.swf:4e5b009afd7cc3b2aa2d95302228bde7
 - All Halloween 2005 files above:
 - Originally from https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2005
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/event/2005/puffle_discovery/artwork/rooms/dance10.swf:7e98bca7e8fe999bf6cd8dd4288da39a
-default/event/2005/puffle_discovery/artwork/rooms/forts12.swf:bb6f82c4e5182b86938e7f911d956f94
-default/event/2005/puffle_discovery/artwork/rooms/rink10.swf:3a2193ee05daca96f6166125574e1718
+**2005**/puffle_discovery/artwork/rooms/dance10.swf:7e98bca7e8fe999bf6cd8dd4288da39a
+**2005**/puffle_discovery/artwork/rooms/forts12.swf:bb6f82c4e5182b86938e7f911d956f94
+**2005**/puffle_discovery/artwork/rooms/rink10.swf:3a2193ee05daca96f6166125574e1718
 - All Puffle Discovery files above:
 - Originally from archives.clubpenguinwiki.info/wiki/Puffle_Discovery
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/event/2010/music_jam/play/v2/content/local/en/login/startscreen.xml:eb616b49b33d54dd37fb518ed23b2cf4
+**2010**/music_jam/**local**/login/startscreen.xml:eb616b49b33d54dd37fb518ed23b2cf4
 - Manual modification of startscreen.xml from legacy media
 
-default/event/2010/mountain_expedition/play/v2/content/local/en/login/startscreen.xml:aab826086cad00c30fbd6b4b76037967
+**2010**/mountain_expedition/**local**/login/startscreen.xml:aab826086cad00c30fbd6b4b76037967
 - Manual modification of startscreen.xml from legacy media
 
-default/event/2010/fair_2010/play/v2/client/dependencies.json:01ad85346c47ff1442ae571a7d38e25b
-default/event/2010/fair_2010/play/v2/client/fair.swf:ede4eeafec9caca98b1e209b8d005f0f
+**2010**/fair_2010/**client**/dependencies.json:01ad85346c47ff1442ae571a7d38e25b
+**2010**/fair_2010/**client**/fair.swf:ede4eeafec9caca98b1e209b8d005f0f
 - The two files are a mod that implements loading the fair ticket icon
 - Dependencies.json is modded from legacy media,
 - and fair.swf is based on the file Ben made for loading Scavenger Hunts
 
-default/event/2010/fair_2010/play/v2/content/local/en/login/startscreen.xml:cf32eefafcf70318ec903dc9fab777e1
+**2010**/fair_2010/**local**/login/startscreen.xml:cf32eefafcf70318ec903dc9fab777e1
 - Manual modification of startscreen.xml from legacy media
 
-default/event/2010/fair_2010/web_service/worldachievements.xml:198082abe086559d3a885639280bb56f
+**2010**/fair_2010/web_service/worldachievements.xml:198082abe086559d3a885639280bb56f
 - Manual modification of world adchievements from legacy media to have Snack Shack working
 - Made by supermanover
 
-default/event/2010_scavenger_hunt/play/v2/client/dependencies.json:0cb107593c27fb086646a3b93af91870
-default/event/2010_scavenger_hunt/play/v2/client/scavenger_hunt.swf:049bf94cefe20080974f8b516a83cdf4
+**2010**_scavenger_hunt/**client**/dependencies.json:0cb107593c27fb086646a3b93af91870
+**2010**_scavenger_hunt/**client**/scavenger_hunt.swf:049bf94cefe20080974f8b516a83cdf4
 - The two files are a mod to add the Scavenger Hunt icon
 - Dependecies.json is modded frmo legacy media
 - The SWF is from Ben's mod for Scavenger Hunts
 
-default/event/2010/halloween_party_2010/play/v2/content/local/en/login/startscreen.xml:a4b2b193a09f6692da7a9ed9fb1a12c2
+**2010**/halloween_party_2010/**local**/login/startscreen.xml:a4b2b193a09f6692da7a9ed9fb1a12c2
 - Manual modification of startscreen.xml from legacy media
 
-default/event/2010/halloween_party_2010/play/v2/content/global/scavenger_hunt/scavenger_hunt_icon.swf:460cea58fddc5082b85d9c41aad1f7ac
+**2010**/halloween_party_2010/**global**/scavenger_hunt/scavenger_hunt_icon.swf:460cea58fddc5082b85d9c41aad1f7ac
 - Icon that shows up in the Halloween Party 2010 for the Scavenger Hunt
 - This comes from Ben's mod, which I'm not fully sure where exactly it came from, and then it was modded
 - to remove the requirement for using a pumpkin basket
 
-default/event/2010/halloween_party_2010/web_service/worldachievements.xml:b5a658ecf8e489cd09581ba7e520837a
+**2010**/halloween_party_2010/web_service/worldachievements.xml:b5a658ecf8e489cd09581ba7e520837a
 - Manual modification of worldachievements.xml from legacy media to have Monster Mash
 - Only costumes that were verified with video have been added here

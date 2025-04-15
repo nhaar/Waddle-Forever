@@ -1,19 +1,19 @@
-default/event/2010/halloween_party_2010/play/v2/content/global/rooms/NOTLS3EN.swf:fe8d363c0678dd6bbc2bb61ef123a0f2
+**2010**/halloween_party_2010/**rooms**/NOTLS3EN.swf:fe8d363c0678dd6bbc2bb61ef123a0f2
 - The Night of the living Sled 3 movie, unknown where this is from
 - This file was given by Resol, but he has no clue where it was fetched from
 - and the data does not match the 2009 one in the archives
 
-default/seasonal/chat291.swf/2005-10-24.swf:b5177a8888fb6590a0f4c1f6aee72ab0
+**seasonal**/chat291.swf/2005-10-24.swf:b5177a8888fb6590a0f4c1f6aee72ab0
 - I originally thought this came from Mammoth's 2006/04 media, but the files don't match at all
 - I have no idea why they are different, perhaps I changed something and I don't remember, I
 - should look into the old commits at some point
 
-default/seasonal/play/v2/client/interface.swf/2010-07-26.swf:bbb53f06ac7cf310ee358dd43aa5c102
+**seasonal**/**client**/interface.swf/2010-07-26.swf:bbb53f06ac7cf310ee358dd43aa5c102
 - I think I roughly remember what this is, but it needs to be double checked
 - I believe this is just the legacy media interface with a few patches like for allowing minigames
 - to warp you to a room when it ends
 - Exact modifications should be tracked down
 
-default/event/2010/halloween_party_2010/play/v2/content/global/telescope/empty.swf:1c999334c610d979d862657411425c62
+**2010**/halloween_party_2010/**global**/telescope/empty.swf:1c999334c610d979d862657411425c62
 - Telescope used in Halloween Party 2010
 - No idea where I got this from, I thought it was from another party's archive, but nothing archived matched
