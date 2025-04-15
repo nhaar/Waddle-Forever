@@ -84,12 +84,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         events: {
           partyStart: 'Stadium Games'
         }
-      },
-      {
-        date: '2010-Nov-24',
-        events: {
-          partyEnd: 'Sensei\'s Water Scavenger Hunt'
-        }
       }
     ]
     timeline = updateTimeline(timeline);
