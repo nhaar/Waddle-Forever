@@ -9,61 +9,61 @@ default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blu
 default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
 - Music from the page: https://archives.clubpenguinwiki.info/wiki/Music
 
-default/seasonal/artwork/maps/island5.swf/2005-Sep-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
-default/seasonal/artwork/maps/island5.swf/2006-Mar-29.swf:73e28ad5f032ab87c147e6b3364fb0ad - ArtworkMapsIsland5.swf (second 2006 one)
+default/seasonal/artwork/maps/island5.swf/2005-09-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
+default/seasonal/artwork/maps/island5.swf/2006-03-29.swf:73e28ad5f032ab87c147e6b3364fb0ad - ArtworkMapsIsland5.swf (second 2006 one)
 - Maps above from the https://archives.clubpenguinwiki.info/wiki/Map
 
-default/seasonal/artwork/rooms/book11.swf/2006-XXX-XX.swf:386d390746fa625d64e8bf117ed5ab12 - book11, ArtworkRoomsBook11.swf
+default/seasonal/artwork/rooms/book11.swf/2006-##-##.swf:386d390746fa625d64e8bf117ed5ab12 - book11, ArtworkRoomsBook11.swf
 - Book Room SWFs above from https://archives.clubpenguinwiki.info/wiki/Book_Room
 
-default/seasonal/artwork/rooms/forts12.swf/2006-Feb-24.swf:94312bc72ca3eb07a193ae80fef55c0f - forts12
-default/seasonal/play/v2/content/global/rooms/forts.swf/2010-May-27.swf:e62ebf662fc1e8d6b498b26849fcff84 - "2008-2010: Soccer Pitch", ESForts-SoccerPitch.swf
+default/seasonal/artwork/rooms/forts12.swf/2006-02-24.swf:94312bc72ca3eb07a193ae80fef55c0f - forts12
+default/seasonal/play/v2/content/global/rooms/forts.swf/2010-05-27.swf:e62ebf662fc1e8d6b498b26849fcff84 - "2008-2010: Soccer Pitch", ESForts-SoccerPitch.swf
 - Snow Forts SWFs above from https://archives.clubpenguinwiki.info/wiki/Snow_Forts
 
-default/seasonal/artwork/rooms/plaza12.swf/2006-Mar-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-Jun-10.swf:5702f4ef453367bb8838e13c85edec59 - "2011-2012 ruby and the ruby", RoomsPlaza_2-Play8.swf
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-Nov-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-Oct-23.swf:8b42920f7346a373ec9ac11e982be244 - "2008-2011 Secrets Of The Bamboo Forest", RoomsPlaza-August2011.swf
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-Sep-24.swf:8576327bca974c9db9a187e69dbb62bb - 2008-2011 Fairy Fables, RoomsPlaza-Play10.swf
+default/seasonal/artwork/rooms/plaza12.swf/2006-03-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
+default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-06-10.swf:5702f4ef453367bb8838e13c85edec59 - "2011-2012 ruby and the ruby", RoomsPlaza_2-Play8.swf
+default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-11-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
+default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-10-23.swf:8b42920f7346a373ec9ac11e982be244 - "2008-2011 Secrets Of The Bamboo Forest", RoomsPlaza-August2011.swf
+default/seasonal/play/v2/content/global/rooms/plaza.swf/2010-09-24.swf:8576327bca974c9db9a187e69dbb62bb - 2008-2011 Fairy Fables, RoomsPlaza-Play10.swf
 - Plaza SWFs above from https://archives.clubpenguinwiki.info/wiki/Plaza
 
-default/seasonal/artwork/rooms/plaza12.swf/2006-Feb-24.swf:e164bcaa2937eb1658265208b90320ef
+default/seasonal/artwork/rooms/plaza12.swf/2006-02-24.swf:e164bcaa2937eb1658265208b90320ef
 - Plaza SWF from https://archives.clubpenguinwiki.info/wiki/Pizza_Party
 
-default/seasonal/artwork/rooms/rink10.swf/2005-Sep-12.swf:783dd4564eeb8ceae6fe838d1d2baa7b - rink10
-default/seasonal/play/v2/content/global/rooms/rink.swf/2010-May-27.swf:238dfeddccf3d0f6bedd75a7adb10e0c - 2010 Soccer Pitch, RoomsRink-May2010.swf
+default/seasonal/artwork/rooms/rink10.swf/2005-09-12.swf:783dd4564eeb8ceae6fe838d1d2baa7b - rink10
+default/seasonal/play/v2/content/global/rooms/rink.swf/2010-05-27.swf:238dfeddccf3d0f6bedd75a7adb10e0c - 2010 Soccer Pitch, RoomsRink-May2010.swf
 default/static/engine2/play/v2/content/global/rooms/rink.swf:6d6493dc71c4e9a82084f49c69fef712 - 2011 soccer pitch, RoomsRink-May2011.swf
 - Stadium SWFs above from https://archives.clubpenguinwiki.info/wiki/Stadium
 
-default/seasonal/artwork/rooms/town10.swf/2005-Sep-12.swf:6e7c605099e1dfeaa4f6a059814b9755 - town10
-default/seasonal/play/v2/content/global/rooms/town.swf/2008-XXX-XX.swf:34e49ae32a948b0e67cbd5a03576754f - 2008-2011 Soccer Pitch, RoomsTown_2.swf
+default/seasonal/artwork/rooms/town10.swf/2005-09-12.swf:6e7c605099e1dfeaa4f6a059814b9755 - town10
+default/seasonal/play/v2/content/global/rooms/town.swf/2008-##-##.swf:34e49ae32a948b0e67cbd5a03576754f - 2008-2011 Soccer Pitch, RoomsTown_2.swf
 - Town SWFs above from https://archives.clubpenguinwiki.info/wiki/Town_Center
 
-default/seasonal/artwork/rooms/village11.swf/2005-Dec-22.swf:05463cbcd61720f82f6c8dc804df8b35 - village11
+default/seasonal/artwork/rooms/village11.swf/2005-12-22.swf:05463cbcd61720f82f6c8dc804df8b35 - village11
 default/static/engine2/play/v2/content/global/rooms/village.swf:8ed5cd3899856d54f4e20fa9c94fe895 - 2010-2012, RoomsVillage_2.swf
 - Ski Village SWFs above from https://archives.clubpenguinwiki.info/wiki/Ski_Village
 
-default/seasonal/play/v2/content/global/rooms/berg.swf/2009-Jul-XX.swf:df774dad12c2f7144a94d05fc2486ee6 - Summer 2009, "RoomsBerg.swf"
+default/seasonal/play/v2/content/global/rooms/berg.swf/2009-07-##.swf:df774dad12c2f7144a94d05fc2486ee6 - Summer 2009, "RoomsBerg.swf"
 - Ice Berg SWFs above from https://archives.clubpenguinwiki.info/wiki/Ice_Berg
 
-default/seasonal/play/v2/content/global/rooms/cove.swf/2009-Jan-XX.swf:7ac1f6c78de3ba5c4e53ec9d8cc745cd - "2009-2011", RoomsCove.swf
+default/seasonal/play/v2/content/global/rooms/cove.swf/2009-01-##.swf:7ac1f6c78de3ba5c4e53ec9d8cc745cd - "2009-2011", RoomsCove.swf
 - Cove SWFs above from https://archives.clubpenguinwiki.info/wiki/Cove
 
-default/seasonal/play/v2/content/global/rooms/dock.swf/2009-XXX-XX.swf:0cc55fd56704019b6ffcffb9ce680822 - "2009-2012", RoomsDock_1.swf
+default/seasonal/play/v2/content/global/rooms/dock.swf/2009-##-##.swf:0cc55fd56704019b6ffcffb9ce680822 - "2009-2012", RoomsDock_1.swf
 - Dock SWFs above from https://archives.clubpenguinwiki.info/wiki/Dock
 
-default/seasonal/play/v2/content/global/rooms/dojoext.swf/2009-Nov-27.swf:e5fa027e233e024753b2d9901d1e9076 - "Nov. 2009-Nov. 2010", RoomsDojoext_2.swf
-default/seasonal/play/v2/content/global/rooms/dojoext.swf/2010-Dec-03.swf:e20a0d96a1f351f72d05d707dc4bb1f7 - "Nov. 2010-Nov. 2011", RoomsDojoext_3.swf
+default/seasonal/play/v2/content/global/rooms/dojoext.swf/2009-11-27.swf:e5fa027e233e024753b2d9901d1e9076 - "Nov. 2009-Nov. 2010", RoomsDojoext_2.swf
+default/seasonal/play/v2/content/global/rooms/dojoext.swf/2010-12-03.swf:e20a0d96a1f351f72d05d707dc4bb1f7 - "Nov. 2010-Nov. 2011", RoomsDojoext_3.swf
 - Dojo Courtyard SWFs above from https://archives.clubpenguinwiki.info/wiki/Dojo_Courtyard
 
-default/seasonal/play/v2/content/global/rooms/ship.swf/2008-XXX-XX.swf:55b2ce742b38f4af851cd9c02eb03c89 - ship N/A, RoomsShip.swf
+default/seasonal/play/v2/content/global/rooms/ship.swf/2008-##-##.swf:55b2ce742b38f4af851cd9c02eb03c89 - ship N/A, RoomsShip.swf
 - Pirate Ship SWFs above are from https://archives.clubpenguinwiki.info/wiki/Pirate_Ship
 
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-Aug-26.swf:17136c87052e7f6878360cadcd0006f3 - October 9, 2009, RoomsStage-October2009.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-Jun-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-Nov-24.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-Oct-23.swf:b90436acfadaa810c597556b156d81db - October 8, 2010, HalloweenParty2010Stage.swf
-default/seasonal/play/v2/content/global/rooms/stage.swf/2010-Sep-24.swf:b89006589daad1ca8babb391aa6c7265 - June 12, 2009, RoomsStage-June2009.swf
+default/seasonal/play/v2/content/global/rooms/stage.swf/2010-08-26.swf:17136c87052e7f6878360cadcd0006f3 - October 9, 2009, RoomsStage-October2009.swf
+default/seasonal/play/v2/content/global/rooms/stage.swf/2010-06-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
+default/seasonal/play/v2/content/global/rooms/stage.swf/2010-11-24.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
+default/seasonal/play/v2/content/global/rooms/stage.swf/2010-10-23.swf:b90436acfadaa810c597556b156d81db - October 8, 2010, HalloweenParty2010Stage.swf
+default/seasonal/play/v2/content/global/rooms/stage.swf/2010-09-24.swf:b89006589daad1ca8babb391aa6c7265 - June 12, 2009, RoomsStage-June2009.swf
 - Stage SWFs above are from https://archives.clubpenguinwiki.info/wiki/The_Stage
 
 default/static/engine2/play/v2/content/global/rooms/mine.swf:11345fd71ff764000c3fa8fe4dfed1aa - 2010-2013, RoomsMine_2.swf
@@ -83,48 +83,48 @@ default/static/engine1/artwork/catalogue/clothing0601.swf:bf34d23ab24f836e3c8c6a
 default/static/engine1/artwork/catalogue/clothing0602.swf:5fa5ad1c0a91b767fe49f7ef7348bba0
 default/static/engine1/artwork/catalogue/clothing0603.swf:421dd6d9848374e8616d2114f953c5c3
 default/static/engine1/artwork/catalogue/clothing0604.swf:fc7b7810842cb66c6150704743b9e1f9
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-May-07.swf:91777170b6cb9a97a67587b612ceb4bc
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-Nov-05.swf:8d01e6020def98f6b48046dd18a4a4fc
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-Oct-01.swf:77c7c552d8ee8c02ab1f79ebdc06f754
-default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-Sep-03.swf:58042c37012177787ea0e34ff238fb49
+default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-05-07.swf:91777170b6cb9a97a67587b612ceb4bc
+default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-11-05.swf:8d01e6020def98f6b48046dd18a4a4fc
+default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-10-01.swf:77c7c552d8ee8c02ab1f79ebdc06f754
+default/seasonal/play/v2/content/local/en/catalogues/clothing.swf/2010-09-03.swf:58042c37012177787ea0e34ff238fb49
 - Penguin Style SWFs are from https://archives.clubpenguinwiki.info/wiki/Penguin_Style
 
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-Aug-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-Jul-22.swf:2184c1ce32f14d0cdb416ef231d192a4 - May 2011, May2011UnderwaterAdventureCostume.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-Jun-10.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July 2009, July09Costume.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-Sep-24.swf:ce62e893ea30c32ebd145e92dc7485b2 - January 2010, Jan10Stage.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-Nov-24.swf:c440fd617a47326beb10db202e790a06 - November 2010, 2010SpacePlanetAdventureYCostumeTrunk.swf
-default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-Oct-23.swf:9243410ff3743f5d48a664729efbe2bc - October 2010, October2010Costume.swf
+default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
+default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-07-22.swf:2184c1ce32f14d0cdb416ef231d192a4 - May 2011, May2011UnderwaterAdventureCostume.swf
+default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-06-10.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July 2009, July09Costume.swf
+default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-09-24.swf:ce62e893ea30c32ebd145e92dc7485b2 - January 2010, Jan10Stage.swf
+default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-11-24.swf:c440fd617a47326beb10db202e790a06 - November 2010, 2010SpacePlanetAdventureYCostumeTrunk.swf
+default/seasonal/play/v2/content/local/en/catalogues/costume.swf/2010-10-23.swf:9243410ff3743f5d48a664729efbe2bc - October 2010, October2010Costume.swf
 - Costume Trunk SWFs are from https://archives.clubpenguinwiki.info/wiki/Costume_Trunk
 
 default/static/engine1/artwork/catalogue/furniture0603.swf:e2990d551ea5b107edf1650dd6c28fa2
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-Aug-20.swf:a45abe51855c16e84e0d1bd518a6c86f
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-May-14.swf:a8c3ade6dbc407681fa5ea075b6602a0
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-Nov-12.swf:f5647ffcfcb283fd24572f94954ee66b
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-Oct-15.swf:cbac9013f8371c7eb0a3f41c15240068
-default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-Sep-24.swf:5ced224c6d77d52ff978fd817a38b825
+default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-08-20.swf:a45abe51855c16e84e0d1bd518a6c86f
+default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-05-14.swf:a8c3ade6dbc407681fa5ea075b6602a0
+default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-11-12.swf:f5647ffcfcb283fd24572f94954ee66b
+default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-10-15.swf:cbac9013f8371c7eb0a3f41c15240068
+default/seasonal/play/v2/content/local/en/catalogues/furniture.swf/2010-09-24.swf:5ced224c6d77d52ff978fd817a38b825
 - Furniture Catalogues are from https://archives.clubpenguinwiki.info/wiki/Furniture_%26_Igloo_Catalog
 
 default/static/engine1/artwork/catalogue/igloo0604.swf:bfb78b45a72f09203502885452c98844
-default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-Apr-16.swf:35dccaf2c41f25936bd830d74f1a4851
-default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-Aug-20.swf:06eb5f424a68b57336591c45fd3b480d
-default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-Nov-12.swf:7729348915fce4f3221063db999f40de
+default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-04-16.swf:35dccaf2c41f25936bd830d74f1a4851
+default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-08-20.swf:06eb5f424a68b57336591c45fd3b480d
+default/seasonal/play/v2/content/local/en/catalogues/igloo.swf/2010-11-12.swf:7729348915fce4f3221063db999f40de
 - Igloo Catalogues are from https://archives.clubpenguinwiki.info/wiki/Igloo_Catalog
 
-default/seasonal/play/v2/content/local/en/catalogues/ninja.swf/2009-Nov-13.swf:38468d91e2d142375ff056e47b0a4593
+default/seasonal/play/v2/content/local/en/catalogues/ninja.swf/2009-11-13.swf:38468d91e2d142375ff056e47b0a4593
 - Martial Artworks are from https://archives.clubpenguinwiki.info/wiki/Martial_Artworks
 
-default/seasonal/play/v2/content/local/en/catalogues/pets.swf/2010-Mar-19.swf:ef3b1151d688f85d2abab2a204414708
+default/seasonal/play/v2/content/local/en/catalogues/pets.swf/2010-03-19.swf:ef3b1151d688f85d2abab2a204414708
 - Puffle Catalogs are from https://archives.clubpenguinwiki.info/wiki/Puffle_Catalog
 
-default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-May-27.swf:4f567e0b1274ae9acd8a124ed0a1d7be
-default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-Sep-24.swf:0f627c87e8cf21fa056a2be90871f599
+default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-05-27.swf:4f567e0b1274ae9acd8a124ed0a1d7be
+default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-09-24.swf:0f627c87e8cf21fa056a2be90871f599
 - Snow and Sports catalogs are from https://archives.clubpenguinwiki.info/wiki/Snow_%26_Sports
 
-default/seasonal/play/v2/content/local/en/forms/library.swf/2010-Oct-23.swf:6be47feb2a3e8af2e92a4f77bb405f6e
+default/seasonal/play/v2/content/local/en/forms/library.swf/2010-10-23.swf:6be47feb2a3e8af2e92a4f77bb405f6e
 - Library SWFs are from https://archives.clubpenguinwiki.info/wiki/Library
 
-default/seasonal/play/v2/content/local/en/postcards/111.swf/2011-Feb-17.swf:b4642b5870486b4748193bdbfa3be74b
+default/seasonal/play/v2/content/local/en/postcards/111.swf/2011-02-17.swf:b4642b5870486b4748193bdbfa3be74b
 - 111 Postcard is from https://archives.clubpenguinwiki.info/wiki/Postcards
 
 default/special/play/v2/games/book1/bootstrap.swf/2013.swf:484e64ea02f4963845bb5303fb336811
@@ -270,10 +270,10 @@ default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizebooth.
 default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizeboothmember.swf:c7a4146d83bbb923d062628717f4f046
 - Files above from the Fair 2010 are all from https://archives.clubpenguinwiki.info/wiki/The_Fair_2010
 
-default/seasonal/play/v2/content/global/rooms/forts.swf/2010-Sep-24.swf:76a96476022c1de7b997afceace8e95f
-default/seasonal/play/v2/content/global/content/map.swf/2010-Sep-24.swf:648cc3fae01c9d019c33354c886e0580
-default/seasonal/play/v2/content/global/rooms/rink.swf/2010-Sep-24.swf:d5254765c539fbb8bcb6e7ce7a1cc8d1
-default/seasonal/play/v2/content/global/rooms/town.swf/2010-Sep-24.swf:3330ffc10e68ac8a32dd80efef2be254
+default/seasonal/play/v2/content/global/rooms/forts.swf/2010-09-24.swf:76a96476022c1de7b997afceace8e95f
+default/seasonal/play/v2/content/global/content/map.swf/2010-09-24.swf:648cc3fae01c9d019c33354c886e0580
+default/seasonal/play/v2/content/global/rooms/rink.swf/2010-09-24.swf:d5254765c539fbb8bcb6e7ce7a1cc8d1
+default/seasonal/play/v2/content/global/rooms/town.swf/2010-09-24.swf:3330ffc10e68ac8a32dd80efef2be254
 - Files above from the Stadium Games party are from https://archives.clubpenguinwiki.info/wiki/Stadium_Games
 
 default/event/2010/5th_anniversary_party/play/v2/content/global/rooms/book.swf:b21874fc4517d4db71eede09e675a55b

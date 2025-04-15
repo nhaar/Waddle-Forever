@@ -1,16 +1,16 @@
 default/music/342.swf:1cff59f55b4ce2e5b660913868c91de4
 default/music/506.swf:f873b7c00671f1b3299b2a39fd54085e
 
-default/seasonal/play/v2/client/engine.swf/2016-Jan-01.swf:5f20ae540b66ea8d336d1f008c82f9da
+default/seasonal/play/v2/client/engine.swf/2016-01-01.swf:5f20ae540b66ea8d336d1f008c82f9da
 
-default/seasonal/play/v2/content/global/content/map.swf/2016-XXX-XX.swf:8ed70354c18f193586840f2747b0146d
-default/seasonal/play/v2/content/global/rooms/cove.swf/2016-XXX-XX.swf:5ea29bdaef13c6ab14acd3a3dfd1ca02
-default/seasonal/play/v2/content/global/rooms/dock.swf/2016-Jan-01.swf:ef84a84ebb06cc53f68e4dfed0d3bdf6
-default/seasonal/play/v2/content/global/rooms/dojoext.swf/2016-XXX-XX.swf:d8928dca30393ea2af322fb4637e6bf9
-default/seasonal/play/v2/content/global/rooms/forts.swf/2016-XXX-XX.swf:8f200e6835056c4e5d9e98a3310496ba
-default/seasonal/play/v2/content/global/rooms/plaza.swf/2016-XXX-XX.swf:cdf0af6b7aa4f2138f25dc748f651b62
-default/seasonal/play/v2/content/global/rooms/rink.swf/2016-XXX-XX.swf:c9caef1a33bc062edbdf403ad0d1708d
-default/seasonal/play/v2/content/global/rooms/town.swf/2016-XXX-XX.swf:6c49731d29dd980dec9f378439cc9960
+default/seasonal/play/v2/content/global/content/map.swf/2016-##-##.swf:8ed70354c18f193586840f2747b0146d
+default/seasonal/play/v2/content/global/rooms/cove.swf/2016-##-##.swf:5ea29bdaef13c6ab14acd3a3dfd1ca02
+default/seasonal/play/v2/content/global/rooms/dock.swf/2016-01-01.swf:ef84a84ebb06cc53f68e4dfed0d3bdf6
+default/seasonal/play/v2/content/global/rooms/dojoext.swf/2016-##-##.swf:d8928dca30393ea2af322fb4637e6bf9
+default/seasonal/play/v2/content/global/rooms/forts.swf/2016-##-##.swf:8f200e6835056c4e5d9e98a3310496ba
+default/seasonal/play/v2/content/global/rooms/plaza.swf/2016-##-##.swf:cdf0af6b7aa4f2138f25dc748f651b62
+default/seasonal/play/v2/content/global/rooms/rink.swf/2016-##-##.swf:c9caef1a33bc062edbdf403ad0d1708d
+default/seasonal/play/v2/content/global/rooms/town.swf/2016-##-##.swf:6c49731d29dd980dec9f378439cc9960
 
 default/special/index.html/engine3.html:bd70daa9a15b074048294c0043fc7d60
 

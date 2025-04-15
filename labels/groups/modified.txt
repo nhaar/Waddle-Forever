@@ -1,4 +1,4 @@
-default/seasonal/artwork/rooms/book11.swf/2005-Aug-22.swf:10f72d00cde2728e44694b6531e37cae
+default/seasonal/artwork/rooms/book11.swf/2005-08-22.swf:10f72d00cde2728e44694b6531e37cae
 - Originally from https://archives.clubpenguinwiki.info/wiki/Beta_Test_Party (at least I think so)
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
@@ -6,41 +6,41 @@ default/event/2005/beta_test_party/artwork/rooms/town10.swf:4aa2a09f05108308be9f
 - Originally from https://archives.clubpenguinwiki.info/wiki/Beta_Test_Party
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/seasonal/artwork/rooms/forts12.swf/2005-Dec-14.swf:db450a576841df5f64035ec3fd909e6e
+default/seasonal/artwork/rooms/forts12.swf/2005-12-14.swf:db450a576841df5f64035ec3fd909e6e
 - Originally "forts3" from https://archives.clubpenguinwiki.info/wiki/Snow_Forts
 - Modified frame1 script and collision scripts for the room to be compatible with chat291
 
-default/seasonal/artwork/rooms/rink10.swf/2005-Aug-22.swf:ccf5560bdedab05688349ad6f077e6ba
+default/seasonal/artwork/rooms/rink10.swf/2005-08-22.swf:ccf5560bdedab05688349ad6f077e6ba
 - Ice Rink with the door that leads to the Snow Forts disabled
 - It is likely that it opened the map instead of having nothing, but evidence is needed
 - It is made from the rink10 SWF from archives
 
-default/seasonal/artwork/rooms/town10.swf/2005-Aug-22.swf:aa98863f9cbd133e56fcdc36a27beb52
+default/seasonal/artwork/rooms/town10.swf/2005-08-22.swf:aa98863f9cbd133e56fcdc36a27beb52
 - Town, but with the Snow Forts trigger removed since it wasn't available yet
 - Made from town10 from archives
 
-default/seasonal/artwork/rooms/village11.swf/2005-Aug-22.swf:d6926a1fcf9484e2a60d7290dce93716
+default/seasonal/artwork/rooms/village11.swf/2005-08-22.swf:d6926a1fcf9484e2a60d7290dce93716
 - Ski Village with all triggers removed to simulate how it was before the Ski Lodge was added
 - and before the Ski Hill trigger was added
 - Made from the village11 SWF from archives
 
-default/seasonal/artwork/rooms/village11.swf/2005-Nov-03.swf:84ad907ae253d259606a335198978d85
+default/seasonal/artwork/rooms/village11.swf/2005-11-03.swf:84ad907ae253d259606a335198978d85
 - Ski Village but with triggers removed to only have Sport Shop to simulate how it was when
 - that shop opened
 - Made from the village11 SWF from archives
 
-default/seasonal/artwork/rooms/village11.swf/2005-Nov-18.swf:8b68d9e15ca824924a750a0c4da9ed7f
+default/seasonal/artwork/rooms/village11.swf/2005-11-18.swf:8b68d9e15ca824924a750a0c4da9ed7f
 - Ski Village with only the Ski Lodge trigger missing to simulate how it was when the Ski Hill trigger
 - was added
 - Made from the village11 SWF from archives
 
-default/seasonal/chat291.swf/2005-Aug-22.swf:7e834adfd358ad04c57d8f6a5d2b1a94
+default/seasonal/chat291.swf/2005-08-22.swf:7e834adfd358ad04c57d8f6a5d2b1a94
 - A copy of the 2005 Oct 24 file but with the newspaper button removed to simulate how
 - there was no newspapers yet
 - It is unknown if this is exactly how the game handled it
 
-default/seasonal/play/v2/content/global/content/igloo_music.swf/2010-Aug-20.swf:448f0d50f99493949a34fecdc35c8e70
-default/seasonal/play/v2/content/global/content/igloo_music.swf/2010-Nov-12.swf:10af717a96764b01073f5d522b7d8cb6
+default/seasonal/play/v2/content/global/content/igloo_music.swf/2010-08-20.swf:448f0d50f99493949a34fecdc35c8e70
+default/seasonal/play/v2/content/global/content/igloo_music.swf/2010-11-12.swf:10af717a96764b01073f5d522b7d8cb6
 - Igloo Music list recreations manually from the one in legacy media
 
 default/special/boots.swf/30.swf:e1e0b8b41a257524cc9850e5bc5022be
