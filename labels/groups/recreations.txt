@@ -67,3 +67,8 @@
 - A recreation of the Mountain Expedition Poster
 - Uses as a base the Halloween Party 2010 poster, and using the mountain asset from a different SWF
 - Very visually accurate, not possible to verify if the "teleport" function is the same as the original
+
+**seasonal**/**rooms**/plaza.swf/2010-11-18.swf:d7d6d926aa9f96e8a8a71c02867d08c9
+- Made by Blue Kirby
+- A recreation of the Stage with Planet Y play during the Water Hunt
+- It also has a graphical glitch reproduced which is the weird T in the sign
