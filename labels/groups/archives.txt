@@ -7,6 +7,11 @@ default/music/57.swf:6f3945ddc793d231e6af0aefccb535a2
 default/music/58.swf:8a8e9f93d70ec142eaa92f9110557354
 default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blue one in Organic Journey
 default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
+default/music/267.swf:9e09a6b44957edd6985c76db5b2c4f17 - Music267.swf
+default/music/268.swf:fc05ab047695a0780a77bca1427f5481 - Music268.swf
+default/music/269.swf:ebd7563567f1ccd9cf5fdf1478a0d91c - Music269.swf
+default/music/289.swf:24af415fdfed17224ca59cc6a595f6b6 - Music289.swf
+default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 - Music from the page: https://archives.clubpenguinwiki.info/wiki/Music
 
 **seasonal**/artwork/maps/island5.swf/2005-09-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
@@ -197,6 +202,21 @@ default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**2010**/island_adventure/**rooms**/beach.swf:c2d8d2c97c4bb9585c79829c270f4cef - RoomsBeach-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/berg.swf:aba78fbb47261537d4da826bed338413 - RoomsBerg-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/cove.swf:3db4125190e00657aada6fab6e3eb2dd - RoomsCove-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/dance.swf:a192f2d05a453ed1a371f2574348cbf2 - RoomsDance-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/dock.swf:f823b1cd48d17257970b7e82a1e3ce7a - RoomsDock-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/forest.swf:053a37fae9567e80361dbcc96635fd5c - RoomsForest-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/forts.swf:4c0f392d418eea170347f024f8248014 - RoomsForts-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/lake.swf:bad2d8959160aa2dbe934019388fc7ae - RoomsLake-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/party.swf:058dd0446732295d566419a75f204ed9 - RoomsParty-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/party2.swf:7f3b616eb092de688b9eedcb4c59444b - RoomsParty2-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/plaza.swf:dd2cf2110ee17c607cfb2ea316210d89 - RoomsPlaza-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/town.swf:d1fad35c0db6fbfaac43f6d589bfa664 - RoomsTown-IslandAdventureParty2010.swf
+**2010**/island_adventure/**rooms**/village.swf:6b007dee499059cfaf26cf60cf5f05a6 - RoomsVillage-IslandAdventureParty2010.swf
+- Island Adventure Party 2010
 
 **2010**/music_jam_construction/**rooms**/beach.swf:b1eca2c3d512e8257097b258fb1e7f9f
 **2010**/music_jam_construction/**rooms**/coffee.swf:f3c31a1b1e552aecc4145c98b2d3a358

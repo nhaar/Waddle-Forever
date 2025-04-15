@@ -78,6 +78,25 @@ export const PARTIES: Party[] = [
     paths: '2006/april_fools_2006'
   },
   {
+    name: 'Island Adventure Party 2010',
+    start: '2010-06-18',
+    end: '2010-06-28',
+    paths: '2010/island_adventure',
+    music: {
+      'beach': 41,
+      'cove': 291,
+      'dance': 269,
+      'dock': 41,
+      'forest': 290,
+      'forts': 291,
+      'plaza': 291,
+      'town': 268,
+      'village': 291,
+      'party': 267,
+      'party2': 289
+    }
+  },
+  {
     name: 'Music Jam 2010 Construction',
     start: '2010-07-01',
     end: null,
