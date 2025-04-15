@@ -1,10 +1,10 @@
 import net from 'net';
 
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
-import { GameVersion, Settings, SettingsManager } from './settings';
+import { Settings, SettingsManager } from './settings';
 import { Penguin } from './penguin';
 import { Stamp } from './game/stamps';
-import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower } from './routes/versions';
+import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
@@ -69,7 +69,7 @@ export class Client {
     this.xtTimestamps = new Map<string, number>();
   }
 
-  private get version(): GameVersion {
+  private get version(): Version {
     return this._settingsManager.settings.version;
   }
 

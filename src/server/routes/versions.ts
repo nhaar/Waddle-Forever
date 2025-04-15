@@ -1,5 +1,3 @@
-import { GameVersion } from "../settings";
-
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;
 
@@ -100,19 +98,19 @@ export function isLowerOrEqual(left: string, right: string): boolean {
 const ENGINE1_CUTOFF = '2008-##-##';
 const ENGINE3_CUTOFF = '2012-##-##';
 
-export function isEngine1(version: GameVersion): boolean {
+export function isEngine1(version: Version): boolean {
   return isLower(version, ENGINE1_CUTOFF)
 }
 
-export function isEngine2(version: GameVersion): boolean {
+export function isEngine2(version: Version): boolean {
   return isGreaterOrEqual(version, ENGINE1_CUTOFF) && isLower(version, ENGINE3_CUTOFF);
 }
 
-export function isEngine3(version:GameVersion): boolean {
+export function isEngine3(version: Version): boolean {
   return isGreaterOrEqual(version, ENGINE3_CUTOFF);
 }
 
-export function inInterval(version: GameVersion, start: GameVersion, end: GameVersion, params?: {
+export function inInterval(version: Version, start: Version, end: Version, params?: {
   startOpen?: boolean,
   endOpen?: boolean
 }): boolean {

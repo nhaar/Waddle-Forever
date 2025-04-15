@@ -1,5 +1,4 @@
-import { GameVersion } from "../settings"
-import { isGreaterOrEqual, isLower } from "./versions"
+import { isGreaterOrEqual, isLower, Version } from "./versions"
 
 type Category = {
   name: string
@@ -993,7 +992,7 @@ function addStamps(category: Category, stamps: Stamp[]) {
   }
 }
 
-export function getStampbook(version: GameVersion): string {
+export function getStampbook(version: Version): string {
   if (isLower(version, '2010-07-26')) {
     return '{}'
   }

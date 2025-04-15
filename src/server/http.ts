@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import { Request, Router } from "express";
-import { GameVersion, SettingsManager } from "./settings";
-import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
+import { SettingsManager } from "./settings";
+import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 import { findCurrentParty, findCurrentUpdateInParty } from './game/parties';
 
@@ -20,9 +20,9 @@ type Alternator = [string, ...string[]]
 
 type AlternatorMap = Array<[string, string]>
 
-type Spacer = [GameVersion, GameVersion, ...string[]]
+type Spacer = [Version, Version, ...string[]]
 
-type SpacerMap = Array<[GameVersion, GameVersion, string]>
+type SpacerMap = Array<[Version, Version, string]>
 
 const SEASONAL_NAME = 'seasonal';
 
@@ -109,7 +109,7 @@ export function spaced(routers: HttpRouter[], spacers: Spacer[]) {
 }
 
 /** Assigns files to routers in a given date interval */
-export function range(start: GameVersion, end: GameVersion, routeMaps: RouteMap) {
+export function range(start: Version, end: Version, routeMaps: RouteMap) {
   const routers: HttpRouter[] = [];
   const targets: string[] = [];
 

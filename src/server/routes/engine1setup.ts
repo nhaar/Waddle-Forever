@@ -1,7 +1,6 @@
 import { findIndexLeftOf } from "../../common/utils";
 import { OLD_CATALOGUES } from "../game/catalogues";
 import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
-import { GameVersion } from "../settings";
 import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
 
 type Engine1Room = {
@@ -42,7 +41,7 @@ function getClothing(releaseVersion: Version) : string {
   return `${String(year).slice(2)}${String(month).padStart(2, '0')}`;
 }
 
-export function getSetupXml(version: GameVersion) {
+export function getSetupXml(version: Version) {
   let news: string | Number;
   if (version === FAN_ISSUE.date) {
     news = FAN_ISSUE.name;

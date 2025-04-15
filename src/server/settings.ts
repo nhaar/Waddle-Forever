@@ -2,64 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Router, Request } from "express";
 import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
-
-export type GameVersion = '2005-Aug-22'
-  | '2005-Sep-12'
-  | '2005-Sep-21'
-  | '2005-Sep-22'
-  | '2005-Oct-24'
-  | '2005-Oct-27'
-  | '2005-Oct-28'
-  | '2005-Nov-01'
-  | '2005-Nov-03'
-  | '2005-Nov-08'
-  | '2005-Nov-11'
-  | '2005-Nov-15'
-  | '2005-Nov-16'
-  | '2005-Nov-18'
-  | '2005-Nov-21'
-  | '2005-Dec-01'
-  | '2005-Dec-05'
-  | '2005-Dec-08'
-  | '2005-Dec-14'
-  | '2005-Dec-15'
-  | '2005-Dec-22'
-  | '2005-Dec-26'
-  | '2005-Dec-29'
-  | '2006-Jan-01'
-  | '2006-Jan-05'
-  | '2006-Jan-12'
-  | '2006-Jan-19'
-  | '2006-Jan-26'
-  | '2006-Feb-02'
-  | '2006-Feb-03'
-  | '2006-Feb-09'
-  | '2006-Feb-14'
-  | '2006-Feb-15'
-  | '2006-Feb-16'
-  | '2006-Feb-23'
-  | '2006-Feb-24'
-  | '2006-Feb-28'
-  | '2006-Mar-02'
-  | '2006-Mar-03'
-  | '2006-Mar-09'
-  | '2006-Mar-16'
-  | '2006-Mar-17'
-  | '2006-Mar-23'
-  | '2006-Mar-29'
-  | '2006-Mar-30'
-  | '2006-Mar-31'
-  | '2006-Apr-03'
-  | '2006-Apr-06'
-  | '2006-Apr-13'
-  | '2006-Apr-07'
-  | '2010-Sep-03'
-  | '2010-Sep-10'
-  | '2010-Sep-24'
-  | '2010-Oct-23'
-  | '2010-Oct-28'
-  | '2010-Nov-24'
-  | '2016-Jan-01';
+import { Version } from './routes/versions';
 
 export interface Settings {
   fps30: boolean
@@ -69,7 +12,7 @@ export interface Settings {
   remove_idle: boolean
   jpa_level_selector: boolean
   swap_dance_arrow: boolean
-  version: GameVersion
+  version: Version
   always_member: boolean
   minified_website: boolean
   no_rainbow_quest_wait: boolean
@@ -152,7 +95,7 @@ export class SettingsManager {
     this.updateSettings({});
   }
 
-  readVersion(object: any): GameVersion {
+  readVersion(object: any): Version {
     const value = object['version'];
     if (value === undefined) {
       return '2010-Nov-24';
