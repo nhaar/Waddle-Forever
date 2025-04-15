@@ -8,6 +8,8 @@
 import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils'
+import { PARTIES } from '../src/server/game/parties'
+import { isGreaterOrEqual } from '../src/server/routes/versions';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 
@@ -124,12 +126,13 @@ type PartyCrumbsChange = {
   changes: Modifications
 };
 
-type CrumbsTimeline = Array<SeasonalCrumbsChange | PartyCrumbsChange>;
+type CrumbsUpdate = SeasonalCrumbsChange | PartyCrumbsChange
 
-/** Timeline with all updates to global_crumbs, must be included in CHRONOLOGICAL ORDER! */
+type CrumbsTimeline = Array<Omit<SeasonalCrumbsChange, 'type'>>;
+
+/** Timeline with all manual updates to global_crumbs, must be included in CHRONOLOGICAL ORDER! */
 const CRUMBS_TIMELINE: CrumbsTimeline = [
   {
-    type: 'seasonal',
     version: '2010-Jun-10',
     changes: {
       music: {
@@ -138,27 +141,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    type: 'party',
-    event: '2010/music_jam',
-    changes: {
-      music: {
-        'lounge': 271,
-        'berg': 244,
-        'mine': 247,
-        'dance': 242,
-        'pizza': 271,
-        'plaza': 271,
-        'forts': 271,
-        'rink': 240,
-        'village': 292,
-        'town': 271,
-        'party3': 293,
-        'coffee': 0
-      }
-    }
-  },
-  {
-    type: 'seasonal',
     version: '2010-Jul-21',
     changes: {
       music: {
@@ -167,19 +149,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    type: 'party',
-    event: '2010/mountain_expedition',
-    changes: {
-      music: {
-        'party2': 294,
-        'party3': 295,
-        'party4': 295,
-        'party6': 256
-      }
-    }
-  },
-  {
-    type: 'seasonal',
     version: '2010-Aug-26',
     changes: {
       music: {
@@ -188,41 +157,15 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    type: 'party',
-    event: '2010/fair_2010',
+    version: '2010-Sep-03',
     changes: {
-      music: {
-        'town': 297,
-        'coffee': 221,
-        'dance': 243,
-        'lounge': 243,
-        'plaza': 297,
-        'village': 297,
-        'mtn': 297,
-        'forts': 297,
-        'dock': 297,
-        'beach': 297,
-        'beacon': 221,
-        'forest': 297,
-        'berg': 297,
-        'cove': 297,
-        'party': 221,
-        'party1': 221,
-        'party2': 221,
-        'party3': 221
-      },
       prices: {
         5077: 0,
         6052: 0
-      },
-      globalPaths: {
-        'tickets': 'tickets.swf',
-        'ticket_icon': 'ticket_icon.swf'
       }
     }
   },
   {
-    type: 'seasonal',
     version: '2010-Sep-16',
     changes: {
       music: {
@@ -231,7 +174,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    type: 'seasonal',
     version: '2010-Oct-08',
     changes: {
       music: {
@@ -240,65 +182,15 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    type: 'party',
-    event: '2010/5th_anniversary_party',
+    version: '2010-Oct-28',
     changes: {
-      music: {
-        'town': 218,
-        'coffee': 218,
-        'book': 218,
-        'stage': 43
-      }
-    }
-  },
-  {
-    type: 'party',
-    event: '2010/halloween_party_2010',
-    changes: {
-      music: {
-        'town': 251,
-        'coffe': 252,
-        'book': 252,
-        'dance': 223,
-        'lounge': 223,
-        'shop': 252,
-        'plaza': 251,
-        'pet': 252,
-        'pizza': 253,
-        'village': 251,
-        'lodge': 252,
-        'attic': 252,
-        'mtn': 251,
-        'forts': 251,
-        'rink': 251,
-        'dock': 251,
-        'beach': 251,
-        'light': 252,
-        'beacon': 251,
-        'forest': 251,
-        'berg': 251,
-        'cove': 251,
-        'cave': 252,
-        'shack': 251,
-        'party1': 251,
-        'party2': 253,
-        'party3': 299,
-        'party4': 300,
-        'party5': 298
-      },
       prices: {
         5081: 0,
         9077: 0
-      },
-      globalPaths: {
-        'scavenger_hunt_icon': 'scavenger_hunt/scavenger_hunt_icon.swf',
-        'hunt_ui': 'scavenger_hunt/hunt_ui.swf',
-        'halloween_hunt': 'scavenger_hunt/hunt_ui.swf'
       }
     }
   },
   {
-    type: 'seasonal',
     version: '2010-Nov-18',
     changes: {
       music: {
@@ -307,6 +199,48 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   }
 ]
+
+function getFullTimeline(): CrumbsUpdate[] {
+  let currentPartyIndex = 0;
+  const crumbsUpdates: CrumbsUpdate[] = [];
+  // go through each update in the timeline to and see if a party comes after or before it
+  for (let timelineIndex = 0; timelineIndex < CRUMBS_TIMELINE.length; timelineIndex++) {
+    const seasonal = CRUMBS_TIMELINE[timelineIndex];
+    // start at the first party we haven't done yet
+    for (let partyIndex = currentPartyIndex; true; partyIndex++) {
+      const party = PARTIES[partyIndex];
+      // party comes after the version, we can push this seasonal update and check next version
+      // also, if partyIndex > PARTIES.length, we just add every new update
+      // we use start >= version so that if they start on the same day, the seasonal one comes first
+      if (partyIndex >= PARTIES.length || isGreaterOrEqual(party.start, seasonal.version)) {
+        crumbsUpdates.push({
+          type: 'seasonal',
+          ...seasonal
+        });
+        // exit the party index without incrementing, return to timeline loop
+        break;
+      } else {
+        const mainPath = typeof party.paths === 'string' ? party.paths : party.paths[0];
+
+        // check if crumbs actually changes in the day
+        const hasChanges = [party.music, party.globalPaths].some((value) => value !== undefined);
+        if (hasChanges) {
+          crumbsUpdates.push({
+            type: 'party',
+            changes: {
+              music: party.music,
+              globalPaths: party.globalPaths
+            },
+            event: mainPath
+          });
+        }
+        // increment so we never have to do this party again
+        currentPartyIndex++;
+      }
+    }
+  }
+  return crumbsUpdates;
+}
 
 const SEASONAL_CRUMBS_PATH = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf');
 
@@ -322,7 +256,8 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
 (async () => {
   console.log('Beginning exporting');
   let permanentCrumbs = await loadBaseCrumbs();
-  for (const update of CRUMBS_TIMELINE) {
+  const crumbsUpdates = getFullTimeline();
+  for (const update of crumbsUpdates) {
     if (update.type === 'seasonal') {
       console.log(`Exporting changes for day ${update.version}`);
       permanentCrumbs = applyChanges(permanentCrumbs, update.changes);

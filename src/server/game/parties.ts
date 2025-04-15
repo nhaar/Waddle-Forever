@@ -1,5 +1,6 @@
 import { findIndexLeftOf } from "../../common/utils";
 import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
+import { MusicUpdate, PathsUpdate } from "./crumbs";
 
 /** Object for documenting a party/event from Club Penguin */
 export type Party = {
@@ -12,6 +13,11 @@ export type Party = {
   /** List of changes in the party */
   updates?: PartyStage[];
   paths: string | string[];
+
+  /** If the party changes the music, all changes that happened */
+  music?: MusicUpdate
+  /** If the party has new global paths, all of them */
+  globalPaths?: PathsUpdate
 
   // TODO temporary features for while the timeline is not complete
   hideEnd?: true;
@@ -95,14 +101,34 @@ export const PARTIES: Party[] = [
     start: '2010-Jul-09',
     end: '2010-Jul-19',
     paths: '2010/music_jam',
-    hideEnd: true
+    hideEnd: true,
+    music: {
+      'lounge': 271,
+      'berg': 244,
+      'mine': 247,
+      'dance': 242,
+      'pizza': 271,
+      'plaza': 271,
+      'forts': 271,
+      'rink': 240,
+      'village': 292,
+      'town': 271,
+      'party3': 293,
+      'coffee': 0
+    }
   },
   {
     name: 'Mountain Expedition',
     start: '2010-Aug-12',
     end: '2010-Aug-19',
     paths: '2010/mountain_expedition',
-    hideEnd: true
+    hideEnd: true,
+    music: {
+      'party2': 294,
+      'party3': 295,
+      'party4': 295,
+      'party6': 256
+    }
   },
   {
     name: 'The Fair 2010',
@@ -110,6 +136,30 @@ export const PARTIES: Party[] = [
     end: '2010-Sep-13',
     paths: '2010/fair_2010',
     hideEnd: true,
+    music: {
+      'town': 297,
+      'coffee': 221,
+      'dance': 243,
+      'lounge': 243,
+      'plaza': 297,
+      'village': 297,
+      'mtn': 297,
+      'forts': 297,
+      'dock': 297,
+      'beach': 297,
+      'beacon': 221,
+      'forest': 297,
+      'berg': 297,
+      'cove': 297,
+      'party': 221,
+      'party1': 221,
+      'party2': 221,
+      'party3': 221
+    },
+    globalPaths: {
+      'tickets': 'tickets.swf',
+      'ticket_icon': 'ticket_icon.swf'
+    },
     updates: [
       {
         update: null,
@@ -129,14 +179,56 @@ export const PARTIES: Party[] = [
     start: '2010-Oct-23',
     end: '2010-Oct-25',
     paths: '2010/5th_anniversary_party',
-    hideEnd: true
+    hideEnd: true,
+    music: {
+      'town': 218,
+      'coffee': 218,
+      'book': 218,
+      'stage': 43
+    }
   },
   {
     name: 'Halloween Party 2010',
     start: '2010-Oct-28',
     end: '2010-Nov-04',
     paths: '2010/halloween_party_2010',
-    hideEnd: true
+    hideEnd: true,
+    music: {
+      'town': 251,
+      'coffee': 252,
+      'book': 252,
+      'dance': 223,
+      'lounge': 223,
+      'shop': 252,
+      'plaza': 251,
+      'pet': 252,
+      'pizza': 253,
+      'village': 251,
+      'lodge': 252,
+      'attic': 252,
+      'mtn': 251,
+      'forts': 251,
+      'rink': 251,
+      'dock': 251,
+      'beach': 251,
+      'light': 252,
+      'beacon': 251,
+      'forest': 251,
+      'berg': 251,
+      'cove': 251,
+      'cave': 252,
+      'shack': 251,
+      'party1': 251,
+      'party2': 253,
+      'party3': 299,
+      'party4': 300,
+      'party5': 298
+    },
+    globalPaths: {
+      'scavenger_hunt_icon': 'scavenger_hunt/scavenger_hunt_icon.swf',
+      'hunt_ui': 'scavenger_hunt/hunt_ui.swf',
+      'halloween_hunt': 'scavenger_hunt/hunt_ui.swf'
+    }
   }
 ];
 
