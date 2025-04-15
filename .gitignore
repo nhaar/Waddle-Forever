@@ -82,4 +82,4 @@ ffdec-path.ts
 /logs
 
 # file management
-/labels/unlabeled.txt
+/labels/warnings.txt

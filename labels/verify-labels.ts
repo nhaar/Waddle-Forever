@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { getEveryMediaFile, getShortcutString, LABEL_FILES, LabelFile, processLabelFile } from "./labels";
+import { getEveryMediaFile, getShortcutString, LABEL_FILES, MEDIA_DIRECTORY, processLabelFile } from "./labels";
 
 // for timing script execution
 const startTime = Date.now();
@@ -47,6 +47,11 @@ Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
   
   const unlabeledAmount = unlabeledArray.length;
   const totalAmount = Array.from(everyFile.values()).length;
+
+  const deadFiles = Array.from(labeledFiles.entries()).filter((pair) => {
+    return !fs.existsSync(path.join(MEDIA_DIRECTORY, pair[0]));
+  }).map((pair) => `${getShortcutString(pair[0])}:${pair[1]}`);
+
   const endTime = Date.now();
   const secondsTaken = (endTime - startTime) / 1000;
   
@@ -54,8 +59,18 @@ Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
     unlabeledArray.forEach((file) => console.log(file));
   }
 
-  fs.writeFileSync(path.join(__dirname, 'unlabeled.txt'), unlabeledArray.join('\n'));
-  console.log(`Unlabeled search complete. ${unlabeledAmount} unlabeled files found out of ${totalAmount} (${unlabeledAmount}/${totalAmount})`);
+  const warnings: string[] = [];
+
+  deadFiles.forEach((line) => {
+    warnings.push(`dead: ${line}`);
+  })
+
+  unlabeledArray.forEach((line) => {
+    warnings.push(`unlabeled: ${line}`);
+  })
+
+  fs.writeFileSync(path.join(__dirname, 'warnings.txt'), warnings.join('\n'));
+  console.log(`Files search complete. ${unlabeledAmount} unlabeled files found out of ${totalAmount} (${unlabeledAmount}/${totalAmount}). Found ${deadFiles.length} dead files`);
   
   console.log(`Total time taken: ${secondsTaken}`);
 

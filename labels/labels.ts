@@ -127,15 +127,6 @@ export class LabelFile {
     return new LabelFile(lines, file);
   }
 
-  checkFilesExistence(): void {
-    this._pathMap.forEach((_, file) => {
-      if (fs.existsSync(path.join(MEDIA_DIRECTORY, file))) {
-      } else {
-        throw new Error(`Labeled file does not exist: ${file}`);
-      }
-    })
-  }
-
   getFileMap(): Map<string, string> {
     const map = new Map<string, string>();
     this._lines.forEach((line) => {
@@ -214,7 +205,6 @@ export function getEveryMediaFile(): Map<string, string> {
 /** Read a file path in the label style and get all files that are labeled in it */
 export async function processLabelFile(filePath: string): Promise<Map<string, string>> {
   const labelFile = await LabelFile.fromFile(filePath);
-  labelFile.checkFilesExistence();
   
   return labelFile.getFileMap();
 }
