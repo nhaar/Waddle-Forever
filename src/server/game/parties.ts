@@ -191,7 +191,7 @@ export const PARTIES: Party[] = [
     name: 'Halloween Party 2010',
     start: '2010-Oct-28',
     end: '2010-Nov-04',
-    paths: '2010/halloween_party_2010',
+    paths: ['2010/halloween_party_2010', '2010_scavenger_hunt'],
     hideEnd: true,
     music: {
       'town': 251,
