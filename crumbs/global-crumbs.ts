@@ -9,6 +9,7 @@ import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils'
 import { PARTIES } from '../src/server/game/parties'
+import { STAGE_PLAYS, STAGE_TIMELINE } from '../src/server/game/stage-plays'
 import { ITEMS } from '../src/server/game/items'
 import { Version, isEqual, isGreaterOrEqual, isLower } from '../src/server/routes/versions';
 import { MusicUpdate, PathsUpdate, PricesUpdate } from '../src/server/game/crumbs';
@@ -131,59 +132,43 @@ type PartyCrumbsChange = {
 
 type CrumbsUpdate = SeasonalCrumbsChange | PartyCrumbsChange
 
-type CrumbsTimeline = Array<Omit<SeasonalCrumbsChange, 'type'>>;
+type SimpleSeasonalCrumbsUpdate = Omit<SeasonalCrumbsChange, 'type'>;
+
+type TimelineMap = Map<Version, SimpleSeasonalCrumbsUpdate>;
+
+type CrumbsTimeline = Array<SimpleSeasonalCrumbsUpdate>;
 
 /** Timeline with all manual updates to global_crumbs, must be included in CHRONOLOGICAL ORDER! */
-const CRUMBS_TIMELINE: CrumbsTimeline = [
-  {
-    version: '2010-06-10',
-    changes: {
-      music: {
-        'stage': 37
-      }
+const CRUMBS_TIMELINE: CrumbsTimeline = [];
+
+function getTimelineMap(timeline: CrumbsTimeline): TimelineMap {
+  const map = new Map<string, SimpleSeasonalCrumbsUpdate>();
+  timeline.forEach((value) => {
+    map.set(value.version, value);
+  });
+  return map;
+}
+
+function getCrumbsTimelineFromMap(map: TimelineMap): CrumbsTimeline {
+  const timeline: CrumbsTimeline = [];
+  map.forEach((value) => {
+    timeline.push(value);
+  });
+
+  const sorted = timeline.sort((a, b) => {
+    const aVersion = a.version;
+    const bVersion = b.version;
+    if (isLower(aVersion, bVersion)) {
+      return -1;
+    } else if (isEqual(aVersion, bVersion)) {
+      return 0;
+    } else {
+      return 1;
     }
-  },
-  {
-    version: '2010-07-21',
-    changes: {
-      music: {
-        'stage': 230
-      }
-    }
-  },
-  {
-    version: '2010-08-26',
-    changes: {
-      music: {
-        'stage': 32
-      }
-    }
-  },
-  {
-    version: '2010-09-16',
-    changes: {
-      music: {
-        'stage': 39
-      }
-    }
-  },
-  {
-    version: '2010-10-08',
-    changes: {
-      music: {
-        'stage': 43
-      }
-    }
-  },
-  {
-    version: '2010-11-18',
-    changes: {
-      music: {
-        'stage': 38
-      }
-    }
-  }
-]
+  });
+
+  return sorted;
+}
 
 function addParties(timeline: CrumbsTimeline): CrumbsUpdate[] {
   let currentPartyIndex = 0;
@@ -227,8 +212,48 @@ function addParties(timeline: CrumbsTimeline): CrumbsUpdate[] {
   return crumbsUpdates;
 }
 
-function addPriceChanges(timeline: CrumbsTimeline): CrumbsTimeline {
-  const newTimeline = [...timeline];
+function addStagePlays(map: TimelineMap): TimelineMap {
+  // name -> music id
+  const stageMap = new Map<string, number>();
+  STAGE_PLAYS.forEach((play) => {
+    stageMap.set(play.name, play.musicId);
+  })
+
+  STAGE_TIMELINE.forEach((update) => {
+    const song = stageMap.get(update.name);
+    if (song === undefined) {
+      throw new Error(`Play has no music: ${update.name}`);
+    }
+    addToTimelineMap(map, {
+      version: update.date,
+      changes: {
+        music: {
+          'stage': song
+        }
+      }
+    });
+  })
+
+  return map;
+}
+
+function addToTimelineMap(map: TimelineMap, update: SimpleSeasonalCrumbsUpdate): void {
+  const previousValue = map.get(update.version);
+  if (previousValue === undefined) {
+    map.set(update.version, update);
+  } else {
+    map.set(update.version, {
+      version: update.version,
+      changes: {
+        music: { ...previousValue.changes.music, ...update.changes.music },
+        globalPaths: { ...previousValue.changes.globalPaths, ...update.changes.globalPaths },
+        prices: { ...previousValue.changes.prices, ...update.changes.prices }
+      }
+    });
+  }
+}
+
+function addPriceChanges(map: TimelineMap): TimelineMap {
   const itemRows = ITEMS.rows;
   const priceChanges: Record<Version, PricesUpdate> = {};
   itemRows.forEach((item) => {
@@ -245,7 +270,7 @@ function addPriceChanges(timeline: CrumbsTimeline): CrumbsTimeline {
     }
   });
   for (const date in priceChanges) {
-    newTimeline.push({
+    addToTimelineMap(map, {
       version: date,
       changes: {
         prices: priceChanges[date]
@@ -253,24 +278,14 @@ function addPriceChanges(timeline: CrumbsTimeline): CrumbsTimeline {
     });
   }
 
-  const sorted = newTimeline.sort((a, b) => {
-    const aVersion = a.version;
-    const bVersion = b.version;
-    if (isLower(aVersion, bVersion)) {
-      return -1;
-    } else if (isEqual(aVersion, bVersion)) {
-      return 0;
-    } else {
-      return 1;
-    }
-  });
-
-  return sorted;
+  return map;
 }
 
 function getFullTimeline(): CrumbsUpdate[] {
-  const timeline = addPriceChanges(CRUMBS_TIMELINE);
-  const updates = addParties(timeline);
+  let map = getTimelineMap(CRUMBS_TIMELINE);
+  map = addPriceChanges(map);
+  map == addStagePlays(map);
+  const updates = addParties(getCrumbsTimelineFromMap(map));
   return updates;
 }
 
