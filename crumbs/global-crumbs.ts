@@ -94,9 +94,10 @@ type Modifications = {
 function applyChanges(crumbs: string, changes: Modifications): string {
   let newCrumbs = crumbs;
   if (changes.music !== undefined) {
-    for (const room in changes.music) {
-      newCrumbs = changeRoomMusic(newCrumbs, room, changes.music[room]);
-    }
+    Object.entries(changes.music).forEach((pair) => {
+      const [room, music] = pair;
+      newCrumbs = changeRoomMusic(newCrumbs, room, music);
+    });
   }
 
   if (changes.prices !== undefined) {
