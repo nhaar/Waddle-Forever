@@ -13,7 +13,7 @@ import { PUFFLES } from './game/puffle';
 
 type ServerType = 'Login' | 'World';
 
-const STAMP_RELEASE_VERSION : string = '2010-Jul-26'
+const STAMP_RELEASE_VERSION : string = '2010-07-26'
 
 export class Client {
   socket: net.Socket;
@@ -291,11 +291,11 @@ export class Client {
     if (this.currentRoom in roomStamps) {
       let gameStamps = roomStamps[this.currentRoom];
       // manually removing stamps if using a version before it was available
-      if (isLower(this.version, '2010-Jul-26')) {
+      if (isLower(this.version, '2010-07-26')) {
         gameStamps = [];
       } else if (this.currentRoom === Room.JetPackAdventure) {
         // Before puffle stamps
-        if (isLower(this.version, '2010-Sep-24')) {
+        if (isLower(this.version, '2010-09-24')) {
           gameStamps = [
             Stamp.LiftOff,
             Stamp.FuelRank1,

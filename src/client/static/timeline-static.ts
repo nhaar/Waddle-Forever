@@ -7,27 +7,27 @@ function updateVersion(version: string) {
   post('update', { version });
 }
 
-const MONTHS = {
-  'Jan': 'January',
-  'Feb': 'February',
-  'Mar': 'March',
-  'Apr': 'April',
-  'May': 'May',
-  'Jun': 'June',
-  'Jul': 'July',
-  'Aug': 'August',
-  'Sep': 'September',
-  'Oct': 'October',
-  'Nov': 'November',
-  'Dec': 'December'
-};
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 
 function getFullDate(value: string) {
   const year = Number(value.slice(0, 4))
-  const monthName = value.slice(5, 8)
-  const day = Number(value.slice(9, 11))
+  const month = Number(value.slice(5, 7))
+  const day = Number(value.slice(8, 10))
 
-  return `${MONTHS[monthName as keyof typeof MONTHS]} ${day}, ${year}`;
+  return `${MONTHS[month - 1]} ${day}, ${year}`;
 }
 
 function getDescription(version: Day): string {

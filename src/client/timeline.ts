@@ -26,61 +26,61 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
     // it should become dynamic in the next updates
     let timeline: Day[] = [
       {
-        date: '2005-Aug-22',
+        date: '2005-08-22',
         events: {
           other: 'Beta release',
         }
       },
       {
-        date: '2005-Sep-12',
+        date: '2005-09-12',
         events: {
           roomOpen: 'Snow Forts'
         }
       },
       {
-        date: '2005-Nov-03',
+        date: '2005-11-03',
         events: {
           roomOpen: 'Sport Shop',
         }
       },
       {
-        date: '2005-Nov-18',
+        date: '2005-11-18',
         events: {
           roomOpen: 'Mountain'
         }
       },
       {
-        date: '2005-Dec-14',
+        date: '2005-12-14',
         events: {
           minigameRelease: 'Puffle Roundup'
         }
       },
       {
-        date: '2005-Dec-22',
+        date: '2005-12-22',
         events: {
           roomOpen: 'Ski Lodge',
         }
       },
       {
-        date: '2006-Feb-24',
+        date: '2006-02-24',
         events: {
           roomOpen: 'Plaza, Pizza Parlor'
         }
       },
       {
-        date: '2006-Mar-17',
+        date: '2006-03-17',
         events: {
           roomOpen: 'Pet Shop'
         }
       },
       {
-        date: '2006-Mar-29',
+        date: '2006-03-29',
         events: {
           roomOpen: 'Iceberg'
         }
       },
       {
-        date: '2010-Sep-24',
+        date: '2010-09-24',
         events: {
           partyStart: 'Stadium Games'
         }

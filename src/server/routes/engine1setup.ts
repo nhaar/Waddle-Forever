@@ -2,7 +2,7 @@ import { findIndexLeftOf } from "../../common/utils";
 import { OLD_CATALOGUES } from "../game/catalogues";
 import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
 import { GameVersion } from "../settings";
-import { decomposeVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
+import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
 
 type Engine1Room = {
   name: string,
@@ -33,7 +33,7 @@ function patchFrame(rooms: Engine1Room[], frames: Record<string, number>) {
  * Clothing filenames looked like 0508 (2005-August)
  * */
 function getClothing(releaseVersion: Version) : string {
-  const decomposed = decomposeVersion(releaseVersion);
+  const decomposed = processVersion(releaseVersion);
   if (decomposed === undefined) {
     throw new Error(`Invalid version: ${releaseVersion}`);
   }

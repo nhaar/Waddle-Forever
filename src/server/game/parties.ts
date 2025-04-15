@@ -37,49 +37,49 @@ export type PartyStage = {
 export const PARTIES: Party[] = [
   {
     name: 'Beta Test Party',
-    start: '2005-Sep-21',
-    end: '2005-Sep-22',
+    start: '2005-09-21',
+    end: '2005-09-22',
     paths: '2005/beta_test_party'
   },
   {
     name: 'Halloween Party 2005',
-    start: '2005-Oct-27',
-    end: '2005-Nov-01',
+    start: '2005-10-27',
+    end: '2005-11-01',
     paths: '2005/halloween_2005'
   },
   {
     name: 'The Great Puffle Discovery',
-    start: '2005-Nov-15',
-    end: '2005-Dec-05',
+    start: '2005-11-15',
+    end: '2005-12-05',
     paths: '2005/puffle_discovery'
   },
   {
     name: 'Christmas Party 2005',
-    start: '2005-Dec-22',
-    end: '2005-Dec-26',
+    start: '2005-12-22',
+    end: '2005-12-26',
     paths: '2005/christmas_2005'
   },
   {
     name: 'Valentine\'s Day Celebration',
-    start: '2006-Feb-14',
-    end: '2006-Feb-15',
+    start: '2006-02-14',
+    end: '2006-02-15',
     paths: '2006/valentine_day_celebration'
   },
   {
     name: 'Pizza Parlor Opening Party',
-    start: '2006-Feb-24',
-    end: '2006-Feb-28',
+    start: '2006-02-24',
+    end: '2006-02-28',
     paths: '2006/pizza_parlor_opening_party'
   },
   {
     name: 'April Fools Party 2006',
-    start: '2006-Mar-31',
-    end: '2006-Apr-03',
+    start: '2006-03-31',
+    end: '2006-04-03',
     paths: '2006/april_fools_2006'
   },
   {
     name: 'Music Jam 2010 Construction',
-    start: '2010-Jul-01',
+    start: '2010-07-01',
     end: null,
     paths: '2010/music_jam_construction',
     updates: [
@@ -90,7 +90,7 @@ export const PARTIES: Party[] = [
       {
         update: {
           description: '4th of July Fireworks Removed',
-          date: '2010-Jul-05'
+          date: '2010-07-05'
         },
         path: '2010/music_jam_construction_no_fireworks'
       }
@@ -98,8 +98,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Music Jam 2010',
-    start: '2010-Jul-09',
-    end: '2010-Jul-19',
+    start: '2010-07-09',
+    end: '2010-07-19',
     paths: '2010/music_jam',
     hideEnd: true,
     music: {
@@ -119,8 +119,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Mountain Expedition',
-    start: '2010-Aug-12',
-    end: '2010-Aug-19',
+    start: '2010-08-12',
+    end: '2010-08-19',
     paths: '2010/mountain_expedition',
     hideEnd: true,
     music: {
@@ -132,8 +132,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'The Fair 2010',
-    start: '2010-Sep-03',
-    end: '2010-Sep-13',
+    start: '2010-09-03',
+    end: '2010-09-13',
     paths: '2010/fair_2010',
     hideEnd: true,
     music: {
@@ -168,7 +168,7 @@ export const PARTIES: Party[] = [
       {
         update: {
           description: 'New items were added to the prize booths',
-          date: '2010-Sep-10'
+          date: '2010-09-10'
         },
         path: '2010/fair_2010_end'
       }
@@ -176,8 +176,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: '5th Anniversary',
-    start: '2010-Oct-23',
-    end: '2010-Oct-25',
+    start: '2010-10-23',
+    end: '2010-10-25',
     paths: '2010/5th_anniversary_party',
     hideEnd: true,
     music: {
@@ -189,8 +189,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Halloween Party 2010',
-    start: '2010-Oct-28',
-    end: '2010-Nov-04',
+    start: '2010-10-28',
+    end: '2010-11-04',
     paths: ['2010/halloween_party_2010', '2010_scavenger_hunt'],
     hideEnd: true,
     music: {
@@ -232,8 +232,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Sensei\'s Water Scavenger Hunt',
-    start: '2010-Nov-16',
-    end: '2010-Nov-24',
+    start: '2010-11-16',
+    end: '2010-11-24',
     paths: ['2010/water_scavenger_hunt', '2010_scavenger_hunt'],
     globalPaths: {
       'scavenger_hunt_icon': 'scavenger_hunt/scavenger_hunt_icon.swf',

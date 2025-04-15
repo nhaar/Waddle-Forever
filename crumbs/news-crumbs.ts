@@ -238,25 +238,7 @@ function getFullDate(news: Newspaper): string {
 }
 
 function getDateFileName(news: Newspaper): string {
-  const month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ][news.month - 1];
-
-  // must be 2 digits for day
-  const day = news.day < 10 ? '0' + String(news.day) : news.day;
-
-  return `${news.year}-${month}-${day}`;
+  return `${news.year}-${String(news.month).padStart(2, '0')}-${String(news.day).padStart(2, '0')}`;
 }
 
 function generateNewsPathAssign(n: number, newspaper: Newspaper): string {

@@ -136,7 +136,7 @@ type CrumbsTimeline = Array<Omit<SeasonalCrumbsChange, 'type'>>;
 /** Timeline with all manual updates to global_crumbs, must be included in CHRONOLOGICAL ORDER! */
 const CRUMBS_TIMELINE: CrumbsTimeline = [
   {
-    version: '2010-Jun-10',
+    version: '2010-06-10',
     changes: {
       music: {
         'stage': 37
@@ -144,7 +144,7 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Jul-21',
+    version: '2010-07-21',
     changes: {
       music: {
         'stage': 230
@@ -152,7 +152,7 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Aug-26',
+    version: '2010-08-26',
     changes: {
       music: {
         'stage': 32
@@ -160,7 +160,7 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Sep-16',
+    version: '2010-09-16',
     changes: {
       music: {
         'stage': 39
@@ -168,7 +168,7 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Oct-08',
+    version: '2010-10-08',
     changes: {
       music: {
         'stage': 43
@@ -176,7 +176,7 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Nov-18',
+    version: '2010-11-18',
     changes: {
       music: {
         'stage': 38
