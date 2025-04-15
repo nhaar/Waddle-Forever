@@ -65,8 +65,9 @@ Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
     warnings.push(`dead: ${line}`);
   })
 
+  warnings.push('\nunlabeled files:');
   unlabeledArray.forEach((line) => {
-    warnings.push(`unlabeled: ${line}`);
+    warnings.push(`${line}`);
   })
 
   fs.writeFileSync(path.join(__dirname, 'warnings.txt'), warnings.join('\n'));

@@ -1,19 +1,19 @@
 - Global Crumbs
-**2010**/fair_2010/**global**/crumbs/global_crumbs.swf:fe8446e059d6f461862390216bdeb413
-**2010**/halloween_party_2010/**global**/crumbs/global_crumbs.swf:3a8509b40dd00ad557e6071a018b5b20
-**2010**/mountain_expedition/**global**/crumbs/global_crumbs.swf:3613956bc9a39a9e1b719a56de6ea8f4
-**2010**/music_jam/**global**/crumbs/global_crumbs.swf:f83aa6f5e66aa82cbee1a315a325c3fc
-**2010**/5th_anniversary_party/**global**/crumbs/global_crumbs.swf:011e4480a7bf156a170b4e97d17baad0
-**2010**/water_scavenger_hunt/**global**/crumbs/global_crumbs.swf:412bb94b9d86db5fa70c41601cb79d75
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-06-10.swf:aa0f2563420de35b8bf70496b5eae9db
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-06-10,2010-07-19.swf:aa0f2563420de35b8bf70496b5eae9db
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-07-09.swf:f83aa6f5e66aa82cbee1a315a325c3fc
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-07-21.swf:051d25c7ffd9fc01994d427daa6da5e4
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-08-12.swf:3613956bc9a39a9e1b719a56de6ea8f4
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-08-19.swf:051d25c7ffd9fc01994d427daa6da5e4
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-08-26.swf:30a9e565809a82e336a210502aacccc9
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-09-03.swf:2680a00c57e07b0fbb7cd86dd94ce61d
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-09-03.swf:fe8446e059d6f461862390216bdeb413
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-09-13.swf:2680a00c57e07b0fbb7cd86dd94ce61d
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-09-16.swf:d43f7c21d7463df56c777a1951102d8f
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-08.swf:798fa13359d7285ecaad50c7912dcb0a
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-28.swf:0d9648a02a3e6f6b54c03da1f84ecc4c
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-11-16.swf:ba2d52cb125eb1afd4a1db28fa4a2240
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-11-18.swf:b968a3756983c88f1dfd48382f8899b4
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-08,2010-10-25.swf:798fa13359d7285ecaad50c7912dcb0a
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-23.swf:011e4480a7bf156a170b4e97d17baad0
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-28.swf:3a8509b40dd00ad557e6071a018b5b20
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-11-04.swf:0d9648a02a3e6f6b54c03da1f84ecc4c
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-11-16.swf:412bb94b9d86db5fa70c41601cb79d75
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-11-18.swf:dda4286da150c305e79beaaba0141efe
 
 - News Crumbs
 **seasonal**/**local**/news/news_crumbs.swf/2010-05-27.swf:3e7f33f449d6000943322dea105d33f7

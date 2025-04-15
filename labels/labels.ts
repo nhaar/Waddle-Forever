@@ -104,7 +104,7 @@ export class LabelFile {
           // group 1 is the filepath
           // group 2 is the md5 hash (separated via colon)
           // group 3 is either ending the line (nothing) or a comment
-          const fileMatch = line.match('^([\\*\\w\\d\\_\\-/\\.\\#]+)\\:([a-fA-F0-9]*)($|\\s+\\-.*)');
+          const fileMatch = line.match('^([\\*\\w\\d\\_\\-/\\.\\,\\#]+)\\:([a-fA-F0-9]*)($|\\s+\\-.*)');
           
           // no match means the line doesn't conform to any thing we allow
           if (fileMatch === null) {
