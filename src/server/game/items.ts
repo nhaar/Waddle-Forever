@@ -1026,7 +1026,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1193, 'The Side Swept', ItemType.Head, 350, true, false, false, false, false, false, '2017-03-30'],
   [1194, 'The Skater', ItemType.Head, 350, true, false, false, false, false, false, '2017-03-30'],
   [1195, 'The Chic', ItemType.Head, 400, true, false, false, false, false, false, '2017-03-30'],
-  [1196, 'Bucket Hat', ItemType.Head, 75, false, false, false, false, false, false, '2017-03-30'],
+  [1196, 'Bucket Hat', ItemType.Head, [75, ['2010-Nov-16', 0]], false, false, false, false, false, false, '2017-03-30'],
   [1199, 'The Cosmic', ItemType.Head, 350, true, false, false, false, false, false, '2017-03-30'],
   [1201, 'Comm Helmet', ItemType.Head, 15, true, false, false, true, false, false, '2017-03-30'],
   [1202, 'Elf Pigtails', ItemType.Head, 400, true, false, false, false, false, false, '2017-03-30'],
