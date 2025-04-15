@@ -10,6 +10,7 @@ import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils'
 import { PARTIES } from '../src/server/game/parties'
 import { isGreaterOrEqual } from '../src/server/routes/versions';
+import { MusicUpdate, PathsUpdate } from '../src/server/game/crumbs';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 
@@ -85,9 +86,9 @@ function addGlobalPath(crumbs: string, pathName: string, path: string): string {
 }
 
 type Modifications = {
-  music?: Record<string, number>,
+  music?: MusicUpdate,
   prices?: Record<number, number>,
-  globalPaths?: Record<string, string>
+  globalPaths?: PathsUpdate
 }
 
 function applyChanges(crumbs: string, changes: Modifications): string {
