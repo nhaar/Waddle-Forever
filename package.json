@@ -93,6 +93,7 @@
     "archiver": "^7.0.1",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
     "electron": "^10.0.0",
     "electron-builder": "23.0.2",
     "eslint": "^8.34.0",

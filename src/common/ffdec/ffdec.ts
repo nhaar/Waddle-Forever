@@ -1,10 +1,19 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import path from 'path';
 import fs from 'fs';
-import { FFDEC_PATH } from "./ffdec-path";
 import { runCommand } from "../utils";
 
 /** Directory to save temporary files */
 const PCODE_DIR = path.join(process.cwd(), 'pcode');
+
+function getFfdecPath(): string {
+  const path = process.env.FFDEC_PATH;
+  if (path === undefined) {
+    throw new Error('FFDec Path was not added to .env file');
+  } 
+  return path;
+}
 
 /**
  * Replace a script in a SWF using P-Code
@@ -21,7 +30,7 @@ export const replacePcode = async (baseFilePath: string, outputFilePath: string,
   const tempfile = path.join(PCODE_DIR, String(Date.now()) + '.pcode');
   fs.writeFileSync(tempfile, pcode);
   
-  await runCommand(`"${FFDEC_PATH}" -replace "${baseFilePath}" "${outputFilePath}" "${scriptName}" "${tempfile}"`);
+  await runCommand(`"${getFfdecPath()}" -replace "${baseFilePath}" "${outputFilePath}" "${scriptName}" "${tempfile}"`);
 
   fs.unlinkSync(tempfile);
 }
@@ -39,7 +48,7 @@ export const extractPcode = async (filePath: string, scriptPath: string) => {
 
   const tempdir = path.join(PCODE_DIR, String(Date.now()));
 
-  await runCommand(`"${FFDEC_PATH}" -format script:pcode -export script "${tempdir}" "${filePath}"`);
+  await runCommand(`"${getFfdecPath()}" -format script:pcode -export script "${tempdir}" "${filePath}"`);
 
   const code = fs.readFileSync(path.join(tempdir, 'scripts', scriptPath), { encoding: 'utf-8' });
 
