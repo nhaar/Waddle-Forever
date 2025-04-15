@@ -229,6 +229,18 @@ export const PARTIES: Party[] = [
       'hunt_ui': 'scavenger_hunt/hunt_ui.swf',
       'halloween_hunt': 'scavenger_hunt/hunt_ui.swf'
     }
+  },
+  {
+    name: 'Sensei\'s Water Scavenger Hunt',
+    start: '2010-Nov-16',
+    end: '2010-Nov-24',
+    paths: ['2010/water_scavenger_hunt', '2010_scavenger_hunt'],
+    globalPaths: {
+      'scavenger_hunt_icon': 'scavenger_hunt/scavenger_hunt_icon.swf',
+      'hunt_ui': 'scavenger_hunt/hunt_ui.swf',
+      'easter_egg_hunt': 'scavenger_hunt/hunt_ui.swf',
+      'scavenger_hunt': 'scavenger_hunt/hunt_ui.swf'
+    }
   }
 ];
 
