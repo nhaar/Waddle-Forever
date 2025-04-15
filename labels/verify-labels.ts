@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { getEveryMediaFile, LABEL_FILES, LabelFile, processLabelFile } from "./labels";
+import { getEveryMediaFile, getShortcutString, LABEL_FILES, LabelFile, processLabelFile } from "./labels";
 
 // for timing script execution
 const startTime = Date.now();
@@ -42,7 +42,7 @@ Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
   });
   
   const unlabeledArray = Array.from(nonLabeledFiles.entries()).map((pair) => {
-    return `${pair[0]}:${pair[1]}`
+    return `${getShortcutString(pair[0])}:${pair[1]}`
   });
   
   const unlabeledAmount = unlabeledArray.length;

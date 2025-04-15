@@ -110,7 +110,7 @@ export class LabelFile {
           if (fileMatch === null) {
             throw new Error(`Invalid line for file ${file}, line ${number}: ${line}`);
           } else {
-            const fileName = fileMatch[1];
+            const fileName = getFullPathString(fileMatch[1]);
             const hash = fileMatch[2];
             const comment = fileMatch[3];
             lines.push([fileName, hash, comment]);
