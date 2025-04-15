@@ -47,6 +47,8 @@ function getDescription(version: Day): string {
     return 'New Clothing Catalogue'
   } else if (version.events.newIssue !== undefined) {
     return `CPT Issue ${version.events.newIssue} released`
+  } else if (version.events.stagePlay !== undefined) {
+    return `New stage play airing: ${version.events.stagePlay}`
   }
 
   return ''
@@ -63,6 +65,7 @@ type Day = {
     roomOpen?: string
     minigameRelease?: string
     newClothing?: boolean
+    stagePlay?: string;
   }
 }
 

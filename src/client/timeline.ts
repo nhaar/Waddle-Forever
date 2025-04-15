@@ -5,6 +5,7 @@ import { PARTIES, PartyStage } from '../server/game/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
 import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
 import { OLD_CATALOGUES } from '../server/game/catalogues';
+import { STAGE_TIMELINE } from '../server/game/stage-plays';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -109,6 +110,8 @@ type Events = {
   minigameRelease?: string
   /** If a clothing catalogue was released this day */
   newClothing?: boolean
+  /** Name of stage play that is debuting today if any */
+  stagePlay?: string;
 };
 
 // this type is duplicated in the timeline-static file, it should be the same type
@@ -158,6 +161,12 @@ function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
   }
 }
 
+function addStagePlays(map: DayMap): void {
+  STAGE_TIMELINE.forEach((update) => {
+    addEvents(map, update.date, { stagePlay: update.name });
+  });
+}
+
 /** Adds all the parties to a timeline */
 function addParties(map: DayMap): DayMap {
   for (let i = 0; i < PARTIES.length; i++) {
@@ -203,5 +212,6 @@ function updateTimeline(days: Day[]): Day[] {
   map = addParties(map);
   map = addNewspapers(map);
   map = addCatalogues(map);
+  addStagePlays(map);
   return getDaysFromMap(map);
 }
