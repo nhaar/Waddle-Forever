@@ -4,6 +4,7 @@ default/event/2010/mountain_expedition/play/v2/content/global/crumbs/global_crum
 default/event/2010/fair_2010/play/v2/content/global/crumbs/global_crumbs.swf:fe8446e059d6f461862390216bdeb413
 default/event/2010/5th_anniversary_party/play/v2/content/global/crumbs/global_crumbs.swf:011e4480a7bf156a170b4e97d17baad0
 default/event/2010/halloween_party_2010/play/v2/content/global/crumbs/global_crumbs.swf:3a8509b40dd00ad557e6071a018b5b20
+default/event/2010/water_scavenger_hunt/play/v2/content/global/crumbs/global_crumbs.swf:412bb94b9d86db5fa70c41601cb79d75
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Aug-26.swf:30a9e565809a82e336a210502aacccc9
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Jul-21.swf:051d25c7ffd9fc01994d427daa6da5e4
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Jun-10.swf:aa0f2563420de35b8bf70496b5eae9db
@@ -13,6 +14,8 @@ default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Oct-28.swf
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Sep-03.swf:2680a00c57e07b0fbb7cd86dd94ce61d
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Sep-16.swf:d43f7c21d7463df56c777a1951102d8f
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2016-Jan-01.swf:91f75a7e6a17a4d44519009d66167ead
+default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Nov-16.swf:ba2d52cb125eb1afd4a1db28fa4a2240
+default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-Nov-18.swf:b968a3756983c88f1dfd48382f8899b4
 
 - News Crumbs
 default/seasonal/play/v2/content/local/en/news/news_crumbs.swf/2009-Jan-12.swf:dc3d89f22a5eae1ef4434e674b0c7060

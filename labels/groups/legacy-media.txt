@@ -18662,3 +18662,6 @@ default/static/engine2_3/play/v2/games/thinice/lang/fr/locale.swf:2cd87de6b3b3e4
 default/static/engine2_3/play/v2/games/thinice/lang/fr/title.swf:b8e69cc1acc9503ee1e924d134e19501
 default/static/engine2_3/play/v2/games/thinice/lang/pt/locale.swf:1b53073a19c02c01f81f39f0a229fbee
 default/static/engine2_3/play/v2/games/thinice/lang/pt/title.swf:ce931e17760bbe23f85ce24a5d35b70c
+
+default/static/engine2/play/v2/content/local/en/close_ups/sensei_note.swf:961860255632607e3d45db6e9ef7d923
+default/static/engine2/play/v2/content/local/en/close_ups/sensei_note2.swf:52c175d1a0680f3b1a63980d872705ea

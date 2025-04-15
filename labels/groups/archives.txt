@@ -331,3 +331,25 @@ default/event/2010/halloween_party_2010/play/v2/content/global/igloo/assets/iglo
 - Igloo Background from the 2011 party: https://archives.clubpenguinwiki.info/wiki/Halloween_Party_2011
 - This should be moved to the 2011 folder when it gets added
 
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/beach.swf:b89f3e3bffca0c3e3c937ee05c27a868
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/boiler.swf:8b9d607f3c9b973d862bb9de295a48f7
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/book.swf:66166a70b65d1a0579e0b0fa03bade18
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/cave.swf:a57b3af7860c7e153564c3606853bd63
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/cavemine.swf:bdc68fe7d2a1a7aa759ece926e84afd5
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/coffee.swf:be037e5ebb76e635a96334f10b34822a
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/cove.swf:725cd04d418121c2c86d458dcf58db36
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dock.swf:b08e63f7cff0487671438587952a8237
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dojoext.swf:0c1f0ddc363115596fbc2011bfe48f13
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dojohide.swf:fa39d0cdf79cfa8334afbca836ac61e9
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/dojowater.swf:219d321be9ca042fd7665a4e9ca7826e
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/forest.swf:83cf6cb570c4dadd7612b21ee00a37a7
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/forts.swf:b90d95a02cc70fee521604e85eea151d
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/lake.swf:c37ac2fd78be3c8e8c35cdb7ddef74ea
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/lounge.swf:e3bc0b4638e79f6954fdb1e14bbb984e
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/mine.swf:28ef5ab8b8e5e575a891a7d2fc8d66c3
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/pet.swf:a17a084e252bf448fb733dd073a7db20
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/plaza.swf:827a74c59d84273670d10e2472f1be63
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/town.swf:1dee9b447e0dfea831011770d18822cc
+default/event/2010/water_scavenger_hunt/play/v2/content/global/scavenger_hunt/hunt_ui.swf:2337253c2f2beed9c7fdf32590bb71ee
+default/event/2010/water_scavenger_hunt/play/v2/content/global/scavenger_hunt/scavenger_hunt_icon.swf:b3387cc490ca009dc0fdce54f1dea846
+- Water Scavenger Hunt: https://archives.clubpenguinwiki.info/wiki/Water_Scavenger_Hunt

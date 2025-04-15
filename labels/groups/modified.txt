@@ -126,8 +126,8 @@ default/event/2010/fair_2010/web_service/worldachievements.xml:198082abe086559d3
 - Manual modification of world adchievements from legacy media to have Snack Shack working
 - Made by supermanover
 
-default/event/2010/halloween_party_2010/play/v2/client/dependencies.json:0cb107593c27fb086646a3b93af91870
-default/event/2010/halloween_party_2010/play/v2/client/scavenger_hunt.swf:049bf94cefe20080974f8b516a83cdf4
+default/event/2010_scavenger_hunt/play/v2/client/dependencies.json:0cb107593c27fb086646a3b93af91870
+default/event/2010_scavenger_hunt/play/v2/client/scavenger_hunt.swf:049bf94cefe20080974f8b516a83cdf4
 - The two files are a mod to add the Scavenger Hunt icon
 - Dependecies.json is modded frmo legacy media
 - The SWF is from Ben's mod for Scavenger Hunts
