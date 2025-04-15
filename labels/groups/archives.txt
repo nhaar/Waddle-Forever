@@ -121,6 +121,9 @@ default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-05-27.swf:4f
 default/seasonal/play/v2/content/local/en/catalogues/sport.swf/2010-09-24.swf:0f627c87e8cf21fa056a2be90871f599
 - Snow and Sports catalogs are from https://archives.clubpenguinwiki.info/wiki/Snow_%26_Sports
 
+default/seasonal/play/v2/content/local/en/catalogues/music.swf/2010-07-15.swf:49014021f747b00be152319e740fc8d5 - MusicJam2010UpdateInstruments.swf
+- Music Catalogs from https://archives.clubpenguinwiki.info/wiki/Music_Catalog
+
 default/seasonal/play/v2/content/local/en/forms/library.swf/2010-10-23.swf:6be47feb2a3e8af2e92a4f77bb405f6e
 - Library SWFs are from https://archives.clubpenguinwiki.info/wiki/Library
 
@@ -138,6 +141,14 @@ default/static/engine3/play/v2/games/quests/q4/common/rooms/conclusion.swf:d4d9d
 
 default/static/engine2_3/play/v2/games/mixmaster/ChooseSong.swf:655cb0da971508e7e4c209b7890581ae - ChooseSong (2), GamesMixmasterChooseSong_2011.swf
 - DJ3K SWFs from https://archives.clubpenguinwiki.info/wiki/DJ3K
+
+default/static/engine2_3/play/v2/games/bell/lang/en/backgroundText.swf:eb7bed45664cec0552434f1efd1e3c66 - BellEn_backgroundText.swf
+default/static/engine2_3/play/v2/games/bell/lang/en/javaBag.swf:5c8a790d61b851022a0c215202054f46 - BellEn_javaBag.swf
+default/static/engine2_3/play/v2/games/bell/lang/en/menu.swf:36a4020fc8d03c6f99ba83f77e2bb1a7 - BellEn_menu.swf
+- Ring the Bell SWFs from https://archives.clubpenguinwiki.info/wiki/Lunar_Launch
+
+default/event/2010/5th_anniversary_party/play/v2/content/global/binoculars/empty.swf:bcb238454dfbaf0bd86bed0cfc0fb2e0 - Storm_on_horizon.swf
+- Binoculars SWFs from https://archives.clubpenguinwiki.info/wiki/Binoculars
 
 default/static/engine1/artwork/news/news1.swf:4b8edb3cb969c2041ebde5763187f12a
 default/static/engine1/artwork/news/news10.swf:995f10c9c2c850a414d27eef07a4c43c
@@ -268,6 +279,9 @@ default/event/2010/fair_2010_start/play/v2/content/local/en/catalogues/prizeboot
 default/event/2010/fair_2010_start/play/v2/content/local/en/catalogues/prizeboothmember.swf:e66f6ad343da1c68e197d8b59f827908
 default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizebooth.swf:5960e0065516cf103b95519d7e819caf
 default/event/2010/fair_2010_end/play/v2/content/local/en/catalogues/prizeboothmember.swf:c7a4146d83bbb923d062628717f4f046
+default/event/2010/fair_2010/play/v2/content/global/tickets.swf:cc1aeb3a06e3ce1cf1055985cb83bf1b - Tickets-TheFair2009.swf
+default/event/2010/fair_2010/play/v2/content/global/ticket_icon.swf:a839678bef0d7e8671b6da6b4261c181 - Ticket_icon-TheFair2010.swf
+default/event/2010/fair_2010/play/v2/content/local/en/close_ups/poster.swf:78fe653a4e513cac77bdb874ae414d9c - Fair2010Poster.swf
 - Files above from the Fair 2010 are all from https://archives.clubpenguinwiki.info/wiki/The_Fair_2010
 
 default/seasonal/play/v2/content/global/rooms/forts.swf/2010-09-24.swf:76a96476022c1de7b997afceace8e95f
@@ -349,6 +363,7 @@ default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/lounge.swf:
 default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/mine.swf:28ef5ab8b8e5e575a891a7d2fc8d66c3
 default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/pet.swf:a17a084e252bf448fb733dd073a7db20
 default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/plaza.swf:827a74c59d84273670d10e2472f1be63
+default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/rink.swf:41f86f59c7e728f3c0f12cfa462c7d99
 default/event/2010/water_scavenger_hunt/play/v2/content/global/rooms/town.swf:1dee9b447e0dfea831011770d18822cc
 default/event/2010/water_scavenger_hunt/play/v2/content/global/scavenger_hunt/hunt_ui.swf:2337253c2f2beed9c7fdf32590bb71ee
 default/event/2010/water_scavenger_hunt/play/v2/content/global/scavenger_hunt/scavenger_hunt_icon.swf:b3387cc490ca009dc0fdce54f1dea846

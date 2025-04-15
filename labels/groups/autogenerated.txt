@@ -3,6 +3,7 @@ default/event/2010/fair_2010/play/v2/content/global/crumbs/global_crumbs.swf:fe8
 default/event/2010/halloween_party_2010/play/v2/content/global/crumbs/global_crumbs.swf:3a8509b40dd00ad557e6071a018b5b20
 default/event/2010/mountain_expedition/play/v2/content/global/crumbs/global_crumbs.swf:3613956bc9a39a9e1b719a56de6ea8f4
 default/event/2010/music_jam/play/v2/content/global/crumbs/global_crumbs.swf:f83aa6f5e66aa82cbee1a315a325c3fc
+default/event/2010/5th_anniversary_party/play/v2/content/global/crumbs/global_crumbs.swf:011e4480a7bf156a170b4e97d17baad0
 default/event/2010/water_scavenger_hunt/play/v2/content/global/crumbs/global_crumbs.swf:412bb94b9d86db5fa70c41601cb79d75
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-06-10.swf:aa0f2563420de35b8bf70496b5eae9db
 default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf/2010-07-21.swf:051d25c7ffd9fc01994d427daa6da5e4
