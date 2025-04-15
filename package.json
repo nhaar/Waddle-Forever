@@ -23,7 +23,8 @@
     "build-media": "node scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
-    "news-crumbs": "ts-node crumbs/news-crumbs.ts"
+    "news-crumbs": "ts-node crumbs/news-crumbs.ts",
+    "verify": "ts-node labels/labels.ts"
   },
   "author": "CPS",
   "license": "MIT",
