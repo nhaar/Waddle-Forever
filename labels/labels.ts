@@ -134,14 +134,19 @@ Promise.all(LABEL_FILES.map((file) => addLabeledFiles(file))).then(() => {
   const unlabeledArray = Array.from(nonLabeledFiles.entries()).map((pair) => {
     return `${pair[0]}:${pair[1]}`
   });
-  fs.writeFileSync(path.join(__dirname, 'unlabeled.txt'), unlabeledArray.join('\n'));
   
   const unlabeledAmount = unlabeledArray.length;
   const totalAmount = Array.from(everyFile.values()).length;
   const endTime = Date.now();
   const secondsTaken = (endTime - startTime) / 1000;
   
+  if (unlabeledAmount < 20) {
+    unlabeledArray.forEach((file) => console.log(file));
+  }
+
+  fs.writeFileSync(path.join(__dirname, 'unlabeled.txt'), unlabeledArray.join('\n'));
   console.log(`Unlabeled search complete. ${unlabeledAmount} unlabeled files found out of ${totalAmount} (${unlabeledAmount}/${totalAmount})`);
+  
   console.log(`Total time taken: ${secondsTaken}`);
 
 });
