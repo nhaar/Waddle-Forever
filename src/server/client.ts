@@ -5,7 +5,7 @@ import { GameVersion, Settings, SettingsManager } from './settings';
 import { Penguin } from './penguin';
 import { Stamp } from './game/stamps';
 import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower } from './routes/versions';
-import { ITEMS, ItemType } from './game/items';
+import { getCost, Item, ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
@@ -203,6 +203,10 @@ export class Client {
   canBuy (item: number): boolean {
     // TODO
     return true;
+  }
+
+  getCost(item: Item) {
+    return getCost(item, this.version);
   }
 
   /**

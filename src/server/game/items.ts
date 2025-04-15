@@ -1,4 +1,6 @@
+import { findIndexLeftOf } from "../../common/utils";
 import { StaticDataTable } from "../../common/static-table";
+import { isGreaterOrEqual, Version } from "../routes/versions";
 
 export enum ItemType {
   Head,
@@ -21,7 +23,7 @@ export enum ItemType {
 */
 type ItemCost = number | [number, ...Array<[Version, number]>];
 
-type Item = {
+export type Item = {
   id: number
   name: string
   isMember: boolean
@@ -34,6 +36,32 @@ type Item = {
   isTour: boolean
   isTreasure: boolean
 };
+
+export function getCost(item: Item, date: Version): number {
+  if (typeof item.cost === 'number') {
+    return item.cost;
+  } else {
+    // remove the base value, flatten the other arrays getting only the date
+    const [_, ...updates] = item.cost;
+    const dates = updates.map((tuple) => {
+      const date = tuple[0];
+      return date;
+    });
+    const index = findIndexLeftOf(date, dates, (date, dates, index) => {
+      return isGreaterOrEqual(date, dates[index]);
+    });
+    // -1 means our date comes before the first update, so we return base value
+    if (index === -1) {
+      return item.cost[0];
+    } else {
+      const [_, ...updates] = item.cost;
+      // skip first index since it's base, our index is relative to the update tuples
+      const updateTuple = updates[index];
+      // cost
+      return updateTuple[1];
+    }
+  }
+}
 
 export const ITEMS = new StaticDataTable<Item, [
   'id',
