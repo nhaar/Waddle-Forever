@@ -66,3 +66,5 @@ export type MusicUpdate = Partial<Record<CrumbRoom, number>>;
 
 /** Represents all updates of the global_paths object in global_crumbs */
 export type PathsUpdate = Record<string, string>;
+
+export type PricesUpdate = Record<number, number>;

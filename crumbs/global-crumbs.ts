@@ -9,8 +9,9 @@ import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils'
 import { PARTIES } from '../src/server/game/parties'
-import { isGreaterOrEqual } from '../src/server/routes/versions';
-import { MusicUpdate, PathsUpdate } from '../src/server/game/crumbs';
+import { ITEMS } from '../src/server/game/items'
+import { Version, isEqual, isGreaterOrEqual, isLower } from '../src/server/routes/versions';
+import { MusicUpdate, PathsUpdate, PricesUpdate } from '../src/server/game/crumbs';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 
@@ -159,15 +160,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Sep-03',
-    changes: {
-      prices: {
-        5077: 0,
-        6052: 0
-      }
-    }
-  },
-  {
     version: '2010-Sep-16',
     changes: {
       music: {
@@ -184,15 +176,6 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
     }
   },
   {
-    version: '2010-Oct-28',
-    changes: {
-      prices: {
-        5081: 0,
-        9077: 0
-      }
-    }
-  },
-  {
     version: '2010-Nov-18',
     changes: {
       music: {
@@ -202,12 +185,12 @@ const CRUMBS_TIMELINE: CrumbsTimeline = [
   }
 ]
 
-function getFullTimeline(): CrumbsUpdate[] {
+function addParties(timeline: CrumbsTimeline): CrumbsUpdate[] {
   let currentPartyIndex = 0;
   const crumbsUpdates: CrumbsUpdate[] = [];
   // go through each update in the timeline to and see if a party comes after or before it
-  for (let timelineIndex = 0; timelineIndex < CRUMBS_TIMELINE.length; timelineIndex++) {
-    const seasonal = CRUMBS_TIMELINE[timelineIndex];
+  for (let timelineIndex = 0; timelineIndex < timeline.length; timelineIndex++) {
+    const seasonal = timeline[timelineIndex];
     // start at the first party we haven't done yet
     for (let partyIndex = currentPartyIndex; true; partyIndex++) {
       const party = PARTIES[partyIndex];
@@ -242,6 +225,53 @@ function getFullTimeline(): CrumbsUpdate[] {
     }
   }
   return crumbsUpdates;
+}
+
+function addPriceChanges(timeline: CrumbsTimeline): CrumbsTimeline {
+  const newTimeline = [...timeline];
+  const itemRows = ITEMS.rows;
+  const priceChanges: Record<Version, PricesUpdate> = {};
+  itemRows.forEach((item) => {
+    const cost = item.cost;
+    if (typeof cost !== 'number') {
+      const [_, ...updates] = cost;
+      updates.forEach((update) => {
+        const [version, cost] = update;
+        if (priceChanges[version] === undefined) {
+          priceChanges[version] = {};
+        }
+        priceChanges[version][item.id] = cost;
+      })
+    }
+  });
+  for (const date in priceChanges) {
+    newTimeline.push({
+      version: date,
+      changes: {
+        prices: priceChanges[date]
+      }
+    });
+  }
+
+  const sorted = newTimeline.sort((a, b) => {
+    const aVersion = a.version;
+    const bVersion = b.version;
+    if (isLower(aVersion, bVersion)) {
+      return -1;
+    } else if (isEqual(aVersion, bVersion)) {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
+
+  return sorted;
+}
+
+function getFullTimeline(): CrumbsUpdate[] {
+  const timeline = addPriceChanges(CRUMBS_TIMELINE);
+  const updates = addParties(timeline);
+  return updates;
 }
 
 const SEASONAL_CRUMBS_PATH = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf');
