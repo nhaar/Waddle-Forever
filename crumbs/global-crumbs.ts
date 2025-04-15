@@ -128,6 +128,8 @@ type PartyCrumbsChange = {
   /** Path to event eg 2010/music_jam */
   event: string
   changes: Modifications
+  start: Version
+  end: Version
 };
 
 type CrumbsUpdate = SeasonalCrumbsChange | PartyCrumbsChange
@@ -177,6 +179,7 @@ function addParties(timeline: CrumbsTimeline): CrumbsUpdate[] {
   for (let timelineIndex = 0; timelineIndex < timeline.length; timelineIndex++) {
     const seasonal = timeline[timelineIndex];
     // start at the first party we haven't done yet
+    // the `true` is no problem since we are breaking eventually
     for (let partyIndex = currentPartyIndex; true; partyIndex++) {
       const party = PARTIES[partyIndex];
       // party comes after the version, we can push this seasonal update and check next version
@@ -191,6 +194,10 @@ function addParties(timeline: CrumbsTimeline): CrumbsUpdate[] {
         break;
       } else {
         const mainPath = typeof party.paths === 'string' ? party.paths : party.paths[0];
+        let end = party.end;
+        if (end === null) {
+          end = PARTIES[partyIndex + 1].start;
+        }
 
         // check if crumbs actually changes in the day
         const hasChanges = [party.music, party.globalPaths].some((value) => value !== undefined);
@@ -201,7 +208,9 @@ function addParties(timeline: CrumbsTimeline): CrumbsUpdate[] {
               music: party.music,
               globalPaths: party.globalPaths
             },
-            event: mainPath
+            event: mainPath,
+            start: party.start,
+            end
           });
         }
         // increment so we never have to do this party again
@@ -300,21 +309,51 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
   await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
+function createSeasonalCrumb(content: string, date: Version): void {
+  const filePath = path.join(SEASONAL_CRUMBS_PATH, date + '.swf');
+  createCrumbs(filePath, content);
+}
+
 (async () => {
   console.log('Beginning exporting');
-  let permanentCrumbs = await loadBaseCrumbs();
+  // when we are in a party, we keep it in paralel the changes with and without party
+  let nonPartyCrumbs = await loadBaseCrumbs();
+  let inPartyCrumbs = '';
+  // when null, no party is currently happening
+  let currentPartyEndDate: string | null = null;
   const crumbsUpdates = getFullTimeline();
+  // 1. when get in a party, save the crumbs "non-party", and save it "in-party"
+  // 2. for each new update, we update both crumbs, but then we check if we are inside the party or not for which to create
+  // 3. also for each update, we check if we are after the party ended, if is, then scrap the party one, save non party one in the date it ends
   for (const update of crumbsUpdates) {
     if (update.type === 'seasonal') {
       console.log(`Exporting changes for day ${update.version}`);
-      permanentCrumbs = applyChanges(permanentCrumbs, update.changes);
-      const filePath = path.join(SEASONAL_CRUMBS_PATH, update.version + '.swf');
-      createCrumbs(filePath, permanentCrumbs);
+      // check if in-party
+      if (currentPartyEndDate !== null) {
+        // check if the party ended
+        if (isGreaterOrEqual(update.version, currentPartyEndDate)) {
+          // if the party ended, we update our info
+          // and we add a seasonal crumb for the party ending
+          // we do this to preserve all information update
+          // in the party
+          createSeasonalCrumb(nonPartyCrumbs, currentPartyEndDate);
+          currentPartyEndDate = null;
+          inPartyCrumbs = '';
+        } else {
+          // if still in party, just update the party crumbs
+          inPartyCrumbs = applyChanges(inPartyCrumbs, update.changes);
+        }
+      }
+      // we always update the non-party, but
+      // we only server it if not in a party
+      nonPartyCrumbs = applyChanges(nonPartyCrumbs, update.changes);
+
+      createSeasonalCrumb(currentPartyEndDate === null ? nonPartyCrumbs : inPartyCrumbs, update.version);
     } else {
       console.log(`Exporting changes for event "${update.event}"`);
-      const partyCrumbs = applyChanges(permanentCrumbs, update.changes);
-      const filePath = path.join(DEFAULT_DIRECTORY, 'event', update.event, 'play/v2/content/global/crumbs/global_crumbs.swf');
-      createCrumbs(filePath, partyCrumbs);
+      currentPartyEndDate = update.end;
+      inPartyCrumbs = applyChanges(nonPartyCrumbs, update.changes);
+      createSeasonalCrumb(inPartyCrumbs, update.start);
     }
   }
 })();
