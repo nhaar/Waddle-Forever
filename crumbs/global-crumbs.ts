@@ -309,9 +309,9 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
   await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
-function createSeasonalCrumb(content: string, date: Version): void {
+async function createSeasonalCrumb(content: string, date: Version): Promise<void> {
   const filePath = path.join(SEASONAL_CRUMBS_PATH, date + '.swf');
-  createCrumbs(filePath, content);
+  await createCrumbs(filePath, content);
 }
 
 (async () => {
@@ -321,10 +321,17 @@ function createSeasonalCrumb(content: string, date: Version): void {
   let inPartyCrumbs = '';
   // when null, no party is currently happening
   let currentPartyEndDate: string | null = null;
+
+  // saving what the crumbs were before, so that we can prevent duplicating crumbs 
+  let lastNonPartySeasonalDate = '';
+
+  // maps: start date -> end date
+  // every entry in this map, we will delete the end date file
+  // and add it to the start date
+  // const merges = new Map<string, string>();
+  const seasonalCrumbs = new Map<string, string>();
+
   const crumbsUpdates = getFullTimeline();
-  // 1. when get in a party, save the crumbs "non-party", and save it "in-party"
-  // 2. for each new update, we update both crumbs, but then we check if we are inside the party or not for which to create
-  // 3. also for each update, we check if we are after the party ended, if is, then scrap the party one, save non party one in the date it ends
   for (const update of crumbsUpdates) {
     if (update.type === 'seasonal') {
       console.log(`Exporting changes for day ${update.version}`);
@@ -336,24 +343,48 @@ function createSeasonalCrumb(content: string, date: Version): void {
           // and we add a seasonal crumb for the party ending
           // we do this to preserve all information update
           // in the party
-          createSeasonalCrumb(nonPartyCrumbs, currentPartyEndDate);
+
+          const beforePartyCrumbs = seasonalCrumbs.get(lastNonPartySeasonalDate);
+          // if the crumbs didn't change during the party, we don't add it
+          // and we will rename what we added earlier
+          // aditionally, if beforePartyCrumbs is undefined it means that this entry was deleted
+          // so we can't rename what was added
+          if (nonPartyCrumbs === beforePartyCrumbs) {
+            // "rename"
+            seasonalCrumbs.delete(lastNonPartySeasonalDate);
+            seasonalCrumbs.set(`${lastNonPartySeasonalDate},${currentPartyEndDate}`, beforePartyCrumbs);
+          } else {
+            seasonalCrumbs.set(currentPartyEndDate, nonPartyCrumbs);
+          }
           currentPartyEndDate = null;
           inPartyCrumbs = '';
         } else {
           // if still in party, just update the party crumbs
           inPartyCrumbs = applyChanges(inPartyCrumbs, update.changes);
         }
+      } else {
+        // if not in party, we save this date for reference
+        lastNonPartySeasonalDate = update.version;
       }
       // we always update the non-party, but
       // we only server it if not in a party
       nonPartyCrumbs = applyChanges(nonPartyCrumbs, update.changes);
 
-      createSeasonalCrumb(currentPartyEndDate === null ? nonPartyCrumbs : inPartyCrumbs, update.version);
+      // these files need to be waited so that we can potentially rename them
+      seasonalCrumbs.set(update.version, currentPartyEndDate === null ? nonPartyCrumbs : inPartyCrumbs);
     } else {
       console.log(`Exporting changes for event "${update.event}"`);
+
+      // if there is a seasonal which started on this day, delete its entry since it will be overwritten
+      seasonalCrumbs.delete(update.start);
+
       currentPartyEndDate = update.end;
       inPartyCrumbs = applyChanges(nonPartyCrumbs, update.changes);
       createSeasonalCrumb(inPartyCrumbs, update.start);
     }
   }
+
+  seasonalCrumbs.forEach((crumbContent, fileName) => {
+    createSeasonalCrumb(crumbContent, fileName);
+  })
 })();
