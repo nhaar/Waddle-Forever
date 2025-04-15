@@ -5,6 +5,49 @@ import crypto from 'crypto';
 
 type LabelFileLine = string | [string, string, string];
 
+const shortcuts = {
+  'engine2_3': 'default/static/engine2_3',
+  'engine2': 'default/static/engine2',
+  'engine1': 'default/static/engine1',
+  'engine3': 'default/static/engine3',
+  'seasonal': 'default/seasonal',
+  'special': 'default/special',
+  '2010': 'default/event/2010',
+  '2005': 'default/event/2005',
+  '2006': 'default/event/2006',
+  'client': 'play/v2/client',
+  'rooms': 'play/v2/content/global/rooms',
+  'global': 'play/v2/content/global',
+  'local': 'play/v2/content/local/en',
+  'games': 'play/v2/games'
+};
+
+export function getShortcutString(fullPath: string): string {
+  let shortPath = fullPath;
+  Object.entries(shortcuts).forEach((value) => {
+    const [shortcut, target] = value;
+    if (shortPath.includes(target)) {
+      shortPath = shortPath.replace(target, `**${shortcut}**`);
+    }
+  })
+  return shortPath;
+}
+
+export function getFullPathString(shortPath: string): string {
+  const shortcutMatches = shortPath.matchAll(/\*\*([\d\w\_]+)\*\*/g);
+  let fullPath = shortPath;
+  if (shortcutMatches === null) {
+    return fullPath;
+  } else {
+    for (const shortcutMatch of shortcutMatches) {
+      const shortcut = shortcutMatch[1];
+      const expandedPath = shortcuts[shortcut as keyof typeof shortcuts];
+      fullPath = fullPath.replace(`**${shortcut}**`, expandedPath);
+    }
+  }
+  return fullPath;
+}
+
 export const MEDIA_DIRECTORY = path.join(__dirname, '..', 'media');
 
 export const LABEL_FILES = [
@@ -61,7 +104,7 @@ export class LabelFile {
           // group 1 is the filepath
           // group 2 is the md5 hash (separated via colon)
           // group 3 is either ending the line (nothing) or a comment
-          const fileMatch = line.match('^([\\w\\d\\_\\-/\\.\\#]+)\\:([a-fA-F0-9]*)($|\\s+\\-.*)');
+          const fileMatch = line.match('^([\\*\\w\\d\\_\\-/\\.\\#]+)\\:([a-fA-F0-9]*)($|\\s+\\-.*)');
           
           // no match means the line doesn't conform to any thing we allow
           if (fileMatch === null) {
@@ -114,6 +157,10 @@ export class LabelFile {
     this._lines[index] = [newPath, hash, comment];
   }
 
+  get paths(): string[] {
+    return Array.from(this._pathMap.keys());
+  }
+
   write(): void {
     let fileContent = '';
     this._lines.forEach((line) => {
@@ -121,7 +168,7 @@ export class LabelFile {
         fileContent += line + '\n';
       } else {
         const [path, hash, comment] = line;
-        fileContent += `${path}:${hash}${comment}`;
+        fileContent += `${path}:${hash}${comment}\n`;
       }
     });
 
