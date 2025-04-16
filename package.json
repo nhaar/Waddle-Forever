@@ -24,6 +24,7 @@
     "build-win": "yarn build-client-win&&node scripts/zip-win",
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
     "news-crumbs": "ts-node crumbs/news-crumbs.ts",
+    "local-crumbs": "ts-node crumbs/local-crumbs.ts",
     "verify": "ts-node labels/verify-labels.ts",
     "shorten": "ts-node labels/shorten-paths.ts",
     "expand": "ts-node labels/expand-paths.ts"
