@@ -10,9 +10,65 @@ type Newspaper = {
 }
 
 // issue number of the very first newspaper in the list below
-const FIRST_ISSUE_NUMBER = 235;
+const FIRST_ISSUE_NUMBER = 221;
 
 const newspapers: Newspaper[] = [
+  {
+    date: '2010-01-07',
+    headline: 'CREATE YOUR OWN T-SHIRT'
+  },
+  {
+    date: '2010-01-14',
+    headline: 'ROCKSLIDE AT THE MINE!'
+  },
+  {
+    date: '2010-01-21',
+    headline: 'SECRET CAVE DISCOVERED!'
+  },
+  {
+    date: '2010-01-28',
+    headline: 'CAVES CLOSING UNTIL FURTHER NOTICE'
+  },
+  {
+    date: '2010-02-04',
+    headline: 'PUFFLE PARTY'
+  },
+  {
+    date: '2010-02-11',
+    headline: 'SECRETS OF THE BAMBOO FOREST'
+  },
+  {
+    date: '2010-02-18',
+    headline: 'PUFFLE PARTY'
+  },
+  {
+    date: '2010-02-25',
+    headline: 'ORANGE PUFFLES READY TO ADOPT!'
+  },
+  {
+    date: '2010-03-04',
+    headline: 'WHERE\'S YARR?'
+  },
+  {
+    date: '2010-03-11',
+    headline: 'PUFFLES TRAPPED UNDERGROUND!'
+  },
+  {
+    date: '2010-03-18',
+    headline: 'PUFFLE RESCUE'
+  },
+  {
+    date: '2010-03-25',
+    headline: 'PENGUIN PLAY AWARDS'
+  },
+  {
+    date: '2010-04-01',
+    headline: 'HAPPY APRIL FOOLS!'
+  },
+  {
+    date: '2010-04-08',
+    headline: '2010-04-08'
+  },
   {
     date: '2010-04-15',
     headline: 'CELEBRATE EARTH DAY!'
