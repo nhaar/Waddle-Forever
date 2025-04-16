@@ -59,7 +59,12 @@ type CrumbRoom = 'town' |
   'party10' |
   'party11' |
   'party12' |
-  'party13';
+  'party13' |
+  'party14' |
+  'party15' |
+  'party16' |
+  'party17' |
+  'party18';
 
 /** Represents all updates for the music ID of a room */
 export type MusicUpdate = Partial<Record<CrumbRoom, number>>;
