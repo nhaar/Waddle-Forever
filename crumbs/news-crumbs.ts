@@ -2,11 +2,10 @@ import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils';
+import { processVersion, Version } from '../src/server/routes/versions';
 
 type Newspaper = {
-  year: number,
-  month: number,
-  day: number,
+  date: Version,
   headline: string
 }
 
@@ -15,189 +14,127 @@ const FIRST_ISSUE_NUMBER = 235;
 
 const newspapers: Newspaper[] = [
   {
-    year: 2010,
-    month: 4,
-    day: 15,
+    date: '2010-04-15',
     headline: 'CELEBRATE EARTH DAY!'
   },
   {
-    year: 2010,
-    month: 4,
-    day: 22,
+    date: '2010-04-22',
     headline: 'EARTH DAY CELEBRATIONS BEGIN!'
   },
   {
-    year: 2010,
-    month: 4,
-    day: 29,
+    date: '2010-04-29',
     headline: 'YE PENGUIN STYLE'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 6,
+    date: '2010-05-06',
     headline: 'MEDIEVAL PARTY'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 13,
+    date: '2010-05-13',
     headline: 'YOUR IGLOO-MEDIEVAL STYLE'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 20,
+    date: '2010-05-20',
     headline: 'POPCORN EVERYWHERE AT SPORT SHOP'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 27,
+    date: '2010-05-27',
     headline: 'SKI VILLAGE UNDER CONSTRUCTION'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 3,
+    date: '2010-06-03',
     headline: 'PENGUINS SEEKING ADVENTURE'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 10,
+    date: '2010-06-10',
     headline: 'ISLAND ADVENTURE PLANS REVEALED'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 17,
+    date: '2010-06-17',
     headline: 'THE ADVENTURE BEGINS!'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 24,
+    date: '2010-06-24',
     headline: 'CONTINUE YOUR ADVENTURE!'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 1,
+    date: '2010-07-01',
     headline: 'GET READY FOR MUSIC JAM 2010'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 8,
+    date: '2010-07-08',
     headline: 'MUSIC JAM!'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 15,
+    date: '2010-07-15',
     headline: 'KEEP JAMMIN\''
   },
   {
-    year: 2010,
-    month: 7,
-    day: 22,
+    date: '2010-07-22',
     headline: 'THANKS FOR JAMMING'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 29,
+    date: '2010-07-29',
     headline: 'CUSTOMIZE YOUR STAMP BOOK'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 5,
+    date: '2010-08-05',
     headline: 'EXPLORATION EVENT'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 12,
+    date: '2010-08-12',
     headline: 'ALL ABOUT IGLOOS'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 19,
+    date: '2010-08-19',
     headline: 'ENERGETIC PHONING FACILITY'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 26,
+    date: '2010-08-26',
     headline: 'IGLOO IMPROVEMENTS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 2,
+    date: '2010-09-02',
     headline: 'WHAT\'S ON AT THE FAIR?'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 9,
+    date: '2010-09-09',
     headline: 'PILOTS SEEK ASSISTANTS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 16,
+    date: '2010-09-16',
     headline: 'NEW IGLOO ITEMS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 23,
+    date: '2010-09-23',
     headline: 'BLACK PUFFLES IN CARTS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 30,
+    date: '2010-09-30',
     headline: 'MYSTERIES IN OCTOBER'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 7,
+    date: '2010-10-07',
     headline: 'ANNIVERSARY PARTY'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 14,
+    date: '2010-10-14',
     headline: 'STORM INCOMING'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 21,
+    date: '2010-10-21',
     headline: 'HALLOWEEN\'S ALMOST HERE'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 28,
+    date: '2010-10-28',
     headline: 'IGLOO CONTEST WINNERS'
   },
   {
-    year: 2010,
-    month: 11,
-    day: 4,
+    date: '2010-11-04',
     headline: 'CLOUDY SKIES STAY'
   },
   {
-    year: 2010,
-    month: 11,
-    day: 11,
+    date: '2010-11-11',
     headline: 'NEW LOOK FOR NEWSPAPER'
   }
 ]
@@ -207,18 +144,17 @@ const newspapers: Newspaper[] = [
 type NewsSet = [Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, number]
 
 function getMinifiedDate(news: Newspaper): string {
-  const month = news.month < 10 ? `0${news.month}` : String(news.month)
-  const day = news.day < 10 ? `0${news.day}` : String(news.day)
-  return `${news.year}${month}${day}`
+  // same format but without dahses in-between
+  return news.date.replaceAll('-', '');
 }
 
 function getFileDate(news: Newspaper): string {
-  const month = news.month < 10 ? `0${news.month}` : String(news.month)
-  const day = news.day < 10 ? `0${news.day}` : String(news.day)
-  return `${news.year}_${month}_${day}`
+  // same format but with _ separator
+  return news.date.replaceAll('-', '_');
 }
 
 function getFullDate(news: Newspaper): string {
+  const [year, month, day] = processVersion(news.date);
   let monthname = [
     'January',
     'February',
@@ -232,13 +168,13 @@ function getFullDate(news: Newspaper): string {
     'October',
     'November',
     'December'
-  ][news.month - 1]
+  ][month - 1];
 
-  return `${monthname} ${news.day}, ${news.year}`
+  return `${monthname} ${day}, ${year}`
 }
 
 function getDateFileName(news: Newspaper): string {
-  return `${news.year}-${String(news.month).padStart(2, '0')}-${String(news.day).padStart(2, '0')}`;
+  return news.date;
 }
 
 function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
