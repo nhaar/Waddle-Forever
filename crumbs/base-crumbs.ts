@@ -62,16 +62,24 @@ export function addParties<Modifications>(
   let currentPartyIndex = 0;
   const crumbsUpdates: CrumbsUpdate<Modifications>[] = [];
   // go through each update in the timeline to and see if a party comes after or before it
-  for (let timelineIndex = 0; timelineIndex < timeline.length; timelineIndex++) {
+  // we keep looping until BOTH the current timeline and party arrays are swept,
+  // this way we can still do this even if timeline is empty at first
+  for (let timelineIndex = 0; (timelineIndex < timeline.length || currentPartyIndex < PARTIES.length); timelineIndex++) {
     const seasonal = timeline[timelineIndex];
     // start at the first party we haven't done yet
-    // the `true` is no problem since we are breaking eventually
-    for (let partyIndex = currentPartyIndex; true; partyIndex++) {
+    // we also need to loop this until both are swept
+    for (let partyIndex = currentPartyIndex; (timelineIndex < timeline.length || partyIndex < PARTIES.length); partyIndex++) {
       const party = PARTIES[partyIndex];
-      // party comes after the version, we can push this seasonal update and check next version
-      // also, if partyIndex > PARTIES.length, we just add every new update
-      // we use start >= version so that if they start on the same day, the seasonal one comes first
-      if (partyIndex >= PARTIES.length || isGreaterOrEqual(party.start, seasonal.version)) {
+      // this means both indexes overflowed, we can break to terminate the loop
+      if (party === undefined && seasonal === undefined) {
+        break;
+      }
+      // if party is undefined, then we only need to add seasonals
+      // if it is defined, we check if this seasonal is on time to be added
+      // start >= versions so that if they start on the same day, the seasonal one comes first
+      // if party is defined and seasonal is undefined then we also have to skip which is what seasonal !== undefined
+      // accomplishes 
+      if (party === undefined || (seasonal !== undefined && isGreaterOrEqual(party.start, seasonal.version))) {
         crumbsUpdates.push({
           type: 'seasonal',
           ...seasonal
