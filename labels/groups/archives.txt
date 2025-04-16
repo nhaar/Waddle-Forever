@@ -88,7 +88,7 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **seasonal**/**rooms**/stage.swf/[P]2010-01-08,[P]2010-09-16.swf:b89006589daad1ca8babb391aa6c7265 - RoomsStage-June2009.swf
 - Stage SWFs above are from https://archives.clubpenguinwiki.info/wiki/The_Stage
 
-**engine2**/**rooms**/mine.swf:11345fd71ff764000c3fa8fe4dfed1aa - 2010-2013, RoomsMine_2.swf
+**seasonal**/**rooms**/mine.swf/2009-##-##,2010-03-15.swf:11345fd71ff764000c3fa8fe4dfed1aa - RoomsMine_2.swf
 - Mine SWFs are from https://archives.clubpenguinwiki.info/wiki/Mine
 
 **engine2**/**rooms**/shack.swf:9109f3a445ad2313446939d49132e50c - December 2011, RoomsShack-September2010.swf (weirdly mismatching)
@@ -219,6 +219,21 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**seasonal**/**rooms**/mine.swf/2010-01-08.swf:744724aad507bc9becdf9ac78758d9de - RoomsMine-Rockslide1.swf
+**seasonal**/**rooms**/mine.swf/2010-01-15.swf:ad9e040cce382efcbf325c4120649fa1 - RoomsMine-Rockslide2.swf
+**2010**/cave_expedition/**rooms**/mine.swf:2abef5d71e3bfb94e618f02fa68b1ae8 - https://archives.clubpenguinwiki.info/images/archives/3/31/RoomsMine-CaveExpedition.swf
+**2010**/cave_expedition/**rooms**/party1.swf:1cf537970c6f847c9c04656797cbcace - https://archives.clubpenguinwiki.info/images/archives/3/36/RoomsParty1-CaveExpedition.swf
+**2010**/cave_expedition/**rooms**/party2.swf:ddc43f59ad1db4089410f7de0591d684 - https://archives.clubpenguinwiki.info/images/archives/9/97/RoomsParty2-CaveExpedition.swf
+**2010**/cave_expedition/**rooms**/party3.swf:c93d2d978b7f220266b7962d8cd62fa3 - https://archives.clubpenguinwiki.info/images/archives/5/56/RoomsParty3-CaveExpedition.swf
+**2010**/cave_expedition/**local**/catalogues/party.swf:a35b2dad8ef90ddca616e5c1e4d51e4c - https://archives.clubpenguinwiki.info/images/archives/0/0c/ENCataloguesParty1-CaveExpedition.swf
+**2010**/cave_expedition/**local**/close_ups/digposter2.swf:6ca424adbd049efa948acadeac942fd0 - https://archives.clubpenguinwiki.info/images/archives/9/93/ENCloseUpsDigPoster2-Jan2010.swf
+**2010**/cave_expedition/**local**/close_ups/treasurepin1.swf:fb670c0dba8f1b877f91f13c43ad5e9d - https://archives.clubpenguinwiki.info/images/archives/1/1c/ENCloseUpsTreasurePin1.swf
+**2010**/cave_expedition/**local**/close_ups/treasurepin2.swf:8c4a605c01d1d4fd3dea91f26782f2bb - https://archives.clubpenguinwiki.info/images/archives/1/1a/ENCloseUpsTreasurePin2.swf
+**2010**/cave_expedition/**local**/close_ups/treasurepin3.swf:cd93b92029eb0aa783869d86403d9a8d - https://archives.clubpenguinwiki.info/images/archives/a/a0/ENCloseUpsTreasurePin3.swf
+**2010**/cave_expedition/**local**/close_ups/treasurepin4.swf:882c86792e249d9afddf2d1c0b8c044e - https://archives.clubpenguinwiki.info/images/archives/f/fe/ENCloseUpsTreasurePin4.swf
+**seasonal**/**rooms**/mine.swf/2010-01-29.swf:08530ffa11d1422c965a91ee1adaa2e5 - RoomsMine-PostCaveExpedition.swf
+- Cave Expedition
 
 **2010**/puffle_party_const/**rooms**/beacon.swf:6705154774f8d9ea71ce06a9356c62e1 - RoomsBeacon-PuffleParty2010Const.swf
 **2010**/puffle_party_const/**rooms**/berg.swf:4a762488c090e95c70a9244f678f5ea3 - RoomsBerg-PuffleParty2010Const.swf

@@ -238,6 +238,12 @@
 **seasonal**/**local**/news/news_crumbs.swf/2010-03-25.swf:1c913ac5da58a46355736003ba5eb640
 **seasonal**/**local**/news/news_crumbs.swf/2010-04-01.swf:801bcfb09c9fef781cabb595cf7056a2
 **seasonal**/**local**/news/news_crumbs.swf/2010-04-08.swf:24c90d09632d4d6e343f4809cdbb85ab
+**seasonal**/**local**/news/news_crumbs.swf/2010-04-15.swf:393baee04dd96551e339787132921de2
+**seasonal**/**local**/news/news_crumbs.swf/2010-04-22.swf:6912fdc4c143f1e43eab22dd4326fef0
+**seasonal**/**local**/news/news_crumbs.swf/2010-04-29.swf:5175935407d05acee1d8c2b00a125639
+**seasonal**/**local**/news/news_crumbs.swf/2010-05-06.swf:19adc1e857c625cb43cc5eb1d4beafcd
+**seasonal**/**local**/news/news_crumbs.swf/2010-05-13.swf:2add05df42a044e9dfbbf299cc39cdf4
+**seasonal**/**local**/news/news_crumbs.swf/2010-05-20.swf:a7bd69b229de868cdf2bef86fdb55231
 **seasonal**/**local**/news/news_crumbs.swf/2010-05-27.swf:3e7f33f449d6000943322dea105d33f7
 **seasonal**/**local**/news/news_crumbs.swf/2010-06-03.swf:546087392f626a1fb9cc97b9727e4268
 **seasonal**/**local**/news/news_crumbs.swf/2010-06-10.swf:30192e0e5b704cf78b81008bb893e442
