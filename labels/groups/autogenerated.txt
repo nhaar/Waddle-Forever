@@ -1,6 +1,10 @@
 - Global Crumbs
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-05-07.swf:c7084130ae469bfcc88fe05891c14f72
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-05-16.swf:aa0f2563420de35b8bf70496b5eae9db
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-06-10,2010-06-28,2010-07-19.swf:aa0f2563420de35b8bf70496b5eae9db
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-06-10.swf:c7084130ae469bfcc88fe05891c14f72
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-06-18.swf:7aee3191f75025600ed6551e8d79abda
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-06-28.swf:aa0f2563420de35b8bf70496b5eae9db
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-07-09.swf:f83aa6f5e66aa82cbee1a315a325c3fc
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-07-19.swf:051d25c7ffd9fc01994d427daa6da5e4
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-07-21.swf:f83aa6f5e66aa82cbee1a315a325c3fc

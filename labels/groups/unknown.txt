@@ -17,3 +17,8 @@
 **2010**/halloween_party_2010/**global**/telescope/empty.swf:1c999334c610d979d862657411425c62
 - Telescope used in Halloween Party 2010
 - No idea where I got this from, I thought it was from another party's archive, but nothing archived matched
+
+**seasonal**/**client**/engine.swf/2009-##-##.swf:23b299c26a95342ee1fded594616ce42
+**seasonal**/**client**/interface.swf/2009-10-##.swf:499e9eeb481baa05be1c764dc323e4df
+- These were given to me by Blue Kirby
+- I don't know exactly where they came from

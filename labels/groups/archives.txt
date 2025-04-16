@@ -7,9 +7,17 @@ default/music/57.swf:6f3945ddc793d231e6af0aefccb535a2
 default/music/58.swf:8a8e9f93d70ec142eaa92f9110557354
 default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blue one in Organic Journey
 default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
+default/music/233.swf:3ab5a0fa2af2323c83be5a05d577e4f4 - Music233.swf
+default/music/235.swf:a18df2906e1f165a448acae46d7f570b - Music235.swf
+default/music/236.swf:e7e5763075dc90cdee6ab763ceff1fc0 - Music236.swf
+default/music/237.swf:537d5b722f2d2fe7f4866425cb8f7c7b - Music237.swf
+default/music/265.swf:c26ece9cfde76adc7180a0da4a44f012 - Music265.swf
 default/music/267.swf:9e09a6b44957edd6985c76db5b2c4f17 - Music267.swf
 default/music/268.swf:fc05ab047695a0780a77bca1427f5481 - Music268.swf
 default/music/269.swf:ebd7563567f1ccd9cf5fdf1478a0d91c - Music269.swf
+default/music/286.swf:a1d1dbdd97af77745023aa68ef5e2c93 - Music286.swf
+default/music/287.swf:81b07969e1aa7a0967604fd2bbd3bf42 - Music287.swf
+default/music/288.swf:e2a5e435743ae061a9d655dd32b75c85 - Music288.swf
 default/music/289.swf:24af415fdfed17224ca59cc6a595f6b6 - Music289.swf
 default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 - Music from the page: https://archives.clubpenguinwiki.info/wiki/Music
@@ -202,6 +210,31 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**2010**/medieval/**rooms**/attic.swf:4b311e5112caaa0f47d9ef02cea9ac18 - MedievalParty2011Attic.swf
+**2010**/medieval/**rooms**/beach.swf:1092ab5c0ad897677f27418b1de3c1b6 - Rooms0508Beach.swf
+**2010**/medieval/**rooms**/beacon.swf:8ccb586a14dbce51309d740aa41bdefe - MedievalParty2011Beacon.swf
+**2010**/medieval/**rooms**/boiler.swf:6fad3f8db5c748d88c139ea421b3e25a - RoomsBoiler-MedievalParty2010.swf
+**2010**/medieval/**rooms**/book.swf:4a65bbc1162413eef0bd455af6ff26cc - RoomsBook-MedievalParty2010.swf
+**2010**/medieval/**rooms**/cave.swf:d8bb97073c16bf2d7095d7ffd2b02af7 - RoomsCave-MedievalParty2010.swf
+**2010**/medieval/**rooms**/coffee.swf:231593b9eb28a46b0e9c5a4b200ec8d1 - RoomsCoffee-MedievalParty2010.swf
+**2010**/medieval/**rooms**/cove.swf:4c3ed1cb599abd70b993404607bb9e46 - RoomsCove-MedievalParty2010.swf
+**2010**/medieval/**rooms**/dance.swf:262ff8bbddbc441d8a84fe683ae6757c - RoomsDance-MedievalParty2010.swf
+**2010**/medieval/**rooms**/dock.swf:6dbf1083ea63ae05341b6cdee24ea5df - MedievalParty2011Dock.swf
+**2010**/medieval/**rooms**/forest.swf:081b1e8a4243b421727569af3ed02ee5 - RoomsForest-MedievalParty2010.swf
+**2010**/medieval/**rooms**/forts.swf:4bade4bce739bff086e7bb988ee03779 - RoomsForts-MedievalParty2010.swf
+**2010**/medieval/**rooms**/light.swf:b20dabcdeae21a3ae83d15c1ae964213 - RoomsLight-MedievalParty2010.swf
+**2010**/medieval/**rooms**/lodge.swf:b59c20029a8ec8f9d5aafd1508746b87 - Rooms0508Lodge.swf
+**2010**/medieval/**rooms**/lounge.swf:e270d261329dcda72a0c645d867acb89 - RoomsLounge-MedievalParty2010.swf
+**2010**/medieval/**rooms**/mtn.swf:f984e5b3fa6cbadf907489e295344a73 - MedievalParty2011Mtn.swf
+**2010**/medieval/**rooms**/pet.swf:454f78286ee2b9eaeb5d1be013c94f92 - RoomsPet-MedievalParty2010.swf
+**2010**/medieval/**rooms**/pizza.swf:0adb423fc62e63033f94210979306037 - RoomsPizza-MedievalParty2010.swf
+**2010**/medieval/**rooms**/plaza.swf:1f2ac3fb982e64cbdff28ab091a9f7b6 - RoomsPlaza-MedievalParty2010.swf
+**2010**/medieval/**rooms**/rink.swf:b24571d7b27f7ad76355deaba47b6715 - Rooms0508Rink.swf
+**2010**/medieval/**rooms**/shop.swf:e091d988af5eace0b642c0085272d338 - RoomsShop-MedievalParty2010.swf
+**2010**/medieval/**rooms**/town.swf:eb02b9430bb8965931ecef90e5e9d67a - RoomsTown-MedievalParty2010.swf
+**2010**/medieval/**rooms**/village.swf:20633086df7c968b568dfa6612fea5ef - RoomsVillage-MedievalParty2010.swf
+- Medieval Party 2010
 
 **2010**/island_adventure_construction/**rooms**/beach.swf:14adceb73e03a3ddab57eee7341a62ee - RoomsBeach-IslandAdventureParty2010Const.swf
 **2010**/island_adventure_construction/**rooms**/cove.swf:29dc95e58fe73bbcf46d48e241edc206 - IslandAdventureParty2011ConstCove.swf
