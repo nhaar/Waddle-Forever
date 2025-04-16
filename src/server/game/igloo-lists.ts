@@ -29,7 +29,7 @@ type ListUpdate = {
   date: Version;
 }
 
-const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
+export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
   {
     date: '2009-12-25',
     list: [

@@ -49,6 +49,8 @@ function getDescription(version: Day): string {
     return `CPT Issue ${version.events.newIssue} released`
   } else if (version.events.stagePlay !== undefined) {
     return `New stage play airing: ${version.events.stagePlay}`
+  } else if (version.events.musicList === true) {
+    return 'New music available for igloos';
   }
 
   return ''
@@ -66,6 +68,7 @@ type Day = {
     minigameRelease?: string
     newClothing?: boolean
     stagePlay?: string;
+    musicList?: true;
   }
 }
 

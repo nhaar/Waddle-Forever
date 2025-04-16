@@ -6,6 +6,7 @@ import { isEqual, isLower, Version } from '../server/routes/versions';
 import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
 import { OLD_CATALOGUES } from '../server/game/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
+import { IGLOO_LISTS } from '../server/game/igloo-lists';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -124,6 +125,8 @@ type Events = {
   newClothing?: boolean
   /** Name of stage play that is debuting today if any */
   stagePlay?: string;
+  /** If a music list was released this day */
+  musicList?: true;
 };
 
 // this type is duplicated in the timeline-static file, it should be the same type
@@ -219,11 +222,18 @@ function addCatalogues(map: DayMap): DayMap {
   return map;
 }
 
+function addIglooMusicLists(map: DayMap): void {
+  IGLOO_LISTS.forEach((list) => {
+    addEvents(map, list.date, { musicList: true });
+  })
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
   map = addNewspapers(map);
   map = addCatalogues(map);
+  addIglooMusicLists(map);
   addStagePlays(map);
   return getDaysFromMap(map);
 }
