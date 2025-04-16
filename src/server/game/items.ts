@@ -1,4 +1,6 @@
+import { findIndexLeftOf } from "../../common/utils";
 import { StaticDataTable } from "../../common/static-table";
+import { isGreaterOrEqual, Version } from "../routes/versions";
 
 export enum ItemType {
   Head,
@@ -14,12 +16,19 @@ export enum ItemType {
   Nothing
 };
 
-type Item = {
+/**
+ * If the cost never changed, a single number,
+ * if the cost changed, an array with the release value,
+ * and subsequent tuples representing updates of the value
+*/
+type ItemCost = number | [number, ...Array<[Version, number]>];
+
+export type Item = {
   id: number
   name: string
   isMember: boolean
   type: ItemType
-  cost: number
+  cost: ItemCost
   isEngine2: boolean
   isEngine3: boolean
   isEPF: boolean
@@ -27,6 +36,32 @@ type Item = {
   isTour: boolean
   isTreasure: boolean
 };
+
+export function getCost(item: Item, date: Version): number {
+  if (typeof item.cost === 'number') {
+    return item.cost;
+  } else {
+    // remove the base value, flatten the other arrays getting only the date
+    const [_, ...updates] = item.cost;
+    const dates = updates.map((tuple) => {
+      const date = tuple[0];
+      return date;
+    });
+    const index = findIndexLeftOf(date, dates, (date, dates, index) => {
+      return isGreaterOrEqual(date, dates[index]);
+    });
+    // -1 means our date comes before the first update, so we return base value
+    if (index === -1) {
+      return item.cost[0];
+    } else {
+      const [_, ...updates] = item.cost;
+      // skip first index since it's base, our index is relative to the update tuples
+      const updateTuple = updates[index];
+      // cost
+      return updateTuple[1];
+    }
+  }
+}
 
 export const ITEMS = new StaticDataTable<Item, [
   'id',
@@ -991,7 +1026,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1193, 'The Side Swept', ItemType.Head, 350, true, false, false, false, false, false, '2017-03-30'],
   [1194, 'The Skater', ItemType.Head, 350, true, false, false, false, false, false, '2017-03-30'],
   [1195, 'The Chic', ItemType.Head, 400, true, false, false, false, false, false, '2017-03-30'],
-  [1196, 'Bucket Hat', ItemType.Head, 75, false, false, false, false, false, false, '2017-03-30'],
+  [1196, 'Bucket Hat', ItemType.Head, [75, ['2010-11-16', 0]], false, false, false, false, false, false, '2017-03-30'],
   [1199, 'The Cosmic', ItemType.Head, 350, true, false, false, false, false, false, '2017-03-30'],
   [1201, 'Comm Helmet', ItemType.Head, 15, true, false, false, true, false, false, '2017-03-30'],
   [1202, 'Elf Pigtails', ItemType.Head, 400, true, false, false, false, false, false, '2017-03-30'],
@@ -2985,10 +3020,10 @@ export const ITEMS = new StaticDataTable<Item, [
   [5074, 'First Aid Kit', ItemType.Hand, 150, true, false, false, false, false, false, '2017-03-30'],
   [5075, 'Range Finder', ItemType.Hand, 10, true, false, false, true, false, false, '2017-03-30'],
   [5076, 'Green Balloon', ItemType.Hand, 0, true, false, false, false, false, false, '2017-03-30'],
-  [5077, 'Ice Cream Cone', ItemType.Hand, 100, true, false, false, false, false, false, '2017-03-30'],
+  [5077, 'Ice Cream Cone', ItemType.Hand, [100, ['2010-09-03', 0]], true, false, false, false, false, false, '2017-03-30'],
   [5079, 'Popcorn', ItemType.Hand, 50, false, false, false, false, false, false, '2017-03-30'],
   [5080, 'Magician\'s Wand', ItemType.Hand, 150, true, false, false, false, false, false, '2017-03-30'],
-  [5081, 'Storm Lantern', ItemType.Hand, 200, true, false, false, false, false, false, '2017-03-30'],
+  [5081, 'Storm Lantern', ItemType.Hand, [200, ['2010-10-28', 0]], true, false, false, false, false, false, '2017-03-30'],
   [5082, 'Cosmic Umbrella', ItemType.Hand, 200, true, false, false, false, false, false, '2017-03-30'],
   [5083, 'Polka Dot Umbrella', ItemType.Hand, 300, true, false, false, false, false, false, '2017-03-30'],
   [5084, 'Mop and Bucket', ItemType.Hand, 250, true, false, false, false, false, false, '2017-03-30'],
@@ -3403,7 +3438,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [6048, 'Red Hiking Shoes', ItemType.Feet, 200, true, false, false, false, false, false, '2017-03-30'],
   [6049, 'Tactical Boots', ItemType.Feet, 10, true, false, false, true, false, false, '2017-03-30'],
   [6050, 'Orange Checkered Shoes', ItemType.Feet, 300, true, false, false, false, false, false, '2017-03-30'],
-  [6052, 'Clown Shoes', ItemType.Feet, 150, true, false, false, false, false, false, '2017-03-30'],
+  [6052, 'Clown Shoes', ItemType.Feet, [150, ['2010-09-03', 0]], true, false, false, false, false, false, '2017-03-30'],
   [6053, 'Blue Striped Rubber Boots', ItemType.Feet, 250, true, false, false, false, false, false, '2017-03-30'],
   [6054, 'Pink Striped Rubber Boots', ItemType.Feet, 250, true, false, false, false, false, false, '2017-03-30'],
   [6057, 'Comm Boots', ItemType.Feet, 10, true, false, false, true, false, false, '2017-03-30'],
@@ -4010,7 +4045,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [9074, 'Circus Tent Background', ItemType.Background, 60, false, false, false, false, false, false, '2017-03-30'],
   [9075, 'Rockhopper Background', ItemType.Background, 0, false, false, false, false, false, false, '2017-03-30'],
   [9076, 'Haunted House Background', ItemType.Background, 60, false, false, false, false, false, false, '2017-03-30'],
-  [9077, 'Candy Forest Path Background', ItemType.Background, 60, false, false, false, false, false, false, '2017-03-30'],
+  [9077, 'Candy Forest Path Background', ItemType.Background, [60, ['2010-10-28', 0]], false, false, false, false, false, false, '2017-03-30'],
   [9078, 'Gary Background', ItemType.Background, 0, false, false, false, false, false, false, '2017-03-30'],
   [9079, 'Rainy Day Background', ItemType.Background, 60, false, false, false, false, false, false, '2017-03-30'],
   [9080, 'Water Tank Background', ItemType.Background, 0, false, false, false, false, false, false, '2017-03-30'],

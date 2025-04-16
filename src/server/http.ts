@@ -1,9 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 import { Request, Router } from "express";
-import { GameVersion, SettingsManager } from "./settings";
-import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
+import { SettingsManager } from "./settings";
+import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
+import { findCurrentParty, findCurrentUpdateInParty } from './game/parties';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -19,9 +20,9 @@ type Alternator = [string, ...string[]]
 
 type AlternatorMap = Array<[string, string]>
 
-type Spacer = [GameVersion, GameVersion, ...string[]]
+type Spacer = [Version, Version, ...string[]]
 
-type SpacerMap = Array<[GameVersion, GameVersion, string]>
+type SpacerMap = Array<[Version, Version, string]>
 
 const SEASONAL_NAME = 'seasonal';
 
@@ -108,7 +109,7 @@ export function spaced(routers: HttpRouter[], spacers: Spacer[]) {
 }
 
 /** Assigns files to routers in a given date interval */
-export function range(start: GameVersion, end: GameVersion, routeMaps: RouteMap) {
+export function range(start: Version, end: Version, routeMaps: RouteMap) {
   const routers: HttpRouter[] = [];
   const targets: string[] = [];
 
@@ -185,29 +186,35 @@ export class HttpServer {
     this.router = Router();
   }
 
-  /** Supplies all the files for an event in its date range */
-  private addEvent(event: EventInfo) {
-    const rootPath = 'default/event/' + event[0];
-    this.dir('', (s) => {
-      if (isGreaterOrEqual(s.settings.version, event[1]) && isLower(s.settings.version, event[2])) {
-        return rootPath;
+  /** Creates a router that listens for party files */
+  addParties() {
+    this.router.get('*', (req: Request, res, next) => {
+      const date = this.settingsManager.settings.version
+      const party = findCurrentParty(date);
+      // no active party
+      if (party === null) {
+        next();
       } else {
-        return undefined;
+        // find all possible paths the party serves
+        const paths = typeof party.paths === 'string' ? [party.paths] : party.paths;
+        if (party.updates !== undefined) {
+          const update = findCurrentUpdateInParty(date, party.updates);
+          paths.push(update.path);
+        }
+        for (const route of paths) {
+          // TODO async file check
+          // TODO optimizing: every file now has to check party first. Assembling a map of all changed files -> destination would be better
+          const filePath = path.join(DEFAULT_DIRECTORY, 'event', route, req.params[0]);
+          // server first route that one can find
+          if (fs.existsSync(filePath)) {
+            res.sendFile(filePath);
+            return;
+          }
+        }
+        // continue if could not find any file in any path
+        next();
       }
-    });
-  }
-
-  /**
-   * Sets up a list of events each with its info.
-   * 
-   * Events are periods of time where a static folder is served with most priority,
-   * it is used mostly for parties, and they are stored in the default/event directory
-   * of the media folders
-   */
-  addEvents(...events: Array<EventInfo>) {
-    for (const event of events) {
-      this.addEvent(event);
-    }
+    })
   }
 
   /**
@@ -259,8 +266,51 @@ export class HttpServer {
     const extension = '.' + route.split('.').pop();
     const files = fs.readdirSync(path.join(DEFAULT_DIRECTORY, SEASONAL_NAME, route));
     const fileDates = files.filter((f) => f.endsWith(extension)).map((f) => f.slice(0, -extension.length));
+
+    // files that appeared multiple times can have multiple dates joined by a separator
+    // to preserve the information we will split all files in the dates array
+    // and create a map for their name and the original filename
+    const fileMap = new Map<string, string>();
+
+    // new array that will have all the dates
+    let flattenedFileDates = [];
+
+    // splitting multiple files
+    const SEPARATOR = ',';
+    for (const fileDate of fileDates) {
+      if (fileDate.includes(SEPARATOR)) {
+        const splitFiles = fileDate.split(SEPARATOR);
+        for (const splitFile of splitFiles) {
+          fileMap.set(splitFile, fileDate);
+        }
+        flattenedFileDates.push(...splitFiles);
+      } else {
+        flattenedFileDates.push(fileDate);
+      }
+    }
+
+    // placeholder prefixes are just to signal that a value is used in a date
+    // but it wasn't archived from that time, it's only being used because it's similar
+    const PLACEHOLDER_PREFIX = '[P]';
+    flattenedFileDates = flattenedFileDates.map((value) => {
+      if (value.startsWith(PLACEHOLDER_PREFIX)) {
+        const trimmed = value.replace(PLACEHOLDER_PREFIX, '');
+        const originalName = fileMap.get(value);
+        // no previous entry to this exists, adding it now
+        if (originalName === undefined) {
+          fileMap.set(trimmed, value);
+        } else {
+          fileMap.set(trimmed, originalName);
+        }
+
+        return trimmed;
+      } else {
+        return value;
+      }
+    })
+
     try {
-      sortVersions(fileDates);
+      sortVersions(flattenedFileDates);
     } catch {
       throw Error(`Seasonal included files not named after versions in path ${route}`);
     }
@@ -268,8 +318,9 @@ export class HttpServer {
     const router = new HttpRouter(route, this);
     alternating(
       [router],
-      fileDates.map((fileDate) => {
-        return [fileDate, path.join('default', SEASONAL_NAME, route, fileDate + extension)]
+      flattenedFileDates.map((fileDate) => {
+        const realFile = fileMap.get(fileDate) ?? fileDate;
+        return [fileDate, path.join('default', SEASONAL_NAME, route, realFile + extension)]
       })
     )
   }

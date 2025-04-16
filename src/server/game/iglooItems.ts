@@ -1,6 +1,6 @@
-import { GameVersion } from "../settings";
+import { Version } from "../routes/versions";
 
-export function getFlooringCost(flooring: number, version: GameVersion = '2010-Nov-24') {
+export function getFlooringCost(flooring: number, version: Version = '2010-11-24') {
   switch (flooring) {
     case 0: // Remove flooring
       return 20
@@ -27,7 +27,7 @@ export function getFlooringCost(flooring: number, version: GameVersion = '2010-N
   }
 }
 
-export function getIglooCost(igloo: number, version: GameVersion = '2010-Nov-24') {
+export function getIglooCost(igloo: number, version: Version = '2010-11-24') {
   switch (igloo) {
     case 2: // Candy Igloo
       return 1500

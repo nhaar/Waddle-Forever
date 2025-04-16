@@ -52,25 +52,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // events, parties
-  server.addEvents(
-    ['2005/beta_test_party', '2005-Sep-21', '2005-Sep-22'],
-    ['2005/halloween_2005', '2005-Oct-27', '2005-Nov-01'],
-    ['2005/puffle_discovery', '2005-Nov-15', '2005-Dec-05'],
-    ['2005/christmas_2005', '2005-Dec-22', '2005-Dec-26'],
-    ['2006/valentine_day_celebration', '2006-Feb-14', '2006-Feb-15'],
-    ['2006/pizza_parlor_opening_party', '2006-Feb-24', '2006-Feb-28'],
-    ['2006/april_fools_2006', '2006-Mar-31', '2006-Apr-03'],
-    ['2010/music_jam_construction', '2010-Jul-01', '2010-Jul-09'],
-    ['2010/4th_of_july', '2010-Jul-01', '2010-Jul-05'],
-    ['2010/music_jam_construction_no_fireworks', '2010-Jul-05', '2010-Jul-09'],
-    ['2010/music_jam', '2010-Jul-09', '2010-Jul-19'],
-    ['2010/mountain_expedition', '2010-Aug-12', '2010-Aug-19'],
-    ['2010/fair_2010', '2010-Sep-03', '2010-Sep-24'],
-    ['2010/fair_2010_start', '2010-Sep-03', '2010-Sep-10'],
-    ['2010/fair_2010_end', '2010-Sep-10', '2010-Sep-24'],
-    ['2010/5th_anniversary_party', '2010-Oct-23', '2010-Oct-28'],
-    ['2010/halloween_party_2010', '2010-Oct-28', '2010-Nov-24']
-  );
+  server.addParties();
 
   // automatically enable seasonals
   server.addSeasonals();

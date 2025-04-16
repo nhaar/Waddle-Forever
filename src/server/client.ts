@@ -1,11 +1,11 @@
 import net from 'net';
 
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
-import { GameVersion, Settings, SettingsManager } from './settings';
+import { Settings, SettingsManager } from './settings';
 import { Penguin } from './penguin';
 import { Stamp } from './game/stamps';
-import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower } from './routes/versions';
-import { ITEMS, ItemType } from './game/items';
+import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, Version } from './routes/versions';
+import { getCost, Item, ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
@@ -13,7 +13,7 @@ import { PUFFLES } from './game/puffle';
 
 type ServerType = 'Login' | 'World';
 
-const STAMP_RELEASE_VERSION : string = '2010-Jul-26'
+const STAMP_RELEASE_VERSION : string = '2010-07-26'
 
 export class Client {
   socket: net.Socket;
@@ -69,7 +69,7 @@ export class Client {
     this.xtTimestamps = new Map<string, number>();
   }
 
-  private get version(): GameVersion {
+  private get version(): Version {
     return this._settingsManager.settings.version;
   }
 
@@ -205,6 +205,10 @@ export class Client {
     return true;
   }
 
+  getCost(item: Item) {
+    return getCost(item, this.version);
+  }
+
   /**
    * Add a new item to a player
    * @param itemId
@@ -287,11 +291,11 @@ export class Client {
     if (this.currentRoom in roomStamps) {
       let gameStamps = roomStamps[this.currentRoom];
       // manually removing stamps if using a version before it was available
-      if (isLower(this.version, '2010-Jul-26')) {
+      if (isLower(this.version, '2010-07-26')) {
         gameStamps = [];
       } else if (this.currentRoom === Room.JetPackAdventure) {
         // Before puffle stamps
-        if (isLower(this.version, '2010-Sep-24')) {
+        if (isLower(this.version, '2010-09-24')) {
           gameStamps = [
             Stamp.LiftOff,
             Stamp.FuelRank1,

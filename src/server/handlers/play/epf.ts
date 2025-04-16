@@ -31,7 +31,7 @@ handler.xt('f#epfai', (client, itemId) => {
   }
 
   client.penguin.addItem(item.id);
-  client.penguin.removeEpfMedals(item.cost);
+  client.penguin.removeEpfMedals(client.getCost(item));
 
   client.sendXt('epfai', client.penguin.ownedMedals);
   client.update();

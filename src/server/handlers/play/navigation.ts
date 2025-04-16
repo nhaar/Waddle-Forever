@@ -62,6 +62,11 @@ handler.xt('u#sp', (client, x, y) => {
   client.sendXt('sp', client.penguin.id, x, y);
 })
 
+handler.xt('u#sb', (client, x, y) => {
+  // TODO multiplayer logic
+  client.sendXt('sb', client.penguin.id, x, y);
+})
+
 // refreshing room (required for bits and bolts, maybe other places)
 handler.xt('j#grs', (client) => {
   // TODO multiplayer logic

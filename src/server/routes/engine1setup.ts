@@ -1,5 +1,7 @@
-import { GameVersion } from "../settings";
-import { findProperInterval, inInterval } from "./versions";
+import { findIndexLeftOf } from "../../common/utils";
+import { OLD_CATALOGUES } from "../game/catalogues";
+import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
+import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
 
 type Engine1Room = {
   name: string,
@@ -24,36 +26,29 @@ function patchFrame(rooms: Engine1Room[], frames: Record<string, number>) {
   }
 }
 
-export function getSetupXml(version: GameVersion) {
-  let news = findProperInterval<string | number>(version, [
-    ['2005-Oct-24', 1],
-    ['2005-Oct-28', 'fan'],
-    ['2005-Nov-03', 2],
-    ['2005-Nov-08', 3],
-    ['2005-Nov-11', 4],
-    ['2005-Nov-16', 5],
-    ['2005-Nov-21', 6],
-    ['2005-Dec-01', 7],
-    ['2005-Dec-08', 8],
-    ['2005-Dec-15', 9],
-    ['2005-Dec-22', 10],
-    ['2005-Dec-29', 11],
-    ['2006-Jan-05', 12],
-    ['2006-Jan-12', 13],
-    ['2006-Jan-19', 14],
-    ['2006-Jan-26', 15],
-    ['2006-Feb-02', 16],
-    ['2006-Feb-09', 17],
-    ['2006-Feb-16', 18],
-    ['2006-Feb-23', 19],
-    ['2006-Mar-02', 20],
-    ['2006-Mar-09', 21],
-    ['2006-Mar-16', 22],
-    ['2006-Mar-23', 23],
-    ['2006-Mar-30', 24],
-    ['2006-Apr-06', 25],
-    ['2006-Apr-13', 26]
-  ])
+/**
+ * Get clothing filename based on release of the  catalogue
+ * 
+ * Clothing filenames looked like 0508 (2005-August)
+ * */
+function getClothing(releaseVersion: Version) : string {
+  const decomposed = processVersion(releaseVersion);
+  if (decomposed === undefined) {
+    throw new Error(`Invalid version: ${releaseVersion}`);
+  }
+  const [year, month] = decomposed;
+  // the last 2 numbers of year, and month with a 0 on front if needed
+  return `${String(year).slice(2)}${String(month).padStart(2, '0')}`;
+}
+
+export function getSetupXml(version: Version) {
+  let news: string | Number;
+  if (version === FAN_ISSUE.date) {
+    news = FAN_ISSUE.name;
+  } else {
+    const index = findIndexLeftOf(version, OLD_NEWSPAPERS, (version, newspapers, index) => isGreaterOrEqual(version, newspapers[index]));
+    news = index + 1;
+  }
 
   const rooms: Engine1Room[] = [
     {
@@ -169,17 +164,8 @@ export function getSetupXml(version: GameVersion) {
     })
   }
 
-  const clothing = findProperInterval<string>(version, [
-    ['2005-Aug-22', '0508'],
-    ['2005-Sep-21', '0509'],
-    ['2005-Oct-24', '0510'],
-    ['2005-Nov-01', '0511'],
-    ['2005-Dec-01', '0512'],
-    ['2006-Jan-01', '0601'],
-    ['2006-Feb-03', '0602'],
-    ['2006-Mar-03', '0603'],
-    ['2006-Apr-07', '0604']
-  ])
+  const clothingIndex = findIndexLeftOf(version, OLD_CATALOGUES, (date, catalogues, i) => isGreaterOrEqual(date, catalogues[i]));
+  const clothing = getClothing(OLD_CATALOGUES[clothingIndex]);
 
   const servers = [
     'Blizzard',

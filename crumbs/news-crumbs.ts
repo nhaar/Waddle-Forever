@@ -2,202 +2,195 @@ import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
 import { DEFAULT_DIRECTORY } from '../src/common/utils';
+import { processVersion, Version } from '../src/server/routes/versions';
 
 type Newspaper = {
-  year: number,
-  month: number,
-  day: number,
+  date: Version,
   headline: string
 }
 
 // issue number of the very first newspaper in the list below
-const FIRST_ISSUE_NUMBER = 235;
+const FIRST_ISSUE_NUMBER = 221;
 
 const newspapers: Newspaper[] = [
   {
-    year: 2010,
-    month: 4,
-    day: 15,
+    date: '2010-01-07',
+    headline: 'CREATE YOUR OWN T-SHIRT'
+  },
+  {
+    date: '2010-01-14',
+    headline: 'ROCKSLIDE AT THE MINE!'
+  },
+  {
+    date: '2010-01-21',
+    headline: 'SECRET CAVE DISCOVERED!'
+  },
+  {
+    date: '2010-01-28',
+    headline: 'CAVES CLOSING UNTIL FURTHER NOTICE'
+  },
+  {
+    date: '2010-02-04',
+    headline: 'PUFFLE PARTY'
+  },
+  {
+    date: '2010-02-11',
+    headline: 'SECRETS OF THE BAMBOO FOREST'
+  },
+  {
+    date: '2010-02-18',
+    headline: 'PUFFLE PARTY'
+  },
+  {
+    date: '2010-02-25',
+    headline: 'ORANGE PUFFLES READY TO ADOPT!'
+  },
+  {
+    date: '2010-03-04',
+    headline: 'WHERE\'S YARR?'
+  },
+  {
+    date: '2010-03-11',
+    headline: 'PUFFLES TRAPPED UNDERGROUND!'
+  },
+  {
+    date: '2010-03-18',
+    headline: 'PUFFLE RESCUE'
+  },
+  {
+    date: '2010-03-25',
+    headline: 'PENGUIN PLAY AWARDS'
+  },
+  {
+    date: '2010-04-01',
+    headline: 'HAPPY APRIL FOOLS!'
+  },
+  {
+    date: '2010-04-08',
+    headline: '2010-04-08'
+  },
+  {
+    date: '2010-04-15',
     headline: 'CELEBRATE EARTH DAY!'
   },
   {
-    year: 2010,
-    month: 4,
-    day: 22,
+    date: '2010-04-22',
     headline: 'EARTH DAY CELEBRATIONS BEGIN!'
   },
   {
-    year: 2010,
-    month: 4,
-    day: 29,
+    date: '2010-04-29',
     headline: 'YE PENGUIN STYLE'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 6,
+    date: '2010-05-06',
     headline: 'MEDIEVAL PARTY'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 13,
+    date: '2010-05-13',
     headline: 'YOUR IGLOO-MEDIEVAL STYLE'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 20,
+    date: '2010-05-20',
     headline: 'POPCORN EVERYWHERE AT SPORT SHOP'
   },
   {
-    year: 2010,
-    month: 5,
-    day: 27,
+    date: '2010-05-27',
     headline: 'SKI VILLAGE UNDER CONSTRUCTION'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 3,
+    date: '2010-06-03',
     headline: 'PENGUINS SEEKING ADVENTURE'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 10,
+    date: '2010-06-10',
     headline: 'ISLAND ADVENTURE PLANS REVEALED'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 17,
+    date: '2010-06-17',
     headline: 'THE ADVENTURE BEGINS!'
   },
   {
-    year: 2010,
-    month: 6,
-    day: 24,
+    date: '2010-06-24',
     headline: 'CONTINUE YOUR ADVENTURE!'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 1,
+    date: '2010-07-01',
     headline: 'GET READY FOR MUSIC JAM 2010'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 8,
+    date: '2010-07-08',
     headline: 'MUSIC JAM!'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 15,
+    date: '2010-07-15',
     headline: 'KEEP JAMMIN\''
   },
   {
-    year: 2010,
-    month: 7,
-    day: 22,
+    date: '2010-07-22',
     headline: 'THANKS FOR JAMMING'
   },
   {
-    year: 2010,
-    month: 7,
-    day: 29,
+    date: '2010-07-29',
     headline: 'CUSTOMIZE YOUR STAMP BOOK'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 5,
+    date: '2010-08-05',
     headline: 'EXPLORATION EVENT'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 12,
+    date: '2010-08-12',
     headline: 'ALL ABOUT IGLOOS'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 19,
+    date: '2010-08-19',
     headline: 'ENERGETIC PHONING FACILITY'
   },
   {
-    year: 2010,
-    month: 8,
-    day: 26,
+    date: '2010-08-26',
     headline: 'IGLOO IMPROVEMENTS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 2,
+    date: '2010-09-02',
     headline: 'WHAT\'S ON AT THE FAIR?'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 9,
+    date: '2010-09-09',
     headline: 'PILOTS SEEK ASSISTANTS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 16,
+    date: '2010-09-16',
     headline: 'NEW IGLOO ITEMS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 23,
+    date: '2010-09-23',
     headline: 'BLACK PUFFLES IN CARTS'
   },
   {
-    year: 2010,
-    month: 9,
-    day: 30,
+    date: '2010-09-30',
     headline: 'MYSTERIES IN OCTOBER'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 7,
+    date: '2010-10-07',
     headline: 'ANNIVERSARY PARTY'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 14,
+    date: '2010-10-14',
     headline: 'STORM INCOMING'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 21,
+    date: '2010-10-21',
     headline: 'HALLOWEEN\'S ALMOST HERE'
   },
   {
-    year: 2010,
-    month: 10,
-    day: 28,
+    date: '2010-10-28',
     headline: 'IGLOO CONTEST WINNERS'
   },
   {
-    year: 2010,
-    month: 11,
-    day: 4,
+    date: '2010-11-04',
     headline: 'CLOUDY SKIES STAY'
   },
   {
-    year: 2010,
-    month: 11,
-    day: 11,
+    date: '2010-11-11',
     headline: 'NEW LOOK FOR NEWSPAPER'
   }
 ]
@@ -207,18 +200,17 @@ const newspapers: Newspaper[] = [
 type NewsSet = [Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, number]
 
 function getMinifiedDate(news: Newspaper): string {
-  const month = news.month < 10 ? `0${news.month}` : String(news.month)
-  const day = news.day < 10 ? `0${news.day}` : String(news.day)
-  return `${news.year}${month}${day}`
+  // same format but without dahses in-between
+  return news.date.replaceAll('-', '');
 }
 
 function getFileDate(news: Newspaper): string {
-  const month = news.month < 10 ? `0${news.month}` : String(news.month)
-  const day = news.day < 10 ? `0${news.day}` : String(news.day)
-  return `${news.year}_${month}_${day}`
+  // same format but with _ separator
+  return news.date.replaceAll('-', '_');
 }
 
 function getFullDate(news: Newspaper): string {
+  const [year, month, day] = processVersion(news.date);
   let monthname = [
     'January',
     'February',
@@ -232,31 +224,13 @@ function getFullDate(news: Newspaper): string {
     'October',
     'November',
     'December'
-  ][news.month - 1]
+  ][month - 1];
 
-  return `${monthname} ${news.day}, ${news.year}`
+  return `${monthname} ${day}, ${year}`
 }
 
 function getDateFileName(news: Newspaper): string {
-  const month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ][news.month - 1];
-
-  // must be 2 digits for day
-  const day = news.day < 10 ? '0' + String(news.day) : news.day;
-
-  return `${news.year}-${month}-${day}`;
+  return news.date;
 }
 
 function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
@@ -346,20 +320,31 @@ const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
 
 console.log('Beginning exporting...');
 
-for (const newspaper of newspapers) {
-  currentThings.push(newspaper)
-  issueNumber++;
+let promises: Array<Promise<void>> = [];
 
-  if (currentThings.length > 7) {
-    currentThings.shift()
+(async () => {
+  for (const newspaper of newspapers) {
+    // doing it 10 at a time otherwise FFDEC will not withstand it
+    if (promises.length >= 10) {
+      await Promise.all(promises);
+      promises = [];
+    }
+    currentThings.push(newspaper)
+    issueNumber++;
+  
+    if (currentThings.length > 7) {
+      currentThings.shift()
+    }
+    if (currentThings.length === 7) {
+      const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
+      
+      const recent = currentThings[6]
+      const fileName = getDateFileName(recent) + '.swf';
+      const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
+      console.log(`Exporting: ${fileName}`);
+      
+      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+      promises.push(promise);
+    }
   }
-  if (currentThings.length === 7) {
-    const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
-    
-    const recent = currentThings[6]
-    const fileName = getDateFileName(recent) + '.swf';
-    const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
-    console.log(`Exporting: ${fileName}`);
-    replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
-  }
-}
+})();

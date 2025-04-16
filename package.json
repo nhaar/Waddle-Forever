@@ -23,7 +23,10 @@
     "build-media": "node scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
-    "news-crumbs": "ts-node crumbs/news-crumbs.ts"
+    "news-crumbs": "ts-node crumbs/news-crumbs.ts",
+    "verify": "ts-node labels/verify-labels.ts",
+    "shorten": "ts-node labels/shorten-paths.ts",
+    "expand": "ts-node labels/expand-paths.ts"
   },
   "author": "CPS",
   "license": "MIT",
@@ -92,6 +95,7 @@
     "archiver": "^7.0.1",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
     "electron": "^10.0.0",
     "electron-builder": "23.0.2",
     "eslint": "^8.34.0",

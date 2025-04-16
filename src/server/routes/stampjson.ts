@@ -1,5 +1,4 @@
-import { GameVersion } from "../settings"
-import { isGreaterOrEqual, isLower } from "./versions"
+import { isGreaterOrEqual, isLower, Version } from "./versions"
 
 type Category = {
   name: string
@@ -993,14 +992,14 @@ function addStamps(category: Category, stamps: Stamp[]) {
   }
 }
 
-export function getStampbook(version: GameVersion): string {
-  if (isLower(version, '2010-Jul-26')) {
+export function getStampbook(version: Version): string {
+  if (isLower(version, '2010-07-26')) {
     return '{}'
   }
   
   const newStampbook = JSON.parse(JSON.stringify(originalStampbook)) as Stampbook
 
-  if (isGreaterOrEqual(version, '2010-Aug-12')) {
+  if (isGreaterOrEqual(version, '2010-08-12')) {
     newStampbook[CategoryID.Party] = {
       "name": "Party",
       "description": "Party Stamps",
@@ -1027,7 +1026,7 @@ export function getStampbook(version: GameVersion): string {
     }
   }
 
-  if (isGreaterOrEqual(version, '2010-Aug-31')) {
+  if (isGreaterOrEqual(version, '2010-08-31')) {
     newStampbook[CategoryID.PSAMissions] = {
       "name": "Missions",
       "description": "PSA Missions 1 to 11",
@@ -1438,7 +1437,7 @@ export function getStampbook(version: GameVersion): string {
     }
   }
 
-  if (isGreaterOrEqual(version, '2010-Sep-03')) {
+  if (isGreaterOrEqual(version, '2010-09-03')) {
     addStamps(newStampbook[CategoryID.Party] as Category, [
       {
         "stamp_id": 184,
@@ -1459,7 +1458,7 @@ export function getStampbook(version: GameVersion): string {
     ])
   }
 
-  if (isGreaterOrEqual(version, '2010-Sep-10')) {
+  if (isGreaterOrEqual(version, '2010-09-10')) {
     addStamps(newStampbook[CategoryID.Activities] as Category, [
       {
         "stamp_id": 197,
@@ -1504,7 +1503,7 @@ export function getStampbook(version: GameVersion): string {
     ])
   }
 
-  if (isGreaterOrEqual(version, '2010-Sep-24')) {
+  if (isGreaterOrEqual(version, '2010-09-24')) {
     addStamps(newStampbook[CategoryID.JetPackAdventure] as Category, [
       {
         "stamp_id": 202,
@@ -1670,7 +1669,7 @@ export function getStampbook(version: GameVersion): string {
     }
   }
 
-  if (isGreaterOrEqual(version, '2010-Oct-23')) {
+  if (isGreaterOrEqual(version, '2010-10-23')) {
     addStamps(newStampbook[CategoryID.Party] as Category, [{
       "stamp_id": 186,
       "name": "Celebration",
@@ -1786,7 +1785,7 @@ export function getStampbook(version: GameVersion): string {
     }
   }
 
-  if (isGreaterOrEqual(version, '2010-Oct-28')) {
+  if (isGreaterOrEqual(version, '2010-10-28')) {
     addStamps(newStampbook[CategoryID.Party] as Category, [
       {
         "stamp_id": 187,
@@ -1807,7 +1806,7 @@ export function getStampbook(version: GameVersion): string {
     ])
   }
 
-  if (isGreaterOrEqual(version, '2010-Nov-24')) {
+  if (isGreaterOrEqual(version, '2010-11-24')) {
     addStamps(newStampbook[CategoryID.Party] as Category, [
       {
         "stamp_id": 189,

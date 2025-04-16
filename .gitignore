@@ -80,3 +80,6 @@ ffdec-path.ts
 
 # production logs
 /logs
+
+# file management
+/labels/warnings.txt

@@ -1,54 +1,27 @@
-import { GameVersion } from "../settings";
-
-/** Valid month initials for versions (same capitalization must be used) */
-const MONTHS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-]
+/** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
+export type Version = string;
 
 /** Returns undefined if an invalid version, otherwise an array [year, month, day] */
-function decomposeVersion(version: string): [number, number, number] | undefined {
-  if (version.length !== 11) {
-    return;
+export function processVersion(version: string): [number, number, number] {
+  const dateMatch = version.match(/(\d{4})\-(\d{2}|##)-(\d{2}|##)/);
+  if (dateMatch === null) {
+    throw new Error(`Invalid version: ${version}`);
   }
 
-  const yearText = version.slice(0, 4);
-  const monthText = version.slice(5, 8);
-  const dayText = version.slice(9, 11);
-
-  const year = Number(yearText);
-  // XX day marks that we don't know the exact day, we assume first of the month.
-  const day = dayText === 'XX' ? 1 : Number(dayText);
-
-  if (isNaN(year) || isNaN(day)) {
-    return;
-  }
-  // same as above, but with three 'X' for the month
-  const monthIndex = monthText === 'XXX' ? 0 : MONTHS.indexOf(monthText);
-  if (monthIndex === -1) {
-    return;
-  }
+  const year = Number(dateMatch[1]);
+  const month = dateMatch[2] == '##' ? 1 : Number(dateMatch[2]);
+  const day = dateMatch[3] == '##' ? 1 : Number(dateMatch[3]);
 
   if (year < 2005 || year > 2017) {
-    return;
+    throw new Error(`Year out of range: ${year}`);
   }
 
-  const date = new Date(year, monthIndex, day);
+  const date = new Date(year, month - 1, day);
   if (isNaN(date.getTime())) {
-    return;
+    throw new Error(`Version is not a real date: ${version}`);
   }
 
-  return [year, monthIndex + 1, day];
+  return [year, month, day];
 }
 
 /** Get object with year, month and day of the version */
@@ -57,7 +30,7 @@ function getVersionDetails(version: string): {
   month: number,
   day: number
 } {
-  const decomposed = decomposeVersion(version);
+  const decomposed = processVersion(version);
 
   if (decomposed === undefined) {
     throw new Error(`Invalid version date being processed: ${version}`);
@@ -85,7 +58,7 @@ export function sortVersions(versions: string[]): void {
   })
 }
 
-function isEqual(left: string, right: string): boolean {
+export function isEqual(left: string, right: string): boolean {
   const leftDetails = getVersionDetails(left);
   const rightDetails = getVersionDetails(right);
 
@@ -122,37 +95,22 @@ export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
 }
 
-const ENGINE1_CUTOFF = '2008-XXX-XX';
-const ENGINE3_CUTOFF = '2012-XXX-XX';
+const ENGINE1_CUTOFF = '2008-##-##';
+const ENGINE3_CUTOFF = '2012-##-##';
 
-export function isEngine1(version: GameVersion): boolean {
+export function isEngine1(version: Version): boolean {
   return isLower(version, ENGINE1_CUTOFF)
 }
 
-export function isEngine2(version: GameVersion): boolean {
+export function isEngine2(version: Version): boolean {
   return isGreaterOrEqual(version, ENGINE1_CUTOFF) && isLower(version, ENGINE3_CUTOFF);
 }
 
-export function isEngine3(version:GameVersion): boolean {
-  return isGreaterOrEqual(version, '2012-Jan-01');
+export function isEngine3(version: Version): boolean {
+  return isGreaterOrEqual(version, ENGINE3_CUTOFF);
 }
 
-type VersionMap<T> = Array<[GameVersion, T]>
-
-export function findProperInterval<T>(version:GameVersion, map: VersionMap<T>): T {
-  if (isLower(version, map[0][0])) {
-    return map[0][1]
-  }
-  for (let i = 0; i < map.length - 1; i++) {
-    if (isLower(version, map[i + 1][0])) {
-      return map[i][1];
-    }
-  }
-
-  return map.slice(-1)[0][1];
-}
-
-export function inInterval(version: GameVersion, start: GameVersion, end: GameVersion, params?: {
+export function inInterval(version: Version, start: Version, end: Version, params?: {
   startOpen?: boolean,
   endOpen?: boolean
 }): boolean {
