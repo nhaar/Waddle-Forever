@@ -133,8 +133,15 @@ export async function generateCrumbFiles<Modifications>(
   createSeasonalCrumb: (content: string, date: Version) => Promise<void>
 ): Promise<void> {
   console.log('Beginning exporting');
+  
+  // early placeholder that will take the base SWF
+  const PLACEHOLDER = '2009-##-##';
+  
   // when we are in a party, we keep it in paralel the changes with and without party
   let nonPartyCrumbs = await loadBaseCrumbs();
+
+  createSeasonalCrumb(nonPartyCrumbs, PLACEHOLDER);
+
   let inPartyCrumbs = '';
   // when null, no party is currently happening
   let currentPartyEndDate: string | null = null;
