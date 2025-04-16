@@ -7,6 +7,7 @@ default/music/57.swf:6f3945ddc793d231e6af0aefccb535a2
 default/music/58.swf:8a8e9f93d70ec142eaa92f9110557354
 default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blue one in Organic Journey
 default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
+default/music/219.swf:bb1ff7a9e033efe6cbe262a9401021d4 - Music219.swf
 default/music/233.swf:3ab5a0fa2af2323c83be5a05d577e4f4 - Music233.swf
 default/music/235.swf:a18df2906e1f165a448acae46d7f570b - Music235.swf
 default/music/236.swf:e7e5763075dc90cdee6ab763ceff1fc0 - Music236.swf
@@ -212,6 +213,21 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**2010**/earth_day/**rooms**/book.swf:093a8ccd7b83d1938d74c24cf6626df5 - RoomsBook-EarthDay2010.swf
+**2010**/earth_day/**rooms**/coffee.swf:e40a1386e1a23a4c923b57248187dde4 - RoomsCoffeeEarthDay2010.swf
+**2010**/earth_day/**rooms**/cove.swf:41ac80933adfcacbb1f3977520a984c2 - RoomsCove-EarthDay2010.swf
+**2010**/earth_day/**rooms**/dojoext.swf:8e1cbbbf759d3d34af6c6943795e7fc7 - RoomsDojoext-EarthDay2010.swf
+**2010**/earth_day/**rooms**/forest.swf:bb70de4e1ac339fa4c96f35026178dbb - RoomsForest-EarthDay2010.swf
+**2010**/earth_day/**rooms**/mtn.swf:c5e85082124587298bfadbbffe101f5e - RoomsMtn-EarthDay2010.swf
+**2010**/earth_day/**rooms**/pet.swf:5a1558b156d3ea7c041e8f695a446d6e - RoomsPet-EarthDay2010.swf
+**2010**/earth_day/**rooms**/plaza.swf:8e047be2ec661a85e11ef85307e88e8e - RoomsPlaza-EarthDay2010.swf
+**2010**/earth_day/**rooms**/shack.swf:0f787317040f4c8f3b60f971852c26d1 - RoomsShack-EarthDay2010.swf
+**2010**/earth_day/**rooms**/town.swf:838a892875faf8ffe3a9659f5a0c6390 - RoomsTown-EarthDay2010.swf
+**2010**/earth_day/**rooms**/village.swf:fc2053f72d8a2fa94bbcd707b0674ca2 - RoomsVillage-EarthDay2010.swf
+**2010**/earth_day/**global**/scavenger_hunt/recycle.swf:a70f9faeaa42813b5b4b606998c684ac - Scavenger_hunt-EarthDay2010.swf
+**2010**/earth_day/**global**/scavenger_hunt/recycle_icon.swf:107d2dd469a2064176d240f4d1c14a99 - Scavenger_hunt_icon-EarthDay2010.swf
+- Earth Day 2010
 
 **2010**/medieval_const/**rooms**/beach.swf:bab51b782fd1b138b8d6f4b855d6b80f - MedievalParty2011ConstBeach.swf
 **2010**/medieval_const/**rooms**/cave.swf:97ae6495020bca51b134c5d9081c68ac - RoomsCave-MedievalParty2010Const.swf

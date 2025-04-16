@@ -78,6 +78,22 @@ export const PARTIES: Party[] = [
     paths: '2006/april_fools_2006'
   },
   {
+    name: 'Earth Day 2010',
+    start: '2010-04-21',
+    end: '2010-04-27',
+    paths: ['2010/earth_day', '2010_scavenger_hunt'],
+    music: {
+      'town': 219,
+      'plaza': 219
+    },
+    globalPaths: {
+      'scavenger_hunt_icon': 'scavenger_hunt/recycle_icon.swf',
+      'hunt_ui': 'scavenger_hunt/recycle.swf',
+      'easter_egg_hunt': 'scavenger_hunt/recycle.swf',
+      'recycle_hunt': 'scavenger_hunt/recycle.swf'
+    }
+  },
+  {
     name: 'Medieval Party 2010 Construction',
     start: '2010-05-06',
     end: null,
