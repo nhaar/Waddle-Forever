@@ -50,6 +50,14 @@ export const STAGE_TIMELINE: Array<{
   name: StageName,
 }> = [
   {
+    date: '2010-01-08',
+    name: 'Fairy Fables'
+  },
+  {
+    date: '2010-02-11',
+    name: 'Secrets of the Bamboo Forest'
+  },
+  {
     date: '2010-03-29',
     name: 'Quest for the Golden Puffle'
   },
