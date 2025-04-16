@@ -113,7 +113,8 @@ function updateList(list: IglooList, update: ListUpdate): void {
 function getIglooList(date: Version): IglooList {
   const [fullList, ...updates] = IGLOO_LISTS;
 
-  const list = fullList.list;
+
+  const list = JSON.parse(JSON.stringify(fullList.list)) as IglooList;
 
   for (const update of updates) {
     // end on the first update that wasn't released
