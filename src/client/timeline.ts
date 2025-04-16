@@ -81,6 +81,18 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
+        date: '2010-01-08',
+        events: {
+          other: 'A rockslide happened in the Mine'
+        }
+      },
+      {
+        date: '2010-01-15',
+        events: {
+          other: 'The rockslide in the mine progressed'
+        }
+      },
+      {
         date: '2010-09-24',
         events: {
           partyStart: 'Stadium Games'
