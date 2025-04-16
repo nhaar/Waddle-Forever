@@ -171,7 +171,8 @@ export class LabelFile {
         fileContent += line + '\n';
       } else {
         const [path, hash, comment] = line;
-        fileContent += `${path}:${hash}${comment}\n`;
+        const cleanName = getShortcutString(path.replaceAll('\\', '/'));
+        fileContent += `${cleanName}:${hash}${comment}\n`;
       }
     });
 
