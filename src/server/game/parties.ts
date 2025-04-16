@@ -80,6 +80,12 @@ export const PARTIES: Party[] = [
     paths: '2006/april_fools_2006'
   },
   {
+    name: 'Puffle Party 2010 Construction',
+    start: '2010-02-11',
+    end: null,
+    paths: '2010/puffle_party_const'
+  },
+  {
     name: 'Puffle Party 2010',
     start: '2010-02-18',
     end: '2010-02-25',

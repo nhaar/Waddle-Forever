@@ -43,8 +43,8 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **seasonal**/artwork/rooms/plaza12.swf/2006-03-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
 **seasonal**/**rooms**/plaza.swf/2010-06-10.swf:5702f4ef453367bb8838e13c85edec59 - "2011-2012 ruby and the ruby", RoomsPlaza_2-Play8.swf
 **seasonal**/**rooms**/plaza.swf/2010-11-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
-**seasonal**/**rooms**/plaza.swf/2010-10-23.swf:8b42920f7346a373ec9ac11e982be244 - "2008-2011 Secrets Of The Bamboo Forest", RoomsPlaza-August2011.swf
-**seasonal**/**rooms**/plaza.swf/2010-09-24.swf:8576327bca974c9db9a187e69dbb62bb - 2008-2011 Fairy Fables, RoomsPlaza-Play10.swf
+**seasonal**/**rooms**/plaza.swf/2010-02-11,2010-10-08.swf:8b42920f7346a373ec9ac11e982be244 - RoomsPlaza-August2011.swf
+**seasonal**/**rooms**/plaza.swf/2010-01-08,2010-09-16.swf:8576327bca974c9db9a187e69dbb62bb - RoomsPlaza-Play10.swf
 **seasonal**/**rooms**/plaza.swf/[P]2010-03-29.swf:1ba6a52c3a313f37a3febb9b754aa1d3 - RoomsPlaza_2-Play5.swf
 - Plaza SWFs above from https://archives.clubpenguinwiki.info/wiki/Plaza
 
@@ -84,8 +84,8 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **seasonal**/**rooms**/stage.swf/2010-03-29.swf:82692c40550aab5594d54b550bc1e101 - RoomsStage-May2010.swf
 **seasonal**/**rooms**/stage.swf/2010-06-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
 **seasonal**/**rooms**/stage.swf/2010-11-18.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
-**seasonal**/**rooms**/stage.swf/2010-10-23.swf:b90436acfadaa810c597556b156d81db - October 8, 2010, HalloweenParty2010Stage.swf
-**seasonal**/**rooms**/stage.swf/2010-09-24.swf:b89006589daad1ca8babb391aa6c7265 - June 12, 2009, RoomsStage-June2009.swf
+**seasonal**/**rooms**/stage.swf/[P]2010-02-11,2010-10-08.swf:b90436acfadaa810c597556b156d81db - HalloweenParty2010Stage.swf
+**seasonal**/**rooms**/stage.swf/[P]2010-01-08,[P]2010-09-16.swf:b89006589daad1ca8babb391aa6c7265 - RoomsStage-June2009.swf
 - Stage SWFs above are from https://archives.clubpenguinwiki.info/wiki/The_Stage
 
 **engine2**/**rooms**/mine.swf:11345fd71ff764000c3fa8fe4dfed1aa - 2010-2013, RoomsMine_2.swf
@@ -220,6 +220,13 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
 
+**2010**/puffle_party_const/**rooms**/beacon.swf:6705154774f8d9ea71ce06a9356c62e1 - RoomsBeacon-PuffleParty2010Const.swf
+**2010**/puffle_party_const/**rooms**/berg.swf:4a762488c090e95c70a9244f678f5ea3 - RoomsBerg-PuffleParty2010Const.swf
+**2010**/puffle_party_const/**rooms**/cave.swf:ac485f71a0353bbe3998c0059af58231 - PuffleParty2010ConstCave.swf
+**2010**/puffle_party_const/**rooms**/dance.swf:61fe3968465ea7df581c102ca15490f2 - RoomsDance-PuffleParty2010Const.swf
+**2010**/puffle_party_const/**rooms**/forest.swf:6e04bdfe8af25886359d829b528eb609 - RoomsForest-PuffleParty2010Const.swf
+**2010**/puffle_party_const/**rooms**/light.swf:0805c26565505f6f5f7ebe12f57700b0 - RoomsLight-PuffleParty2010Const.swf
+**2010**/puffle_party_const/**rooms**/mine.swf:3a39676843f7a9f9b9221dc49c09142f - RoomsMine-PuffleParty2010Const.swf
 **2010**/puffle_party/**rooms**/beach.swf:eeb15540642693ecf2be562c04467ae6 - RoomsBeach-PuffleParty2010.swf
 **2010**/puffle_party/**rooms**/beacon.swf:e2b8600b139ead51bff0ac41ffebc58e - RoomsBeacon-PuffleParty2010.swf
 **2010**/puffle_party/**rooms**/berg.swf:9a477de080afc3fe445b27962f77bf63 - RoomsBerg-PuffleParty2010.swf
