@@ -4,6 +4,7 @@ import { getStampbook } from './stampjson';
 import { isEngine1, isEngine2, isEngine3 } from "./versions";
 import { getSetupXml } from "./engine1setup";
 import { getServersXml } from "../servers";
+import { getDynamicMusicListData } from "../game/igloo-lists";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -74,6 +75,11 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('servers.xml', getServersXml);
   server.getData('setup.xml', (s) => {
     return getSetupXml(s.settings.version);
+  });
+
+  // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
+  server.getData('play/v2/content/global/en/igloo_music.xml', (s) => {
+    return getDynamicMusicListData(s.settings.version);
   });
   
   // FALL BACK AND STATIC SERVING
