@@ -38,6 +38,7 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **seasonal**/**rooms**/plaza.swf/2010-11-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
 **seasonal**/**rooms**/plaza.swf/2010-10-23.swf:8b42920f7346a373ec9ac11e982be244 - "2008-2011 Secrets Of The Bamboo Forest", RoomsPlaza-August2011.swf
 **seasonal**/**rooms**/plaza.swf/2010-09-24.swf:8576327bca974c9db9a187e69dbb62bb - 2008-2011 Fairy Fables, RoomsPlaza-Play10.swf
+**seasonal**/**rooms**/plaza.swf/[P]2010-03-29.swf:1ba6a52c3a313f37a3febb9b754aa1d3 - RoomsPlaza_2-Play5.swf
 - Plaza SWFs above from https://archives.clubpenguinwiki.info/wiki/Plaza
 
 **seasonal**/artwork/rooms/plaza12.swf/2006-02-24.swf:e164bcaa2937eb1658265208b90320ef
@@ -73,6 +74,7 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 - Pirate Ship SWFs above are from https://archives.clubpenguinwiki.info/wiki/Pirate_Ship
 
 **seasonal**/**rooms**/stage.swf/2010-08-26.swf:17136c87052e7f6878360cadcd0006f3 - October 9, 2009, RoomsStage-October2009.swf
+**seasonal**/**rooms**/stage.swf/2010-03-29.swf:82692c40550aab5594d54b550bc1e101 - RoomsStage-May2010.swf
 **seasonal**/**rooms**/stage.swf/2010-06-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
 **seasonal**/**rooms**/stage.swf/2010-11-18.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
 **seasonal**/**rooms**/stage.swf/2010-10-23.swf:b90436acfadaa810c597556b156d81db - October 8, 2010, HalloweenParty2010Stage.swf
@@ -211,6 +213,12 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
 
+**2010**/medieval_const/**rooms**/beach.swf:bab51b782fd1b138b8d6f4b855d6b80f - MedievalParty2011ConstBeach.swf
+**2010**/medieval_const/**rooms**/cave.swf:97ae6495020bca51b134c5d9081c68ac - RoomsCave-MedievalParty2010Const.swf
+**2010**/medieval_const/**rooms**/forts.swf:f7e73ea56a3a857e901ef63ff987f7da - RoomsForts-MedievalParty2010Const.swf
+**2010**/medieval_const/**rooms**/plaza.swf:b37f43629581428a5e73d79a3e7b37fa - RoomsPlaza-MedievalParty2010Const.swf
+**2010**/medieval_const/**rooms**/town.swf:106fc72141a91eb9dd8bc286b2775be1 - RoomsTown-MedievalParty2010Pre.swf
+**2010**/medieval_const/**rooms**/village.swf:2fee9fc97638f9638efff30c9dcc6cef - RoomsVillage-MedievalParty2010Const.swf
 **2010**/medieval/**rooms**/attic.swf:4b311e5112caaa0f47d9ef02cea9ac18 - MedievalParty2011Attic.swf
 **2010**/medieval/**rooms**/beach.swf:1092ab5c0ad897677f27418b1de3c1b6 - Rooms0508Beach.swf
 **2010**/medieval/**rooms**/beacon.swf:8ccb586a14dbce51309d740aa41bdefe - MedievalParty2011Beacon.swf
