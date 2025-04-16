@@ -127,6 +127,18 @@ export class LabelFile {
     return new LabelFile(lines, file);
   }
 
+  get lines(): LabelFileLine[] {
+    return this._lines;
+  }
+
+  deleteLine(index: number): void {
+    this._lines.splice(index, 1);
+  }
+
+  insertLineAfterIndex(index: number, line: LabelFileLine): void {
+    this._lines.splice(index + 1, 0, line);
+  }
+
   getFileMap(): Map<string, string> {
     const map = new Map<string, string>();
     this._lines.forEach((line) => {
@@ -185,12 +197,17 @@ function getFilesInDirectory(basePath: string, relativePath: string): string[] {
   return fileNames;
 }
 
+export function getHash(filePath: string): string {
+  const hash = crypto.createHash('md5').update(fs.readFileSync(path.join(MEDIA_DIRECTORY, filePath), { encoding: 'utf-8' })).digest('hex');
+  return hash;
+}
+
 export function getEveryMediaFile(): Map<string, string> {
   const files = getFilesInDirectory(MEDIA_DIRECTORY, '');
   const map = new Map<string, string>();
   const reversed = new Map<string, string>();
   files.forEach((file) => {
-    const hash = crypto.createHash('md5').update(fs.readFileSync(path.join(MEDIA_DIRECTORY, file), { encoding: 'utf-8' })).digest('hex')
+    const hash = getHash(file);
     const cleanName = file.replaceAll('\\', '/')
     if (reversed.has(hash)) {
       // console.error(`File of hash ${hash} is duplicated in the media files`)

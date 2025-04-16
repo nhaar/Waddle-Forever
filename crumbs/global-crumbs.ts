@@ -7,7 +7,6 @@
 
 import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
-import { DEFAULT_DIRECTORY } from '../src/common/utils'
 import { PARTIES, Party } from '../src/server/game/parties'
 import { STAGE_PLAYS, STAGE_TIMELINE } from '../src/server/game/stage-plays'
 import { ITEMS } from '../src/server/game/items'
@@ -207,8 +206,6 @@ function getFullTimeline(): GlobalCrumbsUpdate[] {
   return updates;
 }
 
-const SEASONAL_CRUMBS_PATH = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/global/crumbs/global_crumbs.swf');
-
 /**
  * Creates a new global_crumbs.swf file
  * @param outputPath Path the SWF will be saved in
@@ -218,8 +215,12 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
   await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
+function getMediaPath(file: string): string {
+  return path.join('default/seasonal/play/v2/content/global/crumbs/global_crumbs.swf', file + '.swf');
+}
+
 async function createSeasonalCrumb(content: string, date: Version): Promise<void> {
-  const filePath = path.join(SEASONAL_CRUMBS_PATH, date + '.swf');
+  const filePath = path.join(__dirname, '..', 'media', getMediaPath(date));
   await createCrumbs(filePath, content);
 }
 
@@ -228,6 +229,8 @@ async function createSeasonalCrumb(content: string, date: Version): Promise<void
     loadBaseCrumbs,
     applyChanges,
     getFullTimeline,
-    createSeasonalCrumb
+    createSeasonalCrumb,
+    getMediaPath,
+    'Global Crumbs'
   );
 })();
