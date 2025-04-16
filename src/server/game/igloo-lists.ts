@@ -105,7 +105,7 @@ const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     songs: [
       { display: 'Planet Y', id: 38, pos: [3, 1] },
       { display: 'Norman Swarm', id: 42, pos: [1, 2] },
-      { display: 'Master the Elements', id: 27, pos: [4, 2] },
+      { display: 'Master the Elements', id: 301, pos: [4, 2] },
       { display: 'The Way of Sensei', id: 24, pos: [5, 2] }
     ]
   },
