@@ -80,6 +80,31 @@ export const PARTIES: Party[] = [
     paths: '2006/april_fools_2006'
   },
   {
+    name: 'Puffle Party 2010',
+    start: '2010-02-18',
+    end: '2010-02-25',
+    paths: '2010/puffle_party',
+    music: {
+      'beach': 282,
+      'beacon': 282,
+      'berg': 282,
+      'cave': 260,
+      'cove': 282,
+      'dance': 282,
+      'dock': 282,
+      'forest': 282,
+      'forts': 282,
+      'light': 282,
+      'mine': 260,
+      'pet': 282,
+      'plaza': 282,
+      'town': 282,
+      'village': 282,
+      'party1': 261,
+      'party2': 261
+    }
+  },
+  {
     name: 'Penguin Play Awards 2010',
     start: '2010-03-18',
     end: '2010-03-29',

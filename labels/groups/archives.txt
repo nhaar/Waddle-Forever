@@ -15,11 +15,13 @@ default/music/233.swf:3ab5a0fa2af2323c83be5a05d577e4f4 - Music233.swf
 default/music/235.swf:a18df2906e1f165a448acae46d7f570b - Music235.swf
 default/music/236.swf:e7e5763075dc90cdee6ab763ceff1fc0 - Music236.swf
 default/music/237.swf:537d5b722f2d2fe7f4866425cb8f7c7b - Music237.swf
+default/music/260.swf:70cb91a2598002adc407746f6c32a2f5 - Music260.swf
 default/music/261.swf:cb51223ceb2aa7b7ba675c68afb1c896 - Music261.swf
 default/music/265.swf:c26ece9cfde76adc7180a0da4a44f012 - Music265.swf
 default/music/267.swf:9e09a6b44957edd6985c76db5b2c4f17 - Music267.swf
 default/music/268.swf:fc05ab047695a0780a77bca1427f5481 - Music268.swf
 default/music/269.swf:ebd7563567f1ccd9cf5fdf1478a0d91c - Music269.swf
+default/music/282.swf:8474eee038041248a9f26eb382554c3d - Music282.swf
 default/music/286.swf:a1d1dbdd97af77745023aa68ef5e2c93 - Music286.swf
 default/music/287.swf:81b07969e1aa7a0967604fd2bbd3bf42 - Music287.swf
 default/music/288.swf:e2a5e435743ae061a9d655dd32b75c85 - Music288.swf
@@ -217,6 +219,27 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**2010**/puffle_party/**rooms**/beach.swf:eeb15540642693ecf2be562c04467ae6 - RoomsBeach-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/beacon.swf:e2b8600b139ead51bff0ac41ffebc58e - RoomsBeacon-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/berg.swf:9a477de080afc3fe445b27962f77bf63 - RoomsBerg-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/boxdimension.swf:7825accdc89408d5c31989a8bb4a6129 - RoomsBoxdimension-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/cave.swf:faaf0a08899b2489ba36d67374b5c62f - RoomsCave-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/cove.swf:d8ab5286b8dbe2e303ea807d3ad42fe9 - RoomsCove-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/dance.swf:a69900849433587b7c138c474fdff923 - RoomsDance-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/dock.swf:f94375830f274cab5364b947cc521ed1 - RoomsDock-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/forest.swf:6d38deb5045fa31936ac74b4f2dfc4bb - RoomsForest-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/forts.swf:457656dd7acbef8363dd6c2fe967b70c - RoomsForts-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/light.swf:92f22516a45ab7293e4cf5c6d9e1a187 - RoomsLight-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/lodge.swf:eba49b1aa90d14c4bb8234bd7a5e4ab2 - RoomsSkiLodgeOrangePuffle.swf
+**2010**/puffle_party/**rooms**/mine.swf:d1b50054544e774db3d4138772092be4 - RoomsMine-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/party1.swf:4256ef50f2d97100bf31c2df596482b6 - RoomsParty1-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/party2.swf:b91a3519561ff7e3243b8f26689d83f0 - RoomsParty2-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/pet.swf:ce9d12c4bfd27ca57509854b587a5388 - RoomsPet-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/plaza.swf:806b4b6104c4af5ccfa742b4c49313da - RoomsPlaza-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/town.swf:69831b5d1c20f27bcd672fb559b0c1c7 - RoomsTown-PuffleParty2010.swf
+**2010**/puffle_party/**rooms**/village.swf:6cbb1dec2b7938d99da9da22488358a8 - RoomsVillage-PuffleParty2010.swf
+- Puffle Party 2010
 
 **2010**/penguin_play_awards/**global**/content/shorts/fairyFables.swf:e708a2cf87556dc3b133896fca89c5f5 - ContentShortsfairyFables.swf
 **2010**/penguin_play_awards/**global**/content/shorts/goldenPuffle.swf:3c074444c1dd2fa8214c1546be26b3dd - ContentShortsgoldenPuffle.swf
