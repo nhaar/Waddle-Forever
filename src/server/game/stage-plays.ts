@@ -1,7 +1,8 @@
 import { Version } from "../routes/versions";
 
 /** All stage names */
-type StageName = 'Squidzoid vs. Shadow Guy and Gamma Gal' |
+type StageName = 'Quest for the Golden Puffle' |
+  'Squidzoid vs. Shadow Guy and Gamma Gal' |
   'Ruby and the Ruby' |
   'Underwater Adventure' |
   'Fairy Fables' |
@@ -13,6 +14,10 @@ export const STAGE_PLAYS: Array<{
   name: StageName,
   musicId: number
 }> = [
+  {
+    name: 'Quest for the Golden Puffle',
+    musicId: 34
+  },
   {
     name: 'Ruby and the Ruby',
     musicId: 37
@@ -44,6 +49,10 @@ export const STAGE_TIMELINE: Array<{
   date: Version
   name: StageName,
 }> = [
+  {
+    date: '2010-03-29',
+    name: 'Quest for the Golden Puffle'
+  },
   {
     date: '2010-06-10',
     name: 'Ruby and the Ruby'
