@@ -264,20 +264,31 @@ const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
 
 console.log('Beginning exporting...');
 
-for (const newspaper of newspapers) {
-  currentThings.push(newspaper)
-  issueNumber++;
+let promises: Array<Promise<void>> = [];
 
-  if (currentThings.length > 7) {
-    currentThings.shift()
+(async () => {
+  for (const newspaper of newspapers) {
+    // doing it 10 at a time otherwise FFDEC will not withstand it
+    if (promises.length >= 10) {
+      await Promise.all(promises);
+      promises = [];
+    }
+    currentThings.push(newspaper)
+    issueNumber++;
+  
+    if (currentThings.length > 7) {
+      currentThings.shift()
+    }
+    if (currentThings.length === 7) {
+      const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
+      
+      const recent = currentThings[6]
+      const fileName = getDateFileName(recent) + '.swf';
+      const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
+      console.log(`Exporting: ${fileName}`);
+      
+      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+      promises.push(promise);
+    }
   }
-  if (currentThings.length === 7) {
-    const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
-    
-    const recent = currentThings[6]
-    const fileName = getDateFileName(recent) + '.swf';
-    const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
-    console.log(`Exporting: ${fileName}`);
-    replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
-  }
-}
+})();
