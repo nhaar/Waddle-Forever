@@ -91,7 +91,8 @@ export const PARTIES: Party[] = [
       'party': 40
     },
     globalPaths: {
-      'voting_booth': 'content/winners.swf'
+      'voting_booth': 'content/winners.swf',
+      'underwaterShort': 'content/shorts/underwater.swf'
     }
   },
   {
