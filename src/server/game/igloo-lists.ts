@@ -39,57 +39,81 @@ const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
       [{ display: 'Norman Swarm', id: 42 }, { display: 'Zero Gravity', id: 279 }],
       [{ display: 'Ninja Training', id: 116 }, { display: 'Santa\'s Mix', id: 254, new: true }],
       [{ display: 'Coconut', id: 215 }, { display: 'Twice Upon a Time', id: 39 }],
-      [{ display: 'Extra Anchovies', id: 0 }, { display: 'Water Kongo', id: 0 }]
+      [{ display: 'Extra Anchovies', id: 270 }, { display: 'Water Kongo', id: 217 }]
     ]
   },
   {
     date: '2010-01-29',
     songs: [
-      { display: 'Puffle Party', id: 0, pos: [3, 1] },
-      { display: 'Float in the Clouds', id: 0, pos: [4, 2] },
-      { display: 'Planet Y', id: 0, pos: [5, 2] },
-      { display: 'Orca Straw', id: 0, pos: [6, 1] }
+      { display: 'Puffle Party', id: 282, pos: [3, 1] },
+      { display: 'Float in the Clouds', id: 277, pos: [4, 2] },
+      { display: 'Planet Y', id: 38, pos: [5, 2] },
+      { display: 'Orca Straw', id: 245, pos: [6, 1] }
     ]
   },
   {
     date: '2010-02-26',
     songs: [
-      { display: 'Jungle Quest', id: 0, pos: [2, 1] },
-      { display: 'Flipper Jig', id: 0, pos: [7, 1] },
-      { display: 'The Bamboo Forest', id: 0, pos: [3, 2] },
-      { display: 'Bonus Level', id:0, pos: [7, 2] }
+      { display: 'Jungle Quest', id: 269, pos: [2, 1] },
+      { display: 'Flipper Jig', id: 262, pos: [7, 1] },
+      { display: 'The Bamboo Forest', id: 43, pos: [3, 2] },
+      { display: 'Bonus Level', id: 275, pos: [7, 2] }
     ]
   },
   {
     date: '2010-03-26',
     songs: [
-      { display: 'Puffle Rescue: Ice Flow', id: 0, pos: [1, 1] },
-      { display: 'Recycle!', id: 0, pos: [6, 1] },
-      { display: 'Anchovy Jazz', id: 0, pos: [4, 2] },
+      { display: 'Puffle Rescue: Ice Flow', id: 119, pos: [1, 1] },
+      { display: 'Recycle!', id: 285, pos: [6, 1] },
+      { display: 'Anchovy Jazz', id: 283, pos: [4, 2] },
     ]
   },
   {
     date: '2010-04-30',
     songs: [
-      { display: 'Quest for the Golden Puffle', id: 0, pos: [4, 1] },
-      { display: 'In the Tower', id: 0, pos: [7, 1] },
-      { display: 'Puffle Rescue: In the Cave', id: 0, pos: [6, 2] }
+      { display: 'Quest for the Golden Puffle', id: 34, pos: [4, 1] },
+      { display: 'In the Tower', id: 235, pos: [7, 1] },
+      { display: 'Puffle Rescue: In the Cave', id: 120, pos: [6, 2] }
     ]
   },
   {
     date: '2010-05-28',
     songs: [
-      { display: 'Knight\'s Challenge', id: 0, pos: [2, 2] },
-      { display: 'The Quest', id: 0, pos: [5, 2] },
-      { display: 'Jungle Jangles', id: 0, pos: [7, 2] }
+      { display: 'Knight\'s Challenge', id: 286, pos: [2, 2] },
+      { display: 'The Quest', id: 266, pos: [5, 2] },
+      { display: 'Jungle Jangles', id: 267, pos: [7, 2] }
     ]
   },
   {
     date: '2010-06-25',
     songs: [
-      { display: 'The Viking Opera', id: 0, pos: [3, 1] },
-      { display: 'Island Adventure', id: 0, pos: [5, 1] },
-      { display: 'Ruby and the Ruby', id: 0, pos: [1, 2] }
+      { display: 'The Viking Opera', id: 41, pos: [3, 1] },
+      { display: 'Island Adventure', id: 291, pos: [5, 1] },
+      { display: 'Ruby and the Ruby', id: 37, pos: [1, 2] }
+    ]
+  },
+  {
+    date: '2010-08-20',
+    songs: [
+      { display: 'You Rock!', id: 293, pos: [2, 1] },
+      { display: 'The Ringmaster', id: 297, pos: [2, 2] },
+      { display: 'For Great Justice', id: 32, pos: [7, 2] }
+    ]
+  },
+  {
+    date: '2010-11-11',
+    songs: [
+      { display: 'Planet Y', id: 38, pos: [3, 1] },
+      { display: 'Norman Swarm', id: 42, pos: [1, 2] },
+      { display: 'Master the Elements', id: 27, pos: [4, 2] },
+      { display: 'The Way of Sensei', id: 24, pos: [5, 2] }
+    ]
+  },
+  {
+    date: '2010-12-09',
+    songs: [
+      { display: 'Candy Cane March', id: 228, pos: [1, 1] },
+      { display: 'Santa\'s Mix', id: 254, pos: [6, 1] },
     ]
   }
 ];

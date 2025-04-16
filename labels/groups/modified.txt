@@ -39,10 +39,6 @@
 - there was no newspapers yet
 - It is unknown if this is exactly how the game handled it
 
-**seasonal**/**global**/content/igloo_music.swf/2010-08-20.swf:448f0d50f99493949a34fecdc35c8e70
-**seasonal**/**global**/content/igloo_music.swf/2010-11-12.swf:10af717a96764b01073f5d522b7d8cb6
-- Igloo Music list recreations manually from the one in legacy media
-
 **special**/boots.swf/30.swf:e1e0b8b41a257524cc9850e5bc5022be
 - Mod that makes the game 30 FPS
 - Just changed the framerate in the header
