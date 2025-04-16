@@ -8,10 +8,13 @@ default/music/58.swf:8a8e9f93d70ec142eaa92f9110557354
 default/music/101.swf:1540f09e5de194b0bc445e49e579a333 - Music101_3.swf, the blue one in Organic Journey
 default/music/201.swf:1d3318a90ada140494bc23f859477db9 - Music201.swf, the white one
 default/music/219.swf:bb1ff7a9e033efe6cbe262a9401021d4 - Music219.swf
+default/music/231.swf:1cb8bb8217d7db8b0dffc98f1ae017b5 - Music231.swf
+default/music/232.swf:4008b3af7b9bd97ccd1b01a1ae974086 - Music232.swf
 default/music/233.swf:3ab5a0fa2af2323c83be5a05d577e4f4 - Music233.swf
 default/music/235.swf:a18df2906e1f165a448acae46d7f570b - Music235.swf
 default/music/236.swf:e7e5763075dc90cdee6ab763ceff1fc0 - Music236.swf
 default/music/237.swf:537d5b722f2d2fe7f4866425cb8f7c7b - Music237.swf
+default/music/261.swf:cb51223ceb2aa7b7ba675c68afb1c896 - Music261.swf
 default/music/265.swf:c26ece9cfde76adc7180a0da4a44f012 - Music265.swf
 default/music/267.swf:9e09a6b44957edd6985c76db5b2c4f17 - Music267.swf
 default/music/268.swf:fc05ab047695a0780a77bca1427f5481 - Music268.swf
@@ -213,6 +216,29 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**2010**/april_fools/**rooms**/beach.swf:16f54dfa47fc28a7f21b39add864810a - RoomsBeach-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/beacon.swf:dfbff6691ccbb8b239017aa4da0cf52e - AprilFools'Party2011Beacon.swf
+**2010**/april_fools/**rooms**/berg.swf:cce437a87190fd4acf730f5df9607241 - RoomsBerg-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/boiler.swf:af6636de77b77c2dca69f34d8612f55b - RoomsBoiler-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/cave.swf:ef14b9945f0db4a66d91c8d80e4d62a4 - RoomsCave-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/coffee.swf:9cee55a8c000d5caf28af9bcdc1fb37d - RoomsCoffeeAprilFools2010.swf
+**2010**/april_fools/**rooms**/cove.swf:49038fe799aa0f3abc7e0584c1933b2e - RoomsCove-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/dance.swf:b9348411276c44c5cd9a8113b8c83f11 - AprilFools'Party2011Dance.swf
+**2010**/april_fools/**rooms**/dock.swf:6631e68e4a455f1cecf1c26132a424ef - RoomsDock-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/forest.swf:9811ed5ec006f9746e7ad5c78ffe9952 - RoomsForest-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/forts.swf:9c651b8f99b58b63fcc29c2c067887cc - RoomsForts-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/light.swf:622ba1385bf068824f7c99b9daec7c26 - AprilFools'Party2011Light.swf
+**2010**/april_fools/**rooms**/lodge.swf:942f9ae6815fd203d25fc9cb634fda9d - RoomsLodge-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/mine.swf:3091d7bf22559f98db68c1d2e4be1ddf - RoomsMine-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/party.swf:f6a978e23a7227bc0f995efa4bcb3e41 - RoomsParty-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/pizza.swf:3e68f8ed257f4b40f6d7b5cc08ca6204 - RoomsPizza-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/shack.swf:ac45e7a1961205f62123f9a0228b6e9b - RoomsShack-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/shop.swf:dfd7a4ae784714b7c52ce0cd94884dfe - AprilFoolsParty2010GiftShop.swf
+**2010**/april_fools/**rooms**/town.swf:3eab9e2d18e31bf960cda27c93df5f96 - RoomsTown-AprilFoolsParty2010.swf
+**2010**/april_fools/**rooms**/village.swf:1810c976194795cf766825b30705450b - RoomsVillage-AprilFoolsParty2010.swf
+**2010**/april_fools/**local**/membership/oops_april_fools.swf:b4386a633220a91d13b14a939d5dac05 - AprilFoolsParty2010MembershipOopsAprilFools.swf
+- April Fools 2010
 
 **2010**/earth_day/**rooms**/book.swf:093a8ccd7b83d1938d74c24cf6626df5 - RoomsBook-EarthDay2010.swf
 **2010**/earth_day/**rooms**/coffee.swf:e40a1386e1a23a4c923b57248187dde4 - RoomsCoffeeEarthDay2010.swf
