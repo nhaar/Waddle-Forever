@@ -56,6 +56,7 @@ export function getCrumbsTimelineFromMap<Modifications>(map: TimelineMap<Modific
 
 export function addParties<Modifications>(
   timeline: CrumbsTimeline<Modifications>,
+  detectChanges: (party: Party) => boolean,
   extractPartyChanges: (party: Party) => Modifications
 ): CrumbsUpdate<Modifications>[] {
   let currentPartyIndex = 0;
@@ -85,7 +86,7 @@ export function addParties<Modifications>(
         }
 
         // check if crumbs actually changes in the day
-        const hasChanges = [party.music, party.globalPaths].some((value) => value !== undefined);
+        const hasChanges =  detectChanges(party);
         if (hasChanges) {
           crumbsUpdates.push({
             type: 'party',

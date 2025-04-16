@@ -188,6 +188,10 @@ function addPriceChanges(map: GlobalTimelineMap): GlobalTimelineMap {
   return map;
 }
 
+function detectChanges(party: Party): boolean {
+  return [party.music, party.globalPaths].some((value) => value !== undefined);
+}
+
 function extractPartyChanges(party: Party): GlobalModifications {
   return {
     music: party.music,
@@ -199,7 +203,7 @@ function getFullTimeline(): GlobalCrumbsUpdate[] {
   let map = getTimelineMap<GlobalModifications>(GLOBAL_CRUMBS_TIMELINE);
   map = addPriceChanges(map);
   map == addStagePlays(map);
-  const updates = addParties(getCrumbsTimelineFromMap<GlobalModifications>(map), extractPartyChanges);
+  const updates = addParties(getCrumbsTimelineFromMap<GlobalModifications>(map), detectChanges, extractPartyChanges);
   return updates;
 }
 

@@ -50,6 +50,10 @@ function applyChanges(crumbs: string, changes: LocalModifications): string {
 
 type LocalCrumbsUpdate = CrumbsUpdate<LocalModifications>;
 
+function detectChanges(party: Party): boolean {
+  return party.localPaths !== undefined;
+}
+
 function extractPartyChanges(party: Party): LocalModifications {
   return {
     localPaths: party.localPaths
@@ -58,7 +62,7 @@ function extractPartyChanges(party: Party): LocalModifications {
 
 function getFullTimeline(): LocalCrumbsUpdate[] {
   let map = getTimelineMap<LocalModifications>([]);
-  const updates = addParties(getCrumbsTimelineFromMap<LocalModifications>(map), extractPartyChanges);
+  const updates = addParties(getCrumbsTimelineFromMap<LocalModifications>(map), detectChanges, extractPartyChanges);
   return updates;
 }
 
