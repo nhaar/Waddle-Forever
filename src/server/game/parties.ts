@@ -18,6 +18,8 @@ export type Party = {
   music?: MusicUpdate
   /** If the party has new global paths, all of them */
   globalPaths?: PathsUpdate
+  /** If the party has new local paths, all of them */
+  localPaths?: PathsUpdate
 
   // TODO temporary features for while the timeline is not complete
   hideEnd?: true;
@@ -76,6 +78,36 @@ export const PARTIES: Party[] = [
     start: '2006-03-31',
     end: '2006-04-03',
     paths: '2006/april_fools_2006'
+  },
+  {
+    name: 'April Fools\' Party 2010',
+    start: '2010-03-31',
+    end: '2010-04-05',
+    paths: '2010/april_fools',
+    music: {
+      'shop': 201,
+      'beach': 232,
+      'berg': 232,
+      'boiler': 201,
+      'cave': 201,
+      'coffee': 201,
+      'cove': 232,
+      'dance': 231,
+      'dock': 232,
+      'forest': 232,
+      'forts': 232,
+      'light': 201,
+      'lodge': 201,
+      'mine': 201,
+      'plaza': 232,
+      'pizza': 201,
+      'town': 232,
+      'village': 232,
+      'party': 261
+    },
+    localPaths: {
+      'oops_party_room': 'membership/oops_april_fools.swf'
+    }
   },
   {
     name: 'Earth Day 2010',
