@@ -2997,7 +2997,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [5051, 'Silver Bell', ItemType.Hand, 75, true, false, false, false, false, false, '2017-03-30'],
   [5052, 'Teal Bracelet', ItemType.Hand, 75, true, false, false, false, false, false, '2017-03-30'],
   [5053, 'Black MP3000', ItemType.Hand, 400, true, false, false, false, false, false, '2017-03-30'],
-  [5054, 'Video Camera', ItemType.Hand, 300, true, false, false, false, false, false, '2017-03-30'],
+  [5054, 'Video Camera', ItemType.Hand, [300, ['2010-03-18', 0]], true, false, false, false, false, false, '2017-03-30'],
   [5055, 'Floral Clutch Bag', ItemType.Hand, 150, true, false, false, false, false, false, '2017-03-30'],
   [5056, 'Brown Leather Cuffs', ItemType.Hand, 100, true, false, false, false, false, false, '2017-03-30'],
   [5057, 'Water Bottle', ItemType.Hand, 50, true, false, false, false, false, false, '2017-03-30'],

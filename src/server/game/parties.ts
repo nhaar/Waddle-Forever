@@ -80,6 +80,21 @@ export const PARTIES: Party[] = [
     paths: '2006/april_fools_2006'
   },
   {
+    name: 'Penguin Play Awards 2010',
+    start: '2010-03-18',
+    end: '2010-03-29',
+    paths: '2010/penguin_play_awards',
+    music: {
+      'pizza': 283,
+      'plaza': 40,
+      'stage': 40,
+      'party': 40
+    },
+    globalPaths: {
+      'voting_booth': 'content/winners.swf'
+    }
+  },
+  {
     name: 'April Fools\' Party 2010',
     start: '2010-03-31',
     end: '2010-04-05',

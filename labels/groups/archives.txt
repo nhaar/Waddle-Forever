@@ -1,6 +1,7 @@
 default/music/3.swf:768ca4c838e0bdf97cf75452e3035c72 - Music3_2.swf, the blue one
 default/music/8.swf:c3fd1cc6d4bb564e378c3d55a56c6a25
 default/music/32.swf:df1ab49c774046d0fc3b5e7eccf36282 - Music32.swf, the white one
+default/music/40.swf:bb3b7d625484b1475f25ed3353714408 - Music40.swf
 default/music/55.swf:d13227912556ad5f6b952e4bf0039504
 default/music/56.swf:1128404df56058918ed87cdcf9092990
 default/music/57.swf:6f3945ddc793d231e6af0aefccb535a2
@@ -216,6 +217,21 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2006**/april_fools_2006/artwork/rooms/town10.swf:114617f231ef07d4a63b5b9a53961cdb
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
+
+**2010**/penguin_play_awards/**global**/content/shorts/fairyFables.swf:e708a2cf87556dc3b133896fca89c5f5 - ContentShortsfairyFables.swf
+**2010**/penguin_play_awards/**global**/content/shorts/goldenPuffle.swf:3c074444c1dd2fa8214c1546be26b3dd - ContentShortsgoldenPuffle.swf
+**2010**/penguin_play_awards/**global**/content/shorts/ruby.swf:4272a7ff2704f8a42c64978feef1a187 - ContentShortsRuby.swf
+**2010**/penguin_play_awards/**global**/content/shorts/squidzoid.swf:3ef0dd6068079c031f5030e637cb16ef - ContentShortssquidzoid.swf
+**2010**/penguin_play_awards/**global**/content/shorts/underwater.swf:62b59e565b44d7f994c48cd46273248c - ContentShortsunderwater.swf
+**2010**/penguin_play_awards/**global**/content/winners.swf:666f67e5633425166fbdf4b9996c6c78 - ContentWinnersPPA2010.swf
+**2010**/penguin_play_awards/**rooms**/dock.swf:235425e0b2ebf857b70b44a494a34973 - RoomsDock-PenguinPlayAwards2010.swf
+**2010**/penguin_play_awards/**rooms**/mtn.swf:ebd11c018bf474b2a40d96b1263e492d - RoomsMtn-PenguinPlayAwards2010.swf
+**2010**/penguin_play_awards/**rooms**/party.swf:cf72e64d2d087fbe2a96ee9eb8ab5dde - RoomsParty-PenguinPlayAwards2010.swf
+**2010**/penguin_play_awards/**rooms**/pizza.swf:637671cd75a6ad4cbb7aa4b3c870e965 - RoomsPizza-PenguinPlayAwards2010.swf
+**2010**/penguin_play_awards/**rooms**/plaza.swf:f5e444ee1ac05fa4613474887fb96de2 - RoomsPlaza-PenguinPlayAwards2010.swf
+**2010**/penguin_play_awards/**rooms**/stage.swf:424a9894d7ad8b41140c56be55e95f98 - RoomsStage-PenguinPlayAwards2010.swf
+**2010**/penguin_play_awards/**rooms**/town.swf:fc9988b3aadc8942db7cd31e11d88a0c - RoomsTown-PenguinPlayAwards2010.swf
+- Penguin Play Awards 2010
 
 **2010**/april_fools/**rooms**/beach.swf:16f54dfa47fc28a7f21b39add864810a - RoomsBeach-AprilFoolsParty2010.swf
 **2010**/april_fools/**rooms**/beacon.swf:dfbff6691ccbb8b239017aa4da0cf52e - AprilFools'Party2011Beacon.swf
