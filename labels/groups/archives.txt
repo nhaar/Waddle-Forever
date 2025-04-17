@@ -85,7 +85,7 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **engine2**/**rooms**/village.swf:8ed5cd3899856d54f4e20fa9c94fe895 - 2010-2012, RoomsVillage_2.swf
 - Ski Village SWFs above from https://archives.clubpenguinwiki.info/wiki/Ski_Village
 
-**seasonal**/**rooms**/berg.swf/2009-07-##.swf:df774dad12c2f7144a94d05fc2486ee6 - Summer 2009, "RoomsBerg.swf"
+**seasonal**/**rooms**/berg.swf/2009-07-##,2010-01-04,2010-07-09.swf:df774dad12c2f7144a94d05fc2486ee6 - RoomsBerg.swf
 - Ice Berg SWFs above from https://archives.clubpenguinwiki.info/wiki/Ice_Berg
 
 **seasonal**/**rooms**/cove.swf/2009-01-##.swf:7ac1f6c78de3ba5c4e53ec9d8cc745cd - "2009-2011", RoomsCove.swf
@@ -241,6 +241,11 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **2006**/april_fools_2006/artwork/rooms/village11.swf:51acb9e98a33027ff17415130a9583f3
 - April Fool 2006 files above are all from https://archives.clubpenguinwiki.info/wiki/April_Fool%27s_Party_2006
 
+**seasonal**/**rooms**/berg.swf/2010-01-01.swf:6ccd6323e9a45721fab3122f5dbeb64d
+**seasonal**/**rooms**/mtn.swf/2010-01-01,2010-07-01.swf:8ca4aa522a1b9fc3a10eb14b1210b432
+- Fireworks from: https://archives.clubpenguinwiki.info/wiki/Fireworks
+- The Ski Hill was reused for 4th of July
+
 **seasonal**/**rooms**/mine.swf/2010-01-08.swf:744724aad507bc9becdf9ac78758d9de - RoomsMine-Rockslide1.swf
 **seasonal**/**rooms**/mine.swf/2010-01-15.swf:ad9e040cce382efcbf325c4120649fa1 - RoomsMine-Rockslide2.swf
 **2010**/cave_expedition/**rooms**/mine.swf:2abef5d71e3bfb94e618f02fa68b1ae8 - https://archives.clubpenguinwiki.info/images/archives/3/31/RoomsMine-CaveExpedition.swf
@@ -395,15 +400,8 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **2010**/music_jam_construction/**rooms**/forts.swf:ecb080c85d4eb95894c290b2465ac921
 **2010**/music_jam_construction/**rooms**/light.swf:ac193121bb2060eb154c9cf091ad941c
 **2010**/music_jam_construction/**rooms**/village.swf:47bd2850a25246c68c1c79edf2958d2f
+**seasonal**/**rooms**/berg.swf/2010-07-01.swf:a3f479eb84f74bee145dabd9a277bb63
 - All Music Jam 2010 construction files above are from https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
-
-**2010**/4th_of_july/**rooms**/berg.swf:a3f479eb84f74bee145dabd9a277bb63
-- This is the Iceberg from the Music Jam 2010 construction grabbed from here https://archives.clubpenguinwiki.info/wiki/Music_Jam_2010
-- It has fireworks which are seemingly from 4th of July
-
-**2010**/4th_of_july/**rooms**/mtn.swf:8ca4aa522a1b9fc3a10eb14b1210b432
-- This is actually from the 2010 New Years Fireworks Ski Hill room, grabbed from here https://archives.clubpenguinwiki.info/wiki/Fireworks
-- They appear to be the same file, and once that party is added, it should be moved away from 4th of July
 
 **2010**/music_jam/**rooms**/beach.swf:b2ea234a9465e8f46e7354cccc84427e
 **2010**/music_jam/**rooms**/berg.swf:dd304bfe0b4d9cba66a221fc879c6eb1

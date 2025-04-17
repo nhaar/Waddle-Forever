@@ -16753,7 +16753,7 @@ default/music/596.swf:4f8b6e9f50a11cd7e865de08d54cff6c
 **engine2**/**rooms**/light.swf:42cd1f6e171b1c1324ce2e094a5b0df1
 **engine2**/**rooms**/lodge.swf:9bc12f8b3800dcd3d92993db12d53ac4
 **engine2**/**rooms**/lounge.swf:fd6db01e767026f653378fcf20529377
-**engine2**/**rooms**/mtn.swf:d33a652586e09bc76404e3db7b70d26d
+**seasonal**/**rooms**/mtn.swf/2009-##-##,2010-01-04,2010-07-05.swf:d33a652586e09bc76404e3db7b70d26d
 **engine2**/**rooms**/pet.swf:cc0c77a446970d0bf06caf3be11547d0
 **engine2**/**rooms**/pizza.swf:748195d3a63dd6df8e7e5391b7e23f79
 **engine2**/**rooms**/shiphold.swf:7f12e4af1a6d65c42e9866d7610e3288

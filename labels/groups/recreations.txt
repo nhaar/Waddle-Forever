@@ -41,7 +41,7 @@
 - It was amde by removing the Brown puffle. This requires properly rewinding the Brown puffle positions to what they were,
 - since we have the white puffle version archived, this one is easy to follow
 
-**2010**/music_jam_construction_no_fireworks/**rooms**/berg.swf:3b700811632aaf18a6d367a098b9d85e
+**seasonal**/**rooms**/berg.swf/2010-07-05.swf:3b700811632aaf18a6d367a098b9d85e
 - Made by Blue Kirby
 - Recreation of what the Iceberg SWF was during the Music Jam 2010 construction
 - after the 4th of July fireworks were removed
