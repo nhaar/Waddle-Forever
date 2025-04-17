@@ -13,8 +13,6 @@ export type SeasonalCrumbsChange<Modifications> = {
 
 export type PartyCrumbsChange<Modifications> = {
   type: 'party',
-  /** Path to event eg 2010/music_jam */
-  event: string
   changes: Modifications
   start: Version
   end: Version
@@ -90,7 +88,6 @@ export function addParties<Modifications>(
         // exit the party index without incrementing, return to timeline loop
         break;
       } else {
-        const mainPath = typeof party.paths === 'string' ? party.paths : party.paths[0];
         let end = party.end;
         if (end === null) {
           end = PARTIES[partyIndex + 1].start;
@@ -102,7 +99,6 @@ export function addParties<Modifications>(
           crumbsUpdates.push({
             type: 'party',
             changes: extractPartyChanges(party),
-            event: mainPath,
             start: party.start,
             end
           });
@@ -239,7 +235,6 @@ export async function generateCrumbFiles<Modifications>(
       seasonalCrumbs.set(update.version, currentPartyEndDate === null ? nonPartyCrumbs : inPartyCrumbs);
     } else {
       partyEnded();
-      console.log(`Exporting changes for event "${update.event}"`);
 
       // if there is a seasonal which started on this day, delete its entry since it will be overwritten
       seasonalCrumbs.delete(update.start);
@@ -249,6 +244,9 @@ export async function generateCrumbFiles<Modifications>(
       partyCrumbs.set(update.start, inPartyCrumbs);
     }
   }
+
+  // in case the last crumb is a party
+  partyEnded();
 
   let promises: Promise<void>[] = [];
   const days = [...Array.from(seasonalCrumbs.entries()), ...Array.from(partyCrumbs.entries())];
