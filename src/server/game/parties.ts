@@ -12,7 +12,7 @@ export type Party = {
   end: Version | null;
   /** List of changes in the party */
   updates?: PartyStage[];
-  paths: string | string[];
+  paths?: string | string[];
 
   /** If the party changes the music, all changes that happened */
   music?: MusicUpdate
@@ -34,7 +34,7 @@ export type PartyStage = {
     description: string;
     date: Version;
   } | null;
-  path: string
+  path?: string
 };
 
 export const PARTIES: Party[] = [
@@ -79,6 +79,11 @@ export const PARTIES: Party[] = [
     start: '2006-03-31',
     end: '2006-04-03',
     paths: '2006/april_fools_2006'
+  },
+  {
+    name: 'New Year\'s Day 2010',
+    start: '2010-01-01',
+    end: '2010-01-04'
   },
   {
     name: 'Cave Expedition',
@@ -266,15 +271,10 @@ export const PARTIES: Party[] = [
     paths: '2010/music_jam_construction',
     updates: [
       {
-        update: null,
-        path: '2010/4th_of_july',
-      },
-      {
         update: {
           description: '4th of July Fireworks Removed',
           date: '2010-07-05'
-        },
-        path: '2010/music_jam_construction_no_fireworks'
+        }
       }
     ]
   },

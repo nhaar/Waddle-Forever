@@ -196,11 +196,12 @@ export class HttpServer {
         next();
       } else {
         // find all possible paths the party serves
-        const paths = typeof party.paths === 'string' ? [party.paths] : party.paths;
-        if (party.updates !== undefined) {
-          const update = findCurrentUpdateInParty(date, party.updates);
-          paths.push(update.path);
+        if (party.paths === undefined) {
+          // no file serving for this party, only semantic
+          next();
+          return
         }
+        const paths = typeof party.paths === 'string' ? [party.paths] : party.paths;
         for (const route of paths) {
           // TODO async file check
           // TODO optimizing: every file now has to check party first. Assembling a map of all changed files -> destination would be better
