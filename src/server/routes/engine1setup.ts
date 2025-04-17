@@ -1,6 +1,7 @@
 import { findIndexLeftOf } from "../../common/utils";
 import { OLD_CATALOGUES } from "../game/catalogues";
 import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
+import { findCurrentParty, PARTIES } from "../game/parties";
 import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
 
 type Engine1Room = {
@@ -132,36 +133,14 @@ export function getSetupXml(version: Version) {
     }
   ]
 
-  if (inInterval(version, '2005-12-22', '2005-12-26')) {
-    patchMusic(rooms, {
-      'Town': 200,
-      'Coffee': 200,
-      'Dance': 200,
-      'Shop': 200,
-      'Village': 200,
-      'Lodge': 200,
-      'Rink': 200
-    })
-  }
-
-  if (inInterval(version, '2006-02-24', '2006-02-28')) {
-    patchFrame(rooms, {
-      'Town': 2
-    })
-  }
-
-  if (inInterval(version, '2006-03-31', '2006-04-03')) {
-    patchMusic(rooms, {
-      'Dance': 201,
-      'Forts': 201,
-      'Rink': 201,
-      'Town': 201,
-      'Plaza': 201
-    })
-
-    patchFrame(rooms, {
-      'Plaza': 3
-    })
+  const currentParty = findCurrentParty(version);
+  if (currentParty !== null) {
+    if (currentParty.oldMusic !== undefined) {
+      patchMusic(rooms, currentParty.oldMusic);
+    }
+    if (currentParty.roomFrames !== undefined) {
+      patchFrame(rooms, currentParty.roomFrames);
+    }
   }
 
   const clothingIndex = findIndexLeftOf(version, OLD_CATALOGUES, (date, catalogues, i) => isGreaterOrEqual(date, catalogues[i]));

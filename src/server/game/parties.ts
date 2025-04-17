@@ -2,6 +2,18 @@ import { findIndexLeftOf } from "../../common/utils";
 import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
 import { MusicUpdate, PathsUpdate } from "./crumbs";
 
+type OldRoom = 'Town' |
+  'Coffee' |
+  'Dance' |
+  'Shop' |
+  'Village' |
+  'Lodge' |
+  'Rink' |
+  'Plaza' |
+  'Forts';
+
+type OldRoomMap = Partial<Record<OldRoom, number>>;
+
 /** Object for documenting a party/event from Club Penguin */
 export type Party = {
   /** Name of the party that will be displayed in the timeline */
@@ -14,8 +26,13 @@ export type Party = {
   updates?: PartyStage[];
   paths?: string | string[];
 
+  /** For an old party that changes music, all changes that happened */
+  oldMusic?: OldRoomMap;
+  /** For an old party that has room frames, all changes */
+  roomFrames?: OldRoomMap;
+
   /** If the party changes the music, all changes that happened */
-  music?: MusicUpdate
+  music?: MusicUpdate;
   /** If the party has new global paths, all of them */
   globalPaths?: PathsUpdate
   /** If the party has new local paths, all of them */
@@ -60,7 +77,16 @@ export const PARTIES: Party[] = [
     name: 'Christmas Party 2005',
     start: '2005-12-22',
     end: '2005-12-26',
-    paths: '2005/christmas_2005'
+    paths: '2005/christmas_2005',
+    oldMusic: {
+      'Town': 200,
+      'Coffee': 200,
+      'Dance': 200,
+      'Shop': 200,
+      'Village': 200,
+      'Lodge': 200,
+      'Rink': 200
+    }
   },
   {
     name: 'Valentine\'s Day Celebration',
@@ -72,13 +98,26 @@ export const PARTIES: Party[] = [
     name: 'Pizza Parlor Opening Party',
     start: '2006-02-24',
     end: '2006-02-28',
-    paths: '2006/pizza_parlor_opening_party'
+    paths: '2006/pizza_parlor_opening_party',
+    roomFrames: {
+      'Town': 2
+    }
   },
   {
     name: 'April Fools Party 2006',
     start: '2006-03-31',
     end: '2006-04-03',
-    paths: '2006/april_fools_2006'
+    paths: '2006/april_fools_2006',
+    oldMusic: {
+      'Dance': 201,
+      'Forts': 201,
+      'Rink': 201,
+      'Town': 201,
+      'Plaza': 201
+    },
+    roomFrames: {
+      'Plaza': 3
+    }
   },
   {
     name: 'New Year\'s Day 2010',
