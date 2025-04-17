@@ -127,6 +127,11 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **engine2**/**rooms**/shack.swf:9109f3a445ad2313446939d49132e50c - December 2011, RoomsShack-September2010.swf (weirdly mismatching)
 - Mine Shack SWFs are from https://archives.clubpenguinwiki.info/wiki/Mine_Shack
 
+**seasonal**/**rooms**/forest.swf/2009-##-##.swf:70e0a5fbb6c64bbeded6dbc8490bd262 - RoomsForest.swf
+**seasonal**/**rooms**/forest.swf/2010-04-21.swf:de91cf1999b47c719ece5b12398fa52e - RoomsForest_2.swf
+**seasonal**/**rooms**/forest.swf/2010-06-17.swf:203c961d1a3260f9fbe48102396ed530 - RoomsForest_3.swf
+- Forest SWFs are from https://archives.clubpenguinwiki.info/wiki/Forest
+
 **engine2**/**rooms**/agentcom.swf:652d2447ffca67913e0b43fde5795b4b - Agentcom June 15, 2010, RoomsAgentcom-June2010_3.swf
 - EPF room SWFs are from https://archives.clubpenguinwiki.info/wiki/EPF_Command_Room
 

@@ -238,12 +238,26 @@ export const ROOM_TIMELINE: RoomEvent[] = [
   { date: '2006-02-24', rooms: ['Plaza', 'Pizza Parlor'], type: 'open' },
   { date: '2006-03-17', rooms: 'Pet Shop', type: 'open' },
   { date: '2006-03-29', rooms: 'Iceberg', type: 'open' },
+  {
+    date: '2010-04-21',
+    descriptions: [
+      'The Forest now has a path to the Mine Shack'
+    ],
+    type: 'update'
+  },
   { date: '2010-05-27', rooms: 'Everyday Phoning Facility', type: 'open' },
   {
     date: '2010-05-27',
     descriptions: [
       'The Sport Shop is replaced with the Everyday Phoning Facility',
       'The Ice Rink was changed into the Stadium'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-06-17',
+    descriptions: [
+      'The Forest now has a path to the Hidden Lake'
     ],
     type: 'update'
   },
