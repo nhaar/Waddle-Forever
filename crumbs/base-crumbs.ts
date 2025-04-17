@@ -208,6 +208,8 @@ export async function generateCrumbFiles<Modifications>(
     } else {
       seasonalCrumbs.set(currentPartyEndDate, nonPartyCrumbs);
     }
+    // party is over
+    currentPartyEndDate = null;
   }
 
   const crumbsUpdates = getFullTimeline();
