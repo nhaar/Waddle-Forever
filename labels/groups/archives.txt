@@ -162,12 +162,14 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **engine2**/**local**/catalogues/fish.swf:378646b62578c88b9c5fce2c9fb14e35 - TheFish2009.swf
 - FISH: https://archives.clubpenguinwiki.info/wiki/The_F.I.S.H.
 
-**seasonal**/**local**/catalogues/costume.swf/2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
-**seasonal**/**local**/catalogues/costume.swf/2010-07-22.swf:2184c1ce32f14d0cdb416ef231d192a4 - May 2011, May2011UnderwaterAdventureCostume.swf
-**seasonal**/**local**/catalogues/costume.swf/2010-06-10.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July 2009, July09Costume.swf
-**seasonal**/**local**/catalogues/costume.swf/2010-09-24.swf:ce62e893ea30c32ebd145e92dc7485b2 - January 2010, Jan10Stage.swf
-**seasonal**/**local**/catalogues/costume.swf/2010-11-24.swf:c440fd617a47326beb10db202e790a06 - November 2010, 2010SpacePlanetAdventureYCostumeTrunk.swf
-**seasonal**/**local**/catalogues/costume.swf/2010-10-23.swf:9243410ff3743f5d48a664729efbe2bc - October 2010, October2010Costume.swf
+**seasonal**/**local**/catalogues/costume.swf/[P]2009-12-25,[P]2010-03-29.swf:b9de4fd45e1637ec28b76937cf4e1338 - December2008Costume.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-03-18.swf:a8fd2cc3176b2c178723610641d21cab - March2010Costume.swf
+**seasonal**/**local**/catalogues/costume.swf/[P]2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
+**seasonal**/**local**/catalogues/costume.swf/[P]2010-07-21.swf:2184c1ce32f14d0cdb416ef231d192a4 - May2011UnderwaterAdventureCostume.swf
+**seasonal**/**local**/catalogues/costume.swf/[P]2010-06-10,[P]2010-12-28.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July09Costume.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-01-08-[P]2010-09-16.swf:ce62e893ea30c32ebd145e92dc7485b2 - Jan10Stage.swf
+**seasonal**/**local**/catalogues/costume.swf/2010-11-18.swf:c440fd617a47326beb10db202e790a06 - November 2010, 2010SpacePlanetAdventureYCostumeTrunk.swf
+**seasonal**/**local**/catalogues/costume.swf/[P]2010-02-11,2010-10-08.swf:9243410ff3743f5d48a664729efbe2bc - October 2010, October2010Costume.swf
 - Costume Trunk SWFs are from https://archives.clubpenguinwiki.info/wiki/Costume_Trunk
 
 **engine1**/artwork/catalogue/furniture0603.swf:e2990d551ea5b107edf1650dd6c28fa2
