@@ -138,10 +138,14 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **engine1**/artwork/catalogue/clothing0602.swf:5fa5ad1c0a91b767fe49f7ef7348bba0
 **engine1**/artwork/catalogue/clothing0603.swf:421dd6d9848374e8616d2114f953c5c3
 **engine1**/artwork/catalogue/clothing0604.swf:fc7b7810842cb66c6150704743b9e1f9
+**seasonal**/**local**/catalogues/clothing.swf/2010-01-01.swf:82c75deb84a9d32d30ca427ce0431b57 - January10Style.swf
+**seasonal**/**local**/catalogues/clothing.swf/2010-02-05.swf:2f1aed0ba67fa32ac15a8bcdf6bef2ab - Feb10Clothing.swf
+**seasonal**/**local**/catalogues/clothing.swf/2010-04-01.swf:f3946303594d21ad516c3a224b3fdb81 - April10Style.swf
 **seasonal**/**local**/catalogues/clothing.swf/2010-05-07.swf:91777170b6cb9a97a67587b612ceb4bc
 **seasonal**/**local**/catalogues/clothing.swf/2010-11-05.swf:8d01e6020def98f6b48046dd18a4a4fc
 **seasonal**/**local**/catalogues/clothing.swf/2010-10-01.swf:77c7c552d8ee8c02ab1f79ebdc06f754
 **seasonal**/**local**/catalogues/clothing.swf/2010-09-03.swf:58042c37012177787ea0e34ff238fb49
+**seasonal**/**local**/catalogues/clothing.swf/2010-12-03.swf:de1a2e2d104bb3796a43c29fbcb53276 - PenguinStyleDec2010.swf
 - Penguin Style SWFs are from https://archives.clubpenguinwiki.info/wiki/Penguin_Style
 
 **seasonal**/**local**/catalogues/costume.swf/2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
@@ -174,6 +178,7 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 
 **seasonal**/**local**/catalogues/sport.swf/2010-05-27.swf:4f567e0b1274ae9acd8a124ed0a1d7be
 **seasonal**/**local**/catalogues/sport.swf/2010-09-24.swf:0f627c87e8cf21fa056a2be90871f599
+**seasonal**/**local**/catalogues/sport.swf/2010-12-20.swf:23742e343cbad59aef521b942f1b3b82 - December10Sport.swf
 - Snow and Sports catalogs are from https://archives.clubpenguinwiki.info/wiki/Snow_%26_Sports
 
 **seasonal**/**local**/catalogues/music.swf/2010-07-15.swf:49014021f747b00be152319e740fc8d5 - MusicJam2010UpdateInstruments.swf

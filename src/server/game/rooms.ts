@@ -246,5 +246,12 @@ export const ROOM_TIMELINE: RoomEvent[] = [
       'The Ice Rink was changed into the Stadium'
     ],
     type: 'update'
+  },
+  {
+    date: '2010-12-20',
+    descriptions: [
+      'The Ice Rink showed up for the season'
+    ],
+    type: 'update'
   }
 ];
