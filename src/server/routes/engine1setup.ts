@@ -132,7 +132,7 @@ export function getSetupXml(version: Version) {
     }
   ]
 
-  if (inInterval(version, '2005-Dec-22', '2005-Dec-26')) {
+  if (inInterval(version, '2005-12-22', '2005-12-26')) {
     patchMusic(rooms, {
       'Town': 200,
       'Coffee': 200,
@@ -144,13 +144,13 @@ export function getSetupXml(version: Version) {
     })
   }
 
-  if (inInterval(version, '2006-Feb-24', '2006-Feb-28')) {
+  if (inInterval(version, '2006-02-24', '2006-02-28')) {
     patchFrame(rooms, {
       'Town': 2
     })
   }
 
-  if (inInterval(version, '2006-Mar-31', '2006-Apr-03')) {
+  if (inInterval(version, '2006-03-31', '2006-04-03')) {
     patchMusic(rooms, {
       'Dance': 201,
       'Forts': 201,
