@@ -53,13 +53,17 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 
 **seasonal**/artwork/maps/island5.swf/2005-09-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
 **seasonal**/artwork/maps/island5.swf/2006-03-29.swf:73e28ad5f032ab87c147e6b3364fb0ad - ArtworkMapsIsland5.swf (second 2006 one)
+**seasonal**/**global**/content/map.swf/2009-11-27,2010-12-28.swf:a335771fb3ab7e83200df6985a230706 - Map2008-2011Rink.swf
+**seasonal**/**global**/content/map.swf/2010-05-27.swf:2269c79ef8c607a04e21ebdea78a79b6 - Map2008-2011Stadium.swf
 - Maps above from the https://archives.clubpenguinwiki.info/wiki/Map
 
 **seasonal**/artwork/rooms/book11.swf/2006-##-##.swf:386d390746fa625d64e8bf117ed5ab12 - book11, ArtworkRoomsBook11.swf
 - Book Room SWFs above from https://archives.clubpenguinwiki.info/wiki/Book_Room
 
 **seasonal**/artwork/rooms/forts12.swf/2006-02-24.swf:94312bc72ca3eb07a193ae80fef55c0f - forts12
+**seasonal**/**rooms**/forts.swf/2009-11-27.swf:62cf3f6aae456d188386d39002d367ee - FortsWithIceRinkStadium.swf
 **seasonal**/**rooms**/forts.swf/2010-05-27.swf:e62ebf662fc1e8d6b498b26849fcff84 - "2008-2010: Soccer Pitch", ESForts-SoccerPitch.swf
+**seasonal**/**rooms**/forts.swf/2010-12-28.swf:c6de1cc15de2fe30a7d4768814a8d8dc - RoomsForts.swf
 - Snow Forts SWFs above from https://archives.clubpenguinwiki.info/wiki/Snow_Forts
 
 **seasonal**/artwork/rooms/plaza12.swf/2006-03-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
@@ -74,12 +78,15 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 - Plaza SWF from https://archives.clubpenguinwiki.info/wiki/Pizza_Party
 
 **seasonal**/artwork/rooms/rink10.swf/2005-09-12.swf:783dd4564eeb8ceae6fe838d1d2baa7b - rink10
+**seasonal**/**rooms**/rink.swf/2009-11-27.swf:12b55b048ac550501488d3a1db267629 - RoomsRink.swf
 **seasonal**/**rooms**/rink.swf/2010-05-27.swf:238dfeddccf3d0f6bedd75a7adb10e0c - 2010 Soccer Pitch, RoomsRink-May2010.swf
+**seasonal**/**rooms**/rink.swf/2010-12-28.swf:a9984addc6b76304f14b24ba5e5f6303 - RoomsRink-Dec2010.swf
 **engine2**/**rooms**/rink.swf:6d6493dc71c4e9a82084f49c69fef712 - 2011 soccer pitch, RoomsRink-May2011.swf
 - Stadium SWFs above from https://archives.clubpenguinwiki.info/wiki/Stadium
 
 **seasonal**/artwork/rooms/town10.swf/2005-09-12.swf:6e7c605099e1dfeaa4f6a059814b9755 - town10
-**seasonal**/**rooms**/town.swf/2008-##-##.swf:34e49ae32a948b0e67cbd5a03576754f - 2008-2011 Soccer Pitch, RoomsTown_2.swf
+**seasonal**/**rooms**/town.swf/2009-11-27,2010-12-28.swf:715fd567b7b07759cd7ac38a42b4938c - RoomsTown.swf
+**seasonal**/**rooms**/town.swf/2010-05-27.swf:34e49ae32a948b0e67cbd5a03576754f - RoomsTown_2.swf
 - Town SWFs above from https://archives.clubpenguinwiki.info/wiki/Town_Center
 
 **seasonal**/**rooms**/agent.swf/2009-##-##.swf:c903011d023839b24253534f60919d24 - RoomsAgent.swf

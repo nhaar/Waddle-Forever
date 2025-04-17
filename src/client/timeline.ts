@@ -211,7 +211,8 @@ function addIglooMusicLists(map: DayMap): void {
 function addRoomUpdates(map: DayMap): void {
   ROOM_TIMELINE.forEach((update) => {
     if (update.type === 'update') {
-      addEvents(map, update.date, { roomUpdate: update.description });
+      // only adding the first one for now
+      addEvents(map, update.date, { roomUpdate: update.descriptions[0] });
     } else {
       const rooms = typeof update.rooms === 'string' ? [update.rooms] : update.rooms;
       addEvents(map, update.date, { roomOpen: rooms });

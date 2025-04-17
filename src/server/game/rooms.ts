@@ -223,9 +223,8 @@ type RoomOpening = {
 
 type RoomUpdate = {
   date: Version;
-  room: RoomName;
   type: 'update';
-  description: string;
+  descriptions: string[];
 }
 
 type RoomEvent = RoomOpening | RoomUpdate;
@@ -242,8 +241,10 @@ export const ROOM_TIMELINE: RoomEvent[] = [
   { date: '2010-05-27', rooms: 'Everyday Phoning Facility', type: 'open' },
   {
     date: '2010-05-27',
-    room: 'Ski Village',
-    description: 'The Sport Shop is replaced with the Everyday Phoning Facility',
+    descriptions: [
+      'The Sport Shop is replaced with the Everyday Phoning Facility',
+      'The Ice Rink was changed into the Stadium'
+    ],
     type: 'update'
   }
 ];

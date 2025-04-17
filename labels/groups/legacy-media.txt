@@ -16553,7 +16553,6 @@ default/music/596.swf:4f8b6e9f50a11cd7e865de08d54cff6c
 **engine2**/**global**/content/epf/epfinitiated.swf:a1d8bb57b1316f6c2bc13eb1ad32f6c4
 **engine2**/**global**/content/epf/epfmessage.swf:70aa8505a55bfa56d2d4a5a0585126d2
 **engine2**/**global**/content/help.swf:0e00eecbe22d54aa7c4f7d0d392f64e4
-**engine2**/**global**/content/map.swf:d6c7fd6ae32fd6b042c7f979d2691be8
 **engine2**/**global**/content/ninjaprogress.swf:4bd18bc9601af4fdfa788fcad701a043
 **engine2**/**global**/igloo/assets/igloo_background.swf:393ff2c4d5fdd14df9d1529b011f603b
 **engine2**/**global**/igloo/assets/room_box_animation.swf:d0e800a11c062dbe075be6a44a5158d8
@@ -16748,7 +16747,6 @@ default/music/596.swf:4f8b6e9f50a11cd7e865de08d54cff6c
 **engine2**/**rooms**/dojowater.swf:c783c1cfa297643e7ba6ee272c1cac17
 **engine2**/**rooms**/eco.swf:128cf0cb9e786fb56f28fd29b9734e76
 **engine2**/**rooms**/forest.swf:203c961d1a3260f9fbe48102396ed530
-**engine2**/**rooms**/forts.swf:c6de1cc15de2fe30a7d4768814a8d8dc
 **engine2**/**rooms**/lake.swf:23baeb0b774b9d338c340ca768498f02
 **engine2**/**rooms**/light.swf:42cd1f6e171b1c1324ce2e094a5b0df1
 **engine2**/**rooms**/lodge.swf:9bc12f8b3800dcd3d92993db12d53ac4
