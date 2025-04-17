@@ -98,6 +98,25 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         events: {
           partyStart: 'Stadium Games'
         }
+      },
+      {
+        date: '2010-12-18',
+        events: {
+          partyUpdate: 'The lighthouse has more money (2)'
+        }
+      },
+      {
+        date: '2010-12-20',
+        events: {
+          other: 'Stadium Games party ends during the Holiday Party',
+          partyUpdate: 'The lighthouse has more money (3)'
+        }
+      },
+      {
+        date: '2010-12-22',
+        events: {
+          partyUpdate: 'The lighthouse has more money (4)'
+        }
       }
     ]
     timeline = updateTimeline(timeline);
