@@ -558,6 +558,11 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **2010**/water_scavenger_hunt/**global**/scavenger_hunt/scavenger_hunt_icon.swf:b3387cc490ca009dc0fdce54f1dea846
 - Water Scavenger Hunt: https://archives.clubpenguinwiki.info/wiki/Water_Scavenger_Hunt
 
+**2010**/water_celebration/**rooms**/dojoext.swf:750ec125cd52d9502ce1e00a14bab387 - WaterCelebrationDojoext.swf
+**2010**/water_celebration/**rooms**/dojohide.swf:7021ae5b262462f03ccdceff5e74a02d - WaterCelebrationDojohide.swf
+**2010**/water_celebration/**rooms**/dojowater.swf:840fae6c509ca18821a5854d00965290 - WaterCelebrationDojowater.swf
+- Celebration of Water: https://archives.clubpenguinwiki.info/wiki/Water_Celebration
+
 **2010**/holiday_party/**rooms**/attic.swf:1c93b4f4d27e392f4d30e1552ad803ae - HolidayParty2010Attic.swf
 **2010**/holiday_party/**rooms**/beach.swf:b32b95421b63a43b59e221001571ffe5 - HolidayParty2010Beach.swf
 **2010**/holiday_party/**rooms**/beacon.swf:362247bb7a17b3bf6f8d7ad3a1d24907 - HolidayParty2010Beacon.swf

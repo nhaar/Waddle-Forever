@@ -415,7 +415,7 @@ export const PARTIES: Party[] = [
   {
     name: 'Sensei\'s Water Scavenger Hunt',
     start: '2010-11-16',
-    end: '2010-11-24',
+    end: null,
     paths: ['2010/water_scavenger_hunt', '2010_scavenger_hunt'],
     globalPaths: {
       'scavenger_hunt_icon': 'scavenger_hunt/scavenger_hunt_icon.swf',
@@ -423,6 +423,12 @@ export const PARTIES: Party[] = [
       'easter_egg_hunt': 'scavenger_hunt/hunt_ui.swf',
       'scavenger_hunt': 'scavenger_hunt/hunt_ui.swf'
     }
+  },
+  {
+    name: 'Celebration of Water',
+    start: '2010-11-24',
+    end: '2010-12-02',
+    paths: '2010/water_celebration'
   },
   {
     name: 'Holiday Party 2010',
