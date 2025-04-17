@@ -1,5 +1,5 @@
 - Global Crumbs
-**seasonal**/**global**/crumbs/global_crumbs.swf/2010-12-16.swf:816fb3c7dd3f5644568593770f65db2e
+**seasonal**/**global**/crumbs/global_crumbs.swf/2010-12-16.swf:76cc568f0f47fb8ba62fa7bf08667fc0
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-11-16.swf:f4d1c6e94987603ebf171ba0b4367ae5
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-28.swf:4e32b5813982c2d31088b0a1684717a1
 **seasonal**/**global**/crumbs/global_crumbs.swf/2010-10-23.swf:91f07c056b9ed35141a81a004c87a11e

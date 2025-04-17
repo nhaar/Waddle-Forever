@@ -20,6 +20,7 @@ export type Party = {
   globalPaths?: PathsUpdate
   /** If the party has new local paths, all of them */
   localPaths?: PathsUpdate
+  activeMigrator?: true;
 
   // TODO temporary features for while the timeline is not complete
   hideEnd?: true;
@@ -452,7 +453,8 @@ export const PARTIES: Party[] = [
       'town': 254,
       'party': 281,
       'party99': 254
-    }
+    },
+    activeMigrator: true
   }
 ];
 

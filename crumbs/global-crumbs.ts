@@ -23,7 +23,21 @@ async function loadBaseCrumbs(): Promise<string> {
 type GlobalModifications = {
   music?: MusicUpdate,
   prices?: Record<number, number>,
-  globalPaths?: PathsUpdate
+  globalPaths?: PathsUpdate,
+  newMigratorStatus?: boolean
+}
+
+function setMigratorStatus(crumbs: string, status: boolean): string {
+  const lines = crumbs.split('\n');
+  const allocationStart = 'Push "migrator_active"';
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith(allocationStart)) {
+      lines[i] = allocationStart + ', ' + (status ? 'true' : 'false');
+      break;
+    }
+  }
+
+  return lines.join('\n');
 }
 
 function changeRoomMusic(crumbs: string, roomName: string, newMusicId: number): string {
@@ -114,6 +128,10 @@ function applyChanges(crumbs: string, changes: GlobalModifications): string {
     }
   }
 
+  if (changes.newMigratorStatus !== undefined) {
+    newCrumbs = setMigratorStatus(newCrumbs, changes.newMigratorStatus);
+  }
+
   return newCrumbs;
 }
 
@@ -188,13 +206,14 @@ function addPriceChanges(map: GlobalTimelineMap): GlobalTimelineMap {
 }
 
 function detectChanges(party: Party): boolean {
-  return [party.music, party.globalPaths].some((value) => value !== undefined);
+  return [party.music, party.globalPaths, party.activeMigrator].some((value) => value !== undefined);
 }
 
 function extractPartyChanges(party: Party): GlobalModifications {
   return {
     music: party.music,
-    globalPaths: party.globalPaths
+    globalPaths: party.globalPaths,
+    newMigratorStatus: party.activeMigrator
   }
 }
 
