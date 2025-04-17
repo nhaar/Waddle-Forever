@@ -1,3 +1,4 @@
+import { Version } from "../routes/versions";
 import { Stamp } from "./stamps";
 
 export enum Room {
@@ -201,3 +202,48 @@ export const isGameRoom = (room: Room): boolean => {
   // 1000 and above however is reserved for igloos
   return room >= 900 && room < 1000;
 };
+
+type RoomName = 'Town' |
+  'Snow Forts' |
+  'Sport Shop' |
+  'Mountain' |
+  'Ski Lodge' |
+  'Plaza' |
+  'Pizza Parlor' |
+  'Pet Shop' |
+  'Iceberg' |
+  'Ski Village' |
+  'Everyday Phoning Facility';
+
+type RoomOpening = {
+  date: Version;
+  rooms: RoomName | RoomName[];
+  type: 'open'
+};
+
+type RoomUpdate = {
+  date: Version;
+  room: RoomName;
+  type: 'update';
+  description: string;
+}
+
+type RoomEvent = RoomOpening | RoomUpdate;
+
+
+export const ROOM_TIMELINE: RoomEvent[] = [
+  { date: '2005-09-12', rooms: 'Snow Forts', type: 'open' },
+  { date: '2005-11-03', rooms: 'Sport Shop', type: 'open' },
+  { date: '2005-11-18', rooms: 'Mountain', type: 'open' },
+  { date: '2005-12-22', rooms: 'Ski Lodge', type: 'open' },
+  { date: '2006-02-24', rooms: ['Plaza', 'Pizza Parlor'], type: 'open' },
+  { date: '2006-03-17', rooms: 'Pet Shop', type: 'open' },
+  { date: '2006-03-29', rooms: 'Iceberg', type: 'open' },
+  { date: '2010-05-27', rooms: 'Everyday Phoning Facility', type: 'open' },
+  {
+    date: '2010-05-27',
+    room: 'Ski Village',
+    description: 'The Sport Shop is replaced with the Everyday Phoning Facility',
+    type: 'update'
+  }
+];

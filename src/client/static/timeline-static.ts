@@ -40,13 +40,19 @@ function getDescription(version: Day): string {
   } else if (version.events.other !== undefined) {
     return version.events.other
   } else if (version.events.roomOpen !== undefined) {
-    return `Room "${version.events.roomOpen}" opens`
+    if (version.events.roomOpen.length === 1) {
+      return `Room "${version.events.roomOpen[0]}" opens`
+    } else {
+      return `Rooms "${version.events.roomOpen.join(', ')}" open`
+    }
   } else if (version.events.minigameRelease !== undefined) {
     return `New minigame: "${version.events.minigameRelease}"`
   } else if (version.events.newClothing === true) {
     return 'New Clothing Catalogue'
   } else if (version.events.newIssue !== undefined) {
     return `CPT Issue ${version.events.newIssue} released`
+  } else if (version.events.roomUpdate !== undefined) {
+    return version.events.roomUpdate;
   } else if (version.events.stagePlay !== undefined) {
     return `New stage play airing: ${version.events.stagePlay}`
   } else if (version.events.musicList === true) {
@@ -64,7 +70,8 @@ type Day = {
     partyUpdate?: string
     other?: string
     newIssue?: number | string
-    roomOpen?: string
+    roomOpen?: string[]
+    roomUpdate?: string;
     minigameRelease?: string
     newClothing?: boolean
     stagePlay?: string;

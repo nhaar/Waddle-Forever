@@ -7,6 +7,7 @@ import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
 import { OLD_CATALOGUES } from '../server/game/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
+import { ROOM_TIMELINE } from '../server/game/rooms';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -34,51 +35,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         }
       },
       {
-        date: '2005-09-12',
-        events: {
-          roomOpen: 'Snow Forts'
-        }
-      },
-      {
-        date: '2005-11-03',
-        events: {
-          roomOpen: 'Sport Shop',
-        }
-      },
-      {
-        date: '2005-11-18',
-        events: {
-          roomOpen: 'Mountain'
-        }
-      },
-      {
         date: '2005-12-14',
         events: {
           minigameRelease: 'Puffle Roundup'
-        }
-      },
-      {
-        date: '2005-12-22',
-        events: {
-          roomOpen: 'Ski Lodge',
-        }
-      },
-      {
-        date: '2006-02-24',
-        events: {
-          roomOpen: 'Plaza, Pizza Parlor'
-        }
-      },
-      {
-        date: '2006-03-17',
-        events: {
-          roomOpen: 'Pet Shop'
-        }
-      },
-      {
-        date: '2006-03-29',
-        events: {
-          roomOpen: 'Iceberg'
         }
       },
       {
@@ -137,7 +96,9 @@ type Events = {
   /** Number (or name) of new CPT issues that released this day */
   newIssue?: number | string
   /** Name of a room that opened this day */
-  roomOpen?: string
+  roomOpen?: string[];
+  /** Description of how a room was updated this day */
+  roomUpdate?: string;
   /** Name of a minigame that released this day */
   minigameRelease?: string
   /** If a clothing catalogue was released this day */
@@ -247,12 +208,24 @@ function addIglooMusicLists(map: DayMap): void {
   })
 }
 
+function addRoomUpdates(map: DayMap): void {
+  ROOM_TIMELINE.forEach((update) => {
+    if (update.type === 'update') {
+      addEvents(map, update.date, { roomUpdate: update.description });
+    } else {
+      const rooms = typeof update.rooms === 'string' ? [update.rooms] : update.rooms;
+      addEvents(map, update.date, { roomOpen: rooms });
+    }
+  })
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
   map = addNewspapers(map);
   map = addCatalogues(map);
   addIglooMusicLists(map);
+  addRoomUpdates(map);
   addStagePlays(map);
   return getDaysFromMap(map);
 }
