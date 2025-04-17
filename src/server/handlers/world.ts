@@ -10,6 +10,7 @@ import iglooHandler from './play/igloo';
 import epfHandler from './play/epf';
 import mailHandler from './play/mail';
 import gameHandler from './play/game';
+import partyHandler from './play/party';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -25,5 +26,6 @@ handler.use(iglooHandler);
 handler.use(epfHandler);
 handler.use(mailHandler);
 handler.use(gameHandler);
+handler.use(partyHandler);
 
 export default handler;
