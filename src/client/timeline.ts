@@ -4,7 +4,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES, PartyStage } from '../server/game/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
 import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
-import { OLD_CATALOGUES } from '../server/game/catalogues';
+import { CATALOGUES } from '../server/game/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
 import { ROOM_TIMELINE } from '../server/game/rooms';
@@ -196,7 +196,7 @@ function addNewspapers(map: DayMap): DayMap {
 }
 
 function addCatalogues(map: DayMap): DayMap {
-  OLD_CATALOGUES.forEach((date) => {
+  CATALOGUES.forEach((date) => {
     addEvents(map, date, { newClothing: true });
   });
   return map;

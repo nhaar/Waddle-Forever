@@ -1,5 +1,5 @@
 import { findIndexLeftOf } from "../../common/utils";
-import { OLD_CATALOGUES } from "../game/catalogues";
+import { CATALOGUES } from "../game/catalogues";
 import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
 import { findCurrentParty, PARTIES } from "../game/parties";
 import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
@@ -143,8 +143,8 @@ export function getSetupXml(version: Version) {
     }
   }
 
-  const clothingIndex = findIndexLeftOf(version, OLD_CATALOGUES, (date, catalogues, i) => isGreaterOrEqual(date, catalogues[i]));
-  const clothing = getClothing(OLD_CATALOGUES[clothingIndex]);
+  const clothingIndex = findIndexLeftOf(version, CATALOGUES, (date, catalogues, i) => isGreaterOrEqual(date, catalogues[i]));
+  const clothing = getClothing(CATALOGUES[clothingIndex]);
 
   const servers = [
     'Blizzard',

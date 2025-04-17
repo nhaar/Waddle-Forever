@@ -356,7 +356,10 @@ export const PARTIES: Party[] = [
       'town': 271,
       'party3': 293,
       'coffee': 0
-    }
+    },
+    updates: [
+      { update: { date: '2010-07-15', description: 'New instruments are available in the Catalog' } }
+    ]
   },
   {
     name: 'Mountain Expedition',
