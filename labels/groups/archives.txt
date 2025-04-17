@@ -67,11 +67,11 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 - Snow Forts SWFs above from https://archives.clubpenguinwiki.info/wiki/Snow_Forts
 
 **seasonal**/artwork/rooms/plaza12.swf/2006-03-17.swf:b962146c464e756a0dbc63f9fa654483 - plaza12
-**seasonal**/**rooms**/plaza.swf/2010-06-10.swf:5702f4ef453367bb8838e13c85edec59 - "2011-2012 ruby and the ruby", RoomsPlaza_2-Play8.swf
+**seasonal**/**rooms**/plaza.swf/[P]2010-06-10,[P]2010-12-28.swf:5702f4ef453367bb8838e13c85edec59 - RoomsPlaza_2-Play8.swf
 **seasonal**/**rooms**/plaza.swf/2010-11-24.swf:f839a84139bb28a0cf2eba14061bd88d - "2008-2011 Planet Y", RoomsPlaza-Play9.swf
 **seasonal**/**rooms**/plaza.swf/2010-02-11,2010-10-08.swf:8b42920f7346a373ec9ac11e982be244 - RoomsPlaza-August2011.swf
 **seasonal**/**rooms**/plaza.swf/2010-01-08,2010-09-16.swf:8576327bca974c9db9a187e69dbb62bb - RoomsPlaza-Play10.swf
-**seasonal**/**rooms**/plaza.swf/[P]2010-03-29.swf:1ba6a52c3a313f37a3febb9b754aa1d3 - RoomsPlaza_2-Play5.swf
+**seasonal**/**rooms**/plaza.swf/[P]2009-12-25,[P]2010-03-29.swf:1ba6a52c3a313f37a3febb9b754aa1d3 - RoomsPlaza_2-Play5.swf
 - Plaza SWFs above from https://archives.clubpenguinwiki.info/wiki/Plaza
 
 **seasonal**/artwork/rooms/plaza12.swf/2006-02-24.swf:e164bcaa2937eb1658265208b90320ef
@@ -114,8 +114,8 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 - Pirate Ship SWFs above are from https://archives.clubpenguinwiki.info/wiki/Pirate_Ship
 
 **seasonal**/**rooms**/stage.swf/2010-08-26.swf:17136c87052e7f6878360cadcd0006f3 - October 9, 2009, RoomsStage-October2009.swf
-**seasonal**/**rooms**/stage.swf/2010-03-29.swf:82692c40550aab5594d54b550bc1e101 - RoomsStage-May2010.swf
-**seasonal**/**rooms**/stage.swf/2010-06-10.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
+**seasonal**/**rooms**/stage.swf/[P]2009-12-25,2010-03-29.swf:82692c40550aab5594d54b550bc1e101 - RoomsStage-May2010.swf
+**seasonal**/**rooms**/stage.swf/[P]2010-06-10,2010-12-28.swf:cfa454000bbb193e51dc90665dc9ece7 - December 28, 2010, RoomsStage-December2010.swf
 **seasonal**/**rooms**/stage.swf/2010-11-18.swf:ea8910d7ff26b6904dce2149cebb7e86 - November 18, 2010,RoomStage-November2010.swf
 **seasonal**/**rooms**/stage.swf/[P]2010-02-11,2010-10-08.swf:b90436acfadaa810c597556b156d81db - HalloweenParty2010Stage.swf
 **seasonal**/**rooms**/stage.swf/[P]2010-01-08,[P]2010-09-16.swf:b89006589daad1ca8babb391aa6c7265 - RoomsStage-June2009.swf
