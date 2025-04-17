@@ -140,7 +140,7 @@
 - Manual modification of worldachievements.xml from legacy media to have Monster Mash
 - Only costumes that were verified with video have been added here
 
-**seasonal**/**global**/content/igloo_music.swf/2008-##-##.swf:78fbaab56752eeb81ec22922bb698d22
+**seasonal**/**global**/content/igloo_music.swf/2008-##-##.swf:bbf57a6f4569cc694b1711e4bab49b5d
 - A SWF that emulates the music list, but reads the data dynamically from a XML file
 - Credit for this is Ben who made the original version, Randomno who added the bold text functionality
 - The fla is available in this repository

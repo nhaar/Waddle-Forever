@@ -1938,7 +1938,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [3056, 'Magician\'s Cloak', ItemType.Neck, 400, true, false, false, false, false, false, '2017-03-30'],
   [3058, 'The Count\'s Cloak', ItemType.Neck, 250, true, false, false, false, false, false, '2017-03-30'],
   [3061, 'Sat-Pack', ItemType.Neck, 15, true, false, false, true, false, false, '2017-03-30'],
-  [3062, 'Santa\'s Present Bag', ItemType.Neck, 300, true, false, false, false, false, false, '2017-03-30'],
+  [3062, 'Santa\'s Present Bag', ItemType.Neck, 0, true, false, false, false, false, false, '2017-03-30'],
   [3063, 'Tech Satchel', ItemType.Neck, 10, true, false, false, true, false, false, '2017-03-30'],
   [3064, 'Popcorn Tray', ItemType.Neck, 200, true, false, false, false, false, false, '2017-03-30'],
   [3065, 'Blue Patched Bag', ItemType.Neck, 200, true, false, false, false, false, false, '2017-03-30'],

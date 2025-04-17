@@ -19,6 +19,7 @@ default/music/217.swf:13f17dc136c9797398ca7d19b60cf35a - Music217.swf
 default/music/219.swf:bb1ff7a9e033efe6cbe262a9401021d4 - Music219.swf
 default/music/220.swf:fe7e60c8e31203b48f8c64ec9dbbd31d - Music220_2.swf
 default/music/226.swf:250de8af60a158ab7a63d21baf9eeb9e - Music226_2.swf
+default/music/227.swf:7c5d99817fec0cf6e0d9a529867bdbdf - Music227.swf
 default/music/231.swf:1cb8bb8217d7db8b0dffc98f1ae017b5 - Music231.swf
 default/music/232.swf:4008b3af7b9bd97ccd1b01a1ae974086 - Music232.swf
 default/music/233.swf:3ab5a0fa2af2323c83be5a05d577e4f4 - Music233.swf
@@ -27,6 +28,7 @@ default/music/236.swf:e7e5763075dc90cdee6ab763ceff1fc0 - Music236.swf
 default/music/237.swf:537d5b722f2d2fe7f4866425cb8f7c7b - Music237.swf
 default/music/245.swf:405849097f4f102d83cd2731fc94a47b - Music245.swf
 default/music/254.swf:d63d648d93b2f1948c02b2044c2e6a99 - Music254_2.swf
+default/music/255.swf:df2e359592f9ee594fb1dbfd22d4126a - Music255.swf
 default/music/260.swf:70cb91a2598002adc407746f6c32a2f5 - Music260.swf
 default/music/261.swf:cb51223ceb2aa7b7ba675c68afb1c896 - Music261.swf
 default/music/262.swf:0fea8ba82afae2feae9d0afbe6cb7a39 - Music262.swf
@@ -38,12 +40,14 @@ default/music/270.swf:bcfd95d310f17e820a869deb34d5dea8 - Music270.swf
 default/music/276.swf:96179cc900e876100252de06cfe0cf88 - Music276.swf
 default/music/277.swf:95a07441a6845ae85ace98e519fe5188 - Music277.swf
 default/music/279.swf:b4146f02b892e8b770ef4252b6789e4a - Music279.swf
+default/music/281.swf:4a4babebebc771489c1ada3a0430c75f - Music281.swf
 default/music/282.swf:8474eee038041248a9f26eb382554c3d - Music282.swf
 default/music/286.swf:a1d1dbdd97af77745023aa68ef5e2c93 - Music286.swf
 default/music/287.swf:81b07969e1aa7a0967604fd2bbd3bf42 - Music287.swf
 default/music/288.swf:e2a5e435743ae061a9d655dd32b75c85 - Music288.swf
 default/music/289.swf:24af415fdfed17224ca59cc6a595f6b6 - Music289.swf
 default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
+default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 - Music from the page: https://archives.clubpenguinwiki.info/wiki/Music
 
 **seasonal**/artwork/maps/island5.swf/2005-09-12.swf:f60e08ae2fa611f1b693ec804b2b37ef - ArtworkMapsIsland3.swf (first 2006 one)
@@ -553,3 +557,45 @@ default/music/290.swf:ae1ae0e4357df8497e0c93ea73cb3982 - Music290.swf
 **2010**/water_scavenger_hunt/**global**/scavenger_hunt/hunt_ui.swf:2337253c2f2beed9c7fdf32590bb71ee
 **2010**/water_scavenger_hunt/**global**/scavenger_hunt/scavenger_hunt_icon.swf:b3387cc490ca009dc0fdce54f1dea846
 - Water Scavenger Hunt: https://archives.clubpenguinwiki.info/wiki/Water_Scavenger_Hunt
+
+**2010**/holiday_party/**rooms**/attic.swf:1c93b4f4d27e392f4d30e1552ad803ae - HolidayParty2010Attic.swf
+**2010**/holiday_party/**rooms**/beach.swf:b32b95421b63a43b59e221001571ffe5 - HolidayParty2010Beach.swf
+**2010**/holiday_party/**rooms**/beacon.swf:362247bb7a17b3bf6f8d7ad3a1d24907 - HolidayParty2010Beacon.swf
+**2010**/holiday_party/**rooms**/berg.swf:fba42f77d5697fc5547392d69ea8a2cf - HolidayParty2010Berg.swf
+**2010**/holiday_party/**rooms**/book.swf:9976837078dcc4ef41b230501aec3b26 - HolidayParty2010Book.swf
+**2010**/holiday_party/**rooms**/coffee.swf:4595d41bf898cf48f08f3d72a15d8312 - HolidayParty2010Coffee.swf
+**2010**/holiday_party/**rooms**/cove.swf:c3656cbb6fd22fb90c085797bfe9fa00 - HolidayParty2010Cove.swf
+**2010**/holiday_party/**rooms**/dance.swf:3340419c9c6f42101457cd53e28f9f86 - HolidayParty2010Dance.swf
+**2010**/holiday_party/**rooms**/dock.swf:e776e4fe074580a3ea5b5a5d2877696f - HolidayParty2010Dock.swf
+**2010**/holiday_party/**rooms**/dojo.swf:605c3824b521b85169924ca780d059b3 - HolidayParty2010Dojo.swf
+**2010**/holiday_party/**rooms**/dojoext.swf:c7113d54067a1e06589af468bb25ac53 - HolidayParty2010DojoExt.swf
+**2010**/holiday_party/**rooms**/dojofire.swf:750c0c4c3993b5e81b2bceef1ef4a9d3 - HolidayParty2010DojoFire.swf
+**2010**/holiday_party/**rooms**/dojohide.swf:e824db8f2d9effe6a15877f8c438d9f4 - HolidayParty2010DojoHide.swf
+**2010**/holiday_party/**rooms**/forest.swf:4e2b6d0395c529fe9bdf41bdfdff4c1c - HolidayParty2010Forest.swf
+**2010**/holiday_party/**rooms**/light.swf:616acebae6b76aae5896206da4e2b0f0 - HolidayParty2010Light.swf
+**2010**/holiday_party/**rooms**/lodge.swf:84a08e2da765f275208a152a68f1bf7b - HolidayParty2010Lodge.swf
+**2010**/holiday_party/**rooms**/lounge.swf:2cce652a01956e1bd36726408c47f5f2 - HolidayParty2010Lounge.swf
+**2010**/holiday_party/**rooms**/mtn.swf:a5598713e8f3840625da9eef9a9c46ff - HolidayParty2010Mtn.swf
+**2010**/holiday_party/**rooms**/party.swf:acb816cd9b076379b6dc9120ab7b1278 - HolidayParty2010Party.swf
+**2010**/holiday_party/**rooms**/party99.swf:39ccb46271ae9cededead17d7f9c565a - HolidayParty2010Party99.swf
+**2010**/holiday_party/**rooms**/pizza.swf:07305d83c4070e50760424f133ec97c7 - HolidayParty2010Pizza.swf
+**2010**/holiday_party/**rooms**/plaza.swf:48039c0cc768b67e93fae3301297b97a - HolidayParty2010Plaza.swf
+**2010**/holiday_party/**rooms**/shack.swf:3bb0eb75a15299d251b5f510e69c68c5 - HolidayParty2010Shack.swf
+**2010**/holiday_party/**rooms**/ship.swf:c45dd01039f8ec795c2fee221bd474d8 - HolidayParty2010Ship.swf
+**2010**/holiday_party/**rooms**/shiphold.swf:c55a83b696cf161215decdcbf4d5d85e - HolidayParty2010ShipHold.swf
+**2010**/holiday_party/**rooms**/shipnest.swf:26be193d3fe87ab65a60f02da4f3ceb4 - HolidayParty2010ShipNest.swf
+**2010**/holiday_party/**rooms**/shipquarters.swf:c369ea9a30ba32d54d815965d9b025fd - HolidayParty2010ShipQuarters.swf
+**2010**/holiday_party/**rooms**/shop.swf:4115e46f2ecdd1eea12417ed05034393 - HolidayParty2010Shop.swf
+**2010**/holiday_party/**rooms**/village.swf:b13f6a2960b16a6a0f3c067ca5f19016 - HolidayParty2010Village.swf
+**2010**/holiday_party/**local**/close_ups/christmasposter.swf:5622640eda7f861d04acfdcc493cc1e0 - HolidayParty2010ChristmasPoster.swf
+**2010**/holiday_party/**local**/close_ups/poster.swf:e17a3c97826bc2dc2999bd4f59bfd62b - 2010coinsforchangeposter.swf
+**2010**/holiday_party/**local**/forms/coins_for_change.swf:74dbed17a41b90b640f48324d0439a8f - 2010coinsforchangedonate.swf
+**seasonal**/**global**/content/map.swf/2010-12-16.swf:8ec9c577336c01b7e93320d6d8ca5570 - HolidayParty2010Map-StadiumGames.swf
+**seasonal**/**global**/content/map.swf/2010-12-20.swf:6592b1b5f508df58e09f8f2cd430711b - HolidayParty2010Map.swf
+**seasonal**/**rooms**/forts.swf/2010-12-16.swf:84ec67c774eb3af3b42e1882cd60949b - HolidayParty2010Forts(1).swf
+**seasonal**/**rooms**/forts.swf/2010-12-20.swf:015fee0e16d4ecbd82721ac5688ad872 - HolidayParty2010Forts(2).swf
+**seasonal**/**rooms**/rink.swf/2010-12-16.swf:cb1d813a8cc10821f81880e0e9ea5d4b - HolidayParty2010Rink(1).swf
+**seasonal**/**rooms**/rink.swf/2010-12-20.swf:9d81dd48e45950c50d1b383d950ef537 - HolidayParty2010Rink(2).swf
+**seasonal**/**rooms**/town.swf/2010-12-16.swf:ceffc86064dc84e77e0921acd2feadb5 - RoomsTown-HolidayParty2010.swf
+**seasonal**/**rooms**/town.swf/2010-12-20.swf:0fdd0f53b967f26aca5df5e5ca97a9ae - RoomsTown-HolidayParty2010_2.swf
+- Holiday Party 2010

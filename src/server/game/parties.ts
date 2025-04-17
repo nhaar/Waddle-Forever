@@ -422,6 +422,37 @@ export const PARTIES: Party[] = [
       'easter_egg_hunt': 'scavenger_hunt/hunt_ui.swf',
       'scavenger_hunt': 'scavenger_hunt/hunt_ui.swf'
     }
+  },
+  {
+    name: 'Holiday Party 2010',
+    start: '2010-12-16',
+    end: '2010-12-28',
+    paths: '2010/holiday_party',
+    music: {
+      'attic': 255,
+      'beach': 254,
+      'beacon': 254,
+      'berg': 227,
+      'book': 255,
+      'coffee': 255,
+      'cove': 254,
+      'dance': 400,
+      'dock': 254,
+      'forest': 254,
+      'forts': 254,
+      'lodge': 255,
+      'lounge': 226,
+      'mtn': 254,
+      'pizza': 255,
+      'plaza': 254,
+      'rink': 254,
+      'shack': 254,
+      'shop': 255,
+      'village': 254,
+      'town': 254,
+      'party': 281,
+      'party99': 254
+    }
   }
 ];
 
