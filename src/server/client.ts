@@ -466,7 +466,7 @@ export class Client {
     const now = new Date();
     const hour = now.getHours();
     const minute = now.getMinutes();
-    const offset = now.getTimezoneOffset(); // todo account for tadyman
+    const offset = now.getTimezoneOffset();
     const hourOffset = Math.floor(offset / 60);
     const minuteOffset = offset % 60;
     // not fully sure why + 22, maybe this code isn't timezone proof
