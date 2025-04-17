@@ -2071,5 +2071,25 @@ export function getStampbook(version: Version): string {
     }
   }
 
+  if (isGreaterOrEqual(version, '2010-12-16')) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        "stamp_id": 191,
+        "name": "Volunteer",
+        "is_member": false,
+        "rank": 1,
+        "description": "Donate to a Coins For Change cause","rank_token": "easy"
+      },
+      {
+        "stamp_id": 294,
+        "name": "Top Volunteer",
+        "is_member": false,
+        "rank":3,
+        "description": "Give a 5000 coin donation to Coins For Change",
+        "rank_token": "hard"
+      }
+    ])
+  }
+
   return JSON.stringify(newStampbook)
 }
