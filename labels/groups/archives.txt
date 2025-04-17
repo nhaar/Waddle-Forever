@@ -327,6 +327,7 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **2010**/april_fools/**local**/membership/oops_april_fools.swf:b4386a633220a91d13b14a939d5dac05 - AprilFoolsParty2010MembershipOopsAprilFools.swf
 - April Fools 2010
 
+**2010**/earth_day_const/**rooms**/shack.swf:cca505401c4da2a2f98fa138becea83b - RoomsShack-EarthDay2010Const.swf
 **2010**/earth_day/**rooms**/book.swf:093a8ccd7b83d1938d74c24cf6626df5 - RoomsBook-EarthDay2010.swf
 **2010**/earth_day/**rooms**/coffee.swf:e40a1386e1a23a4c923b57248187dde4 - RoomsCoffeeEarthDay2010.swf
 **2010**/earth_day/**rooms**/cove.swf:41ac80933adfcacbb1f3977520a984c2 - RoomsCove-EarthDay2010.swf

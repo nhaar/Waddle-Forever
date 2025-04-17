@@ -169,6 +169,12 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Earth Day 2010 Construction',
+    start: '2010-04-15',
+    end: null,
+    paths: '2010/earth_day_const'
+  },
+  {
     name: 'Earth Day 2010',
     start: '2010-04-21',
     end: '2010-04-27',
