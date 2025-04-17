@@ -57,6 +57,8 @@ function getDescription(version: Day): string {
     return `New stage play airing: ${version.events.stagePlay}`
   } else if (version.events.musicList === true) {
     return 'New music available for igloos';
+  } else if (version.events.newFurnitureCatalog === true) {
+    return 'New furniture catalog available';
   }
 
   return ''
@@ -74,6 +76,7 @@ type Day = {
     roomUpdate?: string;
     minigameRelease?: string
     newClothing?: boolean
+    newFurnitureCatalog?: true;
     stagePlay?: string;
     musicList?: true;
   }

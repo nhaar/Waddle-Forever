@@ -4,7 +4,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES, PartyStage } from '../server/game/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
 import { FAN_ISSUE, OLD_NEWSPAPERS } from '../server/game/newspapers';
-import { CATALOGUES } from '../server/game/catalogues';
+import { CATALOGUES, FURNITURE_CATALOGS } from '../server/game/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
 import { ROOM_TIMELINE } from '../server/game/rooms';
@@ -107,6 +107,7 @@ type Events = {
   stagePlay?: string;
   /** If a music list was released this day */
   musicList?: true;
+  newFurnitureCatalog?: true;
 };
 
 // this type is duplicated in the timeline-static file, it should be the same type
@@ -199,6 +200,9 @@ function addCatalogues(map: DayMap): DayMap {
   CATALOGUES.forEach((date) => {
     addEvents(map, date, { newClothing: true });
   });
+  FURNITURE_CATALOGS.forEach((date) => {
+    addEvents(map, date, { newFurnitureCatalog: true });
+  })
   return map;
 }
 

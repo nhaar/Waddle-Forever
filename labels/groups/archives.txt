@@ -157,11 +157,14 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 - Costume Trunk SWFs are from https://archives.clubpenguinwiki.info/wiki/Costume_Trunk
 
 **engine1**/artwork/catalogue/furniture0603.swf:e2990d551ea5b107edf1650dd6c28fa2
+**seasonal**/**local**/catalogues/furniture.swf/2010-03-12.swf:75d679257a51cba86d4d3b910f66feff - March10Furniture.swf
+**seasonal**/**local**/catalogues/furniture.swf/2010-04-16.swf:6e0ed8aee3c3669280e6153c8ea0cd7a - FurnApr2010.swf
 **seasonal**/**local**/catalogues/furniture.swf/2010-08-20.swf:a45abe51855c16e84e0d1bd518a6c86f
 **seasonal**/**local**/catalogues/furniture.swf/2010-05-14.swf:a8c3ade6dbc407681fa5ea075b6602a0
 **seasonal**/**local**/catalogues/furniture.swf/2010-11-12.swf:f5647ffcfcb283fd24572f94954ee66b
 **seasonal**/**local**/catalogues/furniture.swf/2010-10-15.swf:cbac9013f8371c7eb0a3f41c15240068
 **seasonal**/**local**/catalogues/furniture.swf/2010-09-24.swf:5ced224c6d77d52ff978fd817a38b825
+**seasonal**/**local**/catalogues/furniture.swf/2010-12-10.swf:c4e2a2ffbc5b3ad485274cbfcf3b906c - December2011Furniture.swf
 - Furniture Catalogues are from https://archives.clubpenguinwiki.info/wiki/Furniture_%26_Igloo_Catalog
 
 **engine1**/artwork/catalogue/igloo0604.swf:bfb78b45a72f09203502885452c98844
