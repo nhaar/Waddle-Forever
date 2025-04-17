@@ -246,6 +246,20 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Popcorn Explosion',
+    start: '2010-05-18',
+    end: '2010-05-27',
+    paths: '2010/popcorn_explosion',
+    updates: [
+      {
+        update: {
+          description: 'Sports Shop closed for reconstruction',
+          date: '2010-05-25'
+        }
+      }
+    ]
+  },
+  {
     name: 'Island Adventure Party 2010 Construction',
     start: '2010-06-10',
     end: null,

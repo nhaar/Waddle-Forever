@@ -1,4 +1,5 @@
 default/music/3.swf:768ca4c838e0bdf97cf75452e3035c72 - Music3_2.swf, the blue one
+default/music/7.swf:a9e1635d4c090c9b66359612472a5897 - Music7.swf
 default/music/8.swf:c3fd1cc6d4bb564e378c3d55a56c6a25
 default/music/22.swf:94392f5c6c91d7d1736925bd45c78605 - Music22.swf
 default/music/27.swf:d2bd0c408f8b61b6814897688f2d86a4 - Music27.swf
@@ -81,8 +82,12 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **seasonal**/**rooms**/town.swf/2008-##-##.swf:34e49ae32a948b0e67cbd5a03576754f - 2008-2011 Soccer Pitch, RoomsTown_2.swf
 - Town SWFs above from https://archives.clubpenguinwiki.info/wiki/Town_Center
 
+**seasonal**/**rooms**/agent.swf/2009-##-##.swf:c903011d023839b24253534f60919d24 - RoomsAgent.swf
+- PSA HQ SWFs: https://archives.clubpenguinwiki.info/wiki/HQ
+
 **seasonal**/artwork/rooms/village11.swf/2005-12-22.swf:05463cbcd61720f82f6c8dc804df8b35 - village11
-**engine2**/**rooms**/village.swf:8ed5cd3899856d54f4e20fa9c94fe895 - 2010-2012, RoomsVillage_2.swf
+**seasonal**/**rooms**/village.swf/2008-##-##.swf:ccad3c560b391f537e0a729453815843 - RoomsVillage.swf
+**seasonal**/**rooms**/village.swf/2010-05-27.swf:8ed5cd3899856d54f4e20fa9c94fe895 - RoomsVillage_2.swf
 - Ski Village SWFs above from https://archives.clubpenguinwiki.info/wiki/Ski_Village
 
 **seasonal**/**rooms**/berg.swf/2009-07-##,2010-01-04,2010-07-09.swf:df774dad12c2f7144a94d05fc2486ee6 - RoomsBerg.swf
@@ -373,6 +378,13 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **2010**/medieval/**rooms**/town.swf:eb02b9430bb8965931ecef90e5e9d67a - RoomsTown-MedievalParty2010.swf
 **2010**/medieval/**rooms**/village.swf:20633086df7c968b568dfa6612fea5ef - RoomsVillage-MedievalParty2010.swf
 - Medieval Party 2010
+
+**2010**/popcorn_explosion/**rooms**/sport.swf:b976d8c9f206157f2a3bff3ba6f5e133 - RoomsSport-PopcornExplosion.swf
+**seasonal**/**rooms**/agent.swf/2010-05-18.swf:c735a03bebbc78af735e3e724c30bf0b - RoomsAgent-PopcornExplosion.swf
+**seasonal**/**rooms**/agent.swf/2010-05-25.swf:65a3186ed0847bf73c028659574ca950 - RoomsAgent-PopcornExplosion_2.swf
+**seasonal**/**rooms**/village.swf/2010-05-18.swf:55f00c9cfadccd942df2ce4b39150335 - RoomsVillage-PopcornExplosion.swf
+**seasonal**/**rooms**/village.swf/2010-05-25.swf:6225bf3318431cfda256df3cd7f1c338 - RoomsVillage-PopcornExplosion_2.swf
+- Popcorn Explosion: https://archives.clubpenguinwiki.info/wiki/Popcorn_Explosion
 
 **2010**/island_adventure_construction/**rooms**/beach.swf:14adceb73e03a3ddab57eee7341a62ee - RoomsBeach-IslandAdventureParty2010Const.swf
 **2010**/island_adventure_construction/**rooms**/cove.swf:29dc95e58fe73bbcf46d48e241edc206 - IslandAdventureParty2011ConstCove.swf
