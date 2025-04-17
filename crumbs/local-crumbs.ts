@@ -66,12 +66,10 @@ function getFullTimeline(): LocalCrumbsUpdate[] {
   return updates;
 }
 
-function getMediaPath(file: string): string {
-  return path.join('default/seasonal/play/v2/content/local/en/crumbs/local_crumbs.swf', file + '.swf');
-}
+const mediaPath = 'default/seasonal/play/v2/content/local/en/crumbs/local_crumbs.swf'
 
 async function createSeasonalCrumb(content: string, date: Version): Promise<void> {
-  const filePath = path.join(__dirname, '..', 'media', getMediaPath(date));
+  const filePath = path.join(__dirname, '..', 'media', mediaPath, date + '.swf');
   await replacePcode(BASE_LOCAL_CRUMBS, filePath, '\\frame 1\\DoAction', content);
 }
 
@@ -81,7 +79,7 @@ async function createSeasonalCrumb(content: string, date: Version): Promise<void
     applyChanges,
     getFullTimeline,
     createSeasonalCrumb,
-    getMediaPath,
+    mediaPath,
     'Local Crumbs'
   );
 })();
