@@ -125,6 +125,12 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 - Mine SWFs are from https://archives.clubpenguinwiki.info/wiki/Mine
 
 **engine2**/**rooms**/shack.swf:9109f3a445ad2313446939d49132e50c - December 2011, RoomsShack-September2010.swf (weirdly mismatching)
+
+**seasonal**/**rooms**/shack.swf/2009-##-##.swf:00136f3d74168a427a0c2e4656c92829 - RoomsShack.swf
+**seasonal**/**rooms**/shack.swf/[P]2010-04-27,2010-06-24.swf:f9d982ff3cb0ac1461e661e7bbcb8ce5 - RoomsShack-June2010.swf
+**seasonal**/**rooms**/shack.swf/2010-07-29.swf:140b725376e23da64b43e8dd8a9b263b - RoomsShack-July2010.swf
+**seasonal**/**rooms**/shack.swf/2010-08-26.swf:e3058cb6d8ebad1cad75117725e7f3e4 - RoomsShack-LateAugust2010.swf
+**seasonal**/**rooms**/shack.swf/2010-09-30.swf:8483d4b62ee7a2285d1234ef4179b41b - RoomsShack-Early2011.swf
 - Mine Shack SWFs are from https://archives.clubpenguinwiki.info/wiki/Mine_Shack
 
 **seasonal**/**rooms**/forest.swf/2009-##-##.swf:70e0a5fbb6c64bbeded6dbc8490bd262 - RoomsForest.swf

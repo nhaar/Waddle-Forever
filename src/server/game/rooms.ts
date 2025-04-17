@@ -262,6 +262,27 @@ export const ROOM_TIMELINE: RoomEvent[] = [
     type: 'update'
   },
   {
+    date: '2010-07-29',
+    descriptions: [
+      'Grass grew on the patch near the mine shack'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-08-26',
+    descriptions: [
+      'The tree near the mine shack grew longer'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-09-30',
+    descriptions: [
+      'The tree near the mine shack grew longer'
+    ],
+    type: 'update'
+  },
+  {
     date: '2010-12-20',
     descriptions: [
       'The Ice Rink showed up for the season'

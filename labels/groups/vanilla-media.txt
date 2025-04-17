@@ -750,7 +750,7 @@ default/music/506.swf:f873b7c00671f1b3299b2a39fd54085e
 **engine3**/**rooms**/pizza.swf:dac992adb242bf475b7c24b046118dca
 **engine3**/**rooms**/pufflewild.swf:c6e2e78734c74adf9d85c7214718c45b
 **engine3**/**rooms**/school.swf:53c5570af932a3a72f4402653ca93b80
-**engine3**/**rooms**/shack.swf:1ee7368477757d3b70057fd6cfc475e6
+**seasonal**/**rooms**/shack.swf/2016-##-##.swf:1ee7368477757d3b70057fd6cfc475e6
 **engine3**/**rooms**/shop.swf:adc3c2fb04f4b75c7694c6dd0d83a56b
 **engine3**/**rooms**/skatepark.swf:1b3493fae33d3fed8b4934cf0eef64ac
 **engine3**/**rooms**/soundroom.swf:463cdfa3500cc4593ebe0b9f85c93910
