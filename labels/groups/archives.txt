@@ -159,6 +159,9 @@ default/music/400.swf:c9aebbfd26b2a42b3e1da49d211f5343 - Music400_3.swf
 **seasonal**/**local**/catalogues/clothing.swf/2010-12-03.swf:de1a2e2d104bb3796a43c29fbcb53276 - PenguinStyleDec2010.swf
 - Penguin Style SWFs are from https://archives.clubpenguinwiki.info/wiki/Penguin_Style
 
+**engine2**/**local**/catalogues/fish.swf:378646b62578c88b9c5fce2c9fb14e35 - TheFish2009.swf
+- FISH: https://archives.clubpenguinwiki.info/wiki/The_F.I.S.H.
+
 **seasonal**/**local**/catalogues/costume.swf/2010-08-26.swf:03c0ee8c27538a5668b88985c0e7a2c3 - March 2011, March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf
 **seasonal**/**local**/catalogues/costume.swf/2010-07-22.swf:2184c1ce32f14d0cdb416ef231d192a4 - May 2011, May2011UnderwaterAdventureCostume.swf
 **seasonal**/**local**/catalogues/costume.swf/2010-06-10.swf:7e52c634dfefb62fa99ceb3ff88162b2 - July 2009, July09Costume.swf
