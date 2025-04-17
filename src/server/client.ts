@@ -4,7 +4,7 @@ import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
 import { Penguin } from './penguin';
 import { Stamp } from './game/stamps';
-import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, Version } from './routes/versions';
+import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game/items';
 import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
@@ -459,7 +459,20 @@ export class Client {
     TODO 4: map category how to handle
     TODO 3: how to handle status field
     */
-    this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, 1727536687000, this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
+
+    const [year, month, day] = processVersion(this.version);
+    // simulating PST time for the current day
+    // local time needs to be taken into account since flash checks for that all the time
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const offset = now.getTimezoneOffset(); // todo account for tadyman
+    const hourOffset = Math.floor(offset / 60);
+    const minuteOffset = offset % 60;
+    // not fully sure why + 22, maybe this code isn't timezone proof
+    const virtualDate = new Date(year, month - 1, day, hour + hourOffset + 22, minute + minuteOffset);
+    
+    this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }
 
   getFurnitureString(): string {
