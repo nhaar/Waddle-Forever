@@ -16824,6 +16824,17 @@ default/music/596.swf:4f8b6e9f50a11cd7e865de08d54cff6c
 
 **engine2**/**local**/prompts/tutorial_prompts.swf:19c02cdba18b140c770b5cb51f85b26c
 
+**engine2**/**local**/close_ups/clock_tower.swf:8a0379db977a5c47b5d9c6603928dd7c
+**engine2**/**local**/close_ups/digposter2.swf:fde21f04ba17e7f9640d8f83fa0d8661
+**engine2**/**local**/close_ups/field_ops.swf:a52269cc4e453590a22c776db8dc60cb
+**engine2**/**local**/close_ups/fireItems.swf:e09ff5663960b1433f24f5e997b76f79
+**engine2**/**local**/close_ups/ninjabelts.swf:9c40223f5f4b79eb7d2aeb405884b5dc
+**engine2**/**local**/close_ups/ninja_hideout.swf:c6c5c2ecd87c7700c375b8904e6efdd0
+**engine2**/**local**/close_ups/stadium_poster.swf:a8f86a66da7fc81ef67a681e03272d7c
+**engine2**/**local**/close_ups/take_tour.swf:9248974b54e5e408e4f13225f2938405
+**engine2**/**local**/close_ups/underwater_note.swf:2a2deab5a3901317793ebbc3d5e132c5
+**engine2**/**local**/close_ups/waterItems.swf:73fa4f49881a1b23c5325df555b1bf71
+
 **engine2**/web_service/weblogger.json:017d0bf172dc8e8a9ffc92ff34d29ec3
 **engine2_3**/**global**/clothing/books/news.swf:5065a586484c55f687db99ca5356f108
 
