@@ -9,9 +9,31 @@ import { getDynamicMusicListData } from "../game/igloo-lists";
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
+  // serving the websites
+  server.dir('', (s) => {
+    if (isEngine1(s.settings.version)) {
+      return 'websites/old';
+    } else if (isEngine2(s.settings.version)) {
+      return 'websites/classic';
+    } else if (isEngine3(s.settings.version)) {
+      return 'websites/modern';
+    }
+  })
+
+  server.get('/', (s) => {
+    if (isEngine1(s.settings.version)) {
+      return 'websites/old-precpip.html';
+    } else if (isEngine2(s.settings.version)) {
+      return 'websites/classic-cpip.html';
+    } else {
+      return 'websites/modern-as3.html';
+    }
+  });
+
+
   // Engine 3 login page requires this URL
   server.get('/#/login', () => {
-    return `default/special/index.html/engine3.html`;
+    return `websites/modern-as3.html`;
   })
 
   // setting dependent media
