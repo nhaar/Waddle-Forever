@@ -76,6 +76,12 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         events: {
           partyUpdate: 'The lighthouse has more money (4)'
         }
+      },
+      {
+        date: '2016-01-01',
+        events: {
+          other: 'test'
+        }
       }
     ]
     timeline = updateTimeline(timeline);
