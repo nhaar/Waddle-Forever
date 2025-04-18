@@ -9,6 +9,8 @@ import { getDynamicMusicListData } from "../game/igloo-lists";
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
+  server.addFileServer();
+
   // serving the websites
   server.dir('', (s) => {
     if (isEngine1(s.settings.version)) {

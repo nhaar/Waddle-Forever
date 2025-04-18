@@ -57,6 +57,14 @@ export class StaticDataTable<T extends BaseRow, K extends (keyof T)[]> {
     return this.map.get(id);
   }
 
+  public getStrict(id: number): T {
+    const item = this.get(id);
+    if (item === undefined) {
+      throw new Error(`Missing ID: ${id}`);
+    }
+    return item;
+  }
+
   get rows(): T[] {
     return Array.from(this.map.values());
   }

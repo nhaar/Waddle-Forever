@@ -5,6 +5,7 @@ import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 import { findCurrentParty, findCurrentUpdateInParty } from './game/parties';
+import { findFile, getFileServer } from './routes/client-files';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -184,6 +185,31 @@ export class HttpServer {
   constructor (settingsManager: SettingsManager) {
     this.settingsManager = settingsManager;
     this.router = Router();
+  }
+  
+  addFileServer() {
+    const fileServer = getFileServer();
+  
+    this.router.get('/*', (req: Request, res, next) => {
+      const route = req.params[0];
+      const info = fileServer.get(route);
+      if (info === undefined) {
+        next();
+      } else {
+        let filePath = '';
+        if (typeof info === 'string') {
+          filePath = info;
+        } else {
+          if (info.type === 'dynamic') {
+            filePath = findFile(this.settingsManager.settings.version, info.versions);
+          } else {
+            throw new Error('Not implemented');
+          }
+        }
+  
+        res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
+      }
+    });
   }
 
   /** Creates a router that listens for party files */
