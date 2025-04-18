@@ -5,7 +5,7 @@ import { isEqual, isLower, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { FIRST_UPDATE, UPDATES } from "../data/updates";
-import { ROOMS } from "../data/rooms";
+import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
@@ -129,18 +129,19 @@ function addToTimeline(map: TimelineMap, route: string, event: TimelineEvent): v
 
 function addRoomInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
-  const rooms = ROOMS.rows;
   
-  rooms.forEach((room) => {
-    // adding rooms that were there from the start
-    if (room.id in ORIGINAL_ROOMS) {
+  for (const roomName in ROOMS) {
+    const room = ROOMS[roomName as RoomName];
+    const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
+    if (originalRoomFile !== undefined) {
+      // adding rooms that were there from the start
       addToTimeline(map, getRoutePath(room.preCpipPath), {
         type: 'permanent',
         date: firstUpdate.time,
-        file: ORIGINAL_ROOMS[room.id as keyof typeof ORIGINAL_ROOMS]
+        file: originalRoomFile
       })
     }
-  });
+  }
 }
 
 /** Converts a timeline event to the information consumed by the file server */

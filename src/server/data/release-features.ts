@@ -1,20 +1,17 @@
-import { StaticDataTable } from "../../common/static-table";
+import { RoomName } from "./rooms";
 
-type RoomdId = number;
-type RoomFile = number;
-
-export const ORIGINAL_ROOMS = {
-  100: 27,
-  110: 7,
-  111: 29,
-  120: 8,
-  121: 12,
-  130: 16,
-  800: 9,
-  200: 31,
-  802: 33,
-  320: 10,
-  803: 5 // HQ is disputed, maybe not original release
+export const ORIGINAL_ROOMS: Partial<Record<RoomName, number>> = {
+  'town': 27,
+  'coffee': 7,
+  'book': 29,
+  'dance': 8,
+  'lounge': 12,
+  'shop': 16,
+  'dock': 9,
+  'village': 31,
+  'rink': 33,
+  'dojo': 10,
+  'agent': 5 // HQ is disputed, maybe not original release
 }
 
 // File ID of original map
