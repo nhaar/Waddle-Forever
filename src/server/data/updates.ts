@@ -22,7 +22,12 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     [4, '2005-09-22'],
 
     // newspapers are added
-    [6, '2005-10-24']
+    [6, '2005-10-24'],
+
+    // halloween 2005 start
+    [7, '2005-10-27'],
+    // halloween 2005 end
+    [8, '2005-11-01']
 
   ]
 );

@@ -116,4 +116,12 @@ export const FILES = new StaticDataTable<File, [
   [73, 'Clothing_0602.swf', 1, FileCategory.Archives, null, null, null],
   [74, 'Clothing_0603.swf', 1, FileCategory.Archives, null, null, null],
   [75, 'Clothing_0604.swf', 1, FileCategory.Archives, null, null, null],
+
+  // halloween files fixed for compatibility with chat291.swf
+  [76, 'Book2_03_halloween.swf', 1, FileCategory.Fix, null, null, null],
+  [77, 'Dance1b_halloween.swf', 1, FileCategory.Fix, null, null, null],
+  [78, 'Lounge1_halloween.swf', 1, FileCategory.Fix, null, null, null],
+  [79, 'Dojo_halloween.swf', 1, FileCategory.Fix, null, null, null],
+  [80, 'Icerink_halloween.swf', 1, FileCategory.Fix, null, null, null],
+  [81, 'Town_halloween.swf', 1, FileCategory.Fix, null, null, null]
 ]);

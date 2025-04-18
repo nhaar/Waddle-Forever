@@ -16,5 +16,18 @@ export const PARTIES: Party[] = [
     roomChanges: {
       'town': 38
     }
+  },
+  {
+    name: 'Halloween Party 2005',
+    startUpdateId: 7,
+    endUpdateId: 8,
+    roomChanges: {
+      'book': 76,
+      'dance': 77,
+      'lounge': 78,
+      'dojo': 79,
+      'rink': 80,
+      'town': 81
+    }
   }
 ];
