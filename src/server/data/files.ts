@@ -78,5 +78,6 @@ export const FILES = new StaticDataTable<File, [
 
   [35, 'ArtworkMapsIsland3.swf', 1, FileCategory.Archives, null, null, null],
   [36, 'ArtworkRoomsForts12.swf', 1, FileCategory.Archives, null, null, null],
-  [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36, [2]]
+  [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36, [2]],
+  [38, 'Beta-town.swf', 1, FileCategory.Archives, null, null, null]
 ]);

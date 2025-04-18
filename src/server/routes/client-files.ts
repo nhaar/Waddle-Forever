@@ -11,6 +11,7 @@ import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES } from "../data/game-map";
+import { PARTIES } from "../data/parties";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -174,21 +175,65 @@ function addRoomInfo(map: TimelineMap): void {
   });
 }
 
-/** Converts a timeline event to the information consumed by the file server */
-function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformation {
-  const unsorted: DynamicRouteUpdate[] = [];
-  timeline.forEach((event) => {
-    // not accounting for temporary yet
-    if (event.type === 'permanent') {
-      const file = getMediaFilePath(event.file);
-      unsorted.push({
-        date: event.date,
-        file
-      });
+function addParties(map: TimelineMap): void {
+  PARTIES.forEach((party) => {
+    for (const room in party.roomChanges) {
+      const fileId = party.roomChanges[room as RoomName]!;
+      const roomInfo = ROOMS[room as RoomName];
+      addToTimeline(map, getRoutePath(roomInfo.preCpipPath), {
+        type: 'temporary',
+        start: getUpdateDate(party.startUpdateId),
+        end: getUpdateDate(party.endUpdateId),
+        file: fileId
+      })
     }
   })
+}
 
-  const versions = unsorted.sort((a, b) => {
+/** Converts a timeline event to the information consumed by the file server */
+function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformation {
+  // first part of this altgothrm:
+  // labeling what each update is and breaking everything down
+  // to events
+  
+  // maps id -> fileId
+  const permanentMapping = new Map<number, string>();
+  const temporaryMapping = new Map<number, string>();
+
+  const eventsTimeline: Array<{
+    type: 'permanent' | 'temp_start' | 'temp_end',
+    id: number;
+    date: Version;
+  }> = [];
+
+  let permanentId = 0;
+  let temporaryId = 0;
+
+  timeline.forEach((event) => {
+    if (event.type === 'permanent') {
+      permanentId++;
+      permanentMapping.set(permanentId, getMediaFilePath(event.file));
+      eventsTimeline.push({
+        type: 'permanent',
+        id: permanentId,
+        date: event.date
+      });
+    } else {
+      temporaryId++;
+      temporaryMapping.set(temporaryId, getMediaFilePath(event.file));
+      eventsTimeline.push({
+        type: 'temp_start',
+        id: temporaryId,
+        date: event.start
+      }, {
+        type: 'temp_end',
+        id: temporaryId,
+        date: event.end
+      });
+    }
+  });
+
+  const sorted = eventsTimeline.sort((a, b) => {
     const aVersion = a.date;
     const bVersion = b.date;
     if (isLower(aVersion, bVersion)) {
@@ -198,7 +243,59 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
     } else {
       return 1;
     }
-  })
+  });
+
+  // second part of this algorithm: going through the events
+  // and judging which file is to be used at each date
+
+  const versions: DynamicRouteUpdate[] = [];
+
+  let currentPermanent = -1;
+  // this acts as a queue, so there can be multiple temporary events
+  let currentTemporaries: number[] = [];
+
+  const pushPermanent = (date: string) => {
+    const file = permanentMapping.get(currentPermanent);
+    if (file === undefined) {
+      throw new Error('Logic error');
+    }
+    versions.push({
+      date,
+      file
+    })
+  }
+
+  const pushTemporary = (date: string) => {
+    const currentTemporary = currentTemporaries[0];
+    const file = temporaryMapping.get(currentTemporary);
+    if (file === undefined) {
+      throw new Error('Logic error');
+    }
+    versions.push({
+      date,
+      file
+    });
+  }
+
+  sorted.forEach((event) => {
+    if (event.type === 'permanent') {
+      currentPermanent = event.id;
+      // permanent changes take effect once the temporaries are gone
+      if (currentTemporaries.length === 0) {
+        pushPermanent(event.date);
+      }
+    } else if (event.type === 'temp_start') {
+      currentTemporaries.unshift(event.id);
+      pushTemporary(event.date);
+    } else if (event.type === 'temp_end') {
+      currentTemporaries = currentTemporaries.filter((id) => id !== event.id);
+      if (currentTemporaries.length === 0) {
+        pushPermanent(event.date);
+      } else {
+        pushTemporary(event.date);
+      }
+    }
+  });
 
   return {
     type: 'dynamic',
@@ -292,6 +389,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   AddIngameMapInfo(timelines);
   addStandaloneChanges(timelines);
   addMapUpdates(timelines);
+  addParties(timelines);
 
   const fileServer = new Map<string, RouteFileInformation>();
   addStaticFiles(fileServer);
