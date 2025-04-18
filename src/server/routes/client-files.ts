@@ -346,7 +346,7 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
   }
 }
 
-function AddIngameMapInfo(map: TimelineMap): void {
+function addIngameMapInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
   const mapPath = getRoutePath(PATHS.getStrict(PRECPIP_MAP_PATH).id);
 
@@ -386,7 +386,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   const timelines = new Map<string, FileTimeline>();
 
   addRoomInfo(timelines);
-  AddIngameMapInfo(timelines);
+  addIngameMapInfo(timelines);
   addStandaloneChanges(timelines);
   addMapUpdates(timelines);
   addParties(timelines);
