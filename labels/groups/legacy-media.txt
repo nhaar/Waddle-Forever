@@ -16447,28 +16447,14 @@ default/music/596.swf:4f8b6e9f50a11cd7e865de08d54cff6c
 
 **special**/boots.swf/24.swf:24189570b3107eefb52a1ec2dc0037cc
 
-**special**/index.html/engine2.html:48e07cb387ab7f98111cb5bf368210d6
-
 **special**/**games**/dancing/dance.swf/vanilla.swf:f2f8a1cce41fc1c667859c9a6b31c4ae
 **special**/**games**/jetpack/JetpackAdventures.swf/vanilla.swf:79d94c48b0bb0204857b8c2e66727a12
 **special**/**games**/thinice/ThinIce.swf/vanilla.swf:0e7043dcfb9fc5f1ff7dcfb7ae27d003
 
-**engine2**/css/affiliate/0.css:128699aa18e7695a1722ad7dee9d1a87
-**engine2**/css/affiliate/affiliate.css:2f18851a01475fd8912c9c02ab671b34
-**engine2**/css/baseline.css:8c02f4e687eaf7f04d9dae067a6997ee
 **engine2**/en/web_service/cover.json:ba29703aef435b8f22303ccc3f65ca29
 **engine2**/en/web_service/epf.json:8726aeab9d201dacebc1c29a07ecc311
 **engine2**/en/web_service/games.json:a01e51b36cb8e5b7c105213677ba15d0
 **engine2**/en/web_service/polaroids.json:04da5c7ef2f3974bf59fed740062ea0d
-**engine2**/favicon.ico:7e0d25d81b785be4cee3155e8c4f9a01
-**engine2**/images/button_big_screen.gif:8db7e5b1cdf15af441e44ea125ab4d62
-**engine2**/images/button_small_screen.gif:c00cb2ff635f724c60b4398d6adde397
-**engine2**/images/disney-logo3.gif:8eee7b9b728ca72f1ce5cbf584fb1a36
-**engine2**/images/esrb_footer.gif:ef7679afd1b8f5d249a8c7b441341a92
-**engine2**/images/language_bg.gif:9e09b39198f47226c88b6693504eaedf
-**engine2**/images/need-flash-player.gif:30b70009b1ba90ec8e114d6e4553fab8
-**engine2**/images/playNavBg.gif:051f807cd1a368d12058e5b744af171f
-**engine2**/images/truste_kids_seal.jpg:78499a0e8bd70b429e55ab2cce7b877f
 **engine2**/play/card-jitsu/fire/videos/card-jitsu-fire-path.flv:1a06b4506d5c504cc6556a7dd8ef28c5
 **engine2**/play/card-jitsu/water/videos/card-jitsu-water-trailer.flv:0cdcd7906ce0999caf96c7167f78e909
 **engine2**/**client**/airtower.swf:add556a9421fb0627b90a0166b200ff0
@@ -16838,8 +16824,6 @@ default/music/596.swf:4f8b6e9f50a11cd7e865de08d54cff6c
 
 **engine2**/**local**/prompts/tutorial_prompts.swf:19c02cdba18b140c770b5cb51f85b26c
 
-**engine2**/scripts/0.js:6fbf62f366ee12b878f44435bbcbd09b
-**engine2**/scripts/cookies.js:db2548729bdaa8bcc1992b46998487c5
 **engine2**/web_service/weblogger.json:017d0bf172dc8e8a9ffc92ff34d29ec3
 **engine2_3**/**global**/clothing/books/news.swf:5065a586484c55f687db99ca5356f108
 

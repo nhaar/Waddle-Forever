@@ -12,7 +12,6 @@ default/music/506.swf:f873b7c00671f1b3299b2a39fd54085e
 **seasonal**/**rooms**/rink.swf/2016-##-##.swf:c9caef1a33bc062edbdf403ad0d1708d
 **seasonal**/**rooms**/town.swf/2016-##-##.swf:6c49731d29dd980dec9f378439cc9960
 
-**special**/index.html/engine3.html:bd70daa9a15b074048294c0043fc7d60
 
 **special**/**client**/shell.swf/engine3.swf:110be500e2781a697bd38858bbf5f34a
 
@@ -85,22 +84,11 @@ default/music/506.swf:f873b7c00671f1b3299b2a39fd54085e
 **engine2_3**/**games**/soaker/lang/ru/title.swf:8dbbb5ded4ea8ce70d4fdc5a1f26a41d
 **engine2_3**/**games**/soaker/soaker.swf:bcc5a36ffc1993771fd6dae0cc35ad37
 
-**engine3**/content/disney-land-clubpenguin/en/characters.jsonp:8ff9a671adfda7596870cd0926ac4d66
-**engine3**/content/disney-land-clubpenguin/en/worlds.jsonp:61fb68eccfe3dffdb27fef2d2b891f87
-**engine3**/content/en/lands.jsonp:aad3b51cab31b234d9248b445fbefcd5
-**engine3**/content/en/text.jsonp:a3d9d6a027582ebbeea4eb67349b3e90
-**engine3**/content/images.jsonp:21de7b183629866257f9aa06bbe27560
-**engine3**/content/markup.jsonp:39edae25538b8be08abf8b78b40cd817
-**engine3**/css/disney-friends.css:b2fd93fddc723924c84f7f51d4fc1137
-**engine3**/css/themes/club.css:779a2f7c5f2df4401f3c7a772024b341
+
 **engine3**/en/web_service/game_configs/mascots.jsonp:5dc03f6612ccc85c192eafadcb177926
 **engine3**/en/web_service/game_configs/rooms.jsonp:ffc03e4b707397ab0eca9e484401e28a
-**engine3**/js/disney/disney-friends-with-ui-min.js:ef70e26852ab26d02f9af59bb4e519fc
-**engine3**/js/disney-friends-ostrta-min.js:085eeb2733fc52e2c0f832c31027ec3a
-**engine3**/js/lib/css/jquery.ui.css:6e378b1df1987245f0cde1054768494f
-**engine3**/js/lib/jquery.min.js:2e0e20fbbf51b79874177fa05f7bb202
-**engine3**/js/lib/jquery.ui.min.js:eaf5975fb0f3558ffec6a937e8818558
-**engine3**/js/lib/libs.min.js:34986baa24ed053cf3060c20998e68a0
+
+
 **engine3**/mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/assets/catalog/iglooedit/00dec597-c41a-4af8-baa7-20b72ecc2f56_left_bg_617.png:3cc9308b488a85e22dc0a87785068961
 **engine3**/mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/assets/catalog/iglooedit/00dec597-c41a-4af8-baa7-20b72ecc2f56_right_bg_617.png:ceb0a037eb30cfd17a18a786ae9c0679
 **engine3**/mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/assets/catalog/iglooedit/02cd0308-bb67-4ac7-87d4-275aae31a941_left_bg_617.png:7f9f9e219da2182fa42c75cd79d615a2
@@ -1067,17 +1055,3 @@ default/music/506.swf:f873b7c00671f1b3299b2a39fd54085e
 **engine3**/**games**/tumblers/lang/pt/locale.swf:43d47e1b1752054b0209e47b855fb08a
 **engine3**/**games**/tumblers/lang/ru/locale.swf:ecb0c9a754073ca80dbfb058217490bf
 **engine3**/**games**/tumblers/tumblers.swf:229c8cee057adbcf7533007fe0f39f2d
-**engine3**/services:0dede450203c6e2122101049fd3717ac
-**engine3**/sites/default/files/css/css_5AoaSUlnRluwt_SO1GRzTQdCdcJf0Aw-MqGesNvp_6Y.css:411d62c91cf0e13c45602bc75f2c70db
-**engine3**/sites/default/files/css/css_5FxwTVZs9EtbjcExytQ5ndQqt-X7PFwK3mD2o7QXYH0.css:fc807889b7c5c47a002ee53be4fb3090
-**engine3**/sites/default/files/css/css_6sGcdaud_kk5LWaaq4lZk2ZLw8uneQM4wYx5rg2QgOM.css:e0ff57ea9847da63823e25dd66609456
-**engine3**/sites/default/files/css/css_9Heh1u--mIfOomnfZC-JIjM3PxmkhjTogDetvyuVnMU.css:b821bc4a13f3ec7880a3bfed85a208e8
-**engine3**/sites/default/files/css/css_cawUUwTb6FTEpTC7UYZQwdcaTVHlWORZjZlFNt1mXNc.css:a66ec89e78fa1d485997d5c35dc7dc34
-**engine3**/sites/default/files/css/css_Ithmjuj4ePlnkLrL_GIuS3TsGEoCIelrKOCUPBOfhJ8.css:830eeb01b291331e2aaa7b2d51582f14
-**engine3**/sites/default/files/css/css_lpn3saPwnh0DOdveZjtLNqWuVLzzK8A98rurOUMUo0s.css:1b1e4201ed1a35830bc3ff5b4af751ea
-**engine3**/sites/default/files/js/js_32OCC7TUXcQ26myiC_PKkpvoU5ltaaDe8niVutpKtrA.js:93bae6c1801f8e805262b565b795008e
-**engine3**/sites/default/files/js/js_HbFTUN2pKM9AIYs88RAyetbRRbaBp_PaIXfgtECrvTU.js:66024ea070164437345983812afc662a
-**engine3**/sites/default/files/js/js_jpJjaUC0z8JMIyav5oQrYykDRUb64rpaUDpB4Y9aklU.js:9551f4b347cc5cac2f9328228e151737
-**engine3**/sites/default/files/js/js_o2ds7CQye0F4k9GwyDZAYk9dJY5NEBiGnH_iynlnt0s.js:ef877e1a79228f4a6aaf22fdd74a3616
-**engine3**/sites/default/files/js/js_WDaYo-25YBhRo3AvoKzxvgFzAfWWLPZ9T-71faUlHj8.js:fa84aa330d118e1b92dc3f93c073f283
-**engine3**/sites/play.clubpenguin.com/libraries/swfaddress/swfaddress.js:105a17ebdf502528521858579eecf15a

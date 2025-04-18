@@ -1,4 +1,4 @@
-**special**/index.html/engine1.html:35ac5d3fd24fbaf436826498825593f6
+
 
 **engine1**/artwork/catalogue/adopt0703.swf:23b38e236ce26f9dd8a6e9bc0d8552c4
 
@@ -26,11 +26,5 @@
 **engine1**/games/fish.swf:d496f480d165e0bd63ef3fe6302b09d5
 **engine1**/games/puffle.swf:0038088097f2694bfb01e124e6db1b6e
 
-**engine1**/images/bkg_white.gif:16964178864734a55d987d244ff63824
-**engine1**/images/footer_bkg.gif:b7b8220d771fd469728327734f137f29
-**engine1**/images/header_bkg.gif:3829b43604f80df0adde18762b963152
-**engine1**/images/nav-shadow.gif:102185834ff311e182ebc847ab0e3bcc
-
 **engine1**/load.swf:95783ddfba1d61bc41d078eea1d7d88b
-**engine1**/style.css:d4105d442d254290830c9e53b0a4b430
 **engine1**/version.txt:d44ef0641ad2651c6556bf0ecde29085
