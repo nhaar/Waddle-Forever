@@ -107,5 +107,13 @@ export const FILES = new StaticDataTable<File, [
   [64, 'News25.swf', 1, FileCategory.Archives, null, null, null],
   [65, 'News26.swf', 1, FileCategory.Archives, null, null, null],
   [66, 'chat291.swf', 1, FileCategory.Unknown, null, null, null],
-  [67, 'NewsFan.swf', 1, FileCategory.Archives, null, null, null]
+  [67, 'NewsFan.swf', 1, FileCategory.Archives, null, null, null],
+  [68, 'September05Style.swf', 1, FileCategory.Archives, null, null, null],
+  [69, 'Clothing_0510.swf', 1, FileCategory.Archives, null, null, null],
+  [70, 'Clothing_0511.swf', 1, FileCategory.Archives, null, null, null],
+  [71, 'Clothing_0512.swf', 1, FileCategory.Archives, null, null, null],
+  [72, 'Clothing_0601.swf', 1, FileCategory.Archives, null, null, null],
+  [73, 'Clothing_0602.swf', 1, FileCategory.Archives, null, null, null],
+  [74, 'Clothing_0603.swf', 1, FileCategory.Archives, null, null, null],
+  [75, 'Clothing_0604.swf', 1, FileCategory.Archives, null, null, null],
 ]);

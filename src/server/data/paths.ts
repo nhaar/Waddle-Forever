@@ -66,7 +66,16 @@ export const PATHS = new StaticDataTable<Path, ['id', 'parentId', 'name']>(
     [55, 31, 'news24.swf'],
     [56, 31, 'news25.swf'],
     [57, 31, 'news26.swf'],
-    [58, 31, 'newsfan.swf']
+    [58, 31, 'newsfan.swf'],
+    [59, 4, 'catalogue'],
+    [60, 59, 'clothing0509.swf'],
+    [61, 59, 'clothing0510.swf'],
+    [62, 59, 'clothing0511.swf'],
+    [63, 59, 'clothing0512.swf'],
+    [64, 59, 'clothing0601.swf'],
+    [65, 59, 'clothing0602.swf'],
+    [66, 59, 'clothing0603.swf'],
+    [67, 59, 'clothing0604.swf']
   ]
 );
 
