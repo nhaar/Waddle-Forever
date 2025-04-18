@@ -10,7 +10,10 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
   ['id', 'time'],
   [
     // Beta release
-    [1, '2005-08-22']
+    [1, '2005-08-22'],
+    
+    // Added snow forts
+    [2, '2005-09-12']
   ]
 );
 

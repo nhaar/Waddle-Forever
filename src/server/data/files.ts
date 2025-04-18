@@ -76,5 +76,7 @@ export const FILES = new StaticDataTable<File, [
   // removed the Snow Forts button
   [34, 'map_release.swf', 1, FileCategory.Recreation, null, 35, [7]],
 
-  [35, 'ArtworkMapsIsland3.swf', 1, FileCategory.Archives, null, null, null]
+  [35, 'ArtworkMapsIsland3.swf', 1, FileCategory.Archives, null, null, null],
+  [36, 'ArtworkRoomsForts12.swf', 1, FileCategory.Archives, null, null, null],
+  [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36, [2]]
 ]);

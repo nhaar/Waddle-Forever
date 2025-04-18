@@ -37,7 +37,8 @@ export const PATHS = new StaticDataTable<Path, ['id', 'parentId', 'name']>(
     [26, 5, 'agent11.swf'],
     [27, 5, 'dojo10.swf'],
     [28, null, 'edit'],
-    [29, 28, 'edit6.swf']
+    [29, 28, 'edit6.swf'],
+    [30, 5, 'forts12.swf']
   ]
 );
 

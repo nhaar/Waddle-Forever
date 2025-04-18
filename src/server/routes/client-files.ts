@@ -9,6 +9,8 @@ import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
+import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
+import { MAP_UPDATES } from "../data/game-map";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -127,6 +129,11 @@ function addToTimeline(map: TimelineMap, route: string, event: TimelineEvent): v
   }
 }
 
+function getUpdateDate(updateId: number): string {
+  const update = UPDATES.getStrict(updateId);
+  return update.time;
+}
+
 function addRoomInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
   
@@ -142,6 +149,29 @@ function addRoomInfo(map: TimelineMap): void {
       })
     }
   }
+
+  ROOM_OPENINGS.forEach((opening) => {
+    const room = ROOMS[opening.room];
+    addToTimeline(map, getRoutePath(room.preCpipPath), {
+      type: 'permanent',
+      date: getUpdateDate(opening.updateId),
+      file: opening.fileId
+    })
+  })
+
+  ROOM_UPDATES.forEach((update) => {
+    const room = ROOMS[update.room];
+    console.log('update', room, {
+      type: 'permanent',
+      date: getUpdateDate(update.updateId),
+      file: update.fileId
+    });
+    addToTimeline(map, getRoutePath(room.preCpipPath), {
+      type: 'permanent',
+      date: getUpdateDate(update.updateId),
+      file: update.fileId
+    })
+  });
 }
 
 /** Converts a timeline event to the information consumed by the file server */
@@ -178,28 +208,37 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
 
 /** Given dynamic route updates that are sorted, find which file was served at a given date */
 export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
+  if (info.length === 1) {
+    return info[0].file;
+  }
+
   let left = 0;
-  let right = info.length;
+  // the last index is not allowed since we search in pairs
+  // and then -1 because length is last index + 1
+  let right = info.length - 2;
   let index = -1;
+  
   // this is a type of binary search implementation
   while (true) {
-    // -1 because the rightmost shouldn't be included, since we look for ranges
-    const middle = Math.floor((left + right - 1) / 2);
-    if (middle === left) {
+    // this means that was lower than index 0
+    if (right === -1) {
+      index = -1;
+      break
+    } else if (left === info.length - 1) {
+      // this means that was higher than last index
       index = left;
       break;
-    } else if (middle === right) {
-      index = -1;
-      break;
     }
+    const middle = Math.floor((left + right) / 2);
     const element = info[middle];
     if (isLower(date, element.date)) {
-      right = middle;
+      // middle can't be it, but middle - 1 could still be
+      right = middle - 1;
     } else if (isLower(date, info[middle + 1].date)) {
       index = middle;
       break;
     } else {
-      left = middle;
+      left = middle + 1;
     }
   }
 
@@ -234,6 +273,17 @@ function addStandaloneChanges(map: TimelineMap): void {
   })
 }
 
+function addMapUpdates(map: TimelineMap): void {
+  MAP_UPDATES.forEach((update) => {
+    const time = getUpdateDate(update.updateId);
+    addToTimeline(map, getRoutePath(PRECPIP_MAP_PATH), {
+      type: 'permanent',
+      date: time,
+      file: update.fileId
+    })
+  })
+}
+
 /** Get the object which knows all the file information needed to find the file for a given route */
 export function getFileServer(): Map<string, RouteFileInformation> {
   const timelines = new Map<string, FileTimeline>();
@@ -241,6 +291,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   addRoomInfo(timelines);
   AddIngameMapInfo(timelines);
   addStandaloneChanges(timelines);
+  addMapUpdates(timelines);
 
   const fileServer = new Map<string, RouteFileInformation>();
   addStaticFiles(fileServer);

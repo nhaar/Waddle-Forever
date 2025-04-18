@@ -16,6 +16,7 @@ export type RoomName = 'town' |
   'village' |
   'rink' |
   'dojo' |
+  'forts' |
   'agent';
 
 export const ROOMS: Record<RoomName, Room> = {
@@ -87,5 +88,11 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipPath: 26,
     preCpipName: 'Agent',
     preCpipSong: 7
+  },
+  'forts': {
+    id: 801,
+    name: 'Snow Forts',
+    preCpipPath: 30,
+    preCpipName: 'Forts'
   }
 };
