@@ -29,5 +29,15 @@ export const PARTIES: Party[] = [
       'rink': 80,
       'town': 81
     }
+  },
+  {
+    name: 'The Great Puffle Discovery',
+    startUpdateId: 11,
+    endUpdateId: 12,
+    roomChanges: {
+      'dance': 84,
+      'forts': 85,
+      'rink': 86
+    }
   }
 ];

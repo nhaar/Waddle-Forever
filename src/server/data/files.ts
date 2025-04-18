@@ -78,7 +78,7 @@ export const FILES = new StaticDataTable<File, [
 
   [35, 'ArtworkMapsIsland3.swf', 1, FileCategory.Archives, null, null, null],
   [36, 'ArtworkRoomsForts12.swf', 1, FileCategory.Archives, null, null, null],
-  [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36, [2]],
+  [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36, null],
   [38, 'Beta-town.swf', 1, FileCategory.Archives, null, null, null],
   [40, 'News1.swf', 1, FileCategory.Archives, null, null, null],
   [41, 'News2.swf', 1, FileCategory.Archives, null, null, null],
@@ -123,5 +123,11 @@ export const FILES = new StaticDataTable<File, [
   [78, 'Lounge1_halloween.swf', 1, FileCategory.Fix, null, null, null],
   [79, 'Dojo_halloween.swf', 1, FileCategory.Fix, null, null, null],
   [80, 'Icerink_halloween.swf', 1, FileCategory.Fix, null, null, null],
-  [81, 'Town_halloween.swf', 1, FileCategory.Fix, null, null, null]
+  [81, 'Town_halloween.swf', 1, FileCategory.Fix, null, null, null],
+  [82, 'village_sport.swf', 1, FileCategory.Approximation, null, 30, null],
+  [83, 'village_no_lodge.swf', 1, FileCategory.Approximation, null, 30, null],
+
+  [84, 'Dance1b_pet.swf', 1, FileCategory.Fix, null, null, null],
+  [85, 'Forts_pet.swf', 1, FileCategory.Fix, null, null, null],
+  [86, 'Icerink_pet.swf', 1, FileCategory.Fix, null, null, null]
 ]);
