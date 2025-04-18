@@ -244,6 +244,7 @@ export class Client {
   }
 
   sendStamps (): void {
+    // TODO this is actually not just for one's penguin, TODO multiplayer logic
     this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
   }
 
