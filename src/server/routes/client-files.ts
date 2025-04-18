@@ -96,9 +96,9 @@ function getMediaFilePath(fileId: number): string {
 }
 
 function addStaticFiles(map: RouteMap): void {
-  PRE_CPIP_STATIC_FILES.rows.forEach((row) => {
-    const route = getRoutePath(row.path);
-    const filePath = getMediaFilePath(row.file);
+  PRE_CPIP_STATIC_FILES.forEach((row) => {
+    const route = getRoutePath(row.pathId);
+    const filePath = getMediaFilePath(row.fileId);
     addToRouteMap(map, route, filePath);
   })
 }
@@ -358,8 +358,7 @@ function addIngameMapInfo(map: TimelineMap): void {
 }
 
 function addStandaloneChanges(map: TimelineMap): void {
-  const changes = STANDALONE_CHANGE.rows;
-  changes.forEach((change) => {
+  STANDALONE_CHANGE.forEach((change) => {
     const route = getRoutePath(change.pathId);
     const update = UPDATES.getStrict(change.updateId);
     addToTimeline(map, route, {

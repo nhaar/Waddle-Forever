@@ -1,16 +1,22 @@
 import { StaticDataTable } from "../../common/static-table";
 
 type StandaloneChange = {
-  id: number;
   pathId: number;
   fileId: number;
   updateId: number;
 };
 
-export const STANDALONE_CHANGE = new StaticDataTable<StandaloneChange, ['id', 'pathId', 'fileId', 'updateId']>(
-  ['id', 'pathId', 'fileId', 'updateId'],
-  [
+export const STANDALONE_CHANGE: StandaloneChange[] = [
+  {
     // newspapers-less precpip client
-    [1, 3, 24, 1]
-  ]
-);
+    pathId: 3,
+    fileId: 24,
+    updateId: 1
+  },
+  {
+    // precpip client with newspapers
+    pathId: 3,
+    fileId: 66,
+    updateId: 6
+  }
+];

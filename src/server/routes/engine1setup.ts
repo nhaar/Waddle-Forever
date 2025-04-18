@@ -1,6 +1,6 @@
 import { findIndexLeftOf } from "../../common/utils";
 import { CATALOGUES } from "../game/catalogues";
-import { FAN_ISSUE, OLD_NEWSPAPERS } from "../game/newspapers";
+import { FAN_ISSUE_DATE, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { findCurrentParty, PARTIES } from "../game/parties";
 import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
 
@@ -44,10 +44,11 @@ function getClothing(releaseVersion: Version) : string {
 
 export function getSetupXml(version: Version) {
   let news: string | Number;
-  if (version === FAN_ISSUE.date) {
-    news = FAN_ISSUE.name;
+  // this has to be fixed at some point, it's not accounting for everything
+  if (version === FAN_ISSUE_DATE) {
+    news = 'fan';
   } else {
-    const index = findIndexLeftOf(version, OLD_NEWSPAPERS, (version, newspapers, index) => isGreaterOrEqual(version, newspapers[index]));
+    const index = findIndexLeftOf(version, PRE_BOILER_ROOM_PAPERS, (version, newspapers, index) => isGreaterOrEqual(version, newspapers[index]));
     news = index + 1;
   }
 
