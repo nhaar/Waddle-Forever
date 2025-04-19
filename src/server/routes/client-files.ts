@@ -57,25 +57,8 @@ function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation)
   if (previousValue === undefined) {
     map.set(cleanPath, info);
   } else {
-    if (typeof previousValue === 'string' || typeof info === 'string') {
-      console.log(previousValue, info);
-      throw new Error(`Path ${cleanPath} is being duplicated`);
-    } else {
-      if (info.type === 'dynamic' && previousValue.type === 'dynamic') {
-        map.set(cleanPath, {
-          type: 'dynamic',
-          versions: sortOnProperty([...info.versions, ...previousValue.versions])
-        })
-      } else if (info.type === 'special' && previousValue.type === 'special') {
-        map.set(cleanPath, {
-          type: 'special',
-          versions: sortOnProperty([...info.versions, ...previousValue.versions])
-        })
-      } else {
-        console.log(previousValue, info);
-        throw new Error('Incompatible dynamic and special types being assigned');
-      }
-    }
+    console.log(previousValue, info);
+    throw new Error(`Path ${cleanPath} is being duplicated`);
   }
 }
 
@@ -110,7 +93,7 @@ function addMusicFiles(map: TimelineMap): void {
     const [musicId, fileId] = pair;
     const route = path.join(PRE_CPIP_MUSIC_PATH, String(musicId) + '.swf')
     const date = getUpdateDate(FIRST_UPDATE);
-    addToTimeline(map, route, {
+    map.add(route, {
       type: 'permanent',
       date,
       file: fileId
@@ -136,7 +119,7 @@ function addFallbacks(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE).time;
   FALLBACKS.forEach((pair) => {
     const [route, fileId] = pair;
-    addToTimeline(map, route, {
+    map.add(route, {
       type: 'permanent',
       date: firstUpdate,
       file: fileId
@@ -159,20 +142,37 @@ type TimelineEvent = {
 type FileTimeline = Array<TimelineEvent>;
 
 /** Maps for each route its file timeline */
-type TimelineMap = Map<string, FileTimeline>;
+// type TimelineMap = Map<string, FileTimeline>;
 
 function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
 
-/** Add a file update event to a timeline map for a given route */
-function addToTimeline(map: TimelineMap, route: string, event: TimelineEvent): void {
-  route = sanitizePath(route);
-  const prev = map.get(route);
-  if (prev === undefined) {
-    map.set(route, [event]);
-  } else {
-    prev.push(event);
+class TimelineMap {
+  private _map: Map<string, FileTimeline>;
+  
+  constructor() {
+    this._map = new Map<string, FileTimeline>;
+  }
+
+  /** Add a file update event to a timeline map for a given route */
+  add(route: string, event: TimelineEvent): void {
+    route = sanitizePath(route);
+    const prev = this._map.get(route);
+    if (prev === undefined) {
+      this._map.set(route, [event]);
+    } else {
+      prev.push(event);
+    }
+  }
+
+  getRouteMap(): RouteMap {
+    const routeMap = new Map<string, RouteFileInformation>();
+    this._map.forEach((timeline, route) => {
+      addToRouteMap(routeMap, route, getFileInformation(timeline))
+    });
+
+    return routeMap;
   }
 }
 
@@ -203,7 +203,7 @@ function addRoomInfo(map: TimelineMap): void {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
       // adding rooms that were there from the start
-      addToTimeline(map, getPreCpipRoomRoute(roomName as RoomName), {
+      map.add(getPreCpipRoomRoute(roomName as RoomName), {
         type: 'permanent',
         date: firstUpdate.time,
         file: originalRoomFile
@@ -214,7 +214,7 @@ function addRoomInfo(map: TimelineMap): void {
   const addRoomChange = (room: RoomName, updateId: number, fileId: number) => {
     const date = getUpdateDate(updateId);
     const route = getRoomRoute(date, room);
-    addToTimeline(map, route, {
+    map.add(route, {
       type: 'permanent',
       date,
       file: fileId
@@ -235,7 +235,7 @@ function addParties(map: TimelineMap): void {
     for (const room in roomChanges) {
       const fileId = roomChanges[room as RoomName]!;
       const roomRoute = getRoomRoute(start, room as RoomName);
-      addToTimeline(map, roomRoute, {
+      map.add(roomRoute, {
         type: 'temporary',
         start,
         end,
@@ -247,7 +247,7 @@ function addParties(map: TimelineMap): void {
   const addPartyChanges = (start: Version, end: Version, changes: PartyChanges) => {
     const pushCrumbChange = (baseRoute: string, route: string, info: number | CrumbIndicator) => {
       const fileId = typeof info === 'number' ? info : info[0];
-      addToTimeline(map, path.join(baseRoute, route), {
+      map.add(path.join(baseRoute, route), {
         type: 'temporary',
         start,
         end,
@@ -288,7 +288,7 @@ function addParties(map: TimelineMap): void {
 
     if (party.scavengerHunt2010) {
       // enabling the scavenger hunt dependency file
-      addToTimeline(map, 'play/v2/client/dependencies.json', {
+      map.add('play/v2/client/dependencies.json', {
         type: 'temporary',
         start: startDate,
         end: endDate,
@@ -472,7 +472,7 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
 function addIngameMapInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
 
-  addToTimeline(map, PRECPIP_MAP_PATH, {
+  map.add(PRECPIP_MAP_PATH, {
     date: firstUpdate.time,
     file: ORIGINAL_MAP,
     type: 'permanent'
@@ -482,7 +482,7 @@ function addIngameMapInfo(map: TimelineMap): void {
 function addStandaloneChanges(map: TimelineMap): void {
   STANDALONE_CHANGE.forEach((change) => {
     const update = UPDATES.getStrict(change.updateId);
-    addToTimeline(map, change.route, {
+    map.add(change.route, {
       type: 'permanent',
       date: update.time,
       file: change.fileId
@@ -490,7 +490,7 @@ function addStandaloneChanges(map: TimelineMap): void {
   });
 
   STANDALONE_TEMPORARY_CHANGE.forEach((change) => {
-    addToTimeline(map, change.route, {
+    map.add(change.route, {
       type: 'temporary',
       start: getUpdateDate(change.startUpdateId),
       end: getUpdateDate(change.endUpdateid),
@@ -502,7 +502,7 @@ function addStandaloneChanges(map: TimelineMap): void {
 function addMapUpdates(map: TimelineMap): void {
   MAP_UPDATES.forEach((update) => {
     const time = getUpdateDate(update.updateId);
-    addToTimeline(map, PRECPIP_MAP_PATH, {
+    map.add(PRECPIP_MAP_PATH, {
       type: 'permanent',
       date: time,
       file: update.fileId
@@ -514,7 +514,7 @@ function addCatalogues(map: TimelineMap): void {
   Object.entries(CPIP_CATALOGS).forEach((pair) => {
     const [updateId, fileId] = pair;
     
-    addToTimeline(map, 'play/v2/content/local/en/catalogues/clothing.swf', {
+    map.add('play/v2/content/local/en/catalogues/clothing.swf', {
       type: 'permanent',
       date: getUpdateDate(Number(updateId)),
       file: fileId
@@ -527,7 +527,7 @@ function addStagePlays(map: TimelineMap): void {
     const date = getUpdateDate(debut.updateId);
 
     // Stage itself
-    addToTimeline(map, 'play/v2/content/global/rooms/stage.swf', {
+    map.add('play/v2/content/global/rooms/stage.swf', {
       type: 'permanent',
       date,
       file: debut.stageFileId
@@ -535,14 +535,14 @@ function addStagePlays(map: TimelineMap): void {
 
     if (debut.plazaFileId !== null) {
       // Plaza
-      addToTimeline(map, 'play/v2/content/global/rooms/plaza.swf', {
+      map.add('play/v2/content/global/rooms/plaza.swf', {
         type: 'permanent',
         date,
         file: debut.plazaFileId
       });
     }
 
-    addToTimeline(map, 'play/v2/content/local/en/catalogues/costume.swf', {
+    map.add('play/v2/content/local/en/catalogues/costume.swf', {
       type: 'permanent',
       date,
       file: debut.costumeTrunkFileId
@@ -552,7 +552,7 @@ function addStagePlays(map: TimelineMap): void {
 
 /** Get the object which knows all the file information needed to find the file for a given route */
 export function getFileServer(): Map<string, RouteFileInformation> {
-  const timelines = new Map<string, FileTimeline>();
+  const timelines = new TimelineMap();
 
   addRoomInfo(timelines);
   addIngameMapInfo(timelines);
@@ -564,11 +564,8 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   addCatalogues(timelines);
   addStagePlays(timelines);
   
-  const fileServer = new Map<string, RouteFileInformation>();
+  const fileServer = timelines.getRouteMap();
   addStaticFiles(fileServer);
-  timelines.forEach((timeline, route) => {
-    addToRouteMap(fileServer, route, getFileInformation(timeline))
-  });
 
   return fileServer;
 }
