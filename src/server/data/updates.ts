@@ -139,7 +139,12 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // puffle party 2010 ends
     [56, '2010-02-25'],
     // puffle party 2010 construction
-    [57, '2010-02-11']
+    [57, '2010-02-11'],
+    // ppa 2010 starts
+    [58, '2010-03-18'],
+    // ppa 2010 ends
+    [59, '2010-03-29'],
+    
   ]
 );
 

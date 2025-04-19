@@ -10,6 +10,8 @@ type Party = {
   roomChanges: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   localChanges?: Record<string, number>;
+  // maps route inside play/v2/global to either file Id or tuple [global_path name, file Id]
+  globalChanges?: Record<string, number | [string, number]>
   music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
 };
@@ -183,5 +185,33 @@ export const PARTIES: Party[] = [
         'mine': 2333
       }
     }
+  },
+  {
+    name: 'Penguin Play Awards 2010',
+    startUpdateId: 58,
+    endUpdateId: 59,
+    music: {
+      'pizza': 283,
+      'plaza': 40,
+      'stage': 40,
+      'party': 40
+    },
+    roomChanges: {
+      'dock': 2344,
+      'mtn': 2345,
+      'party': 2346,
+      'pizza': 2347,
+      'plaza': 2348,
+      'stage': 2349,
+      'town': 2350
+    },
+    globalChanges: {
+      'content/shorts/fairyFables.swf': 2338,
+      'content/shorts/goldenPuffle.swf': 2339,
+      'content/shorts/ruby.swf': 2340,
+      'content/shorts/squidzoid.swf': 2341,
+      'content/shorts/underwater.swf': ['underwaterShort', 2342],
+      'content/winners.swf': ['voting_booth', 2343]
+    },
   },
 ];

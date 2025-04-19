@@ -32,7 +32,9 @@ export type RoomName = 'town' |
   'mine' |
   'beach' |
   'beacon' |
+  'stage' |
   'boxdimension' |
+  'party' |
   'party1' |
   'party2' |
   'party3';
@@ -200,6 +202,18 @@ export const ROOMS: Record<RoomName, Room> = {
   'boxdimension': {
     id: 811,
     name: 'Box Dimension',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'stage': {
+    id: 340,
+    name: 'Stage',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party': {
+    id: 850,
+    name: 'Party',
     preCpipFileNumber: null,
     preCpipName: null
   },

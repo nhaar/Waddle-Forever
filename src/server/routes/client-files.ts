@@ -254,6 +254,18 @@ function addParties(map: TimelineMap): void {
         });
       })
     }
+    if (party.globalChanges !== undefined) {
+      Object.entries(party.globalChanges).forEach((pair) => {
+        const [route, info] = pair;
+        const fileId = typeof info === 'number' ? info : info[1];
+        addToTimeline(map, path.join('play/v2/content/global', route), {
+          type: 'temporary',
+          start: startDate,
+          end: endDate,
+          file: fileId
+        });
+      })
+    }
     if (party.construction !== undefined) {
       const constructionStart = getUpdateDate(party.construction.updateId);
       addRoomChanges(party.construction.changes, constructionStart, endDate);
