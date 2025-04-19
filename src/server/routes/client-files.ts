@@ -12,6 +12,7 @@ import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES } from "../data/game-map";
 import { PARTIES } from "../data/parties";
+import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -93,6 +94,21 @@ function getMediaFilePath(fileId: number): string {
   }
 
   return path.join(packageInfo.name, categoryName, filePath);
+}
+
+function addMusicFiles(map: TimelineMap): void {
+  // pre-cpip there's no reason to believe updates happened
+
+  Object.entries(MUSIC_IDS).forEach((pair) => {
+    const [musicId, fileId] = pair;
+    const route = path.join(getRoutePath(PRE_CPIP_MUSIC_PATH), String(musicId) + '.swf')
+    const date = getUpdateDate(FIRST_UPDATE);
+    addToTimeline(map, route, {
+      type: 'permanent',
+      date,
+      file: fileId
+    });
+  })
 }
 
 function addStaticFiles(map: RouteMap): void {
@@ -389,7 +405,8 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   addStandaloneChanges(timelines);
   addMapUpdates(timelines);
   addParties(timelines);
-
+  addMusicFiles(timelines);
+  
   const fileServer = new Map<string, RouteFileInformation>();
   addStaticFiles(fileServer);
   timelines.forEach((timeline, route) => {

@@ -39,5 +39,19 @@ export const PARTIES: Party[] = [
       'forts': 85,
       'rink': 86
     }
+  },
+  {
+    name: 'Christmas Party 2005',
+    startUpdateId: 14,
+    endUpdateId: 15,
+    roomChanges: {
+      'coffee': 88,
+      'dance': 89,
+      'lodge': 90,
+      'rink': 91,
+      'shop': 92,
+      'town': 93,
+      'village': 94
+    }
   }
 ];

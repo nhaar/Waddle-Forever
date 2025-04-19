@@ -37,6 +37,11 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'village',
     fileId: 83,
     updateId: 10
+  },
+  {
+    room: 'forts',
+    fileId: 87,
+    updateId: 13
   }
 ];
 
@@ -55,5 +60,10 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     room: 'mtn',
     fileId: 13,
     updateId: 10
+  },
+  {
+    room: 'lodge',
+    fileId: 11,
+    updateId: 16
   }
 ];

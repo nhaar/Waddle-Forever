@@ -206,7 +206,7 @@ export class HttpServer {
             throw new Error('Not implemented');
           }
         }
-  
+
         res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
       }
     });

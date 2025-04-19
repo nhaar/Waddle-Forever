@@ -56,8 +56,8 @@ export const FILES = new StaticDataTable<File, [
   [22, 'games/fish.swf', 1, FileCategory.StaticServer, 1, null, null],
   [23, 'games/puffle.swf', 1, FileCategory.StaticServer, 1, null, null],
   [24, 'chat291_no_news.swf', 1, FileCategory.Approximation, null, 66, null],
-  [25, 'play/v2/content/global/music/1.swf', 1, FileCategory.StaticServer, 2, null, null],
-  [26, 'play/v2/content/global/music/2.swf', 1, FileCategory.StaticServer, 2, null, null],
+  [25, 'media/play/v2/content/global/music/1.swf', 1, FileCategory.StaticServer, 2, null, null],
+  [26, 'media/play/v2/content/global/music/2.swf', 1, FileCategory.StaticServer, 2, null, null],
 
   // with the Snow Forts trigger removed since it wasn't available yet
   [27, 'town_release.swf', 1, FileCategory.Approximation, null, 28, null],
@@ -129,5 +129,19 @@ export const FILES = new StaticDataTable<File, [
 
   [84, 'Dance1b_pet.swf', 1, FileCategory.Fix, null, null, null],
   [85, 'Forts_pet.swf', 1, FileCategory.Fix, null, null, null],
-  [86, 'Icerink_pet.swf', 1, FileCategory.Fix, null, null, null]
+  [86, 'Icerink_pet.swf', 1, FileCategory.Fix, null, null, null],
+
+  // collission fix for chat291.swf
+  [87, 'ArtworkRoomsForts3.swf', 1, FileCategory.Fix, null, null, null],
+
+  // colision fixes for chat291.swf
+  [88, 'CP05Coffee.swf', 1, FileCategory.Fix, null, null, null],
+  [89, 'CP05Dance.swf', 1, FileCategory.Fix, null, null, null],
+  [90, 'CP05Lodge.swf', 1, FileCategory.Fix, null, null, null],
+  [91, 'CP05Rink.swf', 1, FileCategory.Fix, null, null, null],
+  [92, 'CP05Shop.swf', 1, FileCategory.Fix, null, null, null],
+  [93, 'CP05Town.swf', 1, FileCategory.Fix, null, null, null],
+  [94, 'CP05Village.swf', 1, FileCategory.Fix, null, null, null],
+  [95, 'media/play/v2/content/global/music/200.swf', 1, FileCategory.StaticServer, 2, null, null],
+  [96, 'Music7.swf', 1, FileCategory.Archives, null, null, null]
 ]);

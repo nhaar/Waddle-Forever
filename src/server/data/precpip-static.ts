@@ -169,5 +169,9 @@ export const PRE_CPIP_STATIC_FILES: PreCpipStaticFile[] = [
   {
     pathId: 66,
     fileId: 74
+  },
+  {
+    pathId: 70,
+    fileId: 23
   }
 ];
