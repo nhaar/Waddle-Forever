@@ -10,7 +10,7 @@ import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
-import { CrumbIndicator, PARTIES, RoomChanges } from "../data/parties";
+import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
@@ -238,23 +238,21 @@ function addParties(map: TimelineMap): void {
       })
     }
   }
-  
-  PARTIES.forEach((party) => {
-    const startDate = getUpdateDate(party.startUpdateId);
-    const endDate = getUpdateDate(party.endUpdateId);
+
+  const addPartyChanges = (start: Version, end: Version, changes: PartyChanges) => {
     const pushCrumbChange = (baseRoute: string, route: string, info: number | CrumbIndicator) => {
       const fileId = typeof info === 'number' ? info : info[0];
       addToTimeline(map, path.join(baseRoute, route), {
         type: 'temporary',
-        start: startDate,
-        end: endDate,
+        start,
+        end,
         file: fileId
       });
     }
 
-    addRoomChanges(party.roomChanges, startDate, endDate);
-    if (party.localChanges !== undefined) {
-      Object.entries(party.localChanges).forEach((pair) => {
+    addRoomChanges(changes.roomChanges, start, end);
+    if (changes.localChanges !== undefined) {
+      Object.entries(changes.localChanges).forEach((pair) => {
         const [route, languages] = pair;
         Object.entries(languages).forEach((changePair) => {
           const [language, info] = changePair;
@@ -262,12 +260,22 @@ function addParties(map: TimelineMap): void {
         });
       })
     }
-    if (party.globalChanges !== undefined) {
-      Object.entries(party.globalChanges).forEach((pair) => {
+    if (changes.globalChanges !== undefined) {
+      Object.entries(changes.globalChanges).forEach((pair) => {
         const [route, info] = pair;
         pushCrumbChange('play/v2/content/global', route, info);
       })
     }
+  }
+  
+  PARTIES.forEach((party) => {
+    const startDate = getUpdateDate(party.startUpdateId);
+    const endDate = getUpdateDate(party.endUpdateId);
+    addPartyChanges(startDate, endDate, {
+      roomChanges: party.roomChanges,
+      localChanges: party.localChanges,
+      globalChanges: party.globalChanges
+    });
     if (party.construction !== undefined) {
       const constructionStart = getUpdateDate(party.construction.updateId);
       addRoomChanges(party.construction.changes, constructionStart, endDate);
@@ -281,6 +289,17 @@ function addParties(map: TimelineMap): void {
         end: endDate,
         file: 2384
       });
+    }
+
+    if (party.updates !== undefined) {
+      party.updates.forEach((update) => {
+        const updateStartDate = getUpdateDate(update.updateId);
+        addPartyChanges(updateStartDate, endDate, {
+          roomChanges: update.roomChanges,
+          localChanges: update.localChanges,
+          globalChanges: update.globalChanges
+        });
+      })
     }
   })
 }

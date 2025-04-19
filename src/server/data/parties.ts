@@ -8,19 +8,28 @@ type Language = 'en';
 /** First element is file id used, then a list of all the crumbs that point to this path */
 export type CrumbIndicator = [number, ...string[]];
 
-type Party = {
-  name: string;
-  startUpdateId: number;
-  endUpdateId: number;
+export type PartyChanges = {
   roomChanges: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   // inside a map of each language
   localChanges?: Record<string, Partial<Record<Language, number | CrumbIndicator>>>;
   // maps route inside play/v2/global to either file Id or tuple [global_path name, file Id]
   globalChanges?: Record<string, number | CrumbIndicator>
+}
+
+type Party = PartyChanges & {
+  name: string;
+  startUpdateId: number;
+  endUpdateId: number;
+
   music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
   scavengerHunt2010?: true;
+
+  updates?: Array<{
+    comment?: string;
+    updateId: number;
+  } & PartyChanges>;
 };
 
 type Construction = {
@@ -376,5 +385,25 @@ export const PARTIES: Party[] = [
         'village': 2416
       }
     }
-  }
+  },
+  {
+    name: 'Popcorn Explosion',
+    startUpdateId: 67,
+    endUpdateId: 25,
+    roomChanges: {
+      'agent': 2417,
+      'village': 2418,
+      'sport': 2419
+    },
+    updates: [
+      {
+        comment: 'Sports Shop closed for reconstruction',
+        updateId: 69,
+        roomChanges: {
+          'agent': 2420,
+          'village': 2421
+        }
+      }
+    ]
+  },
 ];

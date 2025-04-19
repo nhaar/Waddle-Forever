@@ -2475,12 +2475,12 @@ export const FILES = new StaticDataTable<File, [
   [2413, 'RoomsForts-MedievalParty2010Const.swf', 1, FileCategory.Archives, null, null],
   [2414, 'RoomsPlaza-MedievalParty2010Const.swf', 1, FileCategory.Archives, null, null],
   [2415, 'RoomsTown-MedievalParty2010Pre.swf', 1, FileCategory.Archives, null, null],
-  [2416, 'RoomsVillage-MedievalParty2010Const.swf', 1, FileCategory.Archives, null, null]
-  // [2417, '', 1, FileCategory.Archives, null, null]
-  // [2418, '', 1, FileCategory.Archives, null, null]
-  // [2419, '', 1, FileCategory.Archives, null, null]
-  // [2420, '', 1, FileCategory.Archives, null, null]
-  // [2421, '', 1, FileCategory.Archives, null, null]
+  [2416, 'RoomsVillage-MedievalParty2010Const.swf', 1, FileCategory.Archives, null, null],
+  [2417, 'RoomsAgent-PopcornExplosion.swf', 1, FileCategory.Archives, null, null],
+  [2418, 'RoomsVillage-PopcornExplosion.swf', 1, FileCategory.Archives, null, null],
+  [2419, 'RoomsSport-PopcornExplosion.swf', 1, FileCategory.Archives, null, null],
+  [2420, 'RoomsAgent-PopcornExplosion_2.swf', 1, FileCategory.Archives, null, null],
+  [2421, 'RoomsVillage-PopcornExplosion_2.swf', 1, FileCategory.Archives, null, null]
   // [2422, '', 1, FileCategory.Archives, null, null]
   // [2423, '', 1, FileCategory.Archives, null, null]
 ]);

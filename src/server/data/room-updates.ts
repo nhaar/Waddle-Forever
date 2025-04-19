@@ -170,6 +170,12 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'attic',
     fileId: 239,
     updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'sport',
+    fileId: 286,
+    updateId: 27
   }
 ];
 

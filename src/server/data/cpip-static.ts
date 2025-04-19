@@ -96,7 +96,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/content/global/rooms/shiphold.swf': 264,
   'play/v2/content/global/rooms/shipnest.swf': 265,
   'play/v2/content/global/rooms/shipquarters.swf': 266,
-  'play/v2/content/global/rooms/sport.swf': 268,
   'play/v2/content/global/rooms/underwater.swf': 269,
   'play/v2/content/global/telescope/empty.swf': 270,
   'play/v2/games/dancing/songs/songData1.swf': 271,

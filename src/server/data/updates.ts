@@ -159,7 +159,11 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // medieval 2010 starts
     [66, '2010-05-07'],
     // medieval 2010 ends
-    [67, '2010-05-16']
+    [67, '2010-05-16'],
+    // popcorn exploison start
+    [68, '2010-05-18'],
+    // sport shop closes
+    [69, '2010-05-25'],
   ]
 );
 
