@@ -151,7 +151,15 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // earth day 2010 starts
     [62, '2010-04-21'],
     // earth day 2010 ends
-    [63, '2010-04-27']
+    [63, '2010-04-27'],
+    // earth day 2010 construction starts
+    [64, '2010-04-15'],
+    // medieval construction 2010 starts
+    [65, '2010-04-29'],
+    // medieval 2010 starts
+    [66, '2010-05-07'],
+    // medieval 2010 ends
+    [67, '2010-05-16']
   ]
 );
 

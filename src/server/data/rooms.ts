@@ -20,6 +20,7 @@ export type RoomName = 'town' |
   'village' |
   'rink' |
   'dojo' |
+  'boiler' |
   'dojoext' |
   'forts' |
   'agent' |
@@ -27,6 +28,7 @@ export type RoomName = 'town' |
   'mtn' |
   'shack' |
   'lodge' |
+  'attic' |
   'pizza' |
   'plaza' |
   'pet' |
@@ -39,7 +41,22 @@ export type RoomName = 'town' |
   'party' |
   'party1' |
   'party2' |
-  'party3';
+  'party3' |
+  'party4' |
+  'party5' |
+  'party6' |
+  'party7' |
+  'party8' |
+  'party9' |
+  'party10' |
+  'party11' |
+  'party12' |
+  'party13' |
+  'party14' |
+  'party15' |
+  'party16' |
+  'party17' |
+  'party18' ;
 
 export const ROOMS: Record<RoomName, Room> = {
   'town': {
@@ -80,11 +97,18 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipName: 'Dance',
     preCpipSong: 2
   },
+  
   'lounge': {
     id: 121,
     name: 'Dance Lounge',
     preCpipFileNumber: 10,
     preCpipName: 'Lounge'
+  },
+  'boiler': {
+    id: 804,
+    name: 'Boiler Room',
+    preCpipFileNumber: null,
+    preCpipName: null
   },
   'light': {
     id: 410,
@@ -164,6 +188,12 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Ski Lodge',
     preCpipFileNumber: 11,
     preCpipName: 'Lodge'
+  },
+  'attic': {
+    id: 221,
+    name: 'Lodge Attic',
+    preCpipFileNumber: null,
+    preCpipName: null
   },
   'pizza': {
     id: 330,
@@ -248,5 +278,95 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Party 3',
     preCpipFileNumber: null,
     preCpipName: null
-  }
+  },
+  'party4': {
+    id: 854,
+    name: 'Party 4',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party5': {
+    id: 855,
+    name: 'Party 5',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party6': {
+    id: 856,
+    name: 'Party 6',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party7': {
+    id: 857,
+    name: 'Party 7',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party8': {
+    id: 858,
+    name: 'Party 8',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party9': {
+    id: 859,
+    name: 'Party 9',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party10': {
+    id: 860,
+    name: 'Party 10',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party11': {
+    id: 861,
+    name: 'Party 11',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party12': {
+    id: 862,
+    name: 'Party 12',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party13': {
+    id: 863,
+    name: 'Party 13',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party14': {
+    id: 864,
+    name: 'Party 14',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party15': {
+    id: 865,
+    name: 'Party 15',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party16': {
+    id: 866,
+    name: 'Party 16',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party17': {
+    id: 867,
+    name: 'Party 17',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party18': {
+    id: 868,
+    name: 'Party 18',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
 };

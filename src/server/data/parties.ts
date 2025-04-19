@@ -285,6 +285,96 @@ export const PARTIES: Party[] = [
       'scavenger_hunt/recycle_icon.swf': [2386, 'scavenger_hunt_icon'],
       'scavenger_hunt/recycle.swf': [2385, 'easter_egg_hunt', 'recycle_hunt']
     },
-    scavengerHunt2010: true
+    scavengerHunt2010: true,
+    construction: {
+      updateId: 64,
+      changes: {
+        'shack': 2387
+      }
+    }
   },
+  {
+    name: 'Medieval Party 2010',
+    startUpdateId: 66,
+    endUpdateId: 67,
+    roomChanges: {
+      'town': 2388,
+      'coffee': 2389,
+      'book': 2390,
+      'dance': 2391,
+      'lounge': 2392,
+      'shop': 2393,
+      'forts': 2394,
+      'plaza': 2395,
+      'pet': 2396,
+      'pizza': 2397,
+      'boiler': 2398,
+      'cave': 2399,
+      'forest': 2400,
+      'cove': 2401,
+      'dock': 2402,
+      'beach': 2403,
+      'light': 2404,
+      'beacon': 2405,
+      'village': 2406,
+      'lodge': 2407,
+      'attic': 2408,
+      'mtn': 2409,
+      'rink': 2410
+    },
+    music: {
+      'beach': 233,
+      'beacon': 233,
+      'boiler': 233,
+      'book': 233,
+      'cave': 237,
+      'coffee': 233,
+      'cove': 235,
+      'dance': 233,
+      'dock': 233,
+      'forest': 235,
+      'forts': 236,
+      'light': 233,
+      'lodge': 233,
+      'lounge': 233,
+      'mine': 236,
+      'mtn': 233,
+      'pet': 233,
+      'pizza': 233,
+      'plaza': 233,
+      'rink': 236,
+      'shop': 234,
+      'town': 233,
+      'village': 233,
+      'party1': 235,
+      'party2': 266,
+      'party3': 266,
+      'party4': 266,
+      'party5': 266,
+      'party6': 266,
+      'party7': 266,
+      'party8': 266,
+      'party9': 266,
+      'party10': 266,
+      'party11': 266,
+      'party12': 266,
+      'party13': 265,
+      'party14': 286,
+      'party15': 286,
+      'party16': 287,
+      'party17': 288,
+      'party18': 265
+    },
+    construction: {
+      updateId: 65,
+      changes: {
+        'beach': 2411,
+        'cave': 2412,
+        'forts': 2413,
+        'plaza': 2414,
+        'town': 2415,
+        'village': 2416
+      }
+    }
+  }
 ];
