@@ -48,7 +48,27 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // christmas party 2005 ends
     [15, '2005-12-26'],
     // ski lodge opened, have a feeling it wasnt when christmas 05 started
-    [16, '2005-12-22']
+    [16, '2005-12-22'],
+
+    // valentine's day start
+    [17, '2006-02-14'],
+    // valentine day end
+    [18, '2006-02-15'],
+    // pizza parlor opening start
+    [19, '2006-02-24'],
+    // pizza parlor opening end
+    [20, '2006-02-28'],
+
+    // pet shop opens
+    [21, '2006-03-17'],
+
+    // iceberg opens
+    [22, '2006-03-29'],
+
+    // april fools 2006 start
+    [23, '2006-03-31'],
+    // april fools 2006 end
+    [24, '2006-04-03']
   ]
 );
 

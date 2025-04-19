@@ -253,7 +253,7 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
   const pushPermanent = (date: string) => {
     const file = permanentMapping.get(currentPermanent);
     if (file === undefined) {
-      throw new Error('Logic error');
+      throw new Error('No permanent room found... Perhaps the first permanent update is after the first temporary end');
     }
     versions.push({
       date,

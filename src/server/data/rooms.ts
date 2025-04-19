@@ -20,7 +20,11 @@ export type RoomName = 'town' |
   'agent' |
   'sport' |
   'mtn' |
-  'lodge';
+  'lodge' |
+  'pizza' |
+  'plaza' |
+  'pet' |
+  'berg';
 
 export const ROOMS: Record<RoomName, Room> = {
   'town': {
@@ -115,5 +119,29 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Ski Lodge',
     preCpipFileNumber: 11,
     preCpipName: 'Lodge'
+  },
+  'pizza': {
+    id: 330,
+    name: 'Pizza Parlor',
+    preCpipFileNumber: 12,
+    preCpipName: 'Pizza'
+  },
+  'plaza': {
+    id: 300,
+    name: 'Plaza',
+    preCpipFileNumber: 12,
+    preCpipName: 'Plaza'
+  },
+  'pet': {
+    id: 310,
+    name: 'Pet Shop',
+    preCpipFileNumber: 11,
+    preCpipName: 'Pet'
+  },
+  'berg': {
+    id: 805,
+    name: 'Iceberg',
+    preCpipFileNumber: 10,
+    preCpipName: 'Berg'
   }
 };

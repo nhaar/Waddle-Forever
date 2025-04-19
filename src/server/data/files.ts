@@ -78,6 +78,8 @@ export const FILES = new StaticDataTable<File, [
 
   [35, 'ArtworkMapsIsland3.swf', 1, FileCategory.Archives, null, null, null],
   [36, 'ArtworkRoomsForts12.swf', 1, FileCategory.Archives, null, null, null],
+
+  // just removed ability to go to the right to the plaza
   [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36, null],
   [38, 'Beta-town.swf', 1, FileCategory.Archives, null, null, null],
   [40, 'News1.swf', 1, FileCategory.Archives, null, null, null],
@@ -143,5 +145,27 @@ export const FILES = new StaticDataTable<File, [
   [93, 'CP05Town.swf', 1, FileCategory.Fix, null, null, null],
   [94, 'CP05Village.swf', 1, FileCategory.Fix, null, null, null],
   [95, 'media/play/v2/content/global/music/200.swf', 1, FileCategory.StaticServer, 2, null, null],
-  [96, 'Music7.swf', 1, FileCategory.Archives, null, null, null]
+  [96, 'Music7.swf', 1, FileCategory.Archives, null, null, null],
+  [97, 'ArtworkRooms0214Lounge.swf', 1, FileCategory.Archives, null, null, null],
+  [98, 'ArtworkRooms0214Dance.swf', 1, FileCategory.Archives, null, null, null],
+  
+  [99, 'ArtworkRoomsForts11.swf', 1, FileCategory.Archives, null, null, null],
+  [100, 'ArtworkRoomsPizza10.swf', 1, FileCategory.Archives, null, null, null],
+  [101, 'ArtworkRoomsTown13.swf', 1, FileCategory.Archives, null, null, null],
+  [102, 'ArtworkRoomsPlaza12.swf', 1, FileCategory.Archives, null, null, null],
+  [103, 'ArtworkRoomsPlaza10.swf', 1, FileCategory.Archives, null, null, null],
+  [104, 'ArtworkMapsIsland5.swf', 1, FileCategory.Archives, null, null, null],
+  [105, 'map_plaza_no_berg.swf', 1, FileCategory.Approximation, null, 104, null],
+
+  
+  [105, 'ArtworkRooms0401Dojo.swf', 1, FileCategory.Archives, null, null, null],
+  [106, 'ArtworkRooms0401Rink.swf', 1, FileCategory.Archives, null, null, null],
+  [107, 'ArtworkRooms0401Dance.swf', 1, FileCategory.Archives, null, null, null],
+  [108, 'ArtworkRoomsPlaza13.swf', 1, FileCategory.Archives, null, null, null],
+  [109, 'ArtworkRooms0401Lodge.swf', 1, FileCategory.Archives, null, null, null],
+  [110, 'ArtworkRooms0401Village.swf', 1, FileCategory.Archives, null, null, null],
+  [111, 'ArtworkRooms0401Forts.swf', 1, FileCategory.Archives, null, null, null],
+  [112, 'ArtworkRooms0401Town.swf', 1, FileCategory.Archives, null, null, null],
+  [113, 'Music201.swf', 1, FileCategory.Archives, null, null, null],
+  [114, 'media/play/v2/content/global/music/20.swf', 1, FileCategory.StaticServer, 2, null, null]
 ]);

@@ -53,5 +53,39 @@ export const PARTIES: Party[] = [
       'town': 93,
       'village': 94
     }
+  },
+  {
+    name: 'Valentine\'s Day Celebration',
+    startUpdateId: 17,
+    endUpdateId: 18,
+    roomChanges: {
+      'dance': 98,
+      'lounge': 97
+    }
+  },
+  {
+    name: 'Pizza Parlor Opening Party',
+    startUpdateId: 19,
+    endUpdateId: 20,
+    roomChanges: {
+      'forts': 99,
+      'pizza': 100,
+      'town': 101
+    }
+  },
+  {
+    name: 'April Fools Party 2006',
+    startUpdateId: 23,
+    endUpdateId: 24,
+    roomChanges: {
+      'dojo': 105,
+      'rink': 106,
+      'dance': 107,
+      'plaza': 108,
+      'lodge': 109,
+      'village': 110,
+      'forts': 111,
+      'town': 112
+    }
   }
 ];
