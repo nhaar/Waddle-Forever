@@ -2311,6 +2311,8 @@ export const FILES = new StaticDataTable<File, [
   [2257, 'media/play/v2/games/quests/q9/lang/pt/misc/messages.swf', 1, FileCategory.StaticServer, 2, null, null],
   [2258, 'media/play/v2/games/quests/q9/lang/pt/misc/uitext.swf', 1, FileCategory.StaticServer, 2, null, null],
   [2259, 'media/play/v2/games/quests/q9/lang/pt/misc/versions.swf', 1, FileCategory.StaticServer, 2, null, null],
-  
-
+  [2260, 'interface_epf_no_stamps.swf', 1, FileCategory.Recreation, null, 2261, [1]],
+  [2261, 'interface_stamps.swf', 1, FileCategory.Unknown, null, null, null],
+  [2262, 'interface_2009.swf', 1, FileCategory.Unknown, null, null, null],
+  [2263, 'engine_2009.swf', 1, FileCategory.Unknown, null, null, null]
 ]);

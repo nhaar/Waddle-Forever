@@ -3,7 +3,7 @@ import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isEqual, isLower, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
-import { FIRST_UPDATE, UPDATES } from "../data/updates";
+import { CPIP_UPDATE, FIRST_UPDATE, UPDATES } from "../data/updates";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE } from "../data/standalone-changes";
@@ -12,6 +12,8 @@ import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
 import { PARTIES } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
+import { CPIP_STATIC_FILES } from "../data/cpip-static";
+import { FALLBACKS } from "../data/fallbacks";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -101,6 +103,24 @@ function addStaticFiles(map: RouteMap): void {
     const filePath = getMediaFilePath(fileId);
     addToRouteMap(map, route, filePath);
   })
+
+  Object.entries(CPIP_STATIC_FILES).forEach((pair) => {
+    const [route, fileId] = pair;
+    const filePath = getMediaFilePath(fileId);
+    addToRouteMap(map, route, filePath);
+  });
+}
+
+function addFallbacks(map: TimelineMap): void {
+  const firstUpdate = UPDATES.getStrict(FIRST_UPDATE).time;
+  FALLBACKS.forEach((pair) => {
+    const [route, fileId] = pair;
+    addToTimeline(map, route, {
+      type: 'permanent',
+      date: firstUpdate,
+      file: fileId
+    });
+  })
 }
 
 /** A single event in a timeline of updates of a file */
@@ -140,8 +160,14 @@ function getPreCpipRoomRoute(room: RoomName): string {
   return path.join('artwork/rooms', `${room}${roomInfo.preCpipFileNumber}.swf`);
 }
 
+function getCpipRoomRoute(room: RoomName): string {
+  const roomInfo = ROOMS[room];
+  return path.join('play/v2/content/global/rooms', `${room}.swf`);
+}
+
 function addRoomInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
+  const cpipUpdate = UPDATES.getStrict(CPIP_UPDATE);
   
   for (const roomName in ROOMS) {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
@@ -155,20 +181,22 @@ function addRoomInfo(map: TimelineMap): void {
     }
   }
 
-  ROOM_OPENINGS.forEach((opening) => {
-    addToTimeline(map, getPreCpipRoomRoute(opening.room), {
+  const addRoomChange = (room: RoomName, updateId: number, fileId: number) => {
+    const date = getUpdateDate(updateId);
+    const route = isLower(date, cpipUpdate.time) ? getPreCpipRoomRoute(room) : getCpipRoomRoute(room);
+    addToTimeline(map, route, {
       type: 'permanent',
-      date: getUpdateDate(opening.updateId),
-      file: opening.fileId
+      date,
+      file: fileId
     })
+  }
+
+  ROOM_OPENINGS.forEach((opening) => {
+    addRoomChange(opening.room, opening.updateId, opening.fileId);
   })
 
   ROOM_UPDATES.forEach((update) => {
-    addToTimeline(map, getPreCpipRoomRoute(update.room), {
-      type: 'permanent',
-      date: getUpdateDate(update.updateId),
-      file: update.fileId
-    })
+    addRoomChange(update.room, update.updateId, update.fileId);
   });
 }
 
@@ -384,6 +412,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   addMapUpdates(timelines);
   addParties(timelines);
   addMusicFiles(timelines);
+  addFallbacks(timelines);
   
   const fileServer = new Map<string, RouteFileInformation>();
   addStaticFiles(fileServer);

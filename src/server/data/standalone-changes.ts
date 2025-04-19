@@ -24,5 +24,16 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'play/v2/client/engine.swf',
     fileId: 119,
     updateId: 25
+  },
+  {
+    // interface with EPF phone
+    route: 'play/v2/client/interface.swf',
+    fileId: 2260,
+    updateId: 25
+  },
+  {
+    route: 'play/v2/client/interface.swf',
+    fileId: 2261,
+    updateId: 26
   }
 ];

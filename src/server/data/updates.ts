@@ -70,8 +70,13 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // april fools 2006 end
     [24, '2006-04-03'],
     // epf update
-    [25, '2010-05-27']
+    [25, '2010-05-27'],
+    // Stamps release
+    [26, '2010-07-26'],
+    // cpip "engine" cutoff
+    [27, '2008-07-01']
   ]
 );
 
 export const FIRST_UPDATE = 1;
+export const CPIP_UPDATE = 27;
