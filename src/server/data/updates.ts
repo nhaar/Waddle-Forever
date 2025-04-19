@@ -74,7 +74,57 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // Stamps release
     [26, '2010-07-26'],
     // cpip "engine" cutoff
-    [27, '2008-07-01']
+    [27, '2008-07-01'],
+    // update which added an extra mancala board to the book room, date unknown
+    [28, '2006-01-01'],
+
+    // whatever the update that introduced the vanilla-media engine would be
+    [29, '2016-01-01'],
+
+    // the fair 2010 starts
+    [30, '2010-09-03'],
+    // the fair 2011 starts
+    [31, '2011-09-22'],
+
+    // catalogue jan
+    [32, '2010-01-01'],
+    // catalogue feb
+    [33, '2010-02-05'],
+    // catalogue apr
+    [34, '2010-04-01'],
+    // catalogue may
+    [35, '2010-05-07'],
+    // catalogue sep
+    [36, '2010-09-03'],
+    // catalogue oct
+    [37, '2010-10-01'],
+    // catalogue nov
+    [38, '2010-11-05'],
+    // catalogue dec
+    [39, '2010-12-03'],
+
+    // quest for golden puffle dec 09
+    [40, '2009-12-25'],
+    // fairy fables jan 10
+    [41, '2010-01-08'],
+    // secrets of the bamboo forest feb 10
+    [42, '2010-02-11'],
+    // quest for the golden puffle mar 10
+    [43, '2010-03-29'],
+    // ruby and the ruby june 10
+    [44, '2010-06-10'],
+    // underwater adventure july 10
+    [45, '2010-07-21'],
+    // squidzoid august 10
+    [46, '2010-08-26'],
+    // fairy fables september 10
+    [47, '2010-09-16'],
+    // secrets of the bamboo forest oct 10
+    [48, '2010-10-08'],
+    // space adventure planet Y nov 2010
+    [49, '2010-11-18'],
+    // ruby and the ruby dec 2010
+    [50, '2010-12-28']
   ]
 );
 

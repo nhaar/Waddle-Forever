@@ -14,6 +14,7 @@ const PEOPLE = new StaticDataTable<Person, ['id', 'name']>(
     [4, 'JeffTheRock'],
     [5, 'Blue Kirby'],
     [6, 'Resol'],
-    [7, 'Zeldaboy']
+    [7, 'Zeldaboy'],
+    [8, 'victando']
   ]
 );

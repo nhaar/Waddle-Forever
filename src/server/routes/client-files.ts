@@ -14,6 +14,8 @@ import { PARTIES } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
+import { CPIP_CATALOGS } from "../game/catalogues";
+import { STAGE_TIMELINE } from "../game/stage-plays";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -402,6 +404,46 @@ function addMapUpdates(map: TimelineMap): void {
   })
 }
 
+function addCatalogues(map: TimelineMap): void {
+  Object.entries(CPIP_CATALOGS).forEach((pair) => {
+    const [updateId, fileId] = pair;
+    
+    addToTimeline(map, 'play/v2/content/local/en/catalogues/clothing.swf', {
+      type: 'permanent',
+      date: getUpdateDate(Number(updateId)),
+      file: fileId
+    });
+  })
+}
+
+function addStagePlays(map: TimelineMap): void {
+  STAGE_TIMELINE.forEach((debut) => {
+    const date = getUpdateDate(debut.updateId);
+
+    // Stage itself
+    addToTimeline(map, 'play/v2/content/global/rooms/stage.swf', {
+      type: 'permanent',
+      date,
+      file: debut.stageFileId
+    });
+
+    if (debut.plazaFileId !== null) {
+      // Plaza
+      addToTimeline(map, 'play/v2/content/global/rooms/plaza.swf', {
+        type: 'permanent',
+        date,
+        file: debut.plazaFileId
+      });
+    }
+
+    addToTimeline(map, 'play/v2/content/local/en/catalogues/costume.swf', {
+      type: 'permanent',
+      date,
+      file: debut.costumeTrunkFileId
+    });
+  })
+}
+
 /** Get the object which knows all the file information needed to find the file for a given route */
 export function getFileServer(): Map<string, RouteFileInformation> {
   const timelines = new Map<string, FileTimeline>();
@@ -413,6 +455,8 @@ export function getFileServer(): Map<string, RouteFileInformation> {
   addParties(timelines);
   addMusicFiles(timelines);
   addFallbacks(timelines);
+  addCatalogues(timelines);
+  addStagePlays(timelines);
   
   const fileServer = new Map<string, RouteFileInformation>();
   addStaticFiles(fileServer);

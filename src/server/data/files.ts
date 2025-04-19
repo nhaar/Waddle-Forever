@@ -2314,5 +2314,40 @@ export const FILES = new StaticDataTable<File, [
   [2260, 'interface_epf_no_stamps.swf', 1, FileCategory.Recreation, null, 2261, [1]],
   [2261, 'interface_stamps.swf', 1, FileCategory.Unknown, null, null, null],
   [2262, 'interface_2009.swf', 1, FileCategory.Unknown, null, null, null],
-  [2263, 'engine_2009.swf', 1, FileCategory.Unknown, null, null, null]
+  [2263, 'engine_2009.swf', 1, FileCategory.Unknown, null, null, null],
+  [2264, 'ArtworkRoomsBook11.swf', 1, FileCategory.Archives, null, null, null],
+  [2265, 'media/play/v2/client/engine.swf', 1, FileCategory.StaticServer, 3, null, null],
+
+  // remove brown puffle from 2011 puffle paddle for the 2010 one
+  [2266, 'paddle_no_brown.swf', 1, FileCategory.Recreation, null, 181, [2]],
+
+  [2267, 'January10Style.swf', 1, FileCategory.Archives, null, null, null],
+  [2268, 'Feb10Clothing.swf', 1, FileCategory.Archives, null, null, null],
+  [2269, 'April10Style.swf', 1, FileCategory.Archives, null, null, null],
+  [2270, 'May2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2271, 'September10Style.swf', 1, FileCategory.Archives, null, null, null],
+  [2272, 'PSOct2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2273, 'November10Style.swf', 1, FileCategory.Archives, null, null, null],
+  [2274, 'PenguinStyleDec2010.swf', 1, FileCategory.Archives, null, null, null],
+
+  [2275, 'December2008Costume.swf', 1, FileCategory.Archives, null, null, null],
+  [2276, 'October2010Costume.swf', 1, FileCategory.Archives, null, null, null],
+  [2277, 'July09Costume.swf', 1, FileCategory.Archives, null, null, null],
+  [2278, 'May2011UnderwaterAdventureCostume.swf', 1, FileCategory.Archives, null, null, null],
+  [2279, 'March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf', 1, FileCategory.Archives, null, null, null],
+  [2280, 'Jan10Stage.swf', 1, FileCategory.Archives, null, null, null],
+  [2281, '2010SpacePlanetAdventureYCostumeTrunk.swf', 1, FileCategory.Archives, null, null, null],
+  [2282, 'RoomsPlaza_2-Play5.swf', 1, FileCategory.Archives, null, null, null],
+  [2283, 'RoomsPlaza_2-Play8.swf', 1, FileCategory.Archives, null, null, null],
+  [2284, 'RoomsPlaza-Play10.swf', 1, FileCategory.Archives, null, null, null],
+  [2285, 'RoomsPlaza-August2011.swf', 1, FileCategory.Archives, null, null, null],
+  [2286, 'RoomsPlaza-Play9.swf', 1, FileCategory.Archives, null, null, null],
+  [2287, 'RoomsPlaza-Play3-2.swf', 1, FileCategory.Archives, null, null, null],
+  [2288, 'RoomsStage-May2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2289, 'RoomsStage-June2009.swf', 1, FileCategory.Archives, null, null, null],
+  [2290, 'HalloweenParty2010Stage.swf', 1, FileCategory.Archives, null, null, null],
+  [2291, 'RoomsStage-December2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2292, 'underwater_adventure_no_pin.swf', 1, FileCategory.Recreation, null, null, [8]],
+  [2293, 'RoomsStage-October2009.swf', 1, FileCategory.Archives, null, null, null],
+  [2294, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
 ]);

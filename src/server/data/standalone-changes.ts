@@ -35,5 +35,20 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'play/v2/client/interface.swf',
     fileId: 2261,
     updateId: 26
+  },
+  {
+    route: 'play/v2/client/engine.swf',
+    fileId: 2265,
+    updateId: 29
+  },
+  {
+    route: 'play/v2/games/paddle/paddle.swf',
+    fileId: 181,
+    updateId: 31
+  },
+  {
+    route: 'play/v2/games/paddle/paddle.swf',
+    fileId: 2266,
+    updateId: 30
   }
 ];

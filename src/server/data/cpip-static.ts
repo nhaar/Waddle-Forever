@@ -60,7 +60,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/games/mixmaster/MixMaster_Reggae1.swf': 178,
   'play/v2/games/mixmaster/MixMaster_SouthAsian1.swf': 179,
   'play/v2/games/paddle/bootstrap.swf': 180,
-  'play/v2/games/paddle/paddle.swf': 181,
   'play/v2/games/pizzatron/bootstrap.swf': 182,
   'play/v2/games/pizzatron/Pizzatron.swf': 183,
   'play/v2/games/rescue/bootstrap.swf': 184,

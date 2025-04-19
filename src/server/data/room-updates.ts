@@ -1,5 +1,3 @@
-import { StaticDataTable } from "../../common/static-table";
-import { Version } from "../routes/versions";
 import { RoomName } from "./rooms";
 
 type RoomOpening = {
@@ -52,6 +50,12 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'forts',
     updateId: 20,
     fileId: 36
+  },
+  {
+    room: 'book',
+    updateId: 28,
+    fileId: 2264,
+    // comment: 'The book room was updated to have a new Mancala board'
   }
 ];
 
