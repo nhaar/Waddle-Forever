@@ -68,7 +68,9 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // april fools 2006 start
     [23, '2006-03-31'],
     // april fools 2006 end
-    [24, '2006-04-03']
+    [24, '2006-04-03'],
+    // epf update
+    [25, '2010-05-27']
   ]
 );
 

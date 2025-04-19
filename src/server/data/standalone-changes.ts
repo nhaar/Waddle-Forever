@@ -18,5 +18,11 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'chat291.swf',
     fileId: 66,
     updateId: 6
+  },
+  {
+    // engine that has EPF and stuff
+    route: 'play/v2/client/engine.swf',
+    fileId: 119,
+    updateId: 25
   }
 ];
