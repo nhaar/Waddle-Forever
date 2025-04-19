@@ -56,6 +56,78 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     updateId: 28,
     fileId: 2264,
     // comment: 'The book room was updated to have a new Mancala board'
+  },
+  {
+    // placeholder CPIP room
+    room: 'mtn',
+    fileId: 260,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'berg',
+    fileId: 2335,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'beach',
+    fileId: 240,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'beacon',
+    fileId: 241,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'boxdimension',
+    fileId: 244,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'cave',
+    fileId: 245,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'cove',
+    fileId: 2336,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'dance',
+    fileId: 248,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'dock',
+    fileId: 2337,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'light',
+    fileId: 256,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'lodge',
+    fileId: 258,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'pet',
+    fileId: 261,
+    updateId: 27
   }
 ];
 

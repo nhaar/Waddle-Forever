@@ -50,5 +50,11 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'play/v2/games/paddle/paddle.swf',
     fileId: 2266,
     updateId: 30
+  },
+  {
+    // permanent dig poster after cave expedition
+    route: 'play/v2/content/local/en/close_ups/digposter2.swf',
+    updateId: 54,
+    fileId: 1080
   }
 ];

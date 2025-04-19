@@ -10,7 +10,7 @@ import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
-import { PARTIES } from "../data/parties";
+import { PARTIES, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
@@ -53,10 +53,29 @@ type RouteMap = Map<string, RouteFileInformation>;
 /** Given a route map, adds file information to a given route */
 function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
   const cleanPath = route.replaceAll('\\', '/');
-  if (map.has(cleanPath)) {
-    throw new Error(`Path ${cleanPath} is being duplicated`);
-  } else {
+  const previousValue = map.get(cleanPath);
+  if (previousValue === undefined) {
     map.set(cleanPath, info);
+  } else {
+    if (typeof previousValue === 'string' || typeof info === 'string') {
+      console.log(previousValue, info);
+      throw new Error(`Path ${cleanPath} is being duplicated`);
+    } else {
+      if (info.type === 'dynamic' && previousValue.type === 'dynamic') {
+        map.set(cleanPath, {
+          type: 'dynamic',
+          versions: sortOnProperty([...info.versions, ...previousValue.versions])
+        })
+      } else if (info.type === 'special' && previousValue.type === 'special') {
+        map.set(cleanPath, {
+          type: 'special',
+          versions: sortOnProperty([...info.versions, ...previousValue.versions])
+        })
+      } else {
+        console.log(previousValue, info);
+        throw new Error('Incompatible dynamic and special types being assigned');
+      }
+    }
   }
 }
 
@@ -167,9 +186,13 @@ function getCpipRoomRoute(room: RoomName): string {
   return path.join('play/v2/content/global/rooms', `${room}.swf`);
 }
 
+function getRoomRoute(date: string, room: RoomName): string {
+  const cpipUpdate = UPDATES.getStrict(CPIP_UPDATE).time;
+  return isLower(date, cpipUpdate) ? getPreCpipRoomRoute(room) : getCpipRoomRoute(room);
+}
+
 function addRoomInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
-  const cpipUpdate = UPDATES.getStrict(CPIP_UPDATE);
   
   for (const roomName in ROOMS) {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
@@ -185,7 +208,7 @@ function addRoomInfo(map: TimelineMap): void {
 
   const addRoomChange = (room: RoomName, updateId: number, fileId: number) => {
     const date = getUpdateDate(updateId);
-    const route = isLower(date, cpipUpdate.time) ? getPreCpipRoomRoute(room) : getCpipRoomRoute(room);
+    const route = getRoomRoute(date, room);
     addToTimeline(map, route, {
       type: 'permanent',
       date,
@@ -203,17 +226,53 @@ function addRoomInfo(map: TimelineMap): void {
 }
 
 function addParties(map: TimelineMap): void {
-  PARTIES.forEach((party) => {
-    for (const room in party.roomChanges) {
-      const fileId = party.roomChanges[room as RoomName]!;
-      addToTimeline(map, getPreCpipRoomRoute(room as RoomName), {
+  const addRoomChanges = (roomChanges: RoomChanges, start: Version, end: Version) => {
+    for (const room in roomChanges) {
+      const fileId = roomChanges[room as RoomName]!;
+      const roomRoute = getRoomRoute(start, room as RoomName);
+      addToTimeline(map, roomRoute, {
         type: 'temporary',
-        start: getUpdateDate(party.startUpdateId),
-        end: getUpdateDate(party.endUpdateId),
+        start,
+        end,
         file: fileId
       })
     }
+  }
+  
+  PARTIES.forEach((party) => {
+    const startDate = getUpdateDate(party.startUpdateId);
+    const endDate = getUpdateDate(party.endUpdateId);
+    addRoomChanges(party.roomChanges, startDate, endDate);
+    if (party.localChanges !== undefined) {
+      Object.entries(party.localChanges).forEach((pair) => {
+        const [route, fileId] = pair;
+        addToTimeline(map, path.join('play/v2/content/local', route), {
+          type: 'temporary',
+          start: startDate,
+          end: endDate,
+          file: fileId
+        });
+      })
+    }
+    if (party.construction !== undefined) {
+      const constructionStart = getUpdateDate(party.construction.updateId);
+      addRoomChanges(party.construction.changes, constructionStart, endDate);
+    }
   })
+}
+
+function sortOnProperty<T extends { date: string }>(array: T[]): T[] {
+  return array.sort((a, b) => {
+    const aVersion = a.date;
+    const bVersion = b.date;
+    if (isLower(aVersion, bVersion)) {
+      return -1;
+    } else if (isEqual(aVersion, bVersion)) {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
 }
 
 /** Converts a timeline event to the information consumed by the file server */
@@ -259,17 +318,7 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
     }
   });
 
-  const sorted = eventsTimeline.sort((a, b) => {
-    const aVersion = a.date;
-    const bVersion = b.date;
-    if (isLower(aVersion, bVersion)) {
-      return -1;
-    } else if (isEqual(aVersion, bVersion)) {
-      return 0;
-    } else {
-      return 1;
-    }
-  });
+  const sorted = sortOnProperty(eventsTimeline);
 
   // second part of this algorithm: going through the events
   // and judging which file is to be used at each date
@@ -282,13 +331,13 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
 
   const pushPermanent = (date: string) => {
     const file = permanentMapping.get(currentPermanent);
-    if (file === undefined) {
-      throw new Error('No permanent room found... Perhaps the first permanent update is after the first temporary end');
+    if (file !== undefined) {
+      // no permanent room means there isn't one. So no changes will be used
+      versions.push({
+        date,
+        file
+      });
     }
-    versions.push({
-      date,
-      file
-    })
   }
 
   const pushTemporary = (date: string) => {

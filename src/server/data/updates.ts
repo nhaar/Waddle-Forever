@@ -124,7 +124,22 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // space adventure planet Y nov 2010
     [49, '2010-11-18'],
     // ruby and the ruby dec 2010
-    [50, '2010-12-28']
+    [50, '2010-12-28'],
+
+    // new years 2010 party start
+    [51, '2010-01-01'],
+    // new years 2010 party end
+    [52, '2010-01-04'],
+    // cave expedition start
+    [53, '2010-01-22'],
+    // cave expedition end
+    [54, '2010-01-29'],
+    // puffle party 2010 starts
+    [55, '2010-02-18'],
+    // puffle party 2010 ends
+    [56, '2010-02-25'],
+    // puffle party 2010 construction
+    [57, '2010-02-11']
   ]
 );
 

@@ -1,16 +1,20 @@
 type Room = {
   id: number;
   name: string;
-  preCpipFileNumber: number;
-  preCpipName: string;
+  preCpipFileNumber: number | null;
+  preCpipName: string| null;
   preCpipSong?: number;
 };
 
 export type RoomName = 'town' |
   'coffee' |
   'book' |
+  'cave' |
+  'cove' |
   'dance' |
   'lounge' |
+  'light' |
+  'forest' |
   'shop' |
   'dock' |
   'village' |
@@ -24,7 +28,14 @@ export type RoomName = 'town' |
   'pizza' |
   'plaza' |
   'pet' |
-  'berg';
+  'berg' |
+  'mine' |
+  'beach' |
+  'beacon' |
+  'boxdimension' |
+  'party1' |
+  'party2' |
+  'party3';
 
 export const ROOMS: Record<RoomName, Room> = {
   'town': {
@@ -46,6 +57,18 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipFileNumber: 11,
     preCpipName: 'Book'
   },
+  'cave': {
+    id: 806,
+    name: 'Cave',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'cove': {
+    id: 810,
+    name: 'Cove',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
   'dance': {
     id: 120,
     name: 'Dance Club',
@@ -58,6 +81,12 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Dance Lounge',
     preCpipFileNumber: 10,
     preCpipName: 'Lounge'
+  },
+  'light': {
+    id: 410,
+    name: 'Lighthouse',
+    preCpipFileNumber: null,
+    preCpipName: null
   },
   'shop': {
     id: 130,
@@ -102,6 +131,12 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipFileNumber: 12,
     preCpipName: 'Forts'
   },
+  'forest': {
+    id: 809,
+    name: 'Forest',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
   'sport': {
     id: 210,
     name: 'Sport Shop',
@@ -143,5 +178,47 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Iceberg',
     preCpipFileNumber: 10,
     preCpipName: 'Berg'
+  },
+  'mine': {
+    id: 808,
+    name: 'Mine',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'beach': {
+    id: 400,
+    name: 'Beach',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'beacon': {
+    id: 411,
+    name: 'Beacon',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'boxdimension': {
+    id: 811,
+    name: 'Box Dimension',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party1': {
+    id: 851,
+    name: 'Party 1',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party2': {
+    id: 852,
+    name: 'Party 2',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'party3': {
+    id: 853,
+    name: 'Party 3',
+    preCpipFileNumber: null,
+    preCpipName: null
   }
 };

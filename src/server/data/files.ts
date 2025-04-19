@@ -2349,5 +2349,58 @@ export const FILES = new StaticDataTable<File, [
   [2291, 'RoomsStage-December2010.swf', 1, FileCategory.Archives, null, null, null],
   [2292, 'underwater_adventure_no_pin.swf', 1, FileCategory.Recreation, null, null, [8]],
   [2293, 'RoomsStage-October2009.swf', 1, FileCategory.Archives, null, null, null],
-  [2294, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  [2294, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2295, '2010newyearfireworksskihill.swf', 1, FileCategory.Archives, null, null, null],
+  [2296, '2010newyearfireworksiceberg.swf', 1, FileCategory.Archives, null, null, null],
+  [2297, 'RoomsMine-CaveExpedition.swf', 1, FileCategory.Archives, null, null, null],
+  [2298, 'RoomsParty1-CaveExpedition.swf', 1, FileCategory.Archives, null, null, null],
+  [2299, 'RoomsParty2-CaveExpedition.swf', 1, FileCategory.Archives, null, null, null],
+  [2300, 'RoomsParty3-CaveExpedition.swf', 1, FileCategory.Archives, null, null, null],
+  [2301, 'ENCataloguesParty1-CaveExpedition.swf', 1, FileCategory.Archives, null, null, null],
+  [2302, 'ENCloseUpsDigPoster2-Jan2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2303, 'ENCloseUpsTreasurePin1.swf', 1, FileCategory.Archives, null, null, null],
+  [2304, 'ENCloseUpsTreasurePin2.swf', 1, FileCategory.Archives, null, null, null],
+  [2305, 'ENCloseUpsTreasurePin3.swf', 1, FileCategory.Archives, null, null, null],
+  [2306, 'ENCloseUpsTreasurePin4.swf', 1, FileCategory.Archives, null, null, null],
+  [2307, 'PlayV2ContentEnClose_upsDigposter.swf', 1, FileCategory.Archives, null, null, null],
+  [2308, 'RoomsBeach-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2309, 'RoomsBeacon-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2310, 'RoomsBerg-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2311, 'RoomsBoxdimension-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2312, 'RoomsCave-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2313, 'RoomsCove-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2314, 'RoomsDance-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2315, 'RoomsDock-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2316, 'RoomsForest-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2317, 'RoomsForts-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2318, 'RoomsLight-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2319, 'RoomsSkiLodgeOrangePuffle.swf', 1, FileCategory.Archives, null, null, null],
+  [2320, 'RoomsMine-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2321, 'RoomsParty1-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2322, 'RoomsParty2-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2323, 'RoomsPet-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2324, 'RoomsPlaza-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2325, 'RoomsTown-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2326, 'RoomsVillage-PuffleParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2327, 'RoomsBeacon-PuffleParty2010Const.swf', 1, FileCategory.Archives, null, null, null],
+  [2328, 'RoomsBerg-PuffleParty2010Const.swf', 1, FileCategory.Archives, null, null, null],
+  [2329, 'PuffleParty2010ConstCave.swf', 1, FileCategory.Archives, null, null, null],
+  [2330, 'RoomsDance-PuffleParty2010Const.swf', 1, FileCategory.Archives, null, null, null],
+  [2331, 'RoomsForest-PuffleParty2010Const.swf', 1, FileCategory.Archives, null, null, null],
+  [2332, 'RoomsLight-PuffleParty2010Const.swf', 1, FileCategory.Archives, null, null, null],
+  [2333, 'RoomsMine-PuffleParty2010Const.swf', 1, FileCategory.Archives, null, null, null],
+  [2334, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2335, 'RoomsBerg.swf', 1, FileCategory.Archives, null, null, null],
+  [2336, 'RoomsCove.swf', 1, FileCategory.Archives, null, null, null],
+  [2337, 'RoomsDock_1.swf', 1, FileCategory.Archives, null, null, null]
+  // [2338, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2339, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2340, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2341, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2342, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2343, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2344, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2345, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2346, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2347, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
 ]);
