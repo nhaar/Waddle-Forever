@@ -2536,5 +2536,55 @@ export const FILES = new StaticDataTable<File, [
   [2473, 'RoomsForts-MusicJam2010Pre.swf', 1, FileCategory.Archives, null, null],
 
   // Made by Blue Kirby, removed the fireworks
-  [2474, 'iceberg_mjamconst_no_fireworks.swf', 1, FileCategory.Recreation, null, null]
+  [2474, 'iceberg_mjamconst_no_fireworks.swf', 1, FileCategory.Recreation, null, null],
+  [2475, 'RoomsParty3-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2476, 'RoomsParty6-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2477, 'RoomsParty2-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2478, 'RoomsParty4-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2479, 'RoomsPlaza-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2480, 'RoomsVillage-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2481, 'RoomsParty1-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2482, 'RoomsParty5-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2483, 'RoomsTown-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
+  [2484, 'RoomsVillage-MtnExpeditionPre.swf', 1, FileCategory.Archives, null, null],
+  [2485, 'LocalEnCataloguesMerchAugust2010.swf', 1, FileCategory.Archives, null, null],
+  [2486, 'MountainExpeditionMembershipOopsExpedition.swf', 1, FileCategory.Archives, null, null],
+
+  // Recreation by victando
+  [2487, 'mountain_expedition_poster.swf', 1, FileCategory.Recreation, null, null],
+
+  [2488, 'RoomsBeach-PreFair2010.swf', 1, FileCategory.Archives, null, null],
+  [2489, 'RoomsTown-TheFair2010.swf', 1, FileCategory.Archives, null, null],
+  [2490, 'RoomsCoffeeTheFair2009.swf', 1, FileCategory.Archives, null, null],
+  [2491, 'RoomsDance-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2492, 'RoomsLounge-Fair2009.swf', 1, FileCategory.Archives, null, null],
+  [2493, 'RoomsForts-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2494, 'RoomsPlaza-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2495, 'RoomsForest-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2496, 'RoomsCove-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2497, 'RoomsBerg-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2498, 'RoomsDock-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2499, 'RoomsBeach-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2500, 'RoomsBeacon-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2501, 'RoomsVillage-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2502, 'RoomsMtn-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2503, 'RoomsParty-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2504, 'RoomsParty2-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2505, 'RoomsParty3-Fair2010.swf', 1, FileCategory.Archives, null, null],
+  [2506, 'Tickets-TheFair2009.swf', 1, FileCategory.Archives, null, null],
+  [2507, 'Ticket_icon-TheFair2010.swf', 1, FileCategory.Archives, null, null],
+  [2508, 'Fair2010Poster.swf', 1, FileCategory.Archives, null, null],
+  [2509, 'TheFair2010PrizeBooth.swf', 1, FileCategory.Archives, null, null],
+  [2510, 'TheFair2010PrizeBoothMember.swf', 1, FileCategory.Archives, null, null],
+  [2511, 'TheFair2010PrizeBooth2.swf', 1, FileCategory.Archives, null, null],
+  [2512, 'TheFair2010PrizeBoothMember2.swf', 1, FileCategory.Archives, null, null],
+
+  // modified from Ben's scavenger hunt mod
+  [2513, 'fair_icon_adder.swf', 1, FileCategory.Tool, null, null],
+  // to use the fair.swf dependency
+  [2514, 'fair_dependencies.json', 1, FileCategory.Tool, null, null],
+
+  // snack shack stamp code by Supermanover
+  [2515, 'fair_worldachievements.xml', 1, FileCategory.Approximation, null, 2516],
+  [2516, 'worldachievements.xml', 1, FileCategory.Approximation, null, null]
 ]);

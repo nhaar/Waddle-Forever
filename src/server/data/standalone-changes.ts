@@ -67,6 +67,12 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'play/v2/client/dependencies.json',
     updateId: 1,
     fileId: 136
+  },
+  {
+    // file from legacy media with a few stamps removed since they shouldn't be there
+    route: 'web_service/worldachievements.xml',
+    updateId: 26,
+    fileId: 2516
   }
 ];
 

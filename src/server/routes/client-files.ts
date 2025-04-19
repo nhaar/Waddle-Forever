@@ -306,6 +306,19 @@ function addParties(map: TimelineMap): void {
         });
       })
     }
+
+    // adding just any route change in general for the party
+    if (party.generalChanges !== undefined) {
+      Object.entries(party.generalChanges).forEach((pair) => {
+        const [route, fileId] = pair;
+        map.add(route, {
+          type: 'temporary',
+          start: startDate,
+          end: endDate,
+          file: fileId
+        })
+      });
+    }
   })
 }
 

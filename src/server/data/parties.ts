@@ -30,6 +30,9 @@ type Party = PartyChanges & {
     comment?: string;
     updateId: number;
   } & PartyChanges>;
+
+  // route -> fileId
+  generalChanges?: Record<string, number>;
 };
 
 type Construction = {
@@ -514,4 +517,128 @@ export const PARTIES: Party[] = [
       }
     }
   },
+  {
+    name: 'Mountain Expedition',
+    startUpdateId: 78,
+    endUpdateId: 79,
+    roomChanges: {
+      'party3': 2475,
+      'party6': 2476,
+      'party2': 2477,
+      'party4': 2478,
+      'plaza': 2479,
+      'village': 2480,
+      'party1': 2481,
+      'party5': 2482,
+      'town': 2483
+    },
+    localChanges: {
+      'catalogues/merch.swf': {
+        'en': 2485
+      },
+      'close_ups/poster.swf': {
+        'en': 2487
+      },
+      'membership/party3.swf': {
+        'en': 2486
+      }
+    },
+    music: {
+      'party2': 294,
+      'party3': 295,
+      'party4': 295,
+      'party6': 256
+    },
+    construction: {
+      updateId: 80,
+      changes: {
+        'village': 2484
+      }
+    }
+  },
+  {
+    name: 'The Fair 2010',
+    startUpdateId: 82,
+    endUpdateId: 83,
+    roomChanges: {
+      'town': 2489,
+      'coffee': 2490,
+      'dance': 2491,
+      'lounge': 2492,
+      'forts': 2493,
+      'plaza': 2494,
+      'forest': 2495,
+      'cove': 2496,
+      'berg': 2497,
+      'dock': 2498,
+      'beach': 2499,
+      'beacon': 2500,
+      'village': 2501,
+      'mtn': 2502,
+      'party': 2503,
+      'party2': 2504,
+      'party3': 2505
+    },
+    music: {
+      'town': 297,
+      'coffee': 221,
+      'dance': 243,
+      'lounge': 243,
+      'plaza': 297,
+      'village': 297,
+      'mtn': 297,
+      'forts': 297,
+      'dock': 297,
+      'beach': 297,
+      'beacon': 221,
+      'forest': 297,
+      'berg': 297,
+      'cove': 297,
+      'party': 221,
+      'party1': 221,
+      'party2': 221,
+      'party3': 221
+    },
+    globalChanges: {
+      'tickets.swf': [2506, 'tickets'],
+      'ticket_icon.swf': [2507, 'ticket_icon']
+    },
+    generalChanges: {
+      'play/v2/client/fair.swf': 2513,
+      'play/v2/client/dependencies.json': 2514,
+      'web_service/worldachievements.xml': 2515
+    },
+    localChanges: {
+      'catalogues/prizebooth.swf': {
+        'en': 2509
+      },
+      'catalogues/prizeboothmember.swf': {
+        'en': 2510
+      },
+      'close_ups/poster.swf': {
+        'en': 2508
+      }
+    },
+    construction: {
+      updateId: 81,
+      changes: {
+        'beach': 2488
+      }
+    },
+    updates: [
+      {
+        comment: 'New items were added to the prize booths',
+        updateId: 84,
+        roomChanges: {},
+        localChanges: {
+          'catalogues/prizebooth.swf': {
+            'en': 2511
+          },
+          'catalogues/prizeboothmember.swf': {
+            'en': 2512
+          }
+        }
+      }
+    ]
+  }
 ];
