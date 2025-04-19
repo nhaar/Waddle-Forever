@@ -164,6 +164,22 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     [68, '2010-05-18'],
     // sport shop closes
     [69, '2010-05-25'],
+    // island adventure construction 2010
+    [70, '2010-06-10'],
+    // island adventure 2010 start
+    [71, '2010-06-18'],
+    // island adventure 2010 end
+    [72, '2010-06-28'],
+    // music jam 2010 construction start
+    [73, '2010-07-01'],
+    // 4th of july 2010 end
+    [74, '2010-07-05'],
+    // music jam 2010 start
+    [75, '2010-07-09'],
+    // music jam 2010 end
+    [76, '2010-07-19'],
+    // music jam 2010 instrument update
+    [77, '2010-07-15']
   ]
 );
 

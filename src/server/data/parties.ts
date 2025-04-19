@@ -406,4 +406,112 @@ export const PARTIES: Party[] = [
       }
     ]
   },
+  {
+    name: 'Island Adventure Party 2010',
+    startUpdateId: 71,
+    endUpdateId: 72,
+    roomChanges: {
+      'town': 2426,
+      'dance': 2427,
+      'forts': 2428,
+      'plaza': 2429,
+      'forest': 2430,
+      'lake': 2431,
+      'cove': 2432,
+      'dock': 2433,
+      'beach': 2434,
+      'village': 2435,
+      'berg': 2436,
+      'party': 2437,
+      'party2': 2438
+    },
+    construction: {
+      updateId: 70,
+      changes: {
+        'beach': 2422,
+        'cove': 2423,
+        'plaza': 2424,
+        'town': 2425
+      }
+    }
+  },
+  {
+    name: 'Music Jam 2010',
+    startUpdateId: 75,
+    endUpdateId: 76,
+    roomChanges: {
+      'party3': 2439,
+      'beach': 2440,
+      'party4': 2441,
+      'cave': 2442,
+      'coffee' :2443,
+      'cove': 2444,
+      'lounge': 2445,
+      'dock': 2446,
+      'forest': 2447,
+      'berg': 2448,
+      'light': 2449,
+      'mine': 2450,
+      'party': 2451,
+      'dance': 2452,
+      'party2': 2453,
+      'pizza': 2454,
+      'plaza': 2455,
+      'forts': 2456,
+      'rink': 2457,
+      'village': 2458,
+      'town': 2459
+    },
+    music: {
+      'lounge': 271,
+      'berg': 244,
+      'mine': 247,
+      'dance': 242,
+      'pizza': 271,
+      'plaza': 271,
+      'forts': 271,
+      'rink': 240,
+      'village': 292,
+      'town': 271,
+      'party3': 293,
+      'coffee': 0
+    },
+    localChanges: {
+      'catalogues/merch.swf': {
+        'en': 2460
+      },
+      'close_ups/poster.swf': {
+        'en': 2461
+      },
+      'close_ups/music.swf': {
+        'en': 2463
+      }
+    },
+    updates: [
+      {
+        updateId: 77,
+        comment: 'New instruments are available in the Catalog',
+        roomChanges: {},
+        localChanges: {
+          'catalogues/music.swf': {
+            'en': 2462
+          }
+        }
+      }
+    ],
+    construction: {
+      updateId: 73,
+      changes: {
+        'beach': 2464,
+        'coffee': 2466,
+        'cove': 2467,
+        'dock': 2468,
+        'forest': 2469,
+        'berg': 2470,
+        'light': 2471,
+        'village': 2472,
+        'forts': 2473
+      }
+    }
+  },
 ];

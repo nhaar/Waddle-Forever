@@ -90,7 +90,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/content/global/rooms/dojohide.swf': 252,
   'play/v2/content/global/rooms/dojowater.swf': 253,
   'play/v2/content/global/rooms/eco.swf': 254,
-  'play/v2/content/global/rooms/lake.swf': 255,
   'play/v2/content/global/rooms/loader.swf': 257,
   'play/v2/content/global/rooms/ship.swf': 263,
   'play/v2/content/global/rooms/shiphold.swf': 264,

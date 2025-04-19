@@ -1,10 +1,15 @@
-import { StaticDataTable } from "../../common/static-table";
-
 type StandaloneChange = {
   route: string;
   fileId: number;
   updateId: number;
 };
+
+type StandaloneTemporaryChange = {
+  route: string;
+  startUpdateId: number;
+  endUpdateid: number;
+  fileId: number;
+}
 
 export const STANDALONE_CHANGE: StandaloneChange[] = [
   {
@@ -64,3 +69,20 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     fileId: 136
   }
 ];
+
+export const STANDALONE_TEMPORARY_CHANGE: StandaloneTemporaryChange[] = [
+  // 4th of july fireworks on the mountain (2010)
+  {
+    startUpdateId: 73,
+    endUpdateid: 74,
+    route: 'play/v2/content/global/rooms/mtn.swf',
+    fileId: 2295 // same as new years day
+  },
+  // removing fireworks in music jam construction for the iceberg
+  {
+    startUpdateId: 74,
+    endUpdateid: 75,
+    route: 'play/v2/content/global/rooms/berg.swf',
+    fileId: 2474
+  }
+]

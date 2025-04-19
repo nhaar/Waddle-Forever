@@ -6,7 +6,7 @@ import { PACKAGES } from "../data/packages";
 import { CPIP_UPDATE, FIRST_UPDATE, UPDATES } from "../data/updates";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
-import { STANDALONE_CHANGE } from "../data/standalone-changes";
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
@@ -52,7 +52,7 @@ type RouteMap = Map<string, RouteFileInformation>;
 
 /** Given a route map, adds file information to a given route */
 function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
-  const cleanPath = route.replaceAll('\\', '/');
+  const cleanPath = sanitizePath(route);
   const previousValue = map.get(cleanPath);
   if (previousValue === undefined) {
     map.set(cleanPath, info);
@@ -161,8 +161,13 @@ type FileTimeline = Array<TimelineEvent>;
 /** Maps for each route its file timeline */
 type TimelineMap = Map<string, FileTimeline>;
 
+function sanitizePath(path: string): string {
+  return path.replaceAll('\\', '/');
+}
+
 /** Add a file update event to a timeline map for a given route */
 function addToTimeline(map: TimelineMap, route: string, event: TimelineEvent): void {
+  route = sanitizePath(route);
   const prev = map.get(route);
   if (prev === undefined) {
     map.set(route, [event]);
@@ -482,7 +487,16 @@ function addStandaloneChanges(map: TimelineMap): void {
       date: update.time,
       file: change.fileId
     })
-  })
+  });
+
+  STANDALONE_TEMPORARY_CHANGE.forEach((change) => {
+    addToTimeline(map, change.route, {
+      type: 'temporary',
+      start: getUpdateDate(change.startUpdateId),
+      end: getUpdateDate(change.endUpdateid),
+      file: change.fileId
+    });
+  });
 }
 
 function addMapUpdates(map: TimelineMap): void {
