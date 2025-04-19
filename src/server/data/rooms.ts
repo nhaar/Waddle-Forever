@@ -10,6 +10,7 @@ export type RoomName = 'town' |
   'coffee' |
   'book' |
   'cave' |
+  'cavemine' |
   'cove' |
   'dance' |
   'lounge' |
@@ -23,6 +24,9 @@ export type RoomName = 'town' |
   'dojo' |
   'boiler' |
   'dojoext' |
+  'dojofire' |
+  'dojowater' |
+  'dojohide' |
   'forts' |
   'agent' |
   'sport' |
@@ -82,6 +86,12 @@ export const ROOMS: Record<RoomName, Room> = {
   'cave': {
     id: 806,
     name: 'Cave',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'cavemine': {
+    id: 813,
+    name: 'cavemine',
     preCpipFileNumber: null,
     preCpipName: null
   },
@@ -150,6 +160,24 @@ export const ROOMS: Record<RoomName, Room> = {
   'dojoext': {
     id: 321,
     name: 'Dojo Courtyard',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'dojofire': {
+    id: 812,
+    name: 'Fire Dojo',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'dojohide': {
+    id: 322,
+    name: 'Ninja Hideout',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'dojowater': {
+    id: 816,
+    name: 'Water Dojo',
     preCpipFileNumber: null,
     preCpipName: null
   },

@@ -193,7 +193,23 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // fair 2010 end
     [83, '2010-09-13'],
     // new items in the fair 2010
-    [84, '2010-09-10']
+    [84, '2010-09-10'],
+    // stadium games start
+    [85, '2010-09-24'],
+    // stadium games end
+    [86, '2010-12-20'],
+    // 5th anniversary start
+    [87, '2010-10-23'],
+    // 5th anniversary end
+    [88, '2010-10-25'],
+    // halloween 2010 start
+    [89, '2010-10-28'],
+    // halloween 2010 end
+    [90, '2010-11-04'],
+    // water scavenger hunt start
+    [91, '2010-11-16'],
+    // water scavenger hunt end
+    [92, '2010-11-24']
   ]
 );
 

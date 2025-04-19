@@ -2586,5 +2586,94 @@ export const FILES = new StaticDataTable<File, [
 
   // snack shack stamp code by Supermanover
   [2515, 'fair_worldachievements.xml', 1, FileCategory.Approximation, null, 2516],
-  [2516, 'worldachievements.xml', 1, FileCategory.Approximation, null, null]
+  [2516, 'worldachievements.xml', 1, FileCategory.Approximation, null, null],
+
+  [2517, 'RoomsRink-Stadium_Games.swf', 1, FileCategory.Archives, null, null],
+  [2518, 'RoomsForts-Stadium_Games.swf', 1, FileCategory.Archives, null, null],
+  [2519, 'RoomsTown-Stadium_Games.swf', 1, FileCategory.Archives, null, null],
+  [2520, 'Map-Stadium_Games.swf', 1, FileCategory.Archives, null, null],
+  [2521, '5thAnniversaryPartyBook.swf', 1, FileCategory.Archives, null, null],
+  [2522, '5thAnniversaryPartyCoffee.swf', 1, FileCategory.Archives, null, null],
+  [2523, 'RoomsTown-5thAnniversaryParty.swf', 1, FileCategory.Archives, null, null],
+  [2524, 'HalloweenParty2010Beach.swf', 1, FileCategory.Archives, null, null],
+  [2525, 'HalloweenParty2010Lighthouse.swf', 1, FileCategory.Archives, null, null],
+  [2526, 'HalloweenParty2010Beacon.swf', 1, FileCategory.Archives, null, null],
+  [2527, 'HalloweenParty2010Berg.swf', 1, FileCategory.Archives, null, null],
+  [2528, 'HalloweenParty2010Book.swf', 1, FileCategory.Archives, null, null],
+  [2529, 'HalloweenParty2010Cave.swf', 1, FileCategory.Archives, null, null],
+  [2530, 'HalloweenParty2010SnowForts.swf', 1, FileCategory.Archives, null, null],
+  [2531, 'HalloweenParty2010Stadium.swf', 1, FileCategory.Archives, null, null],
+  [2532, 'HalloweenParty2010SkiVIllage.swf', 1, FileCategory.Archives, null, null],
+  [2533, 'HalloweenParty2010SkiHill.swf', 1, FileCategory.Archives, null, null],
+  [2534, 'HalloweenParty2010Lodge.swf', 1, FileCategory.Archives, null, null],
+  [2535, 'HalloweenParty2010Attic.swf', 1, FileCategory.Archives, null, null],
+  [2536, 'HalloweenParty2010Cove.swf', 1, FileCategory.Archives, null, null],
+  [2537, 'HalloweenParty2010Party4.swf', 1, FileCategory.Archives, null, null],
+  [2538, 'HalloweenParty2010Party3.swf', 1, FileCategory.Archives, null, null],
+  [2539, 'HalloweenParty2010Dock.swf', 1, FileCategory.Archives, null, null],
+  [2540, 'HalloweenParty2010Dojo.swf', 1, FileCategory.Archives, null, null],
+  [2541, 'HalloweenParty2010DojoExt.swf', 1, FileCategory.Archives, null, null],
+  [2542, 'HalloweenParty2010DojoFire.swf', 1, FileCategory.Archives, null, null],
+  [2543, 'HalloweenParty2010Plaza.swf', 1, FileCategory.Archives, null, null],
+  [2544, 'HalloweenParty2010PetShop.swf', 1, FileCategory.Archives, null, null],
+  [2545, 'HalloweenParty2010PizzaParlor.swf', 1, FileCategory.Archives, null, null],
+  [2546, 'HalloweenParty2010Shack.swf', 1, FileCategory.Archives, null, null],
+  [2547, 'HalloweenParty2010Forest.swf', 1, FileCategory.Archives, null, null],
+  [2548, 'HalloweenParty2010Party2.swf', 1, FileCategory.Archives, null, null],
+  [2549, 'HalloweenParty2010Party1.swf', 1, FileCategory.Archives, null, null],
+  [2550, 'HalloweenParty2010Party5.swf', 1, FileCategory.Archives, null, null],
+  [2551, 'RoomsTown-HalloweenParty2010.swf', 1, FileCategory.Archives, null, null],
+  [2552, 'HalloweenParty2010Coffee.swf', 1, FileCategory.Archives, null, null],
+  [2553, 'HalloweenParty2010Dance.swf', 1, FileCategory.Archives, null, null],
+  [2554, 'HalloweenParty2010Lounge.swf', 1, FileCategory.Archives, null, null],
+  [2555, 'HalloweenParty2010GiftShop.swf', 1, FileCategory.Archives, null, null],
+  [2556, 'HalloweenParty2010DojoHide.swf', 1, FileCategory.Archives, null, null],
+  [2557, 'HalloweenParty2010Poster.swf', 1, FileCategory.Archives, null, null],
+  [2558, 'HalloweenParty2010MembershipParty3.swf', 1, FileCategory.Archives, null, null],
+  [2559, 'CataloguesENParty-HalloweenParty2010.swf', 1, FileCategory.Archives, null, null],
+  [2560, 'HalloweenParty2010Map.swf', 1, FileCategory.Archives, null, null],
+
+  // this is a modified version of Ben's mod for the hunt to remove basket requirement
+  [2561, 'halloween_hunt_icon.swf', 1, FileCategory.Approximation, null, null],
+
+  // scavenger hunt 2010 recreation based  on the water hunt SWF
+  // Made by Supermanover (exported candy assets), and nhaar (added hints)
+  [2562, 'halloween_hunt_2010.swf', 1, FileCategory.Recreation, null, null],
+  [2563, 'ContentBinoculars-HalloweenParty2007.swf', 1, FileCategory.Archives, null, null],
+  [2564, 'Igloo_background_nightstorm.swf', 1, FileCategory.Archives, null, null],
+
+  // file given by resol, but from unknown sources, doesn't match any in the wiki
+  [2565, 'NOTLS3EN', 1, FileCategory.Unknown, null, null],
+
+  // No idea where I got this from, I thought it was from another party's archive, but nothing archived matched
+  [2566, 'halloween_telescope.swf', 1, FileCategory.Unknown, null, null],
+
+  // Manual modification of worldachievements.xml from legacy media to have Monster Mash
+  // Only costumes that were verified with video have been added here
+  [2567, 'halloween_worldachievements', 1, FileCategory.Approximation, null, null],
+  [2568, 'WaterHuntBeach.swf', 1, FileCategory.Archives, null, null],
+  [2569, 'WaterHuntBoiler.swf', 1, FileCategory.Archives, null, null],
+  [2570, 'WaterHuntBook.swf', 1, FileCategory.Archives, null, null],
+  [2571, 'WaterHuntCave.swf', 1, FileCategory.Archives, null, null],
+  [2572, 'WaterHuntCavemine.swf', 1, FileCategory.Archives, null, null],
+  [2573, 'WaterHuntCoffee.swf', 1, FileCategory.Archives, null, null],
+  [2574, 'WaterHuntCove.swf', 1, FileCategory.Archives, null, null],
+  [2575, 'WaterHuntLounge.swf', 1, FileCategory.Archives, null, null],
+  [2576, 'WaterHuntDock.swf', 1, FileCategory.Archives, null, null],
+  [2577, 'WaterHuntDojoext.swf', 1, FileCategory.Archives, null, null],
+  [2578, 'WaterHuntForest.swf', 1, FileCategory.Archives, null, null],
+  [2579, 'WaterHuntLake.swf', 1, FileCategory.Archives, null, null],
+  [2580, 'WaterHuntMine.swf', 1, FileCategory.Archives, null, null],
+  [2581, 'WaterHuntDojohide.swf', 1, FileCategory.Archives, null, null],
+  [2582, 'WaterHuntPlaza.swf', 1, FileCategory.Archives, null, null],
+  [2583, 'WaterHuntPet.swf', 1, FileCategory.Archives, null, null],
+  [2584, 'WaterHuntRink.swf', 1, FileCategory.Archives, null, null],
+  [2585, 'WaterHuntForts.swf', 1, FileCategory.Archives, null, null],
+  [2586, 'RoomsTown-WaterScavengerHunt.swf', 1, FileCategory.Archives, null, null],
+  [2587, 'WaterDojoConstruction.swf', 1, FileCategory.Archives, null, null],
+  [2588, 'Sensei_Water_Scavenger_Hunt_closeup.swf', 1, FileCategory.Archives, null, null],
+  [2589, 'Sensei_Water_Scavenger_Hunt_icon.swf.swf', 1, FileCategory.Archives, null, null],
+
+  // recreation by Blue Kirby, including a glitched T as seen from videos
+  [2590, 'water_hunt_planet_y', 1, FileCategory.Recreation, null, null]
 ]);

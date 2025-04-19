@@ -640,5 +640,167 @@ export const PARTIES: Party[] = [
         }
       }
     ]
-  }
+  },
+  {
+    name: 'Stadium Games',
+    startUpdateId: 85,
+    endUpdateId: 86,
+    roomChanges: {
+      'rink': 2517,
+      'forts': 2518,
+      'town': 2519
+    },
+    globalChanges: {
+      'content/map.swf': 2520
+    }
+  },
+  {
+    name: '5th Anniversary Party',
+    startUpdateId: 87,
+    endUpdateId: 88,
+    roomChanges: {
+      'book': 2521,
+      'coffee': 2522,
+      'town': 2523
+    },
+    music: {
+      'town': 218,
+      'coffee': 218,
+      'book': 218
+    }
+  },
+  {
+    name: 'Halloween Party 2010',
+    startUpdateId: 89,
+    endUpdateId: 90,
+    roomChanges: {
+      'beach': 2524,
+      'light': 2525,
+      'beacon': 2526,
+      'berg': 2527,
+      'book': 2528,
+      'cave': 2529,
+      'forts': 2530,
+      'rink': 2531,
+      'village': 2532,
+      'mtn': 2533,
+      'lodge': 2534,
+      'attic': 2535,
+      'cove': 2536,
+      'party4': 2537,
+      'party3': 2538,
+      'dock': 2539,
+      'dojo': 2540,
+      'dojoext': 2541,
+      'dojofire': 2542,
+      'plaza': 2543,
+      'pet': 2544,
+      'pizza': 2545,
+      'shack': 2546,
+      'forest': 2547,
+      'party2': 2548,
+      'party1': 2549,
+      'party5': 2550,
+      'town': 2551,
+      'dance': 2553,
+      'lounge': 2554,
+      'shop': 2555,
+      'dojohide': 2556
+    },
+    globalChanges: {
+      'content/map.swf': 2560,
+      'scavenger_hunt/scavenger_hunt_icon.swf': [2561, 'scavenger_hunt_icon'],
+      'scavenger_hunt/hunt_ui.swf': [2562, 'hunt_ui', 'halloween_hunt'],
+      'binoculars/empty.swf': 2563, // from 2007 party
+      'igloo/assets/igloo_background.swf': 2564, // from 2011 party
+      'rooms/NOTLS3EN.swf': 2565,
+      'telescope/empty.swf': 2566
+    },
+    localChanges: {
+      'catalogues/party.swf': {
+        'en': 2558
+      },
+      'close_ups/halloweenposter.swf': {
+        'en': 2557
+      },
+      'membership/membership_party3.swf': {
+        'en': 2558
+      }
+    },
+    generalChanges: {
+      'web_service/worldachievements.xml': 2567
+    },
+    music: {
+      'town': 251,
+      'coffee': 252,
+      'book': 252,
+      'dance': 223,
+      'lounge': 223,
+      'shop': 252,
+      'plaza': 251,
+      'pet': 252,
+      'pizza': 253,
+      'village': 251,
+      'lodge': 252,
+      'attic': 252,
+      'mtn': 251,
+      'forts': 251,
+      'rink': 251,
+      'dock': 251,
+      'beach': 251,
+      'light': 252,
+      'beacon': 251,
+      'forest': 251,
+      'berg': 251,
+      'cove': 251,
+      'cave': 252,
+      'shack': 251,
+      'party1': 251,
+      'party2': 253,
+      'party3': 299,
+      'party4': 300,
+      'party5': 298
+    },
+    scavengerHunt2010: true
+  },
+  {
+    name: 'Sensei\'s Water Scavenger Hunt',
+    startUpdateId: 91,
+    endUpdateId: 92,
+    roomChanges: {
+      'beach': 2568,
+      'boiler': 2569,
+      'book': 2570,
+      'cave': 2571,
+      'cavemine': 2572,
+      'coffee': 2573,
+      'cove': 2574,
+      'lounge': 2575,
+      'dock': 2576,
+      'dojoext': 2577,
+      'forest': 2578,
+      'lake': 2579,
+      'mine': 2580,
+      'dojohide': 2581,
+      'plaza': 2582,
+      'pet': 2583,
+      'rink': 2584,
+      'forts': 2585,
+      'town': 2586,
+      'dojowater': 2587
+    },
+    globalChanges: {
+      'scavenger_hunt/scavenger_hunt_icon.swf': [2589, 'scavenger_hunt_icon'],
+      'scavenger_hunt/hunt_ui.swf': [2588, 'hunt_ui', 'easter_egg_hunt', 'scavenger_hunt']
+    },
+    updates: [
+      {
+        updateId: 49,
+        roomChanges: {
+          'plaza': 2590
+        }
+      }
+    ],
+    scavengerHunt2010: true
+  },
 ];

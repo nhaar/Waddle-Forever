@@ -73,6 +73,24 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'web_service/worldachievements.xml',
     updateId: 26,
     fileId: 2516
+  },
+  {
+    // placeholder binoculars
+    route: 'play/v2/content/global/binoculars/empty.swf',
+    updateId: 27,
+    fileId: 200
+  },
+  {
+    // placeholder telescope
+    route: 'play/v2/content/global/telescope/empty.swf',
+    updateId: 27,
+    fileId: 270
+  },
+  {
+    // placeholder igloo background
+    route: 'play/v2/content/global/igloo/assets/igloo_background.swf',
+    updateId: 27,
+    fileId: 366
   }
 ];
 

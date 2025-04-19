@@ -182,6 +182,36 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'sport',
     fileId: 255,
     updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'cavemine',
+    fileId: 246,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'dojo',
+    fileId: 250,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'dojofire',
+    fileId: 251,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'dojohide',
+    fileId: 252,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'dojowater',
+    fileId: 253,
+    updateId: 27
   }
 ];
 
