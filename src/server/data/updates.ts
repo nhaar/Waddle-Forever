@@ -209,7 +209,13 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // water scavenger hunt start
     [91, '2010-11-16'],
     // water scavenger hunt end
-    [92, '2010-11-24']
+    [92, '2010-11-24'],
+    // celebration of water end
+    [93, '2010-12-02'],
+    // holiday party 2010 start
+    [94, '2010-12-16'],
+    // holiday party 2010 end
+    [95, '2010-12-28']
   ]
 );
 

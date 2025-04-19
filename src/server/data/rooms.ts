@@ -43,6 +43,10 @@ export type RoomName = 'town' |
   'beacon' |
   'stage' |
   'boxdimension' |
+  'shipquarters' |
+  'shipnest' |
+  'ship' |
+  'shiphold' |
   'party' |
   'party1' |
   'party2' |
@@ -61,7 +65,8 @@ export type RoomName = 'town' |
   'party15' |
   'party16' |
   'party17' |
-  'party18' ;
+  'party18' |
+  'party99';
 
 export const ROOMS: Record<RoomName, Room> = {
   'town': {
@@ -290,6 +295,30 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipFileNumber: null,
     preCpipName: null
   },
+  'ship': {
+    id: 420,
+    name: 'Migrator',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'shipnest': {
+    id: 423,
+    name: 'Crow\'s Nest',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'shiphold': {
+    id: 421,
+    name: 'Ship Hold',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'shipquarters': {
+    id: 422,
+    name: 'Captain\s Quaters',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
   'party': {
     id: 850,
     name: 'Party',
@@ -404,4 +433,10 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipFileNumber: null,
     preCpipName: null
   },
+  'party99': {
+    id: 899,
+    name: 'Party 99',
+    preCpipFileNumber: null,
+    preCpipName: null
+  }
 };

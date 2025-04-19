@@ -212,6 +212,24 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'dojowater',
     fileId: 253,
     updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'shiphold',
+    fileId: 264,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'shipnest',
+    fileId: 265,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'shipquarters',
+    fileId: 266,
+    updateId: 27
   }
 ];
 

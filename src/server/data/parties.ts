@@ -803,4 +803,80 @@ export const PARTIES: Party[] = [
     ],
     scavengerHunt2010: true
   },
+  {
+    name: 'Celebration of Water',
+    startUpdateId: 92,
+    endUpdateId: 93,
+    roomChanges: {
+      'dojoext': 2591,
+      'dojohide': 2592,
+      'dojowater': 2593
+    }
+  },
+  {
+    name: 'Holiday Party 2010',
+    startUpdateId: 94,
+    endUpdateId: 95,
+    roomChanges: {
+      'party99': 2594,
+      'beach': 2595,
+      'beacon': 2596,
+      'book': 2597,
+      'shipquarters': 2598,
+      'coffee': 2599,
+      'cove': 2600,
+      'shipnest': 2601,
+      'lounge': 2602,
+      'dock': 2603,
+      'dojo': 2604,
+      'dojoext': 2605,
+      'dojofire': 2606,
+      'forest': 2607,
+      'shop': 2608,
+      'berg': 2609,
+      'light': 2610,
+      'attic': 2611,
+      'party': 2612,
+      'ship': 2613,
+      'shack': 2614,
+      'dance': 2615,
+      'dojohide': 2616,
+      'pizza': 2617,
+      'plaza': 2618,
+      'shiphold': 2619,
+      'mtn': 2620,
+      'lodge': 2621,
+      'village': 2622,
+      'forts': 2623,
+      'rink': 2625,
+      'town': 2627
+    },
+    globalChanges: {
+      'content/map.swf': 2633
+    },
+    localChanges: {
+      'close_ups/christmasposter.swf': {
+        'en': 2629
+      },
+      'close_ups/poster.swf': {
+        'en': 2630
+      },
+      'forms/coins_for_change.swf': {
+        'en': 2631
+      }
+    },
+    updates: [
+      {
+        updateId: 86,
+        roomChanges: {
+          'forts': 2624,
+          'rink': 2626,
+          'town': 2628
+        },
+        globalChanges: {
+          'content/map.swf': 2632
+        }
+      }
+    ]
+  }
 ];
