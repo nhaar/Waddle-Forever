@@ -56,5 +56,11 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'play/v2/content/local/en/close_ups/digposter2.swf',
     updateId: 54,
     fileId: 1080
+  },
+  {
+    // have no better place to put the default dependencies.json
+    route: 'play/v2/client/dependencies.json',
+    updateId: 1,
+    fileId: 136
   }
 ];

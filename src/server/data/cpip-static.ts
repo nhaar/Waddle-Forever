@@ -13,7 +13,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'pt/web_service/polaroids.json': 133,
   'play/v2/client/airtower.swf': 134,
   'play/v2/client/book.swf': 135,
-  'play/v2/client/dependencies.json': 136,
   'play/v2/client/gridview.swf': 137,
   'play/v2/client/igloo.swf': 138,
   'play/v2/client/load.swf': 139,
@@ -87,10 +86,8 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/content/global/rooms/agentvr.swf': 238,
   'play/v2/content/global/rooms/attic.swf': 239,
   'play/v2/content/global/rooms/boiler.swf': 242,
-  'play/v2/content/global/rooms/book.swf': 243,
   'play/v2/content/global/rooms/cavemine.swf': 246,
-  'play/v2/content/global/rooms/coffee.swf': 247,
-'play/v2/content/global/rooms/dojo.swf': 250,
+  'play/v2/content/global/rooms/dojo.swf': 250,
   'play/v2/content/global/rooms/dojofire.swf': 251,
   'play/v2/content/global/rooms/dojohide.swf': 252,
   'play/v2/content/global/rooms/dojowater.swf': 253,
@@ -102,7 +99,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/content/global/rooms/shiphold.swf': 264,
   'play/v2/content/global/rooms/shipnest.swf': 265,
   'play/v2/content/global/rooms/shipquarters.swf': 266,
-  'play/v2/content/global/rooms/shop.swf': 267,
   'play/v2/content/global/rooms/sport.swf': 268,
   'play/v2/content/global/rooms/underwater.swf': 269,
   'play/v2/content/global/telescope/empty.swf': 270,
@@ -2093,5 +2089,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/games/quests/q9/lang/pt/misc/map2.swf': 2256,
   'play/v2/games/quests/q9/lang/pt/misc/messages.swf': 2257,
   'play/v2/games/quests/q9/lang/pt/misc/uitext.swf': 2258,
-  'play/v2/games/quests/q9/lang/pt/misc/versions.swf': 2259
+  'play/v2/games/quests/q9/lang/pt/misc/versions.swf': 2259,
+  'play/v2/client/scavenger_hunt.swf': 2383
 };

@@ -3,17 +3,24 @@ import { RoomName } from "./rooms";
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
 
+type Language = 'en';
+
+/** First element is file id used, then a list of all the crumbs that point to this path */
+export type CrumbIndicator = [number, ...string[]];
+
 type Party = {
   name: string;
   startUpdateId: number;
   endUpdateId: number;
   roomChanges: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
-  localChanges?: Record<string, number>;
+  // inside a map of each language
+  localChanges?: Record<string, Partial<Record<Language, number | CrumbIndicator>>>;
   // maps route inside play/v2/global to either file Id or tuple [global_path name, file Id]
-  globalChanges?: Record<string, number | [string, number]>
+  globalChanges?: Record<string, number | CrumbIndicator>
   music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
+  scavengerHunt2010?: true;
 };
 
 type Construction = {
@@ -120,14 +127,28 @@ export const PARTIES: Party[] = [
       'party2': 2299,
       'party3': 2300
     },
-    localChanges: {
-      'en/catalogues/party.swf': 2301,
-      'en/close_ups/digposter.swf': 2307,
-      'en/close_ups/digposter2.swf': 2302,
-      'en/close_ups/treasurepin1.swf': 2303,
-      'en/close_ups/treasurepin2.swf': 2304,
-      'en/close_ups/treasurepin3.swf': 2305,
-      'en/close_ups/treasurepin4.swf': 2306
+    'localChanges': {
+      'catalogues/party.swf': {
+        'en': 2301
+      },
+      'close_ups/digposter.swf': {
+        'en': 2307
+      },
+      'close_ups/digposter2.swf': {
+        'en': 2302
+      },
+      'close_ups/treasurepin1.swf': {
+        'en': 2303
+      },
+      'close_ups/treasurepin2.swf': {
+        'en': 2304
+      },
+      'close_ups/treasurepin3.swf': {
+        'en': 2305
+      },
+      'close_ups/treasurepin4.swf': {
+        'en': 2306
+      }
     }
   },
   {
@@ -210,8 +231,60 @@ export const PARTIES: Party[] = [
       'content/shorts/goldenPuffle.swf': 2339,
       'content/shorts/ruby.swf': 2340,
       'content/shorts/squidzoid.swf': 2341,
-      'content/shorts/underwater.swf': ['underwaterShort', 2342],
-      'content/winners.swf': ['voting_booth', 2343]
+      'content/shorts/underwater.swf': [2342, 'underwaterShort'],
+      'content/winners.swf': [2343, 'voting_booth']
     },
+  },
+  {
+    name: 'April Fools\' Party 2010',
+    startUpdateId: 60,
+    endUpdateId: 61,
+    roomChanges: {
+      'dock': 2358,
+      'forest': 2359,
+      'shop': 2360,
+      'berg': 2361,
+      'light': 2362,
+      'dance': 2363,
+      'mine': 2364,
+      'shack': 2365,
+      'pizza': 2366,
+      'lodge': 2367,
+      'village': 2368,
+      'forts': 2369,
+      'town': 2370
+    },
+    localChanges: {
+      'membership/oops_april_fools.swf': {
+        'en': [2371, 'oops_party_room']
+      }
+    }
+  },
+  {
+    name: 'Earth Day 2010',
+    startUpdateId: 62,
+    endUpdateId: 63,
+    roomChanges: {
+      'town': 2372,
+      'coffee': 2373,
+      'book': 2374,
+      'plaza': 2375,
+      'pet': 2376,
+      'mtn': 2377,
+      'village': 2378,
+      'forest': 2379,
+      'cove': 2380,
+      'shack': 2381,
+      'dojoext': 2382
+    },
+    music: {
+      'town': 219,
+      'plaza': 219
+    },
+    globalChanges: {
+      'scavenger_hunt/recycle_icon.swf': [2386, 'scavenger_hunt_icon'],
+      'scavenger_hunt/recycle.swf': [2385, 'easter_egg_hunt', 'recycle_hunt']
+    },
+    scavengerHunt2010: true
   },
 ];

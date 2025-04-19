@@ -2406,11 +2406,47 @@ export const FILES = new StaticDataTable<File, [
   [2348, 'RoomsPlaza-PenguinPlayAwards2010.swf', 1, FileCategory.Archives, null, null, null],
   [2349, 'RoomsStage-PenguinPlayAwards2010.swf', 1, FileCategory.Archives, null, null, null],
   [2350, 'RoomsTown-PenguinPlayAwards2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2351, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2352, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2353, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2354, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2355, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2356, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null],
-  // [2357, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null, null]
+  [2351, 'RoomsParty-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2352, 'RoomsBeach-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2353, 'AprilFools\'Party2011Beacon.swf', 1, FileCategory.Archives, null, null, null],
+  [2354, 'RoomsBoiler-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2355, 'RoomsCave-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2356, 'RoomsCoffeeAprilFools2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2357, 'RoomsCove-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2358, 'RoomsDock-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2359, 'RoomsForest-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2360, 'AprilFoolsParty2010GiftShop.swf', 1, FileCategory.Archives, null, null, null],
+  [2361, 'RoomsBerg-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2362, 'AprilFools\'Party2011Light.swf', 1, FileCategory.Archives, null, null, null],
+  [2363, 'AprilFools\'Party2011Dance.swf', 1, FileCategory.Archives, null, null, null],
+  [2364, 'RoomsMine-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2365, 'RoomsShack-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2366, 'RoomsPizza-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2367, 'RoomsLodge-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2368, 'RoomsVillage-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2369, 'RoomsForts-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2370, 'RoomsTown-AprilFoolsParty2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2371, 'AprilFoolsParty2010MembershipOopsAprilFools.swf', 1, FileCategory.Archives, null, null, null],
+  [2372, 'RoomsTown-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2373, 'RoomsCoffeeEarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2374, 'RoomsBook-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2375, 'RoomsPlaza-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2376, 'RoomsPet-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2377, 'RoomsMtn-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2378, 'RoomsVillage-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2379, 'RoomsForest-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2380, 'RoomsCove-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2381, 'RoomsShack-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2382, 'RoomsDojoext-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+
+  // Scavenger hunt mod made by Ben from solero
+  [2383, 'scavenger_hunt_2010.swf', 1, FileCategory.Tool, null, null, null],
+  // dependencies.json that loads the scavenger hunt file above, may should be integrated in the future
+  [2384, 'dependencies_scavenger_hunt.json', 1, FileCategory.Tool, null, null, null],
+  [2385, 'Scavenger_hunt-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null],
+  [2386, 'Scavenger_hunt_icon-EarthDay2010.swf', 1, FileCategory.Archives, null, null, null]
+  // [2387, '', 1, FileCategory.Archives, null, null, null]
+  // [2388, '', 1, FileCategory.Archives, null, null, null]
+  // [2389, '', 1, FileCategory.Archives, null, null, null]
+  // [2390, '', 1, FileCategory.Archives, null, null, null]
 ]);

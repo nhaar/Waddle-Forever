@@ -10,7 +10,7 @@ import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
-import { PARTIES, RoomChanges } from "../data/parties";
+import { CrumbIndicator, PARTIES, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
@@ -242,33 +242,45 @@ function addParties(map: TimelineMap): void {
   PARTIES.forEach((party) => {
     const startDate = getUpdateDate(party.startUpdateId);
     const endDate = getUpdateDate(party.endUpdateId);
+    const pushCrumbChange = (baseRoute: string, route: string, info: number | CrumbIndicator) => {
+      const fileId = typeof info === 'number' ? info : info[0];
+      addToTimeline(map, path.join(baseRoute, route), {
+        type: 'temporary',
+        start: startDate,
+        end: endDate,
+        file: fileId
+      });
+    }
+
     addRoomChanges(party.roomChanges, startDate, endDate);
     if (party.localChanges !== undefined) {
       Object.entries(party.localChanges).forEach((pair) => {
-        const [route, fileId] = pair;
-        addToTimeline(map, path.join('play/v2/content/local', route), {
-          type: 'temporary',
-          start: startDate,
-          end: endDate,
-          file: fileId
+        const [route, languages] = pair;
+        Object.entries(languages).forEach((changePair) => {
+          const [language, info] = changePair;
+          pushCrumbChange(path.join('play/v2/content/local', language), route, info);
         });
       })
     }
     if (party.globalChanges !== undefined) {
       Object.entries(party.globalChanges).forEach((pair) => {
         const [route, info] = pair;
-        const fileId = typeof info === 'number' ? info : info[1];
-        addToTimeline(map, path.join('play/v2/content/global', route), {
-          type: 'temporary',
-          start: startDate,
-          end: endDate,
-          file: fileId
-        });
+        pushCrumbChange('play/v2/content/global', route, info);
       })
     }
     if (party.construction !== undefined) {
       const constructionStart = getUpdateDate(party.construction.updateId);
       addRoomChanges(party.construction.changes, constructionStart, endDate);
+    }
+
+    if (party.scavengerHunt2010) {
+      // enabling the scavenger hunt dependency file
+      addToTimeline(map, 'play/v2/client/dependencies.json', {
+        type: 'temporary',
+        start: startDate,
+        end: endDate,
+        file: 2384
+      });
     }
   })
 }

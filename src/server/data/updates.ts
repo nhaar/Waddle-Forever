@@ -144,7 +144,14 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     [58, '2010-03-18'],
     // ppa 2010 ends
     [59, '2010-03-29'],
-    
+    // april fools 2010 starts
+    [60, '2010-03-31'],
+    // april fools 2010 ends
+    [61, '2010-04-05'],
+    // earth day 2010 starts
+    [62, '2010-04-21'],
+    // earth day 2010 ends
+    [63, '2010-04-27']
   ]
 );
 

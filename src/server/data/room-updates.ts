@@ -134,6 +134,24 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'pizza',
     fileId: 262,
     updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'shop',
+    fileId: 267,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'coffee',
+    fileId: 247,
+    updateId: 27
+  },
+  {
+    // placeholder CPIP room
+    room: 'book',
+    fileId: 243,
+    updateId: 27
   }
 ];
 

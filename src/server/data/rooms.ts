@@ -20,10 +20,12 @@ export type RoomName = 'town' |
   'village' |
   'rink' |
   'dojo' |
+  'dojoext' |
   'forts' |
   'agent' |
   'sport' |
   'mtn' |
+  'shack' |
   'lodge' |
   'pizza' |
   'plaza' |
@@ -120,6 +122,12 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipFileNumber: 10,
     preCpipName: 'Dojo'
   },
+  'dojoext': {
+    id: 321,
+    name: 'Dojo Courtyard',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
   'agent': {
     id: 803,
     name: 'PSA HQ',
@@ -184,6 +192,12 @@ export const ROOMS: Record<RoomName, Room> = {
   'mine': {
     id: 808,
     name: 'Mine',
+    preCpipFileNumber: null,
+    preCpipName: null
+  },
+  'shack': {
+    id: 807,
+    name: 'Mine Shack',
     preCpipFileNumber: null,
     preCpipName: null
   },
