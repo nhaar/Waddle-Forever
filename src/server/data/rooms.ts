@@ -1,7 +1,7 @@
 type Room = {
   id: number;
   name: string;
-  preCpipPath: number;
+  preCpipFileNumber: number;
   preCpipName: string;
   preCpipSong?: number;
 };
@@ -26,94 +26,94 @@ export const ROOMS: Record<RoomName, Room> = {
   'town': {
     id: 100,
     name: 'Town',
-    preCpipPath: 6,
+    preCpipFileNumber: 10,
     preCpipName: 'Town'
   },
   'coffee': {
     id: 110,
     name: 'Coffee Shop',
-    preCpipPath: 9,
+    preCpipFileNumber: 11,
     preCpipName: 'Coffee',
     preCpipSong: 1
   },
   'book': {
     id: 111,
     name: 'Book Room',
-    preCpipPath: 18,
+    preCpipFileNumber: 11,
     preCpipName: 'Book'
   },
   'dance': {
     id: 120,
     name: 'Dance Club',
-    preCpipPath: 10,
+    preCpipFileNumber: 10,
     preCpipName: 'Dance',
     preCpipSong: 2
   },
   'lounge': {
     id: 121,
     name: 'Dance Lounge',
-    preCpipPath: 11,
+    preCpipFileNumber: 10,
     preCpipName: 'Lounge'
   },
   'shop': {
     id: 130,
     name: 'Gift Shop',
-    preCpipPath: 17,
+    preCpipFileNumber: 10,
     preCpipName: 'Shop'
   },
   'dock': {
     id: 800,
     name: 'Dock',
-    preCpipPath: 15,
+    preCpipFileNumber: 11,
     preCpipName: 'Dock'
   },
   'village': {
     id: 200,
     name: 'Ski Village',
-    preCpipPath: 16,
+    preCpipFileNumber: 11,
     preCpipName: 'Village'
   },
   'rink': {
     id: 802,
     name: 'Stadium',
-    preCpipPath: 14,
+    preCpipFileNumber: 10,
     preCpipName: 'Rink'
   },
   'dojo': {
     id: 320,
     name: 'Dojo',
-    preCpipPath: 27,
+    preCpipFileNumber: 10,
     preCpipName: 'Dojo'
   },
   'agent': {
     id: 803,
     name: 'PSA HQ',
-    preCpipPath: 26,
+    preCpipFileNumber: 11,
     preCpipName: 'Agent',
     preCpipSong: 7
   },
   'forts': {
     id: 801,
     name: 'Snow Forts',
-    preCpipPath: 30,
+    preCpipFileNumber: 12,
     preCpipName: 'Forts'
   },
   'sport': {
     id: 210,
     name: 'Sport Shop',
-    preCpipPath: 68,
+    preCpipFileNumber: 11,
     preCpipName: 'Sport'
   },
   'mtn': {
     id: 230,
     name: 'Ski Hill',
-    preCpipPath: 69,
+    preCpipFileNumber: 10,
     preCpipName: 'Mtn'
   },
   'lodge': {
     id: 220,
     name: 'Ski Lodge',
-    preCpipPath: 71,
+    preCpipFileNumber: 11,
     preCpipName: 'Lodge'
   }
 };

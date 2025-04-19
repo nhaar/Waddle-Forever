@@ -1,5 +1,4 @@
 import path from "path";
-import { PATHS, PRECPIP_MAP_PATH } from "../data/paths";
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isEqual, isLower, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
@@ -10,7 +9,7 @@ import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
-import { MAP_UPDATES } from "../data/game-map";
+import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
 import { PARTIES } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 
@@ -57,21 +56,6 @@ function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation)
   }
 }
 
-/** Given a path id, get a full route */
-function getRoutePath(pathId: number): string {
-  let fullPath = '';
-  let nextId: number | null = pathId;
-  while (nextId !== null) {
-    const currentPath = PATHS.get(nextId);
-    if (currentPath === undefined) {
-      throw new Error(`Incorrect path: ${nextId}`);
-    }
-    fullPath = path.join(currentPath.name, fullPath);
-    nextId = currentPath.parentId;
-  }
-  return fullPath;
-}
-
 /** Get the path to a file */
 function getMediaFilePath(fileId: number): string {
   const file = FILES.getStrict(fileId);
@@ -101,7 +85,7 @@ function addMusicFiles(map: TimelineMap): void {
 
   Object.entries(MUSIC_IDS).forEach((pair) => {
     const [musicId, fileId] = pair;
-    const route = path.join(getRoutePath(PRE_CPIP_MUSIC_PATH), String(musicId) + '.swf')
+    const route = path.join(PRE_CPIP_MUSIC_PATH, String(musicId) + '.swf')
     const date = getUpdateDate(FIRST_UPDATE);
     addToTimeline(map, route, {
       type: 'permanent',
@@ -112,9 +96,9 @@ function addMusicFiles(map: TimelineMap): void {
 }
 
 function addStaticFiles(map: RouteMap): void {
-  PRE_CPIP_STATIC_FILES.forEach((row) => {
-    const route = getRoutePath(row.pathId);
-    const filePath = getMediaFilePath(row.fileId);
+  Object.entries(PRE_CPIP_STATIC_FILES).forEach((pair) => {
+    const [route, fileId] = pair;
+    const filePath = getMediaFilePath(fileId);
     addToRouteMap(map, route, filePath);
   })
 }
@@ -151,15 +135,19 @@ function getUpdateDate(updateId: number): string {
   return update.time;
 }
 
+function getPreCpipRoomRoute(room: RoomName): string {
+  const roomInfo = ROOMS[room];
+  return path.join('artwork/rooms', `${room}${roomInfo.preCpipFileNumber}.swf`);
+}
+
 function addRoomInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
   
   for (const roomName in ROOMS) {
-    const room = ROOMS[roomName as RoomName];
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
       // adding rooms that were there from the start
-      addToTimeline(map, getRoutePath(room.preCpipPath), {
+      addToTimeline(map, getPreCpipRoomRoute(roomName as RoomName), {
         type: 'permanent',
         date: firstUpdate.time,
         file: originalRoomFile
@@ -168,8 +156,7 @@ function addRoomInfo(map: TimelineMap): void {
   }
 
   ROOM_OPENINGS.forEach((opening) => {
-    const room = ROOMS[opening.room];
-    addToTimeline(map, getRoutePath(room.preCpipPath), {
+    addToTimeline(map, getPreCpipRoomRoute(opening.room), {
       type: 'permanent',
       date: getUpdateDate(opening.updateId),
       file: opening.fileId
@@ -177,13 +164,7 @@ function addRoomInfo(map: TimelineMap): void {
   })
 
   ROOM_UPDATES.forEach((update) => {
-    const room = ROOMS[update.room];
-    console.log('update', room, {
-      type: 'permanent',
-      date: getUpdateDate(update.updateId),
-      file: update.fileId
-    });
-    addToTimeline(map, getRoutePath(room.preCpipPath), {
+    addToTimeline(map, getPreCpipRoomRoute(update.room), {
       type: 'permanent',
       date: getUpdateDate(update.updateId),
       file: update.fileId
@@ -195,8 +176,7 @@ function addParties(map: TimelineMap): void {
   PARTIES.forEach((party) => {
     for (const room in party.roomChanges) {
       const fileId = party.roomChanges[room as RoomName]!;
-      const roomInfo = ROOMS[room as RoomName];
-      addToTimeline(map, getRoutePath(roomInfo.preCpipPath), {
+      addToTimeline(map, getPreCpipRoomRoute(room as RoomName), {
         type: 'temporary',
         start: getUpdateDate(party.startUpdateId),
         end: getUpdateDate(party.endUpdateId),
@@ -364,9 +344,8 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
 
 function addIngameMapInfo(map: TimelineMap): void {
   const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
-  const mapPath = getRoutePath(PATHS.getStrict(PRECPIP_MAP_PATH).id);
 
-  addToTimeline(map, mapPath, {
+  addToTimeline(map, PRECPIP_MAP_PATH, {
     date: firstUpdate.time,
     file: ORIGINAL_MAP,
     type: 'permanent'
@@ -375,9 +354,8 @@ function addIngameMapInfo(map: TimelineMap): void {
 
 function addStandaloneChanges(map: TimelineMap): void {
   STANDALONE_CHANGE.forEach((change) => {
-    const route = getRoutePath(change.pathId);
     const update = UPDATES.getStrict(change.updateId);
-    addToTimeline(map, route, {
+    addToTimeline(map, change.route, {
       type: 'permanent',
       date: update.time,
       file: change.fileId
@@ -388,7 +366,7 @@ function addStandaloneChanges(map: TimelineMap): void {
 function addMapUpdates(map: TimelineMap): void {
   MAP_UPDATES.forEach((update) => {
     const time = getUpdateDate(update.updateId);
-    addToTimeline(map, getRoutePath(PRECPIP_MAP_PATH), {
+    addToTimeline(map, PRECPIP_MAP_PATH, {
       type: 'permanent',
       date: time,
       file: update.fileId

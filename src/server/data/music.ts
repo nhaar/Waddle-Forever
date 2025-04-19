@@ -1,4 +1,4 @@
-export const PRE_CPIP_MUSIC_PATH = 23;
+export const PRE_CPIP_MUSIC_PATH = 'music';
 
 // map music id -> file (of when it first released)
 export const MUSIC_IDS: Record<number, number> = {

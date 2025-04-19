@@ -1,177 +1,61 @@
-import { StaticDataTable } from "../../common/static-table";
+import path from "path";
 
-type PreCpipStaticFile = {
-  pathId: number;
-  fileId: number;
-};
-
-export const PRE_CPIP_STATIC_FILES: PreCpipStaticFile[] = [
-  {
-    pathId: 8,
-    fileId: 4
-  },
-  {
-    pathId: 29,
-    fileId: 18
-  },
-  {
-    pathId: 21,
-    fileId: 19
-  },
-  {
-    pathId: 22,
-    fileId: 20
-  },
-  {
-    pathId: 20,
-    fileId: 21
-  },
-  {
-    pathId: 1,
-    fileId: 1
-  },
-  {
-    pathId: 2,
-    fileId: 2
-  },
-  {
-    pathId: 32,
-    fileId: 40
-  },
-  {
-    pathId: 33,
-    fileId: 41
-  },
-  {
-    pathId: 34,
-    fileId: 42
-  },
-  {
-    pathId: 35,
-    fileId: 43
-  },
-  {
-    pathId: 36,
-    fileId: 44
-  },
-  {
-    pathId: 37,
-    fileId: 45
-  },
-  {
-    pathId: 38,
-    fileId: 46
-  },
-  {
-    pathId: 39,
-    fileId: 47
-  },
-  {
-    pathId: 40,
-    fileId: 48
-  },
-  {
-    pathId: 41,
-    fileId: 49
-  },
-  {
-    pathId: 42,
-    fileId: 50
-  },
-  {
-    pathId: 43,
-    fileId: 51
-  },
-  {
-    pathId: 44,
-    fileId: 52
-  },
-  {
-    pathId: 45,
-    fileId: 53
-  },
-  {
-    pathId: 46,
-    fileId: 54
-  },
-  {
-    pathId: 47,
-    fileId: 55
-  },
-  {
-    pathId: 48,
-    fileId: 56
-  },
-  {
-    pathId: 49,
-    fileId: 57
-  },
-  {
-    pathId: 50,
-    fileId: 58
-  },
-  {
-    pathId: 51,
-    fileId: 59
-  },
-  {
-    pathId: 52,
-    fileId: 60
-  },
-  {
-    pathId: 53,
-    fileId: 61
-  },
-  {
-    pathId: 54,
-    fileId: 62
-  },
-  {
-    pathId: 55,
-    fileId: 63
-  },
-  {
-    pathId: 56,
-    fileId: 64
-  },
-  {
-    pathId: 57,
-    fileId: 66
-  },
-  {
-    pathId: 58,
-    fileId: 67
-  },
-  {
-    pathId: 60,
-    fileId: 68
-  },
-  {
-    pathId: 61,
-    fileId: 69
-  },
-  {
-    pathId: 62,
-    fileId: 70
-  },
-  {
-    pathId: 63,
-    fileId: 71
-  },
-  {
-    pathId: 64,
-    fileId: 72
-  },
-  {
-    pathId: 65,
-    fileId: 73
-  },
-  {
-    pathId: 66,
-    fileId: 74
-  },
-  {
-    pathId: 70,
-    fileId: 23
-  }
+// file id of newspapers in order
+// TODO place in newspapers.ts
+const newspaperFiles = [
+  40,
+  41,
+  42,
+  43,
+  44,
+  45,
+  46,
+  47,
+  48,
+  49,
+  50,
+  51,
+  52,
+  53,
+  54,
+  55,
+  56,
+  57,
+  58,
+  59,
+  60,
+  61,
+  62,
+  63,
+  64,
+  65
 ];
+
+const staticNewspaperFiles: Record<string, number> = {};
+
+newspaperFiles.forEach((fileId, index) => {
+  const route = path.join('artwork/news', `new${index + 1}.swf`);
+  staticNewspaperFiles[route] = fileId;
+})
+
+
+export const PRE_CPIP_STATIC_FILES: Record<string, number> = {
+  'artwork/characters/penguin.swf': 4,
+  'edit/edit6.swf': 18,
+  'games/astro.swf': 19,
+  'games/beans.swf': 20,
+  'games/biscuit.swf': 21,
+  'games/puffle.swf': 23,
+  'load.swf': 1,
+  'version.txt': 2,
+  'artwork/news/newfan.swf': 67,
+  ...staticNewspaperFiles,
+  'artwork/catalogue/clothing0509.swf': 68,
+  'artwork/catalogue/clothing0510.swf': 69,
+  'artwork/catalogue/clothing0511.swf': 70,
+  'artwork/catalogue/clothing0512.swf': 71,
+  'artwork/catalogue/clothing0601.swf': 72,
+  'artwork/catalogue/clothing0602.swf': 73,
+  'artwork/catalogue/clothing0603.swf': 74,
+  'artwork/catalogue/clothing0604.swf': 75
+};

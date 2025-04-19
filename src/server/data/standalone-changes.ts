@@ -1,7 +1,7 @@
 import { StaticDataTable } from "../../common/static-table";
 
 type StandaloneChange = {
-  pathId: number;
+  route: string;
   fileId: number;
   updateId: number;
 };
@@ -9,13 +9,13 @@ type StandaloneChange = {
 export const STANDALONE_CHANGE: StandaloneChange[] = [
   {
     // newspapers-less precpip client
-    pathId: 3,
+    route: 'chat291.swf',
     fileId: 24,
     updateId: 1
   },
   {
     // precpip client with newspapers
-    pathId: 3,
+    route: 'chat291.swf',
     fileId: 66,
     updateId: 6
   }

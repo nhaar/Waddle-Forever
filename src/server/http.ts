@@ -207,6 +207,7 @@ export class HttpServer {
           }
         }
 
+        console.log(`Requested: ${route}, sending: ${filePath}`);
         res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
       }
     });
