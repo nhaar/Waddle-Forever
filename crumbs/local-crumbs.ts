@@ -1,19 +1,12 @@
 import path from "path";
 import { extractPcode, replacePcode } from "../src/common/ffdec/ffdec";
-import { addParties, CrumbsUpdate, generateCrumbFiles, getCrumbsTimelineFromMap, getTimelineMap } from "./base-crumbs";
-import { PathsUpdate } from "../src/server/game/crumbs";
-import { Party } from "../src/server/game/parties";
-import { DEFAULT_DIRECTORY } from "../src/common/utils";
-import { Version } from "../src/server/routes/versions";
+import { generateCrumbFiles } from "./base-crumbs";
+import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbPatch } from "../src/server/routes/client-files";
 
 const BASE_LOCAL_CRUMBS = path.join(__dirname, 'base_local_crumbs.swf');
 
 async function loadBaseCrumbs(): Promise<string> {
   return await extractPcode(BASE_LOCAL_CRUMBS, 'frame_1/DoAction.pcode');
-}
-
-type LocalModifications = {
-  localPaths?: PathsUpdate
 }
 
 function addLocalPath(crumbs: string, pathName: string, path: string): string {
@@ -36,50 +29,20 @@ function addLocalPath(crumbs: string, pathName: string, path: string): string {
   return lines.join('\n');
 }
 
-function applyChanges(crumbs: string, changes: LocalModifications): string {
+function applyChanges(crumbs: string, changes: LocalCrumbPatch): string {
   let newCrumbs = crumbs
 
-  if (changes.localPaths !== undefined) {
-    for (const path in changes.localPaths) {
-      newCrumbs = addLocalPath(newCrumbs, path, changes.localPaths[path]);
+  if (changes.paths !== undefined) {
+    for (const path in changes.paths) {
+      newCrumbs = addLocalPath(newCrumbs, path, changes.paths[path]);
     }
   }
 
   return newCrumbs;
 }
 
-type LocalCrumbsUpdate = CrumbsUpdate<LocalModifications>;
-
-function detectChanges(party: Party): boolean {
-  return party.localPaths !== undefined;
+async function createCrumbs(outputPath: string, crumbsContent: string): Promise<void> {
+  await replacePcode(BASE_LOCAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
-function extractPartyChanges(party: Party): LocalModifications {
-  return {
-    localPaths: party.localPaths
-  };
-}
-
-function getFullTimeline(): LocalCrumbsUpdate[] {
-  let map = getTimelineMap<LocalModifications>([]);
-  const updates = addParties(getCrumbsTimelineFromMap<LocalModifications>(map), detectChanges, extractPartyChanges);
-  return updates;
-}
-
-const mediaPath = 'default/seasonal/play/v2/content/local/en/crumbs/local_crumbs.swf'
-
-async function createSeasonalCrumb(content: string, date: Version): Promise<void> {
-  const filePath = path.join(__dirname, '..', 'media', mediaPath, date + '.swf');
-  await replacePcode(BASE_LOCAL_CRUMBS, filePath, '\\frame 1\\DoAction', content);
-}
-
-(async () => {
-  await generateCrumbFiles<LocalModifications>(
-    loadBaseCrumbs,
-    applyChanges,
-    getFullTimeline,
-    createSeasonalCrumb,
-    mediaPath,
-    'Local Crumbs'
-  );
-})();
+generateCrumbFiles(loadBaseCrumbs, getLocalCrumbsOutput, applyChanges, createCrumbs, LOCAL_CRUMBS_PATH);

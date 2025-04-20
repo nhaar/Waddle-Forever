@@ -443,18 +443,69 @@ export type GlobalCrumbPatch = {
   newMigratorStatus?: boolean;
 };
 
+export type LocalCrumbPatch = {
+  paths?: Record<string, string>;
+}
+
 export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
+export const LOCAL_CRUMBS_PATH = path.join('default', 'auto', 'local_crumbs');
 export function getCrumbFileName(hash: string, id: number): string {
   return `${hash}-${id}.swf`;
 }
 
-/**
- * Get an output of the global crumbs timeline which includes a hash
- * identifying this timeline and the information of each version
- */
-export function getGlobalCrumbsOutput() {
+function getMd5(str: string): string {
+  return crypto.createHash('md5').update(str).digest('hex');
+}
+
+export type CrumbOutput<CrumbPatch> = {
+  hash: string;
+ crumbs: Array<{
+      date: Version;
+      out: Partial<CrumbPatch>;
+      id: number;
+  }>;
+};
+
+export function getLocalCrumbsOutput() {
+  return getBaseCrumbsOutput<LocalCrumbPatch>((timeline) => {
+    PARTIES.forEach((party) => {
+      const localPaths: Record<string, string> = {};
+      if (party.localChanges !== undefined) {
+        // only 'en' support
+        Object.entries(party.localChanges).forEach((pair) => {
+          const [route, langs] = pair;
+          if (langs.en !== undefined) {
+            if (typeof langs.en !== 'number') {
+              const [_, ...paths] = langs.en;
+              paths.forEach((path) => {
+                localPaths[path] = route;
+              })
+            }
+          }
+        })
+      }
+  
+      if (Object.keys(localPaths).length > 0) {
+        timeline.push({
+          type: 'temporary',
+          start: party.startDate,
+          end: party.endDate,
+          crumb: { paths: localPaths }
+        });
+      }
+    })
+  }, (prev, cur) => {
+    return {
+      paths: { ...prev.paths, ...cur.paths }
+    };
+  });
+}
+
+function getBaseCrumbsOutput<CrumbPatch>(timelineBuilder: (timeline: TimelineEvent<{
+  crumb: Partial<CrumbPatch>
+}>[]) => void, mergeCrumbs: (prev: Partial<CrumbPatch>, cur: Partial<CrumbPatch>) => Partial<CrumbPatch>) {
   const timeline: TimelineEvent<{
-    crumb: GlobalCrumbPatch
+    crumb: Partial<CrumbPatch>
   }>[] = [
     {
       type: 'permanent',
@@ -463,63 +514,7 @@ export function getGlobalCrumbsOutput() {
     }
   ];
 
-  PARTIES.forEach((party) => {
-    const globalPaths: Record<string, string> = {};
-    if (party.globalChanges !== undefined) {
-      Object.entries(party.globalChanges).forEach((pair) => {
-        const [route, info] = pair;
-        if (typeof info !== 'number') {
-          const [_, ...paths] = info;
-          paths.forEach((globalPath) => {
-            globalPaths[globalPath] = route;
-          })
-        }
-      })
-    }
-
-    // we only want to add parties that are post CPIP and actually made changes
-    // so we don't have excess crumb files
-    let crumbChanged = false;
-    if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)) {
-      if (party.music !== undefined) {
-        crumbChanged = true;
-      } else if (Object.keys(globalPaths).length > 0) {
-        crumbChanged = true;
-      } else if (party.activeMigrator) {
-        crumbChanged = true;
-      }
-    }
-
-    if (crumbChanged) {
-      timeline.push({
-        type: 'temporary',
-        start: party.startDate,
-        end: party.endDate,
-        crumb: {
-          music: party.music,
-          paths: globalPaths,
-          prices: {},
-          newMigratorStatus: party.activeMigrator === true
-        }
-      });
-    }
-  });
-
-  STAGE_TIMELINE.forEach((debut) => {
-    const play = STAGE_PLAYS.find((play) => play.name === debut.name);
-    if (play === undefined) {
-      throw new Error(`Stage play has no music: ${debut.name}`);
-    }
-    timeline.push({
-      type: 'permanent',
-      date: debut.date,
-      crumb: {
-        music: {
-          'stage': play.musicId
-        }
-      }
-    });
-  });
+  timelineBuilder(timeline);
 
   const crumbs = processTimeline(timeline, (input) => {
     return input.crumb
@@ -527,37 +522,109 @@ export function getGlobalCrumbsOutput() {
     if (previous === undefined) {
       return current;
     } else {
-      return {
-        music: {
-          ...previous.music,
-          ...current.music
-        },
-        prices: {
-          ...previous.prices,
-          ...current.prices
-        },
-        paths: {
-          ...previous.paths,
-          ...current.paths
-        },
-        newMigratorStatus: current.newMigratorStatus === undefined ? previous.newMigratorStatus : current.newMigratorStatus
-      }
+      return mergeCrumbs(previous, current);
     }
   });
 
-  const hash = crypto.createHash('md5').update(JSON.stringify(crumbs)).digest('hex');
+  const hash = getMd5(JSON.stringify(crumbs))
   return { hash, crumbs };
 }
 
-/** Adds listeners to the global crumbs files */
-function addGlobalCrumbs(map: TimelineMap): void {
-  const { hash, crumbs } = getGlobalCrumbsOutput();
+/**
+ * Get an output of the global crumbs timeline which includes a hash
+ * identifying this timeline and the information of each version
+ */
+export function getGlobalCrumbsOutput() {
+  return getBaseCrumbsOutput<GlobalCrumbPatch>((timeline) => {
+    PARTIES.forEach((party) => {
+      const globalPaths: Record<string, string> = {};
+      if (party.globalChanges !== undefined) {
+        Object.entries(party.globalChanges).forEach((pair) => {
+          const [route, info] = pair;
+          if (typeof info !== 'number') {
+            const [_, ...paths] = info;
+            paths.forEach((globalPath) => {
+              globalPaths[globalPath] = route;
+            })
+          }
+        })
+      }
   
-  /** So that different crumb generations don't use the same files, we hash it in the name */
-  crumbs.forEach((crumb) => {
-    const filePath = path.join(GLOBAL_CRUMBS_PATH, getCrumbFileName(hash, crumb.id));
-    map.addPerm('play/v2/content/global/crumbs/global_crumbs.swf', crumb.date, filePath);
+      // we only want to add parties that are post CPIP and actually made changes
+      // so we don't have excess crumb files
+      let crumbChanged = false;
+      if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)) {
+        if (party.music !== undefined) {
+          crumbChanged = true;
+        } else if (Object.keys(globalPaths).length > 0) {
+          crumbChanged = true;
+        } else if (party.activeMigrator) {
+          crumbChanged = true;
+        }
+      }
+  
+      if (crumbChanged) {
+        timeline.push({
+          type: 'temporary',
+          start: party.startDate,
+          end: party.endDate,
+          crumb: {
+            music: party.music,
+            paths: globalPaths,
+            prices: {},
+            newMigratorStatus: party.activeMigrator === true
+          }
+        });
+      }
+    });
+  
+    STAGE_TIMELINE.forEach((debut) => {
+      const play = STAGE_PLAYS.find((play) => play.name === debut.name);
+      if (play === undefined) {
+        throw new Error(`Stage play has no music: ${debut.name}`);
+      }
+      timeline.push({
+        type: 'permanent',
+        date: debut.date,
+        crumb: {
+          music: {
+            'stage': play.musicId
+          }
+        }
+      });
+    });
+  }, (prev, cur) => {
+    return {
+      music: {
+        ...prev.music,
+        ...cur.music
+      },
+      prices: {
+        ...prev.prices,
+        ...cur.prices
+      },
+      paths: {
+        ...prev.paths,
+        ...cur.paths
+      },
+      newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus
+    }
   });
+}
+
+/** Adds listeners to the global crumbs files */
+function addCrumbs(map: TimelineMap): void {
+  const addCrumb = <T>(crumbPath: string, route: string, output: CrumbOutput<T>) => {
+    const { hash, crumbs } = output;
+    /** So that different crumb generations don't use the same files, we hash it in the name */
+    crumbs.forEach((crumb) => {
+      const filePath = path.join(crumbPath, getCrumbFileName(hash, crumb.id));
+      map.addPerm(route, crumb.date, filePath);
+    });
+  }
+  
+  addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
+  addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
 }
 
 /** Converts a timeline event to the information consumed by the file server */
@@ -715,7 +782,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addStagePlays,
     addMusicLists,
     addStadiumUpdates,
-    addGlobalCrumbs
+    addCrumbs
   ];
 
   processors.forEach((fn) => fn(timelines));

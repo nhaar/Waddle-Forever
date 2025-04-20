@@ -272,7 +272,8 @@ export const PARTIES: Party[] = [
       'lodge': 2367,
       'village': 2368,
       'forts': 2369,
-      'town': 2370
+      'town': 2370,
+      'party': 2351
     },
     localChanges: {
       'membership/oops_april_fools.swf': {
