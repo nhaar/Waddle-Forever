@@ -79,9 +79,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   // events, parties
   server.addParties();
 
-  // automatically enable seasonals
-  server.addSeasonals();
-
   // important redirects
   server.redirectDirs(
     ['play/v2/content/global/clothing', 'clothing'], // clothing is its own package due to its high size
