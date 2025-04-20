@@ -1,6 +1,7 @@
 import path from "path";
+import crypto from 'crypto';
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
-import { isEqual, isLower, Version } from "./versions";
+import { isEqual, isGreaterOrEqual, isLower, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
@@ -14,7 +15,7 @@ import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../game/catalogues";
-import { STAGE_TIMELINE } from "../game/stage-plays";
+import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
@@ -94,11 +95,7 @@ function addMusicFiles(map: TimelineMap): void {
   Object.entries(MUSIC_IDS).forEach((pair) => {
     const [musicId, fileId] = pair;
     const route = path.join(PRE_CPIP_MUSIC_PATH, String(musicId) + '.swf')
-    map.add(route, {
-      type: 'permanent',
-      date: BETA_RELEASE,
-      file: fileId
-    });
+    map.addPerm(route, BETA_RELEASE, fileId);
   })
 }
 
@@ -119,27 +116,26 @@ function addStaticFiles(map: RouteMap): void {
 function addFallbacks(map: TimelineMap): void {
   FALLBACKS.forEach((pair) => {
     const [route, fileId] = pair;
-    map.add(route, {
-      type: 'permanent',
-      date: BETA_RELEASE,
-      file: fileId
-    });
+    map.addPerm(route, BETA_RELEASE, fileId);
   })
 }
 
-/** A single event in a timeline of updates of a file */
-type TimelineEvent = {
+/** Abstraction of a type that represents either a temporary event or permanent one in a timeline */
+type TimelineEvent<EventInformation> = ({
   type: 'temporary';
   start: Version;
   end: Version;
-  file: number;
 } | {
   type: 'permanent',
   date: Version,
-  file: number;
-};
+}) & EventInformation;
 
-type FileTimeline = Array<TimelineEvent>;
+/** A single event in a timeline of updates of a file */
+type FileTimelineEvent = TimelineEvent<{
+  file: string
+}>;
+
+type FileTimeline = Array<FileTimelineEvent>;
 
 /** Maps for each route its file timeline */
 // type TimelineMap = Map<string, FileTimeline>;
@@ -155,8 +151,28 @@ class TimelineMap {
     this._map = new Map<string, FileTimeline>;
   }
 
+  addTemp(route: string, start: Version, end: Version, file: number) {
+    this.add(route, {
+      type: 'temporary',
+      start,
+      end,
+      file: getMediaFilePath(file)
+    });
+  }
+  addPerm(route: string, date: Version, file: number): void;
+  addPerm(route: string, date: Version, file: string): void;
+
+  addPerm(route: string, date: Version, file: number | string) {
+    const filePath = typeof file === 'number' ? getMediaFilePath(file) : file;
+    this.add(route, {
+      type: 'permanent',
+      date,
+      file: filePath
+    });
+  }
+
   /** Add a file update event to a timeline map for a given route */
-  add(route: string, event: TimelineEvent): void {
+  private add(route: string, event: FileTimelineEvent): void {
     route = sanitizePath(route);
     const prev = this._map.get(route);
     if (prev === undefined) {
@@ -195,21 +211,13 @@ function addRoomInfo(map: TimelineMap): void {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
       // adding rooms that were there from the start
-      map.add(getPreCpipRoomRoute(roomName as RoomName), {
-        type: 'permanent',
-        date: BETA_RELEASE,
-        file: originalRoomFile
-      })
+      map.addPerm(getPreCpipRoomRoute(roomName as RoomName), BETA_RELEASE, originalRoomFile);
     }
   }
 
   const addRoomChange = (room: RoomName, date: string, fileId: number) => {
     const route = getRoomRoute(date, room);
-    map.add(route, {
-      type: 'permanent',
-      date,
-      file: fileId
-    })
+    map.addPerm(route, date, fileId);
   }
 
   ROOM_OPENINGS.forEach((opening) => {
@@ -226,24 +234,14 @@ function addParties(map: TimelineMap): void {
     for (const room in roomChanges) {
       const fileId = roomChanges[room as RoomName]!;
       const roomRoute = getRoomRoute(start, room as RoomName);
-      map.add(roomRoute, {
-        type: 'temporary',
-        start,
-        end,
-        file: fileId
-      })
+      map.addTemp(roomRoute, start, end, fileId);
     }
   }
 
   const addPartyChanges = (start: Version, end: Version, changes: PartyChanges) => {
     const pushCrumbChange = (baseRoute: string, route: string, info: number | CrumbIndicator) => {
       const fileId = typeof info === 'number' ? info : info[0];
-      map.add(path.join(baseRoute, route), {
-        type: 'temporary',
-        start,
-        end,
-        file: fileId
-      });
+      map.addTemp(path.join(baseRoute, route), start, end, fileId);
     }
 
     addRoomChanges(changes.roomChanges, start, end);
@@ -279,12 +277,7 @@ function addParties(map: TimelineMap): void {
 
     if (party.scavengerHunt2010) {
       // enabling the scavenger hunt dependency file
-      map.add('play/v2/client/dependencies.json', {
-        type: 'temporary',
-        start: startDate,
-        end: endDate,
-        file: 2384
-      });
+      map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2384);
     }
 
     if (party.updates !== undefined) {
@@ -301,12 +294,7 @@ function addParties(map: TimelineMap): void {
     if (party.generalChanges !== undefined) {
       Object.entries(party.generalChanges).forEach((pair) => {
         const [route, fileId] = pair;
-        map.add(route, {
-          type: 'temporary',
-          start: startDate,
-          end: endDate,
-          file: fileId
-        })
+        map.addTemp(route, startDate, endDate, fileId);
       });
     }
   })
@@ -325,16 +313,27 @@ function sortOnProperty<T extends { date: string }>(array: T[]): T[] {
     }
   });
 }
+/** Converts a timeline of events into some */
 
-/** Converts a timeline event to the information consumed by the file server */
-function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformation {
+/**
+ * Processes a timeline of events into some form of output
+ * @param timeline The timeline of events
+ * @param getInput A function that takes each event and gets characteristic input data that is meant to be particular of each event
+ * @param getOutput A function that takes a previous' event input data, or none if nothing previous, and the current event input data and outputs a final output
+ * @returns 
+ */
+function processTimeline<EventInformation, EventInput, EventOutput>(timeline: TimelineEvent<EventInformation>[], getInput: <T extends EventInformation>(input: T) => EventInput, getOutput: (prev: EventInput | undefined, cur: EventInput) => EventOutput): Array<{
+  date: Version,
+  out: EventOutput,
+  id: number
+}> {
   // first part of this altgothrm:
   // labeling what each update is and breaking everything down
   // to events
   
   // maps id -> fileId
-  const permanentMapping = new Map<number, string>();
-  const temporaryMapping = new Map<number, string>();
+  const permanentMapping = new Map<number, EventInput>();
+  const temporaryMapping = new Map<number, EventInput>();
 
   const eventsTimeline: Array<{
     type: 'permanent' | 'temp_start' | 'temp_end',
@@ -342,28 +341,27 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
     date: Version;
   }> = [];
 
-  let permanentId = 0;
-  let temporaryId = 0;
+  let currentId = 0;
 
   timeline.forEach((event) => {
     if (event.type === 'permanent') {
-      permanentId++;
-      permanentMapping.set(permanentId, getMediaFilePath(event.file));
+      currentId++;
+      permanentMapping.set(currentId, getInput(event));
       eventsTimeline.push({
         type: 'permanent',
-        id: permanentId,
+        id: currentId,
         date: event.date
       });
     } else {
-      temporaryId++;
-      temporaryMapping.set(temporaryId, getMediaFilePath(event.file));
+      currentId++;
+      temporaryMapping.set(currentId, getInput(event));
       eventsTimeline.push({
         type: 'temp_start',
-        id: temporaryId,
+        id: currentId,
         date: event.start
       }, {
         type: 'temp_end',
-        id: temporaryId,
+        id: currentId,
         date: event.end
       });
     }
@@ -374,37 +372,48 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
   // second part of this algorithm: going through the events
   // and judging which file is to be used at each date
 
-  const versions: DynamicRouteUpdate[] = [];
+  const versions: Array<{ 
+    date: Version
+    out: EventOutput
+    id: number
+  }> = [];
 
+  let previousPermanent = -1;
   let currentPermanent = -1;
   // this acts as a queue, so there can be multiple temporary events
   let currentTemporaries: number[] = [];
 
   const pushPermanent = (date: string) => {
-    const file = permanentMapping.get(currentPermanent);
-    if (file !== undefined) {
+    const input = permanentMapping.get(currentPermanent);
+    if (input !== undefined) {
       // no permanent room means there isn't one. So no changes will be used
+      const output = getOutput(permanentMapping.get(previousPermanent), input);
       versions.push({
         date,
-        file
+        out: output,
+        id: currentPermanent
       });
     }
   }
 
   const pushTemporary = (date: string) => {
     const currentTemporary = currentTemporaries[0];
-    const file = temporaryMapping.get(currentTemporary);
-    if (file === undefined) {
+    const input = temporaryMapping.get(currentTemporary);
+    if (input === undefined) {
       throw new Error('Logic error');
     }
+    const permanentInput = permanentMapping.get(currentPermanent);
+    const output = getOutput(permanentInput, input);
     versions.push({
       date,
-      file
+      out: output,
+      id: currentTemporary
     });
   }
 
   sorted.forEach((event) => {
     if (event.type === 'permanent') {
+      previousPermanent = currentPermanent;
       currentPermanent = event.id;
       // permanent changes take effect once the temporaries are gone
       if (currentTemporaries.length === 0) {
@@ -423,9 +432,141 @@ function getFileInformation(timeline: TimelineEvent[]): DynamicRouteFileInformat
     }
   });
 
+  return versions;
+}
+
+/** Represents a singular change to the global crumbs object */
+export type GlobalCrumbPatch = {
+  prices?: Record<number, number>;
+  music?: Partial<Record<RoomName, number>>;
+  paths?: Record<string, string>;
+  newMigratorStatus?: boolean;
+};
+
+export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
+export function getCrumbFileName(hash: string, id: number): string {
+  return `${hash}-${id}.swf`;
+}
+
+/**
+ * Get an output of the global crumbs timeline which includes a hash
+ * identifying this timeline and the information of each version
+ */
+export function getGlobalCrumbsOutput() {
+  const timeline: TimelineEvent<{
+    crumb: GlobalCrumbPatch
+  }>[] = [
+    {
+      type: 'permanent',
+      date: CPIP_UPDATE,
+      crumb: {}
+    }
+  ];
+
+  PARTIES.forEach((party) => {
+    const globalPaths: Record<string, string> = {};
+    if (party.globalChanges !== undefined) {
+      Object.entries(party.globalChanges).forEach((pair) => {
+        const [route, info] = pair;
+        if (typeof info !== 'number') {
+          const [_, ...paths] = info;
+          paths.forEach((globalPath) => {
+            globalPaths[globalPath] = route;
+          })
+        }
+      })
+    }
+
+    // we only want to add parties that are post CPIP and actually made changes
+    // so we don't have excess crumb files
+    let crumbChanged = false;
+    if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)) {
+      if (party.music !== undefined) {
+        crumbChanged = true;
+      } else if (Object.keys(globalPaths).length > 0) {
+        crumbChanged = true;
+      } else if (party.activeMigrator) {
+        crumbChanged = true;
+      }
+    }
+
+    if (crumbChanged) {
+      timeline.push({
+        type: 'temporary',
+        start: party.startDate,
+        end: party.endDate,
+        crumb: {
+          music: party.music,
+          paths: globalPaths,
+          prices: {},
+          newMigratorStatus: party.activeMigrator === true
+        }
+      });
+    }
+  });
+
+  STAGE_TIMELINE.forEach((debut) => {
+    const play = STAGE_PLAYS.find((play) => play.name === debut.name);
+    if (play === undefined) {
+      throw new Error(`Stage play has no music: ${debut.name}`);
+    }
+    timeline.push({
+      type: 'permanent',
+      date: debut.date,
+      crumb: {
+        music: {
+          'stage': play.musicId
+        }
+      }
+    });
+  });
+
+  const crumbs = processTimeline(timeline, (input) => {
+    return input.crumb
+  }, (previous, current) => {
+    if (previous === undefined) {
+      return current;
+    } else {
+      return {
+        music: {
+          ...previous.music,
+          ...current.music
+        },
+        prices: {
+          ...previous.prices,
+          ...current.prices
+        },
+        paths: {
+          ...previous.paths,
+          ...current.paths
+        },
+        newMigratorStatus: current.newMigratorStatus === undefined ? previous.newMigratorStatus : current.newMigratorStatus
+      }
+    }
+  });
+
+  const hash = crypto.createHash('md5').update(JSON.stringify(crumbs)).digest('hex');
+  return { hash, crumbs };
+}
+
+/** Adds listeners to the global crumbs files */
+function addGlobalCrumbs(map: TimelineMap): void {
+  const { hash, crumbs } = getGlobalCrumbsOutput();
+  
+  /** So that different crumb generations don't use the same files, we hash it in the name */
+  crumbs.forEach((crumb) => {
+    const filePath = path.join(GLOBAL_CRUMBS_PATH, getCrumbFileName(hash, crumb.id));
+    map.addPerm('play/v2/content/global/crumbs/global_crumbs.swf', crumb.date, filePath);
+  });
+}
+
+/** Converts a timeline event to the information consumed by the file server */
+function getFileInformation(timeline: FileTimelineEvent[]): DynamicRouteFileInformation {
   return {
     type: 'dynamic',
-    versions
+    versions: processTimeline(timeline, (input) => {
+      return input.file;
+    }, (_, c) => c).map((version) => ({ date: version.date, file: version.out }))
   }
 }
 
@@ -476,75 +617,38 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
 function addStadiumUpdates(map: TimelineMap): void {
   STADIUM_UPDATES.forEach((update) => {
     const date = update.date;
-    map.add('play/v2/content/global/content/map.swf', {
-      date,
-      file: update.mapFileId,
-      type: 'permanent'
-    });
-    map.add('play/v2/content/global/rooms/town.swf', {
-      date,
-      file: update.townFileId,
-      type: 'permanent'
-    });
-    map.add('play/v2/content/global/rooms/forts.swf', {
-      date,
-      file: update.fortsFileId,
-      type: 'permanent'
-    });
-    map.add('play/v2/content/global/rooms/rink.swf', {
-      date,
-      file: update.rinkFileId,
-      type: 'permanent'
-    });
-    map.add('play/v2/content/local/en/catalogues/sport.swf', {
-      date,
-      file: update.catalogFileId,
-      type: 'permanent'
-    });
+    map.addPerm('play/v2/content/global/content/map.swf', date, update.mapFileId);
+    map.addPerm('play/v2/content/global/rooms/town.swf', date, update.townFileId);
+    map.addPerm('play/v2/content/global/rooms/forts.swf', date, update.fortsFileId);
+    map.addPerm('play/v2/content/global/rooms/rink.swf', date, update.rinkFileId);
+    map.addPerm('play/v2/content/local/en/catalogues/sport.swf', date, update.catalogFileId);
   });
 }
 
 function addIngameMapInfo(map: TimelineMap): void {
 
-  map.add(PRECPIP_MAP_PATH, {
-    date: BETA_RELEASE,
-    file: ORIGINAL_MAP,
-    type: 'permanent'
-  })
+  map.addPerm(PRECPIP_MAP_PATH, BETA_RELEASE, ORIGINAL_MAP);
 }
 
 function addStandaloneChanges(map: TimelineMap): void {
   Object.entries(STANDALONE_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
     updates.forEach((update) => {
-      map.add(route, {
-        type: 'permanent',
-        date: update.date,
-        file: update.fileId
-      })
+      map.addPerm(route, update.date, update.fileId);
     })
   });
 
   Object.entries(STANDALONE_TEMPORARY_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
     updates.forEach((update) => {
-      map.add(route, {
-        type: 'temporary',
-        start: update.startDate,
-        end: update.endDate,
-        file: update.fileId
-      });
+      map.addTemp(route, update.startDate, update.endDate, update.fileId);
     })
   });
 }
 
 function addMapUpdates(map: TimelineMap): void {
   MAP_UPDATES.forEach((update) => {
-    map.add(PRECPIP_MAP_PATH, {
-      type: 'permanent',
-      date: update.date,
-      file: update.fileId
-    })
+    map.addPerm(PRECPIP_MAP_PATH, update.date, update.fileId);
   })
 }
 
@@ -553,11 +657,7 @@ function addCatalogues(map: TimelineMap): void {
     Object.entries(catalogs).forEach((pair) => {
       const [date, fileId] = pair;
       
-      map.add(route, {
-        type: 'permanent',
-        date,
-        file: fileId
-      });
+      map.addPerm(route, date, fileId);
     })
   }
 
@@ -568,29 +668,16 @@ function addCatalogues(map: TimelineMap): void {
 
 function addMusicLists(map: TimelineMap): void {
   const route = 'play/v2/content/global/content/igloo_music.swf';
-  map.add(route, {
-    type: 'permanent',
-    date: BETA_RELEASE, // placeholder for earliest
-    file: 2635
-  });
+  map.addPerm(route, BETA_RELEASE, 2635);
   for (let i = 0; i < IGLOO_LISTS.length; i++) {
     // using archived igloo lists as temporary updates on top of a single permanent one
     const cur = IGLOO_LISTS[i];
     if (typeof cur.fileId === 'number') {
       const start = cur.date;
       if (i === IGLOO_LISTS.length) {
-        map.add(route, {
-          type: 'permanent',
-          date: start,
-          file: cur.fileId
-        });
+        map.addPerm(route, start, cur.fileId);
       } else {
-        map.add(route, {
-          type: 'temporary',
-          start,
-          end: IGLOO_LISTS[i + 1].date,
-          file: cur.fileId
-        });
+        map.addTemp(route, start, IGLOO_LISTS[i + 1].date, cur.fileId);
       }
     }
   }
@@ -601,26 +688,14 @@ function addStagePlays(map: TimelineMap): void {
     const date = debut.date;
 
     // Stage itself
-    map.add('play/v2/content/global/rooms/stage.swf', {
-      type: 'permanent',
-      date,
-      file: debut.stageFileId
-    });
+    map.addPerm('play/v2/content/global/rooms/stage.swf', date, debut.stageFileId);
 
     if (debut.plazaFileId !== null) {
       // Plaza
-      map.add('play/v2/content/global/rooms/plaza.swf', {
-        type: 'permanent',
-        date,
-        file: debut.plazaFileId
-      });
+      map.addPerm('play/v2/content/global/rooms/plaza.swf', date, debut.plazaFileId);
     }
 
-    map.add('play/v2/content/local/en/catalogues/costume.swf', {
-      type: 'permanent',
-      date,
-      file: debut.costumeTrunkFileId
-    });
+    map.addPerm('play/v2/content/local/en/catalogues/costume.swf', date, debut.costumeTrunkFileId);
   })
 }
 
@@ -639,7 +714,8 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addCatalogues,
     addStagePlays,
     addMusicLists,
-    addStadiumUpdates
+    addStadiumUpdates,
+    addGlobalCrumbs
   ];
 
   processors.forEach((fn) => fn(timelines));

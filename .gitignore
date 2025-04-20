@@ -71,6 +71,7 @@ settings.json
 # crumbs output
 /crumbs/out
 /crumbs/news
+/media/default/auto/
 
 # mods folder
 /mods

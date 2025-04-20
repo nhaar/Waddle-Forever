@@ -67,7 +67,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
       fileId: 1080 
     }
   ],
-  'plah/v2/client/dependencies.json': [
+  'play/v2/client/dependencies.json': [
     {
       // have no better place to put the default dependencies.json
       date: BETA_RELEASE,

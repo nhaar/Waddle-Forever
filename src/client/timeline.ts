@@ -206,7 +206,7 @@ function addCatalogues(map: DayMap): DayMap {
   CATALOGUES.forEach((date) => {
     addEvents(map, date, { newClothing: true });
   });
-  FURNITURE_CATALOGS.forEach((date) => {
+  Object.keys(FURNITURE_CATALOGS).forEach((date) => {
     addEvents(map, date, { newFurnitureCatalog: true });
   })
   return map;

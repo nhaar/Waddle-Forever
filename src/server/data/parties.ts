@@ -34,6 +34,8 @@ type Party = PartyChanges & {
 
   // route -> fileId
   generalChanges?: Record<string, number>;
+
+  activeMigrator?: true;
 };
 
 type Construction = {
@@ -433,6 +435,19 @@ export const PARTIES: Party[] = [
       'berg': 2436,
       'party': 2437,
       'party2': 2438
+    },
+    music: {
+      'beach': 41,
+      'cove': 291,
+      'dance': 269,
+      'dock': 41,
+      'forest': 290,
+      'forts': 291,
+      'plaza': 291,
+      'town': 268,
+      'village': 291,
+      'party': 267,
+      'party2': 289
     },
     construction: {
       date: '2010-06-10',
@@ -858,6 +873,32 @@ export const PARTIES: Party[] = [
         'en': 2631
       }
     },
+    music: {
+      'attic': 255,
+      'beach': 254,
+      'beacon': 254,
+      'berg': 227,
+      'book': 255,
+      'coffee': 255,
+      'cove': 254,
+      'dance': 400,
+      'dock': 254,
+      'forest': 254,
+      'forts': 254,
+      'lodge': 255,
+      'lounge': 226,
+      'mtn': 254,
+      'pizza': 255,
+      'plaza': 254,
+      'rink': 254,
+      'shack': 254,
+      'shop': 255,
+      'village': 254,
+      'town': 254,
+      'party': 281,
+      'party99': 254
+    },
+    activeMigrator: true,
     updates: [
       {
         date: STADIUM_GAMES_END,
