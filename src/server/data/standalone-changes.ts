@@ -5,6 +5,7 @@ type StandaloneChange = {
   route: string;
   fileId: number;
   date: string;
+  comment?: string;
 };
 
 type StandaloneTemporaryChange = {
@@ -95,6 +96,17 @@ export const STANDALONE_CHANGE: StandaloneChange[] = [
     route: 'play/v2/content/global/igloo/assets/igloo_background.swf',
     date: CPIP_UPDATE,
     fileId: 366
+  },
+  {
+    route: 'play/v2/content/local/en/catalogues/ninja.swf',
+    date: '2009-11-13',
+    fileId: 2690,
+    comment: 'The amulet is added to the Martial Artworks'
+  },
+  {
+    route: 'play/v2/content/local/en/catalogues/pets.swf',
+    date: '2010-03-19',
+    fileId: 2691
   }
 ];
 

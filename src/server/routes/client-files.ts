@@ -13,7 +13,7 @@ import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../data/part
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
-import { CPIP_CATALOGS } from "../game/catalogues";
+import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../game/catalogues";
 import { STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
@@ -543,15 +543,21 @@ function addMapUpdates(map: TimelineMap): void {
 }
 
 function addCatalogues(map: TimelineMap): void {
-  Object.entries(CPIP_CATALOGS).forEach((pair) => {
-    const [date, fileId] = pair;
-    
-    map.add('play/v2/content/local/en/catalogues/clothing.swf', {
-      type: 'permanent',
-      date,
-      file: fileId
-    });
-  })
+  const addCatalogue = (route: string, catalogs: Record<string, number>) => {
+    Object.entries(catalogs).forEach((pair) => {
+      const [date, fileId] = pair;
+      
+      map.add(route, {
+        type: 'permanent',
+        date,
+        file: fileId
+      });
+    })
+  }
+
+  addCatalogue('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
+  addCatalogue('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
+  addCatalogue('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 }
 
 function addMusicLists(map: TimelineMap): void {
