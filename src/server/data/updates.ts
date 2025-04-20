@@ -50,6 +50,8 @@ export const MUSIC_JAM_2010_START = '2010-07-09';
 
 export const JULY_4_2010_END = '2010-07-05';
 
+export const ANNIVERSARY_5_START = '2010-10-23';
+
 export const HALLOWEEN_2010_START = '2010-10-28';
 
 /** The day Club Penguin launched the CPIP engine */

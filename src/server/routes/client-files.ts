@@ -514,21 +514,27 @@ function addIngameMapInfo(map: TimelineMap): void {
 }
 
 function addStandaloneChanges(map: TimelineMap): void {
-  STANDALONE_CHANGE.forEach((change) => {
-    map.add(change.route, {
-      type: 'permanent',
-      date: change.date,
-      file: change.fileId
+  Object.entries(STANDALONE_CHANGE).forEach((pair) => {
+    const [route, updates] = pair;
+    updates.forEach((update) => {
+      map.add(route, {
+        type: 'permanent',
+        date: update.date,
+        file: update.fileId
+      })
     })
   });
 
-  STANDALONE_TEMPORARY_CHANGE.forEach((change) => {
-    map.add(change.route, {
-      type: 'temporary',
-      start: change.startDate,
-      end: change.endDate,
-      file: change.fileId
-    });
+  Object.entries(STANDALONE_TEMPORARY_CHANGE).forEach((pair) => {
+    const [route, updates] = pair;
+    updates.forEach((update) => {
+      map.add(route, {
+        type: 'temporary',
+        start: update.startDate,
+        end: update.endDate,
+        file: update.fileId
+      });
+    })
   });
 }
 
