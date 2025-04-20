@@ -1116,7 +1116,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/games/quests/global/misc/versions.swf': 1301,
   'play/v2/games/quests/global/rooms/conclusion.swf': 1302,
   'play/v2/games/quests/global/rooms/conclusion2.swf': 1303,
-  'play/v2/games/quests/global/rooms/conclusion3.swf': 1304,
   'play/v2/games/rescue/lang/en/locale.swf': 1305,
   'play/v2/games/rescue/lang/en/logo.swf': 1306,
   'play/v2/games/rescue/lang/es/locale.swf': 1307,
@@ -2072,5 +2071,7 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/games/quests/q9/lang/pt/misc/messages.swf': 2257,
   'play/v2/games/quests/q9/lang/pt/misc/uitext.swf': 2258,
   'play/v2/games/quests/q9/lang/pt/misc/versions.swf': 2259,
-  'play/v2/client/scavenger_hunt.swf': 2383
+  'play/v2/client/scavenger_hunt.swf': 2383,
+  'play/v2/games/quests/global/rooms/conclusion3.swf': 2696,
+  'play/v2/games/quests/q4/common/rooms/conclusion3.swf': 2696
 };

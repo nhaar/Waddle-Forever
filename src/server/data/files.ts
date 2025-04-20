@@ -2782,7 +2782,7 @@ export const FILES = new StaticDataTable<File, [
   [2693, 'ENFormsLibrary-2010.swf', 1, FileCategory.Archives, null, null],
   [2694, 'Enm111.swf', 1, FileCategory.Archives, null, null],
   [2695, 'postcard_orange_puffle.swf', 1, FileCategory.Archives, null, 2694],
-  [2696, '', 1, FileCategory.Archives, null, null],
+  [2696, 'GamesQuestsGlobalRoomsConclusion3.swf', 1, FileCategory.Archives, null, null],
   [2697, '', 1, FileCategory.Archives, null, null],
   [2698, '', 1, FileCategory.Archives, null, null],
   [2699, '', 1, FileCategory.Archives, null, null],
