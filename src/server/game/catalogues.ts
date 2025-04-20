@@ -19,16 +19,16 @@ export const CATALOGUES = [
   '2010-12-03'
 ];
 
-// map updateid -> fileId
-export const CPIP_CATALOGS: Record<number, number> = {
-  32: 2267,
-  33: 2268,
-  34: 2269,
-  35: 2270,
-  36: 2271,
-  37: 2272,
-  38: 2273,
-  39: 2274
+// map date -> fileId
+export const CPIP_CATALOGS: Record<string, number> = {
+  '2010-01-01': 2267,
+  '2010-02-05': 2268,
+  '2010-04-01': 2269,
+  '2010-05-07': 2270,
+  '2010-09-03': 2271,
+  '2010-10-01': 2272,
+  '2010-11-05': 2273,
+  '2010-12-03': 2274
 };
 
 export const FURNITURE_CATALOGS = [

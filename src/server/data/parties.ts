@@ -1,4 +1,5 @@
 import { RoomName } from "./rooms";
+import { CAVE_EXPEDITION_END, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, STADIUM_GAMES_END, WATER_HUNT_END } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -19,8 +20,8 @@ export type PartyChanges = {
 
 type Party = PartyChanges & {
   name: string;
-  startUpdateId: number;
-  endUpdateId: number;
+  startDate: string;
+  endDate: string;
 
   music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
@@ -28,7 +29,7 @@ type Party = PartyChanges & {
 
   updates?: Array<{
     comment?: string;
-    updateId: number;
+    date: string;
   } & PartyChanges>;
 
   // route -> fileId
@@ -36,23 +37,23 @@ type Party = PartyChanges & {
 };
 
 type Construction = {
-  updateId: number;
+  date: string;
   changes: RoomChanges;
 };
 
 export const PARTIES: Party[] = [
   {
     name: 'Beta Test Party',
-    startUpdateId: 3,
-    endUpdateId: 4,
+    startDate: '2005-09-21',
+    endDate: '2005-09-22',
     roomChanges: {
       'town': 38
     }
   },
   {
     name: 'Halloween Party 2005',
-    startUpdateId: 7,
-    endUpdateId: 8,
+    startDate: '2005-10-27',
+    endDate: '2005-11-01',
     roomChanges: {
       'book': 76,
       'dance': 77,
@@ -64,8 +65,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'The Great Puffle Discovery',
-    startUpdateId: 11,
-    endUpdateId: 12,
+    startDate: '2005-11-15',
+    endDate: '2005-12-05',
     roomChanges: {
       'dance': 84,
       'forts': 85,
@@ -74,8 +75,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Christmas Party 2005',
-    startUpdateId: 14,
-    endUpdateId: 15,
+    startDate: '2005-12-22',
+    endDate: '2005-12-26',
     roomChanges: {
       'coffee': 88,
       'dance': 89,
@@ -88,8 +89,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Valentine\'s Day Celebration',
-    startUpdateId: 17,
-    endUpdateId: 18,
+    startDate: '2006-02-14',
+    endDate: '2006-02-15',
     roomChanges: {
       'dance': 98,
       'lounge': 97
@@ -97,8 +98,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Pizza Parlor Opening Party',
-    startUpdateId: 19,
-    endUpdateId: 20,
+    startDate: PIZZA_PARLOR_OPENING_START,
+    endDate: PIZZA_PARLOR_OPENING_END,
     roomChanges: {
       'forts': 99,
       'pizza': 100,
@@ -107,8 +108,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'April Fools Party 2006',
-    startUpdateId: 23,
-    endUpdateId: 24,
+    startDate: '2006-03-31',
+    endDate: '2006-04-03',
     roomChanges: {
       'dojo': 105,
       'rink': 106,
@@ -122,8 +123,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'New Year\'s Day 2010',
-    startUpdateId: 51,
-    endUpdateId: 52,
+    startDate: '2010-01-01',
+    endDate: '2010-01-04',
     roomChanges: {
       mtn: 2295,
       berg: 2296
@@ -131,8 +132,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Cave Expedition',
-    startUpdateId: 53,
-    endUpdateId: 54,
+    startDate: '2010-01-22',
+    endDate: CAVE_EXPEDITION_END,
     roomChanges: {
       'mine': 2297,
       'party1': 2298,
@@ -165,8 +166,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Puffle Party 2010',
-    startUpdateId: 55,
-    endUpdateId: 56,
+    startDate: '2010-02-18',
+    endDate: '2010-02-25',
     roomChanges: {
       'beach': 2308,
       'beacon': 2309,
@@ -207,7 +208,7 @@ export const PARTIES: Party[] = [
       'party2': 261
     },
     construction: {
-      updateId: 57,
+      date: '2010-02-11',
       changes: {
         'beacon': 2327,
         'berg': 2328,
@@ -221,8 +222,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Penguin Play Awards 2010',
-    startUpdateId: 58,
-    endUpdateId: 59,
+    startDate: '2010-03-18',
+    endDate: '2010-03-29',
     music: {
       'pizza': 283,
       'plaza': 40,
@@ -249,8 +250,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'April Fools\' Party 2010',
-    startUpdateId: 60,
-    endUpdateId: 61,
+    startDate: '2010-03-31',
+    endDate: '2010-04-05',
     roomChanges: {
       'dock': 2358,
       'forest': 2359,
@@ -274,8 +275,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Earth Day 2010',
-    startUpdateId: 62,
-    endUpdateId: 63,
+    startDate: '2010-04-21',
+    endDate: '2010-04-27',
     roomChanges: {
       'town': 2372,
       'coffee': 2373,
@@ -299,7 +300,7 @@ export const PARTIES: Party[] = [
     },
     scavengerHunt2010: true,
     construction: {
-      updateId: 64,
+      date: '2010-04-15',
       changes: {
         'shack': 2387
       }
@@ -307,8 +308,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Medieval Party 2010',
-    startUpdateId: 66,
-    endUpdateId: 67,
+    startDate: '2010-05-07',
+    endDate: '2010-05-16',
     roomChanges: {
       'town': 2388,
       'coffee': 2389,
@@ -378,7 +379,7 @@ export const PARTIES: Party[] = [
       'party18': 265
     },
     construction: {
-      updateId: 65,
+      date: '2010-04-29',
       changes: {
         'beach': 2411,
         'cave': 2412,
@@ -391,8 +392,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Popcorn Explosion',
-    startUpdateId: 67,
-    endUpdateId: 25,
+    startDate: '2010-05-18',
+    endDate: EPF_RELEASE,
     roomChanges: {
       'agent': 2417,
       'village': 2418,
@@ -401,7 +402,7 @@ export const PARTIES: Party[] = [
     updates: [
       {
         comment: 'Sports Shop closed for reconstruction',
-        updateId: 69,
+        date: '2010-05-25',
         roomChanges: {
           'agent': 2420,
           'village': 2421
@@ -411,8 +412,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Island Adventure Party 2010',
-    startUpdateId: 71,
-    endUpdateId: 72,
+    startDate: '2010-06-18',
+    endDate: '2010-06-28',
     roomChanges: {
       'town': 2426,
       'dance': 2427,
@@ -429,7 +430,7 @@ export const PARTIES: Party[] = [
       'party2': 2438
     },
     construction: {
-      updateId: 70,
+      date: '2010-06-10',
       changes: {
         'beach': 2422,
         'cove': 2423,
@@ -440,8 +441,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Music Jam 2010',
-    startUpdateId: 75,
-    endUpdateId: 76,
+    startDate: MUSIC_JAM_2010_START,
+    endDate: '2010-07-19',
     roomChanges: {
       'party3': 2439,
       'beach': 2440,
@@ -492,7 +493,7 @@ export const PARTIES: Party[] = [
     },
     updates: [
       {
-        updateId: 77,
+        date: '2010-07-15',
         comment: 'New instruments are available in the Catalog',
         roomChanges: {},
         localChanges: {
@@ -503,7 +504,7 @@ export const PARTIES: Party[] = [
       }
     ],
     construction: {
-      updateId: 73,
+      date: MUSIC_JAM_2010_CONST_START,
       changes: {
         'beach': 2464,
         'coffee': 2466,
@@ -519,8 +520,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Mountain Expedition',
-    startUpdateId: 78,
-    endUpdateId: 79,
+    startDate: '2010-08-12',
+    endDate: '2010-08-19',
     roomChanges: {
       'party3': 2475,
       'party6': 2476,
@@ -550,7 +551,7 @@ export const PARTIES: Party[] = [
       'party6': 256
     },
     construction: {
-      updateId: 80,
+      date: '2010-08-05',
       changes: {
         'village': 2484
       }
@@ -558,8 +559,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'The Fair 2010',
-    startUpdateId: 82,
-    endUpdateId: 83,
+    startDate: FAIR_2010_START,
+    endDate: '2010-09-13',
     roomChanges: {
       'town': 2489,
       'coffee': 2490,
@@ -620,7 +621,7 @@ export const PARTIES: Party[] = [
       }
     },
     construction: {
-      updateId: 81,
+      date: '2010-08-26',
       changes: {
         'beach': 2488
       }
@@ -628,7 +629,7 @@ export const PARTIES: Party[] = [
     updates: [
       {
         comment: 'New items were added to the prize booths',
-        updateId: 84,
+        date: '2010-09-10',
         roomChanges: {},
         localChanges: {
           'catalogues/prizebooth.swf': {
@@ -643,8 +644,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Stadium Games',
-    startUpdateId: 85,
-    endUpdateId: 86,
+    startDate: '2010-09-24',
+    endDate: STADIUM_GAMES_END,
     roomChanges: {
       'rink': 2517,
       'forts': 2518,
@@ -656,8 +657,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: '5th Anniversary Party',
-    startUpdateId: 87,
-    endUpdateId: 88,
+    startDate: '2010-10-23',
+    endDate: '2010-10-25',
     roomChanges: {
       'book': 2521,
       'coffee': 2522,
@@ -671,8 +672,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Halloween Party 2010',
-    startUpdateId: 89,
-    endUpdateId: 90,
+    startDate: HALLOWEEN_2010_START,
+    endDate: '2010-11-04',
     roomChanges: {
       'beach': 2524,
       'light': 2525,
@@ -765,8 +766,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Sensei\'s Water Scavenger Hunt',
-    startUpdateId: 91,
-    endUpdateId: 92,
+    startDate: '2010-11-16',
+    endDate: WATER_HUNT_END,
     roomChanges: {
       'beach': 2568,
       'boiler': 2569,
@@ -795,7 +796,7 @@ export const PARTIES: Party[] = [
     },
     updates: [
       {
-        updateId: 49,
+        date: PLANET_Y_2010,
         roomChanges: {
           'plaza': 2590
         }
@@ -805,8 +806,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Celebration of Water',
-    startUpdateId: 92,
-    endUpdateId: 93,
+    startDate: WATER_HUNT_END,
+    endDate: '2010-12-02',
     roomChanges: {
       'dojoext': 2591,
       'dojohide': 2592,
@@ -815,8 +816,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Holiday Party 2010',
-    startUpdateId: 94,
-    endUpdateId: 95,
+    startDate: '2010-12-16',
+    endDate: '2010-12-28',
     roomChanges: {
       'party99': 2594,
       'beach': 2595,
@@ -867,7 +868,7 @@ export const PARTIES: Party[] = [
     },
     updates: [
       {
-        updateId: 86,
+        date: STADIUM_GAMES_END,
         roomChanges: {
           'forts': 2624,
           'rink': 2626,

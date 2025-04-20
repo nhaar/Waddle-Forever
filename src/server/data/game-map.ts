@@ -1,20 +1,22 @@
+import { ICEBERG_RELEASE, PIZZA_PARLOR_OPENING_END, SNOW_FORTS_RELEASE } from "./updates";
+
 type MapUpdate = {
-  updateId: number;
+  date: string;
   fileId: number;
   comment?: string;
 };
 
 export const MAP_UPDATES: MapUpdate[] = [
   {
-    updateId: 2,
+    date: SNOW_FORTS_RELEASE,
     fileId: 35
   },
   {
-    updateId: 20,
+    date: PIZZA_PARLOR_OPENING_END,
     fileId: 104
   },
   {
-    updateId: 22,
+    date: ICEBERG_RELEASE,
     fileId: 104
   }
 ]

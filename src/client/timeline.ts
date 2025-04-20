@@ -8,7 +8,6 @@ import { CATALOGUES, FURNITURE_CATALOGS } from '../server/game/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
 import { ROOM_TIMELINE } from '../server/game/rooms';
-import { getUpdateDate } from '../server/data/updates';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -215,7 +214,7 @@ function addCatalogues(map: DayMap): DayMap {
 
 function addIglooMusicLists(map: DayMap): void {
   IGLOO_LISTS.forEach((list) => {
-    addEvents(map, getUpdateDate(list.updateId), { musicList: true });
+    addEvents(map, list.date, { musicList: true });
   })
 }
 

@@ -1,16 +1,17 @@
 import { RoomName } from "./rooms";
+import { CPIP_UPDATE, ICEBERG_RELEASE, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
   fileId: number;
-  updateId: number;
+  date: string;
 };
 
 type RoomUpdate = {
   room: RoomName;
   // file used in the update
   fileId: number;
-  updateId: number;
+  date: string;
   /** If not supplied, this won't be in the timeline as an update */
   comment?: string;
 };
@@ -19,41 +20,41 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     room: 'town',
     fileId: 28,
-    updateId: 2
+    date: SNOW_FORTS_RELEASE
   },
   {
     room: 'rink',
     fileId: 32,
-    updateId: 2
+    date: SNOW_FORTS_RELEASE
   },
   {
     room: 'village',
     fileId: 82,
-    updateId: 9
+    date: SPORT_SHOP_RELEASE
   },
   {
     room: 'village',
     fileId: 83,
-    updateId: 10
+    date: MTN_RELEASE
   },
   {
     room: 'forts',
     fileId: 87,
-    updateId: 13
+    date: PUFFLE_ROUNDUP_RELEASE
   },
   {
     room: 'plaza',
-    updateId: 21,
+    date: PET_SHOP_RELEASE,
     fileId: 102
   },
   {
     room: 'forts',
-    updateId: 20,
+    date: PIZZA_PARLOR_OPENING_END,
     fileId: 36
   },
   {
     room: 'book',
-    updateId: 28,
+    date: '2006-##-##',
     fileId: 2264,
     // comment: 'The book room was updated to have a new Mancala board'
   },
@@ -61,175 +62,175 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     // placeholder CPIP room
     room: 'mtn',
     fileId: 260,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'berg',
     fileId: 2335,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'beach',
     fileId: 240,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'beacon',
     fileId: 241,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'boxdimension',
     fileId: 244,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'cave',
     fileId: 245,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'cove',
     fileId: 2336,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'dance',
     fileId: 248,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'dock',
     fileId: 2337,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'light',
     fileId: 256,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'lodge',
     fileId: 258,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'pet',
     fileId: 261,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'pizza',
     fileId: 262,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'shop',
     fileId: 267,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'coffee',
     fileId: 247,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'book',
     fileId: 243,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'lounge',
     fileId: 259,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'boiler',
     fileId: 242,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'attic',
     fileId: 239,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'sport',
     fileId: 286,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'sport',
     fileId: 255,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'cavemine',
     fileId: 246,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'dojo',
     fileId: 250,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'dojofire',
     fileId: 251,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'dojohide',
     fileId: 252,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'dojowater',
     fileId: 253,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'shiphold',
     fileId: 264,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'shipnest',
     fileId: 265,
-    updateId: 27
+    date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'shipquarters',
     fileId: 266,
-    updateId: 27
+    date: CPIP_UPDATE
   }
 ];
 
@@ -237,41 +238,41 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'forts',
     fileId: 37,
-    updateId: 2
+    date: SNOW_FORTS_RELEASE
   },
   {
     room: 'sport',
     fileId: 17,
-    updateId: 9
+    date: SPORT_SHOP_RELEASE
   },
   {
     room: 'mtn',
     fileId: 13,
-    updateId: 10
+    date: MTN_RELEASE
   },
   {
     room: 'lodge',
     fileId: 11,
-    updateId: 16
+    date: '2005-12-22'
   },
   {
     room: 'pizza',
     fileId: 100,
-    updateId: 19
+    date: PIZZA_PARLOR_OPENING_START
   },
   {
     room: 'plaza',
     fileId: 103,
-    updateId: 19
+    date: PIZZA_PARLOR_OPENING_START
   },
   {
     room: 'pet',
     fileId: 14,
-    updateId: 21
+    date: PET_SHOP_RELEASE
   },
   {
     room: 'berg',
     fileId: 6,
-    updateId: 22
+    date: ICEBERG_RELEASE
   }
 ];

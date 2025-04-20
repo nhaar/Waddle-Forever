@@ -3,7 +3,6 @@ import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isEqual, isLower, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
-import { CPIP_UPDATE, FIRST_UPDATE, getUpdateDate, UPDATES } from "../data/updates";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
@@ -17,6 +16,7 @@ import { FALLBACKS } from "../data/fallbacks";
 import { CPIP_CATALOGS } from "../game/catalogues";
 import { STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
+import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -93,10 +93,9 @@ function addMusicFiles(map: TimelineMap): void {
   Object.entries(MUSIC_IDS).forEach((pair) => {
     const [musicId, fileId] = pair;
     const route = path.join(PRE_CPIP_MUSIC_PATH, String(musicId) + '.swf')
-    const date = getUpdateDate(FIRST_UPDATE);
     map.add(route, {
       type: 'permanent',
-      date,
+      date: BETA_RELEASE,
       file: fileId
     });
   })
@@ -117,12 +116,11 @@ function addStaticFiles(map: RouteMap): void {
 }
 
 function addFallbacks(map: TimelineMap): void {
-  const firstUpdate = UPDATES.getStrict(FIRST_UPDATE).time;
   FALLBACKS.forEach((pair) => {
     const [route, fileId] = pair;
     map.add(route, {
       type: 'permanent',
-      date: firstUpdate,
+      date: BETA_RELEASE,
       file: fileId
     });
   })
@@ -188,27 +186,23 @@ function getCpipRoomRoute(room: RoomName): string {
 }
 
 function getRoomRoute(date: string, room: RoomName): string {
-  const cpipUpdate = UPDATES.getStrict(CPIP_UPDATE).time;
-  return isLower(date, cpipUpdate) ? getPreCpipRoomRoute(room) : getCpipRoomRoute(room);
+  return isLower(date, CPIP_UPDATE) ? getPreCpipRoomRoute(room) : getCpipRoomRoute(room);
 }
 
 function addRoomInfo(map: TimelineMap): void {
-  const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
-  
   for (const roomName in ROOMS) {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
       // adding rooms that were there from the start
       map.add(getPreCpipRoomRoute(roomName as RoomName), {
         type: 'permanent',
-        date: firstUpdate.time,
+        date: BETA_RELEASE,
         file: originalRoomFile
       })
     }
   }
 
-  const addRoomChange = (room: RoomName, updateId: number, fileId: number) => {
-    const date = getUpdateDate(updateId);
+  const addRoomChange = (room: RoomName, date: string, fileId: number) => {
     const route = getRoomRoute(date, room);
     map.add(route, {
       type: 'permanent',
@@ -218,11 +212,11 @@ function addRoomInfo(map: TimelineMap): void {
   }
 
   ROOM_OPENINGS.forEach((opening) => {
-    addRoomChange(opening.room, opening.updateId, opening.fileId);
+    addRoomChange(opening.room, opening.date, opening.fileId);
   })
 
   ROOM_UPDATES.forEach((update) => {
-    addRoomChange(update.room, update.updateId, update.fileId);
+    addRoomChange(update.room, update.date, update.fileId);
   });
 }
 
@@ -270,15 +264,15 @@ function addParties(map: TimelineMap): void {
   }
   
   PARTIES.forEach((party) => {
-    const startDate = getUpdateDate(party.startUpdateId);
-    const endDate = getUpdateDate(party.endUpdateId);
+    const startDate = party.startDate;
+    const endDate = party.endDate;
     addPartyChanges(startDate, endDate, {
       roomChanges: party.roomChanges,
       localChanges: party.localChanges,
       globalChanges: party.globalChanges
     });
     if (party.construction !== undefined) {
-      const constructionStart = getUpdateDate(party.construction.updateId);
+      const constructionStart = party.construction.date;
       addRoomChanges(party.construction.changes, constructionStart, endDate);
     }
 
@@ -294,8 +288,7 @@ function addParties(map: TimelineMap): void {
 
     if (party.updates !== undefined) {
       party.updates.forEach((update) => {
-        const updateStartDate = getUpdateDate(update.updateId);
-        addPartyChanges(updateStartDate, endDate, {
+        addPartyChanges(update.date, endDate, {
           roomChanges: update.roomChanges,
           localChanges: update.localChanges,
           globalChanges: update.globalChanges
@@ -479,10 +472,9 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
 }
 
 function addIngameMapInfo(map: TimelineMap): void {
-  const firstUpdate = UPDATES.getStrict(FIRST_UPDATE);
 
   map.add(PRECPIP_MAP_PATH, {
-    date: firstUpdate.time,
+    date: BETA_RELEASE,
     file: ORIGINAL_MAP,
     type: 'permanent'
   })
@@ -490,10 +482,9 @@ function addIngameMapInfo(map: TimelineMap): void {
 
 function addStandaloneChanges(map: TimelineMap): void {
   STANDALONE_CHANGE.forEach((change) => {
-    const update = UPDATES.getStrict(change.updateId);
     map.add(change.route, {
       type: 'permanent',
-      date: update.time,
+      date: change.date,
       file: change.fileId
     })
   });
@@ -501,8 +492,8 @@ function addStandaloneChanges(map: TimelineMap): void {
   STANDALONE_TEMPORARY_CHANGE.forEach((change) => {
     map.add(change.route, {
       type: 'temporary',
-      start: getUpdateDate(change.startUpdateId),
-      end: getUpdateDate(change.endUpdateid),
+      start: change.startDate,
+      end: change.endDate,
       file: change.fileId
     });
   });
@@ -510,10 +501,9 @@ function addStandaloneChanges(map: TimelineMap): void {
 
 function addMapUpdates(map: TimelineMap): void {
   MAP_UPDATES.forEach((update) => {
-    const time = getUpdateDate(update.updateId);
     map.add(PRECPIP_MAP_PATH, {
       type: 'permanent',
-      date: time,
+      date: update.date,
       file: update.fileId
     })
   })
@@ -521,11 +511,11 @@ function addMapUpdates(map: TimelineMap): void {
 
 function addCatalogues(map: TimelineMap): void {
   Object.entries(CPIP_CATALOGS).forEach((pair) => {
-    const [updateId, fileId] = pair;
+    const [date, fileId] = pair;
     
     map.add('play/v2/content/local/en/catalogues/clothing.swf', {
       type: 'permanent',
-      date: getUpdateDate(Number(updateId)),
+      date,
       file: fileId
     });
   })
@@ -535,14 +525,14 @@ function addMusicLists(map: TimelineMap): void {
   const route = 'play/v2/content/global/content/igloo_music.swf';
   map.add(route, {
     type: 'permanent',
-    date: getUpdateDate(FIRST_UPDATE), // placeholder for earliest
+    date: BETA_RELEASE, // placeholder for earliest
     file: 2635
   });
   for (let i = 0; i < IGLOO_LISTS.length; i++) {
     // using archived igloo lists as temporary updates on top of a single permanent one
     const cur = IGLOO_LISTS[i];
     if (typeof cur.fileId === 'number') {
-      const start = getUpdateDate(cur.updateId);
+      const start = cur.date;
       if (i === IGLOO_LISTS.length) {
         map.add(route, {
           type: 'permanent',
@@ -550,12 +540,10 @@ function addMusicLists(map: TimelineMap): void {
           file: cur.fileId
         });
       } else {
-
-        const end = getUpdateDate(IGLOO_LISTS[i + 1].updateId);
         map.add(route, {
           type: 'temporary',
           start,
-          end,
+          end: IGLOO_LISTS[i + 1].date,
           file: cur.fileId
         });
       }
@@ -565,7 +553,7 @@ function addMusicLists(map: TimelineMap): void {
 
 function addStagePlays(map: TimelineMap): void {
   STAGE_TIMELINE.forEach((debut) => {
-    const date = getUpdateDate(debut.updateId);
+    const date = debut.date;
 
     // Stage itself
     map.add('play/v2/content/global/rooms/stage.swf', {
