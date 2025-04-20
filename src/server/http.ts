@@ -4,7 +4,6 @@ import { Request, Router } from "express";
 import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
-import { findCurrentParty, findCurrentUpdateInParty } from './game/parties';
 import { findFile, getFileServer } from './routes/client-files';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
@@ -211,38 +210,6 @@ export class HttpServer {
         res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
       }
     });
-  }
-
-  /** Creates a router that listens for party files */
-  addParties() {
-    this.router.get('*', (req: Request, res, next) => {
-      const date = this.settingsManager.settings.version
-      const party = findCurrentParty(date);
-      // no active party
-      if (party === null) {
-        next();
-      } else {
-        // find all possible paths the party serves
-        if (party.paths === undefined) {
-          // no file serving for this party, only semantic
-          next();
-          return
-        }
-        const paths = typeof party.paths === 'string' ? [party.paths] : party.paths;
-        for (const route of paths) {
-          // TODO async file check
-          // TODO optimizing: every file now has to check party first. Assembling a map of all changed files -> destination would be better
-          const filePath = path.join(DEFAULT_DIRECTORY, 'event', route, req.params[0]);
-          // server first route that one can find
-          if (fs.existsSync(filePath)) {
-            res.sendFile(filePath);
-            return;
-          }
-        }
-        // continue if could not find any file in any path
-        next();
-      }
-    })
   }
 
   /**

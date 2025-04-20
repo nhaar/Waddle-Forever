@@ -1,7 +1,7 @@
 import path from "path";
 import crypto from 'crypto';
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
-import { isEqual, isGreaterOrEqual, isLower, Version } from "./versions";
+import { isEqual, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
@@ -10,11 +10,11 @@ import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalo
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
-import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../data/parties";
+import { CrumbIndicator, PARTIES, Party, PartyChanges, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
-import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../game/catalogues";
+import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
@@ -654,16 +654,19 @@ function getFileInformation(timeline: FileTimelineEvent[]): DynamicRouteFileInfo
   }
 }
 
-/** Given dynamic route updates that are sorted, find which file was served at a given date */
-export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
-  if (info.length === 1) {
-    return info[0].file;
+export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
+  if (array.length === 1) {
+    if (isLower(date, array[0].date)) {
+      return -1
+    } else {
+      return 0;
+    }
   }
 
   let left = 0;
   // the last index is not allowed since we search in pairs
   // and then -1 because length is last index + 1
-  let right = info.length - 2;
+  let right = array.length - 2;
   let index = -1;
   
   // this is a type of binary search implementation
@@ -672,17 +675,17 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
     if (right === -1) {
       index = -1;
       break
-    } else if (left === info.length - 1) {
+    } else if (left === array.length - 1) {
       // this means that was higher than last index
       index = left;
       break;
     }
     const middle = Math.floor((left + right) / 2);
-    const element = info[middle];
+    const element = array[middle];
     if (isLower(date, element.date)) {
       // middle can't be it, but middle - 1 could still be
       right = middle - 1;
-    } else if (isLower(date, info[middle + 1].date)) {
+    } else if (isLower(date, array[middle + 1].date)) {
       index = middle;
       break;
     } else {
@@ -690,12 +693,35 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
     }
   }
 
+  return index;
+}
+
+export function findCurrentParty(date: Version): Party | null {
+  const partyIndex = findEarliestDateHitIndex(date, PARTIES.map((p) => ({ ...p, date: p.startDate })));
+
+  if (partyIndex > -1) {
+    if (isLowerOrEqual(PARTIES[partyIndex].startDate, date) && isLower(date, PARTIES[partyIndex].endDate)) {
+      return PARTIES[partyIndex];
+    }
+  }
+
+
+  return null;
+}
+
+/** Given dynamic route updates that are sorted, find which file was served at a given date */
+export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
+  if (info.length === 1) {
+    return info[0].file;
+  }
+
+  const index = findEarliestDateHitIndex(date, info);
   if (index === -1) {
     console.log(info);
-    throw new Error(`Version ${date} could not find a file in info`);
-  } else {
-    return info[index].file;
+    throw new Error(`Version ${date} could not find in array`);
   }
+
+  return info[index].file;
 }
 
 function addStadiumUpdates(map: TimelineMap): void {

@@ -2,7 +2,7 @@ import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
 import { isEngine1, isEngine2, isEngine3 } from "./versions";
-import { getSetupXml } from "./engine1setup";
+import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
 import { getDynamicMusicListData } from "../game/igloo-lists";
 
@@ -75,9 +75,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       }
     }]
   );
-
-  // events, parties
-  server.addParties();
 
   // important redirects
   server.redirectDirs(

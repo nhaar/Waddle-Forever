@@ -18,7 +18,7 @@ export type PartyChanges = {
   globalChanges?: Record<string, number | CrumbIndicator>
 }
 
-type Party = PartyChanges & {
+export type Party = PartyChanges & {
   name: string;
   startDate: string;
   endDate: string;
@@ -34,6 +34,8 @@ type Party = PartyChanges & {
 
   // route -> fileId
   generalChanges?: Record<string, number>;
+
+  roomFrames?: Partial<Record<RoomName, number>>;
 
   activeMigrator?: true;
 };
@@ -87,6 +89,15 @@ export const PARTIES: Party[] = [
       'shop': 92,
       'town': 93,
       'village': 94
+    },
+    music: {
+      'town': 200,
+      'coffee': 200,
+      'dance': 200,
+      'shop': 200,
+      'village': 200,
+      'lodge': 200,
+      'rink': 200
     }
   },
   {
@@ -106,6 +117,9 @@ export const PARTIES: Party[] = [
       'forts': 99,
       'pizza': 100,
       'town': 101
+    },
+    roomFrames: {
+      'town': 2
     }
   },
   {
@@ -121,6 +135,16 @@ export const PARTIES: Party[] = [
       'village': 110,
       'forts': 111,
       'town': 112
+    },
+    music: {
+      'dance': 201,
+      'forts': 201,
+      'rink': 201,
+      'town': 201,
+      'plaza': 201
+    },
+    roomFrames: {
+      'plaza': 3
     }
   },
   {
@@ -274,6 +298,27 @@ export const PARTIES: Party[] = [
       'forts': 2369,
       'town': 2370,
       'party': 2351
+    },
+    music: {
+      'shop': 201,
+      'beach': 232,
+      'berg': 232,
+      'boiler': 201,
+      'cave': 201,
+      'coffee': 201,
+      'cove': 232,
+      'dance': 231,
+      'dock': 232,
+      'forest': 232,
+      'forts': 232,
+      'light': 201,
+      'lodge': 201,
+      'mine': 201,
+      'plaza': 232,
+      'pizza': 201,
+      'town': 232,
+      'village': 232,
+      'party': 261
     },
     localChanges: {
       'membership/oops_april_fools.swf': {

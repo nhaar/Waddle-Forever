@@ -1,29 +1,27 @@
 import { findIndexLeftOf } from "../../common/utils";
-import { CATALOGUES } from "../game/catalogues";
+import { PRE_CPIP_CATALOGS } from "../data/catalogues";
 import { FAN_ISSUE_DATE, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
-import { findCurrentParty, PARTIES } from "../game/parties";
-import { processVersion, inInterval, isGreaterOrEqual, Version } from "./versions";
+import { RoomName, ROOMS } from "../data/rooms";
+import { findCurrentParty, findEarliestDateHitIndex } from "./client-files";
+import { processVersion, isGreaterOrEqual, Version } from "./versions";
 
-type Engine1Room = {
+type OldRoom = {
+  roomName: RoomName
   name: string,
   file: string
   music?: number,
   frame?: number
 };
 
-function patchMusic(rooms: Engine1Room[], music: Record<string, number>) {
+function patchMusic(rooms: OldRoom[], music: Partial<Record<RoomName, number>>) {
   for (const room of rooms) {
-    if (music[room.name] !== undefined) {
-      room.music = music[room.name]
-    }
+    room.music = music[room.roomName]
   }
 }
 
-function patchFrame(rooms: Engine1Room[], frames: Record<string, number>) {
+function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>) {
   for (const room of rooms) {
-    if (frames[room.name] !== undefined) {
-      room.frame = frames[room.name]
-    }
+      room.frame = frames[room.roomName]
   }
 }
 
@@ -52,100 +50,31 @@ export function getSetupXml(version: Version) {
     news = index + 1;
   }
 
-  const rooms: Engine1Room[] = [
-    {
-      name: 'Town',
-      file: 'town10'
-    },
-    {
-      name: 'Coffee',
-      file: 'coffee11',
-      music: 1,
-    },
-    {
-      name: 'Book',
-      file: 'book11'
-    },
-    {
-      name: 'Dance',
-      file: 'dance10',
-      music: 2
-    },
-    {
-      name: 'Lounge',
-      file: 'lounge10'
-    },
-    {
-      name: 'Shop',
-      file: 'shop10'
-    },
-    {
-      name: 'Village',
-      file: 'village11'
-    },
-    {
-      name: 'Sport',
-      file: 'sport11'
-    },
-    {
-      name: 'Lodge',
-      file: 'lodge11'
-    },
-    {
-      name: 'Mtn',
-      file: 'mtn10'
-    },
-    {
-      name: 'Plaza',
-      file: 'plaza12'
-    },
-    {
-      name: 'Pet',
-      file: 'pet11'
-    },
-    {
-      name: 'Dojo',
-      file: 'dojo10'
-    },
-    {
-      name: 'Pizza',
-      file: 'pizza12',
-      music: 20
-    },
-    {
-      name: 'Dock',
-      file: 'dock11'
-    },
-    {
-      name: 'Forts',
-      file: 'forts12'
-    },
-    {
-      name: 'Rink',
-      file: 'rink10'
-    },
-    {
-      name: 'Agent',
-      file: 'agent11'
-    },
-    {
-      name: 'Berg',
-      file: 'berg10'
+  const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
+    return pair[1].preCpipFileNumber !== null && pair[1].preCpipName !== null;
+  }).map((pair) => {
+    const [ name, info ] = pair;
+    return {
+      roomName: name as RoomName,
+      name: info.preCpipName ?? '',
+      file: `${name}${info.preCpipFileNumber}`,
+      music: info.preCpipSong
     }
-  ]
+  });
+
 
   const currentParty = findCurrentParty(version);
   if (currentParty !== null) {
-    if (currentParty.oldMusic !== undefined) {
-      patchMusic(rooms, currentParty.oldMusic);
+    if (currentParty.music !== undefined) {
+      patchMusic(rooms, currentParty.music);
     }
     if (currentParty.roomFrames !== undefined) {
       patchFrame(rooms, currentParty.roomFrames);
     }
   }
 
-  const clothingIndex = findIndexLeftOf(version, CATALOGUES, (date, catalogues, i) => isGreaterOrEqual(date, catalogues[i]));
-  const clothing = getClothing(CATALOGUES[clothingIndex]);
+  const clothingIndex = findEarliestDateHitIndex(version, PRE_CPIP_CATALOGS.map((date) => ({ date })));
+  const clothing = getClothing(PRE_CPIP_CATALOGS[clothingIndex]);
 
   const servers = [
     'Blizzard',

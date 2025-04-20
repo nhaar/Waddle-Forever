@@ -1,10 +1,10 @@
 import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
-import { PARTIES, PartyStage } from '../server/game/parties';
+import { PARTIES } from '../server/data/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
 import { FAN_ISSUE_DATE, PRE_BOILER_ROOM_PAPERS } from '../server/data/newspapers';
-import { CATALOGUES, FURNITURE_CATALOGS } from '../server/game/catalogues';
+import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
 import { ROOM_TIMELINE } from '../server/game/rooms';
@@ -173,15 +173,13 @@ function addStagePlays(map: DayMap): void {
 function addParties(map: DayMap): DayMap {
   for (let i = 0; i < PARTIES.length; i++) {
     const party = PARTIES[i];
-    addEvents(map, party.start, { partyStart: party.name });
-    if (party.hideEnd !== true) {
-      addEvents(map, party.end ?? PARTIES[i + 1].start , { partyEnd: party.name });
-    }
+    addEvents(map, party.startDate, { partyStart: party.name });
+    addEvents(map, party.endDate, { partyEnd: party.name });
 
     if (party.updates !== undefined) {
       for (const update of party.updates) {
-        if (update.update !== null) {
-          addEvents(map, update.update.date, { partyUpdate: update.update.description });
+        if (update.comment !== undefined) {
+          addEvents(map, update.date, { partyUpdate: update.comment });
         }
       }
     }
@@ -203,7 +201,10 @@ function addNewspapers(map: DayMap): DayMap {
 }
 
 function addCatalogues(map: DayMap): DayMap {
-  CATALOGUES.forEach((date) => {
+  PRE_CPIP_CATALOGS.forEach((date) => {
+    addEvents(map, date, { newClothing: true });
+  });
+  Object.keys(CPIP_CATALOGS).forEach((date) => {
     addEvents(map, date, { newClothing: true });
   });
   Object.keys(FURNITURE_CATALOGS).forEach((date) => {
