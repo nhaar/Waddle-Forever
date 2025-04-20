@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locale game="Smoothie" language="German" version="1.0">
+	
+	<? Titles ?>
+	<entry id="hint_move_title" value="BEWEGEN"/>
+	<entry id="hint_smash_title" value="SMASH"/>
+	<entry id="hint_combos_title" value="COMBOS"/>
+	<entry id="hint_watchout_title" value="ACHTUNG!"/>
+	<entry id="times_up_title" value="Die Zeit ist abgelaufen! Gut gemacht!"/>
+	<entry id="awesome_skills_title" value="Was für ein Talent!"/>
+	
+	<? Body Text ?>
+	<entry id="hint_move_txt" value="Benutze die Pfeiltasten"/>
+	<entry id="hint_smash_txt" value="Springe auf die richtige Frucht."/>
+	<entry id="hint_smash2_txt" value="Springe für Gesundheit auf Früchte."/>
+	<entry id="hint_combos_txt" value="Folge dem Rezept."/>
+	<entry id="hint_watchout_txt" value="Meide Gefahren!"/>
+	<entry id="score_txt" value="Deine Punkte:"/>
+	
+	<? Buttons ?>
+	<entry id="button_play" value="SPIELEN"/>
+	<entry id="button_normal" value="NORMAL"/>
+	<entry id="button_survival" value="ÜBERLEBEN"/>
+	<entry id="button_instructions" value="ANLEITUNG"/>
+	<entry id="button_done" value="Fertig"/>
+	
+</locale>

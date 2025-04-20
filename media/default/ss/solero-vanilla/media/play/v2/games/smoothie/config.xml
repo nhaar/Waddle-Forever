@@ -1,0 +1,18 @@
+<content>
+	<gameID>9988776655</gameID>
+	<gameLinkage></gameLinkage>
+	<gameClass>com.clubpenguin.games.smoothie.SmoothieEngineProxyCP</gameClass>
+
+	<gameLocale>
+		en
+	</gameLocale>
+
+	<gameConfig>
+		SmoothieConfig.xml
+	</gameConfig>
+	
+	<gameAssets>
+		
+	</gameAssets>
+	<!-- A Comment in the xml -->
+</content>
