@@ -20,6 +20,7 @@ import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
 import { NEWSPAPERS } from "../data/newspapers";
+import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -101,17 +102,17 @@ function addMusicFiles(map: TimelineMap): void {
 }
 
 function addStaticFiles(map: RouteMap): void {
-  Object.entries(PRE_CPIP_STATIC_FILES).forEach((pair) => {
-    const [route, fileId] = pair;
-    const filePath = getMediaFilePath(fileId);
-    addToRouteMap(map, route, filePath);
-  })
+  const addStatic = (stat: Record<string, number>) => {
+    Object.entries(stat).forEach((pair) => {
+      const [route, fileId] = pair;
+      const filePath = getMediaFilePath(fileId);
+      addToRouteMap(map, route, filePath);
+    })
+  }
 
-  Object.entries(CPIP_STATIC_FILES).forEach((pair) => {
-    const [route, fileId] = pair;
-    const filePath = getMediaFilePath(fileId);
-    addToRouteMap(map, route, filePath);
-  });
+  addStatic(PRE_CPIP_STATIC_FILES);
+  addStatic(CPIP_STATIC_FILES);
+  addStatic(CPIP_AS3_STATIC_FILES);
 }
 
 function addFallbacks(map: TimelineMap): void {
