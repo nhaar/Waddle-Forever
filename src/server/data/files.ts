@@ -3815,5 +3815,20 @@ export const FILES = new StaticDataTable<File, [
   [3726, 'media/play/v2/games/cp_party_games/soaker/lang/ru/background.swf', 1, FileCategory.StaticServer, 3, null],
   [3727, 'media/play/v2/games/soaker/lang/ru/javaBag.swf', 1, FileCategory.StaticServer, 3, null],
   [3728, 'media/play/v2/games/cp_party_games/soaker/lang/ru/locale.swf', 1, FileCategory.StaticServer, 3, null],
-  [3729, 'media/play/v2/games/cp_party_games/soaker/lang/ru/title.swf', 1, FileCategory.StaticServer, 3, null]
+  [3729, 'media/play/v2/games/cp_party_games/soaker/lang/ru/title.swf', 1, FileCategory.StaticServer, 3, null],
+  [3730, 'BellEn_backgroundText.swf', 1, FileCategory.Archives, null, null],
+  [3731, 'BellEn_javaBag.swf', 1, FileCategory.Archives, null, null],
+  [3732, 'BellEn_menu.swf', 1, FileCategory.Archives, null, null],
+  // security fix removal (I think)
+  [3733, 'ENGamesBook2BurntOutBulbs.swf', 1, FileCategory.Fix, null, null],
+  [3734, 'GamesMixmasterChooseSong_2011.swf', 1, FileCategory.Archives, null, null],
+  // Recreation of the orange puffle version, based on the brown puffle one
+  [3735, 'puffle_roundup_orange.swf', 1, FileCategory.Recreation, null, null],
+  // XML with env data for localhost
+  [3736, 'localhost_environment_data.xml', 1, FileCategory.Tool, null, null],
+  [3737, 'media/play/v2/games/pufflescape/lang/de/locale.xml', 1, FileCategory.StaticServer, 3, null],
+  [3738, 'media/play/v2/games/pufflescape/lang/en/locale.xml', 1, FileCategory.StaticServer, 3, null],
+  [3739, 'media/play/v2/games/pufflescape/lang/es/locale.xml', 1, FileCategory.StaticServer, 3, null],
+  [3740, 'media/play/v2/games/pufflescape/lang/fr/locale.xml', 1, FileCategory.StaticServer, 3, null],
+  [3741, 'media/play/v2/games/pufflescape/lang/pt/locale.xml', 1, FileCategory.StaticServer, 3, null]
 ]);

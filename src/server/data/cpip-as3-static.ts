@@ -1829,5 +1829,10 @@ export const CPIP_AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/games/soaker/lang/ru/background.swf': 3726,
   'play/v2/games/soaker/lang/ru/javaBag.swf': 3727,
   'play/v2/games/soaker/lang/ru/locale.swf': 3728,
-  'play/v2/games/soaker/lang/ru/title.swf': 3729
+  'play/v2/games/soaker/lang/ru/title.swf': 3729,
+  'play/v2/games/bell/lang/en/backgroundText.swf': 3730,
+  'play/v2/games/bell/lang/en/javaBag.swf': 3731,
+  'play/v2/games/bell/lang/en/menu.swf': 3732,
+  'play/v2/games/book2/BurntOutBulbs.swf': 3733,
+  'play/v2/games/mixmaster/ChooseSong.swf': 3734
 };
