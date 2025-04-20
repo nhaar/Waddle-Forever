@@ -33,7 +33,8 @@ export const PRE_BOILER_ROOM_PAPERS: Version[] = [
 
 export type Newspaper = {
   date: Version,
-  headline: string
+  headline: string,
+  fileId?: number;
 }
 
 export const NEWSPAPERS: Newspaper[] = [
@@ -815,63 +816,78 @@ export const NEWSPAPERS: Newspaper[] = [
   },
   {
     date: '2009-12-31',
-    headline: 'HAPPY NEW YEAR CLUB PENGUIN!'
+    headline: 'HAPPY NEW YEAR CLUB PENGUIN!',
+    fileId: 3742
   },
   {
     date: '2010-01-07',
-    headline: 'CREATE YOUR OWN T-SHIRT'
+    headline: 'CREATE YOUR OWN T-SHIRT',
+    fileId: 3743
   },
   {
     date: '2010-01-14',
-    headline: 'ROCKSLIDE AT THE MINE!'
+    headline: 'ROCKSLIDE AT THE MINE!',
+    fileId: 3744
   },
   {
     date: '2010-01-21',
-    headline: 'SECRET CAVE DISCOVERED!'
+    headline: 'SECRET CAVE DISCOVERED!',
+    fileId: 3745
   },
   {
     date: '2010-01-28',
-    headline: 'CAVES CLOSING UNTIL FURTHER NOTICE'
+    headline: 'CAVES CLOSING UNTIL FURTHER NOTICE',
+    fileId: 3746
   },
   {
     date: '2010-02-04',
-    headline: 'PUFFLE PARTY'
+    headline: 'PUFFLE PARTY',
+    fileId: 3747
   },
   {
     date: '2010-02-11',
-    headline: 'SECRETS OF THE BAMBOO FOREST'
+    headline: 'SECRETS OF THE BAMBOO FOREST',
+    fileId: 3748
   },
   {
     date: '2010-02-18',
-    headline: 'PUFFLE PARTY'
+    headline: 'PUFFLE PARTY',
+    fileId: 3749
   },
   {
     date: '2010-02-25',
-    headline: 'ORANGE PUFFLES READY TO ADOPT!'
+    headline: 'ORANGE PUFFLES READY TO ADOPT!',
+    fileId: 3750
   },
   {
     date: '2010-03-04',
-    headline: 'WHERE\'S YARR?'
+    headline: 'WHERE\'S YARR?',
+    fileId: 3751
   },
   {
     date: '2010-03-11',
-    headline: 'PUFFLES TRAPPED UNDERGROUND!'
+    headline: 'PUFFLES TRAPPED UNDERGROUND!',
+    fileId: 3752
   },
   {
     date: '2010-03-18',
-    headline: 'PUFFLE RESCUE'
+    headline: 'PUFFLE RESCUE',
+    fileId: 3753
   },
   {
     date: '2010-03-25',
-    headline: 'PENGUIN PLAY AWARDS'
+    headline: 'PENGUIN PLAY AWARDS',
+    fileId: 3754
   },
   {
     date: '2010-04-01',
-    headline: 'HAPPY APRIL FOOLS!'
+    headline: 'HAPPY APRIL FOOLS!',
+    fileId: 3755
   },
   {
     date: '2010-04-08',
-    headline: 'EARTH DAY IS COMING!'
+    headline: 'EARTH DAY IS COMING!',
+    fileId: 3756
   },
   {
     date: '2010-04-15',

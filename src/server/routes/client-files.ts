@@ -101,6 +101,15 @@ function addMusicFiles(map: TimelineMap): void {
   })
 }
 
+function addNewspapers(map: RouteMap): void {
+  NEWSPAPERS.forEach((news) => {
+    if (news.fileId !== undefined) {
+      const date = news.date.replaceAll('-', '');
+      addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, getMediaFilePath(news.fileId));
+    }
+  })
+}
+
 function addStaticFiles(map: RouteMap): void {
   const addStatic = (stat: Record<string, number>) => {
     Object.entries(stat).forEach((pair) => {
@@ -778,7 +787,7 @@ function addStagePlays(map: TimelineMap): void {
 export function getFileServer(): Map<string, RouteFileInformation> {
   const timelines = new TimelineMap();
 
-  const processors = [
+  const timelineProcessors = [
     addRoomInfo,
     addIngameMapInfo,
     addStandaloneChanges,
@@ -793,10 +802,16 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addCrumbs
   ];
 
-  processors.forEach((fn) => fn(timelines));
+  timelineProcessors.forEach((fn) => fn(timelines));
   
   const fileServer = timelines.getRouteMap();
-  addStaticFiles(fileServer);
+
+  const staticProcessors = [
+    addStaticFiles,
+    addNewspapers
+  ];
+
+  staticProcessors.forEach((fn) => fn(fileServer));
 
   return fileServer;
 }
