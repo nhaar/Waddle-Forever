@@ -19,6 +19,7 @@ import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
+import { NEWSPAPERS } from "../data/newspapers";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -449,6 +450,7 @@ export type LocalCrumbPatch = {
 
 export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
 export const LOCAL_CRUMBS_PATH = path.join('default', 'auto', 'local_crumbs');
+export const NEWS_CRUMBS_PATH = path.join('default', 'auto', 'news_crumbs');
 export function getCrumbFileName(hash: string, id: number): string {
   return `${hash}-${id}.swf`;
 }
@@ -625,6 +627,11 @@ function addCrumbs(map: TimelineMap): void {
   
   addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
   addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
+
+  // remove first 6 which have no crumbs
+  NEWSPAPERS.slice(6).forEach((newspaper) => {
+    map.addPerm('play/v2/content/local/en/news/news_crumbs.swf', newspaper.date, path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'));
+  });
 }
 
 /** Converts a timeline event to the information consumed by the file server */

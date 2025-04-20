@@ -1,8 +1,8 @@
 import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
-import { DEFAULT_DIRECTORY } from '../src/common/utils';
-import { processVersion, Version } from '../src/server/routes/versions';
+import { processVersion } from '../src/server/routes/versions';
+import { NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
 import { Newspaper, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from '../src/server/data/newspapers';
 
 
@@ -123,16 +123,21 @@ const currentThings: Newspaper[] = [];
 // which matches with the length of this array
 let issueNumber = PRE_BOILER_ROOM_PAPERS.length;
 
-const outDir = path.join(__dirname, 'news')
-if (!fs.existsSync(outDir)) {
-  fs.mkdirSync(outDir);
-}
-
 const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
 
 console.log('Beginning exporting...');
 
 let promises: Array<Promise<void>> = [];
+
+const autoDir = path.join(__dirname, '..', 'media', NEWS_CRUMBS_PATH);
+if (!fs.existsSync(autoDir)) {
+  fs.mkdirSync(autoDir, { recursive: true });
+}
+
+const previousFiles = fs.readdirSync(autoDir);
+previousFiles.forEach((file) => {
+  fs.unlinkSync(path.join(autoDir, file));
+});
 
 (async () => {
   for (const newspaper of NEWSPAPERS) {
@@ -152,7 +157,7 @@ let promises: Array<Promise<void>> = [];
       
       const recent = currentThings[6]
       const fileName = getDateFileName(recent) + '.swf';
-      const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
+      const filePath = path.join(autoDir, fileName);
       console.log(`Exporting: ${fileName}`);
       
       const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
