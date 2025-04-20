@@ -3,7 +3,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'en/web_service/epf.json': 116,
   'en/web_service/games.json': 117,
   'en/web_service/polaroids.json': 118,
-  'play/v2/content/global/content/igloo_music.swf': 120,
   'web_service/weblogger.json': 124,
   'es/web_service/cover.json': 128,
   'es/web_service/polaroids.json': 129,

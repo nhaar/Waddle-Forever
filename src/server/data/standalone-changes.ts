@@ -9,6 +9,7 @@ type StandaloneTemporaryChange = {
   startUpdateId: number;
   endUpdateid: number;
   fileId: number;
+  comment?: string;
 }
 
 export const STANDALONE_CHANGE: StandaloneChange[] = [
@@ -108,5 +109,12 @@ export const STANDALONE_TEMPORARY_CHANGE: StandaloneTemporaryChange[] = [
     endUpdateid: 75,
     route: 'play/v2/content/global/rooms/berg.swf',
     fileId: 2474
+  },
+  {
+    startUpdateId: 96,
+    endUpdateid: 89,
+    route: 'play/v2/content/global/binoculars/empty.swf',
+    fileId: 2634,
+    comment: 'A storm is approaching and visible from the Cove'
   }
 ]

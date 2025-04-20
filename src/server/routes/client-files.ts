@@ -3,7 +3,7 @@ import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isEqual, isLower, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
-import { CPIP_UPDATE, FIRST_UPDATE, UPDATES } from "../data/updates";
+import { CPIP_UPDATE, FIRST_UPDATE, getUpdateDate, UPDATES } from "../data/updates";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
@@ -16,6 +16,7 @@ import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
 import { CPIP_CATALOGS } from "../game/catalogues";
 import { STAGE_TIMELINE } from "../game/stage-plays";
+import { IGLOO_LISTS } from "../game/igloo-lists";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -174,11 +175,6 @@ class TimelineMap {
 
     return routeMap;
   }
-}
-
-function getUpdateDate(updateId: number): string {
-  const update = UPDATES.getStrict(updateId);
-  return update.time;
 }
 
 function getPreCpipRoomRoute(room: RoomName): string {
@@ -535,6 +531,38 @@ function addCatalogues(map: TimelineMap): void {
   })
 }
 
+function addMusicLists(map: TimelineMap): void {
+  const route = 'play/v2/content/global/content/igloo_music.swf';
+  map.add(route, {
+    type: 'permanent',
+    date: getUpdateDate(FIRST_UPDATE), // placeholder for earliest
+    file: 2635
+  });
+  for (let i = 0; i < IGLOO_LISTS.length; i++) {
+    // using archived igloo lists as temporary updates on top of a single permanent one
+    const cur = IGLOO_LISTS[i];
+    if (typeof cur.fileId === 'number') {
+      const start = getUpdateDate(cur.updateId);
+      if (i === IGLOO_LISTS.length) {
+        map.add(route, {
+          type: 'permanent',
+          date: start,
+          file: cur.fileId
+        });
+      } else {
+
+        const end = getUpdateDate(IGLOO_LISTS[i + 1].updateId);
+        map.add(route, {
+          type: 'temporary',
+          start,
+          end,
+          file: cur.fileId
+        });
+      }
+    }
+  }
+}
+
 function addStagePlays(map: TimelineMap): void {
   STAGE_TIMELINE.forEach((debut) => {
     const date = getUpdateDate(debut.updateId);
@@ -567,15 +595,20 @@ function addStagePlays(map: TimelineMap): void {
 export function getFileServer(): Map<string, RouteFileInformation> {
   const timelines = new TimelineMap();
 
-  addRoomInfo(timelines);
-  addIngameMapInfo(timelines);
-  addStandaloneChanges(timelines);
-  addMapUpdates(timelines);
-  addParties(timelines);
-  addMusicFiles(timelines);
-  addFallbacks(timelines);
-  addCatalogues(timelines);
-  addStagePlays(timelines);
+  const processors = [
+    addRoomInfo,
+    addIngameMapInfo,
+    addStandaloneChanges,
+    addMapUpdates,
+    addParties,
+    addMusicFiles,
+    addFallbacks,
+    addCatalogues,
+    addStagePlays,
+    addMusicLists
+  ];
+
+  processors.forEach((fn) => fn(timelines));
   
   const fileServer = timelines.getRouteMap();
   addStaticFiles(fileServer);

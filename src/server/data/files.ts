@@ -2718,5 +2718,8 @@ export const FILES = new StaticDataTable<File, [
   [2630, '2010coinsforchangeposter.swf', 1, FileCategory.Archives, null, null],
   [2631, '2010coinsforchangedonate.swf', 1, FileCategory.Archives, null, null],
   [2632, 'HolidayParty2010Map.swf', 1, FileCategory.Archives, null, null],
-  [2633, 'HolidayParty2010Map-StadiumGames.swf', 1, FileCategory.Archives, null, null]
+  [2633, 'HolidayParty2010Map-StadiumGames.swf', 1, FileCategory.Archives, null, null],
+  [2634, 'Storm_on_horizon.swf', 1, FileCategory.Archives, null, null],
+  // originally by Ben, refined by Randomno
+  [2635, 'dynamic_igloo_music.swf', 1, FileCategory.Tool, null, null]
 ]);

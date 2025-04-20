@@ -1,3 +1,4 @@
+import { getUpdateDate } from "../data/updates";
 import { isGreater, Version } from "../routes/versions"
 
 type Row = [FullListSong, FullListSong];
@@ -7,7 +8,8 @@ type IglooList = [Row, Row, Row, Row, Row, Row, Row];
 
 type FullList = {
   list: IglooList,
-  date: Version
+  updateId: number;
+  fileId?: number;
 };
 
 type ListSong = {
@@ -26,12 +28,13 @@ type FullListSong = ListSong & {
 
 type ListUpdate = {
   songs: UpdateListSong[];
-  date: Version;
+  updateId: number;
+  fileId?: number;
 }
 
 export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
   {
-    date: '2009-12-25',
+    updateId: 40,
     list: [
       [{ display: 'Twelfth Fish Theme', id: 31, new: true }, { display: 'Rocksteady', id: 276 }],
       [{ display: 'Campfire Song', id: 220 }, { display: 'The Volcano', id: 22 }],
@@ -43,7 +46,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-01-29',
+    updateId: 97,
     songs: [
       { display: 'Puffle Party', id: 282, pos: [3, 1] },
       { display: 'Float in the Clouds', id: 277, pos: [4, 2] },
@@ -52,7 +55,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-02-26',
+    updateId: 98,
     songs: [
       { display: 'Jungle Quest', id: 269, pos: [2, 1] },
       { display: 'Flipper Jig', id: 262, pos: [7, 1] },
@@ -61,7 +64,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-03-26',
+    updateId: 99,
     songs: [
       { display: 'Puffle Rescue: Ice Flow', id: 119, pos: [1, 1] },
       { display: 'Recycle!', id: 285, pos: [6, 1] },
@@ -69,7 +72,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-04-30',
+    updateId: 100,
     songs: [
       { display: 'Quest for the Golden Puffle', id: 34, pos: [4, 1] },
       { display: 'In the Tower', id: 235, pos: [7, 1] },
@@ -77,7 +80,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-05-28',
+    updateId: 101,
     songs: [
       { display: 'Knight\'s Challenge', id: 286, pos: [2, 2] },
       { display: 'The Quest', id: 266, pos: [5, 2] },
@@ -85,7 +88,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-06-25',
+    updateId: 102,
     songs: [
       { display: 'The Viking Opera', id: 41, pos: [3, 1] },
       { display: 'Island Adventure', id: 291, pos: [5, 1] },
@@ -93,7 +96,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-08-20',
+    updateId: 103,
     songs: [
       { display: 'You Rock!', id: 293, pos: [2, 1] },
       { display: 'The Ringmaster', id: 297, pos: [2, 2] },
@@ -101,7 +104,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-11-11',
+    updateId: 104,
     songs: [
       { display: 'Planet Y', id: 38, pos: [3, 1] },
       { display: 'Norman Swarm', id: 42, pos: [1, 2] },
@@ -110,7 +113,7 @@ export const IGLOO_LISTS: [FullList, ...ListUpdate[]] = [
     ]
   },
   {
-    date: '2010-12-09',
+    updateId: 105,
     songs: [
       { display: 'Candy Cane March', id: 228, pos: [1, 1] },
       { display: 'Santa\'s Mix', id: 254, pos: [6, 1] },
@@ -142,7 +145,8 @@ function getIglooList(date: Version): IglooList {
 
   for (const update of updates) {
     // end on the first update that wasn't released
-    if (isGreater(update.date, date)) {
+    const updateDate = getUpdateDate(update.updateId);
+    if (isGreater(updateDate, date)) {
       break;
     }
 

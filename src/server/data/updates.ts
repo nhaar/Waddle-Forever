@@ -104,6 +104,7 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     [39, '2010-12-03'],
 
     // quest for golden puffle dec 09
+    // igloo list release
     [40, '2009-12-25'],
     // fairy fables jan 10
     [41, '2010-01-08'],
@@ -122,7 +123,7 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // secrets of the bamboo forest oct 10
     [48, '2010-10-08'],
     // space adventure planet Y nov 2010
-    [49, '2010-11-18'],
+    [49, '2010-11-19'],
     // ruby and the ruby dec 2010
     [50, '2010-12-28'],
 
@@ -215,9 +216,39 @@ export const UPDATES = new StaticDataTable<Update, ['id', 'time']>(
     // holiday party 2010 start
     [94, '2010-12-16'],
     // holiday party 2010 end
-    [95, '2010-12-28']
+    [95, '2010-12-28'],
+    // storm is approaching on the cove binoculars
+    [96, '2010-10-14'],
+    // new igloo music
+    // new pin
+    [97, '2010-01-29'],
+    // new igloo music
+    // new pin
+    [98, '2010-02-26'],
+    // new igloo music
+    // new pin
+    [99, '2010-03-26'],
+    // new igloo music
+    [100, '2010-04-30'],
+    // new igloo music
+    [101, '2010-05-28'],
+    // new igloo music
+    [102, '2010-06-25'],
+    // new igloo music
+    // new better igloos
+    // penguin mail
+    [103, '2010-08-20'],
+    // new igloo music
+    [104, '2010-11-11'],
+    // new igloo music
+    [105, '2010-12-09']
   ]
 );
+
+export function getUpdateDate(updateId: number): string {
+  const update = UPDATES.getStrict(updateId);
+  return update.time;
+}
 
 export const FIRST_UPDATE = 1;
 export const CPIP_UPDATE = 27;
