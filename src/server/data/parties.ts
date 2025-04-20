@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, STADIUM_GAMES_END, WATER_HUNT_END } from "./updates";
+import { CAVE_EXPEDITION_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, STADIUM_GAMES_END, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -247,6 +247,11 @@ export const PARTIES: Party[] = [
       'content/shorts/underwater.swf': [2342, 'underwaterShort'],
       'content/winners.swf': [2343, 'voting_booth']
     },
+    localChanges: {
+      'catalogues/costume.swf': {
+        'en': 2678
+      }
+    }
   },
   {
     name: 'April Fools\' Party 2010',
@@ -275,8 +280,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Earth Day 2010',
-    startDate: '2010-04-21',
-    endDate: '2010-04-27',
+    startDate: EARTH_DAY_2010_START,
+    endDate: EARTH_DAY_2010_END,
     roomChanges: {
       'town': 2372,
       'coffee': 2373,
@@ -643,19 +648,6 @@ export const PARTIES: Party[] = [
     ]
   },
   {
-    name: 'Stadium Games',
-    startDate: '2010-09-24',
-    endDate: STADIUM_GAMES_END,
-    roomChanges: {
-      'rink': 2517,
-      'forts': 2518,
-      'town': 2519
-    },
-    globalChanges: {
-      'content/map.swf': 2520
-    }
-  },
-  {
     name: '5th Anniversary Party',
     startDate: '2010-10-23',
     endDate: '2010-10-25',
@@ -807,7 +799,7 @@ export const PARTIES: Party[] = [
   {
     name: 'Celebration of Water',
     startDate: WATER_HUNT_END,
-    endDate: '2010-12-02',
+    endDate: WATER_CELEBRATION_END,
     roomChanges: {
       'dojoext': 2591,
       'dojohide': 2592,

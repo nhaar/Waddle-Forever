@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CPIP_UPDATE, ICEBERG_RELEASE, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE } from "./updates";
+import { CAVE_EXPEDITION_END, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -231,6 +231,150 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'shipquarters',
     fileId: 266,
     date: CPIP_UPDATE
+  },
+  {
+    // placeholder CPIP room
+    room: 'agent',
+    fileId: 2651,
+    date: CPIP_UPDATE
+  },
+  {
+    room: 'mine',
+    fileId: 2662,
+    date: CPIP_UPDATE
+  },
+  {
+    room: 'shack',
+    fileId: 2668,
+    date: CPIP_UPDATE
+  },
+  {
+    room: 'forest',
+    fileId: 2657,
+    date: CPIP_UPDATE
+  },
+  {
+    room: 'ship',
+    fileId: 2674,
+    date: CPIP_UPDATE
+  },
+  {
+    room: 'village',
+    fileId: 2676,
+    date: CPIP_UPDATE
+  },
+  {
+    room: 'dojoext',
+    fileId: 2654,
+    date: '2009-11-27'
+  },
+  {
+    room: 'mine',
+    fileId: 2663,
+    date: '2010-01-08'
+  },
+  {
+    room: 'mine',
+    fileId: 2664,
+    date: '2010-01-15'
+  },
+  {
+    room: 'mine',
+    fileId: 2665,
+    date: CAVE_EXPEDITION_END
+  },
+  {
+    room: 'mine',
+    fileId: 2662,
+    date: '2010-03-15'
+  },
+  {
+    room: 'forest',
+    fileId: 2658,
+    date: EARTH_DAY_2010_START
+  },
+  {
+    room: 'shack',
+    // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
+    fileId: 2669,
+    date: EARTH_DAY_2010_END
+  },
+  {
+    room: 'village',
+    fileId: 2677,
+    date: EPF_RELEASE
+  },
+  {
+    room: 'forest',
+    fileId: 2659,
+    date: '2010-06-17'
+  },
+  {
+    room: 'shack',
+    fileId: 2670,
+    date: '2010-07-29'
+  },
+  {
+    room: 'shack',
+    fileId: 2671,
+    date: '2010-08-26'
+  },
+  {
+    room: 'shack',
+    fileId: 2672,
+    date: '2010-09-30'
+  },
+  {
+    room: 'dojoext',
+    fileId: 2655,
+    date: WATER_CELEBRATION_END
+  },
+  {
+    // placeholder AS3 room
+    room: 'cove',
+    fileId: 2652,
+    date: MODERN_AS3
+  },
+  {
+    // placeholder AS3 room
+    room: 'dock',
+    fileId: 2653,
+    date: MODERN_AS3
+  },
+  {
+    room: 'dojoext',
+    fileId: 2656,
+    date: MODERN_AS3
+  },
+  {
+    room: 'forest',
+    fileId: 2660,
+    date: MODERN_AS3
+  },
+  {
+    room: 'forts',
+    fileId: 2661,
+    date: MODERN_AS3
+  },
+  {
+    room: 'plaza',
+    fileId: 2666,
+    date: MODERN_AS3
+  },
+  {
+    room: 'rink',
+    fileId: 2667,
+    date: MODERN_AS3
+  },
+  {
+    room: 'shack',
+    fileId: 2673,
+    date: MODERN_AS3
+  },
+  {
+    room: 'town',
+    fileId: 2675,
+    date: MODERN_AS3
   }
 ];
 

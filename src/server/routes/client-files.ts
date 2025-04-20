@@ -17,6 +17,7 @@ import { CPIP_CATALOGS } from "../game/catalogues";
 import { STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
+import { STADIUM_UPDATES } from "../data/stadium-updates";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -465,10 +466,42 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
   }
 
   if (index === -1) {
-    throw new Error(`Version ${date} could not find a file in info: ${info}`);
+    console.log(info);
+    throw new Error(`Version ${date} could not find a file in info`);
   } else {
     return info[index].file;
   }
+}
+
+function addStadiumUpdates(map: TimelineMap): void {
+  STADIUM_UPDATES.forEach((update) => {
+    const date = update.date;
+    map.add('play/v2/content/global/content/map.swf', {
+      date,
+      file: update.mapFileId,
+      type: 'permanent'
+    });
+    map.add('play/v2/content/global/rooms/town.swf', {
+      date,
+      file: update.townFileId,
+      type: 'permanent'
+    });
+    map.add('play/v2/content/global/rooms/forts.swf', {
+      date,
+      file: update.fortsFileId,
+      type: 'permanent'
+    });
+    map.add('play/v2/content/global/rooms/rink.swf', {
+      date,
+      file: update.rinkFileId,
+      type: 'permanent'
+    });
+    map.add('play/v2/content/local/en/catalogues/sport.swf', {
+      date,
+      file: update.catalogFileId,
+      type: 'permanent'
+    });
+  });
 }
 
 function addIngameMapInfo(map: TimelineMap): void {
@@ -593,7 +626,8 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addFallbacks,
     addCatalogues,
     addStagePlays,
-    addMusicLists
+    addMusicLists,
+    addStadiumUpdates
   ];
 
   processors.forEach((fn) => fn(timelines));

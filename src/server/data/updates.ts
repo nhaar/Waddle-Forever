@@ -1,5 +1,5 @@
 /** The day Club Penguin launched its beta */
-export const BETA_RELEASE = '2010-08-22';
+export const BETA_RELEASE = '2005-08-22';
 
 /** The day the snow forts opened */
 export const SNOW_FORTS_RELEASE = '2010-09-21';
@@ -18,10 +18,16 @@ export const PIZZA_PARLOR_OPENING_START = '2006-02-24';
 
 export const ICEBERG_RELEASE = '2006-03-29';
 
+export const EARTH_DAY_2010_START = '2010-04-21';
+
+export const EARTH_DAY_2010_END = '2010-04-27';
+
 /** The day the EPF launched */
 export const EPF_RELEASE = '2010-05-27';
 
 export const WATER_HUNT_END = '2010-11-24';
+
+export const WATER_CELEBRATION_END = '2010-10-02';
 
 export const PLANET_Y_2010 = '2010-11-19';
 
