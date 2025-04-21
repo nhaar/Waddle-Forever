@@ -63,6 +63,11 @@ handler.xt('il', (client) => {
 
 handler.xt('m', 'sm', commandsHandler);
 
+// handler for 2007 client
+handler.xt('gi', (client) => {
+  client.sendInventory();
+});
+
 // Logging in
 handler.post('/php/login.php', (body) => {
   const { Username } = body;
