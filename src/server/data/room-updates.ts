@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_CELEBRATION_END } from "./updates";
+import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -57,6 +57,14 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: '2006-##-##',
     fileId: 2264,
     // comment: 'The book room was updated to have a new Mancala board'
+  },
+  {
+    // first room archived with the lighthouse open
+    // used for the party since the SWF for the beach in
+    // the party is also lost
+    room: 'beach',
+    date: LIGHTHOUSE_PARTY_START,
+    fileId: 3835
   },
   {
     // placeholder CPIP room
