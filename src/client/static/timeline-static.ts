@@ -30,56 +30,13 @@ function getFullDate(value: string) {
 }
 
 function getDescription(version: Day): string {
-  const unorderedListItems: string[] = [];
-
-  if (version.events.partyStart !== undefined) {
-    unorderedListItems.push(`${version.events.partyStart} launched`);
-  }
-  if (version.events.partyEnd !== undefined) {
-    unorderedListItems.push(`${version.events.partyEnd} ended`);
-  }
-  if (version.events.partyUpdate !== undefined) {
-    unorderedListItems.push(version.events.partyUpdate);
-  }
-  if (version.events.other !== undefined) {
-    unorderedListItems.push(version.events.other);
-  }
-  if (version.events.roomOpen !== undefined) {
-    if (version.events.roomOpen.length === 1) {
-      unorderedListItems.push(`Room "${version.events.roomOpen[0]}" opens`);
-    } else {
-      unorderedListItems.push(`Rooms "${version.events.roomOpen.join(', ')}" open`);
-    }
-  }
-  if (version.events.minigameRelease !== undefined) {
-    unorderedListItems.push(`New minigame: ${version.events.minigameRelease}`)
-  }
-  if (version.events.newClothing === true) {
-    unorderedListItems.push('New Clothing Catalogue');
-  }
-  if (version.events.newIssue !== undefined) {
-    unorderedListItems.push(`CPT Issue ${version.events.newIssue} released`)
-  }
-  if (version.events.roomUpdate !== undefined) {
-    unorderedListItems.push(version.events.roomUpdate);
-  }
-  if (version.events.stagePlay !== undefined) {
-    unorderedListItems.push(`New stage play airing: ${version.events.stagePlay}`);
-  }
-  if (version.events.musicList === true) {
-    unorderedListItems.push('New music available for igloos');
-  }
-  if (version.events.newFurnitureCatalog === true) {
-    unorderedListItems.push('New furniture catalog available');
-  }
-
   return `
   <div class="date-description">
     <div>
     On this day
     </div>
     <ul>
-      ${unorderedListItems.map((item) => {
+      ${version.events.map((item) => {
         return `
         <li>
           ${item}
@@ -92,21 +49,8 @@ function getDescription(version: Day): string {
 }
 
 type Day = {
-  date: string
-  events: {
-    partyStart?: string
-    partyEnd?: string
-    partyUpdate?: string
-    other?: string
-    newIssue?: number | string
-    roomOpen?: string[]
-    roomUpdate?: string;
-    minigameRelease?: string
-    newClothing?: boolean
-    newFurnitureCatalog?: true;
-    stagePlay?: string;
-    musicList?: true;
-  }
+  date: string;
+  events: string[];
 }
 
 // saving selected version globally

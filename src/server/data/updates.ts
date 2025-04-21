@@ -54,5 +54,10 @@ export const ANNIVERSARY_5_START = '2010-10-23';
 
 export const HALLOWEEN_2010_START = '2010-10-28';
 
+// This got delayed!
+export const NEW_YEARS_2010_UPDATE = '2010-01-02';
+
+export const PUFFLE_PARTY_10_CONST_START = '2010-02-11';
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = '2008-07-##';

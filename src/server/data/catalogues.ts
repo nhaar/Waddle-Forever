@@ -1,3 +1,5 @@
+import { NEW_YEARS_2010_UPDATE } from "./updates";
+
 export const PRE_CPIP_CATALOGS = [
   '2005-08-22',
   '2005-09-21',
@@ -12,7 +14,7 @@ export const PRE_CPIP_CATALOGS = [
 
 // map date -> fileId
 export const CPIP_CATALOGS: Record<string, number> = {
-  '2010-01-01': 2267,
+  [NEW_YEARS_2010_UPDATE]: 2267,
   '2010-02-05': 2268,
   '2010-04-01': 2269,
   '2010-05-07': 2270,

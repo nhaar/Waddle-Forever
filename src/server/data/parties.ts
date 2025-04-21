@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, STADIUM_GAMES_END, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -22,6 +22,11 @@ export type Party = PartyChanges & {
   name: string;
   startDate: string;
   endDate: string;
+
+  // Overriding the default placeholder message for a party start
+  // with a custom one
+  startComment?: string;
+  endComment?: string;
 
   music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
@@ -149,7 +154,9 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'New Year\'s Day 2010',
-    startDate: '2010-01-01',
+    startComment: 'New Year\'s Fireworks appear on the island',
+    endComment: 'The New Year\'s celebration ends',
+    startDate: NEW_YEARS_2010_UPDATE,
     endDate: '2010-01-04',
     roomChanges: {
       mtn: 2295,
@@ -160,6 +167,7 @@ export const PARTIES: Party[] = [
     name: 'Cave Expedition',
     startDate: '2010-01-22',
     endDate: CAVE_EXPEDITION_END,
+    endComment: 'The Cave Expedition ends and the cave mine is temporarily closed',
     roomChanges: {
       'mine': 2297,
       'party1': 2298,
@@ -234,7 +242,7 @@ export const PARTIES: Party[] = [
       'party2': 261
     },
     construction: {
-      date: '2010-02-11',
+      date: PUFFLE_PARTY_10_CONST_START,
       changes: {
         'beacon': 2327,
         'berg': 2328,

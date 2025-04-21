@@ -84,8 +84,9 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   },
   {
     // placeholder CPIP room
+    // post island adventure update
     room: 'boxdimension',
-    fileId: 244,
+    fileId: 3757,
     date: CPIP_UPDATE
   },
   {
@@ -282,6 +283,12 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'mine',
     fileId: 2665,
     date: CAVE_EXPEDITION_END
+  },
+  {
+    room: 'boxdimension',
+    fileId: 244,
+    date: '2010-02-11',
+    comment: 'The plants disappear from the Box Dimension'
   },
   {
     room: 'mine',

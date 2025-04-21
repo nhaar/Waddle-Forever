@@ -3,11 +3,12 @@ import path from 'path'
 import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/data/parties';
 import { isEqual, isLower, Version } from '../server/routes/versions';
-import { FAN_ISSUE_DATE, PRE_BOILER_ROOM_PAPERS } from '../server/data/newspapers';
+import { FAN_ISSUE_DATE, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from '../server/data/newspapers';
 import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
-import { ROOM_TIMELINE } from '../server/game/rooms';
+import { ROOM_UPDATES } from '../server/data/room-updates';
+import { PINS } from '../server/data/pins';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -43,19 +44,19 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2010-01-08',
         events: {
-          other: 'A rockslide happened in the Mine'
+          other: 'A rockslide appears in the Mine'
         }
       },
       {
         date: '2010-01-15',
         events: {
-          other: 'The rockslide in the mine progressed'
+          other: 'The rockslide in the Mine progresses'
         }
       },
       {
         date: '2010-09-24',
         events: {
-          partyStart: 'Stadium Games'
+          partyStart: 'The Stadium Games event started'
         }
       },
       {
@@ -85,14 +86,14 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       }
     ]
     timeline = updateTimeline(timeline);
-    timelinePicker.webContents.send('get-timeline', timeline);
+    timelinePicker.webContents.send('get-timeline', getConsumedTimeline(timeline));
   });
 }
 
 /** All things that can happen in a single day */
 type Events = {
-  /** Name of a party that started this day */
-  partyStart?: string
+  /** Info is either the name of the party (placeholder message) or custom message with comment: true */
+  partyStart?: string;
   /** Name of a party that ended this day */
   partyEnd?: string
   /** Description of something that changed in a party today */
@@ -107,6 +108,7 @@ type Events = {
   roomUpdate?: string;
   /** Name of a minigame that released this day */
   minigameRelease?: string
+  pin?: string;
   /** If a clothing catalogue was released this day */
   newClothing?: boolean
   /** Name of stage play that is debuting today if any */
@@ -164,8 +166,14 @@ function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
 }
 
 function addStagePlays(map: DayMap): void {
+  const premieres = new Set<string>();
   STAGE_TIMELINE.forEach((update) => {
-    addEvents(map, update.date, { stagePlay: update.name });
+    // unused for now, later will be readded
+    const stagePlay = premieres.has(update.name)
+      ? `${update.name} returns to The Stage`
+      : `${update.name} premieres at the Stage`;
+    premieres.add(update.name);
+    addEvents(map, update.date, { stagePlay: `${update.name} returns to The Stage` });
   });
 }
 
@@ -173,8 +181,21 @@ function addStagePlays(map: DayMap): void {
 function addParties(map: DayMap): DayMap {
   for (let i = 0; i < PARTIES.length; i++) {
     const party = PARTIES[i];
-    addEvents(map, party.startDate, { partyStart: party.name });
-    addEvents(map, party.endDate, { partyEnd: party.name });
+    const partyStart = party.startComment === undefined
+      ? `The ${party.name} starts`
+      : party.startComment;
+    addEvents(map, party.startDate, { partyStart });
+
+    const partyEnd = party.endComment === undefined
+      ? `The ${party.name} ends`
+      : party.endComment;
+    addEvents(map, party.endDate, { partyEnd });
+
+    if (party.construction !== undefined) {
+        const partyStart = `Construction for the ${party.name} starts`;
+      
+        addEvents(map, party.construction.date, { partyStart });
+    }
 
     if (party.updates !== undefined) {
       for (const update of party.updates) {
@@ -195,6 +216,13 @@ function addNewspapers(map: DayMap): DayMap {
   PRE_BOILER_ROOM_PAPERS.forEach((date, index) => {
     const issue = index + 1;
     addEvents(map, date, { newIssue: issue });
+  });
+
+  const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
+
+  NEWSPAPERS.forEach((news, index) => {
+    const issue = preBoilerPapers + index + 1;
+    addEvents(map, news.date, { newIssue: issue });
   })
 
   return map;
@@ -220,14 +248,16 @@ function addIglooMusicLists(map: DayMap): void {
 }
 
 function addRoomUpdates(map: DayMap): void {
-  ROOM_TIMELINE.forEach((update) => {
-    if (update.type === 'update') {
-      // only adding the first one for now
-      addEvents(map, update.date, { roomUpdate: update.descriptions[0] });
-    } else {
-      const rooms = typeof update.rooms === 'string' ? [update.rooms] : update.rooms;
-      addEvents(map, update.date, { roomOpen: rooms });
+  ROOM_UPDATES.forEach((update) => {
+    if (update.comment !== undefined) {
+      addEvents(map, update.date, { roomUpdate: update.comment });
     }
+  })
+}
+
+function addPinUpdates(map: DayMap): void {
+  PINS.forEach((pin) => {
+    addEvents(map, pin.date, { pin: pin.name });
   })
 }
 
@@ -239,5 +269,61 @@ function updateTimeline(days: Day[]): Day[] {
   addIglooMusicLists(map);
   addRoomUpdates(map);
   addStagePlays(map);
+  addPinUpdates(map);
   return getDaysFromMap(map);
+}
+
+function getConsumedTimeline(days: Day[]): Array<{
+  date: Version;
+  events: string[]
+}> {
+  return days.map((day) => {
+    const events = [];
+
+    if (day.events.partyStart !== undefined) {
+      events.push(day.events.partyStart);
+    }
+    if (day.events.partyEnd !== undefined) {
+      events.push(day.events.partyEnd);
+    }
+    if (day.events.partyUpdate !== undefined) {
+      events.push(day.events.partyUpdate);
+    }
+    if (day.events.other !== undefined) {
+      events.push(day.events.other);
+    }
+    if (day.events.roomOpen !== undefined) {
+      if (day.events.roomOpen.length === 1) {
+        events.push(`Room "${day.events.roomOpen[0]}" opens`);
+      } else {
+        events.push(`Rooms "${day.events.roomOpen.join(', ')}" open`);
+      }
+    }
+    if (day.events.minigameRelease !== undefined) {
+      events.push(`New minigame: ${day.events.minigameRelease}`)
+    }
+    if (day.events.newClothing === true) {
+      events.push('A new edition of the Penguin Style is out');
+    }
+    if (day.events.newIssue !== undefined) {
+      events.push(`Issue #${day.events.newIssue} of the newspaper releases`)
+    }
+    if (day.events.roomUpdate !== undefined) {
+      events.push(day.events.roomUpdate);
+    }
+    if (day.events.stagePlay !== undefined) {
+      events.push(day.events.stagePlay);
+    }
+    if (day.events.musicList === true) {
+      events.push('New music is available for igloos');
+    }
+    if (day.events.newFurnitureCatalog === true) {
+      events.push('New furniture catalog available');
+    }
+
+    return {
+      date: day.date,
+      events
+    }
+  });
 }
