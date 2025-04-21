@@ -164,6 +164,188 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Easter Egg Hunt 2006',
+    startDate: EGG_HUNT_2006_START,
+    endDate: '2006-04-16',
+    roomChanges: {
+      'book': 3759,
+      'berg': 3760,
+      'dance': 3761,
+      'pet': 3762,
+      'mtn': 3763,
+      'lodge': 3764,
+      'village': 3765,
+      'forts': 3766
+    }
+  },
+  {
+    name: 'Underground Opening Party',
+    startDate: CAVE_OPENING_START,
+    endDate: CAVE_OPENING_END,
+    roomChanges: {
+      'mine': 3783
+    },
+    music: {
+      'boiler': 203,
+      'cave': 202,
+      'mine': 203,
+      'plaza': 203
+    }
+  },
+  {
+    name: 'Summer Party',
+    startDate: SUMMER_PARTY_START,
+    endDate: '2006-06-25',
+    roomChanges: {
+      'beach': 3796,
+      'boiler': 3797,
+      'dock': 3798,
+      'dojo': 3799,
+      'berg': 3800,
+      'shack': 3801,
+      'dance': 3802,
+      'plaza': 3803,
+      'mtn': 3804,
+      'village': 3805,
+      'forts': 3806,
+      'town': 3807
+    },
+    music: {
+      'beach': 204,
+      'boiler': 204,
+      'dock': 204,
+      'dojo': 204,
+      'berg': 204,
+      'shack': 204,
+      'dance': 204,
+      'plaza': 204,
+      'mtn': 204,
+      'village': 204,
+      'forts': 204,
+      'town': 204
+    },
+    updates: [
+      {
+        date: '2006-06-21',
+        comment: 'Two new items are available for the Summer Party',
+        roomChanges: {
+          'beach': 3831,
+          'plaza': 3832
+        }
+      }
+    ]
+  },
+  {
+    name: 'Western Party',
+    startDate: '2006-07-14',
+    endDate: '2006-07-17',
+    roomChanges: {
+      plaza: 3814,
+      forts: 3815,
+      dance: 3813,
+      town: 3816
+    },
+    roomFrames: {
+      plaza: 2,
+      forts: 2,
+      dance: 2,
+      town: 2
+    }
+  },
+  {
+    name: 'Sports Party',
+    startDate: '2006-08-11',
+    endDate: '2006-08-21',
+    roomChanges: {
+      'beach': 3818,
+      'cave': 3819,
+      'coffee': 3820,
+      'dock': 3821,
+      'rink': 3822,
+      'pizza': 3823,
+      'plaza': 3824,
+      'mtn': 3825,
+      'village': 3826,
+      'forts': 3827,
+      'town': 3828
+    },
+    music: {
+      // Just put the music everywhere, but the village
+      'beach': 213,
+      'cave': 213,
+      'coffee': 213,
+      'dock': 213,
+      'rink': 213,
+      'pizza': 213,
+      'plaza': 213,
+      'mtn': 213,
+      'forts': 213,
+      'town': 213
+    },
+    roomFrames: {
+      'beach': 2,
+      'cave': 2,
+      'coffee': 2,
+      'dock': 2,
+      'rink': 2,
+      'pizza': 2,
+      'plaza': 2,
+      'mtn': 2,
+      'village': 2,
+      'forts': 2,
+      'town': 2
+    },
+    updates: [
+      {
+        date: '2006-08-18',
+        comment: 'A new item is in the Snow Forts for the Sport Party',
+        roomChanges: {
+          forts: 3830
+        },
+        roomFrames: {
+          forts: 3
+        }
+      }
+    ]
+  },
+  {
+    name: 'Lighthouse Party',
+    startDate: LIGHTHOUSE_PARTY_START,
+    endDate: '2006-09-24',
+    roomChanges: {
+      'beacon': 3833,
+      'light': 3834
+    },
+    roomFrames: {
+      'light': 2,
+      'beacon': 2
+    }
+  },
+  {
+    name: 'Winter Fiesta',
+    startDate: '2007-01-19',
+    endDate: '2007-01-22',
+    roomChanges: {
+      'village': 3837
+    },
+    music: {
+      'village': 206
+    }
+  },
+  {
+    name: 'Pirate Party 2007',
+    startDate: '2007-04-27',
+    endDate: '2007-05-04',
+    roomChanges: {
+      'town': 3840,
+      'dock': 3839
+    },
+    music: {
+      'town': 212,
+      'dock': 212
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
@@ -343,175 +525,6 @@ export const PARTIES: Party[] = [
       'membership/oops_april_fools.swf': {
         'en': [2371, 'oops_party_room']
       }
-    }
-  },
-  {
-    name: 'Easter Egg Hunt 2006',
-    startDate: EGG_HUNT_2006_START,
-    endDate: '2006-04-16',
-    roomChanges: {
-      'book': 3759,
-      'berg': 3760,
-      'dance': 3761,
-      'pet': 3762,
-      'mtn': 3763,
-      'lodge': 3764,
-      'village': 3765,
-      'forts': 3766
-    }
-  },
-  {
-    name: 'Underground Opening Party',
-    startDate: CAVE_OPENING_START,
-    endDate: CAVE_OPENING_END,
-    roomChanges: {
-      'mine': 3783
-    },
-    music: {
-      'boiler': 203,
-      'cave': 202,
-      'mine': 203,
-      'plaza': 203
-    }
-  },
-  {
-    name: 'Summer Party',
-    startDate: SUMMER_PARTY_START,
-    endDate: '2006-06-25',
-    roomChanges: {
-      'beach': 3796,
-      'boiler': 3797,
-      'dock': 3798,
-      'dojo': 3799,
-      'berg': 3800,
-      'shack': 3801,
-      'dance': 3802,
-      'plaza': 3803,
-      'mtn': 3804,
-      'village': 3805,
-      'forts': 3806,
-      'town': 3807
-    },
-    music: {
-      'beach': 204,
-      'boiler': 204,
-      'dock': 204,
-      'dojo': 204,
-      'berg': 204,
-      'shack': 204,
-      'dance': 204,
-      'plaza': 204,
-      'mtn': 204,
-      'village': 204,
-      'forts': 204,
-      'town': 204
-    },
-    updates: [
-      {
-        date: '2006-06-21',
-        comment: 'Two new items are available for the Summer Party',
-        roomChanges: {
-          'beach': 3831,
-          'plaza': 3832
-        }
-      }
-    ]
-  },
-  {
-    name: 'Western Party',
-    startDate: '2006-07-14',
-    endDate: '2006-07-17',
-    roomChanges: {
-      plaza: 3814,
-      forts: 3815,
-      dance: 3813,
-      town: 3816
-    },
-    roomFrames: {
-      plaza: 2,
-      forts: 2,
-      dance: 2,
-      town: 2
-    }
-  },
-  {
-    name: 'Sports Party',
-    startDate: '2006-08-11',
-    endDate: '2006-08-21',
-    roomChanges: {
-      'beach': 3818,
-      'cave': 3819,
-      'coffee': 3820,
-      'dock': 3821,
-      'rink': 3822,
-      'pizza': 3823,
-      'plaza': 3824,
-      'mtn': 3825,
-      'village': 3826,
-      'forts': 3827,
-      'town': 3828
-    },
-    music: {
-      // Just put the music everywhere, but the village
-      'beach': 213,
-      'cave': 213,
-      'coffee': 213,
-      'dock': 213,
-      'rink': 213,
-      'pizza': 213,
-      'plaza': 213,
-      'mtn': 213,
-      'forts': 213,
-      'town': 213
-    },
-    roomFrames: {
-      'beach': 2,
-      'cave': 2,
-      'coffee': 2,
-      'dock': 2,
-      'rink': 2,
-      'pizza': 2,
-      'plaza': 2,
-      'mtn': 2,
-      'village': 2,
-      'forts': 2,
-      'town': 2
-    },
-    updates: [
-      {
-        date: '2006-08-18',
-        comment: 'A new item is in the Snow Forts for the Sport Party',
-        roomChanges: {
-          forts: 3830
-        },
-        roomFrames: {
-          forts: 3
-        }
-      }
-    ]
-  },
-  {
-    name: 'Lighthouse Party',
-    startDate: LIGHTHOUSE_PARTY_START,
-    endDate: '2006-09-24',
-    roomChanges: {
-      'beacon': 3833,
-      'light': 3834
-    },
-    roomFrames: {
-      'light': 2,
-      'beacon': 2
-    }
-  },
-  {
-    name: 'Winter Fiesta',
-    startDate: '2007-01-19',
-    endDate: '2007-01-22',
-    roomChanges: {
-      'village': 3837
-    },
-    music: {
-      'village': 206
     }
   },
   {

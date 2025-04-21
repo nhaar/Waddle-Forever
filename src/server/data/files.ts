@@ -3930,8 +3930,8 @@ export const FILES = new StaticDataTable<File, [
   [3836, 'ArtworkRoomsPlaza42.swf', 1, FileCategory.Archives, null, null],
   [3837, 'Village40.swf', 1, FileCategory.Archives, null, null],
   [3838, 'Music206.swf', 1, FileCategory.Archives, null, null],
-  [3839, '', 1, FileCategory.Archives, null, null],
-  [3840, '', 1, FileCategory.Archives, null, null],
-  [3841, '', 1, FileCategory.Archives, null, null],
+  [3839, 'RoomsDock-PirateParty2007.swf', 1, FileCategory.Archives, null, null],
+  [3840, 'RoomsTown-PirateParty2007.swf', 1, FileCategory.Archives, null, null],
+  [3841, 'Music212.swf', 1, FileCategory.Archives, null, null],
 
 ]);
