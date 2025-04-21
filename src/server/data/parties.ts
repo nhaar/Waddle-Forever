@@ -16,6 +16,8 @@ export type PartyChanges = {
   localChanges?: Record<string, Partial<Record<Language, number | CrumbIndicator>>>;
   // maps route inside play/v2/global to either file Id or tuple [global_path name, file Id]
   globalChanges?: Record<string, number | CrumbIndicator>
+
+  roomFrames?: Partial<Record<RoomName, number>>;
 }
 
 export type Party = PartyChanges & {
@@ -39,8 +41,6 @@ export type Party = PartyChanges & {
 
   // route -> fileId
   generalChanges?: Record<string, number>;
-
-  roomFrames?: Partial<Record<RoomName, number>>;
 
   activeMigrator?: true;
 };
@@ -412,6 +412,62 @@ export const PARTIES: Party[] = [
       dance: 2,
       town: 2
     }
+  },
+  {
+    name: 'Sports Party',
+    startDate: '2006-08-11',
+    endDate: '2006-08-21',
+    roomChanges: {
+      'beach': 3818,
+      'cave': 3819,
+      'coffee': 3820,
+      'dock': 3821,
+      'rink': 3822,
+      'pizza': 3823,
+      'plaza': 3824,
+      'mtn': 3825,
+      'village': 3826,
+      'forts': 3827,
+      'town': 3828
+    },
+    music: {
+      // Just put the music everywhere, but the village
+      'beach': 213,
+      'cave': 213,
+      'coffee': 213,
+      'dock': 213,
+      'rink': 213,
+      'pizza': 213,
+      'plaza': 213,
+      'mtn': 213,
+      'forts': 213,
+      'town': 213
+    },
+    roomFrames: {
+      'beach': 2,
+      'cave': 2,
+      'coffee': 2,
+      'dock': 2,
+      'rink': 2,
+      'pizza': 2,
+      'plaza': 2,
+      'mtn': 2,
+      'village': 2,
+      'forts': 2,
+      'town': 2
+    },
+    updates: [
+      {
+        date: '2006-08-18',
+        comment: 'A new item is in the Snow Forts for the Sport Party',
+        roomChanges: {
+          forts: 3830
+        },
+        roomFrames: {
+          forts: 3
+        }
+      }
+    ]
   },
   {
     name: 'Earth Day 2010',

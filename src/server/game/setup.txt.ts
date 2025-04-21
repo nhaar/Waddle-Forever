@@ -18,6 +18,12 @@ export function getSetupTxt(date: Version): string {
   if (currentParty !== null) {
     roomMusic = { ...roomMusic, ...currentParty.music };
     frames = { ...frames, ...currentParty.roomFrames };
+  
+    if (currentParty.updates !== null) {
+      currentParty.updates?.forEach((update) => {
+        frames = { ...frames, ...update.roomFrames };
+      })
+    }
   }
 
   const rooms = Object.entries(ROOMS).map((pair) => {
