@@ -397,6 +397,23 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Western Party',
+    startDate: '2006-07-14',
+    endDate: '2006-07-17',
+    roomChanges: {
+      plaza: 3814,
+      forts: 3815,
+      dance: 3813,
+      town: 3816
+    },
+    roomFrames: {
+      plaza: 2,
+      forts: 2,
+      dance: 2,
+      town: 2
+    }
+  },
+  {
     name: 'Earth Day 2010',
     startDate: EARTH_DAY_2010_START,
     endDate: EARTH_DAY_2010_END,

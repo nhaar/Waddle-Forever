@@ -10,17 +10,21 @@ export function getSetupTxt(date: Version): string {
     if (info.preCpipSong !== undefined) {
       roomMusic[room as RoomName] = info.preCpipSong;
     }
-   });
+  });
+
+  let frames: Partial<Record<RoomName, number>> = {};
   
   const currentParty = findCurrentParty(date);
   if (currentParty !== null) {
     roomMusic = { ...roomMusic, ...currentParty.music };
+    frames = { ...frames, ...currentParty.roomFrames };
   }
 
   const rooms = Object.entries(ROOMS).map((pair) => {
     const [room, info] = pair;
     const music = roomMusic[room as RoomName] ?? 0;
-    return `&r${info.id}=|1|${music}&`
+    const frame = frames[room as RoomName] ?? 1;
+    return `&r${info.id}=|${frame}|${music}&`
   }).join('\n');
 
   return `&v=1&
