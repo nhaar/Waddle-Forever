@@ -1,3 +1,7 @@
+:root {
+  --selected: #08549c
+}
+
 .version-description {
   margin-bottom: 20px;
 }
@@ -12,20 +16,21 @@
   grid-template-columns: 8em 10em 1fr;
   cursor: pointer;
   padding: 1em;
+  border-radius: 1em;
 }
 
 .selected-day {
-  background-color: black;
+  background-color: var(--selected);
   color: white;
 }
 
 .timeline-row:hover {
-  background-color: white;
+  background-color: #73c7f6;
   color: black;
 }
 
 .selected-day:hover  {
-  background-color: black;
+  background-color: var(--selected);
   color: white;
   cursor: default;
 }
