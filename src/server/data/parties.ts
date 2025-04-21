@@ -394,7 +394,17 @@ export const PARTIES: Party[] = [
       'village': 204,
       'forts': 204,
       'town': 204
-    }
+    },
+    updates: [
+      {
+        date: '2006-06-21',
+        comment: 'Two new items are available for the Summer Party',
+        roomChanges: {
+          'beach': 3831,
+          'plaza': 3832
+        }
+      }
+    ]
   },
   {
     name: 'Western Party',
