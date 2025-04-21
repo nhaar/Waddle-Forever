@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -332,6 +332,21 @@ export const PARTIES: Party[] = [
       'membership/oops_april_fools.swf': {
         'en': [2371, 'oops_party_room']
       }
+    }
+  },
+  {
+    name: 'Easter Egg Hunt 2006',
+    startDate: EGG_HUNT_2006_START,
+    endDate: '2006-04-16',
+    roomChanges: {
+      'book': 3759,
+      'berg': 3760,
+      'dance': 3761,
+      'pet': 3762,
+      'mtn': 3763,
+      'lodge': 3764,
+      'village': 3765,
+      'forts': 3766
     }
   },
   {

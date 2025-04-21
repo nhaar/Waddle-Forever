@@ -47,7 +47,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, number> = {
   'games/biscuit.swf': 21,
   'games/puffle.swf': 23,
   'load.swf': 1,
-  'version.txt': 2,
   'artwork/news/newfan.swf': 67,
   ...staticNewspaperFiles,
   'artwork/catalogue/clothing0509.swf': 68,
@@ -57,5 +56,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, number> = {
   'artwork/catalogue/clothing0601.swf': 72,
   'artwork/catalogue/clothing0602.swf': 73,
   'artwork/catalogue/clothing0603.swf': 74,
-  'artwork/catalogue/clothing0604.swf': 75
+  'artwork/catalogue/clothing0604.swf': 75,
+  'chat299.swf': 3758
 };

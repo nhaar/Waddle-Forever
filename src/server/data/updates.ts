@@ -59,5 +59,7 @@ export const NEW_YEARS_2010_UPDATE = '2010-01-02';
 
 export const PUFFLE_PARTY_10_CONST_START = '2010-02-11';
 
+export const EGG_HUNT_2006_START = '2006-04-14';
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = '2008-07-##';
