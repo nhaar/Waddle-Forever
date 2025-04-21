@@ -68,7 +68,9 @@ export const CAVE_OPENING_START = '2006-05-26';
 // currently a placeholder since I was not able to get
 // chat339.swf to work, which would've enabled to more 2006 versions
 // without using the 2007 client
-export const PRE_CPIP_REWRITE_DATE = CAVE_OPENING_START
+export const PRE_CPIP_REWRITE_DATE = CAVE_OPENING_START;
+
+export const SUMMER_PARTY_START = '2006-06-16';
 
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = '2008-07-##';
