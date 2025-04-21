@@ -1,5 +1,5 @@
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
-import { ANNIVERSARY_5_START, BETA_RELEASE, CAVE_EXPEDITION_END, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
+import { ANNIVERSARY_5_START, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
 
 type StandaloneChange = {
   route: string;
@@ -159,6 +159,14 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       endDate: HALLOWEEN_2010_START,
       fileId: 2634,
       comment: 'A storm is approaching and visible from the Cove'
+    }
+  ],
+  'media/artwork/rooms/plaza.swf': [
+    {
+      startDate: CHRISTMAS_2006_DECORATION,
+      endDate: '2006-12-21',
+      fileId: 3836,
+      comment: 'A tree is available to be decorated for Christmas'
     }
   ]
 }

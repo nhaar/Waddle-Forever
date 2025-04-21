@@ -9,6 +9,8 @@ import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
 import { ROOM_UPDATES } from '../server/data/room-updates';
 import { PINS } from '../server/data/pins';
+import { CHRISTMAS_2006_DECORATION } from '../server/data/updates';
+import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -261,6 +263,16 @@ function addPinUpdates(map: DayMap): void {
   })
 }
 
+function addStandalone(map: DayMap): void {
+  Object.values(STANDALONE_TEMPORARY_CHANGE).forEach((updates) => {
+    updates.forEach(update => {
+      if (update.comment !== undefined) {
+        addEvents(map, update.startDate, { other: update.comment });
+      }
+    })
+  })
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
@@ -270,6 +282,7 @@ function updateTimeline(days: Day[]): Day[] {
   addRoomUpdates(map);
   addStagePlays(map);
   addPinUpdates(map);
+  addStandalone(map);
   return getDaysFromMap(map);
 }
 

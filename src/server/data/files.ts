@@ -3927,7 +3927,7 @@ export const FILES = new StaticDataTable<File, [
   [3833, 'Beacon30.swf', 1, FileCategory.Archives, null, null],
   [3834, 'Lighthouse30.swf', 1, FileCategory.Archives, null, null],
   [3835, 'ArtworkRoomsBeach41.swf', 1, FileCategory.Archives, null, null],
-  [3836, '', 1, FileCategory.Archives, null, null],
+  [3836, 'ArtworkRoomsPlaza42.swf', 1, FileCategory.Archives, null, null],
   [3837, '', 1, FileCategory.Archives, null, null],
   [3838, '', 1, FileCategory.Archives, null, null],
   [3839, '', 1, FileCategory.Archives, null, null],
