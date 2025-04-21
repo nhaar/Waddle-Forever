@@ -74,9 +74,9 @@ function getDescription(version: Day): string {
   }
 
   return `
-  <div>
+  <div class="date-description">
     <div>
-    On this day:
+    On this day
     </div>
     <ul>
       ${unorderedListItems.map((item) => {
@@ -85,7 +85,7 @@ function getDescription(version: Day): string {
           ${item}
         </li>
         `
-      })}
+      }).join('')}
     </ul>
   </div>
   `;
@@ -116,7 +116,7 @@ const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
-function updateTimeline(days: Day[]) {
+function updateTimeline(days: Day[], scroll: boolean = true) {
   timelineElement.innerHTML = days.filter((day) => {
     const correctYear = day.date.slice(0, 4) === yearElement.value;
     const month = Number(day.date.slice(5, 7));
@@ -129,30 +129,45 @@ function updateTimeline(days: Day[]) {
 
     return `
       <div class="${selected ? 'selected-day' : 'unselected-day'} timeline-row" data-date="${day.date}">
-        <div>
+        <div class="center">
           ${selected ? (
             '[SELECTED]'
           ) : (
             '[Click to select]'
           )}
         </div>
-        <div>${getFullDate(day.date)}</div>
-        <div>${getDescription(day)}</div>
+        <div class="center">${getFullDate(day.date)}</div>
+        ${getDescription(day)}
       </div>
     `
   }).join('')
 
   const timelineRows = document.querySelectorAll('.unselected-day');
 
+  if (scroll) {
+    const selected = document.querySelectorAll('.selected-day')[0];
+  
+    // is undefined if picked a range where nothing is selected
+    if (selected === undefined) {
+      // reset to the top
+      window.scrollTo({ top: 0 });
+    } else if (selected !== undefined) {
+      // need to add some amount so that it doesn't get hidden at the top
+      const y = selected.getBoundingClientRect().top - 150 + window.scrollY;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }
+
+
   timelineRows.forEach((row) => {
-    row.addEventListener('click', (event) => {
+    row.addEventListener('click', () => {
       if (row instanceof HTMLDivElement) {
         const date = row.dataset.date;
         if (date !== undefined) {
           currentVersion = date;
           timelineApi.update();
           updateVersion(date);
-          updateTimeline(days);
+          updateTimeline(days, false);
         }
       }
     })

@@ -30,7 +30,15 @@
   cursor: default;
 }
 
-.timeline-row > * {
+.date-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+  padding-left: 5em;
+}
+
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
