@@ -11,8 +11,8 @@ import { ROOM_TIMELINE } from '../server/game/rooms';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
-    width: 500,
-    height: 500,
+    width: 900,
+    height: 600,
     title: "Timeline Picker",
     webPreferences: {
       preload: path.join(__dirname, 'preload/timeline-preload.js')

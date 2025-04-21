@@ -1,3 +1,54 @@
 .version-description {
   margin-bottom: 20px;
 }
+
+#timeline {
+  padding: 1em;
+  margin-top: 8em;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 8em 10em 1fr;
+  cursor: pointer;
+  padding: 1em;
+}
+
+.selected-day {
+  background-color: black;
+  color: white;
+}
+
+.timeline-row:hover {
+  background-color: white;
+  color: black;
+}
+
+.selected-day:hover  {
+  background-color: black;
+  color: white;
+  cursor: default;
+}
+
+.timeline-row > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.version-picker {
+  position: fixed;
+  background-color: var(--background);
+  left: 0;
+  right: 0;
+  padding: 2em 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}

@@ -23,45 +23,72 @@ const MONTHS = [
 ];
 
 function getFullDate(value: string) {
-  const year = Number(value.slice(0, 4))
   const month = Number(value.slice(5, 7))
   const day = Number(value.slice(8, 10))
 
-  return `${MONTHS[month - 1]} ${day}, ${year}`;
+  return `${MONTHS[month - 1]} ${day}`;
 }
 
 function getDescription(version: Day): string {
+  const unorderedListItems: string[] = [];
+
   if (version.events.partyStart !== undefined) {
-    return `Party "${version.events.partyStart}" starts`
-  } else if (version.events.partyEnd !== undefined) {
-    return `Party "${version.events.partyEnd}" ends`
-  } else if (version.events.partyUpdate !== undefined) {
-    return version.events.partyUpdate
-  } else if (version.events.other !== undefined) {
-    return version.events.other
-  } else if (version.events.roomOpen !== undefined) {
+    unorderedListItems.push(`${version.events.partyStart} launched`);
+  }
+  if (version.events.partyEnd !== undefined) {
+    unorderedListItems.push(`${version.events.partyEnd} ended`);
+  }
+  if (version.events.partyUpdate !== undefined) {
+    unorderedListItems.push(version.events.partyUpdate);
+  }
+  if (version.events.other !== undefined) {
+    unorderedListItems.push(version.events.other);
+  }
+  if (version.events.roomOpen !== undefined) {
     if (version.events.roomOpen.length === 1) {
-      return `Room "${version.events.roomOpen[0]}" opens`
+      unorderedListItems.push(`Room "${version.events.roomOpen[0]}" opens`);
     } else {
-      return `Rooms "${version.events.roomOpen.join(', ')}" open`
+      unorderedListItems.push(`Rooms "${version.events.roomOpen.join(', ')}" open`);
     }
-  } else if (version.events.minigameRelease !== undefined) {
-    return `New minigame: "${version.events.minigameRelease}"`
-  } else if (version.events.newClothing === true) {
-    return 'New Clothing Catalogue'
-  } else if (version.events.newIssue !== undefined) {
-    return `CPT Issue ${version.events.newIssue} released`
-  } else if (version.events.roomUpdate !== undefined) {
-    return version.events.roomUpdate;
-  } else if (version.events.stagePlay !== undefined) {
-    return `New stage play airing: ${version.events.stagePlay}`
-  } else if (version.events.musicList === true) {
-    return 'New music available for igloos';
-  } else if (version.events.newFurnitureCatalog === true) {
-    return 'New furniture catalog available';
+  }
+  if (version.events.minigameRelease !== undefined) {
+    unorderedListItems.push(`New minigame: ${version.events.minigameRelease}`)
+  }
+  if (version.events.newClothing === true) {
+    unorderedListItems.push('New Clothing Catalogue');
+  }
+  if (version.events.newIssue !== undefined) {
+    unorderedListItems.push(`CPT Issue ${version.events.newIssue} released`)
+  }
+  if (version.events.roomUpdate !== undefined) {
+    unorderedListItems.push(version.events.roomUpdate);
+  }
+  if (version.events.stagePlay !== undefined) {
+    unorderedListItems.push(`New stage play airing: ${version.events.stagePlay}`);
+  }
+  if (version.events.musicList === true) {
+    unorderedListItems.push('New music available for igloos');
+  }
+  if (version.events.newFurnitureCatalog === true) {
+    unorderedListItems.push('New furniture catalog available');
   }
 
-  return ''
+  return `
+  <div>
+    <div>
+    On this day:
+    </div>
+    <ul>
+      ${unorderedListItems.map((item) => {
+        return `
+        <li>
+          ${item}
+        </li>
+        `
+      })}
+    </ul>
+  </div>
+  `;
 }
 
 type Day = {
@@ -87,16 +114,49 @@ let currentVersion = '';
 
 const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
+const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
 function updateTimeline(days: Day[]) {
   timelineElement.innerHTML = days.filter((day) => {
-    return day.date.slice(0, 4) === yearElement.value;
+    const correctYear = day.date.slice(0, 4) === yearElement.value;
+    const month = Number(day.date.slice(5, 7));
+    const monthIndex = MONTHS.indexOf(monthElement.value);
+    const correctMonth = monthIndex === -1 || (monthIndex === (month - 1));
+    return correctYear && correctMonth;
   }).map((day) => {
+
+    const selected = day.date === currentVersion;
+
     return `
-        <input type="radio" id="${day.date}" name="version" value="${day.date}">
-        <label for="${day.date}">${getFullDate(day.date)} (${getDescription(day)})</label><br>
+      <div class="${selected ? 'selected-day' : 'unselected-day'} timeline-row" data-date="${day.date}">
+        <div>
+          ${selected ? (
+            '[SELECTED]'
+          ) : (
+            '[Click to select]'
+          )}
+        </div>
+        <div>${getFullDate(day.date)}</div>
+        <div>${getDescription(day)}</div>
+      </div>
     `
   }).join('')
+
+  const timelineRows = document.querySelectorAll('.unselected-day');
+
+  timelineRows.forEach((row) => {
+    row.addEventListener('click', (event) => {
+      if (row instanceof HTMLDivElement) {
+        const date = row.dataset.date;
+        if (date !== undefined) {
+          currentVersion = date;
+          timelineApi.update();
+          updateVersion(date);
+          updateTimeline(days);
+        }
+      }
+    })
+  });
 
   const radioButtons = document.querySelectorAll('input[name="version"]');
 
@@ -132,4 +192,5 @@ window.addEventListener('get-timeline', (e: any) => {
   })
   
   yearElement.addEventListener('change', () => updateTimeline(days));
+  monthElement.addEventListener('change', () => updateTimeline(days));
 });
