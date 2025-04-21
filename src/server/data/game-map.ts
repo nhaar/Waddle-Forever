@@ -26,3 +26,4 @@ export const MAP_UPDATES: MapUpdate[] = [
 ]
 
 export const PRECPIP_MAP_PATH = 'artwork/maps/island5.swf';
+export const MAP_PATH_07 = 'media/artwork/maps/16_forest.swf'

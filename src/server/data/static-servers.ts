@@ -13,6 +13,8 @@ export const STATIC_SERVERS = new StaticDataTable<StaticServer, ['id', 'name']>(
     // Solero has a media called "legacy-media" which is used to play with Houdini on the 2010 version
     [2, 'solero-legacy'],
     // likewise, the 2017 version is via the "vanilla-media"
-    [3, 'solero-vanilla']
+    [3, 'solero-vanilla'],
+    // Slippers (mammot's predecessor) had this 2007 media server alternative
+    [4, 'slippers-07']
   ]
 );

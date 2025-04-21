@@ -34,7 +34,7 @@ const newspaperFiles = [
 const staticNewspaperFiles: Record<string, number> = {};
 
 newspaperFiles.forEach((fileId, index) => {
-  const route = path.join('artwork/news', `new${index + 1}.swf`);
+  const route = path.join('artwork/news', `news${index + 1}.swf`);
   staticNewspaperFiles[route] = fileId;
 })
 
@@ -57,5 +57,12 @@ export const PRE_CPIP_STATIC_FILES: Record<string, number> = {
   'artwork/catalogue/clothing0602.swf': 73,
   'artwork/catalogue/clothing0603.swf': 74,
   'artwork/catalogue/clothing0604.swf': 75,
-  'chat299.swf': 3758
+  'chat299.swf': 3758,
+  'chat506.swf': 3788,
+  'media/crumbs21.swf': 3789,
+  'media/interface41.swf': 3790,
+  'media/paper86.swf': 3792,
+  'media/join/join13.swf': 3793,
+  'media/interface/errors4.swf': 3794,
+  'media/artwork/characters/16.swf': 3795
 };

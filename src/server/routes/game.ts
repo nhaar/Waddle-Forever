@@ -6,6 +6,8 @@ import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
 import { getDynamicMusicListData } from "../game/igloo-lists";
 import { getVersionTxt } from "./version.txt";
+import { getSetupTxt } from "../game/setup.txt";
+import { getNewsTxt } from "../game/news.txt";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -77,6 +79,14 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     }]
   );
 
+  // Pre CPIP server rewrite client uses these POST endpoints
+  server.router.post('/setup.txt', (_, req) => {
+    req.send(getSetupTxt(settingsManager.settings.version));
+  })
+  server.router.post('/news.txt', (_, req) => {
+    req.send(getNewsTxt(settingsManager.settings.version));
+  })
+
   // important redirects
   server.redirectDirs(
     ['play/v2/content/global/clothing', 'clothing'], // clothing is its own package due to its high size
@@ -106,13 +116,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   
   // FALL BACK AND STATIC SERVING
   server.dir('', (s) => {
-    if (isEngine1(s.settings.version)) {
-      return 'default/static/engine1'
-    } else if (isEngine3(s.settings.version)) {
-      return 'default/static/engine3';
-    } else {
-      return 'default/static/engine2'
-    }
+    return 'static'
   })
   // SECOND LAYER FALLBACK
   server.dir('', (s) => {

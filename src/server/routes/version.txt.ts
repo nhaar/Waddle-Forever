@@ -1,10 +1,11 @@
-import { BETA_RELEASE, EGG_HUNT_2006_START } from "../data/updates";
+import { BETA_RELEASE, CAVE_OPENING_START, EGG_HUNT_2006_START } from "../data/updates";
 import { findEarliestDateHitIndex } from "./client-files";
 
 /** Map date and the version number it started using */
 const VERSIONS: Record<string, number> = {
   [BETA_RELEASE]: 291,
-  [EGG_HUNT_2006_START]: 299
+  [EGG_HUNT_2006_START]: 299,
+  [CAVE_OPENING_START]: 506
 };
 
 /** Get the version.txt file used in preCPIP */

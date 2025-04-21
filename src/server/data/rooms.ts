@@ -91,8 +91,8 @@ export const ROOMS: Record<RoomName, Room> = {
   'cave': {
     id: 806,
     name: 'Cave',
-    preCpipFileNumber: null,
-    preCpipName: null
+    preCpipFileNumber: 13,
+    preCpipName: 'Cave'
   },
   'cavemine': {
     id: 813,
@@ -123,8 +123,8 @@ export const ROOMS: Record<RoomName, Room> = {
   'boiler': {
     id: 804,
     name: 'Boiler Room',
-    preCpipFileNumber: null,
-    preCpipName: null
+    preCpipFileNumber: 11,
+    preCpipName: 'Boiler'
   },
   'light': {
     id: 410,
@@ -262,8 +262,8 @@ export const ROOMS: Record<RoomName, Room> = {
   'mine': {
     id: 808,
     name: 'Mine',
-    preCpipFileNumber: null,
-    preCpipName: null
+    preCpipFileNumber: 13,
+    preCpipName: 'Mine'
   },
   'shack': {
     id: 807,

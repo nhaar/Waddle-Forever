@@ -9,7 +9,7 @@ import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
-import { MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
+import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
 import { CrumbIndicator, PARTIES, Party, PartyChanges, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
@@ -19,8 +19,9 @@ import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
-import { NEWSPAPERS } from "../data/newspapers";
+import { NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
+import { getNewspaperName } from "../game/news.txt";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -98,14 +99,23 @@ function addMusicFiles(map: TimelineMap): void {
     const [musicId, fileId] = pair;
     const route = path.join(PRE_CPIP_MUSIC_PATH, String(musicId) + '.swf')
     map.addPerm(route, BETA_RELEASE, fileId);
+    map.addPerm(path.join('media', route), BETA_RELEASE, fileId);
   })
 }
 
 function addNewspapers(map: RouteMap): void {
-  NEWSPAPERS.forEach((news) => {
+  const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
+  NEWSPAPERS.forEach((news, index) => {
     if (news.fileId !== undefined) {
-      const date = news.date.replaceAll('-', '');
-      addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, getMediaFilePath(news.fileId));
+      if (isLower(news.date, CPIP_UPDATE)) {
+        const filePath = getMediaFilePath(news.fileId);
+        addToRouteMap(map, `artwork/news/news${index + preBoilerPapers + 1}.swf`, filePath);
+        const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
+        addToRouteMap(map, path.join('media/artwork/news', route2007), filePath);
+      } else {
+        const date = news.date.replaceAll('-', '');
+        addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, getMediaFilePath(news.fileId));
+      }
     }
   })
 }
@@ -208,27 +218,38 @@ function getPreCpipRoomRoute(room: RoomName): string {
   return path.join('artwork/rooms', `${room}${roomInfo.preCpipFileNumber}.swf`);
 }
 
-function getCpipRoomRoute(room: RoomName): string {
-  const roomInfo = ROOMS[room];
-  return path.join('play/v2/content/global/rooms', `${room}.swf`);
+function addRoomRoute(map: TimelineMap, date: string, room: RoomName, file: number) {
+  if (isLower(date, CPIP_UPDATE)) {
+    const roomInfo = ROOMS[room];
+    const fileName = `${room}${roomInfo.preCpipFileNumber}.swf`
+    map.addPerm(path.join('media/artwork/rooms', `${room}.swf`), date, file);
+    map.addPerm(path.join('artwork/rooms', fileName), date, file);
+  } else {
+    map.addPerm(path.join('play/v2/content/global/rooms', `${room}.swf`), date, file);
+  }
 }
 
-function getRoomRoute(date: string, room: RoomName): string {
-  return isLower(date, CPIP_UPDATE) ? getPreCpipRoomRoute(room) : getCpipRoomRoute(room);
+function addTempRoomRoute(map: TimelineMap, start: string, end: string, room: RoomName, file: number) {
+  if (isLower(start, CPIP_UPDATE)) {
+    const roomInfo = ROOMS[room];
+    const fileName = `${room}${roomInfo.preCpipFileNumber}.swf`
+    map.addTemp(path.join('media/artwork/rooms', `${room}.swf`), start, end, file);
+    map.addTemp(path.join('artwork/rooms', fileName), start, end, file);
+  } else {
+    map.addTemp(path.join('play/v2/content/global/rooms', `${room}.swf`), start, end, file);
+  }
 }
 
 function addRoomInfo(map: TimelineMap): void {
   for (const roomName in ROOMS) {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
-      // adding rooms that were there from the start
-      map.addPerm(getPreCpipRoomRoute(roomName as RoomName), BETA_RELEASE, originalRoomFile);
+      addRoomRoute(map, BETA_RELEASE, roomName as RoomName, originalRoomFile);
     }
   }
 
   const addRoomChange = (room: RoomName, date: string, fileId: number) => {
-    const route = getRoomRoute(date, room);
-    map.addPerm(route, date, fileId);
+    addRoomRoute(map, date, room, fileId);
   }
 
   ROOM_OPENINGS.forEach((opening) => {
@@ -244,8 +265,7 @@ function addParties(map: TimelineMap): void {
   const addRoomChanges = (roomChanges: RoomChanges, start: Version, end: Version) => {
     for (const room in roomChanges) {
       const fileId = roomChanges[room as RoomName]!;
-      const roomRoute = getRoomRoute(start, room as RoomName);
-      map.addTemp(roomRoute, start, end, fileId);
+      addTempRoomRoute(map, start, end, room as RoomName, fileId);
     }
   }
 
@@ -759,6 +779,8 @@ function addStandaloneChanges(map: TimelineMap): void {
 function addMapUpdates(map: TimelineMap): void {
   MAP_UPDATES.forEach((update) => {
     map.addPerm(PRECPIP_MAP_PATH, update.date, update.fileId);
+    // TODO would be best to only include the maps that end up factually being used
+    map.addPerm(MAP_PATH_07, update.date, update.fileId);
   })
 }
 

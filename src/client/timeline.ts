@@ -320,6 +320,9 @@ function getConsumedTimeline(days: Day[]): Array<{
     if (day.events.newFurnitureCatalog === true) {
       events.push('New furniture catalog available');
     }
+    if (day.events.pin !== undefined) {
+      events.push(`The ${day.events.pin} is now hidden in the island`);
+    }
 
     return {
       date: day.date,

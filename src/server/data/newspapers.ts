@@ -1,4 +1,5 @@
 import { Version } from "../routes/versions";
+import { FIRST_BOILER_ROOM_PAPER } from "./updates";
 
 export const FAN_ISSUE_DATE = '2005-10-28'
 
@@ -39,52 +40,63 @@ export type Newspaper = {
 
 export const NEWSPAPERS: Newspaper[] = [
   {
-    date: '2006-04-13',
+    date: FIRST_BOILER_ROOM_PAPER,
     headline: 'EASTER EGG HUNT!!'
   },
   {
     date: '2006-04-20',
-    headline: 'GO GREEN FOR THE SPRING!'
+    headline: 'GO GREEN FOR THE SPRING!',
+    fileId: 3767
   },
   {
     date: '2006-04-27',
-    headline: 'UNDERGROUND CAVES FOUND!!'
+    headline: 'UNDERGROUND CAVES FOUND!!',
+    fileId: 3768
   },
   {
     date: '2006-05-04',
-    headline: 'CAVE CONSTRUCTION!!'
+    headline: 'CAVE CONSTRUCTION!!',
+    fileId: 3769
   },
   {
     date: '2006-05-11',
-    headline: 'CAVE EXCLUSIVE'
+    headline: 'CAVE EXCLUSIVE',
+    fileId: 3770
   },
   {
     date: '2006-05-18',
-    headline: 'IGLOO DECORATING SPECIAL'
+    headline: 'IGLOO DECORATING SPECIAL',
+    fileId: 3771
   },
   {
     date: '2006-05-25',
-    headline: 'MINE SHAFTS'
+    headline: 'MINE SHAFTS',
+    fileId: 3772
   },
   {
     date: '2006-06-01',
-    headline: 'UNDERGROUND OPENING'
+    headline: 'UNDERGROUND OPENING',
+    fileId: 3773
   },
   {
     date: '2006-06-08',
-    headline: 'SUMMER PARTY!!'
+    headline: 'SUMMER PARTY!!',
+    fileId: 3774
   },
   {
     date: '2006-06-15',
-    headline: 'SUMMER PARTY!!'
+    headline: 'SUMMER PARTY!!',
+    fileId: 3775
   },
   {
     date: '2006-06-22',
-    headline: 'SUMMER PARTY CONTINUES!!'
+    headline: 'SUMMER PARTY CONTINUES!!',
+    fileId: 3776
   },
   {
     date: '2006-06-29',
-    headline: 'WESTERN THEME'
+    headline: 'WESTERN THEME',
+    fileId: 3777
   },
   {
     date: '2006-07-06',

@@ -61,5 +61,14 @@ export const PUFFLE_PARTY_10_CONST_START = '2010-02-11';
 
 export const EGG_HUNT_2006_START = '2006-04-14';
 
+export const FIRST_BOILER_ROOM_PAPER = '2006-04-13';
+
+export const CAVE_OPENING_START = '2006-05-26';
+
+// currently a placeholder since I was not able to get
+// chat339.swf to work, which would've enabled to more 2006 versions
+// without using the 2007 client
+export const PRE_CPIP_REWRITE_DATE = CAVE_OPENING_START
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = '2008-07-##';

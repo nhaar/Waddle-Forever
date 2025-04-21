@@ -1,9 +1,10 @@
 import { findIndexLeftOf } from "../../common/utils";
 import { PRE_CPIP_CATALOGS } from "../data/catalogues";
-import { FAN_ISSUE_DATE, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
+import { FAN_ISSUE_DATE, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { RoomName, ROOMS } from "../data/rooms";
+import { FIRST_BOILER_ROOM_PAPER } from "../data/updates";
 import { findCurrentParty, findEarliestDateHitIndex } from "./client-files";
-import { processVersion, isGreaterOrEqual, Version } from "./versions";
+import { processVersion, isGreaterOrEqual, Version, isLower } from "./versions";
 
 type OldRoom = {
   roomName: RoomName
@@ -46,8 +47,13 @@ export function getSetupXml(version: Version) {
   if (version === FAN_ISSUE_DATE) {
     news = 'fan';
   } else {
-    const index = findIndexLeftOf(version, PRE_BOILER_ROOM_PAPERS, (version, newspapers, index) => isGreaterOrEqual(version, newspapers[index]));
-    news = index + 1;
+    if (isLower(version, FIRST_BOILER_ROOM_PAPER)) {
+      const index = findIndexLeftOf(version, PRE_BOILER_ROOM_PAPERS, (version, newspapers, index) => isGreaterOrEqual(version, newspapers[index]));
+      news = index + 1;
+    } else {
+      const findIndex = findEarliestDateHitIndex(version, NEWSPAPERS);
+      news = findIndex + 1 + PRE_BOILER_ROOM_PAPERS.length;
+    }
   }
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {

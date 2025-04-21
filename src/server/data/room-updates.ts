@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { CAVE_EXPEDITION_END, CAVE_OPENING_START, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -382,6 +382,16 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'town',
     fileId: 2675,
     date: MODERN_AS3
+  },
+  {
+    room: 'dance',
+    fileId: 3779,
+    date: CAVE_OPENING_START
+  },
+  {
+    room: 'plaza',
+    fileId: 3780,
+    date: CAVE_OPENING_START
   }
 ];
 
@@ -425,5 +435,22 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     room: 'berg',
     fileId: 6,
     date: ICEBERG_RELEASE
+  },
+  {
+    room: 'boiler',
+    fileId: 3778,
+    // the specific boiler being used is from 2007, since the Mid 2006 client
+    // hasn't been made to work and the original boiler room is not even archived (from cave opening)
+    date: PRE_CPIP_REWRITE_DATE
+  },
+  {
+    room: 'cave',
+    fileId: 3781,
+    date: CAVE_OPENING_START
+  },
+  {
+    room: 'mine',
+    fileId: 3782,
+    date: CAVE_OPENING_START
   }
 ];
