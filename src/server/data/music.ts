@@ -29,6 +29,7 @@ export const MUSIC_IDS: Record<number, number> = {
   23: 225,
   24: 226,
   204: 3809,
+  206: 3838,
   213: 3829,
   264: 227,
   38: 228,

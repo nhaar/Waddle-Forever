@@ -493,6 +493,17 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Winter Fiesta',
+    startDate: '2007-01-19',
+    endDate: '2007-01-22',
+    roomChanges: {
+      'village': 3837
+    },
+    music: {
+      'village': 206
+    }
+  },
+  {
     name: 'Earth Day 2010',
     startDate: EARTH_DAY_2010_START,
     endDate: EARTH_DAY_2010_END,
