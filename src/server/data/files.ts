@@ -3901,9 +3901,9 @@ export const FILES = new StaticDataTable<File, [
   // as the alternative would be modifying the client itself
   [3808, 'ArtworkMapsIsland10.swf', 1, FileCategory.Fix, null, null],
   [3809, 'Music204.swf', 1, FileCategory.Archives, null, null],
-  [3810, '', 1, FileCategory.Archives, null, null],
-  [3811, '', 1, FileCategory.Archives, null, null],
-  [3812, '', 1, FileCategory.Archives, null, null],
+  [3810, 'ArtworkRoomsPizza12.swf', 1, FileCategory.Archives, null, null],
+  [3811, 'ArtworkRoomsBeach12.swf', 1, FileCategory.Archives, null, null],
+  [3812, 'ArtworkRoomsShack10.swf', 1, FileCategory.Archives, null, null],
   [3813, '', 1, FileCategory.Archives, null, null],
   [3814, '', 1, FileCategory.Archives, null, null],
   [3815, '', 1, FileCategory.Archives, null, null],
