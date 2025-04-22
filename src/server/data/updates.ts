@@ -78,5 +78,7 @@ export const LIGHTHOUSE_PARTY_START = '2006-09-21';
 
 export const CHRISTMAS_2006_DECORATION = '2006-12-15';
 
+export const COVE_OPENING_START = '2007-05-25';
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = '2008-07-##';

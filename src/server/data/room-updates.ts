@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_CELEBRATION_END } from "./updates";
+import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -400,6 +400,18 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'plaza',
     fileId: 3780,
     date: CAVE_OPENING_START
+  },
+  {
+    room: 'forest',
+    fileId: 3843,
+    date: '2007-05-29',
+    comment: 'As the Cove Opening party ends, the whistles remain in the Forest'
+  },
+  {
+    room: 'forest',
+    fileId: 3845,
+    date: '2007-06-01',
+    comment: 'The whistles are removed from the Forest'
   }
 ];
 
@@ -470,5 +482,19 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     room: 'beach',
     fileId: 3811,
     date: SUMMER_PARTY_START
+  },
+  {
+    room: 'forest',
+    fileId: 3842,
+    // this is the construction, it is technically from May 15 but we dont have
+    // the map hunt that allows you to get to the forest otherwise
+    date: COVE_OPENING_START
+  },
+  {
+    // from april fools 08, unfortunately it is the only
+    // pre cpip cove SWF that we have
+    room: 'cove',
+    fileId: 3846,
+    date: COVE_OPENING_START
   }
 ];

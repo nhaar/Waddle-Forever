@@ -3933,5 +3933,9 @@ export const FILES = new StaticDataTable<File, [
   [3839, 'RoomsDock-PirateParty2007.swf', 1, FileCategory.Archives, null, null],
   [3840, 'RoomsTown-PirateParty2007.swf', 1, FileCategory.Archives, null, null],
   [3841, 'Music212.swf', 1, FileCategory.Archives, null, null],
-
+  [3842, 'RoomsForest-CoveOpeningPartyPre_1.swf', 1, FileCategory.Archives, null, null],
+  [3843, 'RoomsForest-CoveOpeningPartyPre_2.swf', 1, FileCategory.Archives, null, null],
+  [3844, 'ArtworkMaps15.swf', 1, FileCategory.Archives, null, null],
+  [3845, 'media/artwork/rooms/forest.swf', 1, FileCategory.StaticServer, 4, null],
+  [3846, 'ArtworkRooms0328Cove43.swf', 1, FileCategory.Archives, null, null]
 ]);
