@@ -367,6 +367,49 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Fall Fair',
+    startDate: '2007-09-21',
+    endDate: '2007-10-01',
+    roomChanges: {
+      'beach': 3850,
+      'beacon': 3851,
+      'cove': 3852,
+      'lounge': 3853,
+      'dock': 3854,
+      'forest': 3855,
+      'rink': 3856,
+      'light': 3857,
+      'mine': 3858,
+      'dance': 3859,
+      'pizza': 3860,
+      'plaza': 3861,
+      'mtn': 3862,
+      'village': 3863,
+      'forts': 3864,
+      'town': 3865
+    },
+    music: {
+      // music wiki backed
+      'town': 221,
+      'dance': 221,
+      'lounge': 221,
+      'forts': 221,
+      'plaza': 221,
+      'pizza': 221,
+      'forest': 221,
+      'cove': 221,
+      'dock': 221,
+      'beach': 221,
+      'light': 221,
+      'beacon': 221,
+      'village': 221,
+      'mtn': 221
+    },
+    generalChanges: {
+      'media/artwork/rooms/0926/PrizeBooth2.swf': 3867
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
