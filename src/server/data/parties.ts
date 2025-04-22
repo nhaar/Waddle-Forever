@@ -671,7 +671,8 @@ export const PARTIES: Party[] = [
       lodge: 3991,
       village: 3992,
       forts: 3993,
-      town: 3994
+      town: 3994,
+      cove: 2669
     },
     music: {
       pet: 201,
