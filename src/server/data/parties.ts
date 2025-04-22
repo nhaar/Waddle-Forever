@@ -733,6 +733,67 @@ export const PARTIES: Party[] = [
     activeMigrator: true
   },
   {
+    name: 'Medieval Party',
+    startDate: '2008-05-16',
+    endDate: '2008-05-25',
+    roomChanges: {
+      beach: 4010,
+      beacon: 4011,
+      boiler: 4012,
+      cave: 4013,
+      coffee: 4014,
+      cove: 4015,
+      lounge: 4016,
+      dock: 4017,
+      forest: 4018,
+      light: 4019,
+      attic: 4020,
+      mine: 4021,
+      shack: 4022,
+      dance: 4023,
+      pet: 4024,
+      pizza: 4025,
+      plaza: 4026,
+      rink: 4027,
+      mtn: 4028,
+      lodge: 4029,
+      village: 4030,
+      forts: 4031,
+      town: 4032,
+
+      // this is technically room "party"
+      // but we have an issue with the id of that room
+      // changing... (if want to preserve the internal URLs will need refactoring, so not doing it rn)
+      party99: 4033
+    },
+    music: {
+      beach: 235,
+      beacon: 235,
+      boiler: 236,
+      cave: 236,
+      coffee: 234,
+      cove: 235,
+      lounge: 234,
+      dock: 233,
+      forest: 235,
+      light: 235,
+      attic: 234,
+      mine: 236,
+      shack: 233,
+      dance: 234,
+      pet: 234,
+      pizza: 234,
+      plaza: 233,
+      rink: 233,
+      mtn: 234,
+      lodge: 234,
+      village: 233,
+      forts: 233,
+      town: 233,
+      party99: 235
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
