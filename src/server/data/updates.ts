@@ -82,5 +82,7 @@ export const COVE_OPENING_START = '2007-05-25';
 
 export const CHRISTMAS_2007_START = '2007-12-21';
 
+export const WINTER_FIESTA_08_START = '2008-01-18';
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = '2008-07-##';

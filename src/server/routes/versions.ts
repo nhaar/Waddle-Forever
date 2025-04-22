@@ -95,7 +95,7 @@ export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
 }
 
-const ENGINE1_CUTOFF = '2008-##-##';
+const ENGINE1_CUTOFF = '2008-07-##';
 const ENGINE3_CUTOFF = '2012-##-##';
 
 export function isEngine1(version: Version): boolean {

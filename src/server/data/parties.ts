@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2007_START, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2007_START, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -531,6 +531,37 @@ export const PARTIES: Party[] = [
       'village': 228,
       'forts': 227,
       'town': 227
+    }
+  },
+  {
+    name: 'Winter Fiesta',
+    startDate: WINTER_FIESTA_08_START,
+    endDate: '2008-01-21',
+    roomChanges: {
+      'beach': 3925,
+      'coffee': 3926,
+      'cove': 3927,
+      'dock': 3928,
+      'forest': 3929,
+      'dance': 3930,
+      'pizza': 3931,
+      'plaza': 3932,
+      'village': 3933,
+      'forts': 3934,
+      'town': 3935
+    },
+    music: {
+      'beach': 229,
+      'coffee': 229,
+      'cove': 229,
+      'dock': 229,
+      'forest': 229,
+      'dance': 229,
+      'pizza': 229,
+      'plaza': 229,
+      'village': 229,
+      'forts': 229,
+      'town': 229
     }
   },
   {
