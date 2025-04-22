@@ -422,6 +422,55 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Halloween Party',
+    startDate: '2007-10-26',
+    endDate: '2007-11-01',
+    roomChanges: {
+      'beach': 3873,
+      'beacon': 3874,
+      'cave': 3875,
+      'coffee': 3876,
+      'cove': 3877,
+      'dock': 3878,
+      'forest': 3879,
+      'berg': 3880,
+      'light': 3881,
+      'attic': 3882,
+      'shack': 3883,
+      'dance': 3884,
+      'pizza': 3885,
+      'plaza': 3886,
+      'forts': 3887,
+      'rink': 3888,
+      'mtn': 3889,
+      'lodge': 3890,
+      'village': 3891,
+      'town': 3892
+    },
+    music: {
+      // mix of archives + music wiki
+      'beach': 223,
+      'coffee': 205,
+      'cove': 223,
+      'dock': 223,
+      'forest': 223,
+      'berg': 223,
+      'light': 205,
+      'shack': 223,
+      'dance': 224,
+      'pizza': 205,
+      'forts': 223,
+      'mtn': 223,
+      'lodge': 205,
+      'village': 223,
+      'town': 223,
+      'plaza': 223
+    },
+    generalChanges: {
+      'media/artwork/tools/binoculars1.swf': 2563
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
