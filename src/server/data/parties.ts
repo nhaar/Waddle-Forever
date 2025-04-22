@@ -471,6 +471,30 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Surprise Party',
+    startDate: '2007-11-23',
+    endDate: '2007-11-26',
+    roomChanges: {
+      'cove': 3897,
+      'dock': 3898,
+      'forest': 3899,
+      'dance': 3900,
+      'plaza': 3901,
+      'forts': 3902,
+      'town': 3903
+    },
+    music: {
+      // just put music in every room
+      'cove': 55555,
+      'dock': 55555,
+      'forest': 55555,
+      'dance': 55555,
+      'plaza': 55555,
+      'forts': 55555,
+      'town': 55555
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',

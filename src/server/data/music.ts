@@ -46,4 +46,6 @@ export const MUSIC_IDS: Record<number, number> = {
   532: 232,
   6: 233,
   666: 234,
+  // placeholder ID, we have no idea how these played exactly
+  55555: 3904
 };
