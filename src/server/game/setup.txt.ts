@@ -26,6 +26,11 @@ export function getSetupTxt(date: Version): string {
     }
   }
 
+  let activeMigrator = false;
+  if (currentParty?.activeMigrator) {
+    activeMigrator = true;
+  }
+
   const rooms = Object.entries(ROOMS).map((pair) => {
     const [room, info] = pair;
     const music = roomMusic[room as RoomName] ?? 0;
@@ -70,7 +75,7 @@ export function getSetupTxt(date: Version): string {
 &pirate=0&
 &costume=0712&
 
-&ship=0&
+&ship=${Number(activeMigrator)}&
 &eggs=0&
 &maxcards=50&
 

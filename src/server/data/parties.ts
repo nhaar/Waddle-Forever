@@ -704,6 +704,34 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Rockhopper & Yarr\'s Arr-ival Parr-ty',
+    startDate: '2008-04-25',
+    endDate: '2008-04-28',
+    roomChanges: {
+      beach: 4000,
+      dock: 4002,
+      coffee: 4001,
+      dance: 4003,
+      plaza: 4004,
+      ship: 4005,
+      shiphold: 4006,
+      village: 4007,
+      forts: 4008,
+      town: 4009
+    },
+    music: {
+      town: 212,
+      forts: 212,
+      plaza: 212,
+      village: 212,
+      beach: 212,
+      dock: 212,
+      coffee: 212,
+      dance: 212
+    },
+    activeMigrator: true
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
