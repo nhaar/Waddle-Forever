@@ -945,6 +945,57 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Fall Fair',
+    startDate: '2008-09-26',
+    endDate: '2008-10-06',
+    roomChanges: {
+      beach: 4119,
+      beacon: 4120,
+      cave: 4121,
+      coffee: 4122,
+      cove: 4123,
+      dance: 4124,
+      lounge: 4125,
+      dock: 4126,
+      forest: 4127,
+      berg: 4128,
+      mine: 4129,
+      party: 4130,
+      pizza: 4131,
+      mtn: 4132,
+      village: 4133,
+      forts: 4134,
+      town: 4135
+    },
+    music: {
+      beach: 221,
+      beacon: 221,
+      cave: 221,
+      coffee: 221,
+      cove: 221,
+      dance: 221,
+      lounge: 221,
+      dock: 221,
+      forest: 221,
+      berg: 221,
+      mine: 221,
+      party: 221,
+      pizza: 221,
+      mtn: 221,
+      village: 221,
+      forts: 221,
+      town: 221
+    },
+    globalChanges: {
+      'tickets.swf': [2506, 'tickets'],
+      'ticket_icon.swf': [2507, 'ticket_icon']
+    },
+    generalChanges: {
+      'play/v2/client/fair.swf': 2513,
+      'play/v2/client/dependencies.json': 2514
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
