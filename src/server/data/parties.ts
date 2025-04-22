@@ -621,6 +621,31 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'St. Patrick\'s Day Party',
+    startDate: '2008-03-14',
+    endDate: '2008-03-18',
+    roomChanges: {
+      coffee: 3964,
+      dock: 3965,
+      forest: 3966,
+      dance: 3967,
+      plaza: 3968,
+      village: 3969,
+      forts: 3970,
+      town: 3971
+    },
+    music: {
+      coffee: 208,
+      dock: 208,
+      forest: 208,
+      dance: 208,
+      plaza: 208,
+      village: 208,
+      forts: 208,
+      town: 208
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
