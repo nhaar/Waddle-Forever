@@ -580,6 +580,47 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Sub-Marine Party',
+    startDate: '2008-02-15',
+    endDate: '2008-02-22',
+    roomChanges: {
+      'beach': 3947,
+      'beacon': 3948,
+      'book': 3949,
+      'coffee': 3950,
+      'cove': 3951,
+      'lounge': 3952,
+      'dock': 3953,
+      forest: 3954,
+      berg: 3955,
+      dance: 3956,
+      pizza: 3957,
+      plaza: 3958,
+      village: 3959,
+      forts: 3960,
+      town: 3961
+    },
+    music : {
+      town: 230,
+      plaza: 230,
+      coffee: 230,
+      book: 230,
+      forts: 230,
+      forest: 230,
+      cove: 230,
+      village: 230,
+      beach: 230,
+      light: 230,
+      beacon: 230,
+      dock: 230,
+      pizza: 212,
+      dance: 202
+    },
+    generalChanges: {
+      'media/artwork/forms/pollsub.swf': 3962
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
