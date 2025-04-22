@@ -89,6 +89,7 @@
     "@types/electron-prompt": "^1.6.1",
     "@types/express": "^5.0.0",
     "@types/node": "^18.13.0",
+    "@types/object-hash": "^3.0.6",
     "@types/unzipper": "^0.10.10",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
@@ -115,6 +116,7 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^5.3.0",
     "express": "^4.21.0",
+    "object-hash": "^3.0.0",
     "unzipper": "^0.12.3"
   }
 }

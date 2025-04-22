@@ -1,5 +1,7 @@
 import path from "path";
 import crypto from 'crypto';
+import hash from 'object-hash';
+
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isEqual, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
@@ -353,9 +355,15 @@ function sortOnProperty<T extends { date: string }>(array: T[]): T[] {
  * @param timeline The timeline of events
  * @param getInput A function that takes each event and gets characteristic input data that is meant to be particular of each event
  * @param getOutput A function that takes a previous' event input data, or none if nothing previous, and the current event input data and outputs a final output
+ * @param hashOutput A function that creates a unique identifier for a given output, to be able to hash it
  * @returns 
  */
-function processTimeline<EventInformation, EventInput, EventOutput>(timeline: TimelineEvent<EventInformation>[], getInput: <T extends EventInformation>(input: T) => EventInput, getOutput: (prev: EventInput | undefined, cur: EventInput) => EventOutput): Array<{
+function processTimeline<EventInformation, EventInput, EventOutput>(
+  timeline: TimelineEvent<EventInformation>[],
+  getInput: <T extends EventInformation>(input: T) => EventInput,
+  getOutput: (prev: EventInput | undefined, cur: EventInput) => EventOutput,
+  hashOutput: (out: EventOutput) => string
+): Array<{
   date: Version,
   out: EventOutput,
   id: number
@@ -364,7 +372,7 @@ function processTimeline<EventInformation, EventInput, EventOutput>(timeline: Ti
   // labeling what each update is and breaking everything down
   // to events
   
-  // maps id -> fileId
+  // get id of event input so we can find them later
   const permanentMapping = new Map<number, EventInput>();
   const temporaryMapping = new Map<number, EventInput>();
 
@@ -416,15 +424,37 @@ function processTimeline<EventInformation, EventInput, EventOutput>(timeline: Ti
   // this acts as a queue, so there can be multiple temporary events
   let currentTemporaries: number[] = [];
 
+  // we will assign IDs to the output so that we can tell which of the outputs
+  // represent the exact same state (discerned via the "hashing" function)
+  let outputId = 0;
+  const outputs = new Map<string, number>();
+
+  const getOutputId = (output: EventOutput) => {
+    const hash = hashOutput(output);
+    const id = outputs.get(hash);
+    
+    if (id === undefined) {
+      outputId++;
+      console.log('id', outputId)
+      console.log(output);
+      console.log(hash);
+      outputs.set(hash, outputId);
+      return outputId;
+    } else {
+      return id;
+    }
+  }
+
   const pushPermanent = (date: string) => {
     const input = permanentMapping.get(currentPermanent);
     if (input !== undefined) {
       // no permanent room means there isn't one. So no changes will be used
       const output = getOutput(permanentMapping.get(previousPermanent), input);
+      const id = getOutputId(output);
       versions.push({
         date,
         out: output,
-        id: currentPermanent
+        id
       });
     }
   }
@@ -437,10 +467,11 @@ function processTimeline<EventInformation, EventInput, EventOutput>(timeline: Ti
     }
     const permanentInput = permanentMapping.get(currentPermanent);
     const output = getOutput(permanentInput, input);
+    const id = getOutputId(output);
     versions.push({
       date,
       out: output,
-      id: currentTemporary
+      id
     });
   }
 
@@ -535,9 +566,12 @@ export function getLocalCrumbsOutput() {
   });
 }
 
-function getBaseCrumbsOutput<CrumbPatch>(timelineBuilder: (timeline: TimelineEvent<{
-  crumb: Partial<CrumbPatch>
-}>[]) => void, mergeCrumbs: (prev: Partial<CrumbPatch>, cur: Partial<CrumbPatch>) => Partial<CrumbPatch>) {
+function getBaseCrumbsOutput<CrumbPatch>(
+  timelineBuilder: (timeline: TimelineEvent<{
+    crumb: Partial<CrumbPatch>
+  }>[]) => void,
+  mergeCrumbs: (prev: Partial<CrumbPatch>, cur: Partial<CrumbPatch>) => Partial<CrumbPatch>
+) {
   const timeline: TimelineEvent<{
     crumb: Partial<CrumbPatch>
   }>[] = [
@@ -558,10 +592,14 @@ function getBaseCrumbsOutput<CrumbPatch>(timelineBuilder: (timeline: TimelineEve
     } else {
       return mergeCrumbs(previous, current);
     }
+  }, (out) => {
+    // this is a third party function that can properly hash objects
+    // even if their property order isn't the same
+    return hash(out);
   });
 
-  const hash = getMd5(JSON.stringify(crumbs))
-  return { hash, crumbs };
+  const crumbsHash = getMd5(JSON.stringify(crumbs))
+  return { hash: crumbsHash, crumbs };
 }
 
 /**
@@ -672,7 +710,7 @@ function getFileInformation(timeline: FileTimelineEvent[]): DynamicRouteFileInfo
     type: 'dynamic',
     versions: processTimeline(timeline, (input) => {
       return input.file;
-    }, (_, c) => c).map((version) => ({ date: version.date, file: version.out }))
+    }, (_, c) => c, (out) => out).map((version) => ({ date: version.date, file: version.out }))
   }
 }
 
