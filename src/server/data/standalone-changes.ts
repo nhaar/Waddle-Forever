@@ -1,5 +1,5 @@
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
-import { ANNIVERSARY_5_START, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
+import { ANNIVERSARY_5_START, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
 
 type StandaloneChange = {
   route: string;
@@ -167,6 +167,12 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       endDate: '2006-12-21',
       fileId: 3836,
       comment: 'A tree is available to be decorated for Christmas'
+    },
+    {
+      startDate: '2007-12-14',
+      endDate: CHRISTMAS_2007_START,
+      fileId: 3905,
+      comment: 'The Coins For Change event begins'
     }
   ]
 }

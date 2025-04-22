@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2007_START, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -492,6 +492,45 @@ export const PARTIES: Party[] = [
       'plaza': 55555,
       'forts': 55555,
       'town': 55555
+    }
+  },
+  {
+    name: 'Christmas Party',
+    startDate: CHRISTMAS_2007_START,
+    endDate: '2008-01-02',
+    roomChanges: {
+      'beach': 3906,
+      'beacon': 3907,
+      'book': 3908,
+      'cove': 3909,
+      'dock': 3910,
+      'forest': 3911,
+      'berg': 3912,
+      'attic': 3913,
+      'dance': 3914,
+      'plaza': 3915,
+      'mtn': 3916,
+      'lodge': 3917,
+      'village': 3918,
+      'forts': 3919,
+      'town': 3920
+    },
+    music: {
+      'beach': 200,
+      'beacon': 227,
+      'book': 227,
+      'cove': 200,
+      'dock': 200,
+      'forest': 228,
+      'berg': 227,
+      'attic': 228,
+      'dance': 226,
+      'plaza': 227,
+      'mtn': 228,
+      'lodge': 228,
+      'village': 228,
+      'forts': 227,
+      'town': 227
     }
   },
   {
