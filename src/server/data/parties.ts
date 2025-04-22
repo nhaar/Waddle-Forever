@@ -333,7 +333,7 @@ export const PARTIES: Party[] = [
     }
   },
   {
-    name: 'Pirate Party 2007',
+    name: 'Pirate Party',
     startDate: '2007-04-27',
     endDate: '2007-05-04',
     roomChanges: {
@@ -343,6 +343,27 @@ export const PARTIES: Party[] = [
     music: {
       'town': 212,
       'dock': 212
+    }
+  },
+  {
+    name: 'Water Party',
+    startDate: '2007-07-13',
+    endDate: '2007-07-23',
+    roomChanges: {
+      'dojo': 3847
+    },
+    music: {
+      'dojo': 217
+    }
+  },
+  {
+    name: 'Camp Penguin',
+    startDate: '2007-08-24',
+    endDate: '2007-08-27',
+    startComment: 'Camp Penguin party begins',
+    endComment: 'Camp Penguin party ends',
+    roomChanges: {
+      'village': 3849
     }
   },
   {
