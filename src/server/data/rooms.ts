@@ -86,7 +86,8 @@ export const ROOMS: Record<RoomName, Room> = {
     id: 111,
     name: 'Book Room',
     preCpipFileNumber: 11,
-    preCpipName: 'Book'
+    preCpipName: 'Book',
+    preCpipSong: 1
   },
   'cave': {
     id: 806,

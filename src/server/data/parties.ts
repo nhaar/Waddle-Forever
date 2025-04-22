@@ -410,6 +410,18 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: '2nd Anniversary Party',
+    startDate: '2007-10-24',
+    endDate: '2007-10-25',
+    roomChanges: {
+      'book': 3870,
+      'coffee': 3871
+    },
+    music: {
+      'coffee': 100
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
