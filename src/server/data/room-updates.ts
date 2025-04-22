@@ -457,10 +457,15 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     date: ICEBERG_RELEASE
   },
   {
+    // 2006 client boiler, the party vesion isn't archived
+    room: 'boiler',
+    fileId: 3939,
+    date: CAVE_OPENING_START
+  },
+  {
     room: 'boiler',
     fileId: 3778,
-    // the specific boiler being used is from 2007, since the Mid 2006 client
-    // hasn't been made to work and the original boiler room is not even archived (from cave opening)
+    // boiler room for the 2007 client
     date: PRE_CPIP_REWRITE_DATE
   },
   {

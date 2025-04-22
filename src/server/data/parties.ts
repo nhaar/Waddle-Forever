@@ -253,6 +253,21 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Band Scavenger Hunt',
+    startDate: '2006-07-21',
+    endDate: '2006-07-23',
+    roomChanges: {
+      'boiler': 3939,
+      'cave': 3940,
+      'dock': 3941,
+      'mtn': 3942,
+      'lodge': 3943,
+      'village': 3944,
+      'pet': 3945,
+      'pizza': 3946
+    }
+  },
+  {
     name: 'Sports Party',
     startDate: '2006-08-11',
     endDate: '2006-08-21',

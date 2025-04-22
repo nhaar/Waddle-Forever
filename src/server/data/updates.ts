@@ -67,10 +67,9 @@ export const CAVE_OPENING_START = '2006-05-26';
 
 export const CAVE_OPENING_END = '2006-05-29';
 
-// currently a placeholder since I was not able to get
-// chat339.swf to work, which would've enabled to more 2006 versions
-// without using the 2007 client
-export const PRE_CPIP_REWRITE_DATE = CAVE_OPENING_START;
+// exact date this client is introduced is unknown
+// but the new CPIP system which uses more files than just chat.swf
+export const PRE_CPIP_REWRITE_DATE = '2007-01-01';
 
 export const SUMMER_PARTY_START = '2006-06-16';
 

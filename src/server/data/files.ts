@@ -4031,13 +4031,15 @@ export const FILES = new StaticDataTable<File, [
 
   // fixing ports, paths and recompiled frame 30 so it would work
   [3937, 'Chat604.swf', 1, FileCategory.Fix, null, null],
-  [3938, '', 1, FileCategory.Archives, null, null],
-  [3939, '', 1, FileCategory.Archives, null, null],
-  [3940, '', 1, FileCategory.Archives, null, null],
-  [3941, '', 1, FileCategory.Archives, null, null],
-  [3942, '', 1, FileCategory.Archives, null, null],
-  [3943, '', 1, FileCategory.Archives, null, null],
-  [3944, '', 1, FileCategory.Archives, null, null],
-  [3945, '', 1, FileCategory.Archives, null, null],
-  [3946, '', 1, FileCategory.Archives, null, null],
+
+  // remove domain check (needs to be recompiled, FFDEC P-Code breaks it)
+  [3938, 'Chat339.swf', 1, FileCategory.Fix, null, null],
+  [3939, 'ArtworkRoomsBoiler11.swf', 1, FileCategory.Archives, null, null],
+  [3940, 'ArtworkRooms0721Cave13.swf', 1, FileCategory.Archives, null, null],
+  [3941, 'ArtworkRooms0721Dock10.swf', 1, FileCategory.Archives, null, null],
+  [3942, 'ArtworkRooms0721Mtn10.swf', 1, FileCategory.Archives, null, null],
+  [3943, 'ArtworkRooms0721Lodge14.swf', 1, FileCategory.Archives, null, null],
+  [3944, 'ArtworkRooms0721Village12.swf', 1, FileCategory.Archives, null, null],
+  [3945, 'ArtworkRooms0721Pet11.swf', 1, FileCategory.Archives, null, null],
+  [3946, 'ArtworkRooms0721Pizza13.swf', 1, FileCategory.Archives, null, null],
 ]);
