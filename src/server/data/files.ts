@@ -4237,10 +4237,10 @@ export const FILES = new StaticDataTable<File, [
   [4138, 'GamesSpinMain.swf', 1, FileCategory.Archives, null, null],
   [4139, 'GamesSpinLangENSpin.swf', 1, FileCategory.Archives, null, null],
   [4140, 'GamesSpinLangENTitle.swf', 1, FileCategory.Archives, null, null],
-  [4141, '', 1, FileCategory.Archives, null, null],
-  [4142, '', 1, FileCategory.Archives, null, null],
-  [4143, '', 1, FileCategory.Archives, null, null],
-  [4144, '', 1, FileCategory.Archives, null, null],
-  [4145, '', 1, FileCategory.Archives, null, null],
+  [4141, '3rdAnniversaryPartyBook.swf', 1, FileCategory.Archives, null, null],
+  [4142, '3rdAnniversaryPartyCoffee.swf', 1, FileCategory.Archives, null, null],
+  [4143, '3rdAnniversaryPartyDance.swf', 1, FileCategory.Archives, null, null],
+  [4144, '3rdAnniversaryPartyTown.swf', 1, FileCategory.Archives, null, null],
+  [4145, 'Music250.swf', 1, FileCategory.Archives, null, null],
   [4146, '', 1, FileCategory.Archives, null, null]
 ]);

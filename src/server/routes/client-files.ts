@@ -435,9 +435,6 @@ function processTimeline<EventInformation, EventInput, EventOutput>(
     
     if (id === undefined) {
       outputId++;
-      console.log('id', outputId)
-      console.log(output);
-      console.log(hash);
       outputs.set(hash, outputId);
       return outputId;
     } else {
