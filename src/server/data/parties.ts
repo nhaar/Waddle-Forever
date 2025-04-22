@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2007_START, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2007_START, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, STADIUM_GAMES_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -846,6 +846,55 @@ export const PARTIES: Party[] = [
       mtn: 218,
       village: 218,
       town: 218
+    }
+  },
+  {
+    name: 'Music Jam',
+    startDate: MUSIC_JAM_08_START,
+    endDate: '2008-08-05',
+    roomChanges: {
+      party: 4064,
+      beach: 4065,
+      cave: 4066,
+      coffee: 4067,
+      cove: 4068,
+      lounge: 4069,
+      dock: 4070,
+      dojo: 4071,
+      forest: 4072,
+      berg: 4073,
+      rink: 4074,
+      light: 4075,
+      mine: 4076,
+      dance: 4077,
+      pizza: 4078,
+      plaza: 4079,
+      village: 4080,
+      town: 4081,
+      forts: 4082
+    },
+    music: {
+      party: 243,
+      coffee: 211,
+      berg: 244,
+      mine: 247,
+      pizza: 210,
+      plaza: 242,
+      forts: 240,
+      town: 242,
+      dance: 242,
+      lounge: 242
+    },
+    localChanges: {
+      'catalogues/merch.swf': {
+        'en': 4095
+      },
+      'close_ups/backstage_allaccesspass.swf': {
+        'en': 4094
+      },
+      'catalogues/music.swf': {
+        'en': 4096
+      }
     }
   },
   {

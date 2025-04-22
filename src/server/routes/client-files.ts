@@ -97,9 +97,11 @@ function addMusicFiles(map: TimelineMap): void {
 
   Object.entries(MUSIC_IDS).forEach((pair) => {
     const [musicId, fileId] = pair;
-    const route = path.join(PRE_CPIP_MUSIC_PATH, String(musicId) + '.swf')
+    const fileName = String(musicId) + '.swf';
+    const route = path.join(PRE_CPIP_MUSIC_PATH, fileName);
     map.addPerm(route, BETA_RELEASE, fileId);
     map.addPerm(path.join('media', route), BETA_RELEASE, fileId);
+    map.addPerm(path.join('play/v2/content/global/music', fileName), CPIP_UPDATE, fileId);
   })
 }
 
@@ -778,10 +780,14 @@ function addStandaloneChanges(map: TimelineMap): void {
 
 function addMapUpdates(map: TimelineMap): void {
   MAP_UPDATES.forEach((update) => {
-    map.addPerm(PRECPIP_MAP_PATH, update.date, update.fileId);
-    // TODO would be best to only include the maps that end up factually being used
-    map.addPerm(MAP_PATH_07, update.date, update.fileId);
-  })
+    if (isLower(update.date, CPIP_UPDATE)) {
+      map.addPerm(PRECPIP_MAP_PATH, update.date, update.fileId);
+      // TODO would be best to only include the maps that end up factually being used
+      map.addPerm(MAP_PATH_07, update.date, update.fileId);
+    } else {
+      map.addPerm('play/v2/content/global/content/map.swf', update.date, update.fileId);
+    }
+  });
 }
 
 function addCatalogues(map: TimelineMap): void {

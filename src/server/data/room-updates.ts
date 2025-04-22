@@ -501,5 +501,12 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     room: 'cove',
     fileId: 3846,
     date: COVE_OPENING_START
+  },
+  {
+    room: 'dojoext',
+    fileId: 4097,
+    // not actual date, but we dont have a map for before the dojo was out yet, and
+    // the dojo is inaccessible otherwise for the game CPIP-Dojo release
+    date: CPIP_UPDATE
   }
 ];

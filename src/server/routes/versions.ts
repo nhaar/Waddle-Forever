@@ -1,3 +1,5 @@
+import { CPIP_UPDATE } from "../data/updates";
+
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;
 
@@ -103,7 +105,7 @@ export function isEngine1(version: Version): boolean {
 }
 
 export function isEngine2(version: Version): boolean {
-  return isGreaterOrEqual(version, ENGINE1_CUTOFF) && isLower(version, ENGINE3_CUTOFF);
+  return isGreaterOrEqual(version, CPIP_UPDATE) && isLower(version, ENGINE3_CUTOFF);
 }
 
 export function isEngine3(version: Version): boolean {

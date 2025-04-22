@@ -83,5 +83,7 @@ export const CHRISTMAS_2007_START = '2007-12-21';
 
 export const WINTER_FIESTA_08_START = '2008-01-18';
 
+export const MUSIC_JAM_08_START = '2008-07-25';
+
 /** The day Club Penguin launched the CPIP engine */
-export const CPIP_UPDATE = '2008-07-##';
+export const CPIP_UPDATE = MUSIC_JAM_08_START;
