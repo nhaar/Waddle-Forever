@@ -17,7 +17,7 @@ const MONTHS = [
   'December'
 ];
 
-function getFullDate({ day, month }: DateInfo) {
+function getFullDate({ day, month }: { day: number, month: number }) {
   return `${MONTHS[month - 1]} ${day}`;
 }
 
@@ -89,7 +89,8 @@ function getDateElement({ day, year, month, events, selected }: DateInfo,
   let classes: string[] = [];
   if (left === undefined || left.year === 0) {
     classes.push('left-edge');
-  } else if (right === undefined || right.year === 0 || (right.month > month || right.year > year)) {
+  }
+  if (right === undefined || right.year === 0 || (right.month > month || right.year > year)) {
     classes.push('right-edge');
   }
   if (bottom === undefined || (bottom.month > month || bottom.year > year)) {
@@ -176,7 +177,12 @@ enum CalendarScrollAction {
 };
 
 /** Render the calendar as the timeline */
-function createCalendar(days: DateInfo[], scroll: CalendarScrollAction = CalendarScrollAction.ScrollToSelectedDay) {
+function createCalendar(
+  days: DateInfo[],
+  scroll: CalendarScrollAction = CalendarScrollAction.ScrollToSelectedDay,
+  dayTitle: string | undefined = undefined,
+  dayDescription: string | undefined = undefined
+) {
 
   /** Will be used to track which days have events */
   const dateMap: Record<string, DateInfo> = {};
@@ -258,45 +264,61 @@ function createCalendar(days: DateInfo[], scroll: CalendarScrollAction = Calenda
     weeksWithSpanInfo.push({ week, span: 0 });
   });
 
-  timelineElement.innerHTML = `
-<table>
-<thead>
-    <th></th>
-    <th>
-      Sun
-    </th>
-    <th>
-      Mon
-    </th>
-    <th>
-      Tue
-    </th>
-    <th>
-      Wed
-    </th>
-    <th>
-      Thu
-    </th>
-    <th>
-      Fri
-    </th>
-    <th>
-      Sat
-    </th>
-  </thead>
-<tbody>
-  ${weeksWithSpanInfo.map((week, i) => {
-    return getWeekElement(
-      week.week,
-      week.span,
-      weeksWithSpanInfo[i - 1]?.week,
-      weeksWithSpanInfo[i + 1]?.week)
-      ;
-    }).join('')}
-</tbody>
-</table>
-  `;
+  const DAY_TITLE_ID = 'calendar-title';
+  const DAY_DESCRIPTION_ID = 'day-details';
+  const NON_DAY_DESCRIPTION = 'Hover over a non grayed-out day to see its details';
 
+  timelineElement.innerHTML = `
+<div class="calendar-container">
+  <table>
+  <thead>
+      <th></th>
+      <th>
+        Sun
+      </th>
+      <th>
+        Mon
+      </th>
+      <th>
+        Tue
+      </th>
+      <th>
+        Wed
+      </th>
+      <th>
+        Thu
+      </th>
+      <th>
+        Fri
+      </th>
+      <th>
+        Sat
+      </th>
+    </thead>
+  <tbody>
+    ${weeksWithSpanInfo.map((week, i) => {
+      return getWeekElement(
+        week.week,
+        week.span,
+        weeksWithSpanInfo[i - 1]?.week,
+        weeksWithSpanInfo[i + 1]?.week)
+        ;
+      }).join('')}
+  </tbody>
+  </table>
+  <!-- there needs to be a container for it to stick -->
+  <div class="calendar-description-container">
+    <div class="calendar-description">
+      <div id="${DAY_TITLE_ID}">
+        ${dayTitle === undefined ? NON_DAY_DESCRIPTION : dayTitle}
+      </div>
+      <div id="${DAY_DESCRIPTION_ID}">
+        ${dayDescription ?? ''}
+      </div>
+    </div>
+  </div>
+</div>
+  `;
   const scrollToMonth = (year: number, month: number) => {
     const selected = document.querySelector(`.${getMonthClassName(month, year)}`)!;
     const y = selected.getBoundingClientRect().top - 250 + window.scrollY;
@@ -349,9 +371,39 @@ function createCalendar(days: DateInfo[], scroll: CalendarScrollAction = Calenda
       const date = e.target.dataset.date;
       if (date !== undefined) {
         updateVersion(date);
-        createCalendar(days, CalendarScrollAction.NoScroll);
+        createCalendar(days, CalendarScrollAction.NoScroll, dayTitle, dayDescription);
       }
     }
+  }
+
+  const updateDayOverview = (title: string, description: string) => {
+    const dayTitleElement = document.getElementById(DAY_TITLE_ID)!;
+    const dayDescriptionElement = document.getElementById(DAY_DESCRIPTION_ID)!;
+    dayTitleElement.innerText = title;
+    dayDescriptionElement.innerHTML = description;
+    dayTitle = title;
+    dayDescription = description;
+  }
+
+  // updating information based on the day
+  timelineElement.onmousemove = (e) => {
+    console.log(e.target);
+    if (e.target instanceof HTMLElement) {
+      const date = e.target.dataset.date;
+      if (date !== undefined) {
+        const dateInfo = dateMap[date];
+        // const dateInfo = dateMap['2008-10-09'];
+        if (dateInfo === undefined) {
+          updateDayOverview('This day has no registered updates', '');
+        } else {
+          updateDayOverview(getFullDate(dateInfo), getDescription(dateInfo));
+        }
+      }
+    }
+  }
+
+  timelineElement.onmouseleave = () => {
+    updateDayOverview(NON_DAY_DESCRIPTION, '');
   }
 
   yearElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
@@ -382,7 +434,9 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
           )}
         </div>
         <div class="center">${getFullDate(day)}</div>
-        ${getDescription(day)}
+        <div class="list-description-container">
+          ${getDescription(day)}
+        </div>
       </div>
     `
   }).join('')

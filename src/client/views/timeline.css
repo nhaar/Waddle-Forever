@@ -45,6 +45,9 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: left;
+}
+
+.list-description-container {
   padding-left: 5em;
 }
 
@@ -132,4 +135,24 @@ thead th {
   background-color: var(--hovered);
   color: black;
   cursor: pointer;
+}
+
+.calendar-container {
+  display: flex;
+}
+
+.calendar-description-container {
+  flex: 1;
+}
+
+.calendar-description {
+  position: sticky;
+  top: var(--version-pick-h);
+  padding: 1em;
+}
+
+#calendar-title {
+  margin-bottom: 1em;
+  font-style: bold;
+  font-size: x-large;
 }
