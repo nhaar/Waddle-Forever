@@ -286,57 +286,73 @@ function updateTimeline(days: Day[]): Day[] {
   return getDaysFromMap(map);
 }
 
+type Event = {
+  text: string;
+  partyStart?: true;
+  partyEnd?: true;
+};
+
 function getConsumedTimeline(days: Day[]): Array<{
   year: number;
   day: number;
   month: number;
-  events: string[]
+  events: Array<Event>
 }> {
   return days.map((day) => {
-    const events = [];
+    const events: Event[] = [];
+
+    const pushText = (text: string) => {
+      events.push({ text });
+    }
 
     if (day.events.partyStart !== undefined) {
-      events.push(day.events.partyStart);
+      events.push({
+        partyStart: true,
+        text: day.events.partyStart
+      });
     }
     if (day.events.partyEnd !== undefined) {
-      events.push(day.events.partyEnd);
+      events.push({
+        partyEnd: true,
+        text: day.events.partyEnd
+      });
     }
     if (day.events.partyUpdate !== undefined) {
-      events.push(day.events.partyUpdate);
+      pushText(day.events.partyUpdate);
     }
     if (day.events.other !== undefined) {
-      events.push(day.events.other);
+      pushText(day.events.other);
     }
     if (day.events.roomOpen !== undefined) {
       if (day.events.roomOpen.length === 1) {
-        events.push(`Room "${day.events.roomOpen[0]}" opens`);
+        pushText(`Room "${day.events.roomOpen[0]}" opens`);
       } else {
-        events.push(`Rooms "${day.events.roomOpen.join(', ')}" open`);
+        pushText(`Rooms "${day.events.roomOpen.join(', ')}" open`);
       }
     }
     if (day.events.minigameRelease !== undefined) {
-      events.push(`New minigame: ${day.events.minigameRelease}`)
+      pushText(`New minigame: ${day.events.minigameRelease}`);
     }
     if (day.events.newClothing === true) {
-      events.push('A new edition of the Penguin Style is out');
+      pushText('A new edition of the Penguin Style is out');
     }
     if (day.events.newIssue !== undefined) {
-      events.push(`Issue #${day.events.newIssue} of the newspaper releases`)
+      pushText(`Issue #${day.events.newIssue} of the newspaper releases`);
     }
     if (day.events.roomUpdate !== undefined) {
-      events.push(day.events.roomUpdate);
+      pushText(day.events.roomUpdate);
     }
     if (day.events.stagePlay !== undefined) {
-      events.push(day.events.stagePlay);
+      pushText(day.events.stagePlay);
     }
     if (day.events.musicList === true) {
-      events.push('New music is available for igloos');
+      pushText('New music is available for igloos');
     }
     if (day.events.newFurnitureCatalog === true) {
-      events.push('New furniture catalog available');
+      pushText('New furniture catalog available');
     }
     if (day.events.pin !== undefined) {
-      events.push(`The ${day.events.pin} is now hidden in the island`);
+      pushText(`The ${day.events.pin} is now hidden in the island`);
     }
 
     const [year, month, monthDay] = processVersion(day.date);

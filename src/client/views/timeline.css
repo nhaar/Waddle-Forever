@@ -24,7 +24,7 @@
   border-radius: 1em;
 }
 
-.selected-day {
+.selected-list-day {
   background-color: var(--selected);
   color: white;
 }
@@ -34,7 +34,7 @@
   color: black;
 }
 
-.selected-day:hover  {
+.selected-list-day:hover  {
   background-color: var(--selected);
   color: white;
   cursor: default;
@@ -127,14 +127,8 @@ thead th {
   font-weight: bolder;
 }
 
-.non-day {
+.non-day, .undefined-day {
   background-color: rgba(229, 229, 229, 1);
-}
-
-.yes-day:hover {
-  background-color: var(--hovered);
-  color: black;
-  cursor: pointer;
 }
 
 .calendar-container {
@@ -155,4 +149,31 @@ thead th {
   margin-bottom: 1em;
   font-style: bold;
   font-size: x-large;
+}
+
+.non-party-day.yes-day {
+  background-color: white;
+}
+
+.yes-day:hover {
+  outline: 4px solid var(--hovered);
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+.selected-day {
+  outline: 4px solid var(--selected); 
+  outline-offset: -2px;
+}
+
+.selected-day:hover {
+  cursor: default;
+}
+
+.party-day.yes-day {
+  background-color: #ffbc3a;
+}
+
+.party-day.non-day {
+  background-color: #d6b168;
 }

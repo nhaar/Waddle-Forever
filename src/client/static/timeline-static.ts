@@ -31,7 +31,7 @@ function getDescription(version: DateInfo): string {
       ${version.events.map((item) => {
         return `
         <li>
-          ${item}
+          ${item.text}
         </li>
         `
       }).join('')}
@@ -47,16 +47,27 @@ const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
+type Event = {
+  text: string;
+  partyStart?: true;
+  partyEnd?: true;
+};
+
 /** Basic unit of information about a singular day in the timeline */
 type DateInfo = {
   day: number;
   month: number;
   year: number;
-  events: string[];
+  events: Event[];
   selected?: boolean;
+  inParty: boolean;
 };
 
-function getDateInfo(dateStr: string) : DateInfo {
+function getDateInfo(dateStr: string) : {
+  year: number;
+  month: number;
+  day: number;
+} {
   const dateMatch = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
   if (dateMatch === null) {
     throw new Error('Incorrect date string: ' + dateStr);
@@ -67,12 +78,11 @@ function getDateInfo(dateStr: string) : DateInfo {
   return {
     year,
     month,
-    day,
-    events: [] as string[]
+    day
   };
 }
 
-function getDateElement({ day, year, month, events, selected }: DateInfo,
+function getDateElement({ day, year, month, events, selected, inParty }: DateInfo,
   left: DateInfo | undefined,
   right: DateInfo | undefined,
   top: DateInfo | undefined,
@@ -83,7 +93,7 @@ function getDateElement({ day, year, month, events, selected }: DateInfo,
     elements.push(true);
   }
   if (day === 0) {
-    return `<td></td>`
+    return `<td class="undefined-day"></td>`
   }
 
   let classes: string[] = [];
@@ -106,6 +116,12 @@ function getDateElement({ day, year, month, events, selected }: DateInfo,
     classes.push('selected-day');
   } else {
     classes.push('yes-day');
+  }
+
+  if (inParty) {
+    classes.push('party-day');
+  } else {
+    classes.push('non-party-day');
   }
 
   // data date will be important to be able to fetch what element is clicked
@@ -196,12 +212,15 @@ function createCalendar(
 
   const endDate = new Date(2011, 0, 1);
   // iterating through every day between start and end
+
+  let inParty = false;
   for (let date = getDateFromDateInfo(days[0]); date < endDate; date.setDate(date.getDate() + 1)) {
     const dateInfoOfDate = {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
-      events: [] as string[]
+      events: [] as Event[],
+      inParty
     };
     
     const dateStr = getDateFormat(dateInfoOfDate);
@@ -209,11 +228,21 @@ function createCalendar(
     if (day === undefined) {
       daysToUse.push(dateInfoOfDate);
     } else {
-      if (dateStr === currentVersion) {
-        daysToUse.push({ ...day, selected: true });
+      let dayDateInfo = day;
+      if (inParty) {
+        if (dayDateInfo.events.some((e) => e.partyEnd === true)) {
+          inParty = false;
+        }
       } else {
-        daysToUse.push(day);
+        if (dayDateInfo.events.some((e) => e.partyStart === true)) {
+          inParty = true;
+        }
       }
+      dayDateInfo = { ...dayDateInfo, inParty };
+      if (dateStr === currentVersion) {
+        dayDateInfo = { ...dayDateInfo, selected: true };
+      }
+      daysToUse.push(dayDateInfo);
     }
   }
 
@@ -221,7 +250,7 @@ function createCalendar(
   const firstDayOfWeek = getDateFromDateInfo(days[0]).getDay();
 
   for (let i = 0; i < firstDayOfWeek; i++) {
-    daysToUse.unshift({ day: 0, year: 0, month: 0, events: [] })
+    daysToUse.unshift({ day: 0, year: 0, month: 0, events: [], inParty: false });
   }
 
   const weeks: DateInfo[][] = [];
@@ -238,7 +267,7 @@ function createCalendar(
 
   // padding with "dead" dates at the end
   while (curWeek.length < 7) {
-    curWeek.push({ year: 0, month: 0, day: 0, events: []});
+    curWeek.push({ year: 0, month: 0, day: 0, events: [], inParty: false });
   }
   weeks.push(curWeek);
 
@@ -390,12 +419,10 @@ function createCalendar(
 
   // updating information based on the day
   timelineElement.onmousemove = (e) => {
-    console.log(e.target);
     if (e.target instanceof HTMLElement) {
       const date = e.target.dataset.date;
       if (date !== undefined) {
         const dateInfo = dateMap[date];
-        // const dateInfo = dateMap['2008-10-09'];
         if (dateInfo === undefined) {
           updateDayOverview('This day has no registered updates', '');
         } else {
@@ -428,7 +455,7 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
     const selected = date === currentVersion;
 
     return `
-      <div class="${selected ? 'selected-day' : 'unselected-day'} timeline-row" data-date="${date}">
+      <div class="${selected ? 'selected-list-day' : 'unselected-day'} timeline-row" data-date="${date}">
         <div class="center">
           ${selected ? (
             '[SELECTED]'
