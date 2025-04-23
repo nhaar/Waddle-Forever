@@ -87,16 +87,16 @@ function getDateElement({ day, year, month, events, selected }: DateInfo,
   }
 
   let classes: string[] = [];
-  if (left === undefined || left.year === 0) {
+  if (left === undefined || left.year === 0 || left.year === 0) {
     classes.push('left-edge');
   }
   if (right === undefined || right.year === 0 || (right.month > month || right.year > year)) {
     classes.push('right-edge');
   }
-  if (bottom === undefined || (bottom.month > month || bottom.year > year)) {
+  if (bottom === undefined || (bottom.month > month || bottom.year > year) || bottom.year === 0) {
     classes.push('bottom-edge');
   }
-  if (top === undefined || top.month < month) {
+  if (top === undefined || top.month < month || top.year === 0) {
     classes.push('top-edge');
   }
 
@@ -263,6 +263,9 @@ function createCalendar(
     }
     weeksWithSpanInfo.push({ week, span: 0 });
   });
+
+  // doing for the very last week
+  weeksWithSpanInfo[weekSpanStart].span = currentSpan;
 
   const DAY_TITLE_ID = 'calendar-title';
   const DAY_DESCRIPTION_ID = 'day-details';
