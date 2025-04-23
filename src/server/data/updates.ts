@@ -85,5 +85,7 @@ export const WINTER_FIESTA_08_START = '2008-01-18';
 
 export const MUSIC_JAM_08_START = '2008-07-25';
 
+export const DIG_OUT_DOJO_END = '2008-11-14';
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = MUSIC_JAM_08_START;
