@@ -1,5 +1,10 @@
 :root {
-  --selected: #08549c
+  --selected: #08549c;
+  /* Basic unit of measurement that makes up the calendar */
+  --cell-width: 5em;
+
+  /* Height that the version picker should occupy above */
+  --version-pick-h: 8em;
 }
 
 .version-description {
@@ -8,7 +13,6 @@
 
 #timeline {
   padding: 1em;
-  margin-top: 8em;
 }
 
 .timeline-row {
@@ -50,18 +54,75 @@
 }
 
 .version-picker {
-  position: fixed;
+  position: sticky;
+  top: 0;
   background-color: var(--background);
   left: 0;
   right: 0;
-  padding: 2em 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* needs to be this variable so the calendar can be properly sticky too */
+  height: var(--version-pick-h);
 }
 
 body {
   padding: 0;
   margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  background-color: white;
+  color: black;
+  width: var(--cell-width);
+  height: var(--cell-width);
+  border: 1px solid black;
+  vertical-align: top;
+  padding: 0.4em;
+}
+
+thead th {
+  position: sticky;
+  top: var(--version-pick-h);
+  color: black;
+  background-color: white;
+}
+
+.calendar {
+  background-color: white;
+}
+
+.left-edge {
+  border-left: 2px solid black;
+}
+
+.right-edge {
+  border-right: 2px solid black;
+}
+
+.bottom-edge {
+  border-bottom: 2px solid black;
+}
+
+.top-edge {
+  border-top: 2px solid black;
+}
+
+.month-name {
+  font-weight: bold;
+  font-size: xx-large;
+  padding: 0.4em;
+}
+
+.clickable {
+  font-weight: bolder;
+}
+
+.non-day {
+  background-color: rgba(229, 229, 229, 1);
 }

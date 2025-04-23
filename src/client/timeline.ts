@@ -2,7 +2,7 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/data/parties';
-import { isEqual, isLower, Version } from '../server/routes/versions';
+import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
 import { FAN_ISSUE_DATE, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from '../server/data/newspapers';
 import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
@@ -287,7 +287,9 @@ function updateTimeline(days: Day[]): Day[] {
 }
 
 function getConsumedTimeline(days: Day[]): Array<{
-  date: Version;
+  year: number;
+  day: number;
+  month: number;
   events: string[]
 }> {
   return days.map((day) => {
@@ -337,8 +339,12 @@ function getConsumedTimeline(days: Day[]): Array<{
       events.push(`The ${day.events.pin} is now hidden in the island`);
     }
 
+    const [year, month, monthDay] = processVersion(day.date);
+
     return {
-      date: day.date,
+      year,
+      month,
+      day: monthDay,
       events
     }
   });
