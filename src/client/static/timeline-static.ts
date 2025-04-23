@@ -60,7 +60,7 @@ type DateInfo = {
   events: string[];
 };
 
-function getDateElement({ day, month, events }: DateInfo,
+function getDateElement({ day, year, month, events }: DateInfo,
   left: DateInfo | undefined,
   right: DateInfo | undefined,
   top: DateInfo | undefined,
@@ -77,10 +77,10 @@ function getDateElement({ day, month, events }: DateInfo,
   let classes: string[] = [];
   if (left === undefined || left.year === 0) {
     classes.push('left-edge');
-  } else if (right === undefined || right.year === 0 || right.month > month) {
+  } else if (right === undefined || right.year === 0 || (right.month > month || right.year > year)) {
     classes.push('right-edge');
   }
-  if (bottom === undefined || bottom.month > month) {
+  if (bottom === undefined || (bottom.month > month || bottom.year > year)) {
     classes.push('bottom-edge');
   }
   if (top === undefined || top.month < month) {
@@ -160,10 +160,9 @@ function createCalendar(days: DateInfo[]) {
   // to also have every day in between those
   const daysToUse: DateInfo[] = [];
 
-  const startDate = getDateFromDateInfo(days[0]);
   const endDate = new Date(2011, 0, 1);
   // iterating through every day between start and end
-  for (let date = startDate; date < endDate; date.setDate(date.getDate() + 1)) {
+  for (let date = getDateFromDateInfo(days[0]); date < endDate; date.setDate(date.getDate() + 1)) {
     const dateInfoOfDate = {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
@@ -181,7 +180,8 @@ function createCalendar(days: DateInfo[]) {
   }
 
   // padding with "dead" dates at the start
-  const firstDayOfWeek = startDate.getDay();
+  const firstDayOfWeek = getDateFromDateInfo(days[0]).getDay();
+
   for (let i = 0; i < firstDayOfWeek; i++) {
     daysToUse.unshift({ day: 0, year: 0, month: 0, events: [] })
   }
