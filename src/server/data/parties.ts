@@ -1179,9 +1179,41 @@ export const PARTIES: Party[] = [
       town: 4220
     },
     music: {
-      lounge: 258,
       dance: 258,
       party: 257
+    }
+  },
+  {
+    name: 'Winter Fiesta',
+    startDate: '2009-01-23',
+    endDate: '2009-01-25',
+    roomChanges: {
+      beach: 4223,
+      coffee: 4224,
+      cove: 4225,
+      dock: 4226,
+      forest: 4227,
+      dance: 4228,
+      pizza: 4229,
+      plaza: 4230,
+      lodge: 4231,
+      village: 4232,
+      forts: 4233,
+      town: 4234
+    },
+    music: {
+      beach: 229,
+      coffee: 229,
+      cove: 206,
+      dock: 229,
+      forest: 206,
+      dance: 206,
+      pizza: 206,
+      plaza: 206,
+      lodge: 229,
+      village: 229,
+      forts: 206,
+      town: 206
     }
   },
   {
