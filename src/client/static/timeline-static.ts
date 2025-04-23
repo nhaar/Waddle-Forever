@@ -169,8 +169,14 @@ function getDateFromDateInfo({ day, month, year}: DateInfo): Date {
   return new Date(year, month - 1, day);
 }
 
+enum CalendarScrollAction {
+  ScrollToSelectedDay,
+  NoScroll,
+  ScrollToMonth
+};
+
 /** Render the calendar as the timeline */
-function createCalendar(days: DateInfo[], scroll: boolean = true) {
+function createCalendar(days: DateInfo[], scroll: CalendarScrollAction = CalendarScrollAction.ScrollToSelectedDay) {
 
   /** Will be used to track which days have events */
   const dateMap: Record<string, DateInfo> = {};
@@ -291,12 +297,19 @@ function createCalendar(days: DateInfo[], scroll: boolean = true) {
 </table>
   `;
 
-  // jumping to the right elementt
-  if (scroll) {
-    const currentDay = getDateInfo(currentVersion);
-    const selected = document.querySelector(`.${getMonthClassName(currentDay.month, currentDay.year)}`)!;
+  const scrollToMonth = (year: number, month: number) => {
+    const selected = document.querySelector(`.${getMonthClassName(month, year)}`)!;
     const y = selected.getBoundingClientRect().top - 250 + window.scrollY;
     window.scrollTo({ top: y, behavior: "smooth" });
+  };
+  
+  // jumping to the right elementt
+  if (scroll === CalendarScrollAction.ScrollToSelectedDay) {
+    const currentDay = getDateInfo(currentVersion);
+    scrollToMonth(currentDay.year, currentDay.month);
+  } else if (scroll == CalendarScrollAction.ScrollToMonth) {
+    const monthIndex = MONTHS.indexOf(monthElement.value);
+    scrollToMonth(Number(yearElement.value), monthIndex + 1);
   }
 
   // scroll timeout is used to interrupt the function
@@ -336,10 +349,13 @@ function createCalendar(days: DateInfo[], scroll: boolean = true) {
       const date = e.target.dataset.date;
       if (date !== undefined) {
         updateVersion(date);
-        createCalendar(days, false);
+        createCalendar(days, CalendarScrollAction.NoScroll);
       }
     }
   }
+
+  yearElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
+  monthElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
 
 }
 
@@ -398,6 +414,9 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
       }
     })
   });
+
+  yearElement.onchange = () => updateTimeline(days);
+  monthElement.onchange = () => updateTimeline(days);
 }
 
 /** Update the timeline version */
@@ -416,7 +435,4 @@ window.addEventListener('get-timeline', (e: any) => {
     // updateTimeline(days);
     createCalendar(days);
   })
-  
-  yearElement.addEventListener('change', () => updateTimeline(days));
-  monthElement.addEventListener('change', () => updateTimeline(days));
 });
