@@ -14,8 +14,7 @@ import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
-    width: 900,
-    height: 600,
+    show: false,
     title: "Timeline Picker",
     webPreferences: {
       preload: path.join(__dirname, 'preload/timeline-preload.js')
@@ -28,6 +27,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
   });
 
   timelinePicker.webContents.on('did-finish-load', () => {
+    timelinePicker.maximize();
     // TODO this array is currently hardcoded because of the previous system
     // it should become dynamic in the next updates
     let timeline: Day[] = [
