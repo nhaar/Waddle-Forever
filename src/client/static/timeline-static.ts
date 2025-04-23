@@ -2,11 +2,6 @@ import { getSettings, post } from "./common-static.js";
 
 const timelineApi = (window as any).api;
 
-/** Update the timeline version */
-function updateVersion(version: string) {
-  post('update', { version });
-}
-
 const MONTHS = [
   'January',
   'February',
@@ -58,9 +53,26 @@ type DateInfo = {
   month: number;
   year: number;
   events: string[];
+  selected?: boolean;
 };
 
-function getDateElement({ day, year, month, events }: DateInfo,
+function getDateInfo(dateStr: string) : DateInfo {
+  const dateMatch = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (dateMatch === null) {
+    throw new Error('Incorrect date string: ' + dateStr);
+  }
+
+  const [_, ...numbers] = dateMatch;
+  const [year, month, day] = numbers.map((n) => Number(n));
+  return {
+    year,
+    month,
+    day,
+    events: [] as string[]
+  };
+}
+
+function getDateElement({ day, year, month, events, selected }: DateInfo,
   left: DateInfo | undefined,
   right: DateInfo | undefined,
   top: DateInfo | undefined,
@@ -89,10 +101,15 @@ function getDateElement({ day, year, month, events }: DateInfo,
 
   if (events.length === 0) {
     classes.push('non-day');
+  } else if (selected) {
+    classes.push('selected-day');
+  } else {
+    classes.push('yes-day');
   }
 
+  // data date will be important to be able to fetch what element is clicked
   return `
-  <td class="${classes.join(' ')}">
+  <td class="${classes.join(' ')}" data-date="${getDateFormat({ year, month, day })}">
   <div class="${events.length === 0 ? '' : 'clickable'}">
     ${day}
   </div>
@@ -116,14 +133,19 @@ function getFirstDayOfWeek(week: DateInfo[]): DateInfo {
   return firstDay;
 }
 
+function getMonthClassName(month: number, year: number) {
+  return `month-${year}${String(month).padStart(2, '0')}`;
+}
+
 function getWeekElement(days: DateInfo[], rowsSpan: number, previousWeek: DateInfo[] | undefined, nextWeek: DateInfo[] | undefined): string {
   const firstDay = getFirstDayOfWeek(days);
 
   return `
 <tr>
   ${rowsSpan === 0 ? '' : (
+    // month and year to identify region
     `
-    <td rowspan="${rowsSpan}" class="month-name">
+    <td rowspan="${rowsSpan}" class="month-name ${getMonthClassName(firstDay.month, firstDay.year)}" data-month="${firstDay.month}" data-year="${firstDay.year}">
       ${MONTHS[firstDay.month - 1].slice(0, 3)}'${String(firstDay.year).slice(2)}
     </td>
     `
@@ -139,7 +161,7 @@ function getWeekElement(days: DateInfo[], rowsSpan: number, previousWeek: DateIn
   `
 }
 
-function getDateFormat({ year, month, day}: DateInfo): string {
+function getDateFormat({ year, month, day}: { year: number; month: number; day: number; }): string {
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
@@ -148,7 +170,7 @@ function getDateFromDateInfo({ day, month, year}: DateInfo): Date {
 }
 
 /** Render the calendar as the timeline */
-function createCalendar(days: DateInfo[]) {
+function createCalendar(days: DateInfo[], scroll: boolean = true) {
 
   /** Will be used to track which days have events */
   const dateMap: Record<string, DateInfo> = {};
@@ -175,7 +197,11 @@ function createCalendar(days: DateInfo[]) {
     if (day === undefined) {
       daysToUse.push(dateInfoOfDate);
     } else {
-      daysToUse.push(day);
+      if (dateStr === currentVersion) {
+        daysToUse.push({ ...day, selected: true });
+      } else {
+        daysToUse.push(day);
+      }
     }
   }
 
@@ -264,6 +290,57 @@ function createCalendar(days: DateInfo[]) {
 </tbody>
 </table>
   `;
+
+  // jumping to the right elementt
+  if (scroll) {
+    const currentDay = getDateInfo(currentVersion);
+    const selected = document.querySelector(`.${getMonthClassName(currentDay.month, currentDay.year)}`)!;
+    const y = selected.getBoundingClientRect().top - 250 + window.scrollY;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+
+  // scroll timeout is used to interrupt the function
+  // scroll event will be called multiple times which would lead
+  // to immense iteration times if not interrupted
+  let scrollTimeout: NodeJS.Timeout;
+
+  window.onscroll = () => {
+    clearTimeout(scrollTimeout);
+
+    scrollTimeout = setTimeout(() => {      
+      const months = document.querySelectorAll('.month-name');
+      for (const month of months) {
+        if (month instanceof HTMLElement) {
+          // first month that the user can read, could be adjusted slightly
+          if (month.getBoundingClientRect().top > 0) {
+            const year = month.dataset.year;
+            const monthNumber = month.dataset.month;
+            if (year !== undefined)
+            {
+              yearElement.value = year;
+            }
+            if (monthNumber !== undefined) {
+              monthElement.value = MONTHS[Number(monthNumber) - 1];
+            }
+            break;
+          }
+        }
+      }
+      
+    }, 150); // arbitrary delay that works well
+  };
+
+  // clicking on a day in the calendar
+  timelineElement.onclick = (e) => {
+    if (e.target instanceof HTMLElement) {
+      const date = e.target.dataset.date;
+      if (date !== undefined) {
+        updateVersion(date);
+        createCalendar(days, false);
+      }
+    }
+  }
+
 }
 
 function updateTimeline(days: DateInfo[], scroll: boolean = true) {
@@ -310,43 +387,24 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
     }
   }
 
-
   timelineRows.forEach((row) => {
     row.addEventListener('click', () => {
       if (row instanceof HTMLDivElement) {
         const date = row.dataset.date;
         if (date !== undefined) {
-          currentVersion = date;
-          timelineApi.update();
           updateVersion(date);
           updateTimeline(days, false);
         }
       }
     })
   });
+}
 
-  const radioButtons = document.querySelectorAll('input[name="version"]');
-
-  // Add an event listener to each radio button
-  radioButtons.forEach((radio) => {
-    radio.addEventListener('change', (event) => {
-      if (event.target instanceof HTMLInputElement) {
-        if (event.target.checked) {
-          updateVersion(event.target.value);
-          currentVersion = event.target.value;
-          timelineApi.update();
-        }
-      }
-    });
-  });
-
-  for (const button of radioButtons) {
-    if (button instanceof HTMLInputElement) {
-      if (button.value === currentVersion) {
-        button.checked = true;
-      }
-    }
-  }
+/** Update the timeline version */
+function updateVersion(version: string) {
+  currentVersion = version;
+  timelineApi.update();
+  post('update', { version });
 }
 
 window.addEventListener('get-timeline', (e: any) => {

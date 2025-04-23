@@ -1,5 +1,6 @@
 :root {
   --selected: #08549c;
+  --hovered: #73c7f6;
   /* Basic unit of measurement that makes up the calendar */
   --cell-width: 5em;
 
@@ -29,7 +30,7 @@
 }
 
 .timeline-row:hover {
-  background-color: #73c7f6;
+  background-color: var(--hovered);
   color: black;
 }
 
@@ -125,4 +126,10 @@ thead th {
 
 .non-day {
   background-color: rgba(229, 229, 229, 1);
+}
+
+.yes-day:hover {
+  background-color: var(--hovered);
+  color: black;
+  cursor: pointer;
 }
