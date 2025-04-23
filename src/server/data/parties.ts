@@ -1168,6 +1168,23 @@ export const PARTIES: Party[] = [
     activeMigrator: true
   },
   {
+    name: 'Dance-A-Thon',
+    startDate: '2009-01-15',
+    endDate: '2009-01-20',
+    roomChanges: {
+      boiler: 4216,
+      lounge: 4217,
+      dance: 4218,
+      party: 4219,
+      town: 4220
+    },
+    music: {
+      lounge: 258,
+      dance: 258,
+      party: 257
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
