@@ -29,6 +29,7 @@ export type RoomName = 'town' |
   'dojohide' |
   'forts' |
   'agent' |
+  'agentcom' |
   'sport' |
   'mtn' |
   'shack' |
@@ -193,6 +194,12 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipFileNumber: 11,
     preCpipName: 'Agent',
     preCpipSong: 7
+  },
+  'agentcom': {
+    id: 323,
+    name: 'EPF Command Room',
+    preCpipFileNumber: null,
+    preCpipName: null
   },
   'forts': {
     id: 801,
