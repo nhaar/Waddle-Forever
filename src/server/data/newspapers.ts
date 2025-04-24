@@ -1246,5 +1246,25 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     navigationBack: null,
     navigationFront: null,
     submit: null
+  },
+  {
+    date: '2010-11-26',
+    headline: 'NINJAS SEEK TO MASTER WATER',
+    askBack: 4773,
+    askFront: 4774,
+    featureStory: 4776,
+    headerBack: 4777,
+    headerFront: 4778,
+    jokes: 4779,
+    newsFlash: 4780,
+    answers: 4781,
+    supportStory: 4782,
+    tips: 4783,
+    upcomingEvents: 4784,
+    dividersBack: null,
+    dividersFront: null,
+    navigationBack: null,
+    navigationFront: null,
+    submit: null
   }
 ];
