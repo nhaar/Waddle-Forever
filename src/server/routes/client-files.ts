@@ -21,7 +21,7 @@ import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
-import { NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
+import { Newspaper, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 import { getNewspaperName } from "../game/news.txt";
 
@@ -107,16 +107,26 @@ function addMusicFiles(map: TimelineMap): void {
   })
 }
 
+function isNewspaperBeforeCPIP(newspaper: Newspaper): boolean {
+  return isLower(newspaper.date, CPIP_UPDATE);
+}
+
+/** Check if a newspaper is accessible after CPIP, the argument is the newspaper after it or undefined if it's the "last" newspaper */
+export function isNewspaperAfterCPIP(nextNewspaper: Newspaper | undefined) {
+  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, CPIP_UPDATE);
+}
+
 function addNewspapers(map: RouteMap): void {
   const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
   NEWSPAPERS.forEach((news, index) => {
     if (news.fileId !== undefined) {
-      if (isLower(news.date, CPIP_UPDATE)) {
+      if (isNewspaperBeforeCPIP(news)) {
         const filePath = getMediaFilePath(news.fileId);
         addToRouteMap(map, `artwork/news/news${index + preBoilerPapers + 1}.swf`, filePath);
         const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
         addToRouteMap(map, path.join('media/artwork/news', route2007), filePath);
-      } else {
+      }
+      if (isNewspaperAfterCPIP(NEWSPAPERS[index + 1])) {
         const date = news.date.replaceAll('-', '');
         addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, getMediaFilePath(news.fileId));
       }

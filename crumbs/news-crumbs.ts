@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
 import { processVersion } from '../src/server/routes/versions';
-import { NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
+import { isNewspaperAfterCPIP, NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
 import { Newspaper, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from '../src/server/data/newspapers';
 
 
@@ -139,6 +139,7 @@ previousFiles.forEach((file) => {
   fs.unlinkSync(path.join(autoDir, file));
 });
 
+let i = 0;
 (async () => {
   for (const newspaper of NEWSPAPERS) {
     // doing it 10 at a time otherwise FFDEC will not withstand it
@@ -152,7 +153,9 @@ previousFiles.forEach((file) => {
     if (currentThings.length > 7) {
       currentThings.shift()
     }
-    if (currentThings.length === 7) {
+
+    // only generate news crumbs for post CPIP
+    if (currentThings.length === 7 && isNewspaperAfterCPIP(NEWSPAPERS[i + 1])) {
       const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
       
       const recent = currentThings[6]
@@ -163,5 +166,6 @@ previousFiles.forEach((file) => {
       const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
       promises.push(promise);
     }
+    i++;
   }
 })();
