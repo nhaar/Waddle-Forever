@@ -233,6 +233,10 @@ function addRoomRoute(map: TimelineMap, date: string, room: RoomName, file: numb
   }
 }
 
+const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
+const TICKET_ICON_PATH = 'tickets.swf';
+const TICKET_INFO_PATH = 'ticket_info.swf';
+
 function addTempRoomRoute(map: TimelineMap, start: string, end: string, room: RoomName, file: number) {
   if (isLower(start, CPIP_UPDATE)) {
     const roomInfo = ROOMS[room];
@@ -310,16 +314,23 @@ function addParties(map: TimelineMap): void {
       addRoomChanges(party.construction.changes, constructionStart, endDate);
     }
 
-    if (party.scavengerHunt2010) {
+    if (party.scavengerHunt2010 !== undefined) {
       // enabling the scavenger hunt dependency file
       map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2384);
+
+      // serving the icon that will be loaded by the dependency
+      const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
+      map.addTemp(path.join('play/v2/content/global', huntIconPath), startDate, endDate, party.scavengerHunt2010.iconFileId);
     }
 
     // all CPIP fair parties have the same dependency for loading the fair icon
     // this is possible to change if we can recreate the exact method it used
-    if (party.fairCpip) {
+    if (party.fairCpip !== undefined) {
       map.addTemp('play/v2/client/fair.swf', startDate, endDate, 2513);
       map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2514);
+
+      map.addTemp(path.join('play/v2/content/global', TICKET_ICON_PATH), startDate, endDate, party.fairCpip.iconFileId);
+      map.addTemp(path.join('play/v2/content/global', TICKET_INFO_PATH), startDate, endDate, 2506);
     }
 
     if (party.updates !== undefined) {
@@ -625,18 +636,30 @@ export function getGlobalCrumbsOutput() {
           }
         })
       }
+
+      if (party.scavengerHunt2010 !== undefined) {
+        const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
+        globalPaths['scavenger_hunt_icon'] = huntIconPath;
+      }
+
+      if (party.fairCpip !== undefined) {
+        globalPaths['ticket_icon'] = TICKET_ICON_PATH;
+        globalPaths['tickets'] = TICKET_INFO_PATH;
+      }
   
       // we only want to add parties that are post CPIP and actually made changes
       // so we don't have excess crumb files
+      // NOTE that this design can easily lead to new properties being added not being handled
       let crumbChanged = false;
       if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)) {
-        if (party.music !== undefined) {
-          crumbChanged = true;
-        } else if (Object.keys(globalPaths).length > 0) {
-          crumbChanged = true;
-        } else if (party.activeMigrator) {
-          crumbChanged = true;
-        }
+        // change is detected if any of these is true
+        crumbChanged = [
+          party.music !== undefined,
+          Object.keys(globalPaths).length > 0,
+          party.activeMigrator === true,
+          party.scavengerHunt2010 !== undefined,
+          party.fairCpip !== undefined
+        ].some((v) => v);
       }
   
       if (crumbChanged) {

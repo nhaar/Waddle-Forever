@@ -32,10 +32,19 @@ export type Party = PartyChanges & {
 
   music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
-  scavengerHunt2010?: true;
+  /** Scavenger Hunt icon is loaded by the dependency, must be specified */
+  scavengerHunt2010?: {
+    iconFileId: number;
+    // if not supplied, will use a placeholder one
+    iconFilePath?: string;
+  };
 
-  /** If used the CPIP fair icon, global changes must still be specified with the proper paths */
-  fairCpip?: true;
+  /** If used the CPIP fair icon and its info */
+  fairCpip?: {
+    // exact ID
+    iconFileId: number;
+    // UI id might be required in the future if we find different ones
+  };
 
   updates?: Array<{
     comment?: string;
@@ -989,11 +998,9 @@ export const PARTIES: Party[] = [
       forts: 221,
       town: 221
     },
-    globalChanges: {
-      'tickets.swf': [2506, 'tickets'],
-      'ticket_icon.swf': [4449, 'ticket_icon']
-    },
-    fairCpip: true
+    fairCpip: {
+      iconFileId: 4449
+    }
   },
   {
     name: '3rd Anniversary Party',
@@ -1677,10 +1684,6 @@ export const PARTIES: Party[] = [
       forts: 221,
       town: 221
     },
-    globalChanges: {
-      'tickets.swf': [2506, 'tickets'],
-      'ticket_icon.swf': [4449, 'ticket_icon']
-    },
     localChanges: {
       'catalogues/prizebooth.swf': {
         'en': 4448
@@ -1689,7 +1692,47 @@ export const PARTIES: Party[] = [
         'en': 4450
       }
     },
-    fairCpip: true
+    fairCpip: {
+      iconFileId: 4449
+    }
+  },
+  {
+    name: 'Sensei\'s Fire Scavenger Hunt',
+    startDate: '2009-09-14',
+    endDate: '2009-09-28',
+    roomChanges: {
+      beach: 4454,
+      beacon: 4455,
+      cave: 4456,
+      coffee: 4457,
+      cove: 4458,
+      dock: 4459,
+      dojo: 4460,
+      dojoext: 4461,
+      shop: 4462,
+      agent: 4463,
+      berg: 4464,
+      attic: 4465,
+      forest: 4466,
+      shack: 4467,
+      dojohide: 4468,
+      pizza: 4469,
+      plaza: 4470,
+      pet: 4471,
+      mtn: 4472,
+      lodge: 4473,
+      village: 4474,
+      forts: 4475,
+      sport: 4476,
+      rink: 4477,
+      town: 4478
+    },
+    globalChanges: {
+      'scavenger_hunt/hunt_ui.swf': [4480, 'easter_egg_hunt', 'easter_hunt'],
+    },
+    scavengerHunt2010: {
+      iconFileId: 4479
+    }
   },
   {
     name: '4th Anniversary Party',
@@ -1910,10 +1953,13 @@ export const PARTIES: Party[] = [
       'plaza': 219
     },
     globalChanges: {
-      'scavenger_hunt/recycle_icon.swf': [2386, 'scavenger_hunt_icon'],
       'scavenger_hunt/recycle.swf': [2385, 'easter_egg_hunt', 'recycle_hunt']
     },
-    scavengerHunt2010: true,
+    scavengerHunt2010: {
+      // file to this one was potentially named recycle_icon.swf, this info will be lost here though
+      iconFileId: 2386,
+      iconFilePath: 'scavenger_hunt/recycle_icon.swf'
+    },
     construction: {
       date: '2010-04-15',
       changes: {
@@ -2228,11 +2274,9 @@ export const PARTIES: Party[] = [
       'party2': 221,
       'party3': 221
     },
-    globalChanges: {
-      'tickets.swf': [2506, 'tickets'],
-      'ticket_icon.swf': [2507, 'ticket_icon']
+    fairCpip: {
+      iconFileId: 2507
     },
-    fairCpip: true,
     generalChanges: {
       'web_service/worldachievements.xml': 2515
     },
@@ -2324,7 +2368,6 @@ export const PARTIES: Party[] = [
     },
     globalChanges: {
       'content/map.swf': 2560,
-      'scavenger_hunt/scavenger_hunt_icon.swf': [2561, 'scavenger_hunt_icon'],
       'scavenger_hunt/hunt_ui.swf': [2562, 'hunt_ui', 'halloween_hunt'],
       'binoculars/empty.swf': 2563, // from 2007 party
       'igloo/assets/igloo_background.swf': 2564, // from 2011 party
@@ -2376,7 +2419,9 @@ export const PARTIES: Party[] = [
       'party4': 300,
       'party5': 298
     },
-    scavengerHunt2010: true
+    scavengerHunt2010: {
+      iconFileId: 2561
+    }
   },
   {
     name: 'Sensei\'s Water Scavenger Hunt',
@@ -2405,8 +2450,7 @@ export const PARTIES: Party[] = [
       'dojowater': 2587
     },
     globalChanges: {
-      'scavenger_hunt/scavenger_hunt_icon.swf': [2589, 'scavenger_hunt_icon'],
-      'scavenger_hunt/hunt_ui.swf': [2588, 'hunt_ui', 'easter_egg_hunt', 'scavenger_hunt']
+      'scavenger_hunt/hunt_ui.swf': [2588, 'easter_egg_hunt', 'scavenger_hunt']
     },
     updates: [
       {
@@ -2416,7 +2460,9 @@ export const PARTIES: Party[] = [
         }
       }
     ],
-    scavengerHunt2010: true
+    scavengerHunt2010: {
+      iconFileId: 2589
+    }
   },
   {
     name: 'Celebration of Water',
