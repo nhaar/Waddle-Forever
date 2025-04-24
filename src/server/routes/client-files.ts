@@ -315,6 +315,13 @@ function addParties(map: TimelineMap): void {
       map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2384);
     }
 
+    // all CPIP fair parties have the same dependency for loading the fair icon
+    // this is possible to change if we can recreate the exact method it used
+    if (party.fairCpip) {
+      map.addTemp('play/v2/client/fair.swf', startDate, endDate, 2513);
+      map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2514);
+    }
+
     if (party.updates !== undefined) {
       party.updates.forEach((update) => {
         addPartyChanges(update.date, endDate, {

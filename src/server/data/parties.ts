@@ -34,6 +34,9 @@ export type Party = PartyChanges & {
   construction?: Construction;
   scavengerHunt2010?: true;
 
+  /** If used the CPIP fair icon, global changes must still be specified with the proper paths */
+  fairCpip?: true;
+
   updates?: Array<{
     comment?: string;
     date: string;
@@ -988,12 +991,9 @@ export const PARTIES: Party[] = [
     },
     globalChanges: {
       'tickets.swf': [2506, 'tickets'],
-      'ticket_icon.swf': [2507, 'ticket_icon']
+      'ticket_icon.swf': [4449, 'ticket_icon']
     },
-    generalChanges: {
-      'play/v2/client/fair.swf': 2513,
-      'play/v2/client/dependencies.json': 2514
-    }
+    fairCpip: true
   },
   {
     name: '3rd Anniversary Party',
@@ -1632,6 +1632,66 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'The Fair',
+    startDate: '2009-09-04',
+    endDate: '2009-09-14',
+    roomChanges: {
+      coffee: 2490,
+      lounge: 2492,
+      beach: 4431,
+      beacon: 4432,
+      party: 4433,
+      cave: 4434,
+      cove: 4435,
+      dock: 4436,
+      forest: 4437,
+      party3: 4438,
+      party2: 4439,
+      berg: 4440,
+      dance: 4441,
+      pizza: 4442,
+      plaza: 4443,
+      mtn: 4444,
+      village: 4445,
+      forts: 4446,
+      town: 4447
+    },
+    music: {
+      coffee: 221,
+      lounge: 221,
+      beach: 221,
+      beacon: 221,
+      party: 221,
+      cave: 221,
+      cove: 221,
+      dock: 221,
+      forest: 221,
+      party3: 221,
+      party2: 221,
+      berg: 221,
+      dance: 221,
+      pizza: 221,
+      plaza: 221,
+      mtn: 221,
+      village: 221,
+      forts: 221,
+      town: 221
+    },
+    globalChanges: {
+      'tickets.swf': [2506, 'tickets'],
+      'ticket_icon.swf': [4449, 'ticket_icon']
+    },
+    localChanges: {
+      'catalogues/prizebooth.swf': {
+        'en': 4448
+      },
+      'catalogues/prizeboothmember.swf': {
+        'en': 4450
+      }
+    },
+    fairCpip: true
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
@@ -2157,9 +2217,8 @@ export const PARTIES: Party[] = [
       'tickets.swf': [2506, 'tickets'],
       'ticket_icon.swf': [2507, 'ticket_icon']
     },
+    fairCpip: true,
     generalChanges: {
-      'play/v2/client/fair.swf': 2513,
-      'play/v2/client/dependencies.json': 2514,
       'web_service/worldachievements.xml': 2515
     },
     localChanges: {

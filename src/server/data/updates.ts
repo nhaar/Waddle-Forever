@@ -27,7 +27,7 @@ export const EPF_RELEASE = '2010-05-27';
 
 export const WATER_HUNT_END = '2010-11-24';
 
-export const WATER_CELEBRATION_END = '2010-10-02';
+export const WATER_CELEBRATION_END = '2010-12-02';
 
 export const PLANET_Y_2010 = '2010-11-19';
 
