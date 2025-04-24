@@ -1582,6 +1582,56 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Festival of Flight',
+    startDate: '2009-08-14',
+    endDate: '2009-08-20',
+    roomChanges: {
+      beach: 4406,
+      beacon: 4407,
+      cave: 4408,
+      cove: 4409,
+      dock: 4410,
+      forest: 4411,
+      party: 4412,
+      berg: 4413,
+      dance: 4414,
+      plaza: 4415,
+      mtn: 4416,
+      village: 4417,
+      forts: 4418,
+      party2: 4419,
+      town: 4420
+    },
+    music: {
+      beach: 277,
+      beacon: 277,
+      cave: 277,
+      cove: 277,
+      dance: 279,
+      dock: 277,
+      forest: 277,
+      forts: 277,
+      mtn: 277,
+      plaza: 277,
+      village: 277,
+      town: 277,
+      party: 278,
+      party2: 278
+    },
+    construction: {
+      date: '2009-08-07',
+      changes: {
+        beach: 4424,
+        beacon: 4425,
+        dock: 4426,
+        forest: 4427,
+        plaza: 4428,
+        forts: 4429,
+        town: 4430
+      }
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
