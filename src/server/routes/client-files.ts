@@ -172,12 +172,15 @@ function addNewspapers(map: RouteMap): void {
       ['back/jokesAndRiddles.swf', news.jokes],
       ['back/dividers.swf', news.dividersBack ?? 4771],
       ['back/navigation.swf', news.navigationBack ?? 4772],
-      ['overlays/riddlesAnswers.swf', news.answers]
+      ['overlays/riddlesAnswers.swf', news.answers],
     ]
     if (news.extraJokes !== undefined) {
       newspaperComponenets.push(['overlays/extraJokes.swf', news.extraJokes]);
     }
-
+    if (news.secret !== undefined) {
+      newspaperComponenets.push(['overlays/secret.swf', news.secret]);
+    }
+    
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
       addToRouteMap(map, path.join(newsPath, 'content', route), getMediaFilePath(file));

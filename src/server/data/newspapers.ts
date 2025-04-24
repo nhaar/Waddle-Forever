@@ -60,6 +60,7 @@ export type As3Newspaper = {
   // seems like this is otherwise called topTips early on?
   secrets: number;
   extraJokes: number | undefined;
+  secret: number | undefined;
 }
 
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
@@ -1253,7 +1254,8 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     navigationBack: null,
     navigationFront: null,
     submit: null,
-    extraJokes: undefined
+    extraJokes: undefined,
+    secret: undefined
   },
   {
     date: '2010-11-26',
@@ -1274,7 +1276,8 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     navigationBack: null,
     navigationFront: null,
     submit: null,
-    extraJokes: 4775
+    extraJokes: 4775,
+    secret: undefined
   },
   {
     date: '2010-12-03',
@@ -1295,6 +1298,51 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     answers: 4792,
     supportStory: 4793,
     upcomingEvents: 4794,
-    extraJokes: undefined
+    extraJokes: undefined,
+    secret: undefined
+  },
+  {
+    date: '2010-12-10',
+    headline: 'COINS FOR CHANGE IS COMING',
+    askBack: 4795,
+    askFront: 4796,
+    featureStory: 4797,
+    headerBack: 4798,
+    headerFront: 4799,
+    jokes: 4800,
+    newsFlash: 4801,
+    answers: 4802,
+    supportStory: 4803,
+    secrets: 4804,
+    upcomingEvents: 4805,
+    navigationBack: null,
+    navigationFront: null,
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    secret: undefined
+  },
+  {
+    date: '2010-12-17',
+    headline: 'HOLIDAY PARTY IS HERE',
+    askBack: 4806,
+    askFront: 4807,
+    featureStory: 4808,
+    headerBack: 4809,
+    headerFront: 4810,
+    jokes: 4811,
+    newsFlash: 4812,
+    answers: 4813,
+    secrets: 4815,
+    supportStory: 4816,
+    upcomingEvents: 4817,
+    dividersBack: 4818,
+    navigationBack: 4819,
+    submit: 4820,
+    dividersFront: 4821,
+    navigationFront: 4822,
+    extraJokes: undefined,
+    secret: 4814
   }
 ];
