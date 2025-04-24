@@ -19,7 +19,7 @@ import { FALLBACKS } from "../data/fallbacks";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
-import { BETA_RELEASE, CPIP_UPDATE } from "../data/updates";
+import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, PRE_CPIP_REWRITE_DATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
 import { Newspaper, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
@@ -120,15 +120,29 @@ function addNewspapers(map: RouteMap): void {
   const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
   NEWSPAPERS.forEach((news, index) => {
     if (news.fileId !== undefined) {
+      const filePath = getMediaFilePath(news.fileId);
+      const issueNumber = index + preBoilerPapers + 1;
       if (isNewspaperBeforeCPIP(news)) {
-        const filePath = getMediaFilePath(news.fileId);
-        addToRouteMap(map, `artwork/news/news${index + preBoilerPapers + 1}.swf`, filePath);
+        addToRouteMap(map, `artwork/news/news${issueNumber}.swf`, filePath);
         const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
         addToRouteMap(map, path.join('media/artwork/news', route2007), filePath);
       }
+      // for all the 2006 boiler rooms we have archived,
+      // they seem to only show a singular newspaper, presumed
+      // to maybe be the previous newspaper?
+
+      // if index + 2 is after boiler room is available, then index + 1 was readable after boiler room was available
+      // and thus index was a predecessor to a newspaper available after boiler room
+      if (isGreaterOrEqual(NEWSPAPERS[index + 2].date, CAVE_OPENING_START) && isLower(news.date, PRE_CPIP_REWRITE_DATE)) {
+        // I am a bit unsure of why the client is handled like this, but the name of the archive and
+        // regular newspaper are the same for some reason? So we have to increment the issue number
+        // this is definitely a mystery however, maybe if more files or footage is found light can be shed
+        // upon this issue
+        addToRouteMap(map, path.join('artwork/archives', `news${issueNumber + 1}.swf`), filePath);
+      }
       if (isNewspaperAfterCPIP(NEWSPAPERS[index + 1])) {
         const date = news.date.replaceAll('-', '');
-        addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, getMediaFilePath(news.fileId));
+        addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, filePath);
       }
     }
   })
