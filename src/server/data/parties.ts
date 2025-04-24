@@ -1217,6 +1217,63 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Puffle Party',
+    startDate: '2009-02-20',
+    endDate: '2009-02-24',
+    roomChanges: {
+      beach: 4235,
+      beacon: 4236,
+      cave: 4237,
+      cove: 4238,
+      dance: 4239,
+      dock: 4240,
+      dojo: 4097,
+      forest: 4241,
+      berg: 4242,
+      light: 4243,
+      mtn: 4244,
+      pet: 4245,
+      plaza: 4246,
+      party: 4247,
+      attic: 4248,
+      village: 4249,
+      forts: 4250,
+      town: 4251,
+    },
+    music: {
+      town: 260,
+      beach: 260,
+      dock: 260,
+      pet: 261,
+      plaza: 259,
+      forest: 259,
+      cove: 259,
+      berg: 259,
+      beacon: 261,
+      light: 31,
+      cave: 240,
+      dance: 243,
+      forts: 260,
+      party: 259,
+      village: 260
+    },
+    construction: {
+      date: '2009-02-13',
+      changes: {
+        beacon: 4258,
+        cave: 4259,
+        cove: 4260,
+        forest: 4261,
+        berg: 4262,
+        light: 4263,
+        dance: 4264,
+        plaza: 4265,
+        village: 4266,
+        town: 4267
+      }
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',

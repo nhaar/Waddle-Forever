@@ -27,7 +27,8 @@
     "local-crumbs": "ts-node crumbs/local-crumbs.ts",
     "verify": "ts-node labels/verify-labels.ts",
     "shorten": "ts-node labels/shorten-paths.ts",
-    "expand": "ts-node labels/expand-paths.ts"
+    "expand": "ts-node labels/expand-paths.ts",
+    "files": "ts-node scripts/create-lines.ts"
   },
   "author": "CPS",
   "license": "MIT",
