@@ -75,6 +75,7 @@
 		<content id="secretOverlay" url="content/overlays/secretOverlay.swf" />	
 		<content id="featureMore" url="content/overlays/featureMore.swf" />	
 		<content id="supportMore" url="content/overlays/supportMore.swf" />
+		<content id="extraJokes" url="content/overlays/extraJokes.swf" />
 						
 	</overlays>
 	

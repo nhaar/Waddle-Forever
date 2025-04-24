@@ -56,8 +56,10 @@ export type As3Newspaper = {
   jokes: number;
   navigationBack: number | null;
   submit: number | null;
-  tips: number;
   answers: number;
+  // seems like this is otherwise called topTips early on?
+  secrets: number;
+  extraJokes: number | undefined;
 }
 
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
@@ -1026,6 +1028,11 @@ export const AS2_NEWSPAPERS: As2Newspaper[] = [
     fileId: 4750
   },
   {
+    date: '2009-12-24',
+    headline: 'HAPPY HOLIDAYS CLUB PENGUIN!',
+    fileId: 4751
+  },
+  {
     date: '2009-12-31',
     headline: 'HAPPY NEW YEAR CLUB PENGUIN!',
     fileId: 3742
@@ -1239,13 +1246,14 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     newsFlash: 4762,
     answers: 4763,
     supportStory: 4764,
-    tips: 4765,
+    secrets: 4765,
     upcomingEvents: 4766,
     dividersBack: null,
     dividersFront: null,
     navigationBack: null,
     navigationFront: null,
-    submit: null
+    submit: null,
+    extraJokes: undefined
   },
   {
     date: '2010-11-26',
@@ -1259,12 +1267,34 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     newsFlash: 4780,
     answers: 4781,
     supportStory: 4782,
-    tips: 4783,
+    secrets: 4783,
     upcomingEvents: 4784,
     dividersBack: null,
     dividersFront: null,
     navigationBack: null,
     navigationFront: null,
-    submit: null
+    submit: null,
+    extraJokes: 4775
+  },
+  {
+    date: '2010-12-03',
+    headline: 'GIFT SHOP FULL OF FESTIVE FASHION',
+    secrets: 4769,
+    dividersFront: 4767,
+    dividersBack: 4771,
+    navigationFront:4768,
+    navigationBack: 4772,
+    submit: 4770,
+    askBack: 4785,
+    askFront: 4786,
+    featureStory: 4787,
+    headerBack: 4788,
+    headerFront: 4789,
+    jokes: 4790,
+    newsFlash: 4791,
+    answers: 4792,
+    supportStory: 4793,
+    upcomingEvents: 4794,
+    extraJokes: undefined
   }
 ];
