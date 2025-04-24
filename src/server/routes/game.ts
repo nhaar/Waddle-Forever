@@ -1,13 +1,14 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
-import { isEngine1, isEngine2, isEngine3 } from "./versions";
+import { isEngine1, isEngine2, isEngine3, isLower } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
 import { getDynamicMusicListData } from "../game/igloo-lists";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "../game/setup.txt";
 import { getNewsTxt } from "../game/news.txt";
+import { AS3_UPDATE } from "../data/updates";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -28,8 +29,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/', (s) => {
     if (isEngine1(s.settings.version)) {
       return 'websites/old-precpip.html';
-    } else if (isEngine2(s.settings.version)) {
+    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
       return 'websites/classic-cpip.html';
+    } else if (!isEngine3(s.settings.version)) {
+      return 'websites/classic-as3.html';
     } else {
       return 'websites/modern-as3.html';
     }

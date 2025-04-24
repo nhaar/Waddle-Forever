@@ -1,5 +1,5 @@
 import { Version } from "../routes/versions";
-import { FIRST_BOILER_ROOM_PAPER } from "./updates";
+import { FIRST_AS3_NEWSPAPER, FIRST_BOILER_ROOM_PAPER } from "./updates";
 
 export const FAN_ISSUE_DATE = '2005-10-28'
 
@@ -32,13 +32,35 @@ export const PRE_BOILER_ROOM_PAPERS: Version[] = [
   '2006-04-06'
 ];
 
-export type Newspaper = {
+export type As2Newspaper = {
   date: Version,
   headline: string,
   fileId?: number;
 }
 
-export const NEWSPAPERS: Newspaper[] = [
+/** Null properties are unarchived */
+export type As3Newspaper = {
+  date: Version;
+  headline: string;
+  askFront: number;
+  dividersFront: number | null;
+  featureStory: number;
+  headerFront: number;
+  navigationFront: number | null;
+  newsFlash: number;
+  supportStory: number;
+  upcomingEvents: number;
+  askBack: number;
+  dividersBack: number | null;
+  headerBack: number;
+  jokes: number;
+  navigationBack: number | null;
+  submit: number | null;
+  tips: number;
+  answers: number;
+}
+
+export const AS2_NEWSPAPERS: As2Newspaper[] = [
   {
     date: FIRST_BOILER_ROOM_PAPER,
     headline: 'EASTER EGG HUNT!!'
@@ -1203,3 +1225,26 @@ export const NEWSPAPERS: Newspaper[] = [
     headline: 'FIRST RAINSTORM ON RECORD'
   }
 ]
+
+export const AS3_NEWSPAPERS: As3Newspaper[] = [
+  {
+    date: FIRST_AS3_NEWSPAPER,
+    headline: 'READY FOR CARD-JITSU WATER?',
+    askBack: 4756,
+    askFront: 4757,
+    featureStory: 4758,
+    headerBack: 4759,
+    headerFront: 4760,
+    jokes: 4761,
+    newsFlash: 4762,
+    answers: 4763,
+    supportStory: 4764,
+    tips: 4765,
+    upcomingEvents: 4766,
+    dividersBack: null,
+    dividersFront: null,
+    navigationBack: null,
+    navigationFront: null,
+    submit: null
+  }
+];

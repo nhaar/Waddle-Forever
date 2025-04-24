@@ -1,4 +1,4 @@
-import { NEWSPAPERS } from "../data/newspapers";
+import { AS2_NEWSPAPERS } from "../data/newspapers";
 import { findEarliestDateHitIndex } from "../routes/client-files";
 import { processVersion, Version } from "../routes/versions";
 
@@ -10,8 +10,8 @@ export function getNewspaperName(date: Version): string {
 
 /** Handles the news.txt file from the Pre-CPIP rewrite */
 export function getNewsTxt(date: Version): string {
-  const index = findEarliestDateHitIndex(date, NEWSPAPERS);
-  const paper = NEWSPAPERS[index];
+  const index = findEarliestDateHitIndex(date, AS2_NEWSPAPERS);
+  const paper = AS2_NEWSPAPERS[index];
 
   return `
 &archive=1&

@@ -1,5 +1,5 @@
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
-import { ANNIVERSARY_5_START, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
+import { ANNIVERSARY_5_START, AS3_UPDATE, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
 
 type StandaloneChange = {
   route: string;
@@ -48,6 +48,20 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
     {
       fileId: 2261,
       date: STAMPS_RELEASE
+    }
+  ],
+  'play/v2/client/club_penguin.swf': [
+    {
+      // this file is from Dec 2010, but will be using it as a placeholder
+      // one from november 2010 exists in archives, and should be included if they are different
+      fileId: 4753,
+      date: AS3_UPDATE
+    }
+  ],
+  'play/v2/client/Newspaper.swf': [
+    {
+      fileId: 4754,
+      date: AS3_UPDATE
     }
   ],
   'play/v2/games/paddle/paddle.swf': [

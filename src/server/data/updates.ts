@@ -87,5 +87,11 @@ export const MUSIC_JAM_08_START = '2008-07-25';
 
 export const DIG_OUT_DOJO_END = '2008-11-14';
 
+export const FIRST_AS3_NEWSPAPER = '2010-11-19';
+
+// Update is around Oct 23, but this so far is the first practical
+// use of AS3 in WF
+export const AS3_UPDATE = FIRST_AS3_NEWSPAPER;
+
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = MUSIC_JAM_08_START;

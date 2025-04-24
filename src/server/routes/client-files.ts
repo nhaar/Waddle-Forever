@@ -21,7 +21,7 @@ import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, PRE_CPIP_REWRITE_DATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
-import { Newspaper, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
+import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 import { getNewspaperName } from "../game/news.txt";
 
@@ -107,18 +107,22 @@ function addMusicFiles(map: TimelineMap): void {
   })
 }
 
-function isNewspaperBeforeCPIP(newspaper: Newspaper): boolean {
+function isNewspaperBeforeCPIP(newspaper: As2Newspaper): boolean {
   return isLower(newspaper.date, CPIP_UPDATE);
 }
 
 /** Check if a newspaper is accessible after CPIP, the argument is the newspaper after it or undefined if it's the "last" newspaper */
-export function isNewspaperAfterCPIP(nextNewspaper: Newspaper | undefined) {
+export function isNewspaperAfterCPIP(nextNewspaper: As2Newspaper | undefined) {
   return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, CPIP_UPDATE);
+}
+
+export function getMinifiedDate(date: Version): string {
+  return date.replaceAll('-', '');
 }
 
 function addNewspapers(map: RouteMap): void {
   const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
-  NEWSPAPERS.forEach((news, index) => {
+  AS2_NEWSPAPERS.forEach((news, index) => {
     if (news.fileId !== undefined) {
       const filePath = getMediaFilePath(news.fileId);
       const issueNumber = index + preBoilerPapers + 1;
@@ -133,18 +137,46 @@ function addNewspapers(map: RouteMap): void {
 
       // if index + 2 is after boiler room is available, then index + 1 was readable after boiler room was available
       // and thus index was a predecessor to a newspaper available after boiler room
-      if (isGreaterOrEqual(NEWSPAPERS[index + 2].date, CAVE_OPENING_START) && isLower(news.date, PRE_CPIP_REWRITE_DATE)) {
+      if (isGreaterOrEqual(AS2_NEWSPAPERS[index + 2].date, CAVE_OPENING_START) && isLower(news.date, PRE_CPIP_REWRITE_DATE)) {
         // I am a bit unsure of why the client is handled like this, but the name of the archive and
         // regular newspaper are the same for some reason? So we have to increment the issue number
         // this is definitely a mystery however, maybe if more files or footage is found light can be shed
         // upon this issue
         addToRouteMap(map, path.join('artwork/archives', `news${issueNumber + 1}.swf`), filePath);
       }
-      if (isNewspaperAfterCPIP(NEWSPAPERS[index + 1])) {
-        const date = news.date.replaceAll('-', '');
+      if (isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])) {
+        const date = getMinifiedDate(news.date);
         addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, filePath);
       }
     }
+  })
+
+  
+  const configXmlPath = getMediaFilePath(4755);
+  AS3_NEWSPAPERS.forEach((news) => {
+    const newsPath = `play/v2/content/local/en/news/${getMinifiedDate(news.date)}`;
+    addToRouteMap(map, path.join(newsPath, 'config.xml'), configXmlPath);
+    const newspaperComponenets: Array<[string, number]> = [
+      ['front/header.swf', news.headerFront],
+      ['front/featureStory.swf', news.featureStory],
+      ['front/supportStory.swf', news.supportStory],
+      ['front/upcomingEvents.swf', news.upcomingEvents],
+      ['front/newsFlash.swf', news.newsFlash],
+      ['front/askAuntArctic.swf', news.askFront],
+      ['front/dividers.swf', news.dividersFront ?? 4767],
+      ['front/navigation.swf', news.navigationFront ?? 4768],
+      ['back/header.swf', news.headerBack],
+      ['back/askAuntArctic.swf', news.askBack],
+      ['back/secrets.swf', 4769],
+      ['back/submitYourContent.swf', news.submit ?? 4770],
+      ['back/jokesAndRiddles.swf', news.jokes],
+      ['back/dividers.swf', news.dividersBack ?? 4771],
+      ['back/navigation.swf', news.navigationBack ?? 4772]
+    ]
+    newspaperComponenets.forEach((pair) => {
+      const [route, file] = pair;
+      addToRouteMap(map, path.join(newsPath, 'content', route), getMediaFilePath(file));
+    }) 
   })
 }
 
@@ -750,7 +782,7 @@ function addCrumbs(map: TimelineMap): void {
   addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
 
   // remove first 6 which have no crumbs
-  NEWSPAPERS.slice(6).forEach((newspaper) => {
+  [...AS2_NEWSPAPERS.slice(6), ...AS3_NEWSPAPERS].forEach((newspaper) => {
     map.addPerm('play/v2/content/local/en/news/news_crumbs.swf', newspaper.date, path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'));
   });
 }

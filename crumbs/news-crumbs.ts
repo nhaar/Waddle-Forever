@@ -2,22 +2,20 @@ import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
 import { processVersion } from '../src/server/routes/versions';
-import { isNewspaperAfterCPIP, NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
-import { Newspaper, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from '../src/server/data/newspapers';
+import { getMinifiedDate, isNewspaperAfterCPIP, NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
+import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/data/newspapers';
 
+type LabeledAs2Newspaper = As2Newspaper & { type: 'as2' };
+type LabeledAs3Newspaper = As3Newspaper & { type: 'as3' };
+type Newspaper = LabeledAs2Newspaper | LabeledAs3Newspaper;
 
-// number at the end is issue of the first
-// first is newest, last is oldest
-type NewsSet = [Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, number]
+// number at the start is issue of the first
+// first newspaper is newest, last is oldest
+type NewsSet = [number, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper];
 
-function getMinifiedDate(news: Newspaper): string {
+function getNewspaperMinifiedDate(news: Newspaper): string {
   // same format but without dahses in-between
-  return news.date.replaceAll('-', '');
-}
-
-function getFileDate(news: Newspaper): string {
-  // same format but with _ separator
-  return news.date.replaceAll('-', '_');
+  return getMinifiedDate(news.date)
 }
 
 function getFullDate(news: Newspaper): string {
@@ -52,10 +50,20 @@ function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
     varname = `old_news${n}`
   }
 
-  const date = getMinifiedDate(newspaper)
+  const date = getNewspaperMinifiedDate(newspaper)
+
+  const newspaperPath = newspaper.type === 'as3' ? (
+    date
+  ) : (
+    // TODO not sure why legacy media was setup like this, local_crumbs
+    // from Dec 2010 show just news/date.swf
+    `${date}/${date}.swf`
+  );
+
+  //
   return `Push "news_paths"
 GetVariable
-Push "${varname}", "news/${date}/${date}.swf"
+Push "${varname}", "news/${newspaperPath}"
 SetMember
 Push "news_paths"
 `
@@ -101,9 +109,10 @@ NewObject
 DefineLocal
 `
 
-  bytecode += generateNewsPathAssign(-1, set[0])
+  const [number, ...newspapers] = set;
+  bytecode += generateNewsPathAssign(-1, newspapers[0])
   for (let i = 1; i < 7; i++) {
-    bytecode += generateNewsPathAssign(i - 1, set[i] as Newspaper)
+    bytecode += generateNewsPathAssign(i - 1, newspapers[i])
   }
 
   bytecode += `Push "news_crumbs", 0, "Array"
@@ -112,13 +121,13 @@ DefineLocal
 `
 
   for (let i = 1; i < 7; i++) {
-    bytecode += generateNewsArrayAdd(set[7], i - 1, set[i] as Newspaper)
+    bytecode += generateNewsArrayAdd(number, i - 1, newspapers[i])
   }
 
   return bytecode
 }
 
-const currentThings: Newspaper[] = [];
+const currentThings: Array<(LabeledAs2Newspaper) | (LabeledAs3Newspaper)> = [];
 // this issue number should be first issue number in a boiler room -1, 
 // which matches with the length of this array
 let issueNumber = PRE_BOILER_ROOM_PAPERS.length;
@@ -139,33 +148,46 @@ previousFiles.forEach((file) => {
   fs.unlinkSync(path.join(autoDir, file));
 });
 
-let i = 0;
-(async () => {
-  for (const newspaper of NEWSPAPERS) {
-    // doing it 10 at a time otherwise FFDEC will not withstand it
-    if (promises.length >= 10) {
-      await Promise.all(promises);
-      promises = [];
-    }
-    currentThings.push(newspaper)
-    issueNumber++;
-  
-    if (currentThings.length > 7) {
-      currentThings.shift()
-    }
+async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newspaper, index: number): Promise<void> {
+  // doing it 10 at a time otherwise FFDEC will not withstand it
+  if (promises.length >= 10) {
+    await Promise.all(promises);
+    promises = [];
+  }
+  currentThings.push({ ...newspaper });
+  issueNumber++;
 
-    // only generate news crumbs for post CPIP
-    if (currentThings.length === 7 && isNewspaperAfterCPIP(NEWSPAPERS[i + 1])) {
-      const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
-      
-      const recent = currentThings[6]
-      const fileName = getDateFileName(recent) + '.swf';
-      const filePath = path.join(autoDir, fileName);
-      console.log(`Exporting: ${fileName}`);
-      
-      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
-      promises.push(promise);
-    }
+  if (currentThings.length > 7) {
+    currentThings.shift()
+  }
+
+  // only generate news crumbs for post CPIP
+  const canGenerate = newspaper.type === 'as3' || (
+    isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])
+  );
+
+  if (currentThings.length === 7 && canGenerate) {
+    const filecontent = generateNewsCrumbs([issueNumber, currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0]])
+    
+    const recent = currentThings[6]
+    const fileName = getDateFileName(recent) + '.swf';
+    const filePath = path.join(autoDir, fileName);
+    console.log(`Exporting: ${fileName}`);
+    
+    const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+    promises.push(promise);
+  }
+}
+
+(async () => {
+  let i = 0;
+  for (const newspaper of AS2_NEWSPAPERS) {
+    await processNewspaper({ ...newspaper, type: 'as2' }, i);
     i++;
+  }
+
+  for (const newspaper of AS3_NEWSPAPERS) {
+    // index does not matter for this one
+    await processNewspaper({ ...newspaper, type: 'as3' }, 0);
   }
 })();

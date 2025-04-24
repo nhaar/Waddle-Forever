@@ -3,7 +3,7 @@ import path from 'path'
 import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { FAN_ISSUE_DATE, NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from '../server/data/newspapers';
+import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from '../server/data/newspapers';
 import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
@@ -222,7 +222,7 @@ function addNewspapers(map: DayMap): DayMap {
 
   const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
 
-  NEWSPAPERS.forEach((news, index) => {
+  [...AS2_NEWSPAPERS, ...AS3_NEWSPAPERS].forEach((news, index) => {
     const issue = preBoilerPapers + index + 1;
     addEvents(map, news.date, { newIssue: issue });
   })
