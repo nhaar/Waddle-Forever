@@ -1331,6 +1331,68 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'April Fools\' Party',
+    startDate: '2009-04-01',
+    endDate: '2009-04-06',
+    roomChanges: {
+      beach: 4290,
+      beacon: 4291,
+      boiler: 4292,
+      boxdimension: 4293,
+      party3: 4294,
+      cave: 4295,
+      coffee: 4296,
+      cove: 4297,
+      dock: 4298,
+      dojo: 4299,
+      dojoext: 4300,
+      forest: 4301,
+      berg: 4302,
+      light: 4303,
+      mine: 4304,
+      shack: 4305,
+      dance: 4306,
+      dojohide: 4307,
+      pizza: 4308,
+      plaza: 4309,
+      lodge: 4310,
+      village: 4311,
+      forts: 4312,
+      town: 4313
+    },
+    music: {
+      beach: 232,
+      beacon: 201,
+      boiler: 201,
+      cave: 201,
+      coffee: 201,
+      cove: 232,
+      dock: 232,
+      forest: 232,
+      berg: 232,
+      light: 201,
+      mine: 201,
+      shack: 232,
+      dance: 201,
+      pizza: 201,
+      plaza: 232,
+      lodge: 201,
+      village: 232,
+      forts: 232,
+      town: 232,
+      boxdimension: 264,
+      party3: 264
+    },
+    localChanges: {
+      'catalogues/party.swf': {
+        'en': 4317
+      },
+      'membership/party3.swf': {
+        'en': 4316
+      }
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
