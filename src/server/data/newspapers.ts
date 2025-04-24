@@ -61,6 +61,7 @@ export type As3Newspaper = {
   secrets: number;
   extraJokes: number | undefined;
   secret: number | undefined;
+  iglooWinners?: number;
 }
 
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
@@ -1271,11 +1272,11 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     supportStory: 4782,
     secrets: 4783,
     upcomingEvents: 4784,
-    dividersBack: null,
-    dividersFront: null,
-    navigationBack: null,
-    navigationFront: null,
-    submit: null,
+    dividersBack: 4823,
+    dividersFront: 4826,
+    navigationBack: 4823,
+    navigationFront: 4827,
+    submit: 4825,
     extraJokes: 4775,
     secret: undefined
   },
@@ -1344,5 +1345,51 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     navigationFront: 4822,
     extraJokes: undefined,
     secret: 4814
+  },
+  {
+    date: '2010-12-24',
+    headline: 'LIGHTHOUSE FILLING FAST!',
+    dividersBack: 4823,
+    navigationBack: 4824,
+    submit: 4825,
+    dividersFront: 4826,
+    navigationFront: 4827,
+    askBack: 4828,
+    askFront: 4829,
+    featureStory: 4830,
+    headerBack: 4831,
+    headerFront: 4832,
+    iglooWinners: 4833,
+    jokes: 4834,
+    newsFlash: 4835,
+    answers: 4836,
+    secret: 4837,
+    secrets: 4838,
+    supportStory: 4839,
+    upcomingEvents: 4840,
+    extraJokes: undefined
+  },
+  {
+    date: '2010-12-31',
+    headline: 'HAPPY NEW YEAR!',
+    askBack: 4841,
+    askFront: 4842,
+    featureStory: 4843,
+    headerBack: 4844,
+    headerFront: 4845,
+    iglooWinners: 4846,
+    jokes: 4847,
+    newsFlash: 4848,
+    answers: 4849,
+    secret: 4850,
+    secrets: 4851,
+    supportStory: 4852,
+    upcomingEvents: 4853,
+    navigationBack: null,
+    navigationFront: null,
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined
   }
 ];

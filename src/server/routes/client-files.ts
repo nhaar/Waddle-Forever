@@ -180,6 +180,9 @@ function addNewspapers(map: RouteMap): void {
     if (news.secret !== undefined) {
       newspaperComponenets.push(['overlays/secret.swf', news.secret]);
     }
+    if (news.iglooWinners !== undefined) {
+      newspaperComponenets.push(['overlays/iglooWinners.swf', news.iglooWinners]);
+    }
     
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
