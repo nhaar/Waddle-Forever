@@ -1313,6 +1313,24 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Penguin Play Awards',
+    startDate: '2009-03-20',
+    endDate: '2009-04-09',
+    roomChanges: {
+      party: 4285,
+      plaza: 4286,
+      stage: 4287
+    },
+    music: {
+      party: 40,
+      plaza: 40,
+      stage: 40
+    },
+    globalChanges: {
+      'content/shorts/penguinsTime.swf': 4289
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
