@@ -1692,6 +1692,21 @@ export const PARTIES: Party[] = [
     fairCpip: true
   },
   {
+    name: '4th Anniversary Party',
+    startDate: '2009-10-24',
+    endDate: '2009-10-26',
+    roomChanges: {
+      book: 4451,
+      coffee: 4452,
+      town: 4453
+    },
+    music: {
+      book: 250,
+      coffee: 250,
+      town: 250
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
