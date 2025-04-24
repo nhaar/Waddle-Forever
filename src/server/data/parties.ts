@@ -1530,6 +1530,58 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Music Jam',
+    startDate: '2009-07-17',
+    endDate: '2009-07-26',
+    roomChanges: {
+      party: 2451,
+      party3: 4382,
+      beach: 4383,
+      cave: 4384,
+      coffee: 4385,
+      cove: 4386,
+      lounge: 4387,
+      dock: 4388,
+      forest: 4389,
+      berg: 4390,
+      light: 4391,
+      dance: 4392,
+      party2: 4393,
+      pizza: 4394,
+      plaza: 4395,
+      mtn: 4396,
+      village: 4397,
+      forts: 4398,
+      rink: 4399,
+      town: 4400
+    },
+    music: {
+      dance: 242,
+      forts: 240,
+      lounge: 242,
+      mtn: 232,
+      pizza: 210,
+      plaza: 271,
+      town: 271,
+      party3: 272
+    },
+    construction: {
+      date: '2009-07-10',
+      changes: {
+        beach: 2464,
+        coffee: 2466,
+        cove: 2467,
+        dock: 2468,
+        forest: 2469,
+        berg: 2470,
+        light: 2471,
+        village: 2472,
+        forts: 2473,
+        rink: 4405
+      }
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
