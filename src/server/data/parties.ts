@@ -1480,6 +1480,56 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Adventure Party',
+    startDate: '2009-06-12',
+    endDate: '2009-06-16',
+    roomChanges: {
+      beach: 4356,
+      cave: 4357,
+      cove: 4358,
+      dock: 4359,
+      forest: 4360,
+      berg: 4361,
+      mine: 4362,
+      dance: 4363,
+      plaza: 4364,
+      forts: 4365,
+      rink: 4366,
+      town: 4367,
+      party: 4368
+    },
+    music: {
+      beach: 267,
+      cave: 268,
+      cove: 267,
+      dock: 267,
+      forest: 267,
+      berg: 268,
+      mine: 268,
+      dance: 269,
+      plaza: 267,
+      forts: 267,
+      rink: 267,
+      town: 267,
+      party1: 267
+    },
+    construction: {
+      date: '2009-06-05',
+      changes: {
+        beach: 4372,
+        shipnest: 4373,
+        cove: 4374,
+        dock: 4375,
+        forest: 4376,
+        ship: 4377,
+        plaza: 4378,
+        shiphold: 4379,
+        forts: 4380,
+        town: 4381
+      }
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
