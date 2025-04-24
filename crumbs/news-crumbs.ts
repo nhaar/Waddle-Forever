@@ -143,10 +143,10 @@ if (!fs.existsSync(autoDir)) {
   fs.mkdirSync(autoDir, { recursive: true });
 }
 
-const previousFiles = fs.readdirSync(autoDir);
-previousFiles.forEach((file) => {
-  fs.unlinkSync(path.join(autoDir, file));
-});
+// files previously in the folder
+const previousFiles = new Set<string>(fs.readdirSync(autoDir));
+// files that should not be deleted in the folder
+const properFiles = new Set<string>();
 
 async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newspaper, index: number): Promise<void> {
   // doing it 10 at a time otherwise FFDEC will not withstand it
@@ -171,15 +171,21 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
     
     const recent = currentThings[6]
     const fileName = getDateFileName(recent) + '.swf';
-    const filePath = path.join(autoDir, fileName);
-    console.log(`Exporting: ${fileName}`);
-    
-    const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
-    promises.push(promise);
+
+    properFiles.add(fileName)
+    // only adding files that need to be created
+    if (!previousFiles.has(fileName)) {
+      const filePath = path.join(autoDir, fileName);
+      console.log(`Exporting: ${fileName}`);
+      
+      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+      promises.push(promise);
+    }
   }
 }
 
 (async () => {
+  console.log('WARNING: This script doesn\'t delete previous news_crumbs files, reset your news_crumbs folder if needed');
   let i = 0;
   for (const newspaper of AS2_NEWSPAPERS) {
     await processNewspaper({ ...newspaper, type: 'as2' }, i);
@@ -190,4 +196,11 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
     // index does not matter for this one
     await processNewspaper({ ...newspaper, type: 'as3' }, 0);
   }
+
+  // deleting files that shouldn't be here
+  previousFiles.forEach((file) => {
+    if (!properFiles.has(file)) {
+      fs.unlinkSync(path.join(autoDir, file));
+    }
+  });
 })();
