@@ -1821,6 +1821,48 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Winter Party',
+    startDate: '2009-11-27',
+    endDate: '2009-11-30',
+    roomChanges: {
+      mtn: 4512,
+      village: 4513,
+      rink: 4514,
+      party: 4515,
+      party2: 4516,
+      party3: 4517,
+      party4: 4518,
+      party5: 4519,
+      party6: 4520,
+      party7: 4521,
+      party8: 4522,
+      party9: 4523,
+      party10: 4524,
+      party11: 4525
+    },
+    music: {
+      rink: 280,
+      village: 280,
+      mtn: 280,
+      party: 280,
+      party2: 280,
+      party3: 280,
+      party4: 280,
+      party5: 280,
+      party6: 280,
+      party7: 280,
+      party8: 280,
+      party9: 280,
+      party10: 280,
+      party11: 247
+    },
+    localChanges: {
+      'close_ups/maze_map.swf': {
+        'en': 4526
+      }
+    }
+  },
+  {
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',

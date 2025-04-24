@@ -4606,23 +4606,34 @@ export const FILES = new StaticDataTable<File, [
   [4509, 'RoomsSport-HalloweenParty2009.swf', 1, FileCategory.Archives, null, null],
   [4510, 'RoomsTown-HalloweenParty2009.swf', 1, FileCategory.Archives, null, null],
   [4511, 'RoomsNOTLS3EN-HalloweenParty2009.swf', 1, FileCategory.Archives, null, null],
-  [4512, '', 1, FileCategory.Archives, null, null],
-  [4513, '', 1, FileCategory.Archives, null, null],
-  [4514, '', 1, FileCategory.Archives, null, null],
-  [4515, '', 1, FileCategory.Archives, null, null],
-  [4516, '', 1, FileCategory.Archives, null, null],
-  [4517, '', 1, FileCategory.Archives, null, null],
-  [4518, '', 1, FileCategory.Archives, null, null],
-  [4519, '', 1, FileCategory.Archives, null, null],
-  [4520, '', 1, FileCategory.Archives, null, null],
-  [4521, '', 1, FileCategory.Archives, null, null],
-  [4522, '', 1, FileCategory.Archives, null, null],
-  [4523, '', 1, FileCategory.Archives, null, null],
-  [4524, '', 1, FileCategory.Archives, null, null],
-  [4525, '', 1, FileCategory.Archives, null, null],
-  [4526, '', 1, FileCategory.Archives, null, null],
-  [4527, '', 1, FileCategory.Archives, null, null],
-  [4528, '', 1, FileCategory.Archives, null, null],
+  [4512, 'RoomsMtn-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4513, 'RoomsVillage-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4514, 'RoomsRink-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4515, 'RoomsParty-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4516, 'RoomsParty2-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  
+  // all the rooms in this party that are marked as .Fix are because of an issue that i could
+  // not figure out with the game engine. When the room SWF loads, the player position
+  // obtained from the jr packet should have already been placed inside the penguin's mc coordinates
+  // however, for a mysterious reason, that is not the case, and engine.swf only updates it after
+  // the room checks, so I did a workaround of checking if _x != 0 as well since that
+  // is the default value
+  // this issue was broken with both the 2010 engine and the 2009 engine,
+  // indicating the issue might lie within shell.swf, or another SWF
+  // until those client files can be implemented, this party will have this workaround fix
+  // the issue in question is not being able to walk past the intersections of blue and orange paths
+  [4517, 'RoomsParty3-WinterParty.swf', 1, FileCategory.Fix, null, null],
+  [4518, 'RoomsParty4-WinterParty.swf', 1, FileCategory.Fix, null, null],
+  [4519, 'RoomsParty5-WinterParty.swf', 1, FileCategory.Fix, null, null],
+  [4520, 'RoomsParty6-WinterParty.swf', 1, FileCategory.Fix, null, null],
+  [4521, 'RoomsParty7-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4522, 'RoomsParty8-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4523, 'RoomsParty9-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4524, 'RoomsParty10-WinterParty.swf', 1, FileCategory.Fix, null, null],
+  [4525, 'RoomsParty11-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4526, 'ENClose_upsMaze_map-WinterParty.swf', 1, FileCategory.Archives, null, null],
+  [4527, 'Music117.swf', 1, FileCategory.Archives, null, null],
+  [4528, 'Music280.swf', 1, FileCategory.Archives, null, null],
   [4529, '', 1, FileCategory.Archives, null, null],
   [4530, '', 1, FileCategory.Archives, null, null],
   [4531, '', 1, FileCategory.Archives, null, null],

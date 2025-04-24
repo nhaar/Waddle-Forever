@@ -95,6 +95,7 @@ export const MUSIC_IDS: Record<number, number> = {
   277: 4421,
   278: 4422,
   279: 4423,
+  280: 4528,
   520: 231,
   532: 232,
   666: 234,
