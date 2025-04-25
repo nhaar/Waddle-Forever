@@ -58,7 +58,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2010-09-24',
         events: {
-          partyStart: 'The Stadium Games event started'
+          other: 'The Stadium Games event started'
         }
       },
       {
@@ -118,6 +118,7 @@ type Events = {
   /** If a music list was released this day */
   musicList?: true;
   newFurnitureCatalog?: true;
+  partyConstruction?: string;
 };
 
 // this type is duplicated in the timeline-static file, it should be the same type
@@ -196,7 +197,7 @@ function addParties(map: DayMap): DayMap {
     if (party.construction !== undefined) {
         const partyStart = `Construction for the ${party.name} starts`;
       
-        addEvents(map, party.construction.date, { partyStart });
+        addEvents(map, party.construction.date, { partyConstruction: partyStart });
     }
 
     if (party.updates !== undefined) {
@@ -213,7 +214,7 @@ function addParties(map: DayMap): DayMap {
 
 function addNewspapers(map: DayMap): DayMap {
   // fan issue, a CPT issue which didn't have a proper number
-  addEvents(map, FAN_ISSUE_DATE, { other: 'Fan issue of the newspaper released '});
+  addEvents(map, FAN_ISSUE_DATE, { newIssue: 'Fan issue of the newspaper released '});
 
   PRE_BOILER_ROOM_PAPERS.forEach((date, index) => {
     const issue = index + 1;
@@ -286,10 +287,25 @@ function updateTimeline(days: Day[]): Day[] {
   return getDaysFromMap(map);
 }
 
+enum EventType {
+  PartyStart,
+  PartyEnd,
+  PartyUpdate,
+  Newspaper,
+  Room,
+  Construction,
+  PenguinStyle,
+  FurnitureCatalog,
+  MusicList,
+  Stage,
+  Game,
+  Pin,
+  Other
+};
+
 type Event = {
   text: string;
-  partyStart?: true;
-  partyEnd?: true;
+  type: EventType;
 };
 
 function getConsumedTimeline(days: Day[]): Array<{
@@ -302,57 +318,76 @@ function getConsumedTimeline(days: Day[]): Array<{
     const events: Event[] = [];
 
     const pushText = (text: string) => {
-      events.push({ text });
+      events.push({ text, type: EventType.Other });
     }
 
     if (day.events.partyStart !== undefined) {
       events.push({
-        partyStart: true,
+        type: EventType.PartyStart,
         text: day.events.partyStart
       });
     }
     if (day.events.partyEnd !== undefined) {
       events.push({
-        partyEnd: true,
+        type: EventType.PartyEnd,
         text: day.events.partyEnd
       });
     }
     if (day.events.partyUpdate !== undefined) {
-      pushText(day.events.partyUpdate);
+      events.push({
+        text: day.events.partyUpdate,
+        type: EventType.PartyUpdate
+      })
+    }
+    if (day.events.partyConstruction !== undefined) {
+      events.push({ text: day.events.partyConstruction, type: EventType.Construction });
     }
     if (day.events.other !== undefined) {
       pushText(day.events.other);
     }
     if (day.events.roomOpen !== undefined) {
-      if (day.events.roomOpen.length === 1) {
-        pushText(`Room "${day.events.roomOpen[0]}" opens`);
-      } else {
-        pushText(`Rooms "${day.events.roomOpen.join(', ')}" open`);
-      }
+      let text = day.events.roomOpen.length ? (
+        `Room "${day.events.roomOpen[0]}" opens`
+      ) : (
+        `Rooms "${day.events.roomOpen.join(', ')}" open`
+      );
+      events.push({ text, type: EventType.Room });
     }
     if (day.events.minigameRelease !== undefined) {
-      pushText(`New minigame: ${day.events.minigameRelease}`);
+      events.push({ text : `New minigame: ${day.events.minigameRelease}`, type: EventType.Game });
     }
     if (day.events.newClothing === true) {
-      pushText('A new edition of the Penguin Style is out');
+      events.push({ text: 'A new edition of the Penguin Style is out', type: EventType.PenguinStyle });
+      // pushText('A new edition of the Penguin Style is out');
     }
     if (day.events.newIssue !== undefined) {
-      pushText(`Issue #${day.events.newIssue} of the newspaper releases`);
+      const text = typeof day.events.newIssue === 'number' ? (
+        `Issue #${day.events.newIssue} of the newspaper releases`
+      ) : day.events.newIssue;
+      
+      if (day.events.newIssue)
+      events.push({
+        type: EventType.Newspaper,
+        text
+      });
     }
     if (day.events.roomUpdate !== undefined) {
-      pushText(day.events.roomUpdate);
+      events.push({
+        text: day.events.roomUpdate,
+        type: EventType.Room
+      })
     }
     if (day.events.stagePlay !== undefined) {
-      pushText(day.events.stagePlay);
+      events.push({ text: day.events.stagePlay, type: EventType.Stage });
     }
     if (day.events.musicList === true) {
-      pushText('New music is available for igloos');
+      events.push({ text: 'New music is available for igloos', type: EventType.MusicList });
     }
     if (day.events.newFurnitureCatalog === true) {
-      pushText('New furniture catalog available');
+      events.push({ text: 'New furniture catalog available', type: EventType.FurnitureCatalog });
     }
     if (day.events.pin !== undefined) {
-      pushText(`The ${day.events.pin} is now hidden in the island`);
+      events.push({ text: `The ${day.events.pin} is now hidden in the island`, type: EventType.Pin });
     }
 
     const [year, month, monthDay] = processVersion(day.date);

@@ -3,6 +3,8 @@
   --hovered: #73c7f6;
   /* Basic unit of measurement that makes up the calendar */
   --cell-width: 5em;
+  --cell-padding: 0.4em;
+  --icon-size: 2em;
 
   /* Height that the version picker should occupy above */
   --version-pick-h: 8em;
@@ -87,7 +89,7 @@ td {
   height: var(--cell-width);
   border: 1px solid black;
   vertical-align: top;
-  padding: 0.4em;
+  padding: var(--cell-padding);
 }
 
 thead th {
@@ -127,7 +129,7 @@ thead th {
   font-weight: bolder;
 }
 
-.non-day, .undefined-day {
+.undefined-day {
   background-color: rgba(229, 229, 229, 1);
 }
 
@@ -156,13 +158,13 @@ thead th {
 }
 
 .yes-day:hover {
-  outline: 4px solid var(--hovered);
+  outline: 4px solid var(--selected);
   outline-offset: -2px;
   cursor: pointer;
 }
 
 .selected-day {
-  outline: 4px solid var(--selected); 
+  outline: 4px solid black; 
   outline-offset: -2px;
 }
 
@@ -171,9 +173,35 @@ thead th {
 }
 
 .party-day {
-  background-color: #ffbc3a;
+  background-color: var(--hovered);
 }
 
-.party-day.non-day {
-  background-color: #d6b168;
+.event-description-listing {
+  margin-top: 0.4em;
+  display: flex;
+  align-items: center;
+}
+
+.event-description {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  margin-left: 0.8em;
+}
+
+.day-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 }

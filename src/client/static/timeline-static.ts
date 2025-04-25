@@ -27,15 +27,18 @@ function getDescription(version: DateInfo): string {
     <div>
     On this day
     </div>
-    <ul>
+    <div>
       ${version.events.map((item) => {
         return `
-        <li>
-          ${item.text}
-        </li>
+        <div class="event-description-listing">
+          <img class="day-icon" src="${EVENT_IMAGE_MAP[item.type]}" />
+          <div class="event-description">
+            ${item.text}
+          </div>
+        </div>
         `
       }).join('')}
-    </ul>
+    </div>
   </div>
   `;
 }
@@ -47,10 +50,25 @@ const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
+enum EventType {
+  PartyStart,
+  PartyEnd,
+  PartyUpdate,
+  Newspaper,
+  Room,
+  Construction,
+  PenguinStyle,
+  FurnitureCatalog,
+  MusicList,
+  Stage,
+  Game,
+  Pin,
+  Other
+};
+
 type Event = {
   text: string;
-  partyStart?: true;
-  partyEnd?: true;
+  type: EventType
 };
 
 /** Basic unit of information about a singular day in the timeline */
@@ -81,6 +99,25 @@ function getDateInfo(dateStr: string) : {
     day
   };
 }
+
+const OTHER_ELEMENT = 'other.png';
+const PARTY_ELEMENT = 'party.png';
+
+const EVENT_IMAGE_MAP: Record<EventType, string> = {
+  [EventType.PartyStart]: PARTY_ELEMENT,
+  [EventType.PartyEnd]: PARTY_ELEMENT,
+  [EventType.Newspaper]: 'news.png',
+  [EventType.Other]: OTHER_ELEMENT,
+  [EventType.Room]: 'room.png',
+  [EventType.Construction]: 'const.png',
+  [EventType.FurnitureCatalog]: 'furniture.png',
+  [EventType.MusicList]: 'music.png',
+  [EventType.Stage]: 'stage.png',
+  [EventType.Game]: 'game.png',
+  [EventType.PartyUpdate]: PARTY_ELEMENT,
+  [EventType.Pin]: 'pin.png',
+  [EventType.PenguinStyle]: 'style.png',
+};
 
 function getDateElement({ day, year, month, events, selected, inParty }: DateInfo,
   left: DateInfo | undefined,
@@ -124,16 +161,38 @@ function getDateElement({ day, year, month, events, selected, inParty }: DateInf
     classes.push('non-party-day');
   }
 
+  const icons = new Set<string>();
+
+  for (const event of events) {
+    const iconName = EVENT_IMAGE_MAP[event.type];
+    icons.add(iconName);
+  }
+
+  let iconsArray: string[] = [];
+  // preventing overflowing
+  if (icons.size <= 4) {
+    iconsArray = Array.from(icons.values());
+  } else {
+    iconsArray = Array.from(icons.values()).filter((element) => element !== OTHER_ELEMENT).slice(0, 3);
+    iconsArray.push(OTHER_ELEMENT);
+  }
+
+  const imageElements = iconsArray.map((imageName) => `
+    <div class="image-container">
+      <img src="${imageName}" class="day-icon" />
+    </div>`);
+
+  while (imageElements.length < 4) {
+    imageElements.push('<div></div>');
+  }
+
   // data date will be important to be able to fetch what element is clicked
   return `
   <td class="${classes.join(' ')}" data-date="${getDateFormat({ year, month, day })}">
-  <div class="${events.length === 0 ? '' : 'clickable'}">
-    ${day}
-  </div>
-  <div>
-    
-  </div>
-  
+  <div class="${events.length === 0 ? '' : 'clickable'}">${day}</div>
+    <div class="icons-container">
+      ${imageElements.join('')}
+    </div>
   </td>
   `;
 }
@@ -213,14 +272,14 @@ function createCalendar(
   const endDate = new Date(2011, 0, 1);
   // iterating through every day between start and end
 
-  let inParty = false;
+  let partyCount = 0;
   for (let date = getDateFromDateInfo(days[0]); date < endDate; date.setDate(date.getDate() + 1)) {
     const dateInfoOfDate = {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
       events: [] as Event[],
-      inParty
+      inParty: partyCount > 0
     };
     
     const dateStr = getDateFormat(dateInfoOfDate);
@@ -229,16 +288,14 @@ function createCalendar(
       daysToUse.push(dateInfoOfDate);
     } else {
       let dayDateInfo = day;
-      if (inParty) {
-        if (dayDateInfo.events.some((e) => e.partyEnd === true)) {
-          inParty = false;
+      dayDateInfo.events.forEach((e) => {
+        if (e.type === EventType.PartyStart) {
+          partyCount++;
+        } else if (e.type === EventType.PartyEnd) {
+          partyCount--;
         }
-      } else {
-        if (dayDateInfo.events.some((e) => e.partyStart === true)) {
-          inParty = true;
-        }
-      }
-      dayDateInfo = { ...dayDateInfo, inParty };
+      })
+      dayDateInfo = { ...dayDateInfo, inParty: partyCount > 0 };
       if (dateStr === currentVersion) {
         dayDateInfo = { ...dayDateInfo, selected: true };
       }
@@ -398,15 +455,18 @@ function createCalendar(
   };
 
   // clicking on a day in the calendar
-  timelineElement.onclick = (e) => {
-    if (e.target instanceof HTMLElement) {
-      const date = e.target.dataset.date;
-      if (date !== undefined) {
-        updateVersion(date);
-        createCalendar(days, CalendarScrollAction.NoScroll, dayTitle, dayDescription);
+  const clickableDays = document.querySelectorAll('.yes-day');
+  clickableDays.forEach((element) => {
+    if (element instanceof HTMLElement) {
+      element.onclick = () => {
+        const date = element.dataset.date;
+        if (date !== undefined) {
+          updateVersion(date);
+          createCalendar(days, CalendarScrollAction.NoScroll, dayTitle, dayDescription);
+        }
       }
     }
-  }
+  })
 
   const updateDayOverview = (title: string, description: string) => {
     const dayTitleElement = document.getElementById(DAY_TITLE_ID)!;
@@ -417,10 +477,10 @@ function createCalendar(
     dayDescription = description;
   }
 
-  // updating information based on the day
-  timelineElement.onmousemove = (e) => {
-    if (e.target instanceof HTMLElement) {
-      const date = e.target.dataset.date;
+  const dayElements = document.querySelectorAll('td');
+  dayElements.forEach((element) => {
+    element.onmouseenter = () => {
+      const date = element.dataset.date;
       if (date !== undefined) {
         const dateInfo = dateMap[date];
         if (dateInfo === undefined) {
@@ -430,7 +490,7 @@ function createCalendar(
         }
       }
     }
-  }
+  })
 
   timelineElement.onmouseleave = () => {
     updateDayOverview(NON_DAY_DESCRIPTION, '');
