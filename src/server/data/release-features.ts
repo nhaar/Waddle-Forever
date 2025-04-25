@@ -2,7 +2,7 @@ import { RoomName } from "./rooms";
 
 export const ORIGINAL_ROOMS: Partial<Record<RoomName, number>> = {
   'town': 27,
-  'coffee': 7,
+  'coffee': 4855,
   'book': 29,
   'dance': 8,
   'lounge': 12,

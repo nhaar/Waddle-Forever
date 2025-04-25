@@ -67,10 +67,6 @@ export const CAVE_OPENING_START = '2006-05-26';
 
 export const CAVE_OPENING_END = '2006-05-29';
 
-// exact date this client is introduced is unknown
-// but the new CPIP system which uses more files than just chat.swf
-export const PRE_CPIP_REWRITE_DATE = '2007-01-01';
-
 export const SUMMER_PARTY_START = '2006-06-16';
 
 export const LIGHTHOUSE_PARTY_START = '2006-09-21';
@@ -88,6 +84,13 @@ export const MUSIC_JAM_08_START = '2008-07-25';
 export const DIG_OUT_DOJO_END = '2008-11-14';
 
 export const FIRST_AS3_NEWSPAPER = '2010-11-19';
+
+export const THIN_ICE_RELEASE = '2006-12-19';
+
+// exact date this client is introduced is unknown
+// but the new CPIP system which uses more files than just chat.swf
+// it should be from 2007 but THIN ICE is the first feature to require a more modern client
+export const PRE_CPIP_REWRITE_DATE = THIN_ICE_RELEASE;
 
 // Update is around Oct 23, but this so far is the first practical
 // use of AS3 in WF

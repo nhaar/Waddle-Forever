@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_CELEBRATION_END } from "./updates";
+import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -111,8 +111,10 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   },
   {
     // placeholder CPIP room
+    // this is from june 26, when dj3k disks are added
+    // other SWFs in-between are lost
     room: 'dance',
-    fileId: 248,
+    fileId: 4860,
     date: CPIP_UPDATE
   },
   {
@@ -148,25 +150,25 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'shop',
-    fileId: 267,
+    fileId: 4865,
     date: CPIP_UPDATE
   },
   {
-    // placeholder CPIP room
+    // the first CPIP room we have
     room: 'coffee',
-    fileId: 247,
+    fileId: 4856,
     date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'book',
-    fileId: 243,
+    fileId: 4858,
     date: CPIP_UPDATE
   },
   {
     // placeholder CPIP room
     room: 'lounge',
-    fileId: 259,
+    fileId: 4863,
     date: CPIP_UPDATE
   },
   {
@@ -392,6 +394,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: MODERN_AS3
   },
   {
+    // green puffle + boiler room trigger
     room: 'dance',
     fileId: 3779,
     date: CAVE_OPENING_START
@@ -418,6 +421,50 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     fileId: 4180,
     date: DIG_OUT_DOJO_END,
     comment: 'The dojo has a great reopening'
+  },
+  {
+    // first vectorized version of the Town, possibly from 2007
+    // unknown how to document it
+    room: 'town',
+    fileId: 4854,
+    date: PRE_CPIP_REWRITE_DATE
+  },
+  {
+    // an unknown update which removed the ability to click on the couch
+    room: 'coffee',
+    fileId: 7,
+    date: '2005-12-01'
+  },
+  {
+    // room with UGC art
+    room: 'book',
+    fileId: 4857,
+    date: '2010-10-23',
+    comment: 'The Book Room now contains Penguin Art'
+  },
+  {
+    // placeholder vectorized room, unknown date
+    room: 'dance',
+    fileId: 4859,
+    date: PRE_CPIP_REWRITE_DATE
+  },
+  {
+    room: 'dance',
+    fileId: 4861,
+    date: '2010-01-29',
+    comment: 'The Dance Club now changes colors if a lot of monochrome penguins are present'
+  },
+  {
+    room: 'lounge',
+    date: THIN_ICE_RELEASE,
+    comment: 'A new cabinet is in the Dance Lounge',
+    fileId: 4862
+  },
+  {
+    // unknown date, vectorized 07 rooms
+    room: 'shop',
+    date: PRE_CPIP_REWRITE_DATE,
+    fileId: 4864
   }
 ];
 
