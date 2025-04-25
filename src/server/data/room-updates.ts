@@ -1,9 +1,9 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIRST_STAGE_PLAY, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
-  fileId: number;
+  fileId: number | null;
   date: string;
 };
 
@@ -502,6 +502,18 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'rink',
     date: CPIP_UPDATE,
     fileId: 2645
+  },
+  {
+    // date of vectorization is unknown
+    room: 'plaza',
+    date: PRE_CPIP_REWRITE_DATE,
+    fileId: 4872
+  },
+  {
+    room: 'plaza',
+    date: '2007-01-26',
+    fileId: 4873,
+    comment: 'Tours are now present in the Plaza'
   }
 ];
 
@@ -598,5 +610,10 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     // not actual date, but we dont have a map for before the dojo was out yet, and
     // the dojo is inaccessible otherwise for the game CPIP-Dojo release
     date: CPIP_UPDATE
+  },
+  {
+    room: 'stage',
+    fileId: null,
+    date: FIRST_STAGE_PLAY
   }
 ];

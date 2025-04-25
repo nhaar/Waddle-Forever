@@ -1,4 +1,4 @@
-import { BETA_RELEASE, CAVE_OPENING_START, EGG_HUNT_2006_START, PRE_CPIP_REWRITE_DATE, WINTER_FIESTA_08_START } from "../data/updates";
+import { BETA_RELEASE, CAVE_OPENING_START, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE, WINTER_FIESTA_08_START } from "../data/updates";
 import { findEarliestDateHitIndex } from "./client-files";
 
 /** Map date and the version number it started using */
@@ -7,10 +7,8 @@ const VERSIONS: Record<string, number> = {
   [EGG_HUNT_2006_START]: 299,
   [CAVE_OPENING_START]: 339,
   [PRE_CPIP_REWRITE_DATE]: 506,
-  // no clue what the 604 features are yet,
-  // this was added to fix a bug that wasn't a bug
-  // so now I'm just leaving 604 here
-  [WINTER_FIESTA_08_START]: 604
+  // added 604 because it has the stage, though have no idea of where it is from yet
+  [FIRST_STAGE_PLAY]: 604
 };
 
 /** Get the version.txt file used in preCPIP */

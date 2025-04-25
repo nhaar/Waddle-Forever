@@ -142,9 +142,13 @@ export const PARTIES: Party[] = [
   {
     name: 'St. Patrick\'s Day Party',
     startDate: PET_SHOP_RELEASE,
+    startComment: 'A St. Patrick\'s Day and Puffle celebration starts',
+    endComment: 'The St. Patrick\'s Day and Puffle party ends',
     endDate: '2006-03-20',
     roomChanges: {
       'village': 110,
+      'plaza': 4870,
+      'town': 4871
     },
     roomFrames: {
       'village': 2

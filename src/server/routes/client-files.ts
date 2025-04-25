@@ -328,7 +328,9 @@ function addRoomInfo(map: TimelineMap): void {
   }
 
   ROOM_OPENINGS.forEach((opening) => {
-    addRoomChange(opening.room, opening.date, opening.fileId);
+    if (opening.fileId !== null) {
+      addRoomChange(opening.room, opening.date, opening.fileId);
+    }
   })
 
   ROOM_UPDATES.forEach((update) => {
@@ -960,13 +962,16 @@ function addStagePlays(map: TimelineMap): void {
     const date = debut.date;
 
     // Stage itself
-    map.addPerm('play/v2/content/global/rooms/stage.swf', date, debut.stageFileId);
+    addRoomRoute(map, date, 'stage', debut.stageFileId);
 
     if (debut.plazaFileId !== null) {
       // Plaza
-      map.addPerm('play/v2/content/global/rooms/plaza.swf', date, debut.plazaFileId);
+      addRoomRoute(map, date, 'plaza', debut.plazaFileId);
     }
 
+    // simply hardcoding every catalogue to be from 0712 for now
+    map.addPerm('media/artwork/catalogue/costume_0712.swf', date, debut.costumeTrunkFileId);
+    // TODO only add costrume trunks to each specific engine
     map.addPerm('play/v2/content/local/en/catalogues/costume.swf', date, debut.costumeTrunkFileId);
   })
 }

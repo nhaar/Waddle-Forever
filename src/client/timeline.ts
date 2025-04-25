@@ -7,11 +7,12 @@ import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS 
 import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
-import { ROOM_UPDATES } from '../server/data/room-updates';
+import { ROOM_OPENINGS, ROOM_UPDATES } from '../server/data/room-updates';
 import { PINS } from '../server/data/pins';
 import { CHRISTMAS_2006_DECORATION } from '../server/data/updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/data/stadium-updates';
+import { ROOMS } from '../server/data/rooms';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -247,6 +248,23 @@ function addIglooMusicLists(map: DayMap): void {
 }
 
 function addRoomUpdates(map: DayMap): void {
+  const roomOpenings: Record<string, string[]> = {};
+
+  ROOM_OPENINGS.forEach((update) => {
+    if (roomOpenings[update.date] === undefined) {
+      roomOpenings[update.date] = [];
+    }
+    console.log(update.date, update.room);
+    roomOpenings[update.date].push(ROOMS[update.room].name);
+  })
+
+  Object.entries(roomOpenings).forEach((pair) => {
+    const [date, rooms] = pair;
+    addEvents(map, date, {
+      roomOpen: rooms
+    })
+  })
+
   ROOM_UPDATES.forEach((update) => {
     if (update.comment !== undefined) {
       addEvents(map, update.date, { roomUpdate: update.comment });
@@ -348,7 +366,7 @@ function getConsumedTimeline(days: Day[]): Array<{
       pushText(day.events.other);
     }
     if (day.events.roomOpen !== undefined) {
-      let text = day.events.roomOpen.length ? (
+      let text = day.events.roomOpen.length === 1 ? (
         `Room "${day.events.roomOpen[0]}" opens`
       ) : (
         `Rooms "${day.events.roomOpen.join(', ')}" open`

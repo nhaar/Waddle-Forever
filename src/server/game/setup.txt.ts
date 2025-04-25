@@ -1,6 +1,7 @@
 import { RoomName, ROOMS } from "../data/rooms";
-import { findCurrentParty } from "../routes/client-files";
+import { findCurrentParty, findEarliestDateHitIndex } from "../routes/client-files";
 import { Version } from "../routes/versions";
+import { STAGE_PLAYS, STAGE_TIMELINE } from "./stage-plays";
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
 export function getSetupTxt(date: Version): string {
@@ -13,6 +14,18 @@ export function getSetupTxt(date: Version): string {
   });
 
   let frames: Partial<Record<RoomName, number>> = {};
+
+  // adding stage music
+  const stagePlayIndex = findEarliestDateHitIndex(date, STAGE_TIMELINE);
+  const stageName = STAGE_TIMELINE[stagePlayIndex].name;
+  let stageMusic = 0;
+  for (const stage of STAGE_PLAYS) {
+    if (stage.name === stageName) {
+      stageMusic = stage.musicId;
+      break;
+    }
+  }
+  roomMusic['stage'] = stageMusic;
   
   const currentParty = findCurrentParty(date);
   if (currentParty !== null) {

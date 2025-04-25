@@ -92,6 +92,8 @@ export const THIN_ICE_RELEASE = '2006-12-19';
 // it should be from 2007 but THIN ICE is the first feature to require a more modern client
 export const PRE_CPIP_REWRITE_DATE = THIN_ICE_RELEASE;
 
+export const FIRST_STAGE_PLAY = '2007-11-16';
+
 // Update is around Oct 23, but this so far is the first practical
 // use of AS3 in WF
 export const AS3_UPDATE = FIRST_AS3_NEWSPAPER;

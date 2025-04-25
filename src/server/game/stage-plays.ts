@@ -1,8 +1,9 @@
-import { PLANET_Y_2010 } from "../data/updates";
+import { FIRST_STAGE_PLAY, PLANET_Y_2010 } from "../data/updates";
 import { Version } from "../routes/versions";
 
 /** All stage names */
-type StageName = 'Quest for the Golden Puffle' |
+type StageName = 'Space Adventure' |
+  'Quest for the Golden Puffle' |
   'Squidzoid vs. Shadow Guy and Gamma Gal' |
   'Ruby and the Ruby' |
   'Underwater Adventure' |
@@ -15,6 +16,12 @@ export const STAGE_PLAYS: Array<{
   name: StageName,
   musicId: number
 }> = [
+  {
+    name: 'Space Adventure',
+    // we know this music was not the same in the second premiere,
+    // but that SWF is completely lost, possibly it wasn't in the normal music directory
+    musicId: 30
+  },
   {
     name: 'Quest for the Golden Puffle',
     musicId: 34
@@ -53,6 +60,13 @@ export const STAGE_TIMELINE: Array<{
   costumeTrunkFileId: number;
   plazaFileId: number | null;
 }> = [
+  {
+    date: FIRST_STAGE_PLAY,
+    name: 'Space Adventure',
+    plazaFileId: 4874,
+    stageFileId: 4875,
+    costumeTrunkFileId: 4877
+  },
   {
     date: '2009-12-25',
     name: 'Quest for the Golden Puffle',
