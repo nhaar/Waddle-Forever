@@ -885,7 +885,9 @@ function addStadiumUpdates(map: TimelineMap): void {
     map.addPerm('play/v2/content/global/rooms/town.swf', date, update.townFileId);
     map.addPerm('play/v2/content/global/rooms/forts.swf', date, update.fortsFileId);
     map.addPerm('play/v2/content/global/rooms/rink.swf', date, update.rinkFileId);
-    map.addPerm('play/v2/content/local/en/catalogues/sport.swf', date, update.catalogFileId);
+    if (update.catalogFileId !== undefined) {
+      map.addPerm('play/v2/content/local/en/catalogues/sport.swf', date, update.catalogFileId);
+    }
   });
 }
 

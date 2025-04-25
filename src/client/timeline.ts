@@ -11,6 +11,7 @@ import { ROOM_UPDATES } from '../server/data/room-updates';
 import { PINS } from '../server/data/pins';
 import { CHRISTMAS_2006_DECORATION } from '../server/data/updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
+import { STADIUM_UPDATES } from '../server/data/stadium-updates';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -53,12 +54,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2010-01-15',
         events: {
           other: 'The rockslide in the Mine progresses'
-        }
-      },
-      {
-        date: '2010-09-24',
-        events: {
-          other: 'The Stadium Games event started'
         }
       },
       {
@@ -119,6 +114,7 @@ type Events = {
   musicList?: true;
   newFurnitureCatalog?: true;
   partyConstruction?: string;
+  stadiumUpdate?: 'stadium' | 'rink' | string;
 };
 
 // this type is duplicated in the timeline-static file, it should be the same type
@@ -256,6 +252,12 @@ function addRoomUpdates(map: DayMap): void {
       addEvents(map, update.date, { roomUpdate: update.comment });
     }
   })
+
+  STADIUM_UPDATES.forEach((update) => {
+    if (update.type !== undefined || update.comment !== undefined) {
+      addEvents(map, update.date, { stadiumUpdate: update.type ?? update.comment });
+    }
+  })
 }
 
 function addPinUpdates(map: DayMap): void {
@@ -376,6 +378,20 @@ function getConsumedTimeline(days: Day[]): Array<{
         text: day.events.roomUpdate,
         type: EventType.Room
       })
+    }
+    if (day.events.stadiumUpdate !== undefined) {
+      let text = '';
+      if (day.events.stadiumUpdate === 'rink') {
+        text = 'The Ice Rink shows up for the season';
+      } else if (day.events.stadiumUpdate === 'stadium') {
+        text = 'The Soccer Pitch shows up for the season';
+      } else {
+        text = day.events.stadiumUpdate;
+      }
+      events.push({
+          text,
+          type: EventType.Room
+      });
     }
     if (day.events.stagePlay !== undefined) {
       events.push({ text: day.events.stagePlay, type: EventType.Stage });

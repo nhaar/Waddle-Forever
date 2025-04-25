@@ -465,6 +465,43 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'shop',
     date: PRE_CPIP_REWRITE_DATE,
     fileId: 4864
+  },
+  {
+    room: 'forts',
+    date: '2006-09-22',
+    fileId: 4866,
+    comment: 'The Snow Forts is redrawn'
+  },
+  {
+    // unknown date, you can now walk to the audience in the rink
+    // only evidence is after april fools party
+    room: 'rink',
+    date: '2006-04-01',
+    fileId: 4867
+  },
+  {
+    room: 'rink',
+    date: '2006-08-11',
+    fileId: 4868,
+    comment: 'The Ice Rink now has score signs'
+  },
+  {
+    // placeholder CPIP room
+    room: 'town',
+    date: CPIP_UPDATE,
+    fileId: 2642
+  },
+  {
+    // placeholder CPIP room
+    room: 'forts',
+    date: CPIP_UPDATE,
+    fileId: 2643
+  },
+  {
+    // placeholder CPIP room
+    room: 'rink',
+    date: CPIP_UPDATE,
+    fileId: 2645
   }
 ];
 
