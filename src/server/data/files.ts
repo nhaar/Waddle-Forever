@@ -3896,10 +3896,10 @@ export const FILES = new StaticDataTable<File, [
   [3806, 'ArtworkRooms0615Forts13.swf', 1, FileCategory.Archives, null, null],
   [3807, 'ArtworkRooms0615Town12.swf', 1, FileCategory.Archives, null, null],
 
-  // for some reason, the beach button points to 809 (fores room ID),
-  // this must have been an ID change, unfortunately the map needs to be modified
-  // as the alternative would be modifying the client itself
-  [3808, 'ArtworkMapsIsland10.swf', 1, FileCategory.Fix, null, null],
+  // orginally, the beach had ID 809,
+  // but that was later changed. So this map I changed the ID of the beach to the new id
+  // so that it works with newer clients (newer being around 2007)
+  [3808, 'map_beach_changed_id.swf', 1, FileCategory.Approximation, null, 4912],
   [3809, 'Music204.swf', 1, FileCategory.Archives, null, null],
   [3810, 'ArtworkRoomsPizza12.swf', 1, FileCategory.Archives, null, null],
   [3811, 'ArtworkRoomsBeach12.swf', 1, FileCategory.Archives, null, null],
@@ -5019,12 +5019,12 @@ export const FILES = new StaticDataTable<File, [
   [4905, 'ArtworkRoomsPet44.swf', 1, FileCategory.Archives, null, null],
   [4906, 'RoomsPet_4.swf', 1, FileCategory.Archives, null, null],
   [4907, 'RoomsPet-Early2011.swf', 1, FileCategory.Archives, null, null],
-  [4908, '', 1, FileCategory.Archives, null, null],
-  [4909, '', 1, FileCategory.Archives, null, null],
-  [4910, '', 1, FileCategory.Archives, null, null],
-  [4911, '', 1, FileCategory.Archives, null, null],
-  [4912, '', 1, FileCategory.Archives, null, null],
-  [4913, '', 1, FileCategory.Archives, null, null],
+  [4908, 'RoomsPizza-January2010.swf', 1, FileCategory.Archives, null, null],
+  [4909, 'ArtworkRoomsBerg40.swf', 1, FileCategory.Archives, null, null],
+  [4910, 'RoomsBerg-Feb2008.swf', 1, FileCategory.Archives, null, null],
+  [4911, 'ArtworkRoomsDock40.swf', 1, FileCategory.Archives, null, null],
+  [4912, 'ArtworkMapsIsland10.swf', 1, FileCategory.Archives, null, null],
+  [4913, 'RoomsBeach-2.swf', 1, FileCategory.Archives, null, null],
   [4914, '', 1, FileCategory.Archives, null, null],
   [4915, '', 1, FileCategory.Archives, null, null],
   [4916, '', 1, FileCategory.Archives, null, null],

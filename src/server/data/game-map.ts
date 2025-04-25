@@ -1,4 +1,4 @@
-import { COVE_OPENING_START, CPIP_UPDATE, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, SNOW_FORTS_RELEASE, SUMMER_PARTY_START } from "./updates";
+import { COVE_OPENING_START, CPIP_UPDATE, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SNOW_FORTS_RELEASE, SUMMER_PARTY_START } from "./updates";
 
 type MapUpdate = {
   date: string;
@@ -20,7 +20,13 @@ export const MAP_UPDATES: MapUpdate[] = [
     fileId: 104
   },
   {
+    // beach opens
     date: SUMMER_PARTY_START,
+    fileId: 4912
+  },
+  {
+    // fix for the beach in the pre-cpip rewrite client
+    date: PRE_CPIP_REWRITE_DATE,
     fileId: 3808
   },
   {

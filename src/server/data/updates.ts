@@ -87,9 +87,12 @@ export const FIRST_AS3_NEWSPAPER = '2010-11-19';
 
 export const THIN_ICE_RELEASE = '2006-12-19';
 
+export const SPORT_PARTY_START = '2006-08-11';
+
 // exact date this client is introduced is unknown
 // but the new CPIP system which uses more files than just chat.swf
-// it should be from 2007 but THIN ICE is the first feature to require a more modern client
+// it should be in 2007, I put the earliest date in which chat339.swf fails to provide features
+// the feature being the beach
 export const PRE_CPIP_REWRITE_DATE = THIN_ICE_RELEASE;
 
 export const FIRST_STAGE_PLAY = '2007-11-16';
@@ -100,3 +103,7 @@ export const AS3_UPDATE = FIRST_AS3_NEWSPAPER;
 
 /** The day Club Penguin launched the CPIP engine */
 export const CPIP_UPDATE = MUSIC_JAM_08_START;
+
+export const ROOM_REDRAWS = '2006-09-22';
+
+export const AQUAGRABBER_RELEASE = '2008-02-19';

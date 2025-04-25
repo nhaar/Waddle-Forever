@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIRST_STAGE_PLAY, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { AQUAGRABBER_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIRST_STAGE_PLAY, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -80,8 +80,9 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   },
   {
     // placeholder CPIP room
+    // earliest beach we have archived
     room: 'beach',
-    fileId: 240,
+    fileId: 4913,
     date: CPIP_UPDATE
   },
   {
@@ -144,8 +145,9 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   },
   {
     // placeholder CPIP room
+    // the only SWF we have of CPIP before renovation
     room: 'pizza',
-    fileId: 262,
+    fileId: 4908,
     date: CPIP_UPDATE
   },
   {
@@ -469,7 +471,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   },
   {
     room: 'forts',
-    date: '2006-09-22',
+    date: ROOM_REDRAWS,
     fileId: 4866,
     comment: 'The Snow Forts is redrawn'
   },
@@ -527,7 +529,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     // the wiki mentions it as this date, seems like the date most rooms were redrawn?
     // dont know the source
     room: 'pet',
-    date: '2006-09-22',
+    date: ROOM_REDRAWS,
     fileId: 4903,
     comment: 'The Pet Shop is redrawn'
   },
@@ -549,6 +551,31 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: '2010-02-25',
     fileId: 4907,
     comment: 'White Puffles are now in the Pet Shop'
+  },
+  {
+    // another september 22 redraw
+    room: 'berg',
+    date: ROOM_REDRAWS,
+    fileId: 4909,
+    comment: 'The Iceberg is redrawn'
+  },
+  {
+    room: 'berg',
+    date: '2008-02-08',
+    fileId: 3955,
+    comment: 'Construction of a new invention begins in the Iceberg'
+  },
+  {
+    room: 'berg',
+    date: AQUAGRABBER_RELEASE,
+    fileId: 4910,
+    comment: 'The Aqua Grabber\'s construction is finished'
+  },
+  {
+    room: 'dock',
+    date: ROOM_REDRAWS,
+    fileId: 4911,
+    comment: 'The Dock is redrawn'
   }
 ];
 

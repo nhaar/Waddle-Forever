@@ -254,7 +254,6 @@ function addRoomUpdates(map: DayMap): void {
     if (roomOpenings[update.date] === undefined) {
       roomOpenings[update.date] = [];
     }
-    console.log(update.date, update.room);
     roomOpenings[update.date].push(ROOMS[update.room].name);
   })
 

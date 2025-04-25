@@ -282,8 +282,8 @@ export const ROOMS: Record<RoomName, Room> = {
   'beach': {
     id: 400,
     name: 'Beach',
-    preCpipFileNumber: null,
-    preCpipName: null
+    preCpipFileNumber: 12,
+    preCpipName: 'Beach'
   },
   'beacon': {
     id: 411,
