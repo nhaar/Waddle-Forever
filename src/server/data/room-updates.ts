@@ -138,7 +138,8 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'pet',
-    fileId: 261,
+    // this room seems to be from march 2009, but... tough luck we don't have that SWF
+    fileId: 4906,
     date: CPIP_UPDATE
   },
   {
@@ -514,6 +515,40 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: '2007-01-26',
     fileId: 4873,
     comment: 'Tours are now present in the Plaza'
+  },
+  {
+    // purple puffles release
+    room: 'pet',
+    date: '2006-08-25',
+    fileId: 4902,
+    comment: 'Purple Puffles are now in the Pet Shop'
+  },
+  {
+    // the wiki mentions it as this date, seems like the date most rooms were redrawn?
+    // dont know the source
+    room: 'pet',
+    date: '2006-09-22',
+    fileId: 4903,
+    comment: 'The Pet Shop is redrawn'
+  },
+  {
+    room: 'pet',
+    date: '2006-12-08',
+    fileId: 4904,
+    comment: 'Red Puffles are now in the Pet Shop'
+  },
+  {
+    // NOTE: this date is a PLACEHOLDER! we don't know the exact date...
+    room: 'pet',
+    date: '2007-02-28',
+    fileId: 4905,
+    comment: 'The Pet Shop now has animations'
+  },
+  {
+    room: 'pet',
+    date: '2010-02-25',
+    fileId: 4907,
+    comment: 'White Puffles are now in the Pet Shop'
   }
 ];
 

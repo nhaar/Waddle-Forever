@@ -17,15 +17,17 @@ export function getSetupTxt(date: Version): string {
 
   // adding stage music
   const stagePlayIndex = findEarliestDateHitIndex(date, STAGE_TIMELINE);
-  const stageName = STAGE_TIMELINE[stagePlayIndex].name;
   let stageMusic = 0;
-  for (const stage of STAGE_PLAYS) {
-    if (stage.name === stageName) {
-      stageMusic = stage.musicId;
-      break;
+  if (stagePlayIndex > -1) {
+    const stageName = STAGE_TIMELINE[stagePlayIndex].name;
+    for (const stage of STAGE_PLAYS) {
+      if (stage.name === stageName) {
+        stageMusic = stage.musicId;
+        break;
+      }
     }
+    roomMusic['stage'] = stageMusic;
   }
-  roomMusic['stage'] = stageMusic;
   
   const currentParty = findCurrentParty(date);
   if (currentParty !== null) {
