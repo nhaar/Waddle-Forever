@@ -69,6 +69,8 @@ export const CAVE_OPENING_END = '2006-05-29';
 
 export const SUMMER_PARTY_START = '2006-06-16';
 
+export const SUMMER_PARTY_END = '2006-06-25';
+
 export const LIGHTHOUSE_PARTY_START = '2006-09-21';
 
 export const CHRISTMAS_2006_DECORATION = '2006-12-15';
@@ -88,6 +90,8 @@ export const FIRST_AS3_NEWSPAPER = '2010-11-19';
 export const THIN_ICE_RELEASE = '2006-12-19';
 
 export const SPORT_PARTY_START = '2006-08-11';
+
+export const CARD_JITSU_RELEASE = '2008-11-17';
 
 // exact date this client is introduced is unknown
 // but the new CPIP system which uses more files than just chat.swf

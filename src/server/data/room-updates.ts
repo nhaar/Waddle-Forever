@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { AQUAGRABBER_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIRST_STAGE_PLAY, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIRST_STAGE_PLAY, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_END, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -69,7 +69,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'mtn',
-    fileId: 260,
+    fileId: 4923,
     date: CPIP_UPDATE
   },
   {
@@ -101,7 +101,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'cave',
-    fileId: 245,
+    fileId: 4917,
     date: CPIP_UPDATE
   },
   {
@@ -127,7 +127,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'light',
-    fileId: 256,
+    fileId: 4915,
     date: CPIP_UPDATE
   },
   {
@@ -177,7 +177,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'boiler',
-    fileId: 242,
+    fileId: 4918,
     date: CPIP_UPDATE
   },
   {
@@ -280,7 +280,8 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     room: 'dojoext',
     fileId: 2654,
-    date: '2009-11-27'
+    date: '2009-11-27',
+    comment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard'
   },
   {
     room: 'mine',
@@ -347,7 +348,8 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     room: 'dojoext',
     fileId: 2655,
-    date: WATER_CELEBRATION_END
+    date: WATER_CELEBRATION_END,
+    comment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard'
   },
   {
     // placeholder AS3 room
@@ -576,6 +578,48 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: ROOM_REDRAWS,
     fileId: 4911,
     comment: 'The Dock is redrawn'
+  },
+  {
+    room: 'light',
+    date: '2007-04-13',
+    fileId: 4914,
+    comment: 'A stage is now built in the Lighthouse'
+  },
+  {
+    room: 'cave',
+    date: SUMMER_PARTY_END,
+    fileId: 4916,
+    comment: 'The pool becomes a part of the undeground after the Summer Party ends'
+  },
+  {
+    room: 'mine',
+    date: ROOM_REDRAWS,
+    fileId: 4919,
+    comment: 'The mine is redrawn'
+  },
+  {
+    room: 'dojo',
+    date: ROOM_REDRAWS,
+    fileId: 4920,
+    comment: 'The dojo is redrawn'
+  },
+  {
+    room: 'dojo',
+    date: CARD_JITSU_RELEASE,
+    fileId: 4921,
+    comment: 'The dojo now has the Card-Jitsu game'
+  },
+  {
+    // this file we have has the white puffle, which I believe is only from the puffle party 2009
+    room: 'dojoext',
+    date: CARD_JITSU_RELEASE,
+    fileId: 4097
+  },
+  {
+    room: 'mtn',
+    date: ROOM_REDRAWS,
+    fileId: 4922,
+    comment: 'The Ski Hill is redrawn'
   }
 ];
 
