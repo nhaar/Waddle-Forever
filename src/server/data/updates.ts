@@ -93,6 +93,12 @@ export const SPORT_PARTY_START = '2006-08-11';
 
 export const CARD_JITSU_RELEASE = '2008-11-17';
 
+export const CHRISTMAS_2005_ENDS = '2005-12-26';
+
+export const ICE_FISHING_RELEASE = '2006-03-10';
+
+export const FIND_FOUR_RELEASE = '2006-04-27';
+
 // exact date this client is introduced is unknown
 // but the new CPIP system which uses more files than just chat.swf
 // it should be in 2007, I put the earliest date in which chat339.swf fails to provide features
