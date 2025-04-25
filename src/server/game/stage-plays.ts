@@ -3,12 +3,18 @@ import { Version } from "../routes/versions";
 
 /** All stage names */
 type StageName = 'Space Adventure' |
+  'The Twelfth Fish' |
+  'Team Blue\'s Rally Debut' |
   'Quest for the Golden Puffle' |
   'Squidzoid vs. Shadow Guy and Gamma Gal' |
+  'The Penguins that Time Forgot' |
   'Ruby and the Ruby' |
+  'Team Blue vs. Team Red' |
+  'The Haunting of the Viking Opera' |
   'Underwater Adventure' |
   'Fairy Fables' |
   'Space Adventure Planet Y' |
+  'Norman Swarm Has Been Transformed' |
   'Secrets of the Bamboo Forest';
 
 /** Data for each stage play */
@@ -23,8 +29,28 @@ export const STAGE_PLAYS: Array<{
     musicId: 30
   },
   {
+    name: 'The Twelfth Fish',
+    musicId: 31
+  },
+  {
+    name: 'Team Blue\'s Rally Debut',
+    musicId: 33
+  },
+  {
     name: 'Quest for the Golden Puffle',
     musicId: 34
+  },
+  {
+    name: 'The Penguins that Time Forgot',
+    musicId: 35
+  },
+  {
+    name: 'Team Blue vs. Team Red',
+    musicId: 36
+  },
+  {
+    name: 'The Haunting of the Viking Opera',
+    musicId: 41
   },
   {
     name: 'Ruby and the Ruby',
@@ -43,6 +69,10 @@ export const STAGE_PLAYS: Array<{
     musicId: 39
   },
   {
+    name: 'Norman Swarm Has Been Transformed',
+    musicId: 42
+  },
+  {
     name: 'Secrets of the Bamboo Forest',
     musicId: 43
   },
@@ -59,13 +89,163 @@ export const STAGE_TIMELINE: Array<{
   stageFileId: number;
   costumeTrunkFileId: number;
   plazaFileId: number | null;
+  party1?: number;
 }> = [
   {
     date: FIRST_STAGE_PLAY,
     name: 'Space Adventure',
     plazaFileId: 4874,
+    // stage from March
     stageFileId: 4875,
     costumeTrunkFileId: 4877
+  },
+  {
+    date: '2007-12-14',
+    name: 'The Twelfth Fish',
+    // lost SWF
+    plazaFileId: null,
+    stageFileId: 4878,
+    // costume trunk from may
+    costumeTrunkFileId: 4879
+  },
+  // squidzoid in Jan 2008 is completely lost to time
+  {
+    date: '2008-02-08',
+    name: 'Team Blue\'s Rally Debut',
+    // lost
+    plazaFileId: null,
+    stageFileId: 4881,
+    costumeTrunkFileId: 4882
+  },
+  // quest for golden puffle debut is lost, except its costume trunk
+  // still won't add it though
+  {
+    date: '2008-05-09',
+    name: 'The Twelfth Fish',
+    // stage from 2007
+    stageFileId: 4878,
+    plazaFileId: null,
+    costumeTrunkFileId: 4879
+  },
+  {
+    date: '2008-03-14',
+    name: 'Space Adventure',
+    // plaza from 2007
+    plazaFileId: 4874,
+    stageFileId: 4875,
+    // costume trunk from 2007
+    costumeTrunkFileId: 4877
+  },
+  {
+    date: '2008-06-13',
+    name: 'The Penguins that Time Forgot',
+    plazaFileId: null,
+    stageFileId: 4883,
+    costumeTrunkFileId: 4885
+  },
+  // squidzoid july is also completely lost
+  // team blue rally 2 is completely lost
+  // ruby and the red ruby debut in Pre-CPIP is completely lost/
+  // post CPIP could be reconstructed
+  {
+    date: '2008-10-10',
+    name: 'Space Adventure Planet Y',
+    // from 2010
+    stageFileId: 2294,
+    // from 2010
+    plazaFileId: 2286,
+    costumeTrunkFileId: 4886
+  },
+  {
+    date: '2008-11-21',
+    name: 'Fairy Fables',
+    // from 2009
+    stageFileId: 2289,
+    plazaFileId: 2284,
+    // from 2010
+    costumeTrunkFileId: 2280
+  },
+  {
+    date: '2008-12-12',
+    name: 'Quest for the Golden Puffle',
+    // from 2010
+    stageFileId: 2288,
+    // from 2011 inaccurate
+    plazaFileId: 2282,
+    costumeTrunkFileId: 2275
+  },
+  {
+    date: '2009-01-09',
+    name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
+    stageFileId: 2293, // from october 2009
+    // I think this plaza is accurate (with sign)
+    plazaFileId: 4887,
+    costumeTrunkFileId: 4888
+  },
+  {
+    date: '2009-02-13',
+    name: 'Team Blue vs. Team Red',
+    stageFileId: 4889, // from 2011
+    plazaFileId: null, //lost
+    costumeTrunkFileId: 4890
+  },
+  {
+    date: '2009-04-10',
+    name: 'Quest for the Golden Puffle',
+    stageFileId: 2288, // from 2010
+    plazaFileId: 2282, // from 2011 inaccurate
+    costumeTrunkFileId: 2275
+  },
+  {
+    date: '2009-05-08',
+    name: 'The Haunting of the Viking Opera',
+    stageFileId: 4892, // from 2011
+    plazaFileId: null,
+    costumeTrunkFileId: 4893
+  },
+  {
+    date: '2009-06-12',
+    name: 'Fairy Fables',
+    stageFileId: 2289,
+    plazaFileId: 2284,
+    costumeTrunkFileId: 2280
+  },
+  {
+    date: '2009-07-10',
+    name: 'Ruby and the Ruby',
+    // both 2 below are inaccurate
+    stageFileId: 2291,
+    plazaFileId: 2283,
+    costumeTrunkFileId: 2277
+  },
+  {
+    date: '2009-08-21',
+    name: 'Underwater Adventure',
+    stageFileId: 2292, // recreation
+    plazaFileId: null,
+    costumeTrunkFileId: 2278 // 2011
+  },
+  {
+    date: '2009-09-11',
+    name: 'The Penguins that Time Forgot',
+    stageFileId: 4895,
+    plazaFileId: 4896,
+    costumeTrunkFileId: 4885
+  },
+  {
+    date: '2009-10-09',
+    name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
+    stageFileId: 2293,
+    plazaFileId: 2287,
+    costumeTrunkFileId: 4888 // from jan 2009
+  },
+  {
+    date: '2009-11-13',
+    name: 'Norman Swarm Has Been Transformed',
+    stageFileId: 4897,
+    plazaFileId: 4898,
+    costumeTrunkFileId: 4899, // from april 2011,
+    party1: 4900
   },
   {
     date: '2009-12-25',

@@ -495,7 +495,34 @@ function processTimeline<EventInformation, EventInput, EventOutput>(
     }
   });
 
-  const sorted = sortOnProperty(eventsTimeline);
+  // sort needs to be a bit more than just the date;
+  // if on the same day, the priority is permanent->temp end->temp start
+  const sorted = eventsTimeline.sort((a, b) => {
+    const aVersion = a.date;
+    const bVersion = b.date;
+    if (isLower(aVersion, bVersion)) {
+      return -1;
+    } else if (isEqual(aVersion, bVersion)) {
+      if (a.type === b.type) {
+        return 0;
+      }
+      if (a.type === 'permanent') {
+        return -1;
+      }
+      if (b.type === 'permanent') {
+        return 1;
+      }
+      if (a.type === 'temp_end') {
+        return -1;
+      }
+      if (b.type === 'temp_end') {
+        return 1;
+      }
+      return 0;
+    } else {
+      return 1;
+    }
+  });
 
   // second part of this algorithm: going through the events
   // and judging which file is to be used at each date
@@ -967,6 +994,11 @@ function addStagePlays(map: TimelineMap): void {
     if (debut.plazaFileId !== null) {
       // Plaza
       addRoomRoute(map, date, 'plaza', debut.plazaFileId);
+    }
+
+    if (debut.party1 !== undefined) {
+      // for norman swarm
+      addRoomRoute(map, date, 'party1', debut.party1);
     }
 
     // simply hardcoding every catalogue to be from 0712 for now
