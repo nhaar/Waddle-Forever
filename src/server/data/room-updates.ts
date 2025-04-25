@@ -620,6 +620,18 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: ROOM_REDRAWS,
     fileId: 4922,
     comment: 'The Ski Hill is redrawn'
+  },
+  {
+    // ski village has the path to the beach now here
+    room: 'village',
+    date: SUMMER_PARTY_START,
+    fileId: 4924
+  },
+  {
+    room: 'village',
+    date: ROOM_REDRAWS,
+    fileId: 4925,
+    comment: 'The Ski Village is redrawn'
   }
 ];
 
