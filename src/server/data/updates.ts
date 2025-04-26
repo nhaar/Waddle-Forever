@@ -135,3 +135,7 @@ export const MIGRATOR_RECONSTRUCTION_CLEANUP_PHASE = '2008-04-10';
 export const SPORT_PARTY_END = '2006-08-21';
 
 export const EARTHQUAKE = '2008-06-20';
+
+export const JPA_RELEASE = '2006-11-06';
+
+export const PLAZA_LAUNCHPAD_START = '2006-10-05';

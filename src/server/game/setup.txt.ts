@@ -1,4 +1,5 @@
 import { MIGRATOR_PERIODS } from "../data/migrator";
+import { TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
 import { RoomName, ROOMS } from "../data/rooms";
 import { SNOW_SPORT_RELEASE } from "../data/updates";
 import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "../routes/client-files";
@@ -54,6 +55,18 @@ export function getSetupTxt(date: Version): string {
       }
     }
   }
+
+  // temporary room change frame
+  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
+    const [room, updates] = pair;
+    const updateIndex = findEarliestDateHitIndex(date, updates);
+    if (updateIndex !== -1) {
+      const update = updates[updateIndex];
+      if (update.frame !== undefined && isLower(date, update.end)) {
+        frames[room as RoomName] = update.frame;
+      }
+    }
+  })
 
   // enabling scavenger hunt, by passing an ID you can choose a file. Right now we are always just
   // sending the ID of 1 because we don't have any information about these scavenger hunts
