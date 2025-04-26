@@ -930,6 +930,27 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Paper Boat Scavenger Hunt',
+    startDate: '2008-08-08',
+    endDate: '2008-08-18',
+    roomChanges: {
+      beach: 4964,
+      cave: 4965,
+      coffee: 4966,
+      cove: 4967,
+      dock: 4968,
+      berg: 4969,
+      shack: 4970,
+      pet: 4971
+    },
+    globalChanges: {
+      'scavenger_hunt/hunt_ui.swf': [4973, 'scavenger_hunt_boat', 'easter_hunt'],
+    },
+    scavengerHunt2010: {
+      iconFileId: 4972
+    }
+  },
+  {
     name: 'Penguin Games',
     startDate: '2008-08-22',
     endDate: '2008-08-26',
