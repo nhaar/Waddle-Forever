@@ -168,12 +168,15 @@ function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
 function addStagePlays(map: DayMap): void {
   const premieres = new Set<string>();
   STAGE_TIMELINE.forEach((update) => {
-    // unused for now, later will be readded
+    // pre-emptively adding premieres that aren't archived
+    if (update.notPremiere) {
+      premieres.add(update.name);
+    }
     const stagePlay = premieres.has(update.name)
       ? `${update.name} returns to The Stage`
       : `${update.name} premieres at the Stage`;
     premieres.add(update.name);
-    addEvents(map, update.date, { stagePlay: `${update.name} returns to The Stage` });
+    addEvents(map, update.date, { stagePlay });
   });
 }
 

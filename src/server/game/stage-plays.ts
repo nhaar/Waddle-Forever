@@ -90,6 +90,8 @@ export const STAGE_TIMELINE: Array<{
   costumeTrunkFileId: number;
   plazaFileId: number | null;
   party1?: number;
+  /** If a stage's premiere is not in the timeline, add this as true to the first appearance in the timeline */
+  notPremiere?: true
 }> = [
   {
     date: FIRST_STAGE_PLAY,
@@ -120,14 +122,6 @@ export const STAGE_TIMELINE: Array<{
   // quest for golden puffle debut is lost, except its costume trunk
   // still won't add it though
   {
-    date: '2008-05-09',
-    name: 'The Twelfth Fish',
-    // stage from 2007
-    stageFileId: 4878,
-    plazaFileId: null,
-    costumeTrunkFileId: 4879
-  },
-  {
     date: '2008-03-14',
     name: 'Space Adventure',
     // plaza from 2007
@@ -135,6 +129,14 @@ export const STAGE_TIMELINE: Array<{
     stageFileId: 4875,
     // costume trunk from 2007
     costumeTrunkFileId: 4877
+  },
+  {
+    date: '2008-05-09',
+    name: 'The Twelfth Fish',
+    // stage from 2007
+    stageFileId: 4878,
+    plazaFileId: null,
+    costumeTrunkFileId: 4879
   },
   {
     date: '2008-06-13',
@@ -172,7 +174,8 @@ export const STAGE_TIMELINE: Array<{
     stageFileId: 2288,
     // from 2011 inaccurate
     plazaFileId: 2282,
-    costumeTrunkFileId: 2275
+    costumeTrunkFileId: 2275,
+    notPremiere: true
   },
   {
     date: '2009-01-09',
@@ -180,7 +183,8 @@ export const STAGE_TIMELINE: Array<{
     stageFileId: 2293, // from october 2009
     // I think this plaza is accurate (with sign)
     plazaFileId: 4887,
-    costumeTrunkFileId: 4888
+    costumeTrunkFileId: 4888,
+    notPremiere: true
   },
   {
     date: '2009-02-13',
@@ -216,7 +220,8 @@ export const STAGE_TIMELINE: Array<{
     // both 2 below are inaccurate
     stageFileId: 2291,
     plazaFileId: 2283,
-    costumeTrunkFileId: 2277
+    costumeTrunkFileId: 2277,
+    notPremiere: true
   },
   {
     date: '2009-08-21',
