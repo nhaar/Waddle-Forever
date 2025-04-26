@@ -110,8 +110,8 @@ export const SNOW_SPORT_RELEASE = '2007-08-31';
 // exact date this client is introduced is unknown
 // but the new CPIP system which uses more files than just chat.swf
 // it should be in 2007, I put the earliest date in which chat339.swf fails to provide features
-// the feature being the beach
-export const PRE_CPIP_REWRITE_DATE = THIN_ICE_RELEASE;
+// the feature being the lighthouse
+export const PRE_CPIP_REWRITE_DATE = LIGHTHOUSE_PARTY_START;
 
 export const FIRST_STAGE_PLAY = '2007-11-16';
 
