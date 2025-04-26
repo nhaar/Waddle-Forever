@@ -1,5 +1,5 @@
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -18,6 +18,9 @@ export type PartyChanges = {
   globalChanges?: Record<string, number | CrumbIndicator>
 
   roomFrames?: Partial<Record<RoomName, number>>;
+
+  // route -> fileId
+  generalChanges?: Record<string, number>;
 }
 
 export type Party = PartyChanges & {
@@ -50,9 +53,6 @@ export type Party = PartyChanges & {
     comment?: string;
     date: string;
   } & PartyChanges>;
-
-  // route -> fileId
-  generalChanges?: Record<string, number>;
 
   activeMigrator?: true;
 };
@@ -572,14 +572,7 @@ export const PARTIES: Party[] = [
     startDate: WINTER_FIESTA_08_START,
     endDate: '2008-01-21',
     roomChanges: {
-      'beach': 3925,
       'coffee': 3926,
-      'cove': 3927,
-      'dock': 3928,
-      'forest': 3929,
-      'dance': 3930,
-      'pizza': 3931,
-      'plaza': 3932,
       'village': 3933,
       'forts': 3934,
       'town': 3935
@@ -633,9 +626,6 @@ export const PARTIES: Party[] = [
       dock: 230,
       pizza: 212,
       dance: 202
-    },
-    generalChanges: {
-      'media/artwork/forms/pollsub.swf': 3962
     }
   },
   {
@@ -724,8 +714,8 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Rockhopper & Yarr\'s Arr-ival Parr-ty',
-    startDate: '2008-04-25',
-    endDate: '2008-04-28',
+    startDate: ROCKHOPPER_ARRIVAL_PARTY_START,
+    endDate: ROCKHOPPER_ARRIVAL_END,
     roomChanges: {
       beach: 4000,
       dock: 4002,

@@ -369,6 +369,14 @@ function addParties(map: TimelineMap): void {
         pushCrumbChange('play/v2/content/global', route, info);
       })
     }
+
+    // adding just any route change in general for the party
+    if (changes.generalChanges !== undefined) {
+      Object.entries(changes.generalChanges).forEach((pair) => {
+        const [route, fileId] = pair;
+        map.addTemp(route, start, end, fileId);
+      });
+    }
   }
   
   PARTIES.forEach((party) => {
@@ -377,7 +385,8 @@ function addParties(map: TimelineMap): void {
     addPartyChanges(startDate, endDate, {
       roomChanges: party.roomChanges,
       localChanges: party.localChanges,
-      globalChanges: party.globalChanges
+      globalChanges: party.globalChanges,
+      generalChanges: party.generalChanges
     });
     if (party.construction !== undefined) {
       const constructionStart = party.construction.date;
@@ -408,17 +417,10 @@ function addParties(map: TimelineMap): void {
         addPartyChanges(update.date, endDate, {
           roomChanges: update.roomChanges,
           localChanges: update.localChanges,
-          globalChanges: update.globalChanges
+          globalChanges: update.globalChanges,
+          generalChanges: update.generalChanges
         });
       })
-    }
-
-    // adding just any route change in general for the party
-    if (party.generalChanges !== undefined) {
-      Object.entries(party.generalChanges).forEach((pair) => {
-        const [route, fileId] = pair;
-        map.addTemp(route, startDate, endDate, fileId);
-      });
     }
   })
 }
@@ -993,6 +995,11 @@ function addStandaloneChanges(map: TimelineMap): void {
     const [route, updates] = pair;
     updates.forEach((update) => {
       map.addTemp(route, update.startDate, update.endDate, update.fileId);
+      if (update.updates !== undefined) {
+        update.updates.forEach((newUpdate) => {
+          map.addTemp(route, newUpdate.date, update.endDate, newUpdate.fileId);
+        })
+      }
     })
   });
 }

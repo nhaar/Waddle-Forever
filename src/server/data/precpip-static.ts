@@ -68,5 +68,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, number> = {
   // coins for change for the only pre CPIP party!
   'media/artwork/forms/coinsforchange.swf': 3921,
   'chat604.swf': 3937,
-  'chat339.swf': 3938
+  'chat339.swf': 3938,
+  'media/artwork/forms/pollsub.swf': 3962
 };

@@ -1,7 +1,8 @@
+import { MIGRATOR_PERIODS } from "../data/migrator";
 import { RoomName, ROOMS } from "../data/rooms";
 import { SNOW_SPORT_RELEASE } from "../data/updates";
 import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "../routes/client-files";
-import { isGreaterOrEqual, Version } from "../routes/versions";
+import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "./stage-plays";
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
@@ -44,6 +45,14 @@ export function getSetupTxt(date: Version): string {
   let activeMigrator = false;
   if (currentParty?.activeMigrator) {
     activeMigrator = true;
+  } else {
+    const migratorPeriodIndex = findEarliestDateHitIndex(date, MIGRATOR_PERIODS);
+    if (migratorPeriodIndex !== -1) {
+      const period = MIGRATOR_PERIODS[migratorPeriodIndex];
+      if (isLower(date, period.end)) {
+        activeMigrator = true;
+      }
+    }
   }
 
   const rooms = Object.entries(ROOMS).map((pair) => {

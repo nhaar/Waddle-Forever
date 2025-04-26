@@ -1,6 +1,6 @@
 import { Version } from "../routes/versions";
 import { RoomName } from "./rooms";
-import { AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_END, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_END, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -565,8 +565,14 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     room: 'berg',
     date: '2008-02-08',
-    fileId: 3955,
+    fileId: 4947,
     comment: 'Construction of a new invention begins in the Iceberg'
+  },
+  {
+    room: 'berg',
+    date: '2008-02-15',
+    comment: 'A poll is added to the Iceberg',
+    fileId: 3955
   },
   {
     room: 'berg',
@@ -687,6 +693,61 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     room: 'agent',
     fileId: 4934,
     date: MISSION_1_RELEASE
+  },
+  {
+    room: 'beach',
+    fileId: 4942,
+    comment: 'Rockhopper lands in Club Penguin with a rowboat',
+    date: '2008-01-23'
+  },
+  {
+    room: 'beach',
+    date: '2008-02-01',
+    fileId: 4946,
+    comment: 'Save The Migrator Project is set up at the Beach'
+  },
+  {
+    room: 'beach',
+    date: '2008-02-23',
+    fileId: 4949,
+    comment: 'Pieces of The Migrator show up at the Beach'
+  },
+  {
+    room: 'beach',
+    date: '2008-02-29',
+    fileId: 4948,
+    comment: 'More pieces show up at the Beach'
+  },
+  {
+    room: 'beach',
+    date: '2008-03-07',
+    fileId: 4950,
+    comment: 'Reconstruction of The Migrator begins'
+  },
+  {
+    room: 'beach',
+    // this date is a conjecture, don't know when it actually happened
+    date: '2008-03-20',
+    fileId: 4951,
+    comment: 'Reconstruction of The Migrator progresses'
+  },
+  {
+    room: 'beach',
+    date: '2008-03-27',
+    fileId: 4952,
+    comment: 'Reconstruction of The Migrator progresses'
+  },
+  {
+    room: 'beach',
+    date: '2008-04-10',
+    fileId: 4953,
+    comment: 'The Migrator is cleaned up and a new device is at the Beach'
+  },
+  {
+    // returning to normality
+    room: 'beach',
+    date: ROCKHOPPER_ARRIVAL_END,
+    fileId: 3835
   }
 ];
 

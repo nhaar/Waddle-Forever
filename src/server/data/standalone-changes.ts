@@ -1,5 +1,5 @@
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
-import { ANNIVERSARY_5_START, AS3_UPDATE, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, STAMPS_RELEASE } from "./updates";
+import { ANNIVERSARY_5_START, AS3_UPDATE, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, ROCKHOPPER_ARRIVAL_PARTY_START, STAMPS_RELEASE } from "./updates";
 
 type StandaloneChange = {
   route: string;
@@ -13,6 +13,12 @@ type StandaloneTemporaryChange = {
   endDate: string;
   fileId: number;
   comment?: string;
+  endComment?: string;
+  updates?: Array<{
+    date: string;
+    fileId: number;
+    comment?: string;
+  }>
 }
 
 export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: string; comment?: string }>> = {
@@ -148,7 +154,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
       date: '2011-02-17',
       fileId: 2694
     }
-  ]
+  ],
 };
 
 export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChange[]> = {
@@ -188,5 +194,44 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       fileId: 3905,
       comment: 'The Coins For Change event begins'
     }
-  ]
+  ],
+  'media/artwork/tools/telescope0.swf': [
+    {
+      // according to newspaper
+      // unsure if in the original game the animation replayed each time
+      // unless they had some interesting serverside code or the client in this day was different
+      // it probably just replayed each time
+      startDate: '2008-01-16',
+      endDate: '2008-02-06',
+      fileId: 4941,
+      comment: 'Something happening with The Migrator can be viewed from the telescope',
+      endComment: 'The Migrator is completely sunk',
+      updates: [
+        {
+          // we know on 17th it was still the previous one
+          // this date below here is mostly an assumption, but it should be this at most
+          // by the 23rd
+          date: '2008-01-18',
+          fileId: 4941,
+          comment: 'The aftermath of The Migrator crash remains in the telescope'
+        },
+        {
+          date: '2008-01-30',
+          comment: 'The Migrator\'s remains sink further',
+          fileId: 4943
+        },
+        {
+          date: '2008-02-01',
+          comment: 'Rockhopper is seen leaving Club Penguin from the telescope',
+          fileId: 4944
+        }
+      ]
+    },
+    {
+      startDate: '2008-04-17',
+      endDate: ROCKHOPPER_ARRIVAL_PARTY_START,
+      fileId: 4945,
+      comment: 'Rockhopper is spotted through the telescope'
+    }
+  ],
 }

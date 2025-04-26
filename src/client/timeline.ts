@@ -304,6 +304,16 @@ function addStandalone(map: DayMap): void {
       if (update.comment !== undefined) {
         addEvents(map, update.startDate, { other: update.comment });
       }
+      if (update.endComment !== undefined) {
+        addEvents(map, update.endDate, { other: update.endComment });
+      }
+      if (update.updates !== undefined) {
+        update.updates.forEach((newUpdate) => {
+          if (newUpdate.comment !== undefined) {
+            addEvents(map, newUpdate.date, { other: newUpdate.comment });
+          }
+        })
+      }
     })
   })
 }
