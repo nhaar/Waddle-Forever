@@ -9,7 +9,7 @@ import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES } from '../server/data/room-updates';
 import { PINS } from '../server/data/pins';
-import { CHRISTMAS_2006_DECORATION } from '../server/data/updates';
+import {EARTHQUAKE } from '../server/data/updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/data/stadium-updates';
 import { ROOMS } from '../server/data/rooms';
@@ -43,6 +43,12 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2005-12-14',
         events: {
           minigameRelease: 'Puffle Roundup'
+        }
+      },
+      {
+        date: EARTHQUAKE,
+        events: {
+          other: 'An earthquake hits the island'
         }
       },
       {

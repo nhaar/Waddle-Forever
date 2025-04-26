@@ -5082,7 +5082,7 @@ export const FILES = new StaticDataTable<File, [
   [4960, 'RoomsPet-EasterEggHunt2008.swf', 1, FileCategory.Archives, null, null],
   [4961, 'RoomsPlaza-EasterEggHunt2008.swf', 1, FileCategory.Archives, null, null],
   [4962, 'Eggs-EasterEggHunt2008.swf', 1, FileCategory.Archives, null, null],
-  [4963, '', 1, FileCategory.Archives, null, null],
+  [4963, 'RoomsDance-Earthquake2008.swf', 1, FileCategory.Archives, null, null],
   [4964, '', 1, FileCategory.Archives, null, null],
   [4965, '', 1, FileCategory.Archives, null, null],
   [4966, '', 1, FileCategory.Archives, null, null],

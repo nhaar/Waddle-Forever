@@ -10,7 +10,7 @@ import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
-import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
+import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
 import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
 import { CrumbIndicator, PARTIES, Party, PartyChanges, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
@@ -337,6 +337,14 @@ function addRoomInfo(map: TimelineMap): void {
   ROOM_UPDATES.forEach((update) => {
     addRoomChange(update.room, update.date, update.fileId);
   });
+
+  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
+    const [room, updates] = pair;
+    const roomName = room as RoomName;
+    updates.forEach((update) => {
+      addTempRoomRoute(map, update.date, update.end, roomName, update.fileId);
+    })
+  })
 }
 
 function addParties(map: TimelineMap): void {
