@@ -1,6 +1,7 @@
 import { RoomName, ROOMS } from "../data/rooms";
+import { SNOW_SPORT_RELEASE } from "../data/updates";
 import { findCurrentParty, findEarliestDateHitIndex } from "../routes/client-files";
-import { Version } from "../routes/versions";
+import { isGreaterOrEqual, Version } from "../routes/versions";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "./stage-plays";
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
@@ -14,6 +15,11 @@ export function getSetupTxt(date: Version): string {
   });
 
   let frames: Partial<Record<RoomName, number>> = {};
+
+  // sport shop, the only room to use frame 2
+  if (isGreaterOrEqual(date, SNOW_SPORT_RELEASE)) {
+    frames['sport'] = 2;
+  }
 
   // adding stage music
   const stagePlayIndex = findEarliestDateHitIndex(date, STAGE_TIMELINE);
