@@ -3,7 +3,7 @@ import { PRE_CPIP_CATALOGS } from "../data/catalogues";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { RoomName, ROOMS } from "../data/rooms";
 import { FIRST_BOILER_ROOM_PAPER } from "../data/updates";
-import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "./client-files";
+import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate, getPinFrames } from "./client-files";
 import { processVersion, isGreaterOrEqual, Version, isLower } from "./versions";
 
 type OldRoom = {
@@ -25,7 +25,10 @@ function patchMusic(rooms: OldRoom[], music: Partial<Record<RoomName, number>>) 
 
 function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>) {
   for (const room of rooms) {
-      room.frame = frames[room.roomName]
+    const frameId = frames[room.roomName];
+    if (frameId !== undefined) {
+      room.frame = frameId;
+    }
   }
 }
 
@@ -81,6 +84,13 @@ export function getSetupXml(version: Version) {
     if (currentParty.roomFrames !== undefined) {
       patchFrame(rooms, currentParty.roomFrames);
     }
+  }
+
+  // pin related frame change
+  const pinFrame = getPinFrames(version);
+  if (pinFrame !== null) {
+    const [room, frame] = pinFrame;
+    patchFrame(rooms, { [room]: frame });
   }
 
   const clothingIndex = findEarliestDateHitIndex(version, PRE_CPIP_CATALOGS.map((date) => ({ date })));

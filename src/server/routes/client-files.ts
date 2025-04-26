@@ -24,7 +24,7 @@ import { STADIUM_UPDATES } from "../data/stadium-updates";
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 import { getNewspaperName } from "../game/news.txt";
-import { ROOM_TIMELINE } from "../game/rooms";
+import { PINS } from "../data/pins";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -727,7 +727,6 @@ export function getMusicForDate(date: Version): Partial<Record<RoomName, number>
     if (songIndex > -1) {
       song = otherSongs[songIndex].musicId;
     }
-    console.log(roomName, song);
     music[roomName] = song;
   });
   return music;
@@ -1024,6 +1023,15 @@ function addCatalogues(map: TimelineMap): void {
   addCatalogue('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 }
 
+function addPins(map: TimelineMap): void {
+  PINS.forEach((pin) => {
+    if (pin.roomChange !== undefined) {
+      const [room, fileId] = pin.roomChange;
+      addTempRoomRoute(map, pin.date, pin.end, room, fileId);
+    }
+  });
+}
+
 function addMusicLists(map: TimelineMap): void {
   const route = 'play/v2/content/global/content/igloo_music.swf';
   map.addPerm(route, BETA_RELEASE, 2635);
@@ -1039,6 +1047,18 @@ function addMusicLists(map: TimelineMap): void {
       }
     }
   }
+}
+
+export function getPinFrames(date: Version): [RoomName, number] | null {
+  const pinIndex = findEarliestDateHitIndex(date, PINS);
+  if (pinIndex === -1) {
+    return null;
+  }
+  const pin = PINS[pinIndex];
+  if (isLower(date, pin.end) && pin.frameChange !== undefined) {
+    return pin.frameChange;
+  }
+  return null;
 }
 
 function addStagePlays(map: TimelineMap): void {
@@ -1081,6 +1101,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addStagePlays,
     addMusicLists,
     addStadiumUpdates,
+    addPins,
     addCrumbs
   ];
 
