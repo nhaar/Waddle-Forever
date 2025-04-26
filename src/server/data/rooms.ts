@@ -3,7 +3,6 @@ type Room = {
   name: string;
   preCpipFileNumber: number | null;
   preCpipName: string| null;
-  preCpipSong?: number;
 };
 
 export type RoomName = 'town' |
@@ -81,14 +80,12 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Coffee Shop',
     preCpipFileNumber: 11,
     preCpipName: 'Coffee',
-    preCpipSong: 1
   },
   'book': {
     id: 111,
     name: 'Book Room',
     preCpipFileNumber: 11,
     preCpipName: 'Book',
-    preCpipSong: 1
   },
   'cave': {
     id: 806,
@@ -113,7 +110,6 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Dance Club',
     preCpipFileNumber: 10,
     preCpipName: 'Dance',
-    preCpipSong: 2
   },
   
   'lounge': {
@@ -193,7 +189,6 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'PSA HQ',
     preCpipFileNumber: 11,
     preCpipName: 'Agent',
-    preCpipSong: 7
   },
   'agentcom': {
     id: 323,

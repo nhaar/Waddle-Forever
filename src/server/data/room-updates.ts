@@ -1,5 +1,6 @@
+import { Version } from "../routes/versions";
 import { RoomName } from "./rooms";
-import { AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, ICE_FISHING_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_END, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_END, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -672,7 +673,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     room: 'agent',
     fileId: 4932,
-    date: '2006-03-29',
+    date: HQ_REDESIGN,
     comment: 'The HQ is redesigned'
   },
   {
@@ -794,3 +795,32 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     date: '2008-11-24'
   }
 ];
+
+type MusicTimeline = [number, ...Array<{ date: Version; musicId: number; comment?: string; }>];
+
+export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
+  'coffee': [1],
+  'book': [1],
+  'pizza': [20],
+  'dance': [
+    2,
+    // switching to crossing over, unknown the exact date, it's around this time though
+    { 
+      date: '2006-03-23', 
+      musicId: 5,
+      comment: 'The Dance Club music is updated'
+    }
+  ],
+  'agent': [
+    0,
+    { date: HQ_REDESIGN, musicId: 7 }
+  ],
+  'agentcom': [
+    7,
+    { date: EPF_RELEASE, musicId: 23 }
+  ],
+  'dojo': [
+    0,
+    { date: CARD_JITSU_RELEASE, musicId: 21 }
+  ]
+};

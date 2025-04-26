@@ -3,7 +3,7 @@ import { PRE_CPIP_CATALOGS } from "../data/catalogues";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { RoomName, ROOMS } from "../data/rooms";
 import { FIRST_BOILER_ROOM_PAPER } from "../data/updates";
-import { findCurrentParty, findEarliestDateHitIndex } from "./client-files";
+import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "./client-files";
 import { processVersion, isGreaterOrEqual, Version, isLower } from "./versions";
 
 type OldRoom = {
@@ -16,7 +16,10 @@ type OldRoom = {
 
 function patchMusic(rooms: OldRoom[], music: Partial<Record<RoomName, number>>) {
   for (const room of rooms) {
-    room.music = music[room.roomName]
+    const musicId = music[room.roomName];
+    if (musicId !== undefined) {
+      room.music = musicId;
+    }
   }
 }
 
@@ -63,11 +66,12 @@ export function getSetupXml(version: Version) {
     return {
       roomName: name as RoomName,
       name: info.preCpipName ?? '',
-      file: `${name}${info.preCpipFileNumber}`,
-      music: info.preCpipSong
+      file: `${name}${info.preCpipFileNumber}`
     }
   });
 
+  const baseMusic = getMusicForDate(version);
+  patchMusic(rooms, baseMusic);
 
   const currentParty = findCurrentParty(version);
   if (currentParty !== null) {

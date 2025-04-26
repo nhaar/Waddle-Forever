@@ -7,7 +7,7 @@ import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS 
 import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
 import { STAGE_TIMELINE } from '../server/game/stage-plays';
 import { IGLOO_LISTS } from '../server/game/igloo-lists';
-import { ROOM_OPENINGS, ROOM_UPDATES } from '../server/data/room-updates';
+import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES } from '../server/data/room-updates';
 import { PINS } from '../server/data/pins';
 import { CHRISTMAS_2006_DECORATION } from '../server/data/updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
@@ -269,6 +269,18 @@ function addRoomUpdates(map: DayMap): void {
       addEvents(map, update.date, { roomUpdate: update.comment });
     }
   })
+
+  // add music room updates
+  Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
+    const [_, timeline] = pair;
+    const [__, ...otherSongs] = timeline;
+
+    otherSongs.forEach((update) => {
+      if (update.comment !== undefined) {
+        addEvents(map, update.date, { roomUpdate: update.comment });
+      }
+    });
+  });
 
   STADIUM_UPDATES.forEach((update) => {
     if (update.type !== undefined || update.comment !== undefined) {

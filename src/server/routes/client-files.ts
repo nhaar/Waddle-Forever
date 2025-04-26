@@ -3,14 +3,14 @@ import crypto from 'crypto';
 import hash from 'object-hash';
 
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
-import { isEqual, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "./versions";
+import { isEqual, isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
 import { STATIC_SERVERS } from "../data/static-servers";
-import { ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
+import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES } from "../data/room-updates";
 import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
 import { CrumbIndicator, PARTIES, Party, PartyChanges, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
@@ -24,6 +24,7 @@ import { STADIUM_UPDATES } from "../data/stadium-updates";
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 import { getNewspaperName } from "../game/news.txt";
+import { ROOM_TIMELINE } from "../game/rooms";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -681,7 +682,8 @@ function getBaseCrumbsOutput<CrumbPatch>(
   timelineBuilder: (timeline: TimelineEvent<{
     crumb: Partial<CrumbPatch>
   }>[]) => void,
-  mergeCrumbs: (prev: Partial<CrumbPatch>, cur: Partial<CrumbPatch>) => Partial<CrumbPatch>
+  mergeCrumbs: (prev: Partial<CrumbPatch>, cur: Partial<CrumbPatch>) => Partial<CrumbPatch>,
+  getFirstCrumb?: () => Partial<CrumbPatch>
 ) {
   const timeline: TimelineEvent<{
     crumb: Partial<CrumbPatch>
@@ -689,7 +691,7 @@ function getBaseCrumbsOutput<CrumbPatch>(
     {
       type: 'permanent',
       date: CPIP_UPDATE,
-      crumb: {}
+      crumb: getFirstCrumb === undefined ? {} : getFirstCrumb()
     }
   ];
 
@@ -711,6 +713,24 @@ function getBaseCrumbsOutput<CrumbPatch>(
 
   const crumbsHash = getMd5(JSON.stringify(crumbs))
   return { hash: crumbsHash, crumbs };
+}
+
+export function getMusicForDate(date: Version): Partial<Record<RoomName, number>> {
+  const music: Partial<Record<RoomName, number>> = {};
+  // regular room IDs
+  Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
+    const [room, timeline] = pair;
+    const roomName = room as RoomName;
+    const [firstSong, ...otherSongs] = timeline;
+    let song = firstSong;
+    const songIndex = findEarliestDateHitIndex(date, otherSongs);
+    if (songIndex > -1) {
+      song = otherSongs[songIndex].musicId;
+    }
+    console.log(roomName, song);
+    music[roomName] = song;
+  });
+  return music;
 }
 
 /**
@@ -772,6 +792,24 @@ export function getGlobalCrumbsOutput() {
         });
       }
     });
+
+    Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
+      const [room, musicTimeline] = pair;
+      const [_, ...otherSongs] = musicTimeline;
+      otherSongs.forEach((update) => {
+        if (isGreater(update.date, CPIP_UPDATE)) {
+          timeline.push({
+            type: 'permanent',
+            date: update.date,
+            crumb: {
+              music: {
+                [room as RoomName]: update.musicId
+              }
+            }
+          })
+        }
+      })
+    })
   
     STAGE_TIMELINE.forEach((debut) => {
       const play = STAGE_PLAYS.find((play) => play.name === debut.name);
@@ -803,6 +841,10 @@ export function getGlobalCrumbsOutput() {
         ...cur.paths
       },
       newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus
+    }
+  }, () => {
+    return {
+      music: getMusicForDate(CPIP_UPDATE)
     }
   });
 }
@@ -838,11 +880,16 @@ function getFileInformation(timeline: FileTimelineEvent[]): DynamicRouteFileInfo
 }
 
 export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
-  if (array.length === 1) {
-    if (isLower(date, array[0].date)) {
-      return -1
+  if (array.length < 2) {
+    if (array.length === 1) {
+      if (isLower(date, array[0].date)) {
+        return -1
+      } else {
+        return 0;
+      }
     } else {
-      return 0;
+      // empty array
+      return -1;
     }
   }
 

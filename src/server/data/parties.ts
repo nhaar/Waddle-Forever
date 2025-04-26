@@ -135,6 +135,9 @@ export const PARTIES: Party[] = [
       'pizza': 100,
       'town': 101
     },
+    music: {
+      'plaza': 2
+    },
     roomFrames: {
       'town': 2
     }

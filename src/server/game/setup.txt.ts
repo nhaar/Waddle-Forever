@@ -1,18 +1,12 @@
 import { RoomName, ROOMS } from "../data/rooms";
 import { SNOW_SPORT_RELEASE } from "../data/updates";
-import { findCurrentParty, findEarliestDateHitIndex } from "../routes/client-files";
+import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "../routes/client-files";
 import { isGreaterOrEqual, Version } from "../routes/versions";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "./stage-plays";
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
 export function getSetupTxt(date: Version): string {
-  let roomMusic: Partial<Record<RoomName, number>> = {};
-  Object.entries(ROOMS).forEach((pair) => {
-    const [room, info] = pair;
-    if (info.preCpipSong !== undefined) {
-      roomMusic[room as RoomName] = info.preCpipSong;
-    }
-  });
+  let roomMusic: Partial<Record<RoomName, number>> = getMusicForDate(date);
 
   let frames: Partial<Record<RoomName, number>> = {};
 
