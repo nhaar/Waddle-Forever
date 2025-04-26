@@ -965,7 +965,9 @@ function addStadiumUpdates(map: TimelineMap): void {
       map.addPerm(agent, date, 4935);
     }
   }
+  if (update.mapFileId !== undefined) {
     map.addPerm('play/v2/content/global/content/map.swf', date, update.mapFileId);
+  }
     map.addPerm('play/v2/content/global/rooms/town.swf', date, update.townFileId);
     map.addPerm('play/v2/content/global/rooms/forts.swf', date, update.fortsFileId);
     map.addPerm('play/v2/content/global/rooms/rink.swf', date, update.rinkFileId);

@@ -5053,7 +5053,10 @@ export const FILES = new StaticDataTable<File, [
   [4934, 'ArtworkRoomsAgent40.swf', 1, FileCategory.Archives, null, null],
   [4935, 'RoomsAgentFootball.swf', 1, FileCategory.Archives, null, null],
   [4936, 'RoomsAgentcomFormer.swf', 1, FileCategory.Archives, null, null],
-  [4937, '', 1, FileCategory.Archives, null, null],
+  
+  // edited dojo courtyard to go to the dojo. workaround since we have no
+  // post cpip map with old dojo
+  [4937, 'cpip_map_no_dojoext.swf', 1, FileCategory.Approximation, null, 2637],
   [4938, '', 1, FileCategory.Archives, null, null],
   [4939, '', 1, FileCategory.Archives, null, null],
   [4940, '', 1, FileCategory.Archives, null, null],

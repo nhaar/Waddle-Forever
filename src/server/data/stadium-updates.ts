@@ -6,7 +6,7 @@ type StadiumUpdate = {
   rinkFileId: number;
   townFileId: number;
   fortsFileId: number;
-  mapFileId: number;
+  mapFileId?: number;
   catalogFileId?: number;
   type?: 'rink' | 'stadium';
   comment?: string;
@@ -18,7 +18,6 @@ export const STADIUM_UPDATES: StadiumUpdate[] = [
     rinkFileId: 4869,
     townFileId: 2636,
     fortsFileId: 2638,
-    mapFileId: 2637,
     comment: 'The Soccer Pitch is now open for everyone, and temporarily replaces the Ice Rink',
     type: 'stadium'
   },

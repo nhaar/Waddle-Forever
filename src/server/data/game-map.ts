@@ -1,4 +1,4 @@
-import { COVE_OPENING_START, CPIP_UPDATE, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SNOW_FORTS_RELEASE, SUMMER_PARTY_START } from "./updates";
+import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SNOW_FORTS_RELEASE, SUMMER_PARTY_START } from "./updates";
 
 type MapUpdate = {
   date: string;
@@ -38,9 +38,15 @@ export const MAP_UPDATES: MapUpdate[] = [
     fileId: 3844
   },
   {
-    // placeholder, should be removed once we get proepr map timeline
+    // placeholder map in which the dojo courtyard goes to the dojo
+    // we have no other CPIP maps
     date: CPIP_UPDATE,
-    fileId: 2646
+    fileId: 4937
+  },
+  {
+    // adding dojo courtyard
+    date: DIG_OUT_DOJO_END,
+    fileId: 2637
   }
 ]
 
