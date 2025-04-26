@@ -1441,6 +1441,26 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Easter Egg Hunt',
+    startDate: '2009-04-10',
+    endDate: '2009-04-13',
+    roomChanges: {
+      beacon: 4974,
+      cove: 4975,
+      dojoext: 4976,
+      shop: 4977,
+      mtn: 4978,
+      lodge: 4979,
+      town: 4980
+    },
+    globalChanges: {
+      'scavenger_hunt/hunt_ui.swf': [4982, 'easter_egg_hunt', 'easter_hunt'],
+    },
+    scavengerHunt2010: {
+      'iconFileId': 4981
+    }
+  },
+  {
     name: 'Medieval Party',
     startDate: '2009-05-08',
     endDate: '2009-05-17',
