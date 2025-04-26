@@ -930,5 +930,14 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       fileId: 5012,
       comment: 'A construction begins at the Town'
     }
+  ],
+  'forts': [
+    {
+      // unknown end date
+      date: '2008-04-17',
+      end: '2008-04-21',
+      fileId: 5013,
+      comment: 'The Snow Forts clock breaks'
+    }
   ]
 }
