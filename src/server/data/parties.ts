@@ -27,6 +27,8 @@ export type Party = PartyChanges & {
   name: string;
   startDate: string;
   endDate: string;
+  /** If true, then this will not be labeled a party in the timeline */
+  event?: true;
 
   // Overriding the default placeholder message for a party start
   // with a custom one
@@ -1793,6 +1795,26 @@ export const PARTIES: Party[] = [
     },
     scavengerHunt2010: {
       iconFileId: 4479
+    }
+  },
+  {
+    name: 'The Great Storm of 2009',
+    event: true,
+    startDate: '2009-10-11',
+    endDate: '2009-11-02',
+    roomChanges: {
+      dojoext: 4983,
+      shack: 4984,
+      dojohide: 4985,
+      mtn: 4986,
+      village: 4987,
+      beach: 4988,
+      berg: 4989,
+      dock: 4990,
+      dojo: 4991,
+      forts: 4992,
+      plaza: 4993,
+      town: 4994
     }
   },
   {

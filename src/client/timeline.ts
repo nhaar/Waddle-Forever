@@ -190,15 +190,20 @@ function addStagePlays(map: DayMap): void {
 function addParties(map: DayMap): DayMap {
   for (let i = 0; i < PARTIES.length; i++) {
     const party = PARTIES[i];
+
+    const partyStartProp = party.event === true ? 'other' : 'partyStart'
+
     const partyStart = party.startComment === undefined
       ? `The ${party.name} starts`
       : party.startComment;
-    addEvents(map, party.startDate, { partyStart });
+    addEvents(map, party.startDate, { [partyStartProp]: partyStart });
+
+    const partyEndProp = party.event === true ? 'other' : 'partyEnd'
 
     const partyEnd = party.endComment === undefined
       ? `The ${party.name} ends`
       : party.endComment;
-    addEvents(map, party.endDate, { partyEnd });
+    addEvents(map, party.endDate, { [partyEndProp]: partyEnd });
 
     if (party.construction !== undefined) {
         const partyStart = `Construction for the ${party.name} starts`;
