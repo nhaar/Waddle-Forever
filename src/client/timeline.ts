@@ -36,7 +36,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2005-08-22',
         events: {
-          other: 'Beta release',
+          other: ['Beta release'],
         }
       },
       {
@@ -48,19 +48,19 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: EARTHQUAKE,
         events: {
-          other: 'An earthquake hits the island'
+          other: ['An earthquake hits the island']
         }
       },
       {
         date: '2010-01-08',
         events: {
-          other: 'A rockslide appears in the Mine'
+          other: ['A rockslide appears in the Mine']
         }
       },
       {
         date: '2010-01-15',
         events: {
-          other: 'The rockslide in the Mine progresses'
+          other: ['The rockslide in the Mine progresses']
         }
       },
       {
@@ -72,7 +72,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2010-12-20',
         events: {
-          other: 'Stadium Games party ends during the Holiday Party',
+          other: ['Stadium Games party ends during the Holiday Party'],
           partyUpdate: 'The lighthouse has more money (3)'
         }
       },
@@ -85,7 +85,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2016-01-01',
         events: {
-          other: 'test'
+          other: ['test']
         }
       }
     ]
@@ -94,35 +94,44 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
   });
 }
 
-/** All things that can happen in a single day */
-type Events = {
+type BaseEvents = {
   /** Info is either the name of the party (placeholder message) or custom message with comment: true */
-  partyStart?: string;
+  partyStart: string[];
   /** Name of a party that ended this day */
-  partyEnd?: string
+  partyEnd: string[]
   /** Description of something that changed in a party today */
-  partyUpdate?: string
+  partyUpdate: string
   /** Uncategorized thing that happened this day */
-  other?: string
+  other: string[]
   /** Number (or name) of new CPT issues that released this day */
-  newIssue?: number | string
+  newIssue: number | string
   /** Name of a room that opened this day */
-  roomOpen?: string[];
+  roomOpen: string[];
   /** Description of how a room was updated this day */
-  roomUpdate?: string;
+  roomUpdate: string;
   /** Name of a minigame that released this day */
-  minigameRelease?: string
-  pin?: string;
+  minigameRelease: string
+  pin: string;
   /** If a clothing catalogue was released this day */
-  newClothing?: boolean
+  newClothing: boolean
   /** Name of stage play that is debuting today if any */
-  stagePlay?: string;
+  stagePlay: string;
   /** If a music list was released this day */
-  musicList?: true;
-  newFurnitureCatalog?: true;
-  partyConstruction?: string;
-  stadiumUpdate?: 'stadium' | 'rink' | string;
+  musicList: true;
+  newFurnitureCatalog: true;
+  partyConstruction: string;
+  stadiumUpdate: 'stadium' | 'rink' | string;
 };
+
+/** All things that can happen in a single day */
+type Events = Partial<BaseEvents>;
+
+// some typescript witcher to get property that points to an array in T
+type ArrayProperties<T> = {
+  [K in keyof T]: T[K] extends any[] ? K : never
+}[keyof T];
+
+type EventsArrayProperty = ArrayProperties<BaseEvents>;
 
 // this type is duplicated in the timeline-static file, it should be the same type
 /** Representation of a day in the Club Penguin timeline */
@@ -161,6 +170,21 @@ function getDaysFromMap(map: Map<Version, Day>) {
   });
 }
 
+/** Add a new event to an array property */
+function addArrayEvents<Prop extends EventsArrayProperty>(map: Map<Version, Day>, prop: EventsArrayProperty, date: string, value: BaseEvents[Prop][number]) {
+  const day = map.get(date);
+  if (day === undefined) {
+    map.set(date, { date, events: { [prop]: [value] }});
+  } else {
+    const previousValue = day.events[prop];
+    if (previousValue === undefined) {
+      map.set(date, { date, events: { ...day.events, [prop]: [value] }});
+    } else {
+      map.set(date, { date, events: { ...day.events, [prop]: [...previousValue, value] }});
+    }
+  }
+}
+
 /** Add new events to a day inside a day map */
 function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
   const day = map.get(date);
@@ -196,14 +220,14 @@ function addParties(map: DayMap): DayMap {
     const partyStart = party.startComment === undefined
       ? `The ${party.name} starts`
       : party.startComment;
-    addEvents(map, party.startDate, { [partyStartProp]: partyStart });
+    addArrayEvents(map, partyStartProp, party.startDate, partyStart );
 
     const partyEndProp = party.event === true ? 'other' : 'partyEnd'
 
     const partyEnd = party.endComment === undefined
       ? `The ${party.name} ends`
       : party.endComment;
-    addEvents(map, party.endDate, { [partyEndProp]: partyEnd });
+    addArrayEvents(map, partyEndProp, party.endDate, partyEnd);
 
     if (party.construction !== undefined) {
         const partyStart = `Construction for the ${party.name} starts`;
@@ -313,15 +337,15 @@ function addStandalone(map: DayMap): void {
   Object.values(STANDALONE_TEMPORARY_CHANGE).forEach((updates) => {
     updates.forEach(update => {
       if (update.comment !== undefined) {
-        addEvents(map, update.startDate, { other: update.comment });
+        addArrayEvents(map, 'other', update.startDate, update.comment);
       }
       if (update.endComment !== undefined) {
-        addEvents(map, update.endDate, { other: update.endComment });
+        addArrayEvents(map, 'other', update.endDate, update.endComment);
       }
       if (update.updates !== undefined) {
         update.updates.forEach((newUpdate) => {
           if (newUpdate.comment !== undefined) {
-            addEvents(map, newUpdate.date, { other: newUpdate.comment });
+            addArrayEvents(map, 'other', update.endDate, newUpdate.comment);
           }
         })
       }
@@ -377,16 +401,21 @@ function getConsumedTimeline(days: Day[]): Array<{
     }
 
     if (day.events.partyStart !== undefined) {
-      events.push({
-        type: EventType.PartyStart,
-        text: day.events.partyStart
-      });
+      day.events.partyStart.forEach((partyStart) => {
+        events.push({
+          type: EventType.PartyStart,
+          text: partyStart
+        });
+      })
     }
     if (day.events.partyEnd !== undefined) {
-      events.push({
-        type: EventType.PartyEnd,
-        text: day.events.partyEnd
-      });
+      console.log(day.events.partyEnd);
+      day.events.partyEnd.forEach((partyEnd) => {
+        events.push({
+          type: EventType.PartyEnd,
+          text: partyEnd
+        });
+      })
     }
     if (day.events.partyUpdate !== undefined) {
       events.push({
@@ -398,7 +427,9 @@ function getConsumedTimeline(days: Day[]): Array<{
       events.push({ text: day.events.partyConstruction, type: EventType.Construction });
     }
     if (day.events.other !== undefined) {
-      pushText(day.events.other);
+      day.events.other.forEach((other) => {
+        pushText(other);
+      })
     }
     if (day.events.roomOpen !== undefined) {
       let text = day.events.roomOpen.length === 1 ? (

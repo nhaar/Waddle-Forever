@@ -1363,6 +1363,19 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Snow Sculpture Showcase',
+    startDate: '2009-03-20',
+    endDate: '2009-04-09',
+    roomChanges: {
+      beach: 5003,
+      beacon: 5004,
+      dock: 5005,
+      light: 5006,
+      mtn: 5007,
+      village: 5008
+    }
+  },
+  {
     name: 'Penguin Play Awards',
     startDate: '2009-03-20',
     endDate: '2009-04-09',
