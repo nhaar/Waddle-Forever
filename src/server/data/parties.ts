@@ -1904,6 +1904,37 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Celebration of Fire',
+    startDate: '2009-11-20',
+    endDate: '2009-11-27',
+    roomChanges: {
+      // I actually don't know if this dojo exterior
+      // is from this date, archives lists it as being from later one
+      dojoext: 4995,
+      dojohide: 4998,
+      dojofire: 4999
+    },
+    construction: {
+      date: '2009-11-13',
+      changes: {
+        dojohide: 5000,
+        dojofire: 5001,
+        dojoext: 5002
+      }
+    },
+    updates: [
+      {
+        date: '2009-11-23',
+        comment: 'Card-Jitsu Fire is now available',
+        roomChanges: {
+
+          dojohide: 4996,
+          dojofire: 4997
+        }
+      }
+    ]
+  },
+  {
     name: 'Winter Party',
     startDate: '2009-11-27',
     endDate: '2009-11-30',
