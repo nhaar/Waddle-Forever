@@ -89,7 +89,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'beacon',
-    fileId: 241,
+    fileId: 5014,
     date: CPIP_UPDATE
   },
   {
