@@ -304,7 +304,6 @@ export const PARTIES: Party[] = [
       'town': 3828
     },
     music: {
-      // Just put the music everywhere, but the village
       'beach': 213,
       'cave': 213,
       'coffee': 213,
@@ -314,7 +313,8 @@ export const PARTIES: Party[] = [
       'plaza': 213,
       'mtn': 213,
       'forts': 213,
-      'town': 213
+      'town': 213,
+      'village': 213
     },
     roomFrames: {
       'beach': 2,
@@ -325,7 +325,7 @@ export const PARTIES: Party[] = [
       'pizza': 2,
       'plaza': 2,
       'mtn': 2,
-      'village': 2,
+      'village': 3,
       'forts': 2,
       'town': 2
     },
@@ -1949,7 +1949,6 @@ export const PARTIES: Party[] = [
         shipquarters: 4530,
         shipnest: 4531,
         lounge: 4532,
-        forest: 4533,
         dance: 4534,
         ship: 4535,
         plaza: 4536,

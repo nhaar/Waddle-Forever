@@ -76,6 +76,14 @@ export function getSetupXml(version: Version) {
   const baseMusic = getMusicForDate(version);
   patchMusic(rooms, baseMusic);
 
+  // pin related frame change
+  // should be before party, as party has priority
+  const pinFrame = getPinFrames(version);
+  if (pinFrame !== null) {
+    const [room, frame] = pinFrame;
+    patchFrame(rooms, { [room]: frame });
+  }
+
   const currentParty = findCurrentParty(version);
   if (currentParty !== null) {
     if (currentParty.music !== undefined) {
@@ -84,13 +92,6 @@ export function getSetupXml(version: Version) {
     if (currentParty.roomFrames !== undefined) {
       patchFrame(rooms, currentParty.roomFrames);
     }
-  }
-
-  // pin related frame change
-  const pinFrame = getPinFrames(version);
-  if (pinFrame !== null) {
-    const [room, frame] = pinFrame;
-    patchFrame(rooms, { [room]: frame });
   }
 
   const clothingIndex = findEarliestDateHitIndex(version, PRE_CPIP_CATALOGS.map((date) => ({ date })));
