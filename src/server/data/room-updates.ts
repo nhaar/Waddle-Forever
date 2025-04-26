@@ -787,5 +787,10 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     room: 'stage',
     fileId: null,
     date: FIRST_STAGE_PLAY
+  },
+  {
+    room: 'agentcom',
+    fileId: 4936,
+    date: '2008-11-24'
   }
 ];
