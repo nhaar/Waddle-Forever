@@ -272,7 +272,7 @@ function addRoomUpdates(map: DayMap): void {
 
   STADIUM_UPDATES.forEach((update) => {
     if (update.type !== undefined || update.comment !== undefined) {
-      addEvents(map, update.date, { stadiumUpdate: update.type ?? update.comment });
+      addEvents(map, update.date, { stadiumUpdate: update.comment ?? update.type });
     }
   })
 }

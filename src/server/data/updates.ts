@@ -99,6 +99,8 @@ export const ICE_FISHING_RELEASE = '2006-03-10';
 
 export const FIND_FOUR_RELEASE = '2006-04-27';
 
+export const MISSION_1_RELEASE = '2006-08-18';
+
 export const SNOW_SPORT_RELEASE = '2007-08-31';
 
 // exact date this client is introduced is unknown

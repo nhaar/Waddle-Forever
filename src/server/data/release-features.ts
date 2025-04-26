@@ -11,7 +11,7 @@ export const ORIGINAL_ROOMS: Partial<Record<RoomName, number>> = {
   'village': 31,
   'rink': 33,
   'dojo': 10,
-  'agent': 5 // HQ is disputed, maybe not original release
+  'agent': 4931 // HQ is disputed, maybe not original release
 }
 
 // File ID of original map

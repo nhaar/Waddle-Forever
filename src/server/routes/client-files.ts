@@ -19,7 +19,7 @@ import { FALLBACKS } from "../data/fallbacks";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
-import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, PRE_CPIP_REWRITE_DATE } from "../data/updates";
+import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, PRE_CPIP_REWRITE_DATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
@@ -910,6 +910,14 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
 function addStadiumUpdates(map: TimelineMap): void {
   STADIUM_UPDATES.forEach((update) => {
     const date = update.date;
+  if (isGreaterOrEqual(date, CPIP_UPDATE) && isLower(date, EPF_RELEASE)) {
+    const agent = 'play/v2/content/global/rooms/agent.swf';
+    if (update.type === 'rink') {
+      map.addPerm(agent, date, 2651);
+    } else if (update.type === 'stadium') {
+      map.addPerm(agent, date, 4935);
+    }
+  }
     map.addPerm('play/v2/content/global/content/map.swf', date, update.mapFileId);
     map.addPerm('play/v2/content/global/rooms/town.swf', date, update.townFileId);
     map.addPerm('play/v2/content/global/rooms/forts.swf', date, update.fortsFileId);
