@@ -422,6 +422,10 @@ function addParties(map: TimelineMap): void {
         });
       })
     }
+
+    if (party.scavengerHunt2007 !== undefined) {
+      map.addTemp('media/artwork/eggs/1.swf', startDate, endDate, party.scavengerHunt2007);
+    }
   })
 }
 

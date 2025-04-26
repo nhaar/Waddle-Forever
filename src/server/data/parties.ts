@@ -55,6 +55,14 @@ export type Party = PartyChanges & {
   } & PartyChanges>;
 
   activeMigrator?: true;
+
+  // TODO maybe also supplying the ID if we know
+  // otherwise default egg id to 1
+  /**
+   * For a scavenger hunt in the 2007-2008 client,
+   * writing what the file number of the egg file is
+   * */
+  scavengerHunt2007?: number;
 };
 
 type Construction = {
@@ -652,6 +660,22 @@ export const PARTIES: Party[] = [
       forts: 208,
       town: 208
     }
+  },
+  {
+    name: 'Easter Egg Hunt',
+    startDate: '2008-03-21',
+    endDate: '2008-03-24',
+    roomChanges: {
+      book: 4954,
+      dock: 4955,
+      dojo: 4956,
+      shop: 4957,
+      attic: 4958,
+      mine: 4959,
+      pet: 4960,
+      plaza: 4961
+    },
+    scavengerHunt2007: 4962
   },
   {
     name: 'April Fools\' Party',
