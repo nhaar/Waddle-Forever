@@ -1025,9 +1025,8 @@ function addCatalogues(map: TimelineMap): void {
 
 function addPins(map: TimelineMap): void {
   PINS.forEach((pin) => {
-    if (pin.roomChange !== undefined) {
-      const [room, fileId] = pin.roomChange;
-      addTempRoomRoute(map, pin.date, pin.end, room, fileId);
+    if ('room' in pin && pin.fileId !== undefined) {
+      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.fileId);
     }
   });
 }
@@ -1055,8 +1054,8 @@ export function getPinFrames(date: Version): [RoomName, number] | null {
     return null;
   }
   const pin = PINS[pinIndex];
-  if (isLower(date, pin.end) && pin.frameChange !== undefined) {
-    return pin.frameChange;
+  if ('room' in pin && pin.frame !== undefined && isLower(date, pin.end)) {
+    return [pin.room, pin.frame];
   }
   return null;
 }

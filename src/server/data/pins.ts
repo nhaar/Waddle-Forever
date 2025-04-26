@@ -5,23 +5,34 @@ import { PET_SHOP_RELEASE, PUFFLE_PARTY_10_CONST_START } from "./updates";
 export type Pin = {
   date: Version;
   end: Version;
-  roomChange?: [RoomName, number];
-  frameChange?: [RoomName, number];
   name: string;
-}
-
+} & ({} | {
+  room: RoomName;
+  fileId?: number;
+  frame?: number;
+})
+  
 // has to be sorted
 export const PINS: Array<Pin> = [
   {
     date: PET_SHOP_RELEASE,
     end: '2006-03-31',
-    roomChange: ['coffee', 4938],
-    frameChange: ['coffee', 2],
-    name: 'Shamrock Pin'
+    room: 'coffee',
+    fileId: 4938,
+    frame: 2,
+    name: 'Shamrock'
+  },
+  {
+    date: '2006-05-12',
+    end: '2006-05-26',
+    room: 'dock',
+    fileId: 4939,
+    frame: 2,
+    name: 'Balloon'
   },
   {
     date: PUFFLE_PARTY_10_CONST_START,
     end: '2010-03-18',
-    name: 'Feather Pin'
+    name: 'Feather'
   }
 ];

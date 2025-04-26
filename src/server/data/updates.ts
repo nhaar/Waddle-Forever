@@ -61,6 +61,8 @@ export const PUFFLE_PARTY_10_CONST_START = '2010-02-11';
 
 export const EGG_HUNT_2006_START = '2006-04-14';
 
+export const EGG_HUNT_2006_END = '2006-04-16';
+
 export const FIRST_BOILER_ROOM_PAPER = '2006-04-13';
 
 export const CAVE_OPENING_START = '2006-05-26';
