@@ -4,7 +4,7 @@
 
 import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
-import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbPatch } from '../src/server/routes/client-files';
+import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbContent } from '../src/server/routes/client-files';
 import { generateCrumbFiles } from './base-crumbs';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
@@ -102,7 +102,7 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
   await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
-function applyChanges(crumbs: string, changes: Partial<GlobalCrumbPatch>): string {
+function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): string {
   let newCrumbs = crumbs;
   if (changes.music !== undefined) {
     Object.entries(changes.music).forEach((pair) => {

@@ -1,7 +1,7 @@
 import path from "path";
 import { extractPcode, replacePcode } from "../src/common/ffdec/ffdec";
 import { generateCrumbFiles } from "./base-crumbs";
-import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbPatch } from "../src/server/routes/client-files";
+import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent } from "../src/server/routes/client-files";
 
 const BASE_LOCAL_CRUMBS = path.join(__dirname, 'base_local_crumbs.swf');
 
@@ -29,7 +29,7 @@ function addLocalPath(crumbs: string, pathName: string, path: string): string {
   return lines.join('\n');
 }
 
-function applyChanges(crumbs: string, changes: LocalCrumbPatch): string {
+function applyChanges(crumbs: string, changes: Partial<LocalCrumbContent>): string {
   let newCrumbs = crumbs
 
   if (changes.paths !== undefined) {
