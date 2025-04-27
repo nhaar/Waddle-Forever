@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import hash from 'object-hash';
 
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
-import { isEqual, isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, processVersion, Version } from "./versions";
+import { isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, processVersion, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
@@ -25,6 +25,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 import { getNewspaperName } from "../game/news.txt";
 import { PINS } from "../data/pins";
+import { addToIdentifierMap, processTimeline, TimelineEvent, TimelineMap } from "../data/changes";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -56,20 +57,6 @@ type SpecialRouteFileInformation = {
 
 type RouteFileInformation = string | DynamicRouteFileInformation | SpecialRouteFileInformation;
 
-/** Maps a route to all the file information related to it */
-type RouteMap = Map<string, RouteFileInformation>;
-
-/** Given a route map, adds file information to a given route */
-function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
-  const cleanPath = sanitizePath(route);
-  const previousValue = map.get(cleanPath);
-  if (previousValue === undefined) {
-    map.set(cleanPath, info);
-  } else {
-    console.log(previousValue, info);
-    throw new Error(`Path ${cleanPath} is being duplicated`);
-  }
-}
 
 /** Get the path to a file */
 function getMediaFilePath(fileId: number): string {
@@ -95,7 +82,45 @@ function getMediaFilePath(fileId: number): string {
   return path.join(packageInfo.name, categoryName, filePath);
 }
 
-function addMusicFiles(map: TimelineMap): void {
+class FileTimelineMap {
+  _map: TimelineMap<string, string>;
+
+  constructor() {
+    this._map = new TimelineMap<string, string>();
+  }
+
+
+  addPerm(route: string, date: Version, file: string): void;
+  addPerm(route: string, date: Version, file: number): void;
+
+  
+  addPerm(route: string, date: Version, file: string | number) {
+    this._map.addPerm(sanitizePath(route), date, typeof file === 'string' ? file : getMediaFilePath(file));
+  }
+
+  addTemp(route: string, date: Version, end: Version, file: string): void;
+  addTemp(route: string, date: Version, end: Version, file: number): void;
+
+  addTemp(route: string, date: Version, end: Version, file: string | number) {
+    this._map.addTemp(sanitizePath(route), date, end, typeof file === 'string' ? file : getMediaFilePath(file));
+  }
+
+  getRouteMap(): RouteMap {
+    const routeMap = new Map<string, RouteFileInformation>();
+    const idMap = this._map.getIdentifierMap();
+
+    idMap.forEach((versions, route) => {
+      addToRouteMap(routeMap, route, {
+        type: 'dynamic',
+        versions: versions.map((v) => ({ date: v.date, file: v.info }))
+      })
+    });
+
+    return routeMap;
+  }
+}
+
+function addMusicFiles(map: FileTimelineMap): void {
   // pre-cpip there's no reason to believe updates happened
 
   Object.entries(MUSIC_IDS).forEach((pair) => {
@@ -118,6 +143,15 @@ export function isNewspaperAfterCPIP(nextNewspaper: As2Newspaper | undefined) {
 
 export function getMinifiedDate(date: Version): string {
   return date.replaceAll('-', '');
+}
+
+/** Maps a route to all the file information related to it */
+type RouteMap = Map<string, RouteFileInformation>;
+
+/** Given a route map, adds file information to a given route */
+function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
+  const cleanPath = sanitizePath(route);
+  addToIdentifierMap(map, cleanPath, info);
 }
 
 function addNewspapers(map: RouteMap): void {
@@ -205,29 +239,13 @@ function addStaticFiles(map: RouteMap): void {
   addStatic(CPIP_AS3_STATIC_FILES);
 }
 
-function addFallbacks(map: TimelineMap): void {
+function addFallbacks(map: FileTimelineMap): void {
   FALLBACKS.forEach((pair) => {
     const [route, fileId] = pair;
     map.addPerm(route, BETA_RELEASE, fileId);
   })
 }
 
-/** Abstraction of a type that represents either a temporary event or permanent one in a timeline */
-type TimelineEvent<EventInformation> = ({
-  type: 'temporary';
-  start: Version;
-  end: Version;
-} | {
-  type: 'permanent',
-  date: Version,
-}) & EventInformation;
-
-/** A single event in a timeline of updates of a file */
-type FileTimelineEvent = TimelineEvent<{
-  file: string
-}>;
-
-type FileTimeline = Array<FileTimelineEvent>;
 
 /** Maps for each route its file timeline */
 // type TimelineMap = Map<string, FileTimeline>;
@@ -236,55 +254,7 @@ function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
 
-class TimelineMap {
-  private _map: Map<string, FileTimeline>;
-  
-  constructor() {
-    this._map = new Map<string, FileTimeline>;
-  }
-
-  addTemp(route: string, start: Version, end: Version, file: number) {
-    this.add(route, {
-      type: 'temporary',
-      start,
-      end,
-      file: getMediaFilePath(file)
-    });
-  }
-  addPerm(route: string, date: Version, file: number): void;
-  addPerm(route: string, date: Version, file: string): void;
-
-  addPerm(route: string, date: Version, file: number | string) {
-    const filePath = typeof file === 'number' ? getMediaFilePath(file) : file;
-    this.add(route, {
-      type: 'permanent',
-      date,
-      file: filePath
-    });
-  }
-
-  /** Add a file update event to a timeline map for a given route */
-  private add(route: string, event: FileTimelineEvent): void {
-    route = sanitizePath(route);
-    const prev = this._map.get(route);
-    if (prev === undefined) {
-      this._map.set(route, [event]);
-    } else {
-      prev.push(event);
-    }
-  }
-
-  getRouteMap(): RouteMap {
-    const routeMap = new Map<string, RouteFileInformation>();
-    this._map.forEach((timeline, route) => {
-      addToRouteMap(routeMap, route, getFileInformation(timeline))
-    });
-
-    return routeMap;
-  }
-}
-
-function addRoomRoute(map: TimelineMap, date: string, room: RoomName, file: number) {
+function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: number) {
   if (isLower(date, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.addPerm(path.join('artwork/rooms', fileName), date, file);
@@ -297,7 +267,7 @@ const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 const TICKET_ICON_PATH = 'tickets.swf';
 const TICKET_INFO_PATH = 'ticket_info.swf';
 
-function addTempRoomRoute(map: TimelineMap, start: string, end: string, room: RoomName, file: number) {
+function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: number) {
   if (isLower(start, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.addTemp(path.join('artwork/rooms', fileName), start, end, file);
@@ -306,7 +276,7 @@ function addTempRoomRoute(map: TimelineMap, start: string, end: string, room: Ro
   }
 }
 
-function addRoomInfo(map: TimelineMap): void {
+function addRoomInfo(map: FileTimelineMap): void {
   for (const roomName in ROOMS) {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
@@ -337,7 +307,7 @@ function addRoomInfo(map: TimelineMap): void {
   })
 }
 
-function addParties(map: TimelineMap): void {
+function addParties(map: FileTimelineMap): void {
   const addRoomChanges = (roomChanges: RoomChanges, start: Version, end: Version) => {
     for (const room in roomChanges) {
       const fileId = roomChanges[room as RoomName]!;
@@ -427,205 +397,8 @@ function addParties(map: TimelineMap): void {
   })
 }
 
-function sortOnProperty<T extends { date: string }>(array: T[]): T[] {
-  return array.sort((a, b) => {
-    const aVersion = a.date;
-    const bVersion = b.date;
-    if (isLower(aVersion, bVersion)) {
-      return -1;
-    } else if (isEqual(aVersion, bVersion)) {
-      return 0;
-    } else {
-      return 1;
-    }
-  });
-}
 /** Converts a timeline of events into some */
 
-/**
- * Processes a timeline of events into some form of output
- * @param timeline The timeline of events
- * @param getInput A function that takes each event and gets characteristic input data that is meant to be particular of each event
- * @param getOutput A function that takes a previous' event input data, or none if nothing previous, and the current event input data and outputs a final output
- * @param hashOutput A function that creates a unique identifier for a given output, to be able to hash it
- * @returns 
- */
-function processTimeline<EventInformation, EventInput, EventOutput>(
-  timeline: TimelineEvent<EventInformation>[],
-  getInput: <T extends EventInformation>(input: T) => EventInput,
-  getFirstOutput: () => EventOutput,
-  getOutput: (prev: EventOutput, cur: EventInput) => EventOutput,
-  hashOutput: (out: EventOutput) => string
-): Array<{
-  date: Version,
-  out: EventOutput,
-  id: number
-}> {
-  // first part of this altgothrm:
-  // labeling what each update is and breaking everything down
-  // to events
-  
-  // get id of event input so we can find them later
-  const permanentMapping = new Map<number, EventInput>();
-  const temporaryMapping = new Map<number, EventInput>();
-
-  const eventsTimeline: Array<{
-    type: 'permanent' | 'temp_start' | 'temp_end',
-    id: number;
-    date: Version;
-  }> = [];
-
-  let currentId = 0;
-
-  timeline.forEach((event) => {
-    if (event.type === 'permanent') {
-      currentId++;
-      permanentMapping.set(currentId, getInput(event));
-      eventsTimeline.push({
-        type: 'permanent',
-        id: currentId,
-        date: event.date
-      });
-    } else {
-      currentId++;
-      temporaryMapping.set(currentId, getInput(event));
-      eventsTimeline.push({
-        type: 'temp_start',
-        id: currentId,
-        date: event.start
-      }, {
-        type: 'temp_end',
-        id: currentId,
-        date: event.end
-      });
-    }
-  });
-
-  // sort needs to be a bit more than just the date;
-  // if on the same day, the priority is permanent->temp end->temp start
-  const sorted = eventsTimeline.sort((a, b) => {
-    const aVersion = a.date;
-    const bVersion = b.date;
-    if (isLower(aVersion, bVersion)) {
-      return -1;
-    } else if (isEqual(aVersion, bVersion)) {
-      if (a.type === b.type) {
-        return 0;
-      }
-      if (a.type === 'permanent') {
-        return -1;
-      }
-      if (b.type === 'permanent') {
-        return 1;
-      }
-      if (a.type === 'temp_end') {
-        return -1;
-      }
-      if (b.type === 'temp_end') {
-        return 1;
-      }
-      return 0;
-    } else {
-      return 1;
-    }
-  });
-
-  // second part of this algorithm: going through the events
-  // and judging which file is to be used at each date
-
-  const versions: Array<{ 
-    date: Version
-    out: EventOutput
-    id: number
-  }> = [];
-
-  let previousPermanent = -1;
-  let currentPermanent = -1;
-  // this acts as a queue, so there can be multiple temporary events
-  let currentTemporaries: number[] = [];
-
-  // we will assign IDs to the output so that we can tell which of the outputs
-  // represent the exact same state (discerned via the "hashing" function)
-  let outputId = 0;
-  const outputs = new Map<string, number>();
-
-  const getOutputId = (output: EventOutput) => {
-    const hash = hashOutput(output);
-    const id = outputs.get(hash);
-    
-    if (id === undefined) {
-      outputId++;
-      outputs.set(hash, outputId);
-      return outputId;
-    } else {
-      return id;
-    }
-  }
-
-  // maps id of permanent update and the output generated by it
-  const outputMapping = new Map<number, EventOutput>();
-  
-  const getPrevious = () => {
-    let previous = outputMapping.get(previousPermanent);
-    if (previous === undefined) {
-      return getFirstOutput();
-    }
-    return previous;
-  }
-
-  const pushPermanent = (date: string) => {
-    const input = permanentMapping.get(currentPermanent);
-    if (input !== undefined) {
-      // no permanent room means there isn't one. So no changes will be used
-      const output = getOutput(getPrevious(), input);
-      outputMapping.set(currentPermanent, output);
-      const id = getOutputId(output);
-      versions.push({
-        date,
-        out: output,
-        id
-      });
-    }
-  }
-
-  const pushTemporary = (date: string) => {
-    const currentTemporary = currentTemporaries[0];
-    const input = temporaryMapping.get(currentTemporary);
-    if (input === undefined) {
-      throw new Error('Logic error');
-    }
-    const output = getOutput(getPrevious(), input);
-    const id = getOutputId(output);
-    versions.push({
-      date,
-      out: output,
-      id
-    });
-  }
-
-  sorted.forEach((event) => {
-    if (event.type === 'permanent') {
-      previousPermanent = currentPermanent;
-      currentPermanent = event.id;
-      // permanent changes take effect once the temporaries are gone
-      if (currentTemporaries.length === 0) {
-        pushPermanent(event.date);
-      }
-    } else if (event.type === 'temp_start') {
-      currentTemporaries.unshift(event.id);
-      pushTemporary(event.date);
-    } else if (event.type === 'temp_end') {
-      currentTemporaries = currentTemporaries.filter((id) => id !== event.id);
-      if (currentTemporaries.length === 0) {
-        pushPermanent(event.date);
-      } else {
-        pushTemporary(event.date);
-      }
-    }
-  });
-
-  return versions;
-}
 
 /** Represents a unique global crumbs state */
 export type GlobalCrumbContent = {
@@ -680,10 +453,9 @@ export function getLocalCrumbsOutput() {
   
       if (Object.keys(localPaths).length > 0) {
         timeline.push({
-          type: 'temporary',
-          start: party.startDate,
+          date: party.startDate,
           end: party.endDate,
-          crumb: { paths: localPaths }
+          info: { paths: localPaths }
         });
       }
     })
@@ -699,26 +471,21 @@ export function getLocalCrumbsOutput() {
 }
 
 function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
-  timelineBuilder: (timeline: TimelineEvent<{
-    crumb: Partial<CrumbContent>
-  }>[]) => void,
+  timelineBuilder: (timeline: TimelineEvent<Partial<CrumbContent>>[]) => void,
   mergeCrumbs: (prev: CrumbContent, cur: Partial<CrumbContent>) => CrumbContent,
   getFirstCrumb: () => CrumbContent
 ) {
-  const timeline: TimelineEvent<{
-    crumb: Partial<CrumbContent>
-  }>[] = [
+  const timeline: TimelineEvent<Partial<CrumbContent>>[] = [
     {
-      type: 'permanent',
       date: CPIP_UPDATE,
-      crumb: getFirstCrumb()
+      info: getFirstCrumb()
     }
   ];
 
   timelineBuilder(timeline);
 
   const crumbs = processTimeline(timeline, (input) => {
-    return input.crumb
+    return input
   }, getFirstCrumb, mergeCrumbs, (out) => {
     // this is a third party function that can properly hash objects
     // even if their property order isn't the same
@@ -793,10 +560,9 @@ export function getGlobalCrumbsOutput() {
   
       if (crumbChanged) {
         timeline.push({
-          type: 'temporary',
-          start: party.startDate,
+          date: party.startDate,
           end: party.endDate,
-          crumb: {
+          info: {
             music: party.music,
             paths: globalPaths,
             prices: {},
@@ -812,9 +578,8 @@ export function getGlobalCrumbsOutput() {
       otherSongs.forEach((update) => {
         if (isGreater(update.date, CPIP_UPDATE)) {
           timeline.push({
-            type: 'permanent',
             date: update.date,
-            crumb: {
+            info: {
               music: {
                 [room as RoomName]: update.musicId
               }
@@ -830,9 +595,8 @@ export function getGlobalCrumbsOutput() {
         throw new Error(`Stage play has no music: ${debut.name}`);
       }
       timeline.push({
-        type: 'permanent',
         date: debut.date,
-        crumb: {
+        info: {
           music: {
             'stage': play.musicId
           }
@@ -866,7 +630,7 @@ export function getGlobalCrumbsOutput() {
 }
 
 /** Adds listeners to the global crumbs files */
-function addCrumbs(map: TimelineMap): void {
+function addCrumbs(map: FileTimelineMap): void {
   const addCrumb = <T>(crumbPath: string, route: string, output: CrumbOutput<T>) => {
     const { hash, crumbs } = output;
     /** So that different crumb generations don't use the same files, we hash it in the name */
@@ -883,18 +647,6 @@ function addCrumbs(map: TimelineMap): void {
   [...AS2_NEWSPAPERS.slice(6), ...AS3_NEWSPAPERS].forEach((newspaper) => {
     map.addPerm('play/v2/content/local/en/news/news_crumbs.swf', newspaper.date, path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'));
   });
-}
-
-/** Converts a timeline event to the information consumed by the file server */
-function getFileInformation(timeline: FileTimelineEvent[]): DynamicRouteFileInformation {
-  return {
-    type: 'dynamic',
-    versions: processTimeline(timeline, (input) => {
-      return input.file;
-    }, () => {
-      return ''
-    }, (_, c) => c, (out) => out).map((version) => ({ date: version.date, file: version.out }))
-  }
 }
 
 export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
@@ -972,7 +724,7 @@ export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
   return info[index].file;
 }
 
-function addStadiumUpdates(map: TimelineMap): void {
+function addStadiumUpdates(map: FileTimelineMap): void {
   STADIUM_UPDATES.forEach((update) => {
     const date = update.date;
   if (isGreaterOrEqual(date, CPIP_UPDATE) && isLower(date, EPF_RELEASE)) {
@@ -995,12 +747,11 @@ function addStadiumUpdates(map: TimelineMap): void {
   });
 }
 
-function addIngameMapInfo(map: TimelineMap): void {
-
+function addIngameMapInfo(map: FileTimelineMap): void {
   map.addPerm(PRECPIP_MAP_PATH, BETA_RELEASE, ORIGINAL_MAP);
 }
 
-function addStandaloneChanges(map: TimelineMap): void {
+function addStandaloneChanges(map: FileTimelineMap): void {
   Object.entries(STANDALONE_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
     updates.forEach((update) => {
@@ -1021,7 +772,7 @@ function addStandaloneChanges(map: TimelineMap): void {
   });
 }
 
-function addMapUpdates(map: TimelineMap): void {
+function addMapUpdates(map: FileTimelineMap): void {
   MAP_UPDATES.forEach((update) => {
     if (isLower(update.date, CPIP_UPDATE)) {
       map.addPerm(PRECPIP_MAP_PATH, update.date, update.fileId);
@@ -1043,7 +794,7 @@ export function getFileDateSignature(date: Version): string {
   return `${String(year).slice(2)}${String(month).padStart(2, '0')}`;
 }
 
-function addCatalogues(map: TimelineMap): void {
+function addCatalogues(map: FileTimelineMap): void {
   const addCatalogue = (route: string, catalogs: Record<string, number>) => {
     Object.entries(catalogs).forEach((pair) => {
       const [date, fileId] = pair;
@@ -1064,7 +815,7 @@ function addCatalogues(map: TimelineMap): void {
   addCatalogue('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 }
 
-function addPins(map: TimelineMap): void {
+function addPins(map: FileTimelineMap): void {
   PINS.forEach((pin) => {
     if ('room' in pin && pin.fileId !== undefined) {
       addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.fileId);
@@ -1072,7 +823,7 @@ function addPins(map: TimelineMap): void {
   });
 }
 
-function addMusicLists(map: TimelineMap): void {
+function addMusicLists(map: FileTimelineMap): void {
   const route = 'play/v2/content/global/content/igloo_music.swf';
   map.addPerm(route, BETA_RELEASE, 2635);
   for (let i = 0; i < IGLOO_LISTS.length; i++) {
@@ -1101,7 +852,7 @@ export function getPinFrames(date: Version): [RoomName, number] | null {
   return null;
 }
 
-function addStagePlays(map: TimelineMap): void {
+function addStagePlays(map: FileTimelineMap): void {
   STAGE_TIMELINE.forEach((debut) => {
     const date = debut.date;
 
@@ -1127,7 +878,7 @@ function addStagePlays(map: TimelineMap): void {
 
 /** Get the object which knows all the file information needed to find the file for a given route */
 export function getFileServer(): Map<string, RouteFileInformation> {
-  const timelines = new TimelineMap();
+  const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
     addRoomInfo,
