@@ -1,6 +1,6 @@
 import { Version } from "../routes/versions";
 import { RoomName } from "./rooms";
-import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_PARTY_END, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, MUSIC_JAM_08_START, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_PARTY_END, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -70,8 +70,13 @@ export const ROOM_UPDATES: RoomUpdate[] = [
   {
     // placeholder CPIP room
     room: 'mtn',
-    fileId: 4923,
+    fileId: 5079,
     date: CPIP_UPDATE
+  },
+  {
+    room: 'mtn',
+    fileId: 4923,
+    date: GAME_UPGRADES
   },
   {
     // placeholder CPIP room
@@ -106,9 +111,19 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: CPIP_UPDATE
   },
   {
-    // placeholder CPIP room
+    // recreation of proper cove room here
+    room: 'cove',
+    fileId: 5074,
+    date: CPIP_UPDATE
+  },
+  {
     room: 'cove',
     fileId: 2336,
+    date: GAME_UPGRADES
+  },
+  {
+    room: 'dance',
+    fileId: 5073,
     date: CPIP_UPDATE
   },
   {
@@ -117,32 +132,52 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     // other SWFs in-between are lost
     room: 'dance',
     fileId: 4860,
+    date: MUSIC_JAM_08_START
+  },
+  {
+    // pre catalog
+    room: 'dock',
+    fileId: 5075,
     date: CPIP_UPDATE
   },
   {
-    // placeholder CPIP room
     room: 'dock',
     fileId: 2337,
+    date: GAME_UPGRADES
+  },
+  {
+    room: 'light',
+    fileId: 5077,
     date: CPIP_UPDATE
   },
   {
-    // placeholder CPIP room
+    // placeholder date
     room: 'light',
     fileId: 4915,
-    date: CPIP_UPDATE
+    date: MUSIC_JAM_08_START
   },
   {
     // placeholder CPIP room
     room: 'lodge',
-    fileId: 4928,
+    fileId: 5078,
     date: CPIP_UPDATE
   },
   {
-    // placeholder CPIP room
+    room: 'lodge',
+    fileId: 4928,
+    date: GAME_UPGRADES
+  },
+  {
     room: 'pet',
-    // this room seems to be from march 2009, but... tough luck we don't have that SWF
-    fileId: 4906,
+    fileId: 5080,
     date: CPIP_UPDATE
+  },
+  {
+    // white puffle release
+    room: 'pet',
+    fileId: 4906,
+    date: '2009-03-06',
+    comment: 'White puffles are available in the Pet Shop'
   },
   {
     // placeholder CPIP room
@@ -206,10 +241,14 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: CPIP_UPDATE
   },
   {
-    // placeholder CPIP room
+    room: 'dojo',
+    fileId: 5076,
+    date: CPIP_UPDATE
+  },
+  {
     room: 'dojo',
     fileId: 250,
-    date: CPIP_UPDATE
+    date: CARD_JITSU_RELEASE
   },
   {
     // placeholder CPIP room
@@ -855,7 +894,7 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     fileId: 4179,
     // not actual date, but we dont have a map for before the dojo was out yet, and
     // the dojo is inaccessible otherwise for the game CPIP-Dojo release
-    date: CPIP_UPDATE
+    date: DIG_OUT_DOJO_END
   },
   {
     room: 'stage',

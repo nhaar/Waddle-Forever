@@ -5197,14 +5197,17 @@ export const FILES = new StaticDataTable<File, [
 
   // recreation by VampLovr
   [5072, 'agent_2008_apr_cpip.swf', 1, FileCategory.Recreation, null, null],
-  [5073, '', 1, FileCategory.Archives, null, null],
-  [5074, '', 1, FileCategory.Archives, null, null],
-  [5075, '', 1, FileCategory.Archives, null, null],
-  [5076, '', 1, FileCategory.Archives, null, null],
-  [5077, '', 1, FileCategory.Archives, null, null],
-  [5078, '', 1, FileCategory.Archives, null, null],
-  [5079, '', 1, FileCategory.Archives, null, null],
-  [5080, '', 1, FileCategory.Archives, null, null],
+
+  // recreations by Blue Kirby
+  [5073, 'dance_cpip_premusicjam.swf', 1, FileCategory.Recreation, null, null],
+  [5074, 'cpip_cove_precatalog.swf', 1, FileCategory.Recreation, null, null],
+  [5075, 'dock_cpip_precatalog.swf', 1, FileCategory.Recreation, null, null],
+  [5076, 'dojo_cpip_start.swf', 1, FileCategory.Recreation, null, null],
+  [5077, 'light_cpip_start.swf', 1, FileCategory.Recreation, null, null],
+  [5078, 'lodge_cpip_start.swf', 1, FileCategory.Recreation, null, null],
+  [5079, 'mtn_cpip_start.swf', 1, FileCategory.Recreation, null, null],
+  [5080, 'pet_pre_white.swf', 1, FileCategory.Recreation, null, null],
+
   [5081, '', 1, FileCategory.Archives, null, null],
   [5082, '', 1, FileCategory.Archives, null, null],
   [5083, '', 1, FileCategory.Archives, null, null],
