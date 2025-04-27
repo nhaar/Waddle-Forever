@@ -103,7 +103,6 @@ function addMusicFiles(map: TimelineMap): void {
     const fileName = String(musicId) + '.swf';
     const route = path.join(PRE_CPIP_MUSIC_PATH, fileName);
     map.addPerm(route, BETA_RELEASE, fileId);
-    map.addPerm(path.join('media', route), BETA_RELEASE, fileId);
     map.addPerm(path.join('play/v2/content/global/music', fileName), CPIP_UPDATE, fileId);
   })
 }
@@ -130,7 +129,7 @@ function addNewspapers(map: RouteMap): void {
       if (isNewspaperBeforeCPIP(news)) {
         addToRouteMap(map, `artwork/news/news${issueNumber}.swf`, filePath);
         const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
-        addToRouteMap(map, path.join('media/artwork/news', route2007), filePath);
+        addToRouteMap(map, path.join('artwork/news', route2007), filePath);
       }
       // for all the 2006 boiler rooms we have archived,
       // they seem to only show a singular newspaper, presumed
@@ -288,7 +287,6 @@ class TimelineMap {
 function addRoomRoute(map: TimelineMap, date: string, room: RoomName, file: number) {
   if (isLower(date, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
-    map.addPerm(path.join('media/artwork/rooms', `${room}.swf`), date, file);
     map.addPerm(path.join('artwork/rooms', fileName), date, file);
   } else {
     map.addPerm(path.join('play/v2/content/global/rooms', `${room}.swf`), date, file);
@@ -302,7 +300,6 @@ const TICKET_INFO_PATH = 'ticket_info.swf';
 function addTempRoomRoute(map: TimelineMap, start: string, end: string, room: RoomName, file: number) {
   if (isLower(start, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
-    map.addTemp(path.join('media/artwork/rooms', `${room}.swf`), start, end, file);
     map.addTemp(path.join('artwork/rooms', fileName), start, end, file);
   } else {
     map.addTemp(path.join('play/v2/content/global/rooms', `${room}.swf`), start, end, file);
@@ -425,7 +422,7 @@ function addParties(map: TimelineMap): void {
     }
 
     if (party.scavengerHunt2007 !== undefined) {
-      map.addTemp('media/artwork/eggs/1.swf', startDate, endDate, party.scavengerHunt2007);
+      map.addTemp('artwork/eggs/1.swf', startDate, endDate, party.scavengerHunt2007);
     }
   })
 }
@@ -1058,7 +1055,7 @@ function addCatalogues(map: TimelineMap): void {
   Object.entries(PRE_CPIP_CATALOGS).forEach((pair) => {
     const [date, file] = pair;
     const signature = getFileDateSignature(date);
-    map.addPerm(`media/artwork/catalogue/clothing_${signature}.swf`, date, file);
+    map.addPerm(`artwork/catalogue/clothing_${signature}.swf`, date, file);
     map.addPerm(`artwork/catalogue/clothing${signature}.swf`, date, file);
   })
 
@@ -1122,7 +1119,7 @@ function addStagePlays(map: TimelineMap): void {
     }
 
     // simply hardcoding every catalogue to be from 0712 for now
-    map.addPerm('media/artwork/catalogue/costume_0712.swf', date, debut.costumeTrunkFileId);
+    map.addPerm('artwork/catalogue/costume_0712.swf', date, debut.costumeTrunkFileId);
     // TODO only add costrume trunks to each specific engine
     map.addPerm('play/v2/content/local/en/catalogues/costume.swf', date, debut.costumeTrunkFileId);
   })

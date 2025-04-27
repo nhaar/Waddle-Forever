@@ -51,15 +51,15 @@ export const PRE_CPIP_STATIC_FILES: Record<string, number> = {
   ...staticNewspaperFiles,
   'chat299.swf': 3758,
   'chat506.swf': 3788,
-  'media/crumbs21.swf': 3789,
-  'media/interface41.swf': 3790,
-  'media/paper86.swf': 3792,
-  'media/join/join13.swf': 3793,
-  'media/interface/errors4.swf': 3794,
-  'media/artwork/characters/16.swf': 3795,
+  'crumbs21.swf': 3789,
+  'interface41.swf': 3790,
+  'paper86.swf': 3792,
+  'join/join13.swf': 3793,
+  'interface/errors4.swf': 3794,
+  'artwork/characters/16.swf': 3795,
   // coins for change for the only pre CPIP party!
-  'media/artwork/forms/coinsforchange.swf': 3921,
+  'artwork/forms/coinsforchange.swf': 3921,
   'chat604.swf': 3937,
   'chat339.swf': 3938,
-  'media/artwork/forms/pollsub.swf': 3962
+  'artwork/forms/pollsub.swf': 3962
 };

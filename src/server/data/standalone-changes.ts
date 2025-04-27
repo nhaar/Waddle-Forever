@@ -181,7 +181,7 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       comment: 'A storm is approaching and visible from the Cove'
     }
   ],
-  'media/artwork/rooms/plaza.swf': [
+  'artwork/rooms/plaza.swf': [
     {
       startDate: CHRISTMAS_2006_DECORATION,
       endDate: '2006-12-21',
@@ -195,7 +195,7 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       comment: 'The Coins For Change event begins'
     }
   ],
-  'media/artwork/tools/telescope0.swf': [
+  'artwork/tools/telescope0.swf': [
     {
       // according to newspaper
       // unsure if in the original game the animation replayed each time

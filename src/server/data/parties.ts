@@ -450,7 +450,7 @@ export const PARTIES: Party[] = [
       'mtn': 221
     },
     generalChanges: {
-      'media/artwork/rooms/0926/PrizeBooth2.swf': 3867
+      'artwork/rooms/0926/PrizeBooth2.swf': 3867
     }
   },
   {
@@ -511,7 +511,7 @@ export const PARTIES: Party[] = [
       'plaza': 223
     },
     generalChanges: {
-      'media/artwork/tools/binoculars1.swf': 2563
+      'artwork/tools/binoculars1.swf': 2563
     }
   },
   {
@@ -733,9 +733,9 @@ export const PARTIES: Party[] = [
       berg: 232
     },
     generalChanges: {
-      'media/games/thinice/game.swf': 3999,
-      'media/artwork/tools/binoculars1.swf': 3997,
-      'media/artwork/tools/telescope0.swf': 3998
+      'games/thinice/game.swf': 3999,
+      'artwork/tools/binoculars1.swf': 3997,
+      'artwork/tools/telescope0.swf': 3998
     }
   },
   {
