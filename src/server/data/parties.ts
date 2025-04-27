@@ -2221,7 +2221,8 @@ export const PARTIES: Party[] = [
       'village': 2368,
       'forts': 2369,
       'town': 2370,
-      'party': 2351
+      'party': 2351,
+      plaza: 5082
     },
     music: {
       'shop': 201,
@@ -2485,6 +2486,13 @@ export const PARTIES: Party[] = [
       }
     },
     updates: [
+      {
+        date: '2010-07-14',
+        comment: 'The Penguin Band is taking a break',
+        roomChanges: {
+          berg: 5081
+        }
+      },
       {
         date: '2010-07-15',
         comment: 'New instruments are available in the Catalog',

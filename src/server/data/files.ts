@@ -5208,12 +5208,14 @@ export const FILES = new StaticDataTable<File, [
   [5079, 'mtn_cpip_start.swf', 1, FileCategory.Recreation, null, null],
   [5080, 'pet_pre_white.swf', 1, FileCategory.Recreation, null, null],
 
-  [5081, '', 1, FileCategory.Archives, null, null],
-  [5082, '', 1, FileCategory.Archives, null, null],
-  [5083, '', 1, FileCategory.Archives, null, null],
-  [5084, '', 1, FileCategory.Archives, null, null],
-  [5085, '', 1, FileCategory.Archives, null, null],
-  [5086, '', 1, FileCategory.Archives, null, null],
+  // recreation by VampLovr
+  [5081, 'mjam_10_berg_no_pb.swf', 1, FileCategory.Recreation, null, null],
+  [5082, 'aprilfools2010_plaza.swf', 1, FileCategory.Recreation, null, null],
+  [5083, 'agentcom_nofieldops1.swf', 1, FileCategory.Recreation, null, null],
+  [5084, 'agentcom_nofieldops2.swf', 1, FileCategory.Recreation, null, null],
+
+  [5085, 'RoomsAgentcom-May2010.swf', 1, FileCategory.Archives, null, null],
+  [5086, 'RoomsAgentcom-June2010_3.swf', 1, FileCategory.Archives, null, null],
   [5087, '', 1, FileCategory.Archives, null, null],
   [5088, '', 1, FileCategory.Archives, null, null],
   [5089, '', 1, FileCategory.Archives, null, null],

@@ -799,6 +799,30 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     date: JPA_RELEASE,
     fileId: 5009,
     comment: 'The launchpad construction in the Beacon is finished'
+  },
+  {
+    room: 'agentcom',
+    date: EPF_RELEASE,
+    fileId: 5085,
+    comment: 'The EPF Command Room is under construction'
+  },
+  {
+    room: 'agentcom',
+    date: '2010-06-03',
+    fileId: 5083,
+    comment: 'Only the VR Room remains under construction'
+  },
+  {
+    room: 'agentcom',
+    date: '2010-06-10',
+    fileId: 5084,
+    comment: 'The VR Room\'s construction is finished'
+  },
+  {
+    room: 'agentcom',
+    date: '2010-06-15',
+    fileId: 5086,
+    comment: 'Field Ops are made available'
   }
 ];
 
