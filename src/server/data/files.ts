@@ -5216,7 +5216,7 @@ export const FILES = new StaticDataTable<File, [
 
   [5085, 'RoomsAgentcom-May2010.swf', 1, FileCategory.Archives, null, null],
   [5086, 'RoomsAgentcom-June2010_3.swf', 1, FileCategory.Archives, null, null],
-  [5087, '', 1, FileCategory.Archives, null, null],
+  [5087, 'media/play/v2/content/global/igloo/assets/igloo_storage.swf', 1, FileCategory.StaticServer, 2, null],
   [5088, '', 1, FileCategory.Archives, null, null],
   [5089, '', 1, FileCategory.Archives, null, null],
   [5090, '', 1, FileCategory.Archives, null, null],

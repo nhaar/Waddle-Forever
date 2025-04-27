@@ -311,5 +311,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/content/local/pt/login/messages/icons/whats_new.swf': 1935,
   'play/v2/client/scavenger_hunt.swf': 2383,
   'play/v2/games/quests/global/rooms/conclusion3.swf': 2696,
-  'play/v2/games/quests/q4/common/rooms/conclusion3.swf': 2696
+  'play/v2/games/quests/q4/common/rooms/conclusion3.swf': 2696,
+  'play/v2/content/global/igloo/assets/igloo_storage.swf': 5087
 };
