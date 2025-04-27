@@ -5194,7 +5194,9 @@ export const FILES = new StaticDataTable<File, [
   [5069, 'November09Style.swf', 1, FileCategory.Archives, null, null],
   [5070, 'December09Style.swf', 1, FileCategory.Archives, null, null],
   [5071, 'ArtworkRoomsShop40.swf', 1, FileCategory.Archives, null, null],
-  [5072, '', 1, FileCategory.Archives, null, null],
+
+  // recreation by VampLovr
+  [5072, 'agent_2008_apr_cpip.swf', 1, FileCategory.Recreation, null, null],
   [5073, '', 1, FileCategory.Archives, null, null],
   [5074, '', 1, FileCategory.Archives, null, null],
   [5075, '', 1, FileCategory.Archives, null, null],
