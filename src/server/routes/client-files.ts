@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import hash from 'object-hash';
 
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
-import { isEqual, isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "./versions";
+import { isEqual, isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, processVersion, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
@@ -16,7 +16,7 @@ import { CrumbIndicator, PARTIES, Party, PartyChanges, RoomChanges } from "../da
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
-import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../data/catalogues";
+import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
 import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, PRE_CPIP_REWRITE_DATE } from "../data/updates";
@@ -1043,6 +1043,16 @@ function addMapUpdates(map: TimelineMap): void {
   });
 }
 
+export function getFileDateSignature(date: Version): string {
+  const decomposed = processVersion(date);
+  if (decomposed === undefined) {
+    throw new Error(`Invalid version: ${date}`);
+  }
+  const [year, month] = decomposed;
+  // the last 2 numbers of year, and month with a 0 on front if needed
+  return `${String(year).slice(2)}${String(month).padStart(2, '0')}`;
+}
+
 function addCatalogues(map: TimelineMap): void {
   const addCatalogue = (route: string, catalogs: Record<string, number>) => {
     Object.entries(catalogs).forEach((pair) => {
@@ -1051,6 +1061,13 @@ function addCatalogues(map: TimelineMap): void {
       map.addPerm(route, date, fileId);
     })
   }
+
+  Object.entries(PRE_CPIP_CATALOGS).forEach((pair) => {
+    const [date, file] = pair;
+    const signature = getFileDateSignature(date);
+    map.addPerm(`media/artwork/catalogue/clothing_${signature}.swf`, date, file);
+    map.addPerm(`artwork/catalogue/clothing${signature}.swf`, date, file);
+  })
 
   addCatalogue('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
   addCatalogue('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);

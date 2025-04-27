@@ -3,6 +3,7 @@ import { TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
 import { RoomName, ROOMS } from "../data/rooms";
 import { SNOW_SPORT_RELEASE } from "../data/updates";
 import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "../routes/client-files";
+import { getClothingFileName } from "../routes/setup.xml";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "./stage-plays";
 
@@ -75,6 +76,8 @@ export function getSetupTxt(date: Version): string {
     eggId = 1;
   }
 
+  const clothing = getClothingFileName(date);
+
   const rooms = Object.entries(ROOMS).map((pair) => {
     const [room, info] = pair;
     const music = roomMusic[room as RoomName] ?? 0;
@@ -107,7 +110,7 @@ export function getSetupTxt(date: Version): string {
 &agentform=1&
 &newsform=2&
 
-&clothing=0708&
+&clothing=${clothing}&
 &sport=0711&
 &hair=0710&
 &furniture=0712&

@@ -267,7 +267,7 @@ function addNewspapers(map: DayMap): DayMap {
 }
 
 function addCatalogues(map: DayMap): DayMap {
-  PRE_CPIP_CATALOGS.forEach((date) => {
+  Object.keys(PRE_CPIP_CATALOGS).forEach((date) => {
     addEvents(map, date, { newClothing: true });
   });
   Object.keys(CPIP_CATALOGS).forEach((date) => {

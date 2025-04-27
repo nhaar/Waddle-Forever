@@ -2,9 +2,9 @@ import { findIndexLeftOf } from "../../common/utils";
 import { PRE_CPIP_CATALOGS } from "../data/catalogues";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { RoomName, ROOMS } from "../data/rooms";
-import { FIRST_BOILER_ROOM_PAPER } from "../data/updates";
-import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate, getPinFrames } from "./client-files";
-import { processVersion, isGreaterOrEqual, Version, isLower } from "./versions";
+import { CHAT_339, FIRST_BOILER_ROOM_PAPER } from "../data/updates";
+import { findCurrentParty, findEarliestDateHitIndex, getFileDateSignature, getMusicForDate, getPinFrames } from "./client-files";
+import { isGreaterOrEqual, Version, isLower } from "./versions";
 
 type OldRoom = {
   roomName: RoomName
@@ -33,18 +33,33 @@ function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>)
 }
 
 /**
- * Get clothing filename based on release of the  catalogue
+ * Get clothing filename
  * 
  * Clothing filenames looked like 0508 (2005-August)
  * */
-function getClothing(releaseVersion: Version) : string {
-  const decomposed = processVersion(releaseVersion);
-  if (decomposed === undefined) {
-    throw new Error(`Invalid version: ${releaseVersion}`);
+export function getClothingFileName(date: Version): string {
+  let latest = '';
+  for (const catalogRelease in PRE_CPIP_CATALOGS) {
+    if (isLower(date, catalogRelease)) {
+      break;
+    }
+    latest = catalogRelease;
   }
-  const [year, month] = decomposed;
-  // the last 2 numbers of year, and month with a 0 on front if needed
-  return `${String(year).slice(2)}${String(month).padStart(2, '0')}`;
+  if (latest === '') {
+    return latest;
+  }
+
+
+  return getFileDateSignature(latest);
+}
+
+function getFileName(name: string, date: Version): string {
+  // the way the client reads this XML changed
+  if (isLower(date, CHAT_339)) {
+    return `<File>${name}</File>`;
+  } else {
+    return name;
+  }
 }
 
 export function getSetupXml(version: Version) {
@@ -94,8 +109,7 @@ export function getSetupXml(version: Version) {
     }
   }
 
-  const clothingIndex = findEarliestDateHitIndex(version, PRE_CPIP_CATALOGS.map((date) => ({ date })));
-  const clothing = getClothing(PRE_CPIP_CATALOGS[clothingIndex]);
+  const clothing = getClothingFileName(version);
 
   const servers = [
     'Blizzard',
@@ -190,12 +204,10 @@ export function getSetupXml(version: Version) {
    </Games>
 
    <Catalogues>
-      <Clothing>
-         <File>clothing${clothing}</File>
-      </Clothing>
-      <Furntiture>
+      <Clothing>${getFileName('clothing' + clothing, version)}</Clothing>
+      <Furniture>
          <File>furniture0603</File>
-      </Furntiture>
+      </Furniture>
       <Igloo>
          <File>igloo0604</File>
       </Igloo>

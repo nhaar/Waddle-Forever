@@ -139,3 +139,5 @@ export const EARTHQUAKE = '2008-06-20';
 export const JPA_RELEASE = '2006-11-06';
 
 export const PLAZA_LAUNCHPAD_START = '2006-10-05';
+
+export const CHAT_339 = EGG_HUNT_2006_END;

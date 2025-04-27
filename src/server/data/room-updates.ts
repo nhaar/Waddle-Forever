@@ -470,7 +470,7 @@ export const ROOM_UPDATES: RoomUpdate[] = [
     // unknown date, vectorized 07 rooms
     room: 'shop',
     date: PRE_CPIP_REWRITE_DATE,
-    fileId: 4864
+    fileId: 5071
   },
   {
     room: 'forts',
