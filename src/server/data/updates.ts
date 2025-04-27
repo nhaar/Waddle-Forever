@@ -120,7 +120,7 @@ export const FIRST_STAGE_PLAY = '2007-11-16';
 export const AS3_UPDATE = FIRST_AS3_NEWSPAPER;
 
 /** The day Club Penguin launched the CPIP engine */
-export const CPIP_UPDATE = MUSIC_JAM_08_START;
+export const CPIP_UPDATE = '2008-07-14';
 
 export const ROOM_REDRAWS = '2006-09-22';
 
