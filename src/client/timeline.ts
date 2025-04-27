@@ -17,11 +17,14 @@ import { ROOMS } from '../server/data/rooms';
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
     show: false,
-    title: "Timeline Picker",
+    title: "Timeline",
     webPreferences: {
       preload: path.join(__dirname, 'preload/timeline-preload.js')
     }
   });
+
+  timelinePicker.setMenu(null);
+
   timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
 
   ipcMain.on('update-version', () => {
@@ -417,7 +420,6 @@ function getConsumedTimeline(days: Day[]): Array<{
       })
     }
     if (day.events.partyEnd !== undefined) {
-      console.log(day.events.partyEnd);
       day.events.partyEnd.forEach((partyEnd) => {
         events.push({
           type: EventType.PartyEnd,

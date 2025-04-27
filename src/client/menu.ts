@@ -19,10 +19,6 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
         click: () => { createSettingsWindow(globalSettings, mainWindow); }
       },
       {
-        label: 'Open Timeline Picker',
-        click: () => { createTimelinePicker(mainWindow) }
-      },
-      {
         label: 'Open Mods',
         click: () => { createModsWindow(mainWindow) }
       },
@@ -66,13 +62,6 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
         role: 'resetZoom',
         accelerator: 'CommandOrControl+0',
       },
-    ]
-  };
-
-  const discord: MenuItemConstructorOptions = {
-    id: '3',
-    label: 'Discord',
-    submenu: [
       {
         label: 'Enable/Disable Discord Rich Presence',
         click: () => { enableOrDisableDiscordRPC(store, mainWindow); }
@@ -84,9 +73,15 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     ]
   };
 
+  const timeline: MenuItemConstructorOptions = {
+    id: '3',
+    label: 'Timeline',
+    click: () => { createTimelinePicker(mainWindow); }
+  };
+
   return [
     options,
-    discord
+    timeline
   ];
 };
 
