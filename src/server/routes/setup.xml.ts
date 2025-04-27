@@ -78,13 +78,13 @@ export function getSetupXml(version: Version) {
   }
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
-    return pair[1].preCpipFileNumber !== null && pair[1].preCpipName !== null;
+    return pair[1].preCpipName !== null;
   }).map((pair) => {
     const [ name, info ] = pair;
     return {
       roomName: name as RoomName,
       name: info.preCpipName ?? '',
-      file: `${name}${info.preCpipFileNumber}`
+      file: name
     }
   });
 

@@ -285,15 +285,9 @@ class TimelineMap {
   }
 }
 
-function getPreCpipRoomRoute(room: RoomName): string {
-  const roomInfo = ROOMS[room];
-  return path.join('artwork/rooms', `${room}${roomInfo.preCpipFileNumber}.swf`);
-}
-
 function addRoomRoute(map: TimelineMap, date: string, room: RoomName, file: number) {
   if (isLower(date, CPIP_UPDATE)) {
-    const roomInfo = ROOMS[room];
-    const fileName = `${room}${roomInfo.preCpipFileNumber}.swf`
+    const fileName = `${room}.swf`
     map.addPerm(path.join('media/artwork/rooms', `${room}.swf`), date, file);
     map.addPerm(path.join('artwork/rooms', fileName), date, file);
   } else {
@@ -307,8 +301,7 @@ const TICKET_INFO_PATH = 'ticket_info.swf';
 
 function addTempRoomRoute(map: TimelineMap, start: string, end: string, room: RoomName, file: number) {
   if (isLower(start, CPIP_UPDATE)) {
-    const roomInfo = ROOMS[room];
-    const fileName = `${room}${roomInfo.preCpipFileNumber}.swf`
+    const fileName = `${room}.swf`
     map.addTemp(path.join('media/artwork/rooms', `${room}.swf`), start, end, file);
     map.addTemp(path.join('artwork/rooms', fileName), start, end, file);
   } else {
