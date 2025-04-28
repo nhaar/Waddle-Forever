@@ -27,6 +27,7 @@ import { getNewspaperName } from "../game/news.txt";
 import { PINS } from "../data/pins";
 import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../data/changes";
 import { MIGRATOR_PERIODS } from "../data/migrator";
+import { PRE_CPIP_GAME_UPDATES } from "../data/games";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -84,7 +85,7 @@ function getMediaFilePath(fileId: number): string {
 }
 
 class FileTimelineMap {
-  _map: TimelineMap<string, string>;
+  private _map: TimelineMap<string, string>;
 
   constructor() {
     this._map = new TimelineMap<string, string>();
@@ -939,6 +940,15 @@ function addStagePlays(map: FileTimelineMap): void {
   })
 }
 
+function addGames(map: FileTimelineMap): void {
+  Object.values(PRE_CPIP_GAME_UPDATES).forEach((updates) => {
+    const [release, ...other] = updates;
+    const fileRoute = path.join('games', release.directory);
+
+    map.addPerm(fileRoute, BETA_RELEASE, release.fileId);
+  })
+}
+
 /** Get the object which knows all the file information needed to find the file for a given route */
 export function getFileServer(): Map<string, RouteFileInformation> {
   const timelines = new FileTimelineMap();
@@ -956,7 +966,8 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addMusicLists,
     addStadiumUpdates,
     addPins,
-    addCrumbs
+    addCrumbs,
+    addGames
   ];
 
   timelineProcessors.forEach((fn) => fn(timelines));

@@ -13,6 +13,7 @@ import {EARTHQUAKE } from '../server/data/updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/data/stadium-updates';
 import { ROOMS } from '../server/data/rooms';
+import { PRE_CPIP_GAME_UPDATES } from '../server/data/games';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -40,12 +41,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2005-08-22',
         events: {
           other: ['Beta release'],
-        }
-      },
-      {
-        date: '2005-12-14',
-        events: {
-          minigameRelease: 'Puffle Roundup'
         }
       },
       {
@@ -257,6 +252,16 @@ function addParties(map: DayMap): DayMap {
   return map;
 }
 
+function addGames(map: DayMap): void {
+  Object.entries(PRE_CPIP_GAME_UPDATES).forEach((pair) => {
+    const [game, updates] = pair;
+    const [release] = updates;
+    if (release.date !== undefined) {
+      addEvents(map, release.date, { minigameRelease: `${game} releases`});
+    }
+  })
+}
+
 function addNewspapers(map: DayMap): DayMap {
   // fan issue, a CPT issue which didn't have a proper number
   addEvents(map, FAN_ISSUE_DATE, { newIssue: 'Fan issue of the newspaper released '});
@@ -383,6 +388,7 @@ function updateTimeline(days: Day[]): Day[] {
   addStagePlays(map);
   addPinUpdates(map);
   addStandalone(map);
+  addGames(map);
   return getDaysFromMap(map);
 }
 
@@ -459,7 +465,7 @@ function getConsumedTimeline(days: Day[]): Array<{
       events.push({ text, type: EventType.Room });
     }
     if (day.events.minigameRelease !== undefined) {
-      events.push({ text : `New minigame: ${day.events.minigameRelease}`, type: EventType.Game });
+      events.push({ text : day.events.minigameRelease, type: EventType.Game });
     }
     if (day.events.newClothing === true) {
       events.push({ text: 'A new edition of the Penguin Style is out', type: EventType.PenguinStyle });
