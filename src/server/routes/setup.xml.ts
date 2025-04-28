@@ -1,10 +1,14 @@
-import { findIndexLeftOf } from "../../common/utils";
 import { PRE_CPIP_CATALOGS } from "../data/catalogues";
+import { findInVersion, VersionsTimeline } from "../data/changes";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { RoomName, ROOMS } from "../data/rooms";
-import { CHAT_339, FIRST_BOILER_ROOM_PAPER } from "../data/updates";
-import { findCurrentParty, findEarliestDateHitIndex, getFileDateSignature, getMusicForDate, getPinFrames } from "./client-files";
-import { isGreaterOrEqual, Version, isLower } from "./versions";
+import { CHAT_339 } from "../data/updates";
+import { getFileDateSignature, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
+import { Version, isLower } from "./versions";
+
+const musicTimeline = getMusicTimeline();
+
+const frameTimeline = getRoomFrameTimeline();
 
 type OldRoom = {
   roomName: RoomName
@@ -13,6 +17,25 @@ type OldRoom = {
   music?: number,
   frame?: number
 };
+
+function getNewspapersTimeline() {
+  // info is the issue ID ('fan' or number)
+  const timeline = new VersionsTimeline<string>();
+  [...PRE_BOILER_ROOM_PAPERS, ...AS2_NEWSPAPERS].forEach((news, i) => {
+    const date = typeof news === 'string' ? news : news.date;
+    timeline.add({
+      date,
+      info: String(i + 1)
+    });
+  })
+  timeline.add({
+    date: FAN_ISSUE_DATE,
+    info: 'fan'
+  });
+  return timeline.getVersion();
+}
+
+const newspaperTimeline = getNewspapersTimeline();
 
 function patchMusic(rooms: OldRoom[], music: Partial<Record<RoomName, number>>) {
   for (const room of rooms) {
@@ -63,19 +86,7 @@ function getFileName(name: string, date: Version): string {
 }
 
 export function getSetupXml(version: Version) {
-  let news: string | Number;
-  // this has to be fixed at some point, it's not accounting for everything
-  if (version === FAN_ISSUE_DATE) {
-    news = 'fan';
-  } else {
-    if (isLower(version, FIRST_BOILER_ROOM_PAPER)) {
-      const index = findIndexLeftOf(version, PRE_BOILER_ROOM_PAPERS, (version, newspapers, index) => isGreaterOrEqual(version, newspapers[index]));
-      news = index + 1;
-    } else {
-      const findIndex = findEarliestDateHitIndex(version, AS2_NEWSPAPERS);
-      news = findIndex + 1 + PRE_BOILER_ROOM_PAPERS.length;
-    }
-  }
+  const news = findInVersion(version, newspaperTimeline);
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
     return pair[1].preCpipName !== null;
@@ -88,26 +99,13 @@ export function getSetupXml(version: Version) {
     }
   });
 
-  const baseMusic = getMusicForDate(version);
-  patchMusic(rooms, baseMusic);
+  musicTimeline.forEach((versions, room) => {
+    patchMusic(rooms, { [room]: findInVersion(version, versions) });
+  });
 
-  // pin related frame change
-  // should be before party, as party has priority
-  const pinFrame = getPinFrames(version);
-  if (pinFrame !== null) {
-    const [room, frame] = pinFrame;
-    patchFrame(rooms, { [room]: frame });
-  }
-
-  const currentParty = findCurrentParty(version);
-  if (currentParty !== null) {
-    if (currentParty.music !== undefined) {
-      patchMusic(rooms, currentParty.music);
-    }
-    if (currentParty.roomFrames !== undefined) {
-      patchFrame(rooms, currentParty.roomFrames);
-    }
-  }
+  frameTimeline.forEach((versions, room) => {
+    patchFrame(rooms, { [room]: findInVersion(version, versions) });
+  });
 
   const clothing = getClothingFileName(version);
 

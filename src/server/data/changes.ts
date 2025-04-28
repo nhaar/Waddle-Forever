@@ -203,7 +203,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
 type VersionsInformation<EventInformation> = Array<{
   date: Version;
   info: EventInformation
-}>
+}>;
 
 export function processTimeInvariantTimeline<EventInformation>(timeline: TimelineEvent<EventInformation>[]) {
   const versions = processTimeline<EventInformation, EventInformation, undefined | EventInformation>(timeline, (input) => {
@@ -225,14 +225,90 @@ export function processTimeInvariantTimeline<EventInformation>(timeline: Timelin
   return cleanVersions;
 }
 
+export function baseFindInVersion<Prop extends string, ValueType, T extends { date: Version } & { [key in Prop]: ValueType }>(date: Version, versions: T[], propName: Prop) {
+  if (versions.length === 1) {
+    return versions[0][propName];
+  }
+  
+  const index = findEarliestDateHitIndex(date, versions);
+  if (index === -1) {
+    return undefined;
+  }
+  
+  return versions[index][propName];
+}
+
+export function findInVersion<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
+  return baseFindInVersion(date, versions, 'info');
+}
+
+export function getIdentifierInMap<Identifier, EventInformation>(
+  map: IdentifierMap<Identifier, EventInformation>,
+  id: Identifier,
+  date: Version
+) {
+  const versions = map.get(id);
+  if (versions === undefined) {
+    return null;
+  }
+  return findInVersion(date, versions);
+}
+
+export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
+  if (array.length < 2) {
+    if (array.length === 1) {
+      if (isLower(date, array[0].date)) {
+        return -1
+      } else {
+        return 0;
+      }
+    } else {
+      // empty array
+      return -1;
+    }
+  }
+
+  let left = 0;
+  // the last index is not allowed since we search in pairs
+  // and then -1 because length is last index + 1
+  let right = array.length - 2;
+  let index = -1;
+  
+  // this is a type of binary search implementation
+  while (true) {
+    // this means that was lower than index 0
+    if (right === -1) {
+      index = -1;
+      break
+    } else if (left === array.length - 1) {
+      // this means that was higher than last index
+      index = left;
+      break;
+    }
+    const middle = Math.floor((left + right) / 2);
+    const element = array[middle];
+    if (isLower(date, element.date)) {
+      // middle can't be it, but middle - 1 could still be
+      right = middle - 1;
+    } else if (isLower(date, array[middle + 1].date)) {
+      index = middle;
+      break;
+    } else {
+      left = middle + 1;
+    }
+  }
+
+  return index;
+}
+
 /** Maps a route to all the file information related to it */
-export type IdentifierMap<Identifier, VersionsInformation> = Map<Identifier, VersionsInformation>;
+export type IdentifierMap<Identifier, EventInformation> = Map<Identifier, VersionsInformation<EventInformation>>;
 
 /** Given a route map, adds file information to a given route */
 export function addToIdentifierMap<Identifier, EventInformation>(
   map: IdentifierMap<Identifier, EventInformation>,
   identifier: Identifier,
-  info: EventInformation
+  info: { date: Version; info: EventInformation }[]
 ): void {
   const previousValue = map.get(identifier);
   if (previousValue === undefined) {
@@ -243,11 +319,27 @@ export function addToIdentifierMap<Identifier, EventInformation>(
   }
 }
 
-export class TimelineMap<Identifier, EventInformation> {
-  private _map: Map<Identifier, TimelineEvent<EventInformation>[]>;
+export class VersionsTimeline<EventInformation> {
+  private _eventsTimeline: TimelineEvent<EventInformation>[];
   
   constructor() {
-    this._map = new Map<Identifier, TimelineEvent<EventInformation>[]>;
+    this._eventsTimeline = [];
+  }
+
+  add(event: TimelineEvent<EventInformation>) {
+    this._eventsTimeline.push(event);
+  }
+
+  getVersion() {
+    return processTimeInvariantTimeline(this._eventsTimeline);
+  }
+}
+
+export class TimelineMap<Identifier, EventInformation> {
+  private _map: Map<Identifier, VersionsTimeline<EventInformation>>;
+  
+  constructor() {
+    this._map = new Map<Identifier, VersionsTimeline<EventInformation>>;
   }
 
   addTemp(identifier: Identifier, start: Version, end: Version, info: EventInformation) {
@@ -268,16 +360,18 @@ export class TimelineMap<Identifier, EventInformation> {
   private add(identifier: Identifier, event: TimelineEvent<EventInformation>): void {
     const prev = this._map.get(identifier);
     if (prev === undefined) {
-      this._map.set(identifier, [event]);
+      const timeline = new VersionsTimeline<EventInformation>();
+      timeline.add(event);
+      this._map.set(identifier, timeline);
     } else {
-      prev.push(event);
+      prev.add(event);
     }
   }
 
   getIdentifierMap(): Map<Identifier, VersionsInformation<EventInformation>> {
     const idMap = new Map<Identifier, VersionsInformation<EventInformation>>();
     this._map.forEach((timeline, route) => {
-      addToIdentifierMap(idMap, route, processTimeInvariantTimeline(timeline))
+      addToIdentifierMap(idMap, route, timeline.getVersion());
     });
 
     return idMap;

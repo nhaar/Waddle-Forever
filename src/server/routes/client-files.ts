@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import hash from 'object-hash';
 
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
-import { isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, processVersion, Version } from "./versions";
+import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from "./versions";
 import { FileCategory, FILES } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
@@ -12,7 +12,7 @@ import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalo
 import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
 import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
-import { CrumbIndicator, PARTIES, Party, PartyChanges, RoomChanges } from "../data/parties";
+import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
 import { CPIP_STATIC_FILES } from "../data/cpip-static";
 import { FALLBACKS } from "../data/fallbacks";
@@ -25,7 +25,8 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
 import { getNewspaperName } from "../game/news.txt";
 import { PINS } from "../data/pins";
-import { addToIdentifierMap, processTimeline, TimelineEvent, TimelineMap } from "../data/changes";
+import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../data/changes";
+import { MIGRATOR_PERIODS } from "../data/migrator";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -151,7 +152,10 @@ type RouteMap = Map<string, RouteFileInformation>;
 /** Given a route map, adds file information to a given route */
 function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
   const cleanPath = sanitizePath(route);
-  addToIdentifierMap(map, cleanPath, info);
+  if (map.has(cleanPath)) {
+    throw new Error(`Duplicated path: ${cleanPath}`);
+  }
+  map.set(cleanPath, info);
 }
 
 function addNewspapers(map: RouteMap): void {
@@ -496,20 +500,116 @@ function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
   return { hash: crumbsHash, crumbs };
 }
 
-export function getMusicForDate(date: Version): Partial<Record<RoomName, number>> {
-  const music: Partial<Record<RoomName, number>> = {};
+export function getRoomFrameTimeline() {
+  const timeline = new TimelineMap<RoomName, number>();
+
+  // adding defaults
+  // TODO, not fond of design?
+  Object.keys(ROOMS).forEach((room) => {
+    timeline.addPerm(room as RoomName, BETA_RELEASE, 0);
+  })
+
+  PINS.forEach((pin) => {
+    if ('room' in pin && pin.frame !== undefined) {
+      timeline.addTemp(pin.room, pin.date, pin.end, pin.frame);
+    }
+  });
+
+  const addRoomFrames = (frames: Partial<Record<RoomName, number>>, start: Version, end: Version) => {
+    Object.entries(frames).forEach((pair) => {
+      const [room, frame] = pair;
+      timeline.addTemp(room as RoomName, start, end, frame);
+    })
+  }
+  
+  PARTIES.forEach((party) => {
+    if (party.roomFrames !== undefined) {
+      addRoomFrames(party.roomFrames, party.startDate, party.endDate);
+    }
+  });
+
+  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
+    const [room, updates] = pair;
+    updates.forEach((update) => {
+      if (update.frame !== undefined) {
+        timeline.addTemp(room as RoomName, update.date, update.end, update.frame);
+      }
+    });
+  });
+
+  return timeline.getIdentifierMap();
+}
+
+export function getMusicTimeline(includeParties: boolean = true) {
+  const timeline = new TimelineMap<RoomName, number>();
+
+  Object.keys(ROOMS).forEach((room) => {
+    timeline.addPerm(room as RoomName, BETA_RELEASE, 0);
+  })
+
   // regular room IDs
   Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
-    const [room, timeline] = pair;
+    const [room, musicTimeline] = pair;
     const roomName = room as RoomName;
-    const [firstSong, ...otherSongs] = timeline;
-    let song = firstSong;
-    const songIndex = findEarliestDateHitIndex(date, otherSongs);
-    if (songIndex > -1) {
-      song = otherSongs[songIndex].musicId;
-    }
-    music[roomName] = song;
+    
+    const [firstSong, ...otherSongs] = musicTimeline;
+    timeline.addPerm(roomName, BETA_RELEASE, firstSong);
+    otherSongs.forEach((song) => {
+      timeline.addPerm(roomName, song.date, song.musicId);
+    });
   });
+
+  STAGE_TIMELINE.forEach((debut) => {
+    const musicId = STAGE_PLAYS.find((stage) => stage.name === debut.name)?.musicId ?? 0;
+    timeline.addPerm('stage', debut.date, musicId);
+  });
+
+  if (includeParties) {
+    PARTIES.forEach((party) => {
+      if (party.music !== undefined) {
+        Object.entries(party.music).forEach(pair => {
+          const [room, music] = pair;
+          timeline.addTemp(room as RoomName, party.startDate, party.endDate, music);
+        })
+      }
+    })
+  }
+  return timeline.getIdentifierMap();
+}
+
+export function getMigratorTimeline() {
+  const timeline = new VersionsTimeline<boolean>();
+  timeline.add({
+    date: BETA_RELEASE,
+    info: false
+  });
+
+  PARTIES.forEach((party) => {
+    if (party.activeMigrator === true) {
+      timeline.add({
+        date: party.startDate,
+        end: party.endDate,
+        info: true
+      });
+    }
+  });
+
+  MIGRATOR_PERIODS.forEach((period) => {
+    timeline.add({
+      date: period.date,
+      end: period.end,
+      info: true
+    });
+  });
+
+  return timeline.getVersion();
+}
+
+function getMusicForDate(map: IdentifierMap<RoomName, number>, date: Version): Partial<Record<RoomName, number>> {
+  const music: Partial<Record<RoomName, number>> = {};
+  map.forEach((versions, room) => {
+    music[room] = findInVersion(date, versions);
+  })
   return music;
 }
 
@@ -622,7 +722,7 @@ export function getGlobalCrumbsOutput() {
   }, () => {
     return {
       prices: {},
-      music: getMusicForDate(CPIP_UPDATE),
+      music: getMusicForDate(getMusicTimeline(false), CPIP_UPDATE),
       newMigratorStatus: false,
       paths: {}
     }
@@ -647,81 +747,6 @@ function addCrumbs(map: FileTimelineMap): void {
   [...AS2_NEWSPAPERS.slice(6), ...AS3_NEWSPAPERS].forEach((newspaper) => {
     map.addPerm('play/v2/content/local/en/news/news_crumbs.swf', newspaper.date, path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'));
   });
-}
-
-export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
-  if (array.length < 2) {
-    if (array.length === 1) {
-      if (isLower(date, array[0].date)) {
-        return -1
-      } else {
-        return 0;
-      }
-    } else {
-      // empty array
-      return -1;
-    }
-  }
-
-  let left = 0;
-  // the last index is not allowed since we search in pairs
-  // and then -1 because length is last index + 1
-  let right = array.length - 2;
-  let index = -1;
-  
-  // this is a type of binary search implementation
-  while (true) {
-    // this means that was lower than index 0
-    if (right === -1) {
-      index = -1;
-      break
-    } else if (left === array.length - 1) {
-      // this means that was higher than last index
-      index = left;
-      break;
-    }
-    const middle = Math.floor((left + right) / 2);
-    const element = array[middle];
-    if (isLower(date, element.date)) {
-      // middle can't be it, but middle - 1 could still be
-      right = middle - 1;
-    } else if (isLower(date, array[middle + 1].date)) {
-      index = middle;
-      break;
-    } else {
-      left = middle + 1;
-    }
-  }
-
-  return index;
-}
-
-export function findCurrentParty(date: Version): Party | null {
-  const partyIndex = findEarliestDateHitIndex(date, PARTIES.map((p) => ({ ...p, date: p.startDate })));
-
-  if (partyIndex > -1) {
-    if (isLowerOrEqual(PARTIES[partyIndex].startDate, date) && isLower(date, PARTIES[partyIndex].endDate)) {
-      return PARTIES[partyIndex];
-    }
-  }
-
-
-  return null;
-}
-
-/** Given dynamic route updates that are sorted, find which file was served at a given date */
-export function findFile(date: Version, info: DynamicRouteUpdate[]): string {
-  if (info.length === 1) {
-    return info[0].file;
-  }
-
-  const index = findEarliestDateHitIndex(date, info);
-  if (index === -1) {
-    console.log(info);
-    throw new Error(`Version ${date} could not find in array`);
-  }
-
-  return info[index].file;
 }
 
 function addStadiumUpdates(map: FileTimelineMap): void {
@@ -838,18 +863,6 @@ function addMusicLists(map: FileTimelineMap): void {
       }
     }
   }
-}
-
-export function getPinFrames(date: Version): [RoomName, number] | null {
-  const pinIndex = findEarliestDateHitIndex(date, PINS);
-  if (pinIndex === -1) {
-    return null;
-  }
-  const pin = PINS[pinIndex];
-  if ('room' in pin && pin.frame !== undefined && isLower(date, pin.end)) {
-    return [pin.room, pin.frame];
-  }
-  return null;
 }
 
 function addStagePlays(map: FileTimelineMap): void {

@@ -1,5 +1,5 @@
-import { BETA_RELEASE, CAVE_OPENING_START, CHAT_339, EGG_HUNT_2006_END, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE, WINTER_FIESTA_08_START } from "../data/updates";
-import { findEarliestDateHitIndex } from "./client-files";
+import { findInVersion, VersionsTimeline } from "../data/changes";
+import { BETA_RELEASE, CHAT_339, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE } from "../data/updates";
 
 /** Map date and the version number it started using */
 const VERSIONS: Record<string, number> = {
@@ -11,16 +11,23 @@ const VERSIONS: Record<string, number> = {
   [FIRST_STAGE_PLAY]: 604
 };
 
+function getVersionsTimeline() {
+  const versionTimeline = new VersionsTimeline<number>();
+  Object.entries(VERSIONS).forEach((pair) => {
+    const [date, version] = pair;
+    versionTimeline.add({
+      date,
+      info: version
+    });
+  });
+
+  return versionTimeline.getVersion();
+}
+
+const versionsTimeline = getVersionsTimeline();
+
 /** Get the version.txt file used in preCPIP */
 export function getVersionTxt(date: string): string {
-  const versionsArray = Object.entries(VERSIONS).map((pair) => {
-    const [date, version] = pair;
-    return {
-      date,
-      version
-    };
-  });
-  const index = findEarliestDateHitIndex(date, versionsArray);
-  const version = versionsArray[index].version;
+  const version = findInVersion(date, versionsTimeline);
   return `&v=${version}\n`;
 }

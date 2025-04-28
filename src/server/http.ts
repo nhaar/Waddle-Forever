@@ -4,7 +4,8 @@ import { Request, Router } from "express";
 import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
-import { findFile, getFileServer } from './routes/client-files';
+import { getFileServer } from './routes/client-files';
+import { baseFindInVersion } from './data/changes';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -200,7 +201,12 @@ export class HttpServer {
           filePath = info;
         } else {
           if (info.type === 'dynamic') {
-            filePath = findFile(this.settingsManager.settings.version, info.versions);
+            const foundFilePath = baseFindInVersion(this.settingsManager.settings.version, info.versions, 'file');
+            if (foundFilePath === undefined) {
+              console.log(info.versions);
+              throw new Error('Could not find file, log output is above')
+            }
+            filePath = foundFilePath;
           } else {
             throw new Error('Not implemented');
           }

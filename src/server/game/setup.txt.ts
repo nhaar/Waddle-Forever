@@ -1,80 +1,62 @@
-import { MIGRATOR_PERIODS } from "../data/migrator";
-import { TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
+import { findInVersion, VersionsTimeline } from "../data/changes";
+import { PARTIES } from "../data/parties";
 import { RoomName, ROOMS } from "../data/rooms";
-import { SNOW_SPORT_RELEASE } from "../data/updates";
-import { findCurrentParty, findEarliestDateHitIndex, getMusicForDate } from "../routes/client-files";
+import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../data/updates";
+import { getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "../routes/client-files";
 import { getClothingFileName } from "../routes/setup.xml";
-import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
-import { STAGE_PLAYS, STAGE_TIMELINE } from "./stage-plays";
+import { isGreaterOrEqual, Version } from "../routes/versions";
+
+const musicTimeline = getMusicTimeline();
+
+const frameTimeline = getRoomFrameTimeline();
+
+const migratorTimeline = getMigratorTimeline();
+
+const eggTimeline = getEggTimeline();
+
+function getEggTimeline() {
+  const timeline = new VersionsTimeline<number>();
+  timeline.add({
+    date: BETA_RELEASE,
+    info: 0
+  });
+  PARTIES.forEach((party) => {
+    if (party.scavengerHunt2007 !== undefined) {
+      timeline.add({
+        date: party.startDate,
+        end: party.endDate,
+        info: 1
+      });
+    }
+  });
+
+  return timeline.getVersion();
+}
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
 export function getSetupTxt(date: Version): string {
-  let roomMusic: Partial<Record<RoomName, number>> = getMusicForDate(date);
+  let roomMusic: Partial<Record<RoomName, number>> = {};
 
   let frames: Partial<Record<RoomName, number>> = {};
 
+  musicTimeline.forEach((versions, room) => {
+    roomMusic[room] = findInVersion(date, versions);
+  });
+  frameTimeline.forEach((versions, room) => {
+    frames[room] = findInVersion(date, versions);
+  });
+
   // sport shop, the only room to use frame 2
+  // TODO remove cheap workaround
   if (isGreaterOrEqual(date, SNOW_SPORT_RELEASE)) {
     frames['sport'] = 2;
   }
 
-  // adding stage music
-  const stagePlayIndex = findEarliestDateHitIndex(date, STAGE_TIMELINE);
-  let stageMusic = 0;
-  if (stagePlayIndex > -1) {
-    const stageName = STAGE_TIMELINE[stagePlayIndex].name;
-    for (const stage of STAGE_PLAYS) {
-      if (stage.name === stageName) {
-        stageMusic = stage.musicId;
-        break;
-      }
-    }
-    roomMusic['stage'] = stageMusic;
-  }
-  
-  const currentParty = findCurrentParty(date);
-  if (currentParty !== null) {
-    roomMusic = { ...roomMusic, ...currentParty.music };
-    frames = { ...frames, ...currentParty.roomFrames };
-  
-    if (currentParty.updates !== null) {
-      currentParty.updates?.forEach((update) => {
-        frames = { ...frames, ...update.roomFrames };
-      })
-    }
-  }
-
-  let activeMigrator = false;
-  if (currentParty?.activeMigrator) {
-    activeMigrator = true;
-  } else {
-    const migratorPeriodIndex = findEarliestDateHitIndex(date, MIGRATOR_PERIODS);
-    if (migratorPeriodIndex !== -1) {
-      const period = MIGRATOR_PERIODS[migratorPeriodIndex];
-      if (isLower(date, period.end)) {
-        activeMigrator = true;
-      }
-    }
-  }
-
-  // temporary room change frame
-  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
-    const [room, updates] = pair;
-    const updateIndex = findEarliestDateHitIndex(date, updates);
-    if (updateIndex !== -1) {
-      const update = updates[updateIndex];
-      if (update.frame !== undefined && isLower(date, update.end)) {
-        frames[room as RoomName] = update.frame;
-      }
-    }
-  })
+  const activeMigrator = findInVersion(date, migratorTimeline);
 
   // enabling scavenger hunt, by passing an ID you can choose a file. Right now we are always just
   // sending the ID of 1 because we don't have any information about these scavenger hunts
-  let eggId = 0;
-  if (currentParty?.scavengerHunt2007 !== undefined) {
-    eggId = 1;
-  }
+  const eggId = findInVersion(date, eggTimeline);
 
   const clothing = getClothingFileName(date);
 
