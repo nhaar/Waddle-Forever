@@ -28,6 +28,7 @@ import { PINS } from "../data/pins";
 import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../data/changes";
 import { MIGRATOR_PERIODS } from "../data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../data/games";
+import { ITEMS } from "../game/items";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -666,6 +667,16 @@ function getMusicForDate(map: IdentifierMap<RoomName, number>, date: Version): P
   return music;
 }
 
+/** Get price object for a blank state */
+function getBasePriceObject(): Record<number, number> {
+  const prices: Record<number, number> = {};
+  ITEMS.rows.forEach((item) => {
+    prices[item.id] = item.cost;
+  });
+
+  return prices;
+}
+
 /**
  * Get an output of the global crumbs timeline which includes a hash
  * identifying this timeline and the information of each version
@@ -774,7 +785,7 @@ export function getGlobalCrumbsOutput() {
     }
   }, () => {
     return {
-      prices: {},
+      prices: getBasePriceObject(),
       music: getMusicForDate(getMusicTimeline(false), CPIP_UPDATE),
       newMigratorStatus: false,
       paths: {}

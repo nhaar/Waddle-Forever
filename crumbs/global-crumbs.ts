@@ -49,26 +49,35 @@ function changeRoomMusic(crumbs: string, roomName: string, newMusicId: number): 
   return lines.join('\n')
 }
 
-function changeItemCost(crumbs: string, itemId: number, newCost: number): string {
+function changeItemCosts(crumbs: string, prices: Record<number, number>): string {
+  // map ID of item to the index of its line that contains the cost
+  const paperCrumbs = new Map<number, number>();
+
   const lines = crumbs.split('\n');
   for (let i = 0; i < lines.length; i++) {
     // search for paper_crumbs instruction
     if (lines[i].startsWith('Push "paper_crumbs"')) {
       // skip to line with ID
-      i += 2
-      if (lines[i].startsWith(`Push ${itemId}`)) {
-        // skip to line with cost
-        i += 2
-        const costMatch = lines[i].match(/Push "cost", \d+/)
-        if (costMatch !== null) {
-          lines[i] = lines[i].replace(costMatch[0], `Push "cost", ${newCost}`)
-        }
+      i += 2;
+      // get id (some lines will push paper_crumbs and not have this id)
+      // so the filter is useful
+      const idMatch = lines[i].match(/Push (\d+)/);
+      if (idMatch !== null) {
+        const id = idMatch[1];
 
-        // there will be no other item of interest
-        break;
+        // skip to line with cost
+        i += 2;
+        paperCrumbs.set(Number(id), i);
       }
     }
   }
+
+  paperCrumbs.forEach((index, id) => {
+    const price = prices[id];
+    // remove cost from the start, insert new cost
+    const newInstruction = `Push "cost", ${price}` + lines[index].replace(/Push "cost", \d+/, '');
+    lines[index] = newInstruction;
+  });
 
   return lines.join('\n');
 }
@@ -112,9 +121,7 @@ function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): str
   }
 
   if (changes.prices !== undefined) {
-    for (const item in changes.prices) {
-      newCrumbs = changeItemCost(newCrumbs, Number(item), changes.prices[item]);
-    }
+    newCrumbs = changeItemCosts(newCrumbs, changes.prices);
   }
 
   if (changes.paths !== undefined) {
