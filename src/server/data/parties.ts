@@ -65,6 +65,12 @@ export type Party = PartyChanges & {
    * writing what the file number of the egg file is
    * */
   scavengerHunt2007?: number;
+
+  /** Permanent changes to the island at the party's start */
+  permanentChanges?: PartyChanges & { roomComment?: string; };
+
+  /** Permanent changes to the island at the party's end */
+  consequences?: PartyChanges & { roomComment?: string; };
 };
 
 type Construction = {
@@ -125,6 +131,12 @@ export const PARTIES: Party[] = [
       'village': 200,
       'lodge': 200,
       'rink': 200
+    },
+    permanentChanges: {
+      roomChanges: {
+        // lodge is now accessible
+        village: 30
+      }
     }
   },
   {
@@ -150,6 +162,12 @@ export const PARTIES: Party[] = [
     },
     roomFrames: {
       'town': 2
+    },
+    consequences: {
+      roomChanges: {
+        // now has path to the plaza
+        forts: 36
+      }
     }
   },
   {
@@ -219,6 +237,14 @@ export const PARTIES: Party[] = [
       'cave': 202,
       'mine': 203,
       'plaza': 203
+    },
+    permanentChanges: {
+      roomChanges: {
+        // manhole path
+        plaza: 3780,
+        // green puffle + boiler room trigger
+        dance: 3779
+      }
     }
   },
   {
@@ -262,7 +288,15 @@ export const PARTIES: Party[] = [
           'plaza': 3832
         }
       }
-    ]
+    ],
+    permanentChanges: {
+      roomComment: 'More rooms are visible from the HQ',
+      roomChanges: {
+        // now this has a path to the beach
+        village: 4924,
+        agent: 4933
+      }
+    }
   },
   {
     name: 'Western Party',
@@ -350,7 +384,13 @@ export const PARTIES: Party[] = [
           forts: 3
         }
       }
-    ]
+    ],
+    consequences: {
+      roomComment: 'The pool becomes a part of the undeground after the Sports Party ends',
+      roomChanges: {
+        cave: 4916,
+      }
+    }
   },
   {
     name: 'Lighthouse Party',
@@ -363,6 +403,14 @@ export const PARTIES: Party[] = [
     roomFrames: {
       'light': 2,
       'beacon': 2
+    },
+    permanentChanges: {
+      roomChanges: {
+        // first room archived with the lighthouse open
+        // used for the party since the SWF for the beach in
+        // the party is also lost
+        beach: 3835
+      }
     }
   },
   {
@@ -764,7 +812,13 @@ export const PARTIES: Party[] = [
       coffee: 212,
       dance: 212
     },
-    activeMigrator: true
+    activeMigrator: true,
+    consequences: {
+      roomChanges: {
+        // returning to normality
+        beach: 3835
+      }
+    }
   },
   {
     name: 'Medieval Party',
@@ -928,6 +982,15 @@ export const PARTIES: Party[] = [
       },
       'catalogues/music.swf': {
         'en': 4096
+      }
+    },
+    permanentChanges: {
+      roomChanges: {
+        // this is from june 26, when dj3k disks are added
+        // other SWFs in-between are lost
+        dance: 4860,
+        // placeholder date for the band
+        light: 4915
       }
     }
   },
@@ -1144,7 +1207,13 @@ export const PARTIES: Party[] = [
           dojoext: 4178
         }
       }
-    ]
+    ],
+    consequences: {
+      roomComment: 'The dojo has a great reopening',
+      roomChanges : {
+        dojo: 4180
+      }
+    }
   },
   {
     name: 'Christmas Party',
@@ -2112,6 +2181,11 @@ export const PARTIES: Party[] = [
       'close_ups/treasurepin4.swf': {
         'en': 2306
       }
+    },
+    consequences: {
+      roomChanges: {
+        mine: 2665
+      }
     }
   },
   {
@@ -2284,6 +2358,17 @@ export const PARTIES: Party[] = [
       date: '2010-04-15',
       changes: {
         'shack': 2387
+      }
+    },
+    permanentChanges: {
+      roomChanges: {
+        forest: 2658
+      }
+    },
+    consequences: {
+      roomChanges: {
+        // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
+        shack: 2669
       }
     }
   },
@@ -2799,6 +2884,12 @@ export const PARTIES: Party[] = [
       'dojoext': 2591,
       'dojohide': 2592,
       'dojowater': 2593
+    },
+    consequences: {
+      roomComment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard',
+      roomChanges: {
+        dojoext: 2655
+      }
     }
   },
   {

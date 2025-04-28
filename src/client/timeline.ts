@@ -245,6 +245,13 @@ function addParties(map: DayMap): DayMap {
         }
       }
     }
+
+    if (party.permanentChanges?.roomComment !== undefined) {
+      addEvents(map, party.startDate, { roomUpdate: party.permanentChanges.roomComment });
+    }
+    if (party.consequences?.roomComment !== undefined) {
+      addEvents(map, party.endDate, { roomUpdate: party.consequences.roomComment });
+    }
   }
 
   return map;

@@ -324,17 +324,27 @@ function addRoomInfo(map: FileTimelineMap): void {
 }
 
 function addParties(map: FileTimelineMap): void {
-  const addRoomChanges = (roomChanges: RoomChanges, start: Version, end: Version) => {
+  const addRoomChanges = (roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) => {
     for (const room in roomChanges) {
-      const fileId = roomChanges[room as RoomName]!;
-      addTempRoomRoute(map, start, end, room as RoomName, fileId);
+      const roomName = room as RoomName;
+      const fileId = roomChanges[roomName]!;
+      if (end === undefined) {
+        addRoomRoute(map, start, roomName, fileId);
+      } else {
+        addTempRoomRoute(map, start, end, roomName, fileId);
+      }
     }
   }
 
-  const addPartyChanges = (start: Version, end: Version, changes: PartyChanges) => {
+  const addPartyChanges = (changes: PartyChanges, start: Version, end: Version | undefined = undefined) => {
     const pushCrumbChange = (baseRoute: string, route: string, info: number | CrumbIndicator) => {
       const fileId = typeof info === 'number' ? info : info[0];
-      map.addTemp(path.join(baseRoute, route), start, end, fileId);
+      const fullRoute = path.join(baseRoute, route);
+      if (end === undefined) {
+        map.addPerm(fullRoute, start, fileId);
+      } else {
+        map.addTemp(fullRoute, start, end, fileId);
+      }
     }
 
     addRoomChanges(changes.roomChanges, start, end);
@@ -358,7 +368,11 @@ function addParties(map: FileTimelineMap): void {
     if (changes.generalChanges !== undefined) {
       Object.entries(changes.generalChanges).forEach((pair) => {
         const [route, fileId] = pair;
-        map.addTemp(route, start, end, fileId);
+        if (end === undefined) {
+          map.addPerm(route, start, fileId);
+        } else {
+          map.addTemp(route, start, end, fileId);
+        }
       });
     }
   }
@@ -366,12 +380,12 @@ function addParties(map: FileTimelineMap): void {
   PARTIES.forEach((party) => {
     const startDate = party.startDate;
     const endDate = party.endDate;
-    addPartyChanges(startDate, endDate, {
+    addPartyChanges({
       roomChanges: party.roomChanges,
       localChanges: party.localChanges,
       globalChanges: party.globalChanges,
       generalChanges: party.generalChanges
-    });
+    }, startDate, endDate);
     if (party.construction !== undefined) {
       const constructionStart = party.construction.date;
       addRoomChanges(party.construction.changes, constructionStart, endDate);
@@ -398,17 +412,24 @@ function addParties(map: FileTimelineMap): void {
 
     if (party.updates !== undefined) {
       party.updates.forEach((update) => {
-        addPartyChanges(update.date, endDate, {
+        addPartyChanges({
           roomChanges: update.roomChanges,
           localChanges: update.localChanges,
           globalChanges: update.globalChanges,
           generalChanges: update.generalChanges
-        });
+        }, update.date, endDate);
       })
     }
 
     if (party.scavengerHunt2007 !== undefined) {
       map.addTemp('artwork/eggs/1.swf', startDate, endDate, party.scavengerHunt2007);
+    }
+
+    if (party.permanentChanges !== undefined) {
+      addPartyChanges(party.permanentChanges, party.startDate);
+    }
+    if (party.consequences !== undefined) {
+      addPartyChanges(party.consequences, party.endDate);
     }
   })
 }

@@ -69,29 +69,15 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: EPF_RELEASE
     },
     {
-      // ski village has the path to the beach now here
-      date: SUMMER_PARTY_START,
-      fileId: 4924
-    },
-    {
       date: ROOM_REDRAWS,
       fileId: 4925,
       comment: 'The Ski Village is redrawn'
-    },
-    {
-      // ski lodge is accessible
-      date: CHRISTMAS_2005_ENDS,
-      fileId: 30
     },
   ],
   forts: [
     {
       fileId: 87,
       date: PUFFLE_ROUNDUP_RELEASE
-    },
-    {
-      date: PIZZA_PARLOR_OPENING_END,
-      fileId: 36
     },
     {
       fileId: 2661,
@@ -120,10 +106,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileId: 2666,
       date: MODERN_AS3
-    },
-    {
-      fileId: 3780,
-      date: CAVE_OPENING_START
     },
     {
       // date of vectorization is unknown
@@ -155,13 +137,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   beach: [
-    {
-      // first room archived with the lighthouse open
-      // used for the party since the SWF for the beach in
-      // the party is also lost
-      date: LIGHTHOUSE_PARTY_START,
-      fileId: 3835
-    },
     {
       fileId: 4913,
       date: CPIP_UPDATE
@@ -206,11 +181,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: '2008-04-10',
       fileId: 4953,
       comment: 'The Migrator is cleaned up and a new device is at the Beach'
-    },
-    {
-      // returning to normality
-      date: ROCKHOPPER_ARRIVAL_END,
-      fileId: 3835
     }
   ],
   mtn: [
@@ -287,12 +257,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       // placeholder CPIP room
       fileId: 4917,
       date: CPIP_UPDATE
-    },
-    {
-      date: SPORT_PARTY_END,
-      fileId: 4916,
-      comment: 'The pool becomes a part of the undeground after the Sports Party ends'
-    },
+    }
   ],
   cove: [
     {
@@ -314,18 +279,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileId: 5073,
       date: CPIP_UPDATE
-    },
-    {
-      // placeholder CPIP room
-      // this is from june 26, when dj3k disks are added
-      // other SWFs in-between are lost
-      fileId: 4860,
-      date: MUSIC_JAM_08_START
-    },
-    {
-      // green puffle + boiler room trigger
-      fileId: 3779,
-      date: CAVE_OPENING_START
     },
     {
       // placeholder vectorized room, unknown date
@@ -363,11 +316,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileId: 5077,
       date: CPIP_UPDATE
-    },
-    {
-      // placeholder date
-      fileId: 4915,
-      date: MUSIC_JAM_08_START
     },
     {
       date: '2007-04-13',
@@ -523,11 +471,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: CARD_JITSU_RELEASE
     },
     {
-      fileId: 4180,
-      date: DIG_OUT_DOJO_END,
-      comment: 'The dojo has a great reopening'
-    },
-    {
       date: ROOM_REDRAWS,
       fileId: 4920,
       comment: 'The dojo is redrawn'
@@ -602,11 +545,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'The HQ is redesigned'
     },
     {
-      fileId: 4933,
-      date: SUMMER_PARTY_START,
-      comment: 'More rooms are visible from the HQ'
-    },
-    {
       // placeholder HQ update for the PSA missions
       fileId: 4934,
       date: MISSION_1_RELEASE
@@ -648,10 +586,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: '2010-01-15'
     },
     {
-      fileId: 2665,
-      date: CAVE_EXPEDITION_END
-    },
-    {
       fileId: 2662,
       date: '2010-03-15'
     },
@@ -665,11 +599,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileId: 2668,
       date: CPIP_UPDATE
-    },
-    {
-      // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
-      fileId: 2669,
-      date: EARTH_DAY_2010_END
     },
     {
       fileId: 2670,
@@ -692,10 +621,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileId: 2657,
       date: CPIP_UPDATE
-    },
-    {
-      fileId: 2658,
-      date: EARTH_DAY_2010_START
     },
     {
       fileId: 2659,
@@ -727,11 +652,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileId: 2654,
       date: '2009-11-27',
       comment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard'
-    },
-    {
-      fileId: 2655,
-      date: WATER_CELEBRATION_END,
-      comment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard'
     },
     {
       fileId: 2656,
