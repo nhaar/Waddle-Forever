@@ -957,7 +957,6 @@ export const PARTIES: Party[] = [
       mine: 4076,
       dance: 4077,
       pizza: 4078,
-      plaza: 4079,
       village: 4080,
       town: 4081,
       forts: 4082
