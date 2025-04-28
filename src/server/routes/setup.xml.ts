@@ -3,12 +3,14 @@ import { findInVersion, VersionsTimeline } from "../data/changes";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../data/newspapers";
 import { RoomName, ROOMS } from "../data/rooms";
 import { CHAT_339 } from "../data/updates";
-import { getFileDateSignature, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
+import { getClothingTimeline, getFileDateSignature, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
 import { Version, isLower } from "./versions";
 
 const musicTimeline = getMusicTimeline();
 
 const frameTimeline = getRoomFrameTimeline();
+
+const clothingTimeline = getClothingTimeline();
 
 type OldRoom = {
   roomName: RoomName
@@ -55,27 +57,6 @@ function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>)
   }
 }
 
-/**
- * Get clothing filename
- * 
- * Clothing filenames looked like 0508 (2005-August)
- * */
-export function getClothingFileName(date: Version): string {
-  let latest = '';
-  for (const catalogRelease in PRE_CPIP_CATALOGS) {
-    if (isLower(date, catalogRelease)) {
-      break;
-    }
-    latest = catalogRelease;
-  }
-  if (latest === '') {
-    return latest;
-  }
-
-
-  return getFileDateSignature(latest);
-}
-
 function getFileName(name: string, date: Version): string {
   // the way the client reads this XML changed
   if (isLower(date, CHAT_339)) {
@@ -107,7 +88,7 @@ export function getSetupXml(version: Version) {
     patchFrame(rooms, { [room]: findInVersion(version, versions) });
   });
 
-  const clothing = getClothingFileName(version);
+  const clothing = findInVersion(version, clothingTimeline);
 
   const servers = [
     'Blizzard',

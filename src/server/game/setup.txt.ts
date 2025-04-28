@@ -2,8 +2,7 @@ import { findInVersion, VersionsTimeline } from "../data/changes";
 import { PARTIES } from "../data/parties";
 import { RoomName, ROOMS } from "../data/rooms";
 import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../data/updates";
-import { getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "../routes/client-files";
-import { getClothingFileName } from "../routes/setup.xml";
+import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "../routes/client-files";
 import { isGreaterOrEqual, Version } from "../routes/versions";
 
 const musicTimeline = getMusicTimeline();
@@ -13,6 +12,8 @@ const frameTimeline = getRoomFrameTimeline();
 const migratorTimeline = getMigratorTimeline();
 
 const eggTimeline = getEggTimeline();
+
+const clothingTimeline = getClothingTimeline();
 
 function getEggTimeline() {
   const timeline = new VersionsTimeline<number>();
@@ -58,7 +59,7 @@ export function getSetupTxt(date: Version): string {
   // sending the ID of 1 because we don't have any information about these scavenger hunts
   const eggId = findInVersion(date, eggTimeline);
 
-  const clothing = getClothingFileName(date);
+  const clothing = findInVersion(date, clothingTimeline);
 
   const rooms = Object.entries(ROOMS).map((pair) => {
     const [room, info] = pair;

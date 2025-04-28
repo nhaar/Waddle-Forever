@@ -605,6 +605,19 @@ export function getMigratorTimeline() {
   return timeline.getVersion();
 }
 
+export function getClothingTimeline() {
+  const timeline = new VersionsTimeline<string>();
+  Object.keys(PRE_CPIP_CATALOGS).forEach((date) => {
+    const signature = getFileDateSignature(date);
+    timeline.add({
+      date,
+      info: signature
+    });
+  });
+
+  return timeline.getVersion();
+}
+
 function getMusicForDate(map: IdentifierMap<RoomName, number>, date: Version): Partial<Record<RoomName, number>> {
   const music: Partial<Record<RoomName, number>> = {};
   map.forEach((versions, room) => {
