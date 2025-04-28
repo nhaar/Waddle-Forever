@@ -410,9 +410,11 @@ function createCalendar(
 </div>
   `;
   const scrollToMonth = (year: number, month: number) => {
-    const selected = document.querySelector(`.${getMonthClassName(month, year)}`)!;
-    const y = selected.getBoundingClientRect().top - 250 + window.scrollY;
-    window.scrollTo({ top: y, behavior: "smooth" });
+    const selected = document.querySelector(`.${getMonthClassName(month, year)}`);
+    if (selected !== null) {
+      const y = selected.getBoundingClientRect().top - 250 + window.scrollY;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
   
   // jumping to the right elementt
