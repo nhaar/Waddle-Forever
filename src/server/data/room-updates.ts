@@ -821,7 +821,8 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   'dojo': [
     0,
     { date: CARD_JITSU_RELEASE, musicId: 21 }
-  ]
+  ],
+  boxdimension: [264]
 };
 
 type TemporaryRoomUpdate = Array<{

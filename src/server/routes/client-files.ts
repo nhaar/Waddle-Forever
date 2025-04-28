@@ -577,6 +577,10 @@ export function getRoomFrameTimeline() {
 export function getMusicTimeline(includeParties: boolean = true) {
   const timeline = new TimelineMap<RoomName, number>();
 
+  Object.keys(ROOMS).forEach((room) => {
+    timeline.addPerm(room as RoomName, BETA_RELEASE, 0);
+  });
+    
   // regular room IDs
   Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
     const [room, musicTimeline] = pair;
@@ -782,7 +786,7 @@ function addCrumbs(map: FileTimelineMap): void {
       map.addPerm(route, crumb.date, filePath);
     });
   }
-  
+
   addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
   addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
 
