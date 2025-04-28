@@ -3879,6 +3879,7 @@ export const FILES = new StaticDataTable<File, [
 
   // originally pulled this from slippers 07, but for some reason the sport shop room was bugged
   // so I fixed that, now I placed it in unknown because I have no idea why it was broken
+  // I also fixed all the servers to point to the same port and IP adress
   [3788, 'chat506.swf', 1, FileCategory.Unknown, null, null],
   [3789, 'media/crumbs21.swf', 1, FileCategory.StaticServer, 4, null],
   [3790, 'media/interface41.swf', 1, FileCategory.StaticServer, 4, null],
@@ -5220,8 +5221,8 @@ export const FILES = new StaticDataTable<File, [
   [5088, 'ThinIce.swf', 1, FileCategory.Archives, null, null],
   [5089, 'Pizzatron3000-2007.swf', 1, FileCategory.Fix, null, null],
   [5090, 'ArtworkRoomsAttic12.swf', 1, FileCategory.Archives, null, null],
-  [5091, '', 1, FileCategory.Archives, null, null],
-  [5092, '', 1, FileCategory.Archives, null, null],
+  [5091, 'RoomsDojohide-1.swf', 1, FileCategory.Archives, null, null],
+  [5092, 'RoomsDojohide_2.swf', 1, FileCategory.Archives, null, null],
   [5093, '', 1, FileCategory.Archives, null, null],
   [5094, '', 1, FileCategory.Archives, null, null],
   [5095, '', 1, FileCategory.Archives, null, null],
