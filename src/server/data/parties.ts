@@ -499,7 +499,8 @@ export const PARTIES: Party[] = [
     },
     generalChanges: {
       'artwork/rooms/0926/PrizeBooth2.swf': 3867
-    }
+    },
+    scavengerHunt2007: 3866
   },
   {
     name: '2nd Anniversary Party',
