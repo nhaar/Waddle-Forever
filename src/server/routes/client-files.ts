@@ -298,9 +298,12 @@ function addRoomInfo(map: FileTimelineMap): void {
     }
   })
 
-  ROOM_UPDATES.forEach((update) => {
-    addRoomChange(update.room, update.date, update.fileId);
-  });
+  Object.entries(ROOM_UPDATES).forEach((pair) => {
+    const [room, updates] = pair;
+    updates.forEach((update) => {
+      addRoomChange(room as RoomName, update.date, update.fileId);
+    })
+  })
 
   Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
     const [room, updates] = pair;

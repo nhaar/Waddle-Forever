@@ -1,5 +1,5 @@
 import { Version } from "../routes/versions";
-import { RoomName } from "./rooms";
+import { RoomName, RoomMap } from "./rooms";
 import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, MUSIC_JAM_08_START, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_PARTY_END, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
@@ -9,7 +9,6 @@ type RoomOpening = {
 };
 
 type RoomUpdate = {
-  room: RoomName;
   // file used in the update
   fileId: number;
   date: string;
@@ -17,814 +16,756 @@ type RoomUpdate = {
   comment?: string;
 };
 
-export const ROOM_UPDATES: RoomUpdate[] = [
-  {
-    room: 'town',
-    fileId: 28,
-    date: SNOW_FORTS_RELEASE
-  },
-  {
-    room: 'rink',
-    fileId: 32,
-    date: SNOW_FORTS_RELEASE
-  },
-  {
-    room: 'village',
-    fileId: 82,
-    date: SPORT_SHOP_RELEASE
-  },
-  {
-    room: 'village',
-    fileId: 83,
-    date: MTN_RELEASE
-  },
-  {
-    room: 'forts',
-    fileId: 87,
-    date: PUFFLE_ROUNDUP_RELEASE
-  },
-  {
-    room: 'plaza',
-    date: PET_SHOP_RELEASE,
-    fileId: 102
-  },
-  {
-    room: 'forts',
-    date: PIZZA_PARLOR_OPENING_END,
-    fileId: 36
-  },
-  {
-    room: 'book',
-    date: '2006-##-##',
-    fileId: 2264,
-    // comment: 'The book room was updated to have a new Mancala board'
-  },
-  {
-    // first room archived with the lighthouse open
-    // used for the party since the SWF for the beach in
-    // the party is also lost
-    room: 'beach',
-    date: LIGHTHOUSE_PARTY_START,
-    fileId: 3835
-  },
-  {
-    // placeholder CPIP room
-    room: 'mtn',
-    fileId: 5079,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'mtn',
-    fileId: 4923,
-    date: GAME_UPGRADES
-  },
-  {
-    // placeholder CPIP room
-    room: 'berg',
-    fileId: 2335,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    // earliest beach we have archived
-    room: 'beach',
-    fileId: 4913,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'beacon',
-    fileId: 5014,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    // post island adventure update
-    room: 'boxdimension',
-    fileId: 3757,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'cave',
-    fileId: 4917,
-    date: CPIP_UPDATE
-  },
-  {
-    // recreation of proper cove room here
-    room: 'cove',
-    fileId: 5074,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'cove',
-    fileId: 2336,
-    date: GAME_UPGRADES
-  },
-  {
-    room: 'dance',
-    fileId: 5073,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    // this is from june 26, when dj3k disks are added
-    // other SWFs in-between are lost
-    room: 'dance',
-    fileId: 4860,
-    date: MUSIC_JAM_08_START
-  },
-  {
-    // pre catalog
-    room: 'dock',
-    fileId: 5075,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'dock',
-    fileId: 2337,
-    date: GAME_UPGRADES
-  },
-  {
-    room: 'light',
-    fileId: 5077,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder date
-    room: 'light',
-    fileId: 4915,
-    date: MUSIC_JAM_08_START
-  },
-  {
-    // placeholder CPIP room
-    room: 'lodge',
-    fileId: 5078,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'lodge',
-    fileId: 4928,
-    date: GAME_UPGRADES
-  },
-  {
-    room: 'pet',
-    fileId: 5080,
-    date: CPIP_UPDATE
-  },
-  {
-    // white puffle release
-    room: 'pet',
-    fileId: 4906,
-    date: '2009-03-06',
-    comment: 'White puffles are available in the Pet Shop'
-  },
-  {
-    // placeholder CPIP room
-    // the only SWF we have of CPIP before renovation
-    room: 'pizza',
-    fileId: 4908,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'shop',
-    fileId: 4865,
-    date: CPIP_UPDATE
-  },
-  {
-    // the first CPIP room we have
-    room: 'coffee',
-    fileId: 4856,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'book',
-    fileId: 4858,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'lounge',
-    fileId: 4863,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'boiler',
-    fileId: 4918,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'attic',
-    fileId: 239,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'sport',
-    fileId: 4929,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'lake',
-    fileId: 255,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'cavemine',
-    fileId: 246,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'dojo',
-    fileId: 5076,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'dojo',
-    fileId: 250,
-    date: CARD_JITSU_RELEASE
-  },
-  {
-    // placeholder CPIP room
-    room: 'dojofire',
-    fileId: 251,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'dojohide',
-    fileId: 252,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'dojowater',
-    fileId: 253,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'shiphold',
-    fileId: 264,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'shipnest',
-    fileId: 265,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'shipquarters',
-    fileId: 266,
-    date: CPIP_UPDATE
-  },
-  {
-    // proper recreation of what it was like when CPIP dropped
-    room: 'agent',
-    fileId: 5072,
-    date: CPIP_UPDATE
-  },
-  {
-    // placeholder CPIP room
-    room: 'agent',
-    fileId: 2651,
-    date: AGENTCOM_RELEASE
-  },
-  {
-    room: 'mine',
-    fileId: 2662,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'shack',
-    fileId: 2668,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'forest',
-    fileId: 2657,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'ship',
-    fileId: 2674,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'village',
-    fileId: 2676,
-    date: CPIP_UPDATE
-  },
-  {
-    room: 'dojoext',
-    fileId: 2654,
-    date: '2009-11-27',
-    comment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard'
-  },
-  {
-    room: 'mine',
-    fileId: 2663,
-    date: '2010-01-08'
-  },
-  {
-    room: 'mine',
-    fileId: 2664,
-    date: '2010-01-15'
-  },
-  {
-    room: 'mine',
-    fileId: 2665,
-    date: CAVE_EXPEDITION_END
-  },
-  {
-    room: 'boxdimension',
-    fileId: 244,
-    date: '2010-02-11',
-    comment: 'The plants disappear from the Box Dimension'
-  },
-  {
-    room: 'mine',
-    fileId: 2662,
-    date: '2010-03-15'
-  },
-  {
-    room: 'forest',
-    fileId: 2658,
-    date: EARTH_DAY_2010_START
-  },
-  {
-    room: 'shack',
-    // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
-    fileId: 2669,
-    date: EARTH_DAY_2010_END
-  },
-  {
-    room: 'village',
-    fileId: 2677,
-    date: EPF_RELEASE
-  },
-  {
-    room: 'forest',
-    fileId: 2659,
-    date: '2010-06-17'
-  },
-  {
-    room: 'shack',
-    fileId: 2670,
-    date: '2010-07-29'
-  },
-  {
-    room: 'shack',
-    fileId: 2671,
-    date: '2010-08-26'
-  },
-  {
-    room: 'shack',
-    fileId: 2672,
-    date: '2010-09-30'
-  },
-  {
-    room: 'dojoext',
-    fileId: 2655,
-    date: WATER_CELEBRATION_END,
-    comment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard'
-  },
-  {
-    // placeholder AS3 room
-    room: 'cove',
-    fileId: 2652,
-    date: MODERN_AS3
-  },
-  {
-    // placeholder AS3 room
-    room: 'dock',
-    fileId: 2653,
-    date: MODERN_AS3
-  },
-  {
-    room: 'dojoext',
-    fileId: 2656,
-    date: MODERN_AS3
-  },
-  {
-    room: 'forest',
-    fileId: 2660,
-    date: MODERN_AS3
-  },
-  {
-    room: 'forts',
-    fileId: 2661,
-    date: MODERN_AS3
-  },
-  {
-    room: 'plaza',
-    fileId: 2666,
-    date: MODERN_AS3
-  },
-  {
-    room: 'rink',
-    fileId: 2667,
-    date: MODERN_AS3
-  },
-  {
-    room: 'shack',
-    fileId: 2673,
-    date: MODERN_AS3
-  },
-  {
-    room: 'town',
-    fileId: 2675,
-    date: MODERN_AS3
-  },
-  {
-    // green puffle + boiler room trigger
-    room: 'dance',
-    fileId: 3779,
-    date: CAVE_OPENING_START
-  },
-  {
-    room: 'plaza',
-    fileId: 3780,
-    date: CAVE_OPENING_START
-  },
-  {
-    room: 'forest',
-    fileId: 3843,
-    date: '2007-05-29',
-    comment: 'As the Cove Opening party ends, the whistles remain in the Forest'
-  },
-  {
-    room: 'forest',
-    fileId: 3845,
-    date: '2007-06-01',
-    comment: 'The whistles are removed from the Forest'
-  },
-  {
-    room: 'dojo',
-    fileId: 4180,
-    date: DIG_OUT_DOJO_END,
-    comment: 'The dojo has a great reopening'
-  },
-  {
-    // first vectorized version of the Town, possibly from 2007
-    // unknown how to document it
-    room: 'town',
-    fileId: 4854,
-    date: PRE_CPIP_REWRITE_DATE
-  },
-  {
-    // an unknown update which removed the ability to click on the couch
-    room: 'coffee',
-    fileId: 7,
-    date: '2005-12-01'
-  },
-  {
-    // room with UGC art
-    room: 'book',
-    fileId: 4857,
-    date: '2010-10-23',
-    comment: 'The Book Room now contains Penguin Art'
-  },
-  {
-    // placeholder vectorized room, unknown date
-    room: 'dance',
-    fileId: 4859,
-    date: PRE_CPIP_REWRITE_DATE
-  },
-  {
-    room: 'dance',
-    fileId: 4861,
-    date: '2010-01-29',
-    comment: 'The Dance Club now changes colors if a lot of monochrome penguins are present'
-  },
-  {
-    room: 'lounge',
-    date: THIN_ICE_RELEASE,
-    comment: 'A new cabinet is in the Dance Lounge',
-    fileId: 4862
-  },
-  {
-    // unknown date, vectorized 07 rooms
-    room: 'shop',
-    date: PRE_CPIP_REWRITE_DATE,
-    fileId: 5071
-  },
-  {
-    room: 'forts',
-    date: ROOM_REDRAWS,
-    fileId: 4866,
-    comment: 'The Snow Forts is redrawn'
-  },
-  {
-    // unknown date, you can now walk to the audience in the rink
-    // only evidence is after april fools party
-    room: 'rink',
-    date: '2006-04-01',
-    fileId: 4867
-  },
-  {
-    room: 'rink',
-    date: '2006-08-11',
-    fileId: 4868,
-    comment: 'The Ice Rink now has score signs'
-  },
-  {
-    // placeholder CPIP room
-    room: 'town',
-    date: CPIP_UPDATE,
-    fileId: 2642
-  },
-  {
-    // placeholder CPIP room
-    room: 'forts',
-    date: CPIP_UPDATE,
-    fileId: 2643
-  },
-  {
-    // placeholder CPIP room
-    room: 'rink',
-    date: CPIP_UPDATE,
-    fileId: 2645
-  },
-  {
-    // date of vectorization is unknown
-    room: 'plaza',
-    date: PRE_CPIP_REWRITE_DATE,
-    fileId: 4872
-  },
-  {
-    room: 'plaza',
-    date: '2007-01-26',
-    fileId: 4873,
-    comment: 'Tours are now present in the Plaza'
-  },
-  {
-    // purple puffles release
-    room: 'pet',
-    date: '2006-08-25',
-    fileId: 4902,
-    comment: 'Purple Puffles are now in the Pet Shop'
-  },
-  {
-    // the wiki mentions it as this date, seems like the date most rooms were redrawn?
-    // dont know the source
-    room: 'pet',
-    date: ROOM_REDRAWS,
-    fileId: 4903,
-    comment: 'The Pet Shop is redrawn'
-  },
-  {
-    room: 'pet',
-    date: '2006-12-08',
-    fileId: 4904,
-    comment: 'Red Puffles are now in the Pet Shop'
-  },
-  {
-    // NOTE: this date is a PLACEHOLDER! we don't know the exact date...
-    room: 'pet',
-    date: '2007-02-28',
-    fileId: 4905,
-    comment: 'The Pet Shop now has animations'
-  },
-  {
-    room: 'pet',
-    date: '2010-02-25',
-    fileId: 4907,
-    comment: 'White Puffles are now in the Pet Shop'
-  },
-  {
-    // another september 22 redraw
-    room: 'berg',
-    date: ROOM_REDRAWS,
-    fileId: 4909,
-    comment: 'The Iceberg is redrawn'
-  },
-  {
-    room: 'berg',
-    date: '2008-02-08',
-    fileId: 4947,
-    comment: 'Construction of a new invention begins in the Iceberg'
-  },
-  {
-    room: 'berg',
-    date: '2008-02-15',
-    comment: 'A poll is added to the Iceberg',
-    fileId: 3955
-  },
-  {
-    room: 'berg',
-    date: AQUAGRABBER_RELEASE,
-    fileId: 4910,
-    comment: 'The Aqua Grabber\'s construction is finished'
-  },
-  {
-    room: 'dock',
-    date: ROOM_REDRAWS,
-    fileId: 4911,
-    comment: 'The Dock is redrawn'
-  },
-  {
-    room: 'light',
-    date: '2007-04-13',
-    fileId: 4914,
-    comment: 'A stage is now built in the Lighthouse'
-  },
-  {
-    room: 'cave',
-    date: SPORT_PARTY_END,
-    fileId: 4916,
-    comment: 'The pool becomes a part of the undeground after the Sports Party ends'
-  },
-  {
-    room: 'mine',
-    date: ROOM_REDRAWS,
-    fileId: 4919,
-    comment: 'The mine is redrawn'
-  },
-  {
-    room: 'dojo',
-    date: ROOM_REDRAWS,
-    fileId: 4920,
-    comment: 'The dojo is redrawn'
-  },
-  {
-    room: 'dojo',
-    date: CARD_JITSU_RELEASE,
-    fileId: 4921,
-    comment: 'The dojo now has the Card-Jitsu game'
-  },
-  {
-    // this file we have has the white puffle, which I believe is only from the puffle party 2009
-    room: 'dojoext',
-    date: CARD_JITSU_RELEASE,
-    fileId: 4097
-  },
-  {
-    room: 'mtn',
-    date: ROOM_REDRAWS,
-    fileId: 4922,
-    comment: 'The Ski Hill is redrawn'
-  },
-  {
-    // ski village has the path to the beach now here
-    room: 'village',
-    date: SUMMER_PARTY_START,
-    fileId: 4924
-  },
-  {
-    room: 'village',
-    date: ROOM_REDRAWS,
-    fileId: 4925,
-    comment: 'The Ski Village is redrawn'
-  },
-  {
-    // ski lodge is accessible
-    room: 'village',
-    date: CHRISTMAS_2005_ENDS,
-    fileId: 30
-  },
-  {
-    room: 'lodge',
-    fileId: 11,
-    date: ICE_FISHING_RELEASE,
-    comment: 'A door for Ice Fishing is added in the Ski Lodge'
-  },
-  {
-    room: 'lodge',
-    fileId: 4927,
-    date: FIND_FOUR_RELEASE,
-    comment: 'Find Four tables are added to the Ski Lodge'
-  },
-  {
-    room: 'sport',
-    fileId: 4864,
-    date: SNOW_SPORT_RELEASE,
-    comment: 'The Snow and Sports catalog is now available in the Sport Shop'
-  },
-  {
-    // mancala was added at some random point I dont know
-    room: 'agent',
-    fileId: 4931,
-    date: '2005-11-01'
-  },
-  {
-    room: 'agent',
-    fileId: 4930,
-    date: '2006-02-11',
-    comment: 'Mancala is removed from the HQ'
-  },
-  {
-    room: 'agent',
-    fileId: 4932,
-    date: HQ_REDESIGN,
-    comment: 'The HQ is redesigned'
-  },
-  {
-    room: 'agent',
-    fileId: 4933,
-    date: SUMMER_PARTY_START,
-    comment: 'More rooms are visible from the HQ'
-  },
-  {
-    // placeholder HQ update for the PSA missions
-    room: 'agent',
-    fileId: 4934,
-    date: MISSION_1_RELEASE
-  },
-  {
-    room: 'beach',
-    fileId: 4942,
-    comment: 'Rockhopper lands in Club Penguin with a rowboat',
-    date: '2008-01-23'
-  },
-  {
-    room: 'beach',
-    date: '2008-02-01',
-    fileId: 4946,
-    comment: 'Save The Migrator Project is set up at the Beach'
-  },
-  {
-    room: 'beach',
-    date: '2008-02-23',
-    fileId: 4949,
-    comment: 'Pieces of The Migrator show up at the Beach'
-  },
-  {
-    room: 'beach',
-    date: '2008-02-29',
-    fileId: 4948,
-    comment: 'More pieces show up at the Beach'
-  },
-  {
-    room: 'beach',
-    date: '2008-03-07',
-    fileId: 4950,
-    comment: 'Reconstruction of The Migrator begins'
-  },
-  {
-    room: 'beach',
-    // this date is a conjecture, don't know when it actually happened
-    date: '2008-03-20',
-    fileId: 4951,
-    comment: 'Reconstruction of The Migrator progresses'
-  },
-  {
-    room: 'beach',
-    date: '2008-03-27',
-    fileId: 4952,
-    comment: 'Reconstruction of The Migrator progresses'
-  },
-  {
-    room: 'beach',
-    date: '2008-04-10',
-    fileId: 4953,
-    comment: 'The Migrator is cleaned up and a new device is at the Beach'
-  },
-  {
-    // returning to normality
-    room: 'beach',
-    date: ROCKHOPPER_ARRIVAL_END,
-    fileId: 3835
-  },
-  {
-    room: 'beacon',
-    date: JPA_RELEASE,
-    fileId: 5009,
-    comment: 'The launchpad construction in the Beacon is finished'
-  },
-  {
-    room: 'agentcom',
-    date: EPF_RELEASE,
-    fileId: 5085,
-    comment: 'The EPF Command Room is under construction'
-  },
-  {
-    room: 'agentcom',
-    date: '2010-06-03',
-    fileId: 5083,
-    comment: 'Only the VR Room remains under construction'
-  },
-  {
-    room: 'agentcom',
-    date: '2010-06-10',
-    fileId: 5084,
-    comment: 'The VR Room\'s construction is finished'
-  },
-  {
-    room: 'agentcom',
-    date: '2010-06-15',
-    fileId: 5086,
-    comment: 'Field Ops are made available'
-  }
-];
+export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
+  town: [
+    {
+      fileId: 28,
+      date: SNOW_FORTS_RELEASE
+    },
+    {
+      fileId: 2675,
+      date: MODERN_AS3
+    },
+    {
+      // first vectorized version of the Town, possibly from 2007
+      // unknown how to document it
+      fileId: 4854,
+      date: PRE_CPIP_REWRITE_DATE
+    },
+    {
+      // placeholder CPIP room
+      date: CPIP_UPDATE,
+      fileId: 2642
+    }
+  ],
+  rink: [
+    {
+      fileId: 32,
+      date: SNOW_FORTS_RELEASE
+    },
+    {
+      fileId: 2667,
+      date: MODERN_AS3
+    },
+    {
+      // unknown date, you can now walk to the audience in the rink
+      // only evidence is after april fools party
+      date: '2006-04-01',
+      fileId: 4867
+    },
+    {
+      date: '2006-08-11',
+      fileId: 4868,
+      comment: 'The Ice Rink now has score signs'
+    },
+    {
+      // placeholder CPIP room
+      date: CPIP_UPDATE,
+      fileId: 2645
+    }
+  ],
+  village: [
+    {
+      fileId: 82,
+      date: SPORT_SHOP_RELEASE
+    },
+    {
+      fileId: 83,
+      date: MTN_RELEASE
+    },
+    {
+      fileId: 2676,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 2677,
+      date: EPF_RELEASE
+    },
+    {
+      // ski village has the path to the beach now here
+      date: SUMMER_PARTY_START,
+      fileId: 4924
+    },
+    {
+      date: ROOM_REDRAWS,
+      fileId: 4925,
+      comment: 'The Ski Village is redrawn'
+    },
+    {
+      // ski lodge is accessible
+      date: CHRISTMAS_2005_ENDS,
+      fileId: 30
+    },
+  ],
+  forts: [
+    {
+      fileId: 87,
+      date: PUFFLE_ROUNDUP_RELEASE
+    },
+    {
+      date: PIZZA_PARLOR_OPENING_END,
+      fileId: 36
+    },
+    {
+      fileId: 2661,
+      date: MODERN_AS3
+    },
+    {
+      date: ROOM_REDRAWS,
+      fileId: 4866,
+      comment: 'The Snow Forts is redrawn'
+    },
+    {
+      // placeholder CPIP room
+      date: CPIP_UPDATE,
+      fileId: 2643
+    }
+  ],
+  pizza: [
+    {
+      // placeholder CPIP room
+      // the only SWF we have of CPIP before renovation
+      fileId: 4908,
+      date: CPIP_UPDATE
+    }
+  ],
+  plaza: [
+    {
+      date: PET_SHOP_RELEASE,
+      fileId: 102
+    },
+    {
+      fileId: 2666,
+      date: MODERN_AS3
+    },
+    {
+      fileId: 3780,
+      date: CAVE_OPENING_START
+    },
+    {
+      // date of vectorization is unknown
+      date: PRE_CPIP_REWRITE_DATE,
+      fileId: 4872
+    },
+    {
+      date: '2007-01-26',
+      fileId: 4873,
+      comment: 'Tours are now present in the Plaza'
+    }
+  ],
+  book: [
+    {
+      date: '2006-##-##',
+      fileId: 2264,
+      // comment: 'The book room was updated to have a new Mancala board'
+    },
+    {
+      // placeholder CPIP room
+      fileId: 4858,
+      date: CPIP_UPDATE
+    },
+    {
+      // room with UGC art
+      fileId: 4857,
+      date: '2010-10-23',
+      comment: 'The Book Room now contains Penguin Art'
+    }
+  ],
+  beach: [
+    {
+      // first room archived with the lighthouse open
+      // used for the party since the SWF for the beach in
+      // the party is also lost
+      date: LIGHTHOUSE_PARTY_START,
+      fileId: 3835
+    },
+    {
+      fileId: 4913,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 4942,
+      comment: 'Rockhopper lands in Club Penguin with a rowboat',
+      date: '2008-01-23'
+    },
+    {
+      date: '2008-02-01',
+      fileId: 4946,
+      comment: 'Save The Migrator Project is set up at the Beach'
+    },
+    {
+      date: '2008-02-23',
+      fileId: 4949,
+      comment: 'Pieces of The Migrator show up at the Beach'
+    },
+    {
+      date: '2008-02-29',
+      fileId: 4948,
+      comment: 'More pieces show up at the Beach'
+    },
+    {
+      date: '2008-03-07',
+      fileId: 4950,
+      comment: 'Reconstruction of The Migrator begins'
+    },
+    {
+      // this date is a conjecture, don't know when it actually happened
+      date: '2008-03-20',
+      fileId: 4951,
+      comment: 'Reconstruction of The Migrator progresses'
+    },
+    {
+      date: '2008-03-27',
+      fileId: 4952,
+      comment: 'Reconstruction of The Migrator progresses'
+    },
+    {
+      date: '2008-04-10',
+      fileId: 4953,
+      comment: 'The Migrator is cleaned up and a new device is at the Beach'
+    },
+    {
+      // returning to normality
+      date: ROCKHOPPER_ARRIVAL_END,
+      fileId: 3835
+    }
+  ],
+  mtn: [
+    {
+      // placeholder CPIP room
+      fileId: 5079,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 4923,
+      date: GAME_UPGRADES
+    },
+    {
+      date: ROOM_REDRAWS,
+      fileId: 4922,
+      comment: 'The Ski Hill is redrawn'
+    },
+  ],
+  berg: [
+    {
+      // placeholder CPIP room
+      fileId: 2335,
+      date: CPIP_UPDATE
+    },
+    {
+      // another september 22 redraw
+      date: ROOM_REDRAWS,
+      fileId: 4909,
+      comment: 'The Iceberg is redrawn'
+    },
+    {
+      date: '2008-02-08',
+      fileId: 4947,
+      comment: 'Construction of a new invention begins in the Iceberg'
+    },
+    {
+      date: '2008-02-15',
+      comment: 'A poll is added to the Iceberg',
+      fileId: 3955
+    },
+    {
+      date: AQUAGRABBER_RELEASE,
+      fileId: 4910,
+      comment: 'The Aqua Grabber\'s construction is finished'
+    }
+  ],
+  beacon: [
+    {
+      // placeholder CPIP room
+      fileId: 5014,
+      date: CPIP_UPDATE
+    },
+    {
+      date: JPA_RELEASE,
+      fileId: 5009,
+      comment: 'The launchpad construction in the Beacon is finished'
+    }
+  ],
+  boxdimension: [
+    {
+      // placeholder CPIP room
+      // post island adventure update
+      fileId: 3757,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 244,
+      date: '2010-02-11',
+      comment: 'The plants disappear from the Box Dimension'
+    }
+  ],
+  cave: [
+    {
+      // placeholder CPIP room
+      fileId: 4917,
+      date: CPIP_UPDATE
+    },
+    {
+      date: SPORT_PARTY_END,
+      fileId: 4916,
+      comment: 'The pool becomes a part of the undeground after the Sports Party ends'
+    },
+  ],
+  cove: [
+    {
+      // recreation of proper cove room here
+      fileId: 5074,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 2336,
+      date: GAME_UPGRADES
+    },
+    {
+      // placeholder AS3 room
+      fileId: 2652,
+      date: MODERN_AS3
+    },
+  ],
+  dance: [
+    {
+      fileId: 5073,
+      date: CPIP_UPDATE
+    },
+    {
+      // placeholder CPIP room
+      // this is from june 26, when dj3k disks are added
+      // other SWFs in-between are lost
+      fileId: 4860,
+      date: MUSIC_JAM_08_START
+    },
+    {
+      // green puffle + boiler room trigger
+      fileId: 3779,
+      date: CAVE_OPENING_START
+    },
+    {
+      // placeholder vectorized room, unknown date
+      fileId: 4859,
+      date: PRE_CPIP_REWRITE_DATE
+    },
+    {
+      fileId: 4861,
+      date: '2010-01-29',
+      comment: 'The Dance Club now changes colors if a lot of monochrome penguins are present'
+    }
+  ],
+  dock: [
+    {
+      // pre catalog
+      fileId: 5075,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 2337,
+      date: GAME_UPGRADES
+    },
+    {
+      // placeholder AS3 room
+      fileId: 2653,
+      date: MODERN_AS3
+    },
+    {
+      date: ROOM_REDRAWS,
+      fileId: 4911,
+      comment: 'The Dock is redrawn'
+    }
+  ],
+  light: [
+    {
+      fileId: 5077,
+      date: CPIP_UPDATE
+    },
+    {
+      // placeholder date
+      fileId: 4915,
+      date: MUSIC_JAM_08_START
+    },
+    {
+      date: '2007-04-13',
+      fileId: 4914,
+      comment: 'A stage is now built in the Lighthouse'
+    },
+  ],
+  lodge: [
+    {
+      // placeholder CPIP room
+      fileId: 5078,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 4928,
+      date: GAME_UPGRADES  
+    },
+    {
+      fileId: 11,
+      date: ICE_FISHING_RELEASE,
+      comment: 'A door for Ice Fishing is added in the Ski Lodge'
+    },
+    {
+      fileId: 4927,
+      date: FIND_FOUR_RELEASE,
+      comment: 'Find Four tables are added to the Ski Lodge'
+    }
+  ],
+  pet: [
+    {
+      fileId: 5080,
+      date: CPIP_UPDATE
+    },
+    {
+      // white puffle release
+      fileId: 4906,
+      date: '2009-03-06',
+      comment: 'White puffles are available in the Pet Shop'
+    },
+    {
+      // purple puffles release
+      date: '2006-08-25',
+      fileId: 4902,
+      comment: 'Purple Puffles are now in the Pet Shop'
+    },
+    {
+      // the wiki mentions it as this date, seems like the date most rooms were redrawn?
+      // dont know the source
+      date: ROOM_REDRAWS,
+      fileId: 4903,
+      comment: 'The Pet Shop is redrawn'
+    },
+    {
+      date: '2006-12-08',
+      fileId: 4904,
+      comment: 'Red Puffles are now in the Pet Shop'
+    },
+    {
+      // NOTE: this date is a PLACEHOLDER! we don't know the exact date...
+      date: '2007-02-28',
+      fileId: 4905,
+      comment: 'The Pet Shop now has animations'
+    },
+    {
+      date: '2010-02-25',
+      fileId: 4907,
+      comment: 'White Puffles are now in the Pet Shop'
+    },
+  ],
+  shop: [
+    {
+      // placeholder CPIP room
+      fileId: 4865,
+      date: CPIP_UPDATE
+    },
+    {
+      // unknown date, vectorized 07 rooms
+      date: PRE_CPIP_REWRITE_DATE,
+      fileId: 5071
+    }
+  ],
+  coffee: [
+    {
+      // the first CPIP room we have
+      fileId: 4856,
+      date: CPIP_UPDATE
+    },
+    {
+      // an unknown update which removed the ability to click on the couch
+      fileId: 7,
+      date: '2005-12-01'
+    }
+  ],
+  lounge: [
+    {
+      // placeholder CPIP room
+      fileId: 4863,
+      date: CPIP_UPDATE
+    },
+    {
+      date: THIN_ICE_RELEASE,
+      comment: 'A new cabinet is in the Dance Lounge',
+      fileId: 4862
+    }
+  ],
+  boiler: [
+    {
+      // placeholder CPIP room
+      fileId: 4918,
+      date: CPIP_UPDATE
+    }
+  ],
+  attic: [
+    {
+      // placeholder CPIP room
+      fileId: 239,
+      date: CPIP_UPDATE
+    }
+  ],
+  sport: [
+    {
+      // placeholder CPIP room
+      fileId: 4929,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 4864,
+      date: SNOW_SPORT_RELEASE,
+      comment: 'The Snow and Sports catalog is now available in the Sport Shop'
+    }
+  ],
+  lake: [
+    {
+      // placeholder CPIP room
+      fileId: 255,
+      date: CPIP_UPDATE
+    }
+  ],
+  cavemine: [
+    {
+      // placeholder CPIP room
+      fileId: 246,
+      date: CPIP_UPDATE
+    }
+  ],
+  dojo: [
+    {
+      fileId: 5076,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 250,
+      date: CARD_JITSU_RELEASE
+    },
+    {
+      fileId: 4180,
+      date: DIG_OUT_DOJO_END,
+      comment: 'The dojo has a great reopening'
+    },
+    {
+      date: ROOM_REDRAWS,
+      fileId: 4920,
+      comment: 'The dojo is redrawn'
+    },
+    {
+      date: CARD_JITSU_RELEASE,
+      fileId: 4921,
+      comment: 'The dojo now has the Card-Jitsu game'
+    }
+  ],
+  dojofire: [
+    {
+      // placeholder CPIP room
+      fileId: 251,
+      date: CPIP_UPDATE
+    },
+  ],
+  dojohide: [
+    {
+      // placeholder CPIP room
+      fileId: 252,
+      date: CPIP_UPDATE
+    }
+  ],
+  dojowater: [
+    {
+      // placeholder CPIP room
+      fileId: 253,
+      date: CPIP_UPDATE
+    }
+  ],
+  shiphold: [
+    {
+      // placeholder CPIP room
+      fileId: 264,
+      date: CPIP_UPDATE
+    }
+  ],
+  shipnest: [
+    {
+      // placeholder CPIP room
+      fileId: 265,
+      date: CPIP_UPDATE
+    }
+  ],
+  shipquarters: [
+    {
+      // placeholder CPIP room
+      fileId: 266,
+      date: CPIP_UPDATE
+    }
+  ],
+  agent: [
+    {
+      // proper recreation of what it was like when CPIP dropped
+      fileId: 5072,
+      date: CPIP_UPDATE
+    },
+    {
+      // placeholder CPIP room
+      fileId: 2651,
+      date: AGENTCOM_RELEASE
+    },
+    {
+      // mancala was added at some random point I dont know
+      fileId: 4931,
+      date: '2005-11-01'
+    },
+    {
+      fileId: 4930,
+      date: '2006-02-11',
+      comment: 'Mancala is removed from the HQ'
+    },
+    {
+      fileId: 4932,
+      date: HQ_REDESIGN,
+      comment: 'The HQ is redesigned'
+    },
+    {
+      fileId: 4933,
+      date: SUMMER_PARTY_START,
+      comment: 'More rooms are visible from the HQ'
+    },
+    {
+      // placeholder HQ update for the PSA missions
+      fileId: 4934,
+      date: MISSION_1_RELEASE
+    }
+  ],
+  agentcom: [
+    {
+      date: EPF_RELEASE,
+      fileId: 5085,
+      comment: 'The EPF Command Room is under construction'
+    },
+    {
+      date: '2010-06-03',
+      fileId: 5083,
+      comment: 'Only the VR Room remains under construction'
+    },
+    {
+      date: '2010-06-10',
+      fileId: 5084,
+      comment: 'The VR Room\'s construction is finished'
+    },
+    {
+      date: '2010-06-15',
+      fileId: 5086,
+      comment: 'Field Ops are made available'
+    }
+  ],
+  mine: [
+    {
+      fileId: 2662,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 2663,
+      date: '2010-01-08'
+    },
+    {
+      fileId: 2664,
+      date: '2010-01-15'
+    },
+    {
+      fileId: 2665,
+      date: CAVE_EXPEDITION_END
+    },
+    {
+      fileId: 2662,
+      date: '2010-03-15'
+    },
+    {
+      date: ROOM_REDRAWS,
+      fileId: 4919,
+      comment: 'The mine is redrawn'
+    }
+  ],
+  shack: [
+    {
+      fileId: 2668,
+      date: CPIP_UPDATE
+    },
+    {
+      // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
+      fileId: 2669,
+      date: EARTH_DAY_2010_END
+    },
+    {
+      fileId: 2670,
+      date: '2010-07-29'
+    },
+    {
+      fileId: 2671,
+      date: '2010-08-26'
+    },
+    {
+      fileId: 2672,
+      date: '2010-09-30'
+    },
+    {
+      fileId: 2673,
+      date: MODERN_AS3
+    }
+  ],
+  forest: [
+    {
+      fileId: 2657,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 2658,
+      date: EARTH_DAY_2010_START
+    },
+    {
+      fileId: 2659,
+      date: '2010-06-17'
+    },
+    {
+      fileId: 3843,
+      date: '2007-05-29',
+      comment: 'As the Cove Opening party ends, the whistles remain in the Forest'
+    },
+    {
+      fileId: 3845,
+      date: '2007-06-01',
+      comment: 'The whistles are removed from the Forest'
+    },
+    {
+      fileId: 2660,
+      date: MODERN_AS3
+    }
+  ],
+  ship: [
+    {
+      fileId: 2674,
+      date: CPIP_UPDATE
+    }
+  ],
+  dojoext: [
+    {
+      fileId: 2654,
+      date: '2009-11-27',
+      comment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard'
+    },
+    {
+      fileId: 2655,
+      date: WATER_CELEBRATION_END,
+      comment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard'
+    },
+    {
+      fileId: 2656,
+      date: MODERN_AS3
+    },
+    {
+      // this file we have has the white puffle, which I believe is only from the puffle party 2009
+      date: CARD_JITSU_RELEASE,
+      fileId: 4097
+    },
+  ]
+};
 
 export const ROOM_OPENINGS: RoomOpening[] = [
   {

@@ -67,6 +67,9 @@ export type RoomName = 'town' |
   'party18' |
   'party99';
 
+
+export type RoomMap<T> = Partial<Record<RoomName, T>>;
+
 export const ROOMS: Record<RoomName, Room> = {
   'town': {
     id: 100,

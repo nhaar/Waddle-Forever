@@ -305,10 +305,12 @@ function addRoomUpdates(map: DayMap): void {
     })
   })
 
-  ROOM_UPDATES.forEach((update) => {
-    if (update.comment !== undefined) {
-      addEvents(map, update.date, { roomUpdate: update.comment });
-    }
+  Object.values(ROOM_UPDATES).forEach((updates) => {
+    updates.forEach((update) => {
+      if (update.comment !== undefined) {
+        addEvents(map, update.date, { roomUpdate: update.comment });
+      }
+    })
   })
 
   // add music room updates
