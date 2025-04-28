@@ -59,18 +59,31 @@
   align-items: center;
 }
 
-.version-picker {
+.timeline-header {
   position: sticky;
   top: 0;
   background-color: var(--background);
   left: 0;
   right: 0;
   display: flex;
+  /* needs to be this variable so the calendar can be properly sticky too */
+  height: var(--version-pick-h);
+  justify-content: center;
+  align-items: center;
+}
+
+.version-selected {
+  position: absolute;
+  right: 2em;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.version-picker {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* needs to be this variable so the calendar can be properly sticky too */
-  height: var(--version-pick-h);
 }
 
 body {

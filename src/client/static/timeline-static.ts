@@ -17,8 +17,9 @@ const MONTHS = [
   'December'
 ];
 
-function getFullDate({ day, month }: { day: number, month: number }) {
-  return `${MONTHS[month - 1]} ${day}`;
+function getFullDate({ day, month, year }: { day: number, month: number, year?: number }, useYear: boolean = false) {
+  const yearStr = (year === undefined && useYear) ? '' : `, ${year}`;
+  return `${MONTHS[month - 1]} ${day}` + yearStr;
 }
 
 function getDescription(version: DateInfo): string {
@@ -563,10 +564,15 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
   monthElement.onchange = () => updateTimeline(days);
 }
 
+function setSelectedDateText(version: string) {
+  document.getElementById('selected-date')!.innerText = getFullDate(getDateInfo(version), true);
+}
+
 /** Update the timeline version */
 function updateVersion(version: string) {
   currentVersion = version;
   timelineApi.update();
+  setSelectedDateText(version);
   post('update', { version });
 }
 
@@ -574,6 +580,7 @@ window.addEventListener('get-timeline', (e: any) => {
   const days = e.detail as DateInfo[];
   getSettings().then((settings) => {
     currentVersion = settings.version;
+    setSelectedDateText(currentVersion);
     const year = currentVersion.slice(0, 4);
     yearElement.value = year;
     // updateTimeline(days);

@@ -5,39 +5,44 @@
     <link href="base.css" rel="stylesheet" type="text/css" media="screen"/>
   </head>
   <body>
-    <div class="version-picker">
-      <div class="version-description">
-        Choose a day in the timeline!
-      </div>
-      <div>
-        <div>
-          <label for="year">Year:</label>
-          <select id="year">
-            <option>2005</option>
-            <option>2006</option>
-            <option>2007</option>
-            <option>2008</option>
-            <option>2009</option>
-            <option selected="selected">2010</option>
-            <option>2016</option>
-          </select>
-          <label for="month">Month:</label>
-          <select id="month">
-            <option selected="selected">ALL MONTHS</option>
-            <option>January</option>
-            <option>February</option>
-            <option>March</option>
-            <option>April</option>
-            <option>May</option>
-            <option>June</option>
-            <option>July</option>
-            <option>August</option>
-            <option>September</option>
-            <option>October</option>
-            <option>November</option>
-            <option>December</option>
-          </select>
+    <div class="timeline-header">
+      <div class="version-picker">
+        <div class="version-description">
+          Choose a day in the timeline!
         </div>
+        <div>
+          <div>
+            <label for="year">Year:</label>
+            <select id="year">
+              <option>2005</option>
+              <option>2006</option>
+              <option>2007</option>
+              <option>2008</option>
+              <option>2009</option>
+              <option selected="selected">2010</option>
+              <option>2016</option>
+            </select>
+            <label for="month">Month:</label>
+            <select id="month">
+              <option selected="selected">ALL MONTHS</option>
+              <option>January</option>
+              <option>February</option>
+              <option>March</option>
+              <option>April</option>
+              <option>May</option>
+              <option>June</option>
+              <option>July</option>
+              <option>August</option>
+              <option>September</option>
+              <option>October</option>
+              <option>November</option>
+              <option>December</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="version-selected">
+        Selected Date: <span id="selected-date"></span>
       </div>
     </div>
     <div id="timeline">
