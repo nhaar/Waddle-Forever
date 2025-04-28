@@ -1,11 +1,14 @@
 import { Version } from "../routes/versions";
 import { RoomName, RoomMap } from "./rooms";
-import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, MUSIC_JAM_08_START, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_FORTS_RELEASE, SNOW_SPORT_RELEASE, SPORT_PARTY_END, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
+import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, MUSIC_JAM_08_START, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_SPORT_RELEASE, SPORT_PARTY_END, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
   fileId: number | null;
   date: string;
+  // file id of other rooms that are changing concurrently
+  otherRooms?: RoomMap<number>;
+  map?: number;
 };
 
 type RoomUpdate = {
@@ -18,10 +21,6 @@ type RoomUpdate = {
 
 export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   town: [
-    {
-      fileId: 28,
-      date: SNOW_FORTS_RELEASE
-    },
     {
       fileId: 2675,
       date: MODERN_AS3
@@ -39,10 +38,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   rink: [
-    {
-      fileId: 32,
-      date: SNOW_FORTS_RELEASE
-    },
     {
       fileId: 2667,
       date: MODERN_AS3
@@ -65,14 +60,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   village: [
-    {
-      fileId: 82,
-      date: SPORT_SHOP_RELEASE
-    },
-    {
-      fileId: 83,
-      date: MTN_RELEASE
-    },
     {
       fileId: 2676,
       date: CPIP_UPDATE
@@ -130,10 +117,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   plaza: [
-    {
-      date: PET_SHOP_RELEASE,
-      fileId: 102
-    },
     {
       fileId: 2666,
       date: MODERN_AS3
@@ -604,11 +587,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: CPIP_UPDATE
     },
     {
-      // placeholder CPIP room
-      fileId: 2651,
-      date: AGENTCOM_RELEASE
-    },
-    {
       // mancala was added at some random point I dont know
       fileId: 4931,
       date: '2005-11-01'
@@ -771,17 +749,28 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'forts',
     fileId: 37,
-    date: SNOW_FORTS_RELEASE
+    date: '2005-09-21',
+    otherRooms: {
+      town: 28,
+      rink: 32,
+    },
+    map: 35
   },
   {
     room: 'sport',
     fileId: 17,
-    date: SPORT_SHOP_RELEASE
+    date: SPORT_SHOP_RELEASE,
+    otherRooms: {
+      village: 82
+    }
   },
   {
     room: 'mtn',
     fileId: 13,
-    date: MTN_RELEASE
+    date: MTN_RELEASE,
+    otherRooms: {
+      village: 83
+    }
   },
   {
     room: 'lodge',
@@ -801,12 +790,16 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'pet',
     fileId: 14,
-    date: PET_SHOP_RELEASE
+    date: PET_SHOP_RELEASE,
+    otherRooms: {
+      plaza: 102
+    }
   },
   {
     room: 'berg',
     fileId: 6,
-    date: ICEBERG_RELEASE
+    date: ICEBERG_RELEASE,
+    map: 104
   },
   {
     // 2006 client boiler, the party vesion isn't archived
@@ -869,7 +862,11 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'agentcom',
     fileId: 4936,
-    date: AGENTCOM_RELEASE
+    date: AGENTCOM_RELEASE,
+    otherRooms: {
+      // placeholder CPIP room
+      agent: 2651
+    }
   },
   {
     room: 'beacon',

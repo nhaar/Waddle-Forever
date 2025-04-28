@@ -1,9 +1,6 @@
 /** The day Club Penguin launched its beta */
 export const BETA_RELEASE = '2005-08-22';
 
-/** The day the snow forts opened */
-export const SNOW_FORTS_RELEASE = '2005-09-21';
-
 export const SPORT_SHOP_RELEASE = '2005-11-03';
 
 export const MTN_RELEASE = '2005-11-18';

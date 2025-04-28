@@ -1,4 +1,4 @@
-import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SNOW_FORTS_RELEASE, SUMMER_PARTY_START } from "./updates";
+import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SUMMER_PARTY_START } from "./updates";
 
 type MapUpdate = {
   date: string;
@@ -8,15 +8,7 @@ type MapUpdate = {
 
 export const MAP_UPDATES: MapUpdate[] = [
   {
-    date: SNOW_FORTS_RELEASE,
-    fileId: 35
-  },
-  {
     date: PIZZA_PARLOR_OPENING_END,
-    fileId: 104
-  },
-  {
-    date: ICEBERG_RELEASE,
     fileId: 104
   },
   {

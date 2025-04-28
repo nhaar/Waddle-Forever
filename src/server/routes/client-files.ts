@@ -296,6 +296,15 @@ function addRoomInfo(map: FileTimelineMap): void {
     if (opening.fileId !== null) {
       addRoomChange(opening.room, opening.date, opening.fileId);
     }
+    if (opening.otherRooms !== undefined) {
+      Object.entries(opening.otherRooms).forEach((pair) => {
+        const [room, fileId] = pair;
+        addRoomChange(room as RoomName, opening.date, fileId);
+      });
+    }
+    if (opening.map !== undefined) {
+      addMapUpdate(map, opening.date, opening.map);
+    }
   })
 
   Object.entries(ROOM_UPDATES).forEach((pair) => {
@@ -813,15 +822,19 @@ function addStandaloneChanges(map: FileTimelineMap): void {
   });
 }
 
+function addMapUpdate(map: FileTimelineMap, date: Version, fileId: number): void {
+  if (isLower(date, CPIP_UPDATE)) {
+    map.addPerm(PRECPIP_MAP_PATH, date, fileId);
+    // TODO would be best to only include the maps that end up factually being used
+    map.addPerm(MAP_PATH_07, date, fileId);
+  } else {
+    map.addPerm('play/v2/content/global/content/map.swf', date, fileId);
+  }
+}
+
 function addMapUpdates(map: FileTimelineMap): void {
   MAP_UPDATES.forEach((update) => {
-    if (isLower(update.date, CPIP_UPDATE)) {
-      map.addPerm(PRECPIP_MAP_PATH, update.date, update.fileId);
-      // TODO would be best to only include the maps that end up factually being used
-      map.addPerm(MAP_PATH_07, update.date, update.fileId);
-    } else {
-      map.addPerm('play/v2/content/global/content/map.swf', update.date, update.fileId);
-    }
+    addMapUpdate(map, update.date, update.fileId);
   });
 }
 
