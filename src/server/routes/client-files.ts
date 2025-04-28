@@ -389,7 +389,13 @@ function addParties(map: FileTimelineMap): void {
     }, startDate, endDate);
     if (party.construction !== undefined) {
       const constructionStart = party.construction.date;
-      addRoomChanges(party.construction.changes, constructionStart, endDate);
+      addRoomChanges(party.construction.changes, constructionStart, startDate);
+
+      if (party.construction.updates !== undefined) {
+        party.construction.updates.forEach((update) => {
+          addRoomChanges(update.changes, update.date, startDate);
+        })
+      }
     }
 
     if (party.scavengerHunt2010 !== undefined) {

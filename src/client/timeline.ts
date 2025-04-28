@@ -228,9 +228,17 @@ function addParties(map: DayMap): DayMap {
     addArrayEvents(map, partyEndProp, party.endDate, partyEnd);
 
     if (party.construction !== undefined) {
-        const partyStart = `Construction for the ${party.name} starts`;
+        const partyStart = party.construction.comment === undefined ?
+          `Construction for the ${party.name} starts` :
+          party.construction.comment;
       
         addEvents(map, party.construction.date, { partyConstruction: partyStart });
+
+        if (party.construction.updates !== undefined) {
+          party.construction.updates.forEach((update) => {
+            addEvents(map, update.date, { partyConstruction: update.comment });
+          })
+        }
     }
 
     if (party.updates !== undefined) {

@@ -1,5 +1,6 @@
+import { Version } from "../routes/versions";
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, FIRE_CELEBRATION_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, number>>;
@@ -76,6 +77,14 @@ export type Party = PartyChanges & {
 type Construction = {
   date: string;
   changes: RoomChanges;
+
+  comment?: string;
+
+  updates?: Array<{
+    date: Version;
+    changes: RoomChanges;
+    comment: string;
+  }>;
 };
 
 export const PARTIES: Party[] = [
@@ -1986,7 +1995,7 @@ export const PARTIES: Party[] = [
   },
   {
     name: 'Celebration of Fire',
-    startDate: '2009-11-20',
+    startDate: FIRE_CELEBRATION_START,
     endDate: '2009-11-27',
     roomChanges: {
       // I actually don't know if this dojo exterior
@@ -1996,19 +2005,29 @@ export const PARTIES: Party[] = [
       dojofire: 4999
     },
     construction: {
-      date: '2009-11-13',
+      date: '2009-11-05',
+      comment: 'Construction for Card-Jitsu Fire in the Ninja Hideout begins',
       changes: {
         dojohide: 5000,
-        dojofire: 5001,
         dojoext: 5002
-      }
+      },
+      updates: [
+        {
+          comment: 'Construction for the Fire Dojo begins',
+          date: '2009-11-13',
+          changes: {
+            dojofire: 5001,
+            // reverting back to normality
+            dojohide: 5092
+          }
+        }
+      ]
     },
     updates: [
       {
         date: '2009-11-23',
         comment: 'Card-Jitsu Fire is now available',
         roomChanges: {
-
           dojohide: 4996,
           dojofire: 4997
         }

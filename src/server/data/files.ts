@@ -5223,7 +5223,7 @@ export const FILES = new StaticDataTable<File, [
   [5090, 'ArtworkRoomsAttic12.swf', 1, FileCategory.Archives, null, null],
   [5091, 'RoomsDojohide-1.swf', 1, FileCategory.Archives, null, null],
   [5092, 'RoomsDojohide_2.swf', 1, FileCategory.Archives, null, null],
-  [5093, '', 1, FileCategory.Archives, null, null],
+  [5093, 'RoomsDojohide_3.swf', 1, FileCategory.Archives, null, null],
   [5094, '', 1, FileCategory.Archives, null, null],
   [5095, '', 1, FileCategory.Archives, null, null],
   [5096, '', 1, FileCategory.Archives, null, null],
