@@ -480,29 +480,33 @@ export type CrumbOutput<CrumbContent> = {
 export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     PARTIES.forEach((party) => {
-      const localPaths: Record<string, string> = {};
-      if (party.localChanges !== undefined) {
-        // only 'en' support
-        Object.entries(party.localChanges).forEach((pair) => {
-          const [route, langs] = pair;
-          if (langs.en !== undefined) {
-            if (typeof langs.en !== 'number') {
-              const [_, ...paths] = langs.en;
-              paths.forEach((path) => {
-                localPaths[path] = route;
-              })
+      // crumbs dont exist before this date
+      if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)){
+        const localPaths: Record<string, string> = {};
+        if (party.localChanges !== undefined) {
+          // only 'en' support
+          Object.entries(party.localChanges).forEach((pair) => {
+            const [route, langs] = pair;
+            if (langs.en !== undefined) {
+              if (typeof langs.en !== 'number') {
+                const [_, ...paths] = langs.en;
+                paths.forEach((path) => {
+                  localPaths[path] = route;
+                })
+              }
             }
-          }
-        })
+          })
+        }
+    
+        if (Object.keys(localPaths).length > 0) {
+          timeline.push({
+            date: party.startDate,
+            end: party.endDate,
+            info: { paths: localPaths }
+          });
+        }
       }
-  
-      if (Object.keys(localPaths).length > 0) {
-        timeline.push({
-          date: party.startDate,
-          end: party.endDate,
-          info: { paths: localPaths }
-        });
-      }
+
     })
   }, (prev, cur) => {
     return {
