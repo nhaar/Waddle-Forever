@@ -577,10 +577,6 @@ export function getRoomFrameTimeline() {
 export function getMusicTimeline(includeParties: boolean = true) {
   const timeline = new TimelineMap<RoomName, number>();
 
-  Object.keys(ROOMS).forEach((room) => {
-    timeline.addPerm(room as RoomName, BETA_RELEASE, 0);
-  })
-
   // regular room IDs
   Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
     const [room, musicTimeline] = pair;

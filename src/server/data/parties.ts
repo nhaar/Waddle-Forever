@@ -1513,7 +1513,6 @@ export const PARTIES: Party[] = [
       village: 232,
       forts: 232,
       town: 232,
-      boxdimension: 264,
       party3: 264
     },
     localChanges: {
