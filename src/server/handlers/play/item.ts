@@ -1,3 +1,4 @@
+import { ITEMS } from "../../game/items";
 import { Handler } from "..";
 
 const handler = new Handler();
@@ -8,15 +9,15 @@ handler.xt('i#gi', (client) => {
 });
 
 // giving item
-// NOTICE: COST here is NOT part of vanilla shell, MUST be modded
-handler.xt('i#ai', (client, item, cost) => {
+handler.xt('i#ai', (client, item) => {
   const id = Number(item);
   if (client.penguin.hasItem(id)) {
     // TODO
   } else if (!client.canBuy(id)) {
     // TODO
   } else {
-    client.buyItem(id, { cost: Number(cost) });
+    const item = ITEMS.getStrict(id);
+    client.buyItem(id, { cost: item.cost });
   }
   client.update();
 });
