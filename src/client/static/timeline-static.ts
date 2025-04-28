@@ -583,7 +583,21 @@ window.addEventListener('get-timeline', (e: any) => {
     setSelectedDateText(currentVersion);
     const year = currentVersion.slice(0, 4);
     yearElement.value = year;
-    // updateTimeline(days);
     createCalendar(days);
-  })
+  });
+
+  const calendarButton = document.getElementById('calendar-timeline')! as HTMLInputElement;
+  const listButton = document.getElementById('list-timeline')! as HTMLInputElement;
+
+  calendarButton.addEventListener('change', (e) => {
+    if (e.target instanceof HTMLInputElement && e.target.checked) {
+      createCalendar(days);
+    }
+  });
+
+  listButton.addEventListener('change', (e) => {
+    if (e.target instanceof HTMLInputElement && e.target.checked) {
+      updateTimeline(days);
+    }
+  });
 });
