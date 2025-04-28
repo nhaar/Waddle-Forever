@@ -210,7 +210,7 @@ export const ROOMS: Record<RoomName, Room> = {
   'attic': {
     id: 221,
     name: 'Lodge Attic',
-    preCpipName: null
+    preCpipName: 'Attic'
   },
   'pizza': {
     id: 330,
@@ -240,7 +240,7 @@ export const ROOMS: Record<RoomName, Room> = {
   'shack': {
     id: 807,
     name: 'Mine Shack',
-    preCpipName: null
+    preCpipName: 'Shack'
   },
   'beach': {
     id: 400,

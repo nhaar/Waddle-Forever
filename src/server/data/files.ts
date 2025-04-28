@@ -5219,7 +5219,7 @@ export const FILES = new StaticDataTable<File, [
   [5087, 'media/play/v2/content/global/igloo/assets/igloo_storage.swf', 1, FileCategory.StaticServer, 2, null],
   [5088, 'ThinIce.swf', 1, FileCategory.Archives, null, null],
   [5089, 'Pizzatron3000-2007.swf', 1, FileCategory.Fix, null, null],
-  [5090, '', 1, FileCategory.Archives, null, null],
+  [5090, 'ArtworkRoomsAttic12.swf', 1, FileCategory.Archives, null, null],
   [5091, '', 1, FileCategory.Archives, null, null],
   [5092, '', 1, FileCategory.Archives, null, null],
   [5093, '', 1, FileCategory.Archives, null, null],
