@@ -51,6 +51,11 @@ const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
+function setSelectElements(month: number, year: number) {
+  monthElement.value = MONTHS[month - 1];
+  yearElement.value = String(year);
+}
+
 enum EventType {
   PartyStart,
   PartyEnd,
@@ -442,12 +447,9 @@ function createCalendar(
           if (month.getBoundingClientRect().top > 0) {
             const year = month.dataset.year;
             const monthNumber = month.dataset.month;
-            if (year !== undefined)
+            if (year !== undefined && month !== undefined)
             {
-              yearElement.value = year;
-            }
-            if (monthNumber !== undefined) {
-              monthElement.value = MONTHS[Number(monthNumber) - 1];
+              setSelectElements(Number(monthNumber), Number (year));
             }
             break;
           }
@@ -502,6 +504,16 @@ function createCalendar(
   yearElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
   monthElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
 
+  const as3Footer = document.getElementById('as3-footer')!;
+  as3Footer.innerHTML = `
+    <button>
+      Click here to play in a 2016/2017 version (still in development)
+    </button>
+  `;
+
+  as3Footer.onclick = (e) => {
+    updateVersion('2016-01-01');
+  }
 }
 
 function updateTimeline(days: DateInfo[], scroll: boolean = true) {
@@ -582,6 +594,8 @@ window.addEventListener('get-timeline', (e: any) => {
   const days = e.detail as DateInfo[];
   getSettings().then((settings) => {
     currentVersion = settings.version;
+    const dateInfo = getDateInfo(currentVersion);
+    setSelectElements(dateInfo.month, dateInfo.year);
     setSelectedDateText(currentVersion);
     const year = currentVersion.slice(0, 4);
     yearElement.value = year;

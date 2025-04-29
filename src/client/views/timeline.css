@@ -218,3 +218,22 @@ thead th {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
+
+#as3-footer {
+  width: 100vw;
+  margin: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#as3-footer > button {
+  padding: 0.4em;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#as3-footer > button:hover {
+  background-color: var(--hovered);
+  color: white;
+}

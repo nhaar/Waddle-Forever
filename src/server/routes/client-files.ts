@@ -394,7 +394,6 @@ function addParties(map: FileTimelineMap): void {
     if (changes.generalChanges !== undefined) {
       Object.entries(changes.generalChanges).forEach((pair) => {
         const [route, fileId] = pair;
-        console.log('adding general changes', route, fileId, getMediaFilePath(fileId));
         if (end === undefined) {
           map.addPerm(route, start, fileId);
         } else {
