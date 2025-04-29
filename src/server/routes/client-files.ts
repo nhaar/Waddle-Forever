@@ -89,7 +89,7 @@ class FileTimelineMap {
 function addFurniture(map: FileTimelineMap): void {
   const pushFurniture = (id: string, fileId: number, directory: string) => {
     const filePath = getMediaFilePath(fileId)
-    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, filePath);
+    map.addPerm(`play/v2/content/global/furniture/${directory}/${id}.swf`, BETA_RELEASE, filePath);
   }
 
   Object.entries(FURNITURE_ICONS).forEach((pair) => {

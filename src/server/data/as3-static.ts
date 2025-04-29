@@ -71,7 +71,7 @@ export const AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/games/smoothie/splashBGM.swf': 2766,
   'play/v2/games/spydrills/spydrills.swf': 2767,
   'play/v2/games/tumblers/tumblers.swf': 2768,
-  'play/v2/client/fonts/en/FontLibrary.swf': 2769,
+  'play/v2/client//fonts/en/FontLibrary.swf': 2769,
   'play/v2/client/music/assets/music_game.swf': 2770,
   'play/v2/client/music/assets/music_mysonglist.swf': 2771,
   'play/v2/client/music/assets/music_widget.swf': 2772,

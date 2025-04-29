@@ -5276,7 +5276,7 @@ export const FILES = new StaticDataTable<File, [
   [5103, 'thinice_igt24.swf', 1, FileCategory.Mod, null, null],
   [5104, 'thinice_igt30.swf', 1, FileCategory.Mod, null, null],
   [5105, 'media/play/v2/client/shell.swf', 1, FileCategory.StaticServer, 2, null],
-  [5106, 'media/play/v2/client/shell.swf', 1, FileCategory.StaticServer, 4, null],
+  [5106, 'media/play/v2/client/shell.swf', 1, FileCategory.StaticServer, 3, null],
   [5107, 'media/play/v2/content/global/clothing/icons/14.swf', 2, FileCategory.StaticServer, 2, null],
   [5108, 'media/play/v2/content/global/clothing/icons/16.swf', 2, FileCategory.StaticServer, 2, null],
   [5109, 'media/play/v2/content/global/clothing/icons/101.swf', 2, FileCategory.StaticServer, 2, null],
