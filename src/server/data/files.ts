@@ -21305,5 +21305,6 @@ export const FILES = new StaticDataTable<File, [
   [21132, 'media/play/v2/content/global/furniture/sprites/12127.swf', 1, FileCategory.StaticServer, 2, null],
   [21133, 'media/play/v2/content/global/furniture/sprites/12128.swf', 1, FileCategory.StaticServer, 2, null],
   [21134, 'media/play/v2/content/global/furniture/sprites/12129.swf', 1, FileCategory.StaticServer, 2, null],
-  [21135, 'media/play/v2/content/global/furniture/sprites/12156.swf', 1, FileCategory.StaticServer, 2, null]
+  [21135, 'media/play/v2/content/global/furniture/sprites/12156.swf', 1, FileCategory.StaticServer, 2, null],
+  [21136, 'media/play/v2/client/map_triggers.swf', 1, FileCategory.StaticServer, 3, null]
 ]);
