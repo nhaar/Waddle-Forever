@@ -13,8 +13,9 @@ import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
-import { startMedia } from "./media";
+import { downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '../common/utils';
+import { VERSION } from '../common/version';
 
 log.initialize();
 
@@ -72,6 +73,24 @@ app.on('ready', async () => {
     app.quit();
   }
   
+  if (settingsManager.settings.answered_packages !== VERSION) {
+    const result = await dialog.showMessageBox(mainWindow, {
+      buttons: ['Download Clothing (~600 MB)', 'No Thanks'],
+      title: 'Download package?',
+      message: 'Would you like to download the clothing package? It includes all non essential clothing items from Club Penguin. If you say no, you can always download it later.',
+      defaultId: 0,
+      cancelId: 1
+    });
+    if (result.response === 0) {
+      await downloadMediaFolder('clothing', () => {
+        settingsManager.updateSettings({ clothing: true });
+      }, () => {
+        mediaSuccess = false;
+      })
+    }
+    settingsManager.updateSettings({ answered_packages: VERSION });
+  }
+
   if (!mediaSuccess) {
     await dialog.showMessageBox(setupWindow, {
       buttons: ['Ok'],
