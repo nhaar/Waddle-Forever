@@ -110,7 +110,7 @@ export class SettingsManager {
   readVersion(object: any): Version {
     const value = object['version'];
     if (value === undefined || !isVersionValid(value)) {
-      return '2010-12-02';
+      return '2010-11-04';
     } else {
       return value;
     }
