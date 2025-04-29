@@ -682,7 +682,7 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'forts',
     fileId: 37,
-    date: '2005-09-21',
+    date: '2005-09-12',
     otherRooms: {
       town: 28,
       rink: 32,
