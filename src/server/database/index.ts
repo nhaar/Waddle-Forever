@@ -100,18 +100,18 @@ class JsonDatabase {
     if (!fs.existsSync(DATABASE_DIRECTORY)) {
       fs.mkdirSync(DATABASE_DIRECTORY)
     }
-    db.createSubDatabase(Databases.Penguins);
+    db.createSubDatabase(Databases.Penguins, 100);
     fs.writeFileSync(versionFile, VERSION);
   }
 
-  createSubDatabase(database: Databases) {
+  createSubDatabase(database: Databases, initialSeq: number = 0) {
     const subDir = this.getSubDatabaseDir(database);
     if (!fs.existsSync(subDir)) {
       fs.mkdirSync(subDir);
     }
     const seqDir = this.getSeqDir(database);
     if (!fs.existsSync(seqDir)) {
-      fs.writeFileSync(seqDir, '0');
+      fs.writeFileSync(seqDir, String(initialSeq));
     }
   }
 
@@ -162,7 +162,7 @@ class JsonDatabase {
     const seqDir = this.getSeqDir(database);
     const seq = Number(fs.readFileSync(seqDir, { encoding: 'utf-8' }));
     const id = seq + 1;
-    this.update(database, id, { id, ...value });
+    this.update(database, id, { ...value });
     writeFileSync(seqDir, String(id));
     return [value, id];
   }
@@ -229,7 +229,6 @@ export type IglooFurniture = Array<{
 
 type FurnitureId = number
 type FurnitureAmount = number
-type ItemId = number
 
 export type Stampbook = {
   color: number,
