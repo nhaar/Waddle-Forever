@@ -18,34 +18,34 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   // serving the websites
   server.dir('', (s) => {
     if (isEngine1(s.settings.version)) {
-      return 'websites/old';
+      return 'default/websites/old';
     } else if (isEngine2(s.settings.version)) {
-      return 'websites/classic';
+      return 'default/websites/classic';
     } else if (isEngine3(s.settings.version)) {
-      return 'websites/modern';
+      return 'default/websites/modern';
     }
   })
 
   server.get('/', (s) => {
     if (isEngine1(s.settings.version)) {
-      return 'websites/old-precpip.html';
+      return 'default/websites/old-precpip.html';
     } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
       if (s.settings.minified_website) {
-        return 'websites/minified-cpip.html';
+        return 'default/websites/minified-cpip.html';
       } else {
-        return 'websites/classic-cpip.html';
+        return 'default/websites/classic-cpip.html';
       }
     } else if (!isEngine3(s.settings.version)) {
-      return 'websites/classic-as3.html';
+      return 'default/websites/classic-as3.html';
     } else {
-      return 'websites/modern-as3.html';
+      return 'default/websites/modern-as3.html';
     }
   });
 
 
   // Engine 3 login page requires this URL
   server.get('/#/login', () => {
-    return `websites/modern-as3.html`;
+    return `default/websites/modern-as3.html`;
   })
 
   // Pre CPIP server rewrite client uses these POST endpoints
