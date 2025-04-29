@@ -85,10 +85,15 @@ class FileTimelineMap {
 }
 
 function addClothing(map: FileTimelineMap): void {
-  const pushClothing = (id: string, fileId: number, directory: string) => {
-    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileId));
-
+  const pushClothing = (id: number | string, fileId: number, directory: string) => {
+    const filePath = getMediaFilePath(fileId)
+    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, filePath);
   }
+
+  const preCpipClothing = (id: number | string, fileId: number, directory: string) => {
+    map.addPerm(`artwork/${directory}/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileId));
+  }
+
   Object.entries(ICONS).forEach((pair) => {
     const [id, fileId] = pair;
     pushClothing(id, fileId, 'icons');
@@ -102,11 +107,14 @@ function addClothing(map: FileTimelineMap): void {
   Object.entries(PHOTOS).forEach((pair) => {
     const [id, fileId] = pair;
     pushClothing(id, fileId, 'photos');
+    // in the old engine backgrounds were served with this ID phase
+    preCpipClothing(Number(id) - 900, fileId, 'photos');
   });
 
   Object.entries(SPRITES).forEach((pair) => {
     const [id, fileId] = pair;
     pushClothing(id, fileId, 'sprites');
+    preCpipClothing(id, fileId, 'items');
   });
 }
 
