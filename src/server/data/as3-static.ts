@@ -1,4 +1,4 @@
-const AS3_STATIC_FILES: Record<string, number> = {
+export const AS3_STATIC_FILES: Record<string, number> = {
   'en/web_service/game_configs/mascots.jsonp': 2697,
   'en/web_service/game_configs/rooms.jsonp': 2698,
   'play/en/web_service/game_configs.bin': 2699,

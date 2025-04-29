@@ -180,7 +180,6 @@ export const FILES = new StaticDataTable<File, [
   [102, 'ArtworkRoomsPlaza12.swf', 1, FileCategory.Archives, null, null],
   [103, 'ArtworkRoomsPlaza10.swf', 1, FileCategory.Archives, null, null],
   [104, 'ArtworkMapsIsland5.swf', 1, FileCategory.Archives, null, null],
-  [105, 'map_plaza_no_berg.swf', 1, FileCategory.Approximation, null, 104],
 
   
   [105, 'ArtworkRooms0401Dojo.swf', 1, FileCategory.Archives, null, null],
@@ -2676,7 +2675,7 @@ export const FILES = new StaticDataTable<File, [
 
   // Manual modification of worldachievements.xml from legacy media to have Monster Mash
   // Only costumes that were verified with video have been added here
-  [2567, 'halloween_worldachievements', 1, FileCategory.Approximation, null, null],
+  [2567, 'halloween_worldachievements.xml', 1, FileCategory.Approximation, null, null],
   [2568, 'WaterHuntBeach.swf', 1, FileCategory.Archives, null, null],
   [2569, 'WaterHuntBoiler.swf', 1, FileCategory.Archives, null, null],
   [2570, 'WaterHuntBook.swf', 1, FileCategory.Archives, null, null],
@@ -4218,7 +4217,6 @@ export const FILES = new StaticDataTable<File, [
   [4088, 'Music246.swf', 1, FileCategory.Archives, null, null],
   [4089, 'Music241.swf', 1, FileCategory.Archives, null, null],
   [4090, 'Music245.swf', 1, FileCategory.Archives, null, null],
-  [4091, 'Music244.swf', 1, FileCategory.Archives, null, null],
   [4092, 'Music247.swf', 1, FileCategory.Archives, null, null],
   [4093, 'Music210.swf', 1, FileCategory.Archives, null, null],
   [4094, 'MJ2008VIP.swf', 1, FileCategory.Archives, null, null],
@@ -4663,7 +4661,6 @@ export const FILES = new StaticDataTable<File, [
   [4524, 'RoomsParty10-WinterParty.swf', 1, FileCategory.Fix, null, null],
   [4525, 'RoomsParty11-WinterParty.swf', 1, FileCategory.Archives, null, null],
   [4526, 'ENClose_upsMaze_map-WinterParty.swf', 1, FileCategory.Archives, null, null],
-  [4527, 'Music117.swf', 1, FileCategory.Archives, null, null],
   [4528, 'Music280.swf', 1, FileCategory.Archives, null, null],
   [4529, 'RoomsBeach-HolidayParty2009Pre.swf', 1, FileCategory.Archives, null, null],
   [4530, 'RoomsShipquarters-HolidayParty2009Pre.swf', 1, FileCategory.Archives, null, null],
@@ -18552,5 +18549,6 @@ export const FILES = new StaticDataTable<File, [
   [18376, 'media/play/v2/content/global/clothing/sprites/34158.swf', 2, FileCategory.StaticServer, 2, null],
   [18377, 'media/play/v2/content/global/clothing/sprites/34174.swf', 2, FileCategory.StaticServer, 2, null],
   [18378, 'media/play/v2/content/global/clothing/sprites/34175.swf', 2, FileCategory.StaticServer, 2, null],
-  [18379, 'media/play/v2/content/global/clothing/sprites/34206.swf', 2, FileCategory.StaticServer, 2, null]
+  [18379, 'media/play/v2/content/global/clothing/sprites/34206.swf', 2, FileCategory.StaticServer, 2, null],
+  [18380, 'map_plaza_no_berg.swf', 1, FileCategory.Approximation, null, 104],
 ]);

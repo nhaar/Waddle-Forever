@@ -176,7 +176,9 @@ export const PARTIES: Party[] = [
       roomChanges: {
         // now has path to the plaza
         forts: 36
-      }
+      },
+      // TODO map abstraction in general changes?
+      generalChanges: { 'artwork/maps/island5.swf': 18380 }
     }
   },
   {
@@ -2314,7 +2316,8 @@ export const PARTIES: Party[] = [
       'forts': 2369,
       'town': 2370,
       'party': 2351,
-      plaza: 5082
+      plaza: 5082,
+      beach: 2352
     },
     music: {
       'shop': 201,
@@ -2794,7 +2797,8 @@ export const PARTIES: Party[] = [
       'dance': 2553,
       'lounge': 2554,
       'shop': 2555,
-      'dojohide': 2556
+      'dojohide': 2556,
+      coffee: 2552
     },
     globalChanges: {
       'content/map.swf': 2560,
@@ -2806,7 +2810,7 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'catalogues/party.swf': {
-        'en': 2558
+        'en': 2559
       },
       'close_ups/halloweenposter.swf': {
         'en': 2557

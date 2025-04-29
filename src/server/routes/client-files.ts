@@ -19,7 +19,7 @@ import { FALLBACKS } from "../data/fallbacks";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
 import { IGLOO_LISTS } from "../game/igloo-lists";
-import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, PRE_CPIP_REWRITE_DATE } from "../data/updates";
+import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, MODERN_AS3, PRE_CPIP_REWRITE_DATE } from "../data/updates";
 import { STADIUM_UPDATES } from "../data/stadium-updates";
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
@@ -30,6 +30,7 @@ import { MIGRATOR_PERIODS } from "../data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../data/games";
 import { ITEMS } from "../game/items";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../data/clothing";
+import { AS3_STATIC_FILES } from "../data/as3-static";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -226,6 +227,17 @@ function addNewspapers(map: RouteMap): void {
   })
 }
 
+function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
+  Object.entries(CPIP_STATIC_FILES).forEach((pair) => {
+    const [route, fileId] = pair;
+    map.addPerm(route, CPIP_UPDATE, fileId);
+  });
+  Object.entries(AS3_STATIC_FILES).forEach((pair) => {
+    const [route, fileId] = pair;
+    map.addPerm(route, MODERN_AS3, fileId);
+  });
+}
+
 function addStaticFiles(map: RouteMap): void {
   const addStatic = (stat: Record<string, number>) => {
     Object.entries(stat).forEach((pair) => {
@@ -236,7 +248,6 @@ function addStaticFiles(map: RouteMap): void {
   }
 
   addStatic(PRE_CPIP_STATIC_FILES);
-  addStatic(CPIP_STATIC_FILES);
   addStatic(CPIP_AS3_STATIC_FILES);
 }
 
@@ -365,6 +376,7 @@ function addParties(map: FileTimelineMap): void {
     if (changes.generalChanges !== undefined) {
       Object.entries(changes.generalChanges).forEach((pair) => {
         const [route, fileId] = pair;
+        console.log('adding general changes', route, fileId, getMediaFilePath(fileId));
         if (end === undefined) {
           map.addPerm(route, start, fileId);
         } else {
@@ -984,6 +996,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addPins,
     addCrumbs,
     addClothing,
+    addTimeSensitiveStaticFiles,
     addGames
   ];
 
