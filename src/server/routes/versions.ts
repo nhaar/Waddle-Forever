@@ -3,9 +3,17 @@ import { CPIP_UPDATE } from "../data/updates";
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;
 
+function getDateMatch(version: string) {
+  return version.match(/(\d{4})\-(\d{2}|##)-(\d{2}|##)/);
+}
+
+export function isVersionValid(version: string) : boolean {
+  return getDateMatch(version) !== null;
+}
+
 /** Returns undefined if an invalid version, otherwise an array [year, month, day] */
 export function processVersion(version: string): [number, number, number] {
-  const dateMatch = version.match(/(\d{4})\-(\d{2}|##)-(\d{2}|##)/);
+  const dateMatch = getDateMatch(version);
   if (dateMatch === null) {
     throw new Error(`Invalid version: ${version}`);
   }

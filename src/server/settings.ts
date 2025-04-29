@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Router, Request } from "express";
 import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
-import { Version } from './routes/versions';
+import { isVersionValid, Version } from './routes/versions';
 
 export interface Settings {
   fps30: boolean
@@ -97,8 +97,8 @@ export class SettingsManager {
 
   readVersion(object: any): Version {
     const value = object['version'];
-    if (value === undefined) {
-      return '2010-Nov-24';
+    if (value === undefined || !isVersionValid(value)) {
+      return '2010-12-02';
     } else {
       return value;
     }
