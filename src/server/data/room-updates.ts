@@ -104,6 +104,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   plaza: [
     {
+      // placeholder because the stage play is missing
+      fileId: 2289,
+      date: CPIP_UPDATE
+    },
+    {
       fileId: 2666,
       date: MODERN_AS3
     },
@@ -814,6 +819,7 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   'coffee': [1],
   'book': [1],
   'pizza': [20],
+  'lounge': [6],
   'dance': [
     2,
     // switching to crossing over, unknown the exact date, it's around this time though
@@ -841,7 +847,9 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   dojoext: [
     21,
     { date: CARD_JITSU_RELEASE, musicId: 0}
-  ]
+  ],
+  dojowater: [24],
+  boiler: [6]
 };
 
 type TemporaryRoomUpdate = Array<{

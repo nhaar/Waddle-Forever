@@ -52,7 +52,7 @@ export const AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/games/passcodedecrypt/passcodedecrypt.swf': 2747,
   'play/v2/games/pufflescape/config.xml': 2748,
   'play/v2/games/pufflescape/HostEmulator.swf': 2749,
-  'play/v2/games/pufflescape/Main.swf': 2750,
+  'play/v2/games/pufflescape/Main.swf': 21186,
   'play/v2/games/pufflescape/RollerscapeConfig.xml': 2751,
   'play/v2/games/pufflescape/RollerscapeCP_CP.swf': 2752,
   'play/v2/games/radarstrike/radarstrike.swf': 2753,
@@ -74,7 +74,7 @@ export const AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/client//fonts/en/FontLibrary.swf': 2769,
   'play/v2/client/music/assets/music_game.swf': 2770,
   'play/v2/client/music/assets/music_mysonglist.swf': 2771,
-  'play/v2/client/music/assets/music_widget.swf': 2772,
+  'play/v2/client//music/assets/music_widget.swf': 2772,
   'play/v2/client/puffle_tricks_hud/assets/tricks_hud_assets.swf': 2773,
   'play/v2/client/puffle_ui_widget/assets/radial_menu_assets.swf': 2774,
   'play/v2/client/puffle_ui_widget/assets/stats_bar_assets.swf': 2775,
@@ -964,5 +964,6 @@ export const AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/content/local/en/news/papers/20170322/content/overlays/featureMore.swf': 3659,
   'play/v2/content/local/en/news/papers/20170322/content/overlays/secretOverlay.swf': 3660,
   'play/web_service/environment_data.xml': 3736,
-  'play/v2/client/map_triggers.swf': 21136
+  'play/v2/client/map_triggers.swf': 21136,
+  'play/v2/games/pufflescape/lang/en/locale.xml': 2999
 }
