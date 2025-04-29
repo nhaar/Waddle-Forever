@@ -36,8 +36,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/content/global/rooms/eco.swf': 254,
   'play/v2/content/global/rooms/loader.swf': 257,
   'play/v2/content/global/rooms/underwater.swf': 269,
-  'play/v2/content/global/clothing/icons/1235.swf': 306,
-  'play/v2/content/global/clothing/icons/14.swf': 308,
   'play/v2/content/global/content/epf/epfinitiated.swf': 364,
   'play/v2/content/global/content/epf/epfmessage.swf': 365,
   'play/v2/content/global/igloo/assets/room_box_animation.swf': 367,

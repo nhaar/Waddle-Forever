@@ -29,6 +29,7 @@ import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineM
 import { MIGRATOR_PERIODS } from "../data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../data/games";
 import { ITEMS } from "../game/items";
+import { ICONS } from "../data/clothing";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -81,6 +82,13 @@ class FileTimelineMap {
 
     return routeMap;
   }
+}
+
+function addClothing(map: FileTimelineMap): void {
+  Object.entries(ICONS).forEach((pair) => {
+    const [id, fileId] = pair;
+    map.addPerm(`play/v2/content/global/clothing/icons/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileId));
+  })
 }
 
 function addMusicFiles(map: FileTimelineMap): void {
@@ -948,6 +956,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addStadiumUpdates,
     addPins,
     addCrumbs,
+    addClothing,
     addGames
   ];
 
