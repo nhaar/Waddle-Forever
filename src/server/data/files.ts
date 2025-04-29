@@ -1,4 +1,7 @@
+import path from "path";
 import { StaticDataTable } from "../../common/static-table";
+import { PACKAGES } from "./packages";
+import { STATIC_SERVERS } from "./static-servers";
 
 export enum FileCategory {
   Archives,
@@ -21,6 +24,30 @@ type File = {
   // if is recreated from another file in here
   baseFile: null | number;
 };
+
+/** Get the path to a file */
+export function getMediaFilePath(fileId: number): string {
+  const file = FILES.getStrict(fileId);
+  const packageInfo = PACKAGES.getStrict(file.packageId);
+  const categoryName = {
+    [FileCategory.Archives]: 'archives',
+    [FileCategory.Fix]: 'fix',
+    [FileCategory.Approximation]: 'approximation',
+    [FileCategory.Recreation]: 'recreation',
+    [FileCategory.Mod]: 'mod',
+    [FileCategory.StaticServer]: 'ss',
+    [FileCategory.Tool]: 'tool',
+    [FileCategory.Unknown]: 'unknown'
+  }[file.category];
+
+  let filePath = file.path;
+  if (file.category === FileCategory.StaticServer && file.staticId !== null) {
+    const server = STATIC_SERVERS.getStrict(file.staticId);
+    filePath = path.join(server.name, filePath);
+  }
+
+  return path.join(packageInfo.name, categoryName, filePath);
+}
 
 export const FILES = new StaticDataTable<File, [
   'id',
@@ -5224,19 +5251,35 @@ export const FILES = new StaticDataTable<File, [
   [5091, 'RoomsDojohide-1.swf', 1, FileCategory.Archives, null, null],
   [5092, 'RoomsDojohide_2.swf', 1, FileCategory.Archives, null, null],
   [5093, 'RoomsDojohide_3.swf', 1, FileCategory.Archives, null, null],
-  [5094, '', 1, FileCategory.Archives, null, null],
-  [5095, '', 1, FileCategory.Archives, null, null],
-  [5096, '', 1, FileCategory.Archives, null, null],
-  [5097, '', 1, FileCategory.Archives, null, null],
-  [5098, '', 1, FileCategory.Archives, null, null],
-  [5099, '', 1, FileCategory.Archives, null, null],
-  [5100, '', 1, FileCategory.Archives, null, null],
-  [5101, '', 1, FileCategory.Archives, null, null],
-  [5102, '', 1, FileCategory.Archives, null, null],
-  [5103, '', 1, FileCategory.Archives, null, null],
-  [5104, '', 1, FileCategory.Archives, null, null],
-  [5105, '', 1, FileCategory.Archives, null, null],
-  [5106, '', 1, FileCategory.Archives, null, null],
+
+  // changed the header framerate to 30
+  [5094, 'boots30.swf', 1, FileCategory.Tool, null, null],
+
+  // file from legacy-media, then modified to work with http://localhost
+  [5095, 'boots.swf', 1, FileCategory.Tool, null, 5094],
+  
+  // from legacy media, but with domain check removed. Unknown where legacy media got it from
+  [5096, 'my_puffle.swf', 1, FileCategory.Unknown, null, null],
+
+  // 2013 version, not much secret I just dont remember if I had to remove a domain check. Its on archives
+  [5097, 'my_puffle_2013.swf', 1, FileCategory.Unknown, null, null],
+  [5098, 'GamesDancingDance.swf', 1, FileCategory.Fix, null, null],
+
+  // mod by supermanover
+  [5099, 'dance_contest_swapped.swf', 1, FileCategory.Mod, null, null],
+
+  // remove security check
+  [5100, 'GamesJetPackAdventureMain.swf', 1, FileCategory.Fix, null, null],
+
+  // mod by randomno
+  [5101, 'jpa_level_selector.swf', 1, FileCategory.Mod, null, null],
+  [5102, 'GamesThiniceThinIce.swf', 1, FileCategory.Fix, null, null],
+
+  // IGT mods by sharlot and nhaar
+  [5103, 'thinice_igt24.swf', 1, FileCategory.Mod, null, null],
+  [5104, 'thinice_igt30.swf', 1, FileCategory.Mod, null, null],
+  [5105, 'media/play/v2/client/shell.swf', 1, FileCategory.StaticServer, 2, null],
+  [5106, 'media/play/v2/client/shell.swf', 1, FileCategory.StaticServer, 4, null],
   [5107, '', 1, FileCategory.Archives, null, null],
   [5108, '', 1, FileCategory.Archives, null, null],
   [5109, '', 1, FileCategory.Archives, null, null],

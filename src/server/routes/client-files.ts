@@ -4,7 +4,7 @@ import hash from 'object-hash';
 
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from "./versions";
-import { FileCategory, FILES } from "../data/files";
+import { FileCategory, FILES, getMediaFilePath } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
@@ -46,44 +46,7 @@ type SpecialRouteUpdate = {
   files: Record<string, string>;
 }
 
-/** For a route that updates dynamically */
-type DynamicRouteFileInformation = {
-  type: 'dynamic';
-  versions: Array<DynamicRouteUpdate>;
-};
-
-/** For a route that is special */
-type SpecialRouteFileInformation = {
-  type: 'special';
-  versions: Array<SpecialRouteUpdate>;
-};
-
-type RouteFileInformation = string | DynamicRouteFileInformation | SpecialRouteFileInformation;
-
-
-/** Get the path to a file */
-function getMediaFilePath(fileId: number): string {
-  const file = FILES.getStrict(fileId);
-  const packageInfo = PACKAGES.getStrict(file.packageId);
-  const categoryName = {
-    [FileCategory.Archives]: 'archives',
-    [FileCategory.Fix]: 'fix',
-    [FileCategory.Approximation]: 'approximation',
-    [FileCategory.Recreation]: 'recreation',
-    [FileCategory.Mod]: 'mod',
-    [FileCategory.StaticServer]: 'ss',
-    [FileCategory.Tool]: 'tool',
-    [FileCategory.Unknown]: 'unknown'
-  }[file.category];
-
-  let filePath = file.path;
-  if (file.category === FileCategory.StaticServer && file.staticId !== null) {
-    const server = STATIC_SERVERS.getStrict(file.staticId);
-    filePath = path.join(server.name, filePath);
-  }
-
-  return path.join(packageInfo.name, categoryName, filePath);
-}
+type RouteFileInformation = string | Array<DynamicRouteUpdate>;
 
 class FileTimelineMap {
   private _map: TimelineMap<string, string>;
@@ -113,10 +76,7 @@ class FileTimelineMap {
     const idMap = this._map.getIdentifierMap();
 
     idMap.forEach((versions, route) => {
-      addToRouteMap(routeMap, route, {
-        type: 'dynamic',
-        versions: versions.map((v) => ({ date: v.date, file: v.info }))
-      })
+      addToRouteMap(routeMap, route, versions.map((v) => ({ date: v.date, file: v.info })))
     });
 
     return routeMap;

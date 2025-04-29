@@ -34,6 +34,16 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
       date: PRE_BOILER_ROOM_PAPERS[0]
     }
   ],
+  'play/v2/client/shell.swf': [
+    {
+      fileId: 5105,
+      date: CPIP_UPDATE
+    },
+    {
+      fileId: 5106,
+      date: MODERN_AS3
+    }
+  ],
   'play/v2/client/engine.swf': [
     {
       // engine that has EPF and stuff

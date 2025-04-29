@@ -30,7 +30,11 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     if (isEngine1(s.settings.version)) {
       return 'websites/old-precpip.html';
     } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
-      return 'websites/classic-cpip.html';
+      if (s.settings.minified_website) {
+        return 'websites/minified-cpip.html';
+      } else {
+        return 'websites/classic-cpip.html';
+      }
     } else if (!isEngine3(s.settings.version)) {
       return 'websites/classic-as3.html';
     } else {
@@ -43,44 +47,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/#/login', () => {
     return `websites/modern-as3.html`;
   })
-
-  // setting dependent media
-  server.addSpecials(
-    ['boots.swf', (s) => {
-      return s.settings.fps30 ? '30' : '24'
-    }],
-    ['play/v2/games/thinice/ThinIce.swf',  (s) => {
-      let file = s.settings.thin_ice_igt ? 'igt' : 'vanilla';
-      if (s.settings.thin_ice_igt) {
-        file += s.settings.fps30 ? '30' : '24'
-      }
-      return file;
-    }],
-    ['play/v2/games/dancing/dance.swf', (s) => {
-      return s.settings.swap_dance_arrow ? 'swapped' : 'vanilla';
-    }],
-    ['play/v2/games/book1/bootstrap.swf', (s) => {
-      return s.settings.modern_my_puffle ? '2013' : 'original';
-    }],
-    ['play/v2/games/jetpack/JetpackAdventures.swf',  (s) => {
-      return s.settings.jpa_level_selector ? 'level_selector' : 'vanilla';
-    }],
-    ['play/v2/client/shell.swf', (s) => {
-      if (isEngine3(s.settings.version)) {
-        return 'engine3';
-      }
-      return s.settings.remove_idle ? 'no_idle' : 'vanilla';
-    }],
-    ['index.html', (s) => {
-      if (isEngine1(s.settings.version)) {
-        return 'engine1';
-      } else if (isEngine3(s.settings.version)) {
-        return 'engine3';
-      } else {
-        return s.settings.minified_website ? 'minified-engine2' : 'engine2';
-      }
-    }]
-  );
 
   // Pre CPIP server rewrite client uses these POST endpoints
   server.router.post('/setup.txt', (_, req) => {

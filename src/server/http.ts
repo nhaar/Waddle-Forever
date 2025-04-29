@@ -6,6 +6,7 @@ import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 import { getFileServer } from './routes/client-files';
 import { baseFindInVersion } from './data/changes';
+import { specialServer } from './data/specials';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -192,28 +193,30 @@ export class HttpServer {
   
     this.router.get('/*', (req: Request, res, next) => {
       const route = req.params[0];
-      const info = fileServer.get(route);
-      if (info === undefined) {
-        next();
-      } else {
-        let filePath = '';
-        if (typeof info === 'string') {
-          filePath = info;
+      const special = specialServer.get(route);
+      const specialCheck = special?.check(this.settingsManager);
+      if (special === undefined || specialCheck === undefined) {
+        const info = fileServer.get(route);
+        if (info === undefined) {
+          next();
         } else {
-          if (info.type === 'dynamic') {
-            const foundFilePath = baseFindInVersion(this.settingsManager.settings.version, info.versions, 'file');
-            if (foundFilePath === undefined) {
-              console.log(info.versions);
-              throw new Error('Could not find file, log output is above')
-            }
-            filePath = foundFilePath;
+          let filePath = '';
+          if (typeof info === 'string') {
+            filePath = info;
           } else {
-            throw new Error('Not implemented');
+              const foundFilePath = baseFindInVersion(this.settingsManager.settings.version, info, 'file');
+              if (foundFilePath === undefined) {
+                console.log(info);
+                throw new Error('Could not find file, log output is above')
+              }
+              filePath = foundFilePath;
           }
+  
+          console.log(`Requested: ${route}, sending: ${filePath}`);
+          res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
         }
-
-        console.log(`Requested: ${route}, sending: ${filePath}`);
-        res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
+      } else {
+        res.sendFile(path.join(MEDIA_DIRECTORY, special.files[specialCheck]));
       }
     });
   }
