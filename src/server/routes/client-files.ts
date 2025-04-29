@@ -99,7 +99,7 @@ function addFurniture(map: FileTimelineMap): void {
 
   Object.entries(FURNITURE_SPRITES).forEach((pair) => {
     const [id, fileId] = pair;
-    pushFurniture(id, fileId, 'icons');
+    pushFurniture(id, fileId, 'sprites');
   });
 }
 
