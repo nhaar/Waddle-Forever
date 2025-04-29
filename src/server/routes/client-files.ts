@@ -31,6 +31,7 @@ import { PRE_CPIP_GAME_UPDATES } from "../data/games";
 import { ITEMS } from "../game/items";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../data/clothing";
 import { AS3_STATIC_FILES } from "../data/as3-static";
+import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../data/furniture";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -83,6 +84,23 @@ class FileTimelineMap {
 
     return routeMap;
   }
+}
+
+function addFurniture(map: FileTimelineMap): void {
+  const pushFurniture = (id: string, fileId: number, directory: string) => {
+    const filePath = getMediaFilePath(fileId)
+    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, filePath);
+  }
+
+  Object.entries(FURNITURE_ICONS).forEach((pair) => {
+    const [id, fileId] = pair;
+    pushFurniture(id, fileId, 'icons');
+  });
+
+  Object.entries(FURNITURE_SPRITES).forEach((pair) => {
+    const [id, fileId] = pair;
+    pushFurniture(id, fileId, 'icons');
+  });
 }
 
 function addClothing(map: FileTimelineMap): void {
@@ -997,6 +1015,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addCrumbs,
     addClothing,
     addTimeSensitiveStaticFiles,
+    addFurniture,
     addGames
   ];
 
