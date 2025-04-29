@@ -185,7 +185,7 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
   ],
   'play/v2/content/global/binoculars/empty.swf': [
     {
-      startDate: '2010-10-14', // estimate from newspapers
+      startDate: '2010-10-21',
       endDate: HALLOWEEN_2010_START,
       fileId: 2634,
       comment: 'A storm is approaching and visible from the Cove'
