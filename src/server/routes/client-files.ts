@@ -29,7 +29,7 @@ import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineM
 import { MIGRATOR_PERIODS } from "../data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../data/games";
 import { ITEMS } from "../game/items";
-import { ICONS } from "../data/clothing";
+import { ICONS, PAPER } from "../data/clothing";
 
 /** Information for the update of a route that is dynamic */
 type DynamicRouteUpdate = {
@@ -85,10 +85,19 @@ class FileTimelineMap {
 }
 
 function addClothing(map: FileTimelineMap): void {
+  const pushClothing = (id: string, fileId: number, directory: string) => {
+    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileId));
+
+  }
   Object.entries(ICONS).forEach((pair) => {
     const [id, fileId] = pair;
-    map.addPerm(`play/v2/content/global/clothing/icons/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileId));
-  })
+    pushClothing(id, fileId, 'icons');
+  });
+
+  Object.entries(PAPER).forEach((pair) => {
+    const [id, fileId] = pair;
+    pushClothing(id, fileId, 'paper');
+  });
 }
 
 function addMusicFiles(map: FileTimelineMap): void {
