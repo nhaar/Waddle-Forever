@@ -58,7 +58,20 @@ app.on('ready', async () => {
   });
   setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
 
-  const mediaSuccess = await startMedia();
+  let mediaSuccess;
+  try {
+    // this will throw an error if installing for all users and not running as
+    // an administrator
+    mediaSuccess = await startMedia();
+  } catch (error) {
+    await dialog.showMessageBox(setupWindow, {
+      buttons: ['Ok'],
+      title: 'Permission Error',
+      message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
+    });
+    app.quit();
+  }
+  
   if (!mediaSuccess) {
     await dialog.showMessageBox(setupWindow, {
       buttons: ['Ok'],
