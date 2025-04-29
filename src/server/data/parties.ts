@@ -2858,6 +2858,75 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'The Great Storm of 2010',
+    startDate: '2010-11-04',
+    endDate: '2010-11-16',
+    startComment: 'The storm remains in the island, making it cloudy',
+    endComment: 'The storm ends',
+    roomChanges: {
+      beach: 21137,
+      beacon: 21138,
+      cove: 21139,
+      dock: 21140,
+      dojoext: 21141,
+      dojofire: 21142,
+      forest: 21143,
+      berg: 21144,
+      shack: 21145,
+      dojohide: 21146,
+      plaza: 21147,
+      mtn: 21148,
+      village: 21149,
+      forts: 21150,
+      rink: 21151,
+      town: 21152,
+      pet: 21183,
+      pizza: 21184
+    },
+    globalChanges: {
+      'igloo/assets/igloo_background.swf': 21178,
+      'binoculars/empty.swf': 21179,
+      'telescope/empty.swf': 21180
+    },
+    updates: [
+      {
+        comment: 'Rain starts around the island',
+        date: '2010-11-11',
+        roomChanges: {
+          beach: 21153,
+          beacon: 21154,
+          coffee: 21155,
+          cove: 21156,
+          dock: 21157,
+          dojo: 21158,
+          agentlobbysolo: 21159,
+          agentlobbymulti: 21160,
+          dojofire: 21161,
+          forest: 21162,
+          shop: 21163,
+          dojoext: 21164,
+          berg: 21165,
+          light: 21166,
+          dojohide: 21167,
+          shack: 21168,
+          pet: 21169,
+          pizza: 21170,
+          plaza: 21171,
+          mtn: 21172,
+          lodge: 21173,
+          village: 21174,
+          forts: 21175,
+          rink: 21176,
+          town: 21177
+        },
+        globalChanges: {
+          'binoculars/empty.swf': 21181,
+          'telescope/empty.swf': 21182
+        }
+      }
+    ]
+  },
+  {
     name: 'Sensei\'s Water Scavenger Hunt',
     startDate: '2010-11-16',
     endDate: WATER_HUNT_END,

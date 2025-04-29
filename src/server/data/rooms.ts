@@ -28,6 +28,8 @@ export type RoomName = 'town' |
   'forts' |
   'agent' |
   'agentcom' |
+  'agentlobbysolo' |
+  'agentlobbymulti' |
   'sport' |
   'mtn' |
   'shack' |
@@ -175,6 +177,16 @@ export const ROOMS: Record<RoomName, Room> = {
   'agentcom': {
     id: 323,
     name: 'EPF Command Room',
+    preCpipName: null
+  },
+  'agentlobbymulti': {
+    id: 212,
+    name: '',
+    preCpipName: null
+  },
+  'agentlobbysolo': {
+    id: 211,
+    name: '',
     preCpipName: null
   },
   'forts': {
