@@ -137,4 +137,10 @@ function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): str
   return newCrumbs;
 }
 
-generateCrumbFiles(loadBaseCrumbs, getGlobalCrumbsOutput, applyChanges, createCrumbs, GLOBAL_CRUMBS_PATH);
+export async function generateGlobalCrumbs() {
+  await generateCrumbFiles(loadBaseCrumbs, getGlobalCrumbsOutput, applyChanges, createCrumbs, GLOBAL_CRUMBS_PATH);
+}
+
+if (require.main === module) {
+  generateGlobalCrumbs();
+}

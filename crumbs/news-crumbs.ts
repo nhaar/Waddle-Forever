@@ -184,8 +184,15 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
   }
 }
 
-(async () => {
-  console.log('WARNING: This script doesn\'t delete previous news_crumbs files, reset your news_crumbs folder if needed');
+export async function generateNewsCrumbsFiles(deletePrevious: boolean = false) {
+  console.log('tamo generando tamo generando');
+  if (!deletePrevious) {
+    console.log('WARNING: This script doesn\'t delete previous news_crumbs files, reset your news_crumbs folder if needed');
+  } else {
+    previousFiles.forEach((file) => {
+      fs.unlinkSync(path.join(autoDir, file));
+    })
+  }
   let i = 0;
   for (const newspaper of AS2_NEWSPAPERS) {
     await processNewspaper({ ...newspaper, type: 'as2' }, i);
@@ -197,10 +204,16 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
     await processNewspaper({ ...newspaper, type: 'as3' }, 0);
   }
 
-  // deleting files that shouldn't be here
-  previousFiles.forEach((file) => {
-    if (!properFiles.has(file)) {
-      fs.unlinkSync(path.join(autoDir, file));
-    }
-  });
-})();
+  if (!deletePrevious) {
+    // deleting files that shouldn't be here
+    previousFiles.forEach((file) => {
+      if (!properFiles.has(file)) {
+        fs.unlinkSync(path.join(autoDir, file));
+      }
+    });
+  }
+}
+
+if (require.main === module) {
+  generateNewsCrumbsFiles();
+}

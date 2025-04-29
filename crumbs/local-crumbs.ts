@@ -45,4 +45,10 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
   await replacePcode(BASE_LOCAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
 }
 
-generateCrumbFiles(loadBaseCrumbs, getLocalCrumbsOutput, applyChanges, createCrumbs, LOCAL_CRUMBS_PATH);
+export async function generateLocalCrumbs() {
+  await generateCrumbFiles(loadBaseCrumbs, getLocalCrumbsOutput, applyChanges, createCrumbs, LOCAL_CRUMBS_PATH);
+}
+
+if (require.main === module) {
+  generateLocalCrumbs();
+}

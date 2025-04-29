@@ -1,8 +1,8 @@
-const fs = require('fs')
-const path = require('path')
-const archiver = require('archiver')
+import fs from 'fs';
+import path from 'path';
+import archiver from 'archiver';
 
-async function zip(inputPath, outputPath) {
+async function zip(inputPath: string, outputPath: string) {
   const output = fs.createWriteStream(outputPath);
   const archive = archiver('zip', { zlib: { level: 9 } });
 
@@ -10,7 +10,7 @@ async function zip(inputPath, outputPath) {
       console.log(`Zipped ${inputPath}, total size: ${archive.pointer()} bytes`);
   });
 
-  archive.on('error', (err) => {
+  archive.on('error', (err: unknown) => {
       throw err;
   });
 
@@ -33,7 +33,7 @@ function createOut() {
   }
 }
 
-module.exports = {
+export {
   zip,
   OUT_DIR,
   createOut

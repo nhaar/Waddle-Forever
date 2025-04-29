@@ -20,7 +20,7 @@
     "build-server-linux-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64&&node scripts/rename-linux.js",
     "build-server-win-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64.exe -t node20-win-arm64",
     "build-server-linux-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
-    "build-media": "node scripts/zip-media",
+    "build-media": "cross-env PRODUCTION_BUILD=PRODUCTION ts-node scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
     "news-crumbs": "ts-node crumbs/news-crumbs.ts",
@@ -86,6 +86,7 @@
     "outputPath": "pkgdist"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.3",
     "@types/discord-rpc": "^4.0.3",
     "@types/electron-prompt": "^1.6.1",
     "@types/express": "^5.0.0",
