@@ -171,6 +171,13 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
       date: CPIP_UPDATE,
       fileId: 3735
     }
+  ],
+  'play/v2/content/local/en/catalogues/costume.swf': [
+    {
+      // placeholder CPIP stage
+      date: CPIP_UPDATE,
+      fileId: 4888
+    }
   ]
 };
 

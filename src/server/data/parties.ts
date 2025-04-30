@@ -319,6 +319,14 @@ export const PARTIES: Party[] = [
       dance: 3813,
       town: 3816
     },
+    music: {
+      // we dont know the exact origins of this but,
+      // we know it played, so I assume in every party
+      plaza: 55555,
+      forts: 55555,
+      dance: 55555,
+      town: 55555
+    },
     roomFrames: {
       plaza: 2,
       forts: 2,
@@ -1310,7 +1318,8 @@ export const PARTIES: Party[] = [
     },
     music: {
       dance: 258,
-      party: 257
+      party: 257,
+      lounge: 0
     }
   },
   {
@@ -1673,7 +1682,7 @@ export const PARTIES: Party[] = [
       forts: 267,
       rink: 267,
       town: 267,
-      party1: 267
+      party: 267
     },
     construction: {
       date: '2009-06-05',
@@ -1725,7 +1734,8 @@ export const PARTIES: Party[] = [
       pizza: 210,
       plaza: 271,
       town: 271,
-      party3: 272
+      party3: 272,
+      coffee: 0
     },
     construction: {
       date: '2009-07-10',

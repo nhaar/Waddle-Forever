@@ -104,8 +104,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   plaza: [
     {
-      // placeholder because the stage play is missing
-      fileId: 2289,
+      fileId: 4887,
       date: CPIP_UPDATE
     },
     {
@@ -327,6 +326,12 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileId: 4914,
       comment: 'A stage is now built in the Lighthouse'
     },
+  ],
+  stage: [
+    {
+      fileId: 2293,
+      date: CPIP_UPDATE
+    }
   ],
   lodge: [
     {
@@ -823,7 +828,11 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   'coffee': [1],
   'book': [1],
   'pizza': [20],
-  'lounge': [6],
+  'lounge': [0, {
+    // no idea on the date
+    date: CPIP_UPDATE,
+    musicId: 6
+  }],
   'dance': [
     2,
     // switching to crossing over, unknown the exact date, it's around this time though
