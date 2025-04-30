@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<newspaper>
+	
+	<page id="front" dividersURL="content/front/dividers.swf">
+		
+		<container id="front" width="597">
+			
+			<container id="topRow" width="597">
+				
+				<content id="frontHeader" url="content/front/header.swf"/>
+				
+			</container>
+			
+			<container id="leftColumn" width="438">
+				
+				<content id="featureStory" url="content/front/featureStory.swf"/>
+				
+				<content id="supportStory" url="content/front/supportStory.swf"/>
+				
+				<content id="upcomingEvents" url="content/front/upcomingEvents.swf"/>
+				
+			</container>
+			
+			<container id="rightColumn" width="159">
+				
+				<content id="newsFlash" url="content/front/newsFlash.swf"/>
+				
+				<content id="frontNavigation" url="content/front/navigation.swf"/>
+				
+				<content id="askAuntArctic" url="content/front/askAuntArctic.swf"/>
+				
+			</container>
+			
+		</container>
+		
+	</page>
+	
+	<page id="back" dividersURL="content/back/dividers.swf">
+		
+		<container id="back" width="597">
+			
+			<container id="topRow" width="597">
+				
+				<content id="backHeader" url="content/back/header.swf" />
+				
+			</container>
+			
+			<container id="leftColumn" width="438">
+				
+				<content id="askAuntArcticContinued" url="content/back/askAuntArctic.swf"/>
+				
+				<content id="secrets" url="content/back/secrets.swf"/>
+				
+				<content id="submitYourContent" url="content/back/submitYourContent.swf"/>
+				
+			</container>
+			
+			<container id="rightColumn" width="159">
+				
+				<content id="backNavigation" url="content/back/navigation.swf"/>
+				
+				<content id="jokesAndRiddles" url="content/back/jokesAndRiddles.swf"/>
+				
+			</container>
+			
+		</container>
+		
+	</page>
+	
+	<overlays>
+		
+		<content id="riddlesAnswers" url="content/overlays/riddlesAnswers.swf" />
+		<content id="submitYourContentForm" url="../forms/news.swf" />
+		<content id="secretOverlay" url="content/overlays/secretOverlay.swf" />	
+		<content id="featureMore" url="content/overlays/featureMore.swf" />	
+		<content id="supportMore" url="content/overlays/supportMore.swf" />
+		<content id="extraJokes" url="content/overlays/extraJokes.swf" />
+		<content id="secret" url="content/overlays/secret.swf" />
+		<content id="iglooWinners" url="content/overlays/iglooWinners.swf" />
+						
+	</overlays>
+	
+</newspaper>

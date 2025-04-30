@@ -71,6 +71,7 @@ settings.json
 # crumbs output
 /crumbs/out
 /crumbs/news
+/media/default/auto/
 
 # mods folder
 /mods
@@ -80,3 +81,6 @@ ffdec-path.ts
 
 # production logs
 /logs
+
+# file management
+/labels/warnings.txt

@@ -1,50 +1,45 @@
-import { XtHandler } from '..';
-import { Room } from '../../game/rooms';
+import serverList, { getServerPopulation } from "../../servers";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
-handler.xt('j#js', (client) => {
-  // penguins don't keep the puffle from previous session
-  client.unequipPuffle();
-  /*
-  TODO: find what second number is
-  Figure out how moderators will be handled
-  Figure out what moderator_status is used for
-  Add last number (something to do with stamp book)
-  */
-  const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
-  // initializing penguin data
-  client.sendXt('js', client.penguin.is_agent ? 1 : 0, 0, moderatorStatus, 0);
-
-  client.sendPenguinInfo();
-
-  // joining spawn room // TODO more spawn rooms in the future?
-  client.joinRoom(Room.Town);
-
-  // receiving inventory
-  // TODO proper inventory
-  client.sendStamps();
-
-  client.sendPuffles();
-
-  client.checkAgeStamps();
+handler.xml('verChk', (client) => {
+  // version checking
+  // this is irrelevant for us, we just always send an OK response
+  client.send('<msg t="sys"><body action="apiOK" r="0"></body></msg>');
 });
 
-handler.xt('b#gb', (client) => {
-  client.sendXt('gb', '');
+handler.xml('rndK', (client) => {
+  // random key generation
+  // this is used for authentication, so it is not needed for us, we just send any key
+  client.send('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>');
 });
 
-handler.xt('n#gn', (client) => {
-  client.sendXt('gn', '');
-});
-
-handler.xt('u#glr', (client) => {
-  client.sendXt('glr', '');
-});
-
-
-handler.xt('u#h', (client) => {
-  client.sendXt('h', '');
-});
+handler.xml('login', (client, data) => {
+  const nicknameMatch = data.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
+  if (nicknameMatch === null) {
+    console.log('No nickname provided during Login, terminating.');
+    client.socket.end('');
+  } else {
+    const name = nicknameMatch[1];
+    if (client.isEngine3 && client.serverType === 'World') {
+      // in Engine 3 client, the world actually receives the ID instead of the name
+      client.setPenguinFromId(Number(name));
+    } else {
+      client.setPenguinFromName(name);
+    }
+    console.log(`${client.penguin.name} is logging in`);
+    /*
+    TODO
+    buddies
+    how will server size be handled after NPCs?
+    */
+    // information regarding how many populations are in each server
+    client.sendXt('l', client.penguin.id, client.penguin.id, '', serverList.map((server) => {
+      const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
+      return `${server.id},${population}`;
+    }).join('|'));
+  }
+})
 
 export default handler;

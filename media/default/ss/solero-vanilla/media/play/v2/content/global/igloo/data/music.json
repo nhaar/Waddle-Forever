@@ -1,0 +1,222 @@
+{
+	"text" :
+	{
+		"goToButtonText" :  { 
+			"fontSize" : 9,
+			"translation": {
+				"en": "Go to DJ3K!",
+				"es": "¡Ir a DJ3K!",
+				"fr": "Va à DJ3K !",
+				"pt": "Ir pro DJ3K!"			
+			}
+		},
+		"dialogDescription" : { 
+			"fontSize" : 12,
+			"translation": {
+				"en": "Record and save your own music mixes in DJ3K.",
+				"es": "Graba y guarda tus temas en DJ3K.",
+				"fr": "Enregistre tes propres mix dans DJ3K.",
+				"pt": "Grave e salve sua própria música no DJ3K."		
+			}
+		},
+		"dialogButtonText" : { 
+			"fontSize" : 9,
+			"translation": {
+				"en": "Go There!",
+				"es": "¡Ir allí!",
+				"fr": "Vas-y !",
+				"pt": "Ir pra lá!"		
+			}
+		},
+		"savedMixesText" : { 
+			"fontSize" : 18,
+			"translation": {
+				"en": "My Saved Mixes",
+				"es": "Mis temas mezclados",
+				"fr": "Mes Mix",
+				"pt": "Minhas Músicas"		
+			}
+		},
+		"musicListText" : { 
+			"fontSize" : 18,
+			"translation": {
+				"en": "Music List",
+				"es": "Lista musical",
+				"fr": "Liste de Musiques",
+				"pt": "Lista de Músicas"		
+			}
+		}
+	},
+	"songs" : 	
+	[
+
+			{
+			"id" : 3,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "I've Been Delayed",
+				"es": "Llego tarde",
+				"fr": "En Retard",
+				"pt": "Chego Logo"
+			}
+		},		
+
+			{
+			"id" : 101,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Organic Journey",
+				"es": "Órgano orgánico",
+				"fr": "Compo-country",
+				"pt": "Orgão Orgânico"
+			}
+		},		
+
+			{
+			"id" : 351,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Herbert Style",
+				"es": "Herbert Style",
+				"fr": "Herbert Style",
+				"pt": "Herbert Style"
+			}
+		},		
+
+			{
+			"id" : 242,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Mix Maestro",
+				"es": "Mix Maestro",
+				"fr": "Mélodies du Maestro",
+				"pt": "Escala do Maestro"
+			}
+		},		
+
+			{
+			"id" : 596,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Bulls Eye",
+				"es": "Ojo de buey",
+				"fr": "En Plein Dans le Mille",
+				"pt": "Na Mira"
+			}
+		},		
+
+			{
+			"id" : 342,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Operation Blackout",
+				"es": "Operación Apagón",
+				"fr": "Opération Black-out",
+				"pt": "Operação Apagão"
+			}
+		},		
+
+			{
+			"id" : 222,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Carnival Fun",
+				"es": "Carnavaleando",
+				"fr": "Forains en Fête",
+				"pt": "Festa Festiva"
+			}
+		},		
+
+			{
+			"id" : 8,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "I'm A Mod",
+				"es": "¡Soy un moderador!",
+				"fr": "Je Suis un Modo !",
+				"pt": "Eu Sou o Mod!"
+			}
+		},		
+
+			{
+			"id" : 506,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Party In My Iggy",
+				"es": "Party In My Iggy",
+				"fr": "Party In My Iggy",
+				"pt": "Party In My Iggy"
+			}
+		},		
+
+			{
+			"id" : 28,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "Epic Island",
+				"es": "Isla épica",
+				"fr": "L'Île Épique",
+				"pt": "Ilha Épica"
+			}
+		},		
+
+			{
+			"id" : 58,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "CP Music Mashup 2016",
+				"es": "Mezcla musical de CP 2016",
+				"fr": "Mashup CP 2016",
+				"pt": "Coletânea de Músicas do CP 2016"
+			}
+		},		
+
+			{
+			"id" : 57,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "CP Music Mashup 2015",
+				"es": "Mezcla musical de CP 2015",
+				"fr": "Mashup CP 2015",
+				"pt": "Coletânea de Músicas do CP 2015"
+			}
+		},		
+
+			{
+			"id" : 56,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "CP Music Mashup 2014",
+				"es": "Mezcla musical de CP 2014",
+				"fr": "Mashup CP 2014",
+				"pt": "Coletânea de Músicas do CP 2014"
+			}
+		},		
+
+			{
+			"id" : 55,
+			"enabled": true,
+			"fontSize" : 12,
+			"translation": {
+				"en": "CP Music Mashup 2013",
+				"es": "Mezcla musical de CP 2013",
+				"fr": "Mashup CP 2013",
+				"pt": "Coletânea de Músicas do CP 2013"
+			}
+		}			
+
+	]
+}

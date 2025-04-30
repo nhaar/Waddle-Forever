@@ -18,11 +18,16 @@ const useGameFolder = IS_DEV || fs.existsSync(path.join(process.cwd(), '.useloca
 function getOsDataFolder() {
   switch (process.platform) {
     case 'win32':
-      return path.join(process.env.APPDATA, 'WaddleForever');
+      return path.join(process.env.APPDATA ?? '', 'WaddleForever');
     case 'linux':
-      return path.join(os.homedir(), '.waddleforever');
+      // in sudo, os.homedir() returns the root, which we don't want
+      // SUDO_USER variable informs us the user, so we can manually get the directory
+      const home = process.env.SUDO_USER === undefined
+        ? os.homedir()
+        : `/home/${process.env.SUDO_USER}`;
+      return path.join(home, '.waddleforever');
     default:
-      break;
+      throw new Error(`Unsupported OS: ${process.platform}`);
   }
 }
 

@@ -1,8 +1,7 @@
-import { items } from "../../game/item";
-import { XtHandler } from "..";
-import { ItemType } from "../../game/items";
+import { ITEMS, ItemType } from "../../game/items";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // getting pin information opening stampbook
 handler.xt('i#qpp', (client, id) => {
@@ -12,13 +11,13 @@ handler.xt('i#qpp', (client, id) => {
 // getting mission stamps
 handler.xt('i#qpa', (client) => {
   const awards = [];
-  for (const item in client.penguin.inventory) {
-    const itemInfo = items[item]
-    if (itemInfo !== undefined && items[item].type === ItemType.Award) {
+  for (const item of client.penguin.getItems()) {
+    const itemInfo = ITEMS.get(Number(item));
+    if (itemInfo !== undefined && itemInfo.type === ItemType.Award) {
       awards.push(item);
     }
   }
-  client.sendXt('qpa', client.id, awards.join('|'));
+  client.sendXt('qpa', client.penguin.id, awards.join('|'));
 });
 
 // stampbook cover information
@@ -45,9 +44,12 @@ handler.xt('st#ssbcd', (client, color, highlight, pattern, icon) => {
   client.update();
 });
 
-// earn stamp
+// earn client side stamp
 handler.xt('st#sse', (client, stamp) => {
-  client.addStamp(Number(stamp));
+  // for this endpoint notifying is unecessary since it's the one
+  // that the client sends
+  client.giveStamp(Number(stamp), { notify: false });
+  client.update();
 });
 
 export default handler;

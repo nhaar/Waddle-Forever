@@ -1,5 +1,5 @@
 export abstract class BaseStore<T extends Record<string, unknown>> {
-  abstract get<Key extends keyof T>(key: Key): T[Key];
+  abstract get<Key extends keyof T>(key: Key): T[Key] | undefined;
 
   abstract set<Key extends keyof T>(key: Key, value?: T[Key]): void;
 

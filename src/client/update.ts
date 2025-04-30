@@ -45,7 +45,7 @@ export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
         shell.openExternal('https://waddleforever.com/linux')
       }
     } else {
-      await showWarning(mainWindow, 'New version available', `A new version is available and being downloaded.\n\nOnce the download is complete, you will be notified, and you can update by restarting the game (it may have finished already!).\n\nIf the notification or update doesn't come through, please redownload the game.`)
+      await showWarning(mainWindow, 'New version available', 'A new version is available and being downloaded. Please redownload the game from the website to have access to the latest features and bugfixes.')
     }
   }
 }

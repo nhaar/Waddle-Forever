@@ -1,0 +1,31 @@
+import joinHandler from './play/join';
+import loginHandler from './play/login';
+import navigationHandler from './play/navigation';
+import commandsHandler from './commands';
+import itemHandler from './play/item';
+import stampHandler from './play/stamp';
+import puffleHandler from './play/puffle';
+import rainbowHandler from './play/rainbow';
+import iglooHandler from './play/igloo';
+import epfHandler from './play/epf';
+import mailHandler from './play/mail';
+import gameHandler from './play/game';
+import partyHandler from './play/party';
+import { Handler } from '.';
+
+const handler = new Handler();
+handler.use(loginHandler);
+handler.use(joinHandler);
+handler.use(navigationHandler);
+handler.use(commandsHandler);
+handler.use(itemHandler);
+handler.use(stampHandler);
+handler.use(puffleHandler);
+handler.use(rainbowHandler);
+handler.use(iglooHandler);
+handler.use(epfHandler);
+handler.use(mailHandler);
+handler.use(gameHandler);
+handler.use(partyHandler);
+
+export default handler;

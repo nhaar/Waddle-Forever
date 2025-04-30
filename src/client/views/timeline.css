@@ -1,3 +1,243 @@
+:root {
+  --selected: #08549c;
+  --hovered: #73c7f6;
+  /* Basic unit of measurement that makes up the calendar */
+  --cell-width: 5em;
+  --cell-padding: 0.4em;
+  --icon-size: 2em;
+
+  /* Height that the version picker should occupy above */
+  --version-pick-h: 8em;
+}
+
 .version-description {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#timeline {
+  padding: 1em;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 8em 10em 1fr;
+  cursor: pointer;
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.selected-list-day {
+  background-color: var(--selected);
+  color: white;
+}
+
+.timeline-row:hover {
+  background-color: var(--hovered);
+  color: black;
+}
+
+.selected-list-day:hover  {
+  background-color: var(--selected);
+  color: white;
+  cursor: default;
+}
+
+.date-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+}
+
+.list-description-container {
+  padding-left: 5em;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timeline-header {
+  position: sticky;
+  top: 0;
+  background-color: var(--background);
+  left: 0;
+  right: 0;
+  display: flex;
+  /* needs to be this variable so the calendar can be properly sticky too */
+  height: var(--version-pick-h);
+  justify-content: center;
+  align-items: center;
+}
+
+.version-selected {
+  position: absolute;
+  right: 2em;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.version-picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  background-color: white;
+  color: black;
+  width: var(--cell-width);
+  height: var(--cell-width);
+  border: 1px solid black;
+  vertical-align: top;
+  padding: var(--cell-padding);
+}
+
+thead th {
+  position: sticky;
+  top: var(--version-pick-h);
+  color: black;
+  background-color: white;
+}
+
+.calendar {
+  background-color: white;
+}
+
+.left-edge {
+  border-left: 2px solid black;
+}
+
+.right-edge {
+  border-right: 2px solid black;
+}
+
+.bottom-edge {
+  border-bottom: 2px solid black;
+}
+
+.top-edge {
+  border-top: 2px solid black;
+}
+
+.month-name {
+  font-weight: bold;
+  font-size: xx-large;
+  padding: 0.4em;
+}
+
+.clickable {
+  font-weight: bolder;
+}
+
+.undefined-day {
+  background-color: rgba(229, 229, 229, 1);
+}
+
+.calendar-container {
+  display: flex;
+}
+
+.calendar-description-container {
+  flex: 1;
+}
+
+.calendar-description {
+  position: sticky;
+  top: var(--version-pick-h);
+  padding: 1em;
+}
+
+#calendar-title {
+  margin-bottom: 1em;
+  font-style: bold;
+  font-size: x-large;
+}
+
+.non-party-day.yes-day {
+  background-color: white;
+}
+
+.yes-day:hover {
+  outline: 4px solid var(--selected);
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+.selected-day {
+  outline: 4px solid black; 
+  outline-offset: -2px;
+}
+
+.selected-day:hover {
+  cursor: default;
+}
+
+.party-day {
+  background-color: var(--hovered);
+}
+
+.event-description-listing {
+  margin-top: 0.4em;
+  display: flex;
+  align-items: center;
+}
+
+.event-description {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  margin-left: 0.8em;
+}
+
+.day-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+#as3-footer {
+  width: 100vw;
+  margin: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#as3-footer > button {
+  padding: 0.4em;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#as3-footer > button:hover {
+  background-color: var(--hovered);
+  color: white;
 }

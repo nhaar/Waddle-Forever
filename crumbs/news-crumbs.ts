@@ -1,224 +1,25 @@
 import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
-import { DEFAULT_DIRECTORY } from '../src/common/utils';
+import { processVersion } from '../src/server/routes/versions';
+import { getMinifiedDate, isNewspaperAfterCPIP, NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
+import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/data/newspapers';
 
-type Newspaper = {
-  year: number,
-  month: number,
-  day: number,
-  headline: string
-}
+type LabeledAs2Newspaper = As2Newspaper & { type: 'as2' };
+type LabeledAs3Newspaper = As3Newspaper & { type: 'as3' };
+type Newspaper = LabeledAs2Newspaper | LabeledAs3Newspaper;
 
-// issue number of the very first newspaper in the list below
-const FIRST_ISSUE_NUMBER = 235;
+// number at the start is issue of the first
+// first newspaper is newest, last is oldest
+type NewsSet = [number, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper];
 
-const newspapers: Newspaper[] = [
-  {
-    year: 2010,
-    month: 4,
-    day: 15,
-    headline: 'CELEBRATE EARTH DAY!'
-  },
-  {
-    year: 2010,
-    month: 4,
-    day: 22,
-    headline: 'EARTH DAY CELEBRATIONS BEGIN!'
-  },
-  {
-    year: 2010,
-    month: 4,
-    day: 29,
-    headline: 'YE PENGUIN STYLE'
-  },
-  {
-    year: 2010,
-    month: 5,
-    day: 6,
-    headline: 'MEDIEVAL PARTY'
-  },
-  {
-    year: 2010,
-    month: 5,
-    day: 13,
-    headline: 'YOUR IGLOO-MEDIEVAL STYLE'
-  },
-  {
-    year: 2010,
-    month: 5,
-    day: 20,
-    headline: 'POPCORN EVERYWHERE AT SPORT SHOP'
-  },
-  {
-    year: 2010,
-    month: 5,
-    day: 27,
-    headline: 'SKI VILLAGE UNDER CONSTRUCTION'
-  },
-  {
-    year: 2010,
-    month: 6,
-    day: 3,
-    headline: 'PENGUINS SEEKING ADVENTURE'
-  },
-  {
-    year: 2010,
-    month: 6,
-    day: 10,
-    headline: 'ISLAND ADVENTURE PLANS REVEALED'
-  },
-  {
-    year: 2010,
-    month: 6,
-    day: 17,
-    headline: 'THE ADVENTURE BEGINS!'
-  },
-  {
-    year: 2010,
-    month: 6,
-    day: 24,
-    headline: 'CONTINUE YOUR ADVENTURE!'
-  },
-  {
-    year: 2010,
-    month: 7,
-    day: 1,
-    headline: 'GET READY FOR MUSIC JAM 2010'
-  },
-  {
-    year: 2010,
-    month: 7,
-    day: 8,
-    headline: 'MUSIC JAM!'
-  },
-  {
-    year: 2010,
-    month: 7,
-    day: 15,
-    headline: 'KEEP JAMMIN\''
-  },
-  {
-    year: 2010,
-    month: 7,
-    day: 22,
-    headline: 'THANKS FOR JAMMING'
-  },
-  {
-    year: 2010,
-    month: 7,
-    day: 29,
-    headline: 'CUSTOMIZE YOUR STAMP BOOK'
-  },
-  {
-    year: 2010,
-    month: 8,
-    day: 5,
-    headline: 'EXPLORATION EVENT'
-  },
-  {
-    year: 2010,
-    month: 8,
-    day: 12,
-    headline: 'ALL ABOUT IGLOOS'
-  },
-  {
-    year: 2010,
-    month: 8,
-    day: 19,
-    headline: 'ENERGETIC PHONING FACILITY'
-  },
-  {
-    year: 2010,
-    month: 8,
-    day: 26,
-    headline: 'IGLOO IMPROVEMENTS'
-  },
-  {
-    year: 2010,
-    month: 9,
-    day: 2,
-    headline: 'WHAT\'S ON AT THE FAIR?'
-  },
-  {
-    year: 2010,
-    month: 9,
-    day: 9,
-    headline: 'PILOTS SEEK ASSISTANTS'
-  },
-  {
-    year: 2010,
-    month: 9,
-    day: 16,
-    headline: 'NEW IGLOO ITEMS'
-  },
-  {
-    year: 2010,
-    month: 9,
-    day: 23,
-    headline: 'BLACK PUFFLES IN CARTS'
-  },
-  {
-    year: 2010,
-    month: 9,
-    day: 30,
-    headline: 'MYSTERIES IN OCTOBER'
-  },
-  {
-    year: 2010,
-    month: 10,
-    day: 7,
-    headline: 'ANNIVERSARY PARTY'
-  },
-  {
-    year: 2010,
-    month: 10,
-    day: 14,
-    headline: 'STORM INCOMING'
-  },
-  {
-    year: 2010,
-    month: 10,
-    day: 21,
-    headline: 'HALLOWEEN\'S ALMOST HERE'
-  },
-  {
-    year: 2010,
-    month: 10,
-    day: 28,
-    headline: 'IGLOO CONTEST WINNERS'
-  },
-  {
-    year: 2010,
-    month: 11,
-    day: 4,
-    headline: 'CLOUDY SKIES STAY'
-  },
-  {
-    year: 2010,
-    month: 11,
-    day: 11,
-    headline: 'NEW LOOK FOR NEWSPAPER'
-  }
-]
-
-// number at the end is issue of the first
-// first is newest, last is oldest
-type NewsSet = [Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, number]
-
-function getMinifiedDate(news: Newspaper): string {
-  const month = news.month < 10 ? `0${news.month}` : String(news.month)
-  const day = news.day < 10 ? `0${news.day}` : String(news.day)
-  return `${news.year}${month}${day}`
-}
-
-function getFileDate(news: Newspaper): string {
-  const month = news.month < 10 ? `0${news.month}` : String(news.month)
-  const day = news.day < 10 ? `0${news.day}` : String(news.day)
-  return `${news.year}_${month}_${day}`
+function getNewspaperMinifiedDate(news: Newspaper): string {
+  // same format but without dahses in-between
+  return getMinifiedDate(news.date)
 }
 
 function getFullDate(news: Newspaper): string {
+  const [year, month, day] = processVersion(news.date);
   let monthname = [
     'January',
     'February',
@@ -232,31 +33,13 @@ function getFullDate(news: Newspaper): string {
     'October',
     'November',
     'December'
-  ][news.month - 1]
+  ][month - 1];
 
-  return `${monthname} ${news.day}, ${news.year}`
+  return `${monthname} ${day}, ${year}`
 }
 
 function getDateFileName(news: Newspaper): string {
-  const month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ][news.month - 1];
-
-  // must be 2 digits for day
-  const day = news.day < 10 ? '0' + String(news.day) : news.day;
-
-  return `${news.year}-${month}-${day}`;
+  return news.date;
 }
 
 function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
@@ -267,10 +50,20 @@ function generateNewsPathAssign(n: number, newspaper: Newspaper): string {
     varname = `old_news${n}`
   }
 
-  const date = getMinifiedDate(newspaper)
+  const date = getNewspaperMinifiedDate(newspaper)
+
+  const newspaperPath = newspaper.type === 'as3' ? (
+    date
+  ) : (
+    // TODO not sure why legacy media was setup like this, local_crumbs
+    // from Dec 2010 show just news/date.swf
+    `${date}/${date}.swf`
+  );
+
+  //
   return `Push "news_paths"
 GetVariable
-Push "${varname}", "news/${date}/${date}.swf"
+Push "${varname}", "news/${newspaperPath}"
 SetMember
 Push "news_paths"
 `
@@ -316,9 +109,10 @@ NewObject
 DefineLocal
 `
 
-  bytecode += generateNewsPathAssign(-1, set[0])
+  const [number, ...newspapers] = set;
+  bytecode += generateNewsPathAssign(-1, newspapers[0])
   for (let i = 1; i < 7; i++) {
-    bytecode += generateNewsPathAssign(i - 1, set[i] as Newspaper)
+    bytecode += generateNewsPathAssign(i - 1, newspapers[i])
   }
 
   bytecode += `Push "news_crumbs", 0, "Array"
@@ -327,39 +121,99 @@ DefineLocal
 `
 
   for (let i = 1; i < 7; i++) {
-    bytecode += generateNewsArrayAdd(set[7], i - 1, set[i] as Newspaper)
+    bytecode += generateNewsArrayAdd(number, i - 1, newspapers[i])
   }
 
   return bytecode
 }
 
-const currentThings: Newspaper[] = [];
-// subtract 1 since it will be incremented each time
-let issueNumber = FIRST_ISSUE_NUMBER - 1;
-
-const outDir = path.join(__dirname, 'news')
-if (!fs.existsSync(outDir)) {
-  fs.mkdirSync(outDir);
-}
+const currentThings: Array<(LabeledAs2Newspaper) | (LabeledAs3Newspaper)> = [];
+// this issue number should be first issue number in a boiler room -1, 
+// which matches with the length of this array
+let issueNumber = PRE_BOILER_ROOM_PAPERS.length;
 
 const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
 
 console.log('Beginning exporting...');
 
-for (const newspaper of newspapers) {
-  currentThings.push(newspaper)
+let promises: Array<Promise<void>> = [];
+
+const autoDir = path.join(__dirname, '..', 'media', NEWS_CRUMBS_PATH);
+if (!fs.existsSync(autoDir)) {
+  fs.mkdirSync(autoDir, { recursive: true });
+}
+
+// files previously in the folder
+const previousFiles = new Set<string>(fs.readdirSync(autoDir));
+// files that should not be deleted in the folder
+const properFiles = new Set<string>();
+
+async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newspaper, index: number): Promise<void> {
+  // doing it 10 at a time otherwise FFDEC will not withstand it
+  if (promises.length >= 10) {
+    await Promise.all(promises);
+    promises = [];
+  }
+  currentThings.push({ ...newspaper });
   issueNumber++;
 
   if (currentThings.length > 7) {
     currentThings.shift()
   }
-  if (currentThings.length === 7) {
-    const filecontent = generateNewsCrumbs([currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0], issueNumber])
+
+  // only generate news crumbs for post CPIP
+  const canGenerate = newspaper.type === 'as3' || (
+    isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])
+  );
+
+  if (currentThings.length === 7 && canGenerate) {
+    const filecontent = generateNewsCrumbs([issueNumber, currentThings[6], currentThings[5], currentThings[4], currentThings[3], currentThings[2], currentThings[1], currentThings[0]])
     
     const recent = currentThings[6]
     const fileName = getDateFileName(recent) + '.swf';
-    const filePath = path.join(DEFAULT_DIRECTORY, 'seasonal/play/v2/content/local/en/news/news_crumbs.swf/', fileName);
-    console.log(`Exporting: ${fileName}`);
-    replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+
+    properFiles.add(fileName)
+    // only adding files that need to be created
+    if (!previousFiles.has(fileName)) {
+      const filePath = path.join(autoDir, fileName);
+      console.log(`Exporting: ${fileName}`);
+      
+      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+      promises.push(promise);
+    }
   }
+}
+
+export async function generateNewsCrumbsFiles(deletePrevious: boolean = false) {
+  console.log('tamo generando tamo generando');
+  if (!deletePrevious) {
+    console.log('WARNING: This script doesn\'t delete previous news_crumbs files, reset your news_crumbs folder if needed');
+  } else {
+    previousFiles.forEach((file) => {
+      fs.unlinkSync(path.join(autoDir, file));
+    })
+  }
+  let i = 0;
+  for (const newspaper of AS2_NEWSPAPERS) {
+    await processNewspaper({ ...newspaper, type: 'as2' }, i);
+    i++;
+  }
+
+  for (const newspaper of AS3_NEWSPAPERS) {
+    // index does not matter for this one
+    await processNewspaper({ ...newspaper, type: 'as3' }, 0);
+  }
+
+  if (!deletePrevious) {
+    // deleting files that shouldn't be here
+    previousFiles.forEach((file) => {
+      if (!properFiles.has(file)) {
+        fs.unlinkSync(path.join(autoDir, file));
+      }
+    });
+  }
+}
+
+if (require.main === module) {
+  generateNewsCrumbsFiles();
 }

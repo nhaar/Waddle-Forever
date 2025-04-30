@@ -13,6 +13,7 @@ const jpaInput = document.querySelector<HTMLInputElement>('.js-jpa-level-input')
 const danceInput = document.querySelector<HTMLInputElement>('.js-dance-arrow-input')!;
 const memberInput = document.querySelector<HTMLInputElement>('.js-member-input')!;
 const websiteInput = document.querySelector<HTMLInputElement>('.js-website-input')!;
+const rainbowInput = document.querySelector<HTMLInputElement>('.rainbow-input')!;
 
 /** Update the settings object with the partial settings given */
 function update(settings: any) {
@@ -29,6 +30,7 @@ getSettings().then((settings) => {
   danceInput.checked = settings['swap_dance_arrow'];
   memberInput.checked = settings['always_member'];
   websiteInput.checked = settings['minified_website'];
+  rainbowInput.checked = settings['no_rainbow_quest_wait'];
 });
 
 fpsInput.addEventListener('change', (e) => {
@@ -103,6 +105,12 @@ websiteInput.addEventListener('change', (e) => {
     api.reload();
   }
 })
+
+rainbowInput.addEventListener('change', (e) => {
+  if (e.target instanceof HTMLInputElement) {
+    update({ no_rainbow_quest_wait: e.target.checked });
+  }
+});
 
 window.addEventListener('finish-download', (e: any) => {
   const pack = e.detail;

@@ -67,10 +67,10 @@ Will leave all the files in the folder `zip`
 
 The Electron client is originally forked from the [Club Penguin Avalanche client](https://github.com/Club-Penguin-Avalanche/CPA-Client).
 
-The server is based on Solero's work in reverse engineering the Club Penguin server [(Houdini server emulator)](https://github.com/solero/houdini). The media server is also mostly from Solero's media servers.
-
-Thanks for Levi for help with the Linux version.
+The server, code and setup sources a lot of things from the [Houdini](https://github.com/solero/houdini) and [Mammoth](https://github.com/wizguin/mammoth) server emulators. Special thanks to all of the developers of those repositories for making it open sourced and contributing to the community.
 
 Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunning client.
 
-Special thanks to supermanover, Blue Kirby, Jeff The Rock, Resol van Lemmy for the continued support and help during development.
+Credits to Ben for developing the Scavenger Hunt dependency and dynamic Igloo List. Credits for Randomno for the modified igloo list.
+
+Special thanks for continued support, recreating, researching and or testing the game to: supermanover, Blue Kirby, Jeff The Rock, Resol van Lemmy, VampLovr, ungato, Zeldaboy, Ryboflavin, Bluestk, Levi

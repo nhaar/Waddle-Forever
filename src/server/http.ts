@@ -1,11 +1,14 @@
 import path from 'path';
 import fs from 'fs';
 import { Request, Router } from "express";
-import { GameVersion, SettingsManager } from "./settings";
-import { isGreaterOrEqual, isLower, sortVersions } from './routes/versions';
+import { SettingsManager } from "./settings";
+import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
+import { getFileServer } from './routes/client-files';
+import { baseFindInVersion } from './data/changes';
+import { specialServer } from './data/specials';
 
-type GetCallback = (settings: SettingsManager, route: string) => string
+type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
 type DirCallback = (settings: SettingsManager, dirPath: string) => string | undefined
 
@@ -19,9 +22,9 @@ type Alternator = [string, ...string[]]
 
 type AlternatorMap = Array<[string, string]>
 
-type Spacer = [GameVersion, GameVersion, ...string[]]
+type Spacer = [Version, Version, ...string[]]
 
-type SpacerMap = Array<[GameVersion, GameVersion, string]>
+type SpacerMap = Array<[Version, Version, string]>
 
 const SEASONAL_NAME = 'seasonal';
 
@@ -108,7 +111,7 @@ export function spaced(routers: HttpRouter[], spacers: Spacer[]) {
 }
 
 /** Assigns files to routers in a given date interval */
-export function range(start: GameVersion, end: GameVersion, routeMaps: RouteMap) {
+export function range(start: Version, end: Version, routeMaps: RouteMap) {
   const routers: HttpRouter[] = [];
   const targets: string[] = [];
 
@@ -184,30 +187,38 @@ export class HttpServer {
     this.settingsManager = settingsManager;
     this.router = Router();
   }
-
-  /** Supplies all the files for an event in its date range */
-  private addEvent(event: EventInfo) {
-    const rootPath = 'default/event/' + event[0];
-    this.dir('', (s) => {
-      if (isGreaterOrEqual(s.settings.version, event[1]) && isLower(s.settings.version, event[2])) {
-        return rootPath;
+  
+  addFileServer() {
+    const fileServer = getFileServer();
+  
+    this.router.get('/*', (req: Request, res, next) => {
+      const route = req.params[0];
+      const special = specialServer.get(route);
+      const specialCheck = special?.check(this.settingsManager);
+      if (special === undefined || specialCheck === undefined) {
+        const info = fileServer.get(route);
+        if (info === undefined) {
+          next();
+        } else {
+          let filePath = '';
+          if (typeof info === 'string') {
+            filePath = info;
+          } else {
+              const foundFilePath = baseFindInVersion(this.settingsManager.settings.version, info, 'file');
+              if (foundFilePath === undefined) {
+                console.log(info);
+                throw new Error('Could not find file, log output is above')
+              }
+              filePath = foundFilePath;
+          }
+  
+          console.log(`Requested: ${route}, sending: ${filePath}`);
+          res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
+        }
       } else {
-        return undefined;
+        res.sendFile(path.join(MEDIA_DIRECTORY, special.files[specialCheck]));
       }
     });
-  }
-
-  /**
-   * Sets up a list of events each with its info.
-   * 
-   * Events are periods of time where a static folder is served with most priority,
-   * it is used mostly for parties, and they are stored in the default/event directory
-   * of the media folders
-   */
-  addEvents(...events: Array<EventInfo>) {
-    for (const event of events) {
-      this.addEvent(event);
-    }
   }
 
   /**
@@ -259,8 +270,51 @@ export class HttpServer {
     const extension = '.' + route.split('.').pop();
     const files = fs.readdirSync(path.join(DEFAULT_DIRECTORY, SEASONAL_NAME, route));
     const fileDates = files.filter((f) => f.endsWith(extension)).map((f) => f.slice(0, -extension.length));
+
+    // files that appeared multiple times can have multiple dates joined by a separator
+    // to preserve the information we will split all files in the dates array
+    // and create a map for their name and the original filename
+    const fileMap = new Map<string, string>();
+
+    // new array that will have all the dates
+    let flattenedFileDates = [];
+
+    // splitting multiple files
+    const SEPARATOR = ',';
+    for (const fileDate of fileDates) {
+      if (fileDate.includes(SEPARATOR)) {
+        const splitFiles = fileDate.split(SEPARATOR);
+        for (const splitFile of splitFiles) {
+          fileMap.set(splitFile, fileDate);
+        }
+        flattenedFileDates.push(...splitFiles);
+      } else {
+        flattenedFileDates.push(fileDate);
+      }
+    }
+
+    // placeholder prefixes are just to signal that a value is used in a date
+    // but it wasn't archived from that time, it's only being used because it's similar
+    const PLACEHOLDER_PREFIX = '[P]';
+    flattenedFileDates = flattenedFileDates.map((value) => {
+      if (value.startsWith(PLACEHOLDER_PREFIX)) {
+        const trimmed = value.replace(PLACEHOLDER_PREFIX, '');
+        const originalName = fileMap.get(value);
+        // no previous entry to this exists, adding it now
+        if (originalName === undefined) {
+          fileMap.set(trimmed, value);
+        } else {
+          fileMap.set(trimmed, originalName);
+        }
+
+        return trimmed;
+      } else {
+        return value;
+      }
+    })
+
     try {
-      sortVersions(fileDates);
+      sortVersions(flattenedFileDates);
     } catch {
       throw Error(`Seasonal included files not named after versions in path ${route}`);
     }
@@ -268,8 +322,9 @@ export class HttpServer {
     const router = new HttpRouter(route, this);
     alternating(
       [router],
-      fileDates.map((fileDate) => {
-        return [fileDate, path.join('default', SEASONAL_NAME, route, fileDate + extension)]
+      flattenedFileDates.map((fileDate) => {
+        const realFile = fileMap.get(fileDate) ?? fileDate;
+        return [fileDate, path.join('default', SEASONAL_NAME, route, realFile + extension)]
       })
     )
   }

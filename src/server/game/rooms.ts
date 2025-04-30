@@ -1,3 +1,4 @@
+import { Version } from "../routes/versions";
 import { Stamp } from "./stamps";
 
 export enum Room {
@@ -44,45 +45,6 @@ export enum Room {
   PuffleLaunch = 955
 }
 
-const gameRooms = [
-  Room.AstroBarrier,
-  Room.BeanCounters,
-  Room.PuffleRoundup,
-  Room.HydroHopper,
-  Room.IceFishing,
-  Room.CartSurfer,
-  Room.JetPackAdventure,
-  Room.ThinIce,
-  Room.Pizzatron,
-  Room.CatchinWaves,
-  Room.AquaGrabber,
-  Room.DJ3K,
-  Room.MyPuffle,
-  Room.BurntOutBulbs,
-  Room.LimeGreenDojoClean,
-  Room.Mission1,
-  Room.Mission2,
-  Room.Mission3,
-  Room.Mission4,
-  Room.Mission5,
-  Room.Mission6,
-  Room.Mission7,
-  Room.Mission8,
-  Room.Mission9,
-  Room.Mission10,
-  Room.Mission11,
-  Room.PuffleRescue,
-  Room.DanceContest,
-  Room.PuffleSoaker,
-  Room.BalloonPop,
-  Room.RingTheBell,
-  Room.FeedAPuffle,
-  Room.MemoryCardGame,
-  Room.PufflePaddle,
-  Room.PuffleShuffle,
-  Room.SystemDefender,
-  Room.PuffleLaunch
-];
 export const roomStamps: Record<number, number[]> = {
   [Room.JetPackAdventure]: [
     Stamp.LiftOff,
@@ -236,5 +198,95 @@ export const isLiteralScoreGame = (room: Room): boolean => {
 }
 
 export const isGameRoom = (room: Room): boolean => {
-  return gameRooms.includes(room);
+  // from what I know, 900 and forward is only minigames
+  // 1000 and above however is reserved for igloos
+  return room >= 900 && room < 1000;
 };
+
+type RoomName = 'Town' |
+  'Snow Forts' |
+  'Sport Shop' |
+  'Mountain' |
+  'Ski Lodge' |
+  'Plaza' |
+  'Pizza Parlor' |
+  'Pet Shop' |
+  'Iceberg' |
+  'Ski Village' |
+  'Everyday Phoning Facility';
+
+type RoomOpening = {
+  date: Version;
+  rooms: RoomName | RoomName[];
+  type: 'open'
+};
+
+type RoomUpdate = {
+  date: Version;
+  type: 'update';
+  descriptions: string[];
+}
+
+type RoomEvent = RoomOpening | RoomUpdate;
+
+
+export const ROOM_TIMELINE: RoomEvent[] = [
+  { date: '2005-09-12', rooms: 'Snow Forts', type: 'open' },
+  { date: '2005-11-03', rooms: 'Sport Shop', type: 'open' },
+  { date: '2005-11-18', rooms: 'Mountain', type: 'open' },
+  { date: '2005-12-22', rooms: 'Ski Lodge', type: 'open' },
+  { date: '2006-02-24', rooms: ['Plaza', 'Pizza Parlor'], type: 'open' },
+  { date: '2006-03-17', rooms: 'Pet Shop', type: 'open' },
+  { date: '2006-03-29', rooms: 'Iceberg', type: 'open' },
+  {
+    date: '2010-04-21',
+    descriptions: [
+      'The Forest now has a path to the Mine Shack'
+    ],
+    type: 'update'
+  },
+  { date: '2010-05-27', rooms: 'Everyday Phoning Facility', type: 'open' },
+  {
+    date: '2010-05-27',
+    descriptions: [
+      'The Sport Shop is replaced with the Everyday Phoning Facility',
+      'The Ice Rink was changed into the Stadium'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-06-17',
+    descriptions: [
+      'The Forest now has a path to the Hidden Lake'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-07-29',
+    descriptions: [
+      'Grass grew on the patch near the mine shack'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-08-26',
+    descriptions: [
+      'The tree near the mine shack grew longer'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-09-30',
+    descriptions: [
+      'The tree near the mine shack grew longer'
+    ],
+    type: 'update'
+  },
+  {
+    date: '2010-12-20',
+    descriptions: [
+      'The Ice Rink showed up for the season'
+    ],
+    type: 'update'
+  }
+];

@@ -13,8 +13,9 @@ import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
-import { startMedia } from "./media";
+import { downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '../common/utils';
+import { VERSION } from '../common/version';
 
 log.initialize();
 
@@ -31,11 +32,6 @@ if (process.platform === 'linux') {
 
 
 loadFlashPlugin(app);
-
-// autoupdater (windows only)
-if (process.platform === 'win32') {
-  autoUpdater.checkForUpdatesAndNotify();
-}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -58,7 +54,38 @@ app.on('ready', async () => {
   });
   setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
 
-  const mediaSuccess = await startMedia();
+  let mediaSuccess;
+  try {
+    // this will throw an error if installing for all users and not running as
+    // an administrator
+    mediaSuccess = await startMedia();
+  } catch (error) {
+    await dialog.showMessageBox(setupWindow, {
+      buttons: ['Ok'],
+      title: 'Permission Error',
+      message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
+    });
+    app.quit();
+  }
+  
+  if (settingsManager.settings.answered_packages !== VERSION) {
+    const result = await dialog.showMessageBox(mainWindow, {
+      buttons: ['Download Clothing (~600 MB)', 'No Thanks'],
+      title: 'Download package?',
+      message: 'Would you like to download the clothing package? It includes all non essential clothing items from Club Penguin. If you say no, you can always download it later.',
+      defaultId: 0,
+      cancelId: 1
+    });
+    if (result.response === 0) {
+      await downloadMediaFolder('clothing', () => {
+        settingsManager.updateSettings({ clothing: true });
+      }, () => {
+        mediaSuccess = false;
+      })
+    }
+    settingsManager.updateSettings({ answered_packages: VERSION });
+  }
+
   if (!mediaSuccess) {
     await dialog.showMessageBox(setupWindow, {
       buttons: ['Ok'],
@@ -87,7 +114,13 @@ app.on('ready', async () => {
     });
     
     if (result.response === 1) {
-      await showWarning(mainWindow, 'Error', error.message + '\n' + error.stack)
+      let message = '';
+      let stack: string | undefined = '';
+      if (error instanceof Error) {
+        message = error.message;
+        stack = error.stack;
+      }
+      await showWarning(mainWindow, 'Error', message + '\n' + stack)
     }
   }
 
@@ -104,10 +137,6 @@ app.on('ready', async () => {
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
   }
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
 });
 
 app.on('window-all-closed', async () => {

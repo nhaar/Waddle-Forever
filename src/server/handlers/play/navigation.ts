@@ -1,6 +1,6 @@
-import { XtHandler } from '..';
+import { Handler } from '..';
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // client requesting to join room
 handler.xt('j#jr', (client, destinationRoom, x, y) => {
@@ -19,30 +19,73 @@ handler.xt('z', 'zo', (client, score) => {
     coins *= 2;
   }
 
-  client.penguin.coins += coins;
-  void client.update();
-
+  client.penguin.addCoins(coins);
+  
   client.sendXt('zo', String(client.penguin.coins), ...stampInfo);
+  void client.update();
 });
 
-// Joining player igloo
 handler.xt('j#jp', (client, fakeId) => {
-  // TODO room ID is currently useless here
-  client.joinRoom(Number(fakeId));
+  if (!client.isEngine2) {
+    return;
+  }
+  // for some reason the ID given is the player + 1000
+  // in WF igloo room IDs are playerID + 2000
+  const iglooId = Number(fakeId) + 1000;
+  client.joinRoom(iglooId);
+})
+
+// Joining player igloo
+handler.xt('j#jp', (client, playerId, roomType) => {
+  if (!client.isEngine3) {
+    return;
+  }
+  if (roomType === 'igloo') {
+    // in WF igloo room IDs are playeId + 2000
+    const iglooId = Number(playerId) + 2000;
+    client.sendXt('jp', iglooId, iglooId, roomType);
+    client.joinRoom(iglooId);
+  } else if (roomType === 'backyard') {
+    const backyardId = 1000;
+    client.sendXt('jp', backyardId, backyardId, roomType);
+    client.joinRoom(backyardId);
+  }
 })
 
 handler.xt('u#sf', (client, frame) => {
   // TODO multiplayer logic
-  client.sendXt('sf', client.id, frame);
+  client.sendXt('sf', client.penguin.id, frame);
 })
 
 handler.xt('u#sp', (client, x, y) => {
   // TODO multiplayer logic
-  client.sendXt('sp', client.id, x, y);
+  client.sendXt('sp', client.penguin.id, x, y);
+})
+
+handler.xt('u#sb', (client, x, y) => {
+  // TODO multiplayer logic
+  client.sendXt('sb', client.penguin.id, x, y);
+})
+
+// player inventory thing? Not sure why this exists
+handler.xt('u#pbi', (client, id) => {
+  client.sendXt('pbi', id);
+})
+
+// refreshing room (required for bits and bolts, maybe other places)
+handler.xt('j#grs', (client) => {
+  // TODO multiplayer logic
+  client.sendXt('grs', client.penguin.id, client.penguinString);
+})
+
+// sending coins, used by some places to get coin count (golden puffle)
+handler.xt('r#gtc', (client) => {
+  client.sendXt('gtc', client.penguin.coins);
 })
 
 handler.disconnect((client) => {
   client.disconnect();
+  client.update();
 })
 
 export default handler;

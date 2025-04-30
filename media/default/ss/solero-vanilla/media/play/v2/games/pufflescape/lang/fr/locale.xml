@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<locale game="Rollerscape Ice Caves" language="French" version="1.0">
+	<entry id="title_icecaves_text" value="Cavernes des Glaces"/>
+	<entry id="title_playbutton_text" value="Jouer"/>
+	<entry id="title_instructbutton_text" value="Instructions"/>
+	
+	<entry id="puffleselect_choose" value="Choisis&#10;"/>
+	<entry id="puffleselect_yourpuffle" value="ton puffle"/>
+	<entry id="puffleselect_nextbutton" value="Commencer"/>
+	
+	<entry id="instructions_instructions_text" value="Instructions"/>
+	<entry id="instructions_tomove_text" value="Déplace-toi"/>
+	<entry id="instructions_move_text" value="Appuie sur les flèches de gauche et de droite pour faire avancer ton puffle."/>
+	<entry id="instructions_AND_text" value="ET"/>
+	<entry id="instructions_tointeract_text" value="Bouge les objets"/>
+	<entry id="instructions_interact_text" value="Utilise ta souris pour déplacer et changer les objets mobiles de sens."/>
+	<entry id="instructions_buddy_text" value="Fais les deux en même temps, ou fais équipe avec un ami !"/>
+	<entry id="instructions_togoodstuff_text" value="Ramasse :"/>
+	<entry id="instructions_goodstuff_text" value="- La clé pour ouvrir la porte. &#10;- Les baies pour des pièces bonus. &#10;- Les tas de baies pour débloquer&#10;le mode extrême."/>
+	<entry id="instructions_tohints_text" value="Astuces"/>
+	<entry id="instructions_hints_text" value="Ramasse une baie pour débloquer les astuces. Clique sur le bouton Astuces pour voir les objets mobiles et les indices."/>
+	<entry id="instructions_unlock_text" value="Les baies débloquent les astuces et le mode extrême, ramasse-les toutes !"/>
+	<entry id="instructions_playbutton_text" value="Jouer"/>
+	
+	<entry id="levelstart_message_text" value="GO !"/>
+
+	<entry id="levelselect_icecaves_text" value="Cavernes des Glaces"/>
+	<entry id="levelselect_part1_text" value="Entrée"/>
+	<entry id="levelselect_part2_text" value="Profondeurs"/>
+	<entry id="levelselect_part3_text" value="Légende"/>
+	<entry id="levelselect_instructions_button_text" value="Instructions"/>
+	
+	<entry id="pausescreen_levelnum_text" value="Niveau "/>
+	
+	<entry id="keyexpired_timesup_text" value="Temps écoulé !"/>
+	
+	<entry id="winscreen_level_text" value="Niveau "/>
+	<entry id="winscreen_complete_text" value=" terminé !"/>
+	<entry id="winscreen_unlock_text" value="Niveau extrême débloqué !"/>
+	<entry id="winscreen_goal_text" value="Bien joué !"/>
+	<entry id="winscreen_congratulations_text" value="Félicitations !"/>
+	
+	<entry id="finalscreen_congratulations_text" value="FÉLICITATIONS !"/>
+</locale>

@@ -1,6 +1,7 @@
-import { XtHandler } from "..";
+import { ITEMS } from "../../game/items";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // sending inventory to player
 handler.xt('i#gi', (client) => {
@@ -8,16 +9,17 @@ handler.xt('i#gi', (client) => {
 });
 
 // giving item
-// NOTICE: COST here is NOT part of vanilla shell, MUST be modded
-handler.xt('i#ai', (client, item, cost) => {
+handler.xt('i#ai', (client, item) => {
   const id = Number(item);
-  if (client.hasItem(id)) {
+  if (client.penguin.hasItem(id)) {
     // TODO
   } else if (!client.canBuy(id)) {
     // TODO
   } else {
-    client.addItem(id, Number(cost));
+    const item = ITEMS.getStrict(id);
+    client.buyItem(id, { cost: item.cost });
   }
+  client.update();
 });
 
 type BodyPartName = 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background';
@@ -26,14 +28,15 @@ const addBodyPartUpdater = (xtCode: string, name: BodyPartName) => {
   handler.xt(`s#${xtCode}`, (client, id) => {
     const itemId = Number(id);
     client.penguin[name] = Number(itemId);
+    client.sendXt(xtCode, client.penguin.id, itemId);
     client.update();
-    client.sendXt(xtCode, client.id, itemId);
   })
 }
 
 // equipping color
 handler.xt('s#upc', (client, color) => {
   client.updateColor(Number(color));
+  client.update();
 });
 
 addBodyPartUpdater('upa', 'hand');

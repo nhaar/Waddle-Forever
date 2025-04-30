@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "target": "ES6",
+    "target": "ES2021",
     "module": "commonjs",
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
+    "strict": true,
     "outDir": "compiled",
     "baseUrl": ".",
     "paths": {

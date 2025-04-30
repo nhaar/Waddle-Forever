@@ -1,5 +1,9 @@
+:root {
+  --background: #005bbb
+}
+
 body {
-  background-color: #005bbb;
+  background-color: var(--background);
   color: white;
 
   display: flex;

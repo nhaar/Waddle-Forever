@@ -1,15 +1,14 @@
-import { XtHandler } from "..";
+import { Handler } from "..";
 
-const handler = new XtHandler();
+const handler = new Handler();
 
 // mail system
 handler.xt('l#mst', (client) => {
-  const unreadTotal = client.penguin.mail.filter((mail) => !mail.postcard.read).length;
-  client.sendXt('mst', unreadTotal, client.penguin.mail.length);
+  client.sendXt('mst', client.penguin.getUnreadMailTotal(), client.penguin.getMailTotal());
 });
 
 handler.xt('l#mg', (client) => {
-  const postcards = client.penguin.mail.map((mail) => {
+  const postcards = client.penguin.getAllMail().map((mail) => {
     return [
       mail.sender.name,
       mail.sender.id,
@@ -25,7 +24,8 @@ handler.xt('l#mg', (client) => {
 
 // opened the postcards
 handler.xt('l#mc', (client) => {
-  client.setMailRead();
+  client.penguin.setAllMailAsRead();
+  client.update();
 })
 
 export default handler;

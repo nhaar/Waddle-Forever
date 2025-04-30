@@ -23,6 +23,8 @@ const getPluginName = () => {
     case 'linux':
       pluginName = 'assets/flash/libpepflashplayer.so';
       break;
+    default:
+      throw new Error(`Unsupported OS for flash: ${process.platform}`);
   }
 
   return pluginName;

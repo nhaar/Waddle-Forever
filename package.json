@@ -1,6 +1,6 @@
 {
   "name": "waddle-forever",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
@@ -20,10 +20,15 @@
     "build-server-linux-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64&&node scripts/rename-linux.js",
     "build-server-win-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64.exe -t node20-win-arm64",
     "build-server-linux-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
-    "build-media": "node scripts/zip-media",
+    "build-media": "cross-env PRODUCTION_BUILD=PRODUCTION ts-node scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
-    "news-crumbs": "ts-node crumbs/news-crumbs.ts"
+    "news-crumbs": "ts-node crumbs/news-crumbs.ts",
+    "local-crumbs": "ts-node crumbs/local-crumbs.ts",
+    "verify": "ts-node labels/verify-labels.ts",
+    "shorten": "ts-node labels/shorten-paths.ts",
+    "expand": "ts-node labels/expand-paths.ts",
+    "files": "ts-node scripts/create-lines.ts"
   },
   "author": "CPS",
   "license": "MIT",
@@ -81,10 +86,12 @@
     "outputPath": "pkgdist"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.3",
     "@types/discord-rpc": "^4.0.3",
     "@types/electron-prompt": "^1.6.1",
     "@types/express": "^5.0.0",
     "@types/node": "^18.13.0",
+    "@types/object-hash": "^3.0.6",
     "@types/unzipper": "^0.10.10",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
@@ -92,6 +99,7 @@
     "archiver": "^7.0.1",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
     "electron": "^10.0.0",
     "electron-builder": "23.0.2",
     "eslint": "^8.34.0",
@@ -110,6 +118,7 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^5.3.0",
     "express": "^4.21.0",
+    "object-hash": "^3.0.0",
     "unzipper": "^0.12.3"
   }
 }

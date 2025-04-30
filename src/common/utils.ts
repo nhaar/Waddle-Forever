@@ -24,6 +24,10 @@ export function parseURL(url: string): {
   const slashSplit = rest.split('/')
   const urlBody = slashSplit.shift()
 
+  if (urlBody === undefined) {
+    throw new Error('This error should be impossible.');
+  }
+
   const portSplit = urlBody.split(':')
   const host = portSplit[0]
   const portString = portSplit[1]
@@ -135,3 +139,39 @@ export const logError = (message: string, error: any): void => {
 export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
 
 export const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');
+
+/** Gets a random integer between minimum and max, both included */
+export function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+/** Gets random element from an array */
+export function choose<T>(array: T[]): T {
+  return array[randomInt(0, array.length - 1)];
+}
+
+export function isPositiveInteger(n: number): boolean {
+  return n > 0 && !isNaN(n) && Number.isInteger(n);
+}
+
+/**
+ * Find in an array that is sorted, the first index that corresponds to a value which is the last one that is "smaller"
+ * than the value being compared.
+ * 
+ * For example, with numbers, if you had [1, 3, 5, 8], and you search for the value "4", it would return index 1 since 4 >= 3, 4 < 5.
+ * @param value Value to compare
+ * @param array Array that is sorted to some capacity
+ * @param isGreaterOrEqual Function that evaluates if the value is greater or equal to the given index of the array
+ * @returns Index found, or -1 if the value given is "smaller" than everything in the array
+ */
+export function findIndexLeftOf<T, K>(value: T, array: K[], isGreaterOrEqual: (value: T, array: K[], index: number) => boolean) {
+  let index = -1;
+  // TODO binary searching instead of this
+  for (let i = 0; i < array.length; i++) {
+    if (!isGreaterOrEqual(value, array, i)) {
+      break;
+    }
+    index = i;
+  } 
+  return index;
+}
