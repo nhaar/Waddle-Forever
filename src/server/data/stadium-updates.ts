@@ -18,8 +18,7 @@ export const STADIUM_UPDATES: StadiumUpdate[] = [
     rinkFileId: 4869,
     townFileId: 2636,
     fortsFileId: 2638,
-    comment: 'The Soccer Pitch is now open for everyone, and temporarily replaces the Ice Rink',
-    type: 'stadium'
+    comment: 'The Soccer Pitch is now open for everyone, and temporarily replaces the Ice Rink'
   },
   {
     date: '2008-12-19',

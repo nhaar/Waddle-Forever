@@ -566,6 +566,10 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       // placeholder HQ update for the PSA missions
       fileId: 4934,
       date: MISSION_1_RELEASE
+    },
+    {
+      fileId: 21194,
+      date: '2008-04-21'
     }
   ],
   agentcom: [

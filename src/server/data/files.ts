@@ -21366,7 +21366,7 @@ export const FILES = new StaticDataTable<File, [
   [21191, 'media/play/v2/games/roundup/PuffleRoundup.swf', 1, FileCategory.StaticServer, 3, null],
   [21192, 'media/play/v2/games/thinice/ThinIce.swf', 1, FileCategory.StaticServer, 3, null],
   [21193, 'media/play/v2/games/mine/CartSurfer.swf', 1, FileCategory.StaticServer, 3, null],
-  [21194, '', 1, FileCategory.Archives, null, null],
+  [21194, 'agent_2008_apr_pre_cpip.swf', 1, FileCategory.Recreation, null, null],
   [21195, '', 1, FileCategory.Archives, null, null],
   [21196, '', 1, FileCategory.Archives, null, null],
   [21197, '', 1, FileCategory.Archives, null, null],
