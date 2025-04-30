@@ -965,5 +965,6 @@ export const AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/content/local/en/news/papers/20170322/content/overlays/secretOverlay.swf': 3660,
   'play/web_service/environment_data.xml': 3736,
   'play/v2/client/map_triggers.swf': 21136,
-  'play/v2/games/pufflescape/lang/en/locale.xml': 2999
+  'play/v2/games/pufflescape/lang/en/locale.xml': 2999,
+  'play/v2/games/roundup/PuffleRoundup.swf': 21191
 }

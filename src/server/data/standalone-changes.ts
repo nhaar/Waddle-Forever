@@ -165,6 +165,13 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
       fileId: 2694
     }
   ],
+  'play/v2/games/roundup/PuffleRoundup.swf': [
+    {
+      // orange puffle version, must add white puffle version too later
+      date: CPIP_UPDATE,
+      fileId: 3735
+    }
+  ]
 };
 
 export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChange[]> = {

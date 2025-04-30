@@ -21363,7 +21363,7 @@ export const FILES = new StaticDataTable<File, [
   [21188, 'Music122.swf', 1, FileCategory.Archives, null, null],
   [21189, 'Music123.swf', 1, FileCategory.Archives, null, null],
   [21190, 'Music372.swf', 1, FileCategory.Archives, null, null],
-  [21191, '', 1, FileCategory.Archives, null, null],
+  [21191, 'media/play/v2/games/roundup/PuffleRoundup.swf', 1, FileCategory.StaticServer, 3, null],
   [21192, '', 1, FileCategory.Archives, null, null],
   [21193, '', 1, FileCategory.Archives, null, null],
   [21194, '', 1, FileCategory.Archives, null, null],
