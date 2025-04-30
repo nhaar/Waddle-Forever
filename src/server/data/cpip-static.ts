@@ -313,5 +313,6 @@ export const CPIP_STATIC_FILES: Record<string, number> = {
   'play/v2/games/book1/bootstrap.swf': 5096,
   'play/v2/games/dancing/dance.swf': 5098,
   'play/v2/games/jetpack/JetpackAdventures.swf': 5100,
-  'play/v2/games/thinice/ThinIce.swf': 5102
+  'play/v2/games/thinice/ThinIce.swf': 5102,
+  'play/v2/games/mine/CartSurfer.swf': 171,
 };

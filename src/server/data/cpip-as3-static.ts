@@ -19,7 +19,6 @@ export const CPIP_AS3_STATIC_FILES: Record<string, number> = {
   'play/v2/games/memory/bootstrap.swf': 168,
   'play/v2/games/memory/memory.swf': 169,
   'play/v2/games/mine/bootstrap.swf': 170,
-  'play/v2/games/mine/CartSurfer.swf': 171,
   'play/v2/games/mixmaster/MixMaster.swf': 172,
   'play/v2/games/mixmaster/MixMaster_Brazil1.swf': 173,
   'play/v2/games/mixmaster/MixMaster_Drum_n_Bass1.swf': 174,
