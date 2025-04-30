@@ -11,7 +11,7 @@ const VERSIONS: Record<string, number> = {
   [FIRST_STAGE_PLAY]: 604
 };
 
-function getVersionsTimeline() {
+export function getVersionsTimeline() {
   const versionTimeline = new VersionsTimeline<number>();
   Object.entries(VERSIONS).forEach((pair) => {
     const [date, version] = pair;

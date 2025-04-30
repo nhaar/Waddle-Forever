@@ -10,6 +10,12 @@ import { isFlag } from './game/flags';
 import PuffleLaunchGameSet from './game/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
 import { PUFFLES } from './game/puffle';
+import { getVersionsTimeline } from './routes/version.txt';
+import { CPIP_UPDATE } from './data/updates';
+import { findInVersion } from './data/changes';
+import { OLD_CLIENT_ITEMS } from './data/client-items';
+
+const versionsTimeline = getVersionsTimeline();
 
 type ServerType = 'Login' | 'World';
 
@@ -226,7 +232,16 @@ export class Client {
   }
 
   sendInventory(): void {
-    this.sendXt('gi', this.penguin.getItems().join('%'));
+    let items = this.penguin.getItems();
+    // pre-cpip engines have limited items, after
+    // that global_crumbs allow having all the items
+    if (isLower(this.version, CPIP_UPDATE)) {
+      const version = findInVersion(this.version, versionsTimeline) ?? 0;
+      const itemSet = OLD_CLIENT_ITEMS[version];
+      items = items.filter((value) => itemSet.has(value));
+    }
+    
+    this.sendXt('gi', items.join('%'));
   }
 
   addItems (items: number[]): void {
