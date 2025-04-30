@@ -66,6 +66,70 @@ class JsonDatabase {
     }
   }
 
+  private migrate_0_3_3() {
+    const penguinsDir = path.join(DATABASE_DIRECTORY, 'penguins')
+    const penguins = fs.readdirSync(penguinsDir)
+
+    const penguinIds: number[] = [];
+
+    const hashMapToArray = (hashMap: any) => {
+      const array: number[] = [];
+      for (const item in hashMap) {
+        array.push(Number(item));
+      }
+      return array;
+    }
+
+    for (const penguin of penguins) {
+      const penguinmatch = penguin.match(/(\d+)\.json/);
+      if (penguinmatch !== null) {
+        penguinIds.push(Number(penguinmatch[1]));
+        const penguinDir = path.join(penguinsDir, penguin)
+        const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
+        content.inventory = hashMapToArray(content.inventory);
+        content.iglooTypes = hashMapToArray(content.iglooTypes);
+
+        const previousIgloo = content.igloo;
+        const newIgloo = {
+          ...previousIgloo,
+          id: 1,
+          locked: true,
+          location: 1,
+          type: previousIgloo.type === 0 ? 1 : previousIgloo.type
+        }
+        content.igloo = 1;
+        content.igloos = [newIgloo];
+        content.iglooSeq = 1;
+        content.iglooFloorings = [];
+        content.iglooLocations = [1];
+        content.careerMedals = 0;
+        content.ownedMedals = 0;
+        content.nuggets = 0;
+        content.backyard = [];
+        content.puffleItems = {};
+        content.hasDug = false;
+        content.treasureFinds = [];
+        content.rainbow = {
+          adoptability: false,
+          currentTask: 0,
+          coinsCollected: []
+        }
+        content.id = undefined;
+
+        fs.writeFileSync(penguinDir, JSON.stringify(content))
+      }
+    }
+
+    penguinIds.forEach((penguinId) => {
+      fs.renameSync(path.join(penguinsDir, `${penguinId}.json`), path.join(penguinsDir, `${penguinId + 100}.json`));
+    });
+
+    // in this versions, penguins seq now starts at 100 instead of 0 (fix mascot IDs)
+    const seqDir = path.join(penguinsDir, 'seq');
+    const previousSeq = fs.readFileSync(seqDir, { encoding: 'utf-8' });
+    fs.writeFileSync(seqDir, String(Number(previousSeq) + 100));
+  }
+
   private migrateVersion(version: string): string {
     switch (version) {
       case '0.2.0':
@@ -83,6 +147,9 @@ class JsonDatabase {
         return '0.3.2';
       case '0.3.2':
         return '0.3.3';
+      case '0.3.3':
+        this.migrate_0_3_3();
+        return '1.0.0';
       default:
         throw new Error('Invalid database version: ' + version);
     }
