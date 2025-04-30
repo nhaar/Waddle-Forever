@@ -67,6 +67,11 @@ handler.xt('u#sb', (client, x, y) => {
   client.sendXt('sb', client.penguin.id, x, y);
 })
 
+// player inventory thing? Not sure why this exists
+handler.xt('u#pbi', (client, id) => {
+  client.sendXt('pbi', id);
+})
+
 // refreshing room (required for bits and bolts, maybe other places)
 handler.xt('j#grs', (client) => {
   // TODO multiplayer logic
