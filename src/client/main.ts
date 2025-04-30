@@ -33,11 +33,6 @@ if (process.platform === 'linux') {
 
 loadFlashPlugin(app);
 
-// autoupdater (windows only)
-if (process.platform === 'win32') {
-  autoUpdater.checkForUpdatesAndNotify();
-}
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow;
