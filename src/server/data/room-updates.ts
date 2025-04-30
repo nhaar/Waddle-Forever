@@ -488,7 +488,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       date: ROOM_REDRAWS,
       fileId: 4920,
-      comment: 'The dojo is redrawn'
+      comment: 'Many rooms are redrawn'
     },
     {
       date: CARD_JITSU_RELEASE,
@@ -615,11 +615,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileId: 2662,
       date: '2010-03-15'
-    },
-    {
-      date: ROOM_REDRAWS,
-      fileId: 4919,
-      comment: 'The mine is redrawn'
     }
   ],
   shack: [
