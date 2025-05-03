@@ -13,7 +13,7 @@ import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
 import { CPIP_UPDATE } from './game-data/updates';
 import { findInVersion } from './game-data/changes';
-import { OLD_CLIENT_ITEMS } from './game-data/client-items';
+import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 
 const versionsTimeline = getVersionsTimeline();
 

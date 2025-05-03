@@ -1,4 +1,7 @@
-export const CPIP_AS3_STATIC_FILES: Record<string, string> = {
+import { RouteRefMap } from "./changes";
+
+/** Map of routes to be served staticly during all of the post-CPIP era, including the 2016 version */
+export const CPIP_AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/astro/AstroBarrier.swf': 'slegacy:media/play/v2/games/astro/AstroBarrier.swf',
   'play/v2/games/astro/bootstrap.swf': 'slegacy:media/play/v2/games/astro/bootstrap.swf',
   'play/v2/games/balloon/balloon.swf': 'slegacy:media/play/v2/games/balloon/balloon.swf',

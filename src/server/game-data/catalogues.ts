@@ -1,6 +1,8 @@
+import { DateRefMap } from "./changes";
 import { NEW_YEARS_2010_UPDATE } from "./updates";
 
-export const PRE_CPIP_CATALOGS: Record<string, string> = {
+/** All clothing catalogs that are release Pre-CPIP */
+export const PRE_CPIP_CATALOGS: DateRefMap = {
   '2005-09-21': 'archives:September05Style.swf',
   '2005-10-24': 'archives:Clothing_0510.swf',
   '2005-11-01': 'archives:Clothing_0511.swf',
@@ -37,8 +39,8 @@ export const PRE_CPIP_CATALOGS: Record<string, string> = {
   '2008-06-06': 'archives:Jun2008.swf',
 };
 
-// map date -> fileId
-export const CPIP_CATALOGS: Record<string, string> = {
+/** All clothing catalogs available Post-CPIP */
+export const CPIP_CATALOGS: DateRefMap = {
   '2008-07-04': 'archives:July08Style.swf',
   '2008-08-01': 'archives:PSAug2008.swf',
   '2008-09-05': 'archives:Sep2008.swf',
@@ -65,7 +67,8 @@ export const CPIP_CATALOGS: Record<string, string> = {
   '2010-12-03': 'archives:PenguinStyleDec2010.swf'
 };
 
-export const FURNITURE_CATALOGS: Record<string, string> = {
+/** All furniture catalogs */
+export const FURNITURE_CATALOGS: DateRefMap = {
   '2008-07-18': 'archives:FurnJul2008.swf',
   '2008-08-29': 'archives:FurnAug2008.swf',
   '2008-09-19': 'archives:FurnSep2008.swf',
@@ -88,7 +91,8 @@ export const FURNITURE_CATALOGS: Record<string, string> = {
   '2010-12-10': 'archives:FurnDec2010.swf'
 };
 
-export const IGLOO_CATALOGS: Record<string, string> = {
+/** All igloo catalogs */
+export const IGLOO_CATALOGS: DateRefMap = {
   '2010-04-16': 'archives:April2010Igloo.swf',
   '2010-08-20': 'archives:August10Igloo.swf',
   '2010-11-12': 'archives:November2010Igloo.swf'

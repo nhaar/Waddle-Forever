@@ -1,4 +1,17 @@
 import { isEqual, isLower, Version } from "../routes/versions"
+import { FileRef } from "./files";
+
+/** A map that takes as keys a game route and as values a file reference */
+export type RouteRefMap = Record<string, FileRef>;
+
+/**
+ * A map that takes as keys versions, and as values the file reference associated with that version, used for
+ * permanent changes
+ * */
+export type DateRefMap = Record<Version, FileRef>;
+
+/** A map that takes as keys a ID number (of any kind) and values a file reference */
+export type IdRefMap = Record<number, FileRef>;
 
 export type PermanentChange<ChangeInformation> = {
   date: Version;

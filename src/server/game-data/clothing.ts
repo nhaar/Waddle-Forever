@@ -1,4 +1,7 @@
-export const ICONS: Record<number, string> = {
+import { IdRefMap } from "./changes";
+
+/** Files for the icons of each relevant clothing ID */
+export const ICONS: IdRefMap = {
   14: 'slegacy:media/play/v2/content/global/clothing/icons/14.swf',
   16: 'slegacy:media/play/v2/content/global/clothing/icons/16.swf',
   101: 'slegacy:media/play/v2/content/global/clothing/icons/101.swf',
@@ -4939,7 +4942,8 @@ export const ICONS: Record<number, string> = {
   34206: 'slegacy:media/play/v2/content/global/clothing/icons/34206.swf',
 };
 
-export const PAPER: Record<number, string> = {
+/** Files for the paper of each relevant clothing ID */
+export const PAPER: IdRefMap = {
   101: 'slegacy:media/play/v2/content/global/clothing/paper/101.swf',
   102: 'slegacy:media/play/v2/content/global/clothing/paper/102.swf',
   103: 'slegacy:media/play/v2/content/global/clothing/paper/103.swf',
@@ -9085,7 +9089,8 @@ export const PAPER: Record<number, string> = {
   34206: 'slegacy:media/play/v2/content/global/clothing/paper/34206.swf'
 }
 
-export const PHOTOS: Record<number, string> = {
+/** Files for the backgrounds of each relevant clothing ID */
+export const PHOTOS: IdRefMap = {
   901: 'slegacy:media/play/v2/content/global/clothing/photos/901.swf',
   902: 'slegacy:media/play/v2/content/global/clothing/photos/902.swf',
   903: 'slegacy:media/play/v2/content/global/clothing/photos/903.swf',
@@ -9469,7 +9474,8 @@ export const PHOTOS: Record<number, string> = {
   19154: 'slegacy:media/play/v2/content/global/clothing/photos/19154.swf'
 };
 
-export const SPRITES: Record<number, string> = {
+/** Files for the sprites of each relevant clothing ID */
+export const SPRITES: IdRefMap = {
   101: 'slegacy:media/play/v2/content/global/clothing/sprites/101.swf',
   102: 'slegacy:media/play/v2/content/global/clothing/sprites/102.swf',
   103: 'slegacy:media/play/v2/content/global/clothing/sprites/103.swf',

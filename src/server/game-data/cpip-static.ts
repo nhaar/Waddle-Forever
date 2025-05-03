@@ -1,4 +1,7 @@
-export const CPIP_STATIC_FILES: Record<string, string> = {
+import { RouteRefMap } from "./changes";
+
+/** Files to be served static in Post-CPIP (not including 2016) */
+export const CPIP_STATIC_FILES: RouteRefMap = {
   'en/web_service/cover.json': 'slegacy:play/en/web_service/cover.json',
   'en/web_service/epf.json': 'slegacy:play/en/web_service/epf.json',
   'en/web_service/games.json': 'slegacy:play/en/web_service/games.json',

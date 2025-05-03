@@ -1,4 +1,7 @@
-export const AS3_STATIC_FILES: Record<string, string> = {
+import { RouteRefMap } from "./changes";
+
+/** All files to be served during the 2016 versions */
+export const AS3_STATIC_FILES: RouteRefMap = {
   'en/web_service/game_configs/mascots.jsonp': 'svanilla:media/play/en/web_service/game_configs/mascots.jsonp',
   'en/web_service/game_configs/rooms.jsonp': 'svanilla:media/play/en/web_service/game_configs/rooms.jsonp',
   'play/en/web_service/game_configs.bin': 'svanilla:media/play/en/web_service/game_configs.bin',
