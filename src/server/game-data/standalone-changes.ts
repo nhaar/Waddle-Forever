@@ -46,6 +46,10 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   ],
   'play/v2/client/engine.swf': [
     {
+      fileRef: 'unknown:engine_2009.swf',
+      date: CPIP_UPDATE
+    },
+    {
       // engine that has EPF and stuff
       fileRef: 'slegacy:media/play/v2/client/engine.swf',
       date: EPF_RELEASE
@@ -56,6 +60,10 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     }
   ],
   'play/v2/client/interface.swf': [
+    {
+      fileRef: 'unknown:interface_2009.swf',
+      date: CPIP_UPDATE
+    },
     {
       // interface with EPF phone
       fileRef: 'recreation:interface_epf_no_stamps.swf',

@@ -14,7 +14,6 @@ import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../game-data/game-ma
 import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../game-data/parties";
 import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../game-data/music";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
-import { FALLBACKS } from "../game-data/fallbacks";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
@@ -263,14 +262,6 @@ function addStaticFiles(map: RouteMap): void {
   addStatic(PRE_CPIP_STATIC_FILES);
   addStatic(CPIP_AS3_STATIC_FILES);
 }
-
-function addFallbacks(map: FileTimelineMap): void {
-  FALLBACKS.forEach((pair) => {
-    const [route, fileReference] = pair;
-    map.addPerm(route, BETA_RELEASE, fileReference);
-  })
-}
-
 
 /** Maps for each route its file timeline */
 // type TimelineMap = Map<string, FileTimeline>;
@@ -1002,7 +993,6 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addMapUpdates,
     addParties,
     addMusicFiles,
-    addFallbacks,
     addCatalogues,
     addStagePlays,
     addMusicLists,
