@@ -21397,8 +21397,11 @@ export const FILES = new StaticDataTable<File, [
   [21221, 'cave_opening/boiler.swf', 1, FileCategory.Recreation, null, null],
   [21222, 'cave_opening/cave.swf', 1, FileCategory.Recreation, null, null],
   [21223, 'cave_opening/plaza.swf', 1, FileCategory.Recreation, null, null],
+
   [21224, 'ArtworkRoomsMine10.swf', 1, FileCategory.Archives, null, null],
-  [21225, '', 1, FileCategory.Archives, null, null],
+
+  // by VamprLover
+  [21225, 'cave_opening/dance.swf', 1, FileCategory.Recreation, null, null],
   [21226, '', 1, FileCategory.Archives, null, null],
   [21227, '', 1, FileCategory.Archives, null, null],
   [21228, '', 1, FileCategory.Archives, null, null],

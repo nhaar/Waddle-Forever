@@ -261,7 +261,8 @@ export const PARTIES: Party[] = [
       'mine': 21224,
       boiler: 21221,
       cave: 21222,
-      plaza: 21223
+      plaza: 21223,
+      dance: 21225
     },
     roomFrames: {
       mine: 2
