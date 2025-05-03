@@ -1,4 +1,4 @@
-import { FIRST_STAGE_PLAY, PLANET_Y_2010 } from "../data/updates";
+import { FIRST_STAGE_PLAY, PLANET_Y_2010 } from "../game-data/updates";
 import { Version } from "../routes/versions";
 
 /** All stage names */

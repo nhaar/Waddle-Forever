@@ -4,11 +4,11 @@ import { getStampbook } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
-import { getDynamicMusicListData } from "../game/igloo-lists";
+import { getDynamicMusicListData } from "../game-logic/igloo-lists";
 import { getVersionTxt } from "./version.txt";
-import { getSetupTxt } from "../game/setup.txt";
-import { getNewsTxt } from "../game/news.txt";
-import { AS3_UPDATE } from "../data/updates";
+import { getSetupTxt } from "../game-logic/setup.txt";
+import { getNewsTxt } from "../game-logic/news.txt";
+import { AS3_UPDATE } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {

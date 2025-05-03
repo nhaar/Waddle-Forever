@@ -1,5 +1,5 @@
-import { findInVersion, VersionsTimeline } from "../data/changes";
-import { AS2_NEWSPAPERS } from "../data/newspapers";
+import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { AS2_NEWSPAPERS } from "../game-data/newspapers";
 import { processVersion, Version } from "../routes/versions";
 
 function getNewspaperTimeline() {

@@ -1,6 +1,6 @@
 import { choose } from "../../../common/utils";
 import { Handler } from "..";
-import { SPY_DRILLS_DATA } from "../../../server/game/spy-drills";
+import { SPY_DRILLS_DATA } from "../../game-logic/spy-drills";
 
 const handler = new Handler();
 

@@ -1,19 +1,19 @@
 import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
-import { PARTIES } from '../server/data/parties';
+import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from '../server/data/newspapers';
-import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/data/catalogues';
-import { STAGE_TIMELINE } from '../server/game/stage-plays';
-import { IGLOO_LISTS } from '../server/game/igloo-lists';
-import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/data/room-updates';
-import { PINS } from '../server/data/pins';
-import {EARTHQUAKE } from '../server/data/updates';
-import { STANDALONE_TEMPORARY_CHANGE } from '../server/data/standalone-changes';
-import { STADIUM_UPDATES } from '../server/data/stadium-updates';
-import { ROOMS } from '../server/data/rooms';
-import { PRE_CPIP_GAME_UPDATES } from '../server/data/games';
+import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from '../server/game-data/newspapers';
+import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/game-data/catalogues';
+import { STAGE_TIMELINE } from '../server/game-logic/stage-plays';
+import { IGLOO_LISTS } from '../server/game-logic/igloo-lists';
+import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
+import { PINS } from '../server/game-data/pins';
+import {EARTHQUAKE } from '../server/game-data/updates';
+import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
+import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
+import { ROOMS } from '../server/game-data/rooms';
+import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({

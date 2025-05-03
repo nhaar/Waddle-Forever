@@ -1,4 +1,4 @@
-import { getFlooringCost, getIglooCost } from "../../game/iglooItems";
+import { getFlooringCost, getIglooCost } from "../../game-logic/iglooItems";
 import { Handler } from "..";
 import { Client } from "../../../server/client";
 import { IglooFurniture } from "../../../server/database";

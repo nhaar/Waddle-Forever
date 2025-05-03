@@ -1,5 +1,5 @@
-import { findInVersion, VersionsTimeline } from "../data/changes";
-import { BETA_RELEASE, CHAT_339, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE } from "../data/updates";
+import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { BETA_RELEASE, CHAT_339, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE } from "../game-data/updates";
 
 /** Map date and the version number it started using */
 const VERSIONS: Record<string, number> = {

@@ -1,4 +1,4 @@
-import { ITEMS, ItemType } from "../../game/items";
+import { ITEMS, ItemType } from "../../game-logic/items";
 import { Handler } from "..";
 
 const handler = new Handler();

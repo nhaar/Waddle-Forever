@@ -5,8 +5,8 @@ import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 import { getFileServer } from './routes/client-files';
-import { baseFindInVersion } from './data/changes';
-import { specialServer } from './data/specials';
+import { baseFindInVersion } from './game-data/changes';
+import { specialServer } from './game-data/specials';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 

@@ -1,6 +1,6 @@
 import { isPositiveInteger } from '../common/utils';
 import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
-import { PUFFLE_ITEMS } from './game/puffle-item';
+import { PUFFLE_ITEMS } from './game-logic/puffle-item';
 
 export class Penguin {
   private _id: number;

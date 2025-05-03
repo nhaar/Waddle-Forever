@@ -1,7 +1,7 @@
 import { Client } from "../../../server/client";
 import { Handler } from "..";
-import { ITEMS } from "../../game/items";
-import { Room } from "../../game/rooms";
+import { ITEMS } from "../../game-logic/items";
+import { Room } from "../../game-logic/rooms";
 
 const handler = new Handler();
 

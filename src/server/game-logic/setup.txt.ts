@@ -1,7 +1,7 @@
-import { findInVersion, VersionsTimeline } from "../data/changes";
-import { PARTIES } from "../data/parties";
-import { RoomName, ROOMS } from "../data/rooms";
-import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../data/updates";
+import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { PARTIES } from "../game-data/parties";
+import { RoomName, ROOMS } from "../game-data/rooms";
+import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../game-data/updates";
 import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "../routes/client-files";
 import { isGreaterOrEqual, Version } from "../routes/versions";
 
