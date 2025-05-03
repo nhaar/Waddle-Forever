@@ -1,7 +1,56 @@
 import path from "path";
+import fs from 'fs';
 import { StaticDataTable } from "../../common/static-table";
-import { PACKAGES } from "./packages";
 import { STATIC_SERVERS } from "./static-servers";
+import { IS_DEV } from "../../common/constants";
+import { getFilesInDirectory, iterateEntries, MEDIA_DIRECTORY } from "../../common/utils";
+
+/** Name of all packages that aren't default */
+type PackageName = 'clothing';
+
+/** Structure of the package info json file */
+type PackageInfoJson = Record<PackageName, string[]>;
+
+/** Map of all extra packages and their files */
+type PackageInfo = Record<PackageName, Set<string>>;
+
+// included in default because everyone gets this file
+const PACKAGE_INFO_PATH = path.join(MEDIA_DIRECTORY, 'default', 'info.json');
+
+/**
+ * Outputs the file with the package information inside the default folder
+ */
+export function writePackageInfo(): void {
+  const packageInfo: PackageInfoJson = {
+    'clothing': []
+  };
+  iterateEntries(packageInfo, (pkgName) => {
+    packageInfo[pkgName] = getFilesInDirectory(path.join(MEDIA_DIRECTORY, pkgName));
+  });
+
+  fs.writeFileSync(PACKAGE_INFO_PATH, JSON.stringify(packageInfo));
+}
+
+function getPackageInfo(): PackageInfo {
+  const json = JSON.parse(fs.readFileSync(PACKAGE_INFO_PATH, { encoding: 'utf-8'} )) as PackageInfoJson;
+  const packageInfo: Record<PackageName, Set<string>> = {
+    'clothing': new Set()
+  };
+
+  iterateEntries(json, (pkgName, pkgFiles) => {
+    packageInfo[pkgName] = new Set(pkgFiles);
+  });
+
+  return packageInfo;
+}
+
+// in dev we want to constantly update this
+// in production we may not even have all packages, so that information
+// is passed down via the package info file cached inside default
+if (IS_DEV) {
+  writePackageInfo();
+}
+const PACKAGE_INFO = getPackageInfo();
 
 export enum FileCategory {
   Archives,
@@ -28,7 +77,6 @@ type File = {
 /** Get the path to a file */
 export function getMediaFilePath(fileId: number): string {
   const file = FILES.getStrict(fileId);
-  const packageInfo = PACKAGES.getStrict(file.packageId);
   const categoryName = {
     [FileCategory.Archives]: 'archives',
     [FileCategory.Fix]: 'fix',
@@ -46,7 +94,17 @@ export function getMediaFilePath(fileId: number): string {
     filePath = path.join(server.name, filePath);
   }
 
-  return path.join(packageInfo.name, categoryName, filePath);
+  const pkgPath = path.join(categoryName, filePath);
+
+  let pkgName = 'default';
+  for (const pkg in PACKAGE_INFO) {
+    if (PACKAGE_INFO[pkg as PackageName].has(pkgPath)) {
+      pkgName = pkg;
+      break;
+    }
+  }
+
+  return path.join(pkgName, pkgPath);
 }
 
 export const FILES = new StaticDataTable<File, [

@@ -84,3 +84,6 @@ ffdec-path.ts
 
 # file management
 /labels/warnings.txt
+
+# auto generated media info
+/media/default/info.json

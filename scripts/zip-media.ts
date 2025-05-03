@@ -4,6 +4,7 @@ import { zip, OUT_DIR, createOut } from './zip';
 import { generateGlobalCrumbs } from '../crumbs/global-crumbs'
 import { generateLocalCrumbs } from '../crumbs/local-crumbs'
 import { generateNewsCrumbsFiles } from '../crumbs/news-crumbs'
+import { writePackageInfo } from '../src/server/data/files';
 
 const VERSION = require('../package.json').version;
 
@@ -20,6 +21,8 @@ createOut();
   await generateLocalCrumbs();
   console.log('news crumbs');
   await generateNewsCrumbsFiles(true);
+  console.log('package info');
+  writePackageInfo();
   dirs.forEach((dir) => {
     const fullDir = path.join(MEDIA_DIR, dir)
     if (fs.lstatSync(fullDir).isDirectory()) {

@@ -175,3 +175,34 @@ export function findIndexLeftOf<T, K>(value: T, array: K[], isGreaterOrEqual: (v
   } 
   return index;
 }
+
+/**
+ * Given a directory, returns a list of all the files in the directory as paths relative to the given directory
+ */
+export function getFilesInDirectory(basePath: string, relativePath: string = ''): string[] {
+  const fileNames: string[] = [];
+  const absolutePath = path.join(basePath, relativePath);
+  const files = fs.readdirSync(absolutePath);
+  files.forEach((file) => {
+    const fileAbsolutePath = path.join(absolutePath, file);
+    const fileRelativePath = path.join(relativePath, file);
+    if (fs.lstatSync(fileAbsolutePath).isDirectory()) {
+      const childFiles = getFilesInDirectory(basePath, fileRelativePath);
+      fileNames.push(...childFiles);
+    } else {
+      fileNames.push(fileRelativePath);
+    }
+  })
+
+  return fileNames;
+}
+
+/**
+ * Iterate through all entries of an object, calling a function that takes the key and value as arguments
+ */
+export function iterateEntries<Key extends string, Value>(obj: Record<Key, Value>, callback: (key: Key, value: Value) => void) {
+  Object.entries(obj).forEach((pair) => {
+    const [key, value] = pair;
+    callback(key as Key, value as Value);
+  });
+}
