@@ -8,7 +8,7 @@ type GameRelease = {
 type PreCpipGameRelease = GameRelease & {
   '2006'?: string;
   directory: string;
-  fileId: number;
+  fileRef: string;
 };
 
 type GameUpdate = {
@@ -28,47 +28,47 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease, ...Gam
     {
       date: THIN_ICE_RELEASE,
       directory: 'thinice/game.swf',
-      fileId: 5088
+      fileRef: 'archives:ThinIce.swf'
     }
   ],
   'Astro Barrier': [
     {
       '2006': 'astro.swf',
       directory: 'astro/astro.swf',
-      fileId: 19
+      fileRef: 'mammoth:games/astro.swf'
     }
   ],
   'Bean Counters': [
     {
       '2006': 'beans.swf',
       directory: 'beans/beans.swf',
-      fileId: 20
+      fileRef: 'mammoth:games/beans.swf'
     }
   ],
   'Pizzatron 3000': [
     {
       date: '2007-02-26',
       directory: 'pizza/game.swf',
-      fileId: 5089
+      fileRef: 'fix:Pizzatron3000-2007.swf'
     }
   ],
   'Ice Fishing': [
     {
       date: ICE_FISHING_RELEASE,
       directory: 'fish/fish.swf',
-      fileId: 22
+      fileRef: 'mammoth:games/fish.swf'
     }
   ],
   'Hydro Hopper': [
     {
       directory: 'bbiscuit/bbiscuit.swf',
-      fileId: 21
+      fileRef: 'mammoth:games/biscuit.swf'
     }
   ],
   'Puffle Roundup': [
     {
       date: PUFFLE_ROUNDUP_RELEASE,
-      fileId: 23,
+      fileRef: 'mammoth:games/puffle.swf',
       directory: 'roundup/roundup.swf'
     }
   ]

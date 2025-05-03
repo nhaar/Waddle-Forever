@@ -1,18 +1,18 @@
 import { RoomName } from "./rooms";
 
-export const ORIGINAL_ROOMS: Partial<Record<RoomName, number>> = {
-  'town': 27,
-  'coffee': 4855,
-  'book': 29,
-  'dance': 8,
-  'lounge': 12,
-  'shop': 16,
-  'dock': 9,
-  'village': 31,
-  'rink': 33,
-  'dojo': 10,
-  'agent': 4931 // HQ is disputed, maybe not original release
+export const ORIGINAL_ROOMS: Partial<Record<RoomName, string>> = {
+  'town': 'approximation:town_release.swf',
+  'coffee': 'fix:ArtworkRoomsCoffee2.swf',
+  'book': 'archives:Beta-book.swf',
+  'dance': 'mammoth:artwork/rooms/dance10.swf',
+  'lounge': 'mammoth:artwork/rooms/lounge10.swf',
+  'shop': 'mammoth:artwork/rooms/shop10.swf',
+  'dock': 'mammoth:artwork/rooms/dock11.swf',
+  'village': 'approximation:village_release.swf',
+  'rink': 'approximation:rink_release.swf',
+  'dojo': 'mammoth:artwork/rooms/dojo10.swf',
+  'agent': 'archives:ArtworkRoomsAgent10.swf' // HQ is disputed, maybe not original release
 }
 
 // File ID of original map
-export const ORIGINAL_MAP = 34;
+export const ORIGINAL_MAP = 'recreation:map_release.swf';

@@ -2,43 +2,43 @@ import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, ICEBERG_RELEASE, MOD
 
 type MapUpdate = {
   date: string;
-  fileId: number;
+  fileRef: string;
   comment?: string;
 };
 
 export const MAP_UPDATES: MapUpdate[] = [
   {
     date: PIZZA_PARLOR_OPENING_END,
-    fileId: 104
+    fileRef: 'archives:ArtworkMapsIsland5.swf'
   },
   {
     // beach opens
     date: SUMMER_PARTY_START,
-    fileId: 4912
+    fileRef: 'archives:ArtworkMapsIsland10.swf'
   },
   {
     // fix for the beach in the pre-cpip rewrite client
     date: PRE_CPIP_REWRITE_DATE,
-    fileId: 3808
+    fileRef: 'approximation:map_beach_changed_id.swf'
   },
   {
     date: MODERN_AS3,
-    fileId: 2650
+    fileRef: 'svanilla:media/play/v2/content/global/content/map.swf'
   },
   {
     date: COVE_OPENING_START,
-    fileId: 3844
+    fileRef: 'archives:ArtworkMaps15.swf'
   },
   {
     // placeholder map in which the dojo courtyard goes to the dojo
     // we have no other CPIP maps
     date: CPIP_UPDATE,
-    fileId: 4937
+    fileRef: 'unknown:cpip_map_no_dojoext.swf'
   },
   {
     // adding dojo courtyard
     date: DIG_OUT_DOJO_END,
-    fileId: 2637
+    fileRef: 'archives:Map2008-2011Stadium.swf'
   }
 ]
 

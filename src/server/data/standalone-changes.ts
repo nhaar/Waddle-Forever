@@ -11,58 +11,58 @@ type StandaloneChange = {
 type StandaloneTemporaryChange = {
   startDate: string;
   endDate: string;
-  fileId: number;
+  fileRef: string;
   comment?: string;
   endComment?: string;
   updates?: Array<{
     date: string;
-    fileId: number;
+    fileRef: string;
     comment?: string;
   }>
 }
 
-export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: string; comment?: string }>> = {
+export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: string; comment?: string }>> = {
   'chat291.swf': [
     {
       // newspapers-less precpip client
-      fileId: 24,
+      fileRef: 'approximation:chat291_no_news.swf',
       date: BETA_RELEASE
     },
     {
       // precpip client with newspapers
-      fileId: 66,
+      fileRef: 'unknown:chat291.swf',
       date: PRE_BOILER_ROOM_PAPERS[0]
     }
   ],
   'play/v2/client/shell.swf': [
     {
-      fileId: 5105,
+      fileRef: 'slegacy:media/play/v2/client/shell.swf',
       date: CPIP_UPDATE
     },
     {
-      fileId: 5106,
+      fileRef: 'svanilla:media/play/v2/client/shell.swf',
       date: MODERN_AS3
     }
   ],
   'play/v2/client/engine.swf': [
     {
       // engine that has EPF and stuff
-      fileId: 119,
+      fileRef: 'slegacy:media/play/v2/client/engine.swf',
       date: EPF_RELEASE
     },
     {
-      fileId: 2265,
+      fileRef: 'svanilla:media/play/v2/client/engine.swf',
       date: MODERN_AS3
     }
   ],
   'play/v2/client/interface.swf': [
     {
       // interface with EPF phone
-      fileId: 2260,
+      fileRef: 'recreation:interface_epf_no_stamps.swf',
       date: EPF_RELEASE
     },
     {
-      fileId: 2261,
+      fileRef: 'unknown:interface_stamps.swf',
       date: STAMPS_RELEASE
     }
   ],
@@ -70,23 +70,23 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
     {
       // this file is from Dec 2010, but will be using it as a placeholder
       // one from november 2010 exists in archives, and should be included if they are different
-      fileId: 4753,
+      fileRef: 'archives:Dec2010club_penguin.swf',
       date: AS3_UPDATE
     }
   ],
   'play/v2/client/Newspaper.swf': [
     {
-      fileId: 4754,
+      fileRef: 'archives:Dec2010ClientNewspaper.swf',
       date: AS3_UPDATE
     }
   ],
   'play/v2/games/paddle/paddle.swf': [
     {
-      fileId: 181,
+      fileRef: 'slegacy:media/play/v2/games/paddle/paddle.swf',
       date: FAIR_2011_START
     },
     {
-      fileId: 2266,
+      fileRef: 'recreation:paddle_no_brown.swf',
       date: FAIR_2010_START
     }
   ],
@@ -94,47 +94,47 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
     {
       // permanent dig poster after cave expedition
       date: CAVE_EXPEDITION_END,
-      fileId: 1080 
+      fileRef: 'slegacy:media/play/v2/content/local/en/close_ups/digposter2.swf' 
     }
   ],
   'play/v2/client/dependencies.json': [
     {
       // have no better place to put the default dependencies.json
       date: BETA_RELEASE,
-      fileId: 136 
+      fileRef: 'slegacy:media/play/v2/client/dependencies.json' 
     }
   ],
   'web_service/worldachievements.xml': [
     {
       // file from legacy media with a few stamps removed since they shouldn't be there
       date: STAMPS_RELEASE,
-      fileId: 2516
+      fileRef: 'approximation:worldachievements.xml'
     }
   ],
   'play/v2/content/global/binoculars/empty.swf': [
     {
       // placeholder binoculars
       date: CPIP_UPDATE,
-      fileId: 200
+      fileRef: 'slegacy:media/play/v2/content/global/binoculars/empty.swf'
     }
   ],
   'play/v2/content/global/telescope/empty.swf': [
     {
       // placeholder telescope
       date: CPIP_UPDATE,
-      fileId: 270
+      fileRef: 'slegacy:media/play/v2/content/global/telescope/empty.swf'
     }
   ],
   'play/v2/content/global/igloo/assets/igloo_background.swf': [
     {
       // placeholder igloo background
       date: CPIP_UPDATE,
-      fileId: 366
+      fileRef: 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf'
     }
   ],
   'play/v2/content/local/en/catalogues/ninja.swf': [
     {
-      fileId: 2690,
+      fileRef: 'archives:November09Ninja2.swf',
       comment: 'The amulet is added to the Martial Artworks',
       date: '2009-11-13',
     }
@@ -142,41 +142,41 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileId: number; date: str
   'play/v2/content/local/en/catalogues/pets.swf': [
     {
       date: '2010-03-19',
-      fileId: 2691
+      fileRef: 'archives:Mar2010Pets.swf'
     }
   ],
   'play/v2/content/local/en/forms/library.swf': [
     {
       date: '2009-10-24',
-      fileId: 2692
+      fileRef: 'recreation:library_2009.swf'
     },
     {
       date: ANNIVERSARY_5_START,
-      fileId: 2693
+      fileRef: 'archives:ENFormsLibrary-2010.swf'
     }
   ],
   'play/v2/content/local/en/postcards/111.swf': [
     {
       date: '2010-02-25',
-      fileId: 2695
+      fileRef: 'fix:postcard_orange_puffle.swf'
     },
     {
       date: '2011-02-17',
-      fileId: 2694
+      fileRef: 'archives:Enm111.swf'
     }
   ],
   'play/v2/games/roundup/PuffleRoundup.swf': [
     {
       // orange puffle version, must add white puffle version too later
       date: CPIP_UPDATE,
-      fileId: 3735
+      fileRef: 'recreation:puffle_roundup_orange.swf'
     }
   ],
   'play/v2/content/local/en/catalogues/costume.swf': [
     {
       // placeholder CPIP stage
       date: CPIP_UPDATE,
-      fileId: 4888
+      fileRef: 'archives:January2009Costume.swf'
     }
   ]
 };
@@ -186,7 +186,7 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
     {
       startDate: MUSIC_JAM_2010_CONST_START,
       endDate: JULY_4_2010_END,
-      fileId: 2295 // same as new years day
+      fileRef: 'archives:2010newyearfireworksskihill.swf' // same as new years day
     }
   ],
   'play/v2/content/global/rooms/berg.swf': [
@@ -194,14 +194,14 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       // removing fireworks in music jam construction for the iceberg
       startDate: JULY_4_2010_END,
       endDate: MUSIC_JAM_2010_START,
-      fileId: 2474
+      fileRef: 'recreation:iceberg_mjamconst_no_fireworks.swf'
     }
   ],
   'play/v2/content/global/binoculars/empty.swf': [
     {
       startDate: '2010-10-21',
       endDate: HALLOWEEN_2010_START,
-      fileId: 2634,
+      fileRef: 'archives:Storm_on_horizon.swf',
       comment: 'A storm is approaching and visible from the Cove'
     }
   ],
@@ -209,13 +209,13 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
     {
       startDate: CHRISTMAS_2006_DECORATION,
       endDate: '2006-12-21',
-      fileId: 3836,
+      fileRef: 'archives:ArtworkRoomsPlaza42.swf',
       comment: 'A tree is available to be decorated for Christmas'
     },
     {
       startDate: '2007-12-14',
       endDate: CHRISTMAS_2007_START,
-      fileId: 3905,
+      fileRef: 'archives:RoomsPlaza-ChristmasParty2007Pre.swf',
       comment: 'The Coins For Change event begins'
     }
   ],
@@ -227,7 +227,7 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       // it probably just replayed each time
       startDate: '2008-01-16',
       endDate: '2008-02-06',
-      fileId: 4940,
+      fileRef: 'archives:BeaconTelescopeCrash.swf',
       comment: 'Something happening with The Migrator can be viewed from the telescope',
       endComment: 'The Migrator is completely sunk',
       updates: [
@@ -236,25 +236,25 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
           // this date below here is mostly an assumption, but it should be this at most
           // by the 23rd
           date: '2008-01-18',
-          fileId: 4941,
+          fileRef: 'archives:TelescopeCrash2.swf',
           comment: 'The aftermath of The Migrator crash remains in the telescope'
         },
         {
           date: '2008-01-30',
           comment: 'The Migrator\'s remains sink further',
-          fileId: 4943
+          fileRef: 'archives:TelescopeCrash3.swf'
         },
         {
           date: '2008-02-01',
           comment: 'Rockhopper is seen leaving Club Penguin from the telescope',
-          fileId: 4944
+          fileRef: 'archives:TelescopeCrash4.swf'
         }
       ]
     },
     {
       startDate: '2008-04-17',
       endDate: ROCKHOPPER_ARRIVAL_PARTY_START,
-      fileId: 4945,
+      fileRef: 'archives:Telescope0417.swf',
       comment: 'Rockhopper is spotted through the telescope'
     }
   ],

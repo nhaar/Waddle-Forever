@@ -1,27 +1,28 @@
 import { Version } from "../routes/versions";
+import { FileRef } from "./files";
 import { RoomName } from "./rooms";
 import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, FIRE_CELEBRATION_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
 // room name -> file Id
-export type RoomChanges = Partial<Record<RoomName, number>>;
+export type RoomChanges = Partial<Record<RoomName, FileRef>>;
 
 type Language = 'en';
 
 /** First element is file id used, then a list of all the crumbs that point to this path */
-export type CrumbIndicator = [number, ...string[]];
+export type CrumbIndicator = [FileRef, ...string[]];
 
 export type PartyChanges = {
   roomChanges: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   // inside a map of each language
-  localChanges?: Record<string, Partial<Record<Language, number | CrumbIndicator>>>;
+  localChanges?: Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
   // maps route inside play/v2/global to either file Id or tuple [global_path name, file Id]
-  globalChanges?: Record<string, number | CrumbIndicator>
+  globalChanges?: Record<string, FileRef | CrumbIndicator>
 
   roomFrames?: Partial<Record<RoomName, number>>;
 
   // route -> fileId
-  generalChanges?: Record<string, number>;
+  generalChanges?: Record<string, FileRef>;
 }
 
 export type Party = PartyChanges & {
@@ -40,7 +41,7 @@ export type Party = PartyChanges & {
   construction?: Construction;
   /** Scavenger Hunt icon is loaded by the dependency, must be specified */
   scavengerHunt2010?: {
-    iconFileId: number;
+    iconFileId: FileRef;
     // if not supplied, will use a placeholder one
     iconFilePath?: string;
   };
@@ -48,7 +49,7 @@ export type Party = PartyChanges & {
   /** If used the CPIP fair icon and its info */
   fairCpip?: {
     // exact ID
-    iconFileId: number;
+    iconFileId: FileRef;
     // UI id might be required in the future if we find different ones
   };
 
@@ -65,7 +66,7 @@ export type Party = PartyChanges & {
    * For a scavenger hunt in the 2007-2008 client,
    * writing what the file number of the egg file is
    * */
-  scavengerHunt2007?: number;
+  scavengerHunt2007?: FileRef;
 
   /** Permanent changes to the island at the party's start */
   permanentChanges?: PartyChanges & { roomComment?: string; };
@@ -93,7 +94,7 @@ export const PARTIES: Party[] = [
     startDate: '2005-09-21',
     endDate: '2005-09-22',
     roomChanges: {
-      'town': 38
+      'town': 'archives:Beta-town.swf'
     }
   },
   {
@@ -101,12 +102,12 @@ export const PARTIES: Party[] = [
     startDate: '2005-10-27',
     endDate: '2005-11-01',
     roomChanges: {
-      'book': 76,
-      'dance': 77,
-      'lounge': 78,
-      'dojo': 79,
-      'rink': 80,
-      'town': 81
+      'book': 'fix:Book2_03_halloween.swf',
+      'dance': 'fix:Dance1b_halloween.swf',
+      'lounge': 'fix:Lounge1_halloween.swf',
+      'dojo': 'fix:Dojo_halloween.swf',
+      'rink': 'fix:Icerink_halloween.swf',
+      'town': 'fix:Town_halloween.swf'
     }
   },
   {
@@ -114,9 +115,9 @@ export const PARTIES: Party[] = [
     startDate: '2005-11-15',
     endDate: '2005-12-05',
     roomChanges: {
-      'dance': 84,
-      'forts': 85,
-      'rink': 86
+      'dance': 'fix:Dance1b_pet.swf',
+      'forts': 'fix:Forts_pet.swf',
+      'rink': 'fix:Icerink_pet.swf'
     }
   },
   {
@@ -124,13 +125,13 @@ export const PARTIES: Party[] = [
     startDate: '2005-12-22',
     endDate: CHRISTMAS_2005_ENDS,
     roomChanges: {
-      'coffee': 88,
-      'dance': 89,
-      'lodge': 90,
-      'rink': 91,
-      'shop': 92,
-      'town': 93,
-      'village': 94
+      'coffee': 'fix:CP05Coffee.swf',
+      'dance': 'fix:CP05Dance.swf',
+      'lodge': 'fix:CP05Lodge.swf',
+      'rink': 'fix:CP05Rink.swf',
+      'shop': 'fix:CP05Shop.swf',
+      'town': 'fix:CP05Town.swf',
+      'village': 'fix:CP05Village.swf'
     },
     music: {
       'town': 200,
@@ -144,7 +145,7 @@ export const PARTIES: Party[] = [
     permanentChanges: {
       roomChanges: {
         // lodge is now accessible
-        village: 30
+        village: 'archives:ArtworkRoomsVillage11.swf'
       }
     }
   },
@@ -153,8 +154,8 @@ export const PARTIES: Party[] = [
     startDate: '2006-02-14',
     endDate: '2006-02-15',
     roomChanges: {
-      'dance': 98,
-      'lounge': 97
+      'dance': 'archives:ArtworkRooms0214Dance.swf',
+      'lounge': 'archives:ArtworkRooms0214Lounge.swf'
     }
   },
   {
@@ -162,10 +163,10 @@ export const PARTIES: Party[] = [
     startDate: '2006-01-27',
     endDate: '2006-01-29',
     roomChanges: {
-      dance: 21215,
-      dock: 21216,
-      forts: 21217,
-      town: 21218
+      dance: 'recreation:winter_luau/dance.swf',
+      dock: 'recreation:winter_luau/dock.swf',
+      forts: 'recreation:winter_luau/forts.swf',
+      town: 'recreation:winter_luau/town.swf'
     },
     music: {
       dock: 11,
@@ -179,9 +180,9 @@ export const PARTIES: Party[] = [
     startDate: PIZZA_PARLOR_OPENING_START,
     endDate: PIZZA_PARLOR_OPENING_END,
     roomChanges: {
-      'forts': 99,
-      'pizza': 100,
-      'town': 101
+      'forts': 'archives:ArtworkRoomsForts11.swf',
+      'pizza': 'archives:ArtworkRoomsPizza10.swf',
+      'town': 'archives:ArtworkRoomsTown13.swf'
     },
     music: {
       'plaza': 2
@@ -192,10 +193,10 @@ export const PARTIES: Party[] = [
     consequences: {
       roomChanges: {
         // now has path to the plaza
-        forts: 36
+        forts: 'archives:ArtworkRoomsForts12.swf'
       },
       // TODO map abstraction in general changes?
-      generalChanges: { 'artwork/maps/island5.swf': 18380 }
+      generalChanges: { 'artwork/maps/island5.swf': 'approximation:map_plaza_no_berg.swf' }
     }
   },
   {
@@ -205,9 +206,9 @@ export const PARTIES: Party[] = [
     endComment: 'The St. Patrick\'s Day and Puffle party ends',
     endDate: '2006-03-20',
     roomChanges: {
-      'village': 110,
-      'plaza': 4870,
-      'town': 4871
+      'village': 'archives:ArtworkRooms0401Village.swf',
+      'plaza': 'archives:ArtworkRoomsPlaza11.swf',
+      'town': 'archives:ArtworkRoomsTown12.swf'
     },
     roomFrames: {
       'village': 2
@@ -218,14 +219,14 @@ export const PARTIES: Party[] = [
     startDate: '2006-03-31',
     endDate: '2006-04-03',
     roomChanges: {
-      'dojo': 105,
-      'rink': 106,
-      'dance': 107,
-      'plaza': 108,
-      'lodge': 109,
-      'village': 110,
-      'forts': 111,
-      'town': 112
+      'dojo': 'archives:ArtworkRooms0401Dojo.swf',
+      'rink': 'archives:ArtworkRooms0401Rink.swf',
+      'dance': 'archives:ArtworkRooms0401Dance.swf',
+      'plaza': 'archives:ArtworkRoomsPlaza13.swf',
+      'lodge': 'archives:ArtworkRooms0401Lodge.swf',
+      'village': 'archives:ArtworkRooms0401Village.swf',
+      'forts': 'archives:ArtworkRooms0401Forts.swf',
+      'town': 'archives:ArtworkRooms0401Town.swf'
     },
     music: {
       'dance': 201,
@@ -243,14 +244,14 @@ export const PARTIES: Party[] = [
     startDate: EGG_HUNT_2006_START,
     endDate: EGG_HUNT_2006_END,
     roomChanges: {
-      'book': 3759,
-      'berg': 3760,
-      'dance': 3761,
-      'pet': 3762,
-      'mtn': 3763,
-      'lodge': 3764,
-      'village': 3765,
-      'forts': 3766
+      'book': 'archives:ArtworkRooms0416Book10.swf',
+      'berg': 'archives:ArtworkRooms0416Berg10.swf',
+      'dance': 'archives:ArtworkRooms0416Dance10.swf',
+      'pet': 'archives:ArtworkRooms0416Pet11.swf',
+      'mtn': 'archives:ArtworkRooms0416Mtn10.swf',
+      'lodge': 'archives:ArtworkRooms0416Lodge11.swf',
+      'village': 'archives:ArtworkRooms0416Village12.swf',
+      'forts': 'archives:ArtworkRooms0416Forts12.swf'
     }
   },
   {
@@ -258,11 +259,11 @@ export const PARTIES: Party[] = [
     startDate: CAVE_OPENING_START,
     endDate: CAVE_OPENING_END,
     roomChanges: {
-      'mine': 21224,
-      boiler: 21221,
-      cave: 21222,
-      plaza: 21223,
-      dance: 21225
+      'mine': 'archives:ArtworkRoomsMine10.swf',
+      boiler: 'recreation:cave_opening/boiler.swf',
+      cave: 'recreation:cave_opening/cave.swf',
+      plaza: 'recreation:cave_opening/plaza.swf',
+      dance: 'recreation:cave_opening/dance.swf'
     },
     roomFrames: {
       mine: 2
@@ -276,9 +277,9 @@ export const PARTIES: Party[] = [
     permanentChanges: {
       roomChanges: {
         // manhole path
-        plaza: 3780,
+        plaza: 'archives:ArtworkRoomsPlaza17.swf',
         // green puffle + boiler room trigger
-        dance: 3779
+        dance: 'archives:ArtworkRoomsDance14.swf'
       }
     }
   },
@@ -287,18 +288,18 @@ export const PARTIES: Party[] = [
     startDate: SUMMER_PARTY_START,
     endDate: SUMMER_PARTY_END,
     roomChanges: {
-      'beach': 3796,
-      'boiler': 3797,
-      'dock': 3798,
-      'dojo': 3799,
-      'berg': 3800,
-      'shack': 3801,
-      'dance': 3802,
-      'plaza': 3803,
-      'mtn': 3804,
-      'village': 3805,
-      'forts': 3806,
-      'town': 3807
+      'beach': 'archives:ArtworkRooms0615Beach10.swf',
+      'boiler': 'archives:ArtworkRooms0615Boiler12.swf',
+      'dock': 'archives:ArtworkRooms0615Dock12.swf',
+      'dojo': 'archives:ArtworkRooms0615Dojo11.swf',
+      'berg': 'archives:ArtworkRooms0615Berg11.swf',
+      'shack': 'archives:ArtworkRooms0615Shack10.swf',
+      'dance': 'archives:ArtworkRooms0615Dance15.swf',
+      'plaza': 'archives:ArtworkRooms0615Plaza18.swf',
+      'mtn': 'archives:ArtworkRooms0516Mtn11.swf',
+      'village': 'archives:ArtworkRooms0615Village12.swf',
+      'forts': 'archives:ArtworkRooms0615Forts13.swf',
+      'town': 'archives:ArtworkRooms0615Town12.swf'
     },
     music: {
       'beach': 204,
@@ -319,8 +320,8 @@ export const PARTIES: Party[] = [
         date: '2006-06-21',
         comment: 'Two new items are available for the Summer Party',
         roomChanges: {
-          'beach': 3831,
-          'plaza': 3832
+          'beach': 'archives:ArtworkRooms0615Beach11.swf',
+          'plaza': 'archives:ArtworkRooms0615Plaza19.swf'
         }
       }
     ],
@@ -328,8 +329,8 @@ export const PARTIES: Party[] = [
       roomComment: 'More rooms are visible from the HQ',
       roomChanges: {
         // now this has a path to the beach
-        village: 4924,
-        agent: 4933
+        village: 'archives:ArtworkRoomsVillage13.swf',
+        agent: 'archives:ArtworkRoomsAgent13.swf'
       }
     }
   },
@@ -338,10 +339,10 @@ export const PARTIES: Party[] = [
     startDate: '2006-07-14',
     endDate: '2006-07-17',
     roomChanges: {
-      plaza: 3814,
-      forts: 3815,
-      dance: 3813,
-      town: 3816
+      plaza: 'archives:ArtworkRoomsPlaza20.swf',
+      forts: 'archives:ArtworkRoomsForts14.swf',
+      dance: 'archives:ArtworkRoomsDance15.swf',
+      town: 'archives:ArtworkRoomsTown14.swf'
     },
     music: {
       // we dont know the exact origins of this but,
@@ -363,14 +364,14 @@ export const PARTIES: Party[] = [
     startDate: '2006-07-21',
     endDate: '2006-07-23',
     roomChanges: {
-      'boiler': 3939,
-      'cave': 3940,
-      'dock': 3941,
-      'mtn': 3942,
-      'lodge': 3943,
-      'village': 3944,
-      'pet': 3945,
-      'pizza': 3946
+      'boiler': 'archives:ArtworkRoomsBoiler11.swf',
+      'cave': 'archives:ArtworkRooms0721Cave13.swf',
+      'dock': 'archives:ArtworkRooms0721Dock10.swf',
+      'mtn': 'archives:ArtworkRooms0721Mtn10.swf',
+      'lodge': 'archives:ArtworkRooms0721Lodge14.swf',
+      'village': 'archives:ArtworkRooms0721Village12.swf',
+      'pet': 'archives:ArtworkRooms0721Pet11.swf',
+      'pizza': 'archives:ArtworkRooms0721Pizza13.swf'
     }
   },
   {
@@ -378,17 +379,17 @@ export const PARTIES: Party[] = [
     startDate: SPORT_PARTY_START,
     endDate: SPORT_PARTY_END,
     roomChanges: {
-      'beach': 3818,
-      'cave': 3819,
-      'coffee': 3820,
-      'dock': 3821,
-      'rink': 3822,
-      'pizza': 3823,
-      'plaza': 3824,
-      'mtn': 3825,
-      'village': 3826,
-      'forts': 3827,
-      'town': 3828
+      'beach': 'archives:ArtworkRoomsBeach13.swf',
+      'cave': 'archives:ArtworkRoomsCave14.swf',
+      'coffee': 'archives:ArtworkRoomsCoffee12.swf',
+      'dock': 'archives:ArtworkRoomsDock14.swf',
+      'rink': 'archives:ArtworkRoomsRink20.swf',
+      'pizza': 'archives:ArtworkRoomsPizza14.swf',
+      'plaza': 'archives:ArtworkRoomsPlaza21.swf',
+      'mtn': 'archives:ArtworkRoomsMtn12.swf',
+      'village': 'archives:ArtworkRoomsVillage15.swf',
+      'forts': 'archives:ArtworkRoomsForts16.swf',
+      'town': 'archives:ArtworkRoomsTown15.swf'
     },
     music: {
       'beach': 213,
@@ -421,7 +422,7 @@ export const PARTIES: Party[] = [
         date: '2006-08-18',
         comment: 'A new item is in the Snow Forts for the Sports Party',
         roomChanges: {
-          forts: 3830
+          forts: 'archives:ArtworkRoomsForts17.swf'
         },
         roomFrames: {
           forts: 3
@@ -431,7 +432,7 @@ export const PARTIES: Party[] = [
     consequences: {
       roomComment: 'The pool becomes a part of the undeground after the Sports Party ends',
       roomChanges: {
-        cave: 4916,
+        cave: 'archives:ArtworkRoomsCave40.swf',
       }
     }
   },
@@ -440,8 +441,8 @@ export const PARTIES: Party[] = [
     startDate: LIGHTHOUSE_PARTY_START,
     endDate: '2006-09-24',
     roomChanges: {
-      'beacon': 3833,
-      'light': 3834
+      'beacon': 'archives:Beacon30.swf',
+      'light': 'archives:Lighthouse30.swf'
     },
     roomFrames: {
       'light': 2,
@@ -452,7 +453,7 @@ export const PARTIES: Party[] = [
         // first room archived with the lighthouse open
         // used for the party since the SWF for the beach in
         // the party is also lost
-        beach: 3835
+        beach: 'archives:ArtworkRoomsBeach41.swf'
       }
     }
   },
@@ -461,7 +462,7 @@ export const PARTIES: Party[] = [
     startDate: '2007-01-19',
     endDate: '2007-01-22',
     roomChanges: {
-      'village': 3837
+      'village': 'archives:Village40.swf'
     },
     music: {
       'village': 206
@@ -472,8 +473,8 @@ export const PARTIES: Party[] = [
     startDate: '2007-04-27',
     endDate: '2007-05-04',
     roomChanges: {
-      'town': 3840,
-      'dock': 3839
+      'town': 'archives:RoomsTown-PirateParty2007.swf',
+      'dock': 'archives:RoomsDock-PirateParty2007.swf'
     },
     music: {
       'town': 212,
@@ -485,7 +486,7 @@ export const PARTIES: Party[] = [
     startDate: '2007-07-13',
     endDate: '2007-07-23',
     roomChanges: {
-      'dojo': 3847
+      'dojo': 'archives:ArtworkRoomsDojo50.swf'
     },
     music: {
       'dojo': 217
@@ -498,7 +499,7 @@ export const PARTIES: Party[] = [
     startComment: 'Camp Penguin party begins',
     endComment: 'Camp Penguin party ends',
     roomChanges: {
-      'village': 3849
+      'village': 'archives:RoomsVillage-CampPenguin.swf'
     }
   },
   {
@@ -506,22 +507,22 @@ export const PARTIES: Party[] = [
     startDate: '2007-09-21',
     endDate: '2007-10-01',
     roomChanges: {
-      'beach': 3850,
-      'beacon': 3851,
-      'cove': 3852,
-      'lounge': 3853,
-      'dock': 3854,
-      'forest': 3855,
-      'rink': 3856,
-      'light': 3857,
-      'mine': 3858,
-      'dance': 3859,
-      'pizza': 3860,
-      'plaza': 3861,
-      'mtn': 3862,
-      'village': 3863,
-      'forts': 3864,
-      'town': 3865
+      'beach': 'archives:RoomsBeach-FallFair2007.swf',
+      'beacon': 'archives:RoomsBeacon-FallFair2007.swf',
+      'cove': 'archives:RoomsCove-FallFair2007.swf',
+      'lounge': 'archives:RoomsLounge-FallFair2007.swf',
+      'dock': 'archives:RoomsDock-FallFair2007.swf',
+      'forest': 'archives:RoomsForest-FallFair2007.swf',
+      'rink': 'archives:RoomsRink-FallFair2007.swf',
+      'light': 'archives:RoomsLight-FallFair2007.swf',
+      'mine': 'archives:RoomsMine-FallFair2007.swf',
+      'dance': 'archives:RoomsDance-FallFair2007.swf',
+      'pizza': 'archives:RoomsPizza-FallFair2007.swf',
+      'plaza': 'archives:RoomsPlaza-FallFair2007.swf',
+      'mtn': 'archives:RoomsMtn-FallFair2007.swf',
+      'village': 'archives:RoomsVillage-FallFair2007.swf',
+      'forts': 'archives:RoomsForts-FallFair2007.swf',
+      'town': 'archives:RoomsTown-FallFair2007.swf'
     },
     music: {
       // music wiki backed
@@ -541,17 +542,17 @@ export const PARTIES: Party[] = [
       'mtn': 221
     },
     generalChanges: {
-      'artwork/rooms/0926/PrizeBooth2.swf': 3867
+      'artwork/rooms/0926/PrizeBooth2.swf': 'archives:CataloguesPrizebooth-FallFair2007.swf'
     },
-    scavengerHunt2007: 3866
+    scavengerHunt2007: 'archives:ContentParty_icon-FallFair2007.swf'
   },
   {
     name: '2nd Anniversary Party',
     startDate: '2007-10-24',
     endDate: '2007-10-25',
     roomChanges: {
-      'book': 3870,
-      'coffee': 3871
+      'book': 'archives:RoomsBook-2ndAnniversary.swf',
+      'coffee': 'archives:RoomsCoffee-2ndAnniversary.swf'
     },
     music: {
       'coffee': 100
@@ -562,26 +563,26 @@ export const PARTIES: Party[] = [
     startDate: '2007-10-26',
     endDate: '2007-11-01',
     roomChanges: {
-      'beach': 3873,
-      'beacon': 3874,
-      'cave': 3875,
-      'coffee': 3876,
-      'cove': 3877,
-      'dock': 3878,
-      'forest': 3879,
-      'berg': 3880,
-      'light': 3881,
-      'attic': 3882,
-      'shack': 3883,
-      'dance': 3884,
-      'pizza': 3885,
-      'plaza': 3886,
-      'forts': 3887,
-      'rink': 3888,
-      'mtn': 3889,
-      'lodge': 3890,
-      'village': 3891,
-      'town': 3892
+      'beach': 'archives:RoomsBeach-HalloweenParty2007.swf',
+      'beacon': 'archives:RoomsBeacon-HalloweenParty2007.swf',
+      'cave': 'archives:RoomsCave-HalloweenParty2007.swf',
+      'coffee': 'archives:RoomsCoffee-HalloweenParty2007.swf',
+      'cove': 'archives:RoomsCove-HalloweenParty2007.swf',
+      'dock': 'archives:RoomsDock-HalloweenParty2007.swf',
+      'forest': 'archives:RoomsForest-HalloweenParty2007.swf',
+      'berg': 'archives:RoomsBerg-HalloweenParty2007.swf',
+      'light': 'archives:RoomsLight-HalloweenParty2007.swf',
+      'attic': 'archives:RoomsAttic-HalloweenParty2007.swf',
+      'shack': 'archives:RoomsShack-HalloweenParty2007.swf',
+      'dance': 'archives:RoomsDance-HalloweenParty2007.swf',
+      'pizza': 'archives:RoomsPizza-HalloweenParty2007.swf',
+      'plaza': 'archives:RoomsPlaza-HalloweenParty2007.swf',
+      'forts': 'archives:RoomsForts-HalloweenParty2007.swf',
+      'rink': 'archives:RoomsRink-HalloweenParty2007.swf',
+      'mtn': 'archives:RoomsMtn-HalloweenParty2007.swf',
+      'lodge': 'archives:RoomsLodge-HalloweenParty2007.swf',
+      'village': 'archives:RoomsVillage-HalloweenParty2007.swf',
+      'town': 'archives:RoomsTown-HalloweenParty2007.swf'
     },
     music: {
       // mix of archives + music wiki
@@ -603,7 +604,7 @@ export const PARTIES: Party[] = [
       'plaza': 223
     },
     generalChanges: {
-      'artwork/tools/binoculars1.swf': 2563
+      'artwork/tools/binoculars1.swf': 'archives:ContentBinoculars-HalloweenParty2007.swf'
     }
   },
   {
@@ -611,13 +612,13 @@ export const PARTIES: Party[] = [
     startDate: '2007-11-23',
     endDate: '2007-11-26',
     roomChanges: {
-      'cove': 3897,
-      'dock': 3898,
-      'forest': 3899,
-      'dance': 3900,
-      'plaza': 3901,
-      'forts': 3902,
-      'town': 3903
+      'cove': 'archives:RoomsCove-SurpriseParty.swf',
+      'dock': 'archives:RoomsDock-SurpriseParty.swf',
+      'forest': 'archives:RoomsForest-SurpriseParty.swf',
+      'dance': 'archives:RoomsDance-SurpriseParty.swf',
+      'plaza': 'archives:RoomsPlaza-SurpriseParty.swf',
+      'forts': 'archives:RoomsForts-SurpriseParty.swf',
+      'town': 'archives:RoomsTown-SurpriseParty.swf'
     },
     music: {
       // just put music in every room
@@ -635,21 +636,21 @@ export const PARTIES: Party[] = [
     startDate: CHRISTMAS_2007_START,
     endDate: '2008-01-02',
     roomChanges: {
-      'beach': 3906,
-      'beacon': 3907,
-      'book': 3908,
-      'cove': 3909,
-      'dock': 3910,
-      'forest': 3911,
-      'berg': 3912,
-      'attic': 3913,
-      'dance': 3914,
-      'plaza': 3915,
-      'mtn': 3916,
-      'lodge': 3917,
-      'village': 3918,
-      'forts': 3919,
-      'town': 3920
+      'beach': 'archives:RoomsBeach-ChristmasParty2007.swf',
+      'beacon': 'archives:RoomsBeacon-ChristmasParty2007.swf',
+      'book': 'archives:RoomsBook-ChristmasParty2007.swf',
+      'cove': 'archives:RoomsCove-ChristmasParty2007.swf',
+      'dock': 'archives:RoomsDock-ChristmasParty2007.swf',
+      'forest': 'archives:RoomsForest-ChristmasParty2007.swf',
+      'berg': 'archives:RoomsBerg-ChristmasParty2007.swf',
+      'attic': 'archives:RoomsAttic-ChristmasParty2007.swf',
+      'dance': 'archives:RoomsDance-ChristmasParty2007.swf',
+      'plaza': 'archives:RoomsPlaza-ChristmasParty2007.swf',
+      'mtn': 'archives:RoomsMtn-ChristmasParty2007.swf',
+      'lodge': 'archives:RoomsLodge-ChristmasParty2007.swf',
+      'village': 'archives:RoomsVillage-ChristmasParty2007.swf',
+      'forts': 'archives:RoomsForts-ChristmasParty2007.swf',
+      'town': 'archives:RoomsTown-ChristmasParty2007.swf'
     },
     music: {
       'beach': 200,
@@ -674,10 +675,10 @@ export const PARTIES: Party[] = [
     startDate: WINTER_FIESTA_08_START,
     endDate: '2008-01-21',
     roomChanges: {
-      'coffee': 3926,
-      'village': 3933,
-      'forts': 3934,
-      'town': 3935
+      'coffee': 'archives:RoomsCoffee-WinterFiesta2008.swf',
+      'village': 'archives:RoomsVillage-WinterFiesta2008.swf',
+      'forts': 'archives:RoomsForts-WinterFiesta2008.swf',
+      'town': 'archives:RoomsTown-WinterFiesta2008.swf'
     },
     music: {
       'beach': 229,
@@ -698,20 +699,20 @@ export const PARTIES: Party[] = [
     startDate: '2008-02-15',
     endDate: '2008-02-22',
     roomChanges: {
-      'beach': 3947,
-      'beacon': 3948,
-      'book': 3949,
-      'coffee': 3950,
-      'cove': 3951,
-      'lounge': 3952,
-      'dock': 3953,
-      forest: 3954,
-      dance: 3956,
-      pizza: 3957,
-      plaza: 3958,
-      village: 3959,
-      forts: 3960,
-      town: 3961
+      'beach': 'archives:RoomsBeach-SubMarine.swf',
+      'beacon': 'archives:RoomsBeacon-SubMarine.swf',
+      'book': 'archives:RoomsBook-SubMarine.swf',
+      'coffee': 'archives:RoomsCoffee-SubMarine.swf',
+      'cove': 'archives:RoomsCove-SubMarine.swf',
+      'lounge': 'archives:RoomsLounge-SubMarine.swf',
+      'dock': 'archives:RoomsDock-SubMarine.swf',
+      forest: 'archives:RoomsForest-SubMarine.swf',
+      dance: 'archives:RoomsDance-SubMarine.swf',
+      pizza: 'archives:RoomsPizza-SubMarine.swf',
+      plaza: 'archives:SubMarinePlaza.swf',
+      village: 'archives:RoomsVillage-SubMarine.swf',
+      forts: 'archives:RoomsForts-SubMarine.swf',
+      town: 'archives:RoomsTown-SubMarine.swf'
     },
     music : {
       town: 230,
@@ -735,14 +736,14 @@ export const PARTIES: Party[] = [
     startDate: '2008-03-14',
     endDate: '2008-03-18',
     roomChanges: {
-      coffee: 3964,
-      dock: 3965,
-      forest: 3966,
-      dance: 3967,
-      plaza: 3968,
-      village: 3969,
-      forts: 3970,
-      town: 3971
+      coffee: 'archives:ArtworkRooms0314Coffee42.swf',
+      dock: 'archives:ArtworkRooms0314Dock43.swf',
+      forest: 'archives:ArtworkRooms0314Forest42.swf',
+      dance: 'archives:ArtworkRooms0314Dance43.swf',
+      plaza: 'archives:ArtworkRooms0314Plaza47.swf',
+      village: 'archives:ArtworkRooms0314Village43.swf',
+      forts: 'archives:ArtworkRooms0314Forts41.swf',
+      town: 'archives:ArtworkRooms0314Town40.swf'
     },
     music: {
       coffee: 208,
@@ -760,45 +761,45 @@ export const PARTIES: Party[] = [
     startDate: '2008-03-21',
     endDate: '2008-03-24',
     roomChanges: {
-      book: 4954,
-      dock: 4955,
-      dojo: 4956,
-      shop: 4957,
-      attic: 4958,
-      mine: 4959,
-      pet: 4960,
-      plaza: 4961
+      book: 'archives:RoomsBook-EasterEggHunt2008.swf',
+      dock: 'archives:RoomsDock-EasterEggHunt2008.swf',
+      dojo: 'archives:RoomsDojo-EasterEggHunt2008.swf',
+      shop: 'archives:RoomsShop-EasterEggHunt2008.swf',
+      attic: 'archives:RoomsAttic-EasterEggHunt2008.swf',
+      mine: 'archives:RoomsMine-EasterEggHunt2008.swf',
+      pet: 'archives:RoomsPet-EasterEggHunt2008.swf',
+      plaza: 'archives:RoomsPlaza-EasterEggHunt2008.swf'
     },
-    scavengerHunt2007: 4962
+    scavengerHunt2007: 'archives:Eggs-EasterEggHunt2008.swf'
   },
   {
     name: 'April Fools\' Party',
     startDate: '2008-03-28',
     endDate: '2008-04-02',
     roomChanges: {
-      beach: 3973,
-      beacon: 3974,
-      boiler: 3975,
-      book: 3976,
-      coffee: 3977,
-      lounge: 3978,
-      dock: 3979,
-      dojo: 3980,
-      forest: 3981,
-      shop: 3982,
-      berg: 3983,
-      light: 3984,
-      attic: 3985,
-      shack: 3986,
-      dance: 3987,
-      pet: 3988,
-      pizza: 3989,
-      plaza: 3990,
-      lodge: 3991,
-      village: 3992,
-      forts: 3993,
-      town: 3994,
-      cove: 2669
+      beach: 'archives:ArtworkRooms0328Beach46.swf',
+      beacon: 'archives:ArtworkRooms0328Beacon42.swf',
+      boiler: 'archives:ArtworkRooms0328Boiler43.swf',
+      book: 'archives:ArtworkRooms0328Book43.swf',
+      coffee: 'archives:ArtworkRooms0328Coffee42.swf',
+      lounge: 'archives:ArtworkRooms0328Lounge44.swf',
+      dock: 'archives:ArtworkRooms0328Dock43.swf',
+      dojo: 'archives:ArtworkRooms0328Dojo41.swf',
+      forest: 'archives:ArtworkRooms0328Forest42.swf',
+      shop: 'archives:ArtworkRooms0328Shop46.swf',
+      berg: 'archives:ArtworkRooms0328Berg42.swf',
+      light: 'archives:ArtworkRooms0328Light46.swf',
+      attic: 'archives:ArtworkRooms0328Attic42.swf',
+      shack: 'archives:ArtworkRooms0328Shack40.swf',
+      dance: 'archives:ArtworkRooms0328Dance43.swf',
+      pet: 'archives:ArtworkRooms0328Pet45.swf',
+      pizza: 'archives:ArtworkRooms0328Pizza45.swf',
+      plaza: 'archives:ArtworkRooms0328Plaza47.swf',
+      lodge: 'archives:ArtworkRooms0328Lodge46.swf',
+      village: 'archives:ArtworkRooms0328Village43.swf',
+      forts: 'archives:ArtworkRooms0328Forts41.swf',
+      town: 'archives:ArtworkRooms0328Town40.swf',
+      cove: 'archives:RoomsShack-June2010.swf'
     },
     music: {
       pet: 201,
@@ -825,9 +826,9 @@ export const PARTIES: Party[] = [
       berg: 232
     },
     generalChanges: {
-      'games/thinice/game.swf': 3999,
-      'artwork/tools/binoculars1.swf': 3997,
-      'artwork/tools/telescope0.swf': 3998
+      'games/thinice/game.swf': 'archives:Thinicetrobarrier.swf',
+      'artwork/tools/binoculars1.swf': 'archives:Binoculars-AprilFools2008.swf',
+      'artwork/tools/telescope0.swf': 'archives:Telescope-AprilFools2008.swf'
     }
   },
   {
@@ -835,16 +836,16 @@ export const PARTIES: Party[] = [
     startDate: ROCKHOPPER_ARRIVAL_PARTY_START,
     endDate: ROCKHOPPER_ARRIVAL_END,
     roomChanges: {
-      beach: 4000,
-      dock: 4002,
-      coffee: 4001,
-      dance: 4003,
-      plaza: 4004,
-      ship: 4005,
-      shiphold: 4006,
-      village: 4007,
-      forts: 4008,
-      town: 4009
+      beach: 'archives:ArtworkRooms0425Beach50.swf',
+      dock: 'archives:ArtworkRooms0425Dock50.swf',
+      coffee: 'archives:ArtworkRooms0425Coffee51.swf',
+      dance: 'archives:ArtworkRooms0425Dance50.swf',
+      plaza: 'archives:ArtworkRooms0425Plaza50.swf',
+      ship: 'archives:ArtworkRooms0425Ship50.swf',
+      shiphold: 'archives:ArtworkRooms0425Shiphold50.swf',
+      village: 'archives:ArtworkRooms0425Village50.swf',
+      forts: 'archives:ArtworkRooms0425Forts50.swf',
+      town: 'archives:ArtworkRooms0425Town50.swf'
     },
     music: {
       town: 212,
@@ -860,7 +861,7 @@ export const PARTIES: Party[] = [
     consequences: {
       roomChanges: {
         // returning to normality
-        beach: 3835
+        beach: 'archives:ArtworkRoomsBeach41.swf'
       }
     }
   },
@@ -869,34 +870,34 @@ export const PARTIES: Party[] = [
     startDate: '2008-05-16',
     endDate: '2008-05-25',
     roomChanges: {
-      beach: 4010,
-      beacon: 4011,
-      boiler: 4012,
-      cave: 4013,
-      coffee: 4014,
-      cove: 4015,
-      lounge: 4016,
-      dock: 4017,
-      forest: 4018,
-      light: 4019,
-      attic: 4020,
-      mine: 4021,
-      shack: 4022,
-      dance: 4023,
-      pet: 4024,
-      pizza: 4025,
-      plaza: 4026,
-      rink: 4027,
-      mtn: 4028,
-      lodge: 4029,
-      village: 4030,
-      forts: 4031,
-      town: 4032,
+      beach: 'archives:Rooms0516Beach50.swf',
+      beacon: 'archives:Rooms0516Beacon50.swf',
+      boiler: 'archives:Rooms0516Boiler50.swf',
+      cave: 'archives:Rooms0516Cave50.swf',
+      coffee: 'archives:Rooms0516Coffee51.swf',
+      cove: 'archives:Rooms0516Cove50.swf',
+      lounge: 'archives:Rooms0516Lounge50.swf',
+      dock: 'archives:Rooms0516Dock50.swf',
+      forest: 'archives:Rooms0516Forest50.swf',
+      light: 'archives:Rooms0516Light50.swf',
+      attic: 'archives:Rooms0516Attic50.swf',
+      mine: 'archives:Rooms0516Mine50.swf',
+      shack: 'archives:Rooms0516Shack50.swf',
+      dance: 'archives:Rooms0516Dance50.swf',
+      pet: 'archives:Rooms0516Pet50.swf',
+      pizza: 'archives:Rooms0516Pizza50.swf',
+      plaza: 'archives:Rooms0516Plaza50.swf',
+      rink: 'archives:Rooms0516Rink51.swf',
+      mtn: 'archives:Rooms0516Mtn50.swf',
+      lodge: 'archives:Rooms0516Lodge50.swf',
+      village: 'archives:Rooms0516Village50.swf',
+      forts: 'archives:Rooms0516Forts51.swf',
+      town: 'archives:ArtworkRooms0516Town51.swf',
 
       // this is technically room "party"
       // but we have an issue with the id of that room
       // changing... (if want to preserve the internal URLs will need refactoring, so not doing it rn)
-      party99: 4033
+      party99: 'archives:Rooms0516Party50.swf'
     },
     music: {
       beach: 235,
@@ -930,32 +931,32 @@ export const PARTIES: Party[] = [
     startDate: '2008-06-13',
     endDate: '2008-06-17',
     roomChanges: {
-      beach: 4038,
-      beacon: 4039,
-      boiler: 4040,
-      cave: 4041,
-      coffee: 4042,
-      cove: 4043,
-      dance: 4044,
-      lounge: 4045,
-      dock: 4046,
-      dojo: 4047,
-      forest: 4048,
-      forts: 4049,
-      berg: 4050,
-      rink: 4051,
-      light: 4052,
-      attic: 4053,
-      mine: 4054,
-      shack: 4055,
+      beach: 'archives:WPBeach.swf',
+      beacon: 'archives:WPBeacon.swf',
+      boiler: 'archives:WPBoilerRoom.swf',
+      cave: 'archives:WPCave.swf',
+      coffee: 'archives:WPCoffeeShop.swf',
+      cove: 'archives:WPCove.swf',
+      dance: 'archives:WPDanceClub.swf',
+      lounge: 'archives:RoomsLounge-Water2008.swf',
+      dock: 'archives:WPDock.swf',
+      dojo: 'archives:WPDojo.swf',
+      forest: 'archives:WPForest.swf',
+      forts: 'archives:WPForts.swf',
+      berg: 'archives:WPIceBerg.swf',
+      rink: 'archives:WPIceRink.swf',
+      light: 'archives:WPLightHouse.swf',
+      attic: 'archives:WPLodgeAttic.swf',
+      mine: 'archives:WPMine.swf',
+      shack: 'archives:WPMineShack.swf',
       // technically it was party.swf
-      party99: 4056,
-      pizza: 4057,
-      plaza: 4058,
-      mtn: 4059,
-      lodge: 4060,
-      village: 4061,
-      town: 4062
+      party99: 'archives:WPParty.swf',
+      pizza: 'archives:WPPizzaParlor.swf',
+      plaza: 'archives:WPPlaza.swf',
+      mtn: 'archives:WPSkiHill.swf',
+      lodge: 'archives:WPSkiLodge.swf',
+      village: 'archives:WPSkiVillage.swf',
+      town: 'archives:WPTown.swf'
     },
     music: {
       beach: 218,
@@ -985,24 +986,24 @@ export const PARTIES: Party[] = [
     startDate: MUSIC_JAM_08_START,
     endDate: '2008-08-05',
     roomChanges: {
-      party: 4064,
-      beach: 4065,
-      cave: 4066,
-      coffee: 4067,
-      cove: 4068,
-      lounge: 4069,
-      dock: 4070,
-      dojo: 4071,
-      forest: 4072,
-      berg: 4073,
-      rink: 4074,
-      light: 4075,
-      mine: 4076,
-      dance: 4077,
-      pizza: 4078,
-      village: 4080,
-      town: 4081,
-      forts: 4082
+      party: 'archives:RoomsParty1-MusicJam2008.swf',
+      beach: 'archives:MJ2008Beach.swf',
+      cave: 'archives:RoomsCave-MusicJam2008.swf',
+      coffee: 'archives:RoomsCoffee-MusicJam2008.swf',
+      cove: 'archives:RoomsCove-MusicJam2008.swf',
+      lounge: 'archives:RoomsLounge-MusicJam2008.swf',
+      dock: 'archives:MJDock1.swf',
+      dojo: 'archives:RoomsDojo-MusicJam2008.swf',
+      forest: 'archives:RoomsForest-MusicJam2008.swf',
+      berg: 'archives:RoomsBerg-MusicJam2008.swf',
+      rink: 'archives:MJ2008IceRink.swf',
+      light: 'archives:RoomsLight-MusicJam2008.swf',
+      mine: 'archives:RoomsMine-MusicJam2008.swf',
+      dance: 'archives:RoomsDance-MusicJam2008.swf',
+      pizza: 'archives:RoomsPizza-MusicJam2008.swf',
+      village: 'archives:RoomsVillage-MusicJam2008.swf',
+      town: 'archives:RoomsTown-MusicJam2008.swf',
+      forts: 'archives:MJSnowForts.swf'
     },
     music: {
       party: 243,
@@ -1018,22 +1019,22 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'catalogues/merch.swf': {
-        'en': 4095
+        'en': 'archives:MJ2008MerchCatalog.swf'
       },
       'close_ups/backstage_allaccesspass.swf': {
-        'en': 4094
+        'en': 'archives:MJ2008VIP.swf'
       },
       'catalogues/music.swf': {
-        'en': 4096
+        'en': 'archives:MJ2008MusicCatalog.swf'
       }
     },
     permanentChanges: {
       roomChanges: {
         // this is from june 26, when dj3k disks are added
         // other SWFs in-between are lost
-        dance: 4860,
+        dance: 'archives:RoomsDance_2.swf',
         // placeholder date for the band
-        light: 4915
+        light: 'archives:RoomsLight-January2010.swf'
       }
     }
   },
@@ -1042,20 +1043,20 @@ export const PARTIES: Party[] = [
     startDate: '2008-08-08',
     endDate: '2008-08-18',
     roomChanges: {
-      beach: 4964,
-      cave: 4965,
-      coffee: 4966,
-      cove: 4967,
-      dock: 4968,
-      berg: 4969,
-      shack: 4970,
-      pet: 4971
+      beach: 'archives:RoomsBeach-PaperBoatScavengerHunt2008.swf',
+      cave: 'archives:RoomsCave-PaperBoatScavengerHunt2008.swf',
+      coffee: 'archives:RoomsCoffee-PaperBoatScavengerHunt2008.swf',
+      cove: 'archives:RoomsCove-PaperBoatScavengerHunt2008.swf',
+      dock: 'archives:RoomsDock-PaperBoatScavengerHunt2008.swf',
+      berg: 'archives:RoomsBerg-PaperBoatScavengerHunt2008.swf',
+      shack: 'archives:RoomsShack-PaperBoatScavengerHunt2008.swf',
+      pet: 'archives:RoomsPet-PaperBoatScavengerHunt2008.swf'
     },
     globalChanges: {
-      'scavenger_hunt/hunt_ui.swf': [4973, 'scavenger_hunt_boat', 'easter_hunt'],
+      'scavenger_hunt/hunt_ui.swf': ['archives:Boats-PaperBoatScavengerHunt2008.swf', 'scavenger_hunt_boat', 'easter_hunt'],
     },
     scavengerHunt2010: {
-      iconFileId: 4972
+      iconFileId: 'archives:BoatIcon-PaperBoatScavengerHunt2008.swf'
     }
   },
   {
@@ -1065,24 +1066,24 @@ export const PARTIES: Party[] = [
     startComment: 'The Penguin Games party begins',
     endComment: 'The Penguin Games party ends',
     roomChanges: {
-      'beach': 4098,
-      book: 4099,
-      cave: 4100,
-      coffee: 4101,
-      cove: 4102,
-      dock: 4103,
-      forest: 4104,
-      berg: 4105,
-      rink: 4106,
-      attic: 4107,
-      pizza: 4109,
-      plaza: 4110,
-      mtn: 4111,
-      lodge: 4112,
-      village: 4113,
-      forts: 4114,
-      sport: 4115,
-      town: 4116
+      'beach': 'archives:PGBeach.swf',
+      book: 'archives:RoomsBook-PenguinGames.swf',
+      cave: 'archives:RoomsCave-PenguinGames.swf',
+      coffee: 'archives:RoomsCoffee-PenguinGames.swf',
+      cove: 'archives:RoomsCove-PenguinGames.swf',
+      dock: 'archives:RoomsDock-PenguinGames.swf',
+      forest: 'archives:RoomsForest-PenguinGames.swf',
+      berg: 'archives:RoomsBerg-PenguinGames.swf',
+      rink: 'archives:PGIceRink.swf',
+      attic: 'archives:PGLodgeAttic.swf',
+      pizza: 'archives:RoomsPizza-PenguinGames.swf',
+      plaza: 'archives:PGPlaza.swf',
+      mtn: 'archives:PGSkiHill.swf',
+      lodge: 'archives:PGSkiLodge.swf',
+      village: 'archives:PGSkiVillage.swf',
+      forts: 'archives:RoomsForts-PenguinGames.swf',
+      sport: 'archives:PGSportShop.swf',
+      town: 'archives:RoomsTown-PenguinGames.swf'
     },
     music: {
       beach: 213,
@@ -1110,23 +1111,23 @@ export const PARTIES: Party[] = [
     startDate: '2008-09-26',
     endDate: '2008-10-06',
     roomChanges: {
-      beach: 4119,
-      beacon: 4120,
-      cave: 4121,
-      coffee: 4122,
-      cove: 4123,
-      dance: 4124,
-      lounge: 4125,
-      dock: 4126,
-      forest: 4127,
-      berg: 4128,
-      mine: 4129,
-      party: 4130,
-      pizza: 4131,
-      mtn: 4132,
-      village: 4133,
-      forts: 4134,
-      town: 4135
+      beach: 'archives:FFBeach.swf',
+      beacon: 'archives:FFBeacon.swf',
+      cave: 'archives:FFCave.swf',
+      coffee: 'archives:FFCoffeeShop.swf',
+      cove: 'archives:FFCove.swf',
+      dance: 'archives:FFDanceClub.swf',
+      lounge: 'archives:RoomsLounge-FallFair2008.swf',
+      dock: 'archives:FFDock.swf',
+      forest: 'archives:FFForest.swf',
+      berg: 'archives:FFIceBerg.swf',
+      mine: 'archives:FFMine.swf',
+      party: 'archives:FFParty.swf',
+      pizza: 'archives:FFPizzaParlor.swf',
+      mtn: 'archives:FFSkiHill.swf',
+      village: 'archives:FFSkiVillage.swf',
+      forts: 'archives:FFSnowForts.swf',
+      town: 'archives:FFTown.swf'
     },
     music: {
       beach: 221,
@@ -1148,7 +1149,7 @@ export const PARTIES: Party[] = [
       town: 221
     },
     fairCpip: {
-      iconFileId: 4449
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
     }
   },
   {
@@ -1156,10 +1157,10 @@ export const PARTIES: Party[] = [
     startDate: '2008-10-24',
     endDate: '2008-10-27',
     roomChanges: {
-      book: 4141,
-      coffee: 4142,
-      dance: 4143,
-      town: 4144
+      book: 'archives:3rdAnniversaryPartyBook.swf',
+      coffee: 'archives:3rdAnniversaryPartyCoffee.swf',
+      dance: 'archives:3rdAnniversaryPartyDance.swf',
+      town: 'archives:3rdAnniversaryPartyTown.swf'
     },
     music: {
       book: 250,
@@ -1173,33 +1174,33 @@ export const PARTIES: Party[] = [
     startDate: '2008-10-28',
     endDate: '2008-11-02',
     roomChanges: {
-      beach: 4146,
-      beacon: 4147,
-      book: 4148,
-      cave: 4149,
-      coffee: 4150,
-      cove: 4151,
-      dance: 4152,
-      lounge: 4153,
-      dock: 4154,
-      dojo: 4155,
-      forest: 4156,
-      shop: 4157,
-      berg: 4158,
-      light: 4159,
-      attic: 4160,
-      rink: 4161,
-      shack: 4162,
-      pet: 4163,
-      pizza: 4164,
-      plaza: 4165,
-      party: 4166,
-      mtn: 4167,
-      lodge: 4168,
-      village: 4169,
-      forts: 4170,
-      sport: 4171,
-      town: 4172
+      beach: 'archives:HPBeach.swf',
+      beacon: 'archives:HPBeacon.swf',
+      book: 'archives:HPBookRoom.swf',
+      cave: 'archives:HPCave.swf',
+      coffee: 'archives:HPCoffeeShop.swf',
+      cove: 'archives:HPCove.swf',
+      dance: 'archives:HPDanceClub.swf',
+      lounge: 'archives:RoomsLounge-Halloween2008.swf',
+      dock: 'archives:HPDock.swf',
+      dojo: 'archives:HPDojo.swf',
+      forest: 'archives:HPForest.swf',
+      shop: 'archives:HPGiftShop.swf',
+      berg: 'archives:HPIceBerg.swf',
+      light: 'archives:HPLightHouse.swf',
+      attic: 'archives:HPLodgeAttic.swf',
+      rink: 'archives:HPIceRink.swf',
+      shack: 'archives:HPMineShack.swf',
+      pet: 'archives:HPPetShop.swf',
+      pizza: 'archives:HPPizzaParlor.swf',
+      plaza: 'archives:HPPlaza.swf',
+      party: 'archives:RoomsLab-HalloweenParty2008.swf',
+      mtn: 'archives:HPSkiHill.swf',
+      lodge: 'archives:HPSkiLodge.swf',
+      village: 'archives:HPSkiVillage.swf',
+      forts: 'archives:HPSnowForts.swf',
+      sport: 'archives:HPSportShop.swf',
+      town: 'archives:HPTown.swf'
     },
     music: {
       beach: 251,
@@ -1238,23 +1239,23 @@ export const PARTIES: Party[] = [
     startComment: 'The Dig Out the Dojo event begins',
     endComment: 'The Dig Out the Dojo event ends',
     roomChanges: {
-      dojo: 4175,
-      dojoext: 4176
+      dojo: 'archives:DojoConstruction2008.swf',
+      dojoext: 'archives:DojoExtConstruction2008.swf'
     },
     updates: [
       {
         comment: 'The excavation progresses, and less snow covers the Dojo',
         date: '2008-11-10',
         roomChanges: {
-          dojo: 4177,
-          dojoext: 4178
+          dojo: 'archives:DojoConstruction22008.swf',
+          dojoext: 'archives:DojoExtConstruction22008.swf'
         }
       }
     ],
     consequences: {
       roomComment: 'The dojo has a great reopening',
       roomChanges : {
-        dojo: 4180
+        dojo: 'archives:DojoGrandOpening2008.swf'
       }
     }
   },
@@ -1263,37 +1264,37 @@ export const PARTIES: Party[] = [
     startDate: '2008-12-19',
     endDate: '2008-12-29',
     roomChanges: {
-      beach: 4181,
-      beacon: 4182,
-      boiler: 4183,
-      book: 4184,
-      shipquarters: 4185,
-      cave: 4186,
-      coffee: 4187,
-      agentcom: 4188,
-      cove: 4189,
-      shipnest: 4190,
-      lounge: 4191,
-      dock: 4192,
-      dojo: 4193,
-      dojoext: 4194,
-      forest: 4195,
-      agent: 4196,
-      rink: 4197,
-      berg: 4198,
-      mine: 4199,
-      shack: 4200,
-      dance: 4201,
-      dojohide: 4202,
-      ship: 4203,
-      pizza: 4204,
-      plaza: 4205,
-      shiphold: 4206,
-      mtn: 4207,
-      lodge: 4208,
-      village: 4209,
-      forts: 4210,
-      town: 4211
+      beach: 'archives:RoomsBeach-ChristmasParty2008.swf',
+      beacon: 'archives:RoomsBeacon-ChristmasParty2008.swf',
+      boiler: 'archives:RoomsBoiler-ChristmasParty2008.swf',
+      book: 'archives:RoomsBook-ChristmasParty2008.swf',
+      shipquarters: 'archives:RoomsShipquarters-ChristmasParty2008.swf',
+      cave: 'archives:RoomsCave-ChristmasParty2008.swf',
+      coffee: 'archives:RoomsCoffee-ChristmasParty2008.swf',
+      agentcom: 'archives:RoomsAgentcom-ChristmasParty2008.swf',
+      cove: 'archives:RoomsCove-ChristmasParty2008.swf',
+      shipnest: 'archives:RoomsShipnest-ChristmasParty2008.swf',
+      lounge: 'archives:RoomsLounge-ChristmasParty2008.swf',
+      dock: 'archives:RoomsDock-ChristmasParty2008.swf',
+      dojo: 'archives:RoomsDojo-ChristmasParty2008.swf',
+      dojoext: 'archives:RoomsDojoext-ChristmasParty2008.swf',
+      forest: 'archives:RoomsForest-ChristmasParty2008.swf',
+      agent: 'archives:RoomsAgent-ChristmasParty2008.swf',
+      rink: 'archives:RoomsRink-ChristmasParty2008.swf',
+      berg: 'archives:RoomsBerg-ChristmasParty2008.swf',
+      mine: 'archives:RoomsMine-ChristmasParty2008.swf',
+      shack: 'archives:RoomsShack-ChristmasParty2008.swf',
+      dance: 'archives:RoomsDance-ChristmasParty2008.swf',
+      dojohide: 'archives:RoomsDojohide-ChristmasParty2008.swf',
+      ship: 'archives:RoomsShip-ChristmasParty2008.swf',
+      pizza: 'archives:RoomsPizza-ChristmasParty2008.swf',
+      plaza: 'archives:RoomsPlaza-ChristmasParty2008.swf',
+      shiphold: 'archives:RoomsShiphold-ChristmasParty2008.swf',
+      mtn: 'archives:RoomsMtn-ChristmasParty2008.swf',
+      lodge: 'archives:RoomsLodge-ChristmasParty2008.swf',
+      village: 'archives:RoomsVillage-ChristmasParty2008.swf',
+      forts: 'archives:RoomsForts-ChristmasParty2008.swf',
+      town: 'archives:RoomsTown-ChristmasParty2008.swf'
     },
     music: {
       beach: 254,
@@ -1334,11 +1335,11 @@ export const PARTIES: Party[] = [
     startDate: '2009-01-15',
     endDate: '2009-01-20',
     roomChanges: {
-      boiler: 4216,
-      lounge: 4217,
-      dance: 4218,
-      party: 4219,
-      town: 4220
+      boiler: 'archives:RoomsBoiler-DanceAThon.swf',
+      lounge: 'archives:RoomsLounge-DanceAThon.swf',
+      dance: 'archives:RoomsDance-DanceAThon.swf',
+      party: 'archives:RoomsParty-DanceAThon.swf',
+      town: 'archives:RoomsTown-DanceAThon.swf'
     },
     music: {
       dance: 258,
@@ -1351,18 +1352,18 @@ export const PARTIES: Party[] = [
     startDate: '2009-01-23',
     endDate: '2009-01-25',
     roomChanges: {
-      beach: 4223,
-      coffee: 4224,
-      cove: 4225,
-      dock: 4226,
-      forest: 4227,
-      dance: 4228,
-      pizza: 4229,
-      plaza: 4230,
-      lodge: 4231,
-      village: 4232,
-      forts: 4233,
-      town: 4234
+      beach: 'archives:WinterFiesta2009Beach.swf',
+      coffee: 'archives:WinterFiesta2009Coffee.swf',
+      cove: 'archives:WinterFiesta2009Cove.swf',
+      dock: 'archives:WinterFiesta2009Dock.swf',
+      forest: 'archives:WinterFiesta2009Forest.swf',
+      dance: 'archives:WinterFiesta2009Dance.swf',
+      pizza: 'archives:WinterFiesta2009Pizza.swf',
+      plaza: 'archives:WinterFiesta2009Plaza.swf',
+      lodge: 'archives:WinterFiesta2009SkiLodge.swf',
+      village: 'archives:WinterFiesta2009Village.swf',
+      forts: 'archives:WinterFiesta2009Forts.swf',
+      town: 'archives:WinterFiesta2009Town.swf'
     },
     music: {
       beach: 229,
@@ -1384,24 +1385,24 @@ export const PARTIES: Party[] = [
     startDate: '2009-02-20',
     endDate: '2009-02-24',
     roomChanges: {
-      beach: 4235,
-      beacon: 4236,
-      cave: 4237,
-      cove: 4238,
-      dance: 4239,
-      dock: 4240,
-      dojo: 4097,
-      forest: 4241,
-      berg: 4242,
-      light: 4243,
-      mtn: 4244,
-      pet: 4245,
-      plaza: 4246,
-      party: 4247,
-      attic: 4248,
-      village: 4249,
-      forts: 4250,
-      town: 4251,
+      beach: 'archives:RoomsBeach-PuffleParty2009.swf',
+      beacon: 'archives:RoomsBeacon-PuffleParty2009.swf',
+      cave: 'archives:RoomsCave-PuffleParty2009.swf',
+      cove: 'archives:RoomsCove-PuffleParty2009.swf',
+      dance: 'archives:RoomsDance-PuffleParty2009.swf',
+      dock: 'archives:RoomsDock-PuffleParty2009.swf',
+      dojo: 'archives:RoomsDojoext2008.swf',
+      forest: 'archives:RoomsForest-PuffleParty2009.swf',
+      berg: 'archives:RoomsBerg-PuffleParty2009.swf',
+      light: 'archives:RoomsLight-PuffleParty2009.swf',
+      mtn: 'archives:RoomsMtn-PuffleParty2009.swf',
+      pet: 'archives:PuffleParty2009-0220pet.swf',
+      plaza: 'archives:RoomsPlaza-PuffleParty2009.swf',
+      party: 'archives:RoomsParty-PuffleParty2009.swf',
+      attic: 'archives:RoomsAttic-PuffleParty2009.swf',
+      village: 'archives:RoomsVillage-PuffleParty2009.swf',
+      forts: 'archives:2009pufflepartysnowforts.swf',
+      town: 'archives:Rooms0220Town.swf',
     },
     music: {
       town: 260,
@@ -1423,16 +1424,16 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2009-02-13',
       changes: {
-        beacon: 4258,
-        cave: 4259,
-        cove: 4260,
-        forest: 4261,
-        berg: 4262,
-        light: 4263,
-        dance: 4264,
-        plaza: 4265,
-        village: 4266,
-        town: 4267
+        beacon: 'archives:RoomsBeacon-PuffleParty2009Pre.swf',
+        cave: 'archives:RoomsCave-PuffleParty2009Pre.swf',
+        cove: 'archives:RoomsCove-PuffleParty2009Pre.swf',
+        forest: 'archives:RoomsForest-PuffleParty2009Pre.swf',
+        berg: 'archives:RoomsBerg-PuffleParty2009Pre.swf',
+        light: 'archives:RoomsLight-PuffleParty2009Pre.swf',
+        dance: 'archives:RoomsDance-PuffleParty2009Pre.swf',
+        plaza: 'archives:RoomsPlaza-PuffleParty2009Pre.swf',
+        village: 'archives:RoomsVillage-PuffleParty2009Pre.swf',
+        town: 'archives:RoomsTown-PuffleParty2009Pre.swf'
       }
     }
   },
@@ -1441,18 +1442,18 @@ export const PARTIES: Party[] = [
     startDate: '2009-03-13',
     endDate: '2009-03-17',
     roomChanges: {
-      town: 4268,
-      coffee: 4269,
-      dance: 4270,
-      forts: 4271,
-      plaza: 4272,
-      stage: 4273,
-      forest: 4274,
-      party: 4275,
-      dock: 4276,
-      berg: 4277,
-      mtn: 4278,
-      village: 4279
+      town: 'archives:Rooms0313Town.swf',
+      coffee: 'archives:RoomsCoffeeStPatricksDay2009.swf',
+      dance: 'archives:RoomsDance-StPatrickParty2009.swf',
+      forts: 'archives:RoomsForts-StPatrickParty2009.swf',
+      plaza: 'archives:StPatricksDayParty2009-Plaza.swf',
+      stage: 'archives:StPatricksDayParty2009-Stage.swf',
+      forest: 'archives:RoomsForest-StPatrickParty2009.swf',
+      party: 'archives:RoomsParty-StPatrickParty2009.swf',
+      dock: 'archives:RoomsDock-StPatrickParty2009.swf',
+      berg: 'archives:RoomsBerg-StPatrickParty2009.swf',
+      mtn: 'archives:RoomsMtn-StPatrickParty2009.swf',
+      village: 'archives:RoomsVillage-StPatrickParty2009.swf'
     },
     music: {
       town: 262,
@@ -1469,9 +1470,9 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2009-03-06',
       changes: {
-        cove: 4282,
-        forest: 4283,
-        village: 4284
+        cove: 'archives:RoomsCove-StPatricksDay2009Pre.swf',
+        forest: 'archives:RoomsForest-StPatricksDay2009Pre.swf',
+        village: 'archives:RoomsVillage-StPatricksDay2009Pre.swf'
       }
     }
   },
@@ -1480,12 +1481,12 @@ export const PARTIES: Party[] = [
     startDate: '2009-03-20',
     endDate: '2009-04-09',
     roomChanges: {
-      beach: 5003,
-      beacon: 5004,
-      dock: 5005,
-      light: 5006,
-      mtn: 5007,
-      village: 5008
+      beach: 'archives:RoomsBeach-PenguinPlayAwards2009.swf',
+      beacon: 'archives:RoomsBeacon-PenguinPlayAwards2009.swf',
+      dock: 'archives:RoomsDock-PenguinPlayAwards2009.swf',
+      light: 'archives:RoomsLight-PenguinPlayAwards2009.swf',
+      mtn: 'archives:RoomsMtn-PenguinPlayAwards2009.swf',
+      village: 'archives:RoomsVillage-PenguinPlayAwards2009.swf'
     }
   },
   {
@@ -1493,9 +1494,9 @@ export const PARTIES: Party[] = [
     startDate: '2009-03-20',
     endDate: '2009-04-09',
     roomChanges: {
-      party: 4285,
-      plaza: 4286,
-      stage: 4287
+      party: 'archives:RoomsParty-PenguinPlayAwards2009.swf',
+      plaza: 'archives:RoomsPlaza-PenguinPlayAwards2009.swf',
+      stage: 'archives:RoomsStage-PenguinPlayAwards2009.swf'
     },
     music: {
       party: 40,
@@ -1503,7 +1504,7 @@ export const PARTIES: Party[] = [
       stage: 40
     },
     globalChanges: {
-      'content/shorts/penguinsTime.swf': 4289
+      'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
     }
   },
   {
@@ -1511,30 +1512,30 @@ export const PARTIES: Party[] = [
     startDate: '2009-04-01',
     endDate: '2009-04-06',
     roomChanges: {
-      beach: 4290,
-      beacon: 4291,
-      boiler: 4292,
-      boxdimension: 4293,
-      party3: 4294,
-      cave: 4295,
-      coffee: 4296,
-      cove: 4297,
-      dock: 4298,
-      dojo: 4299,
-      dojoext: 4300,
-      forest: 4301,
-      berg: 4302,
-      light: 4303,
-      mine: 4304,
-      shack: 4305,
-      dance: 4306,
-      dojohide: 4307,
-      pizza: 4308,
-      plaza: 4309,
-      lodge: 4310,
-      village: 4311,
-      forts: 4312,
-      town: 4313
+      beach: 'archives:RoomsBeach-AprilFoolsParty2009.swf',
+      beacon: 'archives:RoomsBeacon-AprilFoolsParty2009.swf',
+      boiler: 'archives:RoomsBoiler-AprilFoolsParty2009.swf',
+      boxdimension: 'archives:RoomsParty2-AprilFoolsParty2009.swf',
+      party3: 'archives:RoomsParty3-AprilFoolsParty2009.swf',
+      cave: 'archives:RoomsCave-AprilFoolsParty2009.swf',
+      coffee: 'archives:RoomsCoffee-AprilFoolsParty2009.swf',
+      cove: 'archives:RoomsCove-AprilFoolsParty2009.swf',
+      dock: 'archives:RoomsDock-AprilFoolsParty2009.swf',
+      dojo: 'archives:RoomsDojo-AprilFoolsParty2009.swf',
+      dojoext: 'archives:RoomsDojoext-AprilFoolsParty2009.swf',
+      forest: 'archives:RoomsForest-AprilFoolsParty2009.swf',
+      berg: 'archives:RoomsBerg-AprilFoolsParty2009.swf',
+      light: 'archives:RoomsLight-AprilFoolsParty2009.swf',
+      mine: 'archives:RoomsMine-AprilFoolsParty2009.swf',
+      shack: 'archives:RoomsShack-AprilFoolsParty2009.swf',
+      dance: 'archives:RoomsDance-AprilFoolsParty2009.swf',
+      dojohide: 'archives:RoomsDojohide-AprilFoolsParty2009.swf',
+      pizza: 'archives:RoomsPizza-AprilFoolsParty2009.swf',
+      plaza: 'archives:RoomsPlaza-AprilFoolsParty2009.swf',
+      lodge: 'archives:RoomsLodge-AprilFoolsParty2009.swf',
+      village: 'archives:RoomsVillage-AprilFoolsParty2009.swf',
+      forts: 'archives:RoomsForts-AprilFoolsParty2009.swf',
+      town: 'archives:RoomsTown-AprilFoolsParty2009.swf'
     },
     music: {
       beach: 232,
@@ -1560,10 +1561,10 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'catalogues/party.swf': {
-        'en': 4317
+        'en': 'archives:BoxCatalog.swf'
       },
       'membership/party3.swf': {
-        'en': 4316
+        'en': 'archives:AprilFoolMembership.swf'
       }
     }
   },
@@ -1572,19 +1573,19 @@ export const PARTIES: Party[] = [
     startDate: '2009-04-10',
     endDate: '2009-04-13',
     roomChanges: {
-      beacon: 4974,
-      cove: 4975,
-      dojoext: 4976,
-      shop: 4977,
-      mtn: 4978,
-      lodge: 4979,
-      town: 4980
+      beacon: 'archives:RoomsBeacon-EasterEggHunt2009.swf',
+      cove: 'archives:RoomsCove-EasterEggHunt2009.swf',
+      dojoext: 'archives:RoomsDojoext-EasterEggHunt2009.swf',
+      shop: 'archives:RoomsShop-EasterEggHunt2009.swf',
+      mtn: 'archives:RoomsMtn-EasterEggHunt2009.swf',
+      lodge: 'archives:RoomsLodge-EasterEggHunt2009.swf',
+      town: 'archives:RoomsTown-Easter2009.swf'
     },
     globalChanges: {
-      'scavenger_hunt/hunt_ui.swf': [4982, 'easter_egg_hunt', 'easter_hunt'],
+      'scavenger_hunt/hunt_ui.swf': ['archives:Eggs-EasterEggHunt2009.swf', 'easter_egg_hunt', 'easter_hunt'],
     },
     scavengerHunt2010: {
-      'iconFileId': 4981
+      'iconFileId': 'archives:EggIcon-EasterEggHunt2009.swf'
     }
   },
   {
@@ -1592,43 +1593,43 @@ export const PARTIES: Party[] = [
     startDate: '2009-05-08',
     endDate: '2009-05-17',
     roomChanges: {
-      beach: 2403,
-      rink: 2410,
-      lodge: 2407,
-      beacon: 4318,
-      boiler: 4319,
-      book: 4320,
-      cave: 4321,
-      coffee: 4322,
-      cove: 4323,
-      lounge: 4324,
-      dock: 4325,
-      forest: 4326,
-      shop: 4327,
-      light: 4328,
-      attic: 4329,
-      shack: 4330,
-      dance: 4331,
-      pet: 4332,
-      pizza: 4333,
-      plaza: 4334,
-      mtn: 4335,
-      village: 4336,
-      forts: 4337,
-      town: 4338,
-      party1: 4339,
-      party2: 4340,
-      party3: 4341,
-      party4: 4342,
-      party5: 4343,
-      party6: 4344,
-      party7: 4350,
-      party8: 4345,
-      party9: 4346,
-      party10: 4347,
-      party11: 4348,
-      party12: 4349,
-      party13: 4351
+      beach: 'archives:Rooms0508Beach.swf',
+      rink: 'archives:Rooms0508Rink.swf',
+      lodge: 'archives:Rooms0508Lodge.swf',
+      beacon: 'archives:Rooms0508Beacon.swf',
+      boiler: 'archives:Rooms0508Boiler.swf',
+      book: 'archives:Rooms0508Book.swf',
+      cave: 'archives:Rooms0508Cave.swf',
+      coffee: 'archives:Rooms0508Coffee.swf',
+      cove: 'archives:Rooms0508Cove.swf',
+      lounge: 'archives:Rooms0508Lounge.swf',
+      dock: 'archives:Rooms0508Dock.swf',
+      forest: 'archives:Rooms0508Forest.swf',
+      shop: 'archives:Rooms0508Shop.swf',
+      light: 'archives:Rooms0508Light.swf',
+      attic: 'archives:Rooms0508Attic.swf',
+      shack: 'archives:Rooms0508Shack.swf',
+      dance: 'archives:Rooms0508Dance.swf',
+      pet: 'archives:Rooms0508Pet.swf',
+      pizza: 'archives:Rooms0508Pizza.swf',
+      plaza: 'archives:Rooms0508Plaza.swf',
+      mtn: 'archives:Rooms0508Mtn.swf',
+      village: 'archives:Rooms0508Village.swf',
+      forts: 'archives:Rooms0508Forts.swf',
+      town: 'archives:Rooms0508Town.swf',
+      party1: 'archives:Rooms0508Party1.swf',
+      party2: 'archives:Rooms0508Party2.swf',
+      party3: 'archives:Rooms0508Party3.swf',
+      party4: 'archives:Rooms0508Party4.swf',
+      party5: 'archives:Rooms0508Party5.swf',
+      party6: 'archives:Rooms0508Party6.swf',
+      party7: 'archives:Rooms0508Party7.swf',
+      party8: 'archives:Rooms0508Party8.swf',
+      party9: 'archives:Rooms0508Party9.swf',
+      party10: 'archives:Rooms0508Party10.swf',
+      party11: 'archives:Rooms0508Party11.swf',
+      party12: 'archives:Rooms0508Party12.swf',
+      party13: 'archives:Rooms0508Party13.swf'
     },
     music: {
       beach: 233,
@@ -1670,7 +1671,7 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'catalogues/party.swf': {
-        'en': 4352
+        'en': 'archives:ENCataloguesParty-MedievalParty2009.swf'
       }
     }
   },
@@ -1679,19 +1680,19 @@ export const PARTIES: Party[] = [
     startDate: '2009-06-12',
     endDate: '2009-06-16',
     roomChanges: {
-      beach: 4356,
-      cave: 4357,
-      cove: 4358,
-      dock: 4359,
-      forest: 4360,
-      berg: 4361,
-      mine: 4362,
-      dance: 4363,
-      plaza: 4364,
-      forts: 4365,
-      rink: 4366,
-      town: 4367,
-      party: 4368
+      beach: 'archives:RoomsBeach-AdventureParty2009.swf',
+      cave: 'archives:RoomsCave-AdventureParty2009.swf',
+      cove: 'archives:RoomsCove-AdventureParty2009.swf',
+      dock: 'archives:RoomsDock-AdventureParty2009.swf',
+      forest: 'archives:RoomsForest-AdventureParty2009.swf',
+      berg: 'archives:RoomsBerg-AdventureParty2009.swf',
+      mine: 'archives:RoomsMine-AdventureParty2009.swf',
+      dance: 'archives:RoomsDance-AdventureParty2009.swf',
+      plaza: 'archives:RoomsPlaza-AdventureParty2009.swf',
+      forts: 'archives:RoomsForts-AdventureParty2009.swf',
+      rink: 'archives:RoomsRink-AdventureParty2009.swf',
+      town: 'archives:RoomsTown-AdventureParty2009.swf',
+      party: 'archives:TreeForts-AdventureParty2009.swf'
     },
     music: {
       beach: 267,
@@ -1711,16 +1712,16 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2009-06-05',
       changes: {
-        beach: 4372,
-        shipnest: 4373,
-        cove: 4374,
-        dock: 4375,
-        forest: 4376,
-        ship: 4377,
-        plaza: 4378,
-        shiphold: 4379,
-        forts: 4380,
-        town: 4381
+        beach: 'archives:RoomsBeach-AdventureParty2009Const.swf',
+        shipnest: 'archives:RoomsNest-AdventureParty2009Const.swf',
+        cove: 'archives:RoomsCove-AdventureParty2009Const.swf',
+        dock: 'archives:RoomsDock-AdventureParty2009Const.swf',
+        forest: 'archives:RoomsForest-AdventureParty2009Const.swf',
+        ship: 'archives:RoomsShip-AdventureParty2009Const.swf',
+        plaza: 'archives:RoomsPlaza-AdventureParty2009Const.swf',
+        shiphold: 'archives:RoomsHold-AdventureParty2009Const.swf',
+        forts: 'archives:RoomsForts-AdventureParty2009Const.swf',
+        town: 'archives:RoomsTown-AdventureParty2009Const.swf'
       }
     }
   },
@@ -1729,26 +1730,26 @@ export const PARTIES: Party[] = [
     startDate: '2009-07-17',
     endDate: '2009-07-26',
     roomChanges: {
-      party: 2451,
-      party3: 4382,
-      beach: 4383,
-      cave: 4384,
-      coffee: 4385,
-      cove: 4386,
-      lounge: 4387,
-      dock: 4388,
-      forest: 4389,
-      berg: 4390,
-      light: 4391,
-      dance: 4392,
-      party2: 4393,
-      pizza: 4394,
-      plaza: 4395,
-      mtn: 4396,
-      village: 4397,
-      forts: 4398,
-      rink: 4399,
-      town: 4400
+      party: 'archives:RoomsParty-MusicJam2010.swf',
+      party3: 'archives:RoomsParty3-MusicJam2009.swf',
+      beach: 'archives:RoomsBeach-MusicJam2009.swf',
+      cave: 'archives:RoomsCave-MusicJam2009.swf',
+      coffee: 'archives:RoomsCoffeeMusicJam2009.swf',
+      cove: 'archives:RoomsCove-MusicJam2009.swf',
+      lounge: 'archives:RoomsLounge-MusicJam2009.swf',
+      dock: 'archives:RoomsDock-MusicJam2009.swf',
+      forest: 'archives:RoomsForest-MusicJam2009.swf',
+      berg: 'archives:RoomsBerg-MusicJam2009.swf',
+      light: 'archives:RoomsLight-MusicJam2009.swf',
+      dance: 'archives:RoomsDance-MusicJam2009.swf',
+      party2: 'archives:RoomsParty2-MusicJam2009.swf',
+      pizza: 'archives:RoomsPizza-MusicJam2009.swf',
+      plaza: 'archives:RoomsPlaza-MusicJam2009.swf',
+      mtn: 'archives:RoomsMtn-MusicJam2009.swf',
+      village: 'archives:RoomsVillage-MusicJam2009.swf',
+      forts: 'archives:RoomsForts-MusicJam2009.swf',
+      rink: 'archives:RoomsRink-MusicJam2009.swf',
+      town: 'archives:RoomsTown-MusicJam2009.swf'
     },
     music: {
       dance: 242,
@@ -1764,16 +1765,16 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2009-07-10',
       changes: {
-        beach: 2464,
-        coffee: 2466,
-        cove: 2467,
-        dock: 2468,
-        forest: 2469,
-        berg: 2470,
-        light: 2471,
-        village: 2472,
-        forts: 2473,
-        rink: 4405
+        beach: 'archives:RoomsBeach-MusicJam2010Pre.swf',
+        coffee: 'archives:RoomsCoffee-MusicJam2010Pre.swf',
+        cove: 'archives:RoomsCove-MusicJam2010Pre.swf',
+        dock: 'archives:RoomsDock-MusicJam2010Pre.swf',
+        forest: 'archives:RoomsForest-MusicJam2010Pre.swf',
+        berg: 'archives:RoomsBerg-MusicJam2010Pre.swf',
+        light: 'archives:RoomsLight-MusicJam2010Pre.swf',
+        village: 'archives:RoomsVillage-MusicJam2010Pre.swf',
+        forts: 'archives:RoomsForts-MusicJam2010Pre.swf',
+        rink: 'archives:RoomsRink-MusicJam2009Const.swf'
       }
     }
   },
@@ -1782,21 +1783,21 @@ export const PARTIES: Party[] = [
     startDate: '2009-08-14',
     endDate: '2009-08-20',
     roomChanges: {
-      beach: 4406,
-      beacon: 4407,
-      cave: 4408,
-      cove: 4409,
-      dock: 4410,
-      forest: 4411,
-      party: 4412,
-      berg: 4413,
-      dance: 4414,
-      plaza: 4415,
-      mtn: 4416,
-      village: 4417,
-      forts: 4418,
-      party2: 4419,
-      town: 4420
+      beach: 'archives:FestivalOfFlightBeach.swf',
+      beacon: 'archives:FestivalOfFlightBeacon.swf',
+      cave: 'archives:FestivalOfFlightCave.swf',
+      cove: 'archives:FestivalOfFlightCove.swf',
+      dock: 'archives:FestivalOfFlightDock.swf',
+      forest: 'archives:FestivalOfFlightForest.swf',
+      party: 'archives:FestivalOfFlightParty.swf',
+      berg: 'archives:FestivalOfFlightBerg.swf',
+      dance: 'archives:FestivalOfFlightDance.swf',
+      plaza: 'archives:FestivalOfFlightPlaza.swf',
+      mtn: 'archives:FestivalOfFlightMtn.swf',
+      village: 'archives:FestivalOfFlightVillage.swf',
+      forts: 'archives:FestivalOfFlightForts.swf',
+      party2: 'archives:FestivalOfFlightParty2.swf',
+      town: 'archives:RoomsTown-FestivalofFlight.swf'
     },
     music: {
       beach: 277,
@@ -1817,13 +1818,13 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2009-08-07',
       changes: {
-        beach: 4424,
-        beacon: 4425,
-        dock: 4426,
-        forest: 4427,
-        plaza: 4428,
-        forts: 4429,
-        town: 4430
+        beach: 'archives:FestivalOfFlightConstBeach.swf',
+        beacon: 'archives:FestivalOfFlightConstBeacon.swf',
+        dock: 'archives:FestivalOfFlightConstDock.swf',
+        forest: 'archives:FestivalOfFlightConstForest.swf',
+        plaza: 'archives:FestivalOfFlightConstPlaza.swf',
+        forts: 'archives:FestivalOfFlightConstForts.swf',
+        town: 'archives:RoomsTown-FestivalofFlightPre.swf'
       }
     }
   },
@@ -1832,25 +1833,25 @@ export const PARTIES: Party[] = [
     startDate: '2009-09-04',
     endDate: '2009-09-14',
     roomChanges: {
-      coffee: 2490,
-      lounge: 2492,
-      beach: 4431,
-      beacon: 4432,
-      party: 4433,
-      cave: 4434,
-      cove: 4435,
-      dock: 4436,
-      forest: 4437,
-      party3: 4438,
-      party2: 4439,
-      berg: 4440,
-      dance: 4441,
-      pizza: 4442,
-      plaza: 4443,
-      mtn: 4444,
-      village: 4445,
-      forts: 4446,
-      town: 4447
+      coffee: 'archives:RoomsCoffeeTheFair2009.swf',
+      lounge: 'archives:RoomsLounge-Fair2009.swf',
+      beach: 'archives:RoomsBeach-TheFair2009.swf',
+      beacon: 'archives:RoomsBeacon-TheFair2009.swf',
+      party: 'archives:RoomsParty-TheFair2009.swf',
+      cave: 'archives:RoomsCave-TheFair2009.swf',
+      cove: 'archives:RoomsCove-TheFair2009.swf',
+      dock: 'archives:RoomsDock-TheFair2009.swf',
+      forest: 'archives:RoomsForest-TheFair2009.swf',
+      party3: 'archives:RoomsParty3-TheFair2009.swf',
+      party2: 'archives:RoomsParty2-TheFair2009.swf',
+      berg: 'archives:RoomsBerg-TheFair2009.swf',
+      dance: 'archives:RoomsDance-TheFair2009.swf',
+      pizza: 'archives:RoomsPizza-TheFair2009.swf',
+      plaza: 'archives:RoomsPlaza-TheFair2009.swf',
+      mtn: 'archives:RoomsMtn-TheFair2009.swf',
+      village: 'archives:RoomsVillage-TheFair2009.swf',
+      forts: 'archives:RoomsForts-TheFair2009.swf',
+      town: 'archives:RoomsTown-TheFair2009.swf'
     },
     music: {
       coffee: 221,
@@ -1875,14 +1876,14 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'catalogues/prizebooth.swf': {
-        'en': 4448
+        'en': 'archives:Prizebooth-TheFair2009.swf'
       },
       'catalogues/prizeboothmember.swf': {
-        'en': 4450
+        'en': 'archives:Prizeboothmember-TheFair2009.swf'
       }
     },
     fairCpip: {
-      iconFileId: 4449
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
     }
   },
   {
@@ -1890,37 +1891,37 @@ export const PARTIES: Party[] = [
     startDate: '2009-09-14',
     endDate: '2009-09-28',
     roomChanges: {
-      beach: 4454,
-      beacon: 4455,
-      cave: 4456,
-      coffee: 4457,
-      cove: 4458,
-      dock: 4459,
-      dojo: 4460,
-      dojoext: 4461,
-      shop: 4462,
-      agent: 4463,
-      berg: 4464,
-      attic: 4465,
-      forest: 4466,
-      shack: 4467,
-      dojohide: 4468,
-      pizza: 4469,
-      plaza: 4470,
-      pet: 4471,
-      mtn: 4472,
-      lodge: 4473,
-      village: 4474,
-      forts: 4475,
-      sport: 4476,
-      rink: 4477,
-      town: 4478
+      beach: 'archives:Sensei_Fire_Hunt_beach.swf',
+      beacon: 'archives:Sensei_Fire_Hunt_beacon.swf',
+      cave: 'archives:Sensei_Fire_Hunt_cave.swf',
+      coffee: 'archives:Sensei_Fire_Hunt_coffee.swf',
+      cove: 'archives:Sensei_Fire_Hunt_cove.swf',
+      dock: 'archives:Sensei_Fire_Hunt_dock.swf',
+      dojo: 'archives:Sensei_Fire_Hunt_dojo.swf',
+      dojoext: 'archives:Sensei_Fire_Hunt_dojoext.swf',
+      shop: 'archives:Sensei_Fire_Hunt_shop.swf',
+      agent: 'archives:Sensei_Fire_Hunt_agent.swf',
+      berg: 'archives:Sensei_Fire_Hunt_berg.swf',
+      attic: 'archives:Sensei_Fire_Hunt_attic.swf',
+      forest: 'archives:Sensei_Fire_Hunt_forest.swf',
+      shack: 'archives:Sensei_Fire_Hunt_shack.swf',
+      dojohide: 'archives:Sensei_Fire_Hunt_dojohide.swf',
+      pizza: 'archives:Sensei_Fire_Hunt_pizza.swf',
+      plaza: 'archives:Sensei_Fire_Hunt_plaza.swf',
+      pet: 'archives:Sensei_Fire_Hunt_pet.swf',
+      mtn: 'archives:Sensei_Fire_Hunt_mtn.swf',
+      lodge: 'archives:Sensei_Fire_Hunt_lodge.swf',
+      village: 'archives:Sensei_Fire_Hunt_village.swf',
+      forts: 'archives:Sensei_Fire_Hunt_forts.swf',
+      sport: 'archives:Sensei_Fire_Hunt_sport.swf',
+      rink: 'archives:Sensei_Fire_Hunt_rink.swf',
+      town: 'archives:RoomsTown-FireScavengerHunt.swf'
     },
     globalChanges: {
-      'scavenger_hunt/hunt_ui.swf': [4480, 'easter_egg_hunt', 'easter_hunt'],
+      'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Fire_Hunt_hunt_closeup.swf', 'easter_egg_hunt', 'easter_hunt'],
     },
     scavengerHunt2010: {
-      iconFileId: 4479
+      iconFileId: 'archives:Sensei_Fire_Hunt_hunt_icon.swf'
     }
   },
   {
@@ -1929,18 +1930,18 @@ export const PARTIES: Party[] = [
     startDate: '2009-10-11',
     endDate: '2009-11-02',
     roomChanges: {
-      dojoext: 4983,
-      shack: 4984,
-      dojohide: 4985,
-      mtn: 4986,
-      village: 4987,
-      beach: 4988,
-      berg: 4989,
-      dock: 4990,
-      dojo: 4991,
-      forts: 4992,
-      plaza: 4993,
-      town: 4994
+      dojoext: 'archives:2009_Storm_dojoext.swf',
+      shack: 'archives:2009_Storm_shack.swf',
+      dojohide: 'archives:2009_Storm_dojohide.swf',
+      mtn: 'archives:2009_Storm_mtn.swf',
+      village: 'archives:2009_Storm_village.swf',
+      beach: 'recreation:2009_storm/beach.swf',
+      berg: 'recreation:2009_storm/berg.swf',
+      dock: 'recreation:2009_storm/dock.swf',
+      dojo: 'recreation:2009_storm/dojo.swf',
+      forts: 'recreation:2009_storm/forts.swf',
+      plaza: 'recreation:2009_storm/plaza.swf',
+      town: 'recreation:2009_storm/town.swf'
     }
   },
   {
@@ -1948,9 +1949,9 @@ export const PARTIES: Party[] = [
     startDate: '2009-10-24',
     endDate: '2009-10-26',
     roomChanges: {
-      book: 4451,
-      coffee: 4452,
-      town: 4453
+      book: 'archives:RoomsBook-4thAnniversary.swf',
+      coffee: 'archives:RoomsCoffee-4thAnniversary.swf',
+      town: 'archives:RoomsTown-4thAnniversaryParty.swf'
     },
     music: {
       book: 250,
@@ -1963,37 +1964,37 @@ export const PARTIES: Party[] = [
     startDate: '2009-10-26',
     endDate: '2009-11-01',
     roomChanges: {
-      mtn: 2533,
-      beach: 4481,
-      beacon: 4482,
-      book: 4483,
-      cave: 4484,
-      coffee: 4485,
-      cove: 4486,
-      lounge: 4487,
-      dock: 4488,
-      dojo: 4489,
-      dojoext: 4490,
-      forest: 4491,
-      shop: 4492,
-      berg: 4493,
-      party2: 4494,
-      light: 4495,
-      attic: 4496,
-      mine: 4497,
-      shack: 4498,
-      dance: 4499,
-      dojohide: 4500,
-      pet: 4501,
-      pizza: 4502,
-      plaza: 4503,
-      party: 4504,
-      lodge: 4505,
-      village: 4506,
-      forts: 4507,
-      rink: 4508,
-      sport: 4509,
-      town: 4510
+      mtn: 'archives:HalloweenParty2010SkiHill.swf',
+      beach: 'archives:HalloweenParty2009RoomsBeach.swf',
+      beacon: 'archives:HalloweenParty2009RoomsBeacon.swf',
+      book: 'archives:HalloweenParty2009RoomsBook.swf',
+      cave: 'archives:HalloweenParty2009RoomsCave.swf',
+      coffee: 'archives:RoomsCoffeeHalloweenParty2009.swf',
+      cove: 'archives:HalloweenParty2009RoomsCove.swf',
+      lounge: 'archives:RoomsLounge-HalloweenParty2009.swf',
+      dock: 'archives:HalloweenParty2009RoomsDock.swf',
+      dojo: 'archives:HalloweenParty2009RoomsDojo.swf',
+      dojoext: 'archives:HalloweenParty2009RoomsDojoext.swf',
+      forest: 'archives:HalloweenParty2009RoomsForest.swf',
+      shop: 'archives:RoomsShop-HalloweenParty2009.swf',
+      berg: 'archives:HalloweenParty2009RoomsBerg.swf',
+      party2: 'archives:HalloweenParty2009RoomsParty2.swf',
+      light: 'archives:HalloweenParty2009RoomsLight.swf',
+      attic: 'archives:HalloweenParty2009RoomsAttic.swf',
+      mine: 'archives:RoomsMine-HalloweenParty2009.swf',
+      shack: 'archives:RoomsShack-HalloweenParty2009.swf',
+      dance: 'archives:HalloweenParty2009RoomsDance.swf',
+      dojohide: 'archives:HalloweenParty2009RoomsDojohide.swf',
+      pet: 'archives:HalloweenParty2009RoomsPet.swf',
+      pizza: 'archives:RoomsPizza-HalloweenParty2009.swf',
+      plaza: 'archives:RoomsPlaza-HalloweenParty2009.swf',
+      party: 'archives:HalloweenParty2009RoomsParty.swf',
+      lodge: 'archives:HalloweenParty2009RoomsLodge.swf',
+      village: 'archives:RoomsVillage-HalloweenParty2009.swf',
+      forts: 'archives:HalloweenParty2009RoomsForts.swf',
+      rink: 'archives:RoomsRink-HalloweenParty2009.swf',
+      sport: 'archives:RoomsSport-HalloweenParty2009.swf',
+      town: 'archives:RoomsTown-HalloweenParty2009.swf'
     },
     music: {
       beach: 251,
@@ -2026,7 +2027,7 @@ export const PARTIES: Party[] = [
       party2: 252
     },
     globalChanges: {
-      'rooms/NOTLS3EN.swf': 4511
+      'rooms/NOTLS3EN.swf': 'archives:RoomsNOTLS3EN-HalloweenParty2009.swf'
     }
   },
   {
@@ -2036,25 +2037,25 @@ export const PARTIES: Party[] = [
     roomChanges: {
       // I actually don't know if this dojo exterior
       // is from this date, archives lists it as being from later one
-      dojoext: 4995,
-      dojohide: 4998,
-      dojofire: 4999
+      dojoext: 'archives:RoomsDojoext-FireCelebrate.swf',
+      dojohide: 'archives:RoomsDojohide-FireCelebratePre2.swf',
+      dojofire: 'archives:RoomsDojofire-FireCelebratePre2.swf'
     },
     construction: {
       date: '2009-11-05',
       comment: 'Construction for Card-Jitsu Fire in the Ninja Hideout begins',
       changes: {
-        dojohide: 5000,
-        dojoext: 5002
+        dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf',
+        dojoext: 'archives:RoomsDojoext-FireCelebratePre.swf'
       },
       updates: [
         {
           comment: 'Construction for the Fire Dojo begins',
           date: '2009-11-13',
           changes: {
-            dojofire: 5001,
+            dojofire: 'archives:RoomsDojofire-FireCelebratePre.swf',
             // reverting back to normality
-            dojohide: 5092
+            dojohide: 'archives:RoomsDojohide_2.swf'
           }
         }
       ]
@@ -2064,8 +2065,8 @@ export const PARTIES: Party[] = [
         date: '2009-11-23',
         comment: 'Card-Jitsu Fire is now available',
         roomChanges: {
-          dojohide: 4996,
-          dojofire: 4997
+          dojohide: 'archives:RoomsDojohide-FireCelebrate.swf',
+          dojofire: 'archives:RoomsDojofire-FireCelebrate.swf'
         }
       }
     ]
@@ -2075,20 +2076,20 @@ export const PARTIES: Party[] = [
     startDate: '2009-11-27',
     endDate: '2009-11-30',
     roomChanges: {
-      mtn: 4512,
-      village: 4513,
-      rink: 4514,
-      party: 4515,
-      party2: 4516,
-      party3: 4517,
-      party4: 4518,
-      party5: 4519,
-      party6: 4520,
-      party7: 4521,
-      party8: 4522,
-      party9: 4523,
-      party10: 4524,
-      party11: 4525
+      mtn: 'archives:RoomsMtn-WinterParty.swf',
+      village: 'archives:RoomsVillage-WinterParty.swf',
+      rink: 'archives:RoomsRink-WinterParty.swf',
+      party: 'archives:RoomsParty-WinterParty.swf',
+      party2: 'archives:RoomsParty2-WinterParty.swf',
+      party3: 'fix:RoomsParty3-WinterParty.swf',
+      party4: 'fix:RoomsParty4-WinterParty.swf',
+      party5: 'fix:RoomsParty5-WinterParty.swf',
+      party6: 'fix:RoomsParty6-WinterParty.swf',
+      party7: 'archives:RoomsParty7-WinterParty.swf',
+      party8: 'archives:RoomsParty8-WinterParty.swf',
+      party9: 'archives:RoomsParty9-WinterParty.swf',
+      party10: 'fix:RoomsParty10-WinterParty.swf',
+      party11: 'archives:RoomsParty11-WinterParty.swf'
     },
     music: {
       rink: 280,
@@ -2108,7 +2109,7 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'close_ups/maze_map.swf': {
-        'en': 4526
+        'en': 'archives:ENClose_upsMaze_map-WinterParty.swf'
       }
     }
   },
@@ -2119,8 +2120,8 @@ export const PARTIES: Party[] = [
     startDate: NEW_YEARS_2010_UPDATE,
     endDate: '2010-01-04',
     roomChanges: {
-      mtn: 2295,
-      berg: 2296
+      mtn: 'archives:2010newyearfireworksskihill.swf',
+      berg: 'archives:2010newyearfireworksiceberg.swf'
     }
   },
   {
@@ -2128,39 +2129,39 @@ export const PARTIES: Party[] = [
     startDate: '2009-12-18',
     endDate: '2009-12-29',
     roomChanges: {
-      ship: 2613,
-      shipnest: 2601,
-      shipquarters: 2598,
-      shiphold: 2619,
-      beach: 4540,
-      cove: 4541,
-      dojofire: 4542,
-      light: 4543,
-      village: 4544,
-      beacon: 4545,
-      forest: 4546,
-      attic: 4547,
-      pizza: 4548,
-      forts: 4549,
-      book: 4550,
-      lounge: 4551,
-      shop: 4552,
-      party: 4553,
-      plaza: 4554,
-      town: 4555,
-      dock: 4556,
-      agent: 4557,
-      shack: 4558,
-      coffee: 4559,
-      dojo: 4560,
-      berg: 4561,
-      dance: 4562,
-      mtn: 4563,
-      agentcom: 4564,
-      dojoext: 4565,
-      rink: 4566,
-      dojohide: 4567,
-      lodge: 4568
+      ship: 'archives:HolidayParty2010Ship.swf',
+      shipnest: 'archives:HolidayParty2010ShipNest.swf',
+      shipquarters: 'archives:HolidayParty2010ShipQuarters.swf',
+      shiphold: 'archives:HolidayParty2010ShipHold.swf',
+      beach: 'archives:RoomsBeach-HolidayParty2009.swf',
+      cove: 'archives:RoomsCove-HolidayParty2009.swf',
+      dojofire: 'archives:RoomsDojofire-HolidayParty2009.swf',
+      light: 'archives:RoomsLight-HolidayParty2009.swf',
+      village: 'archives:RoomsVillage-HolidayParty2009.swf',
+      beacon: 'archives:RoomsBeacon-HolidayParty2009.swf',
+      forest: 'archives:RoomsForest-HolidayParty2009.swf',
+      attic: 'archives:RoomsAttic-HolidayParty2009.swf',
+      pizza: 'archives:RoomsPizza-HolidayParty2009.swf',
+      forts: 'archives:RoomsForts-HolidayParty2009.swf',
+      book: 'archives:RoomsBook-HolidayParty2009.swf',
+      lounge: 'archives:RoomsLounge-HolidayParty2009.swf',
+      shop: 'archives:RoomsShop-HolidayParty2009.swf',
+      party: 'archives:RoomsParty-HolidayParty2009.swf',
+      plaza: 'archives:RoomsPlaza-HolidayParty2009.swf',
+      town: 'archives:RoomsTown-HolidayParty2009.swf',
+      dock: 'archives:RoomsDock-HolidayParty2009.swf',
+      agent: 'archives:HolidayParty2009AgentHQ.swf',
+      shack: 'archives:RoomsShack-HolidayParty2009.swf',
+      coffee: 'archives:RoomsCoffeeHolidayParty2009.swf',
+      dojo: 'archives:RoomsDojo-HolidayParty2009.swf',
+      berg: 'archives:RoomsBerg-HolidayParty2009.swf',
+      dance: 'archives:RoomsDance-HolidayParty2009.swf',
+      mtn: 'archives:RoomsMtn-HolidayParty2009.swf',
+      agentcom: 'archives:RoomsAgentcom-HolidayParty2009.swf',
+      dojoext: 'archives:RoomsDojoext-HolidayParty2009.swf',
+      rink: 'archives:RoomsRink-HolidayParty2009.swf',
+      dojohide: 'archives:RoomsDojohide-HolidayParty2009.swf',
+      lodge: 'archives:RoomsLodge-HolidayParty2009.swf'
     },
     music: {
       attic: 255,
@@ -2189,16 +2190,16 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2009-12-11',
       changes: {
-        beach: 4529,
-        shipquarters: 4530,
-        shipnest: 4531,
-        lounge: 4532,
-        dance: 4534,
-        ship: 4535,
-        plaza: 4536,
-        shiphold: 4537,
-        village: 4538,
-        town: 4539
+        beach: 'archives:RoomsBeach-HolidayParty2009Pre.swf',
+        shipquarters: 'archives:RoomsShipquarters-HolidayParty2009Pre.swf',
+        shipnest: 'archives:RoomsShipnest-HolidayParty2009Pre.swf',
+        lounge: 'archives:RoomsLounge-HolidayParty2009Pre.swf',
+        dance: 'archives:RoomsDance-HolidayParty2009Pre.swf',
+        ship: 'archives:RoomsShip-HolidayParty2009Pre.swf',
+        plaza: 'archives:RoomsPlaza-HolidayParty2009Pre.swf',
+        shiphold: 'archives:RoomsShiphold-HolidayParty2009Pre.swf',
+        village: 'archives:RoomsVillage-HolidayParty2009Pre.swf',
+        town: 'archives:RoomsTown-HolidayParty2009Construction.swf'
       }
     }
   },
@@ -2208,37 +2209,37 @@ export const PARTIES: Party[] = [
     endDate: CAVE_EXPEDITION_END,
     endComment: 'The Cave Expedition ends and the cave mine is temporarily closed',
     roomChanges: {
-      'mine': 2297,
-      'party1': 2298,
-      'party2': 2299,
-      'party3': 2300
+      'mine': 'archives:RoomsMine-CaveExpedition.swf',
+      'party1': 'archives:RoomsParty1-CaveExpedition.swf',
+      'party2': 'archives:RoomsParty2-CaveExpedition.swf',
+      'party3': 'archives:RoomsParty3-CaveExpedition.swf'
     },
     'localChanges': {
       'catalogues/party.swf': {
-        'en': 2301
+        'en': 'archives:ENCataloguesParty1-CaveExpedition.swf'
       },
       'close_ups/digposter.swf': {
-        'en': 2307
+        'en': 'archives:PlayV2ContentEnClose_upsDigposter.swf'
       },
       'close_ups/digposter2.swf': {
-        'en': 2302
+        'en': 'archives:ENCloseUpsDigPoster2-Jan2010.swf'
       },
       'close_ups/treasurepin1.swf': {
-        'en': 2303
+        'en': 'archives:ENCloseUpsTreasurePin1.swf'
       },
       'close_ups/treasurepin2.swf': {
-        'en': 2304
+        'en': 'archives:ENCloseUpsTreasurePin2.swf'
       },
       'close_ups/treasurepin3.swf': {
-        'en': 2305
+        'en': 'archives:ENCloseUpsTreasurePin3.swf'
       },
       'close_ups/treasurepin4.swf': {
-        'en': 2306
+        'en': 'archives:ENCloseUpsTreasurePin4.swf'
       }
     },
     consequences: {
       roomChanges: {
-        mine: 2665
+        mine: 'archives:RoomsMine-PostCaveExpedition.swf'
       }
     }
   },
@@ -2247,24 +2248,24 @@ export const PARTIES: Party[] = [
     startDate: '2010-02-18',
     endDate: '2010-02-25',
     roomChanges: {
-      'beach': 2308,
-      'beacon': 2309,
-      'berg': 2310,
-      'boxdimension': 2311,
-      'cave': 2312,
-      'cove': 2313,
-      'dance': 2314,
-      'dock': 2315,
-      'forest': 2316,
-      'forts': 2317,
-      'light': 2318,
-      'lodge': 2319,
-      'mine': 2320,
-      'party1': 2321,
-      'party2': 2322,
-      'pet': 2323,
-      'town': 2325,
-      'village': 2326
+      'beach': 'archives:RoomsBeach-PuffleParty2010.swf',
+      'beacon': 'archives:RoomsBeacon-PuffleParty2010.swf',
+      'berg': 'archives:RoomsBerg-PuffleParty2010.swf',
+      'boxdimension': 'archives:RoomsBoxdimension-PuffleParty2010.swf',
+      'cave': 'archives:RoomsCave-PuffleParty2010.swf',
+      'cove': 'archives:RoomsCove-PuffleParty2010.swf',
+      'dance': 'archives:RoomsDance-PuffleParty2010.swf',
+      'dock': 'archives:RoomsDock-PuffleParty2010.swf',
+      'forest': 'archives:RoomsForest-PuffleParty2010.swf',
+      'forts': 'archives:RoomsForts-PuffleParty2010.swf',
+      'light': 'archives:RoomsLight-PuffleParty2010.swf',
+      'lodge': 'archives:RoomsSkiLodgeOrangePuffle.swf',
+      'mine': 'archives:RoomsMine-PuffleParty2010.swf',
+      'party1': 'archives:RoomsParty1-PuffleParty2010.swf',
+      'party2': 'archives:RoomsParty2-PuffleParty2010.swf',
+      'pet': 'archives:RoomsPet-PuffleParty2010.swf',
+      'town': 'archives:RoomsTown-PuffleParty2010.swf',
+      'village': 'archives:RoomsVillage-PuffleParty2010.swf'
     },
     music: {
       'beach': 282,
@@ -2288,13 +2289,13 @@ export const PARTIES: Party[] = [
     construction: {
       date: PUFFLE_PARTY_10_CONST_START,
       changes: {
-        'beacon': 2327,
-        'berg': 2328,
-        'cave': 2329,
-        'dance': 2320,
-        'forest': 2331,
-        'light': 2332,
-        'mine': 2333
+        'beacon': 'archives:RoomsBeacon-PuffleParty2010Const.swf',
+        'berg': 'archives:RoomsBerg-PuffleParty2010Const.swf',
+        'cave': 'archives:PuffleParty2010ConstCave.swf',
+        'dance': 'archives:RoomsMine-PuffleParty2010.swf',
+        'forest': 'archives:RoomsForest-PuffleParty2010Const.swf',
+        'light': 'archives:RoomsLight-PuffleParty2010Const.swf',
+        'mine': 'archives:RoomsMine-PuffleParty2010Const.swf'
       }
     }
   },
@@ -2309,25 +2310,25 @@ export const PARTIES: Party[] = [
       'party': 40
     },
     roomChanges: {
-      'dock': 2344,
-      'mtn': 2345,
-      'party': 2346,
-      'pizza': 2347,
-      'plaza': 2348,
-      'stage': 2349,
-      'town': 2350
+      'dock': 'archives:RoomsDock-PenguinPlayAwards2010.swf',
+      'mtn': 'archives:RoomsMtn-PenguinPlayAwards2010.swf',
+      'party': 'archives:RoomsParty-PenguinPlayAwards2010.swf',
+      'pizza': 'archives:RoomsPizza-PenguinPlayAwards2010.swf',
+      'plaza': 'archives:RoomsPlaza-PenguinPlayAwards2010.swf',
+      'stage': 'archives:RoomsStage-PenguinPlayAwards2010.swf',
+      'town': 'archives:RoomsTown-PenguinPlayAwards2010.swf'
     },
     globalChanges: {
-      'content/shorts/fairyFables.swf': 2338,
-      'content/shorts/goldenPuffle.swf': 2339,
-      'content/shorts/ruby.swf': 2340,
-      'content/shorts/squidzoid.swf': 2341,
-      'content/shorts/underwater.swf': [2342, 'underwaterShort'],
-      'content/winners.swf': [2343, 'voting_booth']
+      'content/shorts/fairyFables.swf': 'archives:ContentShortsfairyFables.swf',
+      'content/shorts/goldenPuffle.swf': 'archives:ContentShortsgoldenPuffle.swf',
+      'content/shorts/ruby.swf': 'archives:ContentShortsRuby.swf',
+      'content/shorts/squidzoid.swf': 'archives:ContentShortssquidzoid.swf',
+      'content/shorts/underwater.swf': ['archives:ContentShortsunderwater.swf', 'underwaterShort'],
+      'content/winners.swf': ['archives:ContentWinnersPPA2010.swf', 'voting_booth']
     },
     localChanges: {
       'catalogues/costume.swf': {
-        'en': 2678
+        'en': 'archives:March2010Costume.swf'
       }
     }
   },
@@ -2336,22 +2337,22 @@ export const PARTIES: Party[] = [
     startDate: '2010-03-31',
     endDate: '2010-04-05',
     roomChanges: {
-      'dock': 2358,
-      'forest': 2359,
-      'shop': 2360,
-      'berg': 2361,
-      'light': 2362,
-      'dance': 2363,
-      'mine': 2364,
-      'shack': 2365,
-      'pizza': 2366,
-      'lodge': 2367,
-      'village': 2368,
-      'forts': 2369,
-      'town': 2370,
-      'party': 2351,
-      plaza: 5082,
-      beach: 2352
+      'dock': 'archives:RoomsDock-AprilFoolsParty2010.swf',
+      'forest': 'archives:RoomsForest-AprilFoolsParty2010.swf',
+      'shop': 'archives:AprilFoolsParty2010GiftShop.swf',
+      'berg': 'archives:RoomsBerg-AprilFoolsParty2010.swf',
+      'light': 'archives:AprilFools\'Party2011Light.swf',
+      'dance': 'archives:AprilFools\'Party2011Dance.swf',
+      'mine': 'archives:RoomsMine-AprilFoolsParty2010.swf',
+      'shack': 'archives:RoomsShack-AprilFoolsParty2010.swf',
+      'pizza': 'archives:RoomsPizza-AprilFoolsParty2010.swf',
+      'lodge': 'archives:RoomsLodge-AprilFoolsParty2010.swf',
+      'village': 'archives:RoomsVillage-AprilFoolsParty2010.swf',
+      'forts': 'archives:RoomsForts-AprilFoolsParty2010.swf',
+      'town': 'archives:RoomsTown-AprilFoolsParty2010.swf',
+      'party': 'archives:RoomsParty-AprilFoolsParty2010.swf',
+      plaza: 'recreation:aprilfools2010_plaza.swf',
+      beach: 'archives:RoomsBeach-AprilFoolsParty2010.swf'
     },
     music: {
       'shop': 201,
@@ -2376,7 +2377,7 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'membership/oops_april_fools.swf': {
-        'en': [2371, 'oops_party_room']
+        'en': ['archives:AprilFoolsParty2010MembershipOopsAprilFools.swf', 'oops_party_room']
       }
     }
   },
@@ -2385,45 +2386,45 @@ export const PARTIES: Party[] = [
     startDate: EARTH_DAY_2010_START,
     endDate: EARTH_DAY_2010_END,
     roomChanges: {
-      'town': 2372,
-      'coffee': 2373,
-      'book': 2374,
-      'plaza': 2375,
-      'pet': 2376,
-      'mtn': 2377,
-      'village': 2378,
-      'forest': 2379,
-      'cove': 2380,
-      'shack': 2381,
-      'dojoext': 2382
+      'town': 'archives:RoomsTown-EarthDay2010.swf',
+      'coffee': 'archives:RoomsCoffeeEarthDay2010.swf',
+      'book': 'archives:RoomsBook-EarthDay2010.swf',
+      'plaza': 'archives:RoomsPlaza-EarthDay2010.swf',
+      'pet': 'archives:RoomsPet-EarthDay2010.swf',
+      'mtn': 'archives:RoomsMtn-EarthDay2010.swf',
+      'village': 'archives:RoomsVillage-EarthDay2010.swf',
+      'forest': 'archives:RoomsForest-EarthDay2010.swf',
+      'cove': 'archives:RoomsCove-EarthDay2010.swf',
+      'shack': 'archives:RoomsShack-EarthDay2010.swf',
+      'dojoext': 'archives:RoomsDojoext-EarthDay2010.swf'
     },
     music: {
       'town': 219,
       'plaza': 219
     },
     globalChanges: {
-      'scavenger_hunt/recycle.swf': [2385, 'easter_egg_hunt', 'recycle_hunt']
+      'scavenger_hunt/recycle.swf': ['archives:Scavenger_hunt-EarthDay2010.swf', 'easter_egg_hunt', 'recycle_hunt']
     },
     scavengerHunt2010: {
       // file to this one was potentially named recycle_icon.swf, this info will be lost here though
-      iconFileId: 2386,
+      iconFileId: 'archives:Scavenger_hunt_icon-EarthDay2010.swf',
       iconFilePath: 'scavenger_hunt/recycle_icon.swf'
     },
     construction: {
       date: '2010-04-15',
       changes: {
-        'shack': 2387
+        'shack': 'archives:RoomsShack-EarthDay2010Const.swf'
       }
     },
     permanentChanges: {
       roomChanges: {
-        forest: 2658
+        forest: 'archives:RoomsForest_2.swf'
       }
     },
     consequences: {
       roomChanges: {
         // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
-        shack: 2669
+        shack: 'archives:RoomsShack-June2010.swf'
       }
     }
   },
@@ -2432,29 +2433,29 @@ export const PARTIES: Party[] = [
     startDate: '2010-05-07',
     endDate: '2010-05-16',
     roomChanges: {
-      'town': 2388,
-      'coffee': 2389,
-      'book': 2390,
-      'dance': 2391,
-      'lounge': 2392,
-      'shop': 2393,
-      'forts': 2394,
-      'plaza': 2395,
-      'pet': 2396,
-      'pizza': 2397,
-      'boiler': 2398,
-      'cave': 2399,
-      'forest': 2400,
-      'cove': 2401,
-      'dock': 2402,
-      'beach': 2403,
-      'light': 2404,
-      'beacon': 2405,
-      'village': 2406,
-      'lodge': 2407,
-      'attic': 2408,
-      'mtn': 2409,
-      'rink': 2410
+      'town': 'archives:RoomsTown-MedievalParty2010.swf',
+      'coffee': 'archives:RoomsCoffee-MedievalParty2010.swf',
+      'book': 'archives:RoomsBook-MedievalParty2010.swf',
+      'dance': 'archives:RoomsDance-MedievalParty2010.swf',
+      'lounge': 'archives:RoomsLounge-MedievalParty2010.swf',
+      'shop': 'archives:RoomsShop-MedievalParty2010.swf',
+      'forts': 'archives:RoomsForts-MedievalParty2010.swf',
+      'plaza': 'archives:RoomsPlaza-MedievalParty2010.swf',
+      'pet': 'archives:RoomsPet-MedievalParty2010.swf',
+      'pizza': 'archives:RoomsPizza-MedievalParty2010.swf',
+      'boiler': 'archives:RoomsBoiler-MedievalParty2010.swf',
+      'cave': 'archives:RoomsCave-MedievalParty2010.swf',
+      'forest': 'archives:RoomsForest-MedievalParty2010.swf',
+      'cove': 'archives:RoomsCove-MedievalParty2010.swf',
+      'dock': 'archives:MedievalParty2011Dock.swf',
+      'beach': 'archives:Rooms0508Beach.swf',
+      'light': 'archives:RoomsLight-MedievalParty2010.swf',
+      'beacon': 'archives:MedievalParty2011Beacon.swf',
+      'village': 'archives:RoomsVillage-MedievalParty2010.swf',
+      'lodge': 'archives:Rooms0508Lodge.swf',
+      'attic': 'archives:MedievalParty2011Attic.swf',
+      'mtn': 'archives:MedievalParty2011Mtn.swf',
+      'rink': 'archives:Rooms0508Rink.swf'
     },
     music: {
       'beach': 233,
@@ -2502,12 +2503,12 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2010-04-29',
       changes: {
-        'beach': 2411,
-        'cave': 2412,
-        'forts': 2413,
-        'plaza': 2414,
-        'town': 2415,
-        'village': 2416
+        'beach': 'archives:MedievalParty2011ConstBeach.swf',
+        'cave': 'archives:RoomsCave-MedievalParty2010Const.swf',
+        'forts': 'archives:RoomsForts-MedievalParty2010Const.swf',
+        'plaza': 'archives:RoomsPlaza-MedievalParty2010Const.swf',
+        'town': 'archives:RoomsTown-MedievalParty2010Pre.swf',
+        'village': 'archives:RoomsVillage-MedievalParty2010Const.swf'
       }
     }
   },
@@ -2516,17 +2517,17 @@ export const PARTIES: Party[] = [
     startDate: '2010-05-18',
     endDate: EPF_RELEASE,
     roomChanges: {
-      'agent': 2417,
-      'village': 2418,
-      'sport': 2419
+      'agent': 'archives:RoomsAgent-PopcornExplosion.swf',
+      'village': 'archives:RoomsVillage-PopcornExplosion.swf',
+      'sport': 'archives:RoomsSport-PopcornExplosion.swf'
     },
     updates: [
       {
         comment: 'Sports Shop closed for reconstruction',
         date: '2010-05-25',
         roomChanges: {
-          'agent': 2420,
-          'village': 2421
+          'agent': 'archives:RoomsAgent-PopcornExplosion_2.swf',
+          'village': 'archives:RoomsVillage-PopcornExplosion_2.swf'
         }
       }
     ]
@@ -2536,19 +2537,19 @@ export const PARTIES: Party[] = [
     startDate: '2010-06-18',
     endDate: '2010-06-28',
     roomChanges: {
-      'town': 2426,
-      'dance': 2427,
-      'forts': 2428,
-      'plaza': 2429,
-      'forest': 2430,
-      'lake': 2431,
-      'cove': 2432,
-      'dock': 2433,
-      'beach': 2434,
-      'village': 2435,
-      'berg': 2436,
-      'party': 2437,
-      'party2': 2438
+      'town': 'archives:RoomsTown-IslandAdventureParty2010.swf',
+      'dance': 'archives:RoomsDance-IslandAdventureParty2010.swf',
+      'forts': 'archives:RoomsForts-IslandAdventureParty2010.swf',
+      'plaza': 'archives:RoomsPlaza-IslandAdventureParty2010.swf',
+      'forest': 'archives:RoomsForest-IslandAdventureParty2010.swf',
+      'lake': 'archives:RoomsLake-IslandAdventureParty2010.swf',
+      'cove': 'archives:RoomsCove-IslandAdventureParty2010.swf',
+      'dock': 'archives:RoomsDock-IslandAdventureParty2010.swf',
+      'beach': 'archives:RoomsBeach-IslandAdventureParty2010.swf',
+      'village': 'archives:RoomsVillage-IslandAdventureParty2010.swf',
+      'berg': 'archives:RoomsBerg-IslandAdventureParty2010.swf',
+      'party': 'archives:RoomsParty-IslandAdventureParty2010.swf',
+      'party2': 'archives:RoomsParty2-IslandAdventureParty2010.swf'
     },
     music: {
       'beach': 41,
@@ -2566,10 +2567,10 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2010-06-10',
       changes: {
-        'beach': 2422,
-        'cove': 2423,
-        'plaza': 2424,
-        'town': 2425
+        'beach': 'archives:RoomsBeach-IslandAdventureParty2010Const.swf',
+        'cove': 'archives:IslandAdventureParty2011ConstCove.swf',
+        'plaza': 'archives:RoomsPlaza-IslandAdventureParty2010Const.swf',
+        'town': 'archives:RoomsTown-IslandAdventureParty2010Pre.swf'
       }
     }
   },
@@ -2578,27 +2579,27 @@ export const PARTIES: Party[] = [
     startDate: MUSIC_JAM_2010_START,
     endDate: '2010-07-19',
     roomChanges: {
-      'party3': 2439,
-      'beach': 2440,
-      'party4': 2441,
-      'cave': 2442,
-      'coffee' :2443,
-      'cove': 2444,
-      'lounge': 2445,
-      'dock': 2446,
-      'forest': 2447,
-      'berg': 2448,
-      'light': 2449,
-      'mine': 2450,
-      'party': 2451,
-      'dance': 2452,
-      'party2': 2453,
-      'pizza': 2454,
-      'plaza': 2455,
-      'forts': 2456,
-      'rink': 2457,
-      'village': 2458,
-      'town': 2459
+      'party3': 'archives:RoomsParty3-MusicJam2010.swf',
+      'beach': 'archives:RoomsBeach-MusicJam2010.swf',
+      'party4': 'archives:RoomsParty4-MusicJam2010.swf',
+      'cave': 'archives:RoomsCave-MusicJam2010.swf',
+      'coffee': 'archives:RoomsCoffee-MusicJam2010.swf',
+      'cove': 'archives:RoomsCove-MusicJam2010.swf',
+      'lounge': 'archives:RoomsLounge-MusicJam2010.swf',
+      'dock': 'archives:RoomsDock-MusicJam2010.swf',
+      'forest': 'archives:RoomsForest-MusicJam2010.swf',
+      'berg': 'archives:RoomsBerg-MusicJam2010.swf',
+      'light': 'archives:RoomsLight-MusicJam2010.swf',
+      'mine': 'archives:RoomsMine-MusicJam2010.swf',
+      'party': 'archives:RoomsParty-MusicJam2010.swf',
+      'dance': 'archives:RoomsDance-MusicJam2010.swf',
+      'party2': 'archives:RoomsParty2-MusicJam2010.swf',
+      'pizza': 'archives:RoomsPizza-MusicJam2010.swf',
+      'plaza': 'archives:RoomsPlaza-MusicJam2010.swf',
+      'forts': 'archives:RoomsForts-MusicJam2010.swf',
+      'rink': 'archives:RoomsRink-MusicJam2010.swf',
+      'village': 'archives:RoomsVillage-MusicJam2010.swf',
+      'town': 'archives:RoomsTown-MusicJam2010.swf'
     },
     music: {
       'lounge': 271,
@@ -2616,13 +2617,13 @@ export const PARTIES: Party[] = [
     },
     localChanges: {
       'catalogues/merch.swf': {
-        'en': 2460
+        'en': 'archives:MusicJam2010Merch.swf'
       },
       'close_ups/poster.swf': {
-        'en': 2461
+        'en': 'archives:MusicJam2010TownPoster.swf'
       },
       'close_ups/music.swf': {
-        'en': 2463
+        'en': 'approximation:music_jam_start_instruments.swf'
       }
     },
     updates: [
@@ -2630,7 +2631,7 @@ export const PARTIES: Party[] = [
         date: '2010-07-14',
         comment: 'The Penguin Band is taking a break',
         roomChanges: {
-          berg: 5081
+          berg: 'recreation:mjam_10_berg_no_pb.swf'
         }
       },
       {
@@ -2639,7 +2640,7 @@ export const PARTIES: Party[] = [
         roomChanges: {},
         localChanges: {
           'catalogues/music.swf': {
-            'en': 2462
+            'en': 'archives:MusicJam2010UpdateInstruments.swf'
           }
         }
       }
@@ -2647,15 +2648,15 @@ export const PARTIES: Party[] = [
     construction: {
       date: MUSIC_JAM_2010_CONST_START,
       changes: {
-        'beach': 2464,
-        'coffee': 2466,
-        'cove': 2467,
-        'dock': 2468,
-        'forest': 2469,
-        'berg': 2470,
-        'light': 2471,
-        'village': 2472,
-        'forts': 2473
+        'beach': 'archives:RoomsBeach-MusicJam2010Pre.swf',
+        'coffee': 'archives:RoomsCoffee-MusicJam2010Pre.swf',
+        'cove': 'archives:RoomsCove-MusicJam2010Pre.swf',
+        'dock': 'archives:RoomsDock-MusicJam2010Pre.swf',
+        'forest': 'archives:RoomsForest-MusicJam2010Pre.swf',
+        'berg': 'archives:RoomsBerg-MusicJam2010Pre.swf',
+        'light': 'archives:RoomsLight-MusicJam2010Pre.swf',
+        'village': 'archives:RoomsVillage-MusicJam2010Pre.swf',
+        'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
       }
     }
   },
@@ -2664,25 +2665,25 @@ export const PARTIES: Party[] = [
     startDate: '2010-08-12',
     endDate: '2010-08-19',
     roomChanges: {
-      'party3': 2475,
-      'party6': 2476,
-      'party2': 2477,
-      'party4': 2478,
-      'plaza': 2479,
-      'village': 2480,
-      'party1': 2481,
-      'party5': 2482,
-      'town': 2483
+      'party3': 'archives:RoomsParty3-MtnExpedition.swf',
+      'party6': 'archives:RoomsParty6-MtnExpedition.swf',
+      'party2': 'archives:RoomsParty2-MtnExpedition.swf',
+      'party4': 'archives:RoomsParty4-MtnExpedition.swf',
+      'plaza': 'archives:RoomsPlaza-MtnExpedition.swf',
+      'village': 'archives:RoomsVillage-MtnExpedition.swf',
+      'party1': 'archives:RoomsParty1-MtnExpedition.swf',
+      'party5': 'archives:RoomsParty5-MtnExpedition.swf',
+      'town': 'archives:RoomsTown-MtnExpedition.swf'
     },
     localChanges: {
       'catalogues/merch.swf': {
-        'en': 2485
+        'en': 'archives:LocalEnCataloguesMerchAugust2010.swf'
       },
       'close_ups/poster.swf': {
-        'en': 2487
+        'en': 'recreation:mountain_expedition_poster.swf'
       },
       'membership/party3.swf': {
-        'en': 2486
+        'en': 'archives:MountainExpeditionMembershipOopsExpedition.swf'
       }
     },
     music: {
@@ -2694,7 +2695,7 @@ export const PARTIES: Party[] = [
     construction: {
       date: '2010-08-05',
       changes: {
-        'village': 2484
+        'village': 'archives:RoomsVillage-MtnExpeditionPre.swf'
       }
     }
   },
@@ -2703,23 +2704,23 @@ export const PARTIES: Party[] = [
     startDate: FAIR_2010_START,
     endDate: '2010-09-13',
     roomChanges: {
-      'town': 2489,
-      'coffee': 2490,
-      'dance': 2491,
-      'lounge': 2492,
-      'forts': 2493,
-      'plaza': 2494,
-      'forest': 2495,
-      'cove': 2496,
-      'berg': 2497,
-      'dock': 2498,
-      'beach': 2499,
-      'beacon': 2500,
-      'village': 2501,
-      'mtn': 2502,
-      'party': 2503,
-      'party2': 2504,
-      'party3': 2505
+      'town': 'archives:RoomsTown-TheFair2010.swf',
+      'coffee': 'archives:RoomsCoffeeTheFair2009.swf',
+      'dance': 'archives:RoomsDance-Fair2010.swf',
+      'lounge': 'archives:RoomsLounge-Fair2009.swf',
+      'forts': 'archives:RoomsForts-Fair2010.swf',
+      'plaza': 'archives:RoomsPlaza-Fair2010.swf',
+      'forest': 'archives:RoomsForest-Fair2010.swf',
+      'cove': 'archives:RoomsCove-Fair2010.swf',
+      'berg': 'archives:RoomsBerg-Fair2010.swf',
+      'dock': 'archives:RoomsDock-Fair2010.swf',
+      'beach': 'archives:RoomsBeach-Fair2010.swf',
+      'beacon': 'archives:RoomsBeacon-Fair2010.swf',
+      'village': 'archives:RoomsVillage-Fair2010.swf',
+      'mtn': 'archives:RoomsMtn-Fair2010.swf',
+      'party': 'archives:RoomsParty-Fair2010.swf',
+      'party2': 'archives:RoomsParty2-Fair2010.swf',
+      'party3': 'archives:RoomsParty3-Fair2010.swf'
     },
     music: {
       'town': 297,
@@ -2742,26 +2743,26 @@ export const PARTIES: Party[] = [
       'party3': 221
     },
     fairCpip: {
-      iconFileId: 2507
+      iconFileId: 'archives:Ticket_icon-TheFair2010.swf'
     },
     generalChanges: {
-      'web_service/worldachievements.xml': 2515
+      'web_service/worldachievements.xml': 'approximation:fair_worldachievements.xml'
     },
     localChanges: {
       'catalogues/prizebooth.swf': {
-        'en': 2509
+        'en': 'archives:TheFair2010PrizeBooth.swf'
       },
       'catalogues/prizeboothmember.swf': {
-        'en': 2510
+        'en': 'archives:TheFair2010PrizeBoothMember.swf'
       },
       'close_ups/poster.swf': {
-        'en': 2508
+        'en': 'archives:Fair2010Poster.swf'
       }
     },
     construction: {
       date: '2010-08-26',
       changes: {
-        'beach': 2488
+        'beach': 'archives:RoomsBeach-PreFair2010.swf'
       }
     },
     updates: [
@@ -2771,10 +2772,10 @@ export const PARTIES: Party[] = [
         roomChanges: {},
         localChanges: {
           'catalogues/prizebooth.swf': {
-            'en': 2511
+            'en': 'archives:TheFair2010PrizeBooth2.swf'
           },
           'catalogues/prizeboothmember.swf': {
-            'en': 2512
+            'en': 'archives:TheFair2010PrizeBoothMember2.swf'
           }
         }
       }
@@ -2785,9 +2786,9 @@ export const PARTIES: Party[] = [
     startDate: ANNIVERSARY_5_START,
     endDate: '2010-10-25',
     roomChanges: {
-      'book': 2521,
-      'coffee': 2522,
-      'town': 2523
+      'book': 'archives:5thAnniversaryPartyBook.swf',
+      'coffee': 'archives:5thAnniversaryPartyCoffee.swf',
+      'town': 'archives:RoomsTown-5thAnniversaryParty.swf'
     },
     music: {
       'town': 218,
@@ -2800,61 +2801,61 @@ export const PARTIES: Party[] = [
     startDate: HALLOWEEN_2010_START,
     endDate: '2010-11-04',
     roomChanges: {
-      'beach': 2524,
-      'light': 2525,
-      'beacon': 2526,
-      'berg': 2527,
-      'book': 2528,
-      'cave': 2529,
-      'forts': 2530,
-      'rink': 2531,
-      'village': 2532,
-      'mtn': 2533,
-      'lodge': 2534,
-      'attic': 2535,
-      'cove': 2536,
-      'party4': 2537,
-      'party3': 2538,
-      'dock': 2539,
-      'dojo': 2540,
-      'dojoext': 2541,
-      'dojofire': 2542,
-      'plaza': 2543,
-      'pet': 2544,
-      'pizza': 2545,
-      'shack': 2546,
-      'forest': 2547,
-      'party2': 2548,
-      'party1': 2549,
-      'party5': 2550,
-      'town': 2551,
-      'dance': 2553,
-      'lounge': 2554,
-      'shop': 2555,
-      'dojohide': 2556,
-      coffee: 2552
+      'beach': 'archives:HalloweenParty2010Beach.swf',
+      'light': 'archives:HalloweenParty2010Lighthouse.swf',
+      'beacon': 'archives:HalloweenParty2010Beacon.swf',
+      'berg': 'archives:HalloweenParty2010Berg.swf',
+      'book': 'archives:HalloweenParty2010Book.swf',
+      'cave': 'archives:HalloweenParty2010Cave.swf',
+      'forts': 'archives:HalloweenParty2010SnowForts.swf',
+      'rink': 'archives:HalloweenParty2010Stadium.swf',
+      'village': 'archives:HalloweenParty2010SkiVIllage.swf',
+      'mtn': 'archives:HalloweenParty2010SkiHill.swf',
+      'lodge': 'archives:HalloweenParty2010Lodge.swf',
+      'attic': 'archives:HalloweenParty2010Attic.swf',
+      'cove': 'archives:HalloweenParty2010Cove.swf',
+      'party4': 'archives:HalloweenParty2010Party4.swf',
+      'party3': 'archives:HalloweenParty2010Party3.swf',
+      'dock': 'archives:HalloweenParty2010Dock.swf',
+      'dojo': 'archives:HalloweenParty2010Dojo.swf',
+      'dojoext': 'archives:HalloweenParty2010DojoExt.swf',
+      'dojofire': 'archives:HalloweenParty2010DojoFire.swf',
+      'plaza': 'archives:HalloweenParty2010Plaza.swf',
+      'pet': 'archives:HalloweenParty2010PetShop.swf',
+      'pizza': 'archives:HalloweenParty2010PizzaParlor.swf',
+      'shack': 'archives:HalloweenParty2010Shack.swf',
+      'forest': 'archives:HalloweenParty2010Forest.swf',
+      'party2': 'archives:HalloweenParty2010Party2.swf',
+      'party1': 'archives:HalloweenParty2010Party1.swf',
+      'party5': 'archives:HalloweenParty2010Party5.swf',
+      'town': 'archives:RoomsTown-HalloweenParty2010.swf',
+      'dance': 'archives:HalloweenParty2010Dance.swf',
+      'lounge': 'archives:HalloweenParty2010Lounge.swf',
+      'shop': 'archives:HalloweenParty2010GiftShop.swf',
+      'dojohide': 'archives:HalloweenParty2010DojoHide.swf',
+      coffee: 'archives:HalloweenParty2010Coffee.swf'
     },
     globalChanges: {
-      'content/map.swf': 2560,
-      'scavenger_hunt/hunt_ui.swf': [2562, 'hunt_ui', 'halloween_hunt'],
-      'binoculars/empty.swf': 2563, // from 2007 party
-      'igloo/assets/igloo_background.swf': 2564, // from 2011 party
-      'rooms/NOTLS3EN.swf': 2565,
-      'telescope/empty.swf': 2566
+      'content/map.swf': 'archives:HalloweenParty2010Map.swf',
+      'scavenger_hunt/hunt_ui.swf': ['recreation:halloween_hunt_2010.swf', 'hunt_ui', 'halloween_hunt'],
+      'binoculars/empty.swf': 'archives:ContentBinoculars-HalloweenParty2007.swf', // from 2007 party
+      'igloo/assets/igloo_background.swf': 'archives:Igloo_background_nightstorm.swf', // from 2011 party
+      'rooms/NOTLS3EN.swf': 'unknown:NOTLS3EN',
+      'telescope/empty.swf': 'unknown:halloween_telescope.swf'
     },
     localChanges: {
       'catalogues/party.swf': {
-        'en': 2559
+        'en': 'archives:CataloguesENParty-HalloweenParty2010.swf'
       },
       'close_ups/halloweenposter.swf': {
-        'en': 2557
+        'en': 'archives:HalloweenParty2010Poster.swf'
       },
       'membership/membership_party3.swf': {
-        'en': 2558
+        'en': 'archives:HalloweenParty2010MembershipParty3.swf'
       }
     },
     generalChanges: {
-      'web_service/worldachievements.xml': 2567
+      'web_service/worldachievements.xml': 'approximation:halloween_worldachievements.xml'
     },
     music: {
       'town': 251,
@@ -2888,7 +2889,7 @@ export const PARTIES: Party[] = [
       'party5': 298
     },
     scavengerHunt2010: {
-      iconFileId: 2561
+      iconFileId: 'approximation:halloween_hunt_icon.swf'
     }
   },
   {
@@ -2898,64 +2899,64 @@ export const PARTIES: Party[] = [
     startComment: 'The storm remains in the island, making it cloudy',
     endComment: 'The storm ends',
     roomChanges: {
-      beach: 21137,
-      beacon: 21138,
-      cove: 21139,
-      dock: 21140,
-      dojoext: 21141,
-      dojofire: 21142,
-      forest: 21143,
-      berg: 21144,
-      shack: 21145,
-      dojohide: 21146,
-      plaza: 21147,
-      mtn: 21148,
-      village: 21149,
-      forts: 21150,
-      rink: 21151,
-      town: 21152,
-      pet: 21183,
-      pizza: 21184
+      beach: 'archives:StormBeach.swf',
+      beacon: 'archives:StormBeacon.swf',
+      cove: 'archives:StormCove.swf',
+      dock: 'archives:StormDock.swf',
+      dojoext: 'archives:StormDojoext.swf',
+      dojofire: 'archives:StormDojoFire.swf',
+      forest: 'archives:StormForest.swf',
+      berg: 'archives:StormBerg.swf',
+      shack: 'archives:StormShack.swf',
+      dojohide: 'archives:StormDojohide.swf',
+      plaza: 'archives:StormPlaza.swf',
+      mtn: 'archives:StormMtn.swf',
+      village: 'archives:StormVillage.swf',
+      forts: 'archives:StormForts.swf',
+      rink: 'archives:StormRink.swf',
+      town: 'archives:RoomsTown-Storm2010Pre.swf',
+      pet: 'recreation:storm_2010_pet.swf',
+      pizza: 'recreation:storm_2010_pizza.swf'
     },
     globalChanges: {
-      'igloo/assets/igloo_background.swf': 21178,
-      'binoculars/empty.swf': 21179,
-      'telescope/empty.swf': 21180
+      'igloo/assets/igloo_background.swf': 'archives:StormIglooBackground.swf',
+      'binoculars/empty.swf': 'archives:StormBinoculars.swf',
+      'telescope/empty.swf': 'archives:StormTelescope.swf'
     },
     updates: [
       {
         comment: 'Rain starts around the island',
         date: '2010-11-11',
         roomChanges: {
-          beach: 21153,
-          beacon: 21154,
-          coffee: 21155,
-          cove: 21156,
-          dock: 21157,
-          dojo: 21158,
-          agentlobbysolo: 21159,
-          agentlobbymulti: 21160,
-          dojofire: 21161,
-          forest: 21162,
-          shop: 21163,
-          dojoext: 21164,
-          berg: 21165,
-          light: 21166,
-          dojohide: 21167,
-          shack: 21168,
-          pet: 21169,
-          pizza: 21170,
-          plaza: 21171,
-          mtn: 21172,
-          lodge: 21173,
-          village: 21174,
-          forts: 21175,
-          rink: 21176,
-          town: 21177
+          beach: 'archives:RainBeach.swf',
+          beacon: 'archives:RainBeacon.swf',
+          coffee: 'archives:RainCoffee.swf',
+          cove: 'archives:RainCove.swf',
+          dock: 'archives:RainDock.swf',
+          dojo: 'archives:RainDojo.swf',
+          agentlobbysolo: 'archives:RainAgentlobbysolo.swf',
+          agentlobbymulti: 'archives:RainAgentlobbymulti.swf',
+          dojofire: 'archives:RainDojofire.swf',
+          forest: 'archives:RainForest.swf',
+          shop: 'archives:RainShop.swf',
+          dojoext: 'archives:RainDojoext.swf',
+          berg: 'archives:RainBerg.swf',
+          light: 'archives:RainLight.swf',
+          dojohide: 'archives:RainDojohide.swf',
+          shack: 'archives:RainShack.swf',
+          pet: 'archives:RainPet.swf',
+          pizza: 'archives:RainPizza.swf',
+          plaza: 'archives:RainPlaza.swf',
+          mtn: 'archives:RainMtn.swf',
+          lodge: 'archives:RainLodge.swf',
+          village: 'archives:RainVillage.swf',
+          forts: 'archives:RainForts.swf',
+          rink: 'archives:RainRink.swf',
+          town: 'archives:RoomsTown-Storm2010.swf'
         },
         globalChanges: {
-          'binoculars/empty.swf': 21181,
-          'telescope/empty.swf': 21182
+          'binoculars/empty.swf': 'archives:RainBinoculars.swf',
+          'telescope/empty.swf': 'archives:RainTelescope.swf'
         }
       }
     ]
@@ -2965,40 +2966,40 @@ export const PARTIES: Party[] = [
     startDate: '2010-11-16',
     endDate: WATER_HUNT_END,
     roomChanges: {
-      'beach': 2568,
-      'boiler': 2569,
-      'book': 2570,
-      'cave': 2571,
-      'cavemine': 2572,
-      'coffee': 2573,
-      'cove': 2574,
-      'lounge': 2575,
-      'dock': 2576,
-      'dojoext': 2577,
-      'forest': 2578,
-      'lake': 2579,
-      'mine': 2580,
-      'dojohide': 2581,
-      'plaza': 2582,
-      'pet': 2583,
-      'rink': 2584,
-      'forts': 2585,
-      'town': 2586,
-      'dojowater': 2587
+      'beach': 'archives:WaterHuntBeach.swf',
+      'boiler': 'archives:WaterHuntBoiler.swf',
+      'book': 'archives:WaterHuntBook.swf',
+      'cave': 'archives:WaterHuntCave.swf',
+      'cavemine': 'archives:WaterHuntCavemine.swf',
+      'coffee': 'archives:WaterHuntCoffee.swf',
+      'cove': 'archives:WaterHuntCove.swf',
+      'lounge': 'archives:WaterHuntLounge.swf',
+      'dock': 'archives:WaterHuntDock.swf',
+      'dojoext': 'archives:WaterHuntDojoext.swf',
+      'forest': 'archives:WaterHuntForest.swf',
+      'lake': 'archives:WaterHuntLake.swf',
+      'mine': 'archives:WaterHuntMine.swf',
+      'dojohide': 'archives:WaterHuntDojohide.swf',
+      'plaza': 'archives:WaterHuntPlaza.swf',
+      'pet': 'archives:WaterHuntPet.swf',
+      'rink': 'archives:WaterHuntRink.swf',
+      'forts': 'archives:WaterHuntForts.swf',
+      'town': 'archives:RoomsTown-WaterScavengerHunt.swf',
+      'dojowater': 'archives:WaterDojoConstruction.swf'
     },
     globalChanges: {
-      'scavenger_hunt/hunt_ui.swf': [2588, 'easter_egg_hunt', 'scavenger_hunt']
+      'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Water_Scavenger_Hunt_closeup.swf', 'easter_egg_hunt', 'scavenger_hunt']
     },
     updates: [
       {
         date: PLANET_Y_2010,
         roomChanges: {
-          'plaza': 2590
+          'plaza': 'recreation:water_hunt_planet_y'
         }
       }
     ],
     scavengerHunt2010: {
-      iconFileId: 2589
+      iconFileId: 'archives:Sensei_Water_Scavenger_Hunt_icon.swf.swf'
     }
   },
   {
@@ -3006,14 +3007,14 @@ export const PARTIES: Party[] = [
     startDate: WATER_HUNT_END,
     endDate: WATER_CELEBRATION_END,
     roomChanges: {
-      'dojoext': 2591,
-      'dojohide': 2592,
-      'dojowater': 2593
+      'dojoext': 'archives:WaterCelebrationDojoext.swf',
+      'dojohide': 'archives:WaterCelebrationDojohide.swf',
+      'dojowater': 'archives:WaterCelebrationDojowater.swf'
     },
     consequences: {
       roomComment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard',
       roomChanges: {
-        dojoext: 2655
+        dojoext: 'archives:RoomsDojoext_3.swf'
       }
     }
   },
@@ -3022,51 +3023,51 @@ export const PARTIES: Party[] = [
     startDate: '2010-12-16',
     endDate: '2010-12-28',
     roomChanges: {
-      'party99': 2594,
-      'beach': 2595,
-      'beacon': 2596,
-      'book': 2597,
-      'shipquarters': 2598,
-      'coffee': 2599,
-      'cove': 2600,
-      'shipnest': 2601,
-      'lounge': 2602,
-      'dock': 2603,
-      'dojo': 2604,
-      'dojoext': 2605,
-      'dojofire': 2606,
-      'forest': 2607,
-      'shop': 2608,
-      'berg': 2609,
-      'light': 2610,
-      'attic': 2611,
-      'party': 2612,
-      'ship': 2613,
-      'shack': 2614,
-      'dance': 2615,
-      'dojohide': 2616,
-      'pizza': 2617,
-      'plaza': 2618,
-      'shiphold': 2619,
-      'mtn': 2620,
-      'lodge': 2621,
-      'village': 2622,
-      'forts': 2623,
-      'rink': 2625,
-      'town': 2627
+      'party99': 'archives:HolidayParty2010Party99.swf',
+      'beach': 'archives:HolidayParty2010Beach.swf',
+      'beacon': 'archives:HolidayParty2010Beacon.swf',
+      'book': 'archives:HolidayParty2010Book.swf',
+      'shipquarters': 'archives:HolidayParty2010ShipQuarters.swf',
+      'coffee': 'archives:HolidayParty2010Coffee.swf',
+      'cove': 'archives:HolidayParty2010Cove.swf',
+      'shipnest': 'archives:HolidayParty2010ShipNest.swf',
+      'lounge': 'archives:HolidayParty2010Lounge.swf',
+      'dock': 'archives:HolidayParty2010Dock.swf',
+      'dojo': 'archives:HolidayParty2010Dojo.swf',
+      'dojoext': 'archives:HolidayParty2010DojoExt.swf',
+      'dojofire': 'archives:HolidayParty2010DojoFire.swf',
+      'forest': 'archives:HolidayParty2010Forest.swf',
+      'shop': 'archives:HolidayParty2010Shop.swf',
+      'berg': 'archives:HolidayParty2010Berg.swf',
+      'light': 'archives:HolidayParty2010Light.swf',
+      'attic': 'archives:HolidayParty2010Attic.swf',
+      'party': 'archives:HolidayParty2010Party.swf',
+      'ship': 'archives:HolidayParty2010Ship.swf',
+      'shack': 'archives:HolidayParty2010Shack.swf',
+      'dance': 'archives:HolidayParty2010Dance.swf',
+      'dojohide': 'archives:HolidayParty2010DojoHide.swf',
+      'pizza': 'archives:HolidayParty2010Pizza.swf',
+      'plaza': 'archives:HolidayParty2010Plaza.swf',
+      'shiphold': 'archives:HolidayParty2010ShipHold.swf',
+      'mtn': 'archives:HolidayParty2010Mtn.swf',
+      'lodge': 'archives:HolidayParty2010Lodge.swf',
+      'village': 'archives:HolidayParty2010Village.swf',
+      'forts': 'archives:HolidayParty2010Forts(1).swf',
+      'rink': 'archives:HolidayParty2010Rink(1).swf',
+      'town': 'archives:RoomsTown-HolidayParty2010.swf'
     },
     globalChanges: {
-      'content/map.swf': 2633
+      'content/map.swf': 'archives:HolidayParty2010Map-StadiumGames.swf'
     },
     localChanges: {
       'close_ups/christmasposter.swf': {
-        'en': 2629
+        'en': 'archives:HolidayParty2010ChristmasPoster.swf'
       },
       'close_ups/poster.swf': {
-        'en': 2630
+        'en': 'archives:2010coinsforchangeposter.swf'
       },
       'forms/coins_for_change.swf': {
-        'en': 2631
+        'en': 'archives:2010coinsforchangedonate.swf'
       }
     },
     music: {
@@ -3099,12 +3100,12 @@ export const PARTIES: Party[] = [
       {
         date: STADIUM_GAMES_END,
         roomChanges: {
-          'forts': 2624,
-          'rink': 2626,
-          'town': 2628
+          'forts': 'archives:HolidayParty2010Forts(2).swf',
+          'rink': 'archives:HolidayParty2010Rink(2).swf',
+          'town': 'archives:RoomsTown-HolidayParty2010_2.swf'
         },
         globalChanges: {
-          'content/map.swf': 2632
+          'content/map.swf': 'archives:HolidayParty2010Map.swf'
         }
       }
     ]

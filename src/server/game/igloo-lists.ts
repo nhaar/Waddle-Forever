@@ -8,7 +8,7 @@ type IglooList = [Row, Row, Row, Row, Row, Row, Row];
 type FullList = {
   list: IglooList,
   date: string;
-  fileId?: number;
+  fileRef?: string;
 };
 
 type ListSong = {
@@ -28,7 +28,7 @@ type FullListSong = ListSong & {
 type ListUpdate = {
   songs: UpdateListSong[];
   date: string;
-  fileId?: number;
+  fileRef?: string;
 }
 
 export const IGLOO_LISTS: [FullList, ...Array<FullList | ListUpdate>] = [

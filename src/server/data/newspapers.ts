@@ -35,33 +35,33 @@ export const PRE_BOILER_ROOM_PAPERS: Version[] = [
 export type As2Newspaper = {
   date: Version,
   headline: string,
-  fileId?: number;
+  fileReference?: string;
 }
 
 /** Null properties are unarchived */
 export type As3Newspaper = {
   date: Version;
   headline: string;
-  askFront: number;
-  dividersFront: number | null;
-  featureStory: number;
-  headerFront: number;
-  navigationFront: number | null;
-  newsFlash: number;
-  supportStory: number;
-  upcomingEvents: number;
-  askBack: number;
-  dividersBack: number | null;
-  headerBack: number;
-  jokes: number;
-  navigationBack: number | null;
-  submit: number | null;
-  answers: number;
+  askFront: string;
+  dividersFront: string | null;
+  featureStory: string;
+  headerFront: string;
+  navigationFront: string | null;
+  newsFlash: string;
+  supportStory: string;
+  upcomingEvents: string;
+  askBack: string;
+  dividersBack: string | null;
+  headerBack: string;
+  jokes: string;
+  navigationBack: string | null;
+  submit: string | null;
+  answers: string;
   // seems like this is otherwise called topTips early on?
-  secrets: number;
-  extraJokes: number | undefined;
-  secret: number | undefined;
-  iglooWinners?: number;
+  secrets: string;
+  extraJokes: string | undefined;
+  secret: string | undefined;
+  iglooWinners?: string;
 }
 
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
@@ -72,1042 +72,1042 @@ export const AS2_NEWSPAPERS: As2Newspaper[] = [
   {
     date: '2006-04-20',
     headline: 'GO GREEN FOR THE SPRING!',
-    fileId: 3767
+    fileReference: 'archives:News27.swf'
   },
   {
     date: '2006-04-27',
     headline: 'UNDERGROUND CAVES FOUND!!',
-    fileId: 3768
+    fileReference: 'archives:News28.swf'
   },
   {
     date: '2006-05-04',
     headline: 'CAVE CONSTRUCTION!!',
-    fileId: 3769
+    fileReference: 'archives:News29.swf'
   },
   {
     date: '2006-05-11',
     headline: 'CAVE EXCLUSIVE',
-    fileId: 3770
+    fileReference: 'archives:News30.swf'
   },
   {
     date: '2006-05-18',
     headline: 'IGLOO DECORATING SPECIAL',
-    fileId: 3771
+    fileReference: 'archives:News31.swf'
   },
   {
     date: '2006-05-25',
     headline: 'MINE SHAFTS',
-    fileId: 3772
+    fileReference: 'archives:News32.swf'
   },
   {
     date: '2006-06-01',
     headline: 'UNDERGROUND OPENING',
-    fileId: 3773
+    fileReference: 'archives:News33.swf'
   },
   {
     date: '2006-06-08',
     headline: 'SUMMER PARTY!!',
-    fileId: 3774
+    fileReference: 'archives:News34.swf'
   },
   {
     date: '2006-06-15',
     headline: 'SUMMER PARTY!!',
-    fileId: 3775
+    fileReference: 'archives:News35.swf'
   },
   {
     date: '2006-06-22',
     headline: 'SUMMER PARTY CONTINUES!!',
-    fileId: 3776
+    fileReference: 'archives:News36.swf'
   },
   {
     date: '2006-06-29',
     headline: 'WESTERN THEME',
-    fileId: 3777
+    fileReference: 'archives:News37.swf'
   },
   {
     date: '2006-07-06',
     headline: 'WADDLE IN THE WEST',
-    fileId: 4571
+    fileReference: 'archives:News38.swf'
   },
   {
     date: '2006-07-13',
     headline: 'BAND REUNION',
-    fileId: 4572
+    fileReference: 'archives:News39.swf'
   },
   {
     date: '2006-07-20',
     headline: 'FIND THE MISSING INSTRUMENTS',
-    fileId: 4573
+    fileReference: 'archives:News40.swf'
   },
   {
     date: '2006-07-27',
     headline: 'HISTORY OF MANCALA',
-    fileId: 4574
+    fileReference: 'archives:News41.swf'
   },
   {
     date: '2006-08-03',
     headline: 'LET THE GAMES BEGIN!!',
-    fileId: 4575
+    fileReference: 'archives:News42.swf'
   },
   {
     date: '2006-08-10',
     headline: 'SECRET AGENT MAKES TOWN SAFE',
-    fileId: 4576
+    fileReference: 'archives:News43.swf'
   },
   {
     date: '2006-08-17',
     headline: 'NEW FITNESS EQUIPMENT',
-    fileId: 4577
+    fileReference: 'archives:News44.swf'
   },
   {
     date: '2006-08-24',
     headline: 'PURPLE PUFFLES FOR ADOPTION',
-    fileId: 4578
+    fileReference: 'archives:News45.swf'
   },
   {
     date: '2006-08-31',
     headline: 'LIGHTHOUSE UNDER THE SPOTLIGHT',
-    fileId: 4579
+    fileReference: 'archives:News46.swf'
   },
   {
     date: '2006-09-07',
     headline: 'SAVE THE LIGHTHOUSE!!',
-    fileId: 4580
+    fileReference: 'archives:News47.swf'
   },
   {
     date: '2006-09-14',
     headline: 'LIVING IN STYLE',
-    fileId: 4581
+    fileReference: 'archives:News48.swf'
   },
   {
     date: '2006-09-21',
     headline: 'LIGHT UP THE HOUSE',
-    fileId: 4752
+    fileReference: 'archives:News49.swf'
   },
     {
     date: '2006-09-28',
     headline: 'WALKING PUFFLES!',
-    fileId: 4582
+    fileReference: 'archives:News50.swf'
   },
   {
     date: '2006-10-05',
     headline: 'HALLOWEEN HULLABALOO',
-    fileId: 4583
+    fileReference: 'archives:News51.swf'
   },
   {
     date: '2006-10-12',
     headline: 'SHIP ASHORE',
-    fileId: 4584
+    fileReference: 'archives:News52.swf'
   },
   {
     date: '2006-10-19',
     headline: 'HAUNTED IGLOO DECOR',
-    fileId: 4585
+    fileReference: 'archives:News53.swf'
   },
   {
     date: '2006-10-26',
     headline: 'CRASH LANDING',
-    fileId: 4586
+    fileReference: 'archives:News54.swf'
   },
   {
     date: '2006-11-02',
     headline: 'PENGUINS TAKE FLIGHT',
-    fileId: 4587
+    fileReference: 'archives:News55.swf'
   },
   {
     date: '2006-11-09',
     headline: 'A COLORFUL MISTAKE',
-    fileId: 4588
+    fileReference: 'archives:News56.swf'
   },
   {
     date: '2006-11-16',
     headline: 'MAKING WAVES',
-    fileId: 4589
+    fileReference: 'archives:News57.swf'
   },
   {
     date: '2006-11-23',
     headline: 'GRIN FOR GREEN',
-    fileId: 4590
+    fileReference: 'archives:News58.swf'
   },
   {
     date: '2006-11-30',
     headline: 'ROCKHOPPER\'S SHIP SPOTTED',
-    fileId: 4591
+    fileReference: 'archives:News59.swf'
   },
   {
     date: '2006-12-07',
     headline: 'ROCKHOPPER LANDS TOMORROW',
-    fileId: 4592
+    fileReference: 'archives:News60.swf'
   },
   {
     date: '2006-12-14',
     headline: 'IGLOO DECORATING CONTEST',
-    fileId: 4593
+    fileReference: 'archives:News61.swf'
   },
   {
     date: '2006-12-21',
     headline: 'A VERY WHITE CHRISTMAS',
-    fileId: 4594
+    fileReference: 'archives:News62.swf'
   },
   {
     date: '2006-12-28',
     headline: 'HAPPY NEW YEAR!',
-    fileId: 4595
+    fileReference: 'archives:News63.swf'
   },
   {
     date: '2007-01-04',
     headline: 'WINTER FIESTA!',
-    fileId: 4596
+    fileReference: 'archives:News64.swf'
   },
   {
     date: '2007-01-11',
     headline: 'TOUR GUIDES TO ARRIVE',
-    fileId: 4597
+    fileReference: 'archives:News65.swf'
   },
   {
     date: '2007-01-18',
     headline: 'GET FLOORED!',
-    fileId: 4598
+    fileReference: 'archives:News66.swf'
   },
   {
     date: '2007-01-25',
     headline: 'TOUR GUIDES NEEDED',
-    fileId: 4599
+    fileReference: 'archives:News67.swf'
   },
   {
     date: '2007-02-01',
     headline: 'FESTIVAL OF SNOW',
-    fileId: 4600
+    fileReference: 'archives:News68.swf'
   },
   {
     date: '2007-02-08',
     headline: 'WINNERS ANNOUNCED',
-    fileId: 4601
+    fileReference: 'archives:News69.swf'
   },
   {
     date: '2007-02-15',
     headline: 'GARY THE GADGET GUY',
-    fileId: 4602
+    fileReference: 'archives:News70.swf'
   },
   {
     date: '2007-02-22',
     headline: 'PIZZATRON 3000',
-    fileId: 4603
+    fileReference: 'archives:News71.swf'
   },
   {
     date: '2007-03-01',
     headline: 'MESSAGE IN A BOTTLE',
-    fileId: 4604
+    fileReference: 'archives:News72.swf'
   },
   {
     date: '2007-03-08',
     headline: 'ST. PATRICK\'S DAY 07',
-    fileId: 4605
+    fileReference: 'archives:News73.swf'
   },
   {
     date: '2007-03-15',
     headline: 'CHARMED CELEBRATIONS',
-    fileId: 4606
+    fileReference: 'archives:News74.swf'
   },
   {
     date: '2007-03-22',
     headline: 'PUMPED UP PUFFLE PLAY',
-    fileId: 4607
+    fileReference: 'archives:News75.swf'
   },
   {
     date: '2007-03-29',
     headline: 'APRIL FOOL\'S DAY',
-    fileId: 4608
+    fileReference: 'archives:News76.swf'
   },
   {
     date: '2007-04-05',
     headline: 'EASTER EGG HUNT',
-    fileId: 4609
+    fileReference: 'archives:News77.swf'
   },
   {
     date: '2007-04-12',
     headline: 'STAGED FUN',
-    fileId: 4610
+    fileReference: 'archives:News78.swf'
   },
   {
     date: '2007-04-19',
     headline: 'PIRATE PARTY PARADISE',
-    fileId: 4611
+    fileReference: 'archives:News79.swf'
   },
   {
     date: '2007-04-26',
     headline: 'PARTY ON (DECK)!',
-    fileId: 4612
+    fileReference: 'archives:News80.swf'
   },
   {
     date: '2007-05-03',
     headline: 'SHIPSHAPE SURPRISE',
-    fileId: 4613
+    fileReference: 'archives:News81.swf'
   },
   {
     date: '2007-05-10',
     headline: 'LOCATION LOST',
-    fileId: 4614
+    fileReference: 'archives:News82.swf'
   },
   {
     date: '2007-05-17',
     headline: 'THE MAP QUEST',
-    fileId: 4615
+    fileReference: 'archives:News83.swf'
   },
   {
     date: '2007-05-24',
     headline: 'PATH TO THE COVE',
-    fileId: 4616
+    fileReference: 'archives:News84.swf'
   },
   {
     date: '2007-05-31',
     headline: 'CURIOUS CONSTRUCTION EXPLAINED',
-    fileId: 4617
+    fileReference: 'archives:News85.swf'
   },
   {
     date: '2007-06-07',
     headline: 'BIG SUMMER BASH',
-    fileId: 4618
+    fileReference: 'archives:News86.swf'
   },
   {
     date: '2007-06-14',
     headline: 'SUMMER PARTY CONTINUES',
-    fileId: 4619
+    fileReference: 'archives:News87.swf'
   },
   {
     date: '2007-06-21',
     headline: 'PIRATE PUFFLE ON BOARD',
-    fileId: 4620
+    fileReference: 'archives:News88.swf'
   },
   {
     date: '2007-06-28',
     headline: 'FAR OUT SURFING',
-    fileId: 4621
+    fileReference: 'archives:News89.swf'
   },
   {
     date: '2007-07-05',
     headline: 'WATER PARTY',
-    fileId: 4622
+    fileReference: 'archives:News90.swf'
   },
   {
     date: '2007-07-12',
     headline: 'UNDERGROUND CLOSED',
-    fileId: 4623
+    fileReference: 'archives:News91.swf'
   },
   {
     date: '2007-07-19',
     headline: 'WATER PARTY EXTENDED',
-    fileId: 4624
+    fileReference: 'archives:News92.swf'
   },
   {
     date: '2007-07-26',
     headline: 'WATER PARTY A BIG SPLASH',
-    fileId: 4625
+    fileReference: 'archives:News93.swf'
   },
   {
     date: '2007-08-02',
     headline: 'WINNERS ANNOUNCED',
-    fileId: 4626
+    fileReference: 'archives:News94.swf'
   },
   {
     date: '2007-08-09',
     headline: 'OUTFIT CONTEST WINNERS ANNOUNCED',
-    fileId: 4627
+    fileReference: 'archives:News95.swf'
   },
   {
     date: '2007-08-16',
     headline: 'CAMP PENGUIN',
-    fileId: 4628
+    fileReference: 'archives:News96.swf'
   },
   {
     date: '2007-08-23',
     headline: 'CAMP PENGUIN!',
-    fileId: 4629
+    fileReference: 'archives:News97.swf'
   },
   {
     date: '2007-08-30',
     headline: 'SPORT SHOP UPDATE',
-    fileId: 4630
+    fileReference: 'archives:News98.swf'
   },
   {
     date: '2007-09-06',
     headline: 'CARGO CONTENTS DISCOVERED!',
-    fileId: 4631
+    fileReference: 'archives:News99.swf'
   },
   {
     date: '2007-09-13',
     headline: 'FALL FAIR APPROACHING',
-    fileId: 4632
+    fileReference: 'archives:News100.swf'
   },
   {
     date: '2007-09-20',
     headline: 'FALL FAIR STARTS FRIDAY!',
-    fileId: 4633
+    fileReference: 'archives:News101.swf'
   },
   {
     date: '2007-09-27',
     headline: 'FALL FAIR FUN!',
-    fileId: 4634
+    fileReference: 'archives:News102.swf'
   },
   {
     date: '2007-10-04',
     headline: 'COSTUME CONTEST!!!',
-    fileId: 4635
+    fileReference: 'archives:News103.swf'
   },
   {
     date: '2007-10-11',
     headline: 'HEADS UP!',
-    fileId: 4636
+    fileReference: 'archives:News104.swf'
   },
   {
     date: '2007-10-18',
     headline: 'STARLIGHT? DARKNIGHT?',
-    fileId: 4637
+    fileReference: 'archives:News105.swf'
   },
   {
     date: '2007-10-25',
     headline: 'HALLOWEEN PARTY',
-    fileId: 4638
+    fileReference: 'archives:News106.swf'
   },
   {
     date: '2007-11-01',
     headline: 'WIGGIN\' OUT!',
-    fileId: 4639
+    fileReference: 'archives:News107.swf'
   },
   {
     date: '2007-11-08',
     headline: 'SURPRISE PARTY!',
-    fileId: 4640
+    fileReference: 'archives:News108.swf'
   },
   {
     date: '2007-11-15',
     headline: 'GRAND OPENING',
-    fileId: 4641
+    fileReference: 'archives:News109.swf'
   },
   {
     date: '2007-11-22',
     headline: 'YELLOW PUFFLES DISCOVERED!',
-    fileId: 4642
+    fileReference: 'archives:News110.swf'
   },
   {
     date: '2007-11-29',
     headline: 'GOOD HOMES FOR YELLOW PUFFLES',
-    fileId: 4643
+    fileReference: 'archives:News111.swf'
   },
   {
     date: '2007-12-06',
     headline: 'COINS FOR CHANGE',
-    fileId: 4644
+    fileReference: 'archives:ENNews112.swf'
   },
   {
     date: '2007-12-13',
     headline: 'COINS FOR CHANGE',
-    fileId: 4645
+    fileReference: 'archives:News113.swf'
   },
   {
     date: '2007-12-20',
     headline: 'CONTEST WINNERS ANNOUNCED',
-    fileId: 4646
+    fileReference: 'archives:News114.swf'
   },
   {
     date: '2007-12-25',
     headline: 'DONATION ANNOUNCEMENT',
-    fileId: 4647
+    fileReference: 'archives:News115.swf'
   },
   {
     date: '2008-01-03',
     headline: 'HAPPY NEW YEAR!',
-    fileId: 4648
+    fileReference: 'archives:News116.swf'
   },
   {
     date: '2008-01-10',
     headline: 'NEW PLAY AT THE STAGE',
-    fileId: 4649
+    fileReference: 'archives:News117.swf'
   },
   {
     date: '2008-01-17',
     headline: 'MIGRATOR CRASHES!',
-    fileId: 4650
+    fileReference: 'archives:News118.swf'
   },
   {
     date: '2008-01-24',
     headline: 'ROCKHOPPER IS OKAY',
-    fileId: 4651
+    fileReference: 'archives:News119.swf'
   },
   {
     date: '2008-01-31',
     headline: 'RALLY FOR ROCKHOPPER',
-    fileId: 4652
+    fileReference: 'archives:News120.swf'
   },
   {
     date: '2008-02-07',
     headline: 'SAVE THE MIGRATOR',
-    fileId: 4653
+    fileReference: 'archives:News121.swf'
   },
   {
     date: '2008-02-14',
     headline: 'SEA SALVAGING SUB TO SAVE SHIP',
-    fileId: 4654
+    fileReference: 'archives:News122.swf'
   },
   {
     date: '2008-02-21',
     headline: 'SAVE THE MIGRATOR',
-    fileId: 4655
+    fileReference: 'archives:News123.swf'
   },
   {
     date: '2008-02-28',
     headline: 'RECONSTRUCTION TO BEGIN SOON',
-    fileId: 4656
+    fileReference: 'archives:News124.swf'
   },
   {
     date: '2008-03-06',
     headline: 'ST. PATRICK\'S DAY PARTY!',
-    fileId: 4657
+    fileReference: 'archives:ENNews125.swf'
   },
   {
     date: '2008-03-13',
     headline: 'SALVAGED SHIP SLOWLY SURFACING',
-    fileId: 4658
+    fileReference: 'archives:News126.swf'
   },
   {
     date: '2008-03-20',
     headline: 'FRONT-END FINALLY FISHED',
-    fileId: 4659
+    fileReference: 'archives:News127.swf'
   },
   {
     date: '2008-03-27',
     headline: 'APRIL FOOLS!!!',
-    fileId: 4660
+    fileReference: 'archives:News128.swf'
   },
   {
     date: '2008-04-03',
     headline: 'AUNT ARCTIC ASKED TO BE EDITOR',
-    fileId: 4661
+    fileReference: 'archives:News129.swf'
   },
   {
     date: '2008-04-10',
     headline: 'READY REPORTERS READILY REQUESTED',
-    fileId: 4662
+    fileReference: 'archives:News130.swf'
   },
   {
     date: '2008-04-17',
     headline: 'MIGRATOR MENDED - A PROJECT REVIEW',
-    fileId: 4663
+    fileReference: 'archives:News131.swf'
   },
   {
     date: '2008-04-24',
     headline: 'ROCKHOPPER\'S GRAND RETURN',
-    fileId: 4664
+    fileReference: 'archives:News132.swf'
   },
   {
     date: '2008-05-01',
     headline: 'BOAT SWEET BOAT',
-    fileId: 4665
+    fileReference: 'archives:News133.swf'
   },
   {
     date: '2008-05-08',
     headline: 'PARTY PLANNERS PLAN SHINDIG!',
-    fileId: 4666
+    fileReference: 'archives:News134.swf'
   },
   {
     date: '2008-05-15',
     headline: 'THE ADVENTURE BEGINS',
-    fileId: 4667
+    fileReference: 'archives:News135.swf'
   },
   {
     date: '2008-05-22',
     headline: 'YE OLDE IGLOO CONTEST',
-    fileId: 4668
+    fileReference: 'archives:News136.swf'
   },
   {
     date: '2008-05-29',
     headline: 'A NOVEL IDEA',
-    fileId: 4669
+    fileReference: 'archives:News137.swf'
   },
   {
     date: '2008-06-05',
     headline: 'SUMMER KICK OFF PARTY',
-    fileId: 4670
+    fileReference: 'archives:News138.swf'
   },
   {
     date: '2008-06-12',
     headline: 'WATER PARTY STARTS JUNE 13',
-    fileId: 4671
+    fileReference: 'archives:News139.swf'
   },
   {
     date: '2008-06-19',
     headline: 'WATER PARTY! REVIEW',
-    fileId: 4672
+    fileReference: 'archives:News140.swf'
   },
   {
     date: '2008-06-26',
     headline: 'TREMORS SHAKE UP THE TOWN CENTER',
-    fileId: 4673
+    fileReference: 'archives:News141.swf'
   },
   {
     date: '2008-07-03',
     headline: 'CAPTAIN COMES BACK!',
-    fileId: 4674
+    fileReference: 'archives:News142.swf'
   },
   {
     date: '2008-07-10',
     headline: 'SEE THE PENGUIN BAND JULY 25',
-    fileId: 4675
+    fileReference: 'archives:News143.swf'
   },
   {
     date: '2008-07-17',
     headline: 'SUPERHEROES RETURN!',
-    fileId: 4676
+    fileReference: 'archives:News144.swf'
   },
   {
     date: '2008-07-24',
     headline: 'IT\'S TIME TO ROCK!',
-    fileId: 4677
+    fileReference: 'archives:News145.swf'
   },
   {
     date: '2008-07-31',
     headline: 'HARD-CORE ENCORE!',
-    fileId: 4678
+    fileReference: 'archives:News146.swf'
   },
   {
     date: '2008-08-07',
     headline: 'MUSIC JAM REVIEW',
-    fileId: 4679
+    fileReference: 'archives:News147.swf'
   },
   {
     date: '2008-08-14',
     headline: 'PREPARING FOR THE PENGUIN GAMES',
-    fileId: 4680
+    fileReference: 'archives:News148.swf'
   },
   {
     date: '2008-08-21',
     headline: 'WELCOME TO THE PENGUIN GAMES',
-    fileId: 4681
+    fileReference: 'archives:News149.swf'
   },
   {
     date: '2008-08-28',
     headline: 'PENGUIN GAMES CLOSING CEREMONIES',
-    fileId: 4682
+    fileReference: 'archives:News150.swf'
   },
   {
     date: '2008-09-04',
     headline: 'CONSTRUCTION AT THE STAGE',
-    fileId: 4683
+    fileReference: 'archives:News151.swf'
   },
   {
     date: '2008-09-11',
     headline: 'NEW PLAY IS A MYSTERY',
-    fileId: 4684
+    fileReference: 'archives:News152.swf'
   },
   {
     date: '2008-09-18',
     headline: 'FALL FAIR PARTY!',
-    fileId: 4685
+    fileReference: 'archives:News153.swf'
   },
   {
     date: '2008-09-25',
     headline: 'FALL FAIR FESTIVITIES!',
-    fileId: 4686
+    fileReference: 'archives:News154.swf'
   },
   {
     date: '2008-10-02',
     headline: 'FALL FAIR FINISHING WITH FLAIR',
-    fileId: 4687
+    fileReference: 'archives:ENNews155.swf'
   },
   {
     date: '2008-10-09',
     headline: 'HALLOWEEN PARTY',
-    fileId: 4688
+    fileReference: 'archives:ENNews156.swf'
   },
   {
     date: '2008-10-16',
     headline: '3 YEAR ANNIVERSARY APPROACHES',
-    fileId: 4689
+    fileReference: 'archives:ENNews157.swf'
   },
   {
     date: '2008-10-23',
     headline: 'ROCKHOPPER\'S READY FOR THE PARTY',
-    fileId: 4690
+    fileReference: 'archives:ENNews158.swf'
   },
   {
     date: '2008-10-30',
     headline: 'HALLOWEEN IS HERE',
-    fileId: 4691
+    fileReference: 'archives:ENNews159.swf'
   },
   {
     date: '2008-11-06',
     headline: 'A SHOCKING SURPRISE',
-    fileId: 4692
+    fileReference: 'archives:ENNews160.swf'
   },
   {
     date: '2008-11-13',
     headline: 'DOJO GRAND RE-OPENING',
-    fileId: 4693
+    fileReference: 'archives:ENNews161.swf'
   },
   {
     date: '2008-11-20',
     headline: 'NINJA TRAINING AT THE DOJO',
-    fileId: 4694
+    fileReference: 'archives:ENNews162.swf'
   },
   {
     date: '2008-11-27',
     headline: 'THE SENSEI SPEAKS',
-    fileId: 4695
+    fileReference: 'archives:ENNews163.swf'
   },
   {
     date: '2008-12-04',
     headline: 'THE CAPTAIN & COINS FOR CHANGE',
-    fileId: 4696
+    fileReference: 'archives:ENNews164.swf'
   },
   {
     date: '2008-12-11',
     headline: 'CHRISTMAS WITH THE CAPTAIN',
-    fileId: 4697
+    fileReference: 'archives:ENNews165.swf'
   },
   {
     date: '2008-12-18',
     headline: 'CHRISTMAS PARTY',
-    fileId: 4698
+    fileReference: 'archives:ENNews166.swf'
   },
   {
     date: '2008-12-25',
     headline: 'MERRY CHRISTMAS CLUB PENGUIN!',
-    fileId: 4699
+    fileReference: 'archives:ENNews167.swf'
   },
   {
     date: '2009-01-01',
     headline: 'DANCE FASHIONS AT THE GIFT SHOP!',
-    fileId: 4700
+    fileReference: 'archives:ENNews168.swf'
   },
   {
     date: '2009-01-08',
     headline: 'DANCE-A-THON - A MEMBER EVENT',
-    fileId: 4701
+    fileReference: 'archives:ENNews169.swf'
   },
   {
     date: '2009-01-15',
     headline: 'DANCE-A-THON FOR MEMBERS',
-    fileId: 4702
+    fileReference: 'archives:ENNews170.swf'
   },
   {
     date: '2009-01-22',
     headline: 'FIESTA! PARTY',
-    fileId: 4703
+    fileReference: 'archives:ENNews171.swf'
   },
   {
     date: '2009-01-29',
     headline: 'MUST-PLAY MULTIPLAYER GAMES',
-    fileId: 4704
+    fileReference: 'archives:ENNews172.swf'
   },
   {
     date: '2009-02-05',
     headline: 'PUFFLES PLAY WITH THEIR FURNITURE',
-    fileId: 4705
+    fileReference: 'archives:ENNews173.swf'
   },
   {
     date: '2009-02-12',
     headline: 'PUFFLE PARTY!',
-    fileId: 4706
+    fileReference: 'archives:ENNews174.swf'
   },
   {
     date: '2009-02-19',
     headline: 'PUFFLE PARTY',
-    fileId: 4707
+    fileReference: 'archives:ENNews175.swf'
   },
   {
     date: '2009-02-26',
     headline: 'ROCKHOPPER RETURNS ON FEBRUARY 27!',
-    fileId: 4708
+    fileReference: 'archives:ENNews176.swf'
   },
   {
     date: '2009-03-05',
     headline: 'PRESENTING THE PENGUIN PLAY AWARDS',
-    fileId: 4709
+    fileReference: 'archives:ENNews177.swf'
   },
   {
     date: '2009-03-12',
     headline: 'ST. PATRICK\'S PARTY 09',
-    fileId: 4710
+    fileReference: 'archives:ENNews178.swf'
   },
   {
     date: '2009-03-19',
     headline: 'PENGUIN PLAY AWARDS',
-    fileId: 4711
+    fileReference: 'archives:ENNews179.swf'
   },
   {
     date: '2009-03-26',
     headline: 'PENGUIN PLAY AWARDS CONTINUE!',
-    fileId: 4712
+    fileReference: 'archives:ENNews180.swf'
   },
   {
     date: '2009-04-02',
     headline: 'APRIL FOOLS PARTY',
-    fileId: 4713
+    fileReference: 'archives:ENNews181.swf'
   },
   {
     date: '2009-04-09',
     headline: 'PRESENTING THE TOP PLAYS!',
-    fileId: 4714
+    fileReference: 'archives:ENNews182.swf'
   },
   {
     date: '2009-04-16',
     headline: 'SLEDDING NEWS!',
-    fileId: 4715
+    fileReference: 'archives:ENNews183.swf'
   },
   {
     date: '2009-04-23',
     headline: 'A MEDIEVAL STORY...',
-    fileId: 4716
+    fileReference: 'archives:ENNews184.swf'
   },
   {
     date: '2009-04-30',
     headline: 'A MEDIEVAL STORY PART 2...',
-    fileId: 4717
+    fileReference: 'archives:ENNews185.swf'
   },
   {
     date: '2009-05-07',
     headline: 'MEDIEVAL PARTY',
-    fileId: 4718
+    fileReference: 'archives:ENNews186.swf'
   },
   {
     date: '2009-05-14',
     headline: 'MEDIEVAL PARTY CONTINUES',
-    fileId: 4719
+    fileReference: 'archives:ENNews187.swf'
   },
   {
     date: '2009-05-21',
     headline: 'ROCKHOPPER ARRIVES MAY 22',
-    fileId: 4720
+    fileReference: 'archives:ENNews188.swf'
   },
   {
     date: '2009-05-28',
     headline: 'ROCKHOPPER\'S HERE!',
-    fileId: 4721
+    fileReference: 'archives:ENNews189.swf'
   },
   {
     date: '2009-06-04',
     headline: 'FORECAST CALLS FOR...PARTY!',
-    fileId: 4722
+    fileReference: 'archives:ENNews190.swf'
   },
   {
     date: '2009-06-11',
     headline: 'DISCOVER THE ADVENTURE PARTY',
-    fileId: 4723
+    fileReference: 'archives:ENNews191.swf'
   },
   {
     date: '2009-06-18',
     headline: '101 DAYS OF FUN',
-    fileId: 4724
+    fileReference: 'archives:ENNews192.swf'
   },
   {
     date: '2009-06-25',
     headline: 'NEW MUSIC FOR DJ3K',
-    fileId: 4725
+    fileReference: 'archives:ENNews193.swf'
   },
   {
     date: '2009-07-02',
     headline: 'MUSIC JAM 09 IS AMPING UP',
-    fileId: 4726
+    fileReference: 'archives:ENNews194.swf'
   },
   {
     date: '2009-07-09',
     headline: 'GETTING READY TO ROCK',
-    fileId: 4727
+    fileReference: 'archives:ENNews195.swf'
   },
   {
     date: '2009-07-16',
     headline: 'MUSIC JAM 09 BEGINS JULY 17',
-    fileId: 4728
+    fileReference: 'archives:ENNews196.swf'
   },
   {
     date: '2009-07-23',
     headline: 'MUSIC JAM 09 ENDS JULY 26!',
-    fileId: 4729
+    fileReference: 'archives:ENNews197.swf'
   },
   {
     date: '2009-07-30',
     headline: 'LAST CHANCE FOR PENGUIN TALES',
-    fileId: 4730
+    fileReference: 'archives:ENNews198.swf'
   },
   {
     date: '2009-08-06',
     headline: 'NEW COLOR IS IN!',
-    fileId: 4731
+    fileReference: 'archives:ENNews199.swf'
   },
   {
     date: '2009-08-13',
     headline: 'FESTIVAL OF FLIGHT',
-    fileId: 4732
+    fileReference: 'archives:ENNews200.swf'
   },
   {
     date: '2009-08-20',
     headline: 'FESTIVAL OF FLIGHT FINISHED!',
-    fileId: 4733
+    fileReference: 'archives:ENNews201.swf'
   },
   {
     date: '2009-08-27',
     headline: 'FUN AT THE FAIR!',
-    fileId: 4734
+    fileReference: 'archives:ENNews202.swf'
   },
   {
     date: '2009-09-03',
     headline: 'THE FAIR - JOIN IN THE FUN',
-    fileId: 4735
+    fileReference: 'archives:ENNews203.swf'
   },
   {
     date: '2009-09-10',
     headline: 'PENGUINS THAT TIME FORGOT',
-    fileId: 4736
+    fileReference: 'archives:ENNews204.swf'
   },
   {
     date: '2009-09-17',
     headline: 'SENSEI STARTS SCAVENGER HUNT',
-    fileId: 4737
+    fileReference: 'archives:ENNews205.swf'
   },
   {
     date: '2009-09-24',
     headline: 'NINJAS AWAKEN VOLCANO',
-    fileId: 4738
+    fileReference: 'archives:ENNews206.swf'
   },
   {
     date: '2009-10-01',
     headline: 'HALLOWEEN COSTUMES! OCTOBER 2',
-    fileId: 4739
+    fileReference: 'archives:ENNews207.swf'
   },
   {
     date: '2009-10-08',
     headline: 'HALLOWEEN IGLOO CONTEST OCTOBER 16',
-    fileId: 4740
+    fileReference: 'archives:ENNews208.swf'
   },
   {
     date: '2009-10-15',
     headline: 'HALLOWEEN IGLOO CONTEST',
-    fileId: 4741
+    fileReference: 'archives:ENNews209.swf'
   },
   {
     date: '2009-10-22',
     headline: 'HAPPY 4TH ANNIVERSARY! OCTOBER 24',
-    fileId: 4742
+    fileReference: 'archives:ENNews210.swf'
   },
   {
     date: '2009-10-29',
     headline: 'HALLOWEEN PARTY',
-    fileId: 4743
+    fileReference: 'archives:ENNews211.swf'
   },
   {
     date: '2009-11-05',
     headline: 'VOLCANO TAMED - NINJAS NEEDED',
-    fileId: 4744
+    fileReference: 'archives:ENNews212.swf'
   },
   {
     date: '2009-11-12',
     headline: 'VOLCANO CONSTRUCTION ANNOUNCED',
-    fileId: 4745
+    fileReference: 'archives:ENNews213.swf'
   },
   {
     date: '2009-11-19',
     headline: 'CARD-JITSU FIRE',
-    fileId: 4746
+    fileReference: 'archives:ENNews214.swf'
   },
   {
     date: '2009-11-26',
     headline: 'CARD-JITSU FIRE REVEALED',
-    fileId: 4747
+    fileReference: 'archives:ENNews215.swf'
   },
   {
     date: '2009-12-03',
     headline: 'COINS FOR CHANGE',
-    fileId: 4748
+    fileReference: 'archives:ENNews216.swf'
   },
   {
     date: '2009-12-10',
     headline: 'MAKE A DIFFERENCE!',
-    fileId: 4749
+    fileReference: 'archives:ENNews217.swf'
   },
   {
     date: '2009-12-17',
     headline: 'HOLIDAY PARTY',
-    fileId: 4750
+    fileReference: 'archives:ENNews218.swf'
   },
   {
     date: '2009-12-24',
     headline: 'HAPPY HOLIDAYS CLUB PENGUIN!',
-    fileId: 4751
+    fileReference: 'archives:ENNews219.swf'
   },
   {
     date: '2009-12-31',
     headline: 'HAPPY NEW YEAR CLUB PENGUIN!',
-    fileId: 3742
+    fileReference: 'archives:ENNews220.swf'
   },
   {
     date: '2010-01-07',
     headline: 'CREATE YOUR OWN T-SHIRT',
-    fileId: 3743
+    fileReference: 'archives:News221.swf'
   },
   {
     date: '2010-01-14',
     headline: 'ROCKSLIDE AT THE MINE!',
-    fileId: 3744
+    fileReference: 'archives:News222.swf'
   },
   {
     date: '2010-01-21',
     headline: 'SECRET CAVE DISCOVERED!',
-    fileId: 3745
+    fileReference: 'archives:ENNews223.swf'
   },
   {
     date: '2010-01-28',
     headline: 'CAVES CLOSING UNTIL FURTHER NOTICE',
-    fileId: 3746
+    fileReference: 'archives:ENNews224.swf'
   },
   {
     date: '2010-02-04',
     headline: 'PUFFLE PARTY',
-    fileId: 3747
+    fileReference: 'archives:ENNews225.swf'
   },
   {
     date: '2010-02-11',
     headline: 'SECRETS OF THE BAMBOO FOREST',
-    fileId: 3748
+    fileReference: 'archives:ENNews226.swf'
   },
   {
     date: '2010-02-18',
     headline: 'PUFFLE PARTY',
-    fileId: 3749
+    fileReference: 'archives:ENNews227.swf'
   },
   {
     date: '2010-02-25',
     headline: 'ORANGE PUFFLES READY TO ADOPT!',
-    fileId: 3750
+    fileReference: 'archives:ENNews228.swf'
   },
   {
     date: '2010-03-04',
     headline: 'WHERE\'S YARR?',
-    fileId: 3751
+    fileReference: 'archives:ENNews229.swf'
   },
   {
     date: '2010-03-11',
     headline: 'PUFFLES TRAPPED UNDERGROUND!',
-    fileId: 3752
+    fileReference: 'archives:ENNews230.swf'
   },
   {
     date: '2010-03-18',
     headline: 'PUFFLE RESCUE',
-    fileId: 3753
+    fileReference: 'archives:ENNews231.swf'
   },
   {
     date: '2010-03-25',
     headline: 'PENGUIN PLAY AWARDS',
-    fileId: 3754
+    fileReference: 'archives:ENNews232.swf'
   },
   {
     date: '2010-04-01',
     headline: 'HAPPY APRIL FOOLS!',
-    fileId: 3755
+    fileReference: 'archives:ENNews233.swf'
   },
   {
     date: '2010-04-08',
     headline: 'EARTH DAY IS COMING!',
-    fileId: 3756
+    fileReference: 'archives:ENNews234.swf'
   },
   {
     date: '2010-04-15',
@@ -1239,17 +1239,17 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
   {
     date: FIRST_AS3_NEWSPAPER,
     headline: 'READY FOR CARD-JITSU WATER?',
-    askBack: 4756,
-    askFront: 4757,
-    featureStory: 4758,
-    headerBack: 4759,
-    headerFront: 4760,
-    jokes: 4761,
-    newsFlash: 4762,
-    answers: 4763,
-    supportStory: 4764,
-    secrets: 4765,
-    upcomingEvents: 4766,
+    askBack: 'archives:News266AskAuntArcticBack.swf',
+    askFront: 'archives:News266AskAuntArcticFront.swf',
+    featureStory: 'archives:News266FeatureStory.swf',
+    headerBack: 'archives:News266HeaderBack.swf',
+    headerFront: 'archives:News266HeaderFront.swf',
+    jokes: 'archives:News266JokesAndRiddles.swf',
+    newsFlash: 'archives:News266NewsFlash.swf',
+    answers: 'archives:News266RiddlesAnswers.swf',
+    supportStory: 'archives:News266SupportStory.swf',
+    secrets: 'archives:News266TopTips.swf',
+    upcomingEvents: 'archives:News266UpcomingEvents.swf',
     dividersBack: null,
     dividersFront: null,
     navigationBack: null,
@@ -1261,61 +1261,61 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
   {
     date: '2010-11-26',
     headline: 'NINJAS SEEK TO MASTER WATER',
-    askBack: 4773,
-    askFront: 4774,
-    featureStory: 4776,
-    headerBack: 4777,
-    headerFront: 4778,
-    jokes: 4779,
-    newsFlash: 4780,
-    answers: 4781,
-    supportStory: 4782,
-    secrets: 4783,
-    upcomingEvents: 4784,
-    dividersBack: 4823,
-    dividersFront: 4826,
-    navigationBack: 4823,
-    navigationFront: 4827,
-    submit: 4825,
-    extraJokes: 4775,
+    askBack: 'archives:News267AskAuntArcticBack.swf',
+    askFront: 'archives:News267AskAuntArcticFront.swf',
+    featureStory: 'archives:News267FeatureStory.swf',
+    headerBack: 'archives:News267HeaderBack.swf',
+    headerFront: 'archives:News267HeaderFront.swf',
+    jokes: 'archives:News267JokesAndRiddles.swf',
+    newsFlash: 'archives:News267NewsFlash.swf',
+    answers: 'archives:News267RiddlesAnswers.swf',
+    supportStory: 'archives:News267SupportStory.swf',
+    secrets: 'archives:News267TopTips.swf',
+    upcomingEvents: 'archives:News267UpcomingEvents.swf',
+    dividersBack: 'archives:News267DividersBack.swf',
+    dividersFront: 'archives:News267DividersFront.swf',
+    navigationBack: 'archives:News267DividersBack.swf',
+    navigationFront: 'archives:News267NavigationFront.swf',
+    submit: 'archives:News267SubmitYourContent.swf',
+    extraJokes: 'archives:News267ExtraJokes.swf',
     secret: undefined
   },
   {
     date: '2010-12-03',
     headline: 'GIFT SHOP FULL OF FESTIVE FASHION',
-    secrets: 4769,
-    dividersFront: 4767,
-    dividersBack: 4771,
-    navigationFront:4768,
-    navigationBack: 4772,
-    submit: 4770,
-    askBack: 4785,
-    askFront: 4786,
-    featureStory: 4787,
-    headerBack: 4788,
-    headerFront: 4789,
-    jokes: 4790,
-    newsFlash: 4791,
-    answers: 4792,
-    supportStory: 4793,
-    upcomingEvents: 4794,
+    secrets: 'archives:News268Secrets.swf',
+    dividersFront: 'archives:News268DividersFront.swf',
+    dividersBack: 'archives:News268DividersBack.swf',
+    navigationFront: 'archives:News268NavigationFront.swf',
+    navigationBack: 'archives:News268NavigationBack.swf',
+    submit: 'archives:News268SubmitYourContent.swf',
+    askBack: 'archives:News268AskAuntArcticBack.swf',
+    askFront: 'archives:News268AskAuntArcticFront.swf',
+    featureStory: 'archives:News268FeatureStory.swf',
+    headerBack: 'archives:News268HeaderBack.swf',
+    headerFront: 'archives:News268HeaderFront.swf',
+    jokes: 'archives:News268JokesAndRiddles.swf',
+    newsFlash: 'archives:News268NewsFlash.swf',
+    answers: 'archives:News268RiddlesAnswers.swf',
+    supportStory: 'archives:News268SupportStory.swf',
+    upcomingEvents: 'archives:News268UpcomingEvents.swf',
     extraJokes: undefined,
     secret: undefined
   },
   {
     date: '2010-12-10',
     headline: 'COINS FOR CHANGE IS COMING',
-    askBack: 4795,
-    askFront: 4796,
-    featureStory: 4797,
-    headerBack: 4798,
-    headerFront: 4799,
-    jokes: 4800,
-    newsFlash: 4801,
-    answers: 4802,
-    supportStory: 4803,
-    secrets: 4804,
-    upcomingEvents: 4805,
+    askBack: 'archives:News269AskAuntArcticBack.swf',
+    askFront: 'archives:News269AskAuntArcticFront.swf',
+    featureStory: 'archives:News269FeatureStory.swf',
+    headerBack: 'archives:News269HeaderBack.swf',
+    headerFront: 'archives:News269HeaderFront.swf',
+    jokes: 'archives:News269JokesAndRiddles.swf',
+    newsFlash: 'archives:News269NewsFlash.swf',
+    answers: 'archives:News269RiddlesAnswers.swf',
+    supportStory: 'archives:News269SupportStory.swf',
+    secrets: 'archives:News269TopTips.swf',
+    upcomingEvents: 'archives:News269UpcomingEvents.swf',
     navigationBack: null,
     navigationFront: null,
     dividersBack: null,
@@ -1327,64 +1327,64 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
   {
     date: '2010-12-17',
     headline: 'HOLIDAY PARTY IS HERE',
-    askBack: 4806,
-    askFront: 4807,
-    featureStory: 4808,
-    headerBack: 4809,
-    headerFront: 4810,
-    jokes: 4811,
-    newsFlash: 4812,
-    answers: 4813,
-    secrets: 4815,
-    supportStory: 4816,
-    upcomingEvents: 4817,
-    dividersBack: 4818,
-    navigationBack: 4819,
-    submit: 4820,
-    dividersFront: 4821,
-    navigationFront: 4822,
+    askBack: 'archives:News270AskAuntArcticBack.swf',
+    askFront: 'archives:News270AskAuntArcticFront.swf',
+    featureStory: 'archives:News270FeatureStory.swf',
+    headerBack: 'archives:News270HeaderBack.swf',
+    headerFront: 'archives:News270HeaderFront.swf',
+    jokes: 'archives:News270JokesAndRiddles.swf',
+    newsFlash: 'archives:News270NewsFlash.swf',
+    answers: 'archives:News270RiddlesAnswers.swf',
+    secrets: 'archives:News270Secrets.swf',
+    supportStory: 'archives:News270SupportStory.swf',
+    upcomingEvents: 'archives:News270UpcomingEvents.swf',
+    dividersBack: 'archives:News270DividersBack.swf',
+    navigationBack: 'archives:News270NavigationBack.swf',
+    submit: 'archives:News270SubmitYourContent.swf',
+    dividersFront: 'archives:News270DividersFront.swf',
+    navigationFront: 'archives:News270NavigationFront.swf',
     extraJokes: undefined,
-    secret: 4814
+    secret: 'archives:News270Secret.swf'
   },
   {
     date: '2010-12-24',
     headline: 'LIGHTHOUSE FILLING FAST!',
-    dividersBack: 4823,
-    navigationBack: 4824,
-    submit: 4825,
-    dividersFront: 4826,
-    navigationFront: 4827,
-    askBack: 4828,
-    askFront: 4829,
-    featureStory: 4830,
-    headerBack: 4831,
-    headerFront: 4832,
-    iglooWinners: 4833,
-    jokes: 4834,
-    newsFlash: 4835,
-    answers: 4836,
-    secret: 4837,
-    secrets: 4838,
-    supportStory: 4839,
-    upcomingEvents: 4840,
+    dividersBack: 'archives:News267DividersBack.swf',
+    navigationBack: 'archives:News267NavigationBack.swf',
+    submit: 'archives:News267SubmitYourContent.swf',
+    dividersFront: 'archives:News267DividersFront.swf',
+    navigationFront: 'archives:News267NavigationFront.swf',
+    askBack: 'archives:News271AskAuntArcticBack.swf',
+    askFront: 'archives:News271AskAuntArcticFront.swf',
+    featureStory: 'archives:News271FeatureStory.swf',
+    headerBack: 'archives:News271HeaderBack.swf',
+    headerFront: 'archives:News271HeaderFront.swf',
+    iglooWinners: 'archives:News271IglooWinners.swf',
+    jokes: 'archives:News271JokesAndRiddles.swf',
+    newsFlash: 'archives:News271NewsFlash.swf',
+    answers: 'archives:News271RiddlesAnswers.swf',
+    secret: 'archives:News271Secret.swf',
+    secrets: 'archives:News271Secrets.swf',
+    supportStory: 'archives:News271SupportStory.swf',
+    upcomingEvents: 'archives:News271UpcomingEvents.swf',
     extraJokes: undefined
   },
   {
     date: '2010-12-31',
     headline: 'HAPPY NEW YEAR!',
-    askBack: 4841,
-    askFront: 4842,
-    featureStory: 4843,
-    headerBack: 4844,
-    headerFront: 4845,
-    iglooWinners: 4846,
-    jokes: 4847,
-    newsFlash: 4848,
-    answers: 4849,
-    secret: 4850,
-    secrets: 4851,
-    supportStory: 4852,
-    upcomingEvents: 4853,
+    askBack: 'archives:News272AskAuntArcticBack.swf',
+    askFront: 'archives:News272AskAuntArcticFront.swf',
+    featureStory: 'archives:News272FeatureStory.swf',
+    headerBack: 'archives:News272HeaderBack.swf',
+    headerFront: 'archives:News272HeaderFront.swf',
+    iglooWinners: 'archives:News272IglooWinners.swf',
+    jokes: 'archives:News272JokesAndRiddles.swf',
+    newsFlash: 'archives:News272NewsFlash.swf',
+    answers: 'archives:News272RiddlesAnswers.swf',
+    secret: 'archives:News272Secret.swf',
+    secrets: 'archives:News272Secrets.swf',
+    supportStory: 'archives:News272SupportStory.swf',
+    upcomingEvents: 'archives:News272UpcomingEvents.swf',
     navigationBack: null,
     navigationFront: null,
     dividersBack: null,

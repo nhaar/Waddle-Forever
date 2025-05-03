@@ -8,23 +8,23 @@ type CompoundCheck = {
 
 const specialServer = new Map<string, CompoundCheck>();
 
-type SimpleServer = [string, (s: SettingsManager) => boolean, number];
+type SimpleServer = [string, (s: SettingsManager) => boolean, string];
 
-type CompoundServer = [string, (s: SettingsManager) => number | undefined, Record<number, number>];
+type CompoundServer = [string, (s: SettingsManager) => number | undefined, Record<number, string>];
 
 const simpleFeatures: SimpleServer[] = [
   ['boots.swf', (s) => {
     return s.settings.fps30
-  }, 5094],
+  }, 'tool:boots.swf'],
   ['play/v2/games/book1/bootstrap.swf', (s) => {
     return s.settings.modern_my_puffle
-  }, 5097],
+  }, 'unknown:my_puffle_2013.swf'],
   ['play/v2/games/dancing/dance.swf', (s) => {
     return s.settings.swap_dance_arrow
-  }, 5099],
+  }, 'mod:dance_contest_swapped.swf'],
   ['play/v2/games/jetpack/JetpackAdventures.swf', (s) => {
     return s.settings.jpa_level_selector
-  }, 5101],
+  }, 'mod:jpa_level_selector.swf'],
 ];
 
 const compoundFeatures: Array<CompoundServer> = [
@@ -39,8 +39,8 @@ const compoundFeatures: Array<CompoundServer> = [
       return 2;
     }
   }, {
-    1: 5104,
-    2: 5103
+    1: 'mod:thinice_igt30.swf',
+    2: 'mod:thinice_igt24.swf'
   }]
 ]
 

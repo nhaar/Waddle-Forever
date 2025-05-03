@@ -8,7 +8,7 @@ export type Pin = {
   name: string;
 } & ({} | {
   room: RoomName;
-  fileId?: number;
+  fileRef?: string;
   frame?: number;
 })
   
@@ -18,7 +18,7 @@ export const PINS: Array<Pin> = [
     date: PET_SHOP_RELEASE,
     end: '2006-03-31',
     room: 'coffee',
-    fileId: 4938,
+    fileRef: 'archives:ArtworkRoomsCoffee6.swf',
     frame: 2,
     name: 'Shamrock'
   },
@@ -26,7 +26,7 @@ export const PINS: Array<Pin> = [
     date: '2006-05-12',
     end: '2006-05-26',
     room: 'dock',
-    fileId: 4939,
+    fileRef: 'archives:ArtworkRoomsDock11.swf',
     frame: 2,
     name: 'Balloon'
   },
@@ -35,7 +35,7 @@ export const PINS: Array<Pin> = [
     end: '2006-08-18',
     name: 'Hockey Stick',
     room: 'village',
-    fileId: 3826,
+    fileRef: 'archives:ArtworkRoomsVillage15.swf',
     frame: 2
   },
   {
@@ -75,7 +75,7 @@ export const PINS: Array<Pin> = [
     end: '2008-05-23',
     room: 'coffee',
     // file is from medieval party, vanilla is not archived
-    fileId: 4014
+    fileRef: 'archives:Rooms0516Coffee51.swf'
   },
   {
     name: 'Ice Cream Cone',
@@ -83,7 +83,7 @@ export const PINS: Array<Pin> = [
     end: '2008-06-20',
     // file is from water party, vanilla is not archived
     room: 'forest',
-    fileId: 4048
+    fileRef: 'archives:WPForest.swf'
   },
   {
     name: '3rd Anniversary Cake',
@@ -91,7 +91,7 @@ export const PINS: Array<Pin> = [
     end: '2008-11-07',
     room: 'lounge',
     // file is from halloween party
-    fileId: 4153
+    fileRef: 'archives:RoomsLounge-Halloween2008.swf'
   },
   {
     name: 'Present',
@@ -105,7 +105,7 @@ export const PINS: Array<Pin> = [
     end: '2009-01-30',
     room: 'forts',
     // file is from winter fiesta
-    fileId: 4233
+    fileRef: 'archives:WinterFiesta2009Forts.swf'
   },
   {
     name: 'Koi Fish',
@@ -113,7 +113,7 @@ export const PINS: Array<Pin> = [
     end: '2009-09-11',
     room: 'cove',
     // file is from fair
-    fileId: 4435
+    fileRef: 'archives:RoomsCove-TheFair2009.swf'
   },
   {
     name: '101 Days of Fun',
@@ -121,14 +121,14 @@ export const PINS: Array<Pin> = [
     end: '2009-09-25',
     room: 'pizza',
     // file is from sensei fire hunt
-    fileId: 4469
+    fileRef: 'archives:Sensei_Fire_Hunt_pizza.swf'
   },
   {
     name: 'Christmas Bell',
     date: '2009-12-04',
     end: '2009-12-18',
     room: 'forest',
-    fileId: 4533
+    fileRef: 'archives:RoomsForest-HolidayParty2009Pre.swf'
   },
   {
     name: 'Snowman',
