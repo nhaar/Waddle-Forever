@@ -4,6 +4,7 @@ import { StaticDataTable } from "../../common/static-table";
 import { STATIC_SERVERS } from "./static-servers";
 import { IS_DEV } from "../../common/constants";
 import { getFilesInDirectory, iterateEntries, MEDIA_DIRECTORY } from "../../common/utils";
+import { APPROXIMATION, enforceDocumentationCorrectness, FIX, MOD, RECREATION, TOOL, UNKNOWN } from "./file-documentation";
 
 /** Name of all packages that aren't default */
 type PackageName = 'clothing';
@@ -44,10 +45,13 @@ function getPackageInfo(): PackageInfo {
   return packageInfo;
 }
 
-// in dev we want to constantly update this
-// in production we may not even have all packages, so that information
-// is passed down via the package info file cached inside default
 if (IS_DEV) {
+  // check this in dev to enforce new files are being tracked
+  enforceDocumentationCorrectness();
+  
+  // in dev we want to constantly update this
+  // in production we may not even have all packages, so that information
+  // is passed down via the package info file cached inside default
   writePackageInfo();
 }
 const PACKAGE_INFO = getPackageInfo();
@@ -79,13 +83,13 @@ export function getMediaFilePath(fileId: number): string {
   const file = FILES.getStrict(fileId);
   const categoryName = {
     [FileCategory.Archives]: 'archives',
-    [FileCategory.Fix]: 'fix',
-    [FileCategory.Approximation]: 'approximation',
-    [FileCategory.Recreation]: 'recreation',
-    [FileCategory.Mod]: 'mod',
+    [FileCategory.Fix]: FIX,
+    [FileCategory.Approximation]: APPROXIMATION,
+    [FileCategory.Recreation]: RECREATION,
+    [FileCategory.Mod]: MOD,
     [FileCategory.StaticServer]: '',
-    [FileCategory.Tool]: 'tool',
-    [FileCategory.Unknown]: 'unknown'
+    [FileCategory.Tool]: TOOL,
+    [FileCategory.Unknown]: UNKNOWN
   }[file.category];
 
   let filePath = file.path;
@@ -141,28 +145,22 @@ export const FILES = new StaticDataTable<File, [
   [25, 'Music1.swf', 1, FileCategory.Archives, null, null],
   [26, 'media/play/v2/content/global/music/2.swf', 1, FileCategory.StaticServer, 2, null],
 
-  // with the Snow Forts trigger removed since it wasn't available yet
   [27, 'town_release.swf', 1, FileCategory.Approximation, null, 28],
 
   [28, 'ArtworkRoomsTown10.swf', 1, FileCategory.Archives, null, null],
   [29, 'Beta-book.swf', 1, FileCategory.Archives, null, null],
   [30, 'ArtworkRoomsVillage11.swf', 1, FileCategory.Archives, null, null],
 
-  // removed ability to enter mtn, sport, lodge
   [31, 'village_release.swf', 1, FileCategory.Approximation, null, 30],
   [32, 'ArtworkRoomsRink10.swf', 1, FileCategory.Archives, null, null],
 
-  // removed ability to go to snow fort via the door, maybe that door used to open the map.
   [33, 'rink_release.swf', 1, FileCategory.Approximation, null, 32],
   
-  // removed the Snow Forts button
-  // Recreation by Zeldaboy on the discord
   [34, 'map_release.swf', 1, FileCategory.Recreation, null, 35],
 
   [35, 'ArtworkMapsIsland3.swf', 1, FileCategory.Archives, null, null],
   [36, 'ArtworkRoomsForts12.swf', 1, FileCategory.Archives, null, null],
 
-  // just removed ability to go to the right to the plaza
   [37, 'forts_release.swf', 1, FileCategory.Approximation, null, 36],
   [38, 'Beta-town.swf', 1, FileCategory.Archives, null, null],
   [40, 'News1.swf', 1, FileCategory.Archives, null, null],
@@ -202,7 +200,6 @@ export const FILES = new StaticDataTable<File, [
   [74, 'Clothing_0603.swf', 1, FileCategory.Archives, null, null],
   [75, 'Clothing_0604.swf', 1, FileCategory.Archives, null, null],
 
-  // halloween files fixed for compatibility with chat291.swf
   [76, 'Book2_03_halloween.swf', 1, FileCategory.Fix, null, null],
   [77, 'Dance1b_halloween.swf', 1, FileCategory.Fix, null, null],
   [78, 'Lounge1_halloween.swf', 1, FileCategory.Fix, null, null],
@@ -216,10 +213,8 @@ export const FILES = new StaticDataTable<File, [
   [85, 'Forts_pet.swf', 1, FileCategory.Fix, null, null],
   [86, 'Icerink_pet.swf', 1, FileCategory.Fix, null, null],
 
-  // collission fix for chat291.swf
   [87, 'ArtworkRoomsForts3.swf', 1, FileCategory.Fix, null, null],
 
-  // colision fixes for chat291.swf
   [88, 'CP05Coffee.swf', 1, FileCategory.Fix, null, null],
   [89, 'CP05Dance.swf', 1, FileCategory.Fix, null, null],
   [90, 'CP05Lodge.swf', 1, FileCategory.Fix, null, null],
@@ -2393,7 +2388,6 @@ export const FILES = new StaticDataTable<File, [
   [2257, 'media/play/v2/games/quests/q9/lang/pt/misc/messages.swf', 1, FileCategory.StaticServer, 2, null],
   [2258, 'media/play/v2/games/quests/q9/lang/pt/misc/uitext.swf', 1, FileCategory.StaticServer, 2, null],
   [2259, 'media/play/v2/games/quests/q9/lang/pt/misc/versions.swf', 1, FileCategory.StaticServer, 2, null],
-  // Made by Supermanover
   [2260, 'interface_epf_no_stamps.swf', 1, FileCategory.Recreation, null, 2261],
   [2261, 'interface_stamps.swf', 1, FileCategory.Unknown, null, null],
   [2262, 'interface_2009.swf', 1, FileCategory.Unknown, null, null],
@@ -2401,7 +2395,6 @@ export const FILES = new StaticDataTable<File, [
   [2264, 'ArtworkRoomsBook11.swf', 1, FileCategory.Archives, null, null],
   [2265, 'media/play/v2/client/engine.swf', 1, FileCategory.StaticServer, 3, null],
 
-  // remove brown puffle from 2011 puffle paddle for the 2010 one
   [2266, 'paddle_no_brown.swf', 1, FileCategory.Recreation, null, 181],
 
   [2267, 'January10Style.swf', 1, FileCategory.Archives, null, null],
@@ -2430,7 +2423,6 @@ export const FILES = new StaticDataTable<File, [
   [2289, 'RoomsStage-June2009.swf', 1, FileCategory.Archives, null, null],
   [2290, 'HalloweenParty2010Stage.swf', 1, FileCategory.Archives, null, null],
   [2291, 'RoomsStage-December2010.swf', 1, FileCategory.Archives, null, null],
-  // Made by victando
   [2292, 'underwater_adventure_no_pin.swf', 1, FileCategory.Recreation, null, null],
   [2293, 'RoomsStage-October2009.swf', 1, FileCategory.Archives, null, null],
   [2294, 'RoomsStage-November2010.swf', 1, FileCategory.Archives, null, null],
@@ -2523,9 +2515,7 @@ export const FILES = new StaticDataTable<File, [
   [2381, 'RoomsShack-EarthDay2010.swf', 1, FileCategory.Archives, null, null],
   [2382, 'RoomsDojoext-EarthDay2010.swf', 1, FileCategory.Archives, null, null],
 
-  // Scavenger hunt mod made by Ben from solero
   [2383, 'scavenger_hunt_2010.swf', 1, FileCategory.Tool, null, null],
-  // dependencies.json that loads the scavenger hunt file above, may should be integrated in the future
   [2384, 'dependencies_scavenger_hunt.json', 1, FileCategory.Tool, null, null],
   [2385, 'Scavenger_hunt-EarthDay2010.swf', 1, FileCategory.Archives, null, null],
   [2386, 'Scavenger_hunt_icon-EarthDay2010.swf', 1, FileCategory.Archives, null, null],
@@ -2605,7 +2595,6 @@ export const FILES = new StaticDataTable<File, [
   [2460, 'MusicJam2010Merch.swf', 1, FileCategory.Archives, null, null],
   [2461, 'MusicJam2010TownPoster.swf', 1, FileCategory.Archives, null, null],
   [2462, 'MusicJam2010UpdateInstruments.swf', 1, FileCategory.Archives, null, null],
-  // Supermanover helped removing the colored bars, this still lacks the text which is very hard to add
   [2463, 'music_jam_start_instruments.swf', 1, FileCategory.Approximation, null, 2462],
 
   [2464, 'RoomsBeach-MusicJam2010Pre.swf', 1, FileCategory.Archives, null, null],
@@ -2618,7 +2607,6 @@ export const FILES = new StaticDataTable<File, [
   [2472, 'RoomsVillage-MusicJam2010Pre.swf', 1, FileCategory.Archives, null, null],
   [2473, 'RoomsForts-MusicJam2010Pre.swf', 1, FileCategory.Archives, null, null],
 
-  // Made by Blue Kirby, removed the fireworks
   [2474, 'iceberg_mjamconst_no_fireworks.swf', 1, FileCategory.Recreation, null, null],
   [2475, 'RoomsParty3-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
   [2476, 'RoomsParty6-MtnExpedition.swf', 1, FileCategory.Archives, null, null],
@@ -2633,7 +2621,6 @@ export const FILES = new StaticDataTable<File, [
   [2485, 'LocalEnCataloguesMerchAugust2010.swf', 1, FileCategory.Archives, null, null],
   [2486, 'MountainExpeditionMembershipOopsExpedition.swf', 1, FileCategory.Archives, null, null],
 
-  // Recreation by victando
   [2487, 'mountain_expedition_poster.swf', 1, FileCategory.Recreation, null, null],
 
   [2488, 'RoomsBeach-PreFair2010.swf', 1, FileCategory.Archives, null, null],
@@ -2662,12 +2649,9 @@ export const FILES = new StaticDataTable<File, [
   [2511, 'TheFair2010PrizeBooth2.swf', 1, FileCategory.Archives, null, null],
   [2512, 'TheFair2010PrizeBoothMember2.swf', 1, FileCategory.Archives, null, null],
 
-  // modified from Ben's scavenger hunt mod
   [2513, 'fair_icon_adder.swf', 1, FileCategory.Tool, null, null],
-  // to use the fair.swf dependency
   [2514, 'fair_dependencies.json', 1, FileCategory.Tool, null, null],
 
-  // snack shack stamp code by Supermanover
   [2515, 'fair_worldachievements.xml', 1, FileCategory.Approximation, null, 2516],
   [2516, 'worldachievements.xml', 1, FileCategory.Approximation, null, null],
 
@@ -2716,23 +2700,16 @@ export const FILES = new StaticDataTable<File, [
   [2559, 'CataloguesENParty-HalloweenParty2010.swf', 1, FileCategory.Archives, null, null],
   [2560, 'HalloweenParty2010Map.swf', 1, FileCategory.Archives, null, null],
 
-  // this is a modified version of Ben's mod for the hunt to remove basket requirement
   [2561, 'halloween_hunt_icon.swf', 1, FileCategory.Approximation, null, null],
 
-  // scavenger hunt 2010 recreation based  on the water hunt SWF
-  // Made by Supermanover (exported candy assets), and nhaar (added hints)
   [2562, 'halloween_hunt_2010.swf', 1, FileCategory.Recreation, null, null],
   [2563, 'ContentBinoculars-HalloweenParty2007.swf', 1, FileCategory.Archives, null, null],
   [2564, 'Igloo_background_nightstorm.swf', 1, FileCategory.Archives, null, null],
 
-  // file given by resol, but from unknown sources, doesn't match any in the wiki
   [2565, 'NOTLS3EN', 1, FileCategory.Unknown, null, null],
 
-  // No idea where I got this from, I thought it was from another party's archive, but nothing archived matched
   [2566, 'halloween_telescope.swf', 1, FileCategory.Unknown, null, null],
 
-  // Manual modification of worldachievements.xml from legacy media to have Monster Mash
-  // Only costumes that were verified with video have been added here
   [2567, 'halloween_worldachievements.xml', 1, FileCategory.Approximation, null, null],
   [2568, 'WaterHuntBeach.swf', 1, FileCategory.Archives, null, null],
   [2569, 'WaterHuntBoiler.swf', 1, FileCategory.Archives, null, null],
@@ -2757,7 +2734,6 @@ export const FILES = new StaticDataTable<File, [
   [2588, 'Sensei_Water_Scavenger_Hunt_closeup.swf', 1, FileCategory.Archives, null, null],
   [2589, 'Sensei_Water_Scavenger_Hunt_icon.swf.swf', 1, FileCategory.Archives, null, null],
 
-  // recreation by Blue Kirby, including a glitched T as seen from videos
   [2590, 'water_hunt_planet_y', 1, FileCategory.Recreation, null, null],
   [2591, 'WaterCelebrationDojoext.swf', 1, FileCategory.Archives, null, null],
   [2592, 'WaterCelebrationDojohide.swf', 1, FileCategory.Archives, null, null],
@@ -2803,7 +2779,6 @@ export const FILES = new StaticDataTable<File, [
   [2632, 'HolidayParty2010Map.swf', 1, FileCategory.Archives, null, null],
   [2633, 'HolidayParty2010Map-StadiumGames.swf', 1, FileCategory.Archives, null, null],
   [2634, 'Storm_on_horizon.swf', 1, FileCategory.Archives, null, null],
-  // originally by Ben, refined by Randomno
   [2635, 'dynamic_igloo_music.swf', 1, FileCategory.Tool, null, null],
   [2636, 'RoomsTown_2.swf', 1, FileCategory.Archives, null, null],
   [2637, 'Map2008-2011Stadium.swf', 1, FileCategory.Archives, null, null],
@@ -2864,7 +2839,7 @@ export const FILES = new StaticDataTable<File, [
   [2692, 'library_2009.swf', 1, FileCategory.Recreation, null, 2693],
   [2693, 'ENFormsLibrary-2010.swf', 1, FileCategory.Archives, null, null],
   [2694, 'Enm111.swf', 1, FileCategory.Archives, null, null],
-  [2695, 'postcard_orange_puffle.swf', 1, FileCategory.Archives, null, 2694],
+  [2695, 'postcard_orange_puffle.swf', 1, FileCategory.Fix, null, 2694],
   [2696, 'GamesQuestsGlobalRoomsConclusion3.swf', 1, FileCategory.Archives, null, null],
   [2697, 'media/play/en/web_service/game_configs/mascots.jsonp', 1, FileCategory.StaticServer, 3, null],
   [2698, 'media/play/en/web_service/game_configs/rooms.jsonp', 1, FileCategory.StaticServer, 3, null],
@@ -3902,10 +3877,8 @@ export const FILES = new StaticDataTable<File, [
   [3730, 'BellEn_backgroundText.swf', 1, FileCategory.Archives, null, null],
   [3731, 'BellEn_javaBag.swf', 1, FileCategory.Archives, null, null],
   [3732, 'BellEn_menu.swf', 1, FileCategory.Archives, null, null],
-  // security fix removal (I think)
   [3733, 'ENGamesBook2BurntOutBulbs.swf', 1, FileCategory.Fix, null, null],
   [3734, 'GamesMixmasterChooseSong_2011.swf', 1, FileCategory.Archives, null, null],
-  // Recreation of the orange puffle version, based on the brown puffle one
   [3735, 'puffle_roundup_orange.swf', 1, FileCategory.Recreation, null, null],
   [3737, 'media/play/v2/games/pufflescape/lang/de/locale.xml', 1, FileCategory.StaticServer, 3, null],
   [3738, 'media/play/v2/games/pufflescape/lang/en/locale.xml', 1, FileCategory.StaticServer, 3, null],
@@ -3929,7 +3902,6 @@ export const FILES = new StaticDataTable<File, [
   [3756, 'ENNews234.swf', 1, FileCategory.Archives, null, null],
   [3757, 'RoomsBoxdimension-January2010.swf', 1, FileCategory.Archives, null, null],
 
-  // Removed domain verification
   [3758, 'Chat299.swf', 1, FileCategory.Fix, null, null],
   [3759, 'ArtworkRooms0416Book10.swf', 1, FileCategory.Archives, null, null],
   [3760, 'ArtworkRooms0416Berg10.swf', 1, FileCategory.Archives, null, null],
@@ -3959,9 +3931,6 @@ export const FILES = new StaticDataTable<File, [
   [3784, 'Music203.swf', 1, FileCategory.Archives, null, null],
   [3785, 'Music202.swf', 1, FileCategory.Archives, null, null],
 
-  // originally pulled this from slippers 07, but for some reason the sport shop room was bugged
-  // so I fixed that, now I placed it in unknown because I have no idea why it was broken
-  // I also fixed all the servers to point to the same port and IP adress
   [3788, 'chat506.swf', 1, FileCategory.Unknown, null, null],
   [3789, 'media/crumbs21.swf', 1, FileCategory.StaticServer, 4, null],
   [3790, 'media/interface41.swf', 1, FileCategory.StaticServer, 4, null],
@@ -3982,9 +3951,6 @@ export const FILES = new StaticDataTable<File, [
   [3806, 'ArtworkRooms0615Forts13.swf', 1, FileCategory.Archives, null, null],
   [3807, 'ArtworkRooms0615Town12.swf', 1, FileCategory.Archives, null, null],
 
-  // orginally, the beach had ID 809,
-  // but that was later changed. So this map I changed the ID of the beach to the new id
-  // so that it works with newer clients (newer being around 2007)
   [3808, 'map_beach_changed_id.swf', 1, FileCategory.Approximation, null, 4912],
   [3809, 'Music204.swf', 1, FileCategory.Archives, null, null],
   [3810, 'ArtworkRoomsPizza12.swf', 1, FileCategory.Archives, null, null],
@@ -4115,11 +4081,8 @@ export const FILES = new StaticDataTable<File, [
   [3935, 'RoomsTown-WinterFiesta2008.swf', 1, FileCategory.Archives, null, null],
   [3936, 'Music229.swf', 1, FileCategory.Archives, null, null],
 
-  // fixing ports, paths and recompiled frame 30 so it would work
-  // also manually added the party99.swf entry for medieval 08 (technically the path was party.swf, this may be changed at some point)
   [3937, 'Chat604.swf', 1, FileCategory.Fix, null, null],
 
-  // remove domain check (needs to be recompiled, FFDEC P-Code breaks it)
   [3938, 'Chat339.swf', 1, FileCategory.Fix, null, null],
   [3939, 'ArtworkRoomsBoiler11.swf', 1, FileCategory.Archives, null, null],
   [3940, 'ArtworkRooms0721Cave13.swf', 1, FileCategory.Archives, null, null],
@@ -4697,16 +4660,6 @@ export const FILES = new StaticDataTable<File, [
   [4515, 'RoomsParty-WinterParty.swf', 1, FileCategory.Archives, null, null],
   [4516, 'RoomsParty2-WinterParty.swf', 1, FileCategory.Archives, null, null],
   
-  // all the rooms in this party that are marked as .Fix are because of an issue that i could
-  // not figure out with the game engine. When the room SWF loads, the player position
-  // obtained from the jr packet should have already been placed inside the penguin's mc coordinates
-  // however, for a mysterious reason, that is not the case, and engine.swf only updates it after
-  // the room checks, so I did a workaround of checking if _x != 0 as well since that
-  // is the default value
-  // this issue was broken with both the 2010 engine and the 2009 engine,
-  // indicating the issue might lie within shell.swf, or another SWF
-  // until those client files can be implemented, this party will have this workaround fix
-  // the issue in question is not being able to walk past the intersections of blue and orange paths
   [4517, 'RoomsParty3-WinterParty.swf', 1, FileCategory.Fix, null, null],
   [4518, 'RoomsParty4-WinterParty.swf', 1, FileCategory.Fix, null, null],
   [4519, 'RoomsParty5-WinterParty.swf', 1, FileCategory.Fix, null, null],
@@ -4945,7 +4898,6 @@ export const FILES = new StaticDataTable<File, [
   [4753, 'Dec2010club_penguin.swf', 1, FileCategory.Archives, null, null],
   [4754, 'Dec2010ClientNewspaper.swf', 1, FileCategory.Archives, null, null],
 
-  // a file meant to be used for all newspapers that don't have a config.xml, links every possible element
   [4755, 'news_config.xml', 1, FileCategory.Tool, null, null],
   [4756, 'News266AskAuntArcticBack.swf', 1, FileCategory.Archives, null, null],
   [4757, 'News266AskAuntArcticFront.swf', 1, FileCategory.Archives, null, null],
@@ -5047,9 +4999,6 @@ export const FILES = new StaticDataTable<File, [
   [4853, 'News272UpcomingEvents.swf', 1, FileCategory.Archives, null, null],
   [4854, 'ArtworkRoomsTown40.swf', 1, FileCategory.Archives, null, null],
 
-  // fixes for chat291
-  // however, the auto-sitting doesnt seem to work with chat291 anyways, so that
-  // would need to investigated
   [4855, 'ArtworkRoomsCoffee2.swf', 1, FileCategory.Fix, null, null],
   [4856, 'RoomsCoffee1.swf', 1, FileCategory.Archives, null, null],
   [4857, 'BookWithPenguinArt.swf', 1, FileCategory.Archives, null, null],
@@ -5126,7 +5075,6 @@ export const FILES = new StaticDataTable<File, [
   [4928, 'RoomsLodge.swf', 1, FileCategory.Archives, null, null],
   [4929, 'RoomsSport_2.swf', 1, FileCategory.Archives, null, null],
 
-  // chat291.swf fixes
   [4930, 'ArtworkRoomsAgent3.swf', 1, FileCategory.Fix, null, null],
   [4931, 'ArtworkRoomsAgent10.swf', 1, FileCategory.Archives, null, null],
   [4932, 'ArtworkRoomsAgent11.swf', 1, FileCategory.Archives, null, null],
@@ -5135,8 +5083,6 @@ export const FILES = new StaticDataTable<File, [
   [4935, 'RoomsAgentFootball.swf', 1, FileCategory.Archives, null, null],
   [4936, 'RoomsAgentcomFormer.swf', 1, FileCategory.Archives, null, null],
   
-  // This was found but the origins are not known, allegedly someone edited the old
-  // map to work with CPIP, it's used as a placeholder pre dojo courtyard
   [4937, 'cpip_map_no_dojoext.swf', 1, FileCategory.Unknown, null, null],
   [4938, 'ArtworkRoomsCoffee6.swf', 1, FileCategory.Archives, null, null],
   [4939, 'ArtworkRoomsDock11.swf', 1, FileCategory.Archives, null, null],
@@ -5189,7 +5135,6 @@ export const FILES = new StaticDataTable<File, [
   [4986, '2009_Storm_mtn.swf', 1, FileCategory.Archives, null, null],
   [4987, '2009_Storm_village.swf', 1, FileCategory.Archives, null, null],
 
-  // great storm recreations by Blue Kirby
   [4988, '2009_storm/beach.swf', 1, FileCategory.Recreation, null, null],
   [4989, '2009_storm/berg.swf', 1, FileCategory.Recreation, null, null],
   [4990, '2009_storm/dock.swf', 1, FileCategory.Recreation, null, null],
@@ -5276,10 +5221,8 @@ export const FILES = new StaticDataTable<File, [
   [5070, 'December09Style.swf', 1, FileCategory.Archives, null, null],
   [5071, 'ArtworkRoomsShop40.swf', 1, FileCategory.Archives, null, null],
 
-  // recreation by VampLovr
   [5072, 'agent_2008_apr_cpip.swf', 1, FileCategory.Recreation, null, null],
 
-  // recreations by Blue Kirby
   [5073, 'dance_cpip_premusicjam.swf', 1, FileCategory.Recreation, null, null],
   [5074, 'cpip_cove_precatalog.swf', 1, FileCategory.Recreation, null, null],
   [5075, 'dock_cpip_precatalog.swf', 1, FileCategory.Recreation, null, null],
@@ -5289,7 +5232,6 @@ export const FILES = new StaticDataTable<File, [
   [5079, 'mtn_cpip_start.swf', 1, FileCategory.Recreation, null, null],
   [5080, 'pet_pre_white.swf', 1, FileCategory.Recreation, null, null],
 
-  // recreation by VampLovr
   [5081, 'mjam_10_berg_no_pb.swf', 1, FileCategory.Recreation, null, null],
   [5082, 'aprilfools2010_plaza.swf', 1, FileCategory.Recreation, null, null],
   [5083, 'agentcom_nofieldops1.swf', 1, FileCategory.Recreation, null, null],
@@ -5305,30 +5247,22 @@ export const FILES = new StaticDataTable<File, [
   [5092, 'RoomsDojohide_2.swf', 1, FileCategory.Archives, null, null],
   [5093, 'RoomsDojohide_3.swf', 1, FileCategory.Archives, null, null],
 
-  // changed the header framerate to 30
   [5094, 'boots30.swf', 1, FileCategory.Tool, null, null],
 
-  // file from legacy-media, then modified to work with http://localhost
   [5095, 'boots.swf', 1, FileCategory.Tool, null, 5094],
   
-  // from legacy media, but with domain check removed. Unknown where legacy media got it from
   [5096, 'my_puffle.swf', 1, FileCategory.Unknown, null, null],
 
-  // 2013 version, not much secret I just dont remember if I had to remove a domain check. Its on archives
   [5097, 'my_puffle_2013.swf', 1, FileCategory.Unknown, null, null],
   [5098, 'GamesDancingDance.swf', 1, FileCategory.Fix, null, null],
 
-  // mod by supermanover
   [5099, 'dance_contest_swapped.swf', 1, FileCategory.Mod, null, null],
 
-  // remove security check
   [5100, 'GamesJetPackAdventureMain.swf', 1, FileCategory.Fix, null, null],
 
-  // mod by randomno
   [5101, 'jpa_level_selector.swf', 1, FileCategory.Mod, null, null],
   [5102, 'GamesThiniceThinIce.swf', 1, FileCategory.Fix, null, null],
 
-  // IGT mods by sharlot and nhaar
   [5103, 'thinice_igt24.swf', 1, FileCategory.Mod, null, null],
   [5104, 'thinice_igt30.swf', 1, FileCategory.Mod, null, null],
   [5105, 'media/play/v2/client/shell.swf', 1, FileCategory.StaticServer, 2, null],
@@ -21410,7 +21344,6 @@ export const FILES = new StaticDataTable<File, [
   [21181, 'RainBinoculars.swf', 1, FileCategory.Archives, null, null],
   [21182, 'RainTelescope.swf', 1, FileCategory.Archives, null, null],
 
-  // made by blue kirby
   [21183, 'storm_2010_pet.swf', 1, FileCategory.Recreation, null, null],
   [21184, 'storm_2010_pizza.swf', 1, FileCategory.Recreation, null, null],
   [21185, 'Music297.swf', 1, FileCategory.Archives, null, null],
@@ -21443,7 +21376,6 @@ export const FILES = new StaticDataTable<File, [
   [21212, 'Music283.swf', 1, FileCategory.Archives, null, null],
   [21213, 'Music293.swf', 1, FileCategory.Archives, null, null],
   [21214, 'Music301.swf', 1, FileCategory.Archives, null, null],
-  // winter luau recreation done by supermanover
   [21215, 'winter_luau/dance.swf', 1, FileCategory.Recreation, null, null],
   [21216, 'winter_luau/dock.swf', 1, FileCategory.Recreation, null, null],
   [21217, 'winter_luau/forts.swf', 1, FileCategory.Recreation, null, null],
@@ -21451,14 +21383,12 @@ export const FILES = new StaticDataTable<File, [
   [21219, 'Music10.swf', 1, FileCategory.Archives, null, null],
   [21220, 'Music11.swf', 1, FileCategory.Archives, null, null],
   
-  // cave opening recreations by VamprLover
   [21221, 'cave_opening/boiler.swf', 1, FileCategory.Recreation, null, null],
   [21222, 'cave_opening/cave.swf', 1, FileCategory.Recreation, null, null],
   [21223, 'cave_opening/plaza.swf', 1, FileCategory.Recreation, null, null],
 
   [21224, 'ArtworkRoomsMine10.swf', 1, FileCategory.Archives, null, null],
 
-  // by VamprLover
   [21225, 'cave_opening/dance.swf', 1, FileCategory.Recreation, null, null],
   [21226, '', 1, FileCategory.Archives, null, null],
   [21227, '', 1, FileCategory.Archives, null, null],
