@@ -1,3 +1,4 @@
+import { iterateEntries } from "../../common/utils";
 import { isEqual, isLower, Version } from "../routes/versions"
 import { FileRef } from "./files";
 
@@ -5,10 +6,12 @@ import { FileRef } from "./files";
 export type RouteRefMap = Record<string, FileRef>;
 
 /**
- * A map that takes as keys versions, and as values the file reference associated with that version, used for
+ * A map that takes as keys versions, and as values information of a certain type, used for
  * permanent changes
  * */
-export type DateRefMap = Record<Version, FileRef>;
+export type DateMap<Info> = Record<Version, Info>;
+
+export type DateRefMap = DateMap<FileRef>;
 
 /** A map that takes as keys a ID number (of any kind) and values a file reference */
 export type IdRefMap = Record<number, FileRef>;
@@ -337,6 +340,12 @@ export class VersionsTimeline<EventInformation> {
   
   constructor() {
     this._eventsTimeline = [];
+  }
+
+  addDateMap(dateMap: DateMap<EventInformation>) {
+    iterateEntries(dateMap, (date, info) => {
+      this.add({ date, info });
+    })
   }
 
   add(event: TimelineEvent<EventInformation>) {

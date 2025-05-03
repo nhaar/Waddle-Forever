@@ -13,13 +13,7 @@ const VERSIONS: Record<string, number> = {
 
 export function getVersionsTimeline() {
   const versionTimeline = new VersionsTimeline<number>();
-  Object.entries(VERSIONS).forEach((pair) => {
-    const [date, version] = pair;
-    versionTimeline.add({
-      date,
-      info: version
-    });
-  });
+  versionTimeline.addDateMap(VERSIONS);
 
   return versionTimeline.getVersion();
 }
