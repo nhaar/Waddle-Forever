@@ -1,6 +1,6 @@
 import { findInVersion, VersionsTimeline } from "../game-data/changes";
 import { AS2_NEWSPAPERS } from "../game-data/newspapers";
-import { processVersion, Version } from "../routes/versions";
+import { processVersion, Version } from "./versions";
 
 function getNewspaperTimeline() {
   const timeline = new VersionsTimeline<{ date: Version; headline: string; }>();

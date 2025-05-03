@@ -2,8 +2,8 @@ import { findInVersion, VersionsTimeline } from "../game-data/changes";
 import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../game-data/updates";
-import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "../routes/client-files";
-import { isGreaterOrEqual, Version } from "../routes/versions";
+import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
+import { isGreaterOrEqual, Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
 

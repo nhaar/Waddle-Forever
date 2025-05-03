@@ -4,10 +4,10 @@ import { getStampbook } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
-import { getDynamicMusicListData } from "../game-logic/igloo-lists";
+import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
-import { getSetupTxt } from "../game-logic/setup.txt";
-import { getNewsTxt } from "../game-logic/news.txt";
+import { getSetupTxt } from "./setup.txt";
+import { getNewsTxt } from "./news.txt";
 import { AS3_UPDATE } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 
