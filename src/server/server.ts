@@ -12,6 +12,7 @@ import { createHttpServer } from './routes/game';
 import db from './database';
 import { getModRouter } from './settings';
 import { setApiServer } from './settings-api';
+import { HTTP_PORT } from '../common/constants';
 
 const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<void> => {
   handler.useEndpoints(server);
@@ -63,7 +64,6 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   setApiServer(settingsManager, server);
 
   await new Promise<void>((resolve, reject) => {
-    const HTTP_PORT = 80
     server.listen(HTTP_PORT, () => {
       console.log(`HTTP server listening on port ${HTTP_PORT}`);
       resolve();

@@ -3849,8 +3849,6 @@ export const FILES = new StaticDataTable<File, [
   [3734, 'GamesMixmasterChooseSong_2011.swf', 1, FileCategory.Archives, null, null],
   // Recreation of the orange puffle version, based on the brown puffle one
   [3735, 'puffle_roundup_orange.swf', 1, FileCategory.Recreation, null, null],
-  // XML with env data for localhost
-  [3736, 'localhost_environment_data.xml', 1, FileCategory.Tool, null, null],
   [3737, 'media/play/v2/games/pufflescape/lang/de/locale.xml', 1, FileCategory.StaticServer, 3, null],
   [3738, 'media/play/v2/games/pufflescape/lang/en/locale.xml', 1, FileCategory.StaticServer, 3, null],
   [3739, 'media/play/v2/games/pufflescape/lang/es/locale.xml', 1, FileCategory.StaticServer, 3, null],
