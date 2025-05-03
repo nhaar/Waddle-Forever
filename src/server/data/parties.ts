@@ -158,6 +158,23 @@ export const PARTIES: Party[] = [
     }
   },
   {
+    name: 'Winter Luau',
+    startDate: '2006-01-27',
+    endDate: '2006-01-29',
+    roomChanges: {
+      dance: 21215,
+      dock: 21216,
+      forts: 21217,
+      town: 21218
+    },
+    music: {
+      dock: 11,
+      forts: 11,
+      town: 11,
+      dance: 10
+    }
+  },
+  {
     name: 'Pizza Parlor Opening Party',
     startDate: PIZZA_PARLOR_OPENING_START,
     endDate: PIZZA_PARLOR_OPENING_END,
