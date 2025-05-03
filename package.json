@@ -75,7 +75,8 @@
   "nodemonConfig": {
     "ignore": [
       "/data/*",
-      "settings.json"
+      "settings.json",
+      "info.json"
     ]
   },
   "pkg": {
