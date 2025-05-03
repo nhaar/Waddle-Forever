@@ -4,12 +4,11 @@ import hash from 'object-hash';
 
 import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
 import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from "./versions";
-import { FileCategory, FileRef, getMediaFilePath, isPathAReference } from "../data/files";
+import { FileRef, getMediaFilePath, isPathAReference } from "../data/files";
 import { PACKAGES } from "../data/packages";
 import { RoomName, ROOMS } from "../data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
-import { STATIC_SERVERS } from "../data/static-servers";
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
 import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
 import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../data/parties";
