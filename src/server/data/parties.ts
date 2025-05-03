@@ -258,7 +258,13 @@ export const PARTIES: Party[] = [
     startDate: CAVE_OPENING_START,
     endDate: CAVE_OPENING_END,
     roomChanges: {
-      'mine': 3783
+      'mine': 21224,
+      boiler: 21221,
+      cave: 21222,
+      plaza: 21223
+    },
+    roomFrames: {
+      mine: 2
     },
     music: {
       'boiler': 203,
