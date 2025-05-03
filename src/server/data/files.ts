@@ -83,7 +83,7 @@ export function getMediaFilePath(fileId: number): string {
     [FileCategory.Approximation]: 'approximation',
     [FileCategory.Recreation]: 'recreation',
     [FileCategory.Mod]: 'mod',
-    [FileCategory.StaticServer]: 'ss',
+    [FileCategory.StaticServer]: '',
     [FileCategory.Tool]: 'tool',
     [FileCategory.Unknown]: 'unknown'
   }[file.category];
