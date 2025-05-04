@@ -35,6 +35,19 @@ export type PermanentUpdateTimeline<UpdateInformation> = Array<{
   date: Version;
 } & UpdateInformation>;
 
+export type TemporaryUpdate<UpdateInformation, SubUpdateInformation> = {
+  date: Version;
+  end: Version;
+  updates?: Array<{
+    /** If not added, then it defaults to the start of the temporary update */
+    date?: Version;
+  } & SubUpdateInformation>;
+  permanentChanges?: SubUpdateInformation;
+  consequences?: SubUpdateInformation;
+} & UpdateInformation;
+
+export type TemporaryUpdateTimeline<UpdateInformation, SubUpdateInformation> = Array<TemporaryUpdate<UpdateInformation, SubUpdateInformation>>
+
 /**
  * Processes a timeline of events into some form of output
  * @param timeline The timeline of events
@@ -376,6 +389,18 @@ export class TimelineMap<Identifier, EventInformation> {
   /** Inherit to make changes to the information input */
   protected processInformation(info: EventInformation): EventInformation {
     return info;
+  }
+
+  addPermanentUpdateTimeline<UpdateInformation>(
+    timeline: PermanentUpdateTimeline<UpdateInformation>,
+    processor: (info: UpdateInformation) => Array<{ id: Identifier, info: EventInformation }>
+  ) {
+    timeline.forEach((update) => {
+      const processed = processor(update);
+      processed.forEach(({ id, info}) => {
+        this.addPerm(id, update.date, info);
+      })
+    });
   }
 
   addDateMap(id: Identifier, dateMap: DateMap<EventInformation>): void {

@@ -24,8 +24,8 @@ function getEggTimeline() {
   PARTIES.forEach((party) => {
     if (party.scavengerHunt2007 !== undefined) {
       timeline.add({
-        date: party.startDate,
-        end: party.endDate,
+        date: party.date,
+        end: party.end,
         info: 1
       });
     }

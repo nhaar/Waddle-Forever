@@ -23,7 +23,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, RouteRefMap, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
 import { MIGRATOR_PERIODS } from "../game-data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
@@ -69,6 +69,33 @@ class FileTimelineMap extends TimelineMap<string, string> {
     } else {
       this.add('play/v2/content/global/content/map.swf', info);
     }
+  }
+
+  addTemporaryUpdateTimeline<UpdateInfo, SubUpdateInfo>(
+    timeline: TemporaryUpdateTimeline<UpdateInfo, SubUpdateInfo>,
+    applyUpdate: (map: FileTimelineMap, update: UpdateInfo, start: Version, end: Version) => void,
+    applySubUpdate: (map: FileTimelineMap, update: SubUpdateInfo, start: Version, end: Version | undefined) => void
+  ) {
+    timeline.forEach((tempUpdate) => {
+      applyUpdate(this, tempUpdate, tempUpdate.date, tempUpdate.end);
+      if (tempUpdate.updates !== undefined) {
+        for (let i = 0; i < tempUpdate.updates.length; i++) {
+          const subUpdate = tempUpdate.updates[i];
+          const next = tempUpdate.updates[i + 1];
+          let end = tempUpdate.end;
+          if (next !== undefined && next.date !== undefined) {
+            end = next.date;
+          }
+          applySubUpdate(this, subUpdate, subUpdate.date ?? tempUpdate.date, end);
+        }
+      }
+      if (tempUpdate.permanentChanges !== undefined) {
+        applySubUpdate(this, tempUpdate.permanentChanges, tempUpdate.date, undefined);
+      }
+      if (tempUpdate.consequences !== undefined) {
+        applySubUpdate(this, tempUpdate.consequences, tempUpdate.end, undefined);
+      }
+    })
   }
 }
 
@@ -339,67 +366,54 @@ function addParties(map: FileTimelineMap): void {
     }
   }
   
-  PARTIES.forEach((party) => {
-    const startDate = party.startDate;
-    const endDate = party.endDate;
+  map.addTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
     addPartyChanges({
       roomChanges: party.roomChanges,
       localChanges: party.localChanges,
       globalChanges: party.globalChanges,
       generalChanges: party.generalChanges
-    }, startDate, endDate);
+    }, start, end);
     if (party.construction !== undefined) {
       const constructionStart = party.construction.date;
-      addRoomChanges(party.construction.changes, constructionStart, startDate);
-
+      addRoomChanges(party.construction.changes, constructionStart, start);
+  
       if (party.construction.updates !== undefined) {
         party.construction.updates.forEach((update) => {
-          addRoomChanges(update.changes, update.date, startDate);
+          addRoomChanges(update.changes, update.date, start);
         })
       }
     }
 
     if (party.scavengerHunt2010 !== undefined) {
       // enabling the scavenger hunt dependency file
-      map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 'tool:dependencies_scavenger_hunt.json');
+      map.addTemp('play/v2/client/dependencies.json', start, end, 'tool:dependencies_scavenger_hunt.json');
 
       // serving the icon that will be loaded by the dependency
       const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
-      map.addTemp(path.join('play/v2/content/global', huntIconPath), startDate, endDate, party.scavengerHunt2010.iconFileId);
+      map.addTemp(path.join('play/v2/content/global', huntIconPath), start, end, party.scavengerHunt2010.iconFileId);
     }
 
     // all CPIP fair parties have the same dependency for loading the fair icon
     // this is possible to change if we can recreate the exact method it used
     if (party.fairCpip !== undefined) {
-      map.addTemp('play/v2/client/fair.swf', startDate, endDate, 'tool:fair_icon_adder.swf');
-      map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 'tool:fair_dependencies.json');
+      map.addTemp('play/v2/client/fair.swf', start, end, 'tool:fair_icon_adder.swf');
+      map.addTemp('play/v2/client/dependencies.json', start, end, 'tool:fair_dependencies.json');
 
-      map.addTemp(path.join('play/v2/content/global', TICKET_ICON_PATH), startDate, endDate, party.fairCpip.iconFileId);
-      map.addTemp(path.join('play/v2/content/global', TICKET_INFO_PATH), startDate, endDate, 'archives:Tickets-TheFair2009.swf');
-    }
-
-    if (party.updates !== undefined) {
-      party.updates.forEach((update) => {
-        addPartyChanges({
-          roomChanges: update.roomChanges,
-          localChanges: update.localChanges,
-          globalChanges: update.globalChanges,
-          generalChanges: update.generalChanges
-        }, update.date, endDate);
-      })
+      map.addTemp(path.join('play/v2/content/global', TICKET_ICON_PATH), start, end, party.fairCpip.iconFileId);
+      map.addTemp(path.join('play/v2/content/global', TICKET_INFO_PATH), start, end, 'archives:Tickets-TheFair2009.swf');
     }
 
     if (party.scavengerHunt2007 !== undefined) {
-      map.addTemp('artwork/eggs/1.swf', startDate, endDate, party.scavengerHunt2007);
+      map.addTemp('artwork/eggs/1.swf', start, end, party.scavengerHunt2007);
     }
-
-    if (party.permanentChanges !== undefined) {
-      addPartyChanges(party.permanentChanges, party.startDate);
-    }
-    if (party.consequences !== undefined) {
-      addPartyChanges(party.consequences, party.endDate);
-    }
-  })
+  }, (map, update, start, end) => {
+    addPartyChanges({
+      roomChanges: update.roomChanges,
+      localChanges: update.localChanges,
+      globalChanges: update.globalChanges,
+      generalChanges: update.generalChanges
+    }, start, end);
+  });
 }
 
 /** Converts a timeline of events into some */
@@ -441,7 +455,7 @@ export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     PARTIES.forEach((party) => {
       // crumbs dont exist before this date
-      if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)){
+      if (isGreaterOrEqual(party.date, CPIP_UPDATE)){
         const localPaths: Record<string, string> = {};
         if (party.localChanges !== undefined) {
           // only 'en' support
@@ -460,8 +474,8 @@ export function getLocalCrumbsOutput() {
     
         if (Object.keys(localPaths).length > 0) {
           timeline.push({
-            date: party.startDate,
-            end: party.endDate,
+            date: party.date,
+            end: party.end,
             info: { paths: localPaths }
           });
         }
@@ -529,7 +543,7 @@ export function getRoomFrameTimeline() {
   
   PARTIES.forEach((party) => {
     if (party.roomFrames !== undefined) {
-      addRoomFrames(party.roomFrames, party.startDate, party.endDate);
+      addRoomFrames(party.roomFrames, party.date, party.end);
     }
   });
 
@@ -574,7 +588,7 @@ export function getMusicTimeline(includeParties: boolean = true) {
       if (party.music !== undefined) {
         Object.entries(party.music).forEach(pair => {
           const [room, music] = pair;
-          timeline.addTemp(room as RoomName, party.startDate, party.endDate, music);
+          timeline.addTemp(room as RoomName, party.date, party.end, music);
         })
       }
     })
@@ -592,8 +606,8 @@ export function getMigratorTimeline() {
   PARTIES.forEach((party) => {
     if (party.activeMigrator === true) {
       timeline.add({
-        date: party.startDate,
-        end: party.endDate,
+        date: party.date,
+        end: party.end,
         info: true
       });
     }
@@ -675,7 +689,7 @@ export function getGlobalCrumbsOutput() {
       // so we don't have excess crumb files
       // NOTE that this design can easily lead to new properties being added not being handled
       let crumbChanged = false;
-      if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)) {
+      if (isGreaterOrEqual(party.date, CPIP_UPDATE)) {
         // change is detected if any of these is true
         crumbChanged = [
           party.music !== undefined,
@@ -688,8 +702,8 @@ export function getGlobalCrumbsOutput() {
   
       if (crumbChanged) {
         timeline.push({
-          date: party.startDate,
-          end: party.endDate,
+          date: party.date,
+          end: party.end,
           info: {
             music: party.music,
             paths: globalPaths,

@@ -218,14 +218,14 @@ function addParties(map: DayMap): DayMap {
     const partyStart = party.startComment === undefined
       ? `The ${party.name} starts`
       : party.startComment;
-    addArrayEvents(map, partyStartProp, party.startDate, partyStart );
+    addArrayEvents(map, partyStartProp, party.date, partyStart );
 
     const partyEndProp = party.event === true ? 'other' : 'partyEnd'
 
     const partyEnd = party.endComment === undefined
       ? `The ${party.name} ends`
       : party.endComment;
-    addArrayEvents(map, partyEndProp, party.endDate, partyEnd);
+    addArrayEvents(map, partyEndProp, party.end, partyEnd);
 
     if (party.construction !== undefined) {
         const partyStart = party.construction.comment === undefined ?
@@ -250,10 +250,10 @@ function addParties(map: DayMap): DayMap {
     }
 
     if (party.permanentChanges?.roomComment !== undefined) {
-      addEvents(map, party.startDate, { roomUpdate: party.permanentChanges.roomComment });
+      addEvents(map, party.date, { roomUpdate: party.permanentChanges.roomComment });
     }
     if (party.consequences?.roomComment !== undefined) {
-      addEvents(map, party.endDate, { roomUpdate: party.consequences.roomComment });
+      addEvents(map, party.end, { roomUpdate: party.consequences.roomComment });
     }
   }
 
