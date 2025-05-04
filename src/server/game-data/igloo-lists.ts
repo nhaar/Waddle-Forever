@@ -32,18 +32,18 @@ type ListUpdate = {
 }
 
 export const IGLOO_LISTS: [FullList, ...Array<FullList | ListUpdate>] = [
-  // {
-  //   date: '2008-07-18',
-  //   list: [
-  //     [{ display: 'Fiesta', id: 229, new: true }, { display: 'Jazz', id: 211 }],
-  //     [{ display: 'Aqua Grabber', id: 114, new: true }, { display: 'Ocean Voyage', id: 212 }],
-  //     [{ display: 'Medieval Town', id: 233, new: true }, { display: 'Cool Surf', id: 214 }],
-  //     [{ display: 'Pizza Parlor', id: 20 }, { display: 'Coffee Shop', id: 1 }],
-  //     [{ display: 'Superhero', id: 32 }, { display: 'Dance Mix 1', id: 2 }],
-  //     [{ display: 'Fall Fair', id: 215 }, { display: 'Dance Mix 2', id: 5 }],
-  //     [{ display: 'Folk Guitar', id: 209 }, { display: 'Water Party', id: 217 }]
-  //   ]
-  // },
+  {
+    date: '2008-07-18',
+    list: [
+      [{ display: 'Fiesta', id: 229, new: true }, { display: 'Jazz', id: 211 }],
+      [{ display: 'Aqua Grabber', id: 114, new: true }, { display: 'Ocean Voyage', id: 212 }],
+      [{ display: 'Medieval Town', id: 233, new: true }, { display: 'Cool Surf', id: 214 }],
+      [{ display: 'Pizza Parlor', id: 20 }, { display: 'Coffee Shop', id: 1 }],
+      [{ display: 'Superhero', id: 32 }, { display: 'Dance Mix 1', id: 2 }],
+      [{ display: 'Fall Fair', id: 215 }, { display: 'Dance Mix 2', id: 5 }],
+      [{ display: 'Folk Guitar', id: 209 }, { display: 'Water Party', id: 217 }]
+    ]
+  },
   {
     date: '2008-10-17',
     list: [
