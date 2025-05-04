@@ -36,7 +36,7 @@ async function downloadFile(filename: string, destination: string, update: (prog
         fs.unlink(destination, () => {});
         logError('Error downloading', err);
         finish();
-        resolve(false);
+        reject(err);
     });
   })
 }
