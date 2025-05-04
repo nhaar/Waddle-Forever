@@ -23,7 +23,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, IdentifierMap, PermanentChange, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
 import { MIGRATOR_PERIODS } from "../game-data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
@@ -31,52 +31,19 @@ import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 
-/** Information for the update of a route that is dynamic */
-type DynamicRouteUpdate = {
-  /** The date in which this route changed */
-  date: string;
-  /** The path to the file that this route now serves */
-  file: string;
-}
+type RouteFileInformation = string | Array<PermanentChange<string>>;
 
-/** Information for the update of a route that is special */
-type SpecialRouteUpdate = {
-  /** The date in which this update happens */
-  date: string;
-  /** Maps a special condition to the file server on that day under that condition */
-  files: Record<string, string>;
-}
-
-type RouteFileInformation = string | Array<DynamicRouteUpdate>;
-
-class FileTimelineMap {
-  private _map: TimelineMap<string, string>;
-
-  constructor() {
-    this._map = new TimelineMap<string, string>();
+class FileTimelineMap extends TimelineMap<string, string> {
+  protected override processIdentifier(identifier: string): string {
+    return sanitizePath(identifier);
   }
 
-  static getFilePath(pathOrReference: string): string {
-    return isPathAReference(pathOrReference) ? getMediaFilePath(pathOrReference) : pathOrReference;
-  }
-
-  addPerm(route: string, date: Version, file: string) {
-    this._map.addPerm(sanitizePath(route), date, FileTimelineMap.getFilePath(file));
-  }
-
-  addTemp(route: string, date: Version, end: Version, file: string) {
-    this._map.addTemp(sanitizePath(route), date, end, FileTimelineMap.getFilePath(file));
-  }
-
-  getRouteMap(): RouteMap {
-    const routeMap = new Map<string, RouteFileInformation>();
-    const idMap = this._map.getIdentifierMap();
-
-    idMap.forEach((versions, route) => {
-      addToRouteMap(routeMap, route, versions.map((v) => ({ date: v.date, file: v.info })))
-    });
-
-    return routeMap;
+  protected override processInformation(info: string): string {
+    if (isPathAReference(info)) {
+      return getMediaFilePath(info);
+    } else {
+      return info;
+    }
   }
 }
 
@@ -1007,7 +974,7 @@ export function getFileServer(): Map<string, RouteFileInformation> {
 
   timelineProcessors.forEach((fn) => fn(timelines));
   
-  const fileServer = timelines.getRouteMap();
+  const fileServer = timelines.getIdentifierMap();
 
   const staticProcessors = [
     addStaticFiles,

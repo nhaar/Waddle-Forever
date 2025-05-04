@@ -364,6 +364,16 @@ export class TimelineMap<Identifier, EventInformation> {
     this._map = new Map<Identifier, VersionsTimeline<EventInformation>>;
   }
 
+  /** Inherit to make changes to the identifier input */
+  protected processIdentifier(identifier: Identifier): Identifier {
+    return identifier;
+  }
+
+  /** Inherit to make changes to the information input */
+  protected processInformation(info: EventInformation): EventInformation {
+    return info;
+  }
+
   addTemp(identifier: Identifier, start: Version, end: Version, info: EventInformation) {
     this.add(identifier, {
       date: start,
@@ -380,6 +390,8 @@ export class TimelineMap<Identifier, EventInformation> {
 
   /** Add a file update event to a timeline map for a given route */
   private add(identifier: Identifier, event: TimelineEvent<EventInformation>): void {
+    identifier = this.processIdentifier(identifier);
+    event.info = this.processInformation(event.info);
     const prev = this._map.get(identifier);
     if (prev === undefined) {
       const timeline = new VersionsTimeline<EventInformation>();
