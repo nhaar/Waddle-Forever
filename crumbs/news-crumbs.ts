@@ -3,7 +3,7 @@ import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
 import { processVersion } from '../src/server/routes/versions';
 import { getMinifiedDate, isNewspaperAfterCPIP, NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
-import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/data/newspapers';
+import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/game-data/newspapers';
 
 type LabeledAs2Newspaper = As2Newspaper & { type: 'as2' };
 type LabeledAs3Newspaper = As3Newspaper & { type: 'as3' };
