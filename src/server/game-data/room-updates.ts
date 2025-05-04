@@ -858,7 +858,9 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   'dojofire': [22],
   dojohide: [21],
   dojoext: [
-    21,
+    0,
+    // TODO moving as a consequence?
+    { date: DIG_OUT_DOJO_END, musicId: 21 },
     { date: CARD_JITSU_RELEASE, musicId: 0}
   ],
   dojowater: [24],
