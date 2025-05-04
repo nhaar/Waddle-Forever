@@ -415,6 +415,7 @@ export class TimelineMap<Identifier, EventInformation> {
     }
 
     updater(timeline);
+    this._map.set(id, timeline);
   }
 
   addTemp(identifier: Identifier, start: Version, end: Version, info: EventInformation) {

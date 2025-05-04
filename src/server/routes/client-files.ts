@@ -22,7 +22,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { DateRefMap, findInVersion, IdentifierMap, IdRefMap, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
 import { MIGRATOR_PERIODS } from "../game-data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
@@ -57,6 +57,12 @@ class FileTimelineMap extends TimelineMap<string, string> {
   addRouteMap(routeMap: RouteRefMap, date: Version): void {
     iterateEntries(routeMap, (route, file) => {
       this.addPerm(route, date, file);
+    });
+  }
+
+  addDateRefMap(route: string, dateMap: DateRefMap): void {
+    iterateEntries(dateMap, (date, fileRef) => {
+      this.addPerm(route, date, fileRef);
     });
   }
 
@@ -841,9 +847,9 @@ function addCatalogues(map: FileTimelineMap): void {
     map.addPerm(`artwork/catalogue/clothing${signature}.swf`, date, file);
   });
 
-  map.addDateMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
-  map.addDateMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
-  map.addDateMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
+  map.addDateRefMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
+  map.addDateRefMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
+  map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 }
 
 function addPins(map: FileTimelineMap): void {
