@@ -26,6 +26,10 @@ const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
       comment: 'Chat291.swf compatibility fixes. Files from around 2005 need the code slightly changed due to not having proper spawn points and the triggers using room names instead of room IDs.'
     },
     {
+      file: 'Mtn1.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
       file: 'Dance1b_halloween.swf',
       comment: 'Chat291.swf compatibility fixes'
     },

@@ -189,6 +189,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   mtn: [
     {
+      // it is unknown when the mountain was renovated to have ski animations
+      fileRef: 'mammoth:artwork/rooms/mtn10.swf',
+      date: '2006-01-01'
+    },
+    {
       // placeholder CPIP room
       fileRef: 'recreation:mtn_cpip_start.swf',
       date: CPIP_UPDATE
@@ -708,7 +713,7 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   },
   {
     room: 'mtn',
-    fileRef: 'mammoth:artwork/rooms/mtn10.swf',
+    fileRef: 'fix:Mtn1.swf',
     date: MTN_RELEASE,
     otherRooms: {
       village: 'approximation:village_no_lodge.swf'
