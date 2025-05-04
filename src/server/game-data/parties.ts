@@ -2261,7 +2261,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'party2': 'archives:RoomsParty2-PuffleParty2010.swf',
       'pet': 'archives:RoomsPet-PuffleParty2010.swf',
       'town': 'archives:RoomsTown-PuffleParty2010.swf',
-      'village': 'archives:RoomsVillage-PuffleParty2010.swf'
+      'village': 'archives:RoomsVillage-PuffleParty2010.swf',
+      plaza: 'archives:RoomsPlaza-PuffleParty2010.swf'
     },
     music: {
       'beach': 282,
