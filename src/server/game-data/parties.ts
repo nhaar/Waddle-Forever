@@ -794,7 +794,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       village: 'archives:ArtworkRooms0328Village43.swf',
       forts: 'archives:ArtworkRooms0328Forts41.swf',
       town: 'archives:ArtworkRooms0328Town40.swf',
-      cove: 'archives:RoomsShack-June2010.swf'
+      cove: 'archives:ArtworkRooms0328Cove43.swf'
     },
     music: {
       pet: 201,
