@@ -416,6 +416,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'agent_2008_nov.swf',
       comment: 'Made by VamprLover. A version of the Post-CPIP HQ without the closet and with the soccer pitch.'
+    },
+    {
+      file: 'plaza_squidzoid_sign.swf',
+      comment: 'Made by Blue Kirby. This is RoomsPlaza-Play3.swf from the archives, but for some reason the original is broken, so it was fixed to not have the weird shading. It is unknown why this archive file is like this, but as such it has been tagged as a recreation as it\'s likely a misarchive, and this has been further fixed by Blue Kirby'
     }
   ],
   [MOD]: [

@@ -182,7 +182,7 @@ export const STAGE_TIMELINE: Array<{
     name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
     stageFileRef: 'archives:RoomsStage-October2009.swf', // from october 2009
     // I think this plaza is accurate (with sign)
-    plazaFileRef: 'archives:RoomsPlaza-Play3.swf',
+    plazaFileRef: 'recreation:plaza_squidzoid_sign.swf',
     costumeTrunkFileRef: 'archives:January2009Costume.swf',
     notPremiere: true
   },

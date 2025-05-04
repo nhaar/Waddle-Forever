@@ -105,7 +105,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   plaza: [
     {
-      fileRef: 'archives:RoomsPlaza-Play3.swf',
+      fileRef: 'recreation:plaza_squidzoid_sign.swf',
       date: CPIP_UPDATE
     },
     {
