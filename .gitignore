@@ -86,4 +86,4 @@ ffdec-path.ts
 /labels/warnings.txt
 
 # auto generated media info
-/media/default/info.json
+/src/server/game-data/package-info.ts

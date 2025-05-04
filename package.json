@@ -11,10 +11,10 @@
     "build-tsc": "yarn clean && tsc && yarn build-browser && yarn copy-files",
     "start": "yarn build-tsc && cross-env NODE_ENV=dev electron ./compiled/client/main.js",
     "lint": "eslint -c .eslintrc --ext .ts ./src",
-    "build-client-win-nosetup": "yarn build-tsc && electron-builder build --dir --win --publish never",
-    "build-client-win": "yarn build-tsc && electron-builder build --win --publish never",
+    "build-client-win-nosetup": "yarn build-packages && yarn build-tsc && electron-builder build --dir --win --publish never",
+    "build-client-win": "yarn build-packages && yarn build-tsc && electron-builder build --win --publish never",
     "build-mac": "yarn build-tsc && electron-builder build --mac --publish never",
-    "build-linux": "yarn build-tsc && electron-builder build --linux --x64 --publish never",
+    "build-linux": "yarn build-packages && yarn build-tsc && electron-builder build --linux --x64 --publish never",
     "dev": "cross-env NODE_ENV=dev nodemon src/server/main.ts",
     "build-server-win-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win-x64&&node scripts/rename-win.js",
     "build-server-linux-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64&&node scripts/rename-linux.js",
@@ -28,7 +28,8 @@
     "verify": "ts-node labels/verify-labels.ts",
     "shorten": "ts-node labels/shorten-paths.ts",
     "expand": "ts-node labels/expand-paths.ts",
-    "files": "ts-node scripts/create-lines.ts"
+    "files": "ts-node scripts/create-lines.ts",
+    "build-packages": "ts-node scripts/build-packages.ts"
   },
   "author": "CPS",
   "license": "MIT",
