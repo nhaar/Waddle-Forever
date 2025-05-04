@@ -1,12 +1,12 @@
-import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, ICEBERG_RELEASE, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SUMMER_PARTY_START } from "./updates";
+import { PermanentUpdateTimeline } from "./changes";
+import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SUMMER_PARTY_START } from "./updates";
 
 type MapUpdate = {
-  date: string;
   fileRef: string;
   comment?: string;
 };
 
-export const MAP_UPDATES: MapUpdate[] = [
+export const MAP_UPDATES: PermanentUpdateTimeline<MapUpdate> = [
   {
     date: PIZZA_PARLOR_OPENING_END,
     fileRef: 'archives:ArtworkMapsIsland5.swf'

@@ -31,6 +31,10 @@ export type TemporaryChange<ChangeInformation> = {
 /** Abstraction of a type that represents either a temporary event or permanent one in a timeline */
 export type TimelineEvent<ChangeInformation> = PermanentChange<ChangeInformation> | TemporaryChange<ChangeInformation>;
 
+export type PermanentUpdateTimeline<UpdateInformation> = Array<{
+  date: Version;
+} & UpdateInformation>;
+
 /**
  * Processes a timeline of events into some form of output
  * @param timeline The timeline of events
@@ -403,7 +407,7 @@ export class TimelineMap<Identifier, EventInformation> {
   }
 
   /** Add a file update event to a timeline map for a given route */
-  private add(identifier: Identifier, event: TimelineEvent<EventInformation>): void {
+  protected add(identifier: Identifier, event: TimelineEvent<EventInformation>): void {
     identifier = this.processIdentifier(identifier);
     event.info = this.processInformation(event.info);
     const prev = this._map.get(identifier);

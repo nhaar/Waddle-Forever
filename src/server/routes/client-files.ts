@@ -58,6 +58,18 @@ class FileTimelineMap extends TimelineMap<string, string> {
       this.addPerm(route, date, file);
     });
   }
+
+  addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
+
+    const info = end === undefined ? { date, info: fileRef } : { date, end, info: fileRef };
+    if (isLower(date, CPIP_UPDATE)) {
+      this.add(PRECPIP_MAP_PATH, info);
+      // TODO would be best to only include the maps that end up factually being used
+      this.add(MAP_PATH_07, info);
+    } else {
+      this.add('play/v2/content/global/content/map.swf', info);
+    }
+  }
 }
 
 function addFurniture(map: FileTimelineMap): void {
@@ -253,7 +265,7 @@ function addRoomInfo(map: FileTimelineMap): void {
       });
     }
     if (opening.map !== undefined) {
-      addMapUpdate(map, opening.date, opening.map);
+      map.addGameMapUpdate(opening.map, opening.date);
     }
   })
 
@@ -815,19 +827,9 @@ function addStandaloneChanges(map: FileTimelineMap): void {
   });
 }
 
-function addMapUpdate(map: FileTimelineMap, date: Version, fileRef: string): void {
-  if (isLower(date, CPIP_UPDATE)) {
-    map.addPerm(PRECPIP_MAP_PATH, date, fileRef);
-    // TODO would be best to only include the maps that end up factually being used
-    map.addPerm(MAP_PATH_07, date, fileRef);
-  } else {
-    map.addPerm('play/v2/content/global/content/map.swf', date, fileRef);
-  }
-}
-
 function addMapUpdates(map: FileTimelineMap): void {
   MAP_UPDATES.forEach((update) => {
-    addMapUpdate(map, update.date, update.fileRef);
+    map.addGameMapUpdate(update.fileRef, update.date);
   });
 }
 
