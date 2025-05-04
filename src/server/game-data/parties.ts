@@ -1460,7 +1460,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       dock: 262,
       mtn: 262,
       village: 262,
-      party: 208
+      party: 208,
+      coffee: 262
     },
     construction: {
       date: '2009-03-06',
