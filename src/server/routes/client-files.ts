@@ -30,6 +30,7 @@ import { ITEMS } from "../game-logic/items";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
+import { iterateEntries } from "../../common/utils";
 
 type RouteFileInformation = string | Array<PermanentChange<string>>;
 
@@ -871,24 +872,15 @@ export function getFileDateSignature(date: Version): string {
 }
 
 function addCatalogues(map: FileTimelineMap): void {
-  const addCatalogue = (route: string, catalogs: Record<string, string>) => {
-    Object.entries(catalogs).forEach((pair) => {
-      const [date, fileRef] = pair;
-      
-      map.addPerm(route, date, fileRef);
-    })
-  }
-
-  Object.entries(PRE_CPIP_CATALOGS).forEach((pair) => {
-    const [date, file] = pair;
+  iterateEntries(PRE_CPIP_CATALOGS, (date, file) => {
     const signature = getFileDateSignature(date);
     map.addPerm(`artwork/catalogue/clothing_${signature}.swf`, date, file);
     map.addPerm(`artwork/catalogue/clothing${signature}.swf`, date, file);
-  })
+  });
 
-  addCatalogue('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
-  addCatalogue('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
-  addCatalogue('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
+  map.addDateMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
+  map.addDateMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
+  map.addDateMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 }
 
 function addPins(map: FileTimelineMap): void {

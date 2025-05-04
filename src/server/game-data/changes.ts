@@ -374,6 +374,20 @@ export class TimelineMap<Identifier, EventInformation> {
     return info;
   }
 
+  addDateMap(id: Identifier, dateMap: DateMap<EventInformation>): void {
+    this.updateIdentifier(id, (t) => t.addDateMap(dateMap));
+  }
+
+  updateIdentifier(id: Identifier, updater: (timeline: VersionsTimeline<EventInformation>) => void) {
+    id = this.processIdentifier(id);
+    let timeline = this._map.get(id);
+    if (timeline === undefined) {
+      timeline = new VersionsTimeline<EventInformation>();
+    }
+
+    updater(timeline);
+  }
+
   addTemp(identifier: Identifier, start: Version, end: Version, info: EventInformation) {
     this.add(identifier, {
       date: start,

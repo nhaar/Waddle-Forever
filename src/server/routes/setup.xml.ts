@@ -1,4 +1,3 @@
-import { PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { findInVersion, VersionsTimeline } from "../game-data/changes";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
