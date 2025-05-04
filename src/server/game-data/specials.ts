@@ -15,7 +15,7 @@ type CompoundServer = [string, (s: SettingsManager) => number | undefined, Recor
 const simpleFeatures: SimpleServer[] = [
   ['boots.swf', (s) => {
     return s.settings.fps30
-  }, 'tool:boots.swf'],
+  }, 'tool:boots30.swf'],
   ['play/v2/games/book1/bootstrap.swf', (s) => {
     return s.settings.modern_my_puffle
   }, 'unknown:my_puffle_2013.swf'],
