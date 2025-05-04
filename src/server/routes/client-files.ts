@@ -23,7 +23,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { findInVersion, IdentifierMap, PermanentChange, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
 import { MIGRATOR_PERIODS } from "../game-data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
@@ -46,57 +46,37 @@ class FileTimelineMap extends TimelineMap<string, string> {
       return info;
     }
   }
+
+  addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
+    iterateEntries(idMap, (id, file) => {
+      this.addPerm(path.join(parentDir, directory, `${id}.swf`), BETA_RELEASE, file);
+    });
+  }
 }
 
 function addFurniture(map: FileTimelineMap): void {
-  const pushFurniture = (id: string, fileReference: string, directory: string) => {
-    const filePath = getMediaFilePath(fileReference)
-    map.addPerm(`play/v2/content/global/furniture/${directory}/${id}.swf`, BETA_RELEASE, filePath);
-  }
-
-  Object.entries(FURNITURE_ICONS).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushFurniture(id, fileId, 'icons');
-  });
-
-  Object.entries(FURNITURE_SPRITES).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushFurniture(id, fileId, 'sprites');
-  });
+  const furnitureDir = 'play/v2/content/global/furniture';
+  map.addIdMap(furnitureDir, 'icons', FURNITURE_ICONS);
+  map.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
 }
 
 function addClothing(map: FileTimelineMap): void {
-  const pushClothing = (id: number | string, fileReference: string, directory: string) => {
-    const filePath = getMediaFilePath(fileReference)
-    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, filePath);
-  }
+  const clothingDir = 'play/v2/content/global/clothing';
+  const preCpipClothingDir = 'artwork';
 
-  const preCpipClothing = (id: number | string, fileReference: string, directory: string) => {
-    map.addPerm(`artwork/${directory}/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileReference));
-  }
+  map.addIdMap(clothingDir, 'icons', ICONS);
+  map.addIdMap(clothingDir, 'paper', PAPER);
 
-  Object.entries(ICONS).forEach((pair) => {
-    const [id, fileReference] = pair;
-    pushClothing(id, fileReference, 'icons');
+  const preCpipPhotos: IdRefMap = {};
+  iterateEntries(PHOTOS, (id, file) => {
+    preCpipPhotos[Number(id) - 900] = file;
   });
 
-  Object.entries(PAPER).forEach((pair) => {
-    const [id, fileReference] = pair;
-    pushClothing(id, fileReference, 'paper');
-  });
+  map.addIdMap(clothingDir, 'photos', PHOTOS);
+  map.addIdMap(preCpipClothingDir, 'photos', preCpipPhotos);
 
-  Object.entries(PHOTOS).forEach((pair) => {
-    const [id, fileReference] = pair;
-    pushClothing(id, fileReference, 'photos');
-    // in the old engine backgrounds were served with this ID phase
-    preCpipClothing(Number(id) - 900, fileReference, 'photos');
-  });
-
-  Object.entries(SPRITES).forEach((pair) => {
-    const [id, fileReference] = pair;
-    pushClothing(id, fileReference, 'sprites');
-    preCpipClothing(id, fileReference, 'items');
-  });
+  map.addIdMap(clothingDir, 'sprites', SPRITES);
+  map.addIdMap(preCpipClothingDir, 'items', SPRITES);
 }
 
 function addMusicFiles(map: FileTimelineMap): void {
