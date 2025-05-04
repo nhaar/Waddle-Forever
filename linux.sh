@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.1.0"
+VERSION="1.1.1"
 URL="https://waddleforever.com"
 DEFAULT="default"
 CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverClient-$VERSION.AppImage"
@@ -33,5 +33,7 @@ ACTIVE_MODS_PATH="$DATA_FOLDER/mods/.active_mods"
 if [ ! -f $ACTIVE_MODS_PATH ]; then
     echo "" > $ACTIVE_MODS_PATH
 fi
+
+chmod +x "$DEST_FOLDER/WaddleForeverClient.AppImage"
 
 echo "Installation finished! Please check details in https://waddleforever.com/linux on how to run the game."
