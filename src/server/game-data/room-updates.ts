@@ -565,11 +565,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
     {
       // mancala was added at some random point I dont know
-      fileRef: 'archives:ArtworkRoomsAgent10.swf',
+      fileRef: 'fix:ArtworkRoomsAgent3.swf',
       date: '2005-11-01'
     },
     {
-      fileRef: 'fix:ArtworkRoomsAgent3.swf',
+      fileRef: 'archives:ArtworkRoomsAgent10.swf',
       date: '2006-02-11',
       comment: 'Mancala is removed from the HQ'
     },
