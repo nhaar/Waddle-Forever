@@ -45,8 +45,9 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       // unknown date, you can now walk to the audience in the rink
       // only evidence is after april fools party
+      // the file is also seemingly a debug file
       date: '2006-04-01',
-      fileRef: 'archives:ArtworkRoomsRink12.swf'
+      fileRef: 'fix:ArtworkRoomsRink12.swf'
     },
     {
       date: '2006-08-11',

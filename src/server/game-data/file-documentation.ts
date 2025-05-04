@@ -165,6 +165,10 @@ would need to investigated`
     {
       file: 'Chat339.swf',
       comment: 'Domain check removed, script recompiled in FFDEC to remove obfuscation'
+    },
+    {
+      file: 'ArtworkRoomsRink12.swf',
+      comment: 'This file appears to be a debug unreleased file, as it has debugging log text on screen. The text is removed. It is unknown if this file should even be added to the game'
     }
   ],
   [APPROXIMATION]: [
