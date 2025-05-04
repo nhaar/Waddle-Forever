@@ -5,7 +5,6 @@ import hash from 'object-hash';
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from "./versions";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
-import { PACKAGES } from "../game-data/packages";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../game-data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
