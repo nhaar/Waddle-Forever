@@ -869,7 +869,12 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
     { date: CARD_JITSU_RELEASE, musicId: 0}
   ],
   dojowater: [24],
-  boiler: [6]
+  boiler: [6],
+  stage: [
+    0,
+    // placeholder CPIP play
+    { date: CPIP_UPDATE, musicId: 32 }
+  ]
 };
 
 type TemporaryRoomUpdate = Array<{
