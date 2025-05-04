@@ -4,27 +4,17 @@ import { getStampbook } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
-import { getDynamicMusicListData } from "../game/igloo-lists";
+import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
-import { getSetupTxt } from "../game/setup.txt";
-import { getNewsTxt } from "../game/news.txt";
-import { AS3_UPDATE } from "../data/updates";
+import { getSetupTxt } from "./setup.txt";
+import { getNewsTxt } from "./news.txt";
+import { AS3_UPDATE } from "../game-data/updates";
+import { getEnvironmentDataXml } from "./environment_data.xml";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
   server.addFileServer();
-
-  // serving the websites
-  server.dir('', (s) => {
-    if (isEngine1(s.settings.version)) {
-      return 'default/websites/old';
-    } else if (isEngine2(s.settings.version)) {
-      return 'default/websites/classic';
-    } else if (isEngine3(s.settings.version)) {
-      return 'default/websites/modern';
-    }
-  })
 
   server.get('/', (s) => {
     if (isEngine1(s.settings.version)) {
@@ -46,6 +36,17 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   // Engine 3 login page requires this URL
   server.get('/#/login', () => {
     return `default/websites/modern-as3.html`;
+  })
+
+  // serving the websites
+  server.dir('', (s) => {
+    if (isEngine1(s.settings.version)) {
+      return 'default/websites/old';
+    } else if (isEngine2(s.settings.version)) {
+      return 'default/websites/classic';
+    } else if (isEngine3(s.settings.version)) {
+      return 'default/websites/modern';
+    }
   })
 
   // Pre CPIP server rewrite client uses these POST endpoints
@@ -76,6 +77,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);
+  });
+  server.getData('play/web_service/environment_data.xml', () => {
+    return getEnvironmentDataXml();
   });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod

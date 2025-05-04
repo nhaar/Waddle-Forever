@@ -3,17 +3,17 @@ import net from 'net';
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
 import { Penguin } from './penguin';
-import { Stamp } from './game/stamps';
+import { Stamp } from './game-logic/stamps';
 import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
-import { getCost, Item, ITEMS, ItemType } from './game/items';
-import { isFlag } from './game/flags';
-import PuffleLaunchGameSet from './game/pufflelaunch';
-import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game/rooms';
-import { PUFFLES } from './game/puffle';
+import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
+import { isFlag } from './game-logic/flags';
+import PuffleLaunchGameSet from './game-logic/pufflelaunch';
+import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
+import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
-import { CPIP_UPDATE } from './data/updates';
-import { findInVersion } from './data/changes';
-import { OLD_CLIENT_ITEMS } from './data/client-items';
+import { CPIP_UPDATE } from './game-data/updates';
+import { findInVersion } from './game-data/changes';
+import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 
 const versionsTimeline = getVersionsTimeline();
 

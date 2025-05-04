@@ -5,8 +5,8 @@ import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 import { getFileServer } from './routes/client-files';
-import { baseFindInVersion } from './data/changes';
-import { specialServer } from './data/specials';
+import { findInVersion } from './game-data/changes';
+import { specialServer } from './game-data/specials';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -200,16 +200,10 @@ export class HttpServer {
         if (info === undefined) {
           next();
         } else {
-          let filePath = '';
-          if (typeof info === 'string') {
-            filePath = info;
-          } else {
-              const foundFilePath = baseFindInVersion(this.settingsManager.settings.version, info, 'file');
-              if (foundFilePath === undefined) {
-                console.log(info);
-                throw new Error('Could not find file, log output is above')
-              }
-              filePath = foundFilePath;
+          const filePath = findInVersion(this.settingsManager.settings.version, info);
+          if (filePath === undefined) {
+            console.log(info);
+            throw new Error('Could not find file, log output is above')
           }
   
           console.log(`Requested: ${route}, sending: ${filePath}`);

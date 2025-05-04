@@ -1,4 +1,5 @@
-const API_PATH = 'http://localhost/settings-api/';
+const URL = (window as any).websiteUrl;
+const API_PATH = `${URL}settings-api/`;
 
 /** Post JSON to path in the settings api */
 export async function post(path: string, body: any) {

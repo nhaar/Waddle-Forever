@@ -1,4 +1,5 @@
 import { ipcRenderer } from 'electron';
+import { HTTP_PORT } from '../../common/constants';
 
 function dispatchEvent(name: string) {
   ipcRenderer.on(name, (e, arg) => {
@@ -22,3 +23,5 @@ events.forEach(dispatchEvent);
   clearCache: () => ipcRenderer.send('clear-cache'),
   reloadCacheless: () => ipcRenderer.send('reload-cache')
 };
+
+(window as any).websiteUrl = `http://localhost:${HTTP_PORT}/`;

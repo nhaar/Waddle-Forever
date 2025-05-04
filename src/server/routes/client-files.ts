@@ -2,151 +2,131 @@ import path from "path";
 import crypto from 'crypto';
 import hash from 'object-hash';
 
-import { PRE_CPIP_STATIC_FILES } from "../data/precpip-static";
+import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from "./versions";
-import { FileCategory, FILES, getMediaFilePath } from "../data/files";
-import { PACKAGES } from "../data/packages";
-import { RoomName, ROOMS } from "../data/rooms";
-import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../data/release-features";
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../data/standalone-changes";
-import { STATIC_SERVERS } from "../data/static-servers";
-import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../data/room-updates";
-import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../data/game-map";
-import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../data/parties";
-import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../data/music";
-import { CPIP_STATIC_FILES } from "../data/cpip-static";
-import { FALLBACKS } from "../data/fallbacks";
-import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../data/catalogues";
-import { STAGE_PLAYS, STAGE_TIMELINE } from "../game/stage-plays";
-import { IGLOO_LISTS } from "../game/igloo-lists";
-import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, MODERN_AS3, PRE_CPIP_REWRITE_DATE } from "../data/updates";
-import { STADIUM_UPDATES } from "../data/stadium-updates";
-import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../data/newspapers";
-import { CPIP_AS3_STATIC_FILES } from "../data/cpip-as3-static";
-import { getNewspaperName } from "../game/news.txt";
-import { PINS } from "../data/pins";
-import { findInVersion, IdentifierMap, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../data/changes";
-import { MIGRATOR_PERIODS } from "../data/migrator";
-import { PRE_CPIP_GAME_UPDATES } from "../data/games";
-import { ITEMS } from "../game/items";
-import { ICONS, PAPER, PHOTOS, SPRITES } from "../data/clothing";
-import { AS3_STATIC_FILES } from "../data/as3-static";
-import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../data/furniture";
+import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
+import { RoomName, ROOMS } from "../game-data/rooms";
+import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../game-data/release-features";
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
+import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
+import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../game-data/game-map";
+import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../game-data/parties";
+import { MUSIC_IDS } from "../game-data/music";
+import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
+import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
+import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
+import { IGLOO_LISTS } from "../game-data/igloo-lists";
+import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, MODERN_AS3, PRE_CPIP_REWRITE_DATE } from "../game-data/updates";
+import { STADIUM_UPDATES } from "../game-data/stadium-updates";
+import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../game-data/newspapers";
+import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
+import { getNewspaperName } from "./news.txt";
+import { PINS } from "../game-data/pins";
+import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { MIGRATOR_PERIODS } from "../game-data/migrator";
+import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
+import { ITEMS } from "../game-logic/items";
+import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
+import { AS3_STATIC_FILES } from "../game-data/as3-static";
+import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
+import { iterateEntries } from "../../common/utils";
 
-/** Information for the update of a route that is dynamic */
-type DynamicRouteUpdate = {
-  /** The date in which this route changed */
-  date: string;
-  /** The path to the file that this route now serves */
-  file: string;
-}
-
-/** Information for the update of a route that is special */
-type SpecialRouteUpdate = {
-  /** The date in which this update happens */
-  date: string;
-  /** Maps a special condition to the file server on that day under that condition */
-  files: Record<string, string>;
-}
-
-type RouteFileInformation = string | Array<DynamicRouteUpdate>;
-
-class FileTimelineMap {
-  private _map: TimelineMap<string, string>;
-
-  constructor() {
-    this._map = new TimelineMap<string, string>();
+class FileTimelineMap extends TimelineMap<string, string> {
+  protected override processIdentifier(identifier: string): string {
+    return sanitizePath(identifier);
   }
 
-
-  addPerm(route: string, date: Version, file: string): void;
-  addPerm(route: string, date: Version, file: number): void;
-
-  
-  addPerm(route: string, date: Version, file: string | number) {
-    this._map.addPerm(sanitizePath(route), date, typeof file === 'string' ? file : getMediaFilePath(file));
+  protected override processInformation(info: string): string {
+    if (isPathAReference(info)) {
+      return getMediaFilePath(info);
+    } else {
+      return info;
+    }
   }
 
-  addTemp(route: string, date: Version, end: Version, file: string): void;
-  addTemp(route: string, date: Version, end: Version, file: number): void;
-
-  addTemp(route: string, date: Version, end: Version, file: string | number) {
-    this._map.addTemp(sanitizePath(route), date, end, typeof file === 'string' ? file : getMediaFilePath(file));
+  addDefault(route: string, file: string): void {
+    this.addPerm(route, BETA_RELEASE, file);
   }
 
-  getRouteMap(): RouteMap {
-    const routeMap = new Map<string, RouteFileInformation>();
-    const idMap = this._map.getIdentifierMap();
-
-    idMap.forEach((versions, route) => {
-      addToRouteMap(routeMap, route, versions.map((v) => ({ date: v.date, file: v.info })))
+  addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
+    iterateEntries(idMap, (id, file) => {
+      this.addPerm(path.join(parentDir, directory, `${id}.swf`), BETA_RELEASE, file);
     });
+  }
+  
+  addRouteMap(routeMap: RouteRefMap, date: Version): void {
+    iterateEntries(routeMap, (route, file) => {
+      this.addPerm(route, date, file);
+    });
+  }
 
-    return routeMap;
+  addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
+
+    const info = end === undefined ? { date, info: fileRef } : { date, end, info: fileRef };
+    if (isLower(date, CPIP_UPDATE)) {
+      this.add(PRECPIP_MAP_PATH, info);
+      // TODO would be best to only include the maps that end up factually being used
+      this.add(MAP_PATH_07, info);
+    } else {
+      this.add('play/v2/content/global/content/map.swf', info);
+    }
+  }
+
+  addTemporaryUpdateTimeline<UpdateInfo, SubUpdateInfo>(
+    timeline: TemporaryUpdateTimeline<UpdateInfo, SubUpdateInfo>,
+    applyUpdate: (map: FileTimelineMap, update: UpdateInfo, start: Version, end: Version) => void,
+    applySubUpdate: (map: FileTimelineMap, update: SubUpdateInfo, start: Version, end: Version | undefined) => void
+  ) {
+    timeline.forEach((tempUpdate) => {
+      applyUpdate(this, tempUpdate, tempUpdate.date, tempUpdate.end);
+      if (tempUpdate.updates !== undefined) {
+        for (let i = 0; i < tempUpdate.updates.length; i++) {
+          const subUpdate = tempUpdate.updates[i];
+          const next = tempUpdate.updates[i + 1];
+          let end = tempUpdate.end;
+          if (next !== undefined && next.date !== undefined) {
+            end = next.date;
+          }
+          applySubUpdate(this, subUpdate, subUpdate.date ?? tempUpdate.date, end);
+        }
+      }
+      if (tempUpdate.permanentChanges !== undefined) {
+        applySubUpdate(this, tempUpdate.permanentChanges, tempUpdate.date, undefined);
+      }
+      if (tempUpdate.consequences !== undefined) {
+        applySubUpdate(this, tempUpdate.consequences, tempUpdate.end, undefined);
+      }
+    })
   }
 }
 
 function addFurniture(map: FileTimelineMap): void {
-  const pushFurniture = (id: string, fileId: number, directory: string) => {
-    const filePath = getMediaFilePath(fileId)
-    map.addPerm(`play/v2/content/global/furniture/${directory}/${id}.swf`, BETA_RELEASE, filePath);
-  }
-
-  Object.entries(FURNITURE_ICONS).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushFurniture(id, fileId, 'icons');
-  });
-
-  Object.entries(FURNITURE_SPRITES).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushFurniture(id, fileId, 'sprites');
-  });
+  const furnitureDir = 'play/v2/content/global/furniture';
+  map.addIdMap(furnitureDir, 'icons', FURNITURE_ICONS);
+  map.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
 }
 
 function addClothing(map: FileTimelineMap): void {
-  const pushClothing = (id: number | string, fileId: number, directory: string) => {
-    const filePath = getMediaFilePath(fileId)
-    map.addPerm(`play/v2/content/global/clothing/${directory}/${id}.swf`, BETA_RELEASE, filePath);
-  }
+  const clothingDir = 'play/v2/content/global/clothing';
+  const preCpipClothingDir = 'artwork';
 
-  const preCpipClothing = (id: number | string, fileId: number, directory: string) => {
-    map.addPerm(`artwork/${directory}/${id}.swf`, BETA_RELEASE, getMediaFilePath(fileId));
-  }
+  map.addIdMap(clothingDir, 'icons', ICONS);
+  map.addIdMap(clothingDir, 'paper', PAPER);
 
-  Object.entries(ICONS).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushClothing(id, fileId, 'icons');
+  const preCpipPhotos: IdRefMap = {};
+  iterateEntries(PHOTOS, (id, file) => {
+    preCpipPhotos[Number(id) - 900] = file;
   });
 
-  Object.entries(PAPER).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushClothing(id, fileId, 'paper');
-  });
+  map.addIdMap(clothingDir, 'photos', PHOTOS);
+  map.addIdMap(preCpipClothingDir, 'photos', preCpipPhotos);
 
-  Object.entries(PHOTOS).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushClothing(id, fileId, 'photos');
-    // in the old engine backgrounds were served with this ID phase
-    preCpipClothing(Number(id) - 900, fileId, 'photos');
-  });
-
-  Object.entries(SPRITES).forEach((pair) => {
-    const [id, fileId] = pair;
-    pushClothing(id, fileId, 'sprites');
-    preCpipClothing(id, fileId, 'items');
-  });
+  map.addIdMap(clothingDir, 'sprites', SPRITES);
+  map.addIdMap(preCpipClothingDir, 'items', SPRITES);
 }
 
 function addMusicFiles(map: FileTimelineMap): void {
-  // pre-cpip there's no reason to believe updates happened
-
-  Object.entries(MUSIC_IDS).forEach((pair) => {
-    const [musicId, fileId] = pair;
-    const fileName = String(musicId) + '.swf';
-    const route = path.join(PRE_CPIP_MUSIC_PATH, fileName);
-    map.addPerm(route, BETA_RELEASE, fileId);
-    map.addPerm(path.join('play/v2/content/global/music', fileName), CPIP_UPDATE, fileId);
-  })
+  ['play/v2/content/global', ''].forEach((parentDir) => map.addIdMap(parentDir, 'music', MUSIC_IDS));
 }
 
 function isNewspaperBeforeCPIP(newspaper: As2Newspaper): boolean {
@@ -162,70 +142,46 @@ export function getMinifiedDate(date: Version): string {
   return date.replaceAll('-', '');
 }
 
-/** Maps a route to all the file information related to it */
-type RouteMap = Map<string, RouteFileInformation>;
 
-/** Given a route map, adds file information to a given route */
-function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
-  const cleanPath = sanitizePath(route);
-  if (map.has(cleanPath)) {
-    throw new Error(`Duplicated path: ${cleanPath}`);
-  }
-  map.set(cleanPath, info);
-}
-
-function addNewspapers(map: RouteMap): void {
-  const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
+function addNewspapers(map: FileTimelineMap): void {
   AS2_NEWSPAPERS.forEach((news, index) => {
-    if (news.fileId !== undefined) {
-      const filePath = getMediaFilePath(news.fileId);
-      const issueNumber = index + preBoilerPapers + 1;
-      if (isNewspaperBeforeCPIP(news)) {
-        addToRouteMap(map, `artwork/news/news${issueNumber}.swf`, filePath);
-        const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
-        addToRouteMap(map, path.join('artwork/news', route2007), filePath);
-      }
-      // for all the 2006 boiler rooms we have archived,
-      // they seem to only show a singular newspaper, presumed
-      // to maybe be the previous newspaper?
+    if (news.fileReference !== undefined) {
+      const issueNumber = index + PRE_BOILER_ROOM_PAPERS.length + 1;
+      // pre-cpip, before rewrite
+      map.addDefault(`artwork/news/news${issueNumber}.swf`, news.fileReference);
+      // pre-cpip, post rewrite
+      const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
+      map.addDefault(path.join('artwork/news', route2007), news.fileReference);
 
-      // if index + 2 is after boiler room is available, then index + 1 was readable after boiler room was available
-      // and thus index was a predecessor to a newspaper available after boiler room
-      if (isGreaterOrEqual(AS2_NEWSPAPERS[index + 2].date, CAVE_OPENING_START) && isLower(news.date, PRE_CPIP_REWRITE_DATE)) {
-        // I am a bit unsure of why the client is handled like this, but the name of the archive and
-        // regular newspaper are the same for some reason? So we have to increment the issue number
-        // this is definitely a mystery however, maybe if more files or footage is found light can be shed
-        // upon this issue
-        addToRouteMap(map, path.join('artwork/archives', `news${issueNumber + 1}.swf`), filePath);
-      }
-      if (isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])) {
-        const date = getMinifiedDate(news.date);
-        addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, filePath);
-      }
+      // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
+      map.addDefault(path.join('artwork/archives', `news${issueNumber + 1}.swf`), news.fileReference);
+
+      // post-cpip
+      const date = getMinifiedDate(news.date);
+      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, news.fileReference);
     }
   })
-
   
-  const configXmlPath = getMediaFilePath(4755);
+  const configXmlPath = getMediaFilePath('tool:news_config.xml');
   AS3_NEWSPAPERS.forEach((news) => {
     const newsPath = `play/v2/content/local/en/news/${getMinifiedDate(news.date)}`;
-    addToRouteMap(map, path.join(newsPath, 'config.xml'), configXmlPath);
-    const newspaperComponenets: Array<[string, number]> = [
+    map.addDefault(path.join(newsPath, 'config.xml'), configXmlPath);
+    const newspaperComponenets: Array<[string, string]> = [
       ['front/header.swf', news.headerFront],
       ['front/featureStory.swf', news.featureStory],
       ['front/supportStory.swf', news.supportStory],
       ['front/upcomingEvents.swf', news.upcomingEvents],
       ['front/newsFlash.swf', news.newsFlash],
       ['front/askAuntArctic.swf', news.askFront],
-      ['front/dividers.swf', news.dividersFront ?? 4767],
-      ['front/navigation.swf', news.navigationFront ?? 4768],
+      ['front/dividers.swf', news.dividersFront ?? 'archives:News268DividersFront.swf'],
+      ['front/navigation.swf', news.navigationFront ?? 'archives:News268NavigationFront.swf'],
       ['back/header.swf', news.headerBack],
       ['back/askAuntArctic.swf', news.askBack],
       ['back/secrets.swf', news.secrets],
-      ['back/submitYourContent.swf', news.submit ?? 4770],
+      ['back/submitYourContent.swf', news.submit ?? 'archives:News268SubmitYourContent.swf'],
       ['back/jokesAndRiddles.swf', news.jokes],
-      ['back/dividers.swf', news.dividersBack ?? 4771],
-      ['back/navigation.swf', news.navigationBack ?? 4772],
+      ['back/dividers.swf', news.dividersBack ?? 'archives:News268DividersBack.swf'],
+      ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf'],
       ['overlays/riddlesAnswers.swf', news.answers],
     ]
     if (news.extraJokes !== undefined) {
@@ -240,42 +196,26 @@ function addNewspapers(map: RouteMap): void {
     
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
-      addToRouteMap(map, path.join(newsPath, 'content', route), getMediaFilePath(file));
+      map.addDefault(path.join(newsPath, 'content', route), getMediaFilePath(file));
     }) 
   })
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  Object.entries(CPIP_STATIC_FILES).forEach((pair) => {
-    const [route, fileId] = pair;
-    map.addPerm(route, CPIP_UPDATE, fileId);
-  });
-  Object.entries(AS3_STATIC_FILES).forEach((pair) => {
-    const [route, fileId] = pair;
-    map.addPerm(route, MODERN_AS3, fileId);
-  });
+  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
+  map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
 }
 
-function addStaticFiles(map: RouteMap): void {
-  const addStatic = (stat: Record<string, number>) => {
-    Object.entries(stat).forEach((pair) => {
-      const [route, fileId] = pair;
-      const filePath = getMediaFilePath(fileId);
-      addToRouteMap(map, route, filePath);
-    })
+function addStaticFiles(map: FileTimelineMap): void {
+  const addStatic = (stat: Record<string, string>) => {
+    iterateEntries(stat, (route, fileRef) => {
+      map.addDefault(route, fileRef);
+    });
   }
 
   addStatic(PRE_CPIP_STATIC_FILES);
   addStatic(CPIP_AS3_STATIC_FILES);
 }
-
-function addFallbacks(map: FileTimelineMap): void {
-  FALLBACKS.forEach((pair) => {
-    const [route, fileId] = pair;
-    map.addPerm(route, BETA_RELEASE, fileId);
-  })
-}
-
 
 /** Maps for each route its file timeline */
 // type TimelineMap = Map<string, FileTimeline>;
@@ -284,7 +224,7 @@ function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
 
-function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: number) {
+function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: string) {
   if (isLower(date, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.addPerm(path.join('artwork/rooms', fileName), date, file);
@@ -297,7 +237,7 @@ const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 const TICKET_ICON_PATH = 'tickets.swf';
 const TICKET_INFO_PATH = 'ticket_info.swf';
 
-function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: number) {
+function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
   if (isLower(start, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.addTemp(path.join('artwork/rooms', fileName), start, end, file);
@@ -314,29 +254,29 @@ function addRoomInfo(map: FileTimelineMap): void {
     }
   }
 
-  const addRoomChange = (room: RoomName, date: string, fileId: number) => {
-    addRoomRoute(map, date, room, fileId);
+  const addRoomChange = (room: RoomName, date: string, fileRef: string) => {
+    addRoomRoute(map, date, room, fileRef);
   }
 
   ROOM_OPENINGS.forEach((opening) => {
-    if (opening.fileId !== null) {
-      addRoomChange(opening.room, opening.date, opening.fileId);
+    if (opening.fileRef !== null) {
+      addRoomChange(opening.room, opening.date, opening.fileRef);
     }
     if (opening.otherRooms !== undefined) {
       Object.entries(opening.otherRooms).forEach((pair) => {
-        const [room, fileId] = pair;
-        addRoomChange(room as RoomName, opening.date, fileId);
+        const [room, fileRef] = pair;
+        addRoomChange(room as RoomName, opening.date, fileRef);
       });
     }
     if (opening.map !== undefined) {
-      addMapUpdate(map, opening.date, opening.map);
+      map.addGameMapUpdate(opening.map, opening.date);
     }
   })
 
   Object.entries(ROOM_UPDATES).forEach((pair) => {
     const [room, updates] = pair;
     updates.forEach((update) => {
-      addRoomChange(room as RoomName, update.date, update.fileId);
+      addRoomChange(room as RoomName, update.date, update.fileRef);
     })
   })
 
@@ -344,7 +284,7 @@ function addRoomInfo(map: FileTimelineMap): void {
     const [room, updates] = pair;
     const roomName = room as RoomName;
     updates.forEach((update) => {
-      addTempRoomRoute(map, update.date, update.end, roomName, update.fileId);
+      addTempRoomRoute(map, update.date, update.end, roomName, update.fileRef);
     })
   })
 }
@@ -363,7 +303,7 @@ function addParties(map: FileTimelineMap): void {
   }
 
   const addPartyChanges = (changes: PartyChanges, start: Version, end: Version | undefined = undefined) => {
-    const pushCrumbChange = (baseRoute: string, route: string, info: number | CrumbIndicator) => {
+    const pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator) => {
       const fileId = typeof info === 'number' ? info : info[0];
       const fullRoute = path.join(baseRoute, route);
       if (end === undefined) {
@@ -403,67 +343,54 @@ function addParties(map: FileTimelineMap): void {
     }
   }
   
-  PARTIES.forEach((party) => {
-    const startDate = party.startDate;
-    const endDate = party.endDate;
+  map.addTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
     addPartyChanges({
       roomChanges: party.roomChanges,
       localChanges: party.localChanges,
       globalChanges: party.globalChanges,
       generalChanges: party.generalChanges
-    }, startDate, endDate);
+    }, start, end);
     if (party.construction !== undefined) {
       const constructionStart = party.construction.date;
-      addRoomChanges(party.construction.changes, constructionStart, startDate);
-
+      addRoomChanges(party.construction.changes, constructionStart, start);
+  
       if (party.construction.updates !== undefined) {
         party.construction.updates.forEach((update) => {
-          addRoomChanges(update.changes, update.date, startDate);
+          addRoomChanges(update.changes, update.date, start);
         })
       }
     }
 
     if (party.scavengerHunt2010 !== undefined) {
       // enabling the scavenger hunt dependency file
-      map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2384);
+      map.addTemp('play/v2/client/dependencies.json', start, end, 'tool:dependencies_scavenger_hunt.json');
 
       // serving the icon that will be loaded by the dependency
       const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
-      map.addTemp(path.join('play/v2/content/global', huntIconPath), startDate, endDate, party.scavengerHunt2010.iconFileId);
+      map.addTemp(path.join('play/v2/content/global', huntIconPath), start, end, party.scavengerHunt2010.iconFileId);
     }
 
     // all CPIP fair parties have the same dependency for loading the fair icon
     // this is possible to change if we can recreate the exact method it used
     if (party.fairCpip !== undefined) {
-      map.addTemp('play/v2/client/fair.swf', startDate, endDate, 2513);
-      map.addTemp('play/v2/client/dependencies.json', startDate, endDate, 2514);
+      map.addTemp('play/v2/client/fair.swf', start, end, 'tool:fair_icon_adder.swf');
+      map.addTemp('play/v2/client/dependencies.json', start, end, 'tool:fair_dependencies.json');
 
-      map.addTemp(path.join('play/v2/content/global', TICKET_ICON_PATH), startDate, endDate, party.fairCpip.iconFileId);
-      map.addTemp(path.join('play/v2/content/global', TICKET_INFO_PATH), startDate, endDate, 2506);
-    }
-
-    if (party.updates !== undefined) {
-      party.updates.forEach((update) => {
-        addPartyChanges({
-          roomChanges: update.roomChanges,
-          localChanges: update.localChanges,
-          globalChanges: update.globalChanges,
-          generalChanges: update.generalChanges
-        }, update.date, endDate);
-      })
+      map.addTemp(path.join('play/v2/content/global', TICKET_ICON_PATH), start, end, party.fairCpip.iconFileId);
+      map.addTemp(path.join('play/v2/content/global', TICKET_INFO_PATH), start, end, 'archives:Tickets-TheFair2009.swf');
     }
 
     if (party.scavengerHunt2007 !== undefined) {
-      map.addTemp('artwork/eggs/1.swf', startDate, endDate, party.scavengerHunt2007);
+      map.addTemp('artwork/eggs/1.swf', start, end, party.scavengerHunt2007);
     }
-
-    if (party.permanentChanges !== undefined) {
-      addPartyChanges(party.permanentChanges, party.startDate);
-    }
-    if (party.consequences !== undefined) {
-      addPartyChanges(party.consequences, party.endDate);
-    }
-  })
+  }, (map, update, start, end) => {
+    addPartyChanges({
+      roomChanges: update.roomChanges,
+      localChanges: update.localChanges,
+      globalChanges: update.globalChanges,
+      generalChanges: update.generalChanges
+    }, start, end);
+  });
 }
 
 /** Converts a timeline of events into some */
@@ -505,7 +432,7 @@ export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     PARTIES.forEach((party) => {
       // crumbs dont exist before this date
-      if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)){
+      if (isGreaterOrEqual(party.date, CPIP_UPDATE)){
         const localPaths: Record<string, string> = {};
         if (party.localChanges !== undefined) {
           // only 'en' support
@@ -524,8 +451,8 @@ export function getLocalCrumbsOutput() {
     
         if (Object.keys(localPaths).length > 0) {
           timeline.push({
-            date: party.startDate,
-            end: party.endDate,
+            date: party.date,
+            end: party.end,
             info: { paths: localPaths }
           });
         }
@@ -593,7 +520,7 @@ export function getRoomFrameTimeline() {
   
   PARTIES.forEach((party) => {
     if (party.roomFrames !== undefined) {
-      addRoomFrames(party.roomFrames, party.startDate, party.endDate);
+      addRoomFrames(party.roomFrames, party.date, party.end);
     }
   });
 
@@ -638,7 +565,7 @@ export function getMusicTimeline(includeParties: boolean = true) {
       if (party.music !== undefined) {
         Object.entries(party.music).forEach(pair => {
           const [room, music] = pair;
-          timeline.addTemp(room as RoomName, party.startDate, party.endDate, music);
+          timeline.addTemp(room as RoomName, party.date, party.end, music);
         })
       }
     })
@@ -656,8 +583,8 @@ export function getMigratorTimeline() {
   PARTIES.forEach((party) => {
     if (party.activeMigrator === true) {
       timeline.add({
-        date: party.startDate,
-        end: party.endDate,
+        date: party.date,
+        end: party.end,
         info: true
       });
     }
@@ -739,7 +666,7 @@ export function getGlobalCrumbsOutput() {
       // so we don't have excess crumb files
       // NOTE that this design can easily lead to new properties being added not being handled
       let crumbChanged = false;
-      if (isGreaterOrEqual(party.startDate, CPIP_UPDATE)) {
+      if (isGreaterOrEqual(party.date, CPIP_UPDATE)) {
         // change is detected if any of these is true
         crumbChanged = [
           party.music !== undefined,
@@ -752,8 +679,8 @@ export function getGlobalCrumbsOutput() {
   
       if (crumbChanged) {
         timeline.push({
-          date: party.startDate,
-          end: party.endDate,
+          date: party.date,
+          end: party.end,
           info: {
             music: party.music,
             paths: globalPaths,
@@ -849,9 +776,9 @@ function addStadiumUpdates(map: FileTimelineMap): void {
   if (isGreaterOrEqual(date, CPIP_UPDATE) && isLower(date, EPF_RELEASE)) {
     const agent = 'play/v2/content/global/rooms/agent.swf';
     if (update.type === 'rink') {
-      map.addPerm(agent, date, 2651);
+      map.addPerm(agent, date, 'archives:RoomsAgent.swf');
     } else if (update.type === 'stadium') {
-      map.addPerm(agent, date, 4935);
+      map.addPerm(agent, date, 'archives:RoomsAgentFootball.swf');
     }
   }
   if (update.mapFileId !== undefined) {
@@ -874,36 +801,26 @@ function addStandaloneChanges(map: FileTimelineMap): void {
   Object.entries(STANDALONE_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
     updates.forEach((update) => {
-      map.addPerm(route, update.date, update.fileId);
+      map.addPerm(route, update.date, update.fileRef);
     })
   });
 
   Object.entries(STANDALONE_TEMPORARY_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
     updates.forEach((update) => {
-      map.addTemp(route, update.startDate, update.endDate, update.fileId);
+      map.addTemp(route, update.startDate, update.endDate, update.fileRef);
       if (update.updates !== undefined) {
         update.updates.forEach((newUpdate) => {
-          map.addTemp(route, newUpdate.date, update.endDate, newUpdate.fileId);
+          map.addTemp(route, newUpdate.date, update.endDate, newUpdate.fileRef);
         })
       }
     })
   });
 }
 
-function addMapUpdate(map: FileTimelineMap, date: Version, fileId: number): void {
-  if (isLower(date, CPIP_UPDATE)) {
-    map.addPerm(PRECPIP_MAP_PATH, date, fileId);
-    // TODO would be best to only include the maps that end up factually being used
-    map.addPerm(MAP_PATH_07, date, fileId);
-  } else {
-    map.addPerm('play/v2/content/global/content/map.swf', date, fileId);
-  }
-}
-
 function addMapUpdates(map: FileTimelineMap): void {
   MAP_UPDATES.forEach((update) => {
-    addMapUpdate(map, update.date, update.fileId);
+    map.addGameMapUpdate(update.fileRef, update.date);
   });
 }
 
@@ -918,46 +835,37 @@ export function getFileDateSignature(date: Version): string {
 }
 
 function addCatalogues(map: FileTimelineMap): void {
-  const addCatalogue = (route: string, catalogs: Record<string, number>) => {
-    Object.entries(catalogs).forEach((pair) => {
-      const [date, fileId] = pair;
-      
-      map.addPerm(route, date, fileId);
-    })
-  }
-
-  Object.entries(PRE_CPIP_CATALOGS).forEach((pair) => {
-    const [date, file] = pair;
+  iterateEntries(PRE_CPIP_CATALOGS, (date, file) => {
     const signature = getFileDateSignature(date);
     map.addPerm(`artwork/catalogue/clothing_${signature}.swf`, date, file);
     map.addPerm(`artwork/catalogue/clothing${signature}.swf`, date, file);
-  })
+  });
 
-  addCatalogue('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
-  addCatalogue('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
-  addCatalogue('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
+  map.addDateMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
+  map.addDateMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
+  map.addDateMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 }
 
 function addPins(map: FileTimelineMap): void {
   PINS.forEach((pin) => {
-    if ('room' in pin && pin.fileId !== undefined) {
-      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.fileId);
+    if ('room' in pin && pin.fileRef !== undefined) {
+      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.fileRef);
     }
   });
 }
 
 function addMusicLists(map: FileTimelineMap): void {
   const route = 'play/v2/content/global/content/igloo_music.swf';
-  map.addPerm(route, BETA_RELEASE, 2635);
+  map.addPerm(route, BETA_RELEASE, 'tool:dynamic_igloo_music.swf');
   for (let i = 0; i < IGLOO_LISTS.length; i++) {
     // using archived igloo lists as temporary updates on top of a single permanent one
     const cur = IGLOO_LISTS[i];
-    if (typeof cur.fileId === 'number') {
+    if (typeof cur.fileRef === 'string') {
       const start = cur.date;
       if (i === IGLOO_LISTS.length) {
-        map.addPerm(route, start, cur.fileId);
+        map.addPerm(route, start, cur.fileRef);
       } else {
-        map.addTemp(route, start, IGLOO_LISTS[i + 1].date, cur.fileId);
+        map.addTemp(route, start, IGLOO_LISTS[i + 1].date, cur.fileRef);
       }
     }
   }
@@ -968,11 +876,11 @@ function addStagePlays(map: FileTimelineMap): void {
     const date = debut.date;
 
     // Stage itself
-    addRoomRoute(map, date, 'stage', debut.stageFileId);
+    addRoomRoute(map, date, 'stage', debut.stageFileRef);
 
-    if (debut.plazaFileId !== null) {
+    if (debut.plazaFileRef !== null) {
       // Plaza
-      addRoomRoute(map, date, 'plaza', debut.plazaFileId);
+      addRoomRoute(map, date, 'plaza', debut.plazaFileRef);
     }
 
     if (debut.party1 !== undefined) {
@@ -981,9 +889,9 @@ function addStagePlays(map: FileTimelineMap): void {
     }
 
     // simply hardcoding every catalogue to be from 0712 for now
-    map.addPerm('artwork/catalogue/costume_0712.swf', date, debut.costumeTrunkFileId);
+    map.addPerm('artwork/catalogue/costume_0712.swf', date, debut.costumeTrunkFileRef);
     // TODO only add costrume trunks to each specific engine
-    map.addPerm('play/v2/content/local/en/catalogues/costume.swf', date, debut.costumeTrunkFileId);
+    map.addPerm('play/v2/content/local/en/catalogues/costume.swf', date, debut.costumeTrunkFileRef);
   })
 }
 
@@ -992,12 +900,12 @@ function addGames(map: FileTimelineMap): void {
     const [release, ...other] = updates;
     const fileRoute = path.join('games', release.directory);
 
-    map.addPerm(fileRoute, BETA_RELEASE, release.fileId);
+    map.addPerm(fileRoute, BETA_RELEASE, release.fileRef);
   })
 }
 
 /** Get the object which knows all the file information needed to find the file for a given route */
-export function getFileServer(): Map<string, RouteFileInformation> {
+export function getFileServer() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
@@ -1007,7 +915,6 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addMapUpdates,
     addParties,
     addMusicFiles,
-    addFallbacks,
     addCatalogues,
     addStagePlays,
     addMusicLists,
@@ -1017,19 +924,14 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addClothing,
     addTimeSensitiveStaticFiles,
     addFurniture,
-    addGames
-  ];
-
-  timelineProcessors.forEach((fn) => fn(timelines));
-  
-  const fileServer = timelines.getRouteMap();
-
-  const staticProcessors = [
+    addGames,
     addStaticFiles,
     addNewspapers
   ];
 
-  staticProcessors.forEach((fn) => fn(fileServer));
+  timelineProcessors.forEach((fn) => fn(timelines));
+  
+  const fileServer = timelines.getIdentifierMap();
 
   return fileServer;
 }

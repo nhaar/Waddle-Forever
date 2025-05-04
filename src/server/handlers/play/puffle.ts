@@ -1,9 +1,9 @@
 import { PlayerPuffle } from "../../database";
 import { Handler } from "..";
-import { PUFFLES } from "../../../server/game/puffle";
+import { PUFFLES } from "../../game-logic/puffle";
 import { Client } from "../../../server/client";
 import { choose, randomInt } from "../../../common/utils";
-import { PUFFLE_ITEMS } from "../../../server/game/puffle-item";
+import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 
 const handler = new Handler()
 

@@ -2,6 +2,7 @@ import path from 'path';
 import { BrowserWindow, shell } from "electron";
 import { Store } from "./store";
 import { checkUpdates } from "./update";
+import { HTTP_PORT } from '../common/constants';
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   const fullScreen = !store.private.get("fullScreen");
@@ -12,7 +13,7 @@ export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
 };
 
 export const loadMain = (window: BrowserWindow) => {
-  window.loadURL('http://localhost')
+  window.loadURL(`http://localhost:${HTTP_PORT}`)
 }
 
 interface FiveIconByPlatforms {

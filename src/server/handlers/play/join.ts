@@ -1,5 +1,5 @@
 import { Handler } from '..';
-import { Room } from '../../game/rooms';
+import { Room } from '../../game-logic/rooms';
 import { getClientPuffleIds } from './puffle';
 
 const handler = new Handler();

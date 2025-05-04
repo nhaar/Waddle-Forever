@@ -1,6 +1,6 @@
 import { Client } from '../../client';
 import { Handler } from '..';
-import { Room } from '../../game/rooms';
+import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
 import { commandsHandler } from '../commands';
 

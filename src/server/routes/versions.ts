@@ -1,4 +1,4 @@
-import { CPIP_UPDATE } from "../data/updates";
+import { CPIP_UPDATE } from "../game-data/updates";
 
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;

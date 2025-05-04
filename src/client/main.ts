@@ -13,7 +13,7 @@ import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
-import { downloadMediaFolder, startMedia } from "./media";
+import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '../common/utils';
 import { VERSION } from '../common/version';
 
@@ -60,12 +60,24 @@ app.on('ready', async () => {
     // an administrator
     mediaSuccess = await startMedia();
   } catch (error) {
-    await dialog.showMessageBox(setupWindow, {
-      buttons: ['Ok'],
-      title: 'Permission Error',
-      message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
-    });
-    app.quit();
+    if (error instanceof AdminError) {
+      await dialog.showMessageBox(setupWindow, {
+        buttons: ['Ok'],
+        title: 'Permission Error',
+        message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
+      });
+      app.quit();
+
+    } else {
+      const message = error instanceof Error ? `${error.name}:${error.message}\n${error.stack}` : 'Unknown';
+      await dialog.showMessageBox(setupWindow, {
+        buttons: ['Ok'],
+        title: 'Download Error',
+        message: `It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.\n\nShow this to the admins:\n${message}`
+      })
+  
+      app.quit();
+    }
   }
   
   if (settingsManager.settings.answered_packages !== VERSION) {
@@ -84,16 +96,6 @@ app.on('ready', async () => {
       })
     }
     settingsManager.updateSettings({ answered_packages: VERSION });
-  }
-
-  if (!mediaSuccess) {
-    await dialog.showMessageBox(setupWindow, {
-      buttons: ['Ok'],
-      title: 'Download Error',
-      message: 'It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.'
-    })
-
-    app.quit();
   }
   try {
     await startServer(settingsManager);

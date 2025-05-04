@@ -15,7 +15,7 @@ import { logError, MEDIA_DIRECTORY, postJSON } from '../common/utils';
  * @param onSuccess Function for running if it succeeds
  * @param onFail Function for running if it fails
  */
-export const downloadMediaFolder = async (mediaName: string, onSuccess: () => void, onFail: () => void) => {
+export const downloadMediaFolder = async (mediaName: string, onSuccess: () => void, onFail: (err: unknown) => void) => {
   // in dev, the medias are always installed
   // can only test this in production builds
   if (electronIsDev) {
@@ -28,20 +28,21 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
   const zipDir = path.join(MEDIA_DIRECTORY, zipName);
   // using the "media file name convention"
   // the media/ is to access the proper API route
-  const success = await download(`media/${mediaName}-${VERSION}.zip`, zipDir);
-  if (success) {
+  try {
+    await download(`media/${mediaName}-${VERSION}.zip`, zipDir);
     const folderDestination = path.join(MEDIA_DIRECTORY, mediaName);
     try {
       await unzip(zipDir, folderDestination);
     } catch (error) {
       logError('Error unzipping: ', error);
-      onFail();
+      onFail(error);
       return;
     }
     fs.writeFileSync(path.join(folderDestination, '.version'), VERSION);
     onSuccess();
-  } else {
-    onFail();
+    
+  } catch (error) {
+    onFail(error);    
   }
 }
 
@@ -85,24 +86,30 @@ const checkMedia = async (mediaName: string): Promise<boolean> => {
   let success = true;
   if (!isUpToDate) {
     fs.rmdirSync(TARGET_DIRECTORY, { recursive: true })
-    await downloadMediaFolder(mediaName, () => {}, () => { success = false });
+    await downloadMediaFolder(mediaName, () => {}, (err) => { throw err; });
   }
 
   return success;
 }
 
+export class AdminError extends Error {};
+
 /**
  * Initializes the media folders, downloading when needed to update things
  * @returns Whether the checks and downloads were successful
  */
-export const startMedia = async (): Promise<boolean> => {
+export const startMedia = async (): Promise<void> => {
   // in dev, there's no reason to mess with the media folder as they are all part of the github repo
   if (electronIsDev) {
-    return true;
+    return;
   }
 
-  if (!fs.existsSync(MEDIA_DIRECTORY)) {
-    fs.mkdirSync(MEDIA_DIRECTORY);
+  try {
+    if (!fs.existsSync(MEDIA_DIRECTORY)) {
+      fs.mkdirSync(MEDIA_DIRECTORY);
+    }
+  } catch (error) {
+    throw new AdminError('Could not create media directory');
   }
 
   // check media of name "string" if the "boolean" is true
@@ -110,16 +117,11 @@ export const startMedia = async (): Promise<boolean> => {
     ['default', true], // mandatory check
     ['clothing', settingsManager.settings.clothing]
   ];
-  
-  // built so it aborts the moment something goes wrong
+
   for (const mediaCondition of mediaConditions) {
     const [name, mustCheck] = mediaCondition;
     if (mustCheck) {
-      if ((await checkMedia(name)) === false) {
-        return false;
-      }
+      await checkMedia(name);
     }
   }
-
-  return true;
 }

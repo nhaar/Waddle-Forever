@@ -8,7 +8,6 @@ const fpsInput = document.querySelector<HTMLInputElement>('.js-fps-input')!;
 const thinIceIgtInput = document.querySelector<HTMLInputElement>('.js-thin-ice-igt-input')!;
 const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input')!;
 const myPuffleInput = document.querySelector<HTMLInputElement>('.js-my-puffle-input')!;
-const idleInput = document.querySelector<HTMLInputElement>('.js-idle-input')!;
 const jpaInput = document.querySelector<HTMLInputElement>('.js-jpa-level-input')!;
 const danceInput = document.querySelector<HTMLInputElement>('.js-dance-arrow-input')!;
 const memberInput = document.querySelector<HTMLInputElement>('.js-member-input')!;
@@ -25,7 +24,6 @@ getSettings().then((settings) => {
   thinIceIgtInput.checked = settings['thin_ice_igt'];
   clothingInput.checked = settings['clothing'];
   myPuffleInput.checked = settings['modern_my_puffle'];
-  idleInput.checked = settings['remove_idle'];
   jpaInput.checked = settings['jpa_level_selector'];
   danceInput.checked = settings['swap_dance_arrow'];
   memberInput.checked = settings['always_member'];
@@ -69,13 +67,6 @@ myPuffleInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
     update({ modern_my_puffle: e.target.checked });
     api.clearCache();
-  }
-})
-
-idleInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ remove_idle: e.target.checked });
-    api.reloadCacheless();
   }
 })
 

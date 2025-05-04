@@ -1,4 +1,4 @@
-import { ITEMS } from "../../../server/game/items";
+import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
 
 const handler = new Handler();

@@ -1,8 +1,7 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-
-const IS_DEV = process.env.NODE_ENV === 'dev';
+import { IS_DEV } from './constants';
 
 /**
  * This makes the user data be stored in the game folder itself.

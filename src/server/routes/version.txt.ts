@@ -1,5 +1,5 @@
-import { findInVersion, VersionsTimeline } from "../data/changes";
-import { BETA_RELEASE, CHAT_339, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE } from "../data/updates";
+import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { BETA_RELEASE, CHAT_339, EGG_HUNT_2006_START, FIRST_STAGE_PLAY, PRE_CPIP_REWRITE_DATE } from "../game-data/updates";
 
 /** Map date and the version number it started using */
 const VERSIONS: Record<string, number> = {
@@ -13,13 +13,7 @@ const VERSIONS: Record<string, number> = {
 
 export function getVersionsTimeline() {
   const versionTimeline = new VersionsTimeline<number>();
-  Object.entries(VERSIONS).forEach((pair) => {
-    const [date, version] = pair;
-    versionTimeline.add({
-      date,
-      info: version
-    });
-  });
+  versionTimeline.addDateMap(VERSIONS);
 
   return versionTimeline.getVersion();
 }
