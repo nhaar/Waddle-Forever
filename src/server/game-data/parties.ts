@@ -2452,7 +2452,26 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'lodge': 'archives:Rooms0508Lodge.swf',
       'attic': 'archives:MedievalParty2011Attic.swf',
       'mtn': 'archives:MedievalParty2011Mtn.swf',
-      'rink': 'archives:Rooms0508Rink.swf'
+      'rink': 'archives:Rooms0508Rink.swf',
+
+      // seemingly from 2009, unknown if accurate
+      party1: 'archives:Rooms0508Party1.swf',
+      party2: 'archives:Rooms0508Party2.swf',
+      party3: 'archives:Rooms0508Party3.swf',
+      party4: 'archives:Rooms0508Party4.swf',
+      party5: 'archives:Rooms0508Party5.swf',
+      party6: 'archives:Rooms0508Party6.swf',
+      party7: 'archives:Rooms0508Party7.swf',
+      party8: 'archives:Rooms0508Party8.swf',
+      party9: 'archives:Rooms0508Party9.swf',
+      party10: 'archives:Rooms0508Party10.swf',
+      party11: 'archives:Rooms0508Party11.swf',
+      party12: 'archives:Rooms0508Party12.swf',
+      party13: 'archives:Rooms0508Party13.swf',
+
+      // from 2011, missing party 16 which is visibly different from 2011
+      party14: 'archives:MedievalParty2011Party14.swf',
+      party15: 'archives:MedievalParty2011Party15.swf'
     },
     music: {
       'beach': 233,
