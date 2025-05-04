@@ -408,6 +408,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'puffle_roundup_orange.swf',
       comment: 'Made by nhaar. Recreation of the Puffle Roundup post Orange puffle release, using the Brown puffle one and replacing Brown puffle with its respective Puffle as seen from the white puffle SWF'
+    },
+    {
+      file: 'agent_2008_nov.swf',
+      comment: 'Made by VamprLover. A version of the Post-CPIP HQ without the closet and with the soccer pitch.'
     }
   ],
   [MOD]: [

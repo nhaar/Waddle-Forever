@@ -557,6 +557,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'recreation:agent_2008_apr_cpip.swf',
       date: CPIP_UPDATE
     },
+    // first time stadium was added, seemingly
+    {
+      fileRef: 'recreation:agent_2008_nov.swf',
+      date: '2008-11-18'
+    },
     {
       // mancala was added at some random point I dont know
       fileRef: 'archives:ArtworkRoomsAgent10.swf',
