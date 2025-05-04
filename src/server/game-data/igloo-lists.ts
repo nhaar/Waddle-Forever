@@ -40,7 +40,7 @@ export const IGLOO_LISTS: [FullList, ...Array<FullList | ListUpdate>] = [
       [{ display: 'Medieval Town', id: 233, new: true }, { display: 'Cool Surf', id: 214 }],
       [{ display: 'Pizza Parlor', id: 20 }, { display: 'Coffee Shop', id: 1 }],
       [{ display: 'Superhero', id: 32 }, { display: 'Dance Mix 1', id: 2 }],
-      [{ display: 'Fall Fair', id: 215 }, { display: 'Dance Mix 2', id: 5 }],
+      [{ display: 'Fall Fair', id: 221 }, { display: 'Dance Mix 2', id: 5 }],
       [{ display: 'Folk Guitar', id: 209 }, { display: 'Water Party', id: 217 }]
     ]
   },
