@@ -1355,7 +1355,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       dance: 'archives:WinterFiesta2009Dance.swf',
       pizza: 'archives:WinterFiesta2009Pizza.swf',
       plaza: 'archives:WinterFiesta2009Plaza.swf',
-      lodge: 'archives:WinterFiesta2009SkiLodge.swf',
+      attic: 'archives:WinterFiesta2009SkiLodge.swf',
       village: 'archives:WinterFiesta2009Village.swf',
       forts: 'archives:WinterFiesta2009Forts.swf',
       town: 'archives:WinterFiesta2009Town.swf'
