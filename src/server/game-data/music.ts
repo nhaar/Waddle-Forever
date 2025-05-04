@@ -31,6 +31,7 @@ export const MUSIC_IDS: IdRefMap = {
   42: 'archives:Music42.swf',
   43: 'archives:Music43.swf',
   100: 'archives:Music100.swf',
+  101: 'archives:Music101.swf',
   102: 'slegacy:media/play/v2/content/global/music/102.swf',
   103: 'slegacy:media/play/v2/content/global/music/103.swf',
   105: 'slegacy:media/play/v2/content/global/music/105.swf',
