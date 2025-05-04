@@ -11,7 +11,7 @@ import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../game-data/sta
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../game-data/game-map";
 import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../game-data/parties";
-import { MUSIC_IDS, PRE_CPIP_MUSIC_PATH } from "../game-data/music";
+import { MUSIC_IDS } from "../game-data/music";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
@@ -31,8 +31,6 @@ import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { iterateEntries } from "../../common/utils";
 
-type RouteFileInformation = string | Array<PermanentChange<string>>;
-
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processIdentifier(identifier: string): string {
     return sanitizePath(identifier);
@@ -44,6 +42,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
     } else {
       return info;
     }
+  }
+
+  addDefault(route: string, file: string): void {
+    this.addPerm(route, BETA_RELEASE, file);
   }
 
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
@@ -140,28 +142,16 @@ export function getMinifiedDate(date: Version): string {
   return date.replaceAll('-', '');
 }
 
-/** Maps a route to all the file information related to it */
-type RouteMap = Map<string, RouteFileInformation>;
 
-/** Given a route map, adds file information to a given route */
-function addToRouteMap(map: RouteMap, route: string, info: RouteFileInformation): void {
-  const cleanPath = sanitizePath(route);
-  if (map.has(cleanPath)) {
-    throw new Error(`Duplicated path: ${cleanPath}`);
-  }
-  map.set(cleanPath, info);
-}
-
-function addNewspapers(map: RouteMap): void {
+function addNewspapers(map: FileTimelineMap): void {
   const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
   AS2_NEWSPAPERS.forEach((news, index) => {
     if (news.fileReference !== undefined) {
-      const filePath = getMediaFilePath(news.fileReference);
       const issueNumber = index + preBoilerPapers + 1;
       if (isNewspaperBeforeCPIP(news)) {
-        addToRouteMap(map, `artwork/news/news${issueNumber}.swf`, filePath);
+        map.addDefault(`artwork/news/news${issueNumber}.swf`, news.fileReference);
         const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
-        addToRouteMap(map, path.join('artwork/news', route2007), filePath);
+        map.addDefault(path.join('artwork/news', route2007), news.fileReference);
       }
       // for all the 2006 boiler rooms we have archived,
       // they seem to only show a singular newspaper, presumed
@@ -174,11 +164,11 @@ function addNewspapers(map: RouteMap): void {
         // regular newspaper are the same for some reason? So we have to increment the issue number
         // this is definitely a mystery however, maybe if more files or footage is found light can be shed
         // upon this issue
-        addToRouteMap(map, path.join('artwork/archives', `news${issueNumber + 1}.swf`), filePath);
+        map.addDefault(path.join('artwork/archives', `news${issueNumber + 1}.swf`), news.fileReference);
       }
       if (isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])) {
         const date = getMinifiedDate(news.date);
-        addToRouteMap(map, `play/v2/content/local/en/news/${date}/${date}.swf`, filePath);
+        map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, news.fileReference);
       }
     }
   })
@@ -187,7 +177,7 @@ function addNewspapers(map: RouteMap): void {
   const configXmlPath = getMediaFilePath('tool:news_config.xml');
   AS3_NEWSPAPERS.forEach((news) => {
     const newsPath = `play/v2/content/local/en/news/${getMinifiedDate(news.date)}`;
-    addToRouteMap(map, path.join(newsPath, 'config.xml'), configXmlPath);
+    map.addDefault(path.join(newsPath, 'config.xml'), configXmlPath);
     const newspaperComponenets: Array<[string, string]> = [
       ['front/header.swf', news.headerFront],
       ['front/featureStory.swf', news.featureStory],
@@ -218,7 +208,7 @@ function addNewspapers(map: RouteMap): void {
     
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
-      addToRouteMap(map, path.join(newsPath, 'content', route), getMediaFilePath(file));
+      map.addDefault(path.join(newsPath, 'content', route), getMediaFilePath(file));
     }) 
   })
 }
@@ -228,10 +218,10 @@ function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
   map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
 }
 
-function addStaticFiles(map: RouteMap): void {
+function addStaticFiles(map: FileTimelineMap): void {
   const addStatic = (stat: Record<string, string>) => {
     iterateEntries(stat, (route, fileRef) => {
-      addToRouteMap(map, route, getMediaFilePath(fileRef));
+      map.addDefault(route, fileRef);
     });
   }
 
@@ -927,7 +917,7 @@ function addGames(map: FileTimelineMap): void {
 }
 
 /** Get the object which knows all the file information needed to find the file for a given route */
-export function getFileServer(): Map<string, RouteFileInformation> {
+export function getFileServer() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
@@ -946,19 +936,14 @@ export function getFileServer(): Map<string, RouteFileInformation> {
     addClothing,
     addTimeSensitiveStaticFiles,
     addFurniture,
-    addGames
+    addGames,
+    addStaticFiles,
+    addNewspapers
   ];
 
   timelineProcessors.forEach((fn) => fn(timelines));
   
   const fileServer = timelines.getIdentifierMap();
-
-  const staticProcessors = [
-    addStaticFiles,
-    addNewspapers
-  ];
-
-  staticProcessors.forEach((fn) => fn(fileServer));
 
   return fileServer;
 }

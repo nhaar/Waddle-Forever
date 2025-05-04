@@ -200,16 +200,10 @@ export class HttpServer {
         if (info === undefined) {
           next();
         } else {
-          let filePath = '';
-          if (typeof info === 'string') {
-            filePath = info;
-          } else {
-              const foundFilePath = findInVersion(this.settingsManager.settings.version, info);
-              if (foundFilePath === undefined) {
-                console.log(info);
-                throw new Error('Could not find file, log output is above')
-              }
-              filePath = foundFilePath;
+          const filePath = findInVersion(this.settingsManager.settings.version, info);
+          if (filePath === undefined) {
+            console.log(info);
+            throw new Error('Could not find file, log output is above')
           }
   
           console.log(`Requested: ${route}, sending: ${filePath}`);
