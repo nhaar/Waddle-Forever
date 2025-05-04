@@ -612,7 +612,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   mine: [
     {
-      fileRef: 'archives:RoomsMine_2.swf',
+      fileRef: 'archives:RoomsMine_1.swf',
       date: CPIP_UPDATE
     },
     {
