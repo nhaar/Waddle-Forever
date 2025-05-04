@@ -1,10 +1,9 @@
 #!/bin/bash
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 URL="https://waddleforever.com"
 DEFAULT="default"
 CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverClient-$VERSION.AppImage"
-SERVER_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverServer-linux-$VERSION"
 DEFAULT_URL="$URL/media/$DEFAULT-$VERSION.zip"
 DEST_FOLDER="./Waddle-Forever-$VERSION"
 DATA_FOLDER="$HOME/.waddleforever"
@@ -13,7 +12,6 @@ DEFAULT_ZIP="default.zip"
 mkdir $DEST_FOLDER
 
 curl -o "$DEST_FOLDER/WaddleForeverClient.AppImage" "$CLIENT_URL" -L
-curl -o "$DEST_FOLDER/WaddleForeverServer" "$SERVER_URL" -L
 
 curl -o "$DEFAULT_ZIP" "$DEFAULT_URL" -L
 mkdir -p "$DEST_FOLDER/media"
