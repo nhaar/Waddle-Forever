@@ -144,35 +144,23 @@ export function getMinifiedDate(date: Version): string {
 
 
 function addNewspapers(map: FileTimelineMap): void {
-  const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
   AS2_NEWSPAPERS.forEach((news, index) => {
     if (news.fileReference !== undefined) {
-      const issueNumber = index + preBoilerPapers + 1;
-      if (isNewspaperBeforeCPIP(news)) {
-        map.addDefault(`artwork/news/news${issueNumber}.swf`, news.fileReference);
-        const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
-        map.addDefault(path.join('artwork/news', route2007), news.fileReference);
-      }
-      // for all the 2006 boiler rooms we have archived,
-      // they seem to only show a singular newspaper, presumed
-      // to maybe be the previous newspaper?
+      const issueNumber = index + PRE_BOILER_ROOM_PAPERS.length + 1;
+      // pre-cpip, before rewrite
+      map.addDefault(`artwork/news/news${issueNumber}.swf`, news.fileReference);
+      // pre-cpip, post rewrite
+      const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
+      map.addDefault(path.join('artwork/news', route2007), news.fileReference);
 
-      // if index + 2 is after boiler room is available, then index + 1 was readable after boiler room was available
-      // and thus index was a predecessor to a newspaper available after boiler room
-      if (isGreaterOrEqual(AS2_NEWSPAPERS[index + 2].date, CAVE_OPENING_START) && isLower(news.date, PRE_CPIP_REWRITE_DATE)) {
-        // I am a bit unsure of why the client is handled like this, but the name of the archive and
-        // regular newspaper are the same for some reason? So we have to increment the issue number
-        // this is definitely a mystery however, maybe if more files or footage is found light can be shed
-        // upon this issue
-        map.addDefault(path.join('artwork/archives', `news${issueNumber + 1}.swf`), news.fileReference);
-      }
-      if (isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])) {
-        const date = getMinifiedDate(news.date);
-        map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, news.fileReference);
-      }
+      // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
+      map.addDefault(path.join('artwork/archives', `news${issueNumber + 1}.swf`), news.fileReference);
+
+      // post-cpip
+      const date = getMinifiedDate(news.date);
+      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, news.fileReference);
     }
   })
-
   
   const configXmlPath = getMediaFilePath('tool:news_config.xml');
   AS3_NEWSPAPERS.forEach((news) => {
