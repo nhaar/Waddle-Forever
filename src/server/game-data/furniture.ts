@@ -1,4 +1,6 @@
-export const FURNITURE_ICONS: Record<number, string> = {
+import { IdRefMap } from "./changes";
+
+export const FURNITURE_ICONS: IdRefMap = {
   1: 'slegacy:media/play/v2/content/global/furniture/icons/1.swf',
   2: 'slegacy:media/play/v2/content/global/furniture/icons/2.swf',
   3: 'slegacy:media/play/v2/content/global/furniture/icons/3.swf',
@@ -1383,7 +1385,7 @@ export const FURNITURE_ICONS: Record<number, string> = {
   12156: 'slegacy:media/play/v2/content/global/furniture/icons/12156.swf'
 };
 
-export const FURNITURE_SPRITES: Record<number, string> = {
+export const FURNITURE_SPRITES: IdRefMap = {
   1: 'slegacy:media/play/v2/content/global/furniture/sprites/1.swf',
   2: 'slegacy:media/play/v2/content/global/furniture/sprites/2.swf',
   3: 'slegacy:media/play/v2/content/global/furniture/sprites/3.swf',

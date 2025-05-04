@@ -1,7 +1,9 @@
+import { IdRefMap } from "./changes";
+
 export const PRE_CPIP_MUSIC_PATH = 'music';
 
-// map music id -> file (of when it first released)
-export const MUSIC_IDS: Record<number, string> = {
+/** Base files for all the music */
+export const MUSIC_IDS: IdRefMap = {
   1: 'archives:Music1.swf',
   2: 'archives:Music2.swf',
   5: 'slegacy:media/play/v2/content/global/music/5.swf',

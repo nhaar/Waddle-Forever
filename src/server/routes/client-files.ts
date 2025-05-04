@@ -23,7 +23,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, IdentifierMap, IdRefMap, PermanentChange, processTimeline, RouteRefMap, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
 import { MIGRATOR_PERIODS } from "../game-data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
@@ -50,6 +50,12 @@ class FileTimelineMap extends TimelineMap<string, string> {
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
     iterateEntries(idMap, (id, file) => {
       this.addPerm(path.join(parentDir, directory, `${id}.swf`), BETA_RELEASE, file);
+    });
+  }
+  
+  addRouteMap(routeMap: RouteRefMap, date: Version): void {
+    iterateEntries(routeMap, (route, file) => {
+      this.addPerm(route, date, file);
     });
   }
 }
@@ -80,15 +86,7 @@ function addClothing(map: FileTimelineMap): void {
 }
 
 function addMusicFiles(map: FileTimelineMap): void {
-  // pre-cpip there's no reason to believe updates happened
-
-  Object.entries(MUSIC_IDS).forEach((pair) => {
-    const [musicId, fileReference] = pair;
-    const fileName = String(musicId) + '.swf';
-    const route = path.join(PRE_CPIP_MUSIC_PATH, fileName);
-    map.addPerm(route, BETA_RELEASE, fileReference);
-    map.addPerm(path.join('play/v2/content/global/music', fileName), CPIP_UPDATE, fileReference);
-  })
+  ['play/v2/content/global', ''].forEach((parentDir) => map.addIdMap(parentDir, 'music', MUSIC_IDS));
 }
 
 function isNewspaperBeforeCPIP(newspaper: As2Newspaper): boolean {
@@ -188,23 +186,15 @@ function addNewspapers(map: RouteMap): void {
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  Object.entries(CPIP_STATIC_FILES).forEach((pair) => {
-    const [route, fileReference] = pair;
-    map.addPerm(route, CPIP_UPDATE, fileReference);
-  });
-  Object.entries(AS3_STATIC_FILES).forEach((pair) => {
-    const [route, fileReference] = pair;
-    map.addPerm(route, MODERN_AS3, fileReference);
-  });
+  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
+  map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
 }
 
 function addStaticFiles(map: RouteMap): void {
   const addStatic = (stat: Record<string, string>) => {
-    Object.entries(stat).forEach((pair) => {
-      const [route, fileReference] = pair;
-      const filePath = getMediaFilePath(fileReference);
-      addToRouteMap(map, route, filePath);
-    })
+    iterateEntries(stat, (route, fileRef) => {
+      addToRouteMap(map, route, getMediaFilePath(fileRef));
+    });
   }
 
   addStatic(PRE_CPIP_STATIC_FILES);
