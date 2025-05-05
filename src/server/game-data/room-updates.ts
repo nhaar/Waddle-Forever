@@ -1,6 +1,6 @@
 import { Version } from "../routes/versions";
 import { RoomName, RoomMap } from "./rooms";
-import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, BETA_RELEASE, CARD_JITSU_RELEASE, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, DIG_OUT_DOJO_END, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRE_CELEBRATION_START, FIRE_CONST_START, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_HUNT_END } from "./updates";
+import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, BETA_RELEASE, CARD_JITSU_RELEASE, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, DIG_OUT_DOJO_END, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRE_CELEBRATION_START, FIRE_CONST_START, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, ROOM_REDRAWS, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_HUNT_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -62,10 +62,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
   ],
   forts: [
-    {
-      fileRef: 'fix:ArtworkRoomsForts3.swf',
-      date: PUFFLE_ROUNDUP_RELEASE
-    },
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/forts.swf',
       date: MODERN_AS3
@@ -253,11 +249,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: GAME_UPGRADES  
     },
     {
-      fileRef: 'mammoth:artwork/rooms/lodge11.swf',
-      date: ICE_FISHING_RELEASE,
-      comment: 'A door for Ice Fishing is added in the Ski Lodge'
-    },
-    {
       fileRef: 'archives:ArtworkRoomsLodge14.swf',
       date: FIND_FOUR_RELEASE,
       comment: 'Find Four tables are added to the Ski Lodge'
@@ -312,13 +303,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       // an unknown update which removed the ability to click on the couch
       fileRef: 'mammoth:artwork/rooms/coffee11.swf',
       date: '2005-12-01'
-    }
-  ],
-  lounge: [
-    {
-      date: THIN_ICE_RELEASE,
-      comment: 'A new cabinet is in the Dance Lounge',
-      fileRef: 'archives:ArtworkRoomsLounge40.swf'
     }
   ],
   attic: [

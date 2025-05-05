@@ -909,10 +909,13 @@ function addStagePlays(map: FileTimelineMap): void {
 
 function addGames(map: FileTimelineMap): void {
   Object.values(PRE_CPIP_GAME_UPDATES).forEach((updates) => {
-    const [release, ...other] = updates;
+    const [release] = updates;
     const fileRoute = path.join('games', release.directory);
 
     map.addPerm(fileRoute, BETA_RELEASE, release.fileRef);
+    if (release.roomChanges !== undefined && release.date !== undefined) {
+      map.addRoomChanges(release.roomChanges, release.date);
+    }
   })
 }
 
