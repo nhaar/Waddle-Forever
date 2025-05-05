@@ -6,17 +6,17 @@ import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from "./versions";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
-import { ORIGINAL_MAP, ORIGINAL_ROOMS } from "../game-data/release-features";
+import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
-import { MAP_PATH_07, MAP_UPDATES, PRECPIP_MAP_PATH } from "../game-data/game-map";
+import { MAP_UPDATES } from "../game-data/game-map";
 import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../game-data/parties";
 import { MUSIC_IDS } from "../game-data/music";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
-import { BETA_RELEASE, CAVE_OPENING_START, CPIP_UPDATE, EPF_RELEASE, MODERN_AS3, PRE_CPIP_REWRITE_DATE } from "../game-data/updates";
+import { BETA_RELEASE, CPIP_UPDATE, EPF_RELEASE, MODERN_AS3 } from "../game-data/updates";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../game-data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
@@ -70,9 +70,9 @@ class FileTimelineMap extends TimelineMap<string, string> {
 
     const info = end === undefined ? { date, info: fileRef } : { date, end, info: fileRef };
     if (isLower(date, CPIP_UPDATE)) {
-      this.add(PRECPIP_MAP_PATH, info);
+      this.add('artwork/maps/island5.swf', info);
       // TODO would be best to only include the maps that end up factually being used
-      this.add(MAP_PATH_07, info);
+      this.add('artwork/maps/16_forest.swf', info);
     } else {
       this.add('play/v2/content/global/content/map.swf', info);
     }
@@ -805,10 +805,6 @@ function addStadiumUpdates(map: FileTimelineMap): void {
   });
 }
 
-function addIngameMapInfo(map: FileTimelineMap): void {
-  map.addPerm(PRECPIP_MAP_PATH, BETA_RELEASE, ORIGINAL_MAP);
-}
-
 function addStandaloneChanges(map: FileTimelineMap): void {
   Object.entries(STANDALONE_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
@@ -926,7 +922,6 @@ export function getFileServer() {
 
   const timelineProcessors = [
     addRoomInfo,
-    addIngameMapInfo,
     addStandaloneChanges,
     addMapUpdates,
     addParties,

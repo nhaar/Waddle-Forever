@@ -13,6 +13,3 @@ export const ORIGINAL_ROOMS: Partial<Record<RoomName, string>> = {
   'dojo': 'mammoth:artwork/rooms/dojo10.swf',
   'agent': 'archives:ArtworkRoomsAgent10.swf' // HQ is disputed, maybe not original release
 }
-
-// File ID of original map
-export const ORIGINAL_MAP = 'recreation:map_release.swf';

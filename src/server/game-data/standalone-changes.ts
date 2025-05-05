@@ -25,6 +25,10 @@ type StandaloneTemporaryChange = {
 
 export const STANDALONE_UPDATES: Array<PartyChanges & { date: Version }> = [
   {
+    date: BETA_RELEASE,
+    map: "recreation:map_release.swf"
+  },
+  {
     date: PRE_CPIP_REWRITE_DATE,
     map: 'approximation:map_beach_changed_id.swf'
   },
