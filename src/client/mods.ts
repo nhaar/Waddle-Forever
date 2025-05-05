@@ -13,6 +13,11 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     }
   });
 
+  modsWindow.webContents.on('will-navigate', (event, url) => {
+    event.preventDefault();
+    shell.openExternal(url);
+  })
+
   modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
   modsWindow.webContents.on('did-finish-load', () => {
     if (electronIsDev) {
