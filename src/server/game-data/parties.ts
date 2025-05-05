@@ -1035,7 +1035,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     consequences: {
       roomChanges: {
-        dance: 'recreation:dance_cpip_postmusicjam.swf'
+        dance: 'recreation:dance_cpip_postmusicjam1.swf'
       },
       roomComment: 'The Dance Club is updated post Music Jam'
     }

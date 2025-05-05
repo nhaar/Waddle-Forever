@@ -172,6 +172,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: PRE_CPIP_REWRITE_DATE
     },
     {
+      fileRef: 'recreation:dance_cpip_postmusicjam2.swf',
+      date: '2008-08-15',
+      comment: 'DJ3K is redesigned in the Dance Club'
+    },
+    {
       fileRef: 'archives:Dance.swf',
       date: '2010-01-29',
       comment: 'The Dance Club now changes colors if a lot of monochrome penguins are present'

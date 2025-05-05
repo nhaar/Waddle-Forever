@@ -436,8 +436,12 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby. This is RoomsPlaza-Play3.swf from the archives, but for some reason the original is broken, so it was fixed to not have the weird shading. It is unknown why this archive file is like this, but as such it has been tagged as a recreation as it\'s likely a misarchive, and this has been further fixed by Blue Kirby'
     },
     {
-      file: 'dance_cpip_postmusicjam.swf',
+      file: 'dance_cpip_postmusicjam2.swf',
       comment: 'Made by VamprLovr'
+    },
+    {
+      file: 'dance_cpip_postmusicjam1.swf',
+      comment: 'Made by Jeoy based on VamprLover\'s file'
     }
   ],
   [MOD]: [
