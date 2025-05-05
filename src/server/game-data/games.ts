@@ -28,7 +28,8 @@ type GameName = 'Thin Ice' |
   'Ice Fishing' |
   'Hydro Hopper' |
   'Puffle Roundup' |
-  'Cart Surfer';
+  'Cart Surfer' |
+  'Catchin\' Waves';
 
 /** Timeline of minigames in Pre-CPIP */
 export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
@@ -95,6 +96,13 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
       fileRef: 'fix:CartSurfer2006.swf',
       directory: 'mine/mine.swf',
       '2006': 'mine.swf'
+    }
+  ],
+  'Catchin\' Waves': [
+    {
+      date: '2007-06-04',
+      fileRef: 'archives:CatchinWavesGame.swf',
+      directory: 'waves/game.swf'
     }
   ]
 };
