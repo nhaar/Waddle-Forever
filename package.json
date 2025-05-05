@@ -25,10 +25,6 @@
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
     "news-crumbs": "ts-node crumbs/news-crumbs.ts",
     "local-crumbs": "ts-node crumbs/local-crumbs.ts",
-    "verify": "ts-node labels/verify-labels.ts",
-    "shorten": "ts-node labels/shorten-paths.ts",
-    "expand": "ts-node labels/expand-paths.ts",
-    "files": "ts-node scripts/create-lines.ts",
     "build-packages": "ts-node scripts/build-packages.ts"
   },
   "author": "CPS",
