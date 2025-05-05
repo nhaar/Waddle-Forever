@@ -13,7 +13,7 @@ type Language = 'en';
 export type CrumbIndicator = [FileRef, ...string[]];
 
 export type PartyChanges = {
-  roomChanges: RoomChanges;
+  roomChanges?: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   // inside a map of each language
   localChanges?: Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
@@ -328,7 +328,9 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
         // now this has a path to the beach
         village: 'archives:ArtworkRoomsVillage13.swf',
         agent: 'archives:ArtworkRoomsAgent13.swf'
-      }
+      },
+      // beach opens
+      map: 'archives:ArtworkMapsIsland10.swf'
     }
   },
   {
@@ -1253,7 +1255,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       roomComment: 'The dojo has a great reopening',
       roomChanges : {
         dojo: 'archives:DojoGrandOpening2008.swf'
-      }
+      },
+      map: 'archives:Map2008-2011Stadium.swf'
     }
   },
   {

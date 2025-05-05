@@ -116,7 +116,9 @@ class FileTimelineMap extends TimelineMap<string, string> {
       }
     }
 
-    this.addRoomChanges(changes.roomChanges, start, end);
+    if (changes.roomChanges !== undefined) {
+      this.addRoomChanges(changes.roomChanges, start, end);
+    }
     if (changes.localChanges !== undefined) {
       iterateEntries(changes.localChanges, (route, languages) => {
         iterateEntries(languages, (language, info) => {
