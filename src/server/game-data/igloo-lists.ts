@@ -1,37 +1,53 @@
+/** Module handles the igloo music lists files */
+
 import { isGreater, Version } from "../routes/versions"
 
-type Row = [FullListSong, FullListSong];
-
-
-type IglooList = [Row, Row, Row, Row, Row, Row, Row];
-
-type FullList = {
-  list: IglooList,
-  date: string;
-  fileRef?: string;
+/** Information for a song in a music list */
+type ListSong = Song & {
+  new?: true;
 };
 
-type ListSong = {
+/** Represents a row of a 2D music list */
+type Row = [ListSong, ListSong];
+
+/** Represents a 2D music list */
+type IglooList = [Row, Row, Row, Row, Row, Row, Row];
+
+/** Information for a song in a music list */
+type Song = {
   id: number;
   display: string;
 }
 
-type UpdateListSong = ListSong & {
+/** Information for a song that is being added in a music list */
+type ListSongPatch = Song & {
   /** Row, column, starting at 1 */
   pos: [number, number];
 }
 
-type FullListSong = ListSong & {
-  new?: true;
-};
-
-type ListUpdate = {
-  songs: UpdateListSong[];
-  date: string;
+/** Base type representing a music list release */
+type MusicListBase = {
+  /** Date this list released */
+  date: Version;
+  /** The file of the list, if it exists */
   fileRef?: string;
 }
 
-export const IGLOO_LISTS: [FullList, ...Array<FullList | ListUpdate>] = [
+/** Represents a music list release by informing everything in the list */
+type MusicList = MusicListBase & {
+  list: IglooList
+};
+
+/** Represents a music list release relative to what songs were added to the previous one */
+type MusicListPatch = MusicListBase & {
+  songs: ListSongPatch[]
+}
+
+/** Represents a generic update to the music list */
+type ListUpdate = MusicList | MusicListPatch;
+
+/** All supported music lists, the first one is a full one, other elements may be patches or full ones */
+export const IGLOO_LISTS: [MusicList, ...Array<ListUpdate>] = [
   {
     date: '2008-07-18',
     list: [
@@ -215,25 +231,28 @@ export const IGLOO_LISTS: [FullList, ...Array<FullList | ListUpdate>] = [
   }
 ];
 
+/** Number of rows in a 2D music list */
 const ROWS = 7;
+/** Number of columns in a 2D music list */
 const COLS = 2;
 
-function updateList(list: IglooList, update: ListUpdate): void {
+/** Applies a patch to a music list */
+function applyPatch(list: IglooList, songs: ListSongPatch[]): void {
   // clear all previous "news"
   for (let i = 0; i < ROWS; i++) {
     for (let j = 0; j < COLS; j++) {
       list[i][j].new = undefined;
     }
   }
-  update.songs.forEach((song) => {
+  songs.forEach((song) => {
     const [row, col] = song.pos;
     list[row - 1][col - 1] = { id: song.id, display: song.display, new: true };
   });
 }
 
+/** Get igloo list active on a given date */
 function getIglooList(date: Version): IglooList {
   const [fullList, ...updates] = IGLOO_LISTS;
-
 
   let list = JSON.parse(JSON.stringify(fullList.list)) as IglooList;
 
@@ -244,7 +263,7 @@ function getIglooList(date: Version): IglooList {
     }
 
     if ('songs' in update) {
-      updateList(list, update);
+      applyPatch(list, update.songs);
     } else {
       list = JSON.parse(JSON.stringify(update.list)) as IglooList;
     }
@@ -253,8 +272,9 @@ function getIglooList(date: Version): IglooList {
   return list;
 }
 
+/** Get the XML used by the dynamic igloo list tool for a given list */
 function getListXml(list: IglooList): string {
-  const flattened: FullListSong[] = [];
+  const flattened: ListSong[] = [];
   // it is read from top to bottom, then left to right, so each column first
   for (let j = 0; j < COLS; j++) {
     for (let i = 0; i < ROWS; i++) {
@@ -270,6 +290,7 @@ function getListXml(list: IglooList): string {
 </music>`;
 }
 
+/** Get the raw data for the dynamic music list in a given day */
 export function getDynamicMusicListData(date: Version): string {
   const list = getIglooList(date);
   return getListXml(list);
