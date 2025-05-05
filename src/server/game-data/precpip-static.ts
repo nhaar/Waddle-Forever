@@ -27,8 +27,7 @@ const newspaperFiles = [
   'archives:News22.swf',
   'archives:News23.swf',
   'archives:News24.swf',
-  'archives:News25.swf',
-  'archives:News26.swf'
+  'archives:News25.swf'
 ];
 
 const staticNewspaperFiles: Record<string, string> = {};

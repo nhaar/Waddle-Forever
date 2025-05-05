@@ -1,6 +1,6 @@
-import { IdRefMap } from "./changes";
+/** Module for the files of all music in the game */
 
-export const PRE_CPIP_MUSIC_PATH = 'music';
+import { IdRefMap } from "./changes";
 
 /** Base files for all the music */
 export const MUSIC_IDS: IdRefMap = {
