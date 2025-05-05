@@ -183,6 +183,10 @@ would need to investigated`
     {
       file: 'ArtworkRoomsRink12.swf',
       comment: 'This file appears to be a debug unreleased file, as it has debugging log text on screen. The text is removed. It is unknown if this file should even be added to the game'
+    },
+    {
+      file: 'CartSurfer2006.swf',
+      comment: 'Removed domain check'
     }
   ],
   [APPROXIMATION]: [

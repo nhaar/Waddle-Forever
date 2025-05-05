@@ -27,7 +27,8 @@ type GameName = 'Thin Ice' |
   'Pizzatron 3000' |
   'Ice Fishing' |
   'Hydro Hopper' |
-  'Puffle Roundup';
+  'Puffle Roundup' |
+  'Cart Surfer';
 
 /** Timeline of minigames in Pre-CPIP */
 export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
@@ -86,6 +87,14 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
       roomChanges: {
         forts: 'fix:ArtworkRoomsForts3.swf'
       }
+    }
+  ],
+  'Cart Surfer': [
+    {
+      date: '2006-06-06',
+      fileRef: 'fix:CartSurfer2006.swf',
+      directory: 'mine/mine.swf',
+      '2006': 'mine.swf'
     }
   ]
 };

@@ -941,6 +941,9 @@ function addGames(map: FileTimelineMap): void {
     if (release.roomChanges !== undefined && release.date !== undefined) {
       map.addRoomChanges(release.roomChanges, release.date);
     }
+    if (release['2006'] !== undefined) {
+      map.addPerm(path.join('games', release['2006']), BETA_RELEASE, release.fileRef);
+    }
   })
 }
 
