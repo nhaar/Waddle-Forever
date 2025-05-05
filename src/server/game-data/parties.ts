@@ -1933,6 +1933,12 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     scavengerHunt2010: {
       iconFileId: 'archives:Sensei_Fire_Hunt_hunt_icon.swf'
+    },
+    consequences: {
+      roomComment: 'Construction in the Ninja Hideout continues',
+      roomChanges: {
+        dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+      }
     }
   },
   {
@@ -2054,9 +2060,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     construction: {
       date: '2009-11-05',
-      comment: 'Construction for Card-Jitsu Fire in the Ninja Hideout begins',
+      comment: 'Construction for Amulets begins in the Dojo Courtyard',
       changes: {
-        dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf',
         dojoext: 'archives:RoomsDojoext-FireCelebratePre.swf'
       },
       updates: [
