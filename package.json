@@ -25,7 +25,8 @@
     "global-crumbs": "ts-node crumbs/global-crumbs.ts",
     "news-crumbs": "ts-node crumbs/news-crumbs.ts",
     "local-crumbs": "ts-node crumbs/local-crumbs.ts",
-    "build-packages": "ts-node scripts/build-packages.ts"
+    "build-packages": "ts-node scripts/build-packages.ts",
+    "debug-versions": "ts-node scripts/dump-versions.ts"
   },
   "author": "CPS",
   "license": "MIT",

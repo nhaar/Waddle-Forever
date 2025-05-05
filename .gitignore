@@ -87,3 +87,6 @@ ffdec-path.ts
 
 # auto generated media info
 /src/server/game-data/package-info.ts
+
+# versions dump for debugging
+versions-dump.txt
