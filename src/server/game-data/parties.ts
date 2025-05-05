@@ -1029,12 +1029,15 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     permanentChanges: {
       roomChanges: {
-        // this is from june 26, when dj3k disks are added
-        // other SWFs in-between are lost
-        dance: 'archives:RoomsDance_2.swf',
         // placeholder date for the band
         light: 'archives:RoomsLight-January2010.swf'
       }
+    },
+    consequences: {
+      roomChanges: {
+        dance: 'recreation:dance_cpip_postmusicjam.swf'
+      },
+      roomComment: 'The Dance Club is updated post Music Jam'
     }
   },
   {
@@ -1345,6 +1348,13 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       dance: 258,
       party: 257,
       lounge: 0
+    },
+    consequences: {
+      roomChanges: {
+        // this is from june 26, when dj3k disks are added
+        // other SWFs in-between are lost
+        dance: 'archives:RoomsDance_2.swf'
+      }
     }
   },
   {
