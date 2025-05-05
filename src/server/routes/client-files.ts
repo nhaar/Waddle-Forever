@@ -310,12 +310,12 @@ function addParties(map: FileTimelineMap): void {
 
   const addPartyChanges = (changes: PartyChanges, start: Version, end: Version | undefined = undefined) => {
     const pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator) => {
-      const fileId = typeof info === 'number' ? info : info[0];
+      const fileRef = typeof info === 'string' ? info : info[0];
       const fullRoute = path.join(baseRoute, route);
       if (end === undefined) {
-        map.addPerm(fullRoute, start, fileId);
+        map.addPerm(fullRoute, start, fileRef);
       } else {
-        map.addTemp(fullRoute, start, end, fileId);
+        map.addTemp(fullRoute, start, end, fileRef);
       }
     }
 
