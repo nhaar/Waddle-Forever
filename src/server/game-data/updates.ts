@@ -5,8 +5,6 @@ export const SPORT_SHOP_RELEASE = '2005-11-03';
 
 export const MTN_RELEASE = '2005-11-18';
 
-export const PUFFLE_ROUNDUP_RELEASE = '2005-12-14';
-
 export const PET_SHOP_RELEASE = '2006-03-17';
 
 export const PIZZA_PARLOR_OPENING_END = '2006-02-28';
@@ -86,15 +84,11 @@ export const DIG_OUT_DOJO_END = '2008-11-14';
 
 export const FIRST_AS3_NEWSPAPER = '2010-11-19';
 
-export const THIN_ICE_RELEASE = '2006-12-19';
-
 export const SPORT_PARTY_START = '2006-08-11';
 
 export const CARD_JITSU_RELEASE = '2008-11-17';
 
 export const CHRISTMAS_2005_ENDS = '2005-12-26';
-
-export const ICE_FISHING_RELEASE = '2006-03-10';
 
 export const FIND_FOUR_RELEASE = '2006-04-27';
 
@@ -144,3 +138,5 @@ export const AGENTCOM_RELEASE = '2008-11-24';
 export const GAME_UPGRADES = '2009-03-27';
 
 export const FIRE_CELEBRATION_START = '2009-11-20';
+
+export const FIRE_CONST_START = '2009-11-13';

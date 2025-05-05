@@ -33,7 +33,7 @@ function getNewspapersTimeline() {
     date: FAN_ISSUE_DATE,
     info: 'fan'
   });
-  return timeline.getVersion();
+  return timeline.getVersions();
 }
 
 const newspaperTimeline = getNewspapersTimeline();
@@ -179,6 +179,11 @@ export function getSetupXml(version: Version) {
          <Music>0</Music>
          <Frame>1</Frame>
       </Mancala>
+      <Mine>
+        <File>mine</File>
+        <Music>105</Music>
+        <Frame>1</Frame>
+      </Mine>
    </Games>
 
    <Catalogues>

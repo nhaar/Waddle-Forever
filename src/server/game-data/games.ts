@@ -1,34 +1,46 @@
-import { Version } from "../routes/versions";
-import { ICE_FISHING_RELEASE, PUFFLE_ROUNDUP_RELEASE, THIN_ICE_RELEASE } from "./updates";
+/** Module that handles all standalone game updates */
 
+import { Version } from "../routes/versions";
+import { FileRef } from "./files";
+import { RoomMap } from "./rooms";
+
+/** Base type for a game's release */
 type GameRelease = {
   date?: Version
 }
 
+/** Information for a game releasing in Pre-CPIP */
 type PreCpipGameRelease = GameRelease & {
+  /** If a game from early 2006, the filename inside the games folder during that time */
   '2006'?: string;
+  /** Directory of the game in the 2007 client (inside games) */
   directory: string;
+  /** File of the minigame */
   fileRef: string;
+  roomChanges?: RoomMap<FileRef>
 };
 
-type GameUpdate = {
-
-}
-
+/** Name of games supported in the module */
 type GameName = 'Thin Ice' |
   'Astro Barrier' |
   'Bean Counters' |
   'Pizzatron 3000' |
   'Ice Fishing' |
   'Hydro Hopper' |
-  'Puffle Roundup';
+  'Puffle Roundup' |
+  'Cart Surfer' |
+  'Catchin\' Waves';
 
-export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease, ...GameUpdate[]]> = {
+/** Timeline of minigames in Pre-CPIP */
+export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
   'Thin Ice': [
     {
-      date: THIN_ICE_RELEASE,
+      date: '2006-12-19',
       directory: 'thinice/game.swf',
-      fileRef: 'archives:ThinIce.swf'
+      fileRef: 'archives:ThinIce.swf',
+      roomChanges: {
+        lounge: 'archives:ArtworkRoomsLounge40.swf'
+      }
     }
   ],
   'Astro Barrier': [
@@ -54,9 +66,12 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease, ...Gam
   ],
   'Ice Fishing': [
     {
-      date: ICE_FISHING_RELEASE,
+      date: '2006-03-10',
       directory: 'fish/fish.swf',
-      fileRef: 'mammoth:games/fish.swf'
+      fileRef: 'mammoth:games/fish.swf',
+      roomChanges: {
+        lodge: 'mammoth:artwork/rooms/lodge11.swf'
+      }
     }
   ],
   'Hydro Hopper': [
@@ -67,9 +82,27 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease, ...Gam
   ],
   'Puffle Roundup': [
     {
-      date: PUFFLE_ROUNDUP_RELEASE,
+      date: '2005-12-14',
       fileRef: 'mammoth:games/puffle.swf',
-      directory: 'roundup/roundup.swf'
+      directory: 'roundup/roundup.swf',
+      roomChanges: {
+        forts: 'fix:ArtworkRoomsForts3.swf'
+      }
+    }
+  ],
+  'Cart Surfer': [
+    {
+      date: '2006-06-06',
+      fileRef: 'fix:CartSurfer2006.swf',
+      directory: 'mine/mine.swf',
+      '2006': 'mine.swf'
+    }
+  ],
+  'Catchin\' Waves': [
+    {
+      date: '2007-06-04',
+      fileRef: 'archives:CatchinWavesGame.swf',
+      directory: 'waves/game.swf'
     }
   ]
 };

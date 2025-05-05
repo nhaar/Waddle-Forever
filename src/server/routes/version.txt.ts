@@ -15,7 +15,7 @@ export function getVersionsTimeline() {
   const versionTimeline = new VersionsTimeline<number>();
   versionTimeline.addDateMap(VERSIONS);
 
-  return versionTimeline.getVersion();
+  return versionTimeline.getVersions();
 }
 
 const versionsTimeline = getVersionsTimeline();

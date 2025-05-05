@@ -1,3 +1,5 @@
+/** Module handles all furniture files in the game */
+
 import { IdRefMap } from "./changes";
 
 export const FURNITURE_ICONS: IdRefMap = {

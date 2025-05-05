@@ -1,7 +1,11 @@
+/** Module for all newspapers in the game */
+
 import { Version } from "../routes/versions";
+import { FileRef } from "./files";
 import { FIRST_AS3_NEWSPAPER, FIRST_BOILER_ROOM_PAPER } from "./updates";
 
-export const FAN_ISSUE_DATE = '2005-10-28'
+/** Fan issue is the only exceptional newspaper */
+export const FAN_ISSUE_DATE = '2005-10-28';
 
 /** Array that lists all the newspapers that were never in the boiler room (index number + 1 matches the issue number) */
 export const PRE_BOILER_ROOM_PAPERS: Version[] = [
@@ -32,13 +36,17 @@ export const PRE_BOILER_ROOM_PAPERS: Version[] = [
   '2006-04-06'
 ];
 
+/** Represent an AS2 newspaper (which were single file newspapers) */
 export type As2Newspaper = {
-  date: Version,
-  headline: string,
-  fileReference?: string;
+  /** Issue date */
+  date: Version;
+  /** Headline that was available in the Boiler Room */
+  headline: string;
+  /** Newspaper file */
+  fileReference: FileRef;
 }
 
-/** Null properties are unarchived */
+/** Represents an AS3 newspaper (which had many files). Null properties are unarchived */
 export type As3Newspaper = {
   date: Version;
   headline: string;
@@ -67,7 +75,8 @@ export type As3Newspaper = {
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
   {
     date: FIRST_BOILER_ROOM_PAPER,
-    headline: 'EASTER EGG HUNT!!'
+    headline: 'EASTER EGG HUNT!!',
+    fileReference: 'archives:News26.swf'
   },
   {
     date: '2006-04-20',
@@ -1111,127 +1120,158 @@ export const AS2_NEWSPAPERS: As2Newspaper[] = [
   },
   {
     date: '2010-04-15',
-    headline: 'CELEBRATE EARTH DAY!'
+    headline: 'CELEBRATE EARTH DAY!',
+    fileReference: 'archives:ENNews235.swf'
   },
   {
     date: '2010-04-22',
-    headline: 'EARTH DAY CELEBRATIONS BEGIN!'
+    headline: 'EARTH DAY CELEBRATIONS BEGIN!',
+    fileReference: 'archives:ENNews236.swf'
   },
   {
     date: '2010-04-29',
-    headline: 'YE PENGUIN STYLE'
+    headline: 'YE PENGUIN STYLE',
+    fileReference: 'archives:ENNews237.swf'
   },
   {
     date: '2010-05-06',
-    headline: 'MEDIEVAL PARTY'
+    headline: 'MEDIEVAL PARTY',
+    fileReference: 'archives:ENNews238.swf'
   },
   {
     date: '2010-05-13',
-    headline: 'YOUR IGLOO-MEDIEVAL STYLE'
+    headline: 'YOUR IGLOO-MEDIEVAL STYLE',
+    fileReference: 'archives:ENNews239.swf'
   },
   {
     date: '2010-05-20',
-    headline: 'POPCORN EVERYWHERE AT SPORT SHOP'
+    headline: 'POPCORN EVERYWHERE AT SPORT SHOP',
+    fileReference: 'archives:ENNews240.swf'
   },
   {
     date: '2010-05-27',
-    headline: 'SKI VILLAGE UNDER CONSTRUCTION'
+    headline: 'SKI VILLAGE UNDER CONSTRUCTION',
+    fileReference: 'archives:ENNews241.swf'
   },
   {
     date: '2010-06-03',
-    headline: 'PENGUINS SEEKING ADVENTURE'
+    headline: 'PENGUINS SEEKING ADVENTURE',
+    fileReference: 'archives:ENNews242.swf'
   },
   {
     date: '2010-06-10',
-    headline: 'ISLAND ADVENTURE PLANS REVEALED'
+    headline: 'ISLAND ADVENTURE PLANS REVEALED',
+    fileReference: 'archives:ENNews243.swf'
   },
   {
     date: '2010-06-17',
-    headline: 'THE ADVENTURE BEGINS!'
+    headline: 'THE ADVENTURE BEGINS!',
+    fileReference: 'archives:ENNews244.swf'
   },
   {
     date: '2010-06-24',
-    headline: 'CONTINUE YOUR ADVENTURE!'
+    headline: 'CONTINUE YOUR ADVENTURE!',
+    fileReference: 'archives:ENNews245.swf'
   },
   {
     date: '2010-07-01',
-    headline: 'GET READY FOR MUSIC JAM 2010'
+    headline: 'GET READY FOR MUSIC JAM 2010',
+    fileReference: 'archives:ENNews246.swf'
   },
   {
     date: '2010-07-08',
-    headline: 'MUSIC JAM!'
+    headline: 'MUSIC JAM!',
+    fileReference: 'archives:ENNews247.swf'
   },
   {
     date: '2010-07-15',
-    headline: 'KEEP JAMMIN\''
+    headline: 'KEEP JAMMIN\'',
+    fileReference: 'archives:ENNews248.swf'
   },
   {
     date: '2010-07-22',
-    headline: 'STAMPS ARRIVE JULY 27'
+    headline: 'STAMPS ARRIVE JULY 27',
+    fileReference: 'archives:ENNews249.swf'
   },
   {
     date: '2010-07-29',
-    headline: 'STAMPS - CAN YOU EARN THEM ALL?'
+    headline: 'STAMPS - CAN YOU EARN THEM ALL?',
+    fileReference: 'archives:ENNews250.swf'
   },
   {
     date: '2010-08-05',
-    headline: 'STAMP BOOK STYLE'
+    headline: 'STAMP BOOK STYLE',
+    fileReference: 'archives:ENNews251.swf'
   },
   {
     date: '2010-08-12',
-    headline: 'MOUNTAIN EXPEDITION BEGINS'
+    headline: 'MOUNTAIN EXPEDITION BEGINS',
+    fileReference: 'archives:ENNews252.swf'
   },
   {
     date: '2010-08-19',
-    headline: 'DESIGN YOUR OWN FURNITURE'
+    headline: 'DESIGN YOUR OWN FURNITURE',
+    fileReference: 'archives:ENNews253.swf'
   },
   {
     date: '2010-08-26',
-    headline: 'PREPARE FOR THE FAIR'
+    headline: 'PREPARE FOR THE FAIR',
+    fileReference: 'archives:ENNews254.swf'
   },
   {
     date: '2010-09-02',
-    headline: 'THE FAIR - BE THERE'
+    headline: 'THE FAIR - BE THERE',
+    fileReference: 'archives:ENNews255.swf'
   },
   {
     date: '2010-09-09',
-    headline: 'NEW ITEMS AT PRIZE BOOTH'
+    headline: 'NEW ITEMS AT PRIZE BOOTH',
+    fileReference: 'archives:ENNews256.swf'
   },
   {
     date: '2010-09-16',
-    headline: 'SHOWDOWN AT THE STADIUM'
+    headline: 'SHOWDOWN AT THE STADIUM',
+    fileReference: 'archives:ENNews257.swf'
   },
   {
     date: '2010-09-23',
-    headline: 'GAME ON AT THE STADIUM'
+    headline: 'GAME ON AT THE STADIUM',
+    fileReference: 'archives:ENNews258.swf'
   },
   {
     date: '2010-09-30',
-    headline: 'NEW SPOOKY COSTUMES COMING!'
+    headline: 'NEW SPOOKY COSTUMES COMING!',
+    fileReference: 'archives:ENNews259.swf'
   },
   {
     date: '2010-10-07',
-    headline: 'HALLOWEEN IGLOO CONTEST'
+    headline: 'HALLOWEEN IGLOO CONTEST',
+    fileReference: 'archives:ENNews260.swf'
   },
   {
     date: '2010-10-14',
-    headline: 'HALLOWEEN IGLOO CONTEST'
+    headline: 'HALLOWEEN IGLOO CONTEST',
+    fileReference: 'archives:ENNews261.swf'
   },
   {
     date: '2010-10-21',
-    headline: 'ANNIVERSARY PARTY OCTOBER 24'
+    headline: 'ANNIVERSARY PARTY OCTOBER 24',
+    fileReference: 'archives:ENNews262.swf'
   },
   {
     date: '2010-10-28',
-    headline: 'THE HALLOWEEN PARTY IS HERE'
+    headline: 'THE HALLOWEEN PARTY IS HERE',
+    fileReference: 'archives:ENNews263.swf'
   },
   {
     date: '2010-11-04',
-    headline: 'NEW OUTDOOR OUTFITS'
+    headline: 'NEW OUTDOOR OUTFITS',
+    fileReference: 'archives:ENNews264.swf'
   },
   {
     date: '2010-11-11',
-    headline: 'FIRST RAINSTORM ON RECORD'
+    headline: 'FIRST RAINSTORM ON RECORD',
+    fileReference: 'archives:ENNews265.swf'
   }
 ]
 

@@ -200,7 +200,7 @@ export function getFilesInDirectory(basePath: string, relativePath: string = '')
 /**
  * Iterate through all entries of an object, calling a function that takes the key and value as arguments
  */
-export function iterateEntries<Key extends string, Value>(obj: Record<Key, Value>, callback: (key: Key, value: Value) => void) {
+export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Key, Value>> | Record<Key, Value>, callback: (key: Key, value: Value) => void) {
   Object.entries(obj).forEach((pair) => {
     const [key, value] = pair;
     callback(key as Key, value as Value);

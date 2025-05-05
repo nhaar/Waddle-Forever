@@ -1,7 +1,9 @@
+/** Module writes the data for all standalone updates related to the seasonal catalogs */
+
 import { DateRefMap } from "./changes";
 import { NEW_YEARS_2010_UPDATE } from "./updates";
 
-/** All clothing catalogs that are release Pre-CPIP */
+/** All clothing catalogs that are released Pre-CPIP */
 export const PRE_CPIP_CATALOGS: DateRefMap = {
   '2005-09-21': 'archives:September05Style.swf',
   '2005-10-24': 'archives:Clothing_0510.swf',
@@ -69,6 +71,7 @@ export const CPIP_CATALOGS: DateRefMap = {
 
 /** All furniture catalogs */
 export const FURNITURE_CATALOGS: DateRefMap = {
+  '2008-06-20': 'archives:Jun-Jul2008Furniture.swf',
   '2008-07-18': 'archives:FurnJul2008.swf',
   '2008-08-29': 'archives:FurnAug2008.swf',
   '2008-09-19': 'archives:FurnSep2008.swf',

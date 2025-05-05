@@ -31,7 +31,7 @@ function getEggTimeline() {
     }
   });
 
-  return timeline.getVersion();
+  return timeline.getVersions();
 }
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */

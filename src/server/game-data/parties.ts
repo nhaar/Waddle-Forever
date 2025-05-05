@@ -2,7 +2,7 @@ import { Version } from "../routes/versions";
 import { TemporaryUpdateTimeline } from "./changes";
 import { FileRef } from "./files";
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, FIRE_CELEBRATION_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
+import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, FIRE_CELEBRATION_START, FIRE_CONST_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
@@ -13,7 +13,7 @@ type Language = 'en';
 export type CrumbIndicator = [FileRef, ...string[]];
 
 export type PartyChanges = {
-  roomChanges: RoomChanges;
+  roomChanges?: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   // inside a map of each language
   localChanges?: Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
@@ -26,6 +26,12 @@ export type PartyChanges = {
   generalChanges?: Record<string, FileRef>;
 
   roomComment?: string;
+
+  map?: FileRef;
+
+  music?: Partial<Record<RoomName, number>>;
+
+  activeMigrator?: true;
 }
 
 export type Party = PartyChanges & {
@@ -38,7 +44,6 @@ export type Party = PartyChanges & {
   startComment?: string;
   endComment?: string;
 
-  music?: Partial<Record<RoomName, number>>;
   construction?: Construction;
   /** Scavenger Hunt icon is loaded by the dependency, must be specified */
   scavengerHunt2010?: {
@@ -58,8 +63,6 @@ export type Party = PartyChanges & {
     comment?: string;
     date: string;
   } & PartyChanges>;
-
-  activeMigrator?: true;
 
   // TODO maybe also supplying the ID if we know
   // otherwise default egg id to 1
@@ -190,8 +193,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
         // now has path to the plaza
         forts: 'archives:ArtworkRoomsForts12.swf'
       },
-      // TODO map abstraction in general changes?
-      generalChanges: { 'artwork/maps/island5.swf': 'approximation:map_plaza_no_berg.swf' }
+      map: 'approximation:map_plaza_no_berg.swf'
     }
   },
   {
@@ -326,7 +328,9 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
         // now this has a path to the beach
         village: 'archives:ArtworkRoomsVillage13.swf',
         agent: 'archives:ArtworkRoomsAgent13.swf'
-      }
+      },
+      // beach opens
+      map: 'archives:ArtworkMapsIsland10.swf'
     }
   },
   {
@@ -1025,12 +1029,15 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     permanentChanges: {
       roomChanges: {
-        // this is from june 26, when dj3k disks are added
-        // other SWFs in-between are lost
-        dance: 'archives:RoomsDance_2.swf',
         // placeholder date for the band
         light: 'archives:RoomsLight-January2010.swf'
       }
+    },
+    consequences: {
+      roomChanges: {
+        dance: 'recreation:dance_cpip_postmusicjam1.swf'
+      },
+      roomComment: 'The Dance Club is updated post Music Jam'
     }
   },
   {
@@ -1251,7 +1258,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       roomComment: 'The dojo has a great reopening',
       roomChanges : {
         dojo: 'archives:DojoGrandOpening2008.swf'
-      }
+      },
+      map: 'archives:Map2008-2011Stadium.swf'
     }
   },
   {
@@ -1340,6 +1348,13 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       dance: 258,
       party: 257,
       lounge: 0
+    },
+    consequences: {
+      roomChanges: {
+        // this is from june 26, when dj3k disks are added
+        // other SWFs in-between are lost
+        dance: 'archives:RoomsDance_2.swf'
+      }
     }
   },
   {
@@ -1918,6 +1933,12 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     scavengerHunt2010: {
       iconFileId: 'archives:Sensei_Fire_Hunt_hunt_icon.swf'
+    },
+    consequences: {
+      roomComment: 'Construction in the Ninja Hideout continues',
+      roomChanges: {
+        dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+      }
     }
   },
   {
@@ -2039,15 +2060,14 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     construction: {
       date: '2009-11-05',
-      comment: 'Construction for Card-Jitsu Fire in the Ninja Hideout begins',
+      comment: 'Construction for Amulets begins in the Dojo Courtyard',
       changes: {
-        dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf',
         dojoext: 'archives:RoomsDojoext-FireCelebratePre.swf'
       },
       updates: [
         {
           comment: 'Construction for the Fire Dojo begins',
-          date: '2009-11-13',
+          date: FIRE_CONST_START,
           changes: {
             dojofire: 'archives:RoomsDojofire-FireCelebratePre.swf',
             // reverting back to normality
@@ -2851,8 +2871,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'dojohide': 'archives:HalloweenParty2010DojoHide.swf',
       coffee: 'archives:HalloweenParty2010Coffee.swf'
     },
+    map: 'archives:HalloweenParty2010Map.swf',
     globalChanges: {
-      'content/map.swf': 'archives:HalloweenParty2010Map.swf',
       'scavenger_hunt/hunt_ui.swf': ['recreation:halloween_hunt_2010.swf', 'hunt_ui', 'halloween_hunt'],
       'binoculars/empty.swf': 'archives:ContentBinoculars-HalloweenParty2007.swf', // from 2007 party
       'igloo/assets/igloo_background.swf': 'archives:Igloo_background_nightstorm.swf', // from 2011 party
@@ -3072,9 +3092,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'rink': 'archives:HolidayParty2010Rink(1).swf',
       'town': 'archives:RoomsTown-HolidayParty2010.swf'
     },
-    globalChanges: {
-      'content/map.swf': 'archives:HolidayParty2010Map-StadiumGames.swf'
-    },
+    map: 'archives:HolidayParty2010Map-StadiumGames.swf',
     localChanges: {
       'close_ups/christmasposter.swf': {
         'en': 'archives:HolidayParty2010ChristmasPoster.swf'
@@ -3120,9 +3138,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
           'rink': 'archives:HolidayParty2010Rink(2).swf',
           'town': 'archives:RoomsTown-HolidayParty2010_2.swf'
         },
-        globalChanges: {
-          'content/map.swf': 'archives:HolidayParty2010Map.swf'
-        }
+        map: 'archives:HolidayParty2010Map.swf'
       }
     ]
   }

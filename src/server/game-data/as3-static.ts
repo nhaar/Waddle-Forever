@@ -1,3 +1,8 @@
+/**
+ * Module contains all the files to be served in the 2016 version
+ * This module is mostly temporary, in the future it should be replaced
+ * */
+
 import { RouteRefMap } from "./changes";
 
 /** All files to be served during the 2016 versions */
@@ -970,5 +975,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/ru/logo.swf',
   'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf',
   'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
-  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf'
+  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf',
+  'play/v2/content/global/content/map.swf': 'svanilla:media/play/v2/content/global/content/map.swf'
 }
