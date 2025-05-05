@@ -30,6 +30,8 @@ export type PartyChanges = {
   map?: FileRef;
 
   music?: Partial<Record<RoomName, number>>;
+
+  activeMigrator?: true;
 }
 
 export type Party = PartyChanges & {
@@ -61,8 +63,6 @@ export type Party = PartyChanges & {
     comment?: string;
     date: string;
   } & PartyChanges>;
-
-  activeMigrator?: true;
 
   // TODO maybe also supplying the ID if we know
   // otherwise default egg id to 1

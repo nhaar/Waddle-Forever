@@ -7,7 +7,7 @@ import { isGreater, isGreaterOrEqual, isLower, processVersion, Version } from ".
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
 import { ORIGINAL_ROOMS } from "../game-data/release-features";
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_UPDATES } from "../game-data/standalone-changes";
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { MAP_UPDATES } from "../game-data/game-map";
 import { CrumbIndicator, PARTIES, PartyChanges, RoomChanges } from "../game-data/parties";
@@ -22,14 +22,33 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { DateRefMap, findInVersion, VersionsMap, IdRefMap, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
-import { MIGRATOR_PERIODS } from "../game-data/migrator";
+import { DateRefMap, findInVersion, VersionsMap, IdRefMap, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline, TemporaryUpdate } from "../game-data/changes";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { iterateEntries } from "../../common/utils";
+
+function getSubUpdateDates<UpdateInfo, SubUpdateInfo>(update: TemporaryUpdate<UpdateInfo, SubUpdateInfo>, index: number) {
+  if (update.updates === undefined) {
+    throw new Error('Update must have subupdates');
+  }
+  const subUpdate = update.updates[index];
+  let end = subUpdate.end;
+
+  if (end === undefined) {
+    const next = update.updates[index + 1];
+    if (next !== undefined && next.date !== undefined) {
+      end = next.date;
+    }
+  }
+  if (end === undefined || end === null) {
+    end = update.end;
+  }
+
+  return { date: subUpdate.date ?? update.date, end };
+}
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -87,13 +106,8 @@ class FileTimelineMap extends TimelineMap<string, string> {
       applyUpdate(this, tempUpdate, tempUpdate.date, tempUpdate.end);
       if (tempUpdate.updates !== undefined) {
         for (let i = 0; i < tempUpdate.updates.length; i++) {
-          const subUpdate = tempUpdate.updates[i];
-          const next = tempUpdate.updates[i + 1];
-          let end = tempUpdate.end;
-          if (next !== undefined && next.date !== undefined) {
-            end = next.date;
-          }
-          applySubUpdate(this, subUpdate, subUpdate.date ?? tempUpdate.date, end);
+          const { date, end } = getSubUpdateDates(tempUpdate, i);
+          applySubUpdate(this, tempUpdate.updates[i], date, end);
         }
       }
       if (tempUpdate.permanentChanges !== undefined) {
@@ -602,13 +616,18 @@ export function getMigratorTimeline() {
     }
   });
 
-  MIGRATOR_PERIODS.forEach((period) => {
-    timeline.add({
-      date: period.date,
-      end: period.end,
-      info: true
-    });
-  });
+  STANDALONE_TEMPORARY_UPDATES.forEach((update) => {
+    if (update.updates !== undefined) {
+      update.updates.forEach((subUpdate, i) => {
+        if (subUpdate.activeMigrator === true) {
+          timeline.add({
+            ...getSubUpdateDates(update, i),
+            info: true
+          });
+        }
+      })
+    }
+  })
 
   return timeline.getVersions();
 }
@@ -827,7 +846,13 @@ function addStandaloneChanges(map: FileTimelineMap): void {
 
   STANDALONE_UPDATES.forEach((update) => {
     map.addPartyChanges(update, update.date);
-  })
+  });
+
+  map.addTemporaryUpdateTimeline(STANDALONE_TEMPORARY_UPDATES, (map, update, start, end) => {
+    map.addPartyChanges(update, start, end);
+  }, (map, update, start, end) => {
+    map.addPartyChanges(update, start, end);
+  });
 }
 
 function addMapUpdates(map: FileTimelineMap): void {

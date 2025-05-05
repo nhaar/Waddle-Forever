@@ -70,6 +70,8 @@ export type TemporaryUpdate<UpdateInformation, SubUpdateInformation> = {
   updates?: Array<{
     /** If not added, then it defaults to the start of the temporary update */
     date?: Version;
+    /** If not supplied, ends when the next update shows, if null, ends when the whole group ends, otherwise the value stated */
+    end?: Version | null
   } & SubUpdateInformation>;
   /** Permanent changes applied at the beginning of this update */
   permanentChanges?: SubUpdateInformation;

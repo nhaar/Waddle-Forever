@@ -1,4 +1,4 @@
-import { Version } from "../routes/versions";
+import { PermanentUpdateTimeline, TemporaryUpdateTimeline } from "./changes";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
 import { PartyChanges } from "./parties";
 import { ANNIVERSARY_5_START, AS3_UPDATE, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, PRE_CPIP_REWRITE_DATE, ROCKHOPPER_ARRIVAL_PARTY_START, STAMPS_RELEASE } from "./updates";
@@ -23,7 +23,7 @@ type StandaloneTemporaryChange = {
   }>
 }
 
-export const STANDALONE_UPDATES: Array<PartyChanges & { date: Version }> = [
+export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
   {
     date: BETA_RELEASE,
     map: "recreation:map_release.swf"
@@ -85,6 +85,125 @@ export const STANDALONE_UPDATES: Array<PartyChanges & { date: Version }> = [
     map: 'unknown:cpip_map_no_dojoext.swf'
   }
 ];
+
+type TemporaryGroupUpdate = PartyChanges & {
+  comment?: string;
+  endComment?: string;
+};
+
+export const STANDALONE_TEMPORARY_UPDATES: TemporaryUpdateTimeline<TemporaryGroupUpdate, TemporaryGroupUpdate> = [
+  {
+    date: '2008-01-16',
+    end: ROCKHOPPER_ARRIVAL_PARTY_START,
+    updates: [
+      {
+        // according to newspaper
+        // unsure if in the original game the animation replayed each time
+        // unless they had some interesting serverside code or the client in this day was different
+        // it probably just replayed each time
+
+        comment: 'Something happening with The Migrator can be viewed from the telescope',
+        generalChanges: {
+          // TODO telescope abstraction
+          'artwork/tools/telescope0.swf': 'archives:BeaconTelescopeCrash.swf'
+        }
+      },
+      {
+          // we know on 17th it was still the previous one
+          // this date below here is mostly an assumption, but it should be this at most
+          // by the 23rd
+          date: '2008-01-18',
+          generalChanges: {
+            'artwork/tools/telescope0.swf': 'archives:TelescopeCrash2.swf'
+          },
+          comment: 'The aftermath of The Migrator crash remains in the telescope'
+      },
+      {
+        comment: 'Rockhopper lands in Club Penguin with a rowboat',
+        date: '2008-01-23',
+        roomChanges: {
+          beach: 'archives:Beach45afterrockycrash.swf'
+        }
+      },
+      {
+        date: '2008-01-30',
+        comment: 'The Migrator\'s remains sink further',
+        generalChanges: {
+          'artwork/tools/telescope0.swf': 'archives:TelescopeCrash3.swf'
+        }
+      },
+      {
+        date: '2008-02-01',
+        end: '2008-02-06',
+        comment: 'Rockhopper is seen leaving Club Penguin from the telescope',
+        endComment: 'The Migrator is completely sunk',
+        generalChanges: {
+          'artwork/tools/telescope0.swf': 'archives:TelescopeCrash4.swf'
+        }
+      },
+      {
+        date: '2008-02-01',
+        comment: 'Save the Migrator is setup at the Beach',
+        roomChanges: {
+          beach: 'archives:0403beach45.swf'
+        },
+      },
+      {
+        date: '2008-02-23',
+        comment: 'Pieces of The Migrator show up at the Beach',
+        roomChanges: {
+          beach: 'archives:0223beach45.swf'
+        }
+      },
+      {
+        date: '2008-02-29',
+        comment: 'More pieces show up at the Beach',
+        roomChanges: {
+          beach: 'archives:0229beach45.swf'
+        }
+      },
+      {
+        date: '2008-03-07',
+        comment: 'Reconstruction of The Migrator begins',
+        roomChanges: {
+          beach: 'archives:0307beach45.swf'
+        }
+      },
+      {
+        // this date is a conjecture, don't know when it actually happened
+        date: '2008-03-20',
+        comment: 'Reconstruction of The Migrator progresses',
+        roomChanges: {
+          beach: 'archives:0320beach45.swf'
+        }
+      },
+      {
+        date: '2008-03-27',
+        comment: 'Reconstruction of The Migrator progresses',
+        roomChanges: {
+          beach: 'archives:0327beach45.swf'
+        }
+      },
+      {
+        date: '2008-04-10',
+        comment: 'The Migrator is cleaned up and a new device is at the Beach',
+        roomChanges: {
+          beach: 'archives:0410beach45.swf'
+        },
+        activeMigrator: true,
+        end: null
+      },
+      {
+        date: '2008-04-17',
+        end: null,
+        comment: 'Rockhopper is spotted through the telescope',
+        generalChanges: {
+          'artwork/tools/telescope0.swf': 'archives:Telescope0417.swf'
+        }
+      }
+    ]
+  }
+]
 
 export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: string; comment?: string }>> = {
   'chat291.swf': [
@@ -291,44 +410,5 @@ export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChan
       fileRef: 'archives:RoomsPlaza-ChristmasParty2007Pre.swf',
       comment: 'The Coins For Change event begins'
     }
-  ],
-  'artwork/tools/telescope0.swf': [
-    {
-      // according to newspaper
-      // unsure if in the original game the animation replayed each time
-      // unless they had some interesting serverside code or the client in this day was different
-      // it probably just replayed each time
-      startDate: '2008-01-16',
-      endDate: '2008-02-06',
-      fileRef: 'archives:BeaconTelescopeCrash.swf',
-      comment: 'Something happening with The Migrator can be viewed from the telescope',
-      endComment: 'The Migrator is completely sunk',
-      updates: [
-        {
-          // we know on 17th it was still the previous one
-          // this date below here is mostly an assumption, but it should be this at most
-          // by the 23rd
-          date: '2008-01-18',
-          fileRef: 'archives:TelescopeCrash2.swf',
-          comment: 'The aftermath of The Migrator crash remains in the telescope'
-        },
-        {
-          date: '2008-01-30',
-          comment: 'The Migrator\'s remains sink further',
-          fileRef: 'archives:TelescopeCrash3.swf'
-        },
-        {
-          date: '2008-02-01',
-          comment: 'Rockhopper is seen leaving Club Penguin from the telescope',
-          fileRef: 'archives:TelescopeCrash4.swf'
-        }
-      ]
-    },
-    {
-      startDate: '2008-04-17',
-      endDate: ROCKHOPPER_ARRIVAL_PARTY_START,
-      fileRef: 'archives:Telescope0417.swf',
-      comment: 'Rockhopper is spotted through the telescope'
-    }
-  ],
+  ]
 }

@@ -10,7 +10,7 @@ import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { PINS } from '../server/game-data/pins';
 import {EARTHQUAKE } from '../server/game-data/updates';
-import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
+import { STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
@@ -384,6 +384,22 @@ function addStandalone(map: DayMap): void {
       }
     })
   })
+
+  STANDALONE_TEMPORARY_UPDATES.forEach((update) => {
+    if (update.comment !== undefined) {
+      addArrayEvents(map, 'other', update.date, update.comment);
+    }
+    if (update.updates !== undefined) {
+      update.updates.forEach(subUpdate => {
+        if (subUpdate.comment !== undefined) {
+          addArrayEvents(map, 'other', subUpdate.date ?? update.date, subUpdate.comment);
+        }
+        if (subUpdate.endComment !== undefined && typeof subUpdate.end === 'string') {
+          addArrayEvents(map, 'other', subUpdate.end, subUpdate.endComment);
+        }
+      })
+    }
+  });
 }
 
 function updateTimeline(days: Day[]): Day[] {

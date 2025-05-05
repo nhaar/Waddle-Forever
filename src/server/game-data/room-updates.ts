@@ -101,49 +101,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'The Book Room now contains Penguin Art'
     }
   ],
-  beach: [
-    {
-      fileRef: 'archives:Beach45afterrockycrash.swf',
-      comment: 'Rockhopper lands in Club Penguin with a rowboat',
-      date: '2008-01-23'
-    },
-    {
-      date: '2008-02-01',
-      fileRef: 'archives:0403beach45.swf',
-      comment: 'Save The Migrator Project is set up at the Beach'
-    },
-    {
-      date: '2008-02-23',
-      fileRef: 'archives:0223beach45.swf',
-      comment: 'Pieces of The Migrator show up at the Beach'
-    },
-    {
-      date: '2008-02-29',
-      fileRef: 'archives:0229beach45.swf',
-      comment: 'More pieces show up at the Beach'
-    },
-    {
-      date: '2008-03-07',
-      fileRef: 'archives:0307beach45.swf',
-      comment: 'Reconstruction of The Migrator begins'
-    },
-    {
-      // this date is a conjecture, don't know when it actually happened
-      date: '2008-03-20',
-      fileRef: 'archives:0320beach45.swf',
-      comment: 'Reconstruction of The Migrator progresses'
-    },
-    {
-      date: '2008-03-27',
-      fileRef: 'archives:0327beach45.swf',
-      comment: 'Reconstruction of The Migrator progresses'
-    },
-    {
-      date: '2008-04-10',
-      fileRef: 'archives:0410beach45.swf',
-      comment: 'The Migrator is cleaned up and a new device is at the Beach'
-    }
-  ],
   mtn: [
     {
       // it is unknown when the mountain was renovated to have ski animations
