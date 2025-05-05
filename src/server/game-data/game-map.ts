@@ -1,5 +1,7 @@
+/** Module handles all standalone updates regarding the in-game map */
+
 import { PermanentUpdateTimeline } from "./changes";
-import { COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SUMMER_PARTY_START } from "./updates";
+import { COVE_OPENING_START, DIG_OUT_DOJO_END, MODERN_AS3, PIZZA_PARLOR_OPENING_END, PRE_CPIP_REWRITE_DATE, SUMMER_PARTY_START } from "./updates";
 
 type MapUpdate = {
   fileRef: string;
@@ -28,12 +30,6 @@ export const MAP_UPDATES: PermanentUpdateTimeline<MapUpdate> = [
   {
     date: COVE_OPENING_START,
     fileRef: 'archives:ArtworkMaps15.swf'
-  },
-  {
-    // placeholder map in which the dojo courtyard goes to the dojo
-    // we have no other CPIP maps
-    date: CPIP_UPDATE,
-    fileRef: 'unknown:cpip_map_no_dojoext.swf'
   },
   {
     // adding dojo courtyard

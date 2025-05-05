@@ -1,4 +1,6 @@
+import { Version } from "../routes/versions";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
+import { PartyChanges } from "./parties";
 import { ANNIVERSARY_5_START, AS3_UPDATE, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, ROCKHOPPER_ARRIVAL_PARTY_START, STAMPS_RELEASE } from "./updates";
 
 type StandaloneChange = {
@@ -20,6 +22,61 @@ type StandaloneTemporaryChange = {
     comment?: string;
   }>
 }
+
+export const STANDALONE_UPDATES: Array<PartyChanges & { date: Version }> = [
+  {
+    date: CPIP_UPDATE,
+    roomChanges: {
+      town: 'archives:RoomsTown.swf',
+      rink: 'archives:RoomsRink.swf',
+      village: 'archives:RoomsVillage.swf',
+      forts: 'archives:FortsWithIceRinkStadium.swf',
+      // the only SWF we have of CPIP before renovation
+      pizza: 'archives:RoomsPizza-January2010.swf',
+      plaza: 'recreation:plaza_squidzoid_sign.swf',
+      book: 'archives:BookPrePenguinArt.swf',
+      beach: 'archives:RoomsBeach-2.swf',
+      mtn: 'recreation:mtn_cpip_start.swf',
+      berg: 'archives:RoomsBerg.swf',
+      beacon: 'archives:PreAugust2011Beacon.swf',
+      // post island adventure update
+      boxdimension: 'archives:RoomsBoxdimension-January2010.swf',
+      cave: 'archives:RoomsCave.swf',
+      // recreation of proper cove room here
+      cove: 'recreation:cpip_cove_precatalog.swf',
+      dance: 'recreation:dance_cpip_premusicjam.swf',
+      dock: 'recreation:dock_cpip_precatalog.swf',
+      light: 'recreation:light_cpip_start.swf',
+      stage: 'archives:RoomsStage-October2009.swf',
+      lodge: 'recreation:lodge_cpip_start.swf',
+      pet: 'recreation:pet_pre_white.swf',
+      shop: 'archives:RoomsShop.swf',
+      coffee: 'archives:RoomsCoffee1.swf',
+      lounge: 'archives:RoomsLounge.swf',
+      boiler: 'archives:RoomsBoiler-January2010.swf',
+      attic: 'slegacy:media/play/v2/content/global/rooms/attic.swf',
+      sport: 'archives:RoomsSport_2.swf',
+      lake: 'slegacy:media/play/v2/content/global/rooms/lake.swf',
+      cavemine: 'slegacy:media/play/v2/content/global/rooms/cavemine.swf',
+      dojo: 'recreation:dojo_cpip_start.swf',
+      shiphold: 'slegacy:media/play/v2/content/global/rooms/shiphold.swf',
+      shipnest: 'slegacy:media/play/v2/content/global/rooms/shipnest.swf',
+      shipquarters: 'slegacy:media/play/v2/content/global/rooms/shipquarters.swf',
+      agent: 'recreation:agent_2008_apr_cpip.swf',
+      mine: 'archives:RoomsMine_1.swf',
+      shack: 'archives:RoomsShack.swf',
+      forest: 'archives:RoomsForest.swf',
+      ship: 'archives:RoomsShip.swf'
+    },
+    music: {
+      // placeholder play
+      stage: 32,
+      // no idea on this one's date, adding it here
+      lounge: 6
+    },
+    map: 'unknown:cpip_map_no_dojoext.swf'
+  }
+];
 
 export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: string; comment?: string }>> = {
   'chat291.swf': [

@@ -1,6 +1,6 @@
 import { Version } from "../routes/versions";
 import { RoomName, RoomMap } from "./rooms";
-import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, BETA_RELEASE, CARD_JITSU_RELEASE, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, COVE_OPENING_START, CPIP_UPDATE, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRE_CELEBRATION_START, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, MUSIC_JAM_08_START, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROCKHOPPER_ARRIVAL_END, ROOM_REDRAWS, SNOW_SPORT_RELEASE, SPORT_PARTY_END, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_CELEBRATION_END, WATER_HUNT_END } from "./updates";
+import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, BETA_RELEASE, CARD_JITSU_RELEASE, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, DIG_OUT_DOJO_END, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRE_CELEBRATION_START, FIRE_CONST_START, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICE_FISHING_RELEASE, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, PUFFLE_ROUNDUP_RELEASE, ROOM_REDRAWS, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, THIN_ICE_RELEASE, WATER_HUNT_END } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -31,11 +31,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:ArtworkRoomsTown40.swf',
       date: PRE_CPIP_REWRITE_DATE
     },
-    {
-      // placeholder CPIP room
-      date: CPIP_UPDATE,
-      fileRef: 'archives:RoomsTown.swf'
-    }
   ],
   rink: [
     {
@@ -54,17 +49,8 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:ArtworkRoomsRink22.swf',
       comment: 'The Ice Rink now has score signs'
     },
-    {
-      // placeholder CPIP room
-      date: CPIP_UPDATE,
-      fileRef: 'archives:RoomsRink.swf'
-    }
   ],
   village: [
-    {
-      fileRef: 'archives:RoomsVillage.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:RoomsVillage_2.swf',
       date: EPF_RELEASE
@@ -88,26 +74,9 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsForts40.swf',
       comment: 'The Snow Forts is redrawn'
-    },
-    {
-      // placeholder CPIP room
-      date: CPIP_UPDATE,
-      fileRef: 'archives:FortsWithIceRinkStadium.swf'
-    }
-  ],
-  pizza: [
-    {
-      // placeholder CPIP room
-      // the only SWF we have of CPIP before renovation
-      fileRef: 'archives:RoomsPizza-January2010.swf',
-      date: CPIP_UPDATE
     }
   ],
   plaza: [
-    {
-      fileRef: 'recreation:plaza_squidzoid_sign.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/plaza.swf',
       date: MODERN_AS3
@@ -130,11 +99,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       // comment: 'The book room was updated to have a new Mancala board'
     },
     {
-      // placeholder CPIP room
-      fileRef: 'archives:BookPrePenguinArt.swf',
-      date: CPIP_UPDATE
-    },
-    {
       // room with UGC art
       fileRef: 'archives:BookWithPenguinArt.swf',
       date: '2010-10-23',
@@ -142,10 +106,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   beach: [
-    {
-      fileRef: 'archives:RoomsBeach-2.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:Beach45afterrockycrash.swf',
       comment: 'Rockhopper lands in Club Penguin with a rowboat',
@@ -195,11 +155,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: '2006-01-01'
     },
     {
-      // placeholder CPIP room
-      fileRef: 'recreation:mtn_cpip_start.swf',
-      date: CPIP_UPDATE
-    },
-    {
       fileRef: 'archives:RoomsMtn-January2010.swf',
       date: GAME_UPGRADES
     },
@@ -210,11 +165,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
   ],
   berg: [
-    {
-      // placeholder CPIP room
-      fileRef: 'archives:RoomsBerg.swf',
-      date: CPIP_UPDATE
-    },
     {
       // another september 22 redraw
       date: ROOM_REDRAWS,
@@ -239,11 +189,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   beacon: [
     {
-      // placeholder CPIP room
-      fileRef: 'archives:PreAugust2011Beacon.swf',
-      date: CPIP_UPDATE
-    },
-    {
       date: JPA_RELEASE,
       fileRef: 'archives:ArtworkRoomsBeacon41.swf',
       comment: 'The launchpad construction in the Beacon is finished'
@@ -251,30 +196,12 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   boxdimension: [
     {
-      // placeholder CPIP room
-      // post island adventure update
-      fileRef: 'archives:RoomsBoxdimension-January2010.swf',
-      date: CPIP_UPDATE
-    },
-    {
       fileRef: 'slegacy:media/play/v2/content/global/rooms/boxdimension.swf',
       date: '2010-02-11',
       comment: 'The plants disappear from the Box Dimension'
     }
   ],
-  cave: [
-    {
-      // placeholder CPIP room
-      fileRef: 'archives:RoomsCave.swf',
-      date: CPIP_UPDATE
-    }
-  ],
   cove: [
-    {
-      // recreation of proper cove room here
-      fileRef: 'recreation:cpip_cove_precatalog.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:RoomsCove.swf',
       date: GAME_UPGRADES
@@ -287,10 +214,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   dance: [
     {
-      fileRef: 'recreation:dance_cpip_premusicjam.swf',
-      date: CPIP_UPDATE
-    },
-    {
       // placeholder vectorized room, unknown date
       fileRef: 'archives:ArtworkRoomsDance50.swf',
       date: PRE_CPIP_REWRITE_DATE
@@ -302,11 +225,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   dock: [
-    {
-      // pre catalog
-      fileRef: 'recreation:dock_cpip_precatalog.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:RoomsDock_1.swf',
       date: GAME_UPGRADES
@@ -324,27 +242,12 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   light: [
     {
-      fileRef: 'recreation:light_cpip_start.swf',
-      date: CPIP_UPDATE
-    },
-    {
       date: '2007-04-13',
       fileRef: 'archives:Lighthouse2007.swf',
       comment: 'A stage is now built in the Lighthouse'
     },
   ],
-  stage: [
-    {
-      fileRef: 'archives:RoomsStage-October2009.swf',
-      date: CPIP_UPDATE
-    }
-  ],
   lodge: [
-    {
-      // placeholder CPIP room
-      fileRef: 'recreation:lodge_cpip_start.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:RoomsLodge.swf',
       date: GAME_UPGRADES  
@@ -361,10 +264,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   pet: [
-    {
-      fileRef: 'recreation:pet_pre_white.swf',
-      date: CPIP_UPDATE
-    },
     {
       // white puffle release
       fileRef: 'archives:RoomsPet_4.swf',
@@ -403,22 +302,12 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   shop: [
     {
-      // placeholder CPIP room
-      fileRef: 'archives:RoomsShop.swf',
-      date: CPIP_UPDATE
-    },
-    {
       // unknown date, vectorized 07 rooms
       date: PRE_CPIP_REWRITE_DATE,
       fileRef: 'archives:ArtworkRoomsShop40.swf'
     }
   ],
   coffee: [
-    {
-      // the first CPIP room we have
-      fileRef: 'archives:RoomsCoffee1.swf',
-      date: CPIP_UPDATE
-    },
     {
       // an unknown update which removed the ability to click on the couch
       fileRef: 'mammoth:artwork/rooms/coffee11.swf',
@@ -427,21 +316,9 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   lounge: [
     {
-      // placeholder CPIP room
-      fileRef: 'archives:RoomsLounge.swf',
-      date: CPIP_UPDATE
-    },
-    {
       date: THIN_ICE_RELEASE,
       comment: 'A new cabinet is in the Dance Lounge',
       fileRef: 'archives:ArtworkRoomsLounge40.swf'
-    }
-  ],
-  boiler: [
-    {
-      // placeholder CPIP room
-      fileRef: 'archives:RoomsBoiler-January2010.swf',
-      date: CPIP_UPDATE
     }
   ],
   attic: [
@@ -450,43 +327,15 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:ArtworkRoomsAttic12.swf',
       date: BETA_RELEASE
     },
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/attic.swf',
-      date: CPIP_UPDATE
-    }
   ],
   sport: [
-    {
-      // placeholder CPIP room
-      fileRef: 'archives:RoomsSport_2.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:RoomsSport.swf',
       date: SNOW_SPORT_RELEASE,
       comment: 'The Snow and Sports catalog is now available in the Sport Shop'
     }
   ],
-  lake: [
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/lake.swf',
-      date: CPIP_UPDATE
-    }
-  ],
-  cavemine: [
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/cavemine.swf',
-      date: CPIP_UPDATE
-    }
-  ],
   dojo: [
-    {
-      fileRef: 'recreation:dojo_cpip_start.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'slegacy:media/play/v2/content/global/rooms/dojo.swf',
       date: CARD_JITSU_RELEASE
@@ -502,18 +351,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'The dojo now has the Card-Jitsu game'
     }
   ],
-  dojofire: [
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/dojofire.swf',
-      date: CPIP_UPDATE
-    },
-  ],
   dojohide: [
     {
       // placeholder CPIP room
       fileRef: 'archives:RoomsDojohide-1.swf',
-      date: CPIP_UPDATE
+      date: CARD_JITSU_RELEASE
     },
     {
       fileRef: 'archives:RoomsDojohide_2.swf',
@@ -528,36 +370,10 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       // placeholder CPIP room
       fileRef: 'slegacy:media/play/v2/content/global/rooms/dojowater.swf',
-      date: CPIP_UPDATE
-    }
-  ],
-  shiphold: [
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/shiphold.swf',
-      date: CPIP_UPDATE
-    }
-  ],
-  shipnest: [
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/shipnest.swf',
-      date: CPIP_UPDATE
-    }
-  ],
-  shipquarters: [
-    {
-      // placeholder CPIP room
-      fileRef: 'slegacy:media/play/v2/content/global/rooms/shipquarters.swf',
-      date: CPIP_UPDATE
+      date: WATER_HUNT_END
     }
   ],
   agent: [
-    {
-      // proper recreation of what it was like when CPIP dropped
-      fileRef: 'recreation:agent_2008_apr_cpip.swf',
-      date: CPIP_UPDATE
-    },
     // first time stadium was added, seemingly
     {
       fileRef: 'recreation:agent_2008_nov.swf',
@@ -612,10 +428,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   mine: [
     {
-      fileRef: 'archives:RoomsMine_1.swf',
-      date: CPIP_UPDATE
-    },
-    {
       fileRef: 'archives:RoomsMine-Rockslide1.swf',
       date: '2010-01-08'
     },
@@ -629,10 +441,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   shack: [
-    {
-      fileRef: 'archives:RoomsShack.swf',
-      date: CPIP_UPDATE
-    },
     {
       fileRef: 'archives:RoomsShack-July2010.swf',
       date: '2010-07-29'
@@ -652,10 +460,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   forest: [
     {
-      fileRef: 'archives:RoomsForest.swf',
-      date: CPIP_UPDATE
-    },
-    {
       fileRef: 'archives:RoomsForest_3.swf',
       date: '2010-06-17'
     },
@@ -672,12 +476,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
       date: MODERN_AS3
-    }
-  ],
-  ship: [
-    {
-      fileRef: 'archives:RoomsShip.swf',
-      date: CPIP_UPDATE
     }
   ],
   dojoext: [
@@ -825,6 +623,11 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     room: 'beacon',
     fileRef: 'archives:ArtworkRoomsBeacon40.swf',
     date: LIGHTHOUSE_PARTY_START
+  },
+  {
+    room: 'dojofire',
+    fileRef: 'slegacy:media/play/v2/content/global/rooms/dojofire.swf',
+    date: FIRE_CONST_START
   }
 ];
 
@@ -834,11 +637,7 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   'coffee': [1],
   'book': [1],
   'pizza': [20],
-  'lounge': [0, {
-    // no idea on the date
-    date: CPIP_UPDATE,
-    musicId: 6
-  }],
+  'lounge': [0],
   'dance': [
     2,
     // switching to crossing over, unknown the exact date, it's around this time though
@@ -871,11 +670,7 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   ],
   dojowater: [24],
   boiler: [6],
-  stage: [
-    0,
-    // placeholder CPIP play
-    { date: CPIP_UPDATE, musicId: 32 }
-  ]
+  stage: [0]
 };
 
 type TemporaryRoomUpdate = Array<{
