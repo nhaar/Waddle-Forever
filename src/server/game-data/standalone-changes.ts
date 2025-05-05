@@ -55,7 +55,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       dance: 'recreation:dance_cpip_premusicjam.swf',
       dock: 'recreation:dock_cpip_precatalog.swf',
       light: 'recreation:light_cpip_start.swf',
-      stage: 'archives:RoomsStage-October2009.swf',
+      stage: 'archives:RoomsStage2008-07-15-Squidzoid.swf',
       lodge: 'recreation:lodge_cpip_start.swf',
       pet: 'recreation:pet_pre_white.swf',
       shop: 'archives:RoomsShop.swf',
