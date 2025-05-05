@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.1.1"
+VERSION="1.1.2"
 URL="https://waddleforever.com"
 DEFAULT="default"
 CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverClient-$VERSION.AppImage"
