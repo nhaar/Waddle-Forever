@@ -22,7 +22,7 @@ import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } 
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { getNewspaperName } from "./news.txt";
 import { PINS } from "../game-data/pins";
-import { DateRefMap, findInVersion, IdentifierMap, IdRefMap, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
+import { DateRefMap, findInVersion, VersionsMap, IdRefMap, processTimeline, RouteRefMap, TemporaryUpdateTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data/changes";
 import { MIGRATOR_PERIODS } from "../game-data/migrator";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { ITEMS } from "../game-logic/items";
@@ -32,7 +32,7 @@ import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { iterateEntries } from "../../common/utils";
 
 class FileTimelineMap extends TimelineMap<string, string> {
-  protected override processIdentifier(identifier: string): string {
+  protected override processKey(identifier: string): string {
     return sanitizePath(identifier);
   }
 
@@ -539,7 +539,7 @@ export function getRoomFrameTimeline() {
     });
   });
 
-  return timeline.getIdentifierMap();
+  return timeline.getVersionsMap();
 }
 
 export function getMusicTimeline(includeParties: boolean = true) {
@@ -576,7 +576,7 @@ export function getMusicTimeline(includeParties: boolean = true) {
       }
     })
   }
-  return timeline.getIdentifierMap();
+  return timeline.getVersionsMap();
 }
 
 export function getMigratorTimeline() {
@@ -604,7 +604,7 @@ export function getMigratorTimeline() {
     });
   });
 
-  return timeline.getVersion();
+  return timeline.getVersions();
 }
 
 export function getClothingTimeline() {
@@ -617,10 +617,10 @@ export function getClothingTimeline() {
     });
   });
 
-  return timeline.getVersion();
+  return timeline.getVersions();
 }
 
-function getMusicForDate(map: IdentifierMap<RoomName, number>, date: Version): Partial<Record<RoomName, number>> {
+function getMusicForDate(map: VersionsMap<RoomName, number>, date: Version): Partial<Record<RoomName, number>> {
   const music: Partial<Record<RoomName, number>> = {};
   map.forEach((versions, room) => {
     music[room] = findInVersion(date, versions);
@@ -937,7 +937,7 @@ export function getFileServer() {
 
   timelineProcessors.forEach((fn) => fn(timelines));
   
-  const fileServer = timelines.getIdentifierMap();
+  const fileServer = timelines.getVersionsMap();
 
   return fileServer;
 }

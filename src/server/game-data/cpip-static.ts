@@ -1,3 +1,7 @@
+/**
+ * Should be refactored in the future
+ * Module lists all the files served Post-CPIP, not including modern AS3 */
+
 import { RouteRefMap } from "./changes";
 
 /** Files to be served static in Post-CPIP (not including 2016) */

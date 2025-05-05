@@ -2,7 +2,7 @@ import { iterateEntries } from "../../common/utils";
 import { isEqual, isLower, Version } from "../routes/versions"
 import { FileRef } from "./files";
 
-/** A map that takes as keys a game route and as values a file reference */
+/** A map that takes as keys a game route and as values a file reference. Works as static serving for a single point in time */
 export type RouteRefMap = Record<string, FileRef>;
 
 /**
@@ -11,48 +11,81 @@ export type RouteRefMap = Record<string, FileRef>;
  * */
 export type DateMap<Info> = Record<Version, Info>;
 
+/** A map that takes as keys dates/versions and as values a file reference associated with that date */
 export type DateRefMap = DateMap<FileRef>;
 
-/** A map that takes as keys a ID number (of any kind) and values a file reference */
+/** A map that takes as keys an ID number (of any kind) and values a file reference associated with the ID */
 export type IdRefMap = Record<number, FileRef>;
 
-export type PermanentChange<ChangeInformation> = {
+/**
+ * A permanent change is one in which when it is implemented, there is no plan to go
+ * back on the change
+ * Type represents a permanent change
+ * */
+type PermanentChange<ChangeInformation> = {
+  /** Date this change was implemented */
   date: Version;
+  /** All information associated with the change */
   info: ChangeInformation
 };
 
+/** 
+ * A temporary change is one in which you plan to revert back to the initial stage once
+ * after a time period
+ * Type represents a temporary change
+ * */
 export type TemporaryChange<ChangeInformation> = {
+  /** Date this change is first introduced */
   date: Version;
+  /** Date this change is removed */
   end: Version;
+  /** All information associated with the change */
   info: ChangeInformation;
-  updates: Array<PermanentChange<ChangeInformation>>;
+  /**
+   * A series of changes that happen in the middle of this temporary update
+   * at dates other than the start date, which all disappear when this update goes away
+   */
 };
 
-/** Abstraction of a type that represents either a temporary event or permanent one in a timeline */
+/** A singular update on a timeline of events that are either permanent or temporary */
 export type TimelineEvent<ChangeInformation> = PermanentChange<ChangeInformation> | TemporaryChange<ChangeInformation>;
 
-export type PermanentUpdateTimeline<UpdateInformation> = Array<{
+/** Implementation of a permanent update with arbitrary information */
+type PermanentUpdate<UpdateInformation> = {
   date: Version;
-} & UpdateInformation>;
+} & UpdateInformation;
 
+/** List of many implementations of permanent updates */
+export type PermanentUpdateTimeline<UpdateInformation> = PermanentUpdate<UpdateInformation>[];
+
+/**
+ * Implementation of a temporary update with arbitrary information.
+ * This is not exactly the same as a temporary change, it holds a lot of other things that
+ * are used with updates that last for a small amount of time
+ * */
 export type TemporaryUpdate<UpdateInformation, SubUpdateInformation> = {
   date: Version;
   end: Version;
+  /** All updates that happen within this temporary update */
   updates?: Array<{
     /** If not added, then it defaults to the start of the temporary update */
     date?: Version;
   } & SubUpdateInformation>;
+  /** Permanent changes applied at the beginning of this update */
   permanentChanges?: SubUpdateInformation;
+  /** Permanent changes applied at the end of this update */
   consequences?: SubUpdateInformation;
 } & UpdateInformation;
 
-export type TemporaryUpdateTimeline<UpdateInformation, SubUpdateInformation> = Array<TemporaryUpdate<UpdateInformation, SubUpdateInformation>>
+/** List of many implementations of temporary updates */
+export type TemporaryUpdateTimeline<UpdateInformation, SubUpdateInformation> = Array<TemporaryUpdate<UpdateInformation, SubUpdateInformation>>;
 
 /**
- * Processes a timeline of events into some form of output
+ * Takes an unorganized sequence of temporary and permanent changes, and processes it into a sorted organized output
+ * representing a full timeline of changes
  * @param timeline The timeline of events
  * @param getInput A function that takes each event and gets characteristic input data that is meant to be particular of each event
- * @param getOutput A function that takes a previous' event input data, or none if nothing previous, and the current event input data and outputs a final output
+ * @param getOutput A function that takes a previous event's input data, or none if nothing previous, and the current event input data and outputs a final output
  * @param hashOutput A function that creates a unique identifier for a given output, to be able to hash it
  * @returns 
  */
@@ -67,7 +100,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   out: EventOutput,
   id: number
 }> {
-  // first part of this altgothrm:
+  // first part of this algorithm:
   // labeling what each update is and breaking everything down
   // to events
   
@@ -75,6 +108,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   const permanentMapping = new Map<number, EventInput>();
   const temporaryMapping = new Map<number, EventInput>();
 
+  // further splitting temporary updates into start and end
   const eventsTimeline: Array<{
     type: 'permanent' | 'temp_start' | 'temp_end',
     id: number;
@@ -84,9 +118,11 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   let currentId = 0;
 
   timeline.forEach((event) => {
+    // temporary updates
+    const input = getInput(event.info);
     if ('end' in event) {
       currentId++;
-      temporaryMapping.set(currentId, getInput(event.info));
+      temporaryMapping.set(currentId, input);
       eventsTimeline.push({
         type: 'temp_start',
         id: currentId,
@@ -98,7 +134,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
       });
     } else {
       currentId++;
-      permanentMapping.set(currentId, getInput(event.info));
+      permanentMapping.set(currentId, input);
       eventsTimeline.push({
         type: 'permanent',
         id: currentId,
@@ -107,8 +143,9 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
     } 
   });
 
-  // sort needs to be a bit more than just the date;
+  // sorting by the date
   // if on the same day, the priority is permanent->temp end->temp start
+  // because if a permanent update is after the temporary, then it won't be added
   const sorted = eventsTimeline.sort((a, b) => {
     const aVersion = a.date;
     const bVersion = b.date;
@@ -137,7 +174,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   });
 
   // second part of this algorithm: going through the events
-  // and judging which file is to be used at each date
+  // and processing what the output is meant to look like
 
   const versions: Array<{ 
     date: Version
@@ -182,7 +219,6 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   const pushPermanent = (date: string) => {
     const input = permanentMapping.get(currentPermanent);
     if (input !== undefined) {
-      // no permanent room means there isn't one. So no changes will be used
       const output = getOutput(getPrevious(), input);
       outputMapping.set(currentPermanent, output);
       const id = getOutputId(output);
@@ -233,22 +269,32 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   return versions;
 }
 
+/**
+ * A sorted array which represents how an information changes through time
+ * Each new element means that the information mutates on that given date
+ * */
 type VersionsInformation<EventInformation> = Array<{
   date: Version;
-  info: EventInformation
+  info: EventInformation;
 }>;
 
-export function processTimeInvariantTimeline<EventInformation>(timeline: TimelineEvent<EventInformation>[]) {
+/**
+ * Process a timeline of events which are independent of each other
+ * This means for example that the previous update's information is not used at all
+ * in the next update
+ * @param timeline 
+ * @returns 
+ */
+export function processIndependentTimeline<EventInformation>(timeline: TimelineEvent<EventInformation>[]): VersionsInformation<EventInformation> {
+  // filter things out with undefined, it should not be possible for the output to have undefineds
+  // on the way this is setup
   const versions = processTimeline<EventInformation, EventInformation, undefined | EventInformation>(timeline, (input) => {
     return input;
   }, () => {
     return undefined
   }, (_, c) => c, (out) => out === undefined ? '' : JSON.stringify(out));
 
-  const cleanVersions: Array<{
-    date: Version;
-    info: EventInformation;
-  }> = [];
+  const cleanVersions: VersionsInformation<EventInformation> = [];
   versions.forEach((version) => {
     if (version.out !== undefined) {
       cleanVersions.push({ date: version.date, info: version.out });
@@ -258,9 +304,15 @@ export function processTimeInvariantTimeline<EventInformation>(timeline: Timelin
   return cleanVersions;
 }
 
-export function baseFindInVersion<Prop extends string, ValueType, T extends { date: Version } & { [key in Prop]: ValueType }>(date: Version, versions: T[], propName: Prop) {
+/**
+ * Given an array of sorted versions, find what is active in the given date
+ * @param date 
+ * @param versions 
+ * @returns undefined if it underflows (date is before first update)
+ */
+export function findInVersion<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
   if (versions.length === 1) {
-    return versions[0][propName];
+    return versions[0]['info'];
   }
   
   const index = findEarliestDateHitIndex(date, versions);
@@ -268,26 +320,17 @@ export function baseFindInVersion<Prop extends string, ValueType, T extends { da
     return undefined;
   }
   
-  return versions[index][propName];
+  return versions[index]['info'];
 }
 
-export function findInVersion<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
-  return baseFindInVersion(date, versions, 'info');
-}
-
-export function getIdentifierInMap<Identifier, EventInformation>(
-  map: IdentifierMap<Identifier, EventInformation>,
-  id: Identifier,
-  date: Version
-) {
-  const versions = map.get(id);
-  if (versions === undefined) {
-    return null;
-  }
-  return findInVersion(date, versions);
-}
-
-export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
+/**
+ * Search in a sorted array of dates what index is the earliest to be compatible or -1 if it underflows
+ * If there is only one element, it always returns it
+ * @param date 
+ * @param array Sorted array by date
+ * @returns 
+ */
+function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
   if (array.length < 2) {
     if (array.length === 1) {
       if (isLower(date, array[0].date)) {
@@ -334,24 +377,25 @@ export function findEarliestDateHitIndex<T extends { date: Version }>(date: Vers
   return index;
 }
 
-/** Maps a route to all the file information related to it */
-export type IdentifierMap<Identifier, EventInformation> = Map<Identifier, VersionsInformation<EventInformation>>;
+/** Map of things that map to many versions */
+export type VersionsMap<Key, EventInformation> = Map<Key, VersionsInformation<EventInformation>>;
 
 /** Given a route map, adds file information to a given route */
-export function addToIdentifierMap<Identifier, EventInformation>(
-  map: IdentifierMap<Identifier, EventInformation>,
-  identifier: Identifier,
+export function addToVersionsMap<Key, EventInformation>(
+  map: VersionsMap<Key, EventInformation>,
+  key: Key,
   info: { date: Version; info: EventInformation }[]
 ): void {
-  const previousValue = map.get(identifier);
+  const previousValue = map.get(key);
   if (previousValue === undefined) {
-    map.set(identifier, info);
+    map.set(key, info);
   } else {
     console.log(previousValue, info);
-    throw new Error(`${identifier} is being duplicated`);
+    throw new Error(`${key} is being duplicated`);
   }
 }
 
+/** Class handles a timeline of versions */
 export class VersionsTimeline<EventInformation> {
   private _eventsTimeline: TimelineEvent<EventInformation>[];
   
@@ -359,31 +403,35 @@ export class VersionsTimeline<EventInformation> {
     this._eventsTimeline = [];
   }
 
+  /** Adds all events from a date map */
   addDateMap(dateMap: DateMap<EventInformation>) {
     iterateEntries(dateMap, (date, info) => {
       this.add({ date, info });
-    })
+    });
   }
 
+  /** Add an event to the timeline */
   add(event: TimelineEvent<EventInformation>) {
     this._eventsTimeline.push(event);
   }
 
-  getVersion() {
-    return processTimeInvariantTimeline(this._eventsTimeline);
+  /** Get sorted versions array */
+  getVersions() {
+    return processIndependentTimeline(this._eventsTimeline);
   }
 }
 
-export class TimelineMap<Identifier, EventInformation> {
-  private _map: Map<Identifier, VersionsTimeline<EventInformation>>;
+/** Class handles an object that maps things to timelines */
+export class TimelineMap<Key, EventInformation> {
+  private _map: Map<Key, VersionsTimeline<EventInformation>>;
   
   constructor() {
-    this._map = new Map<Identifier, VersionsTimeline<EventInformation>>;
+    this._map = new Map<Key, VersionsTimeline<EventInformation>>;
   }
 
-  /** Inherit to make changes to the identifier input */
-  protected processIdentifier(identifier: Identifier): Identifier {
-    return identifier;
+  /** Inherit to make changes to the key input */
+  protected processKey(key: Key): Key {
+    return key;
   }
 
   /** Inherit to make changes to the information input */
@@ -391,67 +439,69 @@ export class TimelineMap<Identifier, EventInformation> {
     return info;
   }
 
-  addPermanentUpdateTimeline<UpdateInformation>(
-    timeline: PermanentUpdateTimeline<UpdateInformation>,
-    processor: (info: UpdateInformation) => Array<{ id: Identifier, info: EventInformation }>
-  ) {
-    timeline.forEach((update) => {
-      const processed = processor(update);
-      processed.forEach(({ id, info}) => {
-        this.addPerm(id, update.date, info);
-      })
-    });
+  /**
+   * Consumes a date map onto a timeline
+   * @param key 
+   * @param dateMap 
+   */
+  addDateMap(key: Key, dateMap: DateMap<EventInformation>): void {
+    this.updateTimeline(key, (t) => t.addDateMap(dateMap));
   }
 
-  addDateMap(id: Identifier, dateMap: DateMap<EventInformation>): void {
-    this.updateIdentifier(id, (t) => t.addDateMap(dateMap));
-  }
-
-  updateIdentifier(id: Identifier, updater: (timeline: VersionsTimeline<EventInformation>) => void) {
-    id = this.processIdentifier(id);
-    let timeline = this._map.get(id);
+  /**
+   * Updates the timeline of a member of the map
+   * @param key 
+   * @param updater 
+   */
+  updateTimeline(key: Key, updater: (timeline: VersionsTimeline<EventInformation>) => void) {
+    key = this.processKey(key);
+    let timeline = this._map.get(key);
     if (timeline === undefined) {
       timeline = new VersionsTimeline<EventInformation>();
     }
 
     updater(timeline);
-    this._map.set(id, timeline);
+    this._map.set(key, timeline);
   }
 
-  addTemp(identifier: Identifier, start: Version, end: Version, info: EventInformation) {
-    this.add(identifier, {
+  /** Add a temporary event to a timeline */
+  addTemp(key: Key, start: Version, end: Version, info: EventInformation) {
+    this.add(key, {
       date: start,
       end,
       info
     });
   }
-  addPerm(identifier: Identifier, date: Version, info: EventInformation) {
-    this.add(identifier, {
+
+  /** Add a permanent event to a timeline */
+  addPerm(key: Key, date: Version, info: EventInformation) {
+    this.add(key, {
       date,
       info,
     });
   }
 
-  /** Add a file update event to a timeline map for a given route */
-  protected add(identifier: Identifier, event: TimelineEvent<EventInformation>): void {
-    identifier = this.processIdentifier(identifier);
+  /** Add event to a timeline */
+  protected add(key: Key, event: TimelineEvent<EventInformation>): void {
+    key = this.processKey(key);
     event.info = this.processInformation(event.info);
-    const prev = this._map.get(identifier);
+    const prev = this._map.get(key);
     if (prev === undefined) {
       const timeline = new VersionsTimeline<EventInformation>();
       timeline.add(event);
-      this._map.set(identifier, timeline);
+      this._map.set(key, timeline);
     } else {
       prev.add(event);
     }
   }
 
-  getIdentifierMap(): Map<Identifier, VersionsInformation<EventInformation>> {
-    const idMap = new Map<Identifier, VersionsInformation<EventInformation>>();
+  /** Get processed version maps with sorted timelines */
+  getVersionsMap(): Map<Key, VersionsInformation<EventInformation>> {
+    const map = new Map<Key, VersionsInformation<EventInformation>>();
     this._map.forEach((timeline, route) => {
-      addToIdentifierMap(idMap, route, timeline.getVersion());
+      addToVersionsMap(map, route, timeline.getVersions());
     });
 
-    return idMap;
+    return map;
   }
 }

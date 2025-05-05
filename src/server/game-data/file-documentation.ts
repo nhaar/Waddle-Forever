@@ -6,12 +6,17 @@
 import path from 'path';
 import { DEFAULT_DIRECTORY, getFilesInDirectory, iterateEntries } from "../../common/utils";
 
+/** Information regarding a file */
 type FileDocumentation = {
+  /** File path inside sudirectory. Not a file reference */
   file: string;
+  /** Arbitrary string commenting the file */
   comment: string;
+  /** File reference to the file used to make this one */
   base?: string;
 };
 
+// reference to names of subdirectories
 export const FIX = 'fix';
 export const APPROXIMATION = 'approximation';
 export const RECREATION = 'recreation';
@@ -522,7 +527,8 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
   ]
 };
 
-export function enforceDocumentationCorrectness() {
+/** Raises error if a unproperly documented file is found */
+export function enforceDocumentationCorrectness(): void {
   // files in the media folder, but not in here
   const missingFiles: string[] = [];
   // files in here, but not in the media folder

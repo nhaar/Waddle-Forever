@@ -1,3 +1,8 @@
+/**
+ * Module that lists static files to be used in all post-CPIP
+ * This should be refactored in the future
+ */
+
 import { RouteRefMap } from "./changes";
 
 /** Map of routes to be served staticly during all of the post-CPIP era, including the 2016 version */

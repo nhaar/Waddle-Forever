@@ -1,3 +1,5 @@
+/** Module maps out the files used for all clothing */
+
 import { IdRefMap } from "./changes";
 
 /** Files for the icons of each relevant clothing ID */

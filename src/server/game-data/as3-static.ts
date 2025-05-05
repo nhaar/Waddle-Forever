@@ -1,3 +1,8 @@
+/**
+ * Module contains all the files to be served in the 2016 version
+ * This module is mostly temporary, in the future it should be replaced
+ * */
+
 import { RouteRefMap } from "./changes";
 
 /** All files to be served during the 2016 versions */

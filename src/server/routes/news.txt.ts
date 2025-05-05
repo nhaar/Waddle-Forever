@@ -11,7 +11,7 @@ function getNewspaperTimeline() {
     } });
   });
 
-  return timeline.getVersion();
+  return timeline.getVersions();
 }
 
 const newspaperTimeline = getNewspaperTimeline();

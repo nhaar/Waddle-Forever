@@ -33,7 +33,7 @@ function getNewspapersTimeline() {
     date: FAN_ISSUE_DATE,
     info: 'fan'
   });
-  return timeline.getVersion();
+  return timeline.getVersions();
 }
 
 const newspaperTimeline = getNewspapersTimeline();

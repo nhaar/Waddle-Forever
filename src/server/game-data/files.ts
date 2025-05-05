@@ -1,3 +1,5 @@
+/** Module handles information of all the files stored in the media folder */
+
 import path from "path";
 import { IS_DEV } from "../../common/constants";
 import { APPROXIMATION, enforceDocumentationCorrectness, FIX, MOD, RECREATION, TOOL, UNKNOWN } from "./file-documentation";
