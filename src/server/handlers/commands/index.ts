@@ -123,4 +123,8 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
 
 handler.xt('m#sm', commandsHandler);
 
+handler.xt('m#sm', (client, id, message) => {
+  client.sendRoomXt('sm', id, message);
+});
+
 export default handler;

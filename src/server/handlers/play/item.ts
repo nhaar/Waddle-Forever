@@ -22,22 +22,18 @@ handler.xt('i#ai', (client, item) => {
   client.update();
 });
 
-type BodyPartName = 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background';
+type BodyPartName = 'color' | 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background';
 
 const addBodyPartUpdater = (xtCode: string, name: BodyPartName) => {
   handler.xt(`s#${xtCode}`, (client, id) => {
     const itemId = Number(id);
     client.penguin[name] = Number(itemId);
-    client.sendXt(xtCode, client.penguin.id, itemId);
+    client.sendRoomXt(xtCode, client.penguin.id, itemId);
     client.update();
   })
 }
 
-// equipping color
-handler.xt('s#upc', (client, color) => {
-  client.updateColor(Number(color));
-  client.update();
-});
+addBodyPartUpdater('upc', 'color');
 
 addBodyPartUpdater('upa', 'hand');
 

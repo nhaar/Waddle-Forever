@@ -21,11 +21,45 @@ type ServerType = 'Login' | 'World';
 
 const STAMP_RELEASE_VERSION : string = '2010-07-26'
 
+/** Manages a gameplayer server */
+export class Server {
+  /** All multiplayer rooms and all players connected to them */
+  private _rooms: Map<number, Set<Client>>
+
+  constructor() {
+    this._rooms = new Map<number, Set<Client>>();
+  }
+
+  /** Add a player to a room */
+  addToRoom(room: number, client: Client) {
+    const clients = this._rooms.get(room);
+    if (clients === undefined) {
+      this._rooms.set(room, new Set([client]));
+    } else {
+      clients.add(client);
+    }
+  }
+
+  /** Removes a player from a room */
+  leaveRoom(client: Client, room: number) {
+    this._rooms.get(room)?.delete(client);
+  }
+
+  /** Get all players in a room */
+  getPlayers(room: number): Client[] {
+    return Array.from(this._rooms.get(room)?.values() ?? []); 
+  }
+}
+
 export class Client {
   socket: net.Socket;
+  /** Reference to the server */
+  private _server: Server;
   penguin: Penguin;
   x: number;
   y: number;
+  /** Frame number, for animations like dancing */
+  _frame: number;
   currentRoom: number;
   private _settingsManager: SettingsManager
   sessionStart: number;
@@ -54,9 +88,10 @@ export class Client {
   // when digging gold nuggets for golden puffle
   private _isGoldNuggetState = false;
 
-  constructor (socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
+  constructor (server: Server, socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
     this.currentRoom = -1;
     
+    this._server = server;
     this.socket = socket;
     this._settingsManager = settingsManager;
     this.serverType = type;
@@ -64,6 +99,7 @@ export class Client {
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
+    this._frame = 1;
     this.sessionStart = Date.now();
     
     this.sessionStamps = [];
@@ -131,7 +167,7 @@ export class Client {
         this.penguin.background,
         this.x,
         this.y,
-        1, // TODO, figure what this "frame" means
+        this._frame,
         this.penguin.isMember ? 1 : 0,
         this.memberAge,
         0, // TODO figure out what this "avatar" is
@@ -156,16 +192,50 @@ export class Client {
     return this.age;
   }
 
+  setPosition(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  setFrame(frame: number) {
+    this._frame = frame;
+  }
+
+  resetFrame() {
+    this._frame = 1;
+  }
+
+  private getPlayersInRoom(): Client[] {
+    return this._server.getPlayers(this.currentRoom);
+  }
+
+  /** Send a XT message to all players in a room */
+  sendRoomXt(handler: string, ...args: Array<string | number>) {
+    const players = this.getPlayersInRoom();
+    players.forEach((client) => client.sendXt(handler, ...args));
+  }
+
+  leaveRoom(): void {
+    const players = this.getPlayersInRoom().filter((p) => p.penguin.id !== this.penguin.id);
+    this.sendRoomXt('rp', this.penguin.id, ...players.map((p) => p.penguinString));
+    this._server.leaveRoom(this, this.currentRoom);
+  }
+
   joinRoom (room: number): void {
-    // TODO multiplayer logic
+    // leaving previous room
+    if (this.currentRoom !== -1) {
+      this.leaveRoom();
+    }
+    this.currentRoom = room;
     const string = this.penguinString;
     if (isGameRoom(room)) {
       this.sendXt('jg', room);
     } else {
-      this.sendXt('jr', room, string);
-      this.sendXt('ap', string);
+      this._server.addToRoom(room, this);
+      const players = this._server.getPlayers(room);
+      this.sendXt('jr', room, ...players.map((client) => client.penguinString));
+      this.sendRoomXt('ap', string);
     }
-    this.currentRoom = room;
   }
 
   update (): void {
@@ -251,11 +321,6 @@ export class Client {
 
     this.sendInventory();
     this.sendPenguinInfo();
-  }
-
-  updateColor (color: number): void {
-    this.penguin.color = color;
-    this.sendXt('upc', this.penguin.id, color);
   }
 
   sendStamps (): void {
@@ -523,6 +588,7 @@ export class Client {
   }
 
   disconnect(): void {
+    this.leaveRoom();
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
     this.penguin.incrementPlayTime(minutesDelta);

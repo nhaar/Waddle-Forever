@@ -4,8 +4,7 @@ const handler = new Handler();
 
 // client requesting to join room
 handler.xt('j#jr', (client, destinationRoom, x, y) => {
-  client.x = Number(x);
-  client.y = Number(y);
+  client.setPosition(Number(x), Number(y));
   client.joinRoom(Number(destinationRoom));
 });
 
@@ -53,18 +52,24 @@ handler.xt('j#jp', (client, playerId, roomType) => {
 })
 
 handler.xt('u#sf', (client, frame) => {
-  // TODO multiplayer logic
-  client.sendXt('sf', client.penguin.id, frame);
+  client.setFrame(Number(frame));
+  client.sendRoomXt('sf', client.penguin.id, frame);
 })
 
 handler.xt('u#sp', (client, x, y) => {
-  // TODO multiplayer logic
-  client.sendXt('sp', client.penguin.id, x, y);
+  // walking stops your character from whichever animation
+  client.resetFrame();
+  client.setPosition(Number(x), Number(y));
+  client.sendRoomXt('sp', client.penguin.id, x, y);
 })
 
 handler.xt('u#sb', (client, x, y) => {
-  // TODO multiplayer logic
-  client.sendXt('sb', client.penguin.id, x, y);
+  client.sendRoomXt('sb', client.penguin.id, x, y);
+})
+
+// sending emotes
+handler.xt('u#se', (client, emote) => {
+  client.sendRoomXt('se', client.penguin.id, emote);
 })
 
 // player inventory thing? Not sure why this exists

@@ -6,7 +6,7 @@ import { WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
 import oldHandler from './handlers/old'
 import loginHandler from './handlers/login'
-import { Client } from './client';
+import { Client, Server } from './client';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';
@@ -17,6 +17,8 @@ import { HTTP_PORT } from '../common/constants';
 const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<void> => {
   handler.useEndpoints(server);
 
+  const gameServer = new Server();
+
   await new Promise<void>((resolve) => {
     net.createServer((socket) => {
       socket.setEncoding('utf8');
@@ -24,6 +26,7 @@ const createServer = async (type: string, port: number, handler: Handler, settin
       console.log(`A client has connected to ${type}`);
 
       const client = new Client(
+        gameServer,
         socket,
         type === 'Login' ? 'Login' : 'World',
         settingsManager
