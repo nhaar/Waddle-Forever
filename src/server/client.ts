@@ -14,6 +14,7 @@ import { getVersionsTimeline } from './routes/version.txt';
 import { CPIP_UPDATE } from './game-data/updates';
 import { findInVersion } from './game-data/changes';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
+import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 
 const versionsTimeline = getVersionsTimeline();
 
@@ -21,13 +22,115 @@ type ServerType = 'Login' | 'World';
 
 const STAMP_RELEASE_VERSION : string = '2010-07-26'
 
+/** Manages the players waiting to join a Waddle Game */
+class WaddleRoom {
+  /** Number of players the game supports */
+  private _seats: number;
+  /** Array with all the players sitting, or null if empty slot */
+  private _players: Array<Client | null>;
+
+  constructor(seats: number) {
+    this._seats = seats;
+    this._players = this.getEmptyPlayers();
+  }
+
+  /** Get array with empty players */
+  private getEmptyPlayers(): null[] {
+    const players: null[] = [];
+    for (let i = 0; i < this._seats; i++) {
+      players.push(null);
+    }
+    return players;
+  }
+
+  addPlayer(client: Client): number {
+    let seatIndex = -1;
+    for (let i = 0; i < this._seats; i++) {
+      if (this._players[i] === null) {
+        this._players[i] = client;
+        seatIndex = i;
+        break;
+      }
+    }
+    return seatIndex;
+  }
+
+  removePlayer(client: Client): void {
+    for (let i = 0; i < this._seats; i++) {
+      if (this._players[i] === client) {
+        this._players[i] = null;
+        break;
+      }
+    }
+  }
+
+  resetWaddle(): void {
+    this._players = this.getEmptyPlayers();
+  }
+
+  get players(): Client[] {
+    return this._players.filter((p): p is Client => p !== null);
+  }
+
+  get seats(): Array<Client | null> {
+    return [...this._players];
+  }
+}
+
+/** Interface for a multiplayer "waddle" game */
+export abstract class WaddleGame {
+  /** Room used for the game */
+  public abstract roomId: number;
+  
+  /** Identify what type of game it is */
+  public abstract name: WaddleName;
+
+  private _players: Client[]
+
+  constructor(players: Client[]) {
+    this._players = players;
+  }
+
+  start() {
+    this._players.forEach((p) => p.joinRoom(this.roomId));
+  }
+
+  get seats(): number {
+    return this._players.length;
+  }
+
+  get players(): Client[] {
+    return this._players;
+  }
+}
+
 /** Manages a gameplayer server */
 export class Server {
   /** All multiplayer rooms and all players connected to them */
   private _rooms: Map<number, Set<Client>>
 
+  /** All waddle rooms, which are places people go to start a multiplayer game like Sled Race */
+  private _waddleRooms: Map<number, WaddleRoom>;
+
   constructor() {
     this._rooms = new Map<number, Set<Client>>();
+    this._waddleRooms = new Map<number, WaddleRoom>();
+    WADDLE_ROOMS.rows.forEach((waddle) => {
+      this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
+    });
+  }
+
+  setWaddleGame(waddle: number, game: WaddleGame): void {
+    const players = this.getWaddleRoom(waddle).players;
+    players.forEach(p => p.setWaddleGame(game));
+  }
+
+  getWaddleRoom(waddle: number): WaddleRoom {
+    const players = this._waddleRooms.get(waddle);
+    if (players === undefined) {
+      throw new Error(`Invalid waddle: ${waddle}`);
+    }
+    return players;
   }
 
   /** Add a player to a room */
@@ -59,7 +162,14 @@ export class Client {
   x: number;
   y: number;
   /** Frame number, for animations like dancing */
-  _frame: number;
+  private _frame: number;
+
+  /** Instance of waddle game, if playing, or null otherwise */
+  private _waddleGame: WaddleGame | null;
+
+  /** ID of current waddle room, or -1 otherwise */
+  private _currentWaddleRoom: number;
+
   currentRoom: number;
   private _settingsManager: SettingsManager
   sessionStart: number;
@@ -100,6 +210,8 @@ export class Client {
     this.x = 100;
     this.y = 100;
     this._frame = 1;
+    this._waddleGame = null;
+    this._currentWaddleRoom = -1;
     this.sessionStart = Date.now();
     
     this.sessionStamps = [];
@@ -182,6 +294,10 @@ export class Client {
     }
   }
 
+  get server(): Server {
+    return this._server;
+  }
+
   get age (): number {
     // difference converted into days
     return Math.floor((Date.now() - this.penguin.registrationTimestamp) / 1000 / 86400);
@@ -213,6 +329,17 @@ export class Client {
   sendRoomXt(handler: string, ...args: Array<string | number>) {
     const players = this.getPlayersInRoom();
     players.forEach((client) => client.sendXt(handler, ...args));
+  }
+
+  /** Check if playing a waddle game */
+  isInWaddleGame(): boolean {
+    return this._waddleGame !== null;
+  }
+
+  /** Send a XT message to all players in waddle game */
+  sendWaddleXt(handler: string, ...args: Array<string | number>) {
+    const players = this.waddleGame.players;
+    players.forEach((p) => p.sendXt(handler, ...args));
   }
 
   leaveRoom(): void {
@@ -321,6 +448,27 @@ export class Client {
 
     this.sendInventory();
     this.sendPenguinInfo();
+  }
+
+  joinWaddleRoom(waddle: number): number {
+    this._currentWaddleRoom = waddle;
+    return this._server.getWaddleRoom(waddle).addPlayer(this);
+  }
+
+  leaveWaddleRoom(): void {
+    this._server.getWaddleRoom(this._currentWaddleRoom).removePlayer(this);
+    this._currentWaddleRoom = -1;
+  }
+
+  get waddleGame(): WaddleGame {
+    if (this._waddleGame === null) {
+      throw new Error('No waddle available');
+    }
+    return this._waddleGame;
+  }
+
+  setWaddleGame(waddleGame: WaddleGame): void {
+    this._waddleGame = waddleGame;
   }
 
   sendStamps (): void {

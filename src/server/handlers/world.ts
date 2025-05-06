@@ -11,6 +11,7 @@ import epfHandler from './play/epf';
 import mailHandler from './play/mail';
 import gameHandler from './play/game';
 import partyHandler from './play/party';
+import sledHandler from './games/sled';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -27,5 +28,6 @@ handler.use(epfHandler);
 handler.use(mailHandler);
 handler.use(gameHandler);
 handler.use(partyHandler);
+handler.use(sledHandler);
 
 export default handler;

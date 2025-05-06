@@ -1,4 +1,7 @@
+import { WADDLE_ROOMS } from '../../../server/game-logic/waddles';
 import { Handler } from '..';
+import { WaddleGame } from '../../../server/client';
+import { SledRace } from '../games/sled';
 
 const handler = new Handler();
 
@@ -10,6 +13,11 @@ handler.xt('j#jr', (client, destinationRoom, x, y) => {
 
 // client requesting to leave a minigame
 handler.xt('z', 'zo', (client, score) => {
+  // waddle games individually handle this
+  if (client.isInWaddleGame()) {
+    return;
+  }
+
   const stampInfo = client.getEndgameStampsInformation();
   let coins = client.getCoinsFromScore(Number(score));
 
@@ -87,6 +95,43 @@ handler.xt('j#grs', (client) => {
 handler.xt('r#gtc', (client) => {
   client.sendXt('gtc', client.penguin.coins);
 })
+
+// get penguins in the waddles
+handler.xt('z', 'gw', (client, ...waddles) => {
+  client.sendXt('gw', ...waddles.map((w) => {
+    const players = client.server.getWaddleRoom(Number(w)).seats;
+    return `${w}|${players.map(p => {
+      return p?.penguin.name ?? '';
+    }).join(',')}`
+  }));
+});
+
+// join a waddle
+handler.xt('z', 'jw', (client, waddle) => {
+  const waddleId = Number(waddle);
+  const waddleInfo = WADDLE_ROOMS.getStrict(waddleId);
+  const seatId = client.joinWaddleRoom(waddleId);
+  client.sendXt('jw', seatId);
+  client.sendRoomXt('uw', waddle, seatId, client.penguin.name, client.penguin.id);
+  const players = client.server.getWaddleRoom(waddleId).players;
+  // starts the game if all players have entered
+  if (players.length === waddleInfo.seats) {
+    let waddleGame: WaddleGame;
+    if (waddleInfo.game === 'sled') {
+      waddleGame = new SledRace(players);
+    } else {
+      throw new Error('Unknown waddle name: ' + waddleInfo.game);
+    }
+    client.server.setWaddleGame(waddleId, waddleGame);
+    client.server.getWaddleRoom(waddleId).resetWaddle();
+    waddleGame.start();
+  }
+});
+
+// leave a waddle room
+handler.xt('z', 'lw', (client) => {
+  client.leaveWaddleRoom();
+});
 
 handler.disconnect((client) => {
   client.disconnect();

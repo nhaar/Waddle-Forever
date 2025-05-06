@@ -252,4 +252,5 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/jetpack/JetpackAdventures.swf': 'fix:GamesJetPackAdventureMain.swf',
   'play/v2/games/thinice/ThinIce.swf': 'fix:GamesThiniceThinIce.swf',
   'play/v2/games/mine/CartSurfer.swf': 'slegacy:media/play/v2/games/mine/CartSurfer.swf',
+  'play/v2/games/sled/SledRacer.swf': 'archives:SledRacing.swf'
 };
