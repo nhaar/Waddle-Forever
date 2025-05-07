@@ -35,7 +35,7 @@ function getEggTimeline() {
 }
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
-export function getSetupTxt(date: Version): string {
+export function getSetupTxt(date: Version, ip: string): string {
   let roomMusic: Partial<Record<RoomName, number>> = {};
 
   let frames: Partial<Record<RoomName, number>> = {};
@@ -131,7 +131,9 @@ ${rooms}
 &q4=&
 &q5=&
 
-&e=0&`
+&e=0&
+
+&ip=${ip}` // IP is custom, need to mod chat.swf. Only way to make this work in WF
 }
 
 /**&r100=|1|0&

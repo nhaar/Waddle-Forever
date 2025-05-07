@@ -51,7 +51,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // Pre CPIP server rewrite client uses these POST endpoints
   server.router.post('/setup.txt', (_, req) => {
-    req.send(getSetupTxt(settingsManager.settings.version));
+    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP));
   })
   server.router.post('/news.txt', (_, req) => {
     req.send(getNewsTxt(settingsManager.settings.version));
