@@ -71,9 +71,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('en/web_service/stamps.json', (s) => {
     return getStampbook(s.settings.version);
   });
-  server.getData('servers.xml', getServersXml);
+  server.getData('servers.xml', (s) => getServersXml(s.targetIP));
   server.getData('setup.xml', (s) => {
-    return getSetupXml(s.settings.version);
+    return getSetupXml(s.settings.version, s.targetIP);
   });
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);

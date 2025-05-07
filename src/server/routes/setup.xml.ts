@@ -65,7 +65,7 @@ function getFileName(name: string, date: Version): string {
   }
 }
 
-export function getSetupXml(version: Version) {
+export function getSetupXml(version: Version, ip: string) {
   const news = findInVersion(version, newspaperTimeline);
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
@@ -123,7 +123,7 @@ export function getSetupXml(version: Version) {
         server = server.replace(' ', ''); // it doesn't like spaces
         return `
       <${server}>
-        <IP>localhost</IP>
+        <IP>${ip}</IP>
         <Port>6114</Port>
         <Zone>w1</Zone>
       </${server}>
