@@ -107,4 +107,9 @@ handler.post('/php/login.php', (body) => {
   return response 
 })
 
+handler.disconnect((client) => {
+  client.disconnect();
+  client.update();
+});
+
 export default handler;
