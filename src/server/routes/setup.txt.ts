@@ -133,7 +133,7 @@ ${rooms}
 
 &e=0&
 
-&ip=${ip}` // IP is custom, need to mod chat.swf. Only way to make this work in WF
+&ip=${ip}&` // IP is custom, need to mod chat.swf. Only way to make this work in WF
 }
 
 /**&r100=|1|0&
