@@ -316,6 +316,7 @@ export class Client {
 
   setFrame(frame: number) {
     this._frame = frame;
+    this.sendRoomXt('sf', this.penguin.id, frame);
   }
 
   resetFrame() {

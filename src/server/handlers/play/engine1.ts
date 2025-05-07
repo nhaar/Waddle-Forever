@@ -83,6 +83,10 @@ handler.xt('gi', (client) => {
   client.sendInventory();
 });
 
+handler.xt('sf', (client, frame) => {
+  client.setFrame(Number(frame));
+})
+
 // Logging in
 handler.post('/php/login.php', (body) => {
   const { Username } = body;
