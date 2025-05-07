@@ -240,7 +240,12 @@ export class Client {
     this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
   }
 
-  static engine1Crumb (penguin: Penguin): string {
+  static engine1Crumb (penguin: Penguin, roomInfo: {
+    x: number,
+    y: number,
+    frame: number
+  } = { x: 0, y: 0, frame: 0 }): string {
+    const { x, y, frame } = roomInfo;
     return [
       penguin.id,
       penguin.name,
@@ -253,16 +258,16 @@ export class Client {
       penguin.feet,
       penguin.pin,
       penguin.background,
-      0, // X
-      0, // y
-      0, // TODO frame
+      x, // X
+      y, // y
+      frame, // TODO frame
       penguin.isMember ? 1 : 0
     ].join('|')
   }
 
   get penguinString (): string {
     if (isEngine1(this.version)) {
-      return Client.engine1Crumb(this.penguin);
+      return Client.engine1Crumb(this.penguin, { x: this.x, y: this.y, frame: this._frame });
     } else {
       return [
         this.penguin.id,
