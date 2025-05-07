@@ -4,10 +4,19 @@ import path from 'path';
 import fs from 'fs';
 import { WEBSITE } from './website';
 import { exec } from 'child_process';
+import { IpcRenderer } from 'electron';
 
 export type GlobalSettings = {
   isEditting: boolean
 };
+export function addDispatchEventListeners(events: string[], ipcRenderer: IpcRenderer) {
+  events.forEach((eName) => {
+    ipcRenderer.on(eName, (e, arg) => {
+      const newEvent = new CustomEvent(eName, { detail: arg });
+      window.dispatchEvent(newEvent);
+    }); 
+  });
+}
 
 export function parseURL(url: string): {
   protocol: 'http' | 'https',
