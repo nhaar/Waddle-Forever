@@ -48,7 +48,7 @@ handler.xt('up', (client, color, head, face, neck, body, hand, feet, pin, backgr
   client.penguin.feet = Number(feet);
   client.penguin.pin = Number(pin);
   client.penguin.background = Number(background);
-  client.sendXt('up', client.penguinString)
+  client.sendRoomXt('up', client.penguinString)
   client.update();
 })
 
@@ -62,6 +62,21 @@ handler.xt('il', (client) => {
 }, { once: true })
 
 handler.xt('m', 'sm', commandsHandler);
+handler.xt('m', 'sm', (client, id, message) => {
+  client.sendMessage(message);
+});
+
+handler.xt('sp', (client, x, y) => {
+  client.setPosition(Number(x), Number(y));
+});
+
+handler.xt('se', (client, emote) => {
+  client.sendEmote(emote);
+});
+
+handler.xt('sb', (client, x, y) => {
+  client.throwSnowball(x, y);
+})
 
 // handler for 2007 client
 handler.xt('gi', (client) => {

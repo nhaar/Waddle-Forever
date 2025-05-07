@@ -311,6 +311,7 @@ export class Client {
   setPosition(x: number, y: number) {
     this.x = x;
     this.y = y;
+    this.sendRoomXt('sp', this.penguin.id, x, y);
   }
 
   setFrame(frame: number) {
@@ -840,5 +841,17 @@ export class Client {
 
   resetGoldNuggetState(): void {
     this._isGoldNuggetState = false;
+  }
+
+  sendMessage(message: string) {
+    this.sendRoomXt('sm', this.penguin.id, message);
+  }
+
+  sendEmote(emote: string) {
+    this.sendRoomXt('se', this.penguin.id, emote);
+  }
+
+  throwSnowball(x: string, y: string) {
+    this.sendRoomXt('sb', this.penguin.id, x, y);
   }
 }

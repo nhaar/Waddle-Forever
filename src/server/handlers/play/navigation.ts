@@ -72,13 +72,13 @@ handler.xt('u#sp', (client, x, y) => {
 })
 
 handler.xt('u#sb', (client, x, y) => {
-  client.sendRoomXt('sb', client.penguin.id, x, y);
+  client.throwSnowball(x, y);
 })
 
 // sending emotes
 handler.xt('u#se', (client, emote) => {
-  client.sendRoomXt('se', client.penguin.id, emote);
-})
+  client.sendEmote(emote);
+});
 
 // player inventory thing? Not sure why this exists
 handler.xt('u#pbi', (client, id) => {
