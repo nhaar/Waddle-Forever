@@ -5,10 +5,19 @@ import fs from 'fs';
 import { WEBSITE } from './website';
 import { exec } from 'child_process';
 import { IpcRenderer } from 'electron';
+import { HTTP_PORT } from './constants';
 
 export type GlobalSettings = {
+  /** In order to limit the number of setting windows */
   isEditting: boolean
+  /** IP the client is targetting, undefined if using the local server */
+  targetIP: string | undefined;
 };
+
+export function makeURL(ip: string): string {
+  return `http://${ip}:${HTTP_PORT}`;
+}
+
 export function addDispatchEventListeners(events: string[], ipcRenderer: IpcRenderer) {
   events.forEach((eName) => {
     ipcRenderer.on(eName, (e, arg) => {

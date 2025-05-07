@@ -70,6 +70,9 @@ export class SettingsManager {
 
   activeMods: string[] = [];
 
+  /** IP used by the server */
+  targetIP: string;
+
   constructor () {
     let settingsJson: any = {};
 
@@ -96,6 +99,8 @@ export class SettingsManager {
     };
 
     this.updateSettings({});
+
+    this.targetIP = '127.0.0.1';
   }
 
   readString(object: any, property: string): string {
