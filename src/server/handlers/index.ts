@@ -1,5 +1,5 @@
 import { XtPacket } from '..';
-import { Client } from '../client';
+import { Client, Server } from '../client';
 import express, { Express } from 'express';
 
 type XTCallback = (client: Client, ...args: string[]) => void
@@ -47,6 +47,7 @@ export class Handler {
   loginListeners: XTCallback[];
   phpListeners: Map<string, PostCallback>;
   xmlListeners: Map<string, XMLCallback>;
+  onBoot: Array<(s: Server) => void>;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
@@ -54,6 +55,7 @@ export class Handler {
     this.loginListeners = [];
     this.phpListeners = new Map<string, PostCallback>();
     this.xmlListeners = new Map<string, XMLCallback>();
+    this.onBoot = [];
   }
   xt (extension: string, code: string, method: XTCallback, params?: XtParams): void
   xt (code: string, method: XTCallback, params?: XtParams): void
@@ -119,6 +121,14 @@ export class Handler {
 
   disconnect (method: XTCallback): void {
     this.disconnectListeners.push(method);
+  }
+
+  boot(callback: (s: Server) => void) {
+    this.onBoot.push(callback);
+  }
+
+  bootServer(s: Server): void {
+    this.onBoot.forEach((callback) => callback(s));
   }
 
   private getPacketName (code: string, extension: string): string {
@@ -192,6 +202,7 @@ export class Handler {
     handler.xmlListeners.forEach((callback, action) => {
       this.xmlListeners.set(action, callback);
     });
+    this.onBoot = [...handler.onBoot, ...this.onBoot];
   }
 
   /** Handlers that listen for POST requests in the HTTP server */

@@ -2,6 +2,7 @@ import { WADDLE_ROOMS } from '../../../server/game-logic/waddles';
 import { Handler } from '..';
 import { WaddleGame } from '../../../server/client';
 import { SledRace } from '../games/sled';
+import { CardJitsu } from '../games/card';
 
 const handler = new Handler();
 
@@ -118,6 +119,8 @@ handler.xt('z', 'jw', (client, waddle) => {
     let waddleGame: WaddleGame;
     if (waddleInfo.game === 'sled') {
       waddleGame = new SledRace(players);
+    } else if (waddleInfo.game ==='card') {
+      waddleGame = new CardJitsu(players);
     } else {
       throw new Error('Unknown waddle name: ' + waddleInfo.game);
     }

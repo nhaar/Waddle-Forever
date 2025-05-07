@@ -19,6 +19,8 @@ const createServer = async (type: string, port: number, handler: Handler, settin
 
   const gameServer = new Server();
 
+  handler.bootServer(gameServer);
+
   await new Promise<void>((resolve) => {
     net.createServer((socket) => {
       socket.setEncoding('utf8');

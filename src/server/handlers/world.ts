@@ -12,6 +12,8 @@ import mailHandler from './play/mail';
 import gameHandler from './play/game';
 import partyHandler from './play/party';
 import sledHandler from './games/sled';
+import cardHandler from './games/card';
+import matchHandler from './games/matchmaking';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -29,5 +31,7 @@ handler.use(mailHandler);
 handler.use(gameHandler);
 handler.use(partyHandler);
 handler.use(sledHandler);
+handler.use(cardHandler);
+handler.use(matchHandler);
 
 export default handler;

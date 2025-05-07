@@ -23,7 +23,7 @@ type ServerType = 'Login' | 'World';
 const STAMP_RELEASE_VERSION : string = '2010-07-26'
 
 /** Manages the players waiting to join a Waddle Game */
-class WaddleRoom {
+export class WaddleRoom {
   /** Number of players the game supports */
   private _seats: number;
   /** Array with all the players sitting, or null if empty slot */
@@ -77,6 +77,28 @@ class WaddleRoom {
   }
 }
 
+type MatchedCallback = (players: Client[]) => void;
+
+export class MatchMaker {
+  private _maxPlayers: number;
+  private _players: Client[];
+  private _onMatched: MatchedCallback;
+
+  constructor(max: number, onMatched: MatchedCallback) {
+    this._maxPlayers = max;
+    this._players = [];
+    this._onMatched = onMatched;
+  }
+
+  addPlayer(player: Client) {
+    this._players.push(player);
+    if (this._players.length >= this._maxPlayers) {
+      const matchedPlayers = this._players.splice(0, this._maxPlayers + 1);
+      this._onMatched(matchedPlayers);
+    }
+  }
+}
+
 /** Interface for a multiplayer "waddle" game */
 export abstract class WaddleGame {
   /** Room used for the game */
@@ -102,6 +124,10 @@ export abstract class WaddleGame {
   get players(): Client[] {
     return this._players;
   }
+
+  getSeatId(client: Client): number {
+    return this._players.indexOf(client);
+  }
 }
 
 /** Manages a gameplayer server */
@@ -112,12 +138,25 @@ export class Server {
   /** All waddle rooms, which are places people go to start a multiplayer game like Sled Race */
   private _waddleRooms: Map<number, WaddleRoom>;
 
+  private _cardMatchmaking: MatchMaker | undefined;
+
   constructor() {
     this._rooms = new Map<number, Set<Client>>();
     this._waddleRooms = new Map<number, WaddleRoom>();
     WADDLE_ROOMS.rows.forEach((waddle) => {
       this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
     });
+  }
+
+  get cardMatchmaking(): MatchMaker {
+    if (this._cardMatchmaking === undefined) {
+      throw new Error('Attempting to get card match making before it was initialized');
+    }
+    return this._cardMatchmaking;
+  }
+
+  setCardMatchmaker(matchMaker: MatchMaker) {
+    this._cardMatchmaking = matchMaker;
   }
 
   setWaddleGame(waddle: number, game: WaddleGame): void {
