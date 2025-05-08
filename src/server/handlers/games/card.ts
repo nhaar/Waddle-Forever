@@ -1,7 +1,7 @@
 import { WaddleName } from "../../../server/game-logic/waddles";
 import { Client, WaddleGame } from "../../../server/client";
 import { WaddleHandler } from "./waddle";
-import { randomInt } from "../../../common/utils";
+import { iterateEntries, randomInt } from "../../../common/utils";
 import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
 
 class Hand {
@@ -41,6 +41,9 @@ class Ninja {
   /** For all elements, map all the card's session IDs */
   private _scores: Record<CardElement, number[]>;
 
+  /** Reference to opponent ninja */
+  private _opponent: Ninja | undefined;
+
   constructor(player: Client, seat: number) {
     this._hand = new Hand(player.penguin.getCards());
     this._seat = seat;
@@ -67,7 +70,7 @@ class Ninja {
     return this._chosen !== undefined;
   }
 
-  chosen(): number {
+  get chosen(): number {
     if (this._chosen === undefined) {
       throw new Error('Accessing chosen card but none are chosen!');
     }
@@ -75,15 +78,37 @@ class Ninja {
   }
 
   score(element: CardElement, id: number): void {
-    this._scores[element] = [...this._scores[element], id];
+    this._scores[element].push(id);
   }
 
   get seat(): number {
     return this._seat;
   }
 
+  get otherSeat(): number {
+    return this.opponent.seat;
+  }
+
   get scores(): Record<CardElement, number[]> {
     return this._scores;
+  }
+
+  set opponent(ninja: Ninja) {
+    this._opponent = ninja;
+  }
+
+  get opponent(): Ninja {
+    if (this._opponent === undefined) {
+      throw new Error('Accessing opponent before it is initialized');
+    }
+    return this._opponent;
+  }
+
+  removeCards(cards: number[]): void {
+    const toDiscard = new Set(cards);
+    iterateEntries(this._scores, (element, cards) => {
+      this._scores[element] = cards.filter((id) => !toDiscard.has(id));
+    });
   }
 }
 
@@ -104,13 +129,50 @@ export class CardJitsu extends WaddleGame {
     's': 'w'
   };
 
+  static ON_PLAYED_POWER_CARDS = new Set([1, 16, 17, 18]);
+  static AFFECTS_PLAYER_POWER_CARDS = new Set([2]);
+
+  static REPLACEMENT_POWER_CARDS: Record<number, [CardElement, CardElement] | undefined> = {
+    16: ['w', 'f'],
+    17: ['s', 'w'],
+    18: ['f', 's']
+  };
+  static COLOR_DISCARD_POWER_CARDS: Record<number, CardColor | undefined> = {
+    7: 'r',
+    8: 'b',
+    9: 'g',
+    10: 'y',
+    11: 'o',
+    12: 'p'
+  };
+  static ELEMENT_DISCARD_POWER_CARDS: Record<number, CardElement | undefined> = {
+    4: 's',
+    5: 'w',
+    6: 'f'
+  };
+
+  /** Whether or not lowest value wins this round */
+  private _swapValue: boolean = false;
+
+  /** Number modifiers to apply in next score */
+  private _valueModifier: [number, number] = [0, 0];
+
   constructor(players: Client[]) {
     super(players);
 
     this._ninjas = new Map<Client, Ninja>;
 
+    const ninjas: Ninja[] = [];
+
     players.forEach((p, i) => {
-      this._ninjas.set(p, new Ninja(p, i));
+      const ninja = new Ninja(p, i);
+      ninjas.push(ninja);
+      this._ninjas.set(p, ninja);
+    });
+
+    // initializing
+    ninjas.forEach((ninja, i) => {
+      ninja.opponent = ninjas[(i + 1) % 2];
     });
 
     this._cardId = 0;
@@ -184,7 +246,7 @@ export class CardJitsu extends WaddleGame {
       }
   
       // check for all elements win
-      const combos = Array.from(Object.values(ninja.scores)).reduce<number[][]>((acc, current) => {
+      const combos = Array.from(Object.values(ninja.scores).map(set => [...set])).reduce<number[][]>((acc, current) => {
         return acc.flatMap(a => current.map(b => [...a, b]));
       }, [[]]);
   
@@ -203,20 +265,45 @@ export class CardJitsu extends WaddleGame {
 
   judgeWinner(): number {
     const ninjas = this.players.map((p) => this.getNinja(p));
-    const cards = ninjas.map((n) => n.chosen());
+    const cards = ninjas.map((n) => n.chosen);
     const cardInfo = cards.map(id => this.getCard(id));
-    const [firstCard, secondCard] = cardInfo;
+    const elements = cardInfo.map((c) => c.element);
+
+    // applying element replacement from powercards
+    cardInfo.forEach((card, i) => {
+      const replacement = CardJitsu.REPLACEMENT_POWER_CARDS[card.powerId];
+      if (replacement !== undefined) {
+        const [original, target] = replacement;
+        const other = (i + 1) % 2;
+        if (elements[other] === original) {
+          elements[other] = target;
+        }
+      }
+    });
+    const [firstElement, secondElement] = elements;
+
+    // adding modifier from power cards
+    const [firstValue, secondValue] = cardInfo.map((card, i) => card.value + this._valueModifier[i]);
+    this._valueModifier = [0, 0];
 
     let winIndex = -1;
-    if (firstCard.element === secondCard.element) {
-      if (firstCard.value > secondCard.value) {
-        winIndex = 0;
-      } else if (firstCard.value < secondCard.value) {
-        winIndex = 1;
-      } else {
+    if (firstElement === secondElement) {
+      if (firstValue === secondValue) {
         winIndex = -1;
+      } else {
+        if (firstValue > secondValue) {
+          winIndex = 0;
+        } else {
+          winIndex = 1;
+        }
+
+        // trick for swapping the winner for swap power cards
+        if (this._swapValue) {
+          winIndex = (winIndex + 1) % 2;
+          this._swapValue = false;
+        }
       }
-    } else if (CardJitsu.RULES[firstCard.element] === secondCard.element) {
+    } else if (CardJitsu.RULES[firstElement] === secondElement) {
       winIndex = 0;
     } else {
       winIndex = 1;
@@ -227,6 +314,14 @@ export class CardJitsu extends WaddleGame {
     }
 
     return winIndex;
+  }
+
+  setValueSwap() {
+    this._swapValue = true;
+  }
+
+  alterModifier(seat: number, delta: number) {
+    this._valueModifier[seat] += delta;
   }
 }
 
@@ -263,16 +358,56 @@ handler.waddleXt('z', 'zm', (game, client, action, amount) => {
 // player picks a card
 handler.waddleXt('z', 'zm', (game, client, action, id) => {
   if (action === 'pick') {
+    const sessionId = Number(id);
     const ninja = game.getNinja(client);
     const otherNinja = game.getOpponent(client);
-    game.chooseCard(ninja, Number(id));
+    game.chooseCard(ninja, sessionId);
 
-    client.sendWaddleXt('zm', action, ninja.seat, id);
-    
+    client.sendWaddleXt('zm', action, ninja.seat, sessionId);
+
     if (otherNinja.hasChosen()) {
       const winner = game.judgeWinner();
 
       const winningHand = game.hasWinningHand();
+
+      const ninjas = [ninja, otherNinja];
+
+      ninjas.forEach((n) => {
+        const card = game.getCard(n.chosen);
+        if (CardJitsu.ON_PLAYED_POWER_CARDS.has(card.powerId) || (card.powerId > 0 && n.seat === winner)) {
+          const cardsToDiscard: number[] = [];
+          if (card.powerId === 1) {
+            game.setValueSwap();
+          } else if (card.powerId === 2) {
+            game.alterModifier(n.seat, 2);
+          } else if (card.powerId === 3) {
+            game.alterModifier(n.otherSeat, -2);
+          }
+
+          const colorToDiscard = CardJitsu.COLOR_DISCARD_POWER_CARDS[card.powerId];
+          if (colorToDiscard !== undefined) {
+            Object.values(n.opponent.scores).forEach((cards) => {
+              cards.forEach((sessionId) => {
+                if (game.getCard(sessionId).color === colorToDiscard) {
+                  cardsToDiscard.push(sessionId);
+                }
+              })
+            });
+            n.opponent.removeCards(cardsToDiscard);
+          }
+          const elementToDiscard = CardJitsu.ELEMENT_DISCARD_POWER_CARDS[card.powerId];
+          if (elementToDiscard !== undefined) {
+            const cards = ninja.opponent.scores[elementToDiscard];
+            const last = cards[cards.length - 1];
+            cardsToDiscard.push(last);
+            ninja.opponent.removeCards(cardsToDiscard);
+          }
+
+          const [sender, recipient] =  CardJitsu.AFFECTS_PLAYER_POWER_CARDS.has(card.powerId) ? [n.seat, n.seat] : [n.seat, n.otherSeat];
+          client.sendWaddleXt('zm', 'power', sender, recipient, card.powerId, ...cardsToDiscard);
+        }
+        n.unchoose();
+      });
       otherNinja.unchoose();
       ninja.unchoose();
 

@@ -2,6 +2,7 @@ import { Client } from "../../../server/client";
 import { Handler } from "..";
 import { ITEMS } from "../../game-logic/items";
 import { Room } from "../../game-logic/rooms";
+import { CARDS } from "../../../server/game-logic/cards";
 
 const handler = new Handler();
 
@@ -105,6 +106,14 @@ export const commandsHandler = (client: Client, id: string, message: string) => 
           client.sendXt('af', furniture, client.penguin.coins);
         }
       }
+      client.update();
+    },
+    'powercards': () => {
+      CARDS.rows.forEach(row => {
+        if (row.powerId > 0) {
+          client.penguin.addCard(row.id, 1);
+        }
+      });
       client.update();
     }
   }
