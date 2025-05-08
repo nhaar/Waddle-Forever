@@ -1,8 +1,8 @@
 import { StaticDataTable } from "../../common/static-table";
 
-type CardElement = 'f' | 's' | 'w';
+export type CardElement = 'f' | 's' | 'w';
 
-type Card = {
+export type Card = {
   id: number,
   name: string,
   set: number,
