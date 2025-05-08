@@ -189,14 +189,12 @@ handler.xt('g#cr', (client, id) => {
 
 // get all open igloos
 handler.xt('g#gr', (client) => {
-  // TODO, for some reason empty list gave error. Did this work by having at least
-  // one's own igloo?
-  const players = [client, ...client.server.getOpenIglooPlayers().filter((value) => value !== client)];
+  const players = client.server.getOpenIglooPlayers();
 
   // TODO need to figure out how to make this penguin "nickname" properly display
   // on showHint, without modding. Seems to require an old shell
   // (and for the newer shells, what is the proper map SWF to use?)
-  client.sendXt('gr', ...players.map(p => `${p.penguin.id}|${p.penguin.name}`));
+  client.sendXtEmptyLast('gr', ...players.map(p => `${p.penguin.id}|${p.penguin.name}`));
 });
 
 export default handler;

@@ -319,9 +319,18 @@ export class Client {
     this.socket.write(message + '\0');
   }
 
+  private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
+    return `%xt%${handler}%-1%` + args.join('%') + (emptyLast ? '' : '%');
+  }
+
+  /** Send message but the last XT arg is not empty. Some handlers need this apparently */
+  sendXtEmptyLast(handler: string, ...args: Array<number | string>): void {
+    this.send(this.getXtMessage(true, handler, ...args));
+  }
+
   sendXt (handler: string, ...args: Array<number | string>): void {
     console.log('\x1b[32mSending XT:\x1b[0m ', handler, args);
-    this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
+    this.send(this.getXtMessage(false, handler, ...args));
   }
 
   static engine1Crumb (penguin: Penguin, roomInfo: {
