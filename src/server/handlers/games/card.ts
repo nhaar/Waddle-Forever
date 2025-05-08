@@ -300,7 +300,6 @@ export class CardJitsu extends WaddleGame {
         // trick for swapping the winner for swap power cards
         if (this._swapValue) {
           winIndex = (winIndex + 1) % 2;
-          this._swapValue = false;
         }
       }
     } else if (CardJitsu.RULES[firstElement] === secondElement) {
@@ -311,6 +310,10 @@ export class CardJitsu extends WaddleGame {
 
     if (winIndex !== -1) {
       ninjas[winIndex].score(cardInfo[winIndex].element, cards[winIndex]);
+    }
+
+    if (this._swapValue) {
+      this._swapValue = false;
     }
 
     return winIndex;
