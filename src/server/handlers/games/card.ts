@@ -2,7 +2,7 @@ import { WaddleName } from "../../../server/game-logic/waddles";
 import { Client, WaddleGame } from "../../../server/client";
 import { WaddleHandler } from "./waddle";
 import { randomInt } from "../../../common/utils";
-import { Card, CardElement, CARDS } from "../../../server/game-logic/cards";
+import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
 
 class Hand {
   private _canDrawCards: number[];
@@ -35,20 +35,28 @@ class Ninja {
 
   private _seat: number;
 
-  /** Card currently chosen */
-  private _chosen: Card | undefined;
+  /** Card currently chosen, using session ID */
+  private _chosen: number | undefined;
+
+  /** For all elements, map all the card's session IDs */
+  private _scores: Record<CardElement, number[]>;
 
   constructor(player: Client, seat: number) {
     this._hand = new Hand(player.penguin.getCards());
     this._seat = seat;
+    this._scores = {
+      'f': [],
+      'w': [],
+      's': []
+    };
   }
 
   get hand(): Hand {
     return this._hand;
   }
 
-  choose(card: Card): void {
-    this._chosen = card;
+  choose(id: number): void {
+    this._chosen = id;
   }
 
   unchoose(): void {
@@ -59,15 +67,23 @@ class Ninja {
     return this._chosen !== undefined;
   }
 
-  chosen(): Card {
+  chosen(): number {
     if (this._chosen === undefined) {
       throw new Error('Accessing chosen card but none are chosen!');
     }
     return this._chosen;
   }
 
+  score(element: CardElement, id: number): void {
+    this._scores[element] = [...this._scores[element], id];
+  }
+
   get seat(): number {
     return this._seat;
+  }
+
+  get scores(): Record<CardElement, number[]> {
+    return this._scores;
   }
 }
 
@@ -116,11 +132,7 @@ export class CardJitsu extends WaddleGame {
   }
 
   chooseCard(ninja: Ninja, id: number): void {
-    const card = this._cards.get(id);
-    if (card === undefined) {
-      throw new Error('Invalid card ID');
-    }
-    ninja.choose(card);
+    ninja.choose(id);
   }
 
   getNinja(player: Client): Ninja {
@@ -136,23 +148,85 @@ export class CardJitsu extends WaddleGame {
     return this.getNinja(opponent);
   }
 
+  /** Get card using session ID */
+  getCard(id: number): Card {
+    const card = this._cards.get(id);
+    if (card === undefined) {
+      throw new Error('Invalid card id');
+    }
+    return card;
+  }
+
+  private removeColorDuplicates(cards: number[]) {
+    const colors = new Set<CardColor>();
+    const noDuplicates: number[] = [];
+    cards.forEach(card => {
+      const color = this.getCard(card).color;
+      if (!colors.has(color)) {
+        noDuplicates.push(card);
+        colors.add(color);
+      }
+    })
+    return noDuplicates;
+  }
+
+  hasWinningHand(): [number, number[]] | undefined {
+    let i = 0;
+    for (const player of this.players) {
+      const ninja = this.getNinja(player);
+
+      // check for elemental win
+      for (const [_, cards] of Object.entries(ninja.scores)) {
+        const noDupe = this.removeColorDuplicates(cards);
+        if (noDupe.length >= 3) {
+          return [i, noDupe.slice(0, 3)];
+        }
+      }
+  
+      // check for all elements win
+      const combos = Array.from(Object.values(ninja.scores)).reduce<number[][]>((acc, current) => {
+        return acc.flatMap(a => current.map(b => [...a, b]));
+      }, [[]]);
+  
+      for (const combo of combos) {
+        const noDupes = this.removeColorDuplicates(combo);
+        if (noDupes.length >= 3) {
+          return [i, noDupes.slice(0, 3)];
+        }
+      }
+  
+      
+      i++;
+    }
+    return undefined;
+  }
+
   judgeWinner(): number {
     const ninjas = this.players.map((p) => this.getNinja(p));
-    const [firstCard, secondCard] = ninjas.map((n) => n.chosen());
+    const cards = ninjas.map((n) => n.chosen());
+    const cardInfo = cards.map(id => this.getCard(id));
+    const [firstCard, secondCard] = cardInfo;
 
+    let winIndex = -1;
     if (firstCard.element === secondCard.element) {
       if (firstCard.value > secondCard.value) {
-        return 0;
+        winIndex = 0;
       } else if (firstCard.value < secondCard.value) {
-        return 1;
+        winIndex = 1;
       } else {
-        return -1;
+        winIndex = -1;
       }
     } else if (CardJitsu.RULES[firstCard.element] === secondCard.element) {
-      return 0;
+      winIndex = 0;
     } else {
-      return 1;
+      winIndex = 1;
     }
+
+    if (winIndex !== -1) {
+      ninjas[winIndex].score(cardInfo[winIndex].element, cards[winIndex]);
+    }
+
+    return winIndex;
   }
 }
 
@@ -197,10 +271,17 @@ handler.waddleXt('z', 'zm', (game, client, action, id) => {
     
     if (otherNinja.hasChosen()) {
       const winner = game.judgeWinner();
+
+      const winningHand = game.hasWinningHand();
       otherNinja.unchoose();
       ninja.unchoose();
 
       client.sendWaddleXt('zm', 'judge', winner);
+
+      if (winningHand !== undefined) {
+        const [seat, hand] = winningHand;
+        client.sendWaddleXt('czo', 0, seat, ...hand);
+      }
     }
   }
 })

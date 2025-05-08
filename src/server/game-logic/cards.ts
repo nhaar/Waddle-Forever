@@ -2,13 +2,15 @@ import { StaticDataTable } from "../../common/static-table";
 
 export type CardElement = 'f' | 's' | 'w';
 
+export type CardColor = 'b' | 'g' | 'o' | 'p' | 'y' | 'r';
+
 export type Card = {
   id: number,
   name: string,
   set: number,
   powerId: number,
   element: CardElement;
-  color: 'b' | 'g' | 'o' | 'p' | 'y' | 'r'
+  color: CardColor
   value: number
   description: string
 }
