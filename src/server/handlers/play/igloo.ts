@@ -7,7 +7,14 @@ const handler = new Handler();
 
 // get igloo information
 handler.xt('g#gm', (client, id) => {
-  client.sendXt('gm', id, client.getIglooString());
+  const penguinId = Number(id);
+  let igloo: string;
+  if (client.penguin.id === penguinId) {
+    igloo = client.getOwnIglooString();
+  } else {
+    igloo = client.getIglooString(client.server.getIgloo(Number(id)));
+  }
+  client.sendXt('gm', id, igloo);
 })
 
 // get all owned igloo types
@@ -168,6 +175,28 @@ handler.xt('g#aloc', (client, location) => {
   client.penguin.addIglooLocation(Number(location));
   client.sendXt('aloc', location, client.penguin.coins);
   client.update();
+});
+
+// open igloo
+handler.xt('g#or', (client, id, name) => {
+  client.server.openIgloo(client.penguin.id, client.penguin.activeIgloo);
+});
+
+// close igloo
+handler.xt('g#cr', (client, id) => {
+  client.server.closeIgloo(client.penguin.id);
+});
+
+// get all open igloos
+handler.xt('g#gr', (client) => {
+  // TODO, for some reason empty list gave error. Did this work by having at least
+  // one's own igloo?
+  const players = [client, ...client.server.getOpenIglooPlayers().filter((value) => value !== client)];
+
+  // TODO need to figure out how to make this penguin "nickname" properly display
+  // on showHint, without modding. Seems to require an old shell
+  // (and for the newer shells, what is the proper map SWF to use?)
+  client.sendXt('gr', ...players.map(p => `${p.penguin.id}|${p.penguin.name}`));
 });
 
 export default handler;

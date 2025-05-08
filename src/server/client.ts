@@ -140,12 +140,20 @@ export class Server {
 
   private _cardMatchmaking: MatchMaker | undefined;
 
+  /** Map of all open igloos, penguin ID to their igloo */
+  private _igloos: Map<number, Igloo>;
+
+  /** All clients mapped out by their penguin's ID */
+  private _playersById: Map<number, Client>;
+
   constructor() {
     this._rooms = new Map<number, Set<Client>>();
     this._waddleRooms = new Map<number, WaddleRoom>();
     WADDLE_ROOMS.rows.forEach((waddle) => {
       this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
     });
+    this._igloos = new Map<number, Igloo>();
+    this._playersById = new Map<number, Client>();
   }
 
   get cardMatchmaking(): MatchMaker {
@@ -190,6 +198,43 @@ export class Server {
   /** Get all players in a room */
   getPlayers(room: number): Client[] {
     return Array.from(this._rooms.get(room)?.values() ?? []); 
+  }
+
+  /** Assign client object to a penguin ID */
+  trackPlayer(id: number, client: Client): void {
+    this._playersById.set(id, client);
+  }
+
+  /** Make an igloo open */
+  openIgloo(id: number, igloo: Igloo): void {
+    this._igloos.set(id, igloo);
+  }
+
+  /** Close an igloo */
+  closeIgloo(id: number): void {
+    this._igloos.delete(id);
+  }
+
+  /** Get igloo from someone's ID */
+  getIgloo(id: number): Igloo {
+    const igloo = this._igloos.get(id);
+    if (igloo === undefined) {
+      throw new Error(`Invalid penguin id for igloo: ${id}`);
+    }
+    return igloo;
+  }
+
+  /** Get all players with an open igloo */
+  getOpenIglooPlayers(): Client[] {
+    const players: Client[] = [];
+    Array.from(this._igloos.keys()).forEach((id) => {
+      const client = this._playersById.get(id);
+      if (client !== undefined) {
+        players.push(client);
+      }
+    });
+
+    return players;
   }
 }
 
@@ -429,6 +474,7 @@ export class Client {
 
   setPenguinFromName (name: string): void {
     this.penguin = Client.getPenguinFromName(name)
+    this._server.trackPlayer(this.penguin.id, this);
   }
 
   setPenguinFromId (id: number): void {
@@ -438,6 +484,7 @@ export class Client {
       throw new Error(`Could not find penguin of ID ${id}`);
     }
     this.penguin = new Penguin(id, penguin);
+    this._server.trackPlayer(id, this);
   }
 
   static create (name: string, mascot = 0): [PenguinData, number] {
@@ -664,8 +711,7 @@ export class Client {
     ].join(':');
   }
 
-  getIglooString (): string {
-    const igloo = this.penguin.activeIgloo;
+  getIglooString(igloo: Igloo): string {
     if (this.isEngine2) {
       const furnitureString = Client.getFurnitureString(igloo.furniture);
       return [
@@ -678,6 +724,10 @@ export class Client {
       // This is Engine 3
       return Client.getEngine3IglooString(igloo, 1);
     }
+  }
+
+  getOwnIglooString (): string {
+    return this.getIglooString(this.penguin.activeIgloo);
   }
 
   walkPuffle (puffle: number) {
