@@ -80,7 +80,7 @@ export class Penguin {
     this._puffleSeq = data.puffleSeq;
     this._puffles = parseJsonRows(data.puffles);
     this._backyard = parseJsonSet(data.backyard);
-    this._puffleItems = parseJsonMap(data.puffleItems);
+    this._puffleItems = parseJsonMap(data.puffleItems, true);
     this._hasDug = data.hasDug;
     this._treasureFinds = data.treasureFinds;
     this._rainbow = {
@@ -91,7 +91,7 @@ export class Penguin {
         return isRainbowStage(value);
       })))
     },
-    this._furnitureInventory = parseJsonMap(data.furniture);
+    this._furnitureInventory = parseJsonMap(data.furniture, true);
     this._iglooTypes = parseJsonSet(data.iglooTypes);
     this._iglooLocations = parseJsonSet(data.iglooLocations);
     this._iglooFloorings = parseJsonSet(data.iglooFloorings);
@@ -104,7 +104,7 @@ export class Penguin {
     this._ownedMedals = data.ownedMedals;
     this._careerMedals = data.careerMedals;
     this._nuggets = data.nuggets;
-    this._cards = parseJsonMap(data.cards);
+    this._cards = parseJsonMap(data.cards, true);
     this._cardProgress = new CardJitsuProgress(data.cardProgress);
   }
 

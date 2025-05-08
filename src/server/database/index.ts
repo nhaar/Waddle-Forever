@@ -251,14 +251,18 @@ export function dumpJsonSet<T>(set: Set<T>): T[] {
   return Array.from(set.values());
 }
 
-export function parseJsonMap<T extends string | number, K>(obj: Record<T, K>): Map<T, K> {
+export function parseJsonMap<
+  T extends string | number,
+  K,
+  IsNumber extends boolean = T extends number ? true : false
+>(obj: Record<T, K>, isNumber: IsNumber): Map<T, K> {
   const map = new Map<T, K>();
-  for (const key in obj) {
-    map.set(key, obj[key]);
+  for (const [key, value] of Object.entries(obj)) {
+    const parsedKey = isNumber ? Number(key) : key;
+    map.set(parsedKey as T, value as K);
   }
   return map;
 }
-
 export function dumpJsonMap<T extends string | number, K>(map: Map<T, K>): Record<T, K> {
   const obj: Record<string | number, K> = {};
   map.forEach((value, key) => {
