@@ -60,6 +60,10 @@ handler.xt('j#jp', (client, playerId, roomType) => {
   }
 })
 
+handler.xt('u#sa', (client, action) => {
+  client.sendRoomXt('sa', client.penguin.id, action);
+});
+
 handler.xt('u#sf', (client, frame) => {
   client.setFrame(Number(frame));
 })
