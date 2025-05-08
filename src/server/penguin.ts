@@ -1,5 +1,6 @@
 import { isPositiveInteger } from '../common/utils';
 import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
+import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { PUFFLE_ITEMS } from './game-logic/puffle-item';
 
 export class Penguin {
@@ -50,6 +51,8 @@ export class Penguin {
   private _ownedMedals: number;
   private _careerMedals: number;
   private _nuggets: number;
+  private _cards: Map<number, number>;
+  private _cardProgress: CardJitsuProgress
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -101,6 +104,8 @@ export class Penguin {
     this._ownedMedals = data.ownedMedals;
     this._careerMedals = data.careerMedals;
     this._nuggets = data.nuggets;
+    this._cards = parseJsonMap(data.cards);
+    this._cardProgress = new CardJitsuProgress(data.cardProgress);
   }
 
   serialize(): PenguinData {
@@ -148,7 +153,9 @@ export class Penguin {
       mail: this._mail,
       ownedMedals: this._ownedMedals,
       careerMedals: this._careerMedals,
-      nuggets: this._nuggets
+      nuggets: this._nuggets,
+      cards: dumpJsonMap(this._cards),
+      cardProgress: this._cardProgress.xp
     }
   }
 
@@ -607,6 +614,26 @@ export class Penguin {
     this._nuggets -= 15;
   }
 
+  /** Adds card to the deck */
+  addCard(id: number, amount: number): void {
+    this._cards.set(id, (this._cards.get(id) ?? 0) + amount);
+  }
+
+  /** Gets all owned cards */
+  getCards(): Array<[number, number]> {
+    return Array.from(this._cards.entries());
+  }
+
+  /** Card-Jitsu rank, 0 = no belt, 1 = white, etc... */
+  get ninjaRank(): number {
+    return this._cardProgress.rank;
+  }
+
+  /** Percentage to next belt */
+  get beltPercentage(): number {
+    return this._cardProgress.percentage;
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,
@@ -657,7 +684,9 @@ export class Penguin {
       mailSeq: 0,
       ownedMedals: 0,
       careerMedals: 0,
-      nuggets: 0
+      nuggets: 0,
+      cards: {},
+      cardProgress: 0
     })
   }
 

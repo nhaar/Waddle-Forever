@@ -391,6 +391,8 @@ export interface PenguinData {
   careerMedals: number
   ownedMedals: number
   nuggets: number // Total number of golden nuggets in the gold puffle quest
+  cards: Record<number, number>
+  cardProgress: number
 }
 
 export default db;

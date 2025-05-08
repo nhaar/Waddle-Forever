@@ -14,6 +14,7 @@ import partyHandler from './play/party';
 import sledHandler from './games/sled';
 import cardHandler from './games/card';
 import matchHandler from './games/matchmaking';
+import ninjaHandler from './games/ninja';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -33,5 +34,6 @@ handler.use(partyHandler);
 handler.use(sledHandler);
 handler.use(cardHandler);
 handler.use(matchHandler);
+handler.use(ninjaHandler);
 
 export default handler;
