@@ -142,10 +142,56 @@ export abstract class WaddleGame {
   }
 }
 
+/** Information of a player that only persists during a room */
+type PlayerRoomInfo = {
+  x: number;
+  y: number;
+  frame: number;
+};
+
+/** Represents a room of a server */
+class GameRoom {
+  private _players: Map<Client, PlayerRoomInfo>;
+  private _id: number;
+
+  constructor(id: number) {
+    this._players = new Map<Client, PlayerRoomInfo>();
+    this._id = id;
+  }
+
+  /** Get info of player */
+  getPlayer(client: Client): PlayerRoomInfo | undefined {
+    return this._players.get(client);
+  }
+
+  /** Add a player to the room */
+  addPlayer(player: Client) {
+    this._players.set(player, {
+      x: 0,
+      y: 0,
+      frame: 1
+    });
+  }
+
+  /** Remove player from room */
+  removePlayer(player: Client) {
+    this._players.delete(player);
+  }
+
+  /** Get players in room */
+  get players(): Client[] {
+    return Array.from(this._players.keys());
+  }
+
+  get id(): number {
+    return this._id;
+  }
+}
+
 /** Manages a gameplayer server */
 export class Server {
-  /** All multiplayer rooms and all players connected to them */
-  private _rooms: Map<number, Set<Client>>
+  /** All multiplayer rooms */
+  private _rooms: Map<number, GameRoom>
 
   /** All waddle rooms, which are places people go to start a multiplayer game like Sled Race */
   private _waddleRooms: Map<number, WaddleRoom>;
@@ -165,7 +211,7 @@ export class Server {
 
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
-    this._rooms = new Map<number, Set<Client>>();
+    this._rooms = new Map<number, GameRoom>();
     this._waddleRooms = new Map<number, WaddleRoom>();
     WADDLE_ROOMS.rows.forEach((waddle) => {
       this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
@@ -200,26 +246,6 @@ export class Server {
       throw new Error(`Invalid waddle: ${waddle}`);
     }
     return players;
-  }
-
-  /** Add a player to a room */
-  addToRoom(room: number, client: Client) {
-    const clients = this._rooms.get(room);
-    if (clients === undefined) {
-      this._rooms.set(room, new Set([client]));
-    } else {
-      clients.add(client);
-    }
-  }
-
-  /** Removes a player from a room */
-  leaveRoom(client: Client, room: number) {
-    this._rooms.get(room)?.delete(client);
-  }
-
-  /** Get all players in a room */
-  getPlayers(room: number): Client[] {
-    return Array.from(this._rooms.get(room)?.values() ?? []); 
   }
 
   /** Assign client object to a penguin ID */
@@ -263,6 +289,15 @@ export class Server {
     this._botId++;
     return this._botId;
   }
+
+  getRoom(roomId: number): GameRoom {
+    let room = this._rooms.get(roomId);
+    if (room === undefined) {
+      room = new GameRoom(roomId);
+      this._rooms.set(roomId, room);
+    }
+    return room;
+  }
 }
 
 export class Client {
@@ -270,10 +305,6 @@ export class Client {
   /** Reference to the server */
   private _server: Server;
   protected _penguin: Penguin | undefined;
-  x: number;
-  y: number;
-  /** Frame number, for animations like dancing */
-  private _frame: number;
 
   /** Instance of waddle game, if playing, or null otherwise */
   private _waddleGame: WaddleGame | null;
@@ -281,7 +312,10 @@ export class Client {
   /** ID of current waddle room, or -1 otherwise */
   private _currentWaddleRoom: number;
 
-  currentRoom: number;
+  /** Reference to the room the player is in */
+  private _currentRoom: GameRoom | undefined;
+  /** Reference to the player's information stored in the room */
+  private _roomInfo: PlayerRoomInfo | undefined;
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -311,15 +345,9 @@ export class Client {
   private _bots: BotGroup;
 
   constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
-    this.currentRoom = -1;
-    
     this._server = server;
     this._socket = socket;
     this.serverType = type;
-    /* TODO, x and y random generation at the start? */
-    this.x = 100;
-    this.y = 100;
-    this._frame = 1;
     this._waddleGame = null;
     this._currentWaddleRoom = -1;
     this.sessionStart = Date.now();
@@ -398,9 +426,29 @@ export class Client {
     ].join('|')
   }
 
+  get x(): number {
+    return this._roomInfo?.x ?? 0;
+  }
+
+  private updateRoomInfo(info: Partial<PlayerRoomInfo>) {
+    if (this._roomInfo !== undefined) {
+      for (const [key, value] of Object.entries(info)) {
+        this._roomInfo[key as keyof PlayerRoomInfo] = value;
+      }
+    }
+  }
+
+  get y(): number {
+    return this._roomInfo?.y ?? 0;
+  }
+
+  get frame(): number {
+    return this._roomInfo?.frame ?? 1;
+  }
+
   get penguinString (): string {
     if (isEngine1(this.version)) {
-      return Client.engine1Crumb(this.penguin, { x: this.x, y: this.y, frame: this._frame });
+      return Client.engine1Crumb(this.penguin, { x: this.x, y: this.y, frame: this.frame });
     } else {
       return [
         this.penguin.id,
@@ -417,7 +465,7 @@ export class Client {
         this.penguin.background,
         this.x,
         this.y,
-        this._frame,
+        this.frame,
         this.penguin.isMember ? 1 : 0,
         this.memberAge,
         0, // TODO figure out what this "avatar" is
@@ -446,29 +494,26 @@ export class Client {
     return this.age;
   }
 
+  get room(): GameRoom {
+    if (this._currentRoom === undefined) {
+      throw new Error('Player is not in a room');
+    }
+    return this._currentRoom;
+  }
+
   setPosition(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    this.updateRoomInfo({ x, y, frame: 1 });
     this.sendRoomXt('sp', this.penguin.id, x, y);
   }
 
   setFrame(frame: number) {
-    this._frame = frame;
+    this.updateRoomInfo({ frame });
     this.sendRoomXt('sf', this.penguin.id, frame);
-  }
-
-  resetFrame() {
-    this._frame = 1;
-  }
-
-  private getPlayersInRoom(): Client[] {
-    return this._server.getPlayers(this.currentRoom);
   }
 
   /** Send a XT message to all players in a room */
   sendRoomXt(handler: string, ...args: Array<string | number>) {
-    const players = this.getPlayersInRoom();
-    players.forEach((client) => client.sendXt(handler, ...args));
+    this.room.players.forEach((client) => client.sendXt(handler, ...args));
   }
 
   /** Check if playing a waddle game */
@@ -483,24 +528,25 @@ export class Client {
   }
 
   leaveRoom(): void {
-    const players = this.getPlayersInRoom().filter((p) => p.penguin.id !== this.penguin.id);
+    const players = this.room.players.filter((p) => p.penguin.id !== this.penguin.id);
     this.sendRoomXt('rp', this.penguin.id, ...players.map((p) => p.penguinString));
-    this._server.leaveRoom(this, this.currentRoom);
+    this.room.removePlayer(this);
   }
 
   joinRoom (room: number): void {
     // leaving previous room
-    if (this.currentRoom !== -1) {
+    if (this._currentRoom !== undefined) {
       this.leaveRoom();
     }
-    this.currentRoom = room;
+    this._currentRoom = this._server.getRoom(room);
     const string = this.penguinString;
     if (isGameRoom(room)) {
+      this._roomInfo = undefined;
       this.sendXt('jg', room);
     } else {
-      this._server.addToRoom(room, this);
-      const players = this._server.getPlayers(room);
-      this.sendXt('jr', room, ...players.map((client) => client.penguinString));
+      this.room.addPlayer(this);
+      this._roomInfo = this.room.getPlayer(this);
+      this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
       this.sendRoomXt('ap', string);
     }
   }
@@ -661,12 +707,12 @@ export class Client {
   getEndgameStampsInformation (): [string, number, number, number] {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
-    if (this.currentRoom in roomStamps) {
-      let gameStamps = roomStamps[this.currentRoom];
+    if (this.room.id in roomStamps) {
+      let gameStamps = roomStamps[this.room.id];
       // manually removing stamps if using a version before it was available
       if (isLower(this.version, '2010-07-26')) {
         gameStamps = [];
-      } else if (this.currentRoom === Room.JetPackAdventure) {
+      } else if (this.room.id === Room.JetPackAdventure) {
         // Before puffle stamps
         if (isLower(this.version, '2010-09-24')) {
           gameStamps = [
@@ -900,7 +946,7 @@ export class Client {
   }
 
   getCoinsFromScore(score: number): number {
-    return isLiteralScoreGame(this.currentRoom) ? (
+    return isLiteralScoreGame(this.room.id) ? (
       Number(score)
     ) : (
       Math.floor(Number(score) / 10)

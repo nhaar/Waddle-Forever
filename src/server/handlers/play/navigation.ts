@@ -70,7 +70,6 @@ handler.xt('u#sf', (client, frame) => {
 
 handler.xt('u#sp', (client, x, y) => {
   // walking stops your character from whichever animation
-  client.resetFrame();
   client.setPosition(Number(x), Number(y));
   client.sendRoomXt('sp', client.penguin.id, x, y);
 })
