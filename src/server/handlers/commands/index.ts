@@ -79,7 +79,6 @@ class CommandsHandler {
         const callbacks = commands.get(keyword);
         if (callbacks !== undefined) {
           const args = commandMatch[2].split(/\s+/).slice(1);
-          console.log(args);
           callbacks.forEach(callback => callback(client, args));
         } else {
           console.log(`Attempted to use command ${keyword}, but it doesn't exist`);
