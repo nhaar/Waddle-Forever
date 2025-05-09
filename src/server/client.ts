@@ -161,6 +161,8 @@ export class Server {
   /** Server's settings */
   private _settingsManager: SettingsManager;
 
+  private _botId = 0;
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, Set<Client>>();
@@ -256,13 +258,18 @@ export class Server {
 
     return players;
   }
+
+  getNewBotId(): number {
+    this._botId++;
+    return this._botId;
+  }
 }
 
 export class Client {
   private _socket: net.Socket | undefined;
   /** Reference to the server */
   private _server: Server;
-  private _penguin: Penguin | undefined;
+  protected _penguin: Penguin | undefined;
   x: number;
   y: number;
   /** Frame number, for animations like dancing */
@@ -499,7 +506,9 @@ export class Client {
   }
 
   update (): void {
-    db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+    if (!this.isBot) {
+      db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+    }
   }
 
   static getPenguinFromName (name: string): Penguin {
@@ -1021,7 +1030,10 @@ export class Client {
 }
 
 class Bot extends Client {
-
+  constructor(server: Server, name: string) {
+    super(server, undefined, 'World');
+    this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name, true);
+  }
 };
 
 type Shape = Vector[];
@@ -1059,8 +1071,7 @@ export class BotGroup {
   }
 
   spawnBot(name: string, startRoom: number = Room.Town): Bot {
-    const bot = new Bot(this._server, undefined, 'World');
-    bot.setPenguinFromName(name);
+    const bot = new Bot(this._server, name);
     this._bots.set(name, bot);
     bot.joinRoom(startRoom);
     return bot;
