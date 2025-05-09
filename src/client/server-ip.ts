@@ -19,7 +19,6 @@ export function createChangeServerIPWindow(serverSettings: SettingsManager, main
     window.loadFile(path.join(__dirname, 'views/server-ip.html'));
 
     ipcMain.on('update-ip', (_, arg) => {
-      console.log(arg);
       serverSettings.targetIP = arg;
       mainWindow.loadURL(`http://${arg}:${HTTP_PORT}`);
     });
