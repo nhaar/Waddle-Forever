@@ -2,7 +2,7 @@ import net from 'net';
 
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
-import { Penguin } from './penguin';
+import { Penguin, PenguinEquipmentSlot } from './penguin';
 import { Stamp } from './game-logic/stamps';
 import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
@@ -11,16 +11,28 @@ import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
-import { CPIP_UPDATE } from './game-data/updates';
+import { CPIP_UPDATE, STAMPS_RELEASE } from './game-data/updates';
 import { findInVersion } from './game-data/changes';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
+import { Vector } from '../common/utils';
 
 const versionsTimeline = getVersionsTimeline();
 
 type ServerType = 'Login' | 'World';
 
-const STAMP_RELEASE_VERSION : string = '2010-07-26'
+/** Maps the slot name to what it's called in the packets */
+export const EQUIP_SLOT_MAPPINGS: Record<PenguinEquipmentSlot, string> = {
+  color: 'c',
+  head: 'h',
+  face: 'f',
+  neck: 'n',
+  body: 'b',
+  hand: 'a',
+  feet: 'e',
+  pin: 'l',
+  background: 'p'
+}
 
 /** Manages the players waiting to join a Waddle Game */
 export class WaddleRoom {
@@ -146,7 +158,11 @@ export class Server {
   /** All clients mapped out by their penguin's ID */
   private _playersById: Map<number, Client>;
 
-  constructor() {
+  /** Server's settings */
+  private _settingsManager: SettingsManager;
+
+  constructor(settings: SettingsManager) {
+    this._settingsManager = settings;
     this._rooms = new Map<number, Set<Client>>();
     this._waddleRooms = new Map<number, WaddleRoom>();
     WADDLE_ROOMS.rows.forEach((waddle) => {
@@ -161,6 +177,10 @@ export class Server {
       throw new Error('Attempting to get card match making before it was initialized');
     }
     return this._cardMatchmaking;
+  }
+
+  get settings(): Settings {
+    return this._settingsManager.settings;
   }
 
   setCardMatchmaker(matchMaker: MatchMaker) {
@@ -239,10 +259,10 @@ export class Server {
 }
 
 export class Client {
-  socket: net.Socket;
+  private _socket: net.Socket | undefined;
   /** Reference to the server */
   private _server: Server;
-  penguin: Penguin;
+  private _penguin: Penguin | undefined;
   x: number;
   y: number;
   /** Frame number, for animations like dancing */
@@ -255,7 +275,6 @@ export class Client {
   private _currentWaddleRoom: number;
 
   currentRoom: number;
-  private _settingsManager: SettingsManager
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -282,14 +301,14 @@ export class Client {
   // when digging gold nuggets for golden puffle
   private _isGoldNuggetState = false;
 
-  constructor (server: Server, socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
+  private _bots: BotGroup;
+
+  constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
     this.currentRoom = -1;
     
     this._server = server;
-    this.socket = socket;
-    this._settingsManager = settingsManager;
+    this._socket = socket;
     this.serverType = type;
-    this.penguin = Penguin.getDefault(-1, '', this._settingsManager.settings.always_member);
     /* TODO, x and y random generation at the start? */
     this.x = 100;
     this.y = 100;
@@ -305,18 +324,32 @@ export class Client {
     this.handledXts = new Map<string, boolean>();
 
     this.xtTimestamps = new Map<string, number>();
+
+    this._bots = new BotGroup(this.server);
   }
 
   private get version(): Version {
-    return this._settingsManager.settings.version;
+    return this.server.settings.version;
   }
 
   get settings(): Settings {
-    return this._settingsManager.settings;
+    return this.server.settings;
+  }
+
+  get penguin(): Penguin {
+    return this._penguin ?? (() => { throw new Error('Getting socket before initializing'); })();
+  }
+
+  get socket(): net.Socket {
+    return this._socket ?? (() => { throw new Error('Getting socket before initializing'); })();
+  }
+
+  get isBot(): boolean {
+    return this._socket === undefined;
   }
 
   send (message: string): void {
-    this.socket.write(message + '\0');
+    this._socket?.write(message + '\0');
   }
 
   private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
@@ -329,7 +362,7 @@ export class Client {
   }
 
   sendXt (handler: string, ...args: Array<number | string>): void {
-    console.log('\x1b[32mSending XT:\x1b[0m ', handler, args);
+    // console.log('\x1b[32mSending XT:\x1b[0m ', handler, args);
     this.send(this.getXtMessage(false, handler, ...args));
   }
 
@@ -482,7 +515,7 @@ export class Client {
   }
 
   setPenguinFromName (name: string): void {
-    this.penguin = Client.getPenguinFromName(name)
+    this._penguin = Client.getPenguinFromName(name)
     this._server.trackPlayer(this.penguin.id, this);
   }
 
@@ -492,7 +525,7 @@ export class Client {
     if (penguin === undefined) {
       throw new Error(`Could not find penguin of ID ${id}`);
     }
-    this.penguin = new Penguin(id, penguin);
+    this._penguin = new Penguin(id, penguin);
     this._server.trackPlayer(id, this);
   }
 
@@ -677,7 +710,7 @@ export class Client {
    */
   giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = params.release ?? STAMP_RELEASE_VERSION;
+    const releaseDate = params.release ?? STAMPS_RELEASE;
     if (isGreaterOrEqual(this.version, releaseDate)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
@@ -957,5 +990,118 @@ export class Client {
 
   throwSnowball(x: string, y: string) {
     this.sendRoomXt('sb', this.penguin.id, x, y);
+  }
+
+  updateEquipment(slot: PenguinEquipmentSlot, id: number): void {
+    this.penguin[slot] = id;
+    this.sendRoomXt(`up${EQUIP_SLOT_MAPPINGS[slot]}`, this.penguin.id, id);
+  }
+
+  equip(itemId: number): void {
+    const item = ITEMS.getStrict(itemId);
+    const slots: Partial<Record<ItemType, PenguinEquipmentSlot>> = {
+      [ItemType.Background]: 'background',
+      [ItemType.Body]: 'body',
+      [ItemType.Color]: 'color',
+      [ItemType.Face]: 'face',
+      [ItemType.Feet]: 'feet',
+      [ItemType.Hand]: 'hand',
+      [ItemType.Head]: 'head',
+      [ItemType.Neck]: 'neck'
+    };
+    const slot = slots[item.type];
+    if (slot !== undefined) {
+      this.updateEquipment(slot, itemId);
+    }
+  }
+
+  get botGroup(): BotGroup {
+    return this._bots;
+  }
+}
+
+class Bot extends Client {
+
+};
+
+type Shape = Vector[];
+
+export class BotGroup {
+  private _bots: Map<string, Bot>;
+  private _server: Server;
+
+  constructor(server: Server) {
+    this._bots = new Map<string, Bot>;
+    this._server = server;
+  }
+
+  merge(other: BotGroup): void {
+    other.bots.forEach(bot => {
+      this._bots.set(bot.penguin.name, bot);
+    });
+  }
+
+  get bots(): Bot[] {
+    return Array.from(this._bots.values());
+  }
+
+  private callBotAction(target: string | undefined, action: (bot: Bot) => void) {
+    let bots: Bot[] = [];
+    if (target === undefined) {
+      bots = Array.from(this._bots.values());
+    } else {
+      const bot = this._bots.get(target);
+      if (bot !== undefined) {
+        bots = [bot];
+      }
+    }
+    bots.forEach(action);
+  }
+
+  spawnBot(name: string, startRoom: number = Room.Town): Bot {
+    const bot = new Bot(this._server, undefined, 'World');
+    bot.setPenguinFromName(name);
+    this._bots.set(name, bot);
+    bot.joinRoom(startRoom);
+    return bot;
+  }
+
+  say(message: string, target?: string): void {
+    this.callBotAction(target, (b) => b.sendMessage(message));
+  }
+
+  goTo(x: number, y: number, target?: string): void {
+    this.callBotAction(target, b => b.setPosition(x, y));
+  }
+
+  dance(target?: string): void {
+    this.callBotAction(target, b => b.setFrame(26));
+  }
+
+  wear(itemId: number, target?: string): void {
+    this.callBotAction(target, b => b.equip(itemId));
+  }
+
+  makeShape(shape: Shape, origin?: Vector): void {
+    const pos = origin ?? new Vector(this.bots[0].x, this.bots[0].y);
+    this.bots.forEach((bot, i) => {
+      const targetPos = pos.add(shape[i]).vector;
+      bot.setPosition(targetPos[0], targetPos[1]);
+    })
+  }
+
+  makeRectangle(width: number, xSeparation: number, ySeparation: number, x?: number, y?: number) {
+    const shape: Shape = [];
+    const amount = this.bots.length;
+    for (let i = 0; i < amount; i++) {
+      shape.push(new Vector((i % width) * xSeparation, (Math.floor(i / width)) * ySeparation));
+    }
+    this.makeShape(shape, new Vector(x ?? 0, y ?? 0));
+  }
+
+  spawnNumberedGroup(baseName: string, amount: number, room?: number): void {
+    for (let i = 0; i < amount; i++) {
+      this.spawnBot(`${baseName}${i + 1}`, room);
+    }
   }
 }

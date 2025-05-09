@@ -224,3 +224,35 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
     callback(key as Key, value as Value);
   });
 }
+
+export class Vector {
+  private _vector: number[];
+
+  constructor(...numbers: number[]) {
+    this._vector = numbers;
+  }
+
+  get vector() {
+    return this._vector;
+  }
+
+  get length() {
+    return this._vector.length;
+  }
+
+  copy(): Vector {
+    return new Vector(...this.vector);
+  }
+
+  add(other: Vector): Vector {
+    const vector = this.copy();
+    if (other.length !== this.length) {
+      throw new Error('Vectors don\'t have the same length');
+    }
+    for (let i = 0; i < this._vector.length; i++) {
+      vector.vector[i] += other.vector[i];
+    }
+
+    return vector;
+  }
+}

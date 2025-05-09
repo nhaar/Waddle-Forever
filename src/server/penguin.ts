@@ -3,23 +3,27 @@ import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, 
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { PUFFLE_ITEMS } from './game-logic/puffle-item';
 
+export type PenguinEquipped = {
+  color: number
+  head: number
+  face: number
+  neck: number
+  body: number
+  hand: number
+  feet: number
+  pin: number
+  background: number  
+}
+
+export type PenguinEquipmentSlot = keyof PenguinEquipped;
+
 export class Penguin {
   private _id: number;
   private _name: string;
   private _isMember: boolean;
   private _isAgent: boolean;
   private _mascot: number;
-  private _equipped: {
-    color: number
-    head: number
-    face: number
-    neck: number
-    body: number
-    hand: number
-    feet: number
-    pin: number
-    background: number  
-  };
+  private _equipped: PenguinEquipped;
   private _coins: number;
   private _registrationTimestamp: number;
   private _minutesPlayed: number;

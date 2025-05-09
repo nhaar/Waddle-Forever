@@ -17,7 +17,7 @@ import { HTTP_PORT } from '../common/constants';
 const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<void> => {
   handler.useEndpoints(server);
 
-  const gameServer = new Server();
+  const gameServer = new Server(settingsManager);
 
   handler.bootServer(gameServer);
 
@@ -30,8 +30,7 @@ const createServer = async (type: string, port: number, handler: Handler, settin
       const client = new Client(
         gameServer,
         socket,
-        type === 'Login' ? 'Login' : 'World',
-        settingsManager
+        type === 'Login' ? 'Login' : 'World'
       );
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];

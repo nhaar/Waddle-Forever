@@ -1,4 +1,4 @@
-import { Client } from "../../../server/client";
+import { BotGroup, Client } from "../../../server/client";
 import { Handler } from "..";
 import { ITEMS } from "../../game-logic/items";
 import { Room } from "../../game-logic/rooms";
@@ -204,9 +204,182 @@ commands.add('powercards', [], (client) => {
   client.update();
 });
 
+/** A given action for a bot group */
+type BotAction = {
+  action: 'spawn';
+  name: string;
+  room?: number;
+  pos?: [number, number];
+  items?: number[];
+} | {
+  action: 'say';
+  message: string;
+  target?: string;
+} | {
+  action: 'spawn-increment-group';
+  base: string;
+  amount: number;
+  room?: number;
+} | {
+  action: 'draw-rectangle';
+  x?: number;
+  y?: number;
+  width: number;
+  xSpace: number;
+  ySpace: number;
+} | {
+  action: 'wear';
+  item: number;
+  target?: string;
+} | {
+  action: 'dance';
+  target?: string;
+} | {
+  action: 'walk';
+  x: number;
+  y: number;
+  target: string;
+};
+
+/** Manages all accessible commands for bots */
+class BotCommands {
+  private _commands: Map<string, BotAction[]>
+
+  constructor() {
+    this._commands = new Map<string, BotAction[]>();
+  }
+
+  /** Add a command and its actions */
+  add(command: string, actions: BotAction[]): void {
+    this._commands.set(command, actions);
+  }
+
+  getCommandHandler() {
+    const commands = this._commands;
+    return (client: Client, id: string, message: string) => {
+      const commandMatch = message.match(/!b(\w+)/);
+      if (commandMatch !== null) {
+        const command = commandMatch[1];
+        const actions = commands.get(command);
+        const group = new BotGroup(client.server);
+        if (actions !== undefined) {
+          actions.forEach(action => {
+            switch (action.action) {
+              case 'spawn':
+                group.spawnBot(action.name, action.room);
+                if (action.pos !== undefined) {
+                  group.goTo(...action.pos, action.name);
+                }
+                if (action.items !== undefined) {
+                  action.items.forEach(item => group.wear(item, action.name));
+                }
+                break;
+              case 'spawn-increment-group':
+                group.spawnNumberedGroup(action.base, action.amount, action.room);
+                break;
+              case 'dance':
+                group.dance(action.target);
+                break;
+              case 'draw-rectangle':
+                group.makeRectangle(action.width, action.xSpace, action.ySpace, action.x, action.y);
+                break;
+              case 'say':
+                group.say(action.message);
+                break;
+              case 'wear':
+                group.wear(action.item, action.target);
+                break;
+              case 'walk':
+                group.goTo(action.x, action.y, action.target);
+                break;
+            }
+          })
+        }
+
+        client.botGroup.merge(group);
+      }
+    }
+  }
+}
+
+const botCommands = new BotCommands();
+
+botCommands.add('bergtip', [
+  {
+    action: 'spawn-increment-group',
+    base: 'miner',
+    amount: 30,
+    room: 805
+  },
+  {
+    action: 'draw-rectangle',
+    x: 141,
+    y: 220,
+    width: 5,
+    xSpace: 40,
+    ySpace: 20
+  },
+  {
+    action: 'wear',
+    item: 403
+  },
+  {
+    action: 'dance'
+  }
+]);
+
+botCommands.add('band', [
+  {
+    action: 'spawn',
+    name: 'BandDrummer',
+    room: 410,
+    pos: [87, 225],
+    items: [340]
+  },
+  {
+    action: 'spawn',
+    name: 'BandGuitar',
+    room: 410,
+    pos: [172, 272],
+    items: [233]
+  },
+  {
+    action: 'spawn',
+    name: 'BandAcoustic',
+    room: 410,
+    pos: [137, 305],
+    items: [234]
+  },
+  {
+    action: 'spawn',
+    name: 'BandBass',
+    room: 410,
+    pos: [71, 313],
+    items: [729]
+  },
+  {
+    action: 'spawn',
+    name: 'BandTuba',
+    room: 410,
+    pos: [64, 359],
+    items: [293]
+  },
+  {
+    action: 'spawn',
+    name: 'BandTrumpet',
+    room: 410,
+    pos: [104, 336],
+    items: [5014]
+  },
+  {
+    action: 'dance'
+  }
+])
+
 export const commandsHandler = commands.getCommandsHandler();
 
 handler.xt('m#sm', commandsHandler);
+handler.xt('m#sm', botCommands.getCommandHandler());
 
 handler.xt('m#sm', (client, id, message) => {
   client.sendMessage(message);

@@ -1,5 +1,7 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
+import { EQUIP_SLOT_MAPPINGS } from "../../../server/client";
+import { iterateEntries } from "../../../common/utils";
 
 const handler = new Handler();
 
@@ -22,33 +24,12 @@ handler.xt('i#ai', (client, item) => {
   client.update();
 });
 
-type BodyPartName = 'color' | 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background';
-
-const addBodyPartUpdater = (xtCode: string, name: BodyPartName) => {
-  handler.xt(`s#${xtCode}`, (client, id) => {
+iterateEntries(EQUIP_SLOT_MAPPINGS, (slot, char) => {
+  handler.xt(`s#up${char}`, (client, id) => {
     const itemId = Number(id);
-    client.penguin[name] = Number(itemId);
-    client.sendRoomXt(xtCode, client.penguin.id, itemId);
+    client.updateEquipment(slot, itemId);
     client.update();
   })
-}
-
-addBodyPartUpdater('upc', 'color');
-
-addBodyPartUpdater('upa', 'hand');
-
-addBodyPartUpdater('upf', 'face');
-
-addBodyPartUpdater('upb', 'body');
-
-addBodyPartUpdater('upn', 'neck');
-
-addBodyPartUpdater('uph', 'head');
-
-addBodyPartUpdater('upe', 'feet');
-
-addBodyPartUpdater('upl', 'pin');
-
-addBodyPartUpdater('upp', 'background');
+});
 
 export default handler;
