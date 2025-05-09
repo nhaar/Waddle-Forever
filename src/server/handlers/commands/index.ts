@@ -238,6 +238,9 @@ type BotAction = {
   x: number;
   y: number;
   target: string;
+} | {
+  action: 'command';
+  name: string;
 };
 
 /** Manages all accessible commands for bots */
@@ -253,47 +256,57 @@ class BotCommands {
     this._commands.set(command, actions);
   }
 
+  runCommand(client: Client, command: string, recursion: boolean = false): BotGroup {
+    const actions = this._commands.get(command);
+    const group = new BotGroup(client.server);
+    if (actions !== undefined) {
+      actions.forEach(action => {
+        switch (action.action) {
+          case 'spawn':
+            group.spawnBot(action.name, action.room);
+            if (action.pos !== undefined) {
+              group.goTo(...action.pos, action.name);
+            }
+            if (action.items !== undefined) {
+              action.items.forEach(item => group.wear(item, action.name));
+            }
+            break;
+          case 'spawn-increment-group':
+            group.spawnNumberedGroup(action.base, action.amount, action.room);
+            break;
+          case 'dance':
+            group.dance(action.target);
+            break;
+          case 'draw-rectangle':
+            group.makeRectangle(action.width, action.xSpace, action.ySpace, action.x, action.y);
+            break;
+          case 'say':
+            group.say(action.message);
+            break;
+          case 'wear':
+            group.wear(action.item, action.target);
+            break;
+          case 'walk':
+            group.goTo(action.x, action.y, action.target);
+            break;
+          case 'command':
+            if (!recursion) {
+              this.runCommand(client, action.name, true);
+            }
+            break;
+        }
+      })
+    }
+    return group;
+  }
+
   getCommandHandler() {
-    const commands = this._commands;
+    const handler = this;
     return (client: Client, id: string, message: string) => {
       const commandMatch = message.match(/!b(\w+)/);
       if (commandMatch !== null) {
         const command = commandMatch[1];
-        const actions = commands.get(command);
-        const group = new BotGroup(client.server);
-        if (actions !== undefined) {
-          actions.forEach(action => {
-            switch (action.action) {
-              case 'spawn':
-                group.spawnBot(action.name, action.room);
-                if (action.pos !== undefined) {
-                  group.goTo(...action.pos, action.name);
-                }
-                if (action.items !== undefined) {
-                  action.items.forEach(item => group.wear(item, action.name));
-                }
-                break;
-              case 'spawn-increment-group':
-                group.spawnNumberedGroup(action.base, action.amount, action.room);
-                break;
-              case 'dance':
-                group.dance(action.target);
-                break;
-              case 'draw-rectangle':
-                group.makeRectangle(action.width, action.xSpace, action.ySpace, action.x, action.y);
-                break;
-              case 'say':
-                group.say(action.message);
-                break;
-              case 'wear':
-                group.wear(action.item, action.target);
-                break;
-              case 'walk':
-                group.goTo(action.x, action.y, action.target);
-                break;
-            }
-          })
-        }
+        const group = handler.runCommand(client, command);
 
         client.botGroup.merge(group);
       }
@@ -420,6 +433,21 @@ botCommands.add('dance', [
     action: 'dance'
   }
 ])
+
+botCommands.add('stamps', [
+  {
+    action: 'command',
+    name: 'dance'
+  },
+  {
+    action: 'command',
+    name: 'bergtip'
+  },
+  {
+    action: 'command',
+    name: 'band'
+  }
+]);
 
 export const commandsHandler = commands.getCommandsHandler();
 
