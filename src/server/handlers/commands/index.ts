@@ -302,6 +302,32 @@ class BotCommands {
   }
 }
 
+commands.add('bcolor', ['string'], (client, color) => {
+  let colorId = {
+    color: 1,
+    green: 2,
+    pink: 3,
+    black: 4,
+    red: 5,
+    orange: 6,
+    yellow: 7,
+    darkpurple: 8,
+    brown: 9,
+    peach: 10,
+    darkgreen: 11,
+    lightblue: 12,
+    limegreen: 13,
+    gray: 14,
+    aqua: 15,
+    white: 16,
+    lavender: 17
+  }[color];
+
+  if (colorId !== undefined) {
+    client.botGroup.wear(colorId);
+  }
+});
+
 const botCommands = new BotCommands();
 
 botCommands.add('bergtip', [
@@ -370,6 +396,26 @@ botCommands.add('band', [
     room: 410,
     pos: [104, 336],
     items: [5014]
+  },
+  {
+    action: 'dance'
+  }
+])
+
+botCommands.add('dance', [
+  {
+    action: 'spawn-increment-group',
+    base: 'dance',
+    amount: 48,
+    room: 120,
+  },
+  {
+    action: 'draw-rectangle',
+    x: 206,
+    y: 273,
+    xSpace: 32,
+    ySpace: 30,
+    width: 8
   },
   {
     action: 'dance'
