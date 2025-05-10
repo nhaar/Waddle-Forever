@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 
 import { SettingsManager } from "./settings";
+import { Server } from './client';
 
 /**
  * Creates the REST API that the client uses to communicate with the server for updating
@@ -8,14 +9,19 @@ import { SettingsManager } from "./settings";
  * @param s Reference to the settings manager consumed by the server
  * @param server
  */
-export const setApiServer = (s: SettingsManager, server: Express): void => {
+export const setApiServer = (s: SettingsManager, server: Express, gameServers: Server[]): void => {
   const router = express.Router();
 
   router.use(express.json());
 
+  const resetServers = () => {
+    gameServers.forEach(s => s.reset());
+  }
+
   router.post('/update', (req, res) => {
     s.updateSettings(req.body);
     res.sendStatus(200);
+    resetServers();
   });
 
   router.get('/get', (_, res) => {
@@ -30,6 +36,7 @@ export const setApiServer = (s: SettingsManager, server: Express): void => {
       s.setModInactive(name);
     }
     res.sendStatus(200);
+    resetServers();
   });
 
   router.get('/mod/get', (_, res) => {

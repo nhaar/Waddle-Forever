@@ -221,12 +221,16 @@ export class Server {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
     this._waddleRooms = new Map<number, WaddleRoom>();
-    WADDLE_ROOMS.rows.forEach((waddle) => {
-      this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
-    });
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
+    this.init();
+  }
+
+  private init() {
+    WADDLE_ROOMS.rows.forEach((waddle) => {
+      this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
+    });
   }
 
   get cardMatchmaking(): MatchMaker {
@@ -238,6 +242,17 @@ export class Server {
 
   get settings(): Settings {
     return this._settingsManager.settings;
+  }
+
+  reset(): void {
+    for (const player of this._playersById.values()) {
+      player.disconnect();
+    }
+    this._rooms = new Map<number, GameRoom>();
+    this._waddleRooms = new Map<number, WaddleRoom>();
+    this._igloos = new Map<number, Igloo>();
+    this._playersById = new Map<number, Client>();
+    this._followers = new Map<Client, Bot[]>();
   }
 
   setCardMatchmaker(matchMaker: MatchMaker) {
@@ -970,6 +985,7 @@ export class Client {
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
     this.penguin.incrementPlayTime(minutesDelta);
+    this._socket?.end();
   }
 
   checkAgeStamps(): void {
