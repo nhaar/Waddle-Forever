@@ -981,7 +981,9 @@ export class Client {
   }
 
   disconnect(): void {
-    this.leaveRoom();
+    if (this._currentRoom !== undefined) {
+      this.leaveRoom();
+    }
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
     this.penguin.incrementPlayTime(minutesDelta);
