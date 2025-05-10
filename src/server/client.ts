@@ -559,7 +559,7 @@ export class Client {
     this.room.removePlayer(this);
   }
 
-  joinRoom (room: number): void {
+  joinRoom (room: number, x?: number, y?: number): void {
     // leaving previous room
     if (this._currentRoom !== undefined) {
       this.leaveRoom();
@@ -572,10 +572,19 @@ export class Client {
     } else {
       this.room.addPlayer(this);
       this._roomInfo = this.room.getPlayer(this);
+      const xx = x ?? 0;
+      const yy = y ?? 0;
+      this.updateRoomInfo({ x: xx, y: yy });
       this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
+      console.log(string);
       this.sendRoomXt('ap', string);
+      // it seems that the new x, y position of players must be sent via a new set position packet
+      this.setPosition(xx, yy);
 
-      this.followers.forEach(bot => bot.joinRoom(room));
+      this.followers.forEach(bot => {
+        bot.joinRoom(room, x, y)
+        bot.followPosition(xx, yy);
+      });
     }
   }
 

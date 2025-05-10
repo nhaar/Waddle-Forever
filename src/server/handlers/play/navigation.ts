@@ -8,8 +8,7 @@ const handler = new Handler();
 
 // client requesting to join room
 handler.xt('j#jr', (client, destinationRoom, x, y) => {
-  client.setPosition(Number(x), Number(y));
-  client.joinRoom(Number(destinationRoom));
+  client.joinRoom(Number(destinationRoom), Number(x), Number(y));
 });
 
 // client requesting to leave a minigame
