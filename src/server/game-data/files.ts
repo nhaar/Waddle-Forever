@@ -548,6 +548,10 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
   ]
 };
 
+function cleanPath(path: string): string {
+  return path.replaceAll('/', '\\');
+}
+
 /** Raises error if a unproperly documented file is found */
 function enforceDocumentationCorrectness(): void {
   // files in the media folder, but not in here
@@ -558,14 +562,15 @@ function enforceDocumentationCorrectness(): void {
   iterateEntries(FILE_DOCUMENTATIONS, (key, value) => {
     // currently assuming they are all in default package, this may change at some point
     const subdirectory = path.join(DEFAULT_DIRECTORY, key);
-    const files = new Set(getFilesInDirectory(subdirectory));
+    const files = new Set(getFilesInDirectory(subdirectory).map(cleanPath));
     const documentedFiles = new Set<string>();
 
     value.forEach((doc) => {
       // path module uses \ instead of /
-      documentedFiles.add(doc.file.replaceAll('/', '\\'))
+      documentedFiles.add(cleanPath(doc.file))
     });
     files.forEach((file) => {
+      console.log(file)
       if (!documentedFiles.has(file)) {
         missingFiles.push(path.join(key, file));
       }
