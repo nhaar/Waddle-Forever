@@ -253,6 +253,7 @@ export class Server {
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
+    this.init();
   }
 
   setCardMatchmaker(matchMaker: MatchMaker) {
