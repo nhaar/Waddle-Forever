@@ -1138,7 +1138,7 @@ class Bot extends Client {
 
   followPosition(x: number, y: number): void {
     const targetPos = this.followInfo.relativePosition.add(new Vector(x, y)).vector;
-    this.setPosition(targetPos[0], targetPos[1]);
+    this.setPosition(...targetPos);
   }
 
   followPlayer(player: Client, relativePosition: Vector) {
@@ -1218,7 +1218,7 @@ export class BotGroup {
     const pos = origin ?? new Vector(this.bots[0].x, this.bots[0].y);
     this.bots.forEach((bot, i) => {
       const targetPos = pos.add(shape[i]).vector;
-      bot.setPosition(targetPos[0], targetPos[1]);
+      bot.setPosition(...targetPos);
     })
   }
 

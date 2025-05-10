@@ -225,11 +225,12 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
   });
 }
 
+/** 2-Dimensional vector */
 export class Vector {
-  private _vector: number[];
+  private _vector: [number, number];
 
-  constructor(...numbers: number[]) {
-    this._vector = numbers;
+  constructor(x: number, y: number) {
+    this._vector = [x, y];
   }
 
   get vector() {
@@ -246,9 +247,6 @@ export class Vector {
 
   add(other: Vector): Vector {
     const vector = this.copy();
-    if (other.length !== this.length) {
-      throw new Error('Vectors don\'t have the same length');
-    }
     for (let i = 0; i < this._vector.length; i++) {
       vector.vector[i] += other.vector[i];
     }
