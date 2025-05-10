@@ -4,6 +4,7 @@ import { ITEMS } from "../../game-logic/items";
 import { Room } from "../../game-logic/rooms";
 import { CARDS } from "../../../server/game-logic/cards";
 import { RoomName, ROOMS } from "../../../server/game-data/rooms";
+import { randomInt, Vector } from "../../../common/utils";
 
 const handler = new Handler();
 
@@ -241,6 +242,8 @@ type BotAction = {
 } | {
   action: 'command';
   name: string;
+} | {
+  action: 'follow';
 };
 
 /** Manages all accessible commands for bots */
@@ -291,7 +294,7 @@ class BotCommands {
             break;
           case 'command':
             if (!recursion) {
-              this.runCommand(client, action.name, true);
+              group.merge(this.runCommand(client, action.name, true));
             }
             break;
         }
@@ -308,7 +311,9 @@ class BotCommands {
         const command = commandMatch[1];
         const group = handler.runCommand(client, command);
 
-        client.botGroup.merge(group);
+        group.bots.forEach(bot => {
+          bot.room.botGroup.addBot(bot);
+        })
       }
     }
   }
@@ -338,6 +343,14 @@ commands.add('bcolor', ['string'], (client, color) => {
   if (colorId !== undefined) {
     client.botGroup.wear(colorId);
   }
+});
+
+commands.add('follow', [], (client) => {
+  const shape: Vector[] = [];
+  for (let i = 0; i < client.botGroup.bots.length; i++) {
+    shape.push(new Vector(randomInt(-50, 50), randomInt(-50, 50)));
+  }
+  client.botGroup.follow(client, shape);
 });
 
 const botCommands = new BotCommands();
@@ -451,11 +464,12 @@ botCommands.add('stamps', [
 
 export const commandsHandler = commands.getCommandsHandler();
 
-handler.xt('m#sm', commandsHandler);
-handler.xt('m#sm', botCommands.getCommandHandler());
-
 handler.xt('m#sm', (client, id, message) => {
   client.sendMessage(message);
 });
+
+handler.xt('m#sm', commandsHandler);
+handler.xt('m#sm', botCommands.getCommandHandler());
+
 
 export default handler;

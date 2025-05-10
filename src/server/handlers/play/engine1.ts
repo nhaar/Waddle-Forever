@@ -61,10 +61,10 @@ handler.xt('il', (client) => {
   client.sendInventory();
 }, { once: true })
 
-handler.xt('m', 'sm', commandsHandler);
 handler.xt('m', 'sm', (client, id, message) => {
   client.sendMessage(message);
 });
+handler.xt('m', 'sm', commandsHandler);
 
 handler.xt('sp', (client, x, y) => {
   client.setPosition(Number(x), Number(y));

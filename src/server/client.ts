@@ -153,10 +153,12 @@ type PlayerRoomInfo = {
 class GameRoom {
   private _players: Map<Client, PlayerRoomInfo>;
   private _id: number;
+  private _bots: BotGroup;
 
-  constructor(id: number) {
+  constructor(id: number, server: Server) {
     this._players = new Map<Client, PlayerRoomInfo>();
     this._id = id;
+    this._bots = new BotGroup(server);
   }
 
   /** Get info of player */
@@ -186,6 +188,10 @@ class GameRoom {
   get id(): number {
     return this._id;
   }
+
+  get botGroup(): BotGroup {
+    return this._bots;
+  }
 }
 
 /** Manages a gameplayer server */
@@ -209,6 +215,8 @@ export class Server {
 
   private _botId = 0;
 
+  private _followers: Map<Client, Bot[]>;
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
@@ -218,6 +226,7 @@ export class Server {
     });
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
+    this._followers = new Map<Client, Bot[]>();
   }
 
   get cardMatchmaking(): MatchMaker {
@@ -293,10 +302,23 @@ export class Server {
   getRoom(roomId: number): GameRoom {
     let room = this._rooms.get(roomId);
     if (room === undefined) {
-      room = new GameRoom(roomId);
+      room = new GameRoom(roomId, this);
       this._rooms.set(roomId, room);
     }
     return room;
+  }
+
+  addFollower(bot: Bot, following: Client) {
+    let prev = this._followers.get(following);
+    if (prev === undefined) {
+      prev = [];
+    }
+    prev.push(bot);
+    this._followers.set(following, prev);
+  }
+
+  getFollowers(player: Client): Bot[] {
+    return this._followers.get(player) ?? [];
   }
 }
 
@@ -342,8 +364,6 @@ export class Client {
   // when digging gold nuggets for golden puffle
   private _isGoldNuggetState = false;
 
-  private _bots: BotGroup;
-
   constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
     this._server = server;
     this._socket = socket;
@@ -359,8 +379,6 @@ export class Client {
     this.handledXts = new Map<string, boolean>();
 
     this.xtTimestamps = new Map<string, number>();
-
-    this._bots = new BotGroup(this.server);
   }
 
   private get version(): Version {
@@ -501,14 +519,22 @@ export class Client {
     return this._currentRoom;
   }
 
+  get followers(): Bot[] {
+    return this.server.getFollowers(this);
+  }
+
   setPosition(x: number, y: number) {
     this.updateRoomInfo({ x, y, frame: 1 });
     this.sendRoomXt('sp', this.penguin.id, x, y);
+
+    this.followers.forEach(bot => bot.followPosition(x, y));
   }
 
   setFrame(frame: number) {
     this.updateRoomInfo({ frame });
     this.sendRoomXt('sf', this.penguin.id, frame);
+
+    this.followers.forEach(bot => bot.setFrame(frame));
   }
 
   /** Send a XT message to all players in a room */
@@ -548,6 +574,8 @@ export class Client {
       this._roomInfo = this.room.getPlayer(this);
       this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
       this.sendRoomXt('ap', string);
+
+      this.followers.forEach(bot => bot.joinRoom(room));
     }
   }
 
@@ -1037,19 +1065,27 @@ export class Client {
 
   sendMessage(message: string) {
     this.sendRoomXt('sm', this.penguin.id, message);
+
+    this.followers.forEach(bot => bot.sendMessage(message));
   }
 
   sendEmote(emote: string) {
     this.sendRoomXt('se', this.penguin.id, emote);
+
+    this.followers.forEach(bot => bot.sendEmote(emote));
   }
 
   throwSnowball(x: string, y: string) {
     this.sendRoomXt('sb', this.penguin.id, x, y);
+
+    this.followers.forEach(bot => bot.throwSnowball(x, y));
   }
 
   updateEquipment(slot: PenguinEquipmentSlot, id: number): void {
     this.penguin[slot] = id;
     this.sendRoomXt(`up${EQUIP_SLOT_MAPPINGS[slot]}`, this.penguin.id, id);
+
+    this.followers.forEach(bot => bot.updateEquipment(slot, id));
   }
 
   equip(itemId: number): void {
@@ -1071,14 +1107,37 @@ export class Client {
   }
 
   get botGroup(): BotGroup {
-    return this._bots;
+    return this.room.botGroup;
   }
 }
 
+type FollowInfo = {
+  relativePosition: Vector;
+};
+
 class Bot extends Client {
+  private _followInfo: FollowInfo | undefined;
+
   constructor(server: Server, name: string) {
     super(server, undefined, 'World');
     this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name, true);
+  }
+
+  get followInfo(): FollowInfo {
+    return this._followInfo ?? (() => { throw new Error('Follow info has not been initialized') })();
+  }
+
+  followPosition(x: number, y: number): void {
+    const targetPos = this.followInfo.relativePosition.add(new Vector(x, y)).vector;
+    this.setPosition(targetPos[0], targetPos[1]);
+  }
+
+  followPlayer(player: Client, relativePosition: Vector) {
+    this._followInfo = {
+      relativePosition
+    };
+    this.server.addFollower(this, player);
+    this.followPosition(player.x, player.y);
   }
 };
 
@@ -1093,10 +1152,13 @@ export class BotGroup {
     this._server = server;
   }
 
+  addBot(bot: Bot) {
+    this._bots.set(bot.penguin.name, bot);
+  }
+
   merge(other: BotGroup): void {
-    other.bots.forEach(bot => {
-      this._bots.set(bot.penguin.name, bot);
-    });
+    const group = this;
+    other.bots.forEach((bot) => group.addBot(bot));
   }
 
   get bots(): Bot[] {
@@ -1114,6 +1176,10 @@ export class BotGroup {
       }
     }
     bots.forEach(action);
+  }
+
+  follow(player: Client, shape: Shape) {
+    this.bots.forEach((bot, i) => bot.followPlayer(player, shape[i]));
   }
 
   spawnBot(name: string, startRoom: number = Room.Town): Bot {
