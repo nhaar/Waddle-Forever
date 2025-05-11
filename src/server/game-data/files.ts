@@ -570,7 +570,6 @@ function enforceDocumentationCorrectness(): void {
       documentedFiles.add(cleanPath(doc.file))
     });
     files.forEach((file) => {
-      console.log(file)
       if (!documentedFiles.has(file)) {
         missingFiles.push(path.join(key, file));
       }
