@@ -350,7 +350,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   'play/v2/content/local/en/postcards/111.swf': [
     {
       date: '2010-02-25',
-      fileRef: 'fix:postcard_orange_puffle.swf'
+      fileRef: 'recreation:postcard_orange_puffle.swf'
     },
     {
       date: '2011-02-17',
