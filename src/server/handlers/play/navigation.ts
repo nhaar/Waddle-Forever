@@ -62,7 +62,7 @@ handler.xt(Handle.JoinIglooNew, (client, playerId, roomType) => {
 })
 
 handler.xt(Handle.SendAction, (client, action) => {
-  client.sendRoomXt('sa', client.penguin.id, action);
+  client.sendAction(action);
 });
 
 handler.xt(Handle.SendFrame, (client, frame) => {
@@ -82,6 +82,14 @@ handler.xt(Handle.Snowball, (client, ...args) => {
 // sending emotes
 handler.xt(Handle.SendEmote, (client, emote) => {
   client.sendEmote(emote);
+});
+
+handler.xt(Handle.SendJoke, (client, joke) => {
+  client.sendJoke(joke);
+});
+
+handler.xt(Handle.SendSafeMessage, (client, id) => {
+  client.sendSafeMessage(id);
 });
 
 // player inventory thing? Not sure why this exists

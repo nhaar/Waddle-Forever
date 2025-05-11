@@ -6,6 +6,7 @@ export type TypePrimitiveIndicator = 'number' | 'string';
 /** Primitive types that can be used as an argument */
 export type PrimitiveTypes = number | string;
 
+type HandleLink = HandleName | HandleName[];
 
 /**
  * A map of all the handle extensions in the game.
@@ -14,8 +15,8 @@ export type PrimitiveTypes = number | string;
  * and then pointing to all the remaining codes, which point to the handles used by it
  */
 type HandlerMapping = Record<string, 
-  Record<string, Record<string, 
-    HandleName[] | HandleName
+  Record<string, HandleLink | Record<string, 
+    HandleLink
   >>
 >
 
@@ -136,7 +137,12 @@ export enum Handle {
   JoinSled,
   SledRaceAction,
   LeaveWaddleGame,
-  HandleSendMessage
+  HandleSendMessage,
+  SendJokeOld,
+  SendSafeMessageOld,
+  SendActionOld,
+  SendJoke,
+  SendSafeMessage
 };
 
 /** Map of all the handles and their valid arguments */
@@ -257,24 +263,30 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinSled]: [],
   [Handle.SledRaceAction]: ['string', 'string', 'string', 'string'],
   [Handle.LeaveWaddleGame]: [],
-  [Handle.HandleSendMessage]: ['string', 'string']
+  [Handle.HandleSendMessage]: ['string', 'string'],
+  [Handle.SendJokeOld]: ['string'],
+  [Handle.SendSafeMessageOld]: ['string'],
+  [Handle.SendActionOld]: ['string'],
+  [Handle.SendJoke]: ['string'],
+  [Handle.SendSafeMessage]: ['string']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
-    '': {
-      'jr': Handle.JoinRoomOld,
-      'js': Handle.JoinServerOld,
-      'ac': Handle.GetCoins,
-      'ai': Handle.AddItemOld,
-      'up': Handle.UpdatePenguinOld,
-      'il': Handle.GetInventoryOld,
-      'sp': Handle.SetPositionOld,
-      'se': Handle.SendEmoteOld,
-      'sb': Handle.SnowballOld,
-      'gi': Handle.GetInventory2007,
-      'sf': Handle.SetFrameOld
-    },
+    'jr': Handle.JoinRoomOld,
+    'js': Handle.JoinServerOld,
+    'ac': Handle.GetCoins,
+    'ai': Handle.AddItemOld,
+    'up': Handle.UpdatePenguinOld,
+    'il': Handle.GetInventoryOld,
+    'sp': Handle.SetPositionOld,
+    'se': Handle.SendEmoteOld,
+    'sb': Handle.SnowballOld,
+    'gi': Handle.GetInventory2007,
+    'sf': Handle.SetFrameOld,
+    'sj': Handle.SendJokeOld,
+    'ss': Handle.SendSafeMessageOld,
+    'sa': Handle.SendActionOld,
     'j': {
       'jr': Handle.JoinRoom,
       'jp': [Handle.JoinIgloo, Handle.JoinIglooNew],
@@ -296,6 +308,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       'sp': Handle.SetPosition,
       'sb': Handle.Snowball,
       'se': Handle.SendEmote,
+      'sj': Handle.SendJoke,
+      'ss': Handle.SendSafeMessage,
       'pbi': Handle.PBI,
       'glr': Handle.GLR,
       'h': Handle.Heartbeat
@@ -396,31 +410,25 @@ const HANDLER_MAPPING: HandlerMapping = {
     }
   },
   'z': {
-    '': {
-      'zo': [Handle.LeaveGame, Handle.LeaveWaddleGame],
-      'gw': Handle.GetWaddle,
-      'jw': Handle.JoinWaddle,
-      'ggd': Handle.GetPuffleLaunchData,
-      'sgd': Handle.SetPuffleLaunchData,
-      'zr': Handle.RollSpyDrills,
-      'zc': Handle.SpyDrillsReward,
-      'lw': Handle.LeaveWaddle,
-      'gz': Handle.EnterWaddleGame,
-      'uz': Handle.UpdateWaddleGameSeats,
-      'zm': [Handle.SledRaceAction, Handle.CardJitsuDeal, Handle.CardJitsuPick],
-      'jmm': Handle.JoinMatchMaking,
-      'jz': Handle.JoinSled
-    } 
+    'zo': [Handle.LeaveGame, Handle.LeaveWaddleGame],
+    'gw': Handle.GetWaddle,
+    'jw': Handle.JoinWaddle,
+    'ggd': Handle.GetPuffleLaunchData,
+    'sgd': Handle.SetPuffleLaunchData,
+    'zr': Handle.RollSpyDrills,
+    'zc': Handle.SpyDrillsReward,
+    'lw': Handle.LeaveWaddle,
+    'gz': Handle.EnterWaddleGame,
+    'uz': Handle.UpdateWaddleGameSeats,
+    'zm': [Handle.SledRaceAction, Handle.CardJitsuDeal, Handle.CardJitsuPick],
+    'jmm': Handle.JoinMatchMaking,
+    'jz': Handle.JoinSled
   },
   'k': {
-    '': {
-      'spy': Handle.BecomeAgent
-    }
+    'spy': Handle.BecomeAgent
   },
   'm': {
-    '': {
-      'sm': Handle.SendMessageOld
-    }
+    'sm': Handle.SendMessageOld
   }
 }
 
@@ -432,14 +440,22 @@ type XtName = {
 
 export const handlePacketNames = new Map<HandleName, XtName>();
 
+function iterateHandles(ext: string, code: string, handles: Handle | Handle[], dir?: string) {
+  let array = typeof handles === 'number' ? [handles] : handles;
+  array.forEach(handle => {
+    handlePacketNames.set(handle, { extension: ext, code: dir === undefined ? code : `${dir}#${code}` });
+  });
+}
+
 iterateEntries(HANDLER_MAPPING, (ext, dirs) => {
   iterateEntries(dirs, (dir, codes) => {
-    iterateEntries(codes, (code, names) => {
-      let array = typeof names === 'number' ? [names] : names;
-      array.forEach(name => {
-        handlePacketNames.set(name, { extension: ext, code: dir === '' ? code : `${dir}#${code}` });
-      });
-    })
+    if (typeof codes === 'number' || Array.isArray(codes)) {
+      iterateHandles(ext, dir, codes);
+    } else {
+      iterateEntries(codes, (code, names) => {
+        iterateHandles(ext, code, names, dir);
+      })
+    }
   });
 });
 

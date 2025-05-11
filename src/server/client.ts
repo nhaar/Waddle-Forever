@@ -1109,6 +1109,18 @@ export class Client {
     this.followers.forEach(bot => bot.throwSnowball(x, y));
   }
 
+  sendAction(id: string) {
+    this.sendRoomXt('sa', this.penguin.id, id);
+  }
+
+  sendJoke(id: string) {
+    this.sendRoomXt('sj', this.penguin.id, id);
+  }
+
+  sendSafeMessage(id: string) {
+    this.sendRoomXt('ss', this.penguin.id, id);
+  }
+
   updateEquipment(slot: PenguinEquipmentSlot, id: number): void {
     this.penguin[slot] = id;
     this.sendRoomXt(`up${EQUIP_SLOT_MAPPINGS[slot]}`, this.penguin.id, id);

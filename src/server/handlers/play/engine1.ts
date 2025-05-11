@@ -80,6 +80,18 @@ handler.xt(Handle.SnowballOld, (client, ...args) => {
   client.throwSnowball(...args);
 })
 
+handler.xt(Handle.SendJokeOld, (client, joke) => {
+  client.sendJoke(joke);
+});
+
+handler.xt(Handle.SendSafeMessageOld, (client, id) => {
+  client.sendSafeMessage(id);
+});
+
+handler.xt(Handle.SendActionOld, (client, id) => {
+  client.sendAction(id);
+});
+
 // handler for 2007 client
 handler.xt(Handle.GetInventory2007, (client) => {
   client.sendInventory();
