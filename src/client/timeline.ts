@@ -9,7 +9,6 @@ import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { PINS } from '../server/game-data/pins';
-import {EARTHQUAKE } from '../server/game-data/updates';
 import { STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
@@ -41,12 +40,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2005-08-22',
         events: {
           other: ['Beta release'],
-        }
-      },
-      {
-        date: EARTHQUAKE,
-        events: {
-          other: ['An earthquake hits the island']
         }
       },
       {

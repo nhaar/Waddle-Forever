@@ -628,14 +628,6 @@ type TemporaryRoomUpdate = Array<{
 }>;
 
 export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdate>> = {
-  'dance': [
-    {
-      date: EARTHQUAKE,
-      // no ide when this ended
-      end: '2008-06-24',
-      fileRef: 'archives:RoomsDance-Earthquake2008.swf'
-    }
-  ],
   'plaza': [
     {
       date: PLAZA_LAUNCHPAD_START,
