@@ -1,6 +1,7 @@
 import { XtPacket } from '..';
 import { Client, Server } from '../client';
 import express, { Express } from 'express';
+import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
 
 type XTCallback = (client: Client, ...args: string[]) => void
 type XMLCallback = (client: Client, data: string) => void
@@ -14,6 +15,58 @@ type XtParams = {
    * from the same client
    */
   cooldown?: number
+}
+
+/** Get a function that checks at runtime the types given so it can be used for a client callback */
+export function getHandlerCallback<Arguments extends ArgumentsIndicator>(
+  argTypes: Arguments,
+  method: (client: Client, ...args: GetArgumentsType<Arguments>) => void
+) {
+  let callback = (client: Client, ...args: Array<string>) => {
+    let validArgs: unknown[] = [];
+    let valid = true;
+
+    const checkString = (type: string | undefined) => {
+      if (type === undefined) {
+        valid = false;
+      } else {
+        validArgs.push(type);
+      }
+    }
+
+    const checkNumber = (type: string | undefined) => {
+      const num = Number(type);
+      if (isNaN(num)) {
+        valid = false;
+      } else {
+        validArgs.push(num);
+      }
+    }
+
+    args.forEach((arg, i) => {
+      if (argTypes === 'string') {
+        checkString(arg);
+      } else if (argTypes === 'number') {
+        checkNumber(arg);
+      } else {
+        switch (argTypes[i]) {
+          case 'number':
+            checkNumber(arg)
+            break;
+          case 'string':
+            checkString(arg)
+            break;
+        }
+      }
+
+    });
+
+    if (valid) {
+      method(client, ...validArgs as GetArgumentsType<Arguments>)
+    }
+  }
+
+  return callback;
 }
 
 function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => void) {
@@ -57,56 +110,41 @@ export class Handler {
     this.xmlListeners = new Map<string, XMLCallback>();
     this.onBoot = [];
   }
-  xt (extension: string, code: string, method: XTCallback, params?: XtParams): void
-  xt (code: string, method: XTCallback, params?: XtParams): void
 
-  /* Add listener for XT packet */
-  xt (...args: Array<string | XTCallback | XtParams | undefined>): void {
-    let extension = 's';
-    let code: string;
-    let method: XTCallback;
-    let params: XtParams = {};
-    if (typeof args[1] === 'string') {
-      if (typeof args[0] !== 'string') {
-        throw new Error('');
-      }
-      if (typeof args[1] !== 'string') {
-        throw new Error('');
-      }
-      if (typeof args[2] !== 'function') {
-        throw new Error();
-      }
-      extension = args[0];
-      code = args[1];
-      method = args[2];
-    } else {
-      if (typeof args[0] !== 'string') {
-        throw new Error('');
-      }
-      if (typeof args[1] !== 'function') {
-        throw new Error('');
-      }
-      code = args[0];
-      method = args[1];
+  /**
+   * Setup a listener to a XT packet
+   * @param name Name of the packet - This defines the code and the arguments used in the callback
+   * @param method Listener to be added
+   * @param params Params that restrict when this listener will run
+   */
+  xt<
+    Name extends HandleName
+  >(
+    name: Name,
+    method: (client: Client, ...args: GetArgumentsType<HandleArguments[Name]>) => void,
+    params?: XtParams
+  ) {
+    const xt = handlePacketNames.get(name);
+    if (xt === undefined) {
+      throw new Error(`Invalid XT name: ${name}`);
     }
-    const last = args.slice(-1)[0]
-    if (last !== undefined) {
-      params = last as XtParams;
-    }
+    const argTypes = HANDLE_ARGUMENTS[name];
+    const packetName = this.getPacketName(xt.code, xt.extension);
 
-    const packetName = this.getPacketName(code, extension);
-    if (params.once === true) {
-      method = oncePerPacket(packetName, method);
+    let callback = getHandlerCallback<HandleArguments[Name]>(argTypes, method)
+
+    if (params?.once === true) {
+      callback = oncePerPacket(packetName, callback);
     }
-    if (params.cooldown !== undefined) {
-      method = timestampWrapper(packetName, params.cooldown, method);
+    if (params?.cooldown !== undefined) {
+      callback = timestampWrapper(packetName, params.cooldown, callback);
     }
 
     const callbacks = this.listeners.get(packetName);
     if (callbacks === undefined) {
-      this.listeners.set(packetName, [method]);
+      this.listeners.set(packetName, [callback]);
     } else {
-      this.listeners.set(packetName, [...callbacks, method]);
+      this.listeners.set(packetName, [...callbacks, callback]);
     }
   }
 

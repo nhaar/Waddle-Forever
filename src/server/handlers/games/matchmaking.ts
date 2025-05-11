@@ -1,6 +1,7 @@
 import { MatchMaker, WaddleRoom } from "../../../server/client";
 import { Handler } from "..";
 import { CardJitsu } from "./card";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
@@ -24,7 +25,7 @@ handler.boot((s) => {
   }))
 })
 
-handler.xt('z', 'jmm', (client) => {
+handler.xt(Handle.JoinMatchMaking, (client) => {
   client.server.cardMatchmaking.addPlayer(client);
   client.sendXt('jmm', client.penguin.name);
 });

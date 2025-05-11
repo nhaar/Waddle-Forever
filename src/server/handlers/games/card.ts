@@ -3,6 +3,7 @@ import { Client, WaddleGame } from "../../../server/client";
 import { WaddleHandler } from "./waddle";
 import { iterateEntries, randomInt } from "../../../common/utils";
 import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
+import { Handle } from "../handles";
 
 class Hand {
   private _canDrawCards: number[];
@@ -330,14 +331,14 @@ export class CardJitsu extends WaddleGame {
 
 const handler = new WaddleHandler<CardJitsu>('card');
 
-handler.waddleXt('z', 'gz', (game, client) => {
+handler.waddleXt(Handle.EnterWaddleGame, (game, client) => {
   const seatNumber = game.getSeatId(client);
   // TODO why is seats duplicated?
   client.sendXt('gz', game.seats, game.seats);
   client.sendXt('jz', seatNumber, client.penguin.name, client.penguin.color, client.penguin.ninjaRank)
 });
 
-handler.waddleXt('z', 'uz', (game, client) => {
+handler.waddleXt(Handle.UpdateWaddleGameSeats, (game, client) => {
   client.sendXt('uz', ...game.players.map((p, i) => {
     return [i, p.penguin.name, p.penguin.color, client.penguin.ninjaRank].join('|');
   }));
@@ -345,7 +346,7 @@ handler.waddleXt('z', 'uz', (game, client) => {
 });
 
 // dealing new card to the player
-handler.waddleXt('z', 'zm', (game, client, action, amount) => {
+handler.waddleXt(Handle.CardJitsuDeal, (game, client, action, amount) => {
   if (action === 'deal') {
     const ninja = game.getNinja(client);
 
@@ -359,9 +360,8 @@ handler.waddleXt('z', 'zm', (game, client, action, amount) => {
 });
 
 // player picks a card
-handler.waddleXt('z', 'zm', (game, client, action, id) => {
+handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
   if (action === 'pick') {
-    const sessionId = Number(id);
     const ninja = game.getNinja(client);
     const otherNinja = game.getOpponent(client);
     game.chooseCard(ninja, sessionId);

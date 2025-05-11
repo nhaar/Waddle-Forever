@@ -1,6 +1,7 @@
 import { WaddleName } from "../../../server/game-logic/waddles";
 import { WaddleGame } from "../../../server/client";
 import { WaddleHandler } from "./waddle";
+import { Handle } from "../handles";
 
 export class SledRace extends WaddleGame {
   public roomId: number = 999;
@@ -16,17 +17,17 @@ export class SledRace extends WaddleGame {
 
 const handler = new WaddleHandler<SledRace>('sled');
 
-handler.waddleXt('z', 'jz', (game, client) => {
+handler.waddleXt(Handle.JoinSled, (game, client) => {
   client.sendXt('uz', game.seats, ...game.players.map((p) => {
     return [p.penguin.name, p.penguin.color, p.penguin.hand, p.penguin.name].join('|');
   }));
 });
 
-handler.waddleXt('z', 'zm', (_, client, id, x, y, time) => {
+handler.waddleXt(Handle.SledRaceAction, (_, client, id, x, y, time) => {
   client.sendWaddleXt('zm', id, x, y, time);
 });
 
-handler.waddleXt('z', 'zo', (game, client) => {
+handler.waddleXt(Handle.LeaveWaddleGame, (game, client) => {
   client.penguin.addCoins(game.getPayout())
   client.sendXt('zo', client.penguin.coins, '', 0, 0, 0);
   client.update();

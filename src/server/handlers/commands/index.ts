@@ -1,10 +1,11 @@
 import { BotGroup, Client } from "../../../server/client";
-import { Handler } from "..";
+import { getHandlerCallback, Handler } from "..";
 import { ITEMS } from "../../game-logic/items";
 import { Room } from "../../game-logic/rooms";
 import { CARDS } from "../../../server/game-logic/cards";
 import { RoomName, ROOMS } from "../../../server/game-data/rooms";
 import { randomInt, Vector } from "../../../common/utils";
+import { ArgumentsIndicator, GetArgumentsType, Handle, TypePrimitiveIndicator } from "../handles";
 
 const handler = new Handler();
 
@@ -21,7 +22,7 @@ type MapPrimitives<T extends readonly Primitive[]> = {
   [K in keyof T]: MapPrimitive<T[K]>;
 };
 
-type CommandCallback = (client: Client, args: string[]) => void;
+type CommandCallback = (client: Client, ...args: string[]) => void;
 
 class CommandsHandler {
   private _commands: Map<string, Array<CommandCallback>>;
@@ -31,42 +32,14 @@ class CommandsHandler {
   }
 
   add<
-    T extends readonly Primitive[]
-  >(code: string, types: T, callback: (client: Client, ...args: MapPrimitives<T>) => void) {
+    T extends ArgumentsIndicator
+  >(code: string, types: T, callback: (client: Client, ...args: GetArgumentsType<T>) => void) {
     let prev = this._commands.get(code);
     if (prev === undefined) {
       prev = [];
     }
 
-    prev.push((client: Client, args: string[]) => {
-      let valid = true;
-      const parsedArgs: unknown[] = [];
-    
-      types.forEach((type, i) => {
-        const arg = args[i];
-        if (type === 'number') {
-          const num = Number(arg);
-          if (isNaN(num)) {
-            valid = false;
-            return;
-          }
-          parsedArgs.push(num);
-        } else if (type === 'string') {
-          if (arg === undefined) {
-            valid = false;
-            return;
-          }
-          parsedArgs.push(arg);
-        } else {
-          valid = false;
-        }
-      });
-    
-      if (valid) {
-        callback(client, ...parsedArgs as MapPrimitives<T>);
-      }
-    });
-
+    prev.push(getHandlerCallback(types, callback));
 
     this._commands.set(code, prev);
   }
@@ -80,7 +53,7 @@ class CommandsHandler {
         const callbacks = commands.get(keyword);
         if (callbacks !== undefined) {
           const args = commandMatch[2].split(/\s+/).slice(1);
-          callbacks.forEach(callback => callback(client, args));
+          callbacks.forEach(callback => callback(client, ...args));
         } else {
           console.log(`Attempted to use command ${keyword}, but it doesn't exist`);
         }
@@ -464,12 +437,12 @@ botCommands.add('stamps', [
 
 export const commandsHandler = commands.getCommandsHandler();
 
-handler.xt('m#sm', (client, id, message) => {
+handler.xt(Handle.HandleSendMessage, (client, id, message) => {
   client.sendMessage(message);
 });
 
-handler.xt('m#sm', commandsHandler);
-handler.xt('m#sm', botCommands.getCommandHandler());
+handler.xt(Handle.HandleSendMessage, commandsHandler);
+handler.xt(Handle.HandleSendMessage, botCommands.getCommandHandler());
 
 
 export default handler;

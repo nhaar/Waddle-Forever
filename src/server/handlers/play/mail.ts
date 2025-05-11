@@ -1,13 +1,14 @@
 import { Handler } from "..";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
 // mail system
-handler.xt('l#mst', (client) => {
+handler.xt(Handle.GetMail, (client) => {
   client.sendXt('mst', client.penguin.getUnreadMailTotal(), client.penguin.getMailTotal());
 });
 
-handler.xt('l#mg', (client) => {
+handler.xt(Handle.GetAllMail, (client) => {
   const postcards = client.penguin.getAllMail().map((mail) => {
     return [
       mail.sender.name,
@@ -23,7 +24,7 @@ handler.xt('l#mg', (client) => {
 });
 
 // opened the postcards
-handler.xt('l#mc', (client) => {
+handler.xt(Handle.SetMailCheck, (client) => {
   client.penguin.setAllMailAsRead();
   client.update();
 })

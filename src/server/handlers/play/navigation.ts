@@ -3,23 +3,25 @@ import { Handler } from '..';
 import { WaddleGame } from '../../../server/client';
 import { SledRace } from '../games/sled';
 import { CardJitsu } from '../games/card';
+import { Handle } from '../handles';
 
 const handler = new Handler();
 
 // client requesting to join room
-handler.xt('j#jr', (client, destinationRoom, x, y) => {
-  client.joinRoom(Number(destinationRoom), Number(x), Number(y));
+
+handler.xt(Handle.JoinRoom, (client, ...args) => {
+  client.joinRoom(...args);
 });
 
 // client requesting to leave a minigame
-handler.xt('z', 'zo', (client, score) => {
+handler.xt(Handle.LeaveGame, (client, score) => {
   // waddle games individually handle this
   if (client.isInWaddleGame()) {
     return;
   }
 
   const stampInfo = client.getEndgameStampsInformation();
-  let coins = client.getCoinsFromScore(Number(score));
+  let coins = client.getCoinsFromScore(score);
 
   // stamps double coins
   if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {
@@ -32,24 +34,24 @@ handler.xt('z', 'zo', (client, score) => {
   void client.update();
 });
 
-handler.xt('j#jp', (client, fakeId) => {
+handler.xt(Handle.JoinIgloo, (client, fakeId) => {
   if (!client.isEngine2) {
     return;
   }
   // for some reason the ID given is the player + 1000
   // in WF igloo room IDs are playerID + 2000
-  const iglooId = Number(fakeId) + 1000;
+  const iglooId = fakeId + 1000;
   client.joinRoom(iglooId);
 })
 
 // Joining player igloo
-handler.xt('j#jp', (client, playerId, roomType) => {
+handler.xt(Handle.JoinIglooNew, (client, playerId, roomType) => {
   if (!client.isEngine3) {
     return;
   }
   if (roomType === 'igloo') {
     // in WF igloo room IDs are playeId + 2000
-    const iglooId = Number(playerId) + 2000;
+    const iglooId = playerId + 2000;
     client.sendXt('jp', iglooId, iglooId, roomType);
     client.joinRoom(iglooId);
   } else if (roomType === 'backyard') {
@@ -59,49 +61,49 @@ handler.xt('j#jp', (client, playerId, roomType) => {
   }
 })
 
-handler.xt('u#sa', (client, action) => {
+handler.xt(Handle.SendAction, (client, action) => {
   client.sendRoomXt('sa', client.penguin.id, action);
 });
 
-handler.xt('u#sf', (client, frame) => {
-  client.setFrame(Number(frame));
+handler.xt(Handle.SendFrame, (client, frame) => {
+  client.setFrame(frame);
 })
 
-handler.xt('u#sp', (client, x, y) => {
+handler.xt(Handle.SetPosition, (client, ...args) => {
   // walking stops your character from whichever animation
-  client.setPosition(Number(x), Number(y));
-  client.sendRoomXt('sp', client.penguin.id, x, y);
+  client.setPosition(...args);
+  client.sendRoomXt('sp', client.penguin.id, ...args);
 })
 
-handler.xt('u#sb', (client, x, y) => {
-  client.throwSnowball(x, y);
+handler.xt(Handle.Snowball, (client, ...args) => {
+  client.throwSnowball(...args);
 })
 
 // sending emotes
-handler.xt('u#se', (client, emote) => {
+handler.xt(Handle.SendEmote, (client, emote) => {
   client.sendEmote(emote);
 });
 
 // player inventory thing? Not sure why this exists
-handler.xt('u#pbi', (client, id) => {
+handler.xt(Handle.PBI, (client, id) => {
   client.sendXt('pbi', id);
 })
 
 // refreshing room (required for bits and bolts, maybe other places)
-handler.xt('j#grs', (client) => {
+handler.xt(Handle.RoomRefresh, (client) => {
   // TODO multiplayer logic
   client.sendXt('grs', client.penguin.id, client.penguinString);
 })
 
 // sending coins, used by some places to get coin count (golden puffle)
-handler.xt('r#gtc', (client) => {
+handler.xt(Handle.GetTotalCoins, (client) => {
   client.sendXt('gtc', client.penguin.coins);
 })
 
 // get penguins in the waddles
-handler.xt('z', 'gw', (client, ...waddles) => {
+handler.xt(Handle.GetWaddle, (client, ...waddles) => {
   client.sendXt('gw', ...waddles.map((w) => {
-    const players = client.server.getWaddleRoom(Number(w)).seats;
+    const players = client.server.getWaddleRoom(w).seats;
     return `${w}|${players.map(p => {
       return p?.penguin.name ?? '';
     }).join(',')}`
@@ -109,8 +111,8 @@ handler.xt('z', 'gw', (client, ...waddles) => {
 });
 
 // join a waddle
-handler.xt('z', 'jw', (client, waddle) => {
-  const waddleId = Number(waddle);
+handler.xt(Handle.JoinWaddle, (client, waddle) => {
+  const waddleId = waddle;
   const waddleInfo = WADDLE_ROOMS.getStrict(waddleId);
   const seatId = client.joinWaddleRoom(waddleId);
   client.sendXt('jw', seatId);
@@ -133,7 +135,7 @@ handler.xt('z', 'jw', (client, waddle) => {
 });
 
 // leave a waddle room
-handler.xt('z', 'lw', (client) => {
+handler.xt(Handle.LeaveWaddle, (client) => {
   client.leaveWaddleRoom();
 });
 
