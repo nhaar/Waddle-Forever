@@ -1237,6 +1237,10 @@ export class BotGroup {
     this.callBotAction(target, b => b.setPosition(x, y));
   }
 
+  setFrame(frame: number, target?: string): void {
+    this.callBotAction(target, b => b.setFrame(frame));
+  }
+
   dance(target?: string): void {
     this.callBotAction(target, b => b.setFrame(26));
   }

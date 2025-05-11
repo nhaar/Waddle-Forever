@@ -184,6 +184,7 @@ type BotAction = {
   room?: number;
   pos?: [number, number];
   items?: number[];
+  frame?: number;
 } | {
   action: 'say';
   message: string;
@@ -245,6 +246,9 @@ class BotCommands {
             }
             if (action.items !== undefined) {
               action.items.forEach(item => group.wear(item, action.name));
+            }
+            if (action.frame !== undefined) {
+              group.setFrame(action.frame, action.name);
             }
             break;
           case 'spawn-increment-group':
@@ -434,6 +438,79 @@ botCommands.add('stamps', [
     name: 'band'
   }
 ]);
+
+botCommands.add('epfmeeting', [
+  {
+    action: 'spawn',
+    name: 'Agent1',
+    pos: [280, 310],
+    room: 323,
+    frame: 17,
+  },
+  {
+    action: 'spawn',
+    name: 'Agent2',
+    pos: [347, 310],
+    room: 323,
+    frame: 17,
+  },
+  {
+    action: 'spawn',
+    name: 'Agent3',
+    pos: [414, 310],
+    room: 323,
+    frame: 17,
+  },
+  {
+    action: 'spawn',
+    name: 'Agent4',
+    pos: [483, 310],
+    room: 323,
+    frame: 17,
+  },
+  {
+    action: 'spawn',
+    name: 'Agent5',
+    pos: [571, 348],
+    room: 323,
+    frame: 19
+  },
+  {
+    action: 'spawn',
+    name: 'Agent6',
+    pos: [187, 348],
+    room: 323,
+    frame: 23
+  },
+  {
+    action: 'spawn',
+    name: 'Agent7',
+    pos: [535, 413],
+    room: 323,
+    frame: 21
+  },
+  {
+    action: 'spawn',
+    name: 'Agent8',
+    pos: [434, 413],
+    room: 323,
+    frame: 21
+  },
+  {
+    action: 'spawn',
+    name: 'Agent9',
+    pos: [329, 413],
+    room: 323,
+    frame: 21
+  },
+  {
+    action: 'spawn',
+    name: 'Agent10',
+    pos: [230, 413],
+    room: 323,
+    frame: 21
+  }
+])
 
 export const commandsHandler = commands.getCommandsHandler();
 
