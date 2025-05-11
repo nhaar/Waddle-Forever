@@ -2,6 +2,7 @@ import { XtPacket } from '..';
 import { Client, Server } from '../client';
 import express, { Express } from 'express';
 import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
+import { logdebug } from '../logger';
 
 type XTCallback = (client: Client, ...args: string[]) => void
 type XMLCallback = (client: Client, data: string) => void
@@ -89,7 +90,7 @@ function timestampWrapper(packetName: string, cooldown: number, originalMethod: 
       client.xtTimestamps.set(packetName, now + cooldown);
       originalMethod(client, ...args);
     } else {
-      console.log(`Packet ${packetName} canceled due to spam`);
+      logdebug(`Packet ${packetName} canceled due to spam`);
     }
   }
 }
@@ -188,7 +189,7 @@ export class Handler {
 
   /** Handles responding to XML data */
   private handleXml (client: Client, data: string) {
-    console.log('Incoming XML data: ', data);
+    logdebug('Incoming XML data: ', data);
     if (data === '<policy-file-request/>') {
       // policy file request must terminate connection (not fully sure of the details for that)
       client.socket.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
@@ -196,12 +197,12 @@ export class Handler {
       // not very sophisticated XML handling, but it's sufficient
       const actionMatch = data.match(/action='(\w+)'/);
       if (actionMatch === null) {
-        console.log('Unknown XML request: ', data);
+        logdebug('Unknown XML request: ', data);
       } else {
         const action = actionMatch[1];
         const callback = this.xmlListeners.get(action);
         if (callback === undefined) {
-          console.log('Unhandled XML request: ', data);
+          logdebug('Unhandled XML request: ', data);
         } else {
           callback(client, data);
         }   
@@ -214,9 +215,9 @@ export class Handler {
     const packet = new XtPacket(data);
     const callbacks = this.getCallback(packet);
     if (callbacks === undefined) {
-      console.log('\x1b[31mUnhandled XT:\x1b[0m ', packet);
+      logdebug('\x1b[31mUnhandled XT:\x1b[0m ', packet);
     } else {
-      console.log('\x1b[33mHandled XT:\x1b[0m ', packet);
+      logdebug('\x1b[33mHandled XT:\x1b[0m ', packet);
       callbacks.forEach((callback) => {
         callback(client, ...packet.args);
       });

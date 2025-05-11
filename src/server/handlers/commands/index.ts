@@ -6,6 +6,7 @@ import { CARDS } from "../../../server/game-logic/cards";
 import { RoomName, ROOMS } from "../../../server/game-data/rooms";
 import { randomInt, Vector } from "../../../common/utils";
 import { ArgumentsIndicator, GetArgumentsType, Handle, TypePrimitiveIndicator } from "../handles";
+import { logdebug } from "../../../server/logger";
 
 const handler = new Handler();
 
@@ -55,7 +56,7 @@ class CommandsHandler {
           const args = commandMatch[2].split(/\s+/).slice(1);
           callbacks.forEach(callback => callback(client, ...args));
         } else {
-          console.log(`Attempted to use command ${keyword}, but it doesn't exist`);
+          logdebug(`Attempted to use command ${keyword}, but it doesn't exist`);
         }
       }
     }

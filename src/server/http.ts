@@ -7,6 +7,7 @@ import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
 import { getFileServer } from './routes/client-files';
 import { findInVersion } from './game-data/changes';
 import { specialServer } from './game-data/specials';
+import { logdebug } from './logger';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -206,7 +207,7 @@ export class HttpServer {
             throw new Error('Could not find file, log output is above')
           }
   
-          console.log(`Requested: ${route}, sending: ${filePath}`);
+          logdebug(`Requested: ${route}, sending: ${filePath}`);
           res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
         }
       } else {

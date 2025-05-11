@@ -16,6 +16,7 @@ import { findInVersion } from './game-data/changes';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';
+import { logverbose } from './logger';
 
 const versionsTimeline = getVersionsTimeline();
 
@@ -431,7 +432,7 @@ export class Client {
   }
 
   sendXt (handler: string, ...args: Array<number | string>): void {
-    // console.log('\x1b[32mSending XT:\x1b[0m ', handler, args);
+    logverbose('\x1b[32mSending XT:\x1b[0m ', handler, args);
     this.send(this.getXtMessage(false, handler, ...args));
   }
 
@@ -592,7 +593,6 @@ export class Client {
       const yy = y ?? 0;
       this.updateRoomInfo({ x: xx, y: yy });
       this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
-      console.log(string);
       this.sendRoomXt('ap', string);
       // it seems that the new x, y position of players must be sent via a new set position packet
       this.setPosition(xx, yy);
@@ -988,6 +988,9 @@ export class Client {
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
     this._penguin?.incrementPlayTime(minutesDelta);
+    if (this._penguin !== undefined) {
+      this.update();
+    }
     this._socket?.end();
   }
 
