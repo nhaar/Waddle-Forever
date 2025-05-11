@@ -4,7 +4,8 @@ import express, { Express } from 'express';
 import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
 import { logdebug } from '../logger';
 
-type XTCallback = (client: Client, ...args: string[]) => void
+type XTCallback = (client: Client, ...args: string[]) => boolean
+type ClientCallback = (client: Client) => void
 type XMLCallback = (client: Client, data: string) => void
 
 type PostCallback = (body: any) => string
@@ -23,7 +24,7 @@ export function getHandlerCallback<Arguments extends ArgumentsIndicator>(
   argTypes: Arguments,
   method: (client: Client, ...args: GetArgumentsType<Arguments>) => void
 ) {
-  let callback = (client: Client, ...args: Array<string>) => {
+  let callback = (client: Client, ...args: Array<string>): boolean => {
     let validArgs: unknown[] = [];
     let valid = true;
 
@@ -65,40 +66,48 @@ export function getHandlerCallback<Arguments extends ArgumentsIndicator>(
     if (valid) {
       method(client, ...validArgs as GetArgumentsType<Arguments>)
     }
+    return valid;
   }
 
   return callback;
 }
 
-function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => void) {
+function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => boolean) {
   return function (client: Client, ...args: string[]) {
     const handled = client.handledXts.get(packetName);
     if (handled !== true) {
-      client.handledXts.set(packetName, true);
-      originalMethod(client, ...args);
+      if (originalMethod(client, ...args)) {
+        client.handledXts.set(packetName, true);
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
     }
   };
 }
 
 /** Wraps XT callback so that it respects the cooldown */
 function timestampWrapper(packetName: string, cooldown: number, originalMethod: XTCallback) {
-  return (client: Client, ...args: string[]) => {
+  return (client: Client, ...args: string[]): boolean => {
     const now = Date.now()
     const timestamp = client.xtTimestamps.get(packetName);
     // check if has a record or if we are past the allowed time
     if (timestamp === undefined || timestamp < now) {
       client.xtTimestamps.set(packetName, now + cooldown);
-      originalMethod(client, ...args);
+      return originalMethod(client, ...args);
     } else {
       logdebug(`Packet ${packetName} canceled due to spam`);
+      return true;
     }
   }
 }
 
 export class Handler {
   listeners: Map<string, XTCallback[]>;
-  disconnectListeners: XTCallback[];
-  loginListeners: XTCallback[];
+  disconnectListeners: ClientCallback[];
+  loginListeners: ClientCallback[];
   phpListeners: Map<string, PostCallback>;
   xmlListeners: Map<string, XMLCallback>;
   onBoot: Array<(s: Server) => void>;
@@ -158,7 +167,7 @@ export class Handler {
     this.phpListeners.set(path, method);
   }
 
-  disconnect (method: XTCallback): void {
+  disconnect (method: ClientCallback): void {
     this.disconnectListeners.push(method);
   }
 
@@ -214,13 +223,16 @@ export class Handler {
   private handleXt(client: Client, data: string) {
     const packet = new XtPacket(data);
     const callbacks = this.getCallback(packet);
-    if (callbacks === undefined) {
-      logdebug('\x1b[31mUnhandled XT:\x1b[0m ', packet);
-    } else {
+    let handled = false;
+    callbacks?.forEach((callback) => {
+      if (callback(client, ...packet.args)) {
+        handled = true;
+      }
+    });
+    if (handled) {
       logdebug('\x1b[33mHandled XT:\x1b[0m ', packet);
-      callbacks.forEach((callback) => {
-        callback(client, ...packet.args);
-      });
+    } else {
+      logdebug('\x1b[31mUnhandled XT:\x1b[0m ', packet);
     }
   }
 
