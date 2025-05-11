@@ -406,7 +406,7 @@ export class Client {
   }
 
   get penguin(): Penguin {
-    return this._penguin ?? (() => { throw new Error('Getting socket before initializing'); })();
+    return this._penguin ?? (() => { throw new Error('Getting penguin before initializing'); })();
   }
 
   get socket(): net.Socket {
@@ -987,7 +987,7 @@ export class Client {
     }
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
-    this.penguin.incrementPlayTime(minutesDelta);
+    this._penguin?.incrementPlayTime(minutesDelta);
     this._socket?.end();
   }
 
