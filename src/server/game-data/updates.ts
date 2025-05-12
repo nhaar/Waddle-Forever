@@ -140,3 +140,5 @@ export const GAME_UPGRADES = '2009-03-27';
 export const FIRE_CELEBRATION_START = '2009-11-20';
 
 export const FIRE_CONST_START = '2009-11-13';
+
+export const CARD_JITSU_STAMPS = '2010-11-24';

@@ -628,14 +628,8 @@ export class Penguin {
     return Array.from(this._cards.entries());
   }
 
-  /** Card-Jitsu rank, 0 = no belt, 1 = white, etc... */
-  get ninjaRank(): number {
-    return this._cardProgress.rank;
-  }
-
-  /** Percentage to next belt */
-  get beltPercentage(): number {
-    return this._cardProgress.percentage;
+  get ninjaProgress() {
+    return this._cardProgress;
   }
 
   static getDefault(id: number, name: string, isMember: boolean): Penguin {

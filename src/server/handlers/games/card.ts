@@ -45,7 +45,10 @@ class Ninja {
   /** Reference to opponent ninja */
   private _opponent: Ninja | undefined;
 
+  private _player: Client;
+
   constructor(player: Client, seat: number) {
+    this._player = player;
     this._hand = new Hand(player.penguin.getCards());
     this._seat = seat;
     this._scores = {
@@ -110,6 +113,10 @@ class Ninja {
     iterateEntries(this._scores, (element, cards) => {
       this._scores[element] = cards.filter((id) => !toDiscard.has(id));
     });
+  }
+
+  get player(): Client {
+    return this._player;
   }
 }
 
@@ -327,6 +334,10 @@ export class CardJitsu extends WaddleGame {
   alterModifier(seat: number, delta: number) {
     this._valueModifier[seat] += delta;
   }
+
+  getNinjaBySeatIndex(index: number): Ninja {
+    return this.getNinja(this.players[index]);
+  }
 }
 
 const handler = new WaddleHandler<CardJitsu>('card');
@@ -335,12 +346,12 @@ handler.waddleXt(Handle.EnterWaddleGame, (game, client) => {
   const seatNumber = game.getSeatId(client);
   // TODO why is seats duplicated?
   client.sendXt('gz', game.seats, game.seats);
-  client.sendXt('jz', seatNumber, client.penguin.name, client.penguin.color, client.penguin.ninjaRank)
+  client.sendXt('jz', seatNumber, client.penguin.name, client.penguin.color, client.penguin.ninjaProgress.rank)
 });
 
 handler.waddleXt(Handle.UpdateWaddleGameSeats, (game, client) => {
   client.sendXt('uz', ...game.players.map((p, i) => {
-    return [i, p.penguin.name, p.penguin.color, client.penguin.ninjaRank].join('|');
+    return [i, p.penguin.name, p.penguin.color, p.penguin.ninjaProgress.rank].join('|');
   }));
   client.sendXt('sz');
 });
@@ -417,6 +428,10 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
       client.sendWaddleXt('zm', 'judge', winner);
 
       if (winningHand !== undefined) {
+        const winnerNinja = game.getNinjaBySeatIndex(winner);
+        winnerNinja.player.gainNinjaProgress(true);
+        winnerNinja.opponent.player.gainNinjaProgress(false);
+
         const [seat, hand] = winningHand;
         client.sendWaddleXt('czo', 0, seat, ...hand);
       }

@@ -7,13 +7,13 @@ const handler = new Handler();
 
 // get ninja rank
 handler.xt(Handle.GetNinjaRanks, (client) => {
-  client.sendXt('gnr', client.penguin.id, client.penguin.ninjaRank, 0, 0, 0);
+  client.sendXt('gnr', client.penguin.id, client.penguin.ninjaProgress.rank, 0, 0, 0);
 });
 
 // get card-jitsu level
 handler.xt(Handle.GetNinjaLevel, (client) => {
   // ranke, percentage, unsure what 10 is
-  client.sendXt('gnl', client.penguin.ninjaRank, client.penguin.beltPercentage, 10);
+  client.sendXt('gnl', client.penguin.ninjaProgress.rank, client.penguin.ninjaProgress.percentage, 10);
 })
 
 // get cards

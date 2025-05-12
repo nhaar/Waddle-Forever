@@ -29,6 +29,7 @@ import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { iterateEntries } from "../../common/utils";
+import { POSTCARD_IDS } from "../game-data/postcard";
 
 function getSubUpdateDates<UpdateInfo, SubUpdateInfo>(update: TemporaryUpdate<UpdateInfo, SubUpdateInfo>, index: number) {
   if (update.updates === undefined) {
@@ -200,8 +201,10 @@ function addClothing(map: FileTimelineMap): void {
   map.addIdMap(preCpipClothingDir, 'items', SPRITES);
 }
 
-function addMusicFiles(map: FileTimelineMap): void {
+function addFilesWithIds(map: FileTimelineMap): void {
   ['play/v2/content/global', ''].forEach((parentDir) => map.addIdMap(parentDir, 'music', MUSIC_IDS));
+
+  map.addIdMap('play/v2/content/local/en', 'postcards', POSTCARD_IDS);
 }
 
 function isNewspaperBeforeCPIP(newspaper: As2Newspaper): boolean {
@@ -956,7 +959,7 @@ export function getFileServer() {
     addStandaloneChanges,
     addMapUpdates,
     addParties,
-    addMusicFiles,
+    addFilesWithIds,
     addCatalogues,
     addStagePlays,
     addMusicLists,

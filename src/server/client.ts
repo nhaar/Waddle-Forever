@@ -11,12 +11,13 @@ import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
-import { CPIP_UPDATE, STAMPS_RELEASE } from './game-data/updates';
+import { CARD_JITSU_STAMPS, CPIP_UPDATE, STAMPS_RELEASE } from './game-data/updates';
 import { findInVersion } from './game-data/changes';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';
 import { logverbose } from './logger';
+import { CardJitsuProgress } from './game-logic/ninja-progress';
 
 const versionsTimeline = getVersionsTimeline();
 
@@ -907,7 +908,7 @@ export class Client {
     senderId?: number
     senderName?: string
     details?: string    
-  }): void {
+  } = {}): void {
     const mail = this.penguin.receivePostcard(postcard, info);
     this.sendXt('mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
   }
@@ -1151,6 +1152,32 @@ export class Client {
 
   get botGroup(): BotGroup {
     return this.room.botGroup;
+  }
+
+  gainNinjaProgress(won: boolean): void {
+    if (this.penguin.ninjaProgress.rank >= CardJitsuProgress.MAX_RANK) {
+      return;
+    }
+    const exp = won ? 5 : 1;
+    const previousRank = this.penguin.ninjaProgress.rank;
+    this.penguin.ninjaProgress.earnXP(exp);
+
+    // ranking up
+    if (this.penguin.ninjaProgress.rank > previousRank) {
+      for (let i = previousRank + 1; i <= this.penguin.ninjaProgress.rank; i++) {
+        this.penguin.addItem(CardJitsuProgress.ITEM_AWARDS[i - 1]);
+        const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
+        if (postcard !== undefined) {
+          this.addPostcard(postcard);
+        }
+        const stamp = CardJitsuProgress.STAMP_AWARDS[i];
+        if (stamp !== undefined) {
+          this.giveStamp(stamp, { release: CARD_JITSU_STAMPS });
+        }
+      }
+      this.sendXt('cza', this.penguin.ninjaProgress.rank);
+      this.update();
+    }
   }
 }
 
