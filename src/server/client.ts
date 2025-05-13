@@ -42,10 +42,16 @@ export class WaddleRoom {
   private _seats: number;
   /** Array with all the players sitting, or null if empty slot */
   private _players: Array<Client | null>;
+  /** Id in the server */
+  private _id: number;
+  /** Identify the type of game logic that handles this game */
+  private _game: WaddleName;
 
-  constructor(seats: number) {
+  constructor(id: number, seats: number, game: WaddleName) {
+    this._id = id;
     this._seats = seats;
     this._players = this.getEmptyPlayers();
+    this._game = game;
   }
 
   /** Get array with empty players */
@@ -86,8 +92,22 @@ export class WaddleRoom {
     return this._players.filter((p): p is Client => p !== null);
   }
 
+  /** Array of the players in each seat */
   get seats(): Array<Client | null> {
     return [...this._players];
+  }
+
+  /** Number of players */
+  get size(): number {
+    return this._players.length;
+  }
+  
+  get id(): number {
+    return this._id;
+  }
+
+  get game() {
+    return this._game;
   }
 }
 
@@ -142,6 +162,11 @@ export abstract class WaddleGame {
   getSeatId(client: Client): number {
     return this._players.indexOf(client);
   }
+
+  /** Send XT message to every player in the game */
+  sendXt(code: string, ...args: Array<number | string>) {
+    this._players.forEach(p => p.sendXt(code, ...args));
+  }
 }
 
 /** Information of a player that only persists during a room */
@@ -156,11 +181,14 @@ class GameRoom {
   private _players: Map<Client, PlayerRoomInfo>;
   private _id: number;
   private _bots: BotGroup;
+  /** Waddle rooms hosted inside this room */
+  private _waddles: Map<number, WaddleRoom>;
 
   constructor(id: number, server: Server) {
     this._players = new Map<Client, PlayerRoomInfo>();
     this._id = id;
     this._bots = new BotGroup(server);
+    this._waddles = new Map<number, WaddleRoom>();
   }
 
   /** Get info of player */
@@ -194,7 +222,14 @@ class GameRoom {
   get botGroup(): BotGroup {
     return this._bots;
   }
+
+  get waddles() {
+    return this._waddles;
+  }
 }
+
+/** Map of the waddle games and their constructors */
+type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGame>;
 
 /** Manages a gameplayer server */
 export class Server {
@@ -219,6 +254,8 @@ export class Server {
 
   private _followers: Map<Client, Bot[]>;
 
+  private _waddleConstructors: WaddleConstructors | undefined;
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
@@ -231,7 +268,7 @@ export class Server {
 
   private init() {
     WADDLE_ROOMS.rows.forEach((waddle) => {
-      this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.seats));
+      this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.id, waddle.seats, waddle.game));
     });
   }
 
@@ -262,8 +299,8 @@ export class Server {
     this._cardMatchmaking = matchMaker;
   }
 
-  setWaddleGame(waddle: number, game: WaddleGame): void {
-    const players = this.getWaddleRoom(waddle).players;
+  setWaddleGame(waddleRoom: WaddleRoom, game: WaddleGame): void {
+    const players = waddleRoom.players;
     players.forEach(p => p.setWaddleGame(game));
   }
 
@@ -337,6 +374,17 @@ export class Server {
 
   getFollowers(player: Client): Bot[] {
     return this._followers.get(player) ?? [];
+  }
+
+  get waddleConstructors() {
+    if (this._waddleConstructors === undefined) {
+      throw new Error('Have not initialized Waddle Games');
+    }
+    return this._waddleConstructors;
+  }
+
+  set waddleConstructors(value: WaddleConstructors) {
+    this._waddleConstructors = value;
   }
 }
 
@@ -694,9 +742,21 @@ export class Client {
     this.sendPenguinInfo();
   }
 
-  joinWaddleRoom(waddle: number): number {
-    this._currentWaddleRoom = waddle;
-    return this._server.getWaddleRoom(waddle).addPlayer(this);
+  joinWaddleRoom(waddleRoom: WaddleRoom): void {
+    this._currentWaddleRoom = waddleRoom.id;
+    const seatId = waddleRoom.addPlayer(this);
+
+    this.sendXt('jw', seatId);
+    this.sendRoomXt('uw', waddleRoom.id, seatId, this.penguin.name, this.penguin.id);
+    const players = waddleRoom.players;
+    // starts the game if all players have entered
+    if (players.length === waddleRoom.size) {
+      const Constructor = this.server.waddleConstructors[waddleRoom.game];
+      const waddleGame = new Constructor(players);
+      this.server.setWaddleGame(waddleRoom, waddleGame);
+      waddleRoom.resetWaddle();
+      waddleGame.start();
+    }
   }
 
   leaveWaddleRoom(): void {

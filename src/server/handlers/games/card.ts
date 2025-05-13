@@ -1,7 +1,7 @@
 import { WaddleName } from "../../../server/game-logic/waddles";
-import { Client, WaddleGame } from "../../../server/client";
+import { Client, WaddleGame, WaddleRoom } from "../../../server/client";
 import { WaddleHandler } from "./waddle";
-import { iterateEntries, randomInt } from "../../../common/utils";
+import { choose, iterateEntries, randomInt } from "../../../common/utils";
 import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
 import { Handle } from "../handles";
 
@@ -31,39 +31,49 @@ class Hand {
   }
 }
 
-class Ninja {
-  private _hand: Hand;
-
-  private _seat: number;
-
+abstract class Ninja {
   /** Card currently chosen, using session ID */
   private _chosen: number | undefined;
 
   /** For all elements, map all the card's session IDs */
   private _scores: Record<CardElement, number[]>;
 
+  private _seat: number;
+
   /** Reference to opponent ninja */
   private _opponent: Ninja | undefined;
 
-  private _player: Client;
+  protected _game: CardJitsu;
 
-  constructor(player: Client, seat: number) {
-    this._player = player;
-    this._hand = new Hand(player.penguin.getCards());
+  protected _cardsOnHand: number[];
+
+  constructor(seat: number, game: CardJitsu) {
     this._seat = seat;
     this._scores = {
       'f': [],
       'w': [],
       's': []
     };
+
+    this._game = game;
+    this._cardsOnHand = [];
   }
 
-  get hand(): Hand {
-    return this._hand;
+  /**
+   * Function to implement that handles what to do when drawing a new card
+   * Receiving ID is Session ID of card, must return ID of the card-jitsu card
+   */
+  abstract onDraw(id: number): number;
+
+  draw(id: number): number {
+    this._cardsOnHand.push(id);
+    return this.onDraw(id);
   }
 
   choose(id: number): void {
     this._chosen = id;
+    this._cardsOnHand = this._cardsOnHand.filter(id => id !== id);
+    this._game.sendXt('zm', CardJitsu.PICK_ACTION, this.seat, id);
   }
 
   unchoose(): void {
@@ -81,20 +91,12 @@ class Ninja {
     return this._chosen;
   }
 
-  score(element: CardElement, id: number): void {
-    this._scores[element].push(id);
+  get scores(): Record<CardElement, number[]> {
+    return this._scores;
   }
 
   get seat(): number {
     return this._seat;
-  }
-
-  get otherSeat(): number {
-    return this.opponent.seat;
-  }
-
-  get scores(): Record<CardElement, number[]> {
-    return this._scores;
   }
 
   set opponent(ninja: Ninja) {
@@ -108,6 +110,14 @@ class Ninja {
     return this._opponent;
   }
 
+  get otherSeat(): number {
+    return this.opponent.seat;
+  }
+
+  score(element: CardElement, id: number): void {
+    this._scores[element].push(id);
+  }
+
   removeCards(cards: number[]): void {
     const toDiscard = new Set(cards);
     iterateEntries(this._scores, (element, cards) => {
@@ -115,8 +125,103 @@ class Ninja {
     });
   }
 
+  deal(amount: number) {
+    const cards: string[] = [];
+    for (let i = 0; i < amount; i++) {
+      cards.push(this._game.draw(this));
+    }
+
+    this._game.sendXt('zm', CardJitsu.DEAL_ACTION, this.seat, ...cards);
+  }
+
+  get cards(): number[] {
+    return this._cardsOnHand;
+  }
+}
+
+class NinjaPlayer extends Ninja {
+  private _player: Client;
+
+  private _hand: Hand;
+
+  constructor(player: Client, seat: number, game: CardJitsu) {
+    super(seat, game);
+
+    this._hand = new Hand(player.penguin.getCards());
+    this._player = player;
+  }
+
   get player(): Client {
     return this._player;
+  }
+
+  onDraw(id: number): number {
+    return this._hand.draw();
+  }
+}
+
+class Sensei extends Ninja {
+  private _unbeatable: boolean;
+
+  /**
+   * A map that takes session ID of cards from the opponent and session ID of cards Sensei has
+   * indicating that when the opponent plays that card, Sensei must use this card to beat it
+   * (only used in unbeatable mode)
+   * */
+  private _cardsToUse: Map<number, number>;
+
+  constructor(game: CardJitsu, unbeatable: boolean) {
+    super(0, game);
+    this._unbeatable = unbeatable;
+    this._cardsToUse = new Map<number, number>;
+  }
+
+  pickCard() {
+    if (this._unbeatable) {
+      // it's cheating time
+
+      // NOTE: this is an unbeatable algorithm. But the original sensei seems to lose sometimes
+      // even if he is unbeatable
+
+      const cardToTuse = this._cardsToUse.get(this.opponent.chosen);
+      if (cardToTuse === undefined) {
+        throw new Error('Logic error: Sensei hasn\'t registered what card to use');
+      }
+      this.choose(cardToTuse);
+    } else {
+      // no criteria
+      this.choose(choose(this._cardsOnHand));
+    }
+  }
+
+  onDraw(id: number): number {
+    if (this._unbeatable) {
+      let unbeatableCard: number;
+
+      const cardsWithoutCounter = this.opponent.cards.filter(id => {
+        return !this._cardsToUse.has(id);
+      });
+      if (cardsWithoutCounter.length === 0) {
+        // sensei must always draw after the opponent
+        throw new Error('Logic error: Sensei is drawing a new card, but the opponent has no new card');
+      }
+      const cardToCounterId = cardsWithoutCounter[0]
+      const cardToCounter = this._game.getCard(cardToCounterId);
+      // finding a card that can beat this card.
+      // if a cheater card, for now we will use the same card to make tie
+      // otherwise, pick any card of opposite element
+      if (cardToCounter.powerId in CardJitsu.REPLACEMENT_POWER_CARDS) {
+        unbeatableCard = cardToCounter.id;
+      } else {
+        const winningElement = CardJitsu.RULES[CardJitsu.RULES[cardToCounter.element]];
+        const card = choose(CARDS.rows.filter(card => card.element === winningElement));
+        unbeatableCard = card.id;
+      }
+      this._cardsToUse.set(cardToCounterId, id);
+      return unbeatableCard
+    } else {
+      return choose(CARDS.rows).id;
+    }
   }
 }
 
@@ -127,9 +232,18 @@ export class CardJitsu extends WaddleGame {
 
   private _cardId: number;
 
-  private _ninjas: Map<Client, Ninja>;
+  private _ninjaSeats: [Ninja, Ninja];
+
+  private _ninjas: Map<Client, NinjaPlayer>;
 
   private _cards: Map<number, Card>;
+
+  /** If in Sensei fight */
+  private _sensei: boolean;
+
+  static DEAL_ACTION = 'deal';
+
+  static PICK_ACTION = 'pick';
 
   static RULES: Record<CardElement, CardElement> = {
     'f': 's',
@@ -165,15 +279,22 @@ export class CardJitsu extends WaddleGame {
   /** Number modifiers to apply in next score */
   private _valueModifier: [number, number] = [0, 0];
 
-  constructor(players: Client[]) {
+  constructor(players: Client[]) {    
     super(players);
 
-    this._ninjas = new Map<Client, Ninja>;
+    this._sensei = players.length === 1;
+    this._ninjas = new Map<Client, NinjaPlayer>;
 
     const ninjas: Ninja[] = [];
 
+    if (this._sensei) {
+      // TODO proper implement unbeatable
+      ninjas.push(new Sensei(this, true))
+    }
+
     players.forEach((p, i) => {
-      const ninja = new Ninja(p, i);
+      const seat = this._sensei ? i + 1 : i;
+      const ninja = new NinjaPlayer(p, seat, this);
       ninjas.push(ninja);
       this._ninjas.set(p, ninja);
     });
@@ -183,13 +304,41 @@ export class CardJitsu extends WaddleGame {
       ninja.opponent = ninjas[(i + 1) % 2];
     });
 
+    this._ninjaSeats = ninjas as [Ninja, Ninja];
+
     this._cardId = 0;
     this._cards = new Map<number, Card>();
   }
 
+  get server() {
+    return this.players[0].server;
+  }
+
+  get sensei() {
+    return this._sensei;
+  }
+
+  startMatch() {
+    const waddleRoom = new WaddleRoom(1000 + this.players[0].penguin.id, this.players.length, 'card');
+    const gameRoom = this.server.getRoom(this.roomId);
+    
+    this.players.forEach((p) => {
+      waddleRoom.addPlayer(p);
+    });
+    
+    const playerInfo = this.players.map(p => `${p.penguin.name}|${p.penguin.color}`);
+    
+    gameRoom.waddles.set(waddleRoom.id, waddleRoom);
+    
+    this.players.forEach((p) => {
+      // don't know what the 0 / 10 thing is for
+      p.sendXt('scard', this.roomId, waddleRoom.id, this._sensei ? 1 : this.players.length, this._sensei ? 0 : 10, ...playerInfo);
+    });
+  }
+
   draw(ninja: Ninja): string {
     this._cardId++;
-    const card = ninja.hand.draw() ?? -1;
+    const card = ninja.draw(this._cardId) ?? -1;
     const cardInfo = CARDS.getStrict(card);
     this._cards.set(this._cardId, cardInfo);
     return `${this._cardId}|${[
@@ -201,11 +350,11 @@ export class CardJitsu extends WaddleGame {
     ].join('|')}`;
   }
 
-  chooseCard(ninja: Ninja, id: number): void {
+  chooseCard(ninja: NinjaPlayer, id: number): void {
     ninja.choose(id);
   }
 
-  getNinja(player: Client): Ninja {
+  getNinja(player: Client): NinjaPlayer {
     const ninja = this._ninjas.get(player);
     if (ninja === undefined) {
       throw new Error('Client doesn\'t have a ninja');
@@ -213,9 +362,8 @@ export class CardJitsu extends WaddleGame {
     return ninja
   }
 
-  getOpponent(player: Client): Ninja {
-    const opponent = Array.from(this._ninjas.keys()).filter((p) => p !== player)[0];
-    return this.getNinja(opponent);
+  get swapEffect() {
+    return this._swapValue;
   }
 
   /** Get card using session ID */
@@ -242,8 +390,7 @@ export class CardJitsu extends WaddleGame {
 
   hasWinningHand(): [number, number[]] | undefined {
     let i = 0;
-    for (const player of this.players) {
-      const ninja = this.getNinja(player);
+    for (const ninja of this._ninjaSeats) {
 
       // check for elemental win
       for (const [_, cards] of Object.entries(ninja.scores)) {
@@ -272,8 +419,7 @@ export class CardJitsu extends WaddleGame {
   }
 
   judgeWinner(): number {
-    const ninjas = this.players.map((p) => this.getNinja(p));
-    const cards = ninjas.map((n) => n.chosen);
+    const cards = this._ninjaSeats.map((n) => n.chosen);
     const cardInfo = cards.map(id => this.getCard(id));
     const elements = cardInfo.map((c) => c.element);
 
@@ -317,7 +463,7 @@ export class CardJitsu extends WaddleGame {
     }
 
     if (winIndex !== -1) {
-      ninjas[winIndex].score(cardInfo[winIndex].element, cards[winIndex]);
+      this._ninjaSeats[winIndex].score(cardInfo[winIndex].element, cards[winIndex]);
     }
 
     if (this._swapValue) {
@@ -336,48 +482,57 @@ export class CardJitsu extends WaddleGame {
   }
 
   getNinjaBySeatIndex(index: number): Ninja {
-    return this.getNinja(this.players[index]);
+    return this._ninjaSeats[index];
   }
 }
 
 const handler = new WaddleHandler<CardJitsu>('card');
 
 handler.waddleXt(Handle.EnterWaddleGame, (game, client) => {
-  const seatNumber = game.getSeatId(client);
+  const seatNumber = game.sensei ? 1 : game.getSeatId(client);
   // TODO why is seats duplicated?
   client.sendXt('gz', game.seats, game.seats);
   client.sendXt('jz', seatNumber, client.penguin.name, client.penguin.color, client.penguin.ninjaProgress.rank)
 });
 
 handler.waddleXt(Handle.UpdateWaddleGameSeats, (game, client) => {
-  client.sendXt('uz', ...game.players.map((p, i) => {
-    return [i, p.penguin.name, p.penguin.color, p.penguin.ninjaProgress.rank].join('|');
-  }));
+  const playersInfo: Array<[number, string, number, number]> = [];
+  let seat = 0;
+  if (game.sensei) {
+    playersInfo.push([0, 'Sensei', 14, 10]);
+    seat++;
+  }
+  for (const p of game.players) {
+    playersInfo.push([seat, p.penguin.name, p.penguin.color, p.penguin.ninjaProgress.rank]);
+    seat++;
+  }
+  client.sendXt('uz', ...playersInfo.map(info => info.join('|')));
   client.sendXt('sz');
 });
 
 // dealing new card to the player
 handler.waddleXt(Handle.CardJitsuDeal, (game, client, action, amount) => {
-  if (action === 'deal') {
+  if (action === CardJitsu.DEAL_ACTION) {
     const ninja = game.getNinja(client);
 
-    const cards: string[] = [];
-    for (let i = 0; i < Number(amount); i++) {
-      cards.push(game.draw(ninja));
+    ninja.deal(amount);
+    if (game.sensei) {
+      ninja.opponent.deal(amount);
     }
-
-    client.sendWaddleXt('zm', action, ninja.seat, ...cards);
   }
 });
 
 // player picks a card
 handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
-  if (action === 'pick') {
+  if (action === CardJitsu.PICK_ACTION) {
     const ninja = game.getNinja(client);
-    const otherNinja = game.getOpponent(client);
-    game.chooseCard(ninja, sessionId);
+    const otherNinja = ninja.opponent;
 
-    client.sendWaddleXt('zm', action, ninja.seat, sessionId);
+    game.chooseCard(ninja, sessionId);
+    
+    if (otherNinja instanceof Sensei) {
+      otherNinja.pickCard();
+    }
 
     if (otherNinja.hasChosen()) {
       const winner = game.judgeWinner();
@@ -429,8 +584,12 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
 
       if (winningHand !== undefined) {
         const winnerNinja = game.getNinjaBySeatIndex(winner);
-        winnerNinja.player.gainNinjaProgress(true);
-        winnerNinja.opponent.player.gainNinjaProgress(false);
+        if (winnerNinja instanceof NinjaPlayer) {
+          winnerNinja.player.gainNinjaProgress(true);
+        }
+        if (winnerNinja.opponent instanceof NinjaPlayer) {
+          winnerNinja.opponent.player.gainNinjaProgress(false);
+        }
 
         const [seat, hand] = winningHand;
         client.sendWaddleXt('czo', 0, seat, ...hand);

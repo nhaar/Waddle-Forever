@@ -142,7 +142,9 @@ export enum Handle {
   SendSafeMessageOld,
   SendActionOld,
   SendJoke,
-  SendSafeMessage
+  SendSafeMessage,
+  JoinSensei,
+  JoinTemporaryWaddle
 };
 
 /** Map of all the handles and their valid arguments */
@@ -254,7 +256,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SetStampEarned]: ['number'],
   [Handle.EnterWaddleGame]: [],
   [Handle.UpdateWaddleGameSeats]: [],
-  [Handle.CardJitsuDeal]: ['string', 'string'],
+  [Handle.CardJitsuDeal]: ['string', 'number'],
   [Handle.CardJitsuPick]: ['string', 'number', 'number'],
   [Handle.JoinMatchMaking]: [],
   [Handle.GetNinjaRanks]: [],
@@ -268,7 +270,9 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SendSafeMessageOld]: ['string'],
   [Handle.SendActionOld]: ['string'],
   [Handle.SendJoke]: ['string'],
-  [Handle.SendSafeMessage]: ['string']
+  [Handle.SendSafeMessage]: ['string'],
+  [Handle.JoinSensei]: [],
+  [Handle.JoinTemporaryWaddle]: ['number', 'number', 'number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -407,6 +411,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'gnr': Handle.GetNinjaRanks,
       'gnl': Handle.GetNinjaLevel,
       'gcd': Handle.GetCards
+    },
+    'w': {
+      'jx': Handle.JoinTemporaryWaddle
     }
   },
   'z': {
@@ -422,7 +429,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'uz': Handle.UpdateWaddleGameSeats,
     'zm': [Handle.SledRaceAction, Handle.CardJitsuDeal, Handle.CardJitsuPick],
     'jmm': Handle.JoinMatchMaking,
-    'jz': Handle.JoinSled
+    'jz': Handle.JoinSled,
+    'jsen': Handle.JoinSensei
   },
   'k': {
     'spy': Handle.BecomeAgent

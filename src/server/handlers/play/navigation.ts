@@ -118,28 +118,25 @@ handler.xt(Handle.GetWaddle, (client, ...waddles) => {
   }));
 });
 
+handler.boot(s => {
+  s.waddleConstructors = {
+    'card': CardJitsu,
+    'sled': SledRace
+  };
+});
+
 // join a waddle
 handler.xt(Handle.JoinWaddle, (client, waddle) => {
-  const waddleId = waddle;
-  const waddleInfo = WADDLE_ROOMS.getStrict(waddleId);
-  const seatId = client.joinWaddleRoom(waddleId);
-  client.sendXt('jw', seatId);
-  client.sendRoomXt('uw', waddle, seatId, client.penguin.name, client.penguin.id);
-  const players = client.server.getWaddleRoom(waddleId).players;
-  // starts the game if all players have entered
-  if (players.length === waddleInfo.seats) {
-    let waddleGame: WaddleGame;
-    if (waddleInfo.game === 'sled') {
-      waddleGame = new SledRace(players);
-    } else if (waddleInfo.game ==='card') {
-      waddleGame = new CardJitsu(players);
-    } else {
-      throw new Error('Unknown waddle name: ' + waddleInfo.game);
-    }
-    client.server.setWaddleGame(waddleId, waddleGame);
-    client.server.getWaddleRoom(waddleId).resetWaddle();
-    waddleGame.start();
+  const room = client.server.getWaddleRoom(waddle);
+  client.joinWaddleRoom(room);
+});
+
+handler.xt(Handle.JoinTemporaryWaddle, (client, room, waddle, unknown) => {
+  const waddleRoom = client.server.getRoom(room).waddles.get(waddle);
+  if (waddleRoom === undefined) {
+    throw new Error('Player is joining Waddle Room, but it doesn\'t exist');
   }
+  client.joinWaddleRoom(waddleRoom);
 });
 
 // leave a waddle room
