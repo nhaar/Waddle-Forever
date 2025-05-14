@@ -892,6 +892,10 @@ export class Client {
     }
   }
 
+  addCardJitsuStamp(stampId: number): void {
+    this.giveStamp(stampId, { release: CARD_JITSU_STAMPS });
+  }
+
   static getFurnitureString(furniture: IglooFurniture): string {
     return furniture.map((furniture) => {
       return [
@@ -1223,7 +1227,7 @@ export class Client {
       }
       const stamp = CardJitsuProgress.STAMP_AWARDS[i];
       if (stamp !== undefined) {
-        this.giveStamp(stamp, { release: CARD_JITSU_STAMPS });
+        this.addCardJitsuStamp(stamp);
       }
     }
     this.sendXt('cza', this.penguin.ninjaProgress.rank);
@@ -1238,16 +1242,19 @@ export class Client {
   }
 
   gainNinjaProgress(won: boolean): void {
-    if (this.penguin.ninjaProgress.rank >= CardJitsuProgress.MAX_RANK) {
-      return;
-    }
-    const exp = won ? 5 : 1;
-    const previousRank = this.penguin.ninjaProgress.rank;
-    this.penguin.ninjaProgress.earnXP(exp);
+    this.penguin.addCardJitsuWin();
 
-    if (this.penguin.ninjaProgress.rank > previousRank) {
-      this.ninjaRankUp(previousRank);
+    if (this.penguin.ninjaProgress.rank < CardJitsuProgress.MAX_RANK) {
+      const exp = won ? 5 : 1;
+      const previousRank = this.penguin.ninjaProgress.rank;
+      this.penguin.ninjaProgress.earnXP(exp);
+  
+      if (this.penguin.ninjaProgress.rank > previousRank) {
+        this.ninjaRankUp(previousRank);
+      }
     }
+
+    this.update();
   }
 }
 

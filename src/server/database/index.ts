@@ -399,6 +399,7 @@ export interface PenguinData {
   cardProgress: number
   isNinja: boolean;
   senseiAttempts: number;
+  cardWins: number;
 }
 
 export default db;

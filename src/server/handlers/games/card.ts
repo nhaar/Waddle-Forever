@@ -48,6 +48,8 @@ abstract class Ninja {
 
   protected _cardsOnHand: number[];
 
+  private _flawless: boolean;
+
   constructor(seat: number, game: CardJitsu) {
     this._seat = seat;
     this._scores = {
@@ -58,6 +60,7 @@ abstract class Ninja {
 
     this._game = game;
     this._cardsOnHand = [];
+    this._flawless = true;
   }
 
   /**
@@ -137,6 +140,14 @@ abstract class Ninja {
 
   get cards(): number[] {
     return this._cardsOnHand;
+  }
+
+  removeFlawless() {
+    this._flawless = false;
+  }
+
+  get isFlawless() {
+    return this._flawless;
   }
 }
 
@@ -390,7 +401,11 @@ export class CardJitsu extends WaddleGame {
     return noDuplicates;
   }
 
-  hasWinningHand(): [number, number[]] | undefined {
+  getWinningHand(): {
+    seat: number;
+    cards: number[];
+    oneElement: boolean;
+  } | undefined {
     let i = 0;
     for (const ninja of this._ninjaSeats) {
 
@@ -398,7 +413,11 @@ export class CardJitsu extends WaddleGame {
       for (const [_, cards] of Object.entries(ninja.scores)) {
         const noDupe = this.removeColorDuplicates(cards);
         if (noDupe.length >= 3) {
-          return [i, noDupe.slice(0, 3)];
+          return {
+            seat: i,
+            cards: noDupe.slice(0, 3),
+            oneElement: true
+          }
         }
       }
   
@@ -410,7 +429,11 @@ export class CardJitsu extends WaddleGame {
       for (const combo of combos) {
         const noDupes = this.removeColorDuplicates(combo);
         if (noDupes.length >= 3) {
-          return [i, noDupes.slice(0, 3)];
+          return {
+            seat: i,
+            cards: noDupes.slice(0, 3),
+            oneElement: false
+          }
         }
       }
   
@@ -539,12 +562,20 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
     if (otherNinja.hasChosen()) {
       const winner = game.judgeWinner();
 
-      const winningHand = game.hasWinningHand();
+      const winningHand = game.getWinningHand();
 
       const ninjas = [ninja, otherNinja];
 
       ninjas.forEach((n) => {
         const card = game.getCard(n.chosen);
+        // sensei card stamp
+        if (card.id === 256) {
+          game.players.forEach(player => player.addCardJitsuStamp(246));
+        }
+        if (n.seat !== winner) {
+          n.removeFlawless();
+        }
+
         if (CardJitsu.ON_PLAYED_POWER_CARDS.has(card.powerId) || (card.powerId > 0 && n.seat === winner)) {
           const cardsToDiscard: number[] = [];
           if (card.powerId === 1) {
@@ -587,7 +618,26 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
       if (winningHand !== undefined) {
         const winnerNinja = game.getNinjaBySeatIndex(winner);
         if (winnerNinja instanceof NinjaPlayer) {
+          // TODO research order stamps are given?
+          if (winningHand.oneElement) {
+            winnerNinja.player.addCardJitsuStamp(244);
+          } else {
+            winnerNinja.player.addCardJitsuStamp(242);
+          }
+          if (winnerNinja.isFlawless) {
+            winnerNinja.player.addCardJitsuStamp(238);
+          }
+
+          const scoredCards = Object.values(winnerNinja.scores).flat().length;
+          if (scoredCards >= 9) {
+            winnerNinja.player.addCardJitsuStamp(248);
+          }
+
           winnerNinja.player.gainNinjaProgress(true);
+
+          if (winnerNinja.player.penguin.cardJitsuWins >= 25) {
+            winnerNinja.player.addCardJitsuStamp(240);
+          }
 
           // beating Sensei without Ninja Mask
           if (game.sensei && !client.penguin.ninjaProgress.isNinja) {
@@ -605,8 +655,7 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
           }
         }
 
-        const [seat, hand] = winningHand;
-        client.sendWaddleXt('czo', 0, seat, ...hand);
+        client.sendWaddleXt('czo', 0, winningHand.seat, ...winningHand.cards);
       }
     }
   }
