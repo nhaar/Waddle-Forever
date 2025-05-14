@@ -1214,6 +1214,29 @@ export class Client {
     return this.room.botGroup;
   }
 
+  ninjaRankUp(previousRank: number) {
+    for (let i = previousRank + 1; i <= this.penguin.ninjaProgress.rank; i++) {
+      this.penguin.addItem(CardJitsuProgress.ITEM_AWARDS[i - 1]);
+      const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
+      if (postcard !== undefined) {
+        this.addPostcard(postcard);
+      }
+      const stamp = CardJitsuProgress.STAMP_AWARDS[i];
+      if (stamp !== undefined) {
+        this.giveStamp(stamp, { release: CARD_JITSU_STAMPS });
+      }
+    }
+    this.sendXt('cza', this.penguin.ninjaProgress.rank);
+    this.update();
+
+  }
+
+  becomeNinja(): void {
+    const previousRank = this.penguin.ninjaProgress.rank;
+    this.penguin.ninjaProgress.becomeNinja();
+    this.ninjaRankUp(previousRank);
+  }
+
   gainNinjaProgress(won: boolean): void {
     if (this.penguin.ninjaProgress.rank >= CardJitsuProgress.MAX_RANK) {
       return;
@@ -1222,21 +1245,8 @@ export class Client {
     const previousRank = this.penguin.ninjaProgress.rank;
     this.penguin.ninjaProgress.earnXP(exp);
 
-    // ranking up
     if (this.penguin.ninjaProgress.rank > previousRank) {
-      for (let i = previousRank + 1; i <= this.penguin.ninjaProgress.rank; i++) {
-        this.penguin.addItem(CardJitsuProgress.ITEM_AWARDS[i - 1]);
-        const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
-        if (postcard !== undefined) {
-          this.addPostcard(postcard);
-        }
-        const stamp = CardJitsuProgress.STAMP_AWARDS[i];
-        if (stamp !== undefined) {
-          this.giveStamp(stamp, { release: CARD_JITSU_STAMPS });
-        }
-      }
-      this.sendXt('cza', this.penguin.ninjaProgress.rank);
-      this.update();
+      this.ninjaRankUp(previousRank);
     }
   }
 }

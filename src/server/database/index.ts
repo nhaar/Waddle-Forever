@@ -397,6 +397,8 @@ export interface PenguinData {
   nuggets: number // Total number of golden nuggets in the gold puffle quest
   cards: Record<number, number>
   cardProgress: number
+  isNinja: boolean;
+  senseiAttempts: number;
 }
 
 export default db;

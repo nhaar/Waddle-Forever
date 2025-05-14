@@ -32,6 +32,11 @@ handler.xt(Handle.UpdateHead, (client, id) => {
   client.update();
 });
 
+handler.xt(Handle.UpdateFace, (client, id) => {
+  client.updateEquipment('face', id);
+  client.update();
+});
+
 handler.xt(Handle.UpdateNeck, (client, id) => {
   client.updateEquipment('neck', id);
   client.update();

@@ -109,7 +109,7 @@ export class Penguin {
     this._careerMedals = data.careerMedals;
     this._nuggets = data.nuggets;
     this._cards = parseJsonMap(data.cards, true);
-    this._cardProgress = new CardJitsuProgress(data.cardProgress);
+    this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
   }
 
   serialize(): PenguinData {
@@ -159,7 +159,9 @@ export class Penguin {
       careerMedals: this._careerMedals,
       nuggets: this._nuggets,
       cards: dumpJsonMap(this._cards),
-      cardProgress: this._cardProgress.xp
+      cardProgress: this._cardProgress.xp,
+      senseiAttempts: this._cardProgress.senseiAttempts,
+      isNinja: this._cardProgress.isNinja
     }
   }
 
@@ -684,7 +686,9 @@ export class Penguin {
       careerMedals: 0,
       nuggets: 0,
       cards: {},
-      cardProgress: 0
+      cardProgress: 0,
+      isNinja: false,
+      senseiAttempts: 0
     })
   }
 

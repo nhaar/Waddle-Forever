@@ -5,23 +5,10 @@ import { Room } from "../../game-logic/rooms";
 import { CARDS } from "../../../server/game-logic/cards";
 import { RoomName, ROOMS } from "../../../server/game-data/rooms";
 import { randomInt, Vector } from "../../../common/utils";
-import { ArgumentsIndicator, GetArgumentsType, Handle, TypePrimitiveIndicator } from "../handles";
+import { ArgumentsIndicator, GetArgumentsType, Handle } from "../handles";
 import { logdebug } from "../../../server/logger";
 
 const handler = new Handler();
-
-type Primitive = 'number' | 'string';
-
-// helper to map primitive types to actual typescript types
-type MapPrimitive<T> =
-  T extends 'number' ? number :
-  T extends 'string' ? string :
-  never;
-
-// map the tuple of primitives to their actual types
-type MapPrimitives<T extends readonly Primitive[]> = {
-  [K in keyof T]: MapPrimitive<T[K]>;
-};
 
 type CommandCallback = (client: Client, ...args: string[]) => void;
 
@@ -152,6 +139,20 @@ commands.add('member', [], (client) => {
   client.penguin.swapMember();
   client.sendPenguinInfo();
   client.update();
+});
+
+function addCardJitsuWin(client: Client, amount: number) {
+  for (let i = 0; i < amount; i++) {
+    client.gainNinjaProgress(true);
+  }
+}
+
+commands.add('cjwin', [], (client) => {
+  addCardJitsuWin(client, 1);
+});
+
+commands.add('cjwin', ['number'], (client, amount) => {
+  addCardJitsuWin(client, amount);
 });
 
 function addFurniture(client: Client, id: number, amount: number): void {

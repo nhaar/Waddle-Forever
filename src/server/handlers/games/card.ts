@@ -4,6 +4,7 @@ import { WaddleHandler } from "./waddle";
 import { choose, iterateEntries, randomInt } from "../../../common/utils";
 import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
 import { Handle } from "../handles";
+import { CardJitsuProgress } from "../../../server/game-logic/ninja-progress";
 
 class Hand {
   private _canDrawCards: number[];
@@ -288,8 +289,9 @@ export class CardJitsu extends WaddleGame {
     const ninjas: Ninja[] = [];
 
     if (this._sensei) {
-      // TODO proper implement unbeatable
-      ninjas.push(new Sensei(this, true))
+      const player = players[0];
+      // 5 is estimate from research
+      ninjas.push(new Sensei(this, player.penguin.ninjaProgress.senseiAttempts < 5));
     }
 
     players.forEach((p, i) => {
@@ -586,9 +588,21 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
         const winnerNinja = game.getNinjaBySeatIndex(winner);
         if (winnerNinja instanceof NinjaPlayer) {
           winnerNinja.player.gainNinjaProgress(true);
+
+          // beating Sensei without Ninja Mask
+          if (game.sensei && !client.penguin.ninjaProgress.isNinja) {
+            client.becomeNinja();
+          }
         }
         if (winnerNinja.opponent instanceof NinjaPlayer) {
           winnerNinja.opponent.player.gainNinjaProgress(false);
+          // losing to Sensei as a black belt
+          if (winnerNinja instanceof Sensei) {
+            if (winnerNinja.opponent.player.penguin.ninjaProgress.rank >= CardJitsuProgress.MAX_RANK) {
+              winnerNinja.opponent.player.penguin.ninjaProgress.addAttempt();
+              winnerNinja.opponent.player.update();
+            }
+          }
         }
 
         const [seat, hand] = winningHand;
