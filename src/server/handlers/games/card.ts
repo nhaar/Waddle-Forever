@@ -5,6 +5,8 @@ import { choose, iterateEntries, randomInt } from "../../../common/utils";
 import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
 import { Handle } from "../handles";
 import { CardJitsuProgress } from "../../../server/game-logic/ninja-progress";
+import { Stamp } from "../../../server/game-logic/stamps";
+import { Room } from "../../../server/game-logic/rooms";
 
 class Hand {
   private _canDrawCards: number[];
@@ -238,7 +240,7 @@ class Sensei extends Ninja {
 }
 
 export class CardJitsu extends WaddleGame {
-  public roomId: number = 998;
+  public roomId = Room.CardJitsu;
 
   public name: WaddleName = 'card';
 
@@ -509,6 +511,19 @@ export class CardJitsu extends WaddleGame {
   getNinjaBySeatIndex(index: number): Ninja {
     return this._ninjaSeats[index];
   }
+
+  removePlayer(client: Client) {
+    // for when the player got stamps in older versions
+    for (let i = 0; i <= client.penguin.ninjaProgress.rank; i++) {
+      const stamp = CardJitsuProgress.STAMP_AWARDS[i];
+      if (stamp !== undefined) {
+        client.addCardJitsuStamp(stamp);
+      }
+    }
+
+    client.sendCardJitsuStampInfo();
+    client.leaveWaddleRoom();
+  }
 }
 
 const handler = new WaddleHandler<CardJitsu>('card');
@@ -533,6 +548,15 @@ handler.waddleXt(Handle.UpdateWaddleGameSeats, (game, client) => {
   }
   client.sendXt('uz', ...playersInfo.map(info => info.join('|')));
   client.sendXt('sz');
+});
+
+// specifically for quitting
+handler.waddleXt(Handle.LeaveWaddleMatch, (game, client) => {
+  game.removePlayer(client);
+
+  const seatId = game.getSeatId(client);
+  game.sendXt('cz', client.penguin.name);
+  game.sendXt('lz', seatId);
 });
 
 // dealing new card to the player
@@ -568,9 +592,8 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
 
       ninjas.forEach((n) => {
         const card = game.getCard(n.chosen);
-        // sensei card stamp
         if (card.id === 256) {
-          game.players.forEach(player => player.addCardJitsuStamp(246));
+          game.players.forEach(player => player.addCardJitsuStamp(Stamp.SenseiCard));
         }
         if (n.seat !== winner) {
           n.removeFlawless();
@@ -620,23 +643,23 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
         if (winnerNinja instanceof NinjaPlayer) {
           // TODO research order stamps are given?
           if (winningHand.oneElement) {
-            winnerNinja.player.addCardJitsuStamp(244);
+            winnerNinja.player.addCardJitsuStamp(Stamp.OneElement);
           } else {
-            winnerNinja.player.addCardJitsuStamp(242);
+            winnerNinja.player.addCardJitsuStamp(Stamp.ElementalWin);
           }
           if (winnerNinja.isFlawless) {
-            winnerNinja.player.addCardJitsuStamp(238);
+            winnerNinja.player.addCardJitsuStamp(Stamp.FlawlessVictory);
           }
 
           const scoredCards = Object.values(winnerNinja.scores).flat().length;
           if (scoredCards >= 9) {
-            winnerNinja.player.addCardJitsuStamp(248);
+            winnerNinja.player.addCardJitsuStamp(Stamp.FullDojo);
           }
 
           winnerNinja.player.gainNinjaProgress(true);
 
           if (winnerNinja.player.penguin.cardJitsuWins >= 25) {
-            winnerNinja.player.addCardJitsuStamp(240);
+            winnerNinja.player.addCardJitsuStamp(Stamp.MatchMaster);
           }
 
           // beating Sensei without Ninja Mask
@@ -655,6 +678,8 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
           }
         }
 
+        // players are removed so that they don't get the "player quit" popup even though the game ended normally
+        game.players.forEach(p => game.removePlayer(p));
         client.sendWaddleXt('czo', 0, winningHand.seat, ...winningHand.cards);
       }
     }

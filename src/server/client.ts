@@ -871,6 +871,11 @@ export class Client {
     return info;
   }
 
+  /** Send stamp info at the end of a card-jitsu game */
+  sendCardJitsuStampInfo() {
+    this.sendXt('cjsi', ...this.getEndgameStampsInformation());
+  }
+
   /**
    * Give a stamp to a player
    * @param stampId 

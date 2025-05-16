@@ -1,3 +1,5 @@
+import { Stamp } from "./stamps";
+
 /** Manages EXP for Card-Jitsu */
 export class CardJitsuProgress {
   private _xp: number;
@@ -15,10 +17,10 @@ export class CardJitsuProgress {
   static POSTCARD_AWARDS: Record<number, number | undefined> = {1: 177, 5: 178, 9: 179};
   /** Map a rank to the stamp you earn frmo reaching the rank */
   static STAMP_AWARDS: Record<number, number | undefined> = {
-    1: 230,
-    5: 232,
-    9: 234,
-    10: 236
+    1: Stamp.Grasshopper,
+    5: Stamp.FineStudent,
+    9: Stamp.TrueNinja,
+    10: Stamp.NinjaMaster
   };
 
   /** Max rank XP-wise, ie ninja is a rank above this */

@@ -144,7 +144,8 @@ export enum Handle {
   SendJoke,
   SendSafeMessage,
   JoinSensei,
-  JoinTemporaryWaddle
+  JoinTemporaryWaddle,
+  LeaveWaddleMatch
 };
 
 /** Map of all the handles and their valid arguments */
@@ -272,7 +273,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SendJoke]: ['string'],
   [Handle.SendSafeMessage]: ['string'],
   [Handle.JoinSensei]: [],
-  [Handle.JoinTemporaryWaddle]: ['number', 'number', 'number']
+  [Handle.JoinTemporaryWaddle]: ['number', 'number', 'number'],
+  [Handle.LeaveWaddleMatch]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -430,7 +432,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'zm': [Handle.SledRaceAction, Handle.CardJitsuDeal, Handle.CardJitsuPick],
     'jmm': Handle.JoinMatchMaking,
     'jz': Handle.JoinSled,
-    'jsen': Handle.JoinSensei
+    'jsen': Handle.JoinSensei,
+    'lz': Handle.LeaveWaddleMatch
   },
   'k': {
     'spy': Handle.BecomeAgent
