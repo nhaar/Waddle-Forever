@@ -8,8 +8,10 @@ const handler = new Handler();
 handler.boot((s) => {
   s.setCardMatchmaker(new MatchMaker(2, (players) => {
     const game = new CardJitsu(players);
-
     game.startMatch();
+  }, (players, time) => {
+    const nicknames = players.map(p => p.penguin.name);
+    players.forEach(p => p.sendXt('tmm', time, ...nicknames));
   }))
 })
 

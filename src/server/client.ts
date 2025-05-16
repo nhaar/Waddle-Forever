@@ -64,13 +64,16 @@ export class WaddleRoom {
   }
 
   addPlayer(client: Client): number {
-    let seatIndex = -1;
+    let seatIndex: number | undefined = undefined;
     for (let i = 0; i < this._seats; i++) {
       if (this._players[i] === null) {
         this._players[i] = client;
         seatIndex = i;
         break;
       }
+    }
+    if (seatIndex === undefined) {
+      throw new Error('Tried adding a player to a waddle room, but thre were no slots left');
     }
     return seatIndex;
   }
@@ -113,23 +116,89 @@ export class WaddleRoom {
 
 type MatchedCallback = (players: Client[]) => void;
 
-export class MatchMaker {
-  private _maxPlayers: number;
-  private _players: Client[];
-  private _onMatched: MatchedCallback;
+type TickCallback = (players: Client[], time: number) => void;
 
-  constructor(max: number, onMatched: MatchedCallback) {
-    this._maxPlayers = max;
+/**
+ * Handles a room that will be used for making a match  of games that have queueing
+ * */
+class MatchmakingRoom {
+  private _matchmaker: MatchMaker;
+  private _players: Client[];
+  private _time = 0;
+  private _timer: NodeJS.Timer
+
+  constructor(matchmaker: MatchMaker) {
+    this._matchmaker = matchmaker;
     this._players = [];
-    this._onMatched = onMatched;
+    this.resetTime();
+    this._timer = setInterval(() => {
+      this._matchmaker.onTick(this._players, this._time);
+      this._time--;
+      if (this._time < 0) {
+        if (this._players.length >= 2) {
+          this._matchmaker.onMatched(this._players);
+          clearInterval(this._timer);
+        } else {
+          this.resetTime();
+        }
+      }
+    }, 1000);
+  }
+
+  private resetTime() {
+    this._time = 10;
   }
 
   addPlayer(player: Client) {
     this._players.push(player);
-    if (this._players.length >= this._maxPlayers) {
-      const matchedPlayers = this._players.splice(0, this._maxPlayers + 1);
-      this._onMatched(matchedPlayers);
+  }
+
+  get full() {
+    return this._players.length === this._matchmaker.capacity;
+  }
+}
+
+/** Handles matchmaking in a server */
+export class MatchMaker {
+  /** Max number of players each match supports */
+  private _maxPlayers: number;
+  /** All rooms available */
+  private _rooms: MatchmakingRoom[];
+  /** Callback to run when a match is found */
+  private _onMatched: MatchedCallback;
+  /** Callback to run each second that ticks while matchmaking */
+  private _onTick: TickCallback;
+
+  constructor(max: number, onMatched: MatchedCallback, onTick: TickCallback) {
+    this._maxPlayers = max;
+    this._rooms = [];
+    this._onMatched = onMatched;
+    this._onTick = onTick;
+  }
+
+  get capacity() {
+    return this._maxPlayers;
+  }
+
+  /** Add a player to matchmaking with others in the server */
+  addPlayer(player: Client) {
+    const availableIndex = this._rooms.findIndex(room => !room.full);
+    if (availableIndex === -1) {
+      const room = new MatchmakingRoom(this);
+      room.addPlayer(player);
+      this._rooms.push(room);
+    } else {
+      const firstOnQueue = this._rooms[availableIndex];
+      firstOnQueue.addPlayer(player);
     }
+  }
+
+  get onMatched() {
+    return this._onMatched;
+  }
+
+  get onTick() {
+    return this._onTick;
   }
 }
 
@@ -397,8 +466,8 @@ export class Client {
   /** Instance of waddle game, if playing, or null otherwise */
   private _waddleGame: WaddleGame | null;
 
-  /** ID of current waddle room, or -1 otherwise */
-  private _currentWaddleRoom: number;
+  /** Current Waddle Room, if it exists */
+  private _currentWaddleRoom: WaddleRoom | undefined;
 
   /** Reference to the room the player is in */
   private _currentRoom: GameRoom | undefined;
@@ -435,7 +504,6 @@ export class Client {
     this._socket = socket;
     this.serverType = type;
     this._waddleGame = null;
-    this._currentWaddleRoom = -1;
     this.sessionStart = Date.now();
     
     this.sessionStamps = [];
@@ -742,8 +810,15 @@ export class Client {
     this.sendPenguinInfo();
   }
 
+  get waddleRoom() {
+    if (this._currentWaddleRoom === undefined) {
+      throw new Error('Trying to access Waddle Room, but it\'s not in a waddle room');
+    }
+    return this._currentWaddleRoom;
+  }
+
   joinWaddleRoom(waddleRoom: WaddleRoom): void {
-    this._currentWaddleRoom = waddleRoom.id;
+    this._currentWaddleRoom = waddleRoom;
     const seatId = waddleRoom.addPlayer(this);
 
     this.sendXt('jw', seatId);
@@ -760,8 +835,8 @@ export class Client {
   }
 
   leaveWaddleRoom(): void {
-    this._server.getWaddleRoom(this._currentWaddleRoom).removePlayer(this);
-    this._currentWaddleRoom = -1;
+    this.waddleRoom.removePlayer(this);
+    this._currentWaddleRoom = undefined;
   }
 
   get waddleGame(): WaddleGame {

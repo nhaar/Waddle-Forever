@@ -370,20 +370,17 @@ export class CardJitsu extends WaddleGame {
     return this._sensei;
   }
 
+  /** Starts a match that is being started from matchmaking */
   startMatch() {
     const waddleRoom = new WaddleRoom(1000 + this.players[0].penguin.id, this.players.length, 'card');
     const gameRoom = this.server.getRoom(this.roomId);
-    
-    this.players.forEach((p) => {
-      waddleRoom.addPlayer(p);
-    });
     
     const playerInfo = this.players.map(p => `${p.penguin.name}|${p.penguin.color}`);
     
     gameRoom.waddles.set(waddleRoom.id, waddleRoom);
     
     this.players.forEach((p) => {
-      // don't know what the 0 / 10 thing is for
+      // don't know what the 0 : 10 thing is for, and what the difference is
       p.sendXt('scard', this.roomId, waddleRoom.id, this._sensei ? 1 : this.players.length, this._sensei ? 0 : 10, ...playerInfo);
     });
   }
