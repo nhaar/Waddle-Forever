@@ -253,5 +253,12 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/thinice/ThinIce.swf': 'fix:GamesThiniceThinIce.swf',
   'play/v2/games/mine/CartSurfer.swf': 'slegacy:media/play/v2/games/mine/CartSurfer.swf',
   'play/v2/games/sled/SledRacer.swf': 'archives:SledRacing.swf',
-  'play/v2/content/global/content/igloo_map.swf': 'archives:IglooMap.swf'
+  'play/v2/content/global/content/igloo_map.swf': 'archives:IglooMap.swf',
+  'play/v2/games/senseiFire/bootstrap.swf': 'slegacy:media/play/v2/games/senseiFire/bootstrap.swf',
+  'play/v2/games/senseiFire/SenseiWidget.swf': 'slegacy:media/play/v2/games/senseiFire/SenseiWidget.swf',
+  'play/v2/games/senseiFire/lang/de/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/de/locale.swf',
+  'play/v2/games/senseiFire/lang/en/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/en/locale.swf',
+  'play/v2/games/senseiFire/lang/es/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/es/locale.swf',
+  'play/v2/games/senseiFire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/fr/locale.swf',
+  'play/v2/games/senseiFire/lang/pt/locale.swf':  'slegacy:media/play/v2/games/senseiFire/lang/pt/locale.swf'
 };

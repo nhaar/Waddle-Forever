@@ -1,7 +1,8 @@
-import { CARD_STARTER_DECK } from "../../../server/game-logic/starter-deck";
+import { STARTER_DECKS } from "../../../server/game-logic/starter-deck";
 import { Handler } from "..";
 import { choose } from "../../../common/utils";
 import { Handle } from "../handles";
+import { CARDS } from "../../../server/game-logic/cards";
 
 const handler = new Handler();
 
@@ -16,6 +17,12 @@ handler.xt(Handle.GetNinjaLevel, (client) => {
   client.sendXt('gnl', client.penguin.ninjaProgress.rank, client.penguin.ninjaProgress.percentage, 10);
 })
 
+handler.xt(Handle.GetFireLevel, (client) => {
+  // unsure why 5 is needed
+  // TODO fire ranks
+  client.sendXt('gfl', 0, 0, 5);
+});
+
 // get cards
 handler.xt(Handle.GetCards, (client) => {
   client.sendXt('gcd', client.penguin.getCards().map((card) => {
@@ -25,11 +32,16 @@ handler.xt(Handle.GetCards, (client) => {
 
 // adding cards when receiving a starter deck
 handler.xt(Handle.AddItem, (client, id) => {
-  if (id === 821) {
-    CARD_STARTER_DECK.cards.forEach(card => {
-      client.penguin.addCard(card, 1);
+  const deck = STARTER_DECKS[id];
+  if (deck !== undefined) {
+    const powerCards: number[] = [];
+    const normalCards: number[] = [];
+    deck.forEach(card => {
+      const info = CARDS.getStrict(card);
+      (info.powerId > 0 ? powerCards : normalCards).push(card);
     });
-    client.penguin.addCard(choose(CARD_STARTER_DECK.powerCards), 1);
+    normalCards.forEach(card => client.penguin.addCard(card, 1));
+    client.penguin.addCard(choose(powerCards), 1);
   }
   client.update();
 });

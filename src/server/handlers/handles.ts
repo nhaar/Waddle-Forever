@@ -145,7 +145,8 @@ export enum Handle {
   SendSafeMessage,
   JoinSensei,
   JoinTemporaryWaddle,
-  LeaveWaddleMatch
+  LeaveWaddleMatch,
+  GetFireLevel
 };
 
 /** Map of all the handles and their valid arguments */
@@ -274,7 +275,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SendSafeMessage]: ['string'],
   [Handle.JoinSensei]: [],
   [Handle.JoinTemporaryWaddle]: ['number', 'number', 'number'],
-  [Handle.LeaveWaddleMatch]: []
+  [Handle.LeaveWaddleMatch]: [],
+  [Handle.GetFireLevel]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -412,7 +414,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'ni': {
       'gnr': Handle.GetNinjaRanks,
       'gnl': Handle.GetNinjaLevel,
-      'gcd': Handle.GetCards
+      'gcd': Handle.GetCards,
+      'gfl': Handle.GetFireLevel
     },
     'w': {
       'jx': Handle.JoinTemporaryWaddle
