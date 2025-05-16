@@ -24,6 +24,6 @@ export function createChangeClientIPWindow(globalSettings: GlobalSettings, mainW
 
   ipcMain.on('reset-ip', () => {
     globalSettings.targetIP = undefined;
-    mainWindow.loadURL(makeURL('localhost'));
+    mainWindow.loadURL(makeURL('127.0.0.1'));
   });
 }

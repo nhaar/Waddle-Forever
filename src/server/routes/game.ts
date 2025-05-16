@@ -78,8 +78,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);
   });
-  server.getData('play/web_service/environment_data.xml', () => {
-    return getEnvironmentDataXml();
+  server.getData('play/web_service/environment_data.xml', (s) => {
+    return getEnvironmentDataXml(s.targetIP);
   });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
