@@ -52,6 +52,8 @@ abstract class Ninja {
 
   private _flawless: boolean;
 
+  protected _blockedElement: CardElement | undefined;
+
   constructor(seat: number, game: CardJitsu) {
     this._seat = seat;
     this._scores = {
@@ -151,6 +153,29 @@ abstract class Ninja {
   get isFlawless() {
     return this._flawless;
   }
+
+  blockElement(element: CardElement) {
+    this._blockedElement = element;
+  }
+
+  unblockElement() {
+    this._blockedElement = undefined;
+  }
+
+  hasCardsToPlay(): boolean {
+    // the only condition for not being able to play is an element being blocked
+    if (this._blockedElement === undefined) {
+      return true;
+    }
+    for (const card of this._cardsOnHand) {
+      const info = this._game.getCard(card);
+      if (info.element !== this._blockedElement) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
 
 class NinjaPlayer extends Ninja {
@@ -204,7 +229,14 @@ class Sensei extends Ninja {
       this.choose(cardToTuse);
     } else {
       // no criteria
-      this.choose(choose(this._cardsOnHand));
+      const canPlayCards = this._cardsOnHand.filter(id => {
+        if (this._blockedElement) {
+          return true;
+        }
+        const card = this._game.getCard(id);
+        return card.element !== this._blockedElement;
+      });
+      this.choose(choose(canPlayCards));
     }
   }
 
@@ -266,7 +298,12 @@ export class CardJitsu extends WaddleGame {
   };
 
   static ON_PLAYED_POWER_CARDS = new Set([1, 16, 17, 18]);
-  static AFFECTS_PLAYER_POWER_CARDS = new Set([2]);
+  static SELF_EFFECT_POWER_CARDS = new Set([2]);
+  static ELEMENT_BLOCK_POWER_CARDS: Record<number, CardElement | undefined> = {
+    13: 's',
+    14: 'f',
+    15: 'w'
+  };
 
   static REPLACEMENT_POWER_CARDS: Record<number, [CardElement, CardElement] | undefined> = {
     16: ['w', 'f'],
@@ -493,9 +530,11 @@ export class CardJitsu extends WaddleGame {
       this._ninjaSeats[winIndex].score(cardInfo[winIndex].element, cards[winIndex]);
     }
 
+    // resetting effects
     if (this._swapValue) {
       this._swapValue = false;
     }
+    this._ninjaSeats.forEach(n => n.unblockElement());
 
     return winIndex;
   }
@@ -523,6 +562,14 @@ export class CardJitsu extends WaddleGame {
 
     client.sendCardJitsuStampInfo();
     client.leaveWaddleRoom();
+  }
+
+  setWinner(winnerSeat: number, ...winningCards: number[]) {
+    // players are removed so that they don't get the "player quit" popup even though the game ended normally
+    this.players.forEach(p => {
+      this.removePlayer(p)
+    });
+    this.sendXt('czo', 0, winnerSeat, ...winningCards);
   }
 }
 
@@ -628,7 +675,13 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
             ninja.opponent.removeCards(cardsToDiscard);
           }
 
-          const [sender, recipient] =  CardJitsu.AFFECTS_PLAYER_POWER_CARDS.has(card.powerId) ? [n.seat, n.seat] : [n.seat, n.otherSeat];
+          // element blocking
+          const elementToBlock = CardJitsu.ELEMENT_BLOCK_POWER_CARDS[card.powerId];
+          if (elementToBlock !== undefined) {
+            n.opponent.blockElement(elementToBlock);
+          }
+
+          const [sender, recipient] =  CardJitsu.SELF_EFFECT_POWER_CARDS.has(card.powerId) ? [n.seat, n.seat] : [n.seat, n.otherSeat];
           client.sendWaddleXt('zm', 'power', sender, recipient, card.powerId, ...cardsToDiscard);
         }
         n.unchoose();
@@ -678,9 +731,14 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
           }
         }
 
-        // players are removed so that they don't get the "player quit" popup even though the game ended normally
-        game.players.forEach(p => game.removePlayer(p));
-        client.sendWaddleXt('czo', 0, winningHand.seat, ...winningHand.cards);
+        game.setWinner(winningHand.seat, ...winningHand.cards);
+      } else {
+        // forced losing is achieved by sending no cards
+        ninjas.forEach(n => {
+          if (!n.hasCardsToPlay()) {
+            game.setWinner(n.opponent.seat);
+          }
+        })
       }
     }
   }
