@@ -110,9 +110,9 @@ handler.xt(Handle.GetTotalCoins, (client) => {
 
 // get penguins in the waddles
 handler.xt(Handle.GetWaddle, (client, ...waddles) => {
-  client.sendXt('gw', ...waddles.map((w) => {
-    const players = client.server.getWaddleRoom(w).seats;
-    return `${w}|${players.map(p => {
+  const waddleRooms = client.room.getWaddleRooms();
+  client.sendXt('gw', ...waddleRooms.map((w) => {
+    return `${w.id}|${w.seats.map(p => {
       return p?.penguin.name ?? '';
     }).join(',')}`
   }));
@@ -127,7 +127,7 @@ handler.boot(s => {
 
 // join a waddle
 handler.xt(Handle.JoinWaddle, (client, waddle) => {
-  const room = client.server.getWaddleRoom(waddle);
+  const room = client.room.getWaddleRoom(waddle);
   client.joinWaddleRoom(room);
 });
 

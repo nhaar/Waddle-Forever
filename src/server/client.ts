@@ -295,6 +295,18 @@ class GameRoom {
   get waddles() {
     return this._waddles;
   }
+
+  getWaddleRoom(id: number) {
+    const room = this._waddles.get(id);
+    if (room === undefined) {
+      throw new Error('Trying to get waddle room that doesn\'t exist');
+    }
+    return room;
+  }
+
+  getWaddleRooms() {
+    return Array.from(this._waddles.values());
+  }
 }
 
 /** Map of the waddle games and their constructors */
@@ -304,9 +316,6 @@ type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGa
 export class Server {
   /** All multiplayer rooms */
   private _rooms: Map<number, GameRoom>
-
-  /** All waddle rooms, which are places people go to start a multiplayer game like Sled Race */
-  private _waddleRooms: Map<number, WaddleRoom>;
 
   private _cardMatchmaking: MatchMaker | undefined;
 
@@ -328,7 +337,6 @@ export class Server {
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
-    this._waddleRooms = new Map<number, WaddleRoom>();
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
@@ -336,8 +344,9 @@ export class Server {
   }
 
   private init() {
-    WADDLE_ROOMS.rows.forEach((waddle) => {
-      this._waddleRooms.set(waddle.id, new WaddleRoom(waddle.id, waddle.seats, waddle.game));
+    WADDLE_ROOMS.forEach((waddle) => {
+      const room = this.getRoom(waddle.roomId);
+      room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
   }
 
@@ -357,7 +366,6 @@ export class Server {
       player.disconnect();
     }
     this._rooms = new Map<number, GameRoom>();
-    this._waddleRooms = new Map<number, WaddleRoom>();
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
@@ -371,14 +379,6 @@ export class Server {
   setWaddleGame(waddleRoom: WaddleRoom, game: WaddleGame): void {
     const players = waddleRoom.players;
     players.forEach(p => p.setWaddleGame(game));
-  }
-
-  getWaddleRoom(waddle: number): WaddleRoom {
-    const players = this._waddleRooms.get(waddle);
-    if (players === undefined) {
-      throw new Error(`Invalid waddle: ${waddle}`);
-    }
-    return players;
   }
 
   /** Assign client object to a penguin ID */

@@ -4,24 +4,83 @@ import { StaticDataTable } from "../../common/static-table";
 export type WaddleName = 'sled' | 'card';
 
 type WaddleRoomInfo = {
-  id: number;
+  waddleId: number;
   roomId: number;
   seats: number;
   game: WaddleName;
 }
 
-export const WADDLE_ROOMS = new StaticDataTable<WaddleRoomInfo, ['id', 'roomId', 'seats', 'game']>([
-  'id',
-  'roomId',
-  'seats',
-  'game'
-], [
-  [100, 230, 4, 'sled'],
-  [101, 230, 3, 'sled'],
-  [102, 230, 2, 'sled'],
-  [103, 230, 2, 'sled'],
-  [200, 320, 2, 'card'],
-  [201, 320, 2, 'card'],
-  [202, 320, 2, 'card'],
-  [203, 320, 2, 'card'],
-]);
+export const WADDLE_ROOMS: WaddleRoomInfo[] = [
+  {
+    waddleId: 100,
+    roomId: 230,
+    seats: 4,
+    game: 'sled'
+  },
+  {
+    waddleId: 101,
+    roomId: 230,
+    seats: 3,
+    game: 'sled'
+  },
+  {
+    waddleId: 102,
+    roomId: 230,
+    seats: 2,
+    game: 'sled'
+  },
+  {
+    waddleId: 103,
+    roomId: 230,
+    seats: 2,
+    game: 'sled'
+  },
+  {
+    waddleId: 200,
+    roomId: 320,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 201,
+    roomId: 320,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 202,
+    roomId: 320,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 203,
+    roomId: 320,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 200,
+    roomId: 322,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 201,
+    roomId: 322,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 202,
+    roomId: 322,
+    seats: 2,
+    game: 'card'
+  },
+  {
+    waddleId: 203,
+    roomId: 322,
+    seats: 2,
+    game: 'card'
+  }
+];
