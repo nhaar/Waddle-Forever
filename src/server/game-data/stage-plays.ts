@@ -1,4 +1,4 @@
-import { FIRST_STAGE_PLAY, PLANET_Y_2010 } from "./updates";
+import { Update } from "./updates";
 import { Version } from "../routes/versions";
 
 /** All stage names */
@@ -94,7 +94,7 @@ export const STAGE_TIMELINE: Array<{
   notPremiere?: true
 }> = [
   {
-    date: FIRST_STAGE_PLAY,
+    date: Update.FIRST_STAGE_PLAY,
     name: 'Space Adventure',
     plazaFileRef: 'archives:ArtworkRoomsPlaza47.swf',
     // stage from March
@@ -316,7 +316,7 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:HalloweenParty2010Stage.swf'
   },
   {
-    date: PLANET_Y_2010,
+    date: Update.PLANET_Y_2010,
     name: 'Space Adventure Planet Y',
     costumeTrunkFileRef: 'archives:2010SpacePlanetAdventureYCostumeTrunk.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play9.swf', // accurate

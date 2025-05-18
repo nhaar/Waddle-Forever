@@ -1,7 +1,7 @@
 /** Module writes the data for all standalone updates related to the seasonal catalogs */
 
 import { DateRefMap } from "./changes";
-import { NEW_YEARS_2010_UPDATE } from "./updates";
+import { Update } from "./updates";
 
 /** All clothing catalogs that are released Pre-CPIP */
 export const PRE_CPIP_CATALOGS: DateRefMap = {
@@ -59,7 +59,7 @@ export const CPIP_CATALOGS: DateRefMap = {
   '2009-10-02': 'archives:Oct2009.swf',
   '2009-11-06': 'archives:November09Style.swf',
   '2009-12-04': 'archives:December09Style.swf',
-  [NEW_YEARS_2010_UPDATE]: 'archives:January10Style.swf',
+  [Update.NEW_YEARS_2010_UPDATE]: 'archives:January10Style.swf',
   '2010-02-05': 'archives:Feb10Clothing.swf',
   '2010-04-01': 'archives:April10Style.swf',
   '2010-05-07': 'archives:May2010.swf',

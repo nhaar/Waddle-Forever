@@ -1,7 +1,7 @@
 import { findInVersion, VersionsTimeline } from "../game-data/changes";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { CHAT_339 } from "../game-data/updates";
+import { Update } from "../game-data/updates";
 import { getClothingTimeline, getFileDateSignature, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
 import { Version, isLower } from "./versions";
 
@@ -58,7 +58,7 @@ function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>)
 
 function getFileName(name: string, date: Version): string {
   // the way the client reads this XML changed
-  if (isLower(date, CHAT_339)) {
+  if (isLower(date, Update.CHAT_339)) {
     return `<File>${name}</File>`;
   } else {
     return name;

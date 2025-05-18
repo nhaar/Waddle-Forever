@@ -16,7 +16,7 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
-import { BETA_RELEASE, CPIP_UPDATE, EPF_RELEASE, MODERN_AS3 } from "../game-data/updates";
+import { Update } from "../game-data/updates";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from "../game-data/newspapers";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
@@ -66,12 +66,12 @@ class FileTimelineMap extends TimelineMap<string, string> {
   }
 
   addDefault(route: string, file: string): void {
-    this.addPerm(route, BETA_RELEASE, file);
+    this.addPerm(route, Update.BETA_RELEASE, file);
   }
 
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
     iterateEntries(idMap, (id, file) => {
-      this.addPerm(path.join(parentDir, directory, `${id}.swf`), BETA_RELEASE, file);
+      this.addPerm(path.join(parentDir, directory, `${id}.swf`), Update.BETA_RELEASE, file);
     });
   }
   
@@ -90,7 +90,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
   addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
 
     const info = end === undefined ? { date, info: fileRef } : { date, end, info: fileRef };
-    if (isLower(date, CPIP_UPDATE)) {
+    if (isLower(date, Update.CPIP_UPDATE)) {
       this.add('artwork/maps/island5.swf', info);
       // TODO would be best to only include the maps that end up factually being used
       this.add('artwork/maps/16_forest.swf', info);
@@ -209,12 +209,12 @@ function addFilesWithIds(map: FileTimelineMap): void {
 }
 
 function isNewspaperBeforeCPIP(newspaper: As2Newspaper): boolean {
-  return isLower(newspaper.date, CPIP_UPDATE);
+  return isLower(newspaper.date, Update.CPIP_UPDATE);
 }
 
 /** Check if a newspaper is accessible after CPIP, the argument is the newspaper after it or undefined if it's the "last" newspaper */
 export function isNewspaperAfterCPIP(nextNewspaper: As2Newspaper | undefined) {
-  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, CPIP_UPDATE);
+  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, Update.CPIP_UPDATE);
 }
 
 export function getMinifiedDate(date: Version): string {
@@ -281,8 +281,8 @@ function addNewspapers(map: FileTimelineMap): void {
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
-  map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
+  map.addRouteMap(CPIP_STATIC_FILES, Update.CPIP_UPDATE);
+  map.addRouteMap(AS3_STATIC_FILES, Update.MODERN_AS3);
 }
 
 function addStaticFiles(map: FileTimelineMap): void {
@@ -304,7 +304,7 @@ function sanitizePath(path: string): string {
 }
 
 function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: string) {
-  if (isLower(date, CPIP_UPDATE)) {
+  if (isLower(date, Update.CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.addPerm(path.join('artwork/rooms', fileName), date, file);
   } else {
@@ -317,7 +317,7 @@ const TICKET_ICON_PATH = 'tickets.swf';
 const TICKET_INFO_PATH = 'ticket_info.swf';
 
 function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
-  if (isLower(start, CPIP_UPDATE)) {
+  if (isLower(start, Update.CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.addTemp(path.join('artwork/rooms', fileName), start, end, file);
   } else {
@@ -329,7 +329,7 @@ function addRoomInfo(map: FileTimelineMap): void {
   for (const roomName in ROOMS) {
     const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
     if (originalRoomFile !== undefined) {
-      addRoomRoute(map, BETA_RELEASE, roomName as RoomName, originalRoomFile);
+      addRoomRoute(map, Update.BETA_RELEASE, roomName as RoomName, originalRoomFile);
     }
   }
 
@@ -448,7 +448,7 @@ export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     PARTIES.forEach((party) => {
       // crumbs dont exist before this date
-      if (isGreaterOrEqual(party.date, CPIP_UPDATE)){
+      if (isGreaterOrEqual(party.date, Update.CPIP_UPDATE)){
         const localPaths: Record<string, string> = {};
         if (party.localChanges !== undefined) {
           // only 'en' support
@@ -493,7 +493,7 @@ function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
 ) {
   const timeline: TimelineEvent<Partial<CrumbContent>>[] = [
     {
-      date: CPIP_UPDATE,
+      date: Update.CPIP_UPDATE,
       info: getFirstCrumb()
     }
   ];
@@ -518,7 +518,7 @@ export function getRoomFrameTimeline() {
   // adding defaults
   // TODO, not fond of design?
   Object.keys(ROOMS).forEach((room) => {
-    timeline.addPerm(room as RoomName, BETA_RELEASE, 0);
+    timeline.addPerm(room as RoomName, Update.BETA_RELEASE, 0);
   })
 
   PINS.forEach((pin) => {
@@ -566,7 +566,7 @@ export function getMusicTimeline(includeParties: boolean = true) {
   }
 
   Object.keys(ROOMS).forEach((room) => {
-    timeline.addPerm(room as RoomName, BETA_RELEASE, 0);
+    timeline.addPerm(room as RoomName, Update.BETA_RELEASE, 0);
   });
     
   // regular room IDs
@@ -575,7 +575,7 @@ export function getMusicTimeline(includeParties: boolean = true) {
     const roomName = room as RoomName;
     
     const [firstSong, ...otherSongs] = musicTimeline;
-    timeline.addPerm(roomName, BETA_RELEASE, firstSong);
+    timeline.addPerm(roomName, Update.BETA_RELEASE, firstSong);
     otherSongs.forEach((song) => {
       timeline.addPerm(roomName, song.date, song.musicId);
     });
@@ -606,7 +606,7 @@ export function getMusicTimeline(includeParties: boolean = true) {
 export function getMigratorTimeline() {
   const timeline = new VersionsTimeline<boolean>();
   timeline.add({
-    date: BETA_RELEASE,
+    date: Update.BETA_RELEASE,
     info: false
   });
 
@@ -719,7 +719,7 @@ export function getGlobalCrumbsOutput() {
       // so we don't have excess crumb files
       // NOTE that this design can easily lead to new properties being added not being handled
       let crumbChanged = false;
-      if (isGreaterOrEqual(party.date, CPIP_UPDATE)) {
+      if (isGreaterOrEqual(party.date, Update.CPIP_UPDATE)) {
         // change is detected if any of these is true
         crumbChanged = [
           party.music !== undefined,
@@ -748,7 +748,7 @@ export function getGlobalCrumbsOutput() {
       const [room, musicTimeline] = pair;
       const [_, ...otherSongs] = musicTimeline;
       otherSongs.forEach((update) => {
-        if (isGreater(update.date, CPIP_UPDATE)) {
+        if (isGreater(update.date, Update.CPIP_UPDATE)) {
           timeline.push({
             date: update.date,
             info: {
@@ -794,7 +794,7 @@ export function getGlobalCrumbsOutput() {
   }, () => {
     return {
       prices: getBasePriceObject(),
-      music: getMusicForDate(getMusicTimeline(false), CPIP_UPDATE),
+      music: getMusicForDate(getMusicTimeline(false), Update.CPIP_UPDATE),
       newMigratorStatus: false,
       paths: {}
     }
@@ -826,7 +826,7 @@ function addCrumbs(map: FileTimelineMap): void {
 function addStadiumUpdates(map: FileTimelineMap): void {
   STADIUM_UPDATES.forEach((update) => {
     const date = update.date;
-  if (isGreaterOrEqual(date, CPIP_UPDATE) && isLower(date, EPF_RELEASE)) {
+  if (isGreaterOrEqual(date, Update.CPIP_UPDATE) && isLower(date, Update.EPF_RELEASE)) {
     const agent = 'play/v2/content/global/rooms/agent.swf';
     if (update.type === 'rink') {
       map.addPerm(agent, date, 'archives:RoomsAgent.swf');
@@ -932,7 +932,7 @@ function addPins(map: FileTimelineMap): void {
 
 function addMusicLists(map: FileTimelineMap): void {
   const route = 'play/v2/content/global/content/igloo_music.swf';
-  map.addPerm(route, BETA_RELEASE, 'tool:dynamic_igloo_music.swf');
+  map.addPerm(route, Update.BETA_RELEASE, 'tool:dynamic_igloo_music.swf');
   for (let i = 0; i < IGLOO_LISTS.length; i++) {
     // using archived igloo lists as temporary updates on top of a single permanent one
     const cur = IGLOO_LISTS[i];
@@ -976,12 +976,12 @@ function addGames(map: FileTimelineMap): void {
     const [release] = updates;
     const fileRoute = path.join('games', release.directory);
 
-    map.addPerm(fileRoute, BETA_RELEASE, release.fileRef);
+    map.addPerm(fileRoute, Update.BETA_RELEASE, release.fileRef);
     if (release.roomChanges !== undefined && release.date !== undefined) {
       map.addRoomChanges(release.roomChanges, release.date);
     }
     if (release['2006'] !== undefined) {
-      map.addPerm(path.join('games', release['2006']), BETA_RELEASE, release.fileRef);
+      map.addPerm(path.join('games', release['2006']), Update.BETA_RELEASE, release.fileRef);
     }
   })
 }

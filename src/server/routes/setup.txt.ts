@@ -1,7 +1,7 @@
 import { findInVersion, VersionsTimeline } from "../game-data/changes";
 import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../game-data/updates";
+import { Update } from "../game-data/updates";
 import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
 import { isGreaterOrEqual, Version } from "./versions";
 
@@ -18,7 +18,7 @@ const clothingTimeline = getClothingTimeline();
 function getEggTimeline() {
   const timeline = new VersionsTimeline<number>();
   timeline.add({
-    date: BETA_RELEASE,
+    date: Update.BETA_RELEASE,
     info: 0
   });
   PARTIES.forEach((party) => {
@@ -49,7 +49,7 @@ export function getSetupTxt(date: Version, ip: string): string {
 
   // sport shop, the only room to use frame 2
   // TODO remove cheap workaround
-  if (isGreaterOrEqual(date, SNOW_SPORT_RELEASE)) {
+  if (isGreaterOrEqual(date, Update.SNOW_SPORT_RELEASE)) {
     frames['sport'] = 2;
   }
 

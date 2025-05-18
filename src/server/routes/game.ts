@@ -8,7 +8,7 @@ import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
-import { AS3_UPDATE } from "../game-data/updates";
+import { Update } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
@@ -19,7 +19,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/', (s) => {
     if (isEngine1(s.settings.version)) {
       return 'default/websites/old-precpip.html';
-    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
+    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, Update.AS3_UPDATE)) {
       if (s.settings.minified_website) {
         return 'default/websites/minified-cpip.html';
       } else {

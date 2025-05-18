@@ -1,6 +1,6 @@
 import { Version } from "../routes/versions"
 import { RoomName } from "./rooms"
-import { PET_SHOP_RELEASE, PUFFLE_PARTY_10_CONST_START } from "./updates";
+import { Update } from "./updates";
 
 export type Pin = {
   date: Version;
@@ -15,7 +15,7 @@ export type Pin = {
 // has to be sorted
 export const PINS: Array<Pin> = [
   {
-    date: PET_SHOP_RELEASE,
+    date: Update.PET_SHOP_RELEASE,
     end: '2006-03-31',
     room: 'coffee',
     fileRef: 'archives:ArtworkRoomsCoffee6.swf',
@@ -137,7 +137,7 @@ export const PINS: Array<Pin> = [
     // post holiday party version is not archived
   },
   {
-    date: PUFFLE_PARTY_10_CONST_START,
+    date: Update.PUFFLE_PARTY_10_CONST_START,
     end: '2010-03-18',
     name: 'Feather'
   }

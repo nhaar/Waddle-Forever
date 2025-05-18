@@ -11,7 +11,7 @@ import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
-import { CARD_JITSU_STAMPS, CPIP_UPDATE, STAMPS_RELEASE } from './game-data/updates';
+import { Update } from './game-data/updates';
 import { findInVersion } from './game-data/changes';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
@@ -792,7 +792,7 @@ export class Client {
     let items = this.penguin.getItems();
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.version, CPIP_UPDATE)) {
+    if (isLower(this.version, Update.CPIP_UPDATE)) {
       const version = findInVersion(this.version, versionsTimeline) ?? 0;
       const itemSet = OLD_CLIENT_ITEMS[version];
       items = items.filter((value) => itemSet.has(value));
@@ -959,7 +959,7 @@ export class Client {
    */
   giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = params.release ?? STAMPS_RELEASE;
+    const releaseDate = params.release ?? Update.STAMPS_RELEASE;
     if (isGreaterOrEqual(this.version, releaseDate)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
@@ -973,7 +973,7 @@ export class Client {
   }
 
   addCardJitsuStamp(stampId: number): void {
-    this.giveStamp(stampId, { release: CARD_JITSU_STAMPS });
+    this.giveStamp(stampId, { release: Update.CARD_JITSU_STAMPS });
   }
 
   static getFurnitureString(furniture: IglooFurniture): string {
