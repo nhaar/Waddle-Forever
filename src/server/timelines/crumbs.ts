@@ -5,7 +5,7 @@ import { RoomName } from "../game-data/rooms";
 import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
 import { PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
-import { processTimeline, TimelineEvent } from "../game-data/changes";
+import { processTimeline, TimelineEvent } from "../game-data";
 import { ITEMS } from "../game-logic/items";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { ROOM_MUSIC_TIMELINE } from "../game-data/room-updates";

@@ -1,4 +1,4 @@
-import { findInVersion, TemporaryUpdate, VersionsMap } from "../game-data/changes";
+import { findInVersion, TemporaryUpdate, VersionsMap } from "../game-data";
 import { Version } from "../routes/versions";
 
 export function getMapForDate<Key extends string | number, Value>(map: VersionsMap<Key, Value>, date: Version): Partial<Record<Key, Value>> {

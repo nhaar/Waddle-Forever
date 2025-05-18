@@ -476,16 +476,6 @@ export class TimelineMap<Key, EventInformation> {
     this._map.set(key, timeline);
   }
 
-  /** Add a temporary event to a timeline */
-  addTemp(key: Key, start: Version, end: Version, info: EventInformation) {
-    this.add(key, info, start, end);
-  }
-
-  /** Add a permanent event to a timeline */
-  addPerm(key: Key, date: Version, info: EventInformation) {
-    this.add(key, info, date, undefined);
-  }
-
   /** Add event to a timeline */
   add(key: Key, info: EventInformation, date: Version, end: Version | undefined = undefined): void {
     key = this.processKey(key);

@@ -3,7 +3,7 @@
  * This should be refactored in the future
  */
 
-import { RouteRefMap } from "./changes";
+import { RouteRefMap } from ".";
 
 /** Map of routes to be served staticly during all of the post-CPIP era, including the 2016 version */
 export const CPIP_AS3_STATIC_FILES: RouteRefMap = {

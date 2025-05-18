@@ -1,6 +1,6 @@
 /** Module writes the data for all standalone updates related to the seasonal catalogs */
 
-import { DateRefMap } from "./changes";
+import { DateRefMap } from ".";
 import { Update } from "./updates";
 
 /** All clothing catalogs that are released Pre-CPIP */

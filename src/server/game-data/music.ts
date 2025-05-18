@@ -1,6 +1,6 @@
 /** Module for the files of all music in the game */
 
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 /** Base files for all the music */
 export const MUSIC_IDS: IdRefMap = {

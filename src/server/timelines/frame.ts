@@ -1,4 +1,4 @@
-import { TimelineMap } from "../game-data/changes";
+import { TimelineMap } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { PINS } from "../game-data/pins";
 import { TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
@@ -12,19 +12,19 @@ export function getRoomFrameTimeline() {
   // adding defaults
   // TODO, not fond of design?
   Object.keys(ROOMS).forEach((room) => {
-    timeline.addPerm(room as RoomName, Update.BETA_RELEASE, 0);
+    timeline.add(room as RoomName, 0, Update.BETA_RELEASE);
   })
 
   PINS.forEach((pin) => {
     if ('room' in pin && pin.frame !== undefined) {
-      timeline.addTemp(pin.room, pin.date, pin.end, pin.frame);
+      timeline.add(pin.room, pin.frame, pin.date, pin.end);
     }
   });
 
   const addRoomFrames = (frames: Partial<Record<RoomName, number>>, start: Version, end: Version) => {
     Object.entries(frames).forEach((pair) => {
       const [room, frame] = pair;
-      timeline.addTemp(room as RoomName, start, end, frame);
+      timeline.add(room as RoomName, frame, start, end);
     })
   }
   
@@ -38,7 +38,7 @@ export function getRoomFrameTimeline() {
     const [room, updates] = pair;
     updates.forEach((update) => {
       if (update.frame !== undefined) {
-        timeline.addTemp(room as RoomName, update.date, update.end, update.frame);
+        timeline.add(room as RoomName, update.frame, update.date, update.end);
       }
     });
   });

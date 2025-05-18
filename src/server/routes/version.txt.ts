@@ -1,4 +1,4 @@
-import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, VersionsTimeline } from "../game-data";
 import { Update } from "../game-data/updates";
 
 /** Map date and the version number it started using */

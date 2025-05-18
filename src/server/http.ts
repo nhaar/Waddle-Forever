@@ -4,7 +4,7 @@ import { Request, Router } from "express";
 import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
-import { findInVersion } from './game-data/changes';
+import { findInVersion } from './game-data';
 import { specialServer } from './game-data/specials';
 import { logdebug } from './logger';
 import { getRoutesTimeline } from './timelines/route';

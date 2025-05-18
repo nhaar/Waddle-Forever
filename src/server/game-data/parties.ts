@@ -1,5 +1,5 @@
 import { Version } from "../routes/versions";
-import { MigratorVisit, TemporaryUpdateTimeline } from "./changes";
+import { MigratorVisit, TemporaryUpdateTimeline } from ".";
 import { FileRef } from "./files";
 import { RoomName } from "./rooms";
 import { Update } from "./updates";

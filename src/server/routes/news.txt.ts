@@ -1,4 +1,4 @@
-import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, VersionsTimeline } from "../game-data";
 import { AS2_NEWSPAPERS } from "../game-data/newspapers";
 import { processVersion, Version } from "./versions";
 

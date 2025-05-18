@@ -1,4 +1,4 @@
-import { PermanentUpdateTimeline, TemporaryUpdateTimeline } from "./changes";
+import { PermanentUpdateTimeline, TemporaryUpdateTimeline } from ".";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
 import { PartyChanges } from "./parties";
 import { Update } from "./updates";

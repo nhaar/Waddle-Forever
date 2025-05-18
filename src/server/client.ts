@@ -12,7 +12,7 @@ import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/r
 import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
 import { Update } from './game-data/updates';
-import { findInVersion } from './game-data/changes';
+import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';

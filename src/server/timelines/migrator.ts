@@ -1,5 +1,5 @@
 import { getSubUpdateDates } from ".";
-import { VersionsTimeline } from "../game-data/changes";
+import { VersionsTimeline } from "../game-data";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { PARTIES } from "../game-data/parties";
 import { STANDALONE_TEMPORARY_UPDATES } from "../game-data/standalone-changes";

@@ -1,5 +1,5 @@
 import { PRE_CPIP_CATALOGS } from "../game-data/catalogues";
-import { VersionsTimeline } from "../game-data/changes";
+import { VersionsTimeline } from "../game-data";
 import { processVersion, Version } from "../routes/versions";
 
 export function getFileDateSignature(date: Version): string {

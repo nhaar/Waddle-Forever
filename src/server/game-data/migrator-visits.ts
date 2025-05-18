@@ -1,4 +1,4 @@
-import { MigratorVisit, TemporaryChange } from "./changes";
+import { MigratorVisit, TemporaryChange } from ".";
 
 
 type StandaloneMigratorVisits = TemporaryChange<MigratorVisit>[];

@@ -2,7 +2,7 @@
  * Should be refactored in the future
  * Module lists all the files served Post-CPIP, not including modern AS3 */
 
-import { RouteRefMap } from "./changes";
+import { RouteRefMap } from ".";
 
 /** Files to be served static in Post-CPIP (not including 2016) */
 export const CPIP_STATIC_FILES: RouteRefMap = {
@@ -260,5 +260,12 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/senseiFire/lang/en/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/en/locale.swf',
   'play/v2/games/senseiFire/lang/es/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/es/locale.swf',
   'play/v2/games/senseiFire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/fr/locale.swf',
-  'play/v2/games/senseiFire/lang/pt/locale.swf':  'slegacy:media/play/v2/games/senseiFire/lang/pt/locale.swf'
+  'play/v2/games/senseiFire/lang/pt/locale.swf':  'slegacy:media/play/v2/games/senseiFire/lang/pt/locale.swf',
+  'play/v2/games/fire/fire.swf': 'slegacy:media/play/v2/games/fire/fire.swf',
+  'play/v2/games/fire/assets/avatar.swf': 'slegacy:media/play/v2/games/fire/assets/avatar.swf',
+  'play/v2/games/fire/assets/lang/de/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/de/locale.swf',
+  'play/v2/games/fire/assets/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/en/locale.swf',
+  'play/v2/games/fire/assets/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/es/locale.swf',
+  'play/v2/games/fire/assets/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/fr/locale.swf',
+  'play/v2/games/fire/assets/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/pt/locale.swf'
 };

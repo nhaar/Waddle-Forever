@@ -1,4 +1,4 @@
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 export const POSTCARD_IDS: IdRefMap = {
   177: 'archives:ENPostcards177.swf',

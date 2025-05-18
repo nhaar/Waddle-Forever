@@ -1,6 +1,6 @@
 /** Module maps out the files used for all clothing */
 
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 /** Files for the icons of each relevant clothing ID */
 export const ICONS: IdRefMap = {

@@ -1,6 +1,6 @@
 /** Module handles all standalone updates regarding the in-game map */
 
-import { PermanentUpdateTimeline } from "./changes";
+import { PermanentUpdateTimeline } from ".";
 import { Update } from "./updates";
 
 /** Update of the game map */

@@ -1,4 +1,4 @@
-import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, VersionsTimeline } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";

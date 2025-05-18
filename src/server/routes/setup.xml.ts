@@ -1,4 +1,4 @@
-import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, VersionsTimeline } from "../game-data";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
