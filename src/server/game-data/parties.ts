@@ -1,6 +1,7 @@
 import { Version } from "../routes/versions";
 import { TemporaryUpdateTimeline } from "./changes";
 import { FileRef } from "./files";
+import { MigratorVisit } from "./migrator-visits";
 import { RoomName } from "./rooms";
 import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EARTHQUAKE, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, FIRE_CELEBRATION_START, FIRE_CONST_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
 
@@ -31,7 +32,7 @@ export type PartyChanges = {
 
   music?: Partial<Record<RoomName, number>>;
 
-  activeMigrator?: true;
+  activeMigrator?: MigratorVisit;
 }
 
 export type Party = PartyChanges & {
@@ -1071,7 +1072,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     scavengerHunt2010: {
       iconFileId: 'archives:BoatIcon-PaperBoatScavengerHunt2008.swf'
-    }
+    },
+    activeMigrator: 'archives:RockhopperRareItemsAug2008.swf'
   },
   {
     name: 'Penguin Games',

@@ -30,6 +30,7 @@ import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { iterateEntries } from "../../common/utils";
 import { POSTCARD_IDS } from "../game-data/postcard";
+import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 
 function getSubUpdateDates<UpdateInfo, SubUpdateInfo>(update: TemporaryUpdate<UpdateInfo, SubUpdateInfo>, index: number) {
   if (update.updates === undefined) {
@@ -610,7 +611,7 @@ export function getMigratorTimeline() {
   });
 
   PARTIES.forEach((party) => {
-    if (party.activeMigrator === true) {
+    if (party.activeMigrator !== undefined) {
       timeline.add({
         date: party.date,
         end: party.end,
@@ -619,10 +620,18 @@ export function getMigratorTimeline() {
     }
   });
 
+  STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
+    timeline.add({
+      date: visit.date,
+      end: visit.end,
+      info: true
+    });
+  });
+
   STANDALONE_TEMPORARY_UPDATES.forEach((update) => {
     if (update.updates !== undefined) {
       update.updates.forEach((subUpdate, i) => {
-        if (subUpdate.activeMigrator === true) {
+        if (subUpdate.activeMigrator !== undefined) {
           timeline.add({
             ...getSubUpdateDates(update, i),
             info: true
@@ -672,6 +681,16 @@ function getBasePriceObject(): Record<number, number> {
  */
 export function getGlobalCrumbsOutput() {
   return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
+    STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
+      timeline.push({
+        date: visit.date,
+        end: visit.end,
+        info: {
+          newMigratorStatus: true
+        }
+      });
+    });
+    
     PARTIES.forEach((party) => {
       const globalPaths: Record<string, string> = {};
       if (party.globalChanges !== undefined) {
@@ -705,7 +724,7 @@ export function getGlobalCrumbsOutput() {
         crumbChanged = [
           party.music !== undefined,
           Object.keys(globalPaths).length > 0,
-          party.activeMigrator === true,
+          party.activeMigrator !== undefined,
           party.scavengerHunt2010 !== undefined,
           party.fairCpip !== undefined
         ].some((v) => v);
@@ -719,7 +738,7 @@ export function getGlobalCrumbsOutput() {
             music: party.music,
             paths: globalPaths,
             prices: {},
-            newMigratorStatus: party.activeMigrator === true
+            newMigratorStatus: party.activeMigrator === undefined ? undefined : true
           }
         });
       }
@@ -884,6 +903,23 @@ function addCatalogues(map: FileTimelineMap): void {
   map.addDateRefMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
+
+
+  const addRockhoperCatalog = (date: string, file: FileRef) => {
+    map.addPerm('play/v2/content/local/en/catalogues/pirate.swf', date, file);
+  }
+
+  STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
+    if (typeof visit.info === 'string') {
+      addRockhoperCatalog(visit.date, visit.info);
+    }
+  });
+
+  PARTIES.forEach(party => {
+    if (typeof party.activeMigrator === 'string') {
+      addRockhoperCatalog(party.date, party.activeMigrator);
+    }
+  })
 }
 
 function addPins(map: FileTimelineMap): void {

@@ -13,6 +13,7 @@ import { STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../se
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
+import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -112,6 +113,7 @@ type BaseEvents = {
   newFurnitureCatalog: true;
   partyConstruction: string;
   stadiumUpdate: 'stadium' | 'rink' | string;
+  migrator: true;
 };
 
 /** All things that can happen in a single day */
@@ -395,6 +397,18 @@ function addStandalone(map: DayMap): void {
   });
 }
 
+function addMigratorVisits(map: DayMap): void {
+  STANDALONE_MIGRATOR_VISITS.forEach(visit => {
+    addEvents(map, visit.date, { migrator: true });
+  });
+
+  PARTIES.forEach(party => {
+    if (party.activeMigrator !== undefined) {
+      addEvents(map, party.date, { migrator: true });
+    }
+  });
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
@@ -406,6 +420,7 @@ function updateTimeline(days: Day[]): Day[] {
   addPinUpdates(map);
   addStandalone(map);
   addGames(map);
+  addMigratorVisits(map);
   return getDaysFromMap(map);
 }
 
@@ -422,6 +437,7 @@ enum EventType {
   Stage,
   Game,
   Pin,
+  Migrator,
   Other
 };
 
@@ -530,6 +546,9 @@ function getConsumedTimeline(days: Day[]): Array<{
     }
     if (day.events.pin !== undefined) {
       events.push({ text: `The ${day.events.pin} is now hidden in the island`, type: EventType.Pin });
+    }
+    if (day.events.migrator === true) {
+      events.push({ text: 'The Migrator visits the island', type: EventType.Migrator });
     }
 
     const [year, month, monthDay] = processVersion(day.date);

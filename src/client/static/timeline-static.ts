@@ -69,6 +69,7 @@ enum EventType {
   Stage,
   Game,
   Pin,
+  Migrator,
   Other
 };
 
@@ -123,6 +124,7 @@ const EVENT_IMAGE_MAP: Record<EventType, string> = {
   [EventType.PartyUpdate]: PARTY_ELEMENT,
   [EventType.Pin]: 'pin.png',
   [EventType.PenguinStyle]: 'style.png',
+  [EventType.Migrator]: 'migrator.png'
 };
 
 function getDateElement({ day, year, month, events, selected, inParty }: DateInfo,
