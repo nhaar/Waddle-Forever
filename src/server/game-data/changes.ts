@@ -478,24 +478,18 @@ export class TimelineMap<Key, EventInformation> {
 
   /** Add a temporary event to a timeline */
   addTemp(key: Key, start: Version, end: Version, info: EventInformation) {
-    this.add(key, {
-      date: start,
-      end,
-      info
-    });
+    this.add(key, info, start, end);
   }
 
   /** Add a permanent event to a timeline */
   addPerm(key: Key, date: Version, info: EventInformation) {
-    this.add(key, {
-      date,
-      info,
-    });
+    this.add(key, info, date, undefined);
   }
 
   /** Add event to a timeline */
-  protected add(key: Key, event: TimelineEvent<EventInformation>): void {
+  add(key: Key, info: EventInformation, date: Version, end: Version | undefined = undefined): void {
     key = this.processKey(key);
+    const event = end === undefined ? { date, info } : { date, end, info };
     event.info = this.processInformation(event.info);
     const prev = this._map.get(key);
     if (prev === undefined) {
@@ -517,3 +511,9 @@ export class TimelineMap<Key, EventInformation> {
     return map;
   }
 }
+
+/**
+ * Represents a valid migrator visit. `true` means that a visit happens but the catalog is not updated,
+ * if the catalog is updated, the catalog's file is listed
+ * */
+export type MigratorVisit = true | FileRef;

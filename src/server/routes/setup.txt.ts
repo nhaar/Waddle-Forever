@@ -2,7 +2,10 @@ import { findInVersion, VersionsTimeline } from "../game-data/changes";
 import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
-import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
+import { getClothingTimeline } from "../timelines/clothing";
+import { getRoomFrameTimeline } from "../timelines/frame";
+import { getMigratorTimeline } from "../timelines/migrator";
+import { getMusicTimeline } from "../timelines/music";
 import { isGreaterOrEqual, Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
