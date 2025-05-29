@@ -2711,7 +2711,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Mountain Expedition',
-    date: '2010-08-12',
+    date: Update.MOUNTAIN_EXPEDITION,
     end: '2010-08-19',
     roomChanges: {
       'party3': 'archives:RoomsParty3-MtnExpedition.swf',
@@ -2751,7 +2751,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'The Fair 2010',
     date: Update.FAIR_2010_START,
-    end: '2010-09-13',
+    end: Update.FAIR_2010_END,
     roomChanges: {
       'town': 'archives:RoomsTown-TheFair2010.swf',
       'coffee': 'archives:RoomsCoffeeTheFair2009.swf',
@@ -2793,9 +2793,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     fairCpip: {
       iconFileId: 'archives:Ticket_icon-TheFair2010.swf'
-    },
-    generalChanges: {
-      'web_service/worldachievements.xml': 'approximation:fair_worldachievements.xml'
     },
     localChanges: {
       'catalogues/prizebooth.swf': {
@@ -2848,7 +2845,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'Halloween Party 2010',
     date: Update.HALLOWEEN_2010_START,
-    end: '2010-11-04',
+    end: Update.HALLOWEEN_2010_END,
     roomChanges: {
       'beach': 'archives:HalloweenParty2010Beach.swf',
       'light': 'archives:HalloweenParty2010Lighthouse.swf',
@@ -2902,9 +2899,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'membership/membership_party3.swf': {
         'en': 'archives:HalloweenParty2010MembershipParty3.swf'
       }
-    },
-    generalChanges: {
-      'web_service/worldachievements.xml': 'approximation:halloween_worldachievements.xml'
     },
     music: {
       'town': 251,
@@ -3012,7 +3006,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Sensei\'s Water Scavenger Hunt',
-    date: '2010-11-16',
+    date: Update.WATER_HUNT_START,
     end: Update.WATER_HUNT_END,
     roomChanges: {
       'beach': 'archives:WaterHuntBeach.swf',
@@ -3038,9 +3032,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     globalChanges: {
       'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Water_Scavenger_Hunt_closeup.swf', 'easter_egg_hunt', 'scavenger_hunt']
-    },
-    generalChanges: {
-      'web_service/worldachievements.xml': 'approximation:waterhunt_worldachievements.xml'
     },
     updates: [
       {

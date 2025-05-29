@@ -196,14 +196,6 @@ would need to investigated`
       base: 'unknown:chat291.swf'
     },
     {
-      file: 'fair_worldachievements.xml',
-      comment: 'Added Snack Shack stamp, by Supermanover'
-    },
-    {
-      file: 'waterhunt_worldachievements.xml',
-      comment: 'Added Explorer stamp, by Farizaku'
-    },
-    {
       file: 'forts_release.swf',
       comment: 'Removed ability to go to the Plaza, to simulate how the Snow Forts was during its release',
       base: 'archives:ArtworkRoomsForts12.swf'
@@ -243,11 +235,6 @@ would need to investigated`
       comment: 'This is a modified version of Ben\'s mod for the hunt to remove basket requirement'
     },
     {
-      file: 'halloween_worldachievements.xml',
-      comment: `Manual modification of worldachievements.xml from legacy media to have Monster Mash
-Only costumes that were verified with video have been added here`
-    },
-    {
       file: 'map_beach_changed_id.swf',
       comment: `Originally, the beach had ID 809,
 but that was later changed. So this map I changed the ID of the beach to the new id
@@ -259,10 +246,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Removed the Iceberg button to simulate how the map was before the room\'s release',
       base: 'archives:ArtworkMapsIsland5.swf'
     },
-    {
-      file: 'worldachievements.xml',
-      comment: 'Taken from legacy media but removed a lot of stamps that shouldn\t be active'
-    }
   ],
   [RECREATION]: [
     {

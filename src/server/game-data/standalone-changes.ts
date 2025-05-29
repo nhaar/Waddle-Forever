@@ -296,13 +296,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
       fileRef: 'slegacy:media/play/v2/client/dependencies.json' 
     }
   ],
-  'web_service/worldachievements.xml': [
-    {
-      // file from legacy media with a few stamps removed since they shouldn't be there
-      date: Update.STAMPS_RELEASE,
-      fileRef: 'approximation:worldachievements.xml'
-    }
-  ],
   'play/v2/content/global/binoculars/empty.swf': [
     {
       // placeholder binoculars
