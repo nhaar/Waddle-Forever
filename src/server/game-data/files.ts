@@ -200,6 +200,10 @@ would need to investigated`
       comment: 'Added Snack Shack stamp, by Supermanover'
     },
     {
+      file: 'waterhunt_worldachievements.xml',
+      comment: 'Added Explorer stamp, by Farizaku'
+    },
+    {
       file: 'forts_release.swf',
       comment: 'Removed ability to go to the Plaza, to simulate how the Snow Forts was during its release',
       base: 'archives:ArtworkRoomsForts12.swf'

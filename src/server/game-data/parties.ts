@@ -3039,6 +3039,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     globalChanges: {
       'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Water_Scavenger_Hunt_closeup.swf', 'easter_egg_hunt', 'scavenger_hunt']
     },
+    generalChanges: {
+      'web_service/worldachievements.xml': 'approximation:waterhunt_worldachievements.xml'
+    },
     updates: [
       {
         date: Update.PLANET_Y_2010,
