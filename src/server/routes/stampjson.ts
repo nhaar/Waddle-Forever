@@ -1806,7 +1806,7 @@ export function getStampbook(version: Version): string {
     ])
   }
 
-  if (isGreaterOrEqual(version, '2010-11-24')) {
+  if (isGreaterOrEqual(version, '2010-11-16')){
     addStamps(newStampbook[CategoryID.Party] as Category, [
       {
         "stamp_id": 189,
@@ -1824,7 +1824,10 @@ export function getStampbook(version: Version): string {
         "description": "Visit all the decorated party rooms",
         "rank_token": "easy"
       }
-    ])
+    ])    
+  }
+  
+  if (isGreaterOrEqual(version, '2010-11-24')) {
 
     addStamps(newStampbook[CategoryID.Characters] as Category, [
       {
