@@ -15,6 +15,7 @@
 *.vcxproj.filters
 *.vcxproj.user
 *.xcodeproj
+/pcode/
 /.idea/
 /dist/
 /compiled/
