@@ -1,4 +1,4 @@
-import { PermanentUpdateTimeline, TemporaryUpdateTimeline } from ".";
+import { PermanentUpdateTimeline, ComplexTemporaryUpdateTimeline } from ".";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
 import { PartyChanges } from "./parties";
 import { Update } from "./updates";
@@ -91,7 +91,7 @@ type TemporaryGroupUpdate = PartyChanges & {
   endComment?: string;
 };
 
-export const STANDALONE_TEMPORARY_UPDATES: TemporaryUpdateTimeline<TemporaryGroupUpdate, TemporaryGroupUpdate> = [
+export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<TemporaryGroupUpdate> = [
   {
     date: '2008-01-16',
     end: Update.ROCKHOPPER_ARRIVAL_PARTY_START,

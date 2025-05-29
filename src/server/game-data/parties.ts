@@ -1,5 +1,5 @@
 import { Version } from "../routes/versions";
-import { MigratorVisit, TemporaryUpdateTimeline } from ".";
+import { MigratorVisit, ComplexTemporaryUpdateTimeline } from ".";
 import { FileRef } from "./files";
 import { RoomName } from "./rooms";
 import { Update } from "./updates";
@@ -35,7 +35,7 @@ export type PartyChanges = {
 }
 
 export type Party = PartyChanges & {
-  name: string;
+  name?: string;
   /** If true, then this will not be labeled a party in the timeline */
   event?: true;
 
@@ -86,7 +86,7 @@ type Construction = {
   }>;
 };
 
-export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
+export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'Beta Test Party',
     date: '2005-09-21',

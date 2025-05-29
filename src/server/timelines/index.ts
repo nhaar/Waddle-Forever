@@ -1,4 +1,4 @@
-import { findInVersion, TemporaryUpdate, VersionsMap } from "../game-data";
+import { findInVersion, ComplexTemporaryUpdate, VersionsMap } from "../game-data";
 import { Version } from "../routes/versions";
 
 export function getMapForDate<Key extends string | number, Value>(map: VersionsMap<Key, Value>, date: Version): Partial<Record<Key, Value>> {
@@ -9,7 +9,7 @@ export function getMapForDate<Key extends string | number, Value>(map: VersionsM
   return dateMap;
 }
 
-export function getSubUpdateDates<UpdateInfo, SubUpdateInfo>(update: TemporaryUpdate<UpdateInfo, SubUpdateInfo>, index: number) {
+export function getSubUpdateDates<UpdateInfo>(update: ComplexTemporaryUpdate<UpdateInfo>, index: number) {
   if (update.updates === undefined) {
     throw new Error('Update must have subupdates');
   }

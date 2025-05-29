@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { DateRefMap, IdRefMap, RouteRefMap, TemporaryUpdateTimeline, TimelineMap } from "../game-data";
+import { DateRefMap, IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import { Update } from "../game-data/updates";
 import path from "path";
@@ -76,24 +76,23 @@ class FileTimelineMap extends TimelineMap<string, string> {
     }
   }
 
-  addTemporaryUpdateTimeline<UpdateInfo, SubUpdateInfo>(
-    timeline: TemporaryUpdateTimeline<UpdateInfo, SubUpdateInfo>,
-    applyUpdate: (map: FileTimelineMap, update: UpdateInfo, start: Version, end: Version) => void,
-    applySubUpdate: (map: FileTimelineMap, update: SubUpdateInfo, start: Version, end: Version | undefined) => void
+  addComplexTemporaryUpdateTimeline<UpdateInfo>(
+    timeline: ComplexTemporaryUpdateTimeline<UpdateInfo>,
+    applyUpdate: (map: FileTimelineMap, update: UpdateInfo, start: Version, end: Version | undefined) => void
   ) {
     timeline.forEach((tempUpdate) => {
       applyUpdate(this, tempUpdate, tempUpdate.date, tempUpdate.end);
       if (tempUpdate.updates !== undefined) {
         for (let i = 0; i < tempUpdate.updates.length; i++) {
           const { date, end } = getSubUpdateDates(tempUpdate, i);
-          applySubUpdate(this, tempUpdate.updates[i], date, end);
+          applyUpdate(this, tempUpdate.updates[i], date, end);
         }
       }
       if (tempUpdate.permanentChanges !== undefined) {
-        applySubUpdate(this, tempUpdate.permanentChanges, tempUpdate.date, undefined);
+        applyUpdate(this, tempUpdate.permanentChanges, tempUpdate.date, undefined);
       }
       if (tempUpdate.consequences !== undefined) {
-        applySubUpdate(this, tempUpdate.consequences, tempUpdate.end, undefined);
+        applyUpdate(this, tempUpdate.consequences, tempUpdate.end, undefined);
       }
     })
   }
@@ -348,9 +347,7 @@ function addStandaloneChanges(map: FileTimelineMap): void {
     map.addPartyChanges(update, update.date);
   });
 
-  map.addTemporaryUpdateTimeline(STANDALONE_TEMPORARY_UPDATES, (map, update, start, end) => {
-    map.addPartyChanges(update, start, end);
-  }, (map, update, start, end) => {
+  map.addComplexTemporaryUpdateTimeline(STANDALONE_TEMPORARY_UPDATES, (map, update, start, end) => {
     map.addPartyChanges(update, start, end);
   });
 }
@@ -507,7 +504,7 @@ function addRoomInfo(map: FileTimelineMap): void {
 }
 
 function addParties(map: FileTimelineMap): void {
-  map.addTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
+  map.addComplexTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
     map.addPartyChanges(party, start, end);
     if (party.construction !== undefined) {
       const constructionStart = party.construction.date;
@@ -519,10 +516,6 @@ function addParties(map: FileTimelineMap): void {
         })
       }
     }
-
-
-  }, (map, update, start, end) => {
-    map.addPartyChanges(update, start, end);
   });
 }
 

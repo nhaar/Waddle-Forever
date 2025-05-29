@@ -59,11 +59,10 @@ type PermanentUpdate<UpdateInformation> = {
 export type PermanentUpdateTimeline<UpdateInformation> = PermanentUpdate<UpdateInformation>[];
 
 /**
- * Implementation of a temporary update with arbitrary information.
- * This is not exactly the same as a temporary change, it holds a lot of other things that
- * are used with updates that last for a small amount of time
+ * A complex implementation of a temporary change, which can be accompanied with sub-updates, as well as permanent updates
+ * that could happen at the start or end of this temporary change
  * */
-export type TemporaryUpdate<UpdateInformation, SubUpdateInformation> = {
+export type ComplexTemporaryUpdate<UpdateInformation> = {
   date: Version;
   end: Version;
   /** All updates that happen within this temporary update */
@@ -72,15 +71,15 @@ export type TemporaryUpdate<UpdateInformation, SubUpdateInformation> = {
     date?: Version;
     /** If not supplied, ends when the next update shows, if null, ends when the whole group ends, otherwise the value stated */
     end?: Version | null
-  } & SubUpdateInformation>;
+  } & UpdateInformation>;
   /** Permanent changes applied at the beginning of this update */
-  permanentChanges?: SubUpdateInformation;
+  permanentChanges?: UpdateInformation;
   /** Permanent changes applied at the end of this update */
-  consequences?: SubUpdateInformation;
+  consequences?: UpdateInformation;
 } & UpdateInformation;
 
 /** List of many implementations of temporary updates */
-export type TemporaryUpdateTimeline<UpdateInformation, SubUpdateInformation> = Array<TemporaryUpdate<UpdateInformation, SubUpdateInformation>>;
+export type ComplexTemporaryUpdateTimeline<UpdateInformation> = Array<ComplexTemporaryUpdate<UpdateInformation>>;
 
 /**
  * Takes an unorganized sequence of temporary and permanent changes, and processes it into a sorted organized output
