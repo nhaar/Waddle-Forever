@@ -90,12 +90,11 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   const timeline: MenuItemConstructorOptions = {
     id: '3',
     label: 'Timeline',
-    submenu: [
-      {
-        label: 'Timeline Picker',
-        click: () => { createTimelinePicker(mainWindow); }
-      }
-    ]
+    submenu: process.platform == 'darwin' ? [{ 
+      label: 'Timeline Picker', 
+      click: () => { createTimelinePicker(mainWindow); }
+    }] : [],
+    click: () => { createTimelinePicker(mainWindow); }
   };
 
 return process.platform === 'darwin' ? 
