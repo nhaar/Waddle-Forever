@@ -1,50 +1,48 @@
-# Waddle Forever
+Waddle Forever
+Waddle Forever está compuesto por un emulador de servidor localhost para Club Penguin y un cliente basado en Electron con el servidor integrado, que permite ejecutar el juego sin configuración adicional. Está construido con Node.js en TypeScript.
 
-Waddle Forever is composed of a localhost server emulator for Club Penguin and an Electron client with the server that can run the game out of the box, built with Node.js in TypeScript.
+Su objetivo principal es ofrecer una experiencia de speedrunning accesible, un sandbox accesible de Club Penguin y, en el futuro, un modo de un solo jugador completo, además del archivo de fiestas y eventos.
 
-Its main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival of parties and events.
+[!IMPORTANTE]
+Los enlaces de descarga están disponibles en el sitio web
 
-> [!IMPORTANT]  
-> Download links are available in the [website!](https://waddleforever.com/)
+Progreso
+Actualmente, el programa se encuentra en una etapa temprana. Se soporta una jugabilidad básica de “AS2”, incluyendo minijuegos, estampas y personalización del pingüino.
 
-# Progress
+El cliente tiene objetivos ambiciosos, por lo que su cumplimiento no está garantizado. Entre las metas principales se incluyen:
 
-At the moment, the program is at an early stage. A basic "AS2" gameplay is currently supported, including minigames, stamps and penguin customization.
+Ser completamente utilizable para todas las speedruns.
 
-The client has ambitious goals, so it is uncertain if they will be met. The main goals include:
+Permitir explorar cualquier fiesta, evento y punto en la línea de tiempo.
 
-* Be fully useable for all speedruns
-* Allow exploring any party, event and timestamp in the timeline
-* Allow adding mods easily
-* Useable for small servers hosted for friends
-* Have a world of NPCs over the island
-* Have a complete singleplayer experience and "story mode"
+Facilitar la incorporación de mods.
 
-For more detailed updates and plans for the project, check out the [Discord server](https://discord.gg/URHXm3cFv5).
+Ser utilizable para pequeños servidores para amigos.
 
-# How it works
+Contar con un mundo de NPCs repartidos por la isla.
 
-The project is composed of two segments:
+Ofrecer una experiencia completa de un solo jugador y un “modo historia”.
 
-## Client
+Para actualizaciones más detalladas y planes del proyecto, consulta el servidor de Discord.
 
-Its client uses Electron to read the webpages for Club Penguin and run Flash, so the user does not need to worry about installing Flash. The a
-Electron client runs all the servers it will access, so there is no need to setup.
+Cómo funciona
+El proyecto se compone de dos segmentos:
 
-## Server
+Cliente
+El cliente utiliza Electron para cargar las páginas web de Club Penguin y ejecutar Flash, de modo que el usuario no deba preocuparse por instalar Flash. Además, el cliente en Electron inicia todos los servidores necesarios, por lo que no hace falta ninguna configuración previa.
 
-Under the hood, a Club Penguin server emulator runs to give full functionality to the game. The server can also be run standalone, in which case the Electron client is not needed, and you can use multiple windows to access the game.
+Servidor
+En segundo plano, se ejecuta un emulador de servidor de Club Penguin que proporciona toda la funcionalidad del juego. El servidor también puede ejecutarse de forma independiente; en ese caso, el cliente de Electron no es necesario y se pueden abrir varias ventanas para acceder al juego.
 
-> [!CAUTION]
-> The server made for this client is not safe for multiplayer! It can be exploited easily so only host it to people you trust.
-> If you wish to make a CPPS, use a different emulator like Houdini.
+[!PRECAUCIÓN]
+El servidor diseñado para este cliente no es seguro para multijugador. Puede ser explotado con facilidad, por lo que solo deberías alojarlo para personas de tu confianza.
+Si deseas crear un CPPS (Club Penguin Private Server), utiliza otro emulador como Houdini.
 
-# Building
+Compilación
+Para compilar debes tener instalados Node.js, npm y yarn. Tras clonar el repositorio, instala todas las dependencias:
 
-To build you must have Node.js, npm and yarn installed. After cloning the code, install all dependencies:
-
-> [!NOTE]  
-> Last built using Node.js v20.12.2, NPM v9.8.1, yarn v1.22.22
+[!NOTA]
+Se compiló por última vez con Node.js v20.12.2, NPM v9.8.1 y yarn v1.22.22.
 
 ```yarn install```
 
