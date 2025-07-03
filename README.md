@@ -48,6 +48,14 @@ To build you must have Node.js, npm and yarn installed. After cloning the code, 
 
 ```yarn install```
 
+```yarn build-packages```
+
+Install 22.0.2 de JPEXS FFDec
+
+```yarn local-crumbs```
+```yarn global-crumbs```
+```yarn news-crumbs```
+
 For running the client in development, run
 
 ```yarn start```
