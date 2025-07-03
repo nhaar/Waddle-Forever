@@ -4,7 +4,7 @@ Waddle Forever está compuesto por un emulador de servidor localhost para Club P
 
 Su objetivo principal es ofrecer una experiencia de speedrunning accesible, un sandbox accesible de Club Penguin y, en el futuro, un modo de un solo jugador completo, además del archivo de fiestas y eventos.
 
-> [!IMPORTANTE]  
+> [!IMPORTANT]  
 > Los enlaces de descarga están disponibles en el [sitio web](https://waddleforever.com/)
 
 # Progreso
@@ -34,7 +34,7 @@ El cliente utiliza Electron para cargar las páginas web de Club Penguin y ejecu
 
 En segundo plano, se ejecuta un emulador de servidor de Club Penguin que proporciona toda la funcionalidad del juego. El servidor también puede ejecutarse de forma independiente; en ese caso, el cliente de Electron no es necesario y se pueden abrir varias ventanas para acceder al juego.
 
-> [!PRECAUCIÓN]  
+> [!CAUTION]  
 > El servidor diseñado para este cliente **no** es seguro para multijugador. Puede ser explotado con facilidad, por lo que solo deberías alojarlo para personas de tu confianza.  
 > Si deseas crear un CPPS (Club Penguin Private Server), utiliza otro emulador como Houdini.
 
@@ -42,7 +42,7 @@ En segundo plano, se ejecuta un emulador de servidor de Club Penguin que proporc
 
 Para compilar debes tener instalados Node.js, npm y yarn. Tras clonar el repositorio, instala todas las dependencias:
 
-> [!NOTA]  
+> [!NOTE]  
 > Se compiló por última vez con Node.js v20.12.2, NPM v9.8.1 y yarn v1.22.22.
 
 
