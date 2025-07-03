@@ -52,6 +52,9 @@ To build you must have Node.js, npm and yarn installed. After cloning the code, 
 
 Install 22.0.2 de JPEXS FFDec
 
+Create file .env and "write FFDEC_PATH=C:\Program Files (x86)\FFDec\ffdec.bat"
+
+
 ```yarn local-crumbs```
 ```yarn global-crumbs```
 ```yarn news-crumbs```
