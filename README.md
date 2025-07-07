@@ -12,6 +12,10 @@ Su objetivo principal es ofrecer una experiencia de speedrunning accesible, un s
 > Permite buscar archivos antiguos (https://web.archive.org/)
 > 
 > Buscar archivos SWF antiguos (https://web.archive.org/web/*/http://media1.clubpenguin.com/play*)
+> 
+> Buscar archivos (https://git.solero.me/solero)
+> 
+> Gran repositorio (https://drive.google.com/drive/folders/14XgRKhd6fb6pCl1rAXCttUTOxBvma4os)
 
 
 > [!IMPORTANT]  
