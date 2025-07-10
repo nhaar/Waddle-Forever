@@ -133,6 +133,7 @@ const PUFFLE_CREATURE_FURNITURE = [
   313
 ];
 
+
 /** Possible treasure types and their client-side IDs */
 enum TreasureType {
   Coins = 0,
@@ -472,14 +473,15 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
   } else if (category === PuffleCategory.Gold) {
     client.resetGoldNuggetState();
     client.penguin.removeGoldPuffleNuggets();
-  } else if (category === PuffleCategory.Creature) {
-    if (puffle.favouriteToy === undefined) {
-      throw new Error(`Non creature puffle did not have a favorite toy: ${puffle}`);
-    }
-    client.buyPuffleItem(3, 0, 5);
-    client.buyPuffleItem(79, 0, 1);
-    client.buyPuffleItem(puffle.favouriteToy, 0, 1);
+  } else if (category === PuffleCategory.Creature) {  
+    client.buyPuffleItem(3, 0, 5);  
+    client.buyPuffleItem(79, 0, 1);  
+    if (puffle.favouriteToy !== undefined) {  
+      client.buyPuffleItem(puffle.favouriteToy, 0, 1);  
+    }  
   }
+
+
 
   client.penguin.removeCoins(puffleCost);
   const playerPuffle = client.penguin.addPuffle(puffleName, puffleId);
@@ -672,6 +674,28 @@ handler.xt('p#pcid', (client, puffleId, puffleItemId) => {
 handler.xt('p#revealgoldpuffle', (client) => {
   // TODO multiplayer room logic
   client.sendXt('revealgoldpuffle', client.penguin.id);
+});
+
+
+handler.xt('p#puffletrick', (client, trickId) => {  
+  const trickMap = {  
+    '1': 'jumpForward',  
+    '2': 'jumpSpin',   
+    '3': 'nuzzle',  
+    '4': 'roll',  
+    '5': 'speak',  
+    '6': 'standOnHead'  
+  } as const;  
+    
+  if (!(trickId in trickMap)) return;  
+    
+  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === client.walkingPuffle);  
+  if (playerPuffle === undefined) {  
+    throw new Error(`Player is not walking a puffle`);  
+  }  
+    
+  // Enviar más información como en el handler pw  
+  client.sendXt('puffletrick', client.penguin.id, trickId);  
 });
 
 export default handler
