@@ -1,7 +1,7 @@
 import path from "path";
 import { extractPcode, replacePcode } from "../src/common/ffdec/ffdec";
 import { generateCrumbFiles } from "./base-crumbs";
-import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent } from "../src/server/routes/client-files";
+import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent } from "../src/server/timelines/crumbs";
 
 const BASE_LOCAL_CRUMBS = path.join(__dirname, 'base_local_crumbs.swf');
 

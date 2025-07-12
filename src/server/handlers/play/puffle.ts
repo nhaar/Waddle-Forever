@@ -672,4 +672,25 @@ handler.xt(Handle.RevealGoldPuffle, (client) => {
   client.sendXt('revealgoldpuffle', client.penguin.id);
 });
 
+handler.xt(Handle.Puffletrick, (client, trickId) => {  
+  const trickMap = {  
+    '1': 'jumpForward',  
+    '2': 'jumpSpin',   
+    '3': 'nuzzle',  
+    '4': 'roll',  
+    '5': 'speak',  
+    '6': 'standOnHead'  
+  } as const;  
+    
+  if (!(trickId in trickMap)) return;  
+    
+  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === client.walkingPuffle);  
+  if (playerPuffle === undefined) {  
+    throw new Error(`Player is not walking a puffle`);  
+  }  
+    
+  // Enviar más información como en el handler pw  
+  client.sendXt('puffletrick', client.penguin.id, trickId);  
+});
+
 export default handler

@@ -146,7 +146,8 @@ export enum Handle {
   JoinSensei,
   JoinTemporaryWaddle,
   LeaveWaddleMatch,
-  GetFireLevel
+  GetFireLevel,
+  Puffletrick
 };
 
 /** Map of all the handles and their valid arguments */
@@ -236,6 +237,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.AdoptPuffleNew]: ['number', 'string', 'number'],
   [Handle.GetIglooPuffles]: ['number', 'string'],
   [Handle.WalkPuffle]: ['number', 'number'],
+  [Handle.Puffletrick]: ['number', 'number'],
   [Handle.CheckPuffleName]: ['string'],
   [Handle.CheckPuffleNameAlt]: ['string'],
   [Handle.GetPuffleInventory]: [],
@@ -381,7 +383,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'puffledigoncommand': Handle.PuffleDigOnCommand,
       'pcid': Handle.EatPuffleItem,
       'revealgoldpuffle': Handle.RevealGoldPuffle,
-      'rpqtc': Handle.SetRainbowQuestTaskComplete
+      'rpqtc': Handle.SetRainbowQuestTaskComplete,
+      'puffletrick': Handle.Puffletrick,
+       
     },
     'st': {
       'gsbcd': Handle.GetStampbookCoverData,
