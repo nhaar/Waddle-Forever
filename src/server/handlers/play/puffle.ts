@@ -473,13 +473,12 @@ handler.xt(Handle.AdoptPuffleNew, (client, puffleType, puffleName, puffleSubType
   } else if (category === PuffleCategory.Gold) {
     client.resetGoldNuggetState();
     client.penguin.removeGoldPuffleNuggets();
-  } else if (category === PuffleCategory.Creature) {
-    if (puffle.favouriteToy === undefined) {
-      throw new Error(`Non creature puffle did not have a favorite toy: ${puffle}`);
-    }
-    client.buyPuffleItem(3, 0, 5);
-    client.buyPuffleItem(79, 0, 1);
-    client.buyPuffleItem(puffle.favouriteToy, 0, 1);
+  } else if (category === PuffleCategory.Creature) {  
+    client.buyPuffleItem(3, 0, 5);  
+    client.buyPuffleItem(79, 0, 1);  
+    if (puffle.favouriteToy !== undefined) {  
+      client.buyPuffleItem(puffle.favouriteToy, 0, 1);  
+    }  
   }
 
   client.penguin.removeCoins(puffleCost);
