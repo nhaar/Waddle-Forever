@@ -42,6 +42,9 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf',
   'play/v2/client/sentry.swf': 'svanilla:media/play/v2/client/sentry.swf',
   'play/v2/client/servers.swf': 'svanilla:media/play/v2/client/servers.swf',
+
+  'play/v2/client/party_icon.swf': 'svanilla:media/play/v2/client/party_icon.swf',
+
   'play/v2/client/stampbook.swf': 'svanilla:media/play/v2/client/stampbook.swf',
   'play/v2/client/stamps.swf': 'svanilla:media/play/v2/client/stamps.swf',
   'play/v2/client/world.swf': 'svanilla:media/play/v2/client/world.swf',
@@ -93,6 +96,12 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/close_ups/choose_puffle_color_rabbit.swf': 'svanilla:media/play/v2/content/global/close_ups/choose_puffle_color_rabbit.swf',
   'play/v2/content/global/close_ups/choose_puffle_color_raccoon.swf': 'svanilla:media/play/v2/content/global/close_ups/choose_puffle_color_raccoon.swf',
 
+  'play/v2/content/global/close_ups/character_dialogue_login.swf': 'svanilla:media/play/v2/content/global/character_dialogue_login.swf',
+
+
+  'play/v2/content/global/close_ups/quest_interface.swf': 'svanilla:media/play/v2/content/global/quest_interface.swf',
+
+
   'play/v2/content/global/close_ups/first_successful_puffle_dig.swf': 'svanilla:media/play/v2/content/global/close_ups/first_successful_puffle_dig.swf',
   'play/v2/content/global/close_ups/psa_missions_interface.swf': 'svanilla:media/play/v2/content/global/close_ups/psa_missions_interface.swf',
   'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
@@ -100,7 +109,10 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf',
   'play/v2/content/global/content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
   'play/v2/content/global/content/party.swf': 'svanilla:media/play/v2/content/global/content/party.swf',
-  'play/v2/content/global/content/Party_icon.swf': 'svanilla:media/play/v2/content/global/content/Party_icon.swf',
+
+  'play/v2/content/global/content/party_icon.swf': 'svanilla:media/play/v2/content/global/content/party_icon.swf',
+
+
   'play/v2/content/global/content/prompts.swf': 'svanilla:media/play/v2/content/global/content/prompts.swf',
   'play/v2/content/global/interface/gold_nuggets_hud.swf': 'svanilla:media/play/v2/content/global/interface/gold_nuggets_hud.swf',
   'play/v2/content/global/logo/logo.swf': 'svanilla:media/play/v2/content/global/logo/logo.swf',

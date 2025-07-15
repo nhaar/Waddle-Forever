@@ -3148,5 +3148,377 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         map: 'archives:HolidayParty2010Map.swf'
       }
     ]
+  },
+
+
+  {
+    name: 'Prehistoric Party 2016',
+    date: '2015-01-20',
+    end: '2015-02-03',
+    roomChanges: {
+      'dock': 'Events2016:PrehistoricParty2016dock.swf',
+      'party1': 'Events2016:PrehistoricParty2016party1.swf',
+      'party3': 'Events2016:PrehistoricParty2016party3.swf',
+      'party13': 'Events2016:PrehistoricParty2016party13.swf',
+      'party14': 'Events2016:PrehistoricParty2016party14.swf',
+      'party15': 'Events2016:PrehistoricParty2016party15.swf',
+      'party16': 'Events2016:PrehistoricParty2016party16.swf',
+      'party17': 'Events2016:PrehistoricParty2016party17.swf',
+      'party18': 'Events2016:PrehistoricParty2016party18.swf',
+      'party19': 'Events2016:PrehistoricParty2016party19.swf',
+      'party20': 'Events2016:PrehistoricParty2016party20.swf',
+      'party21': 'Events2016:PrehistoricParty2016party21.swf',
+      'party22': 'Events2016:PrehistoricParty2016party22.swf',
+      'party23': 'Events2016:PrehistoricParty2016party23.swf',
+      'party25': 'Events2016:PrehistoricParty2016party25.swf',
+      'party26': 'Events2016:PrehistoricParty2016party26.swf'
+    },
+    map: 'Events2016:PrehistoricParty2016map.swf',
+    globalChanges: {  
+      'content/party.swf': 'Events2016:PrehistoricParty2016party.swf',  
+      'content/party_icon.swf': 'Events2016:PrehistoricParty2016party_icon.swf',  
+      'content/features.swf': 'Events2016:PrehistoricParty2016features.swf', 
+      'content/interface.swf': 'Events2016:PrehistoricParty2016interface.swf',  
+      'close_ups/quest_interface.swf': 'Events2016:PrehistoricParty2016quest_interface.swf',  
+      'logo/logo.swf': 'Events2016:PrehistoricParty2016logo.swf'  
+    }  
+  },
+
+
+  {
+    name: 'The Fair Party 2015',
+    date: '2015-11-11',
+    end: '2015-11-15',
+    roomChanges: {
+      'beach': 'TheFair2015:TheFairParty2015beach.swf', 
+      'book': 'TheFair2015:TheFairParty2015book.swf',
+      'coffee': 'TheFair2015:TheFairParty2015coffee.swf',
+      'cove': 'TheFair2015:TheFairParty2015cove.swf',
+      'dock': 'TheFair2015:TheFairParty2015dock.swf',
+      'dojo': 'TheFair2015:TheFairParty2015dojo.swf',
+      'dojoext': 'TheFair2015:TheFairParty2015dojoext.swf',
+      'forest': 'TheFair2015:TheFairParty2015forest.swf',
+      'forts': 'TheFair2015:TheFairParty2015forts.swf',
+      'hotellobby': 'TheFair2015:TheFairParty2015hotellobby.swf',
+      'hotelroof': 'TheFair2015:TheFairParty2015hotelroof.swf',
+      'hotelspa': 'TheFair2015:TheFairParty2015hotelspa.swf',
+      'mtn': 'TheFair2015:TheFairParty2015mtn.swf',
+      'park': 'TheFair2015:TheFairParty2015park.swf',
+      'party1': 'TheFair2015:TheFairParty2015party1.swf',
+      'party2': 'TheFair2015:TheFairParty2015party2.swf',
+      'party3': 'TheFair2015:TheFairParty2015party3.swf',
+      'party4': 'TheFair2015:TheFairParty2015party4.swf',
+      'party5': 'TheFair2015:TheFairParty2015party5.swf',
+      'party6': 'TheFair2015:TheFairParty2015party6.swf',
+      'party7': 'TheFair2015:TheFairParty2015party7.swf',
+      'party8': 'TheFair2015:TheFairParty2015party8.swf',
+      'party9': 'TheFair2015:TheFairParty2015party9.swf',
+      'party10': 'TheFair2015:TheFairParty2015party10.swf',
+      'party11': 'TheFair2015:TheFairParty2015party11.swf',
+      'party12': 'TheFair2015:TheFairParty2015party12.swf',
+      'pet': 'TheFair2015:TheFairParty2015pet.swf',
+      'pufflewild': 'TheFair2015:TheFairParty2015pufflewild.swf',
+      'rink': 'TheFair2015:TheFairParty2015rink.swf',
+      'shack': 'TheFair2015:TheFairParty2015shack.swf',
+      'skatepark': 'TheFair2015:TheFairParty2015skatepark.swf',
+      'stage': 'TheFair2015:TheFairParty2015stage.swf',
+      'town': 'TheFair2015:TheFairParty2015town.swf',
+      'village': 'TheFair2015:TheFairParty2015village.swf',
+      'plaza': 'TheFair2015:TheFairParty2015plaza.swf'
+    },
+    globalChanges: {  
+ 
+      'logo/logo.swf': 'TheFair2015:TheFairParty2015Logo.swf'  
+    }  
+  },
+  {
+    name: 'Halloween Party 2016',
+    date: '2015-10-20',
+    end: '2015-11-03',
+    roomChanges: {
+      'agentlobbymulti': 'Halloween2016:HalloweenParty2016agentlobbymulti.swf',
+      'attic': 'Halloween2016:HalloweenParty2016attic.swf',
+      'beach': 'Halloween2016:HalloweenParty2016beach.swf',
+      'beacon': 'Halloween2016:HalloweenParty2016beacon.swf',
+      'berg': 'Halloween2016:HalloweenParty2016berg.swf',
+      'cave': 'Halloween2016:HalloweenParty2016cave.swf',
+      'cloudforest': 'Halloween2016:HalloweenParty2016cloudforest.swf',
+      'cove': 'Halloween2016:HalloweenParty2016cove.swf',
+      'dance': 'Halloween2016:HalloweenParty2016dance.swf',
+      'dock': 'Halloween2016:HalloweenParty2016dock.swf',
+      'dojo': 'Halloween2016:HalloweenParty2016dojo.swf',
+      'dojoext': 'Halloween2016:HalloweenParty2016dojoext.swf',
+      'dojofire': 'Halloween2016:HalloweenParty2016dojofire.swf',
+      'dojosnow': 'Halloween2016:HalloweenParty2016dojosnow.swf',
+      'forest': 'Halloween2016:HalloweenParty2016forest.swf',
+      'forts': 'Halloween2016:HalloweenParty2016forts.swf',
+      'hotellobby': 'Halloween2016:HalloweenParty2016hotellobby.swf',
+      'hotelroof': 'Halloween2016:HalloweenParty2016hotelroof.swf',
+      'hotelspa': 'Halloween2016:HalloweenParty2016hotelspa.swf',
+      'light': 'Halloween2016:HalloweenParty2016light.swf',
+      'lodge': 'Halloween2016:HalloweenParty2016lodge.swf',
+      'lounge': 'Halloween2016:HalloweenParty2016lounge.swf',
+      'mall': 'Halloween2016:HalloweenParty2016mall.swf',
+      'mtn': 'Halloween2016:HalloweenParty2016mtn.swf',
+      'park': 'Halloween2016:HalloweenParty2016park.swf',
+      'pet': 'Halloween2016:HalloweenParty2016pet.swf',
+      'pizza': 'Halloween2016:HalloweenParty2016pizza.swf',
+      'plaza': 'Halloween2016:HalloweenParty2016plaza.swf',
+      'pufflewild': 'Halloween2016:HalloweenParty2016pufflewild.swf',
+      'rink': 'Halloween2016:HalloweenParty2016rink.swf',
+      'school': 'Halloween2016:HalloweenParty2016school.swf',
+      'shack': 'Halloween2016:HalloweenParty2016shack.swf',
+      'shop': 'Halloween2016:HalloweenParty2016shop.swf',
+      'skatepark': 'Halloween2016:HalloweenParty2016skatepark.swf',
+      'town': 'Halloween2016:HalloweenParty2016town.swf',
+      'village': 'Halloween2016:HalloweenParty2016village.swf'
+    },
+    globalChanges: {  
+      'content/party.swf': 'Halloween2016:HalloweenParty2016party.swf',  
+      'content/party_icon.swf': 'Halloween2016:HalloweenParty2016party_icon.swf',  
+      'content/features.swf': 'Halloween2016:HalloweenParty2016features.swf', 
+      'content/interface.swf': 'Halloween2016:HalloweenParty2016interface.swf',  
+      'close_ups/quest_interface.swf': 'Halloween2016:HalloweenParty2016quest_interface.swf',  
+      'logo/logo.swf': 'Halloween2016:HalloweenParty2016logo.swf',
+      'content/prompts': 'Halloween2016:HalloweenParty2016prompts.swf'
+    }  
+  },
+
+
+  {
+    name: 'Blood Moon Party 2016',
+    date: '2015-09-03',
+    end: '2015-09-13',
+    roomChanges: {
+      'agentcom': 'BloodMoon2016:BloodMoonParty2016agentcom.swf',
+      'agentlobbymulti': 'BloodMoon2016:BloodMoonParty2016agentlobbymulti.swf',
+      //'agentlobbysolo': 'BloodMoon2016:BloodMoonParty2016agentlobbysolo.swf',
+      //'agentvr': 'BloodMoon2016:BloodMoonParty2016agentvr.swf',
+      'beach': 'BloodMoon2016:BloodMoonParty2016beach.swf',
+      'beacon': 'BloodMoon2016:BloodMoonParty2016beacon.swf',
+      'berg': 'BloodMoon2016:BloodMoonParty2016berg.swf',
+      'boiler': 'BloodMoon2016:BloodMoonParty2016boiler.swf',
+      'book': 'BloodMoon2016:BloodMoonParty2016book.swf',
+      'boxdimension': 'BloodMoon2016:BloodMoonParty2016boxdimension.swf',
+      'cave': 'BloodMoon2016:BloodMoonParty2016cave.swf',
+      'cavemine': 'BloodMoon2016:BloodMoonParty2016cavemine.swf',
+      'classroom': 'BloodMoon2016:BloodMoonParty2016classroom.swf',
+      'cloudforest': 'BloodMoon2016:BloodMoonParty2016cloudforest.swf',
+      'coffee': 'BloodMoon2016:BloodMoonParty2016coffee.swf',
+      'cove': 'BloodMoon2016:BloodMoonParty2016cove.swf',
+      'dance': 'BloodMoon2016:BloodMoonParty2016dance.swf',
+      'dock': 'BloodMoon2016:BloodMoonParty2016dock.swf',
+      'dojo': 'BloodMoon2016:BloodMoonParty2016dojo.swf',
+      'dojoext': 'BloodMoon2016:BloodMoonParty2016dojoext.swf',
+      'dojofire': 'BloodMoon2016:BloodMoonParty2016dojofire.swf',
+      'dojohide': 'BloodMoon2016:BloodMoonParty2016dojohide.swf',
+      //'eco': 'BloodMoon2016:BloodMoonParty2016eco.swf',
+      'forest': 'BloodMoon2016:BloodMoonParty2016forest.swf',
+      'forts': 'BloodMoon2016:BloodMoonParty2016forts.swf',
+      //'gym': 'BloodMoon2016:BloodMoonParty2016gym.swf',
+      'hotellobby': 'BloodMoon2016:BloodMoonParty2016hotellobby.swf',
+      'hotelroof': 'BloodMoon2016:BloodMoonParty2016hotelroof.swf',
+      'hotelspa': 'BloodMoon2016:BloodMoonParty2016hotelspa.swf',
+      'lake': 'BloodMoon2016:BloodMoonParty2016lake.swf',
+      'light': 'BloodMoon2016:BloodMoonParty2016light.swf',
+      'lodge': 'BloodMoon2016:BloodMoonParty2016lodge.swf',
+      'lounge': 'BloodMoon2016:BloodMoonParty2016lounge.swf',
+      'mall': 'BloodMoon2016:BloodMoonParty2016mall.swf',
+      'mine': 'BloodMoon2016:BloodMoonParty2016mine.swf',
+      'mtn': 'BloodMoon2016:BloodMoonParty2016mtn.swf',
+      'park': 'BloodMoon2016:BloodMoonParty2016park.swf',
+      'party': 'BloodMoon2016:BloodMoonParty2016party.swf',
+      'party1': 'BloodMoon2016:BloodMoonParty2016party1.swf',
+      'party2': 'BloodMoon2016:BloodMoonParty2016party2.swf',
+      'party3': 'BloodMoon2016:BloodMoonParty2016party3.swf',
+      'party4': 'BloodMoon2016:BloodMoonParty2016party4.swf',
+      'party5': 'BloodMoon2016:BloodMoonParty2016party5.swf',
+      'party7': 'BloodMoon2016:BloodMoonParty2016party7.swf',
+      'pet': 'BloodMoon2016:BloodMoonParty2016pet.swf',
+      'pizza': 'BloodMoon2016:BloodMoonParty2016pizza.swf',
+      'plaza': 'BloodMoon2016:BloodMoonParty2016plaza.swf',
+      'pufflewild': 'BloodMoon2016:BloodMoonParty2016pufflewild.swf',
+      'rink': 'BloodMoon2016:BloodMoonParty2016rink.swf',
+      'school': 'BloodMoon2016:BloodMoonParty2016school.swf',
+      'shack': 'BloodMoon2016:BloodMoonParty2016shack.swf',
+      'shiphold': 'BloodMoon2016:BloodMoonParty2016shiphold.swf',
+      'shipnest': 'BloodMoon2016:BloodMoonParty2016shipnest.swf',
+      'shop': 'BloodMoon2016:BloodMoonParty2016shop.swf',
+      'skatepark': 'BloodMoon2016:BloodMoonParty2016skatepark.swf',
+      'sport': 'BloodMoon2016:BloodMoonParty2016sport.swf',
+      'town': 'BloodMoon2016:BloodMoonParty2016town.swf',
+      //'underwater': 'BloodMoon2016:BloodMoonParty2016underwater.swf',
+      'village': 'BloodMoon2016:BloodMoonParty2016village.swf',
+    },
+    map: 'BloodMoon2016:BloodMoonParty2016map.swf',
+
+    localChanges: {
+      'catalogues/clothing.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyCatalogues2016clothing.swf'
+      },
+      'catalogues/party2.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyCatalogues2016party2.swf'
+      },
+      'catalogues/party3.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyCatalogues2016party3.swf'
+      },
+      'catalogues/sport.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyCatalogues2016sport.swf'
+      },
+
+      'close_ups/party_note01.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note01.swf'
+      },
+      'close_ups/party_note02.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note02.swf'
+      },
+      'close_ups/party_note03.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note03.swf'
+      },
+      'close_ups/party_note04.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note04.swf'
+      },
+      'close_ups/party_note05.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note05.swf'
+      },
+      'close_ups/party_note06.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note06.swf'
+      },
+      'close_ups/party_note07.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note07.swf'
+      },
+      'close_ups/party_note08.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note08.swf'
+      },
+      'close_ups/party_note09.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016party_note09.swf'
+      },
+      'close_ups/safety_quiz.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyClose-ups2016safety_quiz.swf'
+      },
+
+      'forms/safety_quiz.swf': {
+        'en': 'BloodMoon2016:BloodMoonPartyForms2016library.swf'
+      },
+
+    }
+  },
+
+
+  {
+    name: 'Operation Puffle Party 2016',
+    date: '2013-07-03',
+    end: '2013-07-15',
+    roomChanges: {
+      'agentcom': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016agentcom.swf', 
+      'agentlobbymulti': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016agentlobbymulti.swf',
+      //'agentlobbysolo': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016agentlobbysolo.swf',
+      'attic': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016attic.swf',
+      'beach': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016beach.swf',
+      'beacon': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016beacon.swf',
+      'berg': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016berg.swf',
+      'boiler': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016boiler.swf',
+      'book': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016book.swf',
+      'boxdimension': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016boxdimension.swf',
+      //'boxhall': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016boxhall.swf',
+      'cave': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016cave.swf',
+      'cavemine': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016cavemine.swf',
+      'classroom': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016classroom.swf',
+      'cloudforest': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016cloudforest.swf',
+      'coffee': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016coffee.swf',
+      'cove': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016cove.swf',
+      'dance': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dance.swf',
+      'dock': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dock.swf',
+      'dojo': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dojo.swf',
+      'dojoext': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dojoext.swf',
+      //'dojoextsolo': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dojoextsolo.swf',
+      'dojofire': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dojofire.swf',
+      'dojosnow': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dojosnow.swf',
+      'dojowater': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016dojowater.swf',
+      'forest': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016forest.swf',
+      'forts': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016forts.swf',
+      //'gym': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016gym.swf',
+      'hotellobby': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016hotellobby.swf',
+      'hotelroof': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016hotelroof.swf',
+      'hotelspa': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016hotelspa.swf',
+      'lake': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016lake.swf',
+      'light': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016light.swf',
+      'lodge': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016lodge.swf',
+      'lounge': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016lounge.swf',
+      'mall': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016mall.swf',
+      'mine': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016mine.swf',
+      'mtn': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016mtn.swf',
+      'park': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016park.swf',
+      'party': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party.swf',
+      'party1': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party1.swf',
+      'party10': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party10.swf',
+      //'party10solo': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party10solo.swf',
+      'party11': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party11.swf',
+      'party12': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party12.swf',
+      'party13': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party13.swf',
+      'party14': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party14.swf',
+      'party15': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party15.swf',
+      'party16': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party16.swf',
+      'party17': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party17.swf',
+      'party18': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party18.swf',
+      'party19': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party19.swf',
+      'party2': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party2.swf',
+      'party24': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party24.swf',
+      'party25': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party25.swf',
+      'party26': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party26.swf',
+      'party27': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party27.swf',
+      //'party28': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party28.swf',
+      'party3': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party3.swf',
+      'party4': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party4.swf',
+      'party5': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party5.swf',
+      'party6': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party6.swf',
+      'party7': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party7.swf',
+      'party8': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party8.swf',
+      'party9': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party9.swf',
+      //'partysolo1': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016partysolo1.swf',
+      //'partysolo2': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016partysolo2.swf',
+      'pet': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016pet.swf',
+      'pizza': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016pizza.swf',
+      'plaza': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016plaza.swf',
+      //'pridimension': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016pridimension.swf',
+      'pufflewild': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016pufflewild.swf',
+      'rink': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016rink.swf',
+      'school': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016school.swf',
+      'shack': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016shack.swf',
+      'ship': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016ship.swf',
+      'shiphold': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016shiphold.swf',
+      'shipnest': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016shipnest.swf',
+      'shipquarters': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016shipquarters.swf',
+      'shop': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016shop.swf',
+      'skatepark': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016skatepark.swf',
+      //'soundroom': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016soundroom.swf',
+      'stage': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016stage.swf',
+      'town': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016town.swf',
+      //'ufo': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016ufo.swf',
+      //'underwater': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016underwater.swf',
+      'village': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016village.swf'
+
+    },
+
+    map: 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016map.swf',	
+
+    globalChanges: {  
+      'content/party.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party.swf',  
+      //'content/party_icon.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party_icon.swf',  
+      'close_ups/quest_interface.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016quest_interface.swf',  
+      'content/features.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016features.swf', 
+      'logo/logo.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016logo.swf',
+      'content/prompts.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016prompts.swf',
+      'content/interface.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016interface.swf',
+      'content/archives.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016archives.swf',
+    },  
+
+    scavengerHunt2010: {
+      iconFileId: 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party_icon.swf'
+      //iconFilePath: 'OperationPuffleCPD2016/OperationPuffleCPDPARTY2016party_icon.swf'
+    },
+
   }
+
+
 ];

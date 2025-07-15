@@ -20,8 +20,12 @@ export enum Update {
   PLANET_Y_2010 = '2010-11-19',
   STADIUM_GAMES_END = '2010-12-20',
   STAMPS_RELEASE = '2010-07-26',
+
+
   /** Just a placeholder for skipping from 2010 to 2016 */
-  MODERN_AS3 = '2016-01-01',
+  MODERN_AS3 = '2012-01-01',
+
+
   CAVE_EXPEDITION_END = '2010-01-29',
   FAIR_2010_START = '2010-09-03',
   FAIR_2011_START = '2011-09-22',

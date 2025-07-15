@@ -10,12 +10,14 @@ export type RoomName = 'town' |
   'cave' |
   'cavemine' |
   'cove' |
+  'classroom' |
   'dance' |
   'lounge' |
   'light' |
   'forest' |
   'lake' |
   'shop' |
+  'skatepark' |
   'dock' |
   'village' |
   'rink' |
@@ -25,7 +27,11 @@ export type RoomName = 'town' |
   'dojofire' |
   'dojowater' |
   'dojohide' |
+  'dojosnow' |
   'forts' |
+  'hotellobby' |
+  'hotelroof' |
+  'hotelspa' |	
   'agent' |
   'agentcom' |
   'agentlobbysolo' |
@@ -48,6 +54,11 @@ export type RoomName = 'town' |
   'shipnest' |
   'ship' |
   'shiphold' |
+  'park' |
+  'pufflewild' |
+  'cloudforest' |
+  'mall' |
+  'school'|
   'party' |
   'party1' |
   'party2' |
@@ -67,6 +78,16 @@ export type RoomName = 'town' |
   'party16' |
   'party17' |
   'party18' |
+  'party19' |
+  'party20' |
+  'party21' |
+  'party22' |
+  'party23' |
+  'party24' |
+  'party25' |
+  'party26' |
+  'party27' |
+
   'party99';
 
 
@@ -103,6 +124,11 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Cove',
     preCpipName: null
   },
+  'classroom': {
+    id: 851,
+    name: 'Classroom',
+    preCpipName: null
+  },
   'dance': {
     id: 120,
     name: 'Dance Club',
@@ -128,6 +154,11 @@ export const ROOMS: Record<RoomName, Room> = {
     id: 130,
     name: 'Gift Shop',
     preCpipName: 'Shop'
+  }, 
+  'skatepark': {
+    id: 435,
+    name: 'Skate Park',
+    preCpipName: 'null'
   },
   'dock': {
     id: 800,
@@ -169,6 +200,11 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Water Dojo',
     preCpipName: null
   },
+  'dojosnow': {
+    id: 326,
+    name: 'Snow Dojo',
+    preCpipName: null
+  },
   'agent': {
     id: 803,
     name: 'PSA HQ',
@@ -194,6 +230,22 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Snow Forts',
     preCpipName: 'Forts'
   },
+  'hotellobby': {
+    id: 430,
+    name: 'Puffle Hotel Lobby',
+    preCpipName: 'null'
+  },
+  'hotelspa': {
+    id: 431,
+    name: 'Puffle Hotel Spa',
+    preCpipName: 'null'
+  },
+  'hotelroof': {
+    id: 432,
+    name: 'Puffle Hotel Roof',
+    preCpipName: 'null'
+  },
+
   'forest': {
     id: 809,
     name: 'Forest',
@@ -294,6 +346,31 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Captain\s Quaters',
     preCpipName: null
   },
+  'park': {
+    id: 890,
+    name: 'Puffle Park',
+    preCpipName: null
+  },
+  'pufflewild': {
+    id: 436,
+    name: 'Puffle Wild',
+    preCpipName: null
+  },
+  'cloudforest': {
+    id: 433,
+    name: 'Cloud Forest',
+    preCpipName: null
+  },
+  'mall': {
+    id: 823,
+    name: 'Mall',
+    preCpipName: null
+  },
+  'school': {
+    id: 825,
+    name: 'School',
+    preCpipName: null
+  },
   'party': {
     id: 850,
     name: 'Party',
@@ -389,6 +466,55 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Party 18',
     preCpipName: null
   },
+
+
+  'party19': {
+    id: 869,
+    name: 'Party 19',
+    preCpipName: null
+  },
+  'party20': {
+    id: 870,
+    name: 'Party 20',
+    preCpipName: null
+  },
+  'party21': {
+    id: 871,
+    name: 'Party 21',
+    preCpipName: null
+  },
+  'party22': {
+    id: 872,
+    name: 'Party 22',
+    preCpipName: null
+  },
+  'party23': {
+    id: 873,
+    name: 'Party 23',
+    preCpipName: null
+  },
+  'party24': {
+    id: 874,
+    name: 'Party 24',
+    preCpipName: null
+  },
+  'party25': {
+    id: 875,
+    name: 'Party 25',
+    preCpipName: null
+  },
+  'party26': {
+    id: 876,
+    name: 'Party 26',
+    preCpipName: null
+  },
+  'party27': {
+    id: 877,
+    name: 'Party 27',
+    preCpipName: null
+  },
+
+
   'party99': {
     id: 899,
     name: 'Party 99',
