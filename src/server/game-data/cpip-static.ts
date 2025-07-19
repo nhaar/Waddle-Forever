@@ -217,7 +217,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/close_ups/underwater_note.swf': 'slegacy:media/play/v2/content/local/en/close_ups/underwater_note.swf',
   'play/v2/content/local/en/close_ups/waterItems.swf': 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf',
   'play/v2/content/local/en/forms/missions.swf': 'slegacy:media/play/v2/content/local/en/forms/missions.swf',
-  'play/v2/content/local/en/forms/moderator.swf': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf',
+  'play/v2/content/local/en/forms/agent.swf': 'archives:ENFormsAgent.swf',
   'play/v2/content/local/en/forms/tour.swf': 'slegacy:media/play/v2/content/local/en/forms/tour.swf',
   'play/v2/content/local/en/instructions/card_jitsu.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu.swf',
   'play/v2/content/local/en/instructions/card_jitsu_fire.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_fire.swf',
