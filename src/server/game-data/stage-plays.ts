@@ -147,8 +147,15 @@ export const STAGE_TIMELINE: Array<{
   },
   // squidzoid july is also completely lost
   // team blue rally 2 is completely lost
-  // ruby and the red ruby debut in Pre-CPIP is completely lost/
   // post CPIP could be reconstructed
+  {
+    date: '2008-09-12',
+    name: 'Ruby and the Ruby',
+    stageFileRef: 'recreation:ruby_play_debut.swf',
+    // these two are inaccurate
+    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf',
+    costumeTrunkFileRef: 'archives:July09Costume.swf'
+  },
   {
     date: '2008-10-10',
     name: 'Space Adventure Planet Y',

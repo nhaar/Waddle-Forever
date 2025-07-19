@@ -449,6 +449,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'pre_epf_moderator_form.swf',
       comment: 'Made by lifeofgames477. A recreation of the moderator form before the EPF. This file was embedded in the pre-CPIP interface but was lost for post-CPIP, thus it was recreated.'
+    },
+    {
+      file: 'ruby_play_debut.swf',
+      comment: 'Made by Blue Kirby, the original version of the play.'
     }
   ],
   [MOD]: [
