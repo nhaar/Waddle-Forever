@@ -152,8 +152,8 @@ export const STAGE_TIMELINE: Array<{
     date: Update.RUBY_DEBUT,
     name: 'Ruby and the Ruby',
     stageFileRef: 'recreation:ruby_play_debut.swf',
-    // these two are inaccurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf',
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
+    // this might be inaccurate
     costumeTrunkFileRef: 'archives:July09Costume.swf'
   },
   {
@@ -226,7 +226,7 @@ export const STAGE_TIMELINE: Array<{
     name: 'Ruby and the Ruby',
     // both 2 below are inaccurate
     stageFileRef: 'archives:RoomsStage-December2010.swf',
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf',
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
     costumeTrunkFileRef: 'archives:July09Costume.swf',
     notPremiere: true
   },
@@ -291,7 +291,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2010-06-10',
     name: 'Ruby and the Ruby',
     costumeTrunkFileRef: 'archives:July09Costume.swf', // From 2009, unknown if accurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-December2010.swf' // from Dec 2010, unknown if accurate
   },
   {
@@ -333,7 +333,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2010-12-28',
     name: 'Ruby and the Ruby',
     costumeTrunkFileRef: 'archives:July09Costume.swf', // From 2009, unknown if accurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-December2010.swf' // accurate
   }
 ];

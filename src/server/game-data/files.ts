@@ -457,6 +457,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_ruby_construction.swf',
       comment: 'Made by Blue Kirby, the Plaza construction for the Ruby and the Ruby play debut'
+    },
+    {
+      file: 'plaza_ruby_no_weather.swf',
+      comment: 'Made by Blue Kirby, Plaza for Ruby and the Ruby before weather manipulation'
     }
   ],
   [MOD]: [
