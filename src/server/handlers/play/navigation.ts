@@ -4,6 +4,7 @@ import { WaddleGame } from '../../../server/client';
 import { SledRace } from '../games/sled';
 import { CardJitsu } from '../games/card';
 import { Handle } from '../handles';
+import { CardJitsuFire } from '../games/fire';
 
 const handler = new Handler();
 
@@ -121,7 +122,8 @@ handler.xt(Handle.GetWaddle, (client, ...waddles) => {
 handler.boot(s => {
   s.waddleConstructors = {
     'card': CardJitsu,
-    'sled': SledRace
+    'sled': SledRace,
+    'fire': CardJitsuFire
   };
 });
 
