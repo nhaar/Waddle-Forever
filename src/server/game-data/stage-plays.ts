@@ -149,7 +149,7 @@ export const STAGE_TIMELINE: Array<{
   // team blue rally 2 is completely lost
   // post CPIP could be reconstructed
   {
-    date: '2008-09-12',
+    date: Update.RUBY_DEBUT,
     name: 'Ruby and the Ruby',
     stageFileRef: 'recreation:ruby_play_debut.swf',
     // these two are inaccurate

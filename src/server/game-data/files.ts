@@ -453,6 +453,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'ruby_play_debut.swf',
       comment: 'Made by Blue Kirby, the original version of the play.'
+    },
+    {
+      file: 'plaza_ruby_construction.swf',
+      comment: 'Made by Blue Kirby, the Plaza construction for the Ruby and the Ruby play debut'
     }
   ],
   [MOD]: [
