@@ -469,6 +469,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'sport_microscope_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lounge_cake_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

@@ -110,8 +110,7 @@ export const PINS: Array<Pin> = [
     date: Update.THIRD_ANNIVERSARY,
     end: '2008-11-07',
     room: 'lounge',
-    // file is from halloween party
-    fileRef: 'archives:RoomsLounge-Halloween2008.swf'
+    fileRef: 'recreation:lounge_cake_pin.swf'
   },
   {
     name: 'Present',
