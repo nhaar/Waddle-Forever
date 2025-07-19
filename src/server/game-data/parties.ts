@@ -1039,6 +1039,14 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:MJ2008MusicCatalog.swf'
       }
     },
+    updates: [
+      {
+        date: Update.RECORD_PIN,
+        roomChanges: {
+          dance: 'recreation:dance_record_pin_mjam.swf'
+        }
+      }
+    ],
     permanentChanges: {
       roomChanges: {
         // placeholder date for the band
@@ -1047,7 +1055,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     consequences: {
       roomChanges: {
-        dance: 'recreation:dance_cpip_postmusicjam1.swf'
+        dance: 'recreation:dance_record_pin.swf'
       },
       roomComment: 'The Dance Club is updated post Music Jam'
     }

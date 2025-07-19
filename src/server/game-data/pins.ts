@@ -86,6 +86,12 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:WPForest.swf'
   },
   {
+    name: 'Record',
+    date: Update.RECORD_PIN,
+    end: '2008-08-15',
+    room: 'dance',
+  },
+  {
     name: '3rd Anniversary Cake',
     date: '2008-10-24',
     end: '2008-11-07',

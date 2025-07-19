@@ -435,6 +435,14 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Jeoy based on VamprLover\'s file'
     },
     {
+      file: 'dance_record_pin_mjam.swf',
+      comment: 'Made by Blue Kirby, adds the record pin to the Dance Club of the Music Jam 2008'
+    },
+    {
+      file: 'dance_record_pin.swf',
+      comment: 'Made by Blue Kirby based on VampLovr and Jeoy\'s files, adds the record pin to the Dance Club with dark lighting'
+    },
+    {
       file: 'pre_epf_moderator_form.swf',
       comment: 'Made by lifeofgames477. A recreation of the moderator form before the EPF. This file was embedded in the pre-CPIP interface but was lost for post-CPIP, thus it was recreated.'
     }
