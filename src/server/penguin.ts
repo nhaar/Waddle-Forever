@@ -633,6 +633,20 @@ export class Penguin {
     return Array.from(this._cards.entries());
   }
 
+  /**
+   * Get an array where each element is a card ID, with duplicates being allowed
+   */
+  getDeck(): number[] {
+    const deck: number[] = [];
+    for (const card of this._cards.entries()) {
+      for (let i = 0; i < card[1]; i++) {
+        deck.push(card[0]);
+      }
+    }
+
+    return deck;
+  }
+
   get ninjaProgress() {
     return this._cardProgress;
   }

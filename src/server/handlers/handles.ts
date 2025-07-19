@@ -146,7 +146,12 @@ export enum Handle {
   JoinSensei,
   JoinTemporaryWaddle,
   LeaveWaddleMatch,
-  GetFireLevel
+  GetFireLevel,
+  CardJitsuFireClickSpinner,
+  CardJitsuFireChooseTile,
+  CardJitsuFireChooseCard,
+  CardJitsuFireInfoReady,
+  CardJitsuFireChooseElement
 };
 
 /** Map of all the handles and their valid arguments */
@@ -276,7 +281,12 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinSensei]: [],
   [Handle.JoinTemporaryWaddle]: ['number', 'number', 'number'],
   [Handle.LeaveWaddleMatch]: [],
-  [Handle.GetFireLevel]: []
+  [Handle.GetFireLevel]: [],
+  [Handle.CardJitsuFireClickSpinner]: ['string', 'number', 'number'],
+  [Handle.CardJitsuFireChooseTile]: ['string', 'number'],
+  [Handle.CardJitsuFireChooseCard]: ['string', 'number'],
+  [Handle.CardJitsuFireInfoReady]: ['string'],
+  [Handle.CardJitsuFireChooseElement]: ['string', 'string']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -432,7 +442,16 @@ const HANDLER_MAPPING: HandlerMapping = {
     'lw': Handle.LeaveWaddle,
     'gz': Handle.EnterWaddleGame,
     'uz': Handle.UpdateWaddleGameSeats,
-    'zm': [Handle.SledRaceAction, Handle.CardJitsuDeal, Handle.CardJitsuPick],
+    'zm': [
+      Handle.SledRaceAction,
+      Handle.CardJitsuDeal,
+      Handle.CardJitsuPick,
+      Handle.CardJitsuFireClickSpinner,
+      Handle.CardJitsuFireChooseTile,
+      Handle.CardJitsuFireChooseCard,
+      Handle.CardJitsuFireInfoReady,
+      Handle.CardJitsuFireChooseElement
+    ],
     'jmm': Handle.JoinMatchMaking,
     'jz': Handle.JoinSled,
     'jsen': Handle.JoinSensei,

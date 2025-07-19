@@ -267,5 +267,10 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/fire/assets/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/en/locale.swf',
   'play/v2/games/fire/assets/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/es/locale.swf',
   'play/v2/games/fire/assets/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/fr/locale.swf',
-  'play/v2/games/fire/assets/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/pt/locale.swf'
+  'play/v2/games/fire/assets/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/pt/locale.swf',
+  'play/v2/games/fire/lang/de/locale.swf': 'slegacy:media/play/v2/games/fire/lang/de/locale.swf',
+  'play/v2/games/fire/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/lang/en/locale.swf',
+  'play/v2/games/fire/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/lang/es/locale.swf',
+  'play/v2/games/fire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/lang/fr/locale.swf',
+  'play/v2/games/fire/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/lang/pt/locale.swf'
 };

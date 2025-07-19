@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { TimelineMap } from "../game-data/changes";
+import { TimelineMap } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { ROOM_MUSIC_TIMELINE } from "../game-data/room-updates";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
