@@ -187,6 +187,10 @@ would need to investigated`
     {
       file: 'CartSurfer2006.swf',
       comment: 'Removed domain check'
+    },
+    {
+      file: 'ENFormsAgent.swf',
+      comment: 'Fix by Blue Kirby, it uses a function from shell.swf which is not present in the WF one, so the function call was replaced with the function contents. Alternatively a shell change could be done and have this file be the original instead'
     }
   ],
   [APPROXIMATION]: [
