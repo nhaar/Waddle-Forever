@@ -4,7 +4,7 @@
 
 import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
-import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbContent } from '../src/server/routes/client-files';
+import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbContent } from '../src/server/timelines/crumbs';
 import { generateCrumbFiles } from './base-crumbs';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
