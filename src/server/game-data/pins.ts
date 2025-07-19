@@ -92,8 +92,22 @@ export const PINS: Array<Pin> = [
     room: 'dance',
   },
   {
+    name: 'Lollipop',
+    date: '2008-09-26',
+    end: Update.MICROSCOPE_PIN,
+    room: 'light',
+    fileRef: 'recreation:light_lollipop_pin.swf'
+  },
+  {
+    name: 'Microscope',
+    date: Update.MICROSCOPE_PIN,
+    end: Update.THIRD_ANNIVERSARY,
+    room: 'sport',
+    fileRef: 'recreation:sport_microscope_pin.swf'
+  },
+  {
     name: '3rd Anniversary Cake',
-    date: '2008-10-24',
+    date: Update.THIRD_ANNIVERSARY,
     end: '2008-11-07',
     room: 'lounge',
     // file is from halloween party

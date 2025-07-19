@@ -461,6 +461,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_ruby_no_weather.swf',
       comment: 'Made by Blue Kirby, Plaza for Ruby and the Ruby before weather manipulation'
+    },
+    {
+      file: 'light_lollipop_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'sport_microscope_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
