@@ -3513,12 +3513,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'content/archives.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016archives.swf',
     },  
 
-    scavengerHunt2010: {
-      iconFileId: 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party_icon.swf'
-      //iconFilePath: 'OperationPuffleCPD2016/OperationPuffleCPDPARTY2016party_icon.swf'
-    },
-
   }
+
+
 
 
 ];
