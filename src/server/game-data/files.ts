@@ -517,6 +517,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'medieval_09_const_cave.swf',
       comment: 'Made by Blue Kirby. Cave for the Medieval Party 2009 construction'
+    },
+    {
+      file: 'plaza_haunting_of_the_viking_opera.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Haunting of the Viking Opera play before weather manipulation'
     }
   ],
   [MOD]: [
