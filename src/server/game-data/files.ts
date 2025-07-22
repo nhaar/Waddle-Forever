@@ -497,6 +497,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fair_2008_plaza_decorated.swf',
       comment: 'Made by Blue Kirby. Decorated plaza which was added in an update to the party'
+    },
+    {
+      file: 'water_party_07_dance.swf',
+      comment: 'Made by victando. Dance Club for the Water Party 2007'
     }
   ],
   [MOD]: [

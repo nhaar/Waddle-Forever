@@ -486,6 +486,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: '2007-07-13',
     end: '2007-07-23',
     roomChanges: {
+      dance: 'recreation:water_party_07_dance.swf',
       'dojo': 'archives:ArtworkRoomsDojo50.swf'
     },
     music: {
