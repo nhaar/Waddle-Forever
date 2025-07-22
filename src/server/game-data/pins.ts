@@ -174,6 +174,13 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Forest_Chocolate_Bunny_Pin.swf'
   },
   {
+    name: 'Beach Umbrella',
+    fileRef: 'archives:Boiler_Room_Beach_Umbrella_Pin.swf',
+    room: 'boiler',
+    date: '2009-07-17',
+    end: '2009-07-31',
+  },
+  {
     name: 'Koi Fish',
     date: '2009-08-28',
     end: '2009-09-11',
