@@ -49,7 +49,7 @@ function changeRoomMusic(crumbs: string, roomName: string, newMusicId: number): 
   return lines.join('\n')
 }
 
-function changeItemCosts(crumbs: string, prices: Record<number, number>): string {
+function changeItemCosts(crumbs: string, prices: Record<number, number | undefined>): string {
   // map ID of item to the index of its line that contains the cost
   const paperCrumbs = new Map<number, number>();
 
@@ -74,9 +74,11 @@ function changeItemCosts(crumbs: string, prices: Record<number, number>): string
 
   paperCrumbs.forEach((index, id) => {
     const price = prices[id];
-    // remove cost from the start, insert new cost
-    const newInstruction = `Push "cost", ${price}` + lines[index].replace(/Push "cost", \d+/, '');
-    lines[index] = newInstruction;
+    if (price !== undefined) {
+      // remove cost from the start, insert new cost
+      const newInstruction = `Push "cost", ${price}` + lines[index].replace(/Push "cost", \d+/, '');
+      lines[index] = newInstruction;
+    }
   });
 
   return lines.join('\n');
@@ -126,7 +128,10 @@ function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): str
 
   if (changes.paths !== undefined) {
     for (const path in changes.paths) {
-      newCrumbs = addGlobalPath(newCrumbs, path, changes.paths[path]);
+      const pathName = changes.paths[path];
+      if (pathName !== undefined) {
+        newCrumbs = addGlobalPath(newCrumbs, path, pathName);
+      }
     }
   }
 
