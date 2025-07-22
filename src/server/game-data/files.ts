@@ -529,6 +529,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_underwater_adventure.swf',
       comment: 'Made by Blue kirby. Plaza for the Underwater Adventure play'
+    },
+    {
+      file: 'fair_09_penguins_time_forgot.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Penguins that Time Forgot play during the Fair 2009'
     }
   ],
   [MOD]: [

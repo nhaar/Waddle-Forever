@@ -1945,7 +1945,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     fairCpip: {
       iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
       infoFile: 'archives:Tickets-TheFair2009.swf'
-    }
+    },
+    updates: [
+      {
+        date: Update.PENGUINS_TIME_FORGOT_2009,
+        roomChanges: {
+          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
+        }
+      }
+    ],
   },
   {
     name: 'Sensei\'s Fire Scavenger Hunt',

@@ -237,7 +237,7 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:May2011UnderwaterAdventureCostume.swf' // 2011
   },
   {
-    date: '2009-09-11',
+    date: Update.PENGUINS_TIME_FORGOT_2009,
     name: 'The Penguins that Time Forgot',
     stageFileRef: 'archives:RoomsStage-September2009.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play6.swf',
