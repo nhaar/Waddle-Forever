@@ -245,5 +245,12 @@ export const PINS: Array<Pin> = [
   {
     name: 'Leaf',
     date: '2010-04-23'
+  },
+  {
+    name: 'Light Bulb',
+    room: 'pizza',
+    fileRef: 'archives:Pizza_Parlor_Light_Bulb_Pin.swf',
+    date: '2010-06-18',
+    end: '2010-07-02'
   }
 ];
