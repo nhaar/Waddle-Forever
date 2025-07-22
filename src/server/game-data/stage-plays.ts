@@ -233,7 +233,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2009-08-21',
     name: 'Underwater Adventure',
     stageFileRef: 'recreation:underwater_adventure_no_pin.swf', // recreation
-    plazaFileRef: null,
+    plazaFileRef: 'recreation:plaza_underwater_adventure.swf',
     costumeTrunkFileRef: 'archives:May2011UnderwaterAdventureCostume.swf' // 2011
   },
   {
