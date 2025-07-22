@@ -241,5 +241,9 @@ export const PINS: Array<Pin> = [
     end: '2010-04-23',
     room: 'dock',
     fileRef: 'archives:Dock_Frog_Pin.swf'
+  },
+  {
+    name: 'Leaf',
+    date: '2010-04-23'
   }
 ];
