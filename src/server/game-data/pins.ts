@@ -234,5 +234,12 @@ export const PINS: Array<Pin> = [
     end: '2010-03-26',
     room: 'lounge',
     fileRef: 'archives:Dance_Lounge_Boot_Pin.swf'
+  },
+  {
+    name: 'Frog',
+    date: '2010-04-09',
+    end: '2010-04-23',
+    room: 'dock',
+    fileRef: 'archives:Dock_Frog_Pin.swf'
   }
 ];
