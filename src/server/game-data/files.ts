@@ -513,6 +513,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'penguin_play_awards_09_plaza_const.swf',
       comment: 'Made by Blue Kirby. Plaza for the Penguin Play Awards 2009 construction'
+    },
+    {
+      file: 'medieval_09_const_cave.swf',
+      comment: 'Made by Blue Kirby. Cave for the Medieval Party 2009 construction'
     }
   ],
   [MOD]: [

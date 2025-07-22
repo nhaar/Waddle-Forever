@@ -1727,6 +1727,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'catalogues/party.swf': {
         'en': 'archives:ENCataloguesParty-MedievalParty2009.swf'
       }
+    },
+    construction: {
+      date: '2009-05-01',
+      changes: {
+        cave: 'recreation:medieval_09_const_cave.swf'
+      }
     }
   },
   {
