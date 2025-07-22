@@ -266,5 +266,12 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:RoomsAtticTambourinePin.swf',
     date: '2010-07-16',
     end: '2010-07-30'
+  },
+  {
+    name: 'Compass',
+    room: 'boiler',
+    fileRef: 'archives:Boiler_Room_Compass_Pin.swf',
+    date: '2010-07-30',
+    end: '2010-08-13'
   }
 ];
