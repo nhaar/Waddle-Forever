@@ -167,6 +167,13 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:mine_puffle_o_pin.swf'
   },
   {
+    name: 'Chocolate Bunny',
+    room: 'forest',
+    date: '2009-04-10',
+    end: '2009-04-24',
+    fileRef: 'archives:Forest_Chocolate_Bunny_Pin.swf'
+  },
+  {
     name: 'Koi Fish',
     date: '2009-08-28',
     end: '2009-09-11',
