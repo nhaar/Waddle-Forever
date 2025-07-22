@@ -493,6 +493,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_golden_puffle_no_weather.swf',
       comment: 'Made by Blue Kirby. Plaza with the Golden Puffle without weather manipulation'
+    },
+    {
+      file: 'fair_2008_plaza_decorated.swf',
+      comment: 'Made by Blue Kirby. Decorated plaza which was added in an update to the party'
     }
   ],
   [MOD]: [

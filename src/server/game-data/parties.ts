@@ -1174,7 +1174,19 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     fairCpip: {
       iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
-    }
+    },
+    updates: [
+      {
+        date: '2008-09-30',
+        comment: 'The plaza was decorated',
+        roomChanges: {
+          plaza: 'recreation:fair_2008_plaza_decorated.swf'
+        },
+        music: {
+          plaza: 221
+        }
+      }
+    ]
   },
   {
     name: '3rd Anniversary Party',
