@@ -138,8 +138,15 @@ export const PINS: Array<Pin> = [
     date: '2008-12-19'
   },
   {
+    name: 'Gingerbread Man',
+    date: '2009-01-02',
+    end: Update.TACO_PIN,
+    room: 'attic',
+    fileRef: 'archives:RoomsAttic-GingerbreadManPin.swf'
+  },
+  {
     name: 'Taco',
-    date: '2009-01-16',
+    date: Update.TACO_PIN,
     end: Update.LILY_PIN,
     room: 'forts',
     // file is from winter fiesta
