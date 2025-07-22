@@ -505,6 +505,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fair_08_ticket_info.swf',
       comment: 'Made by lifeofgames477. A recreation of the tickets information screen for the Fair 2008'
+    },
+    {
+      file: 'plaza_team_blue_play.swf',
+      comment: 'Made by Blue Kirby. Plaza with the stage having the Team Blue vs Team Red play'
     }
   ],
   [MOD]: [

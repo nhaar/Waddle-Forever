@@ -196,7 +196,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2009-02-13',
     name: 'Team Blue vs. Team Red',
     stageFileRef: 'archives:Stage2011Aug17.swf', // from 2011
-    plazaFileRef: null, //lost
+    plazaFileRef: 'recreation:plaza_team_blue_play.swf',
     costumeTrunkFileRef: 'archives:February2009Costume.swf'
   },
   {
