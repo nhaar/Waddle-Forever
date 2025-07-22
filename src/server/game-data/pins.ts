@@ -4,9 +4,9 @@ import { Update } from "./updates";
 
 export type Pin = {
   date: Version;
-  end: Version;
   name: string;
 } & ({} | {
+  end: Version;
   room: RoomName;
   fileRef?: string;
   frame?: number;
