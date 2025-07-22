@@ -227,5 +227,12 @@ export const PINS: Array<Pin> = [
     date: Update.PUFFLE_PARTY_10_CONST_START,
     end: '2010-03-18',
     name: 'Feather'
+  },
+  {
+    name: 'Boot',
+    date: '2010-03-12',
+    end: '2010-03-26',
+    room: 'lounge',
+    fileRef: 'archives:Dance_Lounge_Boot_Pin.swf'
   }
 ];
