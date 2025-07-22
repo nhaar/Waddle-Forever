@@ -537,6 +537,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'holiday_09_plaza_quest_golden_puffle.swf',
       comment: 'Made by Blue Kirby. Plaza for the Quest for the Golden Puffle play during the Holiday Party 2009'
+    },
+    {
+      file: 'beacon_lily_pin.swf',
+      comment: 'Made by Blue Kirby using jeoy\'s base recreation of the room, adds the Lily pin'
+    },
+    {
+      file: 'mine_puffle_o_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

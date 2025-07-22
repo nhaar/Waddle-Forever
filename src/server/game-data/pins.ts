@@ -140,10 +140,24 @@ export const PINS: Array<Pin> = [
   {
     name: 'Taco',
     date: '2009-01-16',
-    end: '2009-01-30',
+    end: Update.LILY_PIN,
     room: 'forts',
     // file is from winter fiesta
     fileRef: 'archives:WinterFiesta2009Forts.swf'
+  },
+  {
+    name: 'Lily',
+    date: Update.LILY_PIN,
+    end: Update.PUFFLE_O_PIN,
+    room: 'beacon',
+    fileRef: 'recreation:beacon_lily_pin.swf'
+  },
+  {
+    name: 'Puffle O',
+    date: Update.PUFFLE_O_PIN,
+    end: '2009-02-27',
+    room: 'mine',
+    fileRef: 'recreation:mine_puffle_o_pin.swf'
   },
   {
     name: 'Koi Fish',
