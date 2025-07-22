@@ -273,5 +273,40 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Boiler_Room_Compass_Pin.swf',
     date: '2010-07-30',
     end: '2010-08-13'
+  },
+  {
+    name: 'Carabiner',
+    room: 'light',
+    fileRef: 'archives:Lighthouse_Carabiner_Pin.swf',
+    date: '2010-08-13',
+    end: '2010-08-27'
+  },
+  {
+    name: 'Igloo',
+    room: 'cave',
+    fileRef: 'archives:RoomsCave-IglooPin.swf',
+    date: '2010-08-27',
+    end: '2010-09-10'
+  },
+  {
+    name: 'Fair Ticket',
+    room: 'book',
+    fileRef: 'archives:Book_Room_Fair_Ticket_Pin.swf',
+    date: '2010-09-10',
+    end: '2010-09-24'
+  },
+  {
+    name: 'Sandwich',
+    room: 'cavemine',
+    fileRef: 'archives:Cave_Mine_Sandwich_Pin.swf',
+    date: '2010-09-24',
+    end: '2010-10-08'
+  },
+  {
+    name: 'Carrot',
+    room: 'dance',
+    fileRef: 'archives:Night_Club_Carrot_Pin.swf',
+    date: '2010-10-08',
+    end: '2010-10-22'
   }
 ];
