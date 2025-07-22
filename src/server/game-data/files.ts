@@ -489,6 +489,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'lodge_present_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'plaza_golden_puffle_no_weather.swf',
+      comment: 'Made by Blue Kirby. Plaza with the Golden Puffle without weather manipulation'
     }
   ],
   [MOD]: [

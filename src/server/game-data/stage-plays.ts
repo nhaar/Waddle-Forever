@@ -179,8 +179,7 @@ export const STAGE_TIMELINE: Array<{
     name: 'Quest for the Golden Puffle',
     // from 2010
     stageFileRef: 'archives:RoomsStage-May2010.swf',
-    // from 2011 inaccurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf',
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     costumeTrunkFileRef: 'archives:December2008Costume.swf',
     notPremiere: true
   },
@@ -204,7 +203,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2009-04-10',
     name: 'Quest for the Golden Puffle',
     stageFileRef: 'archives:RoomsStage-May2010.swf', // from 2010
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf', // from 2011 inaccurate
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     costumeTrunkFileRef: 'archives:December2008Costume.swf'
   },
   {
@@ -263,7 +262,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2009-12-25',
     name: 'Quest for the Golden Puffle',
     costumeTrunkFileRef: 'archives:December2008Costume.swf', // from 2008 unknown if accurate,
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-May2010.swf' // from March, unknown if accurate
   },
   {
@@ -284,7 +283,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2010-03-29',
     name: 'Quest for the Golden Puffle',
     costumeTrunkFileRef: 'archives:December2008Costume.swf', // from 2008 unknown if accurate 
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-May2010.swf' // accurate
   },
   {
