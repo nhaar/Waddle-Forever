@@ -204,6 +204,13 @@ export const PINS: Array<Pin> = [
     end: '2009-11-06'
   },
   {
+    name: 'Hot Chocolate',
+    date: '2009-11-20',
+    end: '2009-12-04',
+    room: 'coffee',
+    fileRef: 'archives:Coffee_Shop_Hot_Chocolate_Pin.swf'
+  },
+  {
     name: 'Christmas Bell',
     date: '2009-12-04',
     end: '2009-12-18',
