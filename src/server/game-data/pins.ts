@@ -252,5 +252,12 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Pizza_Parlor_Light_Bulb_Pin.swf',
     date: '2010-06-18',
     end: '2010-07-02'
+  },
+  {
+    name: 'Candy Apple',
+    room: 'lake',
+    fileRef: 'archives:Hidden_Lake_Candy_Apple_Pin.swf',
+    date: '2010-07-02',
+    end: '2010-07-16'
   }
 ];
