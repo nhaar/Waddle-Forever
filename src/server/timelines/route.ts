@@ -147,7 +147,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
       this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
       this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
       this.add('play/v2/content/global/tickets.swf', changes.fairCpip.iconFileId, start, end);
-      this.add('play/v2/content/global/ticket_info.swf', 'archives:Tickets-TheFair2009.swf', start, end);
+      this.add('play/v2/content/global/ticket_info.swf', changes.fairCpip.infoFile, start, end);
     }
   }
 

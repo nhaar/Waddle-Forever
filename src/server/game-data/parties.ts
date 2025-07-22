@@ -45,6 +45,7 @@ export type PartyChanges = {
     // exact ID
     iconFileId: FileRef;
     // UI id might be required in the future if we find different ones
+    infoFile: FileRef;
   };
 }
 
@@ -1174,7 +1175,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       town: 221
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
+      infoFile: 'recreation:fair_08_ticket_info.swf'
     },
     updates: [
       {
@@ -1929,7 +1931,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       }
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
     }
   },
   {
@@ -2814,7 +2817,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'party3': 221
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2010.swf'
+      iconFileId: 'archives:Ticket_icon-TheFair2010.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
     },
     localChanges: {
       'catalogues/prizebooth.swf': {

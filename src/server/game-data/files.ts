@@ -501,6 +501,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_party_07_dance.swf',
       comment: 'Made by victando. Dance Club for the Water Party 2007'
+    },
+    {
+      file: 'fair_08_ticket_info.swf',
+      comment: 'Made by lifeofgames477. A recreation of the tickets information screen for the Fair 2008'
     }
   ],
   [MOD]: [
