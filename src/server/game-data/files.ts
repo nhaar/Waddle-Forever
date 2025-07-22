@@ -521,6 +521,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_haunting_of_the_viking_opera.swf',
       comment: 'Made by Blue Kirby. Plaza for the Haunting of the Viking Opera play before weather manipulation'
+    },
+    {
+      file: 'plaza_ruby_no_weather_09_july.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Ruby and the Ruby play before weather manipulation, but specifically for July 2009, which has a different billboard'
     }
   ],
   [MOD]: [
