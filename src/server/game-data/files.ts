@@ -533,6 +533,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fair_09_penguins_time_forgot.swf',
       comment: 'Made by Blue Kirby. Plaza for the Penguins that Time Forgot play during the Fair 2009'
+    },
+    {
+      file: 'holiday_09_plaza_quest_golden_puffle.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Quest for the Golden Puffle play during the Holiday Party 2009'
     }
   ],
   [MOD]: [

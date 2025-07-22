@@ -259,7 +259,7 @@ export const STAGE_TIMELINE: Array<{
     party1: 'archives:RoomsParty1-December2009.swf'
   },
   {
-    date: '2009-12-25',
+    date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
     name: 'Quest for the Golden Puffle',
     costumeTrunkFileRef: 'archives:December2008Costume.swf', // from 2008 unknown if accurate,
     plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',

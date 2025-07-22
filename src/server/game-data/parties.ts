@@ -2275,7 +2275,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         village: 'archives:RoomsVillage-HolidayParty2009Pre.swf',
         town: 'archives:RoomsTown-HolidayParty2009Construction.swf'
       }
-    }
+    },
+    updates: [
+      {
+        date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
+        roomChanges: {
+          plaza: 'recreation:holiday_09_plaza_quest_golden_puffle.swf'
+        }
+      }
+    ]
   },
   {
     name: 'Cave Expedition',
