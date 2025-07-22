@@ -32,19 +32,7 @@ export type PartyChanges = {
   music?: Partial<Record<RoomName, number>>;
 
   activeMigrator?: MigratorVisit;
-}
 
-export type Party = PartyChanges & {
-  name?: string;
-  /** If true, then this will not be labeled a party in the timeline */
-  event?: true;
-
-  // Overriding the default placeholder message for a party start
-  // with a custom one
-  startComment?: string;
-  endComment?: string;
-
-  construction?: Construction;
   /** Scavenger Hunt icon is loaded by the dependency, must be specified */
   scavengerHunt2010?: {
     iconFileId: FileRef;
@@ -58,6 +46,19 @@ export type Party = PartyChanges & {
     iconFileId: FileRef;
     // UI id might be required in the future if we find different ones
   };
+}
+
+export type Party = PartyChanges & {
+  name?: string;
+  /** If true, then this will not be labeled a party in the timeline */
+  event?: true;
+
+  // Overriding the default placeholder message for a party start
+  // with a custom one
+  startComment?: string;
+  endComment?: string;
+
+  construction?: Construction;
 
   updates?: Array<{
     comment?: string;
