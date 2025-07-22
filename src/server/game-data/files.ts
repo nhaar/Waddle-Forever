@@ -473,6 +473,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'lounge_cake_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forest_blue_snow_shovel_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beach_snowflake_tile_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pet_fort_snow_fort_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lodge_present_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

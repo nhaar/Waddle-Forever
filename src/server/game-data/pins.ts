@@ -108,15 +108,34 @@ export const PINS: Array<Pin> = [
   {
     name: '3rd Anniversary Cake',
     date: Update.THIRD_ANNIVERSARY,
-    end: '2008-11-07',
+    end: Update.BLUE_SNOW_PIN,
     room: 'lounge',
     fileRef: 'recreation:lounge_cake_pin.swf'
   },
   {
+    name: 'Blue Snow Shovel',
+    date: Update.BLUE_SNOW_PIN,
+    end: Update.SNOWFLAKE_TILE_PIN,
+    room: 'forest',
+    fileRef: 'recreation:forest_blue_snow_shovel_pin.swf'
+  },
+  {
+    name: 'Snowflake Tile',
+    date: Update.SNOWFLAKE_TILE_PIN,
+    end: Update.SNOW_FORT_PIN,
+    room: 'beach',
+    fileRef: 'recreation:beach_snowflake_tile_pin.swf'
+  },
+  {
+    name: 'Snow Fort',
+    date: Update.SNOW_FORT_PIN,
+    end: '2008-12-19',
+    room: 'pet',
+    fileRef: 'recreation:pet_fort_snow_fort_pin.swf'
+  },
+  {
     name: 'Present',
-    date: '2008-12-19',
-    end: '2009-01-02',
-    // post party version is lost
+    date: '2008-12-19'
   },
   {
     name: 'Taco',

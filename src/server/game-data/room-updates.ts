@@ -659,5 +659,12 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       fileRef: 'archives:ArtworkRoomsForts50.swf',
       comment: 'The Snow Forts clock breaks'
     }
+  ],
+  'lodge': [
+    {
+      date: Update.CHRISTMAS_2008_END,
+      end: Update.GINGERBREAD_PIN,
+      fileRef: 'recreation:lodge_present_pin.swf'
+    }
   ]
 }

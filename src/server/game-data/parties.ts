@@ -1286,7 +1286,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'Christmas Party',
     date: '2008-12-19',
-    end: '2008-12-29',
+    end: Update.CHRISTMAS_2008_END,
     roomChanges: {
       beach: 'archives:RoomsBeach-ChristmasParty2008.swf',
       beacon: 'archives:RoomsBeacon-ChristmasParty2008.swf',
