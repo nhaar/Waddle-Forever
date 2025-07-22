@@ -197,6 +197,13 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Sensei_Fire_Hunt_pizza.swf'
   },
   {
+    name: '4th Anniversary Cake',
+    room: 'boiler',
+    fileRef: 'archives:Boiler_Room_4th_Anniversary_Cake_Pin.swf',
+    date: '2009-10-23',
+    end: '2009-11-06'
+  },
+  {
     name: 'Christmas Bell',
     date: '2009-12-04',
     end: '2009-12-18',
