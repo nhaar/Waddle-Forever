@@ -1553,6 +1553,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     globalChanges: {
       'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
+    },
+    construction: {
+      date: '2009-03-17',
+      changes: {
+        plaza: 'recreation:penguin_play_awards_09_plaza_const.swf'
+      }
     }
   },
   {
