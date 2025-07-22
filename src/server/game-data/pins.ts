@@ -259,5 +259,12 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Hidden_Lake_Candy_Apple_Pin.swf',
     date: '2010-07-02',
     end: '2010-07-16'
+  },
+  {
+    name: 'Tambourine',
+    room: 'attic',
+    fileRef: 'archives:RoomsAtticTambourinePin.swf',
+    date: '2010-07-16',
+    end: '2010-07-30'
   }
 ];
