@@ -1,3 +1,4 @@
+import { getSubUpdateDates } from ".";
 import { iterateEntries } from "../../common/utils";
 import { TimelineMap } from "../game-data";
 import { PARTIES } from "../game-data/parties";
@@ -39,6 +40,12 @@ export function getMusicTimeline() {
     if (party.music !== undefined) {
       addMusic(party.music, party.date, party.end);
     }
+    party.updates?.forEach((update, i) => {
+      if (update.music !== undefined) {
+        const dates = getSubUpdateDates(party, i);
+        addMusic(update.music, dates.date, dates.end);
+      }
+    })
   })
 
   STANDALONE_UPDATES.forEach((update) => {

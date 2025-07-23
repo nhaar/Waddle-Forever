@@ -34,7 +34,10 @@ function applyChanges(crumbs: string, changes: Partial<LocalCrumbContent>): stri
 
   if (changes.paths !== undefined) {
     for (const path in changes.paths) {
-      newCrumbs = addLocalPath(newCrumbs, path, changes.paths[path]);
+      const pathName = changes.paths[path];
+      if (pathName !== undefined) {
+        newCrumbs = addLocalPath(newCrumbs, path, pathName);
+      }
     }
   }
 

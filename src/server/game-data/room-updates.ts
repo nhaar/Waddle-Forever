@@ -635,6 +635,12 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       fileRef: 'archives:Plaza31.swf',
       comment: 'A construction begins at the Plaza',
       frame: 2
+    },
+    {
+      date: '2008-09-05',
+      end: Update.RUBY_DEBUT,
+      fileRef: 'recreation:plaza_ruby_construction.swf',
+      comment: 'A construction begins at the Plaza for the Stage'
     }
   ],
   'town': [
@@ -652,6 +658,13 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: '2008-04-21',
       fileRef: 'archives:ArtworkRoomsForts50.swf',
       comment: 'The Snow Forts clock breaks'
+    }
+  ],
+  'lodge': [
+    {
+      date: Update.CHRISTMAS_2008_END,
+      end: Update.GINGERBREAD_PIN,
+      fileRef: 'recreation:lodge_present_pin.swf'
     }
   ]
 }

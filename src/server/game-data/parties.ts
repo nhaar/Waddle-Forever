@@ -32,6 +32,21 @@ export type PartyChanges = {
   music?: Partial<Record<RoomName, number>>;
 
   activeMigrator?: MigratorVisit;
+
+  /** Scavenger Hunt icon is loaded by the dependency, must be specified */
+  scavengerHunt2010?: {
+    iconFileId: FileRef;
+    // if not supplied, will use a placeholder one
+    iconFilePath?: string;
+  };
+
+  /** If used the CPIP fair icon and its info */
+  fairCpip?: {
+    // exact ID
+    iconFileId: FileRef;
+    // UI id might be required in the future if we find different ones
+    infoFile: FileRef;
+  };
 }
 
 export type Party = PartyChanges & {
@@ -45,19 +60,6 @@ export type Party = PartyChanges & {
   endComment?: string;
 
   construction?: Construction;
-  /** Scavenger Hunt icon is loaded by the dependency, must be specified */
-  scavengerHunt2010?: {
-    iconFileId: FileRef;
-    // if not supplied, will use a placeholder one
-    iconFilePath?: string;
-  };
-
-  /** If used the CPIP fair icon and its info */
-  fairCpip?: {
-    // exact ID
-    iconFileId: FileRef;
-    // UI id might be required in the future if we find different ones
-  };
 
   updates?: Array<{
     comment?: string;
@@ -485,6 +487,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: '2007-07-13',
     end: '2007-07-23',
     roomChanges: {
+      dance: 'recreation:water_party_07_dance.swf',
       'dojo': 'archives:ArtworkRoomsDojo50.swf'
     },
     music: {
@@ -1039,6 +1042,14 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:MJ2008MusicCatalog.swf'
       }
     },
+    updates: [
+      {
+        date: Update.RECORD_PIN,
+        roomChanges: {
+          dance: 'recreation:dance_record_pin_mjam.swf'
+        }
+      }
+    ],
     permanentChanges: {
       roomChanges: {
         // placeholder date for the band
@@ -1047,7 +1058,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     consequences: {
       roomChanges: {
-        dance: 'recreation:dance_cpip_postmusicjam1.swf'
+        dance: 'recreation:dance_record_pin.swf'
       },
       roomComment: 'The Dance Club is updated post Music Jam'
     }
@@ -1164,8 +1175,21 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       town: 221
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
-    }
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
+      infoFile: 'recreation:fair_08_ticket_info.swf'
+    },
+    updates: [
+      {
+        date: '2008-09-30',
+        comment: 'The plaza was decorated',
+        roomChanges: {
+          plaza: 'recreation:fair_2008_plaza_decorated.swf'
+        },
+        music: {
+          plaza: 221
+        }
+      }
+    ]
   },
   {
     name: '3rd Anniversary Party',
@@ -1278,7 +1302,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'Christmas Party',
     date: '2008-12-19',
-    end: '2008-12-29',
+    end: Update.CHRISTMAS_2008_END,
     roomChanges: {
       beach: 'archives:RoomsBeach-ChristmasParty2008.swf',
       beacon: 'archives:RoomsBeacon-ChristmasParty2008.swf',
@@ -1529,6 +1553,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     globalChanges: {
       'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
+    },
+    construction: {
+      date: '2009-03-17',
+      changes: {
+        plaza: 'recreation:penguin_play_awards_09_plaza_const.swf'
+      }
     }
   },
   {
@@ -1696,6 +1726,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     localChanges: {
       'catalogues/party.swf': {
         'en': 'archives:ENCataloguesParty-MedievalParty2009.swf'
+      }
+    },
+    construction: {
+      date: '2009-05-01',
+      changes: {
+        cave: 'recreation:medieval_09_const_cave.swf'
       }
     }
   },
@@ -1907,8 +1943,17 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       }
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
-    }
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
+    },
+    updates: [
+      {
+        date: Update.PENGUINS_TIME_FORGOT_2009,
+        roomChanges: {
+          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
+        }
+      }
+    ],
   },
   {
     name: 'Sensei\'s Fire Scavenger Hunt',
@@ -2230,7 +2275,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         village: 'archives:RoomsVillage-HolidayParty2009Pre.swf',
         town: 'archives:RoomsTown-HolidayParty2009Construction.swf'
       }
-    }
+    },
+    updates: [
+      {
+        date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
+        roomChanges: {
+          plaza: 'recreation:holiday_09_plaza_quest_golden_puffle.swf'
+        }
+      }
+    ]
   },
   {
     name: 'Cave Expedition',
@@ -2792,7 +2845,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'party3': 221
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2010.swf'
+      iconFileId: 'archives:Ticket_icon-TheFair2010.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
     },
     localChanges: {
       'catalogues/prizebooth.swf': {
