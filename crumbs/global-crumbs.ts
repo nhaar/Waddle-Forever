@@ -83,6 +83,7 @@ function changeItemCosts(crumbs: string, prices: Record<number, number>): string
 }
 
 function addGlobalPath(crumbs: string, pathName: string, path: string): string {
+  console.log(`Global path recibido: ${pathName} -> ${path}`);
   const lines = crumbs.split('\n');
   let insertIndex: number | undefined = undefined;
   for (let i = 0; i < lines.length; i++) {

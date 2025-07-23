@@ -151,6 +151,7 @@ export function getGlobalCrumbsOutput() {
           if (typeof info !== 'number') {
             const [_, ...paths] = info;
             paths.forEach((globalPath) => {
+              console.log(`Fiesta "${party.name}" solicita global path: ${globalPath} -> ${route}`); 
               globalPaths[globalPath] = route;
             })
           }
