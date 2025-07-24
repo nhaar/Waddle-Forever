@@ -180,62 +180,8 @@ function getPricesTimeline() {
  */
 export function getGlobalCrumbsOutput() {
   return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
-<<<<<<< HEAD
-    STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
-      timeline.push({
-        date: visit.date,
-        end: visit.end,
-        info: {
-          newMigratorStatus: true
-        }
-      });
-    });
-    
-    PARTIES.forEach((party) => {
-      const globalPaths: Record<string, string> = {};
-      if (party.globalChanges !== undefined) {
-        Object.entries(party.globalChanges).forEach((pair) => {
-          const [route, info] = pair;
-          if (typeof info !== 'number') {
-            const [_, ...paths] = info;
-            paths.forEach((globalPath) => {
-              console.log(`Fiesta "${party.name}" solicita global path: ${globalPath} -> ${route}`); 
-              globalPaths[globalPath] = route;
-            })
-          }
-        })
-      }
-
-      if (party.scavengerHunt2010 !== undefined) {
-        const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
-        globalPaths['scavenger_hunt_icon'] = huntIconPath;
-      }
-
-      if (party.fairCpip !== undefined) {
-        globalPaths['ticket_icon'] = TICKET_ICON_PATH;
-        globalPaths['tickets'] = TICKET_INFO_PATH;
-      }
-  
-      // we only want to add parties that are post CPIP and actually made changes
-      // so we don't have excess crumb files
-      // NOTE that this design can easily lead to new properties being added not being handled
-      let crumbChanged = false;
-      if (isGreaterOrEqual(party.date, Update.CPIP_UPDATE)) {
-        // change is detected if any of these is true
-        crumbChanged = [
-          party.music !== undefined,
-          Object.keys(globalPaths).length > 0,
-          party.activeMigrator !== undefined,
-          party.scavengerHunt2010 !== undefined,
-          party.fairCpip !== undefined
-        ].some((v) => v);
-      }
-  
-      if (crumbChanged) {
-=======
     migratorTimeline.forEach((info) => {
       if (isGreater(info.date, Update.CPIP_UPDATE)) {
->>>>>>> upstream/dev
         timeline.push({
           date: info.date,
           info: {

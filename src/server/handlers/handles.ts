@@ -147,15 +147,12 @@ export enum Handle {
   JoinTemporaryWaddle,
   LeaveWaddleMatch,
   GetFireLevel,
-<<<<<<< HEAD
-  Puffletrick
-=======
   CardJitsuFireClickSpinner,
   CardJitsuFireChooseTile,
   CardJitsuFireChooseCard,
   CardJitsuFireInfoReady,
-  CardJitsuFireChooseElement
->>>>>>> upstream/dev
+  CardJitsuFireChooseElement,
+  Puffletrick
 };
 
 /** Map of all the handles and their valid arguments */
@@ -397,8 +394,7 @@ const HANDLER_MAPPING: HandlerMapping = {
       'pcid': Handle.EatPuffleItem,
       'revealgoldpuffle': Handle.RevealGoldPuffle,
       'rpqtc': Handle.SetRainbowQuestTaskComplete,
-      'puffletrick': Handle.Puffletrick,
-       
+      'puffletrick': Handle.Puffletrick
     },
     'st': {
       'gsbcd': Handle.GetStampbookCoverData,

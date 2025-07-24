@@ -77,7 +77,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
       {
         date: '2016-01-01',
         events: {
-          other: ['test-Leo2']
+          other: ['test']
         }
       }
     ]
