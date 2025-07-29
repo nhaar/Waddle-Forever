@@ -308,6 +308,11 @@ class GameRoom {
   getWaddleRooms() {
     return Array.from(this._waddles.values());
   }
+
+  /** Broadcast the walking puffles of every player in the room */
+  broadcastWalkingPuffles() {
+    this.players.forEach(player => player.broadcastWalkingPuffle());
+  }
 }
 
 /** Map of the waddle games and their constructors */
@@ -726,28 +731,8 @@ export class Client {
         bot.followPosition(xx, yy);
       });
 
-      // send every player's walking puffle again after bots joined
-      setTimeout(() => {
-        this.room.players.forEach(player => {
-          player.broadcastWalkingPuffle();
-        });
-      }, 300);
-
-      // send walking puffles of existing players to this newcomer
-      this.room.players.forEach(player => {
-        if (player !== this) {
-          player.sendWalkingPuffle(this);
-        }
-      });
-
-      // reenvío por si acaso para asegurar que el jugador reciba todos
-      setTimeout(() => {
-        this.room.players.forEach(player => {
-          if (player !== this) {
-            player.sendWalkingPuffle(this);
-          }
-        });
-      }, 500);
+      // retransmitir los puffles caminando de todos los jugadores
+      setTimeout(() => this.room.broadcastWalkingPuffles(), 300);
 
       // broadcast this player's walking puffle to everyone
       // send again shortly after to ensure the player sees their own puffle
