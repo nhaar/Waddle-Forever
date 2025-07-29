@@ -10,6 +10,7 @@ son recreaciones hechas de CERO. Para ejecutar el proyecto:
 
 **Nota**: Este repositorio es solo para fines educativos y de desarrollo personal. No aloja ni distribuye activos protegidos por derechos de autor.
 
+© Disney. Todos los derechos reservados.
 
 # Waddle Forever
 
