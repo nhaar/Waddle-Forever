@@ -43,7 +43,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/client/sentry.swf': 'svanilla:media/play/v2/client/sentry.swf',
   'play/v2/client/servers.swf': 'svanilla:media/play/v2/client/servers.swf',
 
-  'play/v2/client/party_icon.swf': 'svanilla:media/play/v2/client/party_icon.swf',
+
 
   'play/v2/client/stampbook.swf': 'svanilla:media/play/v2/client/stampbook.swf',
   'play/v2/client/stamps.swf': 'svanilla:media/play/v2/client/stamps.swf',
@@ -104,7 +104,9 @@ export const AS3_STATIC_FILES: RouteRefMap = {
 
   'play/v2/content/global/close_ups/first_successful_puffle_dig.swf': 'svanilla:media/play/v2/content/global/close_ups/first_successful_puffle_dig.swf',
   'play/v2/content/global/close_ups/psa_missions_interface.swf': 'svanilla:media/play/v2/content/global/close_ups/psa_missions_interface.swf',
+
   'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
+
   'play/v2/content/global/content/features.swf': 'svanilla:media/play/v2/content/global/content/features.swf',
   'play/v2/content/global/content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf',
   'play/v2/content/global/content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
@@ -112,8 +114,10 @@ export const AS3_STATIC_FILES: RouteRefMap = {
 
   'play/v2/content/global/content/party_icon.swf': 'svanilla:media/play/v2/content/global/content/party_icon.swf',
 
-
   'play/v2/content/global/content/prompts.swf': 'svanilla:media/play/v2/content/global/content/prompts.swf',
+
+
+
   'play/v2/content/global/interface/gold_nuggets_hud.swf': 'svanilla:media/play/v2/content/global/interface/gold_nuggets_hud.swf',
   'play/v2/content/global/logo/logo.swf': 'svanilla:media/play/v2/content/global/logo/logo.swf',
   'play/v2/content/global/music/345.swf': 'svanilla:media/play/v2/content/global/music/345.swf',

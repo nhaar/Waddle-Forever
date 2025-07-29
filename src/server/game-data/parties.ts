@@ -1287,6 +1287,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       dojo: 'archives:DojoConstruction2008.swf',
       dojoext: 'archives:DojoExtConstruction2008.swf'
     },
+
+    globalChanges: {  
+      'content/mystery_penguin.swf': 'archives:DojoMystery_penguin200808.swf',  
+   },  
+
     updates: [
       {
         comment: 'The excavation progresses, and less snow covers the Dojo',
@@ -2774,9 +2779,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2010-08-19',
     roomChanges: {
       'party3': 'archives:RoomsParty3-MtnExpedition.swf',
-      'party6': 'archives:RoomsParty6-MtnExpedition.swf',
+      //'party6': 'archives:RoomsParty6-MtnExpedition.swf',
+      'party6': 'archives:RoomsPartyR6-MtnExpedition.swf',
       'party2': 'archives:RoomsParty2-MtnExpedition.swf',
-      'party4': 'archives:RoomsParty4-MtnExpedition.swf',
+      //'party4': 'archives:RoomsParty4-MtnExpedition.swf',
+      'party4': 'archives:RoomsPartyR4-MtnExpedition.swf',
+      'party7': 'archives:RoomsParty7-MtnExpedition.swf',
+      'party8': 'archives:RoomsParty8-MtnExpedition.swf',
+      'party9': 'archives:RoomsParty9-MtnExpedition.swf',
+      'party10': 'archives:RoomsParty10-MtnExpedition.swf',
       'plaza': 'archives:RoomsPlaza-MtnExpedition.swf',
       'village': 'archives:RoomsVillage-MtnExpedition.swf',
       'party1': 'archives:RoomsParty1-MtnExpedition.swf',
@@ -3338,14 +3349,17 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'content/party.swf': 'Halloween2016:HalloweenParty2016party.swf',  
       'content/features.swf': 'Halloween2016:HalloweenParty2016features.swf', 
       'content/interface.swf': 'Halloween2016:HalloweenParty2016interface.swf',  
-      'close_ups/quest_interface.swf': 'Halloween2016:HalloweenParty2016quest_interface.swf',  
+      //'close_ups/quest_interface.swf': 'Halloween2016:HalloweenParty2016quest_interface.swf',  
       'logo/logo.swf': 'Halloween2016:HalloweenParty2016logo.swf',
-      'content/prompts': 'Halloween2016:HalloweenParty2016prompts.swf'
-    }  
+      'content/prompts': 'Halloween2016:HalloweenParty2016prompts.swf',
+
+      'scavenger_hunt/hunt_ui.swf': ['Halloween2016:HalloweenParty2016quest_interface.swf', 'hunt_ui', 'halloween_hunt'],
+
+    },
 
     scavengerHunt2010: {
       iconFileId: 'Halloween2016:HalloweenParty2016party_icon.swf'
-    }
+    },
 
 
   },

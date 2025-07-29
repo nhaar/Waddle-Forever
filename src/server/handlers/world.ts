@@ -16,6 +16,7 @@ import cardHandler from './games/card';
 import fireHandler from './games/fire';
 import matchHandler from './games/matchmaking';
 import ninjaHandler from './games/ninja';
+import botsHandler from './bots';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -37,5 +38,6 @@ handler.use(cardHandler);
 handler.use(matchHandler);
 handler.use(ninjaHandler);
 handler.use(fireHandler);
+handler.use(botsHandler);
 
 export default handler;

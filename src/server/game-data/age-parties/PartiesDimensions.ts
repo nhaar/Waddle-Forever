@@ -224,14 +224,16 @@ export const PARTIES_DIMENSIONS = [
 
     globalChanges: {  
       'content/party.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party.swf',  
-      //'content/party_icon.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016party_icon.swf',  
       'close_ups/quest_interface.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016quest_interface.swf',  
       'content/features.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016features.swf', 
       'logo/logo.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016logo.swf',
       'content/prompts.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016prompts.swf',
       'content/interface.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016interface.swf',
       'content/archives.swf': 'OperationPuffleCPD2016:OperationPuffleCPDPARTY2016archives.swf',
-    },  
+ 
+    }
+
+
   }
 
 

@@ -15,9 +15,10 @@ import { Update } from './game-data/updates';
 import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
-import { Vector } from '../common/utils';
+import { Vector, choose, randomInt } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
+import { getClientPuffleIds } from './handlers/play/puffle';
 
 const versionsTimeline = getVersionsTimeline();
 
@@ -1457,5 +1458,57 @@ export class BotGroup {
     for (let i = 0; i < amount; i++) {
       this.spawnBot(`${baseName}${i + 1}`, room);
     }
+  }
+
+  wearRandom(target?: string): void {
+    const slots: ItemType[] = [
+      ItemType.Color,
+      ItemType.Head,
+      ItemType.Face,
+      ItemType.Neck,
+      ItemType.Body,
+      ItemType.Hand,
+      ItemType.Feet,
+      ItemType.Background
+    ];
+    const itemsByType: Map<ItemType, Item[]> = new Map();
+    ITEMS.rows.forEach(item => {
+      if (item.type !== ItemType.Nothing && item.cost > 0) {
+        const arr = itemsByType.get(item.type) ?? [];
+        arr.push(item);
+        itemsByType.set(item.type, arr);
+      }
+    });
+    this.callBotAction(target, bot => {
+      slots.forEach(type => {
+        const arr = itemsByType.get(type);
+        if (arr && arr.length > 0) {
+          const item = choose(arr).id;
+          bot.equip(item);
+        }
+      });
+    });
+  }
+
+  giveRandomPuffle(target?: string): void {
+    this.callBotAction(target, bot => {
+      const puffle = choose(PUFFLES.rows);
+      const playerPuffle = bot.penguin.addPuffle(puffle.name, puffle.id);
+      bot.walkPuffle(playerPuffle.id);
+      bot.sendXt('pw', bot.penguin.id, playerPuffle.id, ...getClientPuffleIds(puffle.id), 1, 0);
+    });
+  }
+
+  wander(intervalMs: number = 5000, roomWidth: number = 640, roomHeight: number = 480, target?: string): void {
+    this.callBotAction(target, bot => {
+      setInterval(() => {
+        const x = randomInt(0, roomWidth);
+        const y = randomInt(0, roomHeight);
+        bot.setPosition(x, y);
+        if (randomInt(0, 3) === 0) {
+          bot.setFrame(26);
+        }
+      }, intervalMs);
+    });
   }
 }
