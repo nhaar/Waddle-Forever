@@ -58,9 +58,21 @@ Under the hood, a Club Penguin server emulator runs to give full functionality t
 To build you must have Node.js, npm and yarn installed. After cloning the code, install all dependencies:
 
 > [!NOTE]  
-> Last built using Node.js v20.12.2, NPM v9.8.1, yarn v1.22.22
+> Se compiló por última vez con Node.js v20.12.2, NPM v9.8.1 y yarn v1.22.22.
+
 
 ```yarn install```
+
+```yarn build-packages```
+
+Install 22.0.2 de JPEXS FFDec
+
+Create file .env and "write FFDEC_PATH=C:\Program Files (x86)\FFDec\ffdec.bat"
+
+
+```yarn local-crumbs```
+```yarn global-crumbs```
+```yarn news-crumbs```
 
 For running the client in development, run
 
