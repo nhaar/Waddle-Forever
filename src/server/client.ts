@@ -726,6 +726,13 @@ export class Client {
         bot.followPosition(xx, yy);
       });
 
+      // send every player's walking puffle again after bots joined
+      setTimeout(() => {
+        this.room.players.forEach(player => {
+          player.broadcastWalkingPuffle();
+        });
+      }, 300);
+
       // send walking puffles of existing players to this newcomer
       this.room.players.forEach(player => {
         if (player !== this) {
@@ -1407,6 +1414,7 @@ type FollowInfo = {
 
 class Bot extends Client {
   private _followInfo: FollowInfo | undefined;
+  private _idleTimer: NodeJS.Timeout | null = null;
   private _lastMove = Date.now();
 
   override setPosition(x: number, y: number) {
@@ -1415,8 +1423,14 @@ class Bot extends Client {
   }
 
   performAfterIdle(action: () => void, ms = 1000) {
+    if (this._idleTimer) {
+      clearTimeout(this._idleTimer);
+    }
     const delay = Math.max(0, ms - (Date.now() - this._lastMove));
-    setTimeout(action, delay);
+    this._idleTimer = setTimeout(() => {
+      this._idleTimer = null;
+      action();
+    }, delay);
   }
 
   constructor(server: Server, name: string) {
