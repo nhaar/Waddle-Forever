@@ -733,10 +733,24 @@ export class Client {
         }
       });
 
+      // reenvío por si acaso para asegurar que el jugador reciba todos
+      setTimeout(() => {
+        this.room.players.forEach(player => {
+          if (player !== this) {
+            player.sendWalkingPuffle(this);
+          }
+        });
+      }, 500);
+
       // broadcast this player's walking puffle to everyone
       // send again shortly after to ensure the player sees their own puffle
       this.broadcastWalkingPuffle();
-      setTimeout(() => this.broadcastWalkingPuffle(), 500);
+      this.sendWalkingPuffle(this);
+      setTimeout(() => {
+        this.broadcastWalkingPuffle();
+        // resend to ourselves in case the first broadcast was missed
+        this.sendWalkingPuffle(this);
+      }, 500);
     }
   }
 
@@ -1566,7 +1580,7 @@ export class BotGroup {
         const y = randomInt(0, roomHeight);
         bot.setPosition(x, y);
         if (randomInt(0, 3) === 0) {
-          bot.setFrame(26);
+          bot.performAfterIdle(() => bot.setFrame(26));
         }
       }, intervalMs);
     });
