@@ -726,15 +726,17 @@ export class Client {
         bot.followPosition(xx, yy);
       });
 
-      // send info about existing walked puffles to the player joining
+      // send walking puffles of existing players to this newcomer
       this.room.players.forEach(player => {
         if (player !== this) {
           player.sendWalkingPuffle(this);
         }
       });
 
-      // broadcast the player's walking puffle to others in the room
+      // broadcast this player's walking puffle to everyone
+      // send again shortly after to ensure the player sees their own puffle
       this.broadcastWalkingPuffle();
+      setTimeout(() => this.broadcastWalkingPuffle(), 500);
     }
   }
 
@@ -1391,6 +1393,17 @@ type FollowInfo = {
 
 class Bot extends Client {
   private _followInfo: FollowInfo | undefined;
+  private _lastMove = Date.now();
+
+  override setPosition(x: number, y: number) {
+    super.setPosition(x, y);
+    this._lastMove = Date.now();
+  }
+
+  performAfterIdle(action: () => void, ms = 1000) {
+    const delay = Math.max(0, ms - (Date.now() - this._lastMove));
+    setTimeout(action, delay);
+  }
 
   constructor(server: Server, name: string) {
     super(server, undefined, 'World');
@@ -1472,11 +1485,11 @@ export class BotGroup {
   }
 
   setFrame(frame: number, target?: string): void {
-    this.callBotAction(target, b => b.setFrame(frame));
+    this.callBotAction(target, b => b.performAfterIdle(() => b.setFrame(frame)));
   }
 
   dance(target?: string): void {
-    this.callBotAction(target, b => b.setFrame(26));
+    this.callBotAction(target, b => b.performAfterIdle(() => b.setFrame(26)));
   }
 
   wear(itemId: number, target?: string): void {
