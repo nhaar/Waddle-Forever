@@ -344,6 +344,23 @@ export class Penguin {
     return puffle;
   }
 
+  addPuffleWithId(id: number, name: string, puffleType: number): PlayerPuffle {
+    if (id > this._puffleSeq) {
+      this._puffleSeq = id;
+    }
+    const puffle = {
+      id,
+      name,
+      type: puffleType,
+      clean: 100,
+      rest: 100,
+      food: 100
+    }
+    this._puffles.set(id, puffle);
+
+    return puffle;
+  }
+
   addToBackyard(puffle: number) {
     this._backyard.add(puffle);
   }

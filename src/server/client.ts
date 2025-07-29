@@ -330,6 +330,7 @@ export class Server {
   private _settingsManager: SettingsManager;
 
   private _botId = 0;
+  private _puffleId = 0;
 
   private _followers: Map<Client, Bot[]>;
 
@@ -422,6 +423,11 @@ export class Server {
   getNewBotId(): number {
     this._botId++;
     return this._botId;
+  }
+
+  getNewPuffleId(): number {
+    this._puffleId++;
+    return this._puffleId;
   }
 
   getRoom(roomId: number): GameRoom {
@@ -719,6 +725,16 @@ export class Client {
         bot.joinRoom(room, x, y)
         bot.followPosition(xx, yy);
       });
+
+      // send info about existing walked puffles to the player joining
+      this.room.players.forEach(player => {
+        if (player !== this) {
+          player.sendWalkingPuffle(this);
+        }
+      });
+
+      // broadcast the player's walking puffle to others in the room
+      this.broadcastWalkingPuffle();
     }
   }
 
@@ -1032,6 +1048,36 @@ export class Client {
 
   unwalkPuffle() {
     this.walkingPuffle = NaN;
+  }
+
+  /** Broadcast the currently walked puffle to everyone in the room */
+  broadcastWalkingPuffle(): void {
+    if (!isNaN(this.walkingPuffle)) {
+      const playerPuffle = this.penguin.getPuffle(this.walkingPuffle);
+      this.sendRoomXt(
+        'pw',
+        this.penguin.id,
+        playerPuffle.id,
+        ...getClientPuffleIds(playerPuffle.type),
+        1,
+        0
+      );
+    }
+  }
+
+  /** Send walking puffle info of this player to a specific target */
+  sendWalkingPuffle(target: Client): void {
+    if (!isNaN(this.walkingPuffle)) {
+      const playerPuffle = this.penguin.getPuffle(this.walkingPuffle);
+      target.sendXt(
+        'pw',
+        this.penguin.id,
+        playerPuffle.id,
+        ...getClientPuffleIds(playerPuffle.type),
+        1,
+        0
+      );
+    }
   }
 
   swapPuffleFromIglooAndBackyard(playerPuffleId: number, goingToBackyard: boolean) {
@@ -1493,9 +1539,10 @@ export class BotGroup {
   giveRandomPuffle(target?: string): void {
     this.callBotAction(target, bot => {
       const puffle = choose(PUFFLES.rows);
-      const playerPuffle = bot.penguin.addPuffle(puffle.name, puffle.id);
+      const globalId = this._server.getNewPuffleId();
+      const playerPuffle = bot.penguin.addPuffleWithId(globalId, puffle.name, puffle.id);
       bot.walkPuffle(playerPuffle.id);
-      bot.sendXt('pw', bot.penguin.id, playerPuffle.id, ...getClientPuffleIds(puffle.id), 1, 0);
+      bot.sendRoomXt('pw', bot.penguin.id, playerPuffle.id, ...getClientPuffleIds(puffle.id), 1, 0);
     });
   }
 
