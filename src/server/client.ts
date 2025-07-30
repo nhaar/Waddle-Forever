@@ -278,6 +278,9 @@ class GameRoom {
   /** Remove player from room */
   removePlayer(player: Client) {
     this._players.delete(player);
+    if (!this.players.some(p => !p.isBot)) {
+      this._bots.stopAll();
+    }
   }
 
   /** Get players in room */
@@ -745,6 +748,9 @@ export class Client {
         this.room.broadcastWalkingPuffles(this);
         this.broadcastWalkingPuffle();
         this.sendWalkingPuffle(this);
+        // Sync bot animations for this player in case they were already
+        // performing actions before we joined
+        this.room.botGroup.syncBotsFor(this);
       }, 1000);
     }
   }
@@ -1408,6 +1414,11 @@ class Bot extends Client {
   static readonly TRICK_IDS = [1, 2, 3, 4, 5, 6];
   private _lastMove = Date.now();
 
+  /** Check if at least one non-bot player is in the room */
+  private get hasHumanPlayer(): boolean {
+    return this.room.players.some(p => !p.isBot);
+  }
+
   override setPosition(x: number, y: number) {
     super.setPosition(x, y);
     this._lastMove = Date.now();
@@ -1429,6 +1440,7 @@ class Bot extends Client {
   }
 
   startDancing() {
+    if (!this.hasHumanPlayer) return;
     if (this._danceTimer) {
       clearTimeout(this._danceTimer);
     }
@@ -1443,18 +1455,34 @@ class Bot extends Client {
   }
 
   puffleTrick(trickId: number) {
+    if (!this.hasHumanPlayer) return;
     if (!isNaN(this.walkingPuffle)) {
       this.sendRoomXt('puffletrick', this.penguin.id, trickId);
     }
   }
 
   digTreasure() {
+    if (!this.hasHumanPlayer) return;
     if (!isNaN(this.walkingPuffle)) {
       const coins = randomInt(1, 256);
       this.sendRoomXt('puffledig', this.penguin.id, this.walkingPuffle, 0, 0, coins, 1);
       this.penguin.addCoins(coins);
       this.update();
     }
+  }
+
+  /** Stop any active animations */
+  stopActions() {
+    if (this._idleTimer) {
+      clearTimeout(this._idleTimer);
+      this._idleTimer = null;
+    }
+    if (this._danceTimer) {
+      clearTimeout(this._danceTimer);
+      this._danceTimer = null;
+    }
+    this._isDancing = false;
+    this.setFrame(1);
   }
 
   constructor(server: Server, name: string) {
@@ -1515,6 +1543,10 @@ export class BotGroup {
       }
     }
     bots.forEach(action);
+  }
+
+  stopAll(): void {
+    this.bots.forEach(bot => bot.stopActions());
   }
 
   follow(player: Client, shape: Shape) {
@@ -1621,6 +1653,15 @@ export class BotGroup {
     });
   }
 
+  /** Send current animations of all bots to a single player */
+  syncBotsFor(target: Client): void {
+    this.bots.forEach(bot => {
+      if (bot.isDancing) {
+        target.sendXt('sf', bot.penguin.id, 26);
+      }
+    });
+  }
+
   wander(
     intervalMs: number = 7000,
     roomWidth: number = 640,
@@ -1632,6 +1673,10 @@ export class BotGroup {
 
     bots.forEach(bot => {
       setInterval(() => {
+        if (!bot.hasHumanPlayer) {
+          bot.stopActions();
+          return;
+        }
         let x: number, y: number, attempts = 0;
         do {
           x = randomInt(0, roomWidth);
