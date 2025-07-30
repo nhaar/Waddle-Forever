@@ -738,6 +738,9 @@ export class Client {
       // Enviar los puffles caminando de todos los jugadores solo a este cliente
       // y nuestro propio puffle luego de un pequeño retraso para evitar que
       // el cliente lo pierda al cambiar de sala
+      // Esperar un poco más para asegurar que el cliente
+      // tenga tiempo de cargar los recursos necesarios y
+      // así evitar que los puffles desaparezcan al cambiar de sala
       setTimeout(() => {
         this.room.broadcastWalkingPuffles(this);
         this.broadcastWalkingPuffle();
@@ -1574,16 +1577,37 @@ export class BotGroup {
     });
   }
 
-  wander(intervalMs: number = 5000, roomWidth: number = 640, roomHeight: number = 480, target?: string): void {
-    this.callBotAction(target, bot => {
+  wander(
+    intervalMs: number = 5000,
+    roomWidth: number = 640,
+    roomHeight: number = 480,
+    target?: string
+  ): void {
+    const bots = target ? [this._bots.get(target)!] : this.bots;
+    const MIN_DISTANCE = 60;
+
+    bots.forEach(bot => {
       setInterval(() => {
-        const x = randomInt(0, roomWidth);
-        const y = randomInt(0, roomHeight);
+        let x: number, y: number, attempts = 0;
+        do {
+          x = randomInt(0, roomWidth);
+          y = randomInt(0, roomHeight);
+          attempts++;
+        } while (
+          attempts < 10 &&
+          bots.some(
+            other =>
+              other !== bot &&
+              Math.hypot(other.x - x, other.y - y) < MIN_DISTANCE
+          )
+        );
+
         bot.setPosition(x, y);
-        if (randomInt(0, 3) === 0) {
-          bot.performAfterIdle(() => bot.setFrame(26));
+
+        if (randomInt(0, 4) === 0) {
+          bot.performAfterIdle(() => bot.setFrame(26), 4000);
         }
-      }, intervalMs);
+      }, intervalMs + randomInt(0, 1000));
     });
   }
 }
