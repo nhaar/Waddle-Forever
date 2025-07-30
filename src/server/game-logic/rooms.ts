@@ -5,7 +5,6 @@ export enum Room {
   Town = 100,
   GiftShop = 130,
   VRRoom = 213,
-  Plaza = 300,
   PizzaParlor = 330,
   AstroBarrier = 900,
   BeanCounters = 901,
