@@ -310,8 +310,12 @@ class GameRoom {
   }
 
   /** Broadcast the walking puffles of every player in the room */
-  broadcastWalkingPuffles() {
-    this.players.forEach(player => player.broadcastWalkingPuffle());
+  broadcastWalkingPuffles(target?: Client) {
+    if (target) {
+      this.players.forEach(player => player.sendWalkingPuffle(target));
+    } else {
+      this.players.forEach(player => player.broadcastWalkingPuffle());
+    }
   }
 }
 
@@ -731,8 +735,8 @@ export class Client {
         bot.followPosition(xx, yy);
       });
 
-      // retransmitir los puffles caminando de todos los jugadores
-      setTimeout(() => this.room.broadcastWalkingPuffles(), 300);
+      // Enviar los puffles caminando de todos los jugadores solo a este cliente
+      setTimeout(() => this.room.broadcastWalkingPuffles(this), 300);
 
       // broadcast this player's walking puffle to everyone
       // send again shortly after to ensure the player sees their own puffle
