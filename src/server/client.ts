@@ -273,6 +273,9 @@ class GameRoom {
       y: 0,
       frame: 1
     });
+    if (!player.isBot) {
+      this._bots.humanJoined();
+    }
   }
 
   /** Remove player from room */
@@ -1415,7 +1418,7 @@ class Bot extends Client {
   private _lastMove = Date.now();
 
   /** Check if at least one non-bot player is in the room */
-  private get hasHumanPlayer(): boolean {
+  get hasHumanPlayer(): boolean {
     return this.room.players.some(p => !p.isBot);
   }
 
@@ -1513,6 +1516,7 @@ type Shape = Vector[];
 export class BotGroup {
   private _bots: Map<string, Bot>;
   private _server: Server;
+  private _lastHumanJoin = 0;
 
   constructor(server: Server) {
     this._bots = new Map<string, Bot>;
@@ -1547,6 +1551,10 @@ export class BotGroup {
 
   stopAll(): void {
     this.bots.forEach(bot => bot.stopActions());
+  }
+
+  humanJoined(): void {
+    this._lastHumanJoin = Date.now();
   }
 
   follow(player: Client, shape: Shape) {
@@ -1675,6 +1683,9 @@ export class BotGroup {
       setInterval(() => {
         if (!bot.hasHumanPlayer) {
           bot.stopActions();
+          return;
+        }
+        if (Date.now() - this._lastHumanJoin < 1000) {
           return;
         }
         let x: number, y: number, attempts = 0;
