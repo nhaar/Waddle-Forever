@@ -1405,6 +1405,7 @@ class Bot extends Client {
   private _idleTimer: NodeJS.Timeout | null = null;
   private _danceTimer: NodeJS.Timeout | null = null;
   private _isDancing = false;
+  private static readonly TRICK_IDS = [1, 2, 3, 4, 5, 6];
   private _lastMove = Date.now();
 
   override setPosition(x: number, y: number) {
@@ -1439,6 +1440,21 @@ class Bot extends Client {
       this.setFrame(1);
       this._danceTimer = null;
     }, duration);
+  }
+
+  puffleTrick(trickId: number) {
+    if (!isNaN(this.walkingPuffle)) {
+      this.sendRoomXt('puffletrick', this.penguin.id, trickId);
+    }
+  }
+
+  digTreasure() {
+    if (!isNaN(this.walkingPuffle)) {
+      const coins = randomInt(1, 256);
+      this.sendRoomXt('puffledig', this.penguin.id, this.walkingPuffle, 0, 0, coins, 1);
+      this.penguin.addCoins(coins);
+      this.update();
+    }
   }
 
   constructor(server: Server, name: string) {
@@ -1528,6 +1544,14 @@ export class BotGroup {
 
   dance(target?: string): void {
     this.callBotAction(target, b => b.performAfterIdle(() => b.startDancing()));
+  }
+
+  trick(trickId: number, target?: string): void {
+    this.callBotAction(target, b => b.performAfterIdle(() => b.puffleTrick(trickId)));
+  }
+
+  dig(target?: string): void {
+    this.callBotAction(target, b => b.performAfterIdle(() => b.digTreasure()));
   }
 
   wear(itemId: number, target?: string): void {
@@ -1624,10 +1648,16 @@ export class BotGroup {
 
         if (!bot.isDancing) {
           bot.setPosition(x, y);
-        }
 
-        if (!bot.isDancing && randomInt(0, 4) === 0) {
-          bot.performAfterIdle(() => bot.startDancing(), 4000);
+          const roll = randomInt(0, 5);
+          if (roll === 0) {
+            bot.performAfterIdle(() => bot.startDancing(), 4000);
+          } else if (roll === 1) {
+            const trick = choose(Bot.TRICK_IDS);
+            bot.performAfterIdle(() => bot.puffleTrick(trick), 4000);
+          } else if (roll === 2) {
+            bot.performAfterIdle(() => bot.digTreasure(), 4000);
+          }
         }
       }, intervalMs + randomInt(0, 2000));
     });
