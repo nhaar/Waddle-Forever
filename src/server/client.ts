@@ -742,7 +742,7 @@ export class Client {
         this.room.broadcastWalkingPuffles(this);
         this.broadcastWalkingPuffle();
         this.sendWalkingPuffle(this);
-      }, 300);
+      }, 1000);
     }
   }
 
