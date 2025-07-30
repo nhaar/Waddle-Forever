@@ -571,8 +571,8 @@ handler.xt(Handle.WalkPuffle, (client, puffleId, walking) => {
 
   client.walkPuffle(puffleId);
 
-  // TODO make the room send XT to everyone
-  client.sendXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
+  // enviar a toda la sala el nuevo estado del puffle caminante
+  client.sendRoomXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
   client.update();
 })
 // walking puffle Engine 3
@@ -592,7 +592,8 @@ handler.xt(Handle.WalkPuffle, (client, penguinPuffleId, walking) => {
     client.unwalkPuffle();
   }
 
-  client.sendXt('pw', client.penguin.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
+  // notificar a todos en la sala que el jugador comenzó o dejó de caminar su puffle
+  client.sendRoomXt('pw', client.penguin.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0); // TODO hat stuff (last argument)
   client.update();
   // TODO removing puffle, other cases, properly walking puffle in penguin
 })

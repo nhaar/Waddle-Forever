@@ -738,15 +738,9 @@ export class Client {
       // Enviar los puffles caminando de todos los jugadores solo a este cliente
       setTimeout(() => this.room.broadcastWalkingPuffles(this), 300);
 
-      // broadcast this player's walking puffle to everyone
-      // send again shortly after to ensure the player sees their own puffle
+      // Mostrar inmediatamente nuestro puffle y avisar al resto
       this.broadcastWalkingPuffle();
       this.sendWalkingPuffle(this);
-      setTimeout(() => {
-        this.broadcastWalkingPuffle();
-        // resend to ourselves in case the first broadcast was missed
-        this.sendWalkingPuffle(this);
-      }, 500);
     }
   }
 
