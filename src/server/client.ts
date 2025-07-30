@@ -1403,6 +1403,8 @@ type FollowInfo = {
 class Bot extends Client {
   private _followInfo: FollowInfo | undefined;
   private _idleTimer: NodeJS.Timeout | null = null;
+  private _danceTimer: NodeJS.Timeout | null = null;
+  private _isDancing = false;
   private _lastMove = Date.now();
 
   override setPosition(x: number, y: number) {
@@ -1419,6 +1421,24 @@ class Bot extends Client {
       this._idleTimer = null;
       action();
     }, delay);
+  }
+
+  get isDancing(): boolean {
+    return this._isDancing;
+  }
+
+  startDancing() {
+    if (this._danceTimer) {
+      clearTimeout(this._danceTimer);
+    }
+    this._isDancing = true;
+    this.setFrame(26);
+    const duration = randomInt(8000, 20000);
+    this._danceTimer = setTimeout(() => {
+      this._isDancing = false;
+      this.setFrame(1);
+      this._danceTimer = null;
+    }, duration);
   }
 
   constructor(server: Server, name: string) {
@@ -1507,7 +1527,7 @@ export class BotGroup {
   }
 
   dance(target?: string): void {
-    this.callBotAction(target, b => b.performAfterIdle(() => b.setFrame(26)));
+    this.callBotAction(target, b => b.performAfterIdle(() => b.startDancing()));
   }
 
   wear(itemId: number, target?: string): void {
@@ -1578,7 +1598,7 @@ export class BotGroup {
   }
 
   wander(
-    intervalMs: number = 5000,
+    intervalMs: number = 7000,
     roomWidth: number = 640,
     roomHeight: number = 480,
     target?: string
@@ -1602,12 +1622,14 @@ export class BotGroup {
           )
         );
 
-        bot.setPosition(x, y);
-
-        if (randomInt(0, 4) === 0) {
-          bot.performAfterIdle(() => bot.setFrame(26), 4000);
+        if (!bot.isDancing) {
+          bot.setPosition(x, y);
         }
-      }, intervalMs + randomInt(0, 1000));
+
+        if (!bot.isDancing && randomInt(0, 4) === 0) {
+          bot.performAfterIdle(() => bot.startDancing(), 4000);
+        }
+      }, intervalMs + randomInt(0, 2000));
     });
   }
 }
