@@ -1405,7 +1405,7 @@ class Bot extends Client {
   private _idleTimer: NodeJS.Timeout | null = null;
   private _danceTimer: NodeJS.Timeout | null = null;
   private _isDancing = false;
-  private static readonly TRICK_IDS = [1, 2, 3, 4, 5, 6];
+  static readonly TRICK_IDS = [1, 2, 3, 4, 5, 6];
   private _lastMove = Date.now();
 
   override setPosition(x: number, y: number) {
