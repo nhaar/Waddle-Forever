@@ -736,11 +736,13 @@ export class Client {
       });
 
       // Enviar los puffles caminando de todos los jugadores solo a este cliente
-      setTimeout(() => this.room.broadcastWalkingPuffles(this), 300);
-
-      // Mostrar inmediatamente nuestro puffle y avisar al resto
-      this.broadcastWalkingPuffle();
-      this.sendWalkingPuffle(this);
+      // y nuestro propio puffle luego de un pequeño retraso para evitar que
+      // el cliente lo pierda al cambiar de sala
+      setTimeout(() => {
+        this.room.broadcastWalkingPuffles(this);
+        this.broadcastWalkingPuffle();
+        this.sendWalkingPuffle(this);
+      }, 300);
     }
   }
 
@@ -1484,6 +1486,8 @@ export class BotGroup {
     const bot = new Bot(this._server, name);
     this._bots.set(name, bot);
     bot.joinRoom(startRoom);
+    // Ubicación inicial aleatoria para evitar que aparezcan en la esquina
+    bot.setPosition(randomInt(0, 640), randomInt(0, 480));
     return bot;
   }
 
