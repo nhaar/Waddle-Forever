@@ -4,7 +4,6 @@ import { FileRef } from "./files";
 import { RoomName } from "./rooms";
 import { Update } from "./updates";
 
-
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
 
@@ -1282,11 +1281,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       dojo: 'archives:DojoConstruction2008.swf',
       dojoext: 'archives:DojoExtConstruction2008.swf'
     },
-
-    globalChanges: {  
-      'content/mystery_penguin.swf': 'archives:DojoMystery_penguin200808.swf',  
-   },  
-
     updates: [
       {
         comment: 'The excavation progresses, and less snow covers the Dojo',
@@ -2774,15 +2768,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2010-08-19',
     roomChanges: {
       'party3': 'archives:RoomsParty3-MtnExpedition.swf',
-      //'party6': 'archives:RoomsParty6-MtnExpedition.swf',
-      'party6': 'archives:RoomsPartyR6-MtnExpedition.swf',
+      'party6': 'archives:RoomsParty6-MtnExpedition.swf',
       'party2': 'archives:RoomsParty2-MtnExpedition.swf',
-      //'party4': 'archives:RoomsParty4-MtnExpedition.swf',
-      'party4': 'archives:RoomsPartyR4-MtnExpedition.swf',
-      'party7': 'archives:RoomsParty7-MtnExpedition.swf',
-      'party8': 'archives:RoomsParty8-MtnExpedition.swf',
-      'party9': 'archives:RoomsParty9-MtnExpedition.swf',
-      'party10': 'archives:RoomsParty10-MtnExpedition.swf',
+      'party4': 'archives:RoomsParty4-MtnExpedition.swf',
       'plaza': 'archives:RoomsPlaza-MtnExpedition.swf',
       'village': 'archives:RoomsVillage-MtnExpedition.swf',
       'party1': 'archives:RoomsParty1-MtnExpedition.swf',
@@ -3215,7 +3203,4 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       }
     ]
   }
-
-
-
 ];

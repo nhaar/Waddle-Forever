@@ -702,10 +702,7 @@ const SUBDIRECTORES = new Set([
   'slegacy',
   'svanilla',
   'mammoth',
-  'slippers07',
-  'TheFair2015',
-  'BloodMoon2016',
-  'OperationPuffleCPD2016'
+  'slippers07'
 ]);
 
 if (IS_DEV) {
