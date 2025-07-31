@@ -1718,7 +1718,7 @@ export class BotGroup {
           bot.stopActions();
           return;
         }
-        if (Date.now() - this._lastHumanJoin < 1000) {
+        if (Date.now() - this._lastHumanJoin < 1500) {
           return;
         }
         let x: number, y: number, attempts = 0;
