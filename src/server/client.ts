@@ -18,6 +18,7 @@ import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector, choose, randomInt } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
+import { Handler } from './handlers';
 import { getClientPuffleIds } from './handlers/play/puffle';
 
 const versionsTimeline = getVersionsTimeline();
@@ -350,6 +351,9 @@ export class Server {
   private _followers: Map<Client, Bot[]>;
 
   private _waddleConstructors: WaddleConstructors | undefined;
+  
+  /** Handler with boot callbacks used to (re)initialize server state */
+  private _bootHandler: Handler | undefined;
 
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
@@ -358,6 +362,10 @@ export class Server {
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
     this.init();
+  }
+
+  set bootHandler(handler: Handler | undefined) {
+    this._bootHandler = handler;
   }
 
   private init() {
@@ -387,6 +395,9 @@ export class Server {
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
     this.init();
+    if (this._bootHandler) {
+      this._bootHandler.bootServer(this);
+    }
   }
 
   setCardMatchmaker(matchMaker: MatchMaker) {

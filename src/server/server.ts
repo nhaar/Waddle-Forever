@@ -18,6 +18,7 @@ const createServer = async (type: string, port: number, handler: Handler, settin
   handler.useEndpoints(server);
 
   const gameServer = new Server(settingsManager);
+  gameServer.bootHandler = handler;
 
   handler.bootServer(gameServer);
 
