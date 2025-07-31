@@ -3222,41 +3222,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
 
 
-
-  {
-    name: 'Prehistoric Party 2016',
-    date: '2015-01-20',
-    end: '2015-02-03',
-    roomChanges: {
-      'dock': 'Events2016:PrehistoricParty2016dock.swf',
-      'party1': 'Events2016:PrehistoricParty2016party1.swf',
-      'party3': 'Events2016:PrehistoricParty2016party3.swf',
-      'party13': 'Events2016:PrehistoricParty2016party13.swf',
-      'party14': 'Events2016:PrehistoricParty2016party14.swf',
-      'party15': 'Events2016:PrehistoricParty2016party15.swf',
-      'party16': 'Events2016:PrehistoricParty2016party16.swf',
-      'party17': 'Events2016:PrehistoricParty2016party17.swf',
-      'party18': 'Events2016:PrehistoricParty2016party18.swf',
-      'party19': 'Events2016:PrehistoricParty2016party19.swf',
-      'party20': 'Events2016:PrehistoricParty2016party20.swf',
-      'party21': 'Events2016:PrehistoricParty2016party21.swf',
-      'party22': 'Events2016:PrehistoricParty2016party22.swf',
-      'party23': 'Events2016:PrehistoricParty2016party23.swf',
-      'party25': 'Events2016:PrehistoricParty2016party25.swf',
-      'party26': 'Events2016:PrehistoricParty2016party26.swf'
-    },
-    map: 'Events2016:PrehistoricParty2016map.swf',
-    globalChanges: {  
-      'content/party.swf': 'Events2016:PrehistoricParty2016party.swf',  
-      'content/party_icon.swf': 'Events2016:PrehistoricParty2016party_icon.swf',  
-      'content/features.swf': 'Events2016:PrehistoricParty2016features.swf', 
-      'content/interface.swf': 'Events2016:PrehistoricParty2016interface.swf',  
-      'close_ups/quest_interface.swf': 'Events2016:PrehistoricParty2016quest_interface.swf',  
-      'logo/logo.swf': 'Events2016:PrehistoricParty2016logo.swf'  
-    }  
-  },
-
-
   {
     name: 'The Fair Party 2015',
     date: '2015-11-11',
@@ -3303,68 +3268,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'logo/logo.swf': 'TheFair2015:TheFairParty2015Logo.swf'  
     }  
   },
-  {
-    name: 'Halloween Party 2016',
-    date: '2015-10-20',
-    end: '2015-11-03',
-    roomChanges: {
-      'agentlobbymulti': 'Halloween2016:HalloweenParty2016agentlobbymulti.swf',
-      'attic': 'Halloween2016:HalloweenParty2016attic.swf',
-      'beach': 'Halloween2016:HalloweenParty2016beach.swf',
-      'beacon': 'Halloween2016:HalloweenParty2016beacon.swf',
-      'berg': 'Halloween2016:HalloweenParty2016berg.swf',
-      'cave': 'Halloween2016:HalloweenParty2016cave.swf',
-      'cloudforest': 'Halloween2016:HalloweenParty2016cloudforest.swf',
-      'cove': 'Halloween2016:HalloweenParty2016cove.swf',
-      'dance': 'Halloween2016:HalloweenParty2016dance.swf',
-      'dock': 'Halloween2016:HalloweenParty2016dock.swf',
-      'dojo': 'Halloween2016:HalloweenParty2016dojo.swf',
-      'dojoext': 'Halloween2016:HalloweenParty2016dojoext.swf',
-      'dojofire': 'Halloween2016:HalloweenParty2016dojofire.swf',
-      'dojosnow': 'Halloween2016:HalloweenParty2016dojosnow.swf',
-      'forest': 'Halloween2016:HalloweenParty2016forest.swf',
-      'forts': 'Halloween2016:HalloweenParty2016forts.swf',
-      'hotellobby': 'Halloween2016:HalloweenParty2016hotellobby.swf',
-      'hotelroof': 'Halloween2016:HalloweenParty2016hotelroof.swf',
-      'hotelspa': 'Halloween2016:HalloweenParty2016hotelspa.swf',
-      'light': 'Halloween2016:HalloweenParty2016light.swf',
-      'lodge': 'Halloween2016:HalloweenParty2016lodge.swf',
-      'lounge': 'Halloween2016:HalloweenParty2016lounge.swf',
-      'mall': 'Halloween2016:HalloweenParty2016mall.swf',
-      'mtn': 'Halloween2016:HalloweenParty2016mtn.swf',
-      'park': 'Halloween2016:HalloweenParty2016park.swf',
-      'pet': 'Halloween2016:HalloweenParty2016pet.swf',
-      'pizza': 'Halloween2016:HalloweenParty2016pizza.swf',
-      'plaza': 'Halloween2016:HalloweenParty2016plaza.swf',
-      'pufflewild': 'Halloween2016:HalloweenParty2016pufflewild.swf',
-      'rink': 'Halloween2016:HalloweenParty2016rink.swf',
-      'school': 'Halloween2016:HalloweenParty2016school.swf',
-      'shack': 'Halloween2016:HalloweenParty2016shack.swf',
-      'shop': 'Halloween2016:HalloweenParty2016shop.swf',
-      'skatepark': 'Halloween2016:HalloweenParty2016skatepark.swf',
-      'town': 'Halloween2016:HalloweenParty2016town.swf',
-      'village': 'Halloween2016:HalloweenParty2016village.swf'
-    },
-    globalChanges: {  
-      'content/party.swf': 'Halloween2016:HalloweenParty2016party.swf',  
-      'content/features.swf': 'Halloween2016:HalloweenParty2016features.swf', 
-      'content/interface.swf': 'Halloween2016:HalloweenParty2016interface.swf',  
-      //'close_ups/quest_interface.swf': 'Halloween2016:HalloweenParty2016quest_interface.swf',  
-      'logo/logo.swf': 'Halloween2016:HalloweenParty2016logo.swf',
-      'content/prompts': 'Halloween2016:HalloweenParty2016prompts.swf',
-
-      'scavenger_hunt/hunt_ui.swf': ['Halloween2016:HalloweenParty2016quest_interface.swf', 'hunt_ui', 'halloween_hunt'],
-
-    },
-
-    scavengerHunt2010: {
-      iconFileId: 'Halloween2016:HalloweenParty2016party_icon.swf'
-    },
-
-
-  },
-
-
+ 
 
 
 
