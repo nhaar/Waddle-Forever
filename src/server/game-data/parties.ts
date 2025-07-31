@@ -4,11 +4,6 @@ import { FileRef } from "./files";
 import { RoomName } from "./rooms";
 import { Update } from "./updates";
 
-//
-import { PARTIES_DIMENSIONS } from "./age-parties/PartiesDimensions";
-
-//
-
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
@@ -3219,60 +3214,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         map: 'archives:HolidayParty2010Map.swf'
       }
     ]
-  },
-
-
-  {
-    name: 'The Fair Party 2015',
-    date: '2015-11-11',
-    end: '2015-11-15',
-    roomChanges: {
-      'beach': 'TheFair2015:TheFairParty2015beach.swf', 
-      'book': 'TheFair2015:TheFairParty2015book.swf',
-      'coffee': 'TheFair2015:TheFairParty2015coffee.swf',
-      'cove': 'TheFair2015:TheFairParty2015cove.swf',
-      'dock': 'TheFair2015:TheFairParty2015dock.swf',
-      'dojo': 'TheFair2015:TheFairParty2015dojo.swf',
-      'dojoext': 'TheFair2015:TheFairParty2015dojoext.swf',
-      'forest': 'TheFair2015:TheFairParty2015forest.swf',
-      'forts': 'TheFair2015:TheFairParty2015forts.swf',
-      'hotellobby': 'TheFair2015:TheFairParty2015hotellobby.swf',
-      'hotelroof': 'TheFair2015:TheFairParty2015hotelroof.swf',
-      'hotelspa': 'TheFair2015:TheFairParty2015hotelspa.swf',
-      'mtn': 'TheFair2015:TheFairParty2015mtn.swf',
-      'park': 'TheFair2015:TheFairParty2015park.swf',
-      'party1': 'TheFair2015:TheFairParty2015party1.swf',
-      'party2': 'TheFair2015:TheFairParty2015party2.swf',
-      'party3': 'TheFair2015:TheFairParty2015party3.swf',
-      'party4': 'TheFair2015:TheFairParty2015party4.swf',
-      'party5': 'TheFair2015:TheFairParty2015party5.swf',
-      'party6': 'TheFair2015:TheFairParty2015party6.swf',
-      'party7': 'TheFair2015:TheFairParty2015party7.swf',
-      'party8': 'TheFair2015:TheFairParty2015party8.swf',
-      'party9': 'TheFair2015:TheFairParty2015party9.swf',
-      'party10': 'TheFair2015:TheFairParty2015party10.swf',
-      'party11': 'TheFair2015:TheFairParty2015party11.swf',
-      'party12': 'TheFair2015:TheFairParty2015party12.swf',
-      'pet': 'TheFair2015:TheFairParty2015pet.swf',
-      'pufflewild': 'TheFair2015:TheFairParty2015pufflewild.swf',
-      'rink': 'TheFair2015:TheFairParty2015rink.swf',
-      'shack': 'TheFair2015:TheFairParty2015shack.swf',
-      'skatepark': 'TheFair2015:TheFairParty2015skatepark.swf',
-      'stage': 'TheFair2015:TheFairParty2015stage.swf',
-      'town': 'TheFair2015:TheFairParty2015town.swf',
-      'village': 'TheFair2015:TheFairParty2015village.swf',
-      'plaza': 'TheFair2015:TheFairParty2015plaza.swf'
-    },
-    globalChanges: {  
- 
-      'logo/logo.swf': 'TheFair2015:TheFairParty2015Logo.swf'  
-    }  
-  },
- 
-
-
-
-  ...PARTIES_DIMENSIONS,
+  }
 
 
 
