@@ -428,6 +428,12 @@ export function getClientPuffleIds(puffleId: number) {
   }
 }
 
+export function getEngine2PuffleItemId(puffleId: number): number {
+  const data = PUFFLES.get(puffleId);
+  const base = data?.parentId ?? puffleId;
+  return 750 + base;
+}
+
 enum PuffleCategory {
   Normal,
   Rainbow,
