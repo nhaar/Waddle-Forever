@@ -9,6 +9,8 @@ import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
+import { ROOM_LINKS, ROOM_ID_TO_NAME, MAX_BOTS_PER_ROOM } from './game-data/room-links';
+import { ROOMS } from './game-data/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
 import { Update } from './game-data/updates';
@@ -1522,6 +1524,20 @@ class Bot extends Client {
     this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name, true);
   }
 
+  override joinRoom(room: number, x?: number, y?: number): void {
+    const target = this.server.getRoom(room);
+    let sameRoom = false;
+    try {
+      sameRoom = this.room.id === room;
+    } catch {
+      /* not in a room yet */
+    }
+    if (target.botGroup.count >= MAX_BOTS_PER_ROOM && !sameRoom) {
+      return;
+    }
+    super.joinRoom(room, x, y);
+  }
+
   get followInfo(): FollowInfo {
     return this._followInfo ?? (() => { throw new Error('Follow info has not been initialized') })();
   }
@@ -1565,6 +1581,10 @@ export class BotGroup {
     return Array.from(this._bots.values());
   }
 
+  get count(): number {
+    return this._bots.size;
+  }
+
   private callBotAction(target: string | undefined, action: (bot: Bot) => void) {
     let bots: Bot[] = [];
     if (target === undefined) {
@@ -1591,6 +1611,9 @@ export class BotGroup {
   }
 
   spawnBot(name: string, startRoom: number = Room.Town): Bot {
+    if (this.count >= MAX_BOTS_PER_ROOM) {
+      return this._bots.get(name)!;
+    }
     const bot = new Bot(this._server, name);
     this._bots.set(name, bot);
     bot.joinRoom(startRoom);
@@ -1750,5 +1773,25 @@ export class BotGroup {
         }
       }, intervalMs + randomInt(0, 2000));
     });
+  }
+
+  wanderRooms(intervalMs: number = 30000): void {
+    setInterval(() => {
+      this.bots.forEach(bot => {
+        const currentName = ROOM_ID_TO_NAME[bot.room.id];
+        const options = ROOM_LINKS[currentName];
+        if (!options || options.length === 0) {
+          return;
+        }
+        const nextName = choose(options);
+        const nextId = ROOMS[nextName].id;
+        const targetGroup = this._server.getRoom(nextId).botGroup;
+        if (targetGroup.count >= MAX_BOTS_PER_ROOM) {
+          return;
+        }
+        bot.joinRoom(nextId);
+        bot.setPosition(randomInt(0, 640), randomInt(0, 480));
+      });
+    }, intervalMs);
   }
 }

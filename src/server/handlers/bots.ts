@@ -13,6 +13,7 @@ handler.boot((server) => {
     group.wearRandom();
     group.giveRandomPuffle();
     group.wander();
+    group.wanderRooms();
   });
 });
 
