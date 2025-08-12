@@ -18,8 +18,6 @@ export interface Settings {
   no_rainbow_quest_wait: boolean
   /** Whether or not the user has answered if they want to install a package or not */
   answered_packages: string
-  registration_date: string
-  expiry_date: string
 }
 
 type PartialSettings = Partial<Settings>
@@ -97,9 +95,7 @@ export class SettingsManager {
       always_member: this.readBoolean(settingsJson, 'always_member', true),
       minified_website: this.readBoolean(settingsJson, 'minified_website', false),
       no_rainbow_quest_wait: this.readBoolean(settingsJson, 'no_rainbow_quest_wait', false),
-      answered_packages: this.readString(settingsJson, 'answered_packages'),
-      registration_date: this.readString(settingsJson, 'registration_date'),
-      expiry_date: this.readString(settingsJson, 'expiry_date')
+      answered_packages: this.readString(settingsJson, 'answered_packages')
     };
 
     this.updateSettings({});

@@ -13,12 +13,6 @@ const danceInput = document.querySelector<HTMLInputElement>('.js-dance-arrow-inp
 const memberInput = document.querySelector<HTMLInputElement>('.js-member-input')!;
 const websiteInput = document.querySelector<HTMLInputElement>('.js-website-input')!;
 const rainbowInput = document.querySelector<HTMLInputElement>('.rainbow-input')!;
-const registrationInput = document.querySelector<HTMLInputElement>('.js-registration-input')!;
-const expiryInput = document.querySelector<HTMLInputElement>('.js-expiry-input')!;
-
-function today(): string {
-  return new Date().toISOString().split('T')[0];
-}
 
 /** Update the settings object with the partial settings given */
 function update(settings: any) {
@@ -35,8 +29,6 @@ getSettings().then((settings) => {
   memberInput.checked = settings['always_member'];
   websiteInput.checked = settings['minified_website'];
   rainbowInput.checked = settings['no_rainbow_quest_wait'];
-  registrationInput.value = settings['registration_date'] || today();
-  expiryInput.value = settings['expiry_date'] || today();
 });
 
 fpsInput.addEventListener('change', (e) => {
@@ -108,24 +100,6 @@ websiteInput.addEventListener('change', (e) => {
 rainbowInput.addEventListener('change', (e) => {
   if (e.target instanceof HTMLInputElement) {
     update({ no_rainbow_quest_wait: e.target.checked });
-  }
-});
-
-[registrationInput, expiryInput].forEach((input) => {
-  input.addEventListener('focus', () => {
-    (input as any).showPicker?.();
-  });
-});
-
-registrationInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ registration_date: e.target.value });
-  }
-});
-
-expiryInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ expiry_date: e.target.value });
   }
 });
 
