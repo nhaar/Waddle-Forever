@@ -601,6 +601,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'cove_after_cove_opening_pre_cpip.swf',
       comment: 'made by Victando'
+    },
+    {
+      file: 'color_party_2006/dojo.swf',
+      comment: 'made by Doubleman'
     }
   ],
   [MOD]: [

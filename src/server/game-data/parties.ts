@@ -459,6 +459,17 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Color Party',
+    date: '2006-11-24',
+    end: '2006-11-27',
+    roomChanges: {
+      dojo: 'recreation:color_party_2006/dojo.swf'
+    },
+    music: {
+      dojo: 201
+    }
+  },
+  {
     name: 'Winter Fiesta',
     date: '2007-01-19',
     end: '2007-01-22',
