@@ -545,7 +545,61 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'mine_puffle_o_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'camp_penguin/town.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'camp_penguin/cove.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'camp_penguin/dock.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/beach.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'summer_kickoff_2007/beach_update.swf',
+      comment: 'made by Cyan (added Flower Headdress)'
+    },
+    {
+      file: 'summer_kickoff_2007/town.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/dock.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/mtn.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'summer_kickoff_2007/dojo.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/beacon.swf',
+      comment: 'made by Doubleman'
+    },
+    {
+      file: 'cove_opening/plaza.swf',
+      comment: 'made by Doubleman'
+    },
+    {
+      file: 'cove_opening/forest.swf',
+      comment: 'made by Doubleman'
+    },
+    {
+      file: 'cove_opening/cove.swf',
+      comment: 'made by Doubleman'
     }
+    
+    
   ],
   [MOD]: [
     {

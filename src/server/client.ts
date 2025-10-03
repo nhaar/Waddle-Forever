@@ -137,7 +137,7 @@ class MatchmakingRoom {
       if (this._time < 0) {
         if (this._players.length >= 2) {
           this._matchmaker.onMatched(this._players);
-          clearInterval(this._timer);
+          clearInterval(this._time);
         } else {
           this.resetTime();
         }
