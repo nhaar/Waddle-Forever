@@ -1,16 +1,16 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
 // sending inventory to player
-handler.xt('i#gi', (client) => {
+handler.xt(Handle.GetInventory, (client) => {
   client.sendInventory();
 });
 
 // giving item
-handler.xt('i#ai', (client, item) => {
-  const id = Number(item);
+handler.xt(Handle.AddItem, (client, id) => {
   if (client.penguin.hasItem(id)) {
     // TODO
   } else if (!client.canBuy(id)) {
@@ -22,37 +22,49 @@ handler.xt('i#ai', (client, item) => {
   client.update();
 });
 
-type BodyPartName = 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background';
-
-const addBodyPartUpdater = (xtCode: string, name: BodyPartName) => {
-  handler.xt(`s#${xtCode}`, (client, id) => {
-    const itemId = Number(id);
-    client.penguin[name] = Number(itemId);
-    client.sendXt(xtCode, client.penguin.id, itemId);
-    client.update();
-  })
-}
-
-// equipping color
-handler.xt('s#upc', (client, color) => {
-  client.updateColor(Number(color));
+handler.xt(Handle.UpdateColor, (client, id) => {
+  client.updateEquipment('color', id);
   client.update();
 });
 
-addBodyPartUpdater('upa', 'hand');
+handler.xt(Handle.UpdateHead, (client, id) => {
+  client.updateEquipment('head', id);
+  client.update();
+});
 
-addBodyPartUpdater('upf', 'face');
+handler.xt(Handle.UpdateFace, (client, id) => {
+  client.updateEquipment('face', id);
+  client.update();
+});
 
-addBodyPartUpdater('upb', 'body');
+handler.xt(Handle.UpdateNeck, (client, id) => {
+  client.updateEquipment('neck', id);
+  client.update();
+});
 
-addBodyPartUpdater('upn', 'neck');
+handler.xt(Handle.UpdateBody, (client, id) => {
+  client.updateEquipment('body', id);
+  client.update();
+});
 
-addBodyPartUpdater('uph', 'head');
+handler.xt(Handle.UpdateHand, (client, id) => {
+  client.updateEquipment('hand', id);
+  client.update();
+});
 
-addBodyPartUpdater('upe', 'feet');
+handler.xt(Handle.UpdateFeet, (client, id) => {
+  client.updateEquipment('feet', id);
+  client.update();
+});
 
-addBodyPartUpdater('upl', 'pin');
+handler.xt(Handle.UpdatePin, (client, id) => {
+  client.updateEquipment('pin', id);
+  client.update();
+});
 
-addBodyPartUpdater('upp', 'background');
+handler.xt(Handle.UpdateBackground, (client, id) => {
+  client.updateEquipment('background', id);
+  client.update();
+});
 
 export default handler;

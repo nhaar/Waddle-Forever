@@ -1,6 +1,6 @@
 /** Module for the files of all music in the game */
 
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 /** Base files for all the music */
 export const MUSIC_IDS: IdRefMap = {
@@ -42,6 +42,7 @@ export const MUSIC_IDS: IdRefMap = {
   114: 'slegacy:media/play/v2/content/global/music/114.swf',
   115: 'slegacy:media/play/v2/content/global/music/115.swf',
   116: 'archives:Music116.swf',
+  117: 'archives:Music117.swf',
   119: 'slegacy:media/play/v2/content/global/music/119.swf',
   120: 'slegacy:media/play/v2/content/global/music/120.swf',
   121: 'slegacy:media/play/v2/content/global/music/121.swf',

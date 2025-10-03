@@ -2,7 +2,7 @@
  * Should be refactored in the future
  * Module lists all the files served Post-CPIP, not including modern AS3 */
 
-import { RouteRefMap } from "./changes";
+import { RouteRefMap } from ".";
 
 /** Files to be served static in Post-CPIP (not including 2016) */
 export const CPIP_STATIC_FILES: RouteRefMap = {
@@ -217,7 +217,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/close_ups/underwater_note.swf': 'slegacy:media/play/v2/content/local/en/close_ups/underwater_note.swf',
   'play/v2/content/local/en/close_ups/waterItems.swf': 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf',
   'play/v2/content/local/en/forms/missions.swf': 'slegacy:media/play/v2/content/local/en/forms/missions.swf',
-  'play/v2/content/local/en/forms/moderator.swf': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf',
+  'play/v2/content/local/en/forms/agent.swf': 'fix:ENFormsAgent.swf',
   'play/v2/content/local/en/forms/tour.swf': 'slegacy:media/play/v2/content/local/en/forms/tour.swf',
   'play/v2/content/local/en/instructions/card_jitsu.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu.swf',
   'play/v2/content/local/en/instructions/card_jitsu_fire.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_fire.swf',
@@ -252,4 +252,25 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/jetpack/JetpackAdventures.swf': 'fix:GamesJetPackAdventureMain.swf',
   'play/v2/games/thinice/ThinIce.swf': 'fix:GamesThiniceThinIce.swf',
   'play/v2/games/mine/CartSurfer.swf': 'slegacy:media/play/v2/games/mine/CartSurfer.swf',
+  'play/v2/games/sled/SledRacer.swf': 'archives:SledRacing.swf',
+  'play/v2/content/global/content/igloo_map.swf': 'archives:IglooMap.swf',
+  'play/v2/games/senseiFire/bootstrap.swf': 'slegacy:media/play/v2/games/senseiFire/bootstrap.swf',
+  'play/v2/games/senseiFire/SenseiWidget.swf': 'slegacy:media/play/v2/games/senseiFire/SenseiWidget.swf',
+  'play/v2/games/senseiFire/lang/de/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/de/locale.swf',
+  'play/v2/games/senseiFire/lang/en/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/en/locale.swf',
+  'play/v2/games/senseiFire/lang/es/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/es/locale.swf',
+  'play/v2/games/senseiFire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/senseiFire/lang/fr/locale.swf',
+  'play/v2/games/senseiFire/lang/pt/locale.swf':  'slegacy:media/play/v2/games/senseiFire/lang/pt/locale.swf',
+  'play/v2/games/fire/fire.swf': 'slegacy:media/play/v2/games/fire/fire.swf',
+  'play/v2/games/fire/assets/avatar.swf': 'slegacy:media/play/v2/games/fire/assets/avatar.swf',
+  'play/v2/games/fire/assets/lang/de/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/de/locale.swf',
+  'play/v2/games/fire/assets/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/en/locale.swf',
+  'play/v2/games/fire/assets/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/es/locale.swf',
+  'play/v2/games/fire/assets/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/fr/locale.swf',
+  'play/v2/games/fire/assets/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/pt/locale.swf',
+  'play/v2/games/fire/lang/de/locale.swf': 'slegacy:media/play/v2/games/fire/lang/de/locale.swf',
+  'play/v2/games/fire/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/lang/en/locale.swf',
+  'play/v2/games/fire/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/lang/es/locale.swf',
+  'play/v2/games/fire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/lang/fr/locale.swf',
+  'play/v2/games/fire/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/lang/pt/locale.swf'
 };

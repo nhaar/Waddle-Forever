@@ -1,24 +1,25 @@
 import { choose } from "../../../common/utils";
 import { Handler } from "..";
 import { SPY_DRILLS_DATA } from "../../game-logic/spy-drills";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
 // currently only supporting puffle launch. There may be other games that use this
 // get game data
-handler.xt('z', 'ggd', (client) => {
+handler.xt(Handle.GetPuffleLaunchData, (client) => {
   client.sendXt('ggd', client.penguin.getGameData().toString('utf-8'));
-})
+});
 
 // set/save game data
-handler.xt('z', 'sgd', (client, data) => {
+handler.xt(Handle.SetPuffleLaunchData, (client, data) => {
   client.penguin.setGameData(Buffer.from(data));
   client.update();
-})
+});
 
 // this is seemingly the same endpoint used in dance contest
 // there may be conflict, but this is for spy drills
-handler.xt('z', 'zr', (client) => {
+handler.xt(Handle.RollSpyDrills, (client) => {
   // The original algorithm is unknown, so we are using experimental data to simulate it
   const randomOption = choose(SPY_DRILLS_DATA);
   const [games, medalCount] = randomOption;
@@ -40,11 +41,11 @@ handler.xt('z', 'zr', (client) => {
   */
 
   client.sendXt('zr', games.join(','), medalCount);
-})
+});
 
 // receive medals from spy drills
-handler.xt('z', 'zc', (client, medals) => {
-  client.penguin.addEpfMedals(Number(medals));
+handler.xt(Handle.SpyDrillsReward, (client, medals) => {
+  client.penguin.addEpfMedals(medals);
 });
 
 export default handler;

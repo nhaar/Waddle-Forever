@@ -4,6 +4,7 @@ import { PUFFLES } from "../../game-logic/puffle";
 import { Client } from "../../../server/client";
 import { choose, randomInt } from "../../../common/utils";
 import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
+import { Handle } from "../handles";
 
 const handler = new Handler()
 
@@ -397,7 +398,7 @@ const getPuffleString = (puffle: PlayerPuffle): string => {
   ].join('|')
 }
 
-handler.xt('p#pn', (client, puffleType, puffleName) => {
+handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   if (!client.isEngine2) {
     return;
   }
@@ -408,7 +409,7 @@ handler.xt('p#pn', (client, puffleType, puffleName) => {
     // TODO too many puffles error
   }
   client.penguin.removeCoins(PUFFLE_COST)
-  const puffle = client.penguin.addPuffle(puffleName, Number(puffleType));
+  const puffle = client.penguin.addPuffle(puffleName, puffleType);
   client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
 
   client.addPostcard(111, { details: puffleName });
@@ -434,17 +435,17 @@ enum PuffleCategory {
   Creature
 };
 
-handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
+handler.xt(Handle.AdoptPuffleNew, (client, puffleType, puffleName, puffleSubType) => {
   if (!client.isEngine3) {
     return;
   }
 
   let category: PuffleCategory;
-  if (puffleType === '10') {
+  if (puffleType === 10) {
     category = PuffleCategory.Rainbow;
-  } else if (puffleType === '11') {
+  } else if (puffleType === 11) {
     category = PuffleCategory.Gold;
-  } else if (puffleSubType === '0') {
+  } else if (puffleSubType === 0) {
     category = PuffleCategory.Normal;
   } else {
     category = PuffleCategory.Creature;
@@ -458,7 +459,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
     puffleCost = 0;
   }
 
-  const puffleId = Number(puffleSubType === '0' ? puffleType : puffleSubType);
+  const puffleId = Number(puffleSubType === 0 ? puffleType : puffleSubType);
   const puffle = PUFFLES.get(puffleId);
   if (puffle === undefined) {
     throw new Error(`Puffle of ID ${puffleId} was not found in the database`);
@@ -511,7 +512,7 @@ handler.xt('p#pn', (client, puffleType, puffleName, puffleSubType) => {
 });
 
 // get puffles in igloo
-handler.xt('p#pg', (client, id, iglooType) => {
+handler.xt(Handle.GetIglooPuffles, (client, id, iglooType) => {
   if (client.isEngine2) {
     const puffles = client.penguin.getPuffles().map((puffle) => {
       return [
@@ -562,34 +563,31 @@ handler.xt('p#pg', (client, id, iglooType) => {
 })
 
 // walking puffle engine 2
-handler.xt('p#pw', (client, puffleId, walking) => {
+handler.xt(Handle.WalkPuffle, (client, puffleId, walking) => {
   if (!client.isEngine2) {
     return;
   }
-  const id = Number(puffleId);
-  const isWalking = walking === '1';
-
   // TODO add puffle refusing to walk
   // TODO add removing puffle
 
-  client.walkPuffle(id);
+  client.walkPuffle(puffleId);
 
   // TODO make the room send XT to everyone
-  client.sendXt('pw', client.penguin.id, `${id}||||||||||||${walking}`);
+  client.sendXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
   client.update();
 })
 // walking puffle Engine 3
-handler.xt('p#pw', (client, penguinPuffleId, walking) => {
+handler.xt(Handle.WalkPuffle, (client, penguinPuffleId, walking) => {
   if (!client.isEngine3) {
     return;
   }
 
-  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === Number(penguinPuffleId));
+  const playerPuffle = client.penguin.getPuffles().find((puffle) => puffle.id === penguinPuffleId);
   if (playerPuffle === undefined) {
     throw new Error(`Walk puffle: could not find puffle in inventory: ${penguinPuffleId}`);
   }
 
-  if (walking === '1') {
+  if (walking === 1) {
     client.walkPuffle(playerPuffle.id);
   } else {
     client.unwalkPuffle();
@@ -601,19 +599,19 @@ handler.xt('p#pw', (client, penguinPuffleId, walking) => {
 })
 
 // Engine 3 puffle name check
-handler.xt('p#checkpufflename', (client, puffleName) => {
+handler.xt(Handle.CheckPuffleName, (client, puffleName) => {
   // last argument is integer boolean
   client.sendXt('checkpufflename', puffleName, 1);
 })
 
 // endpoint that checks name used by some puffles (rainbow puffle, gold puffle)
 // potentially a predecessor to the one above
-handler.xt('p#pcn', (client, puffleName) => {
+handler.xt(Handle.CheckPuffleNameAlt, (client, puffleName) => {
   client.sendXt('pcn', puffleName, 1);
 })
 
 // get inventory for pet care items
-handler.xt('p#pgpi', (client) => {
+handler.xt(Handle.GetPuffleInventory, (client) => {
   client.sendXt(
     'pgpi',
     ...BASE_CARE_INVENTORY.map((item) => `${item}|1`),
@@ -622,26 +620,26 @@ handler.xt('p#pgpi', (client) => {
 })
 
 // send a puffle to or from the backyard
-handler.xt('p#puffleswap', (client, playerPuffleId, destination) => {
-  client.swapPuffleFromIglooAndBackyard(Number(playerPuffleId), destination === 'backyard');
+handler.xt(Handle.PuffleBackyardSwap, (client, playerPuffleId, destination) => {
+  client.swapPuffleFromIglooAndBackyard(playerPuffleId, destination === 'backyard');
   client.sendXt('puffleswap', playerPuffleId, destination);
   client.update();
 })
 
 // puffle dig no command
-handler.xt('p#puffledig', (client) => {
+handler.xt(Handle.PuffleDigRandom, (client) => {
   dig(client, false);
 })
 
 // puffle dig via the puffle tricks
-handler.xt('p#puffledigoncommand', (client) => {
+handler.xt(Handle.PuffleDigOnCommand, (client) => {
   dig(client, true);
 })
 
 // eating puffle care item
-handler.xt('p#pcid', (client, puffleId, puffleItemId) => {
-  const puffleItem = PUFFLE_ITEMS.get((Number(puffleItemId)));
-  const puffle = client.penguin.getPuffle(Number(puffleId));
+handler.xt(Handle.EatPuffleItem, (client, puffleId, puffleItemId) => {
+  const puffleItem = PUFFLE_ITEMS.get(puffleItemId);
+  const puffle = client.penguin.getPuffle(puffleId);
   if (puffleItem === undefined) {
     throw new Error(`Puffle item not in the database: ${puffleItem}`);
   }
@@ -669,7 +667,7 @@ handler.xt('p#pcid', (client, puffleId, puffleItemId) => {
 });
 
 // make gold puffle appear in the mine
-handler.xt('p#revealgoldpuffle', (client) => {
+handler.xt(Handle.RevealGoldPuffle, (client) => {
   // TODO multiplayer room logic
   client.sendXt('revealgoldpuffle', client.penguin.id);
 });

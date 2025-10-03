@@ -1,4 +1,4 @@
-import { FIRST_STAGE_PLAY, PLANET_Y_2010 } from "./updates";
+import { Update } from "./updates";
 import { Version } from "../routes/versions";
 
 /** All stage names */
@@ -94,7 +94,7 @@ export const STAGE_TIMELINE: Array<{
   notPremiere?: true
 }> = [
   {
-    date: FIRST_STAGE_PLAY,
+    date: Update.FIRST_STAGE_PLAY,
     name: 'Space Adventure',
     plazaFileRef: 'archives:ArtworkRoomsPlaza47.swf',
     // stage from March
@@ -147,8 +147,15 @@ export const STAGE_TIMELINE: Array<{
   },
   // squidzoid july is also completely lost
   // team blue rally 2 is completely lost
-  // ruby and the red ruby debut in Pre-CPIP is completely lost/
   // post CPIP could be reconstructed
+  {
+    date: Update.RUBY_DEBUT,
+    name: 'Ruby and the Ruby',
+    stageFileRef: 'recreation:ruby_play_debut.swf',
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
+    // this might be inaccurate
+    costumeTrunkFileRef: 'archives:July09Costume.swf'
+  },
   {
     date: '2008-10-10',
     name: 'Space Adventure Planet Y',
@@ -172,8 +179,7 @@ export const STAGE_TIMELINE: Array<{
     name: 'Quest for the Golden Puffle',
     // from 2010
     stageFileRef: 'archives:RoomsStage-May2010.swf',
-    // from 2011 inaccurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf',
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     costumeTrunkFileRef: 'archives:December2008Costume.swf',
     notPremiere: true
   },
@@ -190,21 +196,21 @@ export const STAGE_TIMELINE: Array<{
     date: '2009-02-13',
     name: 'Team Blue vs. Team Red',
     stageFileRef: 'archives:Stage2011Aug17.swf', // from 2011
-    plazaFileRef: null, //lost
+    plazaFileRef: 'recreation:plaza_team_blue_play.swf',
     costumeTrunkFileRef: 'archives:February2009Costume.swf'
   },
   {
     date: '2009-04-10',
     name: 'Quest for the Golden Puffle',
     stageFileRef: 'archives:RoomsStage-May2010.swf', // from 2010
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf', // from 2011 inaccurate
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     costumeTrunkFileRef: 'archives:December2008Costume.swf'
   },
   {
     date: '2009-05-08',
     name: 'The Haunting of the Viking Opera',
     stageFileRef: 'archives:RoomsStage-February2011.swf', // from 2011
-    plazaFileRef: null,
+    plazaFileRef: 'recreation:plaza_haunting_of_the_viking_opera.swf',
     costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf'
   },
   {
@@ -219,7 +225,7 @@ export const STAGE_TIMELINE: Array<{
     name: 'Ruby and the Ruby',
     // both 2 below are inaccurate
     stageFileRef: 'archives:RoomsStage-December2010.swf',
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf',
+    plazaFileRef: 'recreation:plaza_ruby_no_weather_09_july.swf',
     costumeTrunkFileRef: 'archives:July09Costume.swf',
     notPremiere: true
   },
@@ -227,11 +233,11 @@ export const STAGE_TIMELINE: Array<{
     date: '2009-08-21',
     name: 'Underwater Adventure',
     stageFileRef: 'recreation:underwater_adventure_no_pin.swf', // recreation
-    plazaFileRef: null,
+    plazaFileRef: 'recreation:plaza_underwater_adventure.swf',
     costumeTrunkFileRef: 'archives:May2011UnderwaterAdventureCostume.swf' // 2011
   },
   {
-    date: '2009-09-11',
+    date: Update.PENGUINS_TIME_FORGOT_2009,
     name: 'The Penguins that Time Forgot',
     stageFileRef: 'archives:RoomsStage-September2009.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play6.swf',
@@ -253,10 +259,10 @@ export const STAGE_TIMELINE: Array<{
     party1: 'archives:RoomsParty1-December2009.swf'
   },
   {
-    date: '2009-12-25',
+    date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
     name: 'Quest for the Golden Puffle',
     costumeTrunkFileRef: 'archives:December2008Costume.swf', // from 2008 unknown if accurate,
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-May2010.swf' // from March, unknown if accurate
   },
   {
@@ -277,14 +283,14 @@ export const STAGE_TIMELINE: Array<{
     date: '2010-03-29',
     name: 'Quest for the Golden Puffle',
     costumeTrunkFileRef: 'archives:December2008Costume.swf', // from 2008 unknown if accurate 
-    plazaFileRef: 'archives:RoomsPlaza_2-Play5.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_golden_puffle_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-May2010.swf' // accurate
   },
   {
     date: '2010-06-10',
     name: 'Ruby and the Ruby',
     costumeTrunkFileRef: 'archives:July09Costume.swf', // From 2009, unknown if accurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-December2010.swf' // from Dec 2010, unknown if accurate
   },
   {
@@ -316,7 +322,7 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:HalloweenParty2010Stage.swf'
   },
   {
-    date: PLANET_Y_2010,
+    date: Update.PLANET_Y_2010,
     name: 'Space Adventure Planet Y',
     costumeTrunkFileRef: 'archives:2010SpacePlanetAdventureYCostumeTrunk.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play9.swf', // accurate
@@ -326,7 +332,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2010-12-28',
     name: 'Ruby and the Ruby',
     costumeTrunkFileRef: 'archives:July09Costume.swf', // From 2009, unknown if accurate
-    plazaFileRef: 'archives:RoomsPlaza_2-Play8.swf', // from 2011, inaccurate
+    plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-December2010.swf' // accurate
   }
 ];

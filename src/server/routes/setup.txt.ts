@@ -1,8 +1,11 @@
-import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, VersionsTimeline } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { BETA_RELEASE, SNOW_SPORT_RELEASE } from "../game-data/updates";
-import { getClothingTimeline, getMigratorTimeline, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
+import { Update } from "../game-data/updates";
+import { getClothingTimeline } from "../timelines/clothing";
+import { getRoomFrameTimeline } from "../timelines/frame";
+import { getMigratorTimeline } from "../timelines/migrator";
+import { getMusicTimeline } from "../timelines/music";
 import { isGreaterOrEqual, Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
@@ -18,7 +21,7 @@ const clothingTimeline = getClothingTimeline();
 function getEggTimeline() {
   const timeline = new VersionsTimeline<number>();
   timeline.add({
-    date: BETA_RELEASE,
+    date: Update.BETA_RELEASE,
     info: 0
   });
   PARTIES.forEach((party) => {
@@ -35,7 +38,7 @@ function getEggTimeline() {
 }
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
-export function getSetupTxt(date: Version): string {
+export function getSetupTxt(date: Version, ip: string): string {
   let roomMusic: Partial<Record<RoomName, number>> = {};
 
   let frames: Partial<Record<RoomName, number>> = {};
@@ -49,7 +52,7 @@ export function getSetupTxt(date: Version): string {
 
   // sport shop, the only room to use frame 2
   // TODO remove cheap workaround
-  if (isGreaterOrEqual(date, SNOW_SPORT_RELEASE)) {
+  if (isGreaterOrEqual(date, Update.SNOW_SPORT_RELEASE)) {
     frames['sport'] = 2;
   }
 
@@ -131,7 +134,9 @@ ${rooms}
 &q4=&
 &q5=&
 
-&e=0&`
+&e=0&
+
+&ip=${ip}&` // IP is custom, need to mod chat.swf. Only way to make this work in WF
 }
 
 /**&r100=|1|0&

@@ -4,9 +4,10 @@ import { Request, Router } from "express";
 import { SettingsManager } from "./settings";
 import { Version, isLower, sortVersions } from './routes/versions';
 import { DEFAULT_DIRECTORY, MEDIA_DIRECTORY } from '../common/utils';
-import { getFileServer } from './routes/client-files';
-import { findInVersion } from './game-data/changes';
+import { findInVersion } from './game-data';
 import { specialServer } from './game-data/specials';
+import { logdebug } from './logger';
+import { getRoutesTimeline } from './timelines/route';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -189,14 +190,14 @@ export class HttpServer {
   }
   
   addFileServer() {
-    const fileServer = getFileServer();
+    const routesTimeline = getRoutesTimeline();
   
     this.router.get('/*', (req: Request, res, next) => {
       const route = req.params[0];
       const special = specialServer.get(route);
       const specialCheck = special?.check(this.settingsManager);
       if (special === undefined || specialCheck === undefined) {
-        const info = fileServer.get(route);
+        const info = routesTimeline.get(route);
         if (info === undefined) {
           next();
         } else {
@@ -206,7 +207,7 @@ export class HttpServer {
             throw new Error('Could not find file, log output is above')
           }
   
-          console.log(`Requested: ${route}, sending: ${filePath}`);
+          logdebug(`Requested: ${route}, sending: ${filePath}`);
           res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
         }
       } else {

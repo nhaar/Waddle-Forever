@@ -9,11 +9,11 @@ import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { PINS } from '../server/game-data/pins';
-import {EARTHQUAKE } from '../server/game-data/updates';
 import { STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
+import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -41,12 +41,6 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
         date: '2005-08-22',
         events: {
           other: ['Beta release'],
-        }
-      },
-      {
-        date: EARTHQUAKE,
-        events: {
-          other: ['An earthquake hits the island']
         }
       },
       {
@@ -119,6 +113,7 @@ type BaseEvents = {
   newFurnitureCatalog: true;
   partyConstruction: string;
   stadiumUpdate: 'stadium' | 'rink' | string;
+  migrator: true;
 };
 
 /** All things that can happen in a single day */
@@ -402,6 +397,18 @@ function addStandalone(map: DayMap): void {
   });
 }
 
+function addMigratorVisits(map: DayMap): void {
+  STANDALONE_MIGRATOR_VISITS.forEach(visit => {
+    addEvents(map, visit.date, { migrator: true });
+  });
+
+  PARTIES.forEach(party => {
+    if (party.activeMigrator !== undefined) {
+      addEvents(map, party.date, { migrator: true });
+    }
+  });
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
@@ -413,6 +420,7 @@ function updateTimeline(days: Day[]): Day[] {
   addPinUpdates(map);
   addStandalone(map);
   addGames(map);
+  addMigratorVisits(map);
   return getDaysFromMap(map);
 }
 
@@ -429,6 +437,7 @@ enum EventType {
   Stage,
   Game,
   Pin,
+  Migrator,
   Other
 };
 
@@ -537,6 +546,9 @@ function getConsumedTimeline(days: Day[]): Array<{
     }
     if (day.events.pin !== undefined) {
       events.push({ text: `The ${day.events.pin} is now hidden in the island`, type: EventType.Pin });
+    }
+    if (day.events.migrator === true) {
+      events.push({ text: 'The Migrator visits the island', type: EventType.Migrator });
     }
 
     const [year, month, monthDay] = processVersion(day.date);

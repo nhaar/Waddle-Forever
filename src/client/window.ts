@@ -2,7 +2,12 @@ import path from 'path';
 import { BrowserWindow, shell } from "electron";
 import { Store } from "./store";
 import { checkUpdates } from "./update";
-import { HTTP_PORT } from '../common/constants';
+import { GlobalSettings, makeURL } from '../common/utils';
+import { SettingsManager } from '../server/settings';
+
+function getIP(clientSettings: GlobalSettings, serverSettings: SettingsManager) {
+  return clientSettings.targetIP ?? serverSettings.targetIP;
+}
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   const fullScreen = !store.private.get("fullScreen");
@@ -12,15 +17,15 @@ export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
   mainWindow.setFullScreen(fullScreen);
 };
 
-export const loadMain = (window: BrowserWindow) => {
-  window.loadURL(`http://localhost:${HTTP_PORT}`)
+export const loadMain = (window: BrowserWindow, settings: GlobalSettings, serverSettings: SettingsManager) => {
+  window.loadURL(makeURL(getIP(settings, serverSettings)));
 }
 
 interface FiveIconByPlatforms {
   [key: string]: () => void;
 }
 
-const createWindow = async (store: Store) => {
+const createWindow = async (store: Store, clientSettings: GlobalSettings, serverSettings: SettingsManager) => {
   const setFaviconByPlatform: FiveIconByPlatforms = {
     win32: () => {
       mainWindow.setIcon(path.join(__dirname, "../assets/favicon.ico"));
@@ -49,10 +54,10 @@ const createWindow = async (store: Store) => {
   
   await checkUpdates(mainWindow);
 
-  loadMain(mainWindow);
+  loadMain(mainWindow, clientSettings, serverSettings);
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (!url.includes("localhost")) {
+    if (!url.includes('localhost') || !url.includes(getIP(clientSettings, serverSettings))) {
       event.preventDefault();
       shell.openExternal(url);
     }

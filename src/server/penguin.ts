@@ -1,6 +1,21 @@
 import { isPositiveInteger } from '../common/utils';
 import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
+import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { PUFFLE_ITEMS } from './game-logic/puffle-item';
+
+export type PenguinEquipped = {
+  color: number
+  head: number
+  face: number
+  neck: number
+  body: number
+  hand: number
+  feet: number
+  pin: number
+  background: number  
+}
+
+export type PenguinEquipmentSlot = keyof PenguinEquipped;
 
 export class Penguin {
   private _id: number;
@@ -8,17 +23,7 @@ export class Penguin {
   private _isMember: boolean;
   private _isAgent: boolean;
   private _mascot: number;
-  private _equipped: {
-    color: number
-    head: number
-    face: number
-    neck: number
-    body: number
-    hand: number
-    feet: number
-    pin: number
-    background: number  
-  };
+  private _equipped: PenguinEquipped;
   private _coins: number;
   private _registrationTimestamp: number;
   private _minutesPlayed: number;
@@ -50,6 +55,9 @@ export class Penguin {
   private _ownedMedals: number;
   private _careerMedals: number;
   private _nuggets: number;
+  private _cards: Map<number, number>;
+  private _cardProgress: CardJitsuProgress;
+  private _cardWins: number;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -77,7 +85,7 @@ export class Penguin {
     this._puffleSeq = data.puffleSeq;
     this._puffles = parseJsonRows(data.puffles);
     this._backyard = parseJsonSet(data.backyard);
-    this._puffleItems = parseJsonMap(data.puffleItems);
+    this._puffleItems = parseJsonMap(data.puffleItems, true);
     this._hasDug = data.hasDug;
     this._treasureFinds = data.treasureFinds;
     this._rainbow = {
@@ -88,7 +96,7 @@ export class Penguin {
         return isRainbowStage(value);
       })))
     },
-    this._furnitureInventory = parseJsonMap(data.furniture);
+    this._furnitureInventory = parseJsonMap(data.furniture, true);
     this._iglooTypes = parseJsonSet(data.iglooTypes);
     this._iglooLocations = parseJsonSet(data.iglooLocations);
     this._iglooFloorings = parseJsonSet(data.iglooFloorings);
@@ -101,6 +109,9 @@ export class Penguin {
     this._ownedMedals = data.ownedMedals;
     this._careerMedals = data.careerMedals;
     this._nuggets = data.nuggets;
+    this._cards = parseJsonMap(data.cards, true);
+    this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
+    this._cardWins = data.cardWins;
   }
 
   serialize(): PenguinData {
@@ -148,7 +159,12 @@ export class Penguin {
       mail: this._mail,
       ownedMedals: this._ownedMedals,
       careerMedals: this._careerMedals,
-      nuggets: this._nuggets
+      nuggets: this._nuggets,
+      cards: dumpJsonMap(this._cards),
+      cardProgress: this._cardProgress.xp,
+      senseiAttempts: this._cardProgress.senseiAttempts,
+      isNinja: this._cardProgress.isNinja,
+      cardWins: this._cardWins
     }
   }
 
@@ -607,6 +623,42 @@ export class Penguin {
     this._nuggets -= 15;
   }
 
+  /** Adds card to the deck */
+  addCard(id: number, amount: number): void {
+    this._cards.set(id, (this._cards.get(id) ?? 0) + amount);
+  }
+
+  /** Gets all owned cards */
+  getCards(): Array<[number, number]> {
+    return Array.from(this._cards.entries());
+  }
+
+  /**
+   * Get an array where each element is a card ID, with duplicates being allowed
+   */
+  getDeck(): number[] {
+    const deck: number[] = [];
+    for (const card of this._cards.entries()) {
+      for (let i = 0; i < card[1]; i++) {
+        deck.push(card[0]);
+      }
+    }
+
+    return deck;
+  }
+
+  get ninjaProgress() {
+    return this._cardProgress;
+  }
+
+  addCardJitsuWin() {
+    this._cardWins++;
+  }
+
+  get cardJitsuWins() {
+    return this._cardWins;
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,
@@ -657,7 +709,12 @@ export class Penguin {
       mailSeq: 0,
       ownedMedals: 0,
       careerMedals: 0,
-      nuggets: 0
+      nuggets: 0,
+      cards: {},
+      cardProgress: 0,
+      isNinja: false,
+      senseiAttempts: 0,
+      cardWins: 0
     })
   }
 

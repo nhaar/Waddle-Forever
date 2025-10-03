@@ -1,4 +1,4 @@
-import { CPIP_UPDATE } from "../game-data/updates";
+import { Update } from "../game-data/updates";
 
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;
@@ -108,11 +108,11 @@ export function isLowerOrEqual(left: string, right: string): boolean {
 const ENGINE3_CUTOFF = '2012-##-##';
 
 export function isEngine1(version: Version): boolean {
-  return isLower(version, CPIP_UPDATE)
+  return isLower(version, Update.CPIP_UPDATE)
 }
 
 export function isEngine2(version: Version): boolean {
-  return isGreaterOrEqual(version, CPIP_UPDATE) && isLower(version, ENGINE3_CUTOFF);
+  return isGreaterOrEqual(version, Update.CPIP_UPDATE) && isLower(version, ENGINE3_CUTOFF);
 }
 
 export function isEngine3(version: Version): boolean {

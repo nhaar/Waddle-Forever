@@ -1,6 +1,6 @@
 import { Version } from "../routes/versions";
 import { RoomName, RoomMap } from "./rooms";
-import { AGENTCOM_RELEASE, AQUAGRABBER_RELEASE, BETA_RELEASE, CARD_JITSU_RELEASE, CAVE_OPENING_END, CAVE_OPENING_START, COVE_OPENING_START, DIG_OUT_DOJO_END, EARTHQUAKE, EPF_RELEASE, FIND_FOUR_RELEASE, FIRE_CELEBRATION_START, FIRE_CONST_START, FIRST_STAGE_PLAY, GAME_UPGRADES, HQ_REDESIGN, ICEBERG_RELEASE, JPA_RELEASE, LIGHTHOUSE_PARTY_START, MISSION_1_RELEASE, MODERN_AS3, MTN_RELEASE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_START, PLAZA_LAUNCHPAD_START, PRE_CPIP_REWRITE_DATE, ROOM_REDRAWS, SNOW_SPORT_RELEASE, SPORT_SHOP_RELEASE, SUMMER_PARTY_START, WATER_HUNT_END } from "./updates";
+import { Update } from "./updates";
 
 type RoomOpening = {
   room: RoomName;
@@ -23,19 +23,19 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   town: [
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/town.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
     {
       // first vectorized version of the Town, possibly from 2007
       // unknown how to document it
       fileRef: 'archives:ArtworkRoomsTown40.swf',
-      date: PRE_CPIP_REWRITE_DATE
+      date: Update.PRE_CPIP_REWRITE_DATE
     },
   ],
   rink: [
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/rink.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
     {
       // unknown date, you can now walk to the audience in the rink
@@ -53,10 +53,10 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   village: [
     {
       fileRef: 'archives:RoomsVillage_2.swf',
-      date: EPF_RELEASE
+      date: Update.EPF_RELEASE
     },
     {
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsVillage40.swf',
       comment: 'The Ski Village is redrawn'
     },
@@ -64,10 +64,10 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   forts: [
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/forts.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
     {
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsForts40.swf',
       comment: 'The Snow Forts is redrawn'
     }
@@ -75,11 +75,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   plaza: [
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/plaza.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
     {
       // date of vectorization is unknown
-      date: PRE_CPIP_REWRITE_DATE,
+      date: Update.PRE_CPIP_REWRITE_DATE,
       fileRef: 'archives:ArtworkRoomsPlaza40.swf'
     },
     {
@@ -109,10 +109,10 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
     {
       fileRef: 'archives:RoomsMtn-January2010.swf',
-      date: GAME_UPGRADES
+      date: Update.GAME_UPGRADES
     },
     {
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsMtn40.swf',
       comment: 'The Ski Hill is redrawn'
     },
@@ -120,7 +120,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   berg: [
     {
       // another september 22 redraw
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsBerg40.swf',
       comment: 'The Iceberg is redrawn'
     },
@@ -135,14 +135,14 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:Rooms0215Berg40.swf'
     },
     {
-      date: AQUAGRABBER_RELEASE,
+      date: Update.AQUAGRABBER_RELEASE,
       fileRef: 'archives:RoomsBerg-Feb2008.swf',
       comment: 'The Aqua Grabber\'s construction is finished'
     }
   ],
   beacon: [
     {
-      date: JPA_RELEASE,
+      date: Update.JPA_RELEASE,
       fileRef: 'archives:ArtworkRoomsBeacon41.swf',
       comment: 'The launchpad construction in the Beacon is finished'
     }
@@ -157,19 +157,19 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   cove: [
     {
       fileRef: 'archives:RoomsCove.swf',
-      date: GAME_UPGRADES
+      date: Update.GAME_UPGRADES
     },
     {
       // placeholder AS3 room
       fileRef: 'svanilla:media/play/v2/content/global/rooms/cove.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
   ],
   dance: [
     {
       // placeholder vectorized room, unknown date
       fileRef: 'archives:ArtworkRoomsDance50.swf',
-      date: PRE_CPIP_REWRITE_DATE
+      date: Update.PRE_CPIP_REWRITE_DATE
     },
     {
       fileRef: 'recreation:dance_cpip_postmusicjam2.swf',
@@ -185,15 +185,15 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   dock: [
     {
       fileRef: 'archives:RoomsDock_1.swf',
-      date: GAME_UPGRADES
+      date: Update.GAME_UPGRADES
     },
     {
       // placeholder AS3 room
       fileRef: 'svanilla:media/play/v2/content/global/rooms/dock.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
     {
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsDock40.swf',
       comment: 'The Dock is redrawn'
     }
@@ -208,11 +208,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   lodge: [
     {
       fileRef: 'archives:RoomsLodge.swf',
-      date: GAME_UPGRADES  
+      date: Update.GAME_UPGRADES  
     },
     {
       fileRef: 'archives:ArtworkRoomsLodge14.swf',
-      date: FIND_FOUR_RELEASE,
+      date: Update.FIND_FOUR_RELEASE,
       comment: 'Find Four tables are added to the Ski Lodge'
     }
   ],
@@ -232,7 +232,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       // the wiki mentions it as this date, seems like the date most rooms were redrawn?
       // dont know the source
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsPet40.swf',
       comment: 'The Pet Shop is redrawn'
     },
@@ -256,7 +256,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   shop: [
     {
       // unknown date, vectorized 07 rooms
-      date: PRE_CPIP_REWRITE_DATE,
+      date: Update.PRE_CPIP_REWRITE_DATE,
       fileRef: 'archives:ArtworkRoomsShop40.swf'
     }
   ],
@@ -271,28 +271,28 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       // placeholder start room
       fileRef: 'archives:ArtworkRoomsAttic12.swf',
-      date: BETA_RELEASE
+      date: Update.BETA_RELEASE
     },
   ],
   sport: [
     {
       fileRef: 'archives:RoomsSport.swf',
-      date: SNOW_SPORT_RELEASE,
+      date: Update.SNOW_SPORT_RELEASE,
       comment: 'The Snow and Sports catalog is now available in the Sport Shop'
     }
   ],
   dojo: [
     {
       fileRef: 'slegacy:media/play/v2/content/global/rooms/dojo.swf',
-      date: CARD_JITSU_RELEASE
+      date: Update.CARD_JITSU_RELEASE
     },
     {
-      date: ROOM_REDRAWS,
+      date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsDojo41.swf',
       comment: 'Many rooms are redrawn'
     },
     {
-      date: CARD_JITSU_RELEASE,
+      date: Update.CARD_JITSU_RELEASE,
       fileRef: 'archives:RoomsDojo.swf',
       comment: 'The dojo now has the Card-Jitsu game'
     }
@@ -301,22 +301,22 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       // placeholder CPIP room
       fileRef: 'archives:RoomsDojohide-1.swf',
-      date: CARD_JITSU_RELEASE
+      date: Update.CARD_JITSU_RELEASE
     },
     {
       fileRef: 'archives:RoomsDojohide_2.swf',
-      date: FIRE_CELEBRATION_START
+      date: Update.FIRE_CELEBRATION_START
     },
     {
       fileRef: 'archives:RoomsDojohide_3.swf',
-      date: WATER_HUNT_END
+      date: Update.WATER_HUNT_END
     }
   ],
   dojowater: [
     {
       // placeholder CPIP room
       fileRef: 'slegacy:media/play/v2/content/global/rooms/dojowater.swf',
-      date: WATER_HUNT_END
+      date: Update.WATER_HUNT_END
     }
   ],
   agent: [
@@ -337,13 +337,13 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
     {
       fileRef: 'archives:ArtworkRoomsAgent11.swf',
-      date: HQ_REDESIGN,
+      date: Update.HQ_REDESIGN,
       comment: 'The HQ is redesigned'
     },
     {
       // placeholder HQ update for the PSA missions
       fileRef: 'archives:ArtworkRoomsAgent40.swf',
-      date: MISSION_1_RELEASE
+      date: Update.MISSION_1_RELEASE
     },
     {
       fileRef: 'recreation:agent_2008_apr_pre_cpip.swf',
@@ -352,7 +352,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   agentcom: [
     {
-      date: EPF_RELEASE,
+      date: Update.EPF_RELEASE,
       fileRef: 'archives:RoomsAgentcom-May2010.swf',
       comment: 'The EPF Command Room is under construction'
     },
@@ -401,7 +401,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/shack.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     }
   ],
   forest: [
@@ -421,7 +421,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     }
   ],
   dojoext: [
@@ -432,11 +432,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
     {
       fileRef: 'svanilla:media/play/v2/content/global/rooms/dojoext.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     },
     {
       // this file we have has the white puffle, which I believe is only from the puffle party 2009
-      date: CARD_JITSU_RELEASE,
+      date: Update.CARD_JITSU_RELEASE,
       fileRef: 'archives:RoomsDojoext2008.swf'
     },
   ]
@@ -456,7 +456,7 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'sport',
     fileRef: 'mammoth:artwork/rooms/sport11.swf',
-    date: SPORT_SHOP_RELEASE,
+    date: Update.SPORT_SHOP_RELEASE,
     otherRooms: {
       village: 'approximation:village_sport.swf'
     }
@@ -464,7 +464,7 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'mtn',
     fileRef: 'fix:Mtn1.swf',
-    date: MTN_RELEASE,
+    date: Update.MTN_RELEASE,
     otherRooms: {
       village: 'approximation:village_no_lodge.swf'
     }
@@ -477,17 +477,17 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'pizza',
     fileRef: 'archives:ArtworkRoomsPizza12.swf',
-    date: PIZZA_PARLOR_OPENING_START
+    date: Update.PIZZA_PARLOR_OPENING_START
   },
   {
     room: 'plaza',
     fileRef: 'archives:ArtworkRoomsPlaza10.swf',
-    date: PIZZA_PARLOR_OPENING_START
+    date: Update.PIZZA_PARLOR_OPENING_START
   },
   {
     room: 'pet',
     fileRef: 'mammoth:artwork/rooms/pet11.swf',
-    date: PET_SHOP_RELEASE,
+    date: Update.PET_SHOP_RELEASE,
     otherRooms: {
       plaza: 'archives:ArtworkRoomsPlaza12.swf'
     }
@@ -495,71 +495,71 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'berg',
     fileRef: 'mammoth:artwork/rooms/berg10.swf',
-    date: ICEBERG_RELEASE,
+    date: Update.ICEBERG_RELEASE,
     map: 'archives:ArtworkMapsIsland5.swf'
   },
   {
     // 2006 client boiler, the party vesion isn't archived
     room: 'boiler',
     fileRef: 'archives:ArtworkRoomsBoiler11.swf',
-    date: CAVE_OPENING_START
+    date: Update.CAVE_OPENING_START
   },
   {
     room: 'boiler',
     fileRef: 'archives:ArtworkRoomsBoiler40.swf',
     // boiler room for the 2007 client
-    date: PRE_CPIP_REWRITE_DATE
+    date: Update.PRE_CPIP_REWRITE_DATE
   },
   {
     room: 'cave',
     fileRef: 'archives:ArtworkRoomsCave13.swf',
-    date: CAVE_OPENING_START
+    date: Update.CAVE_OPENING_START
   },
   {
     room: 'mine',
     fileRef: 'archives:ArtworkRoomsMine13.swf',
-    date: CAVE_OPENING_START
+    date: Update.CAVE_OPENING_START
   },
   {
     room: 'shack',
     fileRef: 'archives:ArtworkRoomsShack10.swf',
-    date: CAVE_OPENING_END
+    date: Update.CAVE_OPENING_END
   },
   {
     room: 'beach',
     fileRef: 'archives:ArtworkRoomsBeach12.swf',
-    date: SUMMER_PARTY_START
+    date: Update.SUMMER_PARTY_START
   },
   {
     room: 'forest',
     fileRef: 'archives:RoomsForest-CoveOpeningPartyPre_1.swf',
     // this is the construction, it is technically from May 15 but we dont have
     // the map hunt that allows you to get to the forest otherwise
-    date: COVE_OPENING_START
+    date: Update.COVE_OPENING_START
   },
   {
     // from april fools 08, unfortunately it is the only
     // pre cpip cove SWF that we have
     room: 'cove',
     fileRef: 'archives:ArtworkRooms0328Cove43.swf',
-    date: COVE_OPENING_START
+    date: Update.COVE_OPENING_START
   },
   {
     room: 'dojoext',
     fileRef: 'archives:DojoExtGrandOpening2008.swf',
     // not actual date, but we dont have a map for before the dojo was out yet, and
     // the dojo is inaccessible otherwise for the game CPIP-Dojo release
-    date: DIG_OUT_DOJO_END
+    date: Update.DIG_OUT_DOJO_END
   },
   {
     room: 'stage',
     fileRef: null,
-    date: FIRST_STAGE_PLAY
+    date: Update.FIRST_STAGE_PLAY
   },
   {
     room: 'agentcom',
     fileRef: 'archives:RoomsAgentcomFormer.swf',
-    date: AGENTCOM_RELEASE,
+    date: Update.AGENTCOM_RELEASE,
     otherRooms: {
       // placeholder CPIP room
       agent: 'archives:RoomsAgent.swf'
@@ -568,12 +568,12 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'beacon',
     fileRef: 'archives:ArtworkRoomsBeacon40.swf',
-    date: LIGHTHOUSE_PARTY_START
+    date: Update.LIGHTHOUSE_PARTY_START
   },
   {
     room: 'dojofire',
     fileRef: 'slegacy:media/play/v2/content/global/rooms/dojofire.swf',
-    date: FIRE_CONST_START
+    date: Update.FIRE_CONST_START
   }
 ];
 
@@ -595,15 +595,15 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   ],
   'agent': [
     0,
-    { date: HQ_REDESIGN, musicId: 7 }
+    { date: Update.HQ_REDESIGN, musicId: 7 }
   ],
   'agentcom': [
     7,
-    { date: EPF_RELEASE, musicId: 23 }
+    { date: Update.EPF_RELEASE, musicId: 23 }
   ],
   'dojo': [
     0,
-    { date: DIG_OUT_DOJO_END, musicId: 21 }
+    { date: Update.DIG_OUT_DOJO_END, musicId: 21 }
   ],
   boxdimension: [264],
   'dojofire': [22],
@@ -611,8 +611,8 @@ export const ROOM_MUSIC_TIMELINE: Partial<Record<RoomName, MusicTimeline>> = {
   dojoext: [
     0,
     // TODO moving as a consequence?
-    { date: DIG_OUT_DOJO_END, musicId: 21 },
-    { date: CARD_JITSU_RELEASE, musicId: 0}
+    { date: Update.DIG_OUT_DOJO_END, musicId: 21 },
+    { date: Update.CARD_JITSU_RELEASE, musicId: 0}
   ],
   dojowater: [24],
   boiler: [6],
@@ -628,27 +628,25 @@ type TemporaryRoomUpdate = Array<{
 }>;
 
 export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdate>> = {
-  'dance': [
-    {
-      date: EARTHQUAKE,
-      // no ide when this ended
-      end: '2008-06-24',
-      fileRef: 'archives:RoomsDance-Earthquake2008.swf'
-    }
-  ],
   'plaza': [
     {
-      date: PLAZA_LAUNCHPAD_START,
+      date: Update.PLAZA_LAUNCHPAD_START,
       end: '2006-10-13',
       fileRef: 'archives:Plaza31.swf',
       comment: 'A construction begins at the Plaza',
       frame: 2
+    },
+    {
+      date: '2008-09-05',
+      end: Update.RUBY_DEBUT,
+      fileRef: 'recreation:plaza_ruby_construction.swf',
+      comment: 'A construction begins at the Plaza for the Stage'
     }
   ],
   'town': [
     {
       date: '2006-09-28',
-      end: PLAZA_LAUNCHPAD_START,
+      end: Update.PLAZA_LAUNCHPAD_START,
       fileRef: 'archives:RoomsTown-LaunchPadConstruction.swf',
       comment: 'A construction begins at the Town'
     }
@@ -660,6 +658,13 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: '2008-04-21',
       fileRef: 'archives:ArtworkRoomsForts50.swf',
       comment: 'The Snow Forts clock breaks'
+    }
+  ],
+  'lodge': [
+    {
+      date: Update.CHRISTMAS_2008_END,
+      end: Update.GINGERBREAD_PIN,
+      fileRef: 'recreation:lodge_present_pin.swf'
     }
   ]
 }

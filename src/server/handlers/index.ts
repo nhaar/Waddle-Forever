@@ -1,8 +1,11 @@
 import { XtPacket } from '..';
-import { Client } from '../client';
+import { Client, Server } from '../client';
 import express, { Express } from 'express';
+import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
+import { logdebug } from '../logger';
 
-type XTCallback = (client: Client, ...args: string[]) => void
+type XTCallback = (client: Client, ...args: string[]) => boolean
+type ClientCallback = (client: Client) => void
 type XMLCallback = (client: Client, data: string) => void
 
 type PostCallback = (body: any) => string
@@ -16,37 +19,98 @@ type XtParams = {
   cooldown?: number
 }
 
-function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => void) {
+/** Get a function that checks at runtime the types given so it can be used for a client callback */
+export function getHandlerCallback<Arguments extends ArgumentsIndicator>(
+  argTypes: Arguments,
+  method: (client: Client, ...args: GetArgumentsType<Arguments>) => void
+) {
+  let callback = (client: Client, ...args: Array<string>): boolean => {
+    let validArgs: unknown[] = [];
+    let valid = true;
+
+    const checkString = (type: string | undefined) => {
+      if (type === undefined) {
+        valid = false;
+      } else {
+        validArgs.push(type);
+      }
+    }
+
+    const checkNumber = (type: string | undefined) => {
+      const num = Number(type);
+      if (isNaN(num)) {
+        valid = false;
+      } else {
+        validArgs.push(num);
+      }
+    }
+
+    args.forEach((arg, i) => {
+      if (argTypes === 'string') {
+        checkString(arg);
+      } else if (argTypes === 'number') {
+        checkNumber(arg);
+      } else {
+        switch (argTypes[i]) {
+          case 'number':
+            checkNumber(arg)
+            break;
+          case 'string':
+            checkString(arg)
+            break;
+        }
+      }
+
+    });
+
+    if (valid) {
+      method(client, ...validArgs as GetArgumentsType<Arguments>)
+    }
+    return valid;
+  }
+
+  return callback;
+}
+
+function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => boolean) {
   return function (client: Client, ...args: string[]) {
     const handled = client.handledXts.get(packetName);
     if (handled !== true) {
-      client.handledXts.set(packetName, true);
-      originalMethod(client, ...args);
+      if (originalMethod(client, ...args)) {
+        client.handledXts.set(packetName, true);
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
     }
   };
 }
 
 /** Wraps XT callback so that it respects the cooldown */
 function timestampWrapper(packetName: string, cooldown: number, originalMethod: XTCallback) {
-  return (client: Client, ...args: string[]) => {
+  return (client: Client, ...args: string[]): boolean => {
     const now = Date.now()
     const timestamp = client.xtTimestamps.get(packetName);
     // check if has a record or if we are past the allowed time
     if (timestamp === undefined || timestamp < now) {
       client.xtTimestamps.set(packetName, now + cooldown);
-      originalMethod(client, ...args);
+      return originalMethod(client, ...args);
     } else {
-      console.log(`Packet ${packetName} canceled due to spam`);
+      logdebug(`Packet ${packetName} canceled due to spam`);
+      return true;
     }
   }
 }
 
 export class Handler {
   listeners: Map<string, XTCallback[]>;
-  disconnectListeners: XTCallback[];
-  loginListeners: XTCallback[];
+  disconnectListeners: ClientCallback[];
+  loginListeners: ClientCallback[];
   phpListeners: Map<string, PostCallback>;
   xmlListeners: Map<string, XMLCallback>;
+  onBoot: Array<(s: Server) => void>;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
@@ -54,57 +118,43 @@ export class Handler {
     this.loginListeners = [];
     this.phpListeners = new Map<string, PostCallback>();
     this.xmlListeners = new Map<string, XMLCallback>();
+    this.onBoot = [];
   }
-  xt (extension: string, code: string, method: XTCallback, params?: XtParams): void
-  xt (code: string, method: XTCallback, params?: XtParams): void
 
-  /* Add listener for XT packet */
-  xt (...args: Array<string | XTCallback | XtParams | undefined>): void {
-    let extension = 's';
-    let code: string;
-    let method: XTCallback;
-    let params: XtParams = {};
-    if (typeof args[1] === 'string') {
-      if (typeof args[0] !== 'string') {
-        throw new Error('');
-      }
-      if (typeof args[1] !== 'string') {
-        throw new Error('');
-      }
-      if (typeof args[2] !== 'function') {
-        throw new Error();
-      }
-      extension = args[0];
-      code = args[1];
-      method = args[2];
-    } else {
-      if (typeof args[0] !== 'string') {
-        throw new Error('');
-      }
-      if (typeof args[1] !== 'function') {
-        throw new Error('');
-      }
-      code = args[0];
-      method = args[1];
+  /**
+   * Setup a listener to a XT packet
+   * @param name Name of the packet - This defines the code and the arguments used in the callback
+   * @param method Listener to be added
+   * @param params Params that restrict when this listener will run
+   */
+  xt<
+    Name extends HandleName
+  >(
+    name: Name,
+    method: (client: Client, ...args: GetArgumentsType<HandleArguments[Name]>) => void,
+    params?: XtParams
+  ) {
+    const xt = handlePacketNames.get(name);
+    if (xt === undefined) {
+      throw new Error(`Invalid XT name: ${name}`);
     }
-    const last = args.slice(-1)[0]
-    if (last !== undefined) {
-      params = last as XtParams;
-    }
+    const argTypes = HANDLE_ARGUMENTS[name];
+    const packetName = this.getPacketName(xt.code, xt.extension);
 
-    const packetName = this.getPacketName(code, extension);
-    if (params.once === true) {
-      method = oncePerPacket(packetName, method);
+    let callback = getHandlerCallback<HandleArguments[Name]>(argTypes, method)
+
+    if (params?.once === true) {
+      callback = oncePerPacket(packetName, callback);
     }
-    if (params.cooldown !== undefined) {
-      method = timestampWrapper(packetName, params.cooldown, method);
+    if (params?.cooldown !== undefined) {
+      callback = timestampWrapper(packetName, params.cooldown, callback);
     }
 
     const callbacks = this.listeners.get(packetName);
     if (callbacks === undefined) {
-      this.listeners.set(packetName, [method]);
+      this.listeners.set(packetName, [callback]);
     } else {
-      this.listeners.set(packetName, [...callbacks, method]);
+      this.listeners.set(packetName, [...callbacks, callback]);
     }
   }
 
@@ -117,8 +167,16 @@ export class Handler {
     this.phpListeners.set(path, method);
   }
 
-  disconnect (method: XTCallback): void {
+  disconnect (method: ClientCallback): void {
     this.disconnectListeners.push(method);
+  }
+
+  boot(callback: (s: Server) => void) {
+    this.onBoot.push(callback);
+  }
+
+  bootServer(s: Server): void {
+    this.onBoot.forEach((callback) => callback(s));
   }
 
   private getPacketName (code: string, extension: string): string {
@@ -140,7 +198,7 @@ export class Handler {
 
   /** Handles responding to XML data */
   private handleXml (client: Client, data: string) {
-    console.log('Incoming XML data: ', data);
+    logdebug('Incoming XML data: ', data);
     if (data === '<policy-file-request/>') {
       // policy file request must terminate connection (not fully sure of the details for that)
       client.socket.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
@@ -148,12 +206,12 @@ export class Handler {
       // not very sophisticated XML handling, but it's sufficient
       const actionMatch = data.match(/action='(\w+)'/);
       if (actionMatch === null) {
-        console.log('Unknown XML request: ', data);
+        logdebug('Unknown XML request: ', data);
       } else {
         const action = actionMatch[1];
         const callback = this.xmlListeners.get(action);
         if (callback === undefined) {
-          console.log('Unhandled XML request: ', data);
+          logdebug('Unhandled XML request: ', data);
         } else {
           callback(client, data);
         }   
@@ -165,13 +223,16 @@ export class Handler {
   private handleXt(client: Client, data: string) {
     const packet = new XtPacket(data);
     const callbacks = this.getCallback(packet);
-    if (callbacks === undefined) {
-      console.log('\x1b[31mUnhandled XT:\x1b[0m ', packet);
+    let handled = false;
+    callbacks?.forEach((callback) => {
+      if (callback(client, ...packet.args)) {
+        handled = true;
+      }
+    });
+    if (handled) {
+      logdebug('\x1b[33mHandled XT:\x1b[0m ', packet);
     } else {
-      console.log('\x1b[33mHandled XT:\x1b[0m ', packet);
-      callbacks.forEach((callback) => {
-        callback(client, ...packet.args);
-      });
+      logdebug('\x1b[31mUnhandled XT:\x1b[0m ', packet);
     }
   }
 
@@ -192,6 +253,7 @@ export class Handler {
     handler.xmlListeners.forEach((callback, action) => {
       this.xmlListeners.set(action, callback);
     });
+    this.onBoot = [...handler.onBoot, ...this.onBoot];
   }
 
   /** Handlers that listen for POST requests in the HTTP server */

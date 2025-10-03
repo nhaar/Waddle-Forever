@@ -1,5 +1,6 @@
 import serverList, { getServerPopulation } from "../../servers";
 import { Handler } from "..";
+import { logdebug } from "../../../server/logger";
 
 const handler = new Handler();
 
@@ -18,7 +19,7 @@ handler.xml('rndK', (client) => {
 handler.xml('login', (client, data) => {
   const nicknameMatch = data.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
   if (nicknameMatch === null) {
-    console.log('No nickname provided during Login, terminating.');
+    logdebug('No nickname provided during Login, terminating.');
     client.socket.end('');
   } else {
     const name = nicknameMatch[1];

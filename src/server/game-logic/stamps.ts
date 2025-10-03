@@ -124,5 +124,16 @@ export enum Stamp {
   SurfsUp = 222,
   FlipMania = 224,
   UltimateDuo = 226,
-  CartMaster = 210
+  CartMaster = 210,
+
+  Grasshopper = 230,
+  ElementalWin = 242,
+  FineStudent = 232,
+  FlawlessVictory = 238,
+  OneElement = 244,
+  TrueNinja = 234,
+  MatchMaster = 240,
+  NinjaMaster = 236,
+  SenseiCard = 246,
+  FullDojo = 248
 }

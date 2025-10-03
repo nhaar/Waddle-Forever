@@ -3,7 +3,7 @@
  * This module is mostly temporary, in the future it should be replaced
  * */
 
-import { RouteRefMap } from "./changes";
+import { RouteRefMap } from ".";
 
 /** All files to be served during the 2016 versions */
 export const AS3_STATIC_FILES: RouteRefMap = {

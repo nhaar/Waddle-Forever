@@ -2,27 +2,34 @@ import { getFlooringCost, getIglooCost } from "../../game-logic/iglooItems";
 import { Handler } from "..";
 import { Client } from "../../../server/client";
 import { IglooFurniture } from "../../../server/database";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
 // get igloo information
-handler.xt('g#gm', (client, id) => {
-  client.sendXt('gm', id, client.getIglooString());
+handler.xt(Handle.GetIgloo, (client, id) => {
+  let igloo: string;
+  if (client.penguin.id === id) {
+    igloo = client.getOwnIglooString();
+  } else {
+    igloo = client.getIglooString(client.server.getIgloo(Number(id)));
+  }
+  client.sendXt('gm', id, igloo);
 })
 
 // get all owned igloo types
-handler.xt('g#go', (client) => {
+handler.xt(Handle.GetIglooTypes, (client) => {
   const iglooTypes = client.penguin.getIglooTypes()
   client.sendXt('go', iglooTypes.join('|'))
 })
 
-handler.xt('g#gf', (client) => {
+handler.xt(Handle.GetFurniture, (client) => {
   client.sendXt('gf', client.getFurnitureString())
 })
 
-// COST is not in normal files, needs to be added manually to client
-handler.xt('g#af', (client, furniture, cost) => {
-  client.buyFurniture(Number(furniture), { cost: Number(cost) });
+handler.xt(Handle.AddFurniture, (client, furniture) => {
+  // TODO cost
+  client.buyFurniture(furniture, { cost: 0 });
   client.update();
 })
 
@@ -44,7 +51,7 @@ function addFullHouseStamp(client: Client) {
 }
 
 // saving client new igloo
-handler.xt('g#ur', (client, ...furnitureItems) => {
+handler.xt(Handle.UpdateIgloo, (client, ...furnitureItems) => {
   const igloo = processFurniture(furnitureItems);
   if (igloo.length === 99) {
     addFullHouseStamp(client);
@@ -54,14 +61,13 @@ handler.xt('g#ur', (client, ...furnitureItems) => {
 })
 
 // save the igloo music (v2)
-handler.xt('g#um', (client, music) => {
-  client.penguin.updateIgloo({ music: Number(music) });
+handler.xt(Handle.UpdateIglooMusic, (client, music) => {
+  client.penguin.updateIgloo({ music });
   client.update();
 })
 
 // buying flooring
-handler.xt('g#ag', (client, floor) => {
-  const flooring = Number(floor);
+handler.xt(Handle.AddFlooring, (client, flooring) => {
   const cost = getFlooringCost(flooring);
   if (client.isEngine2) {
     // in this engine, flooring inventory did not exist
@@ -72,36 +78,35 @@ handler.xt('g#ag', (client, floor) => {
   }
   client.penguin.removeCoins(cost);
 
-  client.sendXt('ag', floor, client.penguin.coins);
+  client.sendXt('ag', flooring, client.penguin.coins);
   client.update();
 })
 
 // buying igloo
-handler.xt('g#au', (client, igloo) => {
-  const iglooId = Number(igloo);
+handler.xt(Handle.AddIgloo, (client, igloo) => {
   // TODO refactoring igloo cost
-  const cost = getIglooCost(iglooId);
+  const cost = getIglooCost(igloo);
   if (cost !== undefined) {
     client.penguin.removeCoins(cost);
   }
-  client.penguin.addIgloo(iglooId);
+  client.penguin.addIgloo(igloo);
   client.sendXt('au', igloo, client.penguin.coins);
   client.update();
 })
 
 // saving igloo type
-handler.xt('g#ao', (client, igloo) => {
-  client.penguin.updateIgloo({ type: Number(igloo)});
+handler.xt(Handle.UpdateIglooType, (client, type) => {
+  client.penguin.updateIgloo({ type });
   client.update();
 })
 
-handler.xt('musictrack#getmymusictracks', (client) => {
+handler.xt(Handle.GetMusicTracks, (client) => {
   const playerTracks: string[] = []; // TODO player tracks
   client.sendXt('getmymusictracks', playerTracks.length, playerTracks.join(','));
 })
 
 // get igloo likes
-handler.xt('g#gili', (client) => {
+handler.xt(Handle.GetIglooLikes, (client) => {
   const id = 1; // TODO Unsure what this ID is
   const likeCount = 0; // TODO like system
   // TODO unsure what this 200 is
@@ -118,12 +123,12 @@ handler.xt('g#gili', (client) => {
 })
 
 // get DJ3K tracks
-handler.xt('g#ggd', (client) => {
+handler.xt(Handle.GetDj3kTracks, (client) => {
   client.sendXt('ggd', '');
 })
 
 // get all igloo layouts
-handler.xt('g#gail', (client) => {
+handler.xt(Handle.GetAllIglooLayouts, (client) => {
   const layouts = client.penguin.getAllIglooLayouts().map((layout, index) => {
     return Client.getEngine3IglooString(layout, index);
   });
@@ -132,20 +137,20 @@ handler.xt('g#gail', (client) => {
 })
 
 // update igloo (v3)
-handler.xt('g#uic', (client, layoutId, type, flooring, location, music, furnitureData) => {
-  client.penguin.setActiveIgloo(Number(layoutId));
+handler.xt(Handle.UpdateIglooNew, (client, layoutId, type, flooring, location, music, furnitureData) => {
+  client.penguin.setActiveIgloo(layoutId);
 
   // if empty, the split function used will cause issues with ghost furniture
   const furniture = furnitureData === '' ? [] : processFurniture(furnitureData.split(','));
   if (furniture.length >= 99) {
     addFullHouseStamp(client);
   }
-  client.penguin.updateIgloo({ type: Number(type), music: Number(music), flooring: Number(flooring), location: Number(location), furniture });
+  client.penguin.updateIgloo({ type, music, flooring, location, furniture });
   client.update();
 });
 
 // add layout
-handler.xt('g#al', (client) => {
+handler.xt(Handle.AddIglooLayout, (client) => {
   const igloo = client.penguin.addIglooLayout();
   
   // TODO document better what this slot-index is for in the engine 3 string
@@ -156,18 +161,38 @@ handler.xt('g#al', (client) => {
 });
 
 // update active igloo layout
-handler.xt('g#uiss', (client, layoutId) => {
+handler.xt(Handle.UpdateIglooLayout, (client, layoutId) => {
   // TODO what is 2nd argument for? (combination of slots and if they are locked)
-  client.penguin.setActiveIgloo(Number(layoutId));
+  client.penguin.setActiveIgloo(layoutId);
   client.update();
 });
 
 // add location
-handler.xt('g#aloc', (client, location) => {
+handler.xt(Handle.AddIglooLocation, (client, location) => {
   // TODO adding cost deducting
-  client.penguin.addIglooLocation(Number(location));
+  client.penguin.addIglooLocation(location);
   client.sendXt('aloc', location, client.penguin.coins);
   client.update();
+});
+
+// open igloo
+handler.xt(Handle.OpenIgloo, (client, id, name) => {
+  client.server.openIgloo(client.penguin.id, client.penguin.activeIgloo);
+});
+
+// close igloo
+handler.xt(Handle.CloseIgloo, (client, id) => {
+  client.server.closeIgloo(client.penguin.id);
+});
+
+// get all open igloos
+handler.xt(Handle.GetOpenIgloos, (client) => {
+  const players = client.server.getOpenIglooPlayers();
+
+  // TODO need to figure out how to make this penguin "nickname" properly display
+  // on showHint, without modding. Seems to require an old shell
+  // (and for the newer shells, what is the proper map SWF to use?)
+  client.sendXtEmptyLast('gr', ...players.map(p => `${p.penguin.id}|${p.penguin.name}`));
 });
 
 export default handler;

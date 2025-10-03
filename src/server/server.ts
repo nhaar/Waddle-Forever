@@ -6,7 +6,7 @@ import { WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
 import oldHandler from './handlers/old'
 import loginHandler from './handlers/login'
-import { Client } from './client';
+import { Client, Server } from './client';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';
@@ -14,8 +14,12 @@ import { getModRouter } from './settings';
 import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 
-const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<void> => {
+const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<Server> => {
   handler.useEndpoints(server);
+
+  const gameServer = new Server(settingsManager);
+
+  handler.bootServer(gameServer);
 
   await new Promise<void>((resolve) => {
     net.createServer((socket) => {
@@ -24,9 +28,9 @@ const createServer = async (type: string, port: number, handler: Handler, settin
       console.log(`A client has connected to ${type}`);
 
       const client = new Client(
+        gameServer,
         socket,
-        type === 'Login' ? 'Login' : 'World',
-        settingsManager
+        type === 'Login' ? 'Login' : 'World'
       );
       socket.on('data', (data: Buffer) => {
         const dataStr = data.toString().split('\0')[0];
@@ -48,6 +52,8 @@ const createServer = async (type: string, port: number, handler: Handler, settin
       resolve();
     });
   })
+
+  return gameServer;
 };
 
 const startServer = async (settingsManager: SettingsManager): Promise<void> => {
@@ -61,7 +67,13 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
 
   server.use(httpServer.router);
 
-  setApiServer(settingsManager, server);
+  
+  // TODO in the future, "world" and "old" should be merged somewhat
+  await createServer('Login', 6112, loginHandler, settingsManager, server);
+  const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server);
+  const oldWorld = await createServer('Old', 6114, oldHandler, settingsManager, server);
+  
+  setApiServer(settingsManager, server, [world, oldWorld]);
 
   await new Promise<void>((resolve, reject) => {
     server.listen(HTTP_PORT, () => {
@@ -71,11 +83,6 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
       reject(err)
     })
   })
-
-  // TODO in the future, "world" and "old" should be merged somewhat
-  await createServer('Login', 6112, loginHandler, settingsManager, server);
-  await createServer('World', WORLD_PORT, worldHandler, settingsManager, server);
-  await createServer('Old', 6114, oldHandler, settingsManager, server);
 };
 
 export default startServer;

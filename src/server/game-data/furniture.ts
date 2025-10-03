@@ -1,6 +1,6 @@
 /** Module handles all furniture files in the game */
 
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 export const FURNITURE_ICONS: IdRefMap = {
   1: 'slegacy:media/play/v2/content/global/furniture/icons/1.swf',

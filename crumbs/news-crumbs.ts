@@ -1,9 +1,11 @@
 import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
-import { processVersion } from '../src/server/routes/versions';
-import { getMinifiedDate, isNewspaperAfterCPIP, NEWS_CRUMBS_PATH } from '../src/server/routes/client-files';
+import { isGreaterOrEqual, processVersion } from '../src/server/routes/versions';
+import { getMinifiedDate } from '../src/server/timelines/route';
+import { NEWS_CRUMBS_PATH } from '../src/server/timelines/crumbs';
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/game-data/newspapers';
+import { Update } from '../src/server/game-data/updates';
 
 type LabeledAs2Newspaper = As2Newspaper & { type: 'as2' };
 type LabeledAs3Newspaper = As3Newspaper & { type: 'as3' };
@@ -12,6 +14,11 @@ type Newspaper = LabeledAs2Newspaper | LabeledAs3Newspaper;
 // number at the start is issue of the first
 // first newspaper is newest, last is oldest
 type NewsSet = [number, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper];
+
+/** Check if a newspaper is accessible after CPIP, the argument is the newspaper after it or undefined if it's the "last" newspaper */
+export function isNewspaperAfterCPIP(nextNewspaper: As2Newspaper | undefined) {
+  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, Update.CPIP_UPDATE);
+}
 
 function getNewspaperMinifiedDate(news: Newspaper): string {
   // same format but without dahses in-between

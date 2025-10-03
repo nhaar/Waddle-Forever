@@ -8,8 +8,9 @@ import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
-import { AS3_UPDATE } from "../game-data/updates";
+import { Update } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
+import { getWorldAchievementsXml } from "./worldachievements.xml";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -19,7 +20,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.get('/', (s) => {
     if (isEngine1(s.settings.version)) {
       return 'default/websites/old-precpip.html';
-    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
+    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, Update.AS3_UPDATE)) {
       if (s.settings.minified_website) {
         return 'default/websites/minified-cpip.html';
       } else {
@@ -51,7 +52,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // Pre CPIP server rewrite client uses these POST endpoints
   server.router.post('/setup.txt', (_, req) => {
-    req.send(getSetupTxt(settingsManager.settings.version));
+    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP));
   })
   server.router.post('/news.txt', (_, req) => {
     req.send(getNewsTxt(settingsManager.settings.version));
@@ -71,16 +72,19 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('en/web_service/stamps.json', (s) => {
     return getStampbook(s.settings.version);
   });
-  server.getData('servers.xml', getServersXml);
+  server.getData('servers.xml', (s) => getServersXml(s.targetIP));
   server.getData('setup.xml', (s) => {
-    return getSetupXml(s.settings.version);
+    return getSetupXml(s.settings.version, s.targetIP);
   });
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);
   });
-  server.getData('play/web_service/environment_data.xml', () => {
-    return getEnvironmentDataXml();
+  server.getData('play/web_service/environment_data.xml', (s) => {
+    return getEnvironmentDataXml(s.targetIP);
   });
+  server.getData('web_service/worldachievements.xml', (s) => {
+    return getWorldAchievementsXml(s.settings.version);
+  })
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
   server.getData('play/v2/content/global/en/igloo_music.xml', (s) => {

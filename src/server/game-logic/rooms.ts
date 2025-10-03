@@ -42,7 +42,8 @@ export enum Room {
   PuffleRescue = 949,
   SystemDefender = 950,
   DanceContest = 952,
-  PuffleLaunch = 955
+  PuffleLaunch = 955,
+  CardJitsu = 998
 }
 
 export const roomStamps: Record<number, number[]> = {
@@ -179,6 +180,18 @@ export const roomStamps: Record<number, number[]> = {
     Stamp.FlipMania,
     Stamp.UltimateDuo,
     Stamp.CartMaster
+  ],
+  [Room.CardJitsu]: [
+    Stamp.Grasshopper,
+    Stamp.ElementalWin,
+    Stamp.FineStudent,
+    Stamp.FlawlessVictory,
+    Stamp.OneElement,
+    Stamp.TrueNinja,
+    Stamp.MatchMaster,
+    Stamp.NinjaMaster,
+    Stamp.SenseiCard,
+    Stamp.FullDojo
   ]
 };
 

@@ -1,15 +1,16 @@
 import { ITEMS, ItemType } from "../../game-logic/items";
 import { Handler } from "..";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
 // getting pin information opening stampbook
-handler.xt('i#qpp', (client, id) => {
+handler.xt(Handle.GetPinInformation, (client, id) => {
   client.sendXt('qpp', client.getPinString());
 });
 
 // getting mission stamps
-handler.xt('i#qpa', (client) => {
+handler.xt(Handle.GetMissionStamps, (client) => {
   const awards = [];
   for (const item of client.penguin.getItems()) {
     const itemInfo = ITEMS.get(Number(item));
@@ -21,34 +22,34 @@ handler.xt('i#qpa', (client) => {
 });
 
 // stampbook cover information
-handler.xt('st#gsbcd', (client, id) => {
+handler.xt(Handle.GetStampbookCoverData, (client, id) => {
   client.sendXt('gsbcd', client.getStampbookCoverString());
 });
 
 // getting all the player stamps
-handler.xt('st#gps', (client, id) => {
+handler.xt(Handle.GetPlayerStamps, (client, id) => {
   client.sendStamps();
 });
 
 // getting recent player stamps
-handler.xt('st#gmres', (client) => {
+handler.xt(Handle.GetRecentStamps, (client) => {
   client.sendXt('gmres', client.getRecentStampsString());
 });
 
 // save stamp book cover data
-handler.xt('st#ssbcd', (client, color, highlight, pattern, icon) => {
-  client.penguin.stampbook.color = Number(color);
-  client.penguin.stampbook.highlight = Number(highlight);
-  client.penguin.stampbook.icon = Number(icon);
-  client.penguin.stampbook.pattern = Number(pattern);
+handler.xt(Handle.SetStampbookCoverData, (client, color, highlight, pattern, icon) => {
+  client.penguin.stampbook.color = color;
+  client.penguin.stampbook.highlight = highlight;
+  client.penguin.stampbook.icon = icon;
+  client.penguin.stampbook.pattern = pattern;
   client.update();
 });
 
 // earn client side stamp
-handler.xt('st#sse', (client, stamp) => {
+handler.xt(Handle.SetStampEarned, (client, stamp) => {
   // for this endpoint notifying is unecessary since it's the one
   // that the client sends
-  client.giveStamp(Number(stamp), { notify: false });
+  client.giveStamp(stamp, { notify: false });
   client.update();
 });
 

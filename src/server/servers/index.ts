@@ -221,18 +221,18 @@ const serverList: PenguinServer[] = locales.reduce<PenguinServer[]>((accumulator
   return [ ...accumulator, ...currentValue.servers]
 }, [])
 
-export function getServersXml(): string {
+export function getServersXml(ip: string): string {
   return `
 <?xml version="1.0" encoding="UTF-8"?>
 <servers>
    <environment name="live">
-      <login address="127.0.0.1" port="6112" />
-      <redemption address="127.0.0.1" port="9875" />
+      <login address="${ip}" port="6112" />
+      <redemption address="${ip}" port="9875" />
       ${locales.map((locale) => {
         return `
           <language locale="${locale.lang}">
             ${locale.servers.map((server) => {
-              return `<server id="${server.id}" name="${server.name}" safe="false" address="127.0.0.1" port="${WORLD_PORT}" />`
+              return `<server id="${server.id}" name="${server.name}" safe="false" address="${ip}" port="${WORLD_PORT}" />`
             }).join('\n')}
           </language>
         `;

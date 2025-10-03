@@ -1,8 +1,8 @@
 import { Version } from "../routes/versions";
-import { TemporaryUpdateTimeline } from "./changes";
+import { MigratorVisit, ComplexTemporaryUpdateTimeline } from ".";
 import { FileRef } from "./files";
 import { RoomName } from "./rooms";
-import { ANNIVERSARY_5_START, CAVE_EXPEDITION_END, CAVE_OPENING_END, CAVE_OPENING_START, CHRISTMAS_2005_ENDS, CHRISTMAS_2007_START, DIG_OUT_DOJO_END, EARTH_DAY_2010_END, EARTH_DAY_2010_START, EGG_HUNT_2006_END, EGG_HUNT_2006_START, EPF_RELEASE, FAIR_2010_START, FIRE_CELEBRATION_START, FIRE_CONST_START, HALLOWEEN_2010_START, LIGHTHOUSE_PARTY_START, MUSIC_JAM_08_START, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, NEW_YEARS_2010_UPDATE, PET_SHOP_RELEASE, PIZZA_PARLOR_OPENING_END, PIZZA_PARLOR_OPENING_START, PLANET_Y_2010, PUFFLE_PARTY_10_CONST_START, ROCKHOPPER_ARRIVAL_END, ROCKHOPPER_ARRIVAL_PARTY_START, SPORT_PARTY_END, SPORT_PARTY_START, STADIUM_GAMES_END, SUMMER_PARTY_END, SUMMER_PARTY_START, WATER_CELEBRATION_END, WATER_HUNT_END, WINTER_FIESTA_08_START } from "./updates";
+import { Update } from "./updates";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
@@ -31,20 +31,8 @@ export type PartyChanges = {
 
   music?: Partial<Record<RoomName, number>>;
 
-  activeMigrator?: true;
-}
+  activeMigrator?: MigratorVisit;
 
-export type Party = PartyChanges & {
-  name: string;
-  /** If true, then this will not be labeled a party in the timeline */
-  event?: true;
-
-  // Overriding the default placeholder message for a party start
-  // with a custom one
-  startComment?: string;
-  endComment?: string;
-
-  construction?: Construction;
   /** Scavenger Hunt icon is loaded by the dependency, must be specified */
   scavengerHunt2010?: {
     iconFileId: FileRef;
@@ -57,7 +45,21 @@ export type Party = PartyChanges & {
     // exact ID
     iconFileId: FileRef;
     // UI id might be required in the future if we find different ones
+    infoFile: FileRef;
   };
+}
+
+export type Party = PartyChanges & {
+  name?: string;
+  /** If true, then this will not be labeled a party in the timeline */
+  event?: true;
+
+  // Overriding the default placeholder message for a party start
+  // with a custom one
+  startComment?: string;
+  endComment?: string;
+
+  construction?: Construction;
 
   updates?: Array<{
     comment?: string;
@@ -86,7 +88,7 @@ type Construction = {
   }>;
 };
 
-export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
+export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'Beta Test Party',
     date: '2005-09-21',
@@ -121,7 +123,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   {
     name: 'Christmas Party 2005',
     date: '2005-12-22',
-    end: CHRISTMAS_2005_ENDS,
+    end: Update.CHRISTMAS_2005_ENDS,
     roomChanges: {
       'coffee': 'fix:CP05Coffee.swf',
       'dance': 'fix:CP05Dance.swf',
@@ -175,8 +177,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Pizza Parlor Opening Party',
-    date: PIZZA_PARLOR_OPENING_START,
-    end: PIZZA_PARLOR_OPENING_END,
+    date: Update.PIZZA_PARLOR_OPENING_START,
+    end: Update.PIZZA_PARLOR_OPENING_END,
     roomChanges: {
       'forts': 'archives:ArtworkRoomsForts11.swf',
       'pizza': 'archives:ArtworkRoomsPizza10.swf',
@@ -198,7 +200,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'St. Patrick\'s Day Party',
-    date: PET_SHOP_RELEASE,
+    date: Update.PET_SHOP_RELEASE,
     startComment: 'A celebration for St. Patrick\'s Day and Puffles starts',
     endComment: 'The St. Patrick\'s Day and Puffle party ends',
     end: '2006-03-20',
@@ -238,8 +240,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Easter Egg Hunt 2006',
-    date: EGG_HUNT_2006_START,
-    end: EGG_HUNT_2006_END,
+    date: Update.EGG_HUNT_2006_START,
+    end: Update.EGG_HUNT_2006_END,
     roomChanges: {
       'book': 'archives:ArtworkRooms0416Book10.swf',
       'berg': 'archives:ArtworkRooms0416Berg10.swf',
@@ -253,8 +255,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Underground Opening Party',
-    date: CAVE_OPENING_START,
-    end: CAVE_OPENING_END,
+    date: Update.CAVE_OPENING_START,
+    end: Update.CAVE_OPENING_END,
     roomChanges: {
       'mine': 'archives:ArtworkRoomsMine10.swf',
       boiler: 'recreation:cave_opening/boiler.swf',
@@ -282,8 +284,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Summer Party',
-    date: SUMMER_PARTY_START,
-    end: SUMMER_PARTY_END,
+    date: Update.SUMMER_PARTY_START,
+    end: Update.SUMMER_PARTY_END,
     roomChanges: {
       'beach': 'archives:ArtworkRooms0615Beach10.swf',
       'boiler': 'archives:ArtworkRooms0615Boiler12.swf',
@@ -375,8 +377,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Sports Party',
-    date: SPORT_PARTY_START,
-    end: SPORT_PARTY_END,
+    date: Update.SPORT_PARTY_START,
+    end: Update.SPORT_PARTY_END,
     roomChanges: {
       'beach': 'archives:ArtworkRoomsBeach13.swf',
       'cave': 'archives:ArtworkRoomsCave14.swf',
@@ -437,7 +439,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Lighthouse Party',
-    date: LIGHTHOUSE_PARTY_START,
+    date: Update.LIGHTHOUSE_PARTY_START,
     end: '2006-09-24',
     roomChanges: {
       'beacon': 'archives:Beacon30.swf',
@@ -481,10 +483,57 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     }
   },
   {
+    name: 'Cove Opening Party',
+    date: '2007-05-25',
+    end: '2007-05-29',
+    roomChanges: {
+      plaza: 'recreation:cove_opening/plaza.swf',
+      forest: 'recreation:cove_opening/forest.swf',
+      cove: 'recreation:cove_opening/cove.swf'
+    },
+    music: {
+      'forest': 214,
+      'cove': 214
+    }
+  },
+  {
+    name: 'Summer Kickoff',
+    date: Update.SUMMER_KICKOFF_START,
+    end: Update.SUMMER_KICKOFF_END,
+    roomChanges: {
+      dock: 'recreation:summer_kickoff_2007/dock.swf',
+      town: 'recreation:summer_kickoff_2007/town.swf',
+      beach: 'recreation:summer_kickoff_2007/beach.swf',
+      beacon: 'recreation:summer_kickoff_2007/beacon.swf',
+      dojo: 'recreation:summer_kickoff_2007/dojo.swf',
+      mtn: 'recreation:summer_kickoff_2007/mtn.swf'
+    },
+    music: {
+      'town': 204,
+      'mtn': 204,
+      'light': 215,
+      'beacon': 215,
+      'dojo': 215,
+      'beach': 216,
+      'dock': 216,
+      'berg': 216
+    },
+    updates: [
+      {
+        date: Update.SUMMER_KICKOFF_UPDATE,
+        comment: 'Added flower headdress in beach',
+        roomChanges: {
+          beach: 'recreation:summer_kickoff_2007/beach_update.swf'
+        }
+      }
+    ]
+  },
+  {
     name: 'Water Party',
     date: '2007-07-13',
     end: '2007-07-23',
     roomChanges: {
+      dance: 'recreation:water_party_07_dance.swf',
       'dojo': 'archives:ArtworkRoomsDojo50.swf'
     },
     music: {
@@ -498,7 +547,16 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     startComment: 'Camp Penguin party begins',
     endComment: 'Camp Penguin party ends',
     roomChanges: {
-      'village': 'archives:RoomsVillage-CampPenguin.swf'
+      'village': 'archives:RoomsVillage-CampPenguin.swf',
+      town: 'recreation:camp_penguin/town.swf',
+      cove: 'recreation:camp_penguin/cove.swf',
+      dock: 'recreation:camp_penguin/dock.swf'
+    },
+    music: {
+      'town': 219,
+      'dock': 219,
+      'cove': 219,
+      'village': 219,
     }
   },
   {
@@ -632,7 +690,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Christmas Party',
-    date: CHRISTMAS_2007_START,
+    date: Update.CHRISTMAS_2007_START,
     end: '2008-01-02',
     roomChanges: {
       'beach': 'archives:RoomsBeach-ChristmasParty2007.swf',
@@ -671,7 +729,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Winter Fiesta',
-    date: WINTER_FIESTA_08_START,
+    date: Update.WINTER_FIESTA_08_START,
     end: '2008-01-21',
     roomChanges: {
       'coffee': 'archives:RoomsCoffee-WinterFiesta2008.swf',
@@ -832,8 +890,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Rockhopper & Yarr\'s Arr-ival Parr-ty',
-    date: ROCKHOPPER_ARRIVAL_PARTY_START,
-    end: ROCKHOPPER_ARRIVAL_END,
+    date: Update.ROCKHOPPER_ARRIVAL_PARTY_START,
+    end: Update.ROCKHOPPER_ARRIVAL_END,
     roomChanges: {
       beach: 'archives:ArtworkRooms0425Beach50.swf',
       dock: 'archives:ArtworkRooms0425Dock50.swf',
@@ -981,8 +1039,20 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     }
   },
   {
+    name: 'Earthquake',
+    event: true,
+    date: Update.EARTHQUAKE,
+    // no ide when this ended
+    end: '2008-06-24',
+    startComment: 'An earthquake hits the island',
+    endComment: 'The earthquake ends',
+    roomChanges: {
+      dance: 'archives:RoomsDance-Earthquake2008.swf'
+    }
+  },
+  {
     name: 'Music Jam',
-    date: MUSIC_JAM_08_START,
+    date: Update.MUSIC_JAM_08_START,
     end: '2008-08-05',
     roomChanges: {
       party: 'archives:RoomsParty1-MusicJam2008.swf',
@@ -1027,6 +1097,14 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
         'en': 'archives:MJ2008MusicCatalog.swf'
       }
     },
+    updates: [
+      {
+        date: Update.RECORD_PIN,
+        roomChanges: {
+          dance: 'recreation:dance_record_pin_mjam.swf'
+        }
+      }
+    ],
     permanentChanges: {
       roomChanges: {
         // placeholder date for the band
@@ -1035,7 +1113,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     consequences: {
       roomChanges: {
-        dance: 'recreation:dance_cpip_postmusicjam1.swf'
+        dance: 'recreation:dance_record_pin.swf'
       },
       roomComment: 'The Dance Club is updated post Music Jam'
     }
@@ -1059,7 +1137,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     scavengerHunt2010: {
       iconFileId: 'archives:BoatIcon-PaperBoatScavengerHunt2008.swf'
-    }
+    },
+    activeMigrator: 'archives:RockhopperRareItemsAug2008.swf'
   },
   {
     name: 'Penguin Games',
@@ -1151,8 +1230,21 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       town: 221
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
-    }
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
+      infoFile: 'recreation:fair_08_ticket_info.swf'
+    },
+    updates: [
+      {
+        date: '2008-09-30',
+        comment: 'The plaza was decorated',
+        roomChanges: {
+          plaza: 'recreation:fair_2008_plaza_decorated.swf'
+        },
+        music: {
+          plaza: 221
+        }
+      }
+    ]
   },
   {
     name: '3rd Anniversary Party',
@@ -1237,7 +1329,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   {
     name: 'Dig Out the Dojo',
     date: '2008-11-03',
-    end: DIG_OUT_DOJO_END,
+    end: Update.DIG_OUT_DOJO_END,
     startComment: 'The Dig Out the Dojo event begins',
     endComment: 'The Dig Out the Dojo event ends',
     roomChanges: {
@@ -1265,7 +1357,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   {
     name: 'Christmas Party',
     date: '2008-12-19',
-    end: '2008-12-29',
+    end: Update.CHRISTMAS_2008_END,
     roomChanges: {
       beach: 'archives:RoomsBeach-ChristmasParty2008.swf',
       beacon: 'archives:RoomsBeacon-ChristmasParty2008.swf',
@@ -1516,6 +1608,12 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     globalChanges: {
       'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
+    },
+    construction: {
+      date: '2009-03-17',
+      changes: {
+        plaza: 'recreation:penguin_play_awards_09_plaza_const.swf'
+      }
     }
   },
   {
@@ -1683,6 +1781,12 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     localChanges: {
       'catalogues/party.swf': {
         'en': 'archives:ENCataloguesParty-MedievalParty2009.swf'
+      }
+    },
+    construction: {
+      date: '2009-05-01',
+      changes: {
+        cave: 'recreation:medieval_09_const_cave.swf'
       }
     }
   },
@@ -1894,8 +1998,17 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       }
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2009.swf'
-    }
+      iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
+    },
+    updates: [
+      {
+        date: Update.PENGUINS_TIME_FORGOT_2009,
+        roomChanges: {
+          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
+        }
+      }
+    ],
   },
   {
     name: 'Sensei\'s Fire Scavenger Hunt',
@@ -2049,7 +2162,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Celebration of Fire',
-    date: FIRE_CELEBRATION_START,
+    date: Update.FIRE_CELEBRATION_START,
     end: '2009-11-27',
     roomChanges: {
       // I actually don't know if this dojo exterior
@@ -2067,7 +2180,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       updates: [
         {
           comment: 'Construction for the Fire Dojo begins',
-          date: FIRE_CONST_START,
+          date: Update.FIRE_CONST_START,
           changes: {
             dojofire: 'archives:RoomsDojofire-FireCelebratePre.swf',
             // reverting back to normality
@@ -2133,7 +2246,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     name: 'New Year\'s Day 2010',
     startComment: 'New Year\'s Fireworks appear on the island',
     endComment: 'The New Year\'s celebration ends',
-    date: NEW_YEARS_2010_UPDATE,
+    date: Update.NEW_YEARS_2010_UPDATE,
     end: '2010-01-04',
     roomChanges: {
       mtn: 'archives:2010newyearfireworksskihill.swf',
@@ -2217,12 +2330,20 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
         village: 'archives:RoomsVillage-HolidayParty2009Pre.swf',
         town: 'archives:RoomsTown-HolidayParty2009Construction.swf'
       }
-    }
+    },
+    updates: [
+      {
+        date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
+        roomChanges: {
+          plaza: 'recreation:holiday_09_plaza_quest_golden_puffle.swf'
+        }
+      }
+    ]
   },
   {
     name: 'Cave Expedition',
     date: '2010-01-22',
-    end: CAVE_EXPEDITION_END,
+    end: Update.CAVE_EXPEDITION_END,
     endComment: 'The Cave Expedition ends and the cave mine is temporarily closed',
     roomChanges: {
       'mine': 'archives:RoomsMine-CaveExpedition.swf',
@@ -2304,7 +2425,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'party2': 261
     },
     construction: {
-      date: PUFFLE_PARTY_10_CONST_START,
+      date: Update.PUFFLE_PARTY_10_CONST_START,
       changes: {
         'beacon': 'archives:RoomsBeacon-PuffleParty2010Const.swf',
         'berg': 'archives:RoomsBerg-PuffleParty2010Const.swf',
@@ -2400,8 +2521,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Earth Day 2010',
-    date: EARTH_DAY_2010_START,
-    end: EARTH_DAY_2010_END,
+    date: Update.EARTH_DAY_2010_START,
+    end: Update.EARTH_DAY_2010_END,
     roomChanges: {
       'town': 'archives:RoomsTown-EarthDay2010.swf',
       'coffee': 'archives:RoomsCoffeeEarthDay2010.swf',
@@ -2551,7 +2672,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   {
     name: 'Popcorn Explosion',
     date: '2010-05-18',
-    end: EPF_RELEASE,
+    end: Update.EPF_RELEASE,
     roomChanges: {
       'agent': 'archives:RoomsAgent-PopcornExplosion.swf',
       'village': 'archives:RoomsVillage-PopcornExplosion.swf',
@@ -2612,7 +2733,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Music Jam 2010',
-    date: MUSIC_JAM_2010_START,
+    date: Update.MUSIC_JAM_2010_START,
     end: '2010-07-19',
     roomChanges: {
       'party3': 'archives:RoomsParty3-MusicJam2010.swf',
@@ -2682,7 +2803,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       }
     ],
     construction: {
-      date: MUSIC_JAM_2010_CONST_START,
+      date: Update.MUSIC_JAM_2010_CONST_START,
       changes: {
         'beach': 'archives:RoomsBeach-MusicJam2010Pre.swf',
         'coffee': 'archives:RoomsCoffee-MusicJam2010Pre.swf',
@@ -2698,7 +2819,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Mountain Expedition',
-    date: '2010-08-12',
+    date: Update.MOUNTAIN_EXPEDITION,
     end: '2010-08-19',
     roomChanges: {
       'party3': 'archives:RoomsParty3-MtnExpedition.swf',
@@ -2737,8 +2858,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'The Fair 2010',
-    date: FAIR_2010_START,
-    end: '2010-09-13',
+    date: Update.FAIR_2010_START,
+    end: Update.FAIR_2010_END,
     roomChanges: {
       'town': 'archives:RoomsTown-TheFair2010.swf',
       'coffee': 'archives:RoomsCoffeeTheFair2009.swf',
@@ -2779,10 +2900,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'party3': 221
     },
     fairCpip: {
-      iconFileId: 'archives:Ticket_icon-TheFair2010.swf'
-    },
-    generalChanges: {
-      'web_service/worldachievements.xml': 'approximation:fair_worldachievements.xml'
+      iconFileId: 'archives:Ticket_icon-TheFair2010.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
     },
     localChanges: {
       'catalogues/prizebooth.swf': {
@@ -2819,7 +2938,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: '5th Anniversary Party',
-    date: ANNIVERSARY_5_START,
+    date: Update.ANNIVERSARY_5_START,
     end: '2010-10-25',
     roomChanges: {
       'book': 'archives:5thAnniversaryPartyBook.swf',
@@ -2834,8 +2953,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Halloween Party 2010',
-    date: HALLOWEEN_2010_START,
-    end: '2010-11-04',
+    date: Update.HALLOWEEN_2010_START,
+    end: Update.HALLOWEEN_2010_END,
     roomChanges: {
       'beach': 'archives:HalloweenParty2010Beach.swf',
       'light': 'archives:HalloweenParty2010Lighthouse.swf',
@@ -2889,9 +3008,6 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
       'membership/membership_party3.swf': {
         'en': 'archives:HalloweenParty2010MembershipParty3.swf'
       }
-    },
-    generalChanges: {
-      'web_service/worldachievements.xml': 'approximation:halloween_worldachievements.xml'
     },
     music: {
       'town': 251,
@@ -2999,8 +3115,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Sensei\'s Water Scavenger Hunt',
-    date: '2010-11-16',
-    end: WATER_HUNT_END,
+    date: Update.WATER_HUNT_START,
+    end: Update.WATER_HUNT_END,
     roomChanges: {
       'beach': 'archives:WaterHuntBeach.swf',
       'boiler': 'archives:WaterHuntBoiler.swf',
@@ -3028,7 +3144,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     },
     updates: [
       {
-        date: PLANET_Y_2010,
+        date: Update.PLANET_Y_2010,
         roomChanges: {
           'plaza': 'recreation:water_hunt_planet_y'
         }
@@ -3040,8 +3156,8 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
   },
   {
     name: 'Celebration of Water',
-    date: WATER_HUNT_END,
-    end: WATER_CELEBRATION_END,
+    date: Update.WATER_HUNT_END,
+    end: Update.WATER_CELEBRATION_END,
     roomChanges: {
       'dojoext': 'archives:WaterCelebrationDojoext.swf',
       'dojohide': 'archives:WaterCelebrationDojohide.swf',
@@ -3132,7 +3248,7 @@ export const PARTIES: TemporaryUpdateTimeline<Party, PartyChanges> = [
     activeMigrator: true,
     updates: [
       {
-        date: STADIUM_GAMES_END,
+        date: Update.STADIUM_GAMES_END,
         roomChanges: {
           'forts': 'archives:HolidayParty2010Forts(2).swf',
           'rink': 'archives:HolidayParty2010Rink(2).swf',

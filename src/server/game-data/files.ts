@@ -187,6 +187,10 @@ would need to investigated`
     {
       file: 'CartSurfer2006.swf',
       comment: 'Removed domain check'
+    },
+    {
+      file: 'ENFormsAgent.swf',
+      comment: 'Fix by Blue Kirby, it uses a function from shell.swf which is not present in the WF one, so the function call was replaced with the function contents. Alternatively a shell change could be done and have this file be the original instead'
     }
   ],
   [APPROXIMATION]: [
@@ -194,10 +198,6 @@ would need to investigated`
       file: 'chat291_no_news.swf',
       comment: 'Remove the Newspaper icon to simulare pre-newspapers',
       base: 'unknown:chat291.swf'
-    },
-    {
-      file: 'fair_worldachievements.xml',
-      comment: 'Added Snack Shack stamp, by Supermanover'
     },
     {
       file: 'forts_release.swf',
@@ -239,11 +239,6 @@ would need to investigated`
       comment: 'This is a modified version of Ben\'s mod for the hunt to remove basket requirement'
     },
     {
-      file: 'halloween_worldachievements.xml',
-      comment: `Manual modification of worldachievements.xml from legacy media to have Monster Mash
-Only costumes that were verified with video have been added here`
-    },
-    {
       file: 'map_beach_changed_id.swf',
       comment: `Originally, the beach had ID 809,
 but that was later changed. So this map I changed the ID of the beach to the new id
@@ -255,10 +250,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Removed the Iceberg button to simulate how the map was before the room\'s release',
       base: 'archives:ArtworkMapsIsland5.swf'
     },
-    {
-      file: 'worldachievements.xml',
-      comment: 'Taken from legacy media but removed a lot of stamps that shouldn\t be active'
-    }
   ],
   [RECREATION]: [
     {
@@ -446,6 +437,114 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'dance_cpip_postmusicjam1.swf',
       comment: 'Made by Jeoy based on VamprLover\'s file'
+    },
+    {
+      file: 'dance_record_pin_mjam.swf',
+      comment: 'Made by Blue Kirby, adds the record pin to the Dance Club of the Music Jam 2008'
+    },
+    {
+      file: 'dance_record_pin.swf',
+      comment: 'Made by Blue Kirby based on VampLovr and Jeoy\'s files, adds the record pin to the Dance Club with dark lighting'
+    },
+    {
+      file: 'pre_epf_moderator_form.swf',
+      comment: 'Made by lifeofgames477. A recreation of the moderator form before the EPF. This file was embedded in the pre-CPIP interface but was lost for post-CPIP, thus it was recreated.'
+    },
+    {
+      file: 'ruby_play_debut.swf',
+      comment: 'Made by Blue Kirby, the original version of the play.'
+    },
+    {
+      file: 'plaza_ruby_construction.swf',
+      comment: 'Made by Blue Kirby, the Plaza construction for the Ruby and the Ruby play debut'
+    },
+    {
+      file: 'plaza_ruby_no_weather.swf',
+      comment: 'Made by Blue Kirby, Plaza for Ruby and the Ruby before weather manipulation'
+    },
+    {
+      file: 'light_lollipop_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'sport_microscope_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lounge_cake_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forest_blue_snow_shovel_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beach_snowflake_tile_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pet_fort_snow_fort_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lodge_present_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'plaza_golden_puffle_no_weather.swf',
+      comment: 'Made by Blue Kirby. Plaza with the Golden Puffle without weather manipulation'
+    },
+    {
+      file: 'fair_2008_plaza_decorated.swf',
+      comment: 'Made by Blue Kirby. Decorated plaza which was added in an update to the party'
+    },
+    {
+      file: 'water_party_07_dance.swf',
+      comment: 'Made by victando. Dance Club for the Water Party 2007'
+    },
+    {
+      file: 'fair_08_ticket_info.swf',
+      comment: 'Made by lifeofgames477. A recreation of the tickets information screen for the Fair 2008'
+    },
+    {
+      file: 'plaza_team_blue_play.swf',
+      comment: 'Made by Blue Kirby. Plaza with the stage having the Team Blue vs Team Red play'
+    },
+    {
+      file: 'penguin_play_awards_09_plaza_const.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Penguin Play Awards 2009 construction'
+    },
+    {
+      file: 'medieval_09_const_cave.swf',
+      comment: 'Made by Blue Kirby. Cave for the Medieval Party 2009 construction'
+    },
+    {
+      file: 'plaza_haunting_of_the_viking_opera.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Haunting of the Viking Opera play before weather manipulation'
+    },
+    {
+      file: 'plaza_ruby_no_weather_09_july.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Ruby and the Ruby play before weather manipulation, but specifically for July 2009, which has a different billboard'
+    },
+    {
+      file: 'plaza_underwater_adventure.swf',
+      comment: 'Made by Blue kirby. Plaza for the Underwater Adventure play'
+    },
+    {
+      file: 'fair_09_penguins_time_forgot.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Penguins that Time Forgot play during the Fair 2009'
+    },
+    {
+      file: 'holiday_09_plaza_quest_golden_puffle.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Quest for the Golden Puffle play during the Holiday Party 2009'
+    },
+    {
+      file: 'beacon_lily_pin.swf',
+      comment: 'Made by Blue Kirby using jeoy\'s base recreation of the room, adds the Lily pin'
+    },
+    {
+      file: 'mine_puffle_o_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
@@ -548,6 +647,10 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
   ]
 };
 
+function cleanPath(path: string): string {
+  return path.replaceAll('/', '\\');
+}
+
 /** Raises error if a unproperly documented file is found */
 function enforceDocumentationCorrectness(): void {
   // files in the media folder, but not in here
@@ -558,12 +661,12 @@ function enforceDocumentationCorrectness(): void {
   iterateEntries(FILE_DOCUMENTATIONS, (key, value) => {
     // currently assuming they are all in default package, this may change at some point
     const subdirectory = path.join(DEFAULT_DIRECTORY, key);
-    const files = new Set(getFilesInDirectory(subdirectory));
+    const files = new Set(getFilesInDirectory(subdirectory).map(cleanPath));
     const documentedFiles = new Set<string>();
 
     value.forEach((doc) => {
       // path module uses \ instead of /
-      documentedFiles.add(doc.file.replaceAll('/', '\\'))
+      documentedFiles.add(cleanPath(doc.file))
     });
     files.forEach((file) => {
       if (!documentedFiles.has(file)) {
