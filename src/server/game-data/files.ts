@@ -605,6 +605,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'color_party_2006/dojo.swf',
       comment: 'made by Doubleman'
+    },
+    {
+      file: '1st_anniversary/coffee.swf',
+      comment: 'made by Doubleman'
     }
   ],
   [MOD]: [
