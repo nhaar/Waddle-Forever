@@ -24,7 +24,7 @@ SHASUMS256.txt
 **/package-lock.json
 compile_commands.json
 .envrc
-ffdec
+ffdec-bat
 
 # npm package
 /npm/dist
