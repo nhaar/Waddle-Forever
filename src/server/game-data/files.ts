@@ -599,7 +599,7 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'made by Doubleman'
     },
     {
-      file: 'cove_after_cove_opening.swf',
+      file: 'cove_after_cove_opening_pre_cpip.swf',
       comment: 'made by Victando'
     }
   ],

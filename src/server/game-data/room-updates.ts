@@ -541,7 +541,7 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     // from april fools 08, unfortunately it is the only
     // pre cpip cove SWF that we have
     room: 'cove',
-    fileRef: 'recreation:cove_after_cove_opening.swf',
+    fileRef: 'recreation:cove_after_cove_opening_pre_cpip.swf',
     date: Update.COVE_OPENING_START
   },
   {
