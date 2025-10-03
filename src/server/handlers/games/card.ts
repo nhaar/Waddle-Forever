@@ -8,17 +8,12 @@ import { CardJitsuProgress } from "../../../server/game-logic/ninja-progress";
 import { Stamp } from "../../../server/game-logic/stamps";
 import { Room } from "../../../server/game-logic/rooms";
 
-class Hand {
+export class Hand {
   private _canDrawCards: number[];
   private _cantDrawCards: number[];
   
-  constructor(cards: [number, number][]) {
-    this._canDrawCards = [];
-    cards.forEach((card) => {
-      for (let i = 0; i < card[1]; i++) {
-        this._canDrawCards.push(card[0]);
-      }
-    });
+  constructor(cards: number[]) {
+    this._canDrawCards = [...cards];
     this._cantDrawCards = [];
   }
 
@@ -186,7 +181,7 @@ class NinjaPlayer extends Ninja {
   constructor(player: Client, seat: number, game: CardJitsu) {
     super(seat, game);
 
-    this._hand = new Hand(player.penguin.getCards());
+    this._hand = new Hand(player.penguin.getDeck());
     this._player = player;
   }
 
@@ -479,6 +474,24 @@ export class CardJitsu extends WaddleGame {
     return undefined;
   }
 
+  static getWinner(firstElement: CardElement, secondElement: CardElement, firstValue: number, secondValue: number) {
+    if (firstElement === secondElement) {
+      if (firstValue === secondValue) {
+        return -1;
+      } else {
+        if (firstValue > secondValue) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    } else if (CardJitsu.RULES[firstElement] === secondElement) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
   judgeWinner(): number {
     const cards = this._ninjaSeats.map((n) => n.chosen);
     const cardInfo = cards.map(id => this.getCard(id));
@@ -498,30 +511,13 @@ export class CardJitsu extends WaddleGame {
     const [firstElement, secondElement] = elements;
 
     // adding modifier from power cards
-    const [firstValue, secondValue] = cardInfo.map((card, i) => card.value + this._valueModifier[i]);
+    let [firstValue, secondValue] = cardInfo.map((card, i) => card.value + this._valueModifier[i]);
     this._valueModifier = [0, 0];
-
-    let winIndex = -1;
-    if (firstElement === secondElement) {
-      if (firstValue === secondValue) {
-        winIndex = -1;
-      } else {
-        if (firstValue > secondValue) {
-          winIndex = 0;
-        } else {
-          winIndex = 1;
-        }
-
-        // trick for swapping the winner for swap power cards
-        if (this._swapValue) {
-          winIndex = (winIndex + 1) % 2;
-        }
-      }
-    } else if (CardJitsu.RULES[firstElement] === secondElement) {
-      winIndex = 0;
-    } else {
-      winIndex = 1;
+    if (this._swapValue) {
+      [firstValue, secondValue] = [secondValue, firstValue];
     }
+
+    const winIndex = CardJitsu.getWinner(firstElement, secondElement, firstValue, secondValue);
 
     if (winIndex !== -1) {
       this._ninjaSeats[winIndex].score(cardInfo[winIndex].element, cards[winIndex]);

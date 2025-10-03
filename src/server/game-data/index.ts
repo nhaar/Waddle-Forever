@@ -88,6 +88,7 @@ export type ComplexTemporaryUpdateTimeline<UpdateInformation> = Array<ComplexTem
  * @param getInput A function that takes each event and gets characteristic input data that is meant to be particular of each event
  * @param getOutput A function that takes a previous event's input data, or none if nothing previous, and the current event input data and outputs a final output
  * @param hashOutput A function that creates a unique identifier for a given output, to be able to hash it
+ * @param complexTimeline If true, the timeline is a complex one (ie. with multiple features updating in parallel, eg. crumbs), in that case, temporary updates are not allowed since they would impede some permament updates from being implemented, thus all timelines used are expected to be already processed.
  * @returns 
  */
 export function processTimeline<EventInformation, EventInput, EventOutput>(
@@ -95,7 +96,8 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
   getInput: <T extends EventInformation>(input: T) => EventInput,
   getFirstOutput: () => EventOutput,
   getOutput: (prev: EventOutput, cur: EventInput) => EventOutput,
-  hashOutput: (out: EventOutput) => string
+  hashOutput: (out: EventOutput) => string,
+  complexTimeline: boolean = true
 ): Array<{
   date: Version,
   out: EventOutput,
@@ -122,6 +124,9 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
     // temporary updates
     const input = getInput(event.info);
     if ('end' in event) {
+      if (complexTimeline) {
+        throw new Error('Complex timelines cannot have temporary updates');
+      }
       currentId++;
       temporaryMapping.set(currentId, input);
       eventsTimeline.push({
@@ -303,7 +308,7 @@ export function processIndependentTimeline<EventInformation>(timeline: TimelineE
     return input;
   }, () => {
     return undefined
-  }, (_, c) => c, (out) => out === undefined ? '' : JSON.stringify(out));
+  }, (_, c) => c, (out) => out === undefined ? '' : JSON.stringify(out), false);
 
   const cleanVersions: VersionsInformation<EventInformation> = [];
   versions.forEach((version) => {
@@ -435,9 +440,17 @@ export class VersionsTimeline<EventInformation> {
 /** Class handles an object that maps things to timelines */
 export class TimelineMap<Key, EventInformation> {
   private _map: Map<Key, VersionsTimeline<EventInformation>>;
+  private _hasDefault: boolean = false;
+  private _default: EventInformation | undefined;
+  private _defaultVersion: Version | undefined;
   
-  constructor() {
+  constructor(defaultInfo?: { value: EventInformation, date: Version }) {
     this._map = new Map<Key, VersionsTimeline<EventInformation>>;
+    if (defaultInfo !== undefined) {
+      this._hasDefault = true;
+      this._default = defaultInfo.value;
+      this._defaultVersion = defaultInfo.date;
+    }
   }
 
   /** Inherit to make changes to the key input */
@@ -483,6 +496,11 @@ export class TimelineMap<Key, EventInformation> {
     const prev = this._map.get(key);
     if (prev === undefined) {
       const timeline = new VersionsTimeline<EventInformation>();
+
+      if (this._hasDefault && this._defaultVersion !== undefined && this._default !== undefined) {
+        timeline.add({ date: this._defaultVersion, info: this._default });
+      }
+
       timeline.add(event);
       this._map.set(key, timeline);
     } else {

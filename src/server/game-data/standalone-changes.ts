@@ -76,6 +76,11 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       forest: 'archives:RoomsForest.swf',
       ship: 'archives:RoomsShip.swf'
     },
+    localChanges: {
+      'forms/moderator.swf': {
+        'en': 'recreation:pre_epf_moderator_form.swf'
+      }
+    },
     music: {
       // placeholder play
       stage: 32,
@@ -83,6 +88,14 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       lounge: 6
     },
     map: 'unknown:cpip_map_no_dojoext.swf'
+  },
+  {
+    date: Update.EPF_RELEASE,
+    localChanges: {
+      'forms/moderator.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
+      }
+    }
   }
 ];
 

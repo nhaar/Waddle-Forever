@@ -1,7 +1,5 @@
-import { StaticDataTable } from "../../common/static-table";
-
 /** Identifies the type of game */
-export type WaddleName = 'sled' | 'card';
+export type WaddleName = 'sled' | 'card' | 'fire';
 
 type WaddleRoomInfo = {
   waddleId: number;
@@ -82,5 +80,29 @@ export const WADDLE_ROOMS: WaddleRoomInfo[] = [
     roomId: 322,
     seats: 2,
     game: 'card'
+  },
+  {
+    waddleId: 300,
+    roomId: 812,
+    seats: 2,
+    game: 'fire'
+  },
+  {
+    waddleId: 301,
+    roomId: 812,
+    seats: 2,
+    game: 'fire'
+  },
+  {
+    waddleId: 302,
+    roomId: 812,
+    seats: 3,
+    game: 'fire'
+  },
+  {
+    waddleId: 303,
+    roomId: 812,
+    seats: 4,
+    game: 'fire'
   }
 ];

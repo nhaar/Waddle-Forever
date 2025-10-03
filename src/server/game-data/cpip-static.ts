@@ -217,7 +217,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/close_ups/underwater_note.swf': 'slegacy:media/play/v2/content/local/en/close_ups/underwater_note.swf',
   'play/v2/content/local/en/close_ups/waterItems.swf': 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf',
   'play/v2/content/local/en/forms/missions.swf': 'slegacy:media/play/v2/content/local/en/forms/missions.swf',
-  'play/v2/content/local/en/forms/moderator.swf': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf',
+  'play/v2/content/local/en/forms/agent.swf': 'fix:ENFormsAgent.swf',
   'play/v2/content/local/en/forms/tour.swf': 'slegacy:media/play/v2/content/local/en/forms/tour.swf',
   'play/v2/content/local/en/instructions/card_jitsu.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu.swf',
   'play/v2/content/local/en/instructions/card_jitsu_fire.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_fire.swf',
@@ -267,5 +267,10 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/fire/assets/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/en/locale.swf',
   'play/v2/games/fire/assets/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/es/locale.swf',
   'play/v2/games/fire/assets/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/fr/locale.swf',
-  'play/v2/games/fire/assets/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/pt/locale.swf'
+  'play/v2/games/fire/assets/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/assets/lang/pt/locale.swf',
+  'play/v2/games/fire/lang/de/locale.swf': 'slegacy:media/play/v2/games/fire/lang/de/locale.swf',
+  'play/v2/games/fire/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/lang/en/locale.swf',
+  'play/v2/games/fire/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/lang/es/locale.swf',
+  'play/v2/games/fire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/lang/fr/locale.swf',
+  'play/v2/games/fire/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/lang/pt/locale.swf'
 };
