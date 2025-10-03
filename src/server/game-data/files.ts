@@ -597,9 +597,11 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'cove_opening/cove.swf',
       comment: 'made by Doubleman'
+    },
+    {
+      file: 'cove_after_cove_opening.swf',
+      comment: 'made by Victando'
     }
-    
-    
   ],
   [MOD]: [
     {
