@@ -467,6 +467,22 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Halloween Party',
+    date: '2006-10-27',
+    end: '2006-11-01',
+    roomChanges: {
+      attic: 'recreation:halloween_2006/attic.swf',
+      pizza: 'recreation:halloween_2006/pizza.swf',
+      rink: 'recreation:halloween_2006/rink.swf',
+      mtn: 'recreation:halloween_2006/mtn.swf'
+    },
+    music: {
+      'town': 205,
+      'rink': 205,
+      'mtn': 205
+    }
+  },
+  {
     name: 'Color Party',
     date: '2006-11-24',
     end: '2006-11-27',
