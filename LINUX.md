@@ -12,28 +12,3 @@ bash <(curl -s https://raw.githubusercontent.com/nhaar/Waddle-Forever/master/lin
 # Requirements
 
 The game uses an AppImage, so you need to install FUSE in order to run it. In some Linux distributions, this already comes packaged, but if you don't have it, [here's the tutorial for installing it](https://github.com/appimage/appimagekit/wiki/fuse).
-
-# Finishing installation
-
-After installing, you must first open the folder you installed and then open the terminal, and then run these commands:
-
-```bash
-chmod +x ./WaddleForeverServer
-```
-```bash
-chmod +x ./WaddleForeverClient.AppImage
-```
-
-# Running the game
-
-Everytime you want to run, you must first open a terminal in the game folder and run:
-
-```bash
-sudo ./WaddleForeverServer
-```
-
-After that is running, then you can go ahead and run the game, which is located in `WaddleForeverClient.AppImage`. A message will pop up. Click to run it serverless.
-
-# Porting your data
-
-Currently, the linux installation script will be using different folders for each new version. If you wish to keep your penguin data, refer to the [database guide](./guide/DATABASE.md).

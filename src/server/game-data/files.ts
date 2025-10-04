@@ -545,7 +545,87 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'mine_puffle_o_pin.swf',
       comment: 'Made by Blue Kirby'
-    }
+    },
+    {
+      file: 'camp_penguin/town.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'camp_penguin/cove.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'camp_penguin/dock.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/beach.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'summer_kickoff_2007/beach_update.swf',
+      comment: 'made by Cyan (added Flower Headdress)'
+    },
+    {
+      file: 'summer_kickoff_2007/town.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/dock.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/mtn.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'summer_kickoff_2007/dojo.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/beacon.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_opening/plaza.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_opening/forest.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_opening/cove.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_after_cove_opening_pre_cpip.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'color_party_2006/dojo.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: '1st_anniversary/coffee.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'halloween_2006/pizza.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'halloween_2006/attic.swf',
+      comment: 'made by Randomno'
+    },
+    {
+      file: 'halloween_2006/rink.swf',
+      comment: 'made by Lifeofgames477'
+    },
+    {
+      file: 'halloween_2006/mtn.swf',
+      comment: 'made by Lifeofgames477'
+    },
   ],
   [MOD]: [
     {
