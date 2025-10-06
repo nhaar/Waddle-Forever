@@ -545,6 +545,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'mine_puffle_o_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'berg_oberry_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
