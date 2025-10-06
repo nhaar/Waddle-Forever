@@ -549,6 +549,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'berg_oberry_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'snow_sculpture_mtn_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'attic_top_hat_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

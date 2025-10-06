@@ -1535,7 +1535,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       light: 'archives:RoomsLight-PenguinPlayAwards2009.swf',
       mtn: 'archives:RoomsMtn-PenguinPlayAwards2009.swf',
       village: 'archives:RoomsVillage-PenguinPlayAwards2009.swf'
-    }
+    },
+    updates: [
+      {
+        // pin was removed mid-party
+        date: '2009-03-27',
+        roomChanges: {
+          mtn: 'recreation:snow_sculpture_mtn_no_pin.swf'
+        }
+      }
+    ]
   },
   {
     name: 'Penguin Play Awards',

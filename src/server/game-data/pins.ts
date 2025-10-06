@@ -174,6 +174,18 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:berg_oberry_pin.swf'
   },
   {
+    name: 'Lucky Coin',
+    date: '2009-03-13',
+    end: '2009-03-27'
+  },
+  {
+    name: 'Top Hat',
+    date: '2009-03-27',
+    end: '2009-04-10',
+    room: 'attic',
+    fileRef: 'recreation:attic_top_hat_pin.swf'
+  },
+  {
     name: 'Chocolate Bunny',
     room: 'forest',
     date: '2009-04-10',
