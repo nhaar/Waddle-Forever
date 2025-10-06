@@ -193,6 +193,27 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Forest_Chocolate_Bunny_Pin.swf'
   },
   {
+    name: 'Tree',
+    room: 'dojoext',
+    date: '2009-04-24',
+    end: '2009-05-08',
+    fileRef: 'recreation:dojoext_tree_pin.swf'
+  },
+  {
+    name: 'Ice Cream Sundae',
+    room: 'pizza',
+    date: '2009-05-22',
+    end: '2009-06-05',
+    fileRef: 'recreation:pizza_ice_cream_sundae_pin.swf'
+  },
+  {
+    name: 'Safari Hat',
+    room: 'book',
+    date: '2009-06-05',
+    end: '2009-06-19',
+    fileRef: 'recreation:book_safari_hat_pin.swf'
+  },
+  {
     name: 'Beach Umbrella',
     fileRef: 'archives:Boiler_Room_Beach_Umbrella_Pin.swf',
     room: 'boiler',

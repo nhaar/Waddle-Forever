@@ -557,6 +557,18 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'attic_top_hat_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'dojoext_tree_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pizza_ice_cream_sundae_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'book_safari_hat_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
