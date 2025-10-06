@@ -3063,7 +3063,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: Update.WATER_HUNT_START,
     end: Update.WATER_HUNT_END,
     roomChanges: {
-      'beach': 'archives:WaterHuntBeach.swf',
       'boiler': 'archives:WaterHuntBoiler.swf',
       'book': 'archives:WaterHuntBook.swf',
       'cave': 'archives:WaterHuntCave.swf',

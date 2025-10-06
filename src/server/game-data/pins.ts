@@ -308,5 +308,26 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Night_Club_Carrot_Pin.swf',
     date: '2010-10-08',
     end: '2010-10-22'
+  },
+  {
+    name: 'Water Tap',
+    room: 'beach',
+    fileRef: 'archives:WaterHuntBeach.swf',
+    date: '2010-11-05',
+    end: '2010-11-19'
+  },
+  {
+    name: 'Water',
+    room: 'berg',
+    fileRef: 'archives:Iceberg_Water_Pin.swf',
+    date: '2010-11-19',
+    end: '2010-12-03'
+  },
+  {
+    name: 'Snowflakes',
+    room: 'forts',
+    fileRef: 'archives:SnowForts.swf',
+    date: '2010-12-03',
+    end: '2010-12-17'
   }
 ];
