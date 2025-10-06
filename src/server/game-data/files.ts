@@ -569,6 +569,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'book_safari_hat_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'boiler_kings_crown_pin.swf',
+      comment: 'Made by Blue Kirby, the post-party variant of the room with the pin'
+    },
+    {
+      file: 'light_watermelon_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_dojo_lantern_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'coffee_toy_sailboat_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

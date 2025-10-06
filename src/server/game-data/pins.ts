@@ -200,6 +200,11 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:dojoext_tree_pin.swf'
   },
   {
+    name: 'King\'s Crown',
+    date: '2009-05-08',
+    end: '2009-05-22',
+  },
+  {
     name: 'Ice Cream Sundae',
     room: 'pizza',
     date: '2009-05-22',
@@ -214,11 +219,32 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:book_safari_hat_pin.swf'
   },
   {
+    name: 'Watermelon',
+    room: 'light',
+    date: '2009-06-19',
+    end: '2009-07-03',
+    fileRef: 'recreation:light_watermelon_pin.swf'
+  },
+  {
+    name: 'Dojo Lantern',
+    room: 'cave',
+    date: '2009-07-03',
+    end: '2009-07-17',
+    fileRef: 'recreation:cave_dojo_lantern_pin.swf'
+  },
+  {
     name: 'Beach Umbrella',
     fileRef: 'archives:Boiler_Room_Beach_Umbrella_Pin.swf',
     room: 'boiler',
     date: '2009-07-17',
     end: '2009-07-31',
+  },
+  {
+    name: 'Toy Sailboat',
+    room: 'coffee',
+    date: '2009-07-31',
+    end: '2009-08-14',
+    fileRef: 'recreation:coffee_toy_sailboat_pin.swf'
   },
   {
     name: 'Koi Fish',
