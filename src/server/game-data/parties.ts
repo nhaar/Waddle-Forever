@@ -459,6 +459,41 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: '1st Anniversary',
+    date: '2006-10-24',
+    end: '2006-10-25',
+    roomChanges: {
+      coffee: 'recreation:1st_anniversary/coffee.swf'
+    }
+  },
+  {
+    name: 'Halloween Party',
+    date: '2006-10-27',
+    end: '2006-11-01',
+    roomChanges: {
+      attic: 'recreation:halloween_2006/attic.swf',
+      pizza: 'recreation:halloween_2006/pizza.swf',
+      rink: 'recreation:halloween_2006/rink.swf',
+      mtn: 'recreation:halloween_2006/mtn.swf'
+    },
+    music: {
+      'town': 205,
+      'rink': 205,
+      'mtn': 205
+    }
+  },
+  {
+    name: 'Color Party',
+    date: '2006-11-24',
+    end: '2006-11-27',
+    roomChanges: {
+      dojo: 'recreation:color_party_2006/dojo.swf'
+    },
+    music: {
+      dojo: 201
+    }
+  },
+  {
     name: 'Winter Fiesta',
     date: '2007-01-19',
     end: '2007-01-22',
@@ -483,6 +518,52 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Cove Opening Party',
+    date: '2007-05-25',
+    end: '2007-05-29',
+    roomChanges: {
+      plaza: 'recreation:cove_opening/plaza.swf',
+      forest: 'recreation:cove_opening/forest.swf',
+      cove: 'recreation:cove_opening/cove.swf'
+    },
+    music: {
+      'forest': 214,
+      'cove': 214
+    }
+  },
+  {
+    name: 'Summer Kickoff',
+    date: Update.SUMMER_KICKOFF_START,
+    end: Update.SUMMER_KICKOFF_END,
+    roomChanges: {
+      dock: 'recreation:summer_kickoff_2007/dock.swf',
+      town: 'recreation:summer_kickoff_2007/town.swf',
+      beach: 'recreation:summer_kickoff_2007/beach.swf',
+      beacon: 'recreation:summer_kickoff_2007/beacon.swf',
+      dojo: 'recreation:summer_kickoff_2007/dojo.swf',
+      mtn: 'recreation:summer_kickoff_2007/mtn.swf'
+    },
+    music: {
+      'town': 204,
+      'mtn': 204,
+      'light': 215,
+      'beacon': 215,
+      'dojo': 215,
+      'beach': 216,
+      'dock': 216,
+      'berg': 216
+    },
+    updates: [
+      {
+        date: Update.SUMMER_KICKOFF_UPDATE,
+        comment: 'Added flower headdress in beach',
+        roomChanges: {
+          beach: 'recreation:summer_kickoff_2007/beach_update.swf'
+        }
+      }
+    ]
+  },
+  {
     name: 'Water Party',
     date: '2007-07-13',
     end: '2007-07-23',
@@ -501,7 +582,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     startComment: 'Camp Penguin party begins',
     endComment: 'Camp Penguin party ends',
     roomChanges: {
-      'village': 'archives:RoomsVillage-CampPenguin.swf'
+      'village': 'archives:RoomsVillage-CampPenguin.swf',
+      town: 'recreation:camp_penguin/town.swf',
+      cove: 'recreation:camp_penguin/cove.swf',
+      dock: 'recreation:camp_penguin/dock.swf'
+    },
+    music: {
+      'town': 219,
+      'dock': 219,
+      'cove': 219,
+      'village': 219,
     }
   },
   {
@@ -1535,16 +1625,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       light: 'archives:RoomsLight-PenguinPlayAwards2009.swf',
       mtn: 'archives:RoomsMtn-PenguinPlayAwards2009.swf',
       village: 'archives:RoomsVillage-PenguinPlayAwards2009.swf'
-    },
-    updates: [
-      {
-        // pin was removed mid-party
-        date: '2009-03-27',
-        roomChanges: {
-          mtn: 'recreation:snow_sculpture_mtn_no_pin.swf'
-        }
-      }
-    ]
+    }
   },
   {
     name: 'Penguin Play Awards',
@@ -1741,11 +1822,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       date: '2009-05-01',
       changes: {
         cave: 'recreation:medieval_09_const_cave.swf'
-      }
-    },
-    consequences: {
-      roomChanges: {
-        boiler: 'recreation:boiler_kings_crown_pin.swf'
       }
     }
   },
@@ -3077,6 +3153,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: Update.WATER_HUNT_START,
     end: Update.WATER_HUNT_END,
     roomChanges: {
+      'beach': 'archives:WaterHuntBeach.swf',
       'boiler': 'archives:WaterHuntBoiler.swf',
       'book': 'archives:WaterHuntBook.swf',
       'cave': 'archives:WaterHuntCave.swf',
