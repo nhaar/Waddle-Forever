@@ -463,7 +463,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: '2006-10-24',
     end: '2006-10-25',
     roomChanges: {
-      coffee: 'recreation:1st_anniversary/coffee.swf'
+      coffee: 'recreation:1st_anniversary_coffee.swf'
     }
   },
   {

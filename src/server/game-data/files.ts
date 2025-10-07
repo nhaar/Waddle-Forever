@@ -607,7 +607,7 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'made by Doubleuman'
     },
     {
-      file: '1st_anniversary/coffee.swf',
+      file: '1st_anniversary_coffee.swf',
       comment: 'made by Doubleuman'
     },
     {
