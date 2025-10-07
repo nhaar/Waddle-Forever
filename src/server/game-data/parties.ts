@@ -1625,7 +1625,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       light: 'archives:RoomsLight-PenguinPlayAwards2009.swf',
       mtn: 'archives:RoomsMtn-PenguinPlayAwards2009.swf',
       village: 'archives:RoomsVillage-PenguinPlayAwards2009.swf'
-    }
+    },
+    updates: [
+      {
+        // pin was removed mid-party
+        date: '2009-03-27',
+        roomChanges: {
+          mtn: 'recreation:snow_sculpture_mtn_no_pin.swf'
+        }
+      }
+    ]
   },
   {
     name: 'Penguin Play Awards',
@@ -1822,6 +1831,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       date: '2009-05-01',
       changes: {
         cave: 'recreation:medieval_09_const_cave.swf'
+      }
+    },
+    consequences: {
+      roomChanges: {
+        boiler: 'recreation:boiler_kings_crown_pin.swf'
       }
     }
   },
@@ -2042,6 +2056,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         roomChanges: {
           'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
         }
+      },
+      {
+        date: Update.DAYS_OF_FUN_PIN,
+        roomChanges: {
+          cove: 'recreation:fair_09_cove_no_pin.swf',
+          pizza: 'recreation:pizza_101_days_of_fun_pin_fair.swf'
+        }
       }
     ],
   },
@@ -2087,7 +2108,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       roomChanges: {
         dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
       }
-    }
+    },
+    updates: [
+      {
+        date: Update.PADLOCK_PIN,
+        roomChanges: {
+          pizza: 'recreation:fire_hunt_pizza_no_pin.swf'
+        }
+      }
+    ]
   },
   {
     name: 'The Great Storm of 2009',
@@ -3153,7 +3182,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: Update.WATER_HUNT_START,
     end: Update.WATER_HUNT_END,
     roomChanges: {
-      'beach': 'archives:WaterHuntBeach.swf',
       'boiler': 'archives:WaterHuntBoiler.swf',
       'book': 'archives:WaterHuntBook.swf',
       'cave': 'archives:WaterHuntCave.swf',
