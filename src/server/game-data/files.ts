@@ -689,6 +689,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'book_padlock_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'april_fools_2007/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'april_fools_2007/shack.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

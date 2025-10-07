@@ -505,6 +505,19 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'April Fools\' Party',
+    date: '2007-03-30',
+    end: '2007-04-02',
+    roomChanges: {
+      shack: 'recreation:april_fools_2007/shack.swf',
+      berg: 'recreation:april_fools_2007/berg.swf'
+    },
+    music: {
+      'shack': 201,
+      'berg': 201
+    }
+  },
+  {
     name: 'Pirate Party',
     date: '2007-04-27',
     end: '2007-05-04',
@@ -590,7 +603,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     music: {
       'town': 219,
       'dock': 219,
-      'cove': 219,
+      'cove': 220,
       'village': 219,
     }
   },
