@@ -585,6 +585,30 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'coffee_toy_sailboat_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'mine_sand_castle_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cove_koi_fish_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'fair_09_cove_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'pizza_101_days_of_fun_pin_fair.swf',
+      comment: 'Made by Blue Kirby, the Fair 2009 variant of the room with the pin'
+    },
+    {
+      file: 'fire_hunt_pizza_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'book_padlock_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

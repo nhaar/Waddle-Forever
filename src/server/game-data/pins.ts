@@ -247,20 +247,30 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:coffee_toy_sailboat_pin.swf'
   },
   {
+    name: 'Sand Castle',
+    room: 'mine',
+    date: '2009-08-14',
+    end: '2009-08-28',
+    fileRef: 'recreation:mine_sand_castle_pin.swf'
+  },
+  {
     name: 'Koi Fish',
     date: '2009-08-28',
     end: '2009-09-11',
     room: 'cove',
-    // file is from fair
-    fileRef: 'archives:RoomsCove-TheFair2009.swf'
+    fileRef: 'recreation:cove_koi_fish_pin.swf'
   },
   {
     name: '101 Days of Fun',
     date: '2009-09-11',
     end: '2009-09-25',
-    room: 'pizza',
-    // file is from sensei fire hunt
-    fileRef: 'archives:Sensei_Fire_Hunt_pizza.swf'
+  },
+  {
+    name: 'Padlock',
+    room: 'book',
+    fileRef: 'recreation:book_padlock_pin.swf',
+    date: '2009-09-25',
+    end: '2009-10-09'
   },
   {
     name: '4th Anniversary Cake',

@@ -1966,6 +1966,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         roomChanges: {
           'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
         }
+      },
+      {
+        date: Update.DAYS_OF_FUN_PIN,
+        roomChanges: {
+          cove: 'recreation:fair_09_cove_no_pin.swf',
+          pizza: 'recreation:pizza_101_days_of_fun_pin_fair.swf'
+        }
       }
     ],
   },
@@ -2011,7 +2018,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       roomChanges: {
         dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
       }
-    }
+    },
+    updates: [
+      {
+        date: Update.PADLOCK_PIN,
+        roomChanges: {
+          pizza: 'recreation:fire_hunt_pizza_no_pin.swf'
+        }
+      }
+    ]
   },
   {
     name: 'The Great Storm of 2009',
