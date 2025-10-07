@@ -626,6 +626,70 @@ Unknown if its teleporting to village functions would be accurate`
       file: 'halloween_2006/mtn.swf',
       comment: 'made by Lifeofgames477'
     },
+    {
+      file: 'berg_oberry_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'snow_sculpture_mtn_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'attic_top_hat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'dojoext_tree_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pizza_ice_cream_sundae_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'book_safari_hat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'boiler_kings_crown_pin.swf',
+      comment: 'Made by Blue Kirby, the post-party variant of the room with the pin'
+    },
+    {
+      file: 'light_watermelon_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_dojo_lantern_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'coffee_toy_sailboat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'mine_sand_castle_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cove_koi_fish_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'fair_09_cove_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'pizza_101_days_of_fun_pin_fair.swf',
+      comment: 'Made by Blue Kirby, the Fair 2009 variant of the room with the pin'
+    },
+    {
+      file: 'fire_hunt_pizza_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'book_padlock_pin.swf',
+      comment: 'Made by Blue Kirby'
+    }
   ],
   [MOD]: [
     {
