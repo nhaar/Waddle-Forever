@@ -556,7 +556,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     updates: [
       {
         date: Update.SUMMER_KICKOFF_UPDATE,
-        comment: 'Added flower headdress in beach',
+        comment: 'The beach gets updated for the Summer Kickoff Party',
         roomChanges: {
           beach: 'recreation:summer_kickoff_2007/beach_update.swf'
         }
