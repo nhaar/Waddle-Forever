@@ -578,8 +578,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Lost Map Hunt',
-    date: '2007-05-15',
-    end: '2007-05-22',
+    date: '2007-05-18',
+    end: '2007-05-25',
     roomChanges: {
       mtn: 'recreation:lost_map_hunt/mtn.swf',
       village: 'recreation:lost_map_hunt/village.swf',
