@@ -40,6 +40,14 @@ export type PartyChanges = {
     iconFilePath?: string;
   };
 
+  // TODO maybe also supplying the ID if we know
+  // otherwise default egg id to 1
+  /**
+   * For a scavenger hunt in the 2007-2008 client,
+   * writing what the file number of the egg file is
+   * */
+  scavengerHunt2007?: FileRef;
+
   /** If used the CPIP fair icon and its info */
   fairCpip?: {
     // exact ID
@@ -65,14 +73,6 @@ export type Party = PartyChanges & {
     comment?: string;
     date: string;
   } & PartyChanges>;
-
-  // TODO maybe also supplying the ID if we know
-  // otherwise default egg id to 1
-  /**
-   * For a scavenger hunt in the 2007-2008 client,
-   * writing what the file number of the egg file is
-   * */
-  scavengerHunt2007?: FileRef;
 };
 
 type Construction = {

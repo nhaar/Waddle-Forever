@@ -149,6 +149,12 @@ class FileTimelineMap extends TimelineMap<string, string> {
       this.add('play/v2/content/global/tickets.swf', changes.fairCpip.iconFileId, start, end);
       this.add('play/v2/content/global/ticket_info.swf', changes.fairCpip.infoFile, start, end);
     }
+    if (changes.scavengerHunt2007 !== undefined && typeof changes.scavengerHunt2007 === 'string') {
+      // theoretically you would have static egg files and signal the number
+      // but in practice for eggs where the number isn't known, we use 1 and thus
+      // we manage multiple egg files of ID 1
+      this.add('artwork/eggs/1.swf', changes.scavengerHunt2007, start, end);
+    }
   }
 
   addRoomChanges(roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) {
