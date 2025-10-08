@@ -921,6 +921,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'cave_mjam08_no_pin.swf',
       comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'halloween_2007/dance_notice.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

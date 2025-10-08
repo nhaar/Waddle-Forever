@@ -778,7 +778,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     generalChanges: {
       'artwork/tools/binoculars1.swf': 'archives:ContentBinoculars-HalloweenParty2007.swf'
-    }
+    },
+    scavengerHunt2007: 'archives:ContentParty_icon-HalloweenParty2007.swf'
   },
   {
     name: 'Surprise Party',
