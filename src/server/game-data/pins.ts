@@ -13,6 +13,7 @@ export type Pin = {
 })
   
 // has to be sorted
+// TODO implicit dates
 export const PINS: Array<Pin> = [
   {
     date: Update.PET_SHOP_RELEASE,
@@ -150,8 +151,7 @@ export const PINS: Array<Pin> = [
     date: Update.TACO_PIN,
     end: Update.LILY_PIN,
     room: 'forts',
-    // file is from winter fiesta
-    fileRef: 'archives:WinterFiesta2009Forts.swf'
+    fileRef: 'recreation:forts_taco_pin.swf'
   },
   {
     name: 'Lily',
@@ -276,6 +276,13 @@ export const PINS: Array<Pin> = [
     end: '2009-10-09'
   },
   {
+    name: 'Football',
+    room: 'attic',
+    fileRef: 'recreation:attic_football_pin.swf',
+    date: '2009-10-09',
+    end: '2009-10-23'
+  },
+  {
     name: '4th Anniversary Cake',
     room: 'boiler',
     fileRef: 'archives:Boiler_Room_4th_Anniversary_Cake_Pin.swf',
@@ -300,12 +307,43 @@ export const PINS: Array<Pin> = [
     name: 'Snowman',
     date: '2009-12-18',
     end: '2010-01-01',
-    // post holiday party version is not archived
+    room: 'attic',
+    fileRef: 'recreation:attic_snowman_pin.swf'
+  },
+  {
+    name: 'Fireworks',
+    date: '2010-01-01',
+    end: '2010-01-15',
+    room: 'light',
+    fileRef: 'recreation:light_fireworks_pin.swf'
+  },
+  {
+    name: 'Puffer Fish',
+    date: '2010-01-15',
+    end: '2010-01-29',
+    room: 'berg',
+    fileRef: 'recreation:berg_puffer_fish_pin.swf'
+  },
+  {
+    name: 'Speaker',
+    date: '2010-01-29',
+    end: '2010-02-12',
+    room: 'pet',
+    fileRef: 'recreation:pet_speaker_pin.swf'
   },
   {
     date: Update.PUFFLE_PARTY_10_CONST_START,
     end: '2010-03-18',
-    name: 'Feather'
+    name: 'Feather',
+    room: 'beacon',
+    fileRef: 'recreation:beacon_feather_pin.swf'
+  },
+  {
+    name: 'Wagon',
+    date: '2010-02-26',
+    end: '2010-03-12',
+    room: 'lodge',
+    fileRef: 'recreation:lodge_wagon_pin.swf'
   },
   {
     name: 'Boot',
@@ -313,6 +351,13 @@ export const PINS: Array<Pin> = [
     end: '2010-03-26',
     room: 'lounge',
     fileRef: 'archives:Dance_Lounge_Boot_Pin.swf'
+  },
+  {
+    name: 'Cupcake',
+    date: '2010-03-26',
+    end: '2010-04-09',
+    room: 'sport',
+    fileRef: 'recreation:sport_cupcake_pin.swf'
   },
   {
     name: 'Frog',
@@ -324,6 +369,27 @@ export const PINS: Array<Pin> = [
   {
     name: 'Leaf',
     date: '2010-04-23'
+  },
+  {
+    name: 'Shield',
+    date: '2010-05-07',
+    end: '2010-05-21',
+    room: 'cove',
+    fileRef: 'recreation:cove_shield_pin.swf'
+  },
+  {
+    name: 'Cream Soda Barrel',
+    date: '2010-05-21',
+    end: '2010-06-04',
+    room: 'book',
+    fileRef: 'recreation:book_cream_soda_barrel_pin.swf'
+  },
+  {
+    name: 'Seashell',
+    date: '2010-06-04',
+    end: '2010-06-18',
+    room: 'berg',
+    fileRef: 'recreation:berg_seashell_pin.swf'
   },
   {
     name: 'Light Bulb',
@@ -387,6 +453,13 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Night_Club_Carrot_Pin.swf',
     date: '2010-10-08',
     end: '2010-10-22'
+  },
+  {
+    name: 'Bat',
+    date: '2010-10-22',
+    end: '2010-11-05',
+    room: 'cove',
+    fileRef: 'recreation:cove_bat_pin.swf'
   },
   {
     name: 'Water Tap',

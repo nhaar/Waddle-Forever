@@ -291,7 +291,7 @@ export const STAGE_TIMELINE: Array<{
     name: 'Ruby and the Ruby',
     costumeTrunkFileRef: 'archives:July09Costume.swf', // From 2009, unknown if accurate
     plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
-    stageFileRef: 'archives:RoomsStage-December2010.swf' // from Dec 2010, unknown if accurate
+    stageFileRef: 'recreation:stage_ruby_2010_june.swf'
   },
   {
     date: '2010-07-21',

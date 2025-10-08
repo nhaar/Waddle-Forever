@@ -825,6 +825,62 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'festival_of_snow/klop6.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'attic_football_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'attic_snowman_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'light_fireworks_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'berg_puffer_fish_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pet_speaker_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beacon_feather_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lodge_wagon_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'sport_cupcake_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cove_shield_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'book_cream_soda_barrel_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'stage_ruby_2010_june.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forts_taco_pin.swf',
+      comment: 'Made by Randomno by removing the decorations from the archived party room'
+    },
+    {
+      file: 'cove_bat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'berg_seashell_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

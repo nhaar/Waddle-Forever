@@ -1891,11 +1891,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       changes: {
         cave: 'recreation:medieval_09_const_cave.swf'
       }
-    },
-    consequences: {
-      roomChanges: {
-        boiler: 'recreation:boiler_kings_crown_pin.swf'
-      }
     }
   },
   {
