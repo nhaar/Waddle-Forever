@@ -86,10 +86,11 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:WPForest.swf'
   },
   {
+    // timeline of this pin is weird due to the many updates of the night club
+    // post music jam
     name: 'Record',
     date: Update.RECORD_PIN,
-    end: '2008-08-15',
-    room: 'dance',
+    end: '2008-08-15'
   },
   {
     name: 'Lollipop',
@@ -203,6 +204,8 @@ export const PINS: Array<Pin> = [
     name: 'King\'s Crown',
     date: '2009-05-08',
     end: '2009-05-22',
+    room: 'boiler',
+    fileRef: 'recreation:boiler_kings_crown_pin.swf'
   },
   {
     name: 'Ice Cream Sundae',
