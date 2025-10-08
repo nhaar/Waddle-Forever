@@ -2130,16 +2130,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     updates: [
       {
-        date: Update.PENGUINS_TIME_FORGOT_2009,
-        roomChanges: {
-          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
-        }
-      },
-      {
         date: Update.DAYS_OF_FUN_PIN,
         roomChanges: {
           cove: 'recreation:fair_09_cove_no_pin.swf',
-          pizza: 'recreation:pizza_101_days_of_fun_pin_fair.swf'
+          pizza: 'recreation:pizza_101_days_of_fun_pin_fair.swf',
+          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
         }
       }
     ],

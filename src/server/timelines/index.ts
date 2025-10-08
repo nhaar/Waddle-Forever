@@ -26,5 +26,9 @@ export function getSubUpdateDates<UpdateInfo>(update: ComplexTemporaryUpdate<Upd
     end = update.end;
   }
 
-  return { date: subUpdate.date ?? update.date, end };
+  const finalDate = subUpdate.date ?? update.date;
+  if (finalDate === end) {
+    throw new Error('Update cannot start and end on the same date');
+  }
+  return { date: finalDate, end };
 }
