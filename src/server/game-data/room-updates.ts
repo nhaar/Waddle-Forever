@@ -531,13 +531,6 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     date: Update.SUMMER_PARTY_START
   },
   {
-    room: 'forest',
-    fileRef: 'archives:RoomsForest-CoveOpeningPartyPre_1.swf',
-    // this is the construction, it is technically from May 15 but we dont have
-    // the map hunt that allows you to get to the forest otherwise
-    date: Update.COVE_OPENING_START
-  },
-  {
     // from april fools 08, unfortunately it is the only
     // pre cpip cove SWF that we have
     room: 'cove',

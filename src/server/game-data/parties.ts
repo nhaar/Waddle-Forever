@@ -577,6 +577,28 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Lost Map Hunt',
+    date: '2007-05-15',
+    end: '2007-05-22',
+    roomChanges: {
+      mtn: 'recreation:lost_map_hunt/mtn.swf',
+      village: 'recreation:lost_map_hunt/village.swf',
+      dock: 'recreation:lost_map_hunt/dock.swf',
+      town: 'recreation:lost_map_hunt/town.swf',
+      forts: 'recreation:lost_map_hunt/forts.swf'
+    },
+    permanentChanges: {
+      roomChanges: {
+        plaza: 'archives:ArtworkRoomsPlaza45.swf',
+        forest: 'archives:RoomsForest-CoveOpeningPartyPre_1.swf'
+      }
+    },
+    scavengerHunt2007: 'recreation:lost_map_hunt/handler.swf',
+    generalChanges: {
+      'chat506.swf': 'recreation:lost_map_hunt/chat506_edit.swf'
+    }
+  },
+  {
     name: 'Cove Opening Party',
     date: '2007-05-25',
     end: '2007-05-29',

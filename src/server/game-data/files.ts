@@ -881,6 +881,34 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'berg_seashell_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lost_map_hunt/mtn.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/village.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/handler.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/chat506_edit.swf',
+      comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work'
     }
   ],
   [MOD]: [
