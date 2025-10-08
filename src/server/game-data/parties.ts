@@ -1217,7 +1217,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       {
         date: Update.RECORD_PIN,
         roomChanges: {
-          dance: 'recreation:dance_record_pin_mjam.swf'
+          dance: 'recreation:dance_record_pin_mjam.swf',
+          cave: 'recreation:cave_mjam08_no_pin.swf'
         }
       }
     ],

@@ -87,6 +87,13 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:WPForest.swf'
   },
   {
+    name: 'Treble Clef',
+    date: '2008-07-18',
+    end: Update.RECORD_PIN,
+    room: 'cave',
+    fileRef: 'recreation:cave_treble_clef_pin.swf'
+  },
+  {
     // timeline of this pin is weird due to the many updates of the night club
     // post music jam
     name: 'Record',

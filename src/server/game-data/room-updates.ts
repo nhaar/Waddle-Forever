@@ -659,5 +659,12 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: Update.GINGERBREAD_PIN,
       fileRef: 'recreation:lodge_present_pin.swf'
     }
+  ],
+  'cove': [
+    {
+      date: Update.CPIP_UPDATE,
+      end: '2008-07-18',
+      fileRef: 'recreation:cove_cpip_firework_rocket_pin.swf'
+    }
   ]
 }

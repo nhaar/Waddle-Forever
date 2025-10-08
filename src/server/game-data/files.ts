@@ -909,6 +909,18 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'lost_map_hunt/chat506_edit.swf',
       comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work'
+    },
+    {
+      file: 'cove_cpip_firework_rocket_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_treble_clef_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_mjam08_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
     }
   ],
   [MOD]: [
