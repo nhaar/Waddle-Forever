@@ -697,6 +697,134 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'april_fools_2007/shack.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/shack.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/flamini1.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/seemi.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/eragon12101.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/clubpenny202.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/liilmiig.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/zujkuteee.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/innin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/mtn.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/air2515.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/beach_1.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/quitex.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/tayler727.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/beach_2.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/beach_3.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/plaza.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/angelspark.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/barney1000.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/pirategirl66.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/kombivw557.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/mickmitzinic.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/village.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/covanant.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/converseray.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/light.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/jazzybadger.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/toastygirl.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/klop6.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

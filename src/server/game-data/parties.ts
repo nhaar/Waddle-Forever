@@ -505,6 +505,52 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Festival of Snow',
+    date: '2007-02-09',
+    end: '2007-02-19',
+    roomChanges: {
+      shack: 'recreation:festival_of_snow/shack.swf',
+      berg: 'recreation:festival_of_snow/berg.swf',
+      forts: 'recreation:festival_of_snow/forts.swf',
+      mtn: 'recreation:festival_of_snow/mtn.swf',
+      dance: 'recreation:festival_of_snow/dance.swf',
+      beach: 'recreation:festival_of_snow/beach_1.swf',
+      plaza: 'recreation:festival_of_snow/plaza.swf',
+      dock: 'recreation:festival_of_snow/dock.swf',
+      village: 'recreation:festival_of_snow/village.swf',
+      light: 'recreation:festival_of_snow/light.swf',
+    },
+    music: {
+      dock: 207,
+      dojo: 207,
+      berg: 207,
+      shack: 207,
+      plaza: 207,
+      forts: 207,
+      town: 207,
+      beach: 204,
+      light: 204,
+      mtn: 204,
+      village: 204
+    },
+    updates: [
+      {
+        date: '2007-02-15',
+        comment: 'The Migrator is updated',
+        roomChanges: {
+          beach: 'recreation:festival_of_snow/beach_2.swf',
+        }
+      },
+      {
+        date: '2007-02-16',
+        comment: 'The Migrator is gone',
+        roomChanges: {
+          beach: 'recreation:festival_of_snow/beach_3.swf',
+        }
+      }
+    ]
+  },
+  {
     name: 'April Fools\' Party',
     date: '2007-03-30',
     end: '2007-04-02',
