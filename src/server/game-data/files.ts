@@ -929,6 +929,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'lighthouse_party_2006/light.swf',
       comment: 'Made by Randomno'
+    },
+    {
+      file: 'plaza_tour_const.swf',
+      comment: 'Made by Doubleuman, just a compiled version of an fla with some fixes'
     }
   ],
   [MOD]: [

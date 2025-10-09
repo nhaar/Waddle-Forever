@@ -83,6 +83,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:ArtworkRoomsPlaza40.swf'
     },
     {
+      date: '2007-01-22',
+      fileRef: 'recreation:plaza_tour_const.swf',
+      comment: 'A construction begins at the Plaza for a tour booth'
+    },
+    {
       date: '2007-01-26',
       fileRef: 'archives:ArtworkRoomsPlaza44.swf',
       comment: 'Tours are now present in the Plaza'
