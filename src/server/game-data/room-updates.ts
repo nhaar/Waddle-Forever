@@ -278,6 +278,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:ArtworkRoomsAttic12.swf',
       date: Update.BETA_RELEASE
     },
+    {
+      fileRef: 'recreation:attic_dec2006.swf',
+      date: '2006-12-22',
+      comment: 'The Attic is vectorized'
+    }
   ],
   sport: [
     {
