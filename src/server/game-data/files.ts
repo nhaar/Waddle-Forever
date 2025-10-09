@@ -925,6 +925,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'halloween_2007/dance_notice.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lighthouse_party_2006/light.swf',
+      comment: 'Made by Randomno'
     }
   ],
   [MOD]: [
