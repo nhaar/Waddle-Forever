@@ -2703,8 +2703,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     consequences: {
       roomChanges: {
-        // this file is from June, but it is being placed here as a placeholder for the file from april which is missing
-        shack: 'archives:RoomsShack-June2010.swf'
+        shack: 'recreation:shack_apr10.swf'
       }
     }
   },

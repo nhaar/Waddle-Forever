@@ -393,6 +393,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   shack: [
     {
+      fileRef: 'archives:RoomsShack-June2010.swf',
+      date: '2010-06-15',
+      comment: 'A statue appears at the Mine Shack'
+    },
+    {
       fileRef: 'archives:RoomsShack-July2010.swf',
       date: '2010-07-29'
     },

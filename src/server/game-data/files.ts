@@ -937,6 +937,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_may07.swf',
       comment: 'Made by Randomno'
+    },
+    {
+      file: 'shack_apr10.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [
