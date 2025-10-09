@@ -408,7 +408,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'winter_luau/dock.swf',
-      comment: 'Winter Luau room recreation by Supermanover'
+      comment: 'Winter Luau room recreation by Supermanover, with additional fixes from Randomno'
     },
     {
       file: 'winter_luau/town.swf',
