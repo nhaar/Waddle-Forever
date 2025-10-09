@@ -945,6 +945,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'attic_dec2006.swf',
       comment: 'Made by Randomno, vectorized attic before rocking horse animation, it is an edit of attic42 with rocking horse from attic12 and Find Four tables moved to match a screenshot'
+    },
+    {
+      file: 'map_vector_original.swf',
+      comment: 'Made by Randomno, repositioned rooms from map15 and deleted parts of the Forest graphic'
     }
   ],
   [MOD]: [

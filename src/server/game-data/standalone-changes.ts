@@ -23,7 +23,11 @@ type StandaloneTemporaryChange = {
   }>
 }
 
-export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
+type PermanentUpdate = PartyChanges & {
+  comment?: string;
+}
+
+export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   {
     date: Update.BETA_RELEASE,
     map: "recreation:map_release.swf"
@@ -31,6 +35,11 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
   {
     date: Update.PRE_CPIP_REWRITE_DATE,
     map: 'approximation:map_beach_changed_id.swf'
+  },
+  {
+    date: '2007-01-15', // rough estimate date
+    map: 'recreation:map_vector_original.swf',
+    comment: 'The map is vectorized'
   },
   {
     date: Update.CPIP_UPDATE,

@@ -12,9 +12,4 @@ type MapUpdate = {
 
 /** Standalone permanent map updates */
 export const MAP_UPDATES: PermanentUpdateTimeline<MapUpdate> = [
-  {
-    // party doesn't exist yet
-    date: Update.COVE_OPENING_START,
-    fileRef: 'archives:ArtworkMaps15.swf'
-  }
 ];
