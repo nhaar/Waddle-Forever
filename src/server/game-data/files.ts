@@ -933,6 +933,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_tour_const.swf',
       comment: 'Made by Doubleuman, just a compiled version of an fla with some fixes'
+    },
+    {
+      file: 'plaza_may07.swf',
+      comment: 'Made by Randomno'
     }
   ],
   [MOD]: [

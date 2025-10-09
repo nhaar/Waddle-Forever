@@ -607,6 +607,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       forest: 'recreation:cove_opening/forest.swf',
       cove: 'recreation:cove_opening/cove.swf'
     },
+    consequences: {
+      roomChanges: {
+        plaza: 'recreation:plaza_may07.swf'
+      }
+    },
     music: {
       'forest': 214,
       'cove': 214
