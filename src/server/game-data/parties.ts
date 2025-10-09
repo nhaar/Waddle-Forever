@@ -776,16 +776,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'dock': 223,
       'forest': 223,
       'berg': 223,
-      'light': 205,
       'shack': 223,
       'dance': 224,
-      'pizza': 205,
+      'pizza': 223,
       'forts': 223,
       'mtn': 223,
       'lodge': 205,
       'village': 223,
       'town': 223,
-      'plaza': 223
+      'plaza': 223,
+      'beacon': 205
     },
     generalChanges: {
       'artwork/tools/binoculars1.swf': 'archives:ContentBinoculars-HalloweenParty2007.swf'
