@@ -957,7 +957,20 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'halloween_2008/igloo_background.swf',
       comment: 'Made by Blue Kirby, removed the stormy clouds from the 2010 version, placeholder until a more proper 2008 version is made'
+    },
+    {
+      file: 'water_party_2007/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/mtn.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/forest.swf',
+      comment: 'Made by Doubleuman'
     }
+
   ],
   [MOD]: [
     {
