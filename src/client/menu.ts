@@ -10,6 +10,20 @@ import { createTimelinePicker } from "./timeline";
 import { createModsWindow } from "./mods";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings): MenuItemConstructorOptions[] => {
+  const app: MenuItemConstructorOptions = { 
+    id: '0', 
+    label: 'Waddle Forever', 
+    submenu: [
+      {
+        label: 'Quit Waddle Forever', 
+        role: 'quit'
+      }, 
+      {
+        role: 'close'
+      }
+    ]
+  };
+  
   const options: MenuItemConstructorOptions = {
     id: '1',
     label: 'Options',
@@ -76,13 +90,16 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   const timeline: MenuItemConstructorOptions = {
     id: '3',
     label: 'Timeline',
+    submenu: process.platform == 'darwin' ? [{ 
+      label: 'Timeline Picker', 
+      click: () => { createTimelinePicker(mainWindow); }
+    }] : [],
     click: () => { createTimelinePicker(mainWindow); }
   };
 
-  return [
-    options,
-    timeline
-  ];
+return process.platform === 'darwin' ? 
+  [app, options, timeline] : 
+  [options, timeline];
 };
 
 const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings) => {
