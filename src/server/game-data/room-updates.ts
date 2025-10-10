@@ -674,5 +674,19 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: '2008-07-18',
       fileRef: 'recreation:cove_cpip_firework_rocket_pin.swf'
     }
+  ],
+  'attic': [
+    {
+      date: Update.CHRISTMAS_2008_END,
+      end: Update.GINGERBREAD_PIN,
+      fileRef: 'recreation:attic_dec08.swf',
+      comment: 'Snow is stored in the Attic'
+    },
+    {
+      date: Update.TACO_PIN,
+      end: Update.SNOW_SCULPTURE_09_START,
+      fileRef: 'archives:WinterFiesta2009SkiLodge.swf',
+      comment: 'The sign in the Attic is now bold'
+    }
   ]
 }

@@ -1591,7 +1591,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       dance: 'archives:WinterFiesta2009Dance.swf',
       pizza: 'archives:WinterFiesta2009Pizza.swf',
       plaza: 'archives:WinterFiesta2009Plaza.swf',
-      attic: 'archives:WinterFiesta2009SkiLodge.swf',
       village: 'archives:WinterFiesta2009Village.swf',
       forts: 'archives:WinterFiesta2009Forts.swf',
       town: 'archives:WinterFiesta2009Town.swf'
@@ -1710,7 +1709,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Snow Sculpture Showcase',
-    date: '2009-03-20',
+    date: Update.SNOW_SCULPTURE_09_START,
     end: '2009-04-09',
     roomChanges: {
       beach: 'archives:RoomsBeach-PenguinPlayAwards2009.swf',

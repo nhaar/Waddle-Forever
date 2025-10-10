@@ -949,6 +949,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'map_vector_original.swf',
       comment: 'Made by Randomno, repositioned rooms from map15 and deleted parts of the Forest graphic'
+    },
+    {
+      file: 'attic_dec08.swf',
+      comment: 'Made by Randomno, removed the Taco Pin from the archived room'
     }
   ],
   [MOD]: [
