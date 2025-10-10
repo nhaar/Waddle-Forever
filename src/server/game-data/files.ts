@@ -953,6 +953,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'attic_dec08.swf',
       comment: 'Made by Randomno, removed the Taco Pin from the archived room'
+    },
+    {
+      file: 'halloween_2008/igloo_background.swf',
+      comment: 'Made by Blue Kirby, removed the stormy clouds from the 2010 version, placeholder until a more proper 2008 version is made'
     }
   ],
   [MOD]: [

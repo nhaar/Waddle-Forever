@@ -1453,6 +1453,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       forts: 251,
       sport: 252,
       town: 251
+    },
+    globalChanges: {
+      'igloo/assets/igloo_background.swf': 'recreation:halloween_2008/igloo_background.swf'
     }
   },
   {
