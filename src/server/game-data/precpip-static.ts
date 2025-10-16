@@ -39,6 +39,7 @@ newspaperFiles.forEach((fileId, index) => {
 
 
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
+  'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
   'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
   'games/astro.swf': 'mammoth:games/astro.swf',
@@ -55,7 +56,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'paper86.swf': 'slippers07:media/paper86.swf',
   'join/join13.swf': 'slippers07:media/join/join13.swf',
   'interface/errors4.swf': 'slippers07:media/interface/errors4.swf',
-  'artwork/characters/16.swf': 'slippers07:media/artwork/characters/16.swf',
   // coins for change for the only pre CPIP party!
   'artwork/forms/coinsforchange.swf': 'archives:ChristmasParty2007CoinsForChange.swf',
   'chat604.swf': 'fix:Chat604.swf',
