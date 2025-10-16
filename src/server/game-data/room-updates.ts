@@ -253,6 +253,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'The Pet Shop now has animations'
     },
     {
+      date: '2007-11-30',
+      fileRef: 'recreation:pet_nov07.swf',
+      comment: 'Yellow Puffles are now in the Pet Shop'
+    },
+    {
       date: '2010-02-25',
       fileRef: 'archives:RoomsPet-Early2011.swf',
       comment: 'White Puffles are now in the Pet Shop'
@@ -397,6 +402,10 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   shack: [
+    {
+      fileRef: 'recreation:shack_vector.swf',
+      date: Update.ROOM_REDRAWS
+    },
     {
       fileRef: 'archives:RoomsShack-June2010.swf',
       date: '2010-06-15',

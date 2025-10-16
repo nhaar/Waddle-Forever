@@ -969,8 +969,23 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_party_2007/forest.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'mjam_08_const/dance.swf',
+      comment: 'Made by Cyan'
+    },
+    {
+      file: 'shack_vector.swf',
+      comment: 'Made by lifeofgames477, based using the april fools 2008 shacka as a base with elements from the 2009 version'
+    },
+    {
+      file: 'pirate_party/coffee.swf',
+      comment: 'Made by Cyan'
+    },
+    {
+      file: 'pet_nov07.swf',
+      comment: 'Made by lifeofgames477'
     }
-
   ],
   [MOD]: [
     {

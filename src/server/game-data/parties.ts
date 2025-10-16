@@ -569,7 +569,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2007-05-04',
     roomChanges: {
       'town': 'archives:RoomsTown-PirateParty2007.swf',
-      'dock': 'archives:RoomsDock-PirateParty2007.swf'
+      'dock': 'archives:RoomsDock-PirateParty2007.swf',
+      coffee: 'recreation:pirate_party/coffee.swf'
     },
     music: {
       'town': 212,
@@ -1251,6 +1252,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         dance: 'recreation:dance_record_pin.swf'
       },
       roomComment: 'The Dance Club is updated post Music Jam'
+    },
+    construction: {
+      date: '2008-07-18',
+      changes: {
+        dance: 'recreation:mjam_08_const/dance.swf'
+      }
     }
   },
   {
