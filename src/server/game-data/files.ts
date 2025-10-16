@@ -989,6 +989,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'igloo_music/cpip_start.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/08_12.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/09_05.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/09_09.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/10_06.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

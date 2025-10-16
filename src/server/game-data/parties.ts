@@ -1567,8 +1567,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       forts: 254,
       town: 254,
       light: 254
-    },
-    activeMigrator: true
+    }
   },
   {
     name: 'Dance-A-Thon',
