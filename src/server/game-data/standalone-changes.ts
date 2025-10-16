@@ -224,6 +224,14 @@ export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<Tempor
         }
       }
     ]
+  },
+  {
+    // placeholder for the CPIP music list update, needs to be refactored somewhat depending on how future igloo lists are handled
+    date: Update.CPIP_UPDATE,
+    end: '2008-07-18',
+    globalChanges: {
+      'content/igloo_music.swf': 'recreation:igloo_music/cpip_start.swf'
+    }
   }
 ]
 

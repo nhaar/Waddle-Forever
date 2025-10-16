@@ -985,6 +985,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'pet_nov07.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'igloo_music/cpip_start.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
