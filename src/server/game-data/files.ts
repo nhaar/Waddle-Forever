@@ -1005,6 +1005,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'pirate_catalog/10_06.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pizza_2007.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'pizza_2008.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [

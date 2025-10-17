@@ -61,7 +61,10 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
     {
       date: '2007-02-26',
       directory: 'pizza/game.swf',
-      fileRef: 'fix:Pizzatron3000-2007.swf'
+      fileRef: 'fix:Pizzatron3000-2007.swf',
+      roomChanges: {
+        pizza: 'recreation:pizza_2007.swf'
+      }
     }
   ],
   'Ice Fishing': [

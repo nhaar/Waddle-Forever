@@ -463,6 +463,13 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: Update.CARD_JITSU_RELEASE,
       fileRef: 'archives:RoomsDojoext2008.swf'
     },
+  ],
+  pizza: [
+    {
+      fileRef: 'recreation:pizza_2008.swf',
+      date: '2008-04-14',
+      comment: 'The skyboxes are updated in the Pizza Parlor'
+    }
   ]
 };
 
