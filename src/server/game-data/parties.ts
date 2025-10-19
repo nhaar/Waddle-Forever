@@ -860,7 +860,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 228,
       'forts': 227,
       'town': 227
-    }
+    },
+    updates: [
+      {
+        date: '2007-12-24',
+        comment: 'Scarves are now available at the Ski Village',
+        roomFrames: {
+          village: 2
+        }
+      }
+    ]
   },
   {
     name: 'Winter Fiesta',

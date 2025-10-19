@@ -1,3 +1,4 @@
+import { getSubUpdateDates } from ".";
 import { TimelineMap } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { PINS } from "../game-data/pins";
@@ -12,7 +13,7 @@ export function getRoomFrameTimeline() {
   // adding defaults
   // TODO, not fond of design?
   Object.keys(ROOMS).forEach((room) => {
-    timeline.add(room as RoomName, 0, Update.BETA_RELEASE);
+    timeline.add(room as RoomName, 1, Update.BETA_RELEASE);
   })
 
   PINS.forEach((pin) => {
@@ -31,6 +32,14 @@ export function getRoomFrameTimeline() {
   PARTIES.forEach((party) => {
     if (party.roomFrames !== undefined) {
       addRoomFrames(party.roomFrames, party.date, party.end);
+    }
+    if (party.updates !== undefined) {
+      party.updates.forEach((update, i) => {
+        if (update.roomFrames !== undefined) {
+          const { date, end } = getSubUpdateDates(party, i);
+          addRoomFrames(update.roomFrames, date, end);
+        }
+      });
     }
   });
 
