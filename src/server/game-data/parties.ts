@@ -519,6 +519,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       dock: 'recreation:festival_of_snow/dock.swf',
       village: 'recreation:festival_of_snow/village.swf',
       light: 'recreation:festival_of_snow/light.swf',
+      dojo: 'recreation:festival_of_snow/dojo.swf'
     },
     music: {
       dock: 207,
