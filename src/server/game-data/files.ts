@@ -191,6 +191,10 @@ would need to investigated`
     {
       file: 'ENFormsAgent.swf',
       comment: 'Fix by Blue Kirby, it uses a function from shell.swf which is not present in the WF one, so the function call was replaced with the function contents. Alternatively a shell change could be done and have this file be the original instead'
+    },
+    {
+      file: 'Town-party.swf',
+      comment: 'Chat291.swf compatibility fixes'
     }
   ],
   [APPROXIMATION]: [

@@ -94,7 +94,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: '2005-09-21',
     end: '2005-09-22',
     roomChanges: {
-      'town': 'archives:Beta-town.swf'
+      'town': 'fix:Town-party.swf'
     }
   },
   {
