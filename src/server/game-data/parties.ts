@@ -542,10 +542,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       },
       {
-        date: '2007-02-16',
+        date: Update.ICE_BLOCK_PIN,
         comment: 'The Migrator is gone',
         roomChanges: {
           beach: 'recreation:festival_of_snow/beach_3.swf',
+          berg: 'recreation:festival_of_snow/berg_pin.swf'
         }
       }
     ]

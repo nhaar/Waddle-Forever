@@ -1013,6 +1013,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'pizza_2008.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'berg_ice_block_pin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/berg_pin.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

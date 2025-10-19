@@ -40,6 +40,13 @@ export const PINS: Array<Pin> = [
     frame: 2
   },
   {
+    name: 'Ice Block',
+    date: Update.ICE_BLOCK_PIN,
+    end: '2007-03-02',
+    room: 'berg',
+    fileRef: 'recreation:berg_ice_block_pin.swf'
+  },
+  {
     name: 'Paddleball',
     date: '2007-09-28',
     end: '2007-10-12'
