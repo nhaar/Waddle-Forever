@@ -1045,6 +1045,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'boiler_100_newspapers.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'festival_of_snow/town.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
