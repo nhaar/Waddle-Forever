@@ -1,0 +1,52 @@
+name: "Release-Windows"
+on:
+  release: 
+    types: ["published"]
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+    - name: Wait for package update
+      uses: fountainhead/action-wait-for-check@v1.1.0
+      id: wait-for-commit
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        checkName: update
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: "master"
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'latest'
+        architecture: 'x86'
+
+    - name: Restore dependencies
+      run: yarn install
+
+    - name: Build for Windows
+      run: yarn build-client-win
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: |
+          ./dist/*.exe
+          ./dist/*.blockmap
+          ./dist/latest.yml
+
+    - name: "Upload Artifacts to Release"
+      uses: "ncipollo/release-action@v1"
+      with:
+        allowUpdates: true
+        artifactErrorsFailBuild: true
+        artifacts: "dist/*.exe,dist/*.blockmap,dist/latest.yml"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        omitBodyDuringUpdate: true
+        omitNameDuringUpdate: true
