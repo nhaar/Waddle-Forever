@@ -1025,6 +1025,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'festival_of_snow/berg_pin.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/dojo.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/vinje99.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/y4ssengrego.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/rockandpen.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
