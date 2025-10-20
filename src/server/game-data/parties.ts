@@ -2603,7 +2603,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'beacon': 'archives:RoomsBeacon-PuffleParty2010Const.swf',
         'berg': 'archives:RoomsBerg-PuffleParty2010Const.swf',
         'cave': 'archives:PuffleParty2010ConstCave.swf',
-        'dance': 'archives:RoomsMine-PuffleParty2010.swf',
+        'dance': 'archives:RoomsDance-PuffleParty2010Const.swf',
         'forest': 'archives:RoomsForest-PuffleParty2010Const.swf',
         'light': 'archives:RoomsLight-PuffleParty2010Const.swf',
         'mine': 'archives:RoomsMine-PuffleParty2010Const.swf'
