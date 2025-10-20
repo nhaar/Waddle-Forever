@@ -7,18 +7,6 @@ jobs:
   publish:
     runs-on: windows-latest
     steps:
-    - name: Wait for package update
-      uses: fountainhead/action-wait-for-check@v1.1.0
-      id: wait-for-commit
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        checkName: update
-        ref: ${{ github.event.pull_request.head.sha || github.sha }}
-
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        ref: "main"
 
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v3
