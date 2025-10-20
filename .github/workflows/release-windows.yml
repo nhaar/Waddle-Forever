@@ -8,6 +8,9 @@ jobs:
     runs-on: windows-latest
     steps:
 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v3
       with:
