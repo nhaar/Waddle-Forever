@@ -704,5 +704,13 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       fileRef: 'archives:WinterFiesta2009SkiLodge.swf',
       comment: 'The sign in the Attic is now bold'
     }
+  ],
+  'boiler': [
+    {
+      date: '2007-09-13',
+      end: '2007-09-20',
+      fileRef: 'recreation:boiler_100_newspapers.swf',
+      comment: 'The Boiler Room is updated for the 100th newspaper'
+    }
   ]
 }
