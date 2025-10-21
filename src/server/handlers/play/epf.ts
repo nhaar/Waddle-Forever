@@ -51,4 +51,17 @@ handler.xt(Handle.GrantEpfMedals, (client, medals) => {
   client.update();
 });
 
+// epf stamps, a seemingly unused system that was only implemented for one stamp of system defender
+handler.xt(Handle.EPFStamps, (client, stamp) => {
+  if (!client.penguin.isAgent) {
+    client.sendXt('epfsf', 'naa'); // TODO document
+  }
+
+  if (client.penguin.hasStamp(stamp)) {
+    client.sendXt('epfsf', 'ahm'); // TODO document
+  } else {
+    client.sendXt('epfsf', 'nem', stamp); // giving the stamp
+  }
+});
+
 export default handler

@@ -151,7 +151,8 @@ export enum Handle {
   CardJitsuFireChooseTile,
   CardJitsuFireChooseCard,
   CardJitsuFireInfoReady,
-  CardJitsuFireChooseElement
+  CardJitsuFireChooseElement,
+  EPFStamps
 };
 
 /** Map of all the handles and their valid arguments */
@@ -286,7 +287,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.CardJitsuFireChooseTile]: ['string', 'number'],
   [Handle.CardJitsuFireChooseCard]: ['string', 'number'],
   [Handle.CardJitsuFireInfoReady]: ['string'],
-  [Handle.CardJitsuFireChooseElement]: ['string', 'string']
+  [Handle.CardJitsuFireChooseElement]: ['string', 'string'],
+  [Handle.EPFStamps]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -455,7 +457,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'jmm': Handle.JoinMatchMaking,
     'jz': Handle.JoinSled,
     'jsen': Handle.JoinSensei,
-    'lz': Handle.LeaveWaddleMatch
+    'lz': Handle.LeaveWaddleMatch,
+    'epfsf': Handle.EPFStamps
   },
   'k': {
     'spy': Handle.BecomeAgent
