@@ -26,6 +26,9 @@ handler.xml('login', (client, data) => {
     if (client.isEngine3 && client.serverType === 'World') {
       // in Engine 3 client, the world actually receives the ID instead of the name
       client.setPenguinFromId(Number(name));
+    } else if (client.isEngine1) {
+      // in pre-cpip, underscores represent spaces in names
+      client.setPenguinFromName(name.replace(/_/g, ' '));
     } else {
       client.setPenguinFromName(name);
     }
