@@ -280,7 +280,8 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     },
     {
       fileRef: 'recreation:interfaces/2009_jan.swf',
-      date: '2009-01-20'
+      date: '2009-01-20',
+      comment: 'A membership badge is added to the player card'
     },
     {
       // interface with EPF phone
@@ -293,7 +294,8 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     },
     {
       fileRef: 'unknown:interface_stamps.swf',
-      date: Update.OWNED_IGLOOS
+      date: Update.OWNED_IGLOOS,
+      comment: 'The owned igloos list is added'
     }
   ],
   'play/v2/client/club_penguin.swf': [
