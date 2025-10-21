@@ -108,7 +108,7 @@ function addGlobalPath(crumbs: string, pathName: string, path: string): string {
  * @param crumbsContent The P-Code code content of the file
  */
 async function createCrumbs(outputPath: string, crumbsContent: string): Promise<void> {
-  await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
+  await replacePcode(BASE_GLOBAL_CRUMBS, outputPath, path.join('/frame_1', 'DoAction'), crumbsContent);
 }
 
 function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): string {
