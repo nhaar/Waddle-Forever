@@ -195,6 +195,10 @@ would need to investigated`
     {
       file: 'Town-party.swf',
       comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'RoomsPlaza-MusicJam2008.swf',
+      comment: 'Added triggers and logic to this file that for some reason has unexisting logic'
     }
   ],
   [APPROXIMATION]: [

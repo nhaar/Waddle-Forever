@@ -1219,7 +1219,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       pizza: 'archives:RoomsPizza-MusicJam2008.swf',
       village: 'archives:RoomsVillage-MusicJam2008.swf',
       town: 'archives:RoomsTown-MusicJam2008.swf',
-      forts: 'archives:MJSnowForts.swf'
+      forts: 'archives:MJSnowForts.swf',
+      plaza: 'fix:RoomsPlaza-MusicJam2008.swf'
     },
     music: {
       party: 243,
