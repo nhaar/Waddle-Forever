@@ -51,7 +51,7 @@
     "mac": {
       "category": "game",
       "icon": "./assets/icon.icns",
-      "artifactName": "WaddleForever-Client-${version}.${ext}"
+      "artifactName": "WaddleForever-${version}.${ext}"
     },
     "linux": {
       "category": "game",
