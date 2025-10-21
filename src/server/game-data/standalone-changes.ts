@@ -283,11 +283,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
       date: '2009-01-20'
     },
     {
-      //unknown date
-      fileRef: 'archives:ClientInterface-October2009.swf',
-      date: '2009-10-01'
-    },
-    {
       // interface with EPF phone
       fileRef: 'recreation:interfaces/2010_may.swf',
       date: Update.EPF_RELEASE
@@ -295,6 +290,10 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       fileRef: 'recreation:interfaces/2010_july.swf',
       date: Update.STAMPS_RELEASE
+    },
+    {
+      fileRef: 'unknown:interface_stamps.swf',
+      date: Update.OWNED_IGLOOS
     }
   ],
   'play/v2/client/club_penguin.swf': [
@@ -303,6 +302,16 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
       // one from november 2010 exists in archives, and should be included if they are different
       fileRef: 'archives:Dec2010club_penguin.swf',
       date: Update.AS3_UPDATE
+    }
+  ],
+  'play/v2/client/igloo.swf': [
+    {
+      fileRef: 'recreation:client_igloo_cpip.swf',
+      date: Update.CPIP_UPDATE
+    },
+    {
+      fileRef: 'slegacy:media/play/v2/client/igloo.swf',
+      date: Update.OWNED_IGLOOS
     }
   ],
   'play/v2/client/Newspaper.swf': [

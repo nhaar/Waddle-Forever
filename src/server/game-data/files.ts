@@ -1065,6 +1065,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'interfaces/2010_july.swf',
       comment: 'Made by Blue Kirby. Added stamps, but before the owned igloos list'
+    },
+    {
+      file: 'client_igloo_cpip.swf',
+      comment: 'Made by Blue Kirby, edit which removes the owned igloos button'
     }
   ],
   [MOD]: [
@@ -1142,7 +1146,7 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     },
     {
       file: 'interface_stamps.swf',
-      comment: 'Originally from legacy-media, but have not documented all the changes'
+      comment: 'Originally from legacy-media, but have not documented all the changes, such as a fix for exiting minigames and being placed in rooms'
     },
     {
       file: 'my_puffle.swf',

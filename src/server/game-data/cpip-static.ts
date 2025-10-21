@@ -20,7 +20,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/client/airtower.swf': 'slegacy:media/play/v2/client/airtower.swf',
   'play/v2/client/book.swf': 'slegacy:media/play/v2/client/book.swf',
   'play/v2/client/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
-  'play/v2/client/igloo.swf': 'slegacy:media/play/v2/client/igloo.swf',
   'play/v2/client/load.swf': 'slegacy:media/play/v2/client/load.swf',
   'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf',
   'play/v2/client/mail.swf': 'slegacy:media/play/v2/client/mail.swf',
