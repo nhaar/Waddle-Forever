@@ -212,7 +212,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/close_ups/sensei_note.swf': 'slegacy:media/play/v2/content/local/en/close_ups/sensei_note.swf',
   'play/v2/content/local/en/close_ups/sensei_note2.swf': 'slegacy:media/play/v2/content/local/en/close_ups/sensei_note2.swf',
   'play/v2/content/local/en/close_ups/stadium_poster.swf': 'slegacy:media/play/v2/content/local/en/close_ups/stadium_poster.swf',
-  'play/v2/content/local/en/close_ups/take_tour.swf': 'slegacy:media/play/v2/content/local/en/close_ups/take_tour.swf',
+  'play/v2/content/local/en/close_ups/take_tour.swf': 'approximation:take_tour.swf',
   'play/v2/content/local/en/close_ups/underwater_note.swf': 'slegacy:media/play/v2/content/local/en/close_ups/underwater_note.swf',
   'play/v2/content/local/en/close_ups/waterItems.swf': 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf',
   'play/v2/content/local/en/forms/missions.swf': 'slegacy:media/play/v2/content/local/en/forms/missions.swf',

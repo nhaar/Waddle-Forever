@@ -258,6 +258,10 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Removed the Iceberg button to simulate how the map was before the room\'s release',
       base: 'archives:ArtworkMapsIsland5.swf'
     },
+    {
+      file: 'take_tour.swf',
+      comment: 'Modified version from the legacy media which makes it compatible with all interfaces. There must have existed an old version of this file from prior to May 27 2010 but this is an approximation that will work for all interfaces'
+    }
   ],
   [RECREATION]: [
     {
