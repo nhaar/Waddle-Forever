@@ -275,8 +275,8 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   ],
   'play/v2/client/interface.swf': [
     {
-      fileRef: 'unknown:interface_2009.swf',
-      date: Update.CPIP_UPDATE
+      fileRef: 'recreation:interfaces/2008_july.swf',
+      date: '2008-07-15'
     },
     {
       // interface with EPF phone
@@ -286,6 +286,18 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       fileRef: 'unknown:interface_stamps.swf',
       date: Update.STAMPS_RELEASE
+    },
+    {
+      fileRef: 'recreation:interfaces/2009_jan.swf',
+      date: '2009-01-20'
+    },
+    {
+      fileRef: 'recreation:interfaces/2010_may.swf',
+      date: '2010-05-27'
+    },
+    {
+      fileRef: 'recreation:interfaces/2010_july.swf',
+      date: '2010-07-26'
     }
   ],
   'play/v2/client/club_penguin.swf': [

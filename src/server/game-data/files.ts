@@ -1049,6 +1049,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'festival_of_snow/town.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'interfaces/2008_july.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'interfaces/2009_jan.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'interfaces/2010_may.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'interfaces/2010_july.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
