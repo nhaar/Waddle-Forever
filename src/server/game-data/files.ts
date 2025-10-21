@@ -366,10 +366,6 @@ Made by Supermanover (exported candy assets), and nhaar (added hint text)`
       comment: 'By Blue Kirby, removed fireworks from the Music Jam 2010 construction Iceberg'
     },
     {
-      file: 'interface_epf_no_stamps.swf',
-      comment: 'Made by Supermanover. Interface with EPF phone but no stamps in the playercard'
-    },
-    {
       file: 'library_2009.swf',
       comment: 'Made by nhaar. Library without the 2010 yearbook'
     },
@@ -1052,19 +1048,19 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/2008_july.swf',
-      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, which has no membership badge'
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
     },
     {
       file: 'interfaces/2009_jan.swf',
-      comment: 'Made by Blue Kirby. The 2008 july one but with membership badge'
+      comment: 'Made by Blue Kirby. Built on top of the October 2009 interface but removing the owned igloos functionality'
     },
     {
       file: 'interfaces/2010_may.swf',
-      comment: 'Made by Blue Kirby. Added the EPF phone'
+      comment: 'Made by Supermanover and Blue Kirby. Initially, Super removed the stamps from the legacy media modified interface that was in WF. Blue Kirby removed the owned igloo functionality'
     },
     {
       file: 'interfaces/2010_july.swf',
-      comment: 'Made by Blue Kirby. Added stamps, but before the owned igloos list'
+      comment: 'Made by Blue Kirby. Built on top of the modified lgeacy media interface, removing the owned igloos functionality'
     },
     {
       file: 'client_igloo_cpip.swf',
