@@ -90,12 +90,16 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   const timeline: MenuItemConstructorOptions = {
     id: '3',
     label: 'Timeline',
-    submenu: process.platform == 'darwin' ? [{ 
-      label: 'Timeline Picker', 
-      click: () => { createTimelinePicker(mainWindow); }
-    }] : [],
     click: () => { createTimelinePicker(mainWindow); }
   };
+
+  // only adding the submenu if Mac, because empty submenu leads to it not working on other OSes, and it's a necessary Mac feature
+  if (process.platform === 'darwin') {
+    timeline.submenu = [{ 
+      label: 'Timeline Picker', 
+      click: () => { createTimelinePicker(mainWindow); }
+    }];
+  }
 
 return process.platform === 'darwin' ? 
   [app, options, timeline] : 
