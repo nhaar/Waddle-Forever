@@ -1052,19 +1052,19 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/2008_july.swf',
-      comment: 'Made by Blue Kirby'
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, which has no membership badge'
     },
     {
       file: 'interfaces/2009_jan.swf',
-      comment: 'Made by Blue Kirby'
+      comment: 'Made by Blue Kirby. The 2008 july one but with membership badge'
     },
     {
       file: 'interfaces/2010_may.swf',
-      comment: 'Made by Blue Kirby'
+      comment: 'Made by Blue Kirby. Added the EPF phone'
     },
     {
       file: 'interfaces/2010_july.swf',
-      comment: 'Made by Blue Kirby'
+      comment: 'Made by Blue Kirby. Added stamps, but before the owned igloos list'
     }
   ],
   [MOD]: [
@@ -1139,10 +1139,6 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'engine_2009.swf',
       comment: 'Unknown. Most likely some engine SWF we have archived somewhere'
-    },
-    {
-      file: 'interface_2009.swf',
-      comment: 'Unknown, might just be the October 2009 interface in archives'
     },
     {
       file: 'interface_stamps.swf',

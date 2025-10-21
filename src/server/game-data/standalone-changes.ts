@@ -276,33 +276,25 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   'play/v2/client/interface.swf': [
     {
       fileRef: 'recreation:interfaces/2008_july.swf',
-      date: '2008-07-15'
-    },
-    {
-      //unknown date
-      fileRef: 'unknown:inteface_2009.swf',
-      date: '2009-10-01'
-    },
-    {
-      // interface with EPF phone
-      fileRef: 'recreation:interface_epf_no_stamps.swf',
-      date: Update.EPF_RELEASE
-    },
-    {
-      fileRef: 'unknown:interface_stamps.swf',
-      date: Update.STAMPS_RELEASE
+      date: Update.CPIP_UPDATE
     },
     {
       fileRef: 'recreation:interfaces/2009_jan.swf',
       date: '2009-01-20'
     },
     {
+      //unknown date
+      fileRef: 'archives:ClientInterface-October2009.swf',
+      date: '2009-10-01'
+    },
+    {
+      // interface with EPF phone
       fileRef: 'recreation:interfaces/2010_may.swf',
-      date: '2010-05-27'
+      date: Update.EPF_RELEASE
     },
     {
       fileRef: 'recreation:interfaces/2010_july.swf',
-      date: '2010-07-26'
+      date: Update.STAMPS_RELEASE
     }
   ],
   'play/v2/client/club_penguin.swf': [
