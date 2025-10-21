@@ -366,10 +366,6 @@ Made by Supermanover (exported candy assets), and nhaar (added hint text)`
       comment: 'By Blue Kirby, removed fireworks from the Music Jam 2010 construction Iceberg'
     },
     {
-      file: 'interface_epf_no_stamps.swf',
-      comment: 'Made by Supermanover. Interface with EPF phone but no stamps in the playercard'
-    },
-    {
       file: 'library_2009.swf',
       comment: 'Made by nhaar. Library without the 2010 yearbook'
     },
@@ -1045,6 +1041,30 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'boiler_100_newspapers.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'festival_of_snow/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'interfaces/2008_july.swf',
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
+    },
+    {
+      file: 'interfaces/2009_jan.swf',
+      comment: 'Made by Blue Kirby. Built on top of the October 2009 interface but removing the owned igloos functionality'
+    },
+    {
+      file: 'interfaces/2010_may.swf',
+      comment: 'Made by Supermanover and Blue Kirby. Initially, Super removed the stamps from the legacy media modified interface that was in WF. Blue Kirby removed the owned igloo functionality'
+    },
+    {
+      file: 'interfaces/2010_july.swf',
+      comment: 'Made by Blue Kirby. Built on top of the modified lgeacy media interface, removing the owned igloos functionality'
+    },
+    {
+      file: 'client_igloo_cpip.swf',
+      comment: 'Made by Blue Kirby, edit which removes the owned igloos button'
     }
   ],
   [MOD]: [
@@ -1121,12 +1141,8 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
       comment: 'Unknown. Most likely some engine SWF we have archived somewhere'
     },
     {
-      file: 'interface_2009.swf',
-      comment: 'Unknown, might just be the October 2009 interface in archives'
-    },
-    {
       file: 'interface_stamps.swf',
-      comment: 'Originally from legacy-media, but have not documented all the changes'
+      comment: 'Originally from legacy-media, but have not documented all the changes, such as a fix for exiting minigames and being placed in rooms'
     },
     {
       file: 'my_puffle.swf',

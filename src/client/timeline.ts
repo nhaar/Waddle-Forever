@@ -9,11 +9,12 @@ import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { PINS } from '../server/game-data/pins';
-import { STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from '../server/game-data/standalone-changes';
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
 import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
+import { iterateEntries } from '../common/utils';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -401,6 +402,14 @@ function addStandalone(map: DayMap): void {
       addArrayEvents(map, 'other', update.date, update.comment);
     }
   });
+
+  iterateEntries(STANDALONE_CHANGE, (_, updates) => {
+    updates.forEach(update => {
+      if (update.comment !== undefined) {
+        addArrayEvents(map, 'other', update.date, update.comment);
+      }
+    });
+  })
 }
 
 function addMigratorVisits(map: DayMap): void {

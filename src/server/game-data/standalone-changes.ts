@@ -275,17 +275,27 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   ],
   'play/v2/client/interface.swf': [
     {
-      fileRef: 'unknown:interface_2009.swf',
+      fileRef: 'recreation:interfaces/2008_july.swf',
       date: Update.CPIP_UPDATE
     },
     {
+      fileRef: 'recreation:interfaces/2009_jan.swf',
+      date: '2009-01-20',
+      comment: 'A membership badge is added to the player card'
+    },
+    {
       // interface with EPF phone
-      fileRef: 'recreation:interface_epf_no_stamps.swf',
+      fileRef: 'recreation:interfaces/2010_may.swf',
       date: Update.EPF_RELEASE
     },
     {
-      fileRef: 'unknown:interface_stamps.swf',
+      fileRef: 'recreation:interfaces/2010_july.swf',
       date: Update.STAMPS_RELEASE
+    },
+    {
+      fileRef: 'unknown:interface_stamps.swf',
+      date: Update.OWNED_IGLOOS,
+      comment: 'The owned igloos list is added'
     }
   ],
   'play/v2/client/club_penguin.swf': [
@@ -294,6 +304,16 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
       // one from november 2010 exists in archives, and should be included if they are different
       fileRef: 'archives:Dec2010club_penguin.swf',
       date: Update.AS3_UPDATE
+    }
+  ],
+  'play/v2/client/igloo.swf': [
+    {
+      fileRef: 'recreation:client_igloo_cpip.swf',
+      date: Update.CPIP_UPDATE
+    },
+    {
+      fileRef: 'slegacy:media/play/v2/client/igloo.swf',
+      date: Update.OWNED_IGLOOS
     }
   ],
   'play/v2/client/Newspaper.swf': [
