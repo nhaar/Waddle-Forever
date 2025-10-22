@@ -130,6 +130,25 @@ class JsonDatabase {
     fs.writeFileSync(seqDir, String(Number(previousSeq) + 100));
   }
 
+  private migrate_1_1_2() {
+    const penguinsDir = path.join(DATABASE_DIRECTORY, 'penguins')
+    const penguins = fs.readdirSync(penguinsDir)
+    for (const penguin of penguins) {
+      if (penguin.match(/\d+\.json/) !== null) {
+        const penguinDir = path.join(penguinsDir, penguin)
+        const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
+
+        content.cards = {};
+        content.cardProgress = 0;
+        content.isNinja = false;
+        content.senseiAttempts = 0;
+        content.cardWins = 0;
+
+        fs.writeFileSync(penguinDir, JSON.stringify(content))
+      }
+    }
+  }
+
   private migrateVersion(version: string): string {
     switch (version) {
       case '0.2.0':
@@ -156,6 +175,9 @@ class JsonDatabase {
         return '1.1.1';
       case '1.1.1':
         return '1.1.2';
+      case '1.1.2':
+        this.migrate_1_1_2();
+        return '1.2.0';
       default:
         throw new Error('Invalid database version: ' + version);
     }
