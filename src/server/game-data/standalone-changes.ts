@@ -85,6 +85,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       forest: 'archives:RoomsForest.swf',
       ship: 'archives:RoomsShip.swf'
     },
+    startscreens: ['access_more.swf', 'celebrate_more.swf', 'create_more.swf', 'explore_more.swf'],
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'

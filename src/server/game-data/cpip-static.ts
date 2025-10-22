@@ -222,7 +222,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/instructions/card_jitsu_fire.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_fire.swf',
   'play/v2/content/local/en/instructions/card_jitsu_water.swf': 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_water.swf',
   'play/v2/content/local/en/instructions/mancala.swf': 'slegacy:media/play/v2/content/local/en/instructions/mancala.swf',
-  'play/v2/content/local/en/login/startscreen.xml': 'slegacy:media/play/v2/content/local/en/login/startscreen.xml',
   'play/v2/content/local/en/prompts/tutorial_prompts.swf': 'slegacy:media/play/v2/content/local/en/prompts/tutorial_prompts.swf',
   'play/v2/content/local/es/catalogues/adopt.swf': 'slegacy:media/play/v2/content/local/es/catalogues/adopt.swf',
   'play/v2/content/local/fr/catalogues/cove.swf': 'slegacy:media/play/v2/content/local/fr/catalogues/cove.swf',

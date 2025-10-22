@@ -33,6 +33,9 @@ export type PartyChanges = {
 
   activeMigrator?: MigratorVisit;
 
+  /** A list of all file names for the backgrounds folder used to load the startscreens */
+  startscreens?: string[];
+
   /** Scavenger Hunt icon is loaded by the dependency, must be specified */
   scavengerHunt2010?: {
     iconFileId: FileRef;

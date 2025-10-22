@@ -11,6 +11,7 @@ import { getNewsTxt } from "./news.txt";
 import { Update } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
+import { getStartscreenXML } from "./startscreen.xml";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -84,6 +85,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('web_service/worldachievements.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
+  });
+  server.getData('play/v2/content/local/en/login/startscreen.xml', (s) => {
+    return getStartscreenXML(s.settings.version);
   })
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
