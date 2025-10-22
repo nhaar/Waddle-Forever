@@ -86,7 +86,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       ship: 'archives:RoomsShip.swf'
     },
     generalChanges: {
-      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf'
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
+      'play/v2/client/login.swf': 'recreation:login_cpip.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     localChanges: {
@@ -106,7 +107,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     date: '2008-10-24',
     comment: 'The start screen is updated with the introduction of Unlock Items Online',
     generalChanges: {
-      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf'
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
+      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf'
     },
     startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ]
   },

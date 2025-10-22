@@ -1089,6 +1089,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'startscreen/unlock_items_logo.swf',
       comment: 'Made by Blue Kirby, the logo was slightly altered, cf. lifeofgame\'s recreation for why this file exists'
+    },
+    {
+      file: 'login_cpip.swf',
+      comment: 'Made by Blue Kirby, server select screen without the unlock items button and with the proper save password warning'
     }
   ],
   [MOD]: [
