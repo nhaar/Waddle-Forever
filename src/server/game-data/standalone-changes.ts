@@ -232,6 +232,23 @@ export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<Tempor
     globalChanges: {
       'content/igloo_music.swf': 'recreation:igloo_music/cpip_start.swf'
     }
+  },
+  {
+    date: '2007-02-02',
+    end: '2007-02-09',
+    generalChanges: {
+      'artwork/tools/telescope0.swf': 'archives:Telescope5.swf'
+    },
+    comment: 'Rockhopper is seen from the telescope',
+    updates: [
+      {
+        date: '2007-02-07',
+        generalChanges: {
+          'artwork/tools/telescope0.swf': 'archives:Telescope6.swf'
+        },
+        comment: 'Rockhopper is seen closer from the telescope'
+      }
+    ]
   }
 ]
 
