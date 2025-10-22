@@ -1843,7 +1843,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'membership/party3.swf': {
         'en': 'archives:AprilFoolMembership.swf'
       }
-    }
+    },
+    startscreens: ['archives:LoginScreenAprilFools2009.swf']
   },
   {
     name: 'Easter Egg Hunt',
@@ -2006,7 +2007,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         forts: 'archives:RoomsForts-AdventureParty2009Const.swf',
         town: 'archives:RoomsTown-AdventureParty2009Const.swf'
       }
-    }
+    },
+    startscreens: ['archives:AdventureParty2009ENLoginScreen1.swf', 'archives:AdventureParty2009ENLoginScreen2.swf']
   },
   {
     name: 'Music Jam',
@@ -2059,7 +2061,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         forts: 'archives:RoomsForts-MusicJam2010Pre.swf',
         rink: 'archives:RoomsRink-MusicJam2009Const.swf'
       }
-    }
+    },
+    startscreens: ['archives:LoginMusicJam2009.swf']
   },
   {
     name: 'Festival of Flight',
@@ -2265,7 +2268,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       book: 250,
       coffee: 250,
       town: 250
-    }
+    },
+    startscreens: ['archives:EN4thAnniversaryLoginScreen.swf']
   },
   {
     name: 'Halloween Party',
@@ -2376,7 +2380,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
           dojofire: 'archives:RoomsDojofire-FireCelebrate.swf'
         }
       }
-    ]
+    ],
+    startscreens: ['archives:ENLoginBackgroundsCard_jitsu_fire-FireCelebrate.swf']
   },
   {
     name: 'Winter Party',
@@ -2418,17 +2423,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'close_ups/maze_map.swf': {
         'en': 'archives:ENClose_upsMaze_map-WinterParty.swf'
       }
-    }
-  },
-  {
-    name: 'New Year\'s Day 2010',
-    startComment: 'New Year\'s Fireworks appear on the island',
-    endComment: 'The New Year\'s celebration ends',
-    date: Update.NEW_YEARS_2010_UPDATE,
-    end: '2010-01-04',
-    roomChanges: {
-      mtn: 'archives:2010newyearfireworksskihill.swf',
-      berg: 'archives:2010newyearfireworksiceberg.swf'
     }
   },
   {
@@ -2516,7 +2510,19 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
           plaza: 'recreation:holiday_09_plaza_quest_golden_puffle.swf'
         }
       }
-    ]
+    ],
+    startscreens: ['archives:StartscreenChristmas-HolidayParty2009.swf']
+  },
+  {
+    name: 'New Year\'s Day 2010',
+    startComment: 'New Year\'s Fireworks appear on the island',
+    endComment: 'The New Year\'s celebration ends',
+    date: Update.NEW_YEARS_2010_UPDATE,
+    end: '2010-01-04',
+    roomChanges: {
+      mtn: 'archives:2010newyearfireworksskihill.swf',
+      berg: 'archives:2010newyearfireworksiceberg.swf'
+    }
   },
   {
     name: 'Cave Expedition',
@@ -2613,7 +2619,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'light': 'archives:RoomsLight-PuffleParty2010Const.swf',
         'mine': 'archives:RoomsMine-PuffleParty2010Const.swf'
       }
-    }
+    },
+    startscreens: ['archives:StartscreenPuffle_party1-PuffleParty2010.swf', 'archives:StartscreenPuffle_party2-PuffleParty2010.swf', 'archives:StartscreenPuffle_party3-PuffleParty2010.swf']
   },
   {
     name: 'Penguin Play Awards 2010',
@@ -2646,7 +2653,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'catalogues/costume.swf': {
         'en': 'archives:March2010Costume.swf'
       }
-    }
+    },
+    startscreens: ['archives:StartscreenPpa-PenguinPlayAwards2010.swf']
   },
   {
     name: 'April Fools\' Party 2010',
@@ -2741,7 +2749,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       roomChanges: {
         shack: 'recreation:shack_apr10.swf'
       }
-    }
+    },
+    startscreens: ['archives:Startscreen-EarthDay2010.swf']
   },
   {
     name: 'Medieval Party 2010',
@@ -2906,7 +2915,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'plaza': 'archives:RoomsPlaza-IslandAdventureParty2010Const.swf',
         'town': 'archives:RoomsTown-IslandAdventureParty2010Pre.swf'
       }
-    }
+    },
+    startscreens: ['archives:StartscreenIsland_adventure-IslandAdventureParty2010.swf', 'archives:StartscreenIsland_adventure_2-IslandAdventureParty2010.swf']
   },
   {
     name: 'Music Jam 2010',
@@ -2992,7 +3002,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'village': 'archives:RoomsVillage-MusicJam2010Pre.swf',
         'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
       }
-    }
+    },
+    startscreens: ['archives:LoginMusicJam2010(1).swf', 'archives:LoginMusicJam2010(2).swf']
   },
   {
     name: 'Mountain Expedition',
@@ -3031,7 +3042,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       changes: {
         'village': 'archives:RoomsVillage-MtnExpeditionPre.swf'
       }
-    }
+    },
+    startscreens: ['archives:ENMtnExpeditionLogin.swf']
   },
   {
     name: 'The Fair 2010',
@@ -3111,7 +3123,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
           }
         }
       }
-    ]
+    ],
+    startscreens: ['archives:LoginFairParty2010.swf', 'archives:StartscreenFairMember10.swf']
   },
   {
     name: '5th Anniversary Party',
@@ -3222,7 +3235,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     scavengerHunt2010: {
       iconFileId: 'approximation:halloween_hunt_icon.swf'
-    }
+    },
+    startscreens: ['archives:Halloween2010LoginScreen1.swf', 'archives:Halloween2010LoginScreen2.swf', 'archives:Halloween2010LoginScreen3.swf']
   },
   {
     name: 'The Great Storm of 2010',
@@ -3435,6 +3449,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         },
         map: 'archives:HolidayParty2010Map.swf'
       }
-    ]
+    ],
+    startscreens: [
+      'archives:LoginHolidayParty2010.swf',
+      'archives:CFC2010LoginScreen.SWF',
+      'archives:LoginDec2010Membership.swf',
+      'archives:StartscreenENCoins_for_change_2-HolidayParty2010.swf']
   }
 ];
