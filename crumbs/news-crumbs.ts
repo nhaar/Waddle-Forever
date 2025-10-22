@@ -192,7 +192,6 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
 }
 
 export async function generateNewsCrumbsFiles(deletePrevious: boolean = false) {
-  console.log('tamo generando tamo generando');
   if (!deletePrevious) {
     console.log('WARNING: This script doesn\'t delete previous news_crumbs files, reset your news_crumbs folder if needed');
   } else {
