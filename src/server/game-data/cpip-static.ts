@@ -27,7 +27,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/client/sentry.swf': 'slegacy:media/play/v2/client/sentry.swf',
   'play/v2/client/servers.swf': 'slegacy:media/play/v2/client/servers.swf',
   'play/v2/client/stampbook.swf': 'slegacy:media/play/v2/client/stampbook.swf',
-  'play/v2/client/startscreen.swf': 'slegacy:media/play/v2/client/startscreen.swf',
   'play/card-jitsu/fire/videos/card-jitsu-fire-path.flv': 'slegacy:media/play/card-jitsu/fire/videos/card-jitsu-fire-path.flv',
   'play/card-jitsu/water/videos/card-jitsu-water-trailer.flv': 'slegacy:media/play/card-jitsu/water/videos/card-jitsu-water-trailer.flv',
   'play/v2/content/global/close_ups/ninja_fire_video.swf': 'slegacy:media/play/v2/content/global/close_ups/ninja_fire_video.swf',

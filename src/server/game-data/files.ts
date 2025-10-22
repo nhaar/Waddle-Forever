@@ -1073,6 +1073,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'client_igloo_cpip.swf',
       comment: 'Made by Blue Kirby, edit which removes the owned igloos button'
+    },
+    {
+      file: 'startscreen/cpip.swf',
+      comment: 'Made by lifeofgames477, recreation of the original CPIP start screen'
+    },
+    {
+      file: 'startscreen/cpip_logo.swf',
+      comment: 'Made by lifeofgames477, this file is an extension of the CPIP startscreen recreation. The logo was placed in a separate SWF because the recreation was built on top of the startscreen that we had, though it is purely a functional dependency'
+    },
+    {
+      file: 'startscreen/unlock_items.swf',
+      comment: 'Made by Blue Kirby, built on top of lifeofgames\' recreation adding the unlock items functionality'
+    },
+    {
+      file: 'startscreen/unlock_items_logo.swf',
+      comment: 'Made by Blue Kirby, the logo was slightly altered, cf. lifeofgame\'s recreation for why this file exists'
     }
   ],
   [MOD]: [

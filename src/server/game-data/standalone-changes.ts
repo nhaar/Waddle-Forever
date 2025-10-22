@@ -85,7 +85,11 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       forest: 'archives:RoomsForest.swf',
       ship: 'archives:RoomsShip.swf'
     },
-    startscreens: ['access_more.swf', 'celebrate_more.swf', 'create_more.swf', 'explore_more.swf'],
+    generalChanges: {
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
+      'play/v2/content/local/en/login/backgrounds/anniversary.swf': 'recreation:startscreen/cpip_logo.swf'
+    },
+    startscreens: ['anniversary.swf'], // the name "anniversary" is dummy, it's just the byproduct of how the recreation was made
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'
@@ -98,6 +102,22 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       lounge: 6
     },
     map: 'unknown:cpip_map_no_dojoext.swf'
+  },
+  {
+    date: '2008-10-24',
+    comment: 'The start screen is updated with the introduction of Unlock Items Online',
+    generalChanges: {
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
+      'play/v2/content/local/en/login/backgrounds/anniversary.swf': 'recreation:startscreen/unlock_items_logo.swf'
+    }
+  },
+  {
+    date: '2008-12-23',
+    comment: 'The start screen is updated',
+    generalChanges: {
+      'play/v2/client/startscreen.swf': 'slegacy:media/play/v2/client/startscreen.swf',
+    },
+    startscreens: ['access_more.swf', 'celebrate_more.swf', 'create_more.swf', 'explore_more.swf'],
   },
   {
     date: Update.EPF_RELEASE,
