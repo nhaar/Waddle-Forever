@@ -155,6 +155,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
       // we manage multiple egg files of ID 1
       this.add('artwork/eggs/1.swf', changes.scavengerHunt2007, start, end);
     }
+
+    if (changes.startscreens !== undefined) {
+      addStartscreens(changes.startscreens, this, start, end);
+    }
   }
 
   addRoomChanges(roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) {
@@ -517,6 +521,16 @@ function addRoomInfo(map: FileTimelineMap): void {
     updates.forEach((update) => {
       addTempRoomRoute(map, update.date, update.end, roomName, update.fileRef);
     })
+  })
+}
+
+function addStartscreens(screens: Array<string | [string, string]>, map: FileTimelineMap, date: Version, end?: Version): void {
+  screens.forEach((screen, i) => {
+    if (typeof screen === 'string') {
+      map.add(`play/v2/content/local/en/login/backgrounds/background${i}.swf`, screen, date, end);
+    } else {
+      map.add(`play/v2/content/local/en/login/backgrounds/${screen[0]}`, screen[1], date, end);
+    }
   })
 }
 

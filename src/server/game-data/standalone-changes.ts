@@ -86,10 +86,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       ship: 'archives:RoomsShip.swf'
     },
     generalChanges: {
-      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/content/local/en/login/backgrounds/anniversary.swf': 'recreation:startscreen/cpip_logo.swf'
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf'
     },
-    startscreens: ['anniversary.swf'], // the name "anniversary" is dummy, it's just the byproduct of how the recreation was made
+    startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'
@@ -107,9 +106,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     date: '2008-10-24',
     comment: 'The start screen is updated with the introduction of Unlock Items Online',
     generalChanges: {
-      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
-      'play/v2/content/local/en/login/backgrounds/anniversary.swf': 'recreation:startscreen/unlock_items_logo.swf'
-    }
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf'
+    },
+    startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ]
   },
   {
     date: '2008-12-23',
@@ -117,7 +116,12 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     generalChanges: {
       'play/v2/client/startscreen.swf': 'slegacy:media/play/v2/client/startscreen.swf',
     },
-    startscreens: ['access_more.swf', 'celebrate_more.swf', 'create_more.swf', 'explore_more.swf'],
+    startscreens: [
+      ['access_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/access_more.swf'],
+      ['celebrate_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/celebrate_more.swf'],
+      ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
+      ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
+    ],
   },
   {
     date: Update.EPF_RELEASE,
