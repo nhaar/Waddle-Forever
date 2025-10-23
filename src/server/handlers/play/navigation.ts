@@ -119,6 +119,16 @@ handler.xt(Handle.GetWaddle, (client, ...waddles) => {
   }));
 });
 
+// used to indicate opening book (eg. newspaper), which was apparently called a "toy"
+// TODO persistence for new penguins joining
+handler.xt(Handle.OpenBook, (client, id) => {
+  client.sendRoomXt('at', client.penguin.id, id);
+});
+
+handler.xt(Handle.CloseBook, (client) => {
+  client.sendRoomXt('rt', client.penguin.id);
+});
+
 handler.boot(s => {
   s.waddleConstructors = {
     'card': CardJitsu,

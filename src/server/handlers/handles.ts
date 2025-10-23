@@ -152,7 +152,9 @@ export enum Handle {
   CardJitsuFireChooseCard,
   CardJitsuFireInfoReady,
   CardJitsuFireChooseElement,
-  EPFStamps
+  EPFStamps,
+  OpenBook,
+  CloseBook
 };
 
 /** Map of all the handles and their valid arguments */
@@ -288,7 +290,9 @@ export const HANDLE_ARGUMENTS = {
   [Handle.CardJitsuFireChooseCard]: ['string', 'number'],
   [Handle.CardJitsuFireInfoReady]: ['string'],
   [Handle.CardJitsuFireChooseElement]: ['string', 'string'],
-  [Handle.EPFStamps]: ['number']
+  [Handle.EPFStamps]: ['number'],
+  [Handle.OpenBook]: ['number'],
+  [Handle.CloseBook]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -394,6 +398,10 @@ const HANDLER_MAPPING: HandlerMapping = {
       'pcid': Handle.EatPuffleItem,
       'revealgoldpuffle': Handle.RevealGoldPuffle,
       'rpqtc': Handle.SetRainbowQuestTaskComplete
+    },
+    't': {
+      'at': Handle.OpenBook,
+      'rt': Handle.CloseBook
     },
     'st': {
       'gsbcd': Handle.GetStampbookCoverData,
