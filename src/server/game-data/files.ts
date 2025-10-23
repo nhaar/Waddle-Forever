@@ -1093,6 +1093,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'login_cpip.swf',
       comment: 'Made by Blue Kirby, server select screen without the unlock items button and with the proper save password warning'
+    },
+    {
+      file: 'april_fools_2007',
+      comment: 'Made by Lifeofgames477'
     }
   ],
   [MOD]: [
