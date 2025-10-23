@@ -150,6 +150,12 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: Update.JPA_RELEASE,
       fileRef: 'archives:ArtworkRoomsBeacon41.swf',
       comment: 'The launchpad construction in the Beacon is finished'
+    },
+    {
+      date: '2009-04-10',
+      fileRef: 'archives:PreAugust2011Beacon.swf'
+      // comment is not added because it coincides with the easter egg hunt and turning the light on is PART
+      // of one of the eggs
     }
   ],
   boxdimension: [

@@ -1121,6 +1121,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'forms_missions/m10.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beacon_nolight.swf',
+      comment: 'Made by joey, remove the ability to turn off the beacon light'
     }
   ],
   [MOD]: [
