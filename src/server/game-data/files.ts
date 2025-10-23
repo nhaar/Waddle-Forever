@@ -1109,6 +1109,18 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'library/tales_vol_3.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forms_missions/cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forms_missions/m9.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forms_missions/m10.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

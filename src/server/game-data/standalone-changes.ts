@@ -96,6 +96,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'forms/library.swf': {
         'en': 'recreation:library/cpip.swf'
+      },
+      'forms/missions.swf': {
+        'en': 'recreation:forms_missions/cpip.swf'
       }
     },
     music: {
@@ -449,6 +452,23 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       date: Update.ANNIVERSARY_5_START,
       fileRef: 'archives:ENFormsLibrary-2010.swf'
+    }
+  ],
+  'play/v2/content/local/en/forms/missions.swf': [
+    {
+      date: '2008-10-07',
+      fileRef: 'recreation:forms_missions/m9.swf',
+      comment: 'Mission 9: Operation: Spy & Seek is added'
+    },
+    {
+      date: '2008-12-29',
+      fileRef: 'recreation:forms_missions/m10.swf',
+      comment: 'Mission 10: Waddle Squad is added'
+    },
+    {
+      date: '2010-05-17',
+      fileRef: 'slegacy:media/play/v2/content/local/en/forms/missions.swf',
+      comment: 'Mission 11: The Veggie Villain is added'
     }
   ],
   'play/v2/content/local/en/postcards/111.swf': [
