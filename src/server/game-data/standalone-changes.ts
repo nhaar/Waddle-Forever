@@ -93,6 +93,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'
+      },
+      'forms/library.swf': {
+        'en': 'recreation:library/cpip.swf'
       }
     },
     music: {
@@ -425,6 +428,20 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     }
   ],
   'play/v2/content/local/en/forms/library.swf': [
+    {
+      date: '2008-10-24',
+      fileRef: 'recreation:library/yearbook_08.swf'
+    },
+    {
+      date: '2009-02-03',
+      fileRef: 'recreation:library/lime_green.swf',
+      comment: 'The Lime Green Dojo Clean book is added'
+    },
+    {
+      date: '2009-09-11',
+      fileRef: 'recreation:library/tales_vol_3.swf',
+      comment: 'The Penguin Tales Volume 3 book is added'
+    },
     {
       date: '2009-10-24',
       fileRef: 'recreation:library_2009.swf'

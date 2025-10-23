@@ -1093,6 +1093,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'login_cpip.swf',
       comment: 'Made by Blue Kirby, server select screen without the unlock items button and with the proper save password warning'
+    },
+    {
+      file: 'library/cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'library/yearbook_08.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'library/lime_green.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'library/tales_vol_3.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
