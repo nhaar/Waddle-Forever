@@ -71,7 +71,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       coffee: 'archives:RoomsCoffee1.swf',
       lounge: 'archives:RoomsLounge.swf',
       boiler: 'archives:RoomsBoiler-January2010.swf',
-      attic: 'slegacy:media/play/v2/content/global/rooms/attic.swf',
+      attic: 'archives:RoomsAttic.swf',
       sport: 'archives:RoomsSport_2.swf',
       lake: 'slegacy:media/play/v2/content/global/rooms/lake.swf',
       cavemine: 'slegacy:media/play/v2/content/global/rooms/cavemine.swf',
