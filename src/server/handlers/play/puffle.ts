@@ -369,7 +369,7 @@ function dig(client: Client, onCommand: boolean) {
   }
 
   if (treasure === TreasureType.Clothing) {
-    client.buyItem(itemId, { notify: false });
+    client.buyItem(itemId, { notify: false, free: true });
   } else if (treasure === TreasureType.Food) {
     // TODO notify = false?
     client.buyPuffleItem(itemId, 0, 1);

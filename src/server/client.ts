@@ -775,12 +775,18 @@ export class Client {
   /**
    * Add a new item to a player
    * @param itemId
-   * @param params.cost Cost of the item (default 0)
+   * @param params.free If it should be free (default false)
    * @param params.notify Whether or not to notify the client (default false)
    */
-  buyItem (itemId: number, params: { cost?: number, notify?: boolean } = {}): void {
+  buyItem (itemId: number, params: { free?: boolean, notify?: boolean } = {}): void {
     this.penguin.addItem(itemId);
-    const cost = params.cost ?? 0;
+    let cost: number;
+    if (params.free === true) {
+      cost = 0;
+    } else {
+      const item = ITEMS.getStrict(itemId);
+      cost = item.cost;
+    }
     const notify = params.notify ?? true;
     this.penguin.removeCoins(cost);
     if (notify) {

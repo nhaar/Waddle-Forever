@@ -61,7 +61,7 @@ commands.add('ai', ['string'], (client, action) => {
 });
 
 commands.add('ai', ['number'], (client, id) => {
-  client.buyItem(id);
+  client.buyItem(id, { free: true });
   client.update();
 });
 

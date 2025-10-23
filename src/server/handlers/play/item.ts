@@ -11,14 +11,7 @@ handler.xt(Handle.GetInventory, (client) => {
 
 // giving item
 handler.xt(Handle.AddItem, (client, id) => {
-  if (client.penguin.hasItem(id)) {
-    // TODO
-  } else if (!client.canBuy(id)) {
-    // TODO
-  } else {
-    const item = ITEMS.getStrict(id);
-    client.buyItem(id, { cost: item.cost });
-  }
+  client.buyItem(id);
   client.update();
 });
 

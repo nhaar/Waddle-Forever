@@ -137,7 +137,7 @@ handler.xt(Handle.RainbowQuestCollectCoins, (client, task) => {
 
 // rainbow puffle quest item collect
 handler.xt(Handle.RainbowQuestItemCollect, (client, task) => {
-  client.buyItem(RAINBOW_QUEST_REWARDS[task], { notify: false });
+  client.buyItem(RAINBOW_QUEST_REWARDS[task], { notify: false, free: true });
   client.sendXt('rpqic', task, ItemStatus.Collected);
   client.update();
 });
@@ -151,7 +151,7 @@ handler.xt(Handle.RainbowQuestCollectBonus, (client) => {
     // TODO unsure why these 2 zeros
     client.sendXt('rpqbc', 0, 0, client.penguin.coins);
   } else {
-    client.buyItem(RAINBOW_BONUS_REWARD);
+    client.buyItem(RAINBOW_BONUS_REWARD, { free: true });
   }
   client.penguin.rainbowQuestInfo.coinsCollected.add('bonus');
   client.update();
