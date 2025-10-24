@@ -1,6 +1,6 @@
 /** Module maps out the files used for all clothing */
 
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 /** Files for the icons of each relevant clothing ID */
 export const ICONS: IdRefMap = {
@@ -5404,6 +5404,10 @@ export const PAPER: IdRefMap = {
   852: 'slegacy:media/play/v2/content/global/clothing/paper/852.swf',
   853: 'slegacy:media/play/v2/content/global/clothing/paper/853.swf',
   854: 'slegacy:media/play/v2/content/global/clothing/paper/854.swf',
+  1000: 'archives:ClothingPaper1000.swf',
+  1001: 'archives:ClothingPaper1001.swf',
+  1002: 'archives:ClothingPaper1002.swf',
+  1003: 'archives:ClothingPaper1003.swf',
   1004: 'slegacy:media/play/v2/content/global/clothing/paper/1004.swf',
   1005: 'slegacy:media/play/v2/content/global/clothing/paper/1005.swf',
   1006: 'slegacy:media/play/v2/content/global/clothing/paper/1006.swf',
@@ -6268,6 +6272,7 @@ export const PAPER: IdRefMap = {
   1997: 'slegacy:media/play/v2/content/global/clothing/paper/1997.swf',
   1998: 'slegacy:media/play/v2/content/global/clothing/paper/1998.swf',
   1999: 'slegacy:media/play/v2/content/global/clothing/paper/1999.swf',
+  2000: 'svanilla:media/play/v2/content/global/clothing/paper/2000.swf',
   2001: 'slegacy:media/play/v2/content/global/clothing/paper/2001.swf',
   2002: 'slegacy:media/play/v2/content/global/clothing/paper/2002.swf',
   2003: 'slegacy:media/play/v2/content/global/clothing/paper/2003.swf',
@@ -9938,6 +9943,10 @@ export const SPRITES: IdRefMap = {
   852: 'slegacy:media/play/v2/content/global/clothing/sprites/852.swf',
   853: 'slegacy:media/play/v2/content/global/clothing/sprites/853.swf',
   854: 'slegacy:media/play/v2/content/global/clothing/sprites/854.swf',
+  1000: 'archives:ClothingSprites1000.swf',
+  1001: 'archives:ClothingSprites1001.swf',
+  1002: 'archives:ClothingSprites1002.swf',
+  1003: 'archives:ClothingSprites1003.swf',
   1004: 'slegacy:media/play/v2/content/global/clothing/sprites/1004.swf',
   1005: 'slegacy:media/play/v2/content/global/clothing/sprites/1005.swf',
   1006: 'slegacy:media/play/v2/content/global/clothing/sprites/1006.swf',
@@ -10797,6 +10806,7 @@ export const SPRITES: IdRefMap = {
   1996: 'slegacy:media/play/v2/content/global/clothing/sprites/1996.swf',
   1997: 'slegacy:media/play/v2/content/global/clothing/sprites/1997.swf',
   1998: 'slegacy:media/play/v2/content/global/clothing/sprites/1998.swf',
+  2000: 'archives:ClothingSprites2000.swf',
   2001: 'slegacy:media/play/v2/content/global/clothing/sprites/2001.swf',
   2002: 'slegacy:media/play/v2/content/global/clothing/sprites/2002.swf',
   2003: 'slegacy:media/play/v2/content/global/clothing/sprites/2003.swf',

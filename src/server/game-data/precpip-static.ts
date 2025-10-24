@@ -39,6 +39,7 @@ newspaperFiles.forEach((fileId, index) => {
 
 
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
+  'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
   'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
   'games/astro.swf': 'mammoth:games/astro.swf',
@@ -55,10 +56,35 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'paper86.swf': 'slippers07:media/paper86.swf',
   'join/join13.swf': 'slippers07:media/join/join13.swf',
   'interface/errors4.swf': 'slippers07:media/interface/errors4.swf',
-  'artwork/characters/16.swf': 'slippers07:media/artwork/characters/16.swf',
   // coins for change for the only pre CPIP party!
   'artwork/forms/coinsforchange.swf': 'archives:ChristmasParty2007CoinsForChange.swf',
   'chat604.swf': 'fix:Chat604.swf',
   'chat339.swf': 'fix:Chat339.swf',
-  'artwork/forms/pollsub.swf': 'archives:ENClose_upsPollsub.swf'
+  'artwork/forms/pollsub.swf': 'archives:ENClose_upsPollsub.swf',
+  'artwork/toys/sculpture/flamini1.swf': 'recreation:festival_of_snow/flamini1.swf',
+  'artwork/toys/sculpture/seemi.swf': 'recreation:festival_of_snow/seemi.swf',
+  'artwork/toys/sculpture/Eragon12101.swf': 'recreation:festival_of_snow/eragon12101.swf',
+  'artwork/toys/sculpture/Clubpenny202.swf': 'recreation:festival_of_snow/clubpenny202.swf',
+  'artwork/toys/sculpture/liilmiig.swf': 'recreation:festival_of_snow/liilmiig.swf',
+  'artwork/toys/sculpture/zujkuteee.swf': 'recreation:festival_of_snow/zujkuteee.swf',
+  'artwork/toys/sculpture/Innin.swf': 'recreation:festival_of_snow/innin.swf',
+  'artwork/toys/sculpture/Air2515.swf': 'recreation:festival_of_snow/air2515.swf',
+  'artwork/toys/sculpture/Quitex.swf': 'recreation:festival_of_snow/quitex.swf',
+  'artwork/toys/sculpture/Tayler727.swf': 'recreation:festival_of_snow/tayler727.swf',
+  'artwork/toys/sculpture/barney1000.swf': 'recreation:festival_of_snow/barney1000.swf',
+  'artwork/toys/sculpture/angelspark.swf': 'recreation:festival_of_snow/angelspark.swf',
+  'artwork/toys/sculpture/pirategirl66.swf': 'recreation:festival_of_snow/pirategirl66.swf',
+  'artwork/toys/sculpture/kombivw557.swf': 'recreation:festival_of_snow/kombivw557.swf',
+  'artwork/toys/sculpture/mickmitzinic.swf': 'recreation:festival_of_snow/mickmitzinic.swf',
+  'artwork/toys/sculpture/Covanant.swf': 'recreation:festival_of_snow/covanant.swf',
+  'artwork/toys/sculpture/converseray.swf': 'recreation:festival_of_snow/converseray.swf',
+  'artwork/toys/sculpture/jazzybadger.swf': 'recreation:festival_of_snow/jazzybadger.swf',
+  'artwork/toys/sculpture/Toastygirl.swf': 'recreation:festival_of_snow/toastygirl.swf',
+  'artwork/toys/sculpture/Klop6.swf': 'recreation:festival_of_snow/klop6.swf',
+  'artwork/toys/sculpture/Vinje99.swf': 'recreation:festival_of_snow/vinje99.swf',
+  'artwork/toys/sculpture/RockAndPen.swf': 'recreation:festival_of_snow/rockandpen.swf',
+  'artwork/toys/sculpture/Y4ssenGrego.swf': 'recreation:festival_of_snow/y4ssengrego.swf',
+  'artwork/tools/807.swf': 'archives:AwardsEN807.swf',
+  'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf'
+
 };

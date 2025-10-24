@@ -1,7 +1,7 @@
-import { PermanentUpdateTimeline, TemporaryUpdateTimeline } from "./changes";
+import { PermanentUpdateTimeline, ComplexTemporaryUpdateTimeline } from ".";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
 import { PartyChanges } from "./parties";
-import { ANNIVERSARY_5_START, AS3_UPDATE, BETA_RELEASE, CAVE_EXPEDITION_END, CHRISTMAS_2006_DECORATION, CHRISTMAS_2007_START, CPIP_UPDATE, EPF_RELEASE, FAIR_2010_START, FAIR_2011_START, HALLOWEEN_2010_START, JULY_4_2010_END, MODERN_AS3, MUSIC_JAM_2010_CONST_START, MUSIC_JAM_2010_START, PRE_CPIP_REWRITE_DATE, ROCKHOPPER_ARRIVAL_PARTY_START, STAMPS_RELEASE } from "./updates";
+import { Update } from "./updates";
 
 type StandaloneChange = {
   route: string;
@@ -23,17 +23,26 @@ type StandaloneTemporaryChange = {
   }>
 }
 
-export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
+type PermanentUpdate = PartyChanges & {
+  comment?: string;
+}
+
+export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   {
-    date: BETA_RELEASE,
+    date: Update.BETA_RELEASE,
     map: "recreation:map_release.swf"
   },
   {
-    date: PRE_CPIP_REWRITE_DATE,
+    date: Update.PRE_CPIP_REWRITE_DATE,
     map: 'approximation:map_beach_changed_id.swf'
   },
   {
-    date: CPIP_UPDATE,
+    date: '2007-01-15', // rough estimate date
+    map: 'recreation:map_vector_original.swf',
+    comment: 'The map is vectorized'
+  },
+  {
+    date: Update.CPIP_UPDATE,
     roomChanges: {
       town: 'archives:RoomsTown.swf',
       rink: 'archives:RoomsRink.swf',
@@ -46,7 +55,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       beach: 'archives:RoomsBeach-2.swf',
       mtn: 'recreation:mtn_cpip_start.swf',
       berg: 'archives:RoomsBerg.swf',
-      beacon: 'archives:PreAugust2011Beacon.swf',
+      beacon: 'recreation:beacon_nolight.swf',
       // post island adventure update
       boxdimension: 'archives:RoomsBoxdimension-January2010.swf',
       cave: 'archives:RoomsCave.swf',
@@ -62,7 +71,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       coffee: 'archives:RoomsCoffee1.swf',
       lounge: 'archives:RoomsLounge.swf',
       boiler: 'archives:RoomsBoiler-January2010.swf',
-      attic: 'slegacy:media/play/v2/content/global/rooms/attic.swf',
+      attic: 'archives:RoomsAttic.swf',
       sport: 'archives:RoomsSport_2.swf',
       lake: 'slegacy:media/play/v2/content/global/rooms/lake.swf',
       cavemine: 'slegacy:media/play/v2/content/global/rooms/cavemine.swf',
@@ -76,6 +85,22 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       forest: 'archives:RoomsForest.swf',
       ship: 'archives:RoomsShip.swf'
     },
+    generalChanges: {
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
+      'play/v2/client/login.swf': 'recreation:login_cpip.swf'
+    },
+    startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
+    localChanges: {
+      'forms/moderator.swf': {
+        'en': 'recreation:pre_epf_moderator_form.swf'
+      },
+      'forms/library.swf': {
+        'en': 'recreation:library/cpip.swf'
+      },
+      'forms/missions.swf': {
+        'en': 'recreation:forms_missions/cpip.swf'
+      }
+    },
     music: {
       // placeholder play
       stage: 32,
@@ -83,6 +108,36 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PartyChanges> = [
       lounge: 6
     },
     map: 'unknown:cpip_map_no_dojoext.swf'
+  },
+  {
+    date: '2008-10-24',
+    comment: 'The start screen is updated with the introduction of Unlock Items Online',
+    generalChanges: {
+      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
+      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf'
+    },
+    startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ]
+  },
+  {
+    date: '2008-12-23',
+    comment: 'The start screen is updated',
+    generalChanges: {
+      'play/v2/client/startscreen.swf': 'slegacy:media/play/v2/client/startscreen.swf',
+    },
+    startscreens: [
+      ['access_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/access_more.swf'],
+      ['celebrate_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/celebrate_more.swf'],
+      ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
+      ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
+    ],
+  },
+  {
+    date: Update.EPF_RELEASE,
+    localChanges: {
+      'forms/moderator.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
+      }
+    }
   }
 ];
 
@@ -91,10 +146,10 @@ type TemporaryGroupUpdate = PartyChanges & {
   endComment?: string;
 };
 
-export const STANDALONE_TEMPORARY_UPDATES: TemporaryUpdateTimeline<TemporaryGroupUpdate, TemporaryGroupUpdate> = [
+export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<TemporaryGroupUpdate> = [
   {
     date: '2008-01-16',
-    end: ROCKHOPPER_ARRIVAL_PARTY_START,
+    end: Update.ROCKHOPPER_ARRIVAL_PARTY_START,
     updates: [
       {
         // according to newspaper
@@ -202,6 +257,31 @@ export const STANDALONE_TEMPORARY_UPDATES: TemporaryUpdateTimeline<TemporaryGrou
         }
       }
     ]
+  },
+  {
+    // placeholder for the CPIP music list update, needs to be refactored somewhat depending on how future igloo lists are handled
+    date: Update.CPIP_UPDATE,
+    end: '2008-07-18',
+    globalChanges: {
+      'content/igloo_music.swf': 'recreation:igloo_music/cpip_start.swf'
+    }
+  },
+  {
+    date: '2007-02-02',
+    end: '2007-02-09',
+    generalChanges: {
+      'artwork/tools/telescope0.swf': 'archives:Telescope5.swf'
+    },
+    comment: 'Rockhopper is seen from the telescope',
+    updates: [
+      {
+        date: '2007-02-07',
+        generalChanges: {
+          'artwork/tools/telescope0.swf': 'archives:Telescope6.swf'
+        },
+        comment: 'Rockhopper is seen closer from the telescope'
+      }
+    ]
   }
 ]
 
@@ -210,7 +290,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       // newspapers-less precpip client
       fileRef: 'approximation:chat291_no_news.swf',
-      date: BETA_RELEASE
+      date: Update.BETA_RELEASE
     },
     {
       // precpip client with newspapers
@@ -221,41 +301,51 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   'play/v2/client/shell.swf': [
     {
       fileRef: 'slegacy:media/play/v2/client/shell.swf',
-      date: CPIP_UPDATE
+      date: Update.CPIP_UPDATE
     },
     {
       fileRef: 'svanilla:media/play/v2/client/shell.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     }
   ],
   'play/v2/client/engine.swf': [
     {
       fileRef: 'unknown:engine_2009.swf',
-      date: CPIP_UPDATE
+      date: Update.CPIP_UPDATE
     },
     {
       // engine that has EPF and stuff
       fileRef: 'slegacy:media/play/v2/client/engine.swf',
-      date: EPF_RELEASE
+      date: Update.EPF_RELEASE
     },
     {
       fileRef: 'svanilla:media/play/v2/client/engine.swf',
-      date: MODERN_AS3
+      date: Update.MODERN_AS3
     }
   ],
   'play/v2/client/interface.swf': [
     {
-      fileRef: 'unknown:interface_2009.swf',
-      date: CPIP_UPDATE
+      fileRef: 'recreation:interfaces/2008_july.swf',
+      date: Update.CPIP_UPDATE
+    },
+    {
+      fileRef: 'recreation:interfaces/2009_jan.swf',
+      date: '2009-01-20',
+      comment: 'A membership badge is added to the player card'
     },
     {
       // interface with EPF phone
-      fileRef: 'recreation:interface_epf_no_stamps.swf',
-      date: EPF_RELEASE
+      fileRef: 'recreation:interfaces/2010_may.swf',
+      date: Update.EPF_RELEASE
+    },
+    {
+      fileRef: 'recreation:interfaces/2010_july.swf',
+      date: Update.STAMPS_RELEASE
     },
     {
       fileRef: 'unknown:interface_stamps.swf',
-      date: STAMPS_RELEASE
+      date: Update.OWNED_IGLOOS,
+      comment: 'The owned igloos list is added'
     }
   ],
   'play/v2/client/club_penguin.swf': [
@@ -263,64 +353,67 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
       // this file is from Dec 2010, but will be using it as a placeholder
       // one from november 2010 exists in archives, and should be included if they are different
       fileRef: 'archives:Dec2010club_penguin.swf',
-      date: AS3_UPDATE
+      date: Update.AS3_UPDATE
+    }
+  ],
+  'play/v2/client/igloo.swf': [
+    {
+      fileRef: 'recreation:client_igloo_cpip.swf',
+      date: Update.CPIP_UPDATE
+    },
+    {
+      fileRef: 'slegacy:media/play/v2/client/igloo.swf',
+      date: Update.OWNED_IGLOOS
     }
   ],
   'play/v2/client/Newspaper.swf': [
     {
       fileRef: 'archives:Dec2010ClientNewspaper.swf',
-      date: AS3_UPDATE
+      date: Update.AS3_UPDATE
     }
   ],
   'play/v2/games/paddle/paddle.swf': [
     {
       fileRef: 'slegacy:media/play/v2/games/paddle/paddle.swf',
-      date: FAIR_2011_START
+      date: Update.FAIR_2011_START
     },
     {
       fileRef: 'recreation:paddle_no_brown.swf',
-      date: FAIR_2010_START
+      date: Update.FAIR_2010_START
     }
   ],
   'play/v2/content/local/en/close_ups/digposter2.swf': [
     {
       // permanent dig poster after cave expedition
-      date: CAVE_EXPEDITION_END,
+      date: Update.CAVE_EXPEDITION_END,
       fileRef: 'slegacy:media/play/v2/content/local/en/close_ups/digposter2.swf' 
     }
   ],
   'play/v2/client/dependencies.json': [
     {
       // have no better place to put the default dependencies.json
-      date: BETA_RELEASE,
+      date: Update.BETA_RELEASE,
       fileRef: 'slegacy:media/play/v2/client/dependencies.json' 
-    }
-  ],
-  'web_service/worldachievements.xml': [
-    {
-      // file from legacy media with a few stamps removed since they shouldn't be there
-      date: STAMPS_RELEASE,
-      fileRef: 'approximation:worldachievements.xml'
     }
   ],
   'play/v2/content/global/binoculars/empty.swf': [
     {
       // placeholder binoculars
-      date: CPIP_UPDATE,
+      date: Update.CPIP_UPDATE,
       fileRef: 'slegacy:media/play/v2/content/global/binoculars/empty.swf'
     }
   ],
   'play/v2/content/global/telescope/empty.swf': [
     {
       // placeholder telescope
-      date: CPIP_UPDATE,
+      date: Update.CPIP_UPDATE,
       fileRef: 'slegacy:media/play/v2/content/global/telescope/empty.swf'
     }
   ],
   'play/v2/content/global/igloo/assets/igloo_background.swf': [
     {
       // placeholder igloo background
-      date: CPIP_UPDATE,
+      date: Update.CPIP_UPDATE,
       fileRef: 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf'
     }
   ],
@@ -339,18 +432,49 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   ],
   'play/v2/content/local/en/forms/library.swf': [
     {
+      date: '2008-10-24',
+      fileRef: 'recreation:library/yearbook_08.swf'
+    },
+    {
+      date: '2009-02-03',
+      fileRef: 'recreation:library/lime_green.swf',
+      comment: 'The Lime Green Dojo Clean book is added'
+    },
+    {
+      date: '2009-09-11',
+      fileRef: 'recreation:library/tales_vol_3.swf',
+      comment: 'The Penguin Tales Volume 3 book is added'
+    },
+    {
       date: '2009-10-24',
       fileRef: 'recreation:library_2009.swf'
     },
     {
-      date: ANNIVERSARY_5_START,
+      date: Update.ANNIVERSARY_5_START,
       fileRef: 'archives:ENFormsLibrary-2010.swf'
+    }
+  ],
+  'play/v2/content/local/en/forms/missions.swf': [
+    {
+      date: '2008-10-07',
+      fileRef: 'recreation:forms_missions/m9.swf',
+      comment: 'Mission 9: Operation: Spy & Seek is added'
+    },
+    {
+      date: '2008-12-29',
+      fileRef: 'recreation:forms_missions/m10.swf',
+      comment: 'Mission 10: Waddle Squad is added'
+    },
+    {
+      date: '2010-05-17',
+      fileRef: 'slegacy:media/play/v2/content/local/en/forms/missions.swf',
+      comment: 'Mission 11: The Veggie Villain is added'
     }
   ],
   'play/v2/content/local/en/postcards/111.swf': [
     {
       date: '2010-02-25',
-      fileRef: 'fix:postcard_orange_puffle.swf'
+      fileRef: 'recreation:postcard_orange_puffle.swf'
     },
     {
       date: '2011-02-17',
@@ -360,14 +484,14 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   'play/v2/games/roundup/PuffleRoundup.swf': [
     {
       // orange puffle version, must add white puffle version too later
-      date: CPIP_UPDATE,
+      date: Update.CPIP_UPDATE,
       fileRef: 'recreation:puffle_roundup_orange.swf'
     }
   ],
   'play/v2/content/local/en/catalogues/costume.swf': [
     {
       // placeholder CPIP stage
-      date: CPIP_UPDATE,
+      date: Update.CPIP_UPDATE,
       fileRef: 'archives:January2009Costume.swf'
     }
   ]
@@ -376,37 +500,37 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
 export const STANDALONE_TEMPORARY_CHANGE: Record<string, StandaloneTemporaryChange[]> = {
   'play/v2/content/global/rooms/mtn.swf': [
     {
-      startDate: MUSIC_JAM_2010_CONST_START,
-      endDate: JULY_4_2010_END,
+      startDate: Update.MUSIC_JAM_2010_CONST_START,
+      endDate: Update.JULY_4_2010_END,
       fileRef: 'archives:2010newyearfireworksskihill.swf' // same as new years day
     }
   ],
   'play/v2/content/global/rooms/berg.swf': [
     {
       // removing fireworks in music jam construction for the iceberg
-      startDate: JULY_4_2010_END,
-      endDate: MUSIC_JAM_2010_START,
+      startDate: Update.JULY_4_2010_END,
+      endDate: Update.MUSIC_JAM_2010_START,
       fileRef: 'recreation:iceberg_mjamconst_no_fireworks.swf'
     }
   ],
   'play/v2/content/global/binoculars/empty.swf': [
     {
       startDate: '2010-10-21',
-      endDate: HALLOWEEN_2010_START,
+      endDate: Update.HALLOWEEN_2010_START,
       fileRef: 'archives:Storm_on_horizon.swf',
       comment: 'A storm is approaching and visible from the Cove'
     }
   ],
   'artwork/rooms/plaza.swf': [
     {
-      startDate: CHRISTMAS_2006_DECORATION,
+      startDate: Update.CHRISTMAS_2006_DECORATION,
       endDate: '2006-12-21',
       fileRef: 'archives:ArtworkRoomsPlaza42.swf',
       comment: 'A tree is available to be decorated for Christmas'
     },
     {
       startDate: '2007-12-14',
-      endDate: CHRISTMAS_2007_START,
+      endDate: Update.CHRISTMAS_2007_START,
       fileRef: 'archives:RoomsPlaza-ChristmasParty2007Pre.swf',
       comment: 'The Coins For Change event begins'
     }

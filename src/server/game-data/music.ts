@@ -1,6 +1,6 @@
 /** Module for the files of all music in the game */
 
-import { IdRefMap } from "./changes";
+import { IdRefMap } from ".";
 
 /** Base files for all the music */
 export const MUSIC_IDS: IdRefMap = {
@@ -42,6 +42,7 @@ export const MUSIC_IDS: IdRefMap = {
   114: 'slegacy:media/play/v2/content/global/music/114.swf',
   115: 'slegacy:media/play/v2/content/global/music/115.swf',
   116: 'archives:Music116.swf',
+  117: 'archives:Music117.swf',
   119: 'slegacy:media/play/v2/content/global/music/119.swf',
   120: 'slegacy:media/play/v2/content/global/music/120.swf',
   121: 'slegacy:media/play/v2/content/global/music/121.swf',
@@ -55,6 +56,7 @@ export const MUSIC_IDS: IdRefMap = {
   204: 'archives:Music204.swf',
   205: 'archives:Music205.swf',
   206: 'archives:Music206.swf',
+  207: 'archives:Music207.swf',
   208: 'archives:Music208.swf',
   209: 'archives:Music209.swf',
   210: 'archives:Music210.swf',
@@ -66,6 +68,7 @@ export const MUSIC_IDS: IdRefMap = {
   216: 'archives:Music216.swf',
   217: 'archives:Music217.swf',
   218: 'archives:Music218.swf',
+  219: 'archives:Music219.swf',
   220: 'archives:Music220.swf',
   221: 'archives:Music221.swf',
   222: 'archives:Music222.swf',
@@ -137,6 +140,8 @@ export const MUSIC_IDS: IdRefMap = {
   301: 'archives:Music301.swf',
   372: 'archives:Music372.swf',
   400: 'archives:Music400.swf',
+  401: 'archives:Music401.swf',
+  402: 'archives:Music402.swf',
   520: 'slegacy:media/play/v2/content/global/music/520.swf',
   532: 'slegacy:media/play/v2/content/global/music/532.swf',
   666: 'slegacy:media/play/v2/content/global/music/666.swf',

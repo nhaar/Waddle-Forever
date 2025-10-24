@@ -1,10 +1,11 @@
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
+import { Handle } from '../handles';
 import { getClientPuffleIds } from './puffle';
 
 const handler = new Handler();
 
-handler.xt('j#js', (client) => {
+handler.xt(Handle.JoinServer, (client) => {
   if (client.isEngine3) {
     return;
   }
@@ -34,13 +35,13 @@ handler.xt('j#js', (client) => {
   client.checkAgeStamps();
 });
 
-handler.xt('j#js', (client, id) => {
+handler.xt(Handle.JoinServerNew, (client, id) => {
   if (!client.isEngine3) {
     return;
   }
   // in Engine 3, the client reconnects, thus losing the login data, the only thing
   // we have is the ID granted by this handler
-  client.setPenguinFromId(Number(id));
+  client.setPenguinFromId(id);
   const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
   // // initializing penguin data
   client.sendXt('js', client.penguin.isAgent ? 1 : 0, 0, moderatorStatus, 0);
@@ -71,14 +72,14 @@ handler.xt('j#js', (client, id) => {
   client.send('%xt%nxquestdata%-1%{"quests":[{"id":1,"status":"prize claimed","tasks":[true]},{"id":3,"status":"prize claimed","tasks":[true]},{"id":2,"status":"prize claimed","tasks":[true]}]}%')
 });
 
-handler.xt('b#gb', (client) => {
+handler.xt(Handle.GetBuddies, (client) => {
   if (client.isEngine3) {
     return;
   }
   client.sendXt('gb', '');
 });
 
-handler.xt('b#gb', (client) => {
+handler.xt(Handle.GetBuddies, (client) => {
   // TODO: buddy stuff
   if (!client.isEngine3) {
     return;
@@ -89,20 +90,20 @@ handler.xt('b#gb', (client) => {
   client.sendXt('gc', '');
 });
 
-handler.xt('n#gn', (client) => {
+handler.xt(Handle.GN, (client) => {
   client.sendXt('gn', '');
 });
 
-handler.xt('u#glr', (client) => {
+handler.xt(Handle.GLR, (client) => {
   client.sendXt('glr', '');
 });
 
 
-handler.xt('u#h', (client) => {
+handler.xt(Handle.Heartbeat, (client) => {
   client.sendXt('h', '');
 });
 
-handler.xt('g#gii', (client) => {
+handler.xt(Handle.GetIglooInventory, (client) => {
   // No idea what these zeros are used for
   const zeros = '0000000000';
   const furnitureInfo = client.penguin.getAllFurniture().map((pair) => {

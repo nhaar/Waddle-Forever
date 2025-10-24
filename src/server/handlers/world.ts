@@ -11,6 +11,11 @@ import epfHandler from './play/epf';
 import mailHandler from './play/mail';
 import gameHandler from './play/game';
 import partyHandler from './play/party';
+import sledHandler from './games/sled';
+import cardHandler from './games/card';
+import fireHandler from './games/fire';
+import matchHandler from './games/matchmaking';
+import ninjaHandler from './games/ninja';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -27,5 +32,10 @@ handler.use(epfHandler);
 handler.use(mailHandler);
 handler.use(gameHandler);
 handler.use(partyHandler);
+handler.use(sledHandler);
+handler.use(cardHandler);
+handler.use(matchHandler);
+handler.use(ninjaHandler);
+handler.use(fireHandler);
 
 export default handler;

@@ -187,6 +187,18 @@ would need to investigated`
     {
       file: 'CartSurfer2006.swf',
       comment: 'Removed domain check'
+    },
+    {
+      file: 'ENFormsAgent.swf',
+      comment: 'Fix by Blue Kirby, it uses a function from shell.swf which is not present in the WF one, so the function call was replaced with the function contents. Alternatively a shell change could be done and have this file be the original instead'
+    },
+    {
+      file: 'Town-party.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'RoomsPlaza-MusicJam2008.swf',
+      comment: 'Added triggers and logic to this file that for some reason has unexisting logic'
     }
   ],
   [APPROXIMATION]: [
@@ -194,10 +206,6 @@ would need to investigated`
       file: 'chat291_no_news.swf',
       comment: 'Remove the Newspaper icon to simulare pre-newspapers',
       base: 'unknown:chat291.swf'
-    },
-    {
-      file: 'fair_worldachievements.xml',
-      comment: 'Added Snack Shack stamp, by Supermanover'
     },
     {
       file: 'forts_release.swf',
@@ -239,11 +247,6 @@ would need to investigated`
       comment: 'This is a modified version of Ben\'s mod for the hunt to remove basket requirement'
     },
     {
-      file: 'halloween_worldachievements.xml',
-      comment: `Manual modification of worldachievements.xml from legacy media to have Monster Mash
-Only costumes that were verified with video have been added here`
-    },
-    {
       file: 'map_beach_changed_id.swf',
       comment: `Originally, the beach had ID 809,
 but that was later changed. So this map I changed the ID of the beach to the new id
@@ -256,8 +259,8 @@ so that it works with newer clients (newer being around 2007)`,
       base: 'archives:ArtworkMapsIsland5.swf'
     },
     {
-      file: 'worldachievements.xml',
-      comment: 'Taken from legacy media but removed a lot of stamps that shouldn\t be active'
+      file: 'take_tour.swf',
+      comment: 'Modified version from the legacy media which makes it compatible with all interfaces. There must have existed an old version of this file from prior to May 27 2010 but this is an approximation that will work for all interfaces'
     }
   ],
   [RECREATION]: [
@@ -371,10 +374,6 @@ Made by Supermanover (exported candy assets), and nhaar (added hint text)`
       comment: 'By Blue Kirby, removed fireworks from the Music Jam 2010 construction Iceberg'
     },
     {
-      file: 'interface_epf_no_stamps.swf',
-      comment: 'Made by Supermanover. Interface with EPF phone but no stamps in the playercard'
-    },
-    {
       file: 'library_2009.swf',
       comment: 'Made by nhaar. Library without the 2010 yearbook'
     },
@@ -417,7 +416,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'winter_luau/dock.swf',
-      comment: 'Winter Luau room recreation by Supermanover'
+      comment: 'Winter Luau room recreation by Supermanover, with additional fixes from Randomno'
     },
     {
       file: 'winter_luau/town.swf',
@@ -446,6 +445,686 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'dance_cpip_postmusicjam1.swf',
       comment: 'Made by Jeoy based on VamprLover\'s file'
+    },
+    {
+      file: 'dance_record_pin_mjam.swf',
+      comment: 'Made by Blue Kirby, adds the record pin to the Dance Club of the Music Jam 2008'
+    },
+    {
+      file: 'dance_record_pin.swf',
+      comment: 'Made by Blue Kirby based on VampLovr and Jeoy\'s files, adds the record pin to the Dance Club with dark lighting'
+    },
+    {
+      file: 'pre_epf_moderator_form.swf',
+      comment: 'Made by lifeofgames477. A recreation of the moderator form before the EPF. This file was embedded in the pre-CPIP interface but was lost for post-CPIP, thus it was recreated.'
+    },
+    {
+      file: 'ruby_play_debut.swf',
+      comment: 'Made by Blue Kirby, the original version of the play.'
+    },
+    {
+      file: 'plaza_ruby_construction.swf',
+      comment: 'Made by Blue Kirby, the Plaza construction for the Ruby and the Ruby play debut'
+    },
+    {
+      file: 'plaza_ruby_no_weather.swf',
+      comment: 'Made by Blue Kirby, Plaza for Ruby and the Ruby before weather manipulation'
+    },
+    {
+      file: 'light_lollipop_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'sport_microscope_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lounge_cake_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forest_blue_snow_shovel_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beach_snowflake_tile_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pet_fort_snow_fort_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lodge_present_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'plaza_golden_puffle_no_weather.swf',
+      comment: 'Made by Blue Kirby. Plaza with the Golden Puffle without weather manipulation'
+    },
+    {
+      file: 'fair_2008_plaza_decorated.swf',
+      comment: 'Made by Blue Kirby. Decorated plaza which was added in an update to the party'
+    },
+    {
+      file: 'water_party_07_dance.swf',
+      comment: 'Made by victando. Dance Club for the Water Party 2007'
+    },
+    {
+      file: 'fair_08_ticket_info.swf',
+      comment: 'Made by lifeofgames477. A recreation of the tickets information screen for the Fair 2008'
+    },
+    {
+      file: 'plaza_team_blue_play.swf',
+      comment: 'Made by Blue Kirby. Plaza with the stage having the Team Blue vs Team Red play'
+    },
+    {
+      file: 'penguin_play_awards_09_plaza_const.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Penguin Play Awards 2009 construction'
+    },
+    {
+      file: 'medieval_09_const_cave.swf',
+      comment: 'Made by Blue Kirby. Cave for the Medieval Party 2009 construction'
+    },
+    {
+      file: 'plaza_haunting_of_the_viking_opera.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Haunting of the Viking Opera play before weather manipulation'
+    },
+    {
+      file: 'plaza_ruby_no_weather_09_july.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Ruby and the Ruby play before weather manipulation, but specifically for July 2009, which has a different billboard'
+    },
+    {
+      file: 'plaza_underwater_adventure.swf',
+      comment: 'Made by Blue kirby. Plaza for the Underwater Adventure play'
+    },
+    {
+      file: 'fair_09_penguins_time_forgot.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Penguins that Time Forgot play during the Fair 2009'
+    },
+    {
+      file: 'holiday_09_plaza_quest_golden_puffle.swf',
+      comment: 'Made by Blue Kirby. Plaza for the Quest for the Golden Puffle play during the Holiday Party 2009'
+    },
+    {
+      file: 'beacon_lily_pin.swf',
+      comment: 'Made by Blue Kirby using jeoy\'s base recreation of the room, adds the Lily pin'
+    },
+    {
+      file: 'mine_puffle_o_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'camp_penguin/town.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'camp_penguin/cove.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'camp_penguin/dock.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/beach.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'summer_kickoff_2007/beach_update.swf',
+      comment: 'made by Cyan (added Flower Headdress)'
+    },
+    {
+      file: 'summer_kickoff_2007/town.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/dock.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/mtn.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'summer_kickoff_2007/dojo.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'summer_kickoff_2007/beacon.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_opening/plaza.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_opening/forest.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_opening/cove.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: 'cove_after_cove_opening_pre_cpip.swf',
+      comment: 'made by Victando'
+    },
+    {
+      file: 'color_party_2006/dojo.swf',
+      comment: 'made by Doubleuman'
+    },
+    {
+      file: '1st_anniversary_coffee.swf',
+      comment: 'Made by Doubleuman, with fixes by Randomno'
+    },
+    {
+      file: 'halloween_2006/pizza.swf',
+      comment: 'made by Cyan'
+    },
+    {
+      file: 'halloween_2006/attic.swf',
+      comment: 'made by Randomno'
+    },
+    {
+      file: 'halloween_2006/rink.swf',
+      comment: 'made by Lifeofgames477'
+    },
+    {
+      file: 'halloween_2006/mtn.swf',
+      comment: 'made by Lifeofgames477'
+    },
+    {
+      file: 'berg_oberry_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'snow_sculpture_mtn_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'attic_top_hat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'dojoext_tree_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pizza_ice_cream_sundae_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'book_safari_hat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'boiler_kings_crown_pin.swf',
+      comment: 'Made by Blue Kirby, the post-party variant of the room with the pin'
+    },
+    {
+      file: 'light_watermelon_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_dojo_lantern_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'coffee_toy_sailboat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'mine_sand_castle_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cove_koi_fish_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'fair_09_cove_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'pizza_101_days_of_fun_pin_fair.swf',
+      comment: 'Made by Blue Kirby, the Fair 2009 variant of the room with the pin'
+    },
+    {
+      file: 'fire_hunt_pizza_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'book_padlock_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'april_fools_2007/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'april_fools_2007/shack.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/shack.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/flamini1.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/seemi.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/eragon12101.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/clubpenny202.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/liilmiig.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/zujkuteee.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/innin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/mtn.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/air2515.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/beach_1.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/quitex.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/tayler727.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/beach_2.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/beach_3.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/plaza.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/angelspark.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/barney1000.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/pirategirl66.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/kombivw557.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/mickmitzinic.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/village.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/covanant.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/converseray.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/light.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/jazzybadger.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/toastygirl.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/klop6.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'attic_football_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'attic_snowman_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'light_fireworks_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'berg_puffer_fish_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pet_speaker_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beacon_feather_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lodge_wagon_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'sport_cupcake_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cove_shield_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'book_cream_soda_barrel_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'stage_ruby_2010_june.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forts_taco_pin.swf',
+      comment: 'Made by Randomno by removing the decorations from the archived party room'
+    },
+    {
+      file: 'cove_bat_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'berg_seashell_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'lost_map_hunt/mtn.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/village.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/handler.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lost_map_hunt/chat506_edit.swf',
+      comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work'
+    },
+    {
+      file: 'cove_cpip_firework_rocket_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_treble_clef_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'cave_mjam08_no_pin.swf',
+      comment: 'Made by Blue Kirby, the archived room with the pin removed'
+    },
+    {
+      file: 'halloween_2007/dance_notice.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lighthouse_party_2006/light.swf',
+      comment: 'Made by Randomno'
+    },
+    {
+      file: 'plaza_tour_const.swf',
+      comment: 'Made by Doubleuman, just a compiled version of an fla with some fixes'
+    },
+    {
+      file: 'plaza_may07.swf',
+      comment: 'Made by Randomno'
+    },
+    {
+      file: 'shack_apr10.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'attic_dec2006.swf',
+      comment: 'Made by Randomno, vectorized attic before rocking horse animation, it is an edit of attic42 with rocking horse from attic12 and Find Four tables moved to match a screenshot'
+    },
+    {
+      file: 'map_vector_original.swf',
+      comment: 'Made by Randomno, repositioned rooms from map15 and deleted parts of the Forest graphic'
+    },
+    {
+      file: 'attic_dec08.swf',
+      comment: 'Made by Randomno, removed the Taco Pin from the archived room'
+    },
+    {
+      file: 'halloween_2008/igloo_background.swf',
+      comment: 'Made by Blue Kirby, removed the stormy clouds from the 2010 version, placeholder until a more proper 2008 version is made'
+    },
+    {
+      file: 'water_party_2007/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/mtn.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/forest.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'mjam_08_const/dance.swf',
+      comment: 'Made by Cyan'
+    },
+    {
+      file: 'shack_vector.swf',
+      comment: 'Made by lifeofgames477, based using the april fools 2008 shacka as a base with elements from the 2009 version'
+    },
+    {
+      file: 'pirate_party/coffee.swf',
+      comment: 'Made by Cyan'
+    },
+    {
+      file: 'pet_nov07.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'igloo_music/cpip_start.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/08_12.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/09_05.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/09_09.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pirate_catalog/10_06.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pizza_2007.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'pizza_2008.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'berg_ice_block_pin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/berg_pin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/dojo.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/vinje99.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/y4ssengrego.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'festival_of_snow/rockandpen.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'boiler_100_newspapers.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'festival_of_snow/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'interfaces/2008_july.swf',
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
+    },
+    {
+      file: 'interfaces/2009_jan.swf',
+      comment: 'Made by Blue Kirby. Built on top of the October 2009 interface but removing the owned igloos functionality'
+    },
+    {
+      file: 'interfaces/2010_may.swf',
+      comment: 'Made by Supermanover and Blue Kirby. Initially, Super removed the stamps from the legacy media modified interface that was in WF. Blue Kirby removed the owned igloo functionality'
+    },
+    {
+      file: 'interfaces/2010_july.swf',
+      comment: 'Made by Blue Kirby. Built on top of the modified lgeacy media interface, removing the owned igloos functionality'
+    },
+    {
+      file: 'client_igloo_cpip.swf',
+      comment: 'Made by Blue Kirby, edit which removes the owned igloos button'
+    },
+    {
+      file: 'startscreen/cpip.swf',
+      comment: 'Made by lifeofgames477, recreation of the original CPIP start screen'
+    },
+    {
+      file: 'startscreen/cpip_logo.swf',
+      comment: 'Made by lifeofgames477, this file is an extension of the CPIP startscreen recreation. The logo was placed in a separate SWF because the recreation was built on top of the startscreen that we had, though it is purely a functional dependency'
+    },
+    {
+      file: 'startscreen/unlock_items.swf',
+      comment: 'Made by Blue Kirby, built on top of lifeofgames\' recreation adding the unlock items functionality'
+    },
+    {
+      file: 'startscreen/unlock_items_logo.swf',
+      comment: 'Made by Blue Kirby, the logo was slightly altered, cf. lifeofgame\'s recreation for why this file exists'
+    },
+    {
+      file: 'login_cpip.swf',
+      comment: 'Made by Blue Kirby, server select screen without the unlock items button and with the proper save password warning'
+    },
+    {
+      file: 'library/cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'library/yearbook_08.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'library/lime_green.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'library/tales_vol_3.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forms_missions/cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forms_missions/m9.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'forms_missions/m10.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beacon_nolight.swf',
+      comment: 'Made by joey, remove the ability to turn off the beacon light'
     }
   ],
   [MOD]: [
@@ -522,12 +1201,8 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
       comment: 'Unknown. Most likely some engine SWF we have archived somewhere'
     },
     {
-      file: 'interface_2009.swf',
-      comment: 'Unknown, might just be the October 2009 interface in archives'
-    },
-    {
       file: 'interface_stamps.swf',
-      comment: 'Originally from legacy-media, but have not documented all the changes'
+      comment: 'Originally from legacy-media, but have not documented all the changes, such as a fix for exiting minigames and being placed in rooms'
     },
     {
       file: 'my_puffle.swf',
@@ -548,6 +1223,10 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
   ]
 };
 
+function cleanPath(path: string): string {
+  return path.replaceAll('/', '\\');
+}
+
 /** Raises error if a unproperly documented file is found */
 function enforceDocumentationCorrectness(): void {
   // files in the media folder, but not in here
@@ -558,12 +1237,12 @@ function enforceDocumentationCorrectness(): void {
   iterateEntries(FILE_DOCUMENTATIONS, (key, value) => {
     // currently assuming they are all in default package, this may change at some point
     const subdirectory = path.join(DEFAULT_DIRECTORY, key);
-    const files = new Set(getFilesInDirectory(subdirectory));
+    const files = new Set(getFilesInDirectory(subdirectory).map(cleanPath));
     const documentedFiles = new Set<string>();
 
     value.forEach((doc) => {
       // path module uses \ instead of /
-      documentedFiles.add(doc.file.replaceAll('/', '\\'))
+      documentedFiles.add(cleanPath(doc.file))
     });
     files.forEach((file) => {
       if (!documentedFiles.has(file)) {

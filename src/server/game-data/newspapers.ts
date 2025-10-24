@@ -2,7 +2,7 @@
 
 import { Version } from "../routes/versions";
 import { FileRef } from "./files";
-import { FIRST_AS3_NEWSPAPER, FIRST_BOILER_ROOM_PAPER } from "./updates";
+import { Update } from "./updates";
 
 /** Fan issue is the only exceptional newspaper */
 export const FAN_ISSUE_DATE = '2005-10-28';
@@ -74,7 +74,7 @@ export type As3Newspaper = {
 
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
   {
-    date: FIRST_BOILER_ROOM_PAPER,
+    date: Update.FIRST_BOILER_ROOM_PAPER,
     headline: 'EASTER EGG HUNT!!',
     fileReference: 'archives:News26.swf'
   },
@@ -1277,7 +1277,7 @@ export const AS2_NEWSPAPERS: As2Newspaper[] = [
 
 export const AS3_NEWSPAPERS: As3Newspaper[] = [
   {
-    date: FIRST_AS3_NEWSPAPER,
+    date: Update.FIRST_AS3_NEWSPAPER,
     headline: 'READY FOR CARD-JITSU WATER?',
     askBack: 'archives:News266AskAuntArcticBack.swf',
     askFront: 'archives:News266AskAuntArcticFront.swf',

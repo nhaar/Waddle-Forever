@@ -1,5 +1,5 @@
 import { Version } from "../routes/versions";
-import { STADIUM_GAMES_END } from "./updates";
+import { Update } from "./updates";
 
 type StadiumUpdate = {
   date: Version;
@@ -64,7 +64,7 @@ export const STADIUM_UPDATES: StadiumUpdate[] = [
     comment: 'The Stadium Games event starts, replacing the Soccer Pitch'
   },
   {
-    date: STADIUM_GAMES_END,
+    date: Update.STADIUM_GAMES_END,
     townFileId: 'archives:RoomsTown.swf',
     rinkFileId: 'archives:RoomsRink-Dec2010.swf',
     mapFileId: 'archives:Map2008-2011Rink.swf',

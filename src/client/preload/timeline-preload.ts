@@ -1,18 +1,10 @@
 import { ipcRenderer } from 'electron';
 import { HTTP_PORT } from '../../common/constants';
+import { addDispatchEventListeners } from '../../common/utils';
 
-function dispatchEvent(name: string) {
-  ipcRenderer.on(name, (e, arg) => {
-    const newEvent = new CustomEvent(name, { detail: arg });
-    window.dispatchEvent(newEvent);
-  });  
-}
-
-const events = [
+addDispatchEventListeners([
   'get-timeline'
-];
-
-events.forEach(dispatchEvent);
+], ipcRenderer);
 
 (window as any).api = {
   update: () => ipcRenderer.send('update-version')

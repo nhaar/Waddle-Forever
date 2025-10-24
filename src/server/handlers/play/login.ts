@@ -1,5 +1,6 @@
 import serverList, { getServerPopulation } from "../../servers";
 import { Handler } from "..";
+import { logdebug } from "../../../server/logger";
 
 const handler = new Handler();
 
@@ -18,13 +19,16 @@ handler.xml('rndK', (client) => {
 handler.xml('login', (client, data) => {
   const nicknameMatch = data.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
   if (nicknameMatch === null) {
-    console.log('No nickname provided during Login, terminating.');
+    logdebug('No nickname provided during Login, terminating.');
     client.socket.end('');
   } else {
     const name = nicknameMatch[1];
     if (client.isEngine3 && client.serverType === 'World') {
       // in Engine 3 client, the world actually receives the ID instead of the name
       client.setPenguinFromId(Number(name));
+    } else if (client.isEngine1) {
+      // in pre-cpip, underscores represent spaces in names
+      client.setPenguinFromName(name.replace(/_/g, ' '));
     } else {
       client.setPenguinFromName(name);
     }

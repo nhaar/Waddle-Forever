@@ -8,8 +8,11 @@ import { createSettingsWindow } from "./settings";
 import { GlobalSettings } from "../common/utils";
 import { createTimelinePicker } from "./timeline";
 import { createModsWindow } from "./mods";
+import { SettingsManager } from "../server/settings";
+import { createChangeClientIPWindow } from "./client-ip";
+import { createChangeServerIPWindow } from "./server-ip";
 
-const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings): MenuItemConstructorOptions[] => {
+const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager): MenuItemConstructorOptions[] => {
   const app: MenuItemConstructorOptions = { 
     id: '0', 
     label: 'Waddle Forever', 
@@ -48,7 +51,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Reload',
         accelerator: 'F5',
-        click: () => loadMain(mainWindow)
+        click: () => loadMain(mainWindow, globalSettings, serverSettings)
       },
       {
         label: 'Reload Clear Cache',
@@ -83,6 +86,14 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Enable/Disable room tracking through Discord Rich Presence',
         click: () => { enableOrDisableDiscordRPCLocationTracking(store, mainWindow); }
+      },
+      {
+        label: 'Change the client IP',
+        click: () => { createChangeClientIPWindow(globalSettings, mainWindow); }
+      },
+      {
+        label: 'Change your server\'s IP',
+        click: () => { createChangeServerIPWindow(serverSettings, mainWindow) }
       }
     ]
   };
@@ -106,9 +117,8 @@ return process.platform === 'darwin' ?
   [options, timeline];
 };
 
-const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings) => {
-  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings);
-
+const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager) => {
+  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings, serverSettings);
   buildMenu(menuTemplate);
 };
 

@@ -1,20 +1,12 @@
 import { ipcRenderer } from 'electron';
 import { HTTP_PORT } from '../../common/constants';
+import { addDispatchEventListeners } from '../../common/utils';
 
-function dispatchEvent(name: string) {
-  ipcRenderer.on(name, (e, arg) => {
-    const newEvent = new CustomEvent(name, { detail: arg });
-    window.dispatchEvent(newEvent);
-  });  
-}
-
-const events = [
+addDispatchEventListeners([
   'finish-download',
   'finish-deleting',
   'download-fail'
-];
-
-events.forEach(dispatchEvent);
+], ipcRenderer);
 
 (window as any).api = {
   download: (pack: string) => ipcRenderer.send('download-package', pack),

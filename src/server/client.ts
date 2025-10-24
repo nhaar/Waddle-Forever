@@ -2,7 +2,7 @@ import net from 'net';
 
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
-import { Penguin } from './penguin';
+import { Penguin, PenguinEquipmentSlot } from './penguin';
 import { Stamp } from './game-logic/stamps';
 import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
@@ -11,23 +11,468 @@ import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { getVersionsTimeline } from './routes/version.txt';
-import { CPIP_UPDATE } from './game-data/updates';
-import { findInVersion } from './game-data/changes';
+import { Update } from './game-data/updates';
+import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
+import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
+import { Vector } from '../common/utils';
+import { logverbose } from './logger';
+import { CardJitsuProgress } from './game-logic/ninja-progress';
 
 const versionsTimeline = getVersionsTimeline();
 
 type ServerType = 'Login' | 'World';
 
-const STAMP_RELEASE_VERSION : string = '2010-07-26'
+/** Maps the slot name to what it's called in the packets */
+export const EQUIP_SLOT_MAPPINGS: Record<PenguinEquipmentSlot, string> = {
+  color: 'c',
+  head: 'h',
+  face: 'f',
+  neck: 'n',
+  body: 'b',
+  hand: 'a',
+  feet: 'e',
+  pin: 'l',
+  background: 'p'
+}
 
-export class Client {
-  socket: net.Socket;
-  penguin: Penguin;
+/** Manages the players waiting to join a Waddle Game */
+export class WaddleRoom {
+  /** Number of players the game supports */
+  private _seats: number;
+  /** Array with all the players sitting, or null if empty slot */
+  private _players: Array<Client | null>;
+  /** Id in the server */
+  private _id: number;
+  /** Identify the type of game logic that handles this game */
+  private _game: WaddleName;
+
+  constructor(id: number, seats: number, game: WaddleName) {
+    this._id = id;
+    this._seats = seats;
+    this._players = this.getEmptyPlayers();
+    this._game = game;
+  }
+
+  /** Get array with empty players */
+  private getEmptyPlayers(): null[] {
+    const players: null[] = [];
+    for (let i = 0; i < this._seats; i++) {
+      players.push(null);
+    }
+    return players;
+  }
+
+  addPlayer(client: Client): number {
+    let seatIndex: number | undefined = undefined;
+    for (let i = 0; i < this._seats; i++) {
+      if (this._players[i] === null) {
+        this._players[i] = client;
+        seatIndex = i;
+        break;
+      }
+    }
+    if (seatIndex === undefined) {
+      throw new Error('Tried adding a player to a waddle room, but thre were no slots left');
+    }
+    return seatIndex;
+  }
+
+  removePlayer(client: Client): void {
+    for (let i = 0; i < this._seats; i++) {
+      if (this._players[i] === client) {
+        this._players[i] = null;
+        break;
+      }
+    }
+  }
+
+  resetWaddle(): void {
+    this._players = this.getEmptyPlayers();
+  }
+
+  get players(): Client[] {
+    return this._players.filter((p): p is Client => p !== null);
+  }
+
+  /** Array of the players in each seat */
+  get seats(): Array<Client | null> {
+    return [...this._players];
+  }
+
+  /** Number of players */
+  get size(): number {
+    return this._players.length;
+  }
+  
+  get id(): number {
+    return this._id;
+  }
+
+  get game() {
+    return this._game;
+  }
+}
+
+type MatchedCallback = (players: Client[]) => void;
+
+type TickCallback = (players: Client[], time: number) => void;
+
+/**
+ * Handles a room that will be used for making a match  of games that have queueing
+ * */
+class MatchmakingRoom {
+  private _matchmaker: MatchMaker;
+  private _players: Client[];
+  private _time = 0;
+  private _timer: NodeJS.Timer
+
+  constructor(matchmaker: MatchMaker) {
+    this._matchmaker = matchmaker;
+    this._players = [];
+    this.resetTime();
+    this._timer = setInterval(() => {
+      this._matchmaker.onTick(this._players, this._time);
+      this._time--;
+      if (this._time < 0) {
+        if (this._players.length >= 2) {
+          this._matchmaker.onMatched(this._players);
+          clearInterval(this._timer);
+        } else {
+          this.resetTime();
+        }
+      }
+    }, 1000);
+  }
+
+  private resetTime() {
+    this._time = 10;
+  }
+
+  addPlayer(player: Client) {
+    this._players.push(player);
+  }
+
+  get full() {
+    return this._players.length === this._matchmaker.capacity;
+  }
+}
+
+/** Handles matchmaking in a server */
+export class MatchMaker {
+  /** Max number of players each match supports */
+  private _maxPlayers: number;
+  /** All rooms available */
+  private _rooms: MatchmakingRoom[];
+  /** Callback to run when a match is found */
+  private _onMatched: MatchedCallback;
+  /** Callback to run each second that ticks while matchmaking */
+  private _onTick: TickCallback;
+
+  constructor(max: number, onMatched: MatchedCallback, onTick: TickCallback) {
+    this._maxPlayers = max;
+    this._rooms = [];
+    this._onMatched = onMatched;
+    this._onTick = onTick;
+  }
+
+  get capacity() {
+    return this._maxPlayers;
+  }
+
+  /** Add a player to matchmaking with others in the server */
+  addPlayer(player: Client) {
+    const availableIndex = this._rooms.findIndex(room => !room.full);
+    if (availableIndex === -1) {
+      const room = new MatchmakingRoom(this);
+      room.addPlayer(player);
+      this._rooms.push(room);
+    } else {
+      const firstOnQueue = this._rooms[availableIndex];
+      firstOnQueue.addPlayer(player);
+    }
+  }
+
+  get onMatched() {
+    return this._onMatched;
+  }
+
+  get onTick() {
+    return this._onTick;
+  }
+}
+
+/** Interface for a multiplayer "waddle" game */
+export abstract class WaddleGame {
+  /** Room used for the game */
+  public abstract roomId: number;
+  
+  /** Identify what type of game it is */
+  public abstract name: WaddleName;
+
+  private _players: Client[]
+
+  constructor(players: Client[]) {
+    this._players = players;
+  }
+
+  start() {
+    this._players.forEach((p) => p.joinRoom(this.roomId));
+  }
+
+  get seats(): number {
+    return this._players.length;
+  }
+
+  get players(): Client[] {
+    return this._players;
+  }
+
+  getSeatId(client: Client): number {
+    return this._players.indexOf(client);
+  }
+
+  /** Send XT message to every player in the game */
+  sendXt(code: string, ...args: Array<number | string>) {
+    this._players.forEach(p => p.sendXt(code, ...args));
+  }
+}
+
+/** Information of a player that only persists during a room */
+type PlayerRoomInfo = {
   x: number;
   y: number;
-  currentRoom: number;
-  private _settingsManager: SettingsManager
+  frame: number;
+};
+
+/** Represents a room of a server */
+class GameRoom {
+  private _players: Map<Client, PlayerRoomInfo>;
+  private _id: number;
+  private _bots: BotGroup;
+  /** Waddle rooms hosted inside this room */
+  private _waddles: Map<number, WaddleRoom>;
+
+  constructor(id: number, server: Server) {
+    this._players = new Map<Client, PlayerRoomInfo>();
+    this._id = id;
+    this._bots = new BotGroup(server);
+    this._waddles = new Map<number, WaddleRoom>();
+  }
+
+  /** Get info of player */
+  getPlayer(client: Client): PlayerRoomInfo | undefined {
+    return this._players.get(client);
+  }
+
+  /** Add a player to the room */
+  addPlayer(player: Client) {
+    this._players.set(player, {
+      x: 0,
+      y: 0,
+      frame: 1
+    });
+  }
+
+  /** Remove player from room */
+  removePlayer(player: Client) {
+    this._players.delete(player);
+  }
+
+  /** Get players in room */
+  get players(): Client[] {
+    return Array.from(this._players.keys());
+  }
+
+  get id(): number {
+    return this._id;
+  }
+
+  get botGroup(): BotGroup {
+    return this._bots;
+  }
+
+  get waddles() {
+    return this._waddles;
+  }
+
+  getWaddleRoom(id: number) {
+    const room = this._waddles.get(id);
+    if (room === undefined) {
+      throw new Error('Trying to get waddle room that doesn\'t exist');
+    }
+    return room;
+  }
+
+  getWaddleRooms() {
+    return Array.from(this._waddles.values());
+  }
+}
+
+/** Map of the waddle games and their constructors */
+type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGame>;
+
+/** Manages a gameplayer server */
+export class Server {
+  /** All multiplayer rooms */
+  private _rooms: Map<number, GameRoom>
+
+  private _cardMatchmaking: MatchMaker | undefined;
+
+  /** Map of all open igloos, penguin ID to their igloo */
+  private _igloos: Map<number, Igloo>;
+
+  /** All clients mapped out by their penguin's ID */
+  private _playersById: Map<number, Client>;
+
+  /** Server's settings */
+  private _settingsManager: SettingsManager;
+
+  private _botId = 0;
+
+  private _followers: Map<Client, Bot[]>;
+
+  private _waddleConstructors: WaddleConstructors | undefined;
+
+  constructor(settings: SettingsManager) {
+    this._settingsManager = settings;
+    this._rooms = new Map<number, GameRoom>();
+    this._igloos = new Map<number, Igloo>();
+    this._playersById = new Map<number, Client>();
+    this._followers = new Map<Client, Bot[]>();
+    this.init();
+  }
+
+  private init() {
+    WADDLE_ROOMS.forEach((waddle) => {
+      const room = this.getRoom(waddle.roomId);
+      room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
+    });
+  }
+
+  get cardMatchmaking(): MatchMaker {
+    if (this._cardMatchmaking === undefined) {
+      throw new Error('Attempting to get card match making before it was initialized');
+    }
+    return this._cardMatchmaking;
+  }
+
+  get settings(): Settings {
+    return this._settingsManager.settings;
+  }
+
+  reset(): void {
+    for (const player of this._playersById.values()) {
+      player.disconnect();
+    }
+    this._rooms = new Map<number, GameRoom>();
+    this._igloos = new Map<number, Igloo>();
+    this._playersById = new Map<number, Client>();
+    this._followers = new Map<Client, Bot[]>();
+    this.init();
+  }
+
+  setCardMatchmaker(matchMaker: MatchMaker) {
+    this._cardMatchmaking = matchMaker;
+  }
+
+  setWaddleGame(waddleRoom: WaddleRoom, game: WaddleGame): void {
+    const players = waddleRoom.players;
+    players.forEach(p => p.setWaddleGame(game));
+  }
+
+  /** Assign client object to a penguin ID */
+  trackPlayer(id: number, client: Client): void {
+    this._playersById.set(id, client);
+  }
+
+  /** Make an igloo open */
+  openIgloo(id: number, igloo: Igloo): void {
+    this._igloos.set(id, igloo);
+  }
+
+  /** Close an igloo */
+  closeIgloo(id: number): void {
+    this._igloos.delete(id);
+  }
+
+  /** Get igloo from someone's ID */
+  getIgloo(id: number): Igloo {
+    const igloo = this._igloos.get(id);
+    if (igloo === undefined) {
+      throw new Error(`Invalid penguin id for igloo: ${id}`);
+    }
+    return igloo;
+  }
+
+  /** Get all players with an open igloo */
+  getOpenIglooPlayers(): Client[] {
+    const players: Client[] = [];
+    Array.from(this._igloos.keys()).forEach((id) => {
+      const client = this._playersById.get(id);
+      if (client !== undefined) {
+        players.push(client);
+      }
+    });
+
+    return players;
+  }
+
+  getNewBotId(): number {
+    this._botId++;
+    return this._botId;
+  }
+
+  getRoom(roomId: number): GameRoom {
+    let room = this._rooms.get(roomId);
+    if (room === undefined) {
+      room = new GameRoom(roomId, this);
+      this._rooms.set(roomId, room);
+    }
+    return room;
+  }
+
+  addFollower(bot: Bot, following: Client) {
+    let prev = this._followers.get(following);
+    if (prev === undefined) {
+      prev = [];
+    }
+    prev.push(bot);
+    this._followers.set(following, prev);
+  }
+
+  getFollowers(player: Client): Bot[] {
+    return this._followers.get(player) ?? [];
+  }
+
+  get waddleConstructors() {
+    if (this._waddleConstructors === undefined) {
+      throw new Error('Have not initialized Waddle Games');
+    }
+    return this._waddleConstructors;
+  }
+
+  set waddleConstructors(value: WaddleConstructors) {
+    this._waddleConstructors = value;
+  }
+}
+
+export class Client {
+  private _socket: net.Socket | undefined;
+  /** Reference to the server */
+  private _server: Server;
+  protected _penguin: Penguin | undefined;
+
+  /** Instance of waddle game, if playing, or null otherwise */
+  private _waddleGame: WaddleGame | null;
+
+  /** Current Waddle Room, if it exists */
+  private _currentWaddleRoom: WaddleRoom | undefined;
+
+  /** Reference to the room the player is in */
+  private _currentRoom: GameRoom | undefined;
+  /** Reference to the player's information stored in the room */
+  private _roomInfo: PlayerRoomInfo | undefined;
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -54,16 +499,11 @@ export class Client {
   // when digging gold nuggets for golden puffle
   private _isGoldNuggetState = false;
 
-  constructor (socket: net.Socket, type: ServerType, settingsManager: SettingsManager) {
-    this.currentRoom = -1;
-    
-    this.socket = socket;
-    this._settingsManager = settingsManager;
+  constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
+    this._server = server;
+    this._socket = socket;
     this.serverType = type;
-    this.penguin = Penguin.getDefault(-1, '', this._settingsManager.settings.always_member);
-    /* TODO, x and y random generation at the start? */
-    this.x = 100;
-    this.y = 100;
+    this._waddleGame = null;
     this.sessionStart = Date.now();
     
     this.sessionStamps = [];
@@ -76,23 +516,49 @@ export class Client {
   }
 
   private get version(): Version {
-    return this._settingsManager.settings.version;
+    return this.server.settings.version;
   }
 
   get settings(): Settings {
-    return this._settingsManager.settings;
+    return this.server.settings;
+  }
+
+  get penguin(): Penguin {
+    return this._penguin ?? (() => { throw new Error('Getting penguin before initializing'); })();
+  }
+
+  get socket(): net.Socket {
+    return this._socket ?? (() => { throw new Error('Getting socket before initializing'); })();
+  }
+
+  get isBot(): boolean {
+    return this._socket === undefined;
   }
 
   send (message: string): void {
-    this.socket.write(message + '\0');
+    this._socket?.write(message + '\0');
+  }
+
+  private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
+    return `%xt%${handler}%-1%` + args.join('%') + (emptyLast ? '' : '%');
+  }
+
+  /** Send message but the last XT arg is not empty. Some handlers need this apparently */
+  sendXtEmptyLast(handler: string, ...args: Array<number | string>): void {
+    this.send(this.getXtMessage(true, handler, ...args));
   }
 
   sendXt (handler: string, ...args: Array<number | string>): void {
-    console.log('\x1b[32mSending XT:\x1b[0m ', handler, args);
-    this.send(`%xt%${handler}%-1%` + args.join('%') + '%');
+    logverbose('\x1b[32mSending XT:\x1b[0m ', handler, args);
+    this.send(this.getXtMessage(false, handler, ...args));
   }
 
-  static engine1Crumb (penguin: Penguin): string {
+  static engine1Crumb (penguin: Penguin, roomInfo: {
+    x: number,
+    y: number,
+    frame: number
+  } = { x: 0, y: 0, frame: 0 }): string {
+    const { x, y, frame } = roomInfo;
     return [
       penguin.id,
       penguin.name,
@@ -105,16 +571,36 @@ export class Client {
       penguin.feet,
       penguin.pin,
       penguin.background,
-      0, // X
-      0, // y
-      0, // TODO frame
+      x, // X
+      y, // y
+      frame, // TODO frame
       penguin.isMember ? 1 : 0
     ].join('|')
   }
 
+  get x(): number {
+    return this._roomInfo?.x ?? 0;
+  }
+
+  private updateRoomInfo(info: Partial<PlayerRoomInfo>) {
+    if (this._roomInfo !== undefined) {
+      for (const [key, value] of Object.entries(info)) {
+        this._roomInfo[key as keyof PlayerRoomInfo] = value;
+      }
+    }
+  }
+
+  get y(): number {
+    return this._roomInfo?.y ?? 0;
+  }
+
+  get frame(): number {
+    return this._roomInfo?.frame ?? 1;
+  }
+
   get penguinString (): string {
     if (isEngine1(this.version)) {
-      return Client.engine1Crumb(this.penguin);
+      return Client.engine1Crumb(this.penguin, { x: this.x, y: this.y, frame: this.frame });
     } else {
       return [
         this.penguin.id,
@@ -131,7 +617,7 @@ export class Client {
         this.penguin.background,
         this.x,
         this.y,
-        1, // TODO, figure what this "frame" means
+        this.frame,
         this.penguin.isMember ? 1 : 0,
         this.memberAge,
         0, // TODO figure out what this "avatar" is
@@ -146,6 +632,10 @@ export class Client {
     }
   }
 
+  get server(): Server {
+    return this._server;
+  }
+
   get age (): number {
     // difference converted into days
     return Math.floor((Date.now() - this.penguin.registrationTimestamp) / 1000 / 86400);
@@ -156,20 +646,85 @@ export class Client {
     return this.age;
   }
 
-  joinRoom (room: number): void {
-    // TODO multiplayer logic
+  get room(): GameRoom {
+    if (this._currentRoom === undefined) {
+      throw new Error('Player is not in a room');
+    }
+    return this._currentRoom;
+  }
+
+  get followers(): Bot[] {
+    return this.server.getFollowers(this);
+  }
+
+  setPosition(x: number, y: number) {
+    this.updateRoomInfo({ x, y, frame: 1 });
+    this.sendRoomXt('sp', this.penguin.id, x, y);
+
+    this.followers.forEach(bot => bot.followPosition(x, y));
+  }
+
+  setFrame(frame: number) {
+    this.updateRoomInfo({ frame });
+    this.sendRoomXt('sf', this.penguin.id, frame);
+
+    this.followers.forEach(bot => bot.setFrame(frame));
+  }
+
+  /** Send a XT message to all players in a room */
+  sendRoomXt(handler: string, ...args: Array<string | number>) {
+    this.room.players.forEach((client) => client.sendXt(handler, ...args));
+  }
+
+  /** Check if playing a waddle game */
+  isInWaddleGame(): boolean {
+    return this._waddleGame !== null;
+  }
+
+  /** Send a XT message to all players in waddle game */
+  sendWaddleXt(handler: string, ...args: Array<string | number>) {
+    const players = this.waddleGame.players;
+    players.forEach((p) => p.sendXt(handler, ...args));
+  }
+
+  leaveRoom(): void {
+    const players = this.room.players.filter((p) => p.penguin.id !== this.penguin.id);
+    this.sendRoomXt('rp', this.penguin.id, ...players.map((p) => p.penguinString));
+    this.room.removePlayer(this);
+  }
+
+  joinRoom (room: number, x?: number, y?: number): void {
+    // leaving previous room
+    if (this._currentRoom !== undefined) {
+      this.leaveRoom();
+    }
+    this._currentRoom = this._server.getRoom(room);
     const string = this.penguinString;
     if (isGameRoom(room)) {
+      this._roomInfo = undefined;
       this.sendXt('jg', room);
     } else {
-      this.sendXt('jr', room, string);
-      this.sendXt('ap', string);
+      this.room.addPlayer(this);
+      this._roomInfo = this.room.getPlayer(this);
+      const xx = x ?? 0;
+      const yy = y ?? 0;
+      this.updateRoomInfo({ x: xx, y: yy });
+      this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
+      this.sendRoomXt('ap', string);
+      // it seems that the new x, y position of players must be sent via a new set position packet
+      this.setPosition(xx, yy);
+
+      this.followers.forEach(bot => {
+        bot.joinRoom(room, x, y)
+        bot.followPosition(xx, yy);
+      });
     }
-    this.currentRoom = room;
   }
 
   update (): void {
-    db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+    if (!this.isBot) {
+      db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+    }
   }
 
   static getPenguinFromName (name: string): Penguin {
@@ -185,7 +740,8 @@ export class Client {
   }
 
   setPenguinFromName (name: string): void {
-    this.penguin = Client.getPenguinFromName(name)
+    this._penguin = Client.getPenguinFromName(name)
+    this._server.trackPlayer(this.penguin.id, this);
   }
 
   setPenguinFromId (id: number): void {
@@ -194,7 +750,8 @@ export class Client {
     if (penguin === undefined) {
       throw new Error(`Could not find penguin of ID ${id}`);
     }
-    this.penguin = new Penguin(id, penguin);
+    this._penguin = new Penguin(id, penguin);
+    this._server.trackPlayer(id, this);
   }
 
   static create (name: string, mascot = 0): [PenguinData, number] {
@@ -218,12 +775,18 @@ export class Client {
   /**
    * Add a new item to a player
    * @param itemId
-   * @param params.cost Cost of the item (default 0)
+   * @param params.free If it should be free (default false)
    * @param params.notify Whether or not to notify the client (default false)
    */
-  buyItem (itemId: number, params: { cost?: number, notify?: boolean } = {}): void {
+  buyItem (itemId: number, params: { free?: boolean, notify?: boolean } = {}): void {
     this.penguin.addItem(itemId);
-    const cost = params.cost ?? 0;
+    let cost: number;
+    if (params.free === true) {
+      cost = 0;
+    } else {
+      const item = ITEMS.getStrict(itemId);
+      cost = item.cost;
+    }
     const notify = params.notify ?? true;
     this.penguin.removeCoins(cost);
     if (notify) {
@@ -235,7 +798,7 @@ export class Client {
     let items = this.penguin.getItems();
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.version, CPIP_UPDATE)) {
+    if (isLower(this.version, Update.CPIP_UPDATE)) {
       const version = findInVersion(this.version, versionsTimeline) ?? 0;
       const itemSet = OLD_CLIENT_ITEMS[version];
       items = items.filter((value) => itemSet.has(value));
@@ -253,9 +816,44 @@ export class Client {
     this.sendPenguinInfo();
   }
 
-  updateColor (color: number): void {
-    this.penguin.color = color;
-    this.sendXt('upc', this.penguin.id, color);
+  get waddleRoom() {
+    if (this._currentWaddleRoom === undefined) {
+      throw new Error('Trying to access Waddle Room, but it\'s not in a waddle room');
+    }
+    return this._currentWaddleRoom;
+  }
+
+  joinWaddleRoom(waddleRoom: WaddleRoom): void {
+    this._currentWaddleRoom = waddleRoom;
+    const seatId = waddleRoom.addPlayer(this);
+
+    this.sendXt('jw', seatId);
+    this.sendRoomXt('uw', waddleRoom.id, seatId, this.penguin.name, this.penguin.id);
+    const players = waddleRoom.players;
+    // starts the game if all players have entered
+    if (players.length === waddleRoom.size) {
+      const Constructor = this.server.waddleConstructors[waddleRoom.game];
+      const waddleGame = new Constructor(players);
+      this.server.setWaddleGame(waddleRoom, waddleGame);
+      waddleRoom.resetWaddle();
+      waddleGame.start();
+    }
+  }
+
+  leaveWaddleRoom(): void {
+    this.waddleRoom.removePlayer(this);
+    this._currentWaddleRoom = undefined;
+  }
+
+  get waddleGame(): WaddleGame {
+    if (this._waddleGame === null) {
+      throw new Error('No waddle available');
+    }
+    return this._waddleGame;
+  }
+
+  setWaddleGame(waddleGame: WaddleGame): void {
+    this._waddleGame = waddleGame;
   }
 
   sendStamps (): void {
@@ -304,12 +902,12 @@ export class Client {
   getEndgameStampsInformation (): [string, number, number, number] {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
-    if (this.currentRoom in roomStamps) {
-      let gameStamps = roomStamps[this.currentRoom];
+    if (this.room.id in roomStamps) {
+      let gameStamps = roomStamps[this.room.id];
       // manually removing stamps if using a version before it was available
       if (isLower(this.version, '2010-07-26')) {
         gameStamps = [];
-      } else if (this.currentRoom === Room.JetPackAdventure) {
+      } else if (this.room.id === Room.JetPackAdventure) {
         // Before puffle stamps
         if (isLower(this.version, '2010-09-24')) {
           gameStamps = [
@@ -354,6 +952,11 @@ export class Client {
     return info;
   }
 
+  /** Send stamp info at the end of a card-jitsu game */
+  sendCardJitsuStampInfo() {
+    this.sendXt('cjsi', ...this.getEndgameStampsInformation());
+  }
+
   /**
    * Give a stamp to a player
    * @param stampId 
@@ -362,7 +965,7 @@ export class Client {
    */
   giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = params.release ?? STAMP_RELEASE_VERSION;
+    const releaseDate = params.release ?? Update.STAMPS_RELEASE;
     if (isGreaterOrEqual(this.version, releaseDate)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
@@ -373,6 +976,10 @@ export class Client {
         this.sendXt('aabs', stampId);
       }
     }
+  }
+
+  addCardJitsuStamp(stampId: number): void {
+    this.giveStamp(stampId, { release: Update.CARD_JITSU_STAMPS });
   }
 
   static getFurnitureString(furniture: IglooFurniture): string {
@@ -405,8 +1012,7 @@ export class Client {
     ].join(':');
   }
 
-  getIglooString (): string {
-    const igloo = this.penguin.activeIgloo;
+  getIglooString(igloo: Igloo): string {
     if (this.isEngine2) {
       const furnitureString = Client.getFurnitureString(igloo.furniture);
       return [
@@ -419,6 +1025,10 @@ export class Client {
       // This is Engine 3
       return Client.getEngine3IglooString(igloo, 1);
     }
+  }
+
+  getOwnIglooString (): string {
+    return this.getIglooString(this.penguin.activeIgloo);
   }
 
   walkPuffle (puffle: number) {
@@ -448,7 +1058,7 @@ export class Client {
     senderId?: number
     senderName?: string
     details?: string    
-  }): void {
+  } = {}): void {
     const mail = this.penguin.receivePostcard(postcard, info);
     this.sendXt('mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
   }
@@ -523,9 +1133,16 @@ export class Client {
   }
 
   disconnect(): void {
+    if (this._currentRoom !== undefined) {
+      this.leaveRoom();
+    }
     const delta = Date.now() - this.sessionStart;
     const minutesDelta = delta / 1000 / 60;
-    this.penguin.incrementPlayTime(minutesDelta);
+    this._penguin?.incrementPlayTime(minutesDelta);
+    if (this._penguin !== undefined) {
+      this.update();
+    }
+    this._socket?.end();
   }
 
   checkAgeStamps(): void {
@@ -539,7 +1156,7 @@ export class Client {
   }
 
   getCoinsFromScore(score: number): number {
-    return isLiteralScoreGame(this.currentRoom) ? (
+    return isLiteralScoreGame(this.room.id) ? (
       Number(score)
     ) : (
       Math.floor(Number(score) / 10)
@@ -626,5 +1243,225 @@ export class Client {
 
   resetGoldNuggetState(): void {
     this._isGoldNuggetState = false;
+  }
+
+  sendMessage(message: string) {
+    this.sendRoomXt('sm', this.penguin.id, message);
+
+    this.followers.forEach(bot => bot.sendMessage(message));
+  }
+
+  sendEmote(emote: string) {
+    this.sendRoomXt('se', this.penguin.id, emote);
+
+    this.followers.forEach(bot => bot.sendEmote(emote));
+  }
+
+  throwSnowball(x: string, y: string) {
+    this.sendRoomXt('sb', this.penguin.id, x, y);
+
+    this.followers.forEach(bot => bot.throwSnowball(x, y));
+  }
+
+  sendAction(id: string) {
+    this.sendRoomXt('sa', this.penguin.id, id);
+  }
+
+  sendJoke(id: string) {
+    this.sendRoomXt('sj', this.penguin.id, id);
+  }
+
+  sendSafeMessage(id: string) {
+    this.sendRoomXt('ss', this.penguin.id, id);
+  }
+
+  updateEquipment(slot: PenguinEquipmentSlot, id: number): void {
+    this.penguin[slot] = id;
+    this.sendRoomXt(`up${EQUIP_SLOT_MAPPINGS[slot]}`, this.penguin.id, id);
+
+    this.followers.forEach(bot => bot.updateEquipment(slot, id));
+  }
+
+  equip(itemId: number): void {
+    const item = ITEMS.getStrict(itemId);
+    const slots: Partial<Record<ItemType, PenguinEquipmentSlot>> = {
+      [ItemType.Background]: 'background',
+      [ItemType.Body]: 'body',
+      [ItemType.Color]: 'color',
+      [ItemType.Face]: 'face',
+      [ItemType.Feet]: 'feet',
+      [ItemType.Hand]: 'hand',
+      [ItemType.Head]: 'head',
+      [ItemType.Neck]: 'neck'
+    };
+    const slot = slots[item.type];
+    if (slot !== undefined) {
+      this.updateEquipment(slot, itemId);
+    }
+  }
+
+  get botGroup(): BotGroup {
+    return this.room.botGroup;
+  }
+
+  ninjaRankUp(previousRank: number) {
+    for (let i = previousRank + 1; i <= this.penguin.ninjaProgress.rank; i++) {
+      this.penguin.addItem(CardJitsuProgress.ITEM_AWARDS[i - 1]);
+      const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
+      if (postcard !== undefined) {
+        this.addPostcard(postcard);
+      }
+      const stamp = CardJitsuProgress.STAMP_AWARDS[i];
+      if (stamp !== undefined) {
+        this.addCardJitsuStamp(stamp);
+      }
+    }
+    this.sendXt('cza', this.penguin.ninjaProgress.rank);
+    this.update();
+
+  }
+
+  becomeNinja(): void {
+    const previousRank = this.penguin.ninjaProgress.rank;
+    this.penguin.ninjaProgress.becomeNinja();
+    this.ninjaRankUp(previousRank);
+  }
+
+  gainNinjaProgress(won: boolean): void {
+    this.penguin.addCardJitsuWin();
+
+    if (this.penguin.ninjaProgress.rank < CardJitsuProgress.MAX_RANK) {
+      const exp = won ? 5 : 1;
+      const previousRank = this.penguin.ninjaProgress.rank;
+      this.penguin.ninjaProgress.earnXP(exp);
+  
+      if (this.penguin.ninjaProgress.rank > previousRank) {
+        this.ninjaRankUp(previousRank);
+      }
+    }
+
+    this.update();
+  }
+}
+
+type FollowInfo = {
+  relativePosition: Vector;
+};
+
+class Bot extends Client {
+  private _followInfo: FollowInfo | undefined;
+
+  constructor(server: Server, name: string) {
+    super(server, undefined, 'World');
+    this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name, true);
+  }
+
+  get followInfo(): FollowInfo {
+    return this._followInfo ?? (() => { throw new Error('Follow info has not been initialized') })();
+  }
+
+  followPosition(x: number, y: number): void {
+    const targetPos = this.followInfo.relativePosition.add(new Vector(x, y)).vector;
+    this.setPosition(...targetPos);
+  }
+
+  followPlayer(player: Client, relativePosition: Vector) {
+    this._followInfo = {
+      relativePosition
+    };
+    this.server.addFollower(this, player);
+    this.followPosition(player.x, player.y);
+  }
+};
+
+type Shape = Vector[];
+
+export class BotGroup {
+  private _bots: Map<string, Bot>;
+  private _server: Server;
+
+  constructor(server: Server) {
+    this._bots = new Map<string, Bot>;
+    this._server = server;
+  }
+
+  addBot(bot: Bot) {
+    this._bots.set(bot.penguin.name, bot);
+  }
+
+  merge(other: BotGroup): void {
+    const group = this;
+    other.bots.forEach((bot) => group.addBot(bot));
+  }
+
+  get bots(): Bot[] {
+    return Array.from(this._bots.values());
+  }
+
+  private callBotAction(target: string | undefined, action: (bot: Bot) => void) {
+    let bots: Bot[] = [];
+    if (target === undefined) {
+      bots = Array.from(this._bots.values());
+    } else {
+      const bot = this._bots.get(target);
+      if (bot !== undefined) {
+        bots = [bot];
+      }
+    }
+    bots.forEach(action);
+  }
+
+  follow(player: Client, shape: Shape) {
+    this.bots.forEach((bot, i) => bot.followPlayer(player, shape[i]));
+  }
+
+  spawnBot(name: string, startRoom: number = Room.Town): Bot {
+    const bot = new Bot(this._server, name);
+    this._bots.set(name, bot);
+    bot.joinRoom(startRoom);
+    return bot;
+  }
+
+  say(message: string, target?: string): void {
+    this.callBotAction(target, (b) => b.sendMessage(message));
+  }
+
+  goTo(x: number, y: number, target?: string): void {
+    this.callBotAction(target, b => b.setPosition(x, y));
+  }
+
+  setFrame(frame: number, target?: string): void {
+    this.callBotAction(target, b => b.setFrame(frame));
+  }
+
+  dance(target?: string): void {
+    this.callBotAction(target, b => b.setFrame(26));
+  }
+
+  wear(itemId: number, target?: string): void {
+    this.callBotAction(target, b => b.equip(itemId));
+  }
+
+  makeShape(shape: Shape, origin?: Vector): void {
+    const pos = origin ?? new Vector(this.bots[0].x, this.bots[0].y);
+    this.bots.forEach((bot, i) => {
+      const targetPos = pos.add(shape[i]).vector;
+      bot.setPosition(...targetPos);
+    })
+  }
+
+  makeRectangle(width: number, xSeparation: number, ySeparation: number, x?: number, y?: number) {
+    const shape: Shape = [];
+    const amount = this.bots.length;
+    for (let i = 0; i < amount; i++) {
+      shape.push(new Vector((i % width) * xSeparation, (Math.floor(i / width)) * ySeparation));
+    }
+    this.makeShape(shape, new Vector(x ?? 0, y ?? 0));
+  }
+
+  spawnNumberedGroup(baseName: string, amount: number, room?: number): void {
+    for (let i = 0; i < amount; i++) {
+      this.spawnBot(`${baseName}${i + 1}`, room);
+    }
   }
 }

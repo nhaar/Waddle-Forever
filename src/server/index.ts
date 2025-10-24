@@ -7,10 +7,7 @@ export class XtPacket {
     const args = message.split('%');
     args.shift(); // initial ''
     if (args.shift() !== 'xt') {
-      console.log('wrong xt:' + message);
-      this.handler = '';
-      this.code = '';
-      this.args = [];
+      throw new Error(`Invalid XT message: ${message}`);
     }
 
     this.handler = args.shift() ?? '';

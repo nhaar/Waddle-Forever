@@ -1,3 +1,4 @@
+import { Update } from "../game-data/updates"
 import { isGreaterOrEqual, isLower, Version } from "./versions"
 
 type Category = {
@@ -1806,7 +1807,7 @@ export function getStampbook(version: Version): string {
     ])
   }
 
-  if (isGreaterOrEqual(version, '2010-11-24')) {
+  if (isGreaterOrEqual(version, Update.WATER_HUNT_START)){
     addStamps(newStampbook[CategoryID.Party] as Category, [
       {
         "stamp_id": 189,
@@ -1824,7 +1825,10 @@ export function getStampbook(version: Version): string {
         "description": "Visit all the decorated party rooms",
         "rank_token": "easy"
       }
-    ])
+    ])    
+  }
+  
+  if (isGreaterOrEqual(version, '2010-11-24')) {
 
     addStamps(newStampbook[CategoryID.Characters] as Category, [
       {

@@ -1,5 +1,6 @@
 import { isRainbowStage, RainbowPuffleStage } from "../../../server/database";
 import { Handler } from "..";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
@@ -48,7 +49,7 @@ const RAINBOW_QUEST_REWARDS = [6158, 4809, 1560, 3159];
 const RAINBOW_BONUS_REWARD = 5220;
 
 // sending the rainbow puffle quest data
-handler.xt('rpq#rpqd', (client) => {
+handler.xt(Handle.GetRainbowQuestData, (client) => {
   // time in minutes between each task
   // TODO this changed with time, by 2014 it was already 20 minutes
   // but at some point in 2013 it was 18 hours
@@ -113,19 +114,19 @@ handler.xt('rpq#rpqd', (client) => {
 })
 
 // rainbow puffle quest task complete
-handler.xt('rpq#rpqtc', (client, task) => {
+handler.xt(Handle.SetRainbowQuestTaskComplete, (client, task) => {
   // completing last quest, can adopt
-  if (Number(task) === RAINBOW_QUEST_REWARDS.length - 1) {
+  if (task === RAINBOW_QUEST_REWARDS.length - 1) {
     client.penguin.rainbowQuestInfo.adoptability = true;
   }
 
-  client.penguin.rainbowQuestInfo.currentTask = Number(task) + 1;
+  client.penguin.rainbowQuestInfo.currentTask = task + 1;
   client.penguin.rainbowQuestInfo.latestTaskCompletionTime = Date.now() / 1000;
   client.update();
 })
 
 // rainbow puffle quest collect coins
-handler.xt('rpq#rpqcc', (client, task) => {
+handler.xt(Handle.RainbowQuestCollectCoins, (client, task) => {
   if (isRainbowStage(task)) {
     client.penguin.rainbowQuestInfo.coinsCollected.add(task);
   }
@@ -135,14 +136,14 @@ handler.xt('rpq#rpqcc', (client, task) => {
 });
 
 // rainbow puffle quest item collect
-handler.xt('rpq#rpqic', (client, task) => {
-  client.buyItem(RAINBOW_QUEST_REWARDS[Number(task)], { notify: false });
+handler.xt(Handle.RainbowQuestItemCollect, (client, task) => {
+  client.buyItem(RAINBOW_QUEST_REWARDS[task], { notify: false, free: true });
   client.sendXt('rpqic', task, ItemStatus.Collected);
   client.update();
 });
 
 // rainbow puffle quest bonus collect
-handler.xt('rpq#rpqbc', (client) => {
+handler.xt(Handle.RainbowQuestCollectBonus, (client) => {
   // if have item, already completed the quest once
   if (client.penguin.hasItem(RAINBOW_BONUS_REWARD)) {
     // TODO get evidence this reward amount is correct
@@ -150,7 +151,7 @@ handler.xt('rpq#rpqbc', (client) => {
     // TODO unsure why these 2 zeros
     client.sendXt('rpqbc', 0, 0, client.penguin.coins);
   } else {
-    client.buyItem(RAINBOW_BONUS_REWARD);
+    client.buyItem(RAINBOW_BONUS_REWARD, { free: true });
   }
   client.penguin.rainbowQuestInfo.coinsCollected.add('bonus');
   client.update();

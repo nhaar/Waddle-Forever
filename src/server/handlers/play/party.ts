@@ -1,15 +1,15 @@
 import { Handler } from "..";
+import { Handle } from "../handles";
 
 const handler = new Handler();
 
 // donate coins for coins for change
-handler.xt('e#dc', (client, choice, coins) => {
+handler.xt(Handle.DonateCoins, (client, choice, donation) => {
   // choice is useless, since we are not trying to rewrite history unfortunately
-  const donationAmount = Number(coins);
 
   // client doesn't check if can donate
-  if (client.penguin.coins >= donationAmount) {
-    client.penguin.removeCoins(donationAmount);
+  if (client.penguin.coins >= donation) {
+    client.penguin.removeCoins(donation);
   } else {
     client.sendError(401);
   }

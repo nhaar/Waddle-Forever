@@ -39,8 +39,8 @@ let mainWindow: BrowserWindow;
 
 /** An object to keep global variables in memory across windows */
 let globalSettings : GlobalSettings = {
-  /** In order to limit the number of setting windows */
-  isEditting: false
+  isEditting: false,
+  targetIP: undefined
 };
 
 app.on('ready', async () => {
@@ -126,7 +126,7 @@ app.on('ready', async () => {
     }
   }
 
-  mainWindow = await createWindow(store);
+  mainWindow = await createWindow(store, globalSettings, settingsManager);
   // release window since the main window now serves as
   // the window that will remain open
   setupWindow.close();
@@ -134,7 +134,7 @@ app.on('ready', async () => {
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, globalSettings);
+  startMenu(store, mainWindow, globalSettings, settingsManager);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
@@ -167,7 +167,7 @@ app.on('activate', async () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    mainWindow = await createWindow(store);
-    startMenu(store, mainWindow, globalSettings);
+    mainWindow = await createWindow(store, globalSettings, settingsManager);
+    startMenu(store, mainWindow, globalSettings, settingsManager);
   }
 });

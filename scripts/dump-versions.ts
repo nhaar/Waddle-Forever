@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { getFileServer } from '../src/server/routes/client-files';
+import { getRoutesTimeline } from '../src/server/timelines/route';
 
-const fileServer = getFileServer();
+const fileServer = getRoutesTimeline();
 
 let output = '';
 

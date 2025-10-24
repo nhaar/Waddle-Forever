@@ -130,6 +130,25 @@ class JsonDatabase {
     fs.writeFileSync(seqDir, String(Number(previousSeq) + 100));
   }
 
+  private migrate_1_1_2() {
+    const penguinsDir = path.join(DATABASE_DIRECTORY, 'penguins')
+    const penguins = fs.readdirSync(penguinsDir)
+    for (const penguin of penguins) {
+      if (penguin.match(/\d+\.json/) !== null) {
+        const penguinDir = path.join(penguinsDir, penguin)
+        const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
+
+        content.cards = {};
+        content.cardProgress = 0;
+        content.isNinja = false;
+        content.senseiAttempts = 0;
+        content.cardWins = 0;
+
+        fs.writeFileSync(penguinDir, JSON.stringify(content))
+      }
+    }
+  }
+
   private migrateVersion(version: string): string {
     switch (version) {
       case '0.2.0':
@@ -156,6 +175,9 @@ class JsonDatabase {
         return '1.1.1';
       case '1.1.1':
         return '1.1.2';
+      case '1.1.2':
+        this.migrate_1_1_2();
+        return '1.2.0';
       default:
         throw new Error('Invalid database version: ' + version);
     }
@@ -251,14 +273,18 @@ export function dumpJsonSet<T>(set: Set<T>): T[] {
   return Array.from(set.values());
 }
 
-export function parseJsonMap<T extends string | number, K>(obj: Record<T, K>): Map<T, K> {
+export function parseJsonMap<
+  T extends string | number,
+  K,
+  IsNumber extends boolean = T extends number ? true : false
+>(obj: Record<T, K>, isNumber: IsNumber): Map<T, K> {
   const map = new Map<T, K>();
-  for (const key in obj) {
-    map.set(key, obj[key]);
+  for (const [key, value] of Object.entries(obj)) {
+    const parsedKey = isNumber ? Number(key) : key;
+    map.set(parsedKey as T, value as K);
   }
   return map;
 }
-
 export function dumpJsonMap<T extends string | number, K>(map: Map<T, K>): Record<T, K> {
   const obj: Record<string | number, K> = {};
   map.forEach((value, key) => {
@@ -391,6 +417,11 @@ export interface PenguinData {
   careerMedals: number
   ownedMedals: number
   nuggets: number // Total number of golden nuggets in the gold puffle quest
+  cards: Record<number, number>
+  cardProgress: number
+  isNinja: boolean;
+  senseiAttempts: number;
+  cardWins: number;
 }
 
 export default db;

@@ -4,10 +4,28 @@ import path from 'path';
 import fs from 'fs';
 import { WEBSITE } from './website';
 import { exec } from 'child_process';
+import { IpcRenderer } from 'electron';
+import { HTTP_PORT } from './constants';
 
 export type GlobalSettings = {
+  /** In order to limit the number of setting windows */
   isEditting: boolean
+  /** IP the client is targetting, undefined if using the local server */
+  targetIP: string | undefined;
 };
+
+export function makeURL(ip: string): string {
+  return `http://${ip}:${HTTP_PORT}`;
+}
+
+export function addDispatchEventListeners(events: string[], ipcRenderer: IpcRenderer) {
+  events.forEach((eName) => {
+    ipcRenderer.on(eName, (e, arg) => {
+      const newEvent = new CustomEvent(eName, { detail: arg });
+      window.dispatchEvent(newEvent);
+    }); 
+  });
+}
 
 export function parseURL(url: string): {
   protocol: 'http' | 'https',
@@ -205,4 +223,34 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
     const [key, value] = pair;
     callback(key as Key, value as Value);
   });
+}
+
+/** 2-Dimensional vector */
+export class Vector {
+  private _vector: [number, number];
+
+  constructor(x: number, y: number) {
+    this._vector = [x, y];
+  }
+
+  get vector() {
+    return this._vector;
+  }
+
+  get length() {
+    return this._vector.length;
+  }
+
+  copy(): Vector {
+    return new Vector(...this.vector);
+  }
+
+  add(other: Vector): Vector {
+    const vector = this.copy();
+    for (let i = 0; i < this._vector.length; i++) {
+      vector.vector[i] += other.vector[i];
+    }
+
+    return vector;
+  }
 }

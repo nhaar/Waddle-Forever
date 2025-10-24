@@ -1,8 +1,10 @@
-import { findInVersion, VersionsTimeline } from "../game-data/changes";
+import { findInVersion, VersionsTimeline } from "../game-data";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { CHAT_339 } from "../game-data/updates";
-import { getClothingTimeline, getFileDateSignature, getMusicTimeline, getRoomFrameTimeline } from "./client-files";
+import { Update } from "../game-data/updates";
+import { getClothingTimeline } from "../timelines/clothing";
+import { getRoomFrameTimeline } from "../timelines/frame";
+import { getMusicTimeline } from "../timelines/music";
 import { Version, isLower } from "./versions";
 
 const musicTimeline = getMusicTimeline();
@@ -58,14 +60,14 @@ function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>)
 
 function getFileName(name: string, date: Version): string {
   // the way the client reads this XML changed
-  if (isLower(date, CHAT_339)) {
+  if (isLower(date, Update.CHAT_339)) {
     return `<File>${name}</File>`;
   } else {
     return name;
   }
 }
 
-export function getSetupXml(version: Version) {
+export function getSetupXml(version: Version, ip: string) {
   const news = findInVersion(version, newspaperTimeline);
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
@@ -123,7 +125,7 @@ export function getSetupXml(version: Version) {
         server = server.replace(' ', ''); // it doesn't like spaces
         return `
       <${server}>
-        <IP>localhost</IP>
+        <IP>${ip}</IP>
         <Port>6114</Port>
         <Zone>w1</Zone>
       </${server}>
