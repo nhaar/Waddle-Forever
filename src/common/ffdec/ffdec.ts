@@ -32,7 +32,9 @@ export const replacePcode = async (baseFilePath: string, outputFilePath: string,
   
   await runCommand(`"${getFfdecPath()}" -replace "${baseFilePath}" "${outputFilePath}" "${scriptName}" "${tempfile}"`);
 
-  fs.unlinkSync(tempfile);
+  if(fs.existsSync(tempfile)) {
+    fs.unlinkSync(tempfile);
+  }
 }
 
 /**

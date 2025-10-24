@@ -25,6 +25,8 @@ function getOsDataFolder() {
         ? os.homedir()
         : `/home/${process.env.SUDO_USER}`;
       return path.join(home, '.waddleforever');
+    case 'darwin':
+      return path.join(os.homedir(), '.waddleforever');
     default:
       throw new Error(`Unsupported OS: ${process.platform}`);
   }

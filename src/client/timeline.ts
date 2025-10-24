@@ -35,6 +35,7 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
 
   timelinePicker.webContents.on('did-finish-load', () => {
     timelinePicker.maximize();
+    timelinePicker.show();
     // TODO this array is currently hardcoded because of the previous system
     // it should become dynamic in the next updates
     let timeline: Day[] = [

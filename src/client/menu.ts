@@ -13,6 +13,20 @@ import { createChangeClientIPWindow } from "./client-ip";
 import { createChangeServerIPWindow } from "./server-ip";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager): MenuItemConstructorOptions[] => {
+  const app: MenuItemConstructorOptions = { 
+    id: '0', 
+    label: 'Waddle Forever', 
+    submenu: [
+      {
+        label: 'Quit Waddle Forever', 
+        role: 'quit'
+      }, 
+      {
+        role: 'close'
+      }
+    ]
+  };
+  
   const options: MenuItemConstructorOptions = {
     id: '1',
     label: 'Options',
@@ -90,10 +104,17 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     click: () => { createTimelinePicker(mainWindow); }
   };
 
-  return [
-    options,
-    timeline
-  ];
+  // only adding the submenu if Mac, because empty submenu leads to it not working on other OSes, and it's a necessary Mac feature
+  if (process.platform === 'darwin') {
+    timeline.submenu = [{ 
+      label: 'Timeline Picker', 
+      click: () => { createTimelinePicker(mainWindow); }
+    }];
+  }
+
+return process.platform === 'darwin' ? 
+  [app, options, timeline] : 
+  [options, timeline];
 };
 
 const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager) => {

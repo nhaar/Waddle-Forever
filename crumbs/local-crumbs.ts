@@ -45,7 +45,7 @@ function applyChanges(crumbs: string, changes: Partial<LocalCrumbContent>): stri
 }
 
 async function createCrumbs(outputPath: string, crumbsContent: string): Promise<void> {
-  await replacePcode(BASE_LOCAL_CRUMBS, outputPath, '\\frame 1\\DoAction', crumbsContent);
+  await replacePcode(BASE_LOCAL_CRUMBS, outputPath, path.join('/frame_1', 'DoAction'), crumbsContent);
 }
 
 export async function generateLocalCrumbs() {

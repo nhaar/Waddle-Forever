@@ -154,7 +154,7 @@ export const logError = (message: string, error: any): void => {
   fs.appendFileSync(logFile, `${message}: ${error}\n`);
 }
 
-export const MEDIA_DIRECTORY = path.join(process.cwd(), 'media');
+export const MEDIA_DIRECTORY = process.platform == 'darwin' ? path.join(__dirname, '..', '..', 'media') : path.join(process.cwd(), 'media');
 
 export const DEFAULT_DIRECTORY = path.join(MEDIA_DIRECTORY, 'default');
 

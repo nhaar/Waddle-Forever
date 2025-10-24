@@ -185,7 +185,7 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
       const filePath = path.join(autoDir, fileName);
       console.log(`Exporting: ${fileName}`);
       
-      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, '\\frame 1\\DoAction', filecontent);
+      const promise = replacePcode(BASE_NEWS_CRUMBS, filePath, path.join('/frame_1', 'DoAction'), filecontent);
       promises.push(promise);
     }
   }
