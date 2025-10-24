@@ -168,6 +168,6 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    startMenu(store, mainWindow, globalSettings);
+    startMenu(store, mainWindow, globalSettings, settingsManager);
   }
 });
