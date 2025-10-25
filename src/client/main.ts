@@ -107,22 +107,20 @@ app.on('ready', async () => {
       message: `Waddle Forever is Ready!`
     });
   } catch (error) {
-    const result = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Boot Serverless', 'Check out error'],
-      title: 'Server Error',
-      message: `It was not possible to start the server. Would you like to open the client serverless, or check out the error?`,
-      defaultId: 1,
-      cancelId: 0
-    });
-    
-    if (result.response === 1) {
-      let message = '';
-      let stack: string | undefined = '';
-      if (error instanceof Error) {
-        message = error.message;
-        stack = error.stack;
+    if (error instanceof Error && error.message.includes('EADDRINUSE')) {
+      const result = await dialog.showMessageBox(mainWindow, {
+        buttons: ['Boot Serverless', 'Check out error'],
+        title: 'Server Error',
+        message: `Another process is already using the designated ports. If you want, you can boot Waddle Forever without its server, but this is only useful if you have another Waddle Forever client running already, otherwise you may have to close the other process using the ports (check error).`,
+        defaultId: 1,
+        cancelId: 0
+      });
+      
+      if (result.response === 1) {
+        await showWarning(mainWindow, 'Error', error.message + '\n' + error.stack);
       }
-      await showWarning(mainWindow, 'Error', message + '\n' + stack)
+    } else {
+      throw error;
     }
   }
 
