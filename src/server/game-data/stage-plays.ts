@@ -201,7 +201,7 @@ export const STAGE_TIMELINE: Array<{
   {
     date: '2009-01-09',
     name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
-    stageFileRef: 'archives:RoomsStage-October2009.swf', // from october 2009
+    stageFileRef: 'archives:StageSquidzoidJan09.swf',
     // I think this plaza is accurate (with sign)
     plazaFileRef: 'recreation:plaza_squidzoid_sign.swf',
     costumeTrunkFileRef: 'archives:January2009Costume.swf',
