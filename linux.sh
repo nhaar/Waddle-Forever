@@ -1,6 +1,8 @@
 #!/bin/bash
 
-VERSION="1.2.0"
+# get version via github api
+latest_tag=$(curl -s "https://api.github.com/repos/nhaar/Waddle-Forever/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+VERSION="${latest_tag#v}"
 URL="https://waddleforever.com"
 DEFAULT="default"
 CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverClient-$VERSION.AppImage"
