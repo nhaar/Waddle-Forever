@@ -1,7 +1,6 @@
 import { StaticDataTable } from "../../common/static-table";
-import { Version } from "../routes/versions";
 
-type IglooType = {
+type IglooItem = {
   id: number;
   name: string;
   cost: number;
@@ -10,7 +9,7 @@ type IglooType = {
   modern: boolean;
 };
 
-export const IGLOO_TYPES = new StaticDataTable<IglooType, [
+export const IGLOO_TYPES = new StaticDataTable<IglooItem, [
   'id',
   'name',
   'cost',
@@ -123,31 +122,50 @@ export const IGLOO_TYPES = new StaticDataTable<IglooType, [
  [98, 'Stage Igloo', 1500, false, false, false]
 ]);
 
-export function getFlooringCost(flooring: number, version: Version = '2010-11-24') {
-  switch (flooring) {
-    case 0: // Remove flooring
-      return 20
-    case 1: // Terracotta
-      return 680
-    case 4: // Burgundy carpet
-      return 530
-    case 7: // Dance floor
-      return 1000
-    case 9: // Bamboo floor
-      return 370
-    case 14: // Phony-Lawn
-      return 700
-    case 17: // Pink carpet
-      return 530
-    case 20: // Cobblestone
-      return 1200
-    case 21: // Snowy Floor
-      return 400
-    case 22: // Lime Green Carpet
-      return 530
-    default:
-      return 0;
-  }
+export const IGLOO_FLOORING = new StaticDataTable<IglooItem, [
+  'id',
+  'name',
+  'cost',
+  'patched',
+  'old',
+  'modern'
+]>([
+  'id',
+  'name',
+  'cost',
+  'patched',
+  'old',
+  'modern'
+], [
+ [0, 'Floor Removal', 20, false, false, false],
+ [1, 'Terracotta Tile', 680, false, false, false],
+ [2, 'Maple Hardwood', 620, false, false, false],
+ [3, 'Green Carpet', 530, false, false, false],
+ [4, 'Burgundy Carpet', 530, false, false, false],
+ [5, 'Black & White Tile', 510, false, false, false],
+ [6, 'Linoleum', 540, false, false, false],
+ [7, 'Dance Floor', 1000, false, false, false],
+ [8, 'Painted Dance Steps', 280, false, false, false],
+ [9, 'Bamboo Floor', 370, false, false, false],
+ [10, 'Dirt & Leaves', 400, false, false, false],
+ [11, 'Blue Turf', 530, false, false, false],
+ [12, 'Whirlpool', 750, false, false, false],
+ [13, 'Cherry Hardwood', 620, false, false, false],
+ [14, 'Phony Lawn', 700, false, false, false],
+ [15, 'Black Carpet', 530, false, false, false],
+ [16, 'Dark Stone Tile', 800, false, false, false],
+ [17, 'Pink Carpet', 530, false, false, false],
+ [18, 'Sand Floor', 400, false, false, false],
+ [19, 'Sunny Sky Floor', 530, false, false, false],
+ [20, 'Cobblestone', 1200, false, false, false],
+ [21, 'Snowy Floor', 400, false, false, false],
+ [22, 'Lime Green Carpet', 530, false, false, false],
+ [23, 'Woven Rice Mat', 750, false, false, false]
+]);
+
+export function getFlooringCost(flooring: number) {
+  const item = IGLOO_FLOORING.getStrict(flooring);
+  return item.cost;
 }
 
 export function getIglooCost(igloo: number) {
