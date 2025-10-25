@@ -757,7 +757,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'coffee': 'archives:RoomsCoffee-2ndAnniversary.swf'
     },
     music: {
-      'coffee': 100
+      'coffee': 100,
+      'book': 100
     }
   },
   {
