@@ -452,6 +452,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'light': 2,
       'beacon': 2
     },
+    music: {
+      light: 55556,
+      beacon: 55556,
+      beach: 55557
+    },
     permanentChanges: {
       roomChanges: {
         // first room archived with the lighthouse open

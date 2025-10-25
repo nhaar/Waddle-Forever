@@ -1141,6 +1141,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'stage_dodgeball_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'alehouse.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'alehouse_quiet.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
