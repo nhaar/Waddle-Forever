@@ -68,7 +68,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       lodge: 'recreation:lodge_cpip_start.swf',
       pet: 'recreation:pet_pre_white.swf',
       shop: 'archives:RoomsShop.swf',
-      coffee: 'archives:RoomsCoffee1.swf',
+      coffee: 'archives:RoomsCoffee-January2010.swf',
       lounge: 'archives:RoomsLounge.swf',
       boiler: 'archives:RoomsBoiler-January2010.swf',
       attic: 'archives:RoomsAttic.swf',

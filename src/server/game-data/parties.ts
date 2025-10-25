@@ -3003,7 +3003,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
       }
     },
-    startscreens: ['archives:LoginMusicJam2010(1).swf', 'archives:LoginMusicJam2010(2).swf']
+    startscreens: ['archives:LoginMusicJam2010(1).swf', 'archives:LoginMusicJam2010(2).swf'],
+    consequences: {
+      roomChanges: {
+        light: 'archives:LightCurrent.swf'
+      }
+    }
   },
   {
     name: 'Mountain Expedition',
