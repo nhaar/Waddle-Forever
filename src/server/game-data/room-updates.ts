@@ -594,6 +594,11 @@ export const ROOM_OPENINGS: RoomOpening[] = [
     date: Update.LIGHTHOUSE_PARTY_START
   },
   {
+    room: 'light',
+    fileRef: 'archives:ArtworkRoomsLight40.swf',
+    date: Update.LIGHTHOUSE_PARTY_START
+  },
+  {
     room: 'dojofire',
     fileRef: 'slegacy:media/play/v2/content/global/rooms/dojofire.swf',
     date: Update.FIRE_CONST_START
