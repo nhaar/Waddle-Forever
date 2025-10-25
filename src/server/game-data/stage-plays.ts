@@ -1,5 +1,6 @@
 import { Update } from "./updates";
 import { Version } from "../routes/versions";
+import { RoomChanges } from "./parties";
 
 /** All stage names */
 type StageName = 'Space Adventure' |
@@ -89,7 +90,8 @@ export const STAGE_TIMELINE: Array<{
   stageFileRef: string;
   costumeTrunkFileRef: string;
   plazaFileRef: string | null;
-  party1?: string;
+  /** Temporary changes of rooms other than the plaza and stage */
+  roomChanges?: RoomChanges;
   /** If a stage's premiere is not in the timeline, add this as true to the first appearance in the timeline */
   notPremiere?: true
 }> = [
@@ -256,7 +258,9 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-December2009.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play14.swf',
     costumeTrunkFileRef: 'archives:Apr2011NormanSwarmHasBeenTransformedCostume.swf', // from april 2011,
-    party1: 'archives:RoomsParty1-December2009.swf'
+    roomChanges: {
+      party1: 'archives:RoomsParty1-December2009.swf'
+    }
   },
   {
     date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
@@ -319,7 +323,10 @@ export const STAGE_TIMELINE: Array<{
     name: 'Secrets of the Bamboo Forest',
     costumeTrunkFileRef: 'archives:October2010Costume.swf',
     plazaFileRef: 'archives:RoomsPlaza-August2011.swf', // from 2011, unknown if accurate
-    stageFileRef: 'archives:HalloweenParty2010Stage.swf'
+    stageFileRef: 'archives:HalloweenParty2010Stage.swf',
+    roomChanges: {
+      shack: 'archives:Mine_Shack_Gold_Feather_Pin.swf'
+    }
   },
   {
     date: Update.PLANET_Y_2010,
