@@ -92,7 +92,6 @@ function discountIglooTypeCost(client: Client, type: number): void {
 
 // buying igloo
 handler.xt(Handle.AddIgloo, (client, igloo) => {
-  // TODO refactoring igloo cost
   discountIglooTypeCost(client, igloo);
   client.penguin.addIgloo(igloo);
   client.sendXt('au', igloo, client.penguin.coins);
