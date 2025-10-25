@@ -114,7 +114,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     comment: 'The start screen is updated with the introduction of Unlock Items Online',
     generalChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
-      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf'
+      'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
     },
     startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ]
   },
@@ -130,6 +130,13 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
       ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
     ],
+  },
+  {
+    date: '2010-11-19',
+    comment: 'The password warning is updated',
+    generalChanges: {
+      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf'
+    }
   },
   {
     date: Update.EPF_RELEASE,
