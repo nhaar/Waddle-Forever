@@ -2578,4 +2578,5 @@ export const CPIP_AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/sensei/bootstrap.swf': 'slegacy:media/play/v2/games/sensei/bootstrap.swf',
   'play/v2/games/sensei/lang/en/locale.swf': 'slegacy:media/play/v2/games/sensei/lang/en/locale.swf',
   'play/v2/games/sensei/SenseiWidget.swf': 'slegacy:media/play/v2/games/sensei/SenseiWidget.swf',
+  'play/v2/games/mixmaster/ChooseSong.swf': 'archives:GamesMixmasterChooseSong_2011.swf'
 };

@@ -108,6 +108,28 @@ export const PINS: Array<Pin> = [
     end: '2008-08-15'
   },
   {
+    date: '2008-08-15',
+    end: '2008-08-29',
+    name: 'Dodgeball',
+    room: 'stage',
+    // placeholder using team blue vs team red as opposed to team blue rally
+    fileRef: 'recreation:stage_dodgeball_pin.swf'
+  },
+  {
+    name: '150th Newspaper',
+    date: '2008-08-29',
+    end: '2008-09-12',
+    fileRef: 'recreation:boiler_150_newspaper.swf',
+    room: 'boiler'
+  },
+  {
+    name: 'Magnifying Glass',
+    date: '2008-09-12',
+    end: '2008-09-26',
+    room: 'dock',
+    fileRef: 'recreation:dock_magnifying_glass_pin.swf'
+  },
+  {
     name: 'Lollipop',
     date: '2008-09-26',
     end: Update.MICROSCOPE_PIN,
@@ -302,6 +324,13 @@ export const PINS: Array<Pin> = [
     fileRef: 'archives:Boiler_Room_4th_Anniversary_Cake_Pin.swf',
     date: '2009-10-23',
     end: '2009-11-06'
+  },
+  {
+    name: 'Toboggan',
+    date: '2009-11-06',
+    end: '2009-11-20',
+    room: 'mtn',
+    fileRef: 'recreation:mtn_toboggan_pin.swf'
   },
   {
     name: 'Hot Chocolate',

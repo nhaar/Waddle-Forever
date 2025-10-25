@@ -1,10 +1,12 @@
 import { Update } from "./updates";
 import { Version } from "../routes/versions";
+import { RoomChanges } from "./parties";
 
 /** All stage names */
 type StageName = 'Space Adventure' |
   'The Twelfth Fish' |
   'Team Blue\'s Rally Debut' |
+  'Team Blue\'s Rally 2' |
   'Quest for the Golden Puffle' |
   'Squidzoid vs. Shadow Guy and Gamma Gal' |
   'The Penguins that Time Forgot' |
@@ -35,6 +37,10 @@ export const STAGE_PLAYS: Array<{
   {
     name: 'Team Blue\'s Rally Debut',
     musicId: 33
+  },
+  {
+    name: 'Team Blue\'s Rally 2',
+    musicId: 36
   },
   {
     name: 'Quest for the Golden Puffle',
@@ -89,7 +95,8 @@ export const STAGE_TIMELINE: Array<{
   stageFileRef: string;
   costumeTrunkFileRef: string;
   plazaFileRef: string | null;
-  party1?: string;
+  /** Temporary changes of rooms other than the plaza and stage */
+  roomChanges?: RoomChanges;
   /** If a stage's premiere is not in the timeline, add this as true to the first appearance in the timeline */
   notPremiere?: true
 }> = [
@@ -145,6 +152,14 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-June2008.swf',
     costumeTrunkFileRef: 'archives:June08Costume.swf'
   },
+  {
+    date: '2008-08-08',
+    name: 'Team Blue\'s Rally 2',
+    // placeholder file using team blue vs team red, which is nearly identical
+    stageFileRef: 'archives:Stage2011Aug17.swf',
+    plazaFileRef: 'recreation:plaza_team_blues_rally_2.swf',
+    costumeTrunkFileRef: 'archives:August2008Costume.swf'
+  },
   // squidzoid july is also completely lost
   // team blue rally 2 is completely lost
   // post CPIP could be reconstructed
@@ -186,7 +201,7 @@ export const STAGE_TIMELINE: Array<{
   {
     date: '2009-01-09',
     name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
-    stageFileRef: 'archives:RoomsStage-October2009.swf', // from october 2009
+    stageFileRef: 'archives:StageSquidzoidJan09.swf',
     // I think this plaza is accurate (with sign)
     plazaFileRef: 'recreation:plaza_squidzoid_sign.swf',
     costumeTrunkFileRef: 'archives:January2009Costume.swf',
@@ -256,7 +271,9 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-December2009.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play14.swf',
     costumeTrunkFileRef: 'archives:Apr2011NormanSwarmHasBeenTransformedCostume.swf', // from april 2011,
-    party1: 'archives:RoomsParty1-December2009.swf'
+    roomChanges: {
+      party1: 'archives:RoomsParty1-December2009.swf'
+    }
   },
   {
     date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
@@ -319,7 +336,10 @@ export const STAGE_TIMELINE: Array<{
     name: 'Secrets of the Bamboo Forest',
     costumeTrunkFileRef: 'archives:October2010Costume.swf',
     plazaFileRef: 'archives:RoomsPlaza-August2011.swf', // from 2011, unknown if accurate
-    stageFileRef: 'archives:HalloweenParty2010Stage.swf'
+    stageFileRef: 'archives:HalloweenParty2010Stage.swf',
+    roomChanges: {
+      shack: 'archives:Mine_Shack_Gold_Feather_Pin.swf'
+    }
   },
   {
     date: Update.PLANET_Y_2010,

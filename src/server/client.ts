@@ -515,7 +515,7 @@ export class Client {
     this.xtTimestamps = new Map<string, number>();
   }
 
-  private get version(): Version {
+  public get version(): Version {
     return this.server.settings.version;
   }
 

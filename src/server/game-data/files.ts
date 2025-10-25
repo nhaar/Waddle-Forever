@@ -1125,6 +1125,34 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'beacon_nolight.swf',
       comment: 'Made by joey, remove the ability to turn off the beacon light'
+    },
+    {
+      file: 'boiler_150_newspaper.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'dock_magnifying_glass_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'mtn_toboggan_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'stage_dodgeball_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'alehouse.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'alehouse_quiet.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'plaza_team_blues_rally_2.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

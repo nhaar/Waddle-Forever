@@ -21,7 +21,7 @@ const createServer = async (type: string, port: number, handler: Handler, settin
 
   handler.bootServer(gameServer);
 
-  await new Promise<void>((resolve) => {
+  await new Promise<void>((resolve, reject) => {
     net.createServer((socket) => {
       socket.setEncoding('utf8');
   
@@ -50,6 +50,8 @@ const createServer = async (type: string, port: number, handler: Handler, settin
     }).listen(port, () => {
       console.log(`${type} server listening on port ${port}`);
       resolve();
+    }).on('error', (err) => {
+      reject(err)
     });
   })
 

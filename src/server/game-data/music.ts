@@ -145,6 +145,8 @@ export const MUSIC_IDS: IdRefMap = {
   520: 'slegacy:media/play/v2/content/global/music/520.swf',
   532: 'slegacy:media/play/v2/content/global/music/532.swf',
   666: 'slegacy:media/play/v2/content/global/music/666.swf',
-  // placeholder ID, we have no idea how these played exactly
-  55555: 'archives:MusicSurpriseParty.swf'
+  // placeholder IDs, we have no idea how these played exactly
+  55555: 'archives:MusicSurpriseParty.swf',
+  55556: 'recreation:alehouse.swf',
+  55557: 'recreation:alehouse_quiet.swf'
 };

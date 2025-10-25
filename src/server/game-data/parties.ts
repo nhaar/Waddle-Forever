@@ -452,6 +452,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'light': 2,
       'beacon': 2
     },
+    music: {
+      light: 55556,
+      beacon: 55556,
+      beach: 55557
+    },
     permanentChanges: {
       roomChanges: {
         // first room archived with the lighthouse open
@@ -752,7 +757,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'coffee': 'archives:RoomsCoffee-2ndAnniversary.swf'
     },
     music: {
-      'coffee': 100
+      'coffee': 100,
+      'book': 100
     }
   },
   {
@@ -1257,12 +1263,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       }
     ],
-    permanentChanges: {
-      roomChanges: {
-        // placeholder date for the band
-        light: 'archives:RoomsLight-January2010.swf'
-      }
-    },
     consequences: {
       roomChanges: {
         dance: 'recreation:dance_record_pin.swf'
@@ -3003,7 +3003,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
       }
     },
-    startscreens: ['archives:LoginMusicJam2010(1).swf', 'archives:LoginMusicJam2010(2).swf']
+    startscreens: ['archives:LoginMusicJam2010(1).swf', 'archives:LoginMusicJam2010(2).swf'],
+    consequences: {
+      roomChanges: {
+        light: 'archives:LightCurrent.swf'
+      }
+    }
   },
   {
     name: 'Mountain Expedition',
@@ -3339,7 +3344,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       {
         date: Update.PLANET_Y_2010,
         roomChanges: {
-          'plaza': 'recreation:water_hunt_planet_y'
+          'plaza': 'recreation:water_hunt_planet_y.swf'
         }
       }
     ],

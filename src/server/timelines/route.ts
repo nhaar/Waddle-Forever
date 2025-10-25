@@ -434,8 +434,9 @@ function addMusicLists(map: FileTimelineMap): void {
 }
 
 function addStagePlays(map: FileTimelineMap): void {
-  STAGE_TIMELINE.forEach((debut) => {
+  STAGE_TIMELINE.forEach((debut, i) => {
     const date = debut.date;
+    const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
 
     // Stage itself
     addRoomRoute(map, date, 'stage', debut.stageFileRef);
@@ -445,9 +446,9 @@ function addStagePlays(map: FileTimelineMap): void {
       addRoomRoute(map, date, 'plaza', debut.plazaFileRef);
     }
 
-    if (debut.party1 !== undefined) {
-      // for norman swarm
-      addRoomRoute(map, date, 'party1', debut.party1);
+    // temporary changes in other rooms
+    if (debut.roomChanges !== undefined) {
+      map.addRoomChanges(debut.roomChanges, date, end);
     }
 
     // simply hardcoding every catalogue to be from 0712 for now
