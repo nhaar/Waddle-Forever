@@ -1149,6 +1149,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'alehouse_quiet.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'plaza_team_blues_rally_2.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
