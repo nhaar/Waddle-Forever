@@ -3,6 +3,7 @@ import { Handler } from "..";
 import { Client } from "../../../server/client";
 import { IglooFurniture } from "../../../server/database";
 import { Handle } from "../handles";
+import { isLower } from "../../../server/routes/versions";
 
 const handler = new Handler();
 
@@ -82,13 +83,17 @@ handler.xt(Handle.AddFlooring, (client, flooring) => {
   client.update();
 })
 
-// buying igloo
-handler.xt(Handle.AddIgloo, (client, igloo) => {
-  // TODO refactoring igloo cost
-  const cost = getIglooCost(igloo);
+function discountIglooTypeCost(client: Client, type: number): void {
+  const cost = getIglooCost(type);
   if (cost !== undefined) {
     client.penguin.removeCoins(cost);
   }
+}
+
+// buying igloo
+handler.xt(Handle.AddIgloo, (client, igloo) => {
+  // TODO refactoring igloo cost
+  discountIglooTypeCost(client, igloo);
   client.penguin.addIgloo(igloo);
   client.sendXt('au', igloo, client.penguin.coins);
   client.update();
@@ -96,6 +101,13 @@ handler.xt(Handle.AddIgloo, (client, igloo) => {
 
 // saving igloo type
 handler.xt(Handle.UpdateIglooType, (client, type) => {
+  // adding support to the recreation of how it worked pre owned igloos (updating igloo type costed money)
+  if (isLower(client.version, '2010-08-26')) {
+    discountIglooTypeCost(client, type);
+    // a bit of a hack to notify the client of the coin change
+    client.sendXt('au', type, client.penguin.coins);
+  }
+
   client.penguin.updateIgloo({ type });
   client.update();
 })
