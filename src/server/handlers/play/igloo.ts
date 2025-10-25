@@ -4,6 +4,7 @@ import { Client } from "../../../server/client";
 import { IglooFurniture } from "../../../server/database";
 import { Handle } from "../handles";
 import { isLower } from "../../../server/routes/versions";
+import { FURNITURE } from "../../../server/game-logic/furniture";
 
 const handler = new Handler();
 
@@ -29,8 +30,8 @@ handler.xt(Handle.GetFurniture, (client) => {
 })
 
 handler.xt(Handle.AddFurniture, (client, furniture) => {
-  // TODO cost
-  client.buyFurniture(furniture, { cost: 0 });
+  const item = FURNITURE.getStrict(furniture);
+  client.buyFurniture(furniture, { cost: item.cost });
   client.update();
 })
 
