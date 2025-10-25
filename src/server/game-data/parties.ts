@@ -1257,12 +1257,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       }
     ],
-    permanentChanges: {
-      roomChanges: {
-        // placeholder date for the band
-        light: 'archives:RoomsLight-January2010.swf'
-      }
-    },
     consequences: {
       roomChanges: {
         dance: 'recreation:dance_record_pin.swf'

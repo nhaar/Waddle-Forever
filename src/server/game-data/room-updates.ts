@@ -215,6 +215,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:Lighthouse2007.swf',
       comment: 'A stage is now built in the Lighthouse'
     },
+    {
+      date: '2009-08-07',
+      fileRef: 'archives:RoomsLight-January2010.swf',
+      comment: 'Instruments can now be played at the Lighthouse'
+    }
   ],
   lodge: [
     {
