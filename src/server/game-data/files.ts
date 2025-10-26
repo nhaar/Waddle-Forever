@@ -1157,6 +1157,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'light_life_ring_pin.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lighthouse_party_2006/beach.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
