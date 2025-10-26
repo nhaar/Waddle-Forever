@@ -689,8 +689,11 @@ export class Client {
 
   leaveRoom(): void {
     const players = this.room.players.filter((p) => p.penguin.id !== this.penguin.id);
-    this.sendRoomXt('rp', this.penguin.id, ...players.map((p) => p.penguinString));
+    // because minigames get the player from their previous room, you can't
+    // send the remove player packet to the player leaving otherwise it won't
+    // find itself and minigame features (the penguin color) won't work
     this.room.removePlayer(this);
+    this.sendRoomXt('rp', this.penguin.id, ...players.map((p) => p.penguinString));
   }
 
   joinRoom (room: number, x?: number, y?: number): void {
