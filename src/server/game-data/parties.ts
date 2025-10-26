@@ -568,11 +568,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2007-04-02',
     roomChanges: {
       shack: 'recreation:april_fools_2007/shack.swf',
-      berg: 'recreation:april_fools_2007/berg.swf'
+      berg: 'recreation:april_fools_2007/berg.swf',
+      mine: 'recreation:april_fools_2007/mine.swf'
     },
     music: {
       'shack': 201,
-      'berg': 201
+      'berg': 201,
+      'mine': 201
     }
   },
   {
