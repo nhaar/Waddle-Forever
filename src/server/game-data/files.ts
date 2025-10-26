@@ -1173,6 +1173,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'catalog/furniture_cpip.swf',
       comment: 'Made by Blue Kirby. Ported the catalog to CPIP'
+    },
+    {
+      file: 'april_fools_2007/mine.swf',
+      comment: 'Made by Lifeofgames477'
     }
   ],
   [MOD]: [
