@@ -100,6 +100,12 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'forms/missions.swf': {
         'en': 'recreation:forms_missions/cpip.swf'
+      },
+      'catalogues/clothing.swf': {
+        'en': 'recreation:catalog/clothing_cpip.swf'
+      },
+      'catalogues/furniture.swf': {
+        'en': 'recreation:catalog/furniture_cpip.swf'
       }
     },
     music: {
