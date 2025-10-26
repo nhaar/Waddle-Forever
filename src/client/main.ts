@@ -80,7 +80,8 @@ app.on('ready', async () => {
     }
   }
   
-  if (settingsManager.settings.answered_packages !== VERSION) {
+  // only check if the clothing settings is false, otherwise it would have been downloaded already
+  if (!settingsManager.settings.clothing && settingsManager.settings.answered_packages !== VERSION) {
     const result = await dialog.showMessageBox(mainWindow, {
       buttons: ['Download Clothing (~600 MB)', 'No Thanks'],
       title: 'Download package?',
