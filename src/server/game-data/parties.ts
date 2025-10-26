@@ -2676,7 +2676,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'town': 'archives:RoomsTown-AprilFoolsParty2010.swf',
       'party': 'archives:RoomsParty-AprilFoolsParty2010.swf',
       plaza: 'recreation:aprilfools2010_plaza.swf',
-      beach: 'archives:RoomsBeach-AprilFoolsParty2010.swf'
+      beach: 'archives:RoomsBeach-AprilFoolsParty2010.swf',
+      coffee: 'archives:RoomsCoffeeAprilFools2010.swf',
+      cave: 'archives:RoomsCave-AprilFoolsParty2010.swf',
+      beacon: 'archives:AprilFools\'Party2011Beacon.swf',
+      boiler: 'archives:RoomsBoiler-AprilFoolsParty2010.swf'
     },
     music: {
       'shop': 201,
