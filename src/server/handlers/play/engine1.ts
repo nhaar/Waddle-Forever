@@ -115,7 +115,8 @@ handler.post('/php/login.php', (body) => {
     ed: '10000-1-1', // EXPIRACY DATE TODO what is it for?
     h: '', // TODO what is?
     w: '100|0', // TODO what is?
-    m: '' // TODO what is
+    m: '', // TODO what is
+    il: penguin.getItems().join('|') // item list
   }
 
   let response = ''
