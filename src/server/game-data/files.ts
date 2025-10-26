@@ -1153,6 +1153,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_team_blues_rally_2.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'light_life_ring_pin.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
