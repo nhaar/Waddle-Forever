@@ -70,6 +70,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsForts40.swf',
       comment: 'The Snow Forts is redrawn'
+    },
+    {
+      date: '2007-02-23',
+      fileRef: 'archives:ArtworkRoomsForts41.swf',
+      comment: 'The Clock Tower is added to the Snow Forts'
     }
   ],
   plaza: [
