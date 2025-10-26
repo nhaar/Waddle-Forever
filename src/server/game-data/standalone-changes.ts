@@ -144,6 +144,18 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     ],
   },
   {
+    date: '2009-03-06',
+    comment: 'White Puffles are available to adopt',
+    roomChanges: {
+      pet: 'archives:RoomsPet_4.swf'
+    },
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'archives:Mar2009Adopt.swf'
+      }
+    }
+  },
+  {
     date: '2010-02-25',
     comment: 'Orange Puffles are available to adopt',
     localChanges: {

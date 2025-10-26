@@ -234,12 +234,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   pet: [
     {
-      // white puffle release
-      fileRef: 'archives:RoomsPet_4.swf',
-      date: '2009-03-06',
-      comment: 'White puffles are available in the Pet Shop'
-    },
-    {
       // purple puffles release
       date: '2006-08-25',
       fileRef: 'archives:ArtworkRoomsPet12.swf',
