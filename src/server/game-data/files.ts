@@ -1153,6 +1153,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_team_blues_rally_2.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'light_life_ring_pin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lighthouse_party_2006/beach.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'catalog/clothing_cpip.swf',
+      comment: 'Made by Blue Kirby. Ported the catalog to CPIP'
+    },
+    {
+      file: 'catalog/furniture_cpip.swf',
+      comment: 'Made by Blue Kirby. Ported the catalog to CPIP'
     }
   ],
   [MOD]: [

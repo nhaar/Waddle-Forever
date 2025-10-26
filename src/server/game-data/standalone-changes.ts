@@ -43,6 +43,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   },
   {
     date: Update.CPIP_UPDATE,
+    comment: 'The Club Penguin Improvement Project is implemented',
     roomChanges: {
       town: 'archives:RoomsTown.swf',
       rink: 'archives:RoomsRink.swf',
@@ -99,6 +100,12 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'forms/missions.swf': {
         'en': 'recreation:forms_missions/cpip.swf'
+      },
+      'catalogues/clothing.swf': {
+        'en': 'recreation:catalog/clothing_cpip.swf'
+      },
+      'catalogues/furniture.swf': {
+        'en': 'recreation:catalog/furniture_cpip.swf'
       }
     },
     music: {
