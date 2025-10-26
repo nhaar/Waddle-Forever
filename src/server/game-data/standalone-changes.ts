@@ -43,6 +43,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   },
   {
     date: Update.CPIP_UPDATE,
+    comment: 'The Club Penguin Improvement Project is implemented',
     roomChanges: {
       town: 'archives:RoomsTown.swf',
       rink: 'archives:RoomsRink.swf',

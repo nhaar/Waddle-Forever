@@ -67,7 +67,7 @@ export enum Update {
   // use of AS3 in WF
   AS3_UPDATE = FIRST_AS3_NEWSPAPER,
   /** The day Club Penguin launched the CPIP engine */
-  CPIP_UPDATE = '2008-07-14',
+  CPIP_UPDATE = '2008-07-15',
   ROOM_REDRAWS = '2006-09-22',
   AQUAGRABBER_RELEASE = '2008-02-19',
   ROCKHOPPER_ARRIVAL_PARTY_START = '2008-04-25',
