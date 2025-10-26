@@ -199,6 +199,10 @@ would need to investigated`
     {
       file: 'RoomsPlaza-MusicJam2008.swf',
       comment: 'Added triggers and logic to this file that for some reason has unexisting logic'
+    },
+    {
+      file: 'PuffleRoundupWhitePuffle.swf',
+      comment: 'Removed domain check'
     }
   ],
   [APPROXIMATION]: [

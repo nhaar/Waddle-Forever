@@ -88,7 +88,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     },
     generalChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/client/login.swf': 'recreation:login_cpip.swf'
+      'play/v2/client/login.swf': 'recreation:login_cpip.swf',
+      // this puffle roundup is a placeholder, TODO needs to be updated
+      'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     localChanges: {
@@ -106,6 +108,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'catalogues/furniture.swf': {
         'en': 'recreation:catalog/furniture_cpip.swf'
+      },
+      'catalogues/adopt.swf': {
+        'en': 'archives:Puffle_0711b.swf'
       }
     },
     music: {
@@ -137,6 +142,18 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
       ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
     ],
+  },
+  {
+    date: '2010-02-25',
+    comment: 'Orange Puffles are available to adopt',
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
+      }
+    },
+    generalChanges: {
+      'play/v2/games/roundup/PuffleRoundup.swf': 'recreation:puffle_roundup_orange.swf'
+    }
   },
   {
     date: '2010-11-19',
@@ -493,13 +510,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       date: '2011-02-17',
       fileRef: 'archives:Enm111.swf'
-    }
-  ],
-  'play/v2/games/roundup/PuffleRoundup.swf': [
-    {
-      // orange puffle version, must add white puffle version too later
-      date: Update.CPIP_UPDATE,
-      fileRef: 'recreation:puffle_roundup_orange.swf'
     }
   ],
   'play/v2/content/local/en/catalogues/costume.swf': [
