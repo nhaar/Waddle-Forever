@@ -674,6 +674,11 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: Update.RUBY_DEBUT,
       fileRef: 'recreation:plaza_ruby_construction.swf',
       comment: 'A construction begins at the Plaza for the Stage'
+    },
+    {
+      date: Update.PPA_10_END,
+      end: Update.APRIL_FOOLS_10_END,
+      fileRef: 'recreation:aprilfools2010_plaza.swf'
     }
   ],
   'town': [

@@ -2625,7 +2625,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'Penguin Play Awards 2010',
     date: '2010-03-18',
-    end: '2010-03-29',
+    end: Update.PPA_10_END,
     music: {
       'pizza': 283,
       'plaza': 40,
@@ -2659,7 +2659,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
     name: 'April Fools\' Party 2010',
     date: '2010-03-31',
-    end: '2010-04-05',
+    end: Update.APRIL_FOOLS_10_END,
     roomChanges: {
       'dock': 'archives:RoomsDock-AprilFoolsParty2010.swf',
       'forest': 'archives:RoomsForest-AprilFoolsParty2010.swf',
@@ -2675,7 +2675,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'forts': 'archives:RoomsForts-AprilFoolsParty2010.swf',
       'town': 'archives:RoomsTown-AprilFoolsParty2010.swf',
       'party': 'archives:RoomsParty-AprilFoolsParty2010.swf',
-      plaza: 'recreation:aprilfools2010_plaza.swf',
       beach: 'archives:RoomsBeach-AprilFoolsParty2010.swf',
       coffee: 'archives:RoomsCoffeeAprilFools2010.swf',
       cave: 'archives:RoomsCave-AprilFoolsParty2010.swf',
