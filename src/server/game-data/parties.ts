@@ -1849,6 +1849,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:AprilFoolMembership.swf'
       }
     },
+    roomMemberStatus: {
+      party3: true
+    },
     startscreens: ['archives:LoginScreenAprilFools2009.swf']
   },
   {
@@ -2707,6 +2710,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 232,
       'party': 261
     },
+    roomMemberStatus: {
+      party: true
+    },
     localChanges: {
       'membership/oops_april_fools.swf': {
         'en': ['archives:AprilFoolsParty2010MembershipOopsAprilFools.swf', 'oops_party_room']
@@ -3044,6 +3050,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:MountainExpeditionMembershipOopsExpedition.swf'
       }
     },
+    roomMemberStatus: {
+      party3: true
+    },
     music: {
       'party2': 294,
       'party3': 295,
@@ -3208,9 +3217,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'close_ups/halloweenposter.swf': {
         'en': 'archives:HalloweenParty2010Poster.swf'
       },
-      'membership/membership_party3.swf': {
+      'membership/party3.swf': {
         'en': 'archives:HalloweenParty2010MembershipParty3.swf'
       }
+    },
+    roomMemberStatus: {
+      party3: true
     },
     music: {
       'town': 251,

@@ -63,7 +63,7 @@ function changeRoomInfo(crumbs: string, roomInfo: RoomInfoChange): string {
               if (propertiesMatch === null || propertiesMatch.length !== 3) {
                 throw new Error('Invalid global crumbs: Expected to find properties line definition with number at the end');
               }
-              lines[i] = `${match[1]}, "is_member", true, ${Number(match[2] + 1)}`;
+              lines[i] = `${propertiesMatch[1]}, "is_member", true, ${Number(propertiesMatch[2]) + 1}`;
             } else if (memberMatch !== null) {
               // replacing the old value
               lines[i] = lines[i].replace(memberMatch[0], `"is_member", ${info.newMemberStatus ? 'true' : 'false'}`)

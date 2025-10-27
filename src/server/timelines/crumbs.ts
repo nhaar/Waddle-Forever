@@ -1,6 +1,5 @@
 import path from "path";
 import crypto from 'crypto';
-import hash from 'object-hash';
 import { RoomName } from "../game-data/rooms";
 import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
 import { PARTIES } from "../game-data/parties";
@@ -141,7 +140,7 @@ export function getLocalCrumbsOutput() {
   });
 }
 
-function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
+function getBaseCrumbsOutput<CrumbContent>(
   timelineBuilder: (timeline: TimelineEvent<Partial<CrumbContent>>[]) => void,
   mergeCrumbs: (prev: CrumbContent, cur: Partial<CrumbContent>) => CrumbContent,
   getFirstCrumb: () => CrumbContent
@@ -158,9 +157,10 @@ function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
   const crumbs = processTimeline(timeline, (input) => {
     return input
   }, getFirstCrumb, mergeCrumbs, (out) => {
-    // this is a third party function that can properly hash objects
-    // even if their property order isn't the same
-    return hash(out);
+    // theoretically, stringify might not work if things are out of order
+    // however, due to how the crumbs are setup, this is not an issue
+    // (if the crumbs script ever breaks though, it's because it became an issue)
+    return JSON.stringify(out);
   });
 
   const crumbsHash = getMd5(JSON.stringify(crumbs))
