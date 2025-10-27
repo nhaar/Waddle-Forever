@@ -3626,7 +3626,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     updates: [
       {
-        date: '2011-02-25',
+        date: Update.STAGE_FEB_11,
         roomChanges: {
           'plaza': 'archives:PuffleParty2011Plaza(2).swf'
         }

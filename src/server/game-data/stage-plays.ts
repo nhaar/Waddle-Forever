@@ -356,10 +356,10 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-December2010.swf' // accurate
   },
   {
-    date: '2011-02-25',
+    date: Update.STAGE_FEB_11,
     name: 'The Haunting of the Viking Opera',
     costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf',
-    plazaFileRef: 'archives:PuffleParty2011Plaza(2).swf',
+    plazaFileRef: null,
     stageFileRef: 'archives:RoomsStage-February2011.swf'
   }
 ];
