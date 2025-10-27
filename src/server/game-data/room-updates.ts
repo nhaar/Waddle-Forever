@@ -272,6 +272,16 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:RoomsPet-Early2011.swf',
       comment: 'White Puffles are now in the Pet Shop'
     },
+    {
+      date: '2011-03-08',
+      fileRef: 'archives:Mar07.2011Pet.swf',
+      comment: 'Pet Shop Renovation is Finished'
+    },
+    {
+      date: '2011-03-15',
+      fileRef: 'archives:RoomsPet_5.swf',
+      comment: 'Puffle Launch Released'
+    }
   ],
   shop: [
     {
@@ -678,6 +688,12 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       date: Update.PPA_10_END,
       end: Update.APRIL_FOOLS_10_END,
       fileRef: 'recreation:aprilfools2010_plaza.swf'
+    },
+    {
+      date: '2011-03-01',
+      end: '2011-03-08',
+      fileRef: 'archives:PlazaConstructionMar2011.swf',
+      comment: 'Pet Shop Renovation Construction'
     }
   ],
   'town': [
@@ -731,6 +747,14 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: '2007-09-20',
       fileRef: 'recreation:boiler_100_newspapers.swf',
       comment: 'The Boiler Room is updated for the 100th newspaper'
+    }
+  ],
+  'pet': [
+    {
+      date: '2011-03-01',
+      end: '2011-03-08',
+      fileRef: 'archives:PetConstructionMar2011.swf',
+      comment: 'Pet Shop Renovation Construction'
     }
   ]
 }
