@@ -333,7 +333,7 @@ export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<Tempor
   {
     date: '2011-03-01',
     end: '2011-03-08',
-    comment: 'The Pet Shop is getting renovated',
+    comment: 'Renovation for the Pet Shop begins',
     roomChanges: {
       plaza: 'archives:PlazaConstructionMar2011.swf',
       pet: 'archives:PetConstructionMar2011.swf'
