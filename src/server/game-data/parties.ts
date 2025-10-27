@@ -3548,5 +3548,89 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       }
     ]
+  },
+  {
+    name: 'Puffle Party',
+    date: Update.PUFFLE_PARTY_11_START,
+    end: Update.PUFFLE_PARTY_11_END,
+    roomChanges: {
+      'town': 'archives:RoomsTown-PuffleParty2011.swf',
+      'beach': 'archives:PuffleParty2011Beach.swf',
+      'berg': 'archives:PuffleParty2011Berg.swf',
+      'dock': 'archives:PuffleParty2011Dock.swf',
+      'forest': 'archives:PuffleParty2011Forest.swf',
+      'pet': 'archives:PuffleParty2011Pet.swf',
+      'plaza': 'archives:PuffleParty2011Plaza(1).swf',
+      'village': 'archives:PuffleParty2011Village.swf',
+      'forts': 'archives:PuffleParty2011Forts.swf',
+      'party1': 'archives:PuffleParty2011Party1.swf',
+      'party2': 'archives:PuffleParty2011Party2.swf',
+      'party3': 'archives:PuffleParty2011Party3.swf',
+      'dance': 'archives:PuffleParty2011Dance.swf',
+      'mine': 'archives:PuffleParty2011Mine.swf',
+      'light': 'archives:PuffleParty2011Light.swf',
+      'beacon': 'archives:PuffleParty2011Beacon.swf',
+      'cove': 'archives:PuffleParty2011Cove.swf',
+      'cave': 'archives:PuffleParty2011Cave.swf',
+      'boxdimension': 'archives:PuffleParty2011BoxDimension.swf',
+      'lounge': 'archives:PuffleParty2011Lounge.swf'
+    },
+    music: {
+      'town': 261,
+      'beach': 261,
+      'dock': 261,
+      'forts': 261,
+      'forest': 261,
+      'village': 261,
+      'light': 31,
+      'berg': 213,
+      'pet': 282,
+      'plaza': 261,
+      'party1': 261,
+      'party2': 282,
+      'dance': 260,
+      'lounge': 260,
+      'cove': 290,
+      'beacon': 261,
+      'mine': 256,
+      'cave': 36
+    },
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:PuffleParty2011Poster.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:PuffleParty2011MembershipParty2.swf'
+      },
+      'membership/party3.swf': {
+        'en': 'archives:PuffleParty2011MembershipParty3.swf'
+      }
+    },
+    startscreens: [
+      'archives:LoginPuffleParty2011(1).swf',
+      'archives:LoginPuffleParty2011(2).swf'
+    ],
+    construction: {
+      date: Update.PUFFLE_PARTY_11_CONST_START,
+      changes: {
+        'boxdimension': 'archives:PuffleParty2011ConstBoxDimension.swf',
+        'dance': 'archives:PuffleParty2011ConstDance.swf',
+        'mine': 'archives:PuffleParty2011ConstMine.swf',
+        'berg': 'archives:PuffleParty2011ConstBerg.swf',
+        'light': 'archives:PuffleParty2011ConstLight.swf',
+        'forest': 'archives:PuffleParty2011ConstForest.swf',
+        'lounge': 'archives:PuffleParty2011ConstLounge.swf',
+        'beacon': 'archives:PuffleParty2011ConstBeacon.swf',
+        'cave': 'archives:PuffleParty2010ConstCave.swf'
+      }
+    },
+    updates: [
+      {
+        date: '2011-02-25',
+        roomChanges: {
+          'plaza': 'archives:PuffleParty2011Plaza(2).swf'
+        }
+      }
+    ]
   }
 ];

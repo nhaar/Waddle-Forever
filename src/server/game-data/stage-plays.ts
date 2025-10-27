@@ -354,5 +354,12 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:July09Costume.swf', // From 2009, unknown if accurate
     plazaFileRef: 'recreation:plaza_ruby_no_weather.swf',
     stageFileRef: 'archives:RoomsStage-December2010.swf' // accurate
+  },
+  {
+    date: '2011-02-25',
+    name: 'The Haunting of the Viking Opera',
+    costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf',
+    plazaFileRef: 'archives:PuffleParty2011Plaza(2).swf',
+    stageFileRef: 'archives:RoomsStage-February2011.swf'
   }
 ];
