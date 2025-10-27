@@ -2116,5 +2116,18 @@ export function getStampbook(version: Version): string {
     ]);
   }
 
+  if (isGreaterOrEqual(version, Update.PUFFLE_PARTY_11_START)) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        stamp_id: 330,
+        name: 'Party Puffle',
+        is_member: false,
+        rank: 1,
+        description: 'Walk your puffle to their party room',
+        rank_token: 'easy'
+      }
+    ]);
+  }
+
   return JSON.stringify(newStampbook)
 }
