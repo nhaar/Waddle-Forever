@@ -3536,6 +3536,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     startscreens: [
       'archives:LoginWildernessExpedition.swf',
       'archives:LoginWildernessExpedition2.swf'
+    ],
+    updates: [
+      {
+        date: '2011-01-24',
+        comment: 'Brown Puffles Houses are available for free',
+        roomChanges: {
+          party13: 'archives:RoomsParty13-WildernessExpedition.swf'
+        }
+      }
     ]
   }
 ];
