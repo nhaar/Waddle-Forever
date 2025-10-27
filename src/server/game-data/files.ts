@@ -1177,6 +1177,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'april_fools_2007/mine.swf',
       comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'lighthouse_party_2006/beacon.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
