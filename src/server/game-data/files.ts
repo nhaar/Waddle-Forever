@@ -1180,7 +1180,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'lighthouse_party_2006/beacon.swf',
-      comment: 'Made by Doubleuman'
+      comment: 'Made by Doubleuman, comes from a previously compiled SWF of a FLA that was likely an earlier version, and it contained a depth error, which was fixed in this \"recreation\"'
     }
   ],
   [MOD]: [
