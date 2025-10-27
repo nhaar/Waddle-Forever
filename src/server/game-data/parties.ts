@@ -445,8 +445,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: Update.LIGHTHOUSE_PARTY_START,
     end: '2006-09-24',
     roomChanges: {
-      'beacon': 'archives:Beacon30.swf',
       light: 'recreation:lighthouse_party_2006/light.swf',
+      beacon: 'recreation:lighthouse_party_2006/beacon.swf',
       beach: 'recreation:lighthouse_party_2006/beach.swf'
     },
     roomFrames: {
