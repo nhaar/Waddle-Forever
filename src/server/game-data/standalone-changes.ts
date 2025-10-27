@@ -119,6 +119,10 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       // no idea on this one's date, adding it here
       lounge: 6
     },
+    roomMemberStatus: {
+      dojofire: true,
+      dojowater: true,
+    },
     map: 'unknown:cpip_map_no_dojoext.swf'
   },
   {

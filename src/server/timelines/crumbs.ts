@@ -10,9 +10,11 @@ import { ITEMS } from "../game-logic/items";
 import { getMapForDate } from ".";
 import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
+import { getMemberTimeline } from "./member";
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
+const memberTimeline = getMemberTimeline();
 
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 export const TICKET_ICON_PATH = 'tickets.swf';
@@ -83,6 +85,7 @@ const pricesTimeline = getPricesTimeline();
 export type GlobalCrumbContent = {
   prices: Record<number, number | undefined>;
   music: Partial<Record<RoomName, number>>;
+  member: Partial<Record<RoomName, boolean>>;
   paths: Record<string, string | undefined>;
   newMigratorStatus: boolean;
 }
@@ -221,6 +224,21 @@ export function getGlobalCrumbsOutput() {
       });
     });
 
+    memberTimeline.forEach((versions, room) => {
+      versions.forEach((info) => {
+        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+          timeline.push({
+            date: info.date,
+            info: {
+              member: {
+                [room]: info.info
+              }
+            }
+          });
+        }
+      });
+    });
+
     pricesTimeline.forEach((versions, itemId) => {
       versions.forEach((info) => {
         if (isGreater(info.date, Update.CPIP_UPDATE)) {
@@ -249,6 +267,10 @@ export function getGlobalCrumbsOutput() {
         ...prev.paths,
         ...cur.paths
       },
+      member: {
+        ...prev.member,
+        ...cur.member
+      },
       newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus
     }
   }, () => {
@@ -256,7 +278,8 @@ export function getGlobalCrumbsOutput() {
       prices: getMapForDate(pricesTimeline, Update.CPIP_UPDATE),
       music: getMapForDate(musicTimeline, Update.CPIP_UPDATE),
       newMigratorStatus: findInVersion(Update.CPIP_UPDATE, migratorTimeline) ?? false,
-      paths: {}
+      paths: {},
+      member: getMapForDate(memberTimeline, Update.CPIP_UPDATE)
     }
   });
 }

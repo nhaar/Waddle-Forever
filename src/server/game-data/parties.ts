@@ -31,6 +31,8 @@ export type PartyChanges = {
 
   music?: Partial<Record<RoomName, number>>;
 
+  roomMemberStatus?: Partial<Record<RoomName, boolean>>;
+
   activeMigrator?: MigratorVisit;
 
   /** A list of all backgrounds used for the startscreen. Each element bust be either a file, or a file and the exact name the startscreen uses for it */

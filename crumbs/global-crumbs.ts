@@ -6,6 +6,7 @@ import path from 'path'
 import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbContent } from '../src/server/timelines/crumbs';
 import { generateCrumbFiles } from './base-crumbs';
+import { iterateEntries } from '../src/common/utils';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 
@@ -26,23 +27,49 @@ function setMigratorStatus(crumbs: string, status: boolean): string {
   return lines.join('\n');
 }
 
-function changeRoomMusic(crumbs: string, roomName: string, newMusicId: number): string {
+type RoomInfoChange = Record<string, {
+  newMusicId?: number;
+  newMemberStatus?: boolean;
+}>
+
+function changeRoomInfo(crumbs: string, roomInfo: RoomInfoChange): string {
   const lines = crumbs.split('\n')
   for (let i = 0; i < lines.length; i++) {
     // search for room_crumbs instructions
     if (lines[i].startsWith('Push "room_crumbs"')) {
       i += 2
-      // check that it is the same room we want
-      if (lines[i].startsWith(`Push "${roomName}"`)) {
-        // find the original ID
-        const musicMatch = lines[i].match(/"music_id", \d+/)
-        if (musicMatch !== null) {
-          // replacing the old ID
-          lines[i] = lines[i].replace(musicMatch[0], `"music_id", ${newMusicId}`)
+      // check that it is a room instruction
+      const match = lines[i].match(/^Push "([\d\w]+)"/);
+      if (match !== null && typeof match[1] === 'string') {
+        const roomName = match[1];
+  
+        if (roomName in roomInfo) {
+          const info = roomInfo[roomName];
+          if (info.newMusicId !== undefined) {
+            // find the original ID
+            const musicMatch = lines[i].match(/"music_id", \d+/)
+            if (musicMatch !== null) {
+              // replacing the old ID
+              lines[i] = lines[i].replace(musicMatch[0], `"music_id", ${info.newMusicId}`)
+            }
+          }
+          if (info.newMemberStatus !== undefined) {
+            // find the original status
+            const memberMatch = lines[i].match(/"is_member", \w+/);
+            if (memberMatch === null && info.newMemberStatus === true) {
+              // property doesn't exist: we have to add it
+              // the line always ends with ", \d+" where number is how many properties there are
+              const propertiesMatch = lines[i].match(/^(.*), (\d+)\s*$/);
+              if (propertiesMatch === null || propertiesMatch.length !== 3) {
+                throw new Error('Invalid global crumbs: Expected to find properties line definition with number at the end');
+              }
+              lines[i] = `${match[1]}, "is_member", true, ${Number(match[2] + 1)}`;
+            } else if (memberMatch !== null) {
+              // replacing the old value
+              lines[i] = lines[i].replace(memberMatch[0], `"is_member", ${info.newMemberStatus ? 'true' : 'false'}`)
+            }
+          }
         }
-
-        // there will be no other room of interest
-        break;
       }
     }
   }
@@ -115,12 +142,26 @@ async function createCrumbs(outputPath: string, crumbsContent: string): Promise<
 
 function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): string {
   let newCrumbs = crumbs;
+  const roomInfo: RoomInfoChange = {};
   if (changes.music !== undefined) {
     Object.entries(changes.music).forEach((pair) => {
       const [room, music] = pair;
-      newCrumbs = changeRoomMusic(newCrumbs, room, music);
+      if (!(room in roomInfo)) {
+        roomInfo[room] = {};
+      }
+      roomInfo[room].newMusicId = music;
     });
   }
+  if (changes.member !== undefined) {
+    iterateEntries(changes.member, (room, isMember) => {
+      if (!(room in roomInfo)) {
+        roomInfo[room] = {};
+      }
+      roomInfo[room].newMemberStatus = isMember;
+    });
+  }
+
+  newCrumbs = changeRoomInfo(newCrumbs, roomInfo);
 
   if (changes.prices !== undefined) {
     newCrumbs = changeItemCosts(newCrumbs, changes.prices);
