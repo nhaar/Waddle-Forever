@@ -272,6 +272,16 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:RoomsPet-Early2011.swf',
       comment: 'White Puffles are now in the Pet Shop'
     },
+    {
+      date: '2011-03-08',
+      fileRef: 'archives:Mar07.2011Pet.swf',
+      comment: 'The Pet Shop renovation finishes'
+    },
+    {
+      date: '2011-03-15',
+      fileRef: 'archives:RoomsPet_5.swf',
+      comment: 'Puffle Launch releases'
+    }
   ],
   shop: [
     {
