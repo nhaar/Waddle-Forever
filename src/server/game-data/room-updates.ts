@@ -275,7 +275,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       date: '2011-03-08',
       fileRef: 'archives:Mar07.2011Pet.swf',
-      comment: 'The Pet Shop Renovation finishes'
+      comment: 'The Pet Shop renovation finishes'
     },
     {
       date: '2011-03-15',
