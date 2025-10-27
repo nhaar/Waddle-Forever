@@ -3540,6 +3540,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       },
       'catalogues/party.swf': {
         'en': ['archives:PartyCatalogWildernessExpedition.swf', 'party_purchase']
+      },
+      'membership/party1.swf': {
+        'en': 'archives:WildernessExpeditionMembershipParty1.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:WildernessExpeditionMembershipParty2.swf'
       }
     },
     // workaround shell and interface
