@@ -5,11 +5,11 @@ import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
 import { PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap } from "../game-data";
-import { ITEMS } from "../game-logic/items";
 import { getMapForDate } from ".";
 import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
 import { getMemberTimeline } from "./member";
+import { getPricesTimeline } from "./prices";
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
@@ -165,16 +165,6 @@ function getBaseCrumbsOutput<CrumbContent>(
 
   const crumbsHash = getMd5(JSON.stringify(crumbs))
   return { hash: crumbsHash, crumbs };
-}
-
-/** Get price object for a blank state */
-function getPricesTimeline() {
-  const timeline = new TimelineMap<number, number>();
-  ITEMS.rows.forEach((item) => {
-    timeline.add(item.id, item.cost, Update.CPIP_UPDATE);
-  });
-
-  return timeline.getVersionsMap();
 }
 
 /**

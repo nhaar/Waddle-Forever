@@ -31,6 +31,9 @@ export type PartyChanges = {
 
   music?: Partial<Record<RoomName, number>>;
 
+  /** Price updates */
+  prices?: Partial<Record<number, number>>;
+
   roomMemberStatus?: Partial<Record<RoomName, boolean>>;
 
   activeMigrator?: MigratorVisit;
