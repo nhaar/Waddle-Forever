@@ -3466,5 +3466,76 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'archives:CFC2010LoginScreen.SWF',
       'archives:LoginDec2010Membership.swf',
       'archives:StartscreenENCoins_for_change_2-HolidayParty2010.swf']
+  },
+  {
+    name: 'Wilderness Expedition',
+    date: Update.WILDERNESS_EXPEDITION_START,
+    end: Update.WILDERNESS_EXPEDITION_END,
+    roomChanges: {
+      town: 'archives:RoomsTown-WildernessExpedition.swf',
+      plaza: 'archives:WildernessExpeditionPlaza.swf',
+      dock: 'archives:RoomsDock-WildernessExpedition.swf',
+      cove: 'archives:RoomsCove-WildernessExpedition.swf',
+      party1: 'archives:WildernessExpeditionParty1.swf',
+      party2: 'archives:WildernessExpeditionParty2.swf',
+      party3: 'archives:WildernessExpeditionParty3.swf',
+      party4: 'archives:WildernessExpeditionParty4.swf',
+      party5: 'archives:WildernessExpeditionParty5.swf',
+      party6: 'archives:WildernessExpeditionParty6.swf',
+      party7: 'archives:WildernessExpeditionParty7.swf',
+      party8: 'archives:WildernessExpeditionParty8.swf',
+      party9: 'archives:WildernessExpeditionParty9.swf',
+      party10: 'archives:WildernessExpeditionParty10.swf',
+      party11: 'archives:WildernessExpeditionParty11.swf',
+      party12: 'archives:WildernessExpeditionParty12.swf',
+      party13: 'archives:WildernessExpeditionParty13.swf'
+    },
+    music: {
+      party1: 304,
+      party2: 303,
+      party3: 303,
+      party4: 303,
+      party5: 303,
+      party6: 303,
+      party7: 303,
+      party8: 303,
+      party9: 303,
+      party10: 302,
+      party11: 306,
+      party12: 304,
+      party13: 305
+    },
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:WildernessExpeditionPoster.swf'
+      },
+      'close_ups/party_note01.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote01.swf'
+      },
+      'close_ups/party_note02.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote02.swf'
+      },
+      'close_ups/party_note03.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote03.swf'
+      },
+      'close_ups/party_note04.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote04.swf'
+      },
+      'close_ups/party_note05.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote05.swf'
+      },
+      'catalogues/party.swf': {
+        'en': ['archives:PartyCatalogWildernessExpedition.swf', 'party_purchase']
+      }
+    },
+    // workaround shell and interface
+    generalChanges: {
+      'play/v2/client/interface.swf': 'approximation:wilderness_expedition/interface.swf',
+      'play/v2/client/shell.swf': 'approximation:wilderness_expedition/shell.swf'
+    },
+    startscreens: [
+      'archives:LoginWildernessExpedition.swf',
+      'archives:LoginWildernessExpedition2.swf'
+    ]
   }
 ];

@@ -589,6 +589,36 @@ const WORLD_STAMPS_TIMELINE: Array<{
       }
     ],
     start: '2011-08-25'
+  },
+  {
+    start: Update.WILDERNESS_EXPEDITION_START,
+    end: Update.WILDERNESS_EXPEDITION_END,
+    stamps: [
+      {
+        name: 'Path Finder',
+        id: 193,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: [
+              'user in 860'
+            ]
+          }
+        ]
+      },
+      {
+        name: 'Out At Sea',
+        id: 292,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: [
+              'user in 862'
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
 

@@ -265,6 +265,14 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'take_tour.swf',
       comment: 'Modified version from the legacy media which makes it compatible with all interfaces. There must have existed an old version of this file from prior to May 27 2010 but this is an approximation that will work for all interfaces'
+    },
+    {
+      file: 'wilderness_expedition/interface.swf',
+      comment: 'Modified version of the at the time of comitting unknown:interface_stamps.swf which added the function adoptFreePuffle, used in the Wilderness Expedition 2011, which was recreated as none of the archived interfaces included it'
+    },
+    {
+      file: 'wilderness_expedition/shell.swf',
+      comment: 'Modified version ot the legacy-media shell which added the function ownsPuffleType, used in the Wilderness Expedition 2011, which was recreated to fit this shell\'s functionality'
     }
   ],
   [RECREATION]: [

@@ -2095,5 +2095,26 @@ export function getStampbook(version: Version): string {
     ])
   }
 
+  if (isGreaterOrEqual(version, Update.WILDERNESS_EXPEDITION_START)) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        "stamp_id": 193,
+        "name": "Path Finder",
+        "is_member": false,
+        "rank": 2,
+        description: 'Complete a maze at a party',
+        rank_token: 'medium'
+      },
+      {
+        "stamp_id": 292,
+        "name": "Out At Sea",
+        "is_member": true,
+        "rank": 1,
+        "description": "Sail away from the island in a boat",
+        "rank_token": "easy"
+      }
+    ]);
+  }
+
   return JSON.stringify(newStampbook)
 }
