@@ -3613,6 +3613,10 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'mine': 256,
       'cave': 36
     },
+    roomMemberStatus: {
+      party2: true,
+      party3: true
+    },
     localChanges: {
       'close_ups/poster.swf': {
         'en': 'archives:PuffleParty2011Poster.swf'
