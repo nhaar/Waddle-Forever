@@ -9,7 +9,7 @@ import { getMapForDate } from ".";
 import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
 import { getMemberTimeline } from "./member";
-import { getPricesTimeline } from "./prices";
+import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
@@ -79,10 +79,12 @@ function getLocalPathsTimeline() {
 const localPathsTimeline = getLocalPathsTimeline();
 const globalPathsTimeline = getGlobalPathsTimeline();
 const pricesTimeline = getPricesTimeline();
+const furniturePricesTimeline = getFurniturePricesTimeline();
 
 /** Represents a unique global crumbs state */
 export type GlobalCrumbContent = {
   prices: Record<number, number | undefined>;
+  furniturePrices: Record<number, number | undefined>;
   music: Partial<Record<RoomName, number>>;
   member: Partial<Record<RoomName, boolean>>;
   paths: Record<string, string | undefined>;
@@ -243,6 +245,21 @@ export function getGlobalCrumbsOutput() {
         }
       });
     });
+
+    furniturePricesTimeline.forEach((versions, itemId) => {
+      versions.forEach((info) => {
+        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+          timeline.push({
+            date: info.date,
+            info: {
+              furniturePrices: {
+                [itemId]: info.info
+              }
+            }
+          });
+        }
+      });
+    });
   }, (prev, cur) => {
     return {
       music: {
@@ -252,6 +269,10 @@ export function getGlobalCrumbsOutput() {
       prices: {
         ...prev.prices,
         ...cur.prices
+      },
+      furniturePrices: {
+        ...prev.furniturePrices,
+        ...cur.furniturePrices
       },
       paths: {
         ...prev.paths,
@@ -266,6 +287,7 @@ export function getGlobalCrumbsOutput() {
   }, () => {
     return {
       prices: getMapForDate(pricesTimeline, Update.CPIP_UPDATE),
+      furniturePrices: getMapForDate(furniturePricesTimeline, Update.CPIP_UPDATE),
       music: getMapForDate(musicTimeline, Update.CPIP_UPDATE),
       newMigratorStatus: findInVersion(Update.CPIP_UPDATE, migratorTimeline) ?? false,
       paths: {},

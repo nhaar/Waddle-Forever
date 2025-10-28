@@ -76,14 +76,14 @@ function changeRoomInfo(crumbs: string, roomInfo: RoomInfoChange): string {
   return lines.join('\n')
 }
 
-function changeItemCosts(crumbs: string, prices: Record<number, number | undefined>): string {
+function changeCostsBase(crumbs: string, prices: Record<number, number | undefined>, lineSkips: number, name: string): string {
   // map ID of item to the index of its line that contains the cost
-  const paperCrumbs = new Map<number, number>();
+  const itemCrumbs = new Map<number, number>();
 
   const lines = crumbs.split('\n');
   for (let i = 0; i < lines.length; i++) {
     // search for paper_crumbs instruction
-    if (lines[i].startsWith('Push "paper_crumbs"')) {
+    if (lines[i].startsWith(`Push "${name}_crumbs"`)) {
       // skip to line with ID
       i += 2;
       // get id (some lines will push paper_crumbs and not have this id)
@@ -93,13 +93,13 @@ function changeItemCosts(crumbs: string, prices: Record<number, number | undefin
         const id = idMatch[1];
 
         // skip to line with cost
-        i += 2;
-        paperCrumbs.set(Number(id), i);
+        i += lineSkips;
+        itemCrumbs.set(Number(id), i);
       }
     }
   }
 
-  paperCrumbs.forEach((index, id) => {
+  itemCrumbs.forEach((index, id) => {
     const price = prices[id];
     if (price !== undefined) {
       // remove cost from the start, insert new cost
@@ -109,6 +109,15 @@ function changeItemCosts(crumbs: string, prices: Record<number, number | undefin
   });
 
   return lines.join('\n');
+}
+
+function changeItemCosts(crumbs: string, prices: Record<number, number | undefined>): string {
+  return changeCostsBase(crumbs, prices, 2, 'paper');
+}
+
+function changeFurnitureCosts(crumbs: string, prices: Record<number, number | undefined>): string {
+  return changeCostsBase(crumbs, prices, 4, 'furniture');
+  
 }
 
 function addGlobalPath(crumbs: string, pathName: string, path: string): string {
@@ -165,6 +174,10 @@ function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): str
 
   if (changes.prices !== undefined) {
     newCrumbs = changeItemCosts(newCrumbs, changes.prices);
+  }
+
+  if (changes.furniturePrices !== undefined) {
+    newCrumbs = changeFurnitureCosts(newCrumbs, changes.furniturePrices);
   }
 
   if (changes.paths !== undefined) {

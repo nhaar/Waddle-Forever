@@ -33,6 +33,7 @@ export type PartyChanges = {
 
   /** Price updates */
   prices?: Partial<Record<number, number>>;
+  furniturePrices?: Partial<Record<number, number>>;
 
   roomMemberStatus?: Partial<Record<RoomName, boolean>>;
 
@@ -3521,6 +3522,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       party11: 306,
       party12: 304,
       party13: 305
+    },
+    furniturePrices: {
+      665: 0
     },
     localChanges: {
       'close_ups/poster.swf': {
