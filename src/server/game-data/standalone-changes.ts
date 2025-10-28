@@ -185,6 +185,16 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
         'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
       }
     }
+  },
+  {
+    // implementing 2011 AS3 startscreens
+    date: Update.AS3_STARTSCREEN,
+    generalChanges: {
+      'play/v2/client/club_penguin.swf': 'archives:ClientClubPenguin2011-03-28.swf',
+      'play/v2/client/world.swf': 'archives:ClientWorld.swf',
+      'play/v2/client/login.swf': 'archives:ClientLogin2011-08-20.swf',
+      'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf'
+    }
   }
 ];
 

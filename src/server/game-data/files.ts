@@ -273,6 +273,22 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'wilderness_expedition/shell.swf',
       comment: 'Modified version ot the legacy-media shell which added the function ownsPuffleType, used in the Wilderness Expedition 2011, which was recreated to fit this shell\'s functionality'
+    },
+    {
+      file: 'temp_php_files/game_strings.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/puffle_care.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/puffles.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/weblogger.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
     }
   ],
   [RECREATION]: [

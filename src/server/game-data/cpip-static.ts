@@ -264,5 +264,9 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/fire/lang/en/locale.swf': 'slegacy:media/play/v2/games/fire/lang/en/locale.swf',
   'play/v2/games/fire/lang/es/locale.swf': 'slegacy:media/play/v2/games/fire/lang/es/locale.swf',
   'play/v2/games/fire/lang/fr/locale.swf': 'slegacy:media/play/v2/games/fire/lang/fr/locale.swf',
-  'play/v2/games/fire/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/lang/pt/locale.swf'
+  'play/v2/games/fire/lang/pt/locale.swf': 'slegacy:media/play/v2/games/fire/lang/pt/locale.swf',
+  'en/web_service/game_strings.php': 'approximation:temp_php_files/game_strings.php',
+  'en/web_service/puffle_care.php': 'approximation:temp_php_files/puffle_care.php',
+  'en/web_service/puffles.php': 'approximation:temp_php_files/puffles.php',
+  'en/web_service/weblogger.php': 'approximation:temp_php_files/weblogger.php'
 };
