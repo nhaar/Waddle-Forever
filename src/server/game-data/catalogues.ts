@@ -66,7 +66,10 @@ export const CPIP_CATALOGS: DateRefMap = {
   '2010-09-03': 'archives:September10Style.swf',
   '2010-10-01': 'archives:PSOct2010.swf',
   '2010-11-05': 'archives:November10Style.swf',
-  '2010-12-03': 'archives:PenguinStyleDec2010.swf'
+  '2010-12-03': 'archives:PenguinStyleDec2010.swf',
+  '2011-01-11': 'archives:January11Style.swf',
+  '2011-02-11': 'archives:PenguinStyleFeb2011.swf',
+  '2011-03-11': 'archives:PenguinStyleMar2011.swf'
 };
 
 /** All furniture catalogs */
@@ -91,7 +94,10 @@ export const FURNITURE_CATALOGS: DateRefMap = {
   '2010-09-24': 'archives:FurnitureSept10.swf',
   '2010-10-15': 'archives:October10Furniture.swf',
   '2010-11-12': 'archives:FurnNov2010.swf',
-  '2010-12-10': 'archives:FurnDec2010.swf'
+  '2010-12-10': 'archives:FurnDec2010.swf',
+  '2011-01-14': 'archives:Jan-Feb2011BetterIgloos.swf',
+  '2011-02-11': 'archives:Feb-Mar2011BetterIgloos.swf',
+  '2011-03-12': 'archives:Mar-Apr2011Furniture.swf'
 };
 
 /** All igloo catalogs */
