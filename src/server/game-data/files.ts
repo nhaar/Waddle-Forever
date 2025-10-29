@@ -1212,7 +1212,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'water_party_2007/dojo.swf',
-      comment: 'Made by Doubleuman, added puddle, water balloons, changed block, based on a previously compiled SWF of a FLA that wasn't accurate'
+      comment: 'Made by Doubleuman, added puddle, water balloons, changed block, based on a previously compiled SWF of a FLA that wasn\'t accurate'
     },
     {
       file: 'halloween_2006/village.swf',
