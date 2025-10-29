@@ -490,13 +490,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       pizza: 'recreation:halloween_2006/pizza.swf',
       rink: 'recreation:halloween_2006/rink.swf',
       mtn: 'recreation:halloween_2006/mtn.swf',
-      shack: 'recreation:halloween_2006/shack.swf'
+      shack: 'recreation:halloween_2006/shack.swf',
+      village: 'recreation:halloween_2006/village.swf'
     },
     music: {
       'town': 205,
       'rink': 205,
       'mtn': 205,
-      'shack': 205
+      'shack': 205,
+      'village': 205
     }
   },
   {
