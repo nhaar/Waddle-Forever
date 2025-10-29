@@ -51,6 +51,7 @@ const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
+// automatically add missing year options (shouldnt be done like this but who cares)
 function ensureYearOptions(days: DateInfo[]): void {
   const yearsInData = Array.from(new Set(days.map((day) => day.year))).sort((a, b) => a - b);
   const existingYears = new Set(
@@ -612,7 +613,7 @@ function updateVersion(version: string) {
 
 window.addEventListener('get-timeline', (e: any) => {
   const days = e.detail as DateInfo[];
-  ensureYearOptions(days);
+  ensureYearOptions(days); // add missing year options
   getSettings().then((settings) => {
     currentVersion = settings.version;
     const dateInfo = getDateInfo(currentVersion);
