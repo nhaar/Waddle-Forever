@@ -258,7 +258,7 @@ export const ROOMS: Record<RoomName, Room> = {
   'eco': {
     id: 122,
     name: 'Recycling Plant',
-    preCpipName: ''
+    preCpipName: null
   },
   'beach': {
     id: 400,
