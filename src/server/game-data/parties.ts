@@ -3661,5 +3661,103 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       }
     ]
+  },
+  {
+    name: 'April Fools',
+    date: '2011-03-25',
+    end: '2011-04-05',
+    globalChanges: {
+      'scavenger_hunt/hunt_ui.swf': ['archives:AprilFoolsParty2011Scavenger_hunt.swf', 'april_fools_hunt', 'scavenger_hunt']
+    },
+    scavengerHunt2010: {
+      iconFileId: 'archives:AprilFoolsParty2011Scavenger_hunt_icon.swf',
+      iconFilePath: 'archives:AprilFoolsParty2011Scavenger_hunt_icon.swf'
+    },
+    startscreens: [
+      'archives:LoginAprilfools2.swf',
+      'archives:LoginAprilFools2011.swf'
+    ],
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:AprilFoolsParty2011Poster.swf'
+      },
+      'catalogues/party.swf': {
+        'en': 'archives:AprilFoolsParty2011PartyCatalog.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:AprilFoolsParty2011MembershipParty2.swf'
+      }
+    },
+    roomChanges: {
+      'party1': 'archives:AprilFools\'Party2011Party1.swf',
+      'party2': 'archives:AprilFools\'Party2011Party2.swf',
+      'party3': 'archives:AprilFools\'Party2011Party3.swf',
+      'party4': 'archives:AprilFools\'Party2011Party4.swf',
+      'party5': 'archives:AprilFools\'Party2011Party5.swf',
+      'party6': 'archives:AprilFools\'Party2011Party6.swf',
+      'party7': 'archives:AprilFools\'Party2011Party7.swf',
+      'party8': 'archives:AprilFools\'Party2011Party8.swf',
+      'beach': 'archives:AprilFools\'Party2011Beach.swf',
+      'town': 'archives:RoomsTown-AprilFoolsParty2011.swf',
+      'shop': 'archives:AprilFools\'Party2011Shop.swf',
+      'eco': 'archives:AprilFools\'Party2011Eco.swf',
+      'forts': 'archives:AprilFools\'Party2011Forts.swf',
+      'beacon': 'archives:AprilFools\'Party2011Beacon.swf',
+      'berg': 'archives:AprilFools\'Party2011Berg.swf',
+      'boiler': 'archives:AprilFools\'Party2011Boiler.swf',
+      'cove': 'archives:AprilFools\'Party2011Cove.swf',
+      'dance': 'archives:AprilFools\'Party2011Dance.swf',
+      'mine': 'archives:AprilFools\'Party2011Mine.swf',
+      'lodge': 'archives:AprilFools\'Party2011Lodge.swf',
+      'dock': 'archives:AprilFools\'Party2011Dock.swf',
+      'boxdimension': 'archives:AprilFools\'Party2011Boxdimension.swf',
+      'village': 'archives:AprilFools\'Party2011Village.swf',
+      'pizza': 'archives:AprilFools\'Party2011Pizza.swf',
+      'coffee': 'archives:AprilFools\'Party2011Coffee.swf',
+      'cave': 'archives:AprilFools\'Party2011Cave.swf',
+      'light': 'archives:AprilFools\'Party2011Light.swf'
+    },
+    construction: {
+      date: '2011-03-21',
+      changes: {
+        'beach': 'archives:BeachConstructionAprilFoolsParty2011.swf',
+        'dock': 'archives:DockCostructionAprilFoolsParty2011.swf',
+        'berg': 'archives:IceBergConstructionAprilFoolsParty2011.swf',
+        'village': 'archives:SkiVillageCostructionAprilFoolsParty2011.swf',
+        'forts': 'archives:SnowFortsContructionAprilFoolsParty2011.swf',
+        'boxdimension': 'archives:BoxDimensionConstructionAprilFoolsParty2011.swf'
+      }
+    },
+    music: {
+      'party1': 229,
+      'party2': 307,
+      'party3': 265,
+      'party4': 215,
+      'party5': 208,
+      'party6': 209,
+      'party7': 220,
+      'party8': 11,
+      'town': 232,
+      'shop': 201,
+      'dance': 231,
+      'light': 201,
+      'lodge': 201,
+      'eco': 201,
+      'cove': 232,
+      'beacon': 232,
+      'forts': 232,
+      'pizza': 201,
+      'dock': 232,
+      'berg': 232,
+      'mine': 201,
+      'boiler': 201,
+      'coffee': 201,
+      'cave': 201,
+      'beach': 232,
+      'village': 232
+    },
+    roomMemberStatus: {
+      'party6': true
+    }
   }
 ];

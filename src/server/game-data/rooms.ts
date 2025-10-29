@@ -33,6 +33,7 @@ export type RoomName = 'town' |
   'sport' |
   'mtn' |
   'shack' |
+  'eco' |
   'lodge' |
   'attic' |
   'pizza' |
@@ -253,6 +254,11 @@ export const ROOMS: Record<RoomName, Room> = {
     id: 807,
     name: 'Mine Shack',
     preCpipName: 'Shack'
+  },
+  'eco': {
+    id: 122,
+    name: 'Recycling Plant',
+    preCpipName: null
   },
   'beach': {
     id: 400,
