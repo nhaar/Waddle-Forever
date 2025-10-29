@@ -289,6 +289,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'temp_php_files/weblogger.php',
       comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'shell.swf',
+      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added'
     }
   ],
   [RECREATION]: [

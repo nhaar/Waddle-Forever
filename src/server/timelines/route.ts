@@ -143,6 +143,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
       this.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', start, end);
       this.add(path.join('play/v2/content/global', changes.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), changes.scavengerHunt2010.iconFileId, start, end);
     }
+    if (changes.scavengerHunt2011 !== undefined) {
+      this.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), changes.scavengerHunt2011.icon, start, end);
+    }
+
     if (changes.fairCpip !== undefined) {
       this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
       this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);

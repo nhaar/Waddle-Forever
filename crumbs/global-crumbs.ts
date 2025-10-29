@@ -7,6 +7,7 @@ import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbContent } from '../src/server/timelines/crumbs';
 import { generateCrumbFiles } from './base-crumbs';
 import { iterateEntries } from '../src/common/utils';
+import { GlobalHuntCrumbs } from '../src/server/game-data/parties';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 
@@ -140,6 +141,25 @@ function addGlobalPath(crumbs: string, pathName: string, path: string): string {
   return lines.join('\n');
 }
 
+function addScavengerHunt(crumb: string, hunt: GlobalHuntCrumbs): string {
+  return `${crumb}
+Push "scavenger_hunt_crumbs", 0.0, "Object"
+NewObject
+DefineLocal
+Push "scavenger_hunt_crumbs"
+GetVariable
+Push "hunt_active", true
+SetMember
+Push "scavenger_hunt_crumbs"
+GetVariable
+Push "member_hunt", ${hunt.member ? 'true' : 'false'}
+SetMember
+Push "scavenger_hunt_crumbs"
+GetVariable
+Push "itemRewardID", ${hunt.reward}
+SetMember`;
+}
+
 /**
  * Creates a new global_crumbs.swf file
  * @param outputPath Path the SWF will be saved in
@@ -191,6 +211,10 @@ function applyChanges(crumbs: string, changes: Partial<GlobalCrumbContent>): str
 
   if (changes.newMigratorStatus !== undefined) {
     newCrumbs = setMigratorStatus(newCrumbs, changes.newMigratorStatus);
+  }
+
+  if (changes.hunt !== undefined) {
+    newCrumbs = addScavengerHunt(newCrumbs, changes.hunt);
   }
 
   return newCrumbs;

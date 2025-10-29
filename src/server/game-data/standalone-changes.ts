@@ -367,7 +367,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   ],
   'play/v2/client/shell.swf': [
     {
-      fileRef: 'slegacy:media/play/v2/client/shell.swf',
+      fileRef: 'approximation:shell.swf',
       date: Update.CPIP_UPDATE
     },
     {

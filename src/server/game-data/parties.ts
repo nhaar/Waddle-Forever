@@ -7,6 +7,31 @@ import { Update } from "./updates";
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
 
+export type GlobalHuntCrumbs = {
+  member: boolean;
+  reward: number;
+}
+
+export type LocalHuntCrumbs = {
+  en: {
+    loading: string;
+    title: string;
+    start: string;
+    itemsFound: string;
+    itemsFoundPlural: string;
+    claim: string;
+    continue: string;
+    clues: [ string, string, string, string, string, string, string, string ];
+  }
+}
+
+
+export type HuntCrumbs = {
+  global: GlobalHuntCrumbs;
+  lang: LocalHuntCrumbs;
+  icon: FileRef;
+};
+
 type Language = 'en';
 
 /** First element is file id used, then a list of all the crumbs that point to this path */
@@ -48,6 +73,8 @@ export type PartyChanges = {
     // if not supplied, will use a placeholder one
     iconFilePath?: string;
   };
+
+  scavengerHunt2011?: HuntCrumbs
 
   // TODO maybe also supplying the ID if we know
   // otherwise default egg id to 1
@@ -3673,10 +3700,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     globalChanges: {
       'scavenger_hunt/hunt_ui.swf': ['archives:AprilFoolsParty2011Scavenger_hunt.swf', 'april_fools_hunt', 'scavenger_hunt']
     },
-    scavengerHunt2010: {
-      iconFileId: 'archives:AprilFoolsParty2011Scavenger_hunt_icon.swf',
-      iconFilePath: 'archives:AprilFoolsParty2011Scavenger_hunt_icon.swf'
-    },
     startscreens: [
       'archives:LoginAprilfools2.swf',
       'archives:LoginAprilFools2011.swf'
@@ -3762,6 +3785,42 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     roomMemberStatus: {
       'party6': true
+    },
+    permanentChanges: {
+      generalChanges: {
+        // interface that has scavenger hunt functions
+        'play/v2/client/interface.swf': 'archives:ClientInterface20110830.swf',
+        // engine that has teleport functions
+        'play/v2/client/engine.swf': 'archives:ClientEngine2012-10-17.swf'
+      }
+    },
+    scavengerHunt2011: {
+      icon: 'archives:AprilFoolsParty2011Scavenger_hunt_icon.swf',
+      global: {
+        member: true,
+        reward: 4339,
+      },
+      lang: {
+        en: {
+          loading: 'Loading Scavenger Hunt',
+          title: 'SILLY SCAVENGER HUNT',
+          start: 'You have found',
+          itemsFound: 'You have found %num% piece',
+          itemsFoundPlural: 'You have found %num% pieces',
+          claim: 'Claim Prize',
+          continue: 'Continue',
+          clues: [
+            "Start where,\\norange puffles go,\\n\\nIn a room with\\na purple glow.\\n",
+            "Continue the search,\\namong the sand,\\n\\nWhere red mountains,\\nframe the land.\\n",
+            "This blank page\\nholds much potential\\n\\nYour imagination\\nis essential!\\n",
+            "If you find yourself\\nnext to Mars...\\n\\n...find something hidden\\nin the stars \\n",
+            "The stage is\\njust the thing\\n\\nTo find a clue\\nfit for a king\\n",
+            "Finding this one\\nwill turn you around\\n\\nIn a room\\nwhere up is down\\n",
+            "To free this piece:\\nyou\\'ll need a clue:\\n\\nFind your way\\nthrough bright pink brew \\n",
+            "This Scavenger Hunt\\nis extreme!\\n\\nFind this piece\\nby a chocolate stream\\n"
+          ]
+        }
+      }
     }
   }
 ];

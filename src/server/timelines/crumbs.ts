@@ -2,9 +2,9 @@ import path from "path";
 import crypto from 'crypto';
 import { RoomName } from "../game-data/rooms";
 import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
-import { PARTIES } from "../game-data/parties";
+import { GlobalHuntCrumbs, HuntCrumbs, LocalHuntCrumbs, PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
-import { findInVersion, processTimeline, TimelineEvent, TimelineMap } from "../game-data";
+import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
 import { getMapForDate } from ".";
 import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
@@ -14,6 +14,7 @@ import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
 const memberTimeline = getMemberTimeline();
+const huntTimeline = getHuntTimeline();
 
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 export const TICKET_ICON_PATH = 'tickets.swf';
@@ -38,6 +39,10 @@ function getGlobalPathsTimeline() {
     if (party.scavengerHunt2010 !== undefined) {
       const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
       timeline.add('scavenger_hunt_icon', huntIconPath, party.date, party.end);
+    }
+
+    if (party.scavengerHunt2011 !== undefined) {
+      timeline.add('scavenger_hunt_icon', SCAVENGER_ICON_PATH, party.date, party.end);
     }
 
     if (party.fairCpip !== undefined) {
@@ -89,10 +94,12 @@ export type GlobalCrumbContent = {
   member: Partial<Record<RoomName, boolean>>;
   paths: Record<string, string | undefined>;
   newMigratorStatus: boolean;
+  hunt: GlobalHuntCrumbs | undefined;
 }
 
 export type LocalCrumbContent = {
   paths: Record<string, string | undefined>;
+  hunt: LocalHuntCrumbs | undefined;
 }
 
 export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
@@ -131,15 +138,48 @@ export function getLocalCrumbsOutput() {
         }
       })
     });
+
+    huntTimeline.forEach((info) => {
+      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        timeline.push({
+          date: info.date,
+          info: {
+            hunt: info.info?.lang
+          }
+        });
+      }
+    });
   }, (prev, cur) => {
     return {
-      paths: { ...prev.paths, ...cur.paths }
+      paths: { ...prev.paths, ...cur.paths },
+      hunt: cur.hunt
     };
   }, () => {
     return {
-      paths: {}
+      paths: {},
+      hunt: undefined
     }
   });
+}
+
+function getHuntTimeline() {
+  const timeline = new VersionsTimeline<undefined | HuntCrumbs>();
+  timeline.add({
+    date: Update.BETA_RELEASE,
+    info: undefined
+  });
+
+  PARTIES.forEach((party) => {
+    if (party.scavengerHunt2011 !== undefined) {
+      timeline.add({
+        date: party.date,
+        end: party.end,
+        info: party.scavengerHunt2011
+      });
+    }
+  });
+
+  return timeline.getVersions();
 }
 
 function getBaseCrumbsOutput<CrumbContent>(
@@ -260,6 +300,17 @@ export function getGlobalCrumbsOutput() {
         }
       });
     });
+
+    huntTimeline.forEach((info) => {
+      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        timeline.push({
+          date: info.date,
+          info: {
+            hunt: info.info?.global
+          }
+        });
+      }
+    });
   }, (prev, cur) => {
     return {
       music: {
@@ -282,7 +333,8 @@ export function getGlobalCrumbsOutput() {
         ...prev.member,
         ...cur.member
       },
-      newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus
+      newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus,
+      hunt: cur.hunt
     }
   }, () => {
     return {
@@ -291,7 +343,8 @@ export function getGlobalCrumbsOutput() {
       music: getMapForDate(musicTimeline, Update.CPIP_UPDATE),
       newMigratorStatus: findInVersion(Update.CPIP_UPDATE, migratorTimeline) ?? false,
       paths: {},
-      member: getMapForDate(memberTimeline, Update.CPIP_UPDATE)
+      member: getMapForDate(memberTimeline, Update.CPIP_UPDATE),
+      hunt: undefined
     }
   });
 }
