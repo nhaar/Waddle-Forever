@@ -711,6 +711,32 @@ const WORLD_STAMPS_TIMELINE: Array<{
         ]
       }
     ]
+  },
+  {
+    start: Update.APRIL_FOOLS_11_START,
+    end: Update.APRIL_FOOLS_11_END,
+    stamps: [
+      {
+        name: 'Food Fight',
+        id: 332,
+        declarations: [
+          {
+            // candy dimension
+            event: 'any penguin snowballHit',
+            conditions: [
+              'user in 854'
+            ]
+          },
+          {
+            // piza parlor
+            event: 'any penguin snowballHit',
+            conditions: [
+              'user in 330'
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
 

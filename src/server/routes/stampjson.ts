@@ -2129,5 +2129,18 @@ export function getStampbook(version: Version): string {
     ]);
   }
 
+  if (isGreaterOrEqual(version, Update.APRIL_FOOLS_11_START)) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        stamp_id: 332,
+        name: 'Food Fight',
+        is_member: false,
+        rank: 1,
+        description: 'Throw your meal in a place where food is found',
+        rank_token: 'easy'
+      }
+    ]);
+  }
+
   return JSON.stringify(newStampbook)
 }

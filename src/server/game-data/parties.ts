@@ -3695,8 +3695,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'April Fools',
-    date: '2011-03-25',
-    end: '2011-04-05',
+    date: Update.APRIL_FOOLS_11_START,
+    end: Update.APRIL_FOOLS_11_END,
     globalChanges: {
       'scavenger_hunt/hunt_ui.swf': ['archives:AprilFoolsParty2011Scavenger_hunt.swf', 'april_fools_hunt', 'scavenger_hunt']
     },
