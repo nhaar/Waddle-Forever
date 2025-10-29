@@ -3722,10 +3722,10 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       changes: {
         'beach': 'archives:BeachConstructionAprilFoolsParty2011.swf',
         'dock': 'archives:DockCostructionAprilFoolsParty2011.swf',
-        'berg': 'archives:IceBergCostructionAprilFoolsParty2011.swf',
+        'berg': 'archives:IceBergConstructionAprilFoolsParty2011.swf',
         'village': 'archives:SkiVillageCostructionAprilFoolsParty2011.swf',
         'forts': 'archives:SnowFortsContructionAprilFoolsParty2011.swf',
-        'boxdimension': 'archives:BoxDimensionCostructionAprilFoolsParty2011.swf'
+        'boxdimension': 'archives:BoxDimensionConstructionAprilFoolsParty2011.swf'
       }
     },
     music: {
