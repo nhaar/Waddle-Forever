@@ -503,7 +503,21 @@ function createCalendar(
     updateDayOverview(NON_DAY_DESCRIPTION, '');
   }
 
-  yearElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
+  yearElement.onchange = () => {
+    const selectedYear = Number(yearElement.value);
+    const availableMonths = days
+      .filter((day) => day.year === selectedYear)
+      .map((day) => day.month);
+    if (availableMonths.length > 0) {
+      const uniqueMonths = Array.from(new Set(availableMonths)).sort((a, b) => a - b);
+      const currentMonthIndex = MONTHS.indexOf(monthElement.value);
+      const currentMonth = currentMonthIndex === -1 ? null : currentMonthIndex + 1;
+      if (currentMonth === null || !uniqueMonths.includes(currentMonth)) {
+        monthElement.value = MONTHS[uniqueMonths[0] - 1];
+      }
+    }
+    createCalendar(days, CalendarScrollAction.ScrollToMonth);
+  };
   monthElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
 
   const as3Footer = document.getElementById('as3-footer')!;
@@ -576,7 +590,21 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
     })
   });
 
-  yearElement.onchange = () => updateTimeline(days);
+  yearElement.onchange = () => {
+    const selectedYear = Number(yearElement.value);
+    const availableMonths = days
+      .filter((day) => day.year === selectedYear)
+      .map((day) => day.month);
+    if (availableMonths.length > 0) {
+      const uniqueMonths = Array.from(new Set(availableMonths)).sort((a, b) => a - b);
+      const currentMonthIndex = MONTHS.indexOf(monthElement.value);
+      const currentMonth = currentMonthIndex === -1 ? null : currentMonthIndex + 1;
+      if (currentMonth === null || !uniqueMonths.includes(currentMonth)) {
+        monthElement.value = MONTHS[uniqueMonths[0] - 1];
+      }
+    }
+    updateTimeline(days);
+  };
   monthElement.onchange = () => updateTimeline(days);
 }
 
