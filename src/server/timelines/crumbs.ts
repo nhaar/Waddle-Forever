@@ -1,18 +1,20 @@
 import path from "path";
 import crypto from 'crypto';
-import hash from 'object-hash';
 import { RoomName } from "../game-data/rooms";
 import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
-import { PARTIES } from "../game-data/parties";
+import { GlobalHuntCrumbs, HuntCrumbs, LocalHuntCrumbs, PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
-import { findInVersion, processTimeline, TimelineEvent, TimelineMap } from "../game-data";
-import { ITEMS } from "../game-logic/items";
+import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
 import { getMapForDate } from ".";
 import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
+import { getMemberTimeline } from "./member";
+import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
+const memberTimeline = getMemberTimeline();
+const huntTimeline = getHuntTimeline();
 
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 export const TICKET_ICON_PATH = 'tickets.swf';
@@ -37,6 +39,10 @@ function getGlobalPathsTimeline() {
     if (party.scavengerHunt2010 !== undefined) {
       const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
       timeline.add('scavenger_hunt_icon', huntIconPath, party.date, party.end);
+    }
+
+    if (party.scavengerHunt2011 !== undefined) {
+      timeline.add('scavenger_hunt_icon', SCAVENGER_ICON_PATH, party.date, party.end);
     }
 
     if (party.fairCpip !== undefined) {
@@ -78,17 +84,22 @@ function getLocalPathsTimeline() {
 const localPathsTimeline = getLocalPathsTimeline();
 const globalPathsTimeline = getGlobalPathsTimeline();
 const pricesTimeline = getPricesTimeline();
+const furniturePricesTimeline = getFurniturePricesTimeline();
 
 /** Represents a unique global crumbs state */
 export type GlobalCrumbContent = {
   prices: Record<number, number | undefined>;
+  furniturePrices: Record<number, number | undefined>;
   music: Partial<Record<RoomName, number>>;
+  member: Partial<Record<RoomName, boolean>>;
   paths: Record<string, string | undefined>;
   newMigratorStatus: boolean;
+  hunt: GlobalHuntCrumbs | undefined;
 }
 
 export type LocalCrumbContent = {
   paths: Record<string, string | undefined>;
+  hunt: LocalHuntCrumbs | undefined;
 }
 
 export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
@@ -127,18 +138,51 @@ export function getLocalCrumbsOutput() {
         }
       })
     });
+
+    huntTimeline.forEach((info) => {
+      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        timeline.push({
+          date: info.date,
+          info: {
+            hunt: info.info?.lang
+          }
+        });
+      }
+    });
   }, (prev, cur) => {
     return {
-      paths: { ...prev.paths, ...cur.paths }
+      paths: { ...prev.paths, ...cur.paths },
+      hunt: cur.hunt
     };
   }, () => {
     return {
-      paths: {}
+      paths: {},
+      hunt: undefined
     }
   });
 }
 
-function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
+function getHuntTimeline() {
+  const timeline = new VersionsTimeline<undefined | HuntCrumbs>();
+  timeline.add({
+    date: Update.BETA_RELEASE,
+    info: undefined
+  });
+
+  PARTIES.forEach((party) => {
+    if (party.scavengerHunt2011 !== undefined) {
+      timeline.add({
+        date: party.date,
+        end: party.end,
+        info: party.scavengerHunt2011
+      });
+    }
+  });
+
+  return timeline.getVersions();
+}
+
+function getBaseCrumbsOutput<CrumbContent>(
   timelineBuilder: (timeline: TimelineEvent<Partial<CrumbContent>>[]) => void,
   mergeCrumbs: (prev: CrumbContent, cur: Partial<CrumbContent>) => CrumbContent,
   getFirstCrumb: () => CrumbContent
@@ -155,23 +199,14 @@ function getBaseCrumbsOutput<CrumbContent extends hash.NotUndefined>(
   const crumbs = processTimeline(timeline, (input) => {
     return input
   }, getFirstCrumb, mergeCrumbs, (out) => {
-    // this is a third party function that can properly hash objects
-    // even if their property order isn't the same
-    return hash(out);
+    // theoretically, stringify might not work if things are out of order
+    // however, due to how the crumbs are setup, this is not an issue
+    // (if the crumbs script ever breaks though, it's because it became an issue)
+    return JSON.stringify(out);
   });
 
   const crumbsHash = getMd5(JSON.stringify(crumbs))
   return { hash: crumbsHash, crumbs };
-}
-
-/** Get price object for a blank state */
-function getPricesTimeline() {
-  const timeline = new TimelineMap<number, number>();
-  ITEMS.rows.forEach((item) => {
-    timeline.add(item.id, item.cost, Update.CPIP_UPDATE);
-  });
-
-  return timeline.getVersionsMap();
 }
 
 /**
@@ -221,6 +256,21 @@ export function getGlobalCrumbsOutput() {
       });
     });
 
+    memberTimeline.forEach((versions, room) => {
+      versions.forEach((info) => {
+        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+          timeline.push({
+            date: info.date,
+            info: {
+              member: {
+                [room]: info.info
+              }
+            }
+          });
+        }
+      });
+    });
+
     pricesTimeline.forEach((versions, itemId) => {
       versions.forEach((info) => {
         if (isGreater(info.date, Update.CPIP_UPDATE)) {
@@ -235,6 +285,32 @@ export function getGlobalCrumbsOutput() {
         }
       });
     });
+
+    furniturePricesTimeline.forEach((versions, itemId) => {
+      versions.forEach((info) => {
+        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+          timeline.push({
+            date: info.date,
+            info: {
+              furniturePrices: {
+                [itemId]: info.info
+              }
+            }
+          });
+        }
+      });
+    });
+
+    huntTimeline.forEach((info) => {
+      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        timeline.push({
+          date: info.date,
+          info: {
+            hunt: info.info?.global
+          }
+        });
+      }
+    });
   }, (prev, cur) => {
     return {
       music: {
@@ -245,18 +321,30 @@ export function getGlobalCrumbsOutput() {
         ...prev.prices,
         ...cur.prices
       },
+      furniturePrices: {
+        ...prev.furniturePrices,
+        ...cur.furniturePrices
+      },
       paths: {
         ...prev.paths,
         ...cur.paths
       },
-      newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus
+      member: {
+        ...prev.member,
+        ...cur.member
+      },
+      newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus,
+      hunt: cur.hunt
     }
   }, () => {
     return {
       prices: getMapForDate(pricesTimeline, Update.CPIP_UPDATE),
+      furniturePrices: getMapForDate(furniturePricesTimeline, Update.CPIP_UPDATE),
       music: getMapForDate(musicTimeline, Update.CPIP_UPDATE),
       newMigratorStatus: findInVersion(Update.CPIP_UPDATE, migratorTimeline) ?? false,
-      paths: {}
+      paths: {},
+      member: getMapForDate(memberTimeline, Update.CPIP_UPDATE),
+      hunt: undefined
     }
   });
 }

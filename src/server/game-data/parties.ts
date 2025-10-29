@@ -7,6 +7,31 @@ import { Update } from "./updates";
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
 
+export type GlobalHuntCrumbs = {
+  member: boolean;
+  reward: number;
+}
+
+export type LocalHuntCrumbs = {
+  en: {
+    loading: string;
+    title: string;
+    start: string;
+    itemsFound: string;
+    itemsFoundPlural: string;
+    claim: string;
+    continue: string;
+    clues: [ string, string, string, string, string, string, string, string ];
+  }
+}
+
+
+export type HuntCrumbs = {
+  global: GlobalHuntCrumbs;
+  lang: LocalHuntCrumbs;
+  icon: FileRef;
+};
+
 type Language = 'en';
 
 /** First element is file id used, then a list of all the crumbs that point to this path */
@@ -31,6 +56,12 @@ export type PartyChanges = {
 
   music?: Partial<Record<RoomName, number>>;
 
+  /** Price updates */
+  prices?: Partial<Record<number, number>>;
+  furniturePrices?: Partial<Record<number, number>>;
+
+  roomMemberStatus?: Partial<Record<RoomName, boolean>>;
+
   activeMigrator?: MigratorVisit;
 
   /** A list of all backgrounds used for the startscreen. Each element bust be either a file, or a file and the exact name the startscreen uses for it */
@@ -42,6 +73,8 @@ export type PartyChanges = {
     // if not supplied, will use a placeholder one
     iconFilePath?: string;
   };
+
+  scavengerHunt2011?: HuntCrumbs
 
   // TODO maybe also supplying the ID if we know
   // otherwise default egg id to 1
@@ -445,8 +478,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     date: Update.LIGHTHOUSE_PARTY_START,
     end: '2006-09-24',
     roomChanges: {
-      'beacon': 'archives:Beacon30.swf',
       light: 'recreation:lighthouse_party_2006/light.swf',
+      beacon: 'recreation:lighthouse_party_2006/beacon.swf',
       beach: 'recreation:lighthouse_party_2006/beach.swf'
     },
     roomFrames: {
@@ -483,12 +516,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       attic: 'recreation:halloween_2006/attic.swf',
       pizza: 'recreation:halloween_2006/pizza.swf',
       rink: 'recreation:halloween_2006/rink.swf',
-      mtn: 'recreation:halloween_2006/mtn.swf'
+      mtn: 'recreation:halloween_2006/mtn.swf',
+      shack: 'recreation:halloween_2006/shack.swf',
+      village: 'recreation:halloween_2006/village.swf'
     },
     music: {
       'town': 205,
       'rink': 205,
-      'mtn': 205
+      'mtn': 205,
+      'shack': 205,
+      'village': 205
     }
   },
   {
@@ -568,11 +605,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2007-04-02',
     roomChanges: {
       shack: 'recreation:april_fools_2007/shack.swf',
-      berg: 'recreation:april_fools_2007/berg.swf'
+      berg: 'recreation:april_fools_2007/berg.swf',
+      mine: 'recreation:april_fools_2007/mine.swf'
     },
     music: {
       'shack': 201,
-      'berg': 201
+      'berg': 201,
+      'mine': 201
     }
   },
   {
@@ -674,13 +713,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2007-07-23',
     roomChanges: {
       dance: 'recreation:water_party_07_dance.swf',
-      'dojo': 'archives:ArtworkRoomsDojo50.swf',
       town: 'recreation:water_party_2007/town.swf',
       forest: 'recreation:water_party_2007/forest.swf',
       mtn: 'recreation:water_party_2007/mtn.swf',
+      dojo: 'recreation:water_party_2007/dojo.swf'
     },
     music: {
-      'dojo': 217,
+      dojo: 217,
       town: 218,
       forest: 218,
       mtn: 218
@@ -1845,6 +1884,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:AprilFoolMembership.swf'
       }
     },
+    roomMemberStatus: {
+      party3: true
+    },
     startscreens: ['archives:LoginScreenAprilFools2009.swf']
   },
   {
@@ -2703,6 +2745,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 232,
       'party': 261
     },
+    roomMemberStatus: {
+      party: true
+    },
     localChanges: {
       'membership/oops_april_fools.swf': {
         'en': ['archives:AprilFoolsParty2010MembershipOopsAprilFools.swf', 'oops_party_room']
@@ -3040,6 +3085,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:MountainExpeditionMembershipOopsExpedition.swf'
       }
     },
+    roomMemberStatus: {
+      party3: true
+    },
     music: {
       'party2': 294,
       'party3': 295,
@@ -3204,9 +3252,12 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'close_ups/halloweenposter.swf': {
         'en': 'archives:HalloweenParty2010Poster.swf'
       },
-      'membership/membership_party3.swf': {
+      'membership/party3.swf': {
         'en': 'archives:HalloweenParty2010MembershipParty3.swf'
       }
+    },
+    roomMemberStatus: {
+      party3: true
     },
     music: {
       'town': 251,
@@ -3464,5 +3515,312 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'archives:CFC2010LoginScreen.SWF',
       'archives:LoginDec2010Membership.swf',
       'archives:StartscreenENCoins_for_change_2-HolidayParty2010.swf']
+  },
+  {
+    name: 'Wilderness Expedition',
+    date: Update.WILDERNESS_EXPEDITION_START,
+    end: Update.WILDERNESS_EXPEDITION_END,
+    roomChanges: {
+      town: 'archives:RoomsTown-WildernessExpedition.swf',
+      plaza: 'archives:WildernessExpeditionPlaza.swf',
+      dock: 'archives:RoomsDock-WildernessExpedition.swf',
+      cove: 'archives:RoomsCove-WildernessExpedition.swf',
+      party1: 'archives:WildernessExpeditionParty1.swf',
+      party2: 'archives:WildernessExpeditionParty2.swf',
+      party3: 'archives:WildernessExpeditionParty3.swf',
+      party4: 'archives:WildernessExpeditionParty4.swf',
+      party5: 'archives:WildernessExpeditionParty5.swf',
+      party6: 'archives:WildernessExpeditionParty6.swf',
+      party7: 'archives:WildernessExpeditionParty7.swf',
+      party8: 'archives:WildernessExpeditionParty8.swf',
+      party9: 'archives:WildernessExpeditionParty9.swf',
+      party10: 'archives:WildernessExpeditionParty10.swf',
+      party11: 'archives:WildernessExpeditionParty11.swf',
+      party12: 'archives:WildernessExpeditionParty12.swf',
+      party13: 'archives:WildernessExpeditionParty13.swf'
+    },
+    music: {
+      party1: 304,
+      party2: 303,
+      party3: 303,
+      party4: 303,
+      party5: 303,
+      party6: 303,
+      party7: 303,
+      party8: 303,
+      party9: 303,
+      party10: 302,
+      party11: 306,
+      party12: 304,
+      party13: 305
+    },
+    furniturePrices: {
+      665: 0
+    },
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:WildernessExpeditionPoster.swf'
+      },
+      'close_ups/party_note01.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote01.swf'
+      },
+      'close_ups/party_note02.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote02.swf'
+      },
+      'close_ups/party_note03.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote03.swf'
+      },
+      'close_ups/party_note04.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote04.swf'
+      },
+      'close_ups/party_note05.swf': {
+        'en': 'archives:WildernessExpeditionPartyNote05.swf'
+      },
+      'catalogues/party.swf': {
+        'en': ['archives:PartyCatalogWildernessExpedition.swf', 'party_purchase']
+      },
+      'membership/party1.swf': {
+        'en': 'archives:WildernessExpeditionMembershipParty1.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:WildernessExpeditionMembershipParty2.swf'
+      }
+    },
+    // workaround shell and interface
+    generalChanges: {
+      'play/v2/client/interface.swf': 'approximation:wilderness_expedition/interface.swf',
+      'play/v2/client/shell.swf': 'approximation:wilderness_expedition/shell.swf'
+    },
+    startscreens: [
+      'archives:LoginWildernessExpedition.swf',
+      'archives:LoginWildernessExpedition2.swf'
+    ],
+    updates: [
+      {
+        date: '2011-01-24',
+        comment: 'Brown Puffles Houses are available for free',
+        roomChanges: {
+          party13: 'archives:RoomsParty13-WildernessExpedition.swf'
+        }
+      }
+    ]
+  },
+  {
+    name: 'Puffle Party',
+    date: Update.PUFFLE_PARTY_11_START,
+    end: Update.PUFFLE_PARTY_11_END,
+    roomChanges: {
+      'town': 'archives:RoomsTown-PuffleParty2011.swf',
+      'beach': 'archives:PuffleParty2011Beach.swf',
+      'berg': 'archives:PuffleParty2011Berg.swf',
+      'dock': 'archives:PuffleParty2011Dock.swf',
+      'forest': 'archives:PuffleParty2011Forest.swf',
+      'pet': 'archives:PuffleParty2011Pet.swf',
+      'plaza': 'archives:PuffleParty2011Plaza(1).swf',
+      'village': 'archives:PuffleParty2011Village.swf',
+      'forts': 'archives:PuffleParty2011Forts.swf',
+      'party1': 'archives:PuffleParty2011Party1.swf',
+      'party2': 'archives:PuffleParty2011Party2.swf',
+      'party3': 'archives:PuffleParty2011Party3.swf',
+      'dance': 'archives:PuffleParty2011Dance.swf',
+      'mine': 'archives:PuffleParty2011Mine.swf',
+      'light': 'archives:PuffleParty2011Light.swf',
+      'beacon': 'archives:PuffleParty2011Beacon.swf',
+      'cove': 'archives:PuffleParty2011Cove.swf',
+      'cave': 'archives:PuffleParty2011Cave.swf',
+      'boxdimension': 'archives:PuffleParty2011BoxDimension.swf',
+      'lounge': 'archives:PuffleParty2011Lounge.swf'
+    },
+    music: {
+      'town': 261,
+      'beach': 261,
+      'dock': 261,
+      'forts': 261,
+      'forest': 261,
+      'village': 261,
+      'light': 31,
+      'berg': 213,
+      'pet': 282,
+      'plaza': 261,
+      'party1': 261,
+      'party2': 282,
+      'dance': 260,
+      'lounge': 260,
+      'cove': 290,
+      'beacon': 261,
+      'mine': 256,
+      'cave': 36
+    },
+    roomMemberStatus: {
+      party2: true,
+      party3: true
+    },
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:PuffleParty2011Poster.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:PuffleParty2011MembershipParty2.swf'
+      },
+      'membership/party3.swf': {
+        'en': 'archives:PuffleParty2011MembershipParty3.swf'
+      }
+    },
+    startscreens: [
+      'archives:LoginPuffleParty2011(1).swf',
+      'archives:LoginPuffleParty2011(2).swf'
+    ],
+    construction: {
+      date: Update.PUFFLE_PARTY_11_CONST_START,
+      changes: {
+        'boxdimension': 'archives:PuffleParty2011ConstBoxDimension.swf',
+        'dance': 'archives:PuffleParty2011ConstDance.swf',
+        'mine': 'archives:PuffleParty2011ConstMine.swf',
+        'berg': 'archives:PuffleParty2011ConstBerg.swf',
+        'light': 'archives:PuffleParty2011ConstLight.swf',
+        'forest': 'archives:PuffleParty2011ConstForest.swf',
+        'lounge': 'archives:PuffleParty2011ConstLounge.swf',
+        'beacon': 'archives:PuffleParty2011ConstBeacon.swf',
+        'cave': 'archives:PuffleParty2010ConstCave.swf'
+      }
+    },
+    updates: [
+      {
+        date: Update.STAGE_FEB_11,
+        roomChanges: {
+          'plaza': 'archives:PuffleParty2011Plaza(2).swf'
+        }
+      }
+    ]
+  },
+  {
+    name: 'April Fools',
+    date: Update.APRIL_FOOLS_11_START,
+    end: Update.APRIL_FOOLS_11_END,
+    globalChanges: {
+      'scavenger_hunt/hunt_ui.swf': ['archives:AprilFoolsParty2011Scavenger_hunt.swf', 'april_fools_hunt', 'scavenger_hunt']
+    },
+    startscreens: [
+      'archives:LoginAprilfools2.swf',
+      'archives:LoginAprilFools2011.swf'
+    ],
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:AprilFoolsParty2011Poster.swf'
+      },
+      'catalogues/party.swf': {
+        'en': 'archives:AprilFoolsParty2011PartyCatalog.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:AprilFoolsParty2011MembershipParty2.swf'
+      }
+    },
+    roomChanges: {
+      'party1': 'archives:AprilFools\'Party2011Party1.swf',
+      'party2': 'archives:AprilFools\'Party2011Party2.swf',
+      'party3': 'archives:AprilFools\'Party2011Party3.swf',
+      'party4': 'archives:AprilFools\'Party2011Party4.swf',
+      'party5': 'archives:AprilFools\'Party2011Party5.swf',
+      'party6': 'archives:AprilFools\'Party2011Party6.swf',
+      'party7': 'archives:AprilFools\'Party2011Party7.swf',
+      'party8': 'archives:AprilFools\'Party2011Party8.swf',
+      'beach': 'archives:AprilFools\'Party2011Beach.swf',
+      'town': 'archives:RoomsTown-AprilFoolsParty2011.swf',
+      'shop': 'archives:AprilFools\'Party2011Shop.swf',
+      'eco': 'archives:AprilFools\'Party2011Eco.swf',
+      'forts': 'archives:AprilFools\'Party2011Forts.swf',
+      'beacon': 'archives:AprilFools\'Party2011Beacon.swf',
+      'berg': 'archives:AprilFools\'Party2011Berg.swf',
+      'boiler': 'archives:AprilFools\'Party2011Boiler.swf',
+      'cove': 'archives:AprilFools\'Party2011Cove.swf',
+      'dance': 'archives:AprilFools\'Party2011Dance.swf',
+      'mine': 'archives:AprilFools\'Party2011Mine.swf',
+      'lodge': 'archives:AprilFools\'Party2011Lodge.swf',
+      'dock': 'archives:AprilFools\'Party2011Dock.swf',
+      'boxdimension': 'archives:AprilFools\'Party2011Boxdimension.swf',
+      'village': 'archives:AprilFools\'Party2011Village.swf',
+      'pizza': 'archives:AprilFools\'Party2011Pizza.swf',
+      'coffee': 'archives:AprilFools\'Party2011Coffee.swf',
+      'cave': 'archives:AprilFools\'Party2011Cave.swf',
+      'light': 'archives:AprilFools\'Party2011Light.swf'
+    },
+    construction: {
+      date: '2011-03-21',
+      changes: {
+        'beach': 'archives:BeachConstructionAprilFoolsParty2011.swf',
+        'dock': 'archives:DockCostructionAprilFoolsParty2011.swf',
+        'berg': 'archives:IceBergConstructionAprilFoolsParty2011.swf',
+        'village': 'archives:SkiVillageCostructionAprilFoolsParty2011.swf',
+        'forts': 'archives:SnowFortsContructionAprilFoolsParty2011.swf',
+        'boxdimension': 'archives:BoxDimensionConstructionAprilFoolsParty2011.swf'
+      }
+    },
+    music: {
+      'party1': 229,
+      'party2': 307,
+      'party3': 265,
+      'party4': 215,
+      'party5': 208,
+      'party6': 209,
+      'party7': 220,
+      'party8': 11,
+      'town': 232,
+      'shop': 201,
+      'dance': 231,
+      'light': 201,
+      'lodge': 201,
+      'eco': 201,
+      'cove': 232,
+      'beacon': 232,
+      'forts': 232,
+      'pizza': 201,
+      'dock': 232,
+      'berg': 232,
+      'mine': 201,
+      'boiler': 201,
+      'coffee': 201,
+      'cave': 201,
+      'beach': 232,
+      'village': 232
+    },
+    roomMemberStatus: {
+      'party6': true
+    },
+    permanentChanges: {
+      generalChanges: {
+        // interface that has scavenger hunt functions
+        'play/v2/client/interface.swf': 'archives:ClientInterface20110830.swf',
+        // engine that has teleport functions
+        'play/v2/client/engine.swf': 'archives:ClientEngine2012-10-17.swf'
+      }
+    },
+    scavengerHunt2011: {
+      icon: 'archives:AprilFoolsParty2011Scavenger_hunt_icon.swf',
+      global: {
+        member: true,
+        reward: 4339,
+      },
+      lang: {
+        en: {
+          loading: 'Loading Scavenger Hunt',
+          title: 'SILLY SCAVENGER HUNT',
+          start: 'You have found',
+          itemsFound: 'You have found %num% piece',
+          itemsFoundPlural: 'You have found %num% pieces',
+          claim: 'Claim Prize',
+          continue: 'Continue',
+          clues: [
+            "Start where,\\norange puffles go,\\n\\nIn a room with\\na purple glow.\\n",
+            "Continue the search,\\namong the sand,\\n\\nWhere red mountains,\\nframe the land.\\n",
+            "This blank page\\nholds much potential\\n\\nYour imagination\\nis essential!\\n",
+            "If you find yourself\\nnext to Mars...\\n\\n...find something hidden\\nin the stars \\n",
+            "The stage is\\njust the thing\\n\\nTo find a clue\\nfit for a king\\n",
+            "Finding this one\\nwill turn you around\\n\\nIn a room\\nwhere up is down\\n",
+            "To free this piece:\\nyou\\'ll need a clue:\\n\\nFind your way\\nthrough bright pink brew \\n",
+            "This Scavenger Hunt\\nis extreme!\\n\\nFind this piece\\nby a chocolate stream\\n"
+          ]
+        }
+      }
+    }
   }
 ];

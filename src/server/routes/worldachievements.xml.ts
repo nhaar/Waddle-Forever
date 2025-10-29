@@ -589,6 +589,154 @@ const WORLD_STAMPS_TIMELINE: Array<{
       }
     ],
     start: '2011-08-25'
+  },
+  {
+    start: Update.WILDERNESS_EXPEDITION_START,
+    end: Update.WILDERNESS_EXPEDITION_END,
+    stamps: [
+      {
+        name: 'Path Finder',
+        id: 193,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: [
+              'user in 860'
+            ]
+          }
+        ]
+      },
+      {
+        name: 'Out At Sea',
+        id: 292,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: [
+              'user in 862'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    start: Update.PUFFLE_PARTY_11_START,
+    end: Update.PUFFLE_PARTY_11_END,
+    stamps: [
+      {
+        name: 'Party Puffle',
+        id: 330,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // blue puffle in forest
+              'user in 809',
+              'user wearing 750'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // pink puffle in berg
+              'user in 805',
+              'user wearing 751'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // black puffle in cave
+              'user in 806',
+              'user wearing 752'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // green puffle in beacon
+              'user in 411',
+              'user wearing 753'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // purple puffle in dance
+              'user in 120',
+              'user wearing 754'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // red puffle in cove
+              'user in 810',
+              'user wearing 755'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // yellow puffle in light
+              'user in 410',
+              'user wearing 756'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // white puffle in mine
+              'user in 808',
+              'user wearing 757'
+            ]
+          },
+          {
+            event: 'user enterRoom',
+            conditions: [
+              // orange puffle in box dimension
+              'user in 811',
+              'user wearing 758'
+            ]
+          },
+          {
+            // brown puffle in lounge
+            event: 'user enterRoom',
+            conditions: [
+              'user in 121',
+              'user wearing 759'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    start: Update.APRIL_FOOLS_11_START,
+    end: Update.APRIL_FOOLS_11_END,
+    stamps: [
+      {
+        name: 'Food Fight',
+        id: 332,
+        declarations: [
+          {
+            // candy dimension
+            event: 'any penguin snowballHit',
+            conditions: [
+              'user in 854'
+            ]
+          },
+          {
+            // piza parlor
+            event: 'any penguin snowballHit',
+            conditions: [
+              'user in 330'
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
 

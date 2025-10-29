@@ -199,6 +199,10 @@ would need to investigated`
     {
       file: 'RoomsPlaza-MusicJam2008.swf',
       comment: 'Added triggers and logic to this file that for some reason has unexisting logic'
+    },
+    {
+      file: 'PuffleRoundupWhitePuffle.swf',
+      comment: 'Removed domain check'
     }
   ],
   [APPROXIMATION]: [
@@ -261,6 +265,34 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'take_tour.swf',
       comment: 'Modified version from the legacy media which makes it compatible with all interfaces. There must have existed an old version of this file from prior to May 27 2010 but this is an approximation that will work for all interfaces'
+    },
+    {
+      file: 'wilderness_expedition/interface.swf',
+      comment: 'Modified version of the at the time of comitting unknown:interface_stamps.swf which added the function adoptFreePuffle, used in the Wilderness Expedition 2011, which was recreated as none of the archived interfaces included it'
+    },
+    {
+      file: 'wilderness_expedition/shell.swf',
+      comment: 'Modified version ot the legacy-media shell which added the function ownsPuffleType, used in the Wilderness Expedition 2011, which was recreated to fit this shell\'s functionality'
+    },
+    {
+      file: 'temp_php_files/game_strings.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/puffle_care.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/puffles.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/weblogger.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'shell.swf',
+      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added'
     }
   ],
   [RECREATION]: [
@@ -1169,6 +1201,26 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'catalog/furniture_cpip.swf',
       comment: 'Made by Blue Kirby. Ported the catalog to CPIP'
+    },
+    {
+      file: 'april_fools_2007/mine.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'lighthouse_party_2006/beacon.swf',
+      comment: 'Made by Doubleuman, comes from a previously compiled SWF of a FLA that was likely an earlier version, and it contained a depth error, which was fixed in this \"recreation\"'
+    },
+    {
+      file: 'halloween_2006/shack.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'water_party_2007/dojo.swf',
+      comment: 'Made by Doubleuman, added puddle, water balloons, changed block, based on a previously compiled SWF of a FLA that wasn\'t accurate'
+    },
+    {
+      file: 'halloween_2006/village.swf',
+      comment: 'Made by Lifeofgames477'
     }
   ],
   [MOD]: [

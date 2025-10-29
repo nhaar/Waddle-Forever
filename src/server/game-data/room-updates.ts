@@ -70,6 +70,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsForts40.swf',
       comment: 'The Snow Forts is redrawn'
+    },
+    {
+      date: '2007-02-23',
+      fileRef: 'archives:ArtworkRoomsForts41.swf',
+      comment: 'The Clock Tower is added to the Snow Forts'
     }
   ],
   plaza: [
@@ -234,12 +239,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   pet: [
     {
-      // white puffle release
-      fileRef: 'archives:RoomsPet_4.swf',
-      date: '2009-03-06',
-      comment: 'White puffles are available in the Pet Shop'
-    },
-    {
       // purple puffles release
       date: '2006-08-25',
       fileRef: 'archives:ArtworkRoomsPet12.swf',
@@ -273,6 +272,16 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:RoomsPet-Early2011.swf',
       comment: 'White Puffles are now in the Pet Shop'
     },
+    {
+      date: '2011-03-08',
+      fileRef: 'archives:Mar07.2011Pet.swf',
+      comment: 'The Pet Shop renovation finishes'
+    },
+    {
+      date: '2011-03-15',
+      fileRef: 'archives:RoomsPet_5.swf',
+      comment: 'Puffle Launch releases'
+    }
   ],
   shop: [
     {

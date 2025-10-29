@@ -40,6 +40,14 @@ export const PINS: Array<Pin> = [
     frame: 2
   },
   {
+    date: '2006-11-10',
+    end: '2006-11-24',
+    name: 'Jet Pack',
+    room: 'beach',
+    fileRef: 'archives:ArtworkRoomsBeach42.swf',
+    frame: 2
+  },
+  {
     date: '2006-11-24',
     end: '2006-12-08',
     name: 'Life Ring',

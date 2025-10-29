@@ -2,6 +2,7 @@ import path from "path";
 import { extractPcode, replacePcode } from "../src/common/ffdec/ffdec";
 import { generateCrumbFiles } from "./base-crumbs";
 import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent } from "../src/server/timelines/crumbs";
+import { LocalHuntCrumbs } from "../src/server/game-data/parties";
 
 const BASE_LOCAL_CRUMBS = path.join(__dirname, 'base_local_crumbs.swf');
 
@@ -29,6 +30,71 @@ function addLocalPath(crumbs: string, pathName: string, path: string): string {
   return lines.join('\n');
 }
 
+function addScavengerHunt(crumbs: string, hunt: LocalHuntCrumbs): string {
+  return `${crumbs}
+Push "lang"
+GetVariable
+Push "scavenger_hunt", "${hunt.en.loading}"
+SetMember
+Push "lang"
+GetVariable
+Push "title", "${hunt.en.title}"
+SetMember
+Push "lang"
+GetVariable
+Push "start_string", "${hunt.en.start}"
+SetMember
+Push "lang"
+GetVariable
+Push "scavenger_items_found", "${hunt.en.itemsFound}"
+SetMember
+Push "lang"
+GetVariable
+Push "scavenger_items_found_plural", "${hunt.en.itemsFoundPlural}"
+SetMember
+Push "lang"
+GetVariable
+Push "claim_prize", "${hunt.en.claim}"
+SetMember
+Push "lang"
+GetVariable
+Push "continue", "${hunt.en.continue}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue0", "${hunt.en.clues[0]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue1", "${hunt.en.clues[1]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue2", "${hunt.en.clues[2]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue3", "${hunt.en.clues[3]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue4", "${hunt.en.clues[4]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue5", "${hunt.en.clues[5]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue6", "${hunt.en.clues[6]}"
+SetMember
+Push "lang"
+GetVariable
+Push "clue7", "${hunt.en.clues[7]}"
+SetMember
+`;
+}
+
 function applyChanges(crumbs: string, changes: Partial<LocalCrumbContent>): string {
   let newCrumbs = crumbs
 
@@ -39,6 +105,10 @@ function applyChanges(crumbs: string, changes: Partial<LocalCrumbContent>): stri
         newCrumbs = addLocalPath(newCrumbs, path, pathName);
       }
     }
+  }
+
+  if (changes.hunt !== undefined) {
+    newCrumbs = addScavengerHunt(newCrumbs, changes.hunt);
   }
 
   return newCrumbs;

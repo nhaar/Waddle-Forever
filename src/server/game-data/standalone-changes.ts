@@ -88,7 +88,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     },
     generalChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/client/login.swf': 'recreation:login_cpip.swf'
+      'play/v2/client/login.swf': 'recreation:login_cpip.swf',
+      // this puffle roundup is a placeholder, TODO needs to be updated
+      'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     localChanges: {
@@ -106,6 +108,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'catalogues/furniture.swf': {
         'en': 'recreation:catalog/furniture_cpip.swf'
+      },
+      'catalogues/adopt.swf': {
+        'en': 'archives:Puffle_0711b.swf'
       }
     },
     music: {
@@ -113,6 +118,10 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       stage: 32,
       // no idea on this one's date, adding it here
       lounge: 6
+    },
+    roomMemberStatus: {
+      dojofire: true,
+      dojowater: true,
     },
     map: 'unknown:cpip_map_no_dojoext.swf'
   },
@@ -139,6 +148,30 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     ],
   },
   {
+    date: '2009-03-06',
+    comment: 'White Puffles are available to adopt',
+    roomChanges: {
+      pet: 'archives:RoomsPet_4.swf'
+    },
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'archives:Mar2009Adopt.swf'
+      }
+    }
+  },
+  {
+    date: '2010-02-25',
+    comment: 'Orange Puffles are available to adopt',
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
+      }
+    },
+    generalChanges: {
+      'play/v2/games/roundup/PuffleRoundup.swf': 'recreation:puffle_roundup_orange.swf'
+    }
+  },
+  {
     date: '2010-11-19',
     comment: 'The password warning is updated',
     generalChanges: {
@@ -152,6 +185,17 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
         'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
       }
     }
+  },
+  {
+    // implementing 2011 AS3 startscreens
+    date: Update.AS3_STARTSCREEN,
+    generalChanges: {
+      'play/v2/client/club_penguin.swf': 'archives:ClientClubPenguin2011-03-28.swf',
+      'play/v2/client/world.swf': 'archives:ClientWorld.swf',
+      'play/v2/client/login.swf': 'archives:ClientLogin2011-08-20.swf',
+      'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf'
+    },
+    startscreens: [ 'archives:LoginSystemDefender.swf' ]
   }
 ];
 
@@ -296,6 +340,15 @@ export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<Tempor
         comment: 'Rockhopper is seen closer from the telescope'
       }
     ]
+  },
+  {
+    date: '2011-03-01',
+    end: '2011-03-08',
+    comment: 'Renovation for the Pet Shop begins',
+    roomChanges: {
+      plaza: 'archives:PlazaConstructionMar2011.swf',
+      pet: 'archives:PetConstructionMar2011.swf'
+    }
   }
 ]
 
@@ -314,7 +367,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
   ],
   'play/v2/client/shell.swf': [
     {
-      fileRef: 'slegacy:media/play/v2/client/shell.swf',
+      fileRef: 'approximation:shell.swf',
       date: Update.CPIP_UPDATE
     },
     {
@@ -493,13 +546,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       date: '2011-02-17',
       fileRef: 'archives:Enm111.swf'
-    }
-  ],
-  'play/v2/games/roundup/PuffleRoundup.swf': [
-    {
-      // orange puffle version, must add white puffle version too later
-      date: Update.CPIP_UPDATE,
-      fileRef: 'recreation:puffle_roundup_orange.swf'
     }
   ],
   'play/v2/content/local/en/catalogues/costume.swf': [
