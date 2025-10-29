@@ -51,6 +51,24 @@ const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
+function ensureYearOptions(days: DateInfo[]): void {
+  const yearsInData = Array.from(new Set(days.map((day) => day.year))).sort((a, b) => a - b);
+  const existingYears = new Set(
+    Array.from(yearElement.options)
+      .map((option) => Number(option.value))
+      .filter((value) => !Number.isNaN(value))
+  );
+
+  yearsInData.forEach((year) => {
+    if (!existingYears.has(year)) {
+      const option = document.createElement('option');
+      option.value = String(year);
+      option.text = String(year);
+      yearElement.append(option);
+    }
+  });
+}
+
 function setSelectElements(month: number, year: number) {
   monthElement.value = MONTHS[month - 1];
   yearElement.value = String(year);
@@ -594,6 +612,7 @@ function updateVersion(version: string) {
 
 window.addEventListener('get-timeline', (e: any) => {
   const days = e.detail as DateInfo[];
+  ensureYearOptions(days);
   getSettings().then((settings) => {
     currentVersion = settings.version;
     const dateInfo = getDateInfo(currentVersion);
