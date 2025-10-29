@@ -489,12 +489,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       attic: 'recreation:halloween_2006/attic.swf',
       pizza: 'recreation:halloween_2006/pizza.swf',
       rink: 'recreation:halloween_2006/rink.swf',
-      mtn: 'recreation:halloween_2006/mtn.swf'
+      mtn: 'recreation:halloween_2006/mtn.swf',
+      shack: 'recreation:halloween_2006/shack.swf',
+      village: 'recreation:halloween_2006/village.swf'
     },
     music: {
       'town': 205,
       'rink': 205,
-      'mtn': 205
+      'mtn': 205,
+      'shack': 205,
+      'village': 205
     }
   },
   {
@@ -682,13 +686,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2007-07-23',
     roomChanges: {
       dance: 'recreation:water_party_07_dance.swf',
-      'dojo': 'archives:ArtworkRoomsDojo50.swf',
       town: 'recreation:water_party_2007/town.swf',
       forest: 'recreation:water_party_2007/forest.swf',
       mtn: 'recreation:water_party_2007/mtn.swf',
+      dojo: 'recreation:water_party_2007/dojo.swf'
     },
     music: {
-      'dojo': 217,
+      dojo: 217,
       town: 218,
       forest: 218,
       mtn: 218

@@ -1205,6 +1205,18 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'lighthouse_party_2006/beacon.swf',
       comment: 'Made by Doubleuman, comes from a previously compiled SWF of a FLA that was likely an earlier version, and it contained a depth error, which was fixed in this \"recreation\"'
+    },
+    {
+      file: 'halloween_2006/shack.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'water_party_2007/dojo.swf',
+      comment: 'Made by Doubleuman, added puddle, water balloons, changed block, based on a previously compiled SWF of a FLA that wasn't accurate'
+    },
+    {
+      file: 'halloween_2006/village.swf',
+      comment: 'Made by Lifeofgames477'
     }
   ],
   [MOD]: [
