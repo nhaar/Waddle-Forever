@@ -1,5 +1,3 @@
-// ignore this comment - github is being a fucking annoying shit
-
 import { getSettings, post } from "./common-static.js";
 
 const timelineApi = (window as any).api;
