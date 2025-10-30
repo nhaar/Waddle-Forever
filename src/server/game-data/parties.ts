@@ -3932,7 +3932,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'mine': 236,
       'cave': 236,
       'boiler': 236,
-      'party1': 236,
+      'party1': 235,
       'party2': 236,
       'party3': 236,
       'party4': 236,
