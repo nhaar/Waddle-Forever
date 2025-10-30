@@ -4042,6 +4042,140 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Music Jam',
+    date: '2011-06-16',
+    end: '2011-07-05',
+    roomChanges: {
+      'town': 'archives:RoomsTown-MusicJam2011.swf',
+      'rink': 'archives:MusicJam2011Rink.swf',
+      'forts': 'archives:MusicJam2011Forts.swf',
+      'village': 'archives:MusicJam2011Village.swf',
+      'plaza': 'archives:MusicJam2011Plaza.swf',
+      'pizza': 'archives:MusicJam2011Pizza.swf',
+      'dance': 'archives:MusicJam2011Dance.swf',
+      'mine': 'archives:MusicJam2011Mine.swf',
+      'light': 'archives:MusicJam2011Light.swf',
+      'beach': 'archives:MusicJam2011Beach.swf',
+      'forest': 'archives:MusicJam2011Forest.swf',
+      'dock': 'archives:MusicJam2011Dock.swf',
+      'lounge': 'archives:MusicJam2011Lounge.swf',
+      'coffee': 'archives:MusicJam2011Coffee.swf',
+      'cave': 'archives:MusicJam2011Cave.swf',
+      'berg': 'archives:MusicJam2011Berg.swf',
+      'cove': 'archives:MusicJam2011Cove.swf',
+      'party': 'archives:MusicJam2011Party.swf',
+      'party2': 'archives:MusicJam2011Party2.swf',
+      'party3': 'archives:MusicJam2011Party3.swf',
+      'party4': 'archives:MusicJam2011Party4.swf'
+    },
+    music: {
+      'town': 271,
+      'plaza': 271,
+      'forts': 271,
+      'party3': 271,
+      'dance': 242,
+      'rink': 240,
+      'mine': 247
+    },
+    startscreens: [
+      'archives:MusicJam2011BillboardMusic_jam2.swf'
+    ],
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:MusicJam2011Poster.swf'
+      },
+      'catalogues/party.swf': {
+        'en': [ 'archives:MusicJam2011CatalogParty.swf', 'party_catalogue' ]
+      },
+      'catalogues/party2.swf': {
+        'en': [ 'archives:MusicJam2011CatalogParty2.swf', 'party2_catalogue' ]
+      },
+      'catalogues/party3.swf': {
+        'en': [ 'archives:MusicJam2011CatalogParty3.swf', 'party3_catalogue' ]
+      },
+      'membership/party2.swf': {
+        'en': [ 'archives:MusicJam2011MembershipParty2.swf', 'oops_party2_room', 'oops_party3_room', 'oops_party4_room' ]
+      }
+    },
+    roomMemberStatus: {
+      'party2': true,
+      'party3': true,
+      'party4': true
+    }
+  },
+  {
+    name: 'Island Adventure Party',
+    date: '2011-07-21',
+    end: '2011-08-04',
+    construction: {
+      date: '2011-07-14',
+      changes: {
+        'town': 'archives:RoomsTown-IslandAdventureParty2010Pre.swf',
+        'beach': 'archives:IslandAdventureParty2011ConstBeach.swf',
+        'plaza': 'archives:IslandAdventureParty2011ConstPlaza.swf',
+        'cove': 'archives:IslandAdventureParty2011ConstCove.swf'
+      }
+    },
+    roomChanges: {
+      'town': 'archives:RoomsTown-IslandAdventureParty2011.swf',
+      'plaza': 'archives:IslandAdventureParty2011Plaza.swf',
+      'forts': 'archives:IslandAdventureParty2011Forts.swf',
+      'forest': 'archives:IslandAdventureParty2011Forest.swf',
+      'village': 'archives:IslandAdventureParty2011Village.swf',
+      'dock': 'archives:IslandAdventureParty2011Dock.swf',
+      'pizza': 'archives:IslandAdventureParty2011Pizza.swf',
+      'cove': 'archives:IslandAdventureParty2011Cove.swf',
+      'berg': 'archives:IslandAdventureParty2011Berg.swf',
+      'beach': 'archives:IslandAdventureParty2011Beach.swf',
+      'dance': 'archives:IslandAdventureParty2011Dance.swf',
+      'lake': 'archives:IslandAdventureParty2011Lake.swf',
+      'shiphold': 'archives:IslandAdventureParty2011Shiphold.swf',
+      'party': 'archives:IslandAdventureParty2011Party.swf',
+      'party2': 'archives:IslandAdventureParty2011Party2.swf'
+    },
+    music: {
+      'forest': 290,
+      'beach': 41,
+      'dock': 41,
+      'town': 268,
+      'dance': 269,
+      'party': 267,
+      'party2': 289,
+      'forts': 291,
+      'shiphold': 291,
+      'plaza': 291,
+      'pizza': 291,
+      'cove': 291,
+      'lake': 291,
+      'village': 291,
+      'berg': 291
+    },
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': [ 'archives:IslandAdventureParty2011Party_poster.swf', 'party_poster' ]
+      },
+      'close_ups/christmasposter.swf': {
+        'en': [ 'archives:IslandAdventureParty2011Party_poster2.swf', 'party_poster2' ]
+      },
+      'close_ups/poster3.swf': {
+        'en': [ 'archives:IslandAdventureParty2011Party_poster3.swf', 'party_poster3' ]
+      },
+      'membership/party1.swf': {
+        'en': [ 'archives:IslandAdventureParty2011MembershipParty1.swf', 'oops_party1_room' ]
+      },
+      'membership/party2.swf': {
+        'en': [ 'archives:IslandAdventureParty2011MembershipParty2.swf', 'oops_party2_room', 'oops_party3_room' ]
+      },
+      'catalogues/party.swf': {
+        'en': 'archives:IslandAdventureParty2011CatalogParty.swf'
+      }
+    },
+    roomMemberStatus: {
+      'party2': true
+    },
+    startscreens: [
+      'archives:LoginIslandAdventureParty2011.swf'
+    ]
     name: 'Battle of Doom',
     date: '2011-05-31',
     end: '2011-06-07',
