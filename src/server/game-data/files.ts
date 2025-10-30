@@ -292,7 +292,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell.swf',
-      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added (2011_scavenger_hunt.as), and sendPlayerTeleport() from archives ClientShell2012-10-17.swf (used in April Fools 2011)'
+      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added (2011_scavenger_hunt.as), and sendPlayerTeleport() from archives ClientShell2012-10-17.swf (used in April Fools 2011), from the same archives file the variable MSG_SHOW_CONTENT and function showAs3Content() were also implemented'
     },
     {
       file: 'airtower.swf',
