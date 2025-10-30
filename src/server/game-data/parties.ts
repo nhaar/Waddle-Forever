@@ -4040,5 +4040,31 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'party22': 308,
       'party23': 41
     }
+  },
+  {
+    name: 'Battle of Doom',
+    date: '2011-05-31',
+    end: '2011-06-07',
+    roomChanges: {
+      village: 'archives:BattleofDoomVillage.swf',
+      agentlobbysolo: 'archives:BattleofDoomAgentlobbysolo.swf',
+      agentlobbymulti: 'archives:BattleofDoomAgentlobbymulti.swf',
+      party: 'archives:BattleofDoomParty.swf'
+    },
+    localChanges: {
+      'herbert_taunt.swf': {
+        en: [ 'archives:ENBattleofDoomHerbertTaunt.swf', 'herbert_taunt' ]
+      },
+      'herbert_taunt2.swf': {
+        en: [ 'archives:ENBattleofDoomHerbertTaunt2.swf', 'herbert_taunt_defeated' ]
+      },
+      'party_op.swf': {
+        // placeholder
+        en: [ 'archives:AprilFoolsParty2011Poster.swf', 'party_op_medals_earned' ]
+      }
+    },
+    music: {
+      party: 125
+    }
   }
 ];
