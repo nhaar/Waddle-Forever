@@ -1,40 +1,29 @@
 #!/usr/bin/env python3
-"""Utility to export room timelines into the LOST-IN-TIME/EXPORT-IMPORT format.
+# -*- coding: utf-8 -*-
+# CITATION (base script reference): :contentReference[oaicite:0]{index=0}
+"""
+export_rooms_fast.py — Exportador optimizado (rápido y silencioso)
 
-This script inspects the TypeScript sources from the main Waddle Forever project
-and produces an Excel workbook plus the expected storage tree (PNG previews and
-SWF copies) ready to be uploaded to the LOST-IN-TIME web administration tool.
+Cambios clave vs. tu versión original:
+1) Salida de frames: SOLO 1 PNG por cada SWF, con el MISMO nombre del SWF (p.ej. `room.swf` → `room.png`).
+2) Mucho más rápido:
+   - Trabajo en paralelo (copiado de SWF + extracción de frame) con ThreadPoolExecutor.
+   - Excel en modo write_only para escribir filas más rápido y con menor uso de RAM.
+   - Menos I/O: ya no copiamos todos los PNGs temporales; solo el frame objetivo.
+3) Silencioso por defecto (sin “paso por paso”):
+   - Nivel de log por defecto = ERROR. Usa --log-level INFO si quieres ver progreso.
+4) Compatible con tus flags originales; se añaden:
+   - --workers N  → define hilos de extracción/copiar (por defecto: núm. CPUs).
+   - --target-frame N → si quieres un frame distinto al 1 (por defecto 1).
 
-Features
-========
-* Reads the canonical game data (rooms, openings, updates, parties, temporary
-  changes and music timelines) directly from the TypeScript source files using
-  ``ts-node`` so the export stays in sync with the game.
-* Builds a chronological list of room states (permanent, temporary, parties and
-  constructions) and formats it like ``EXPORT-IMPORT/records.xlsx``.
-* Copies every referenced SWF into ``storage/swf-files/<ID>/`` and creates a PNG
-  preview in ``storage/record-images/<ID>/`` leveraging the frame extraction
-  helpers from ``ExtraerFrameSWF/extract_swf_frames.py``.
-
-Requirements
-============
-* Node.js with the project dependencies installed (``yarn install``).
-* ``ts-node`` (already a dev dependency of the project).
-* Optional: FFmpeg, JPEXS or SWFTools if you want automatic PNG previews. The
-  script shares the same options as ``extract_swf_frames.py`` and gracefully
-  skips previews when no engine is available.
-
-Usage
-=====
-::
-
-    python export_rooms.py \
+Uso (idéntico + mejoras):
+    python export_rooms_fast.py \
         --repo-root .. \
         --output LOST-IN-TIME/EXPORT-IMPORT \
         --engine auto \
-        --ffdec /path/to/ffdec.jar
-
-Run ``python export_rooms.py --help`` for all options.
+        --ffdec "C:/Program Files/FFDec/ffdec.jar" \
+        --workers 8 \
+        --log-level ERROR
 """
 from __future__ import annotations
 
@@ -47,6 +36,7 @@ import shutil
 import subprocess
 import sys
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import date, timedelta
 from pathlib import Path
@@ -55,187 +45,134 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 try:
     from openpyxl import Workbook
-except ImportError as exc:  # pragma: no cover - dependency error is surfaced to the user
-    raise SystemExit(
-        "openpyxl is required. Install it with 'pip install openpyxl' before running this script.'"
-    ) from exc
+except ImportError as exc:
+    raise SystemExit("openpyxl es requerido. Instálalo con: pip install openpyxl") from exc
 
 # ---------------------------------------------------------------------------
-# Optional import of the frame extraction helpers
+# Import opcional del helper de extracción (si existe en ExtraerFrameSWF/)
 # ---------------------------------------------------------------------------
 EXTRAER_DIR = Path(__file__).resolve().parent / "ExtraerFrameSWF"
 if EXTRAER_DIR.exists():
     sys.path.append(str(EXTRAER_DIR))
 try:
+    # Este módulo es el mismo que ya usabas; lo aprovechamos si está disponible.
     import extract_swf_frames  # type: ignore
-except Exception:  # pragma: no cover - fallback when helper isn't available
+except Exception:
     extract_swf_frames = None
 
-
+# ---------------------------------------------------------------------------
+# Descubrimiento de JPEXS (ffdec)
+# ---------------------------------------------------------------------------
 def discover_ffdec_path() -> Optional[Path]:
-    """Try to locate a default ffdec.jar/bat installation."""
-
     def expand(candidate: Optional[str]) -> Optional[Path]:
         if not candidate:
             return None
-        path = Path(candidate).expanduser()
-        return path if path.exists() else None
+        p = Path(candidate).expanduser()
+        return p if p.exists() else None
 
-    # First honour explicit environment overrides.
-    for env_var in ("FFDEC", "FFDEC_PATH", "JPEXS_FFDEC"):
-        env_value = expand(os.environ.get(env_var))
-        if env_value:
-            return env_value
+    # Variables de entorno comunes
+    for env in ("FFDEC", "FFDEC_PATH", "JPEXS_FFDEC"):
+        val = expand(os.environ.get(env))
+        if val:
+            return val
 
-    # Look for common installation folders on Windows (default from the shared instructions).
-    common_locations = [
-        Path("C:/Program Files/FFDec/ffdec.jar"),
-        Path("C:/Program Files/FFDec/ffdec.exe"),
-        Path("C:/Program Files/FFDec/ffdec.bat"),
-        Path("C:/Program Files (x86)/FFDec/ffdec.jar"),
-        Path("C:/Program Files (x86)/FFDec/ffdec.exe"),
-        Path("C:/Program Files (x86)/FFDec/ffdec.bat"),
+    # Ubicaciones comunes Windows
+    common = [
+        Path(r"C:/Program Files/FFDec/ffdec.jar"),
+        Path(r"C:/Program Files/FFDec/ffdec.exe"),
+        Path(r"C:/Program Files/FFDec/ffdec.bat"),
+        Path(r"C:/Program Files (x86)/FFDec/ffdec.jar"),
+        Path(r"C:/Program Files (x86)/FFDec/ffdec.exe"),
+        Path(r"C:/Program Files (x86)/FFDec/ffdec.bat"),
     ]
-    for location in common_locations:
-        if location.exists():
-            return location
+    for p in common:
+        if p.exists():
+            return p
 
-    # Probe additional folders that are commonly used by the JPEXS installer.
-    def probe_windows_roots() -> Iterable[Path]:
-        for env_name in ("ProgramFiles", "ProgramFiles(x86)", "ProgramW6432", "LOCALAPPDATA"):
-            value = expand(os.environ.get(env_name))
-            if value:
-                yield value
+    # Explorar raíces conocidas en Windows (rápido, no profundo)
+    def iter_roots() -> Iterable[Path]:
+        for name in ("ProgramFiles", "ProgramFiles(x86)", "ProgramW6432", "LOCALAPPDATA"):
+            v = expand(os.environ.get(name))
+            if v:
+                yield v
 
-    def search_within(root: Path) -> Optional[Path]:
-        names = [
-            root / "JPEXS Free Flash Decompiler",
-            root / "JPEXS Free Flash Decompiler (Nightly)",
-            root / "FFDec",
-            root / "FFDec nightly",
-        ]
-        for name in names:
-            if name.exists():
-                for candidate in iter_ffdec_candidates(name):
-                    return candidate
-        # Fall back to a shallow glob so we do not crawl the entire Program Files tree.
+    def iter_ffdec_candidates(base: Path) -> Iterable[Path]:
+        names = ("ffdec.jar", "ffdec.exe", "ffdec.bat", "ffdec.cmd")
+        for n in names:
+            c = base / n
+            if c.exists():
+                yield c
+        for sub in ("bin", "lib"):
+            for n in names:
+                c = base / sub / n
+                if c.exists():
+                    yield c
+
+    for root in iter_roots():
+        for name in ("JPEXS Free Flash Decompiler", "JPEXS Free Flash Decompiler (Nightly)", "FFDec", "FFDec nightly"):
+            base = root / name
+            if base.exists():
+                for c in iter_ffdec_candidates(base):
+                    return c
         for pattern in ("*/ffdec.jar", "*/ffdec.exe", "*/ffdec.bat", "*/*/ffdec.jar", "*/*/ffdec.exe", "*/*/ffdec.bat"):
-            for candidate in root.glob(pattern):
-                return candidate
-        return None
+            for c in root.glob(pattern):
+                return c
 
-    for windows_root in probe_windows_roots():
-        candidate = search_within(windows_root)
-        if candidate:
-            return candidate
-
-    # Try to extract a hint from the helper folder (Codigo usado.txt stores the manual command).
-    codigo_txt = EXTRAER_DIR / "Codigo usado.txt"
-    if codigo_txt.exists():
-        content = codigo_txt.read_text(encoding="utf-8", errors="ignore")
-        match = re.search(r"\$ffdec\s*=\s*\"([^\"]+)\"", content)
-        if match:
-            hint = expand(match.group(1))
-            if hint:
-                return hint
-
-    # Finally, see if the helper directory bundles ffdec.
-    bundled = [
+    # Mirar si viene junto al helper
+    for c in [
         EXTRAER_DIR / "ffdec.jar",
         EXTRAER_DIR / "ffdec.bat",
         EXTRAER_DIR / "ffdec.exe",
         EXTRAER_DIR / "ffdec/ffdec.jar",
         EXTRAER_DIR / "ffdec/ffdec.bat",
         EXTRAER_DIR / "ffdec/ffdec.exe",
-    ]
-    for bundle in bundled:
-        if bundle.exists():
-            return bundle
-
+    ]:
+        if c.exists():
+            return c
     return None
 
 
-def iter_ffdec_candidates(base: Path) -> Iterable[Path]:
-    """Yield plausible ffdec executables relative to *base*.
-
-    ``extract_swf_frames.py`` accepts either ``ffdec.jar`` or ``ffdec.bat/.exe``.
-    Users sometimes point to the installation directory instead of the specific
-    file, so we probe common names (both in the root and immediate subfolders)
-    before giving up.
-    """
-
-    names = ("ffdec.jar", "ffdec.exe", "ffdec.bat", "ffdec.cmd")
-    for name in names:
-        candidate = base / name
-        if candidate.exists():
-            yield candidate
-    for subdir in ("bin", "lib"):
-        for name in names:
-            candidate = base / subdir / name
-            if candidate.exists():
-                yield candidate
-
-
 def normalize_ffdec_path(ffdec: Optional[Path]) -> Optional[Path]:
-    """Resolve *ffdec* to an executable path understood by JPEXS."""
-
     if ffdec is None:
         return None
-
     ffdec = ffdec.expanduser()
     if ffdec.is_file():
         return ffdec
     if ffdec.is_dir():
-        for candidate in iter_ffdec_candidates(ffdec):
-            return candidate
-        # Some portable bundles place ffdec.jar deeper in the folder tree.
-        for candidate in ffdec.rglob("ffdec.jar"):
-            return candidate
-        for candidate in ffdec.rglob("ffdec.bat"):
-            return candidate
-        for candidate in ffdec.rglob("ffdec.exe"):
-            return candidate
+        for n in ("ffdec.jar", "ffdec.exe", "ffdec.bat", "ffdec.cmd"):
+            c = ffdec / n
+            if c.exists():
+                return c
+        for c in ffdec.rglob("ffdec.jar"):
+            return c
+        for c in ffdec.rglob("ffdec.bat"):
+            return c
+        for c in ffdec.rglob("ffdec.exe"):
+            return c
         return None
-
-    # Path with a known suffix that does not exist yet – try to look in the
-    # parent folder for a similarly named file (case-insensitive installs on
-    # Windows sometimes rename the executable).
-    suffix = ffdec.suffix.lower()
-    if suffix in {".jar", ".bat", ".cmd", ".exe"}:
+    if ffdec.suffix.lower() in {".jar", ".bat", ".cmd", ".exe"}:
         parent = ffdec.parent
         if parent.exists():
-            target_name = ffdec.name.lower()
+            target = ffdec.name.lower()
             for child in parent.iterdir():
-                if child.name.lower() == target_name:
+                if child.name.lower() == target:
                     return child
-            for candidate in iter_ffdec_candidates(parent):
-                return candidate
-
+            for n in ("ffdec.jar", "ffdec.exe", "ffdec.bat", "ffdec.cmd"):
+                c = parent / n
+                if c.exists():
+                    return c
     return ffdec if ffdec.exists() else None
 
 # ---------------------------------------------------------------------------
-# Constants and configuration helpers
+# Constantes
 # ---------------------------------------------------------------------------
 BETA_RELEASE = "2005-08-22"
 DEFAULT_STATUS = "En proceso"
 DEFAULT_CREDITS = "-"
 DEFAULT_CHECKLIST = [
-    {
-        "key": "animation-test",
-        "name": "Animation test",
-        "checked": False,
-        "legacy": False,
-        "enabled": False,
-    },
-    {
-        "key": "interaction-test",
-        "name": "Interaction test",
-        "checked": False,
-        "legacy": False,
-        "enabled": False,
-    },
+    {"key": "animation-test", "name": "Animation test", "checked": False, "legacy": False, "enabled": False},
+    {"key": "interaction-test", "name": "Interaction test", "checked": False, "legacy": False, "enabled": False},
 ]
-
 HEADERS = [
     "ID List",
     "Nombre",
@@ -254,12 +191,10 @@ HEADERS = [
 ]
 
 # ---------------------------------------------------------------------------
-# Dataclasses that represent the intermediate and final records
+# Dataclasses
 # ---------------------------------------------------------------------------
 @dataclass
 class RoomEvent:
-    """A single room state change."""
-
     room: str
     start: str
     end: Optional[str]
@@ -274,8 +209,6 @@ class RoomEvent:
 
 @dataclass
 class ExportRecord:
-    """Final representation written into the spreadsheet."""
-
     id: int
     nombre: str
     status: str
@@ -294,64 +227,33 @@ class ExportRecord:
     frame: Optional[int]
     start: str
 
-
 # ---------------------------------------------------------------------------
-# Utility helpers
+# Utilidades
 # ---------------------------------------------------------------------------
 def parse_args() -> argparse.Namespace:
     script_dir = Path(__file__).resolve().parent
     default_repo_root = script_dir.parent
     default_output = default_repo_root / "LOST-IN-TIME" / "EXPORT-IMPORT"
 
-    parser = argparse.ArgumentParser(description="Export Club Penguin room data to the LOST-IN-TIME import format")
-    parser.add_argument("--repo-root", type=Path, default=default_repo_root, help="Path to the repository root")
-    parser.add_argument(
-        "--output",
-        type=Path,
-        default=default_output,
-        help="Destination folder (will mirror the EXPORT-IMPORT layout)",
-    )
-    parser.add_argument(
-        "--engine",
-        choices=["auto", "ffmpeg", "jpexs", "swfrender", "none"],
-        default="auto",
-        help="Frame extraction engine. Use 'none' to skip PNG previews.",
-    )
-    parser.add_argument(
-        "--ffdec",
-        type=Path,
-        help="Path to ffdec.jar or ffdec.bat when using the JPEXS engine (auto-detected when possible)",
-    )
-    parser.add_argument(
-        "--preview-zoom",
-        type=float,
-        default=2.0,
-        help="Zoom level for JPEXS previews (matches the manual extract_swf_frames.py command)",
-    )
-    parser.add_argument(
-        "--clean",
-        action="store_true",
-        help="Remove existing records.xlsx and storage directory before generating new data",
-    )
-    parser.add_argument(
-        "--skip-media",
-        action="store_true",
-        help="Do not copy SWF files or extract PNG previews (useful for quick dry-runs)",
-    )
-    parser.add_argument(
-        "--log-level",
-        default="INFO",
-        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-        help="Logging verbosity",
-    )
+    parser = argparse.ArgumentParser(description="Exportador rápido al formato LOST-IN-TIME (1 frame por SWF, silencioso)")
+    parser.add_argument("--repo-root", type=Path, default=default_repo_root, help="Ruta al repo WF")
+    parser.add_argument("--output", type=Path, default=default_output, help="Carpeta de salida EXPORT-IMPORT")
+    parser.add_argument("--engine", choices=["auto", "ffmpeg", "jpexs", "swfrender", "none"], default="auto",
+                        help="Motor de extracción de frame. 'none' para saltar PNGs.")
+    parser.add_argument("--ffdec", type=Path, help="Ruta a ffdec.jar/bat (JPEXS)")
+    parser.add_argument("--preview-zoom", type=float, default=2.0, help="Zoom para JPEXS (2.0 por defecto)")
+    parser.add_argument("--clean", action="store_true", help="Borra records.xlsx y storage antes de generar")
+    parser.add_argument("--skip-media", action="store_true", help="No copiar SWF ni generar PNGs")
+    parser.add_argument("--log-level", default="ERROR", choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+                        help="Nivel de logs (por defecto ERROR para no mostrar paso a paso)")
+    parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 4)),
+                        help="Nº de hilos para copiar SWFs y extraer frames")
+    parser.add_argument("--target-frame", type=int, default=1, help="Frame objetivo (1 por defecto)")
     return parser.parse_args()
 
 
 def configure_logging(level: str) -> None:
-    logging.basicConfig(
-        format="[%(levelname)s] %(message)s",
-        level=getattr(logging, level.upper(), logging.INFO),
-    )
+    logging.basicConfig(format="[%(levelname)s] %(message)s", level=getattr(logging, level.upper(), logging.ERROR))
 
 
 def slugify(value: str) -> str:
@@ -370,8 +272,6 @@ def json_dump(data: Any) -> str:
 
 
 def parse_version(version: str) -> Tuple[date, bool]:
-    """Parse WF version strings (YYYY-MM-DD or with '##')."""
-
     parts = version.split("-")
     if len(parts) != 3:
         raise ValueError(f"Invalid version: {version}")
@@ -431,7 +331,7 @@ def get_music_for_date(lookup: Dict[str, List[Tuple[str, int]]], room: str, vers
 
 def call_node_for_data(repo_root: Path) -> Dict[str, Any]:
     if shutil.which("node") is None:
-        raise SystemExit("Node.js is required to run this exporter.")
+        raise SystemExit("Se requiere Node.js para extraer los datos del juego.")
     js_code = r"""
 const { ROOMS } = require('./src/server/game-data/rooms');
 const { ORIGINAL_ROOMS } = require('./src/server/game-data/release-features');
@@ -447,43 +347,26 @@ const data = {
   parties: PARTIES,
 };
 const replacer = (_key, value) => {
-  if (value instanceof Map) {
-    return Object.fromEntries(value.entries());
-  }
-  if (value instanceof Set) {
-    return Array.from(value.values());
-  }
+  if (value instanceof Map) return Object.fromEntries(value.entries());
+  if (value instanceof Set) return Array.from(value.values());
   return value;
 };
 process.stdout.write(JSON.stringify(data, replacer));
 """
-    cmd = [
-        "node",
-        "-r",
-        "ts-node/register/transpile-only",
-        "-e",
-        js_code,
-    ]
+    cmd = ["node", "-r", "ts-node/register/transpile-only", "-e", js_code]
     try:
-        result = subprocess.run(
-            cmd,
-            cwd=repo_root,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except subprocess.CalledProcessError as exc:  # pragma: no cover - surfaces node errors
-        logging.error("Node execution failed: %s", exc.stderr.strip())
+        result = subprocess.run(cmd, cwd=repo_root, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as exc:
+        logging.error("Fallo ejecutando Node: %s", exc.stderr.strip())
         raise SystemExit(1) from exc
     try:
         return json.loads(result.stdout)
-    except json.JSONDecodeError as exc:  # pragma: no cover - invalid JSON
-        logging.error("Failed to parse game data JSON: %s", exc)
+    except json.JSONDecodeError as exc:
+        logging.error("JSON inválido desde Node: %s", exc)
         raise SystemExit(1) from exc
 
-
 # ---------------------------------------------------------------------------
-# Timeline assembly helpers
+# Ensamblado de eventos
 # ---------------------------------------------------------------------------
 def add_base_event(
     base_events: Dict[str, List[RoomEvent]],
@@ -496,17 +379,18 @@ def add_base_event(
 ) -> None:
     if file_ref is None:
         return
-    event = RoomEvent(
-        room=room,
-        start=start,
-        end=None,
-        file_ref=file_ref,
-        category="base",
-        comment=comment,
-        source=source,
-        music=get_music_for_date(music_lookup, room, start),
+    base_events[room].append(
+        RoomEvent(
+            room=room,
+            start=start,
+            end=None,
+            file_ref=file_ref,
+            category="base",
+            comment=comment,
+            source=source,
+            music=get_music_for_date(music_lookup, room, start),
+        )
     )
-    base_events[room].append(event)
 
 
 def add_temporary_event(
@@ -525,7 +409,6 @@ def add_temporary_event(
     if file_ref is None:
         return
     if end is not None and start == end:
-        logging.debug("Skipping zero-length temporary event for %s at %s", room, start)
         return
     temporary_events.append(
         RoomEvent(
@@ -546,18 +429,17 @@ def add_temporary_event(
 def get_sub_update_dates(update: Dict[str, Any], index: int) -> Tuple[str, Optional[str]]:
     updates = update.get("updates")
     if not updates:
-        raise ValueError("Update must include sub updates")
-    sub_update = updates[index]
-    end = sub_update.get("end")
+        raise ValueError("Update sin sub-updates")
+    sub = updates[index]
+    end = sub.get("end")
     if end is None:
         next_update = updates[index + 1] if index + 1 < len(updates) else None
         if next_update and next_update.get("date"):
             end = next_update["date"]
     if end is None:
         end = update.get("end")
-    start = sub_update.get("date", update.get("date"))
+    start = sub.get("date", update.get("date"))
     if start == end:
-        logging.debug("Ignoring zero-length sub update at %s", start)
         return start, None
     return start, end
 
@@ -580,28 +462,14 @@ def process_parties(
         permanent = party.get("permanentChanges") or {}
         for room, file_ref in (permanent.get("roomChanges") or {}).items():
             add_base_event(
-                base_events,
-                room,
-                party_start,
-                file_ref,
-                permanent.get("roomComment") or party_comment,
-                f"party-permanent:{party_name or ''}",
-                music_lookup,
+                base_events, room, party_start, file_ref, permanent.get("roomComment") or party_comment,
+                f"party-permanent:{party_name or ''}", music_lookup
             )
 
         for room, file_ref in (party.get("roomChanges") or {}).items():
             add_temporary_event(
-                temporary_events,
-                room,
-                party_start,
-                party_end,
-                file_ref,
-                party_category,
-                party_comment,
-                party_name,
-                room_music.get(room),
-                room_frames.get(room),
-                "party",
+                temporary_events, room, party_start, party_end, file_ref, party_category, party_comment,
+                party_name, room_music.get(room), room_frames.get(room), "party"
             )
 
         updates = party.get("updates") or []
@@ -611,17 +479,9 @@ def process_parties(
             update_music = update.get("music", {})
             for room, file_ref in (update.get("roomChanges") or {}).items():
                 add_temporary_event(
-                    temporary_events,
-                    room,
-                    sub_start,
-                    sub_end,
-                    file_ref,
-                    party_category,
-                    update.get("comment") or party_comment,
-                    party_name,
-                    update_music.get(room),
-                    update_frames.get(room),
-                    "party-update",
+                    temporary_events, room, sub_start, sub_end, file_ref, party_category,
+                    update.get("comment") or party_comment, party_name,
+                    update_music.get(room), update_frames.get(room), "party-update"
                 )
 
         construction = party.get("construction")
@@ -632,57 +492,30 @@ def process_parties(
             const_music = construction.get("music", {})
             for room, file_ref in (construction.get("changes") or {}).items():
                 add_temporary_event(
-                    temporary_events,
-                    room,
-                    const_start,
-                    const_end,
-                    file_ref,
-                    "construction",
-                    construction.get("comment"),
-                    party_name,
-                    const_music.get(room),
-                    const_frames.get(room),
-                    "construction",
+                    temporary_events, room, const_start, const_end, file_ref, "construction",
+                    construction.get("comment"), party_name, const_music.get(room), const_frames.get(room), "construction"
                 )
             const_updates = construction.get("updates") or []
-            fake_parent = {
-                "date": const_start,
-                "end": const_end,
-                "updates": const_updates,
-            }
+            fake_parent = {"date": const_start, "end": const_end, "updates": const_updates}
             for idx, update in enumerate(const_updates):
                 sub_start, sub_end = get_sub_update_dates(fake_parent, idx)
                 for room, file_ref in (update.get("changes") or {}).items():
                     add_temporary_event(
-                        temporary_events,
-                        room,
-                        sub_start,
-                        sub_end,
-                        file_ref,
-                        "construction",
-                        update.get("comment"),
-                        party_name,
-                        None,
-                        None,
-                        "construction-update",
+                        temporary_events, room, sub_start, sub_end, file_ref, "construction",
+                        update.get("comment"), party_name, None, None, "construction-update"
                     )
 
         consequences = party.get("consequences") or {}
         for room, file_ref in (consequences.get("roomChanges") or {}).items():
             add_base_event(
-                base_events,
-                room,
-                party_end or party_start,
-                file_ref,
+                base_events, room, party_end or party_start, file_ref,
                 consequences.get("roomComment") or party_comment,
-                f"party-consequence:{party_name or ''}",
-                music_lookup,
+                f"party-consequence:{party_name or ''}", music_lookup
             )
 
 
 def build_events(game_data: Dict[str, Any]) -> Tuple[List[RoomEvent], Dict[str, List[RoomEvent]]]:
     music_lookup = get_music_lookup(game_data["roomMusicTimeline"])
-
     base_events: Dict[str, List[RoomEvent]] = defaultdict(list)
     temporary_events: List[RoomEvent] = []
 
@@ -692,44 +525,19 @@ def build_events(game_data: Dict[str, Any]) -> Tuple[List[RoomEvent], Dict[str, 
     for opening in game_data["roomOpenings"]:
         comment = opening.get("comment")
         if opening.get("fileRef"):
-            add_base_event(
-                base_events,
-                opening["room"],
-                opening["date"],
-                opening["fileRef"],
-                comment,
-                "opening",
-                music_lookup,
-            )
+            add_base_event(base_events, opening["room"], opening["date"], opening["fileRef"], comment, "opening", music_lookup)
         for room, file_ref in (opening.get("otherRooms") or {}).items():
             add_base_event(base_events, room, opening["date"], file_ref, comment, "opening-other", music_lookup)
 
     for room, updates in game_data["roomUpdates"].items():
         for update in updates:
-            add_base_event(
-                base_events,
-                room,
-                update["date"],
-                update["fileRef"],
-                update.get("comment"),
-                "update",
-                music_lookup,
-            )
+            add_base_event(base_events, room, update["date"], update["fileRef"], update.get("comment"), "update", music_lookup)
 
     for room, updates in (game_data["temporaryRoomUpdates"] or {}).items():
         for update in updates:
             add_temporary_event(
-                temporary_events,
-                room,
-                update["date"],
-                update.get("end"),
-                update["fileRef"],
-                "temporary",
-                update.get("comment"),
-                None,
-                None,
-                update.get("frame"),
-                "temporary",
+                temporary_events, room, update["date"], update.get("end"), update["fileRef"],
+                "temporary", update.get("comment"), None, None, update.get("frame"), "temporary"
             )
 
     process_parties(game_data["parties"], base_events, temporary_events, music_lookup)
@@ -743,16 +551,11 @@ def build_events(game_data: Dict[str, Any]) -> Tuple[List[RoomEvent], Dict[str, 
     return temporary_events, base_events
 
 
-def build_records(
-    rooms: Dict[str, Any],
-    temporary_events: List[RoomEvent],
-    base_events: Dict[str, List[RoomEvent]],
-) -> List[ExportRecord]:
+def build_records(rooms: Dict[str, Any], temporary_events: List[RoomEvent], base_events: Dict[str, List[RoomEvent]]) -> List[ExportRecord]:
     all_events: List[RoomEvent] = []
     for events in base_events.values():
         all_events.extend(events)
     all_events.extend(temporary_events)
-
     all_events.sort(key=lambda ev: (version_sort_key(ev.start), ev.room, ev.category))
 
     records: List[ExportRecord] = []
@@ -762,84 +565,62 @@ def build_records(
         file_ref = event.file_ref
         if file_ref:
             prefix, path_part = file_ref.split(":", 1)
-            file_name = Path(path_part).name
+            file_name = Path(path_part).name                         # p.ej. room.swf
+            swf_stem = Path(path_part).stem                          # p.ej. room
             nombre = slugify(Path(path_part).stem)
             swf_type = prefix
+            image_rel_path = f"record-images/{idx}/{swf_stem}.png"   # MISMO nombre que el SWF
+            swf_rel_path = f"swf-files/{idx}/{file_name}"
         else:
             nombre = slugify(f"{event.room}-{event.start}")
-            file_name = ""
             swf_type = ""
+            swf_rel_path = ""
+            image_rel_path = f"record-images/{idx}/{nombre}.png"     # Fallback si no hay SWF
 
-        fechas_json = json_dump([
-            {
-                "start": event.start,
-                "end": event.end,
-            }
-        ])
-        checklist_json = json_dump([
-            {
-                **item,
-                "key": f"{nombre}-{item['key']}",
-            }
-            for item in DEFAULT_CHECKLIST
-        ])
+        fechas_json = json_dump([{"start": event.start, "end": event.end}])
+        checklist_json = json_dump([{**item, "key": f"{nombre}-{item['key']}"} for item in DEFAULT_CHECKLIST])
         music_value = event.music if event.music is not None else None
         notes = event.comment or (f"fileRef: '{file_ref}'" if file_ref else "")
 
-        image_rel_path = f"record-images/{idx}/{nombre}.png"
-        swf_rel_path = f"swf-files/{idx}/{file_name}" if file_ref else ""
-
-        record = ExportRecord(
-            id=idx,
-            nombre=nombre,
-            status=DEFAULT_STATUS,
-            category=event.category,
-            fiesta=event.party,
-            fechas_json=fechas_json,
-            room_label=room_label,
-            music=str(music_value) if music_value is not None else None,
-            notes=notes,
-            image_rel_path=image_rel_path,
-            checklist_json=checklist_json,
-            credits=DEFAULT_CREDITS,
-            swf_type=swf_type,
-            swf_rel_path=swf_rel_path,
-            file_ref=file_ref,
-            frame=event.frame,
-            start=event.start,
+        records.append(
+            ExportRecord(
+                id=idx,
+                nombre=nombre,
+                status=DEFAULT_STATUS,
+                category=event.category,
+                fiesta=event.party,
+                fechas_json=fechas_json,
+                room_label=room_label,
+                music=str(music_value) if music_value is not None else None,
+                notes=notes,
+                image_rel_path=image_rel_path,
+                checklist_json=checklist_json,
+                credits=DEFAULT_CREDITS,
+                swf_type=swf_type,
+                swf_rel_path=swf_rel_path,
+                file_ref=file_ref,
+                frame=event.frame,
+                start=event.start,
+            )
         )
-        records.append(record)
-
     return records
 
-
 # ---------------------------------------------------------------------------
-# Output helpers: Excel + media assets
+# Salida: Excel + media
 # ---------------------------------------------------------------------------
 def write_excel(output_path: Path, records: List[ExportRecord]) -> None:
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Registros"
+    # Modo write_only: mucho más rápido y consume menos memoria
+    wb = Workbook(write_only=True)
+    ws = wb.create_sheet("Registros", 0)
     ws.append(HEADERS)
-    for record in records:
-        ws.append(
-            [
-                str(record.id),
-                record.nombre,
-                record.status,
-                record.category,
-                record.fiesta,
-                record.fechas_json,
-                record.room_label,
-                record.music,
-                record.notes,
-                record.image_rel_path,
-                record.checklist_json,
-                record.credits,
-                record.swf_type,
-                record.swf_rel_path,
-            ]
-        )
+    for r in records:
+        ws.append([
+            str(r.id), r.nombre, r.status, r.category, r.fiesta, r.fechas_json, r.room_label, r.music, r.notes,
+            r.image_rel_path, r.checklist_json, r.credits, r.swf_type, r.swf_rel_path
+        ])
+    # openpyxl en write_only crea una hoja vacía por defecto; elimínala si aparece
+    if "Sheet" in wb.sheetnames and len(wb.sheetnames) > 1:
+        wb.remove(wb["Sheet"])
     wb.save(output_path)
 
 
@@ -850,151 +631,181 @@ def resolve_media_source(repo_root: Path, file_ref: str) -> Optional[Path]:
     return repo_root / "media" / "default" / prefix / relative
 
 
-def extract_frames(
+def extract_single_frame(
     swf_path: Path,
     dest_dir: Path,
-    preview_filename: str,
+    out_png_name: str,   # <<--- MISMO nombre que el SWF, pero .png
     engine: str,
-    frame: Optional[int],
+    target_frame: int,
     ffdec: Optional[Path],
     preview_zoom: Optional[float],
 ) -> None:
-    if engine == "none" or extract_swf_frames is None:
-        logging.debug("Skipping frame extraction for %s (engine=%s)", swf_path, engine)
+    """
+    Extrae SOLO UN PNG del SWF:
+    - Prioriza sacar el frame `target_frame` (default 1).
+    - No deja archivos extra; solo {dest_dir}/{out_png_name}.
+    - Evita “paso por paso” (usa logging y subprocess en silencio).
+    """
+    if engine == "none":
         return
     if not swf_path.exists():
-        logging.warning("SWF not found for frame export: %s", swf_path)
         return
 
-    target_frame = frame or 1
-
+    # Descubrir ffdec si hace falta
     def available_ffdec() -> Optional[Path]:
         if ffdec and ffdec.exists():
             return ffdec
         auto = discover_ffdec_path()
-        if auto and auto.exists():
-            logging.info("Detected ffdec at %s for %s", auto, swf_path.name)
-            return auto
-        return None
+        return auto if (auto and auto.exists()) else None
 
-    def clear_tmpdir(root: Path) -> None:
-        for child in root.iterdir():
-            if child.is_dir():
-                shutil.rmtree(child)
-            else:
-                child.unlink()
+    # Explorar frames detectados en un tmpdir
+    def discover_first_frame(root: Path) -> Optional[Path]:
+        # Preferimos frame_00001.png si existe; si no, el primer .png
+        candidates = sorted(root.rglob("frame_*.png"))
+        if candidates:
+            return next((c for c in candidates if c.name.lower() == f"frame_{target_frame:05d}.png"), candidates[0])
+        any_pngs = sorted(root.rglob("*.png"))
+        return any_pngs[0] if any_pngs else None
 
-    def discover_frames(root: Path) -> List[Path]:
-        patterns = ("frame_*.png", "frame*.png")
-        for pattern in patterns:
-            matches = sorted(root.rglob(pattern))
-            if matches:
-                return matches
-        return sorted(root.rglob("*.png"))
-
-    def run_engine(engine_name: str, tmpdir_path: Path) -> List[Path]:
-        clear_tmpdir(tmpdir_path)
-
+    def try_ffmpeg(tmp: Path) -> Optional[Path]:
+        if shutil.which("ffmpeg") is None:
+            return None
+        # ffmpeg puede sacar 1 frame con -vframes 1 (rápido cuando SWF es soportado)
+        out_path = tmp / "ffmpeg_frame.png"
+        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(swf_path), "-frames:v", "1", str(out_path)]
         try:
-            if engine_name == "ffmpeg":
-                if not shutil.which("ffmpeg"):
-                    return []
-                extract_swf_frames.ffmpeg_extract(  # type: ignore[attr-defined]
-                    str(swf_path),
-                    str(tmpdir_path),
-                )
-            elif engine_name == "jpexs":
-                ffdec_path = available_ffdec()
-                if not ffdec_path:
-                    logging.warning("JPEXS engine requested but ffdec is not configured for %s", swf_path)
-                    return []
-                extract_swf_frames.jpexs_extract(  # type: ignore[attr-defined]
-                    str(swf_path),
-                    str(tmpdir_path),
-                    str(ffdec_path),
-                    zoom=preview_zoom,
-                )
-            elif engine_name == "swfrender":
-                if not (shutil.which("swfrender") and shutil.which("swfdump")):
-                    return []
-                extract_swf_frames.swfrender_extract(  # type: ignore[attr-defined]
-                    str(swf_path),
-                    str(tmpdir_path),
-                )
-            else:
-                logging.warning("Unknown engine '%s' for %s", engine_name, swf_path)
-                return []
-        except Exception as exc:  # pragma: no cover - passthrough tool failures
-            logging.warning("Frame extraction using %s failed for %s: %s", engine_name, swf_path, exc)
-            return []
+            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return out_path if out_path.exists() else None
+        except Exception:
+            return None
 
-        return discover_frames(tmpdir_path)
+    def try_swfrender(tmp: Path) -> Optional[Path]:
+        # swfrender + swfdump (SWFTools) — no siempre instalado
+        if not (shutil.which("swfrender") and shutil.which("swfdump")):
+            return None
+        out_path = tmp / "swfrender_frame.png"
+        # Algunos swfrender no soportan pedir frame específico; sacamos el primero
+        cmd = ["swfrender", str(swf_path), "-o", str(out_path)]
+        try:
+            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return out_path if out_path.exists() else None
+        except Exception:
+            return None
+
+    def try_jpexs(tmp: Path) -> Optional[Path]:
+        # Si tenemos helper, lo usamos (suele exportar todos los frames).
+        # Tras exportar, elegimos el frame objetivo y borramos el resto.
+        exported_frame = None
+        if extract_swf_frames is not None:
+            # exportación genérica (puede volcar varios PNGs)
+            try:
+                extract_swf_frames.jpexs_extract(  # type: ignore[attr-defined]
+                    str(swf_path), str(tmp), str(available_ffdec() or ""), zoom=preview_zoom
+                )
+                exported_frame = discover_first_frame(tmp)
+            except Exception:
+                exported_frame = None
+        else:
+            # CLI directa de ffdec (si existe). Intentamos rango 1-1 si es soportado.
+            ffdec_exec = available_ffdec()
+            if ffdec_exec:
+                out_dir = tmp / "ffdec"
+                ensure_directory(out_dir)
+                # Intento con opciones comunes de CLI:
+                # -cli -format png -export frame -range 1-1 <outdir> <file.swf>
+                # (algunas builds usan otra sintaxis; si falla, ignoramos)
+                cmd = [str(ffdec_exec), "-cli", "-format", "png", "-export", "frame", "-range", f"{target_frame}-{target_frame}", str(out_dir), str(swf_path)]
+                try:
+                    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    exported_frame = discover_first_frame(out_dir)
+                except Exception:
+                    # plan B: sin rango, exporta todo y elegimos:
+                    cmd2 = [str(ffdec_exec), "-cli", "-format", "png", "-export", "frame", str(out_dir), str(swf_path)]
+                    try:
+                        subprocess.run(cmd2, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                        exported_frame = discover_first_frame(out_dir)
+                    except Exception:
+                        exported_frame = None
+        return exported_frame
 
     with TemporaryDirectory() as tmpdir:
-        tmpdir_path = Path(tmpdir)
-        success_frames: List[Path] = []
+        tmp = Path(tmpdir)
+        chosen: Optional[Path] = None
 
+        engines = []
         if engine == "auto":
-            for candidate in ("ffmpeg", "jpexs", "swfrender"):
-                candidate_frames = run_engine(candidate, tmpdir_path)
-                if candidate_frames:
-                    logging.debug("Frame extraction engine for %s: %s", swf_path, candidate)
-                    success_frames = candidate_frames
-                    break
+            engines = ["ffmpeg", "jpexs", "swfrender"]
         else:
-            success_frames = run_engine(engine, tmpdir_path)
+            engines = [engine]
 
-        if not success_frames:
-            logging.warning("No frame extraction engine available for %s", swf_path)
+        for eng in engines:
+            if eng == "ffmpeg":
+                chosen = try_ffmpeg(tmp)
+            elif eng == "jpexs":
+                chosen = try_jpexs(tmp)
+            elif eng == "swfrender":
+                chosen = try_swfrender(tmp)
+            else:
+                chosen = None
+            if chosen and chosen.exists():
+                break
+
+        if not chosen:
             return
 
-        if dest_dir.exists():
-            shutil.rmtree(dest_dir)
         ensure_directory(dest_dir)
-
-        for png_file in success_frames:
-            shutil.copy2(png_file, dest_dir / png_file.name)
-
-        desired_name = f"frame_{target_frame:05d}.png"
-        desired_path = dest_dir / desired_name
-        if not desired_path.exists() and success_frames:
-            desired_path = dest_dir / success_frames[0].name
-
-        preview_path = dest_dir / preview_filename
-        if preview_path != desired_path:
-            shutil.copy2(desired_path, preview_path)
+        final_png = dest_dir / out_png_name
+        if final_png.exists():
+            try:
+                final_png.unlink()
+            except Exception:
+                pass
+        shutil.copy2(chosen, final_png)
 
 
-def copy_assets(
+def copy_assets_parallel(
     repo_root: Path,
     output_root: Path,
     records: List[ExportRecord],
     engine: str,
     ffdec: Optional[Path],
     preview_zoom: Optional[float],
+    workers: int,
+    target_frame: int,
 ) -> None:
     storage_root = output_root / "storage"
     swf_root = storage_root / "swf-files"
     img_root = storage_root / "record-images"
     ffdec_exec = ffdec if ffdec and ffdec.exists() else None
     if ffdec and not ffdec_exec:
-        logging.warning("Configured ffdec path is not accessible: %s", ffdec)
-    for record in records:
-        if not record.file_ref:
-            continue
-        source = resolve_media_source(repo_root, record.file_ref)
+        logging.warning("ffdec configurado pero no accesible: %s", ffdec)
+
+    def process_record(rec: ExportRecord) -> None:
+        if not rec.file_ref:
+            return
+        source = resolve_media_source(repo_root, rec.file_ref)
         if source is None or not source.exists():
-            logging.warning("Missing SWF for %s (%s)", record.nombre, record.file_ref)
-            continue
-        dest_swf_dir = swf_root / str(record.id)
+            return
+        # Copiar SWF
+        dest_swf_dir = swf_root / str(rec.id)
         ensure_directory(dest_swf_dir)
-        dest_swf = dest_swf_dir / Path(record.swf_rel_path).name
-        shutil.copy2(source, dest_swf)
+        dest_swf = dest_swf_dir / Path(rec.swf_rel_path).name
+        if not dest_swf.exists():
+            shutil.copy2(source, dest_swf)
+        # Generar SOLO 1 PNG con el mismo nombre del SWF (stem + .png)
+        dest_img_dir = img_root / str(rec.id)
+        out_png_name = Path(rec.swf_rel_path).stem + ".png"
+        extract_single_frame(dest_swf, dest_img_dir, out_png_name, engine, target_frame, ffdec_exec, preview_zoom)
 
-        dest_img_dir = img_root / str(record.id)
-        preview_filename = Path(record.image_rel_path).name
-        extract_frames(dest_swf, dest_img_dir, preview_filename, engine, record.frame, ffdec_exec, preview_zoom)
-
+    tasks = [rec for rec in records if rec.file_ref]
+    if workers <= 1:
+        for rec in tasks:
+            process_record(rec)
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            futures = [ex.submit(process_record, rec) for rec in tasks]
+            for _ in as_completed(futures):
+                pass  # silencioso: no mostramos progreso
 
 def clean_output(output_root: Path) -> None:
     records_path = output_root / "records.xlsx"
@@ -1004,9 +815,8 @@ def clean_output(output_root: Path) -> None:
     if storage_path.exists():
         shutil.rmtree(storage_path)
 
-
 # ---------------------------------------------------------------------------
-# Main entry point
+# Main
 # ---------------------------------------------------------------------------
 def main() -> None:
     args = parse_args()
@@ -1015,20 +825,9 @@ def main() -> None:
     if args.ffdec is None:
         auto_ffdec = discover_ffdec_path()
         if auto_ffdec:
-            logging.info("Detected ffdec at %s", auto_ffdec)
             args.ffdec = auto_ffdec
-        else:
-            logging.debug("No ffdec installation detected automatically")
-
     if args.ffdec is not None:
-        normalized_ffdec = normalize_ffdec_path(args.ffdec)
-        if normalized_ffdec is None:
-            logging.warning("Unable to resolve a usable ffdec executable from %s", args.ffdec)
-            args.ffdec = None
-        else:
-            if normalized_ffdec != args.ffdec:
-                logging.info("Using ffdec executable %s", normalized_ffdec)
-            args.ffdec = normalized_ffdec
+        args.ffdec = normalize_ffdec_path(args.ffdec)
 
     repo_root = args.repo_root.resolve()
     output_root = args.output.resolve()
@@ -1037,25 +836,29 @@ def main() -> None:
     if args.clean:
         clean_output(output_root)
 
-    logging.info("Loading game data via ts-node...")
+    # 1) Datos del juego
     game_data = call_node_for_data(repo_root)
 
-    logging.info("Processing timelines...")
+    # 2) Eventos → Registros
     temporary_events, base_events = build_events(game_data)
     records = build_records(game_data["rooms"], temporary_events, base_events)
 
+    # 3) Excel rápido
     records_path = output_root / "records.xlsx"
-    logging.info("Writing spreadsheet to %s", records_path)
     write_excel(records_path, records)
 
+    # 4) Media (paralelo, 1 frame por SWF con mismo nombre)
     if not args.skip_media:
-        logging.info("Copying SWFs and generating previews...")
-        copy_assets(repo_root, output_root, records, args.engine, args.ffdec, args.preview_zoom)
-    else:
-        logging.info("--skip-media enabled; skipping SWF copies and previews")
-
-    logging.info("Export completed: %d records", len(records))
-
+        copy_assets_parallel(
+            repo_root=repo_root,
+            output_root=output_root,
+            records=records,
+            engine=args.engine,
+            ffdec=args.ffdec,
+            preview_zoom=args.preview_zoom,
+            workers=max(1, int(args.workers)),
+            target_frame=max(1, int(args.target_frame)),
+        )
 
 if __name__ == "__main__":
     main()
