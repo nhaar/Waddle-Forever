@@ -3837,6 +3837,77 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    name: 'Earth Day',
+    date: '2011-04-21',
+    end: '2011-04-26',
+    roomChanges: {
+      dock: 'archives:EarthDay2011Dock.swf',
+      forest: 'archives:EarthDay2011Forest.swf',
+      plaza: 'archives:EarthDay2011Plaza.swf',
+      forts: 'archives:EarthDay2011Forts.swf',
+      town: 'archives:RoomsTown-March2011.swf',
+      cave: 'archives:EasterEggHunt2011Cave.swf',
+      dojo: 'archives:EasterEggHunt2011Dojo.swf',
+      attic: 'archives:EasterEggHunt2011Attic.swf',
+      shack: 'archives:EasterEggHunt2011Shack.swf',
+      mtn: 'archives:EasterEggHunt2011Mtn.swf'
+    },
+    scavengerHunt2011: {
+      icon: 'archives:EasterEggHunt2011Scavenger_hunt_icon.swf',
+      global: {
+        reward: 9098,
+        member: false
+      },
+      lang: {
+        en: {
+          loading: 'Loading Scavenger Hunt',
+          title: 'SCAVENGER HUNT',
+          claim: 'Claim Prize',
+          continue: 'Continue',
+          clues: [
+            'The first egg is\\nhidden way up high.\\nStart your search\\nnear a small bonsai',
+            'This clue requires\\na very short note:\\nFind this egg near\\na floating boat.',
+            'The next clue\\nis a total breeze.\\nLook for this egg\\naround some trees.',
+            'Go to where\\nthe lighting is dim.\\nThink of where\\nyou most like to swim.',
+            'You grasped the clues,\\nyou followed the signs...\\n...now find the polar bear\\nwrapped in vines!',
+            'You\'re almost done\\nso stay the course.\\nFind the room\\nwith a rocking horse.',
+            'Wrap up warm,\\nor you\'ll feel a chill.\\nSpot this egg\\non top of a hill.',
+            'With this last clue,\\nyou\'re good to go.\\nStart a machine\\nand make it snow.'
+          ],
+          'itemsFound': '',
+          itemsFoundPlural: '',
+          start: ''
+        }
+      }
+    },
+    globalChanges: {
+      'content/scavenger_hunt.swf': [ 'archives:EasterEggHunt2011Scavenger_hunt.swf', 'scavenger_hunt' ]
+    },
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': ['archives:EarthDay2011Poster.swf', 'party_poster']
+      },
+      'catalogues/party.swf': {
+        'en': ['archives:EarthDay2011CatalogParty.swf', 'party_catalogue']
+      },
+      'catalogues/party2.swf': {
+        'en': [ 'archives:EarthDay2011CatalogParty2.swf', 'party_catalogue2']
+      },
+      'earth_day_video.swf': {
+        'en': [ 'archives:EarthDay2011Earth_day_video.swf', 'earth_day_video']
+      }
+    },
+    music: {
+      dock: 269,
+      forts: 295
+    },
+    prices: {
+      4345: 50,
+      4344: 50
+    },
+    startscreens: [ 'archives:LoginEarth_day1.swf' ]
+  },
+  {
     name: 'Medieval Party',
     date: Update.MEDIEVAL_11_START,
     end: Update.MEDIEVAL_11_END,
@@ -4105,5 +4176,29 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     startscreens: [
       'archives:LoginIslandAdventureParty2011.swf'
     ]
+    name: 'Battle of Doom',
+    date: '2011-05-31',
+    end: '2011-06-07',
+    roomChanges: {
+      village: 'archives:BattleofDoomVillage.swf',
+      agentlobbysolo: 'archives:BattleofDoomAgentlobbysolo.swf',
+      agentlobbymulti: 'archives:BattleofDoomAgentlobbymulti.swf',
+      party: 'archives:BattleofDoomParty.swf'
+    },
+    localChanges: {
+      'herbert_taunt.swf': {
+        en: [ 'archives:ENBattleofDoomHerbertTaunt.swf', 'herbert_taunt' ]
+      },
+      'herbert_taunt2.swf': {
+        en: [ 'archives:ENBattleofDoomHerbertTaunt2.swf', 'herbert_taunt_defeated' ]
+      },
+      'party_op.swf': {
+        // placeholder
+        en: [ 'archives:AprilFoolsParty2011Poster.swf', 'party_op_medals_earned' ]
+      }
+    },
+    music: {
+      party: 125
+    }
   }
 ];
