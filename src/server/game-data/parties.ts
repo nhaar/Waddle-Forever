@@ -4073,12 +4073,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     music: {
       'town': 271,
+      coffee: 0,
       'plaza': 271,
+      'pizza': 271,
       'forts': 271,
       'party3': 271,
       'dance': 242,
       'rink': 240,
-      'mine': 247
+      'mine': 247,
+      village: 292
     },
     startscreens: [
       'archives:MusicJam2011BillboardMusic_jam2.swf'
