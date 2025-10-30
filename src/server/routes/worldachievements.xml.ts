@@ -737,6 +737,36 @@ const WORLD_STAMPS_TIMELINE: Array<{
         ]
       }
     ]
+  },
+  {
+    start: Update.MEDIEVAL_11_START,
+    end: Update.MEDIEVAL_11_END,
+    stamps: [
+      {
+        name: 'Noble Knight',
+        id: 360,
+        declarations: [
+          {
+            event: 'every 2 seconds',
+            conditions: [
+              'user hasProperty is_member equals 1',
+              // shield hand items
+              'user wearing 723 or 724 or 725 or 5028 or 5058 or 5097 or 5099 or 5098 or 5100 or 5095'
+            ],
+            optionalConditions: [
+              // standard knight
+              'user wearing 688 and 794',
+              // golden knight
+              'user wearing 1052 and 4078',
+              // iron knight
+              'user wearing 1146 and 4219',
+              // white knight
+              'user wearing 1253 and 4362'
+            ],
+          }
+        ]
+      }
+    ]
   }
 ];
 

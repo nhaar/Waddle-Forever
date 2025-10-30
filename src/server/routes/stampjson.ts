@@ -2142,5 +2142,18 @@ export function getStampbook(version: Version): string {
     ]);
   }
 
+    if (isGreaterOrEqual(version, Update.MEDIEVAL_11_START)) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        stamp_id: 360,
+        name: 'Noble Knight',
+        is_member: true,
+        rank: 2,
+        description: 'Wear a knight costume at the Medieval party',
+        rank_token: 'medium'
+      }
+    ]);
+  }
+
   return JSON.stringify(newStampbook)
 }

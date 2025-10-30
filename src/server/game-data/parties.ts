@@ -3838,8 +3838,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Medieval Party',
-    date: '2011-05-19',
-    end: '2011-05-31',
+    date: Update.MEDIEVAL_11_START,
+    end: Update.MEDIEVAL_11_END,
     construction: {
       date: '2011-05-17',
       changes: {
