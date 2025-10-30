@@ -4023,7 +4023,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': [ 'archives:MusicJam2011CatalogParty3.swf', 'party3_catalogue' ]
       },
       'membership/party2.swf': {
-        'en': 'archives:MusicJam2011MembershipParty2.swf'
+        'en': [ 'archives:MusicJam2011MembershipParty2.swf', 'oops_party2_room', 'oops_party3_room', 'oops_party4_room' ]
       }
     },
     roomMemberStatus: {
