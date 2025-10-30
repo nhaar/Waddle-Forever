@@ -3969,5 +3969,67 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'party22': 308,
       'party23': 41
     }
+  },
+  {
+    name: 'Music Jam',
+    date: '2011-06-16',
+    end: '2011-07-05',
+    roomChanges: {
+      'town': 'archives:RoomsTown-MusicJam2011.swf',
+      'rink': 'archives:MusicJam2011Rink.swf',
+      'forts': 'archives:MusicJam2011Forts.swf',
+      'village': 'archives:MusicJam2011Village.swf',
+      'plaza': 'archives:MusicJam2011Plaza.swf',
+      'pizza': 'archives:MusicJam2011Pizza.swf',
+      'dance': 'archives:MusicJam2011Dance.swf',
+      'mine': 'archives:MusicJam2011Mine.swf',
+      'light': 'archives:MusicJam2011Light.swf',
+      'beach': 'archives:MusicJam2011Beach.swf',
+      'forest': 'archives:MusicJam2011Forest.swf',
+      'dock': 'archives:MusicJam2011Dock.swf',
+      'lounge': 'archives:MusicJam2011Lounge.swf',
+      'coffee': 'archives:MusicJam2011Coffee.swf',
+      'cave': 'archives:MusicJam2011Cave.swf',
+      'berg': 'archives:MusicJam2011Berg.swf',
+      'cove': 'archives:MusicJam2011Cove.swf',
+      'party': 'archives:MusicJam2011Party.swf',
+      'party2': 'archives:MusicJam2011Party2.swf',
+      'party3': 'archives:MusicJam2011Party3.swf',
+      'party4': 'archives:MusicJam2011Party4.swf'
+    },
+    music: {
+      'town': 271,
+      'plaza': 271,
+      'forts': 271,
+      'party3': 271,
+      'dance': 242,
+      'rink': 240,
+      'mine': 247
+    },
+    startscreens: [
+      'archives:MusicJam2011BillboardMusic_jam2.swf'
+    ],
+    localChanges: {
+      'close_ups/poster.swf': {
+        'en': 'archives:MusicJam2011Poster.swf'
+      },
+      'catalogues/party.swf': {
+        'en': [ 'archives:MusicJam2011CatalogParty.swf', 'party_catalogue' ]
+      },
+      'catalogues/party2.swf': {
+        'en': [ 'archives:MusicJam2011CatalogParty2.swf', 'party2_catalogue' ]
+      },
+      'catalogues/party3.swf': {
+        'en': [ 'archives:MusicJam2011CatalogParty3.swf', 'party3_catalogue' ]
+      },
+      'membership/party2.swf': {
+        'en': 'archives:MusicJam2011MembershipParty2.swf'
+      }
+    },
+    roomMemberStatus: {
+      'party2': true,
+      'party3': true,
+      'party4': true
+    }
   }
 ];
