@@ -3931,6 +3931,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       },
       'membership/party.swf': {
         'en': ['archives:MedievalParty2011MembershipParty2.swf', 'oops_party14_room', 'oops_party19_room']
+      },
+      'close_ups/InstructionsScroll.swf': {
+        en: ['svanilla:media/play/v2/content/local/en/close_ups/InstructionsScroll.swf', 'instructions_quest']
       }
     },
     roomMemberStatus: {
