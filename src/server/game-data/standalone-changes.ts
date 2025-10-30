@@ -382,7 +382,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     },
     {
       // engine that has EPF and stuff
-      fileRef: 'slegacy:media/play/v2/client/engine.swf',
+      fileRef: 'approximation:engine.swf',
       date: Update.EPF_RELEASE
     },
     {

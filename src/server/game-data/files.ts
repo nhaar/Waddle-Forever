@@ -292,7 +292,15 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell.swf',
-      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added'
+      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added (2011_scavenger_hunt.as), and sendPlayerTeleport() from archives ClientShell2012-10-17.swf (used in April Fools 2011)'
+    },
+    {
+      file: 'airtower.swf',
+      comment: 'Exact same as legacy-media airtower.swf but with PLAYER_TELEPORT added (from ClientAirtower2012-07-09.swf) (for April Fools 2011)'
+    },
+    {
+      file: 'engine.swf',
+      comment: 'This is the legacy-media engine.swf, with the functions checkIsValidPosition(), teleportPlayer(), sendPlayerTeleport(), sendPlayerTeleportAndMove(), from archives file ClientEngine2012-10-17.swf (for April Fools 2011)'
     }
   ],
   [RECREATION]: [

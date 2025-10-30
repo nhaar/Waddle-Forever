@@ -3789,9 +3789,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     permanentChanges: {
       generalChanges: {
         // interface that has scavenger hunt functions
-        'play/v2/client/interface.swf': 'archives:ClientInterface20110830.swf',
-        // engine that has teleport functions
-        'play/v2/client/engine.swf': 'archives:ClientEngine2012-10-17.swf'
+        'play/v2/client/interface.swf': 'archives:ClientInterface20110830.swf'
       }
     },
     scavengerHunt2011: {
