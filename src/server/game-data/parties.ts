@@ -1881,7 +1881,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:BoxCatalog.swf'
       },
       'membership/party3.swf': {
-        'en': 'archives:AprilFoolMembership.swf'
+        'en': ['archives:AprilFoolMembership.swf', 'oops_party3_room']
       }
     },
     roomMemberStatus: {
@@ -3082,7 +3082,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'recreation:mountain_expedition_poster.swf'
       },
       'membership/party3.swf': {
-        'en': 'archives:MountainExpeditionMembershipOopsExpedition.swf'
+        'en': ['archives:MountainExpeditionMembershipOopsExpedition.swf', 'oops_party3_room']
       }
     },
     roomMemberStatus: {
@@ -3253,7 +3253,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:HalloweenParty2010Poster.swf'
       },
       'membership/party3.swf': {
-        'en': 'archives:HalloweenParty2010MembershipParty3.swf'
+        'en': ['archives:HalloweenParty2010MembershipParty3.swf', 'oops_party3_room']
       }
     },
     roomMemberStatus: {
@@ -3660,10 +3660,10 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'archives:PuffleParty2011Poster.swf'
       },
       'membership/party2.swf': {
-        'en': 'archives:PuffleParty2011MembershipParty2.swf'
+        'en': ['archives:PuffleParty2011MembershipParty2.swf', 'oops_party2_room']
       },
       'membership/party3.swf': {
-        'en': 'archives:PuffleParty2011MembershipParty3.swf'
+        'en': ['archives:PuffleParty2011MembershipParty3.swf', 'oops_party3_room']
       }
     },
     startscreens: [
@@ -3711,8 +3711,17 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'catalogues/party.swf': {
         'en': 'archives:AprilFoolsParty2011PartyCatalog.swf'
       },
-      'membership/party2.swf': {
-        'en': 'archives:AprilFoolsParty2011MembershipParty2.swf'
+      'membership/party.swf': {
+        'en': [
+          'archives:AprilFoolsParty2011MembershipParty2.swf',
+          'oops_party1_room',
+          'oops_party2_room',
+          'oops_party3_room',
+          'oops_party4_room',
+          'oops_party5_room',
+          'oops_party6_room',
+          'oops_party7_room',
+        ]
       }
     },
     roomChanges: {
@@ -3784,7 +3793,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 232
     },
     roomMemberStatus: {
-      'party6': true
+      party1: true,
+      party2: true,
+      party3: true,
+      party4: true,
+      party5: true,
+      'party6': true,
+      party7: true
     },
     permanentChanges: {
       generalChanges: {
