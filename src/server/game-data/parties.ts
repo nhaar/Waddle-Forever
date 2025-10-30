@@ -4176,6 +4176,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     startscreens: [
       'archives:LoginIslandAdventureParty2011.swf'
     ]
+  },
+  {
     name: 'Battle of Doom',
     date: '2011-05-31',
     end: '2011-06-07',
@@ -4192,9 +4194,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'herbert_taunt2.swf': {
         en: [ 'archives:ENBattleofDoomHerbertTaunt2.swf', 'herbert_taunt_defeated' ]
       },
-      'party_op.swf': {
-        // placeholder
-        en: [ 'archives:AprilFoolsParty2011Poster.swf', 'party_op_medals_earned' ]
+      'close_ups/party_op_medals_earned.swf': {
+        en: [ 'svanilla:media/play/v2/content/local/en/close_ups/party_op_medals_earned.swf', 'party_op_medals_earned' ]
       }
     },
     music: {
