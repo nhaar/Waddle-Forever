@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Club Penguin Wiki App",
+    "slug": "clubpenguinwiki-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "platforms": ["ios", "android", "web"],
+    "icon": "./Media/Logo.png",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./Media/Logo.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./Media/Logo.png"
+    }
+  }
+}
