@@ -3820,5 +3820,139 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       }
     }
+  },
+  {
+    name: 'Medieval Party',
+    date: '2011-05-19',
+    end: '2011-05-31',
+    construction: {
+      date: '2011-05-17',
+      changes: {
+        'town': 'archives:RoomsTown-MedievalParty2010Pre.swf',
+        'forts': 'archives:MedievalParty2011ConstForts.swf',
+        'village': 'archives:MedievalParty2011ConstVillage.swf',
+        'plaza': 'archives:MedievalParty2011ConstPlaza.swf',
+        'cave': 'archives:MedievalParty2011ConstCave.swf',
+        'beach': 'archives:MedievalParty2011ConstBeach.swf'
+      }
+    },
+    localChanges: {
+      'catalogues/party.swf': {
+        'en': 'archives:MedievalParty2011CatalogParty.swf'
+      },
+      'catalogues/party2.swf': {
+        'en': 'archives:MedievalParty2011CatalogParty2.swf'
+      },
+      'membership/party2.swf': {
+        'en': 'archives:MedievalParty2011MembershipParty2.swf'
+      }
+    },
+    roomMemberStatus: {
+      'party14': true,
+      'party19': true
+    },
+    startscreens: [
+      'archives:LoginMedievalparty.swf'
+    ],
+    roomChanges: {
+      'book': 'archives:MedievalParty2011Book.swf',
+      'beach': 'archives:Rooms0508Beach.swf',
+      'beacon': 'archives:MedievalParty2011Beacon.swf',
+      'boiler': 'archives:MedievalParty2011Boiler.swf',
+      'cave': 'archives:MedievalParty2011Cave.swf',
+      'cove': 'archives:MedievalParty2011Cove.swf',
+      'coffee': 'archives:MedievalParty2011Coffee.swf',
+      'lounge': 'archives:MedievalParty2011Lounge.swf',
+      'light': 'archives:MedievalParty2011Light.swf',
+      'shop': 'archives:MedievalParty2011Shop.swf',
+      'dock': 'archives:MedievalParty2011Dock.swf',
+      'forest': 'archives:MedievalParty2011Forest.swf',
+      'dance': 'archives:MedievalParty2011Dance.swf',
+      'mine': 'archives:MedievalParty2011Mine.swf',
+      'shack': 'archives:MedievalParty2011Shack.swf',
+      'attic': 'archives:MedievalParty2011Attic.swf',
+      'pizza': 'archives:MedievalParty2011Pizza.swf',
+      'plaza': 'archives:MedievalParty2011Plaza.swf',
+      'eco': 'archives:MedievalParty2011Eco.swf',
+      'mtn': 'archives:MedievalParty2011Mtn.swf',
+      'rink': 'archives:MedievalParty2011Rink.swf',
+      'town': 'archives:RoomsTown-MedievalParty2011.swf',
+      'forts': 'archives:MedievalParty2011Forts.swf',
+      'village': 'archives:MedievalParty2011Village.swf',
+      'lodge': 'archives:Rooms0508Lodge.swf',
+      'party1': 'archives:MedievalParty2011Party1.swf',
+      'party2': 'archives:MedievalParty2011Party2.swf',
+      'party3': 'archives:MedievalParty2011Party3.swf',
+      'party4': 'archives:MedievalParty2011Party4.swf',
+      'party5': 'archives:MedievalParty2011Party5.swf',
+      'party6': 'archives:MedievalParty2011Party6.swf',
+      'party7': 'archives:MedievalParty2011Party7.swf',
+      'party8': 'archives:MedievalParty2011Party8.swf',
+      'party9': 'archives:MedievalParty2011Party9.swf',
+      'party10': 'archives:MedievalParty2011Party10.swf',
+      'party11': 'archives:MedievalParty2011Party11.swf',
+      'party12': 'archives:MedievalParty2011Party12.swf',
+      'party13': 'archives:MedievalParty2011Party13.swf',
+      'party14': 'archives:MedievalParty2011Party14.swf',
+      'party15': 'archives:MedievalParty2011Party15.swf',
+      'party16': 'archives:MedievalParty2011Party16.swf',
+      'party17': 'archives:MedievalParty2011Party17.swf',
+      'party18': 'archives:MedievalParty2011Party18.swf',
+      'party19': 'archives:MedievalParty2011Party19.swf',
+      'party20': 'archives:MedievalParty2011Party20.swf',
+      'party21': 'archives:MedievalParty2011Party21.swf',
+      'party22': 'archives:MedievalParty2011Party22.swf',
+      'party23': 'archives:MedievalParty2011Party23.swf'
+    },
+    music: {
+      'town': 233,
+      'plaza': 233,
+      'village': 233,
+      'beach': 233,
+      'rink': 233,
+      'shack': 233,
+      'dock': 233,
+      'beacon': 233,
+      'mtn': 233,
+      'lounge': 31,
+      'coffee': 234,
+      'book': 234,
+      'dance': 234,
+      'light': 234,
+      'shop': 234,
+      'eco': 234,
+      'pizza': 234,
+      'forest': 235,
+      'forts': 235,
+      'lodge': 235,
+      'attic': 235,
+      'cove': 235,
+      'mine': 236,
+      'cave': 236,
+      'boiler': 236,
+      'party1': 235,
+      'party2': 236,
+      'party3': 236,
+      'party4': 236,
+      'party5': 236,
+      'party6': 236,
+      'party7': 236,
+      'party8': 236,
+      'party9': 236,
+      'party10': 236,
+      'party11': 236,
+      'party12': 236,
+      'party13': 265,
+      'party14': 286,
+      'party15': 286,
+      'party16': 287,
+      'party17': 288,
+      'party18': 265,
+      'party19': 310,
+      'party20': 310,
+      'party21': 309,
+      'party22': 308,
+      'party23': 41
+    }
   }
 ];
