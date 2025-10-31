@@ -288,6 +288,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       // unknown date, vectorized 07 rooms
       date: Update.PRE_CPIP_REWRITE_DATE,
       fileRef: 'archives:ArtworkRoomsShop40.swf'
+    },
+    {
+      date: '2009-01-02',
+      fileRef: 'archives:RoomsShop.swf',
+      comment: 'The Big Wigs Catalog is merged with the Penguin Style'
     }
   ],
   coffee: [

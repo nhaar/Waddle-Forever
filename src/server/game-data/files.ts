@@ -1241,6 +1241,34 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'great_snow_race/party_note05.swf',
       comment: 'Currently same as party_note04, placeholder'
+    },
+    {
+      file: 'april_fools_2007/beach.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: '2008-07-15-CataloguesAdopt.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: '2008-07-15-CataloguesCostume.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: '2008-07-15-CataloguesHair.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: '2008-07-15-RoomsShop.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: '2008-07-15-CataloguesSport.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: '2008-07-15-CataloguesIgloo.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
