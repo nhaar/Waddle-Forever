@@ -68,7 +68,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       stage: 'archives:RoomsStage2008-07-15-Squidzoid.swf',
       lodge: 'recreation:lodge_cpip_start.swf',
       pet: 'recreation:pet_pre_white.swf',
-      shop: 'archives:RoomsShop.swf',
+      shop: 'recreation:shop_cpip.swf',
       coffee: 'archives:RoomsCoffee-January2010.swf',
       lounge: 'archives:RoomsLounge.swf',
       boiler: 'archives:RoomsBoiler-January2010.swf',
@@ -110,7 +110,19 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
         'en': 'recreation:catalog/furniture_cpip.swf'
       },
       'catalogues/adopt.swf': {
-        'en': 'archives:Puffle_0711b.swf'
+        'en': 'recreation:catalog/adopt_cpip.swf'
+      },
+      'catalogues/costume.swf': {
+        'en': 'recreation:catalog/costume_cpip.swf'
+      },
+      'catalogues/hair.swf': {
+        'en': 'recreation:catalog/hair_cpip.swf'
+      },
+      'catalogues/igloo.swf': {
+        'en': 'recreation:catalog/igloo_cpip.swf'
+      },
+      'catalogues/sport.swf': {
+        'en': 'recreation:catalog/sport_cpip.swf'
       },
       'catalogues/fish.swf': {
         'en': 'archives:TheFish2009.swf'

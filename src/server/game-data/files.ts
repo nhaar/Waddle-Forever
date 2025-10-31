@@ -1247,6 +1247,34 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Currently same as party_note04, placeholder'
     },
     {
+      file: 'april_fools_2007/beach.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'catalog/adopt_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/costume_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/hair_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'shop_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/sport_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/igloo_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
       file: 'beacon41.swf',
       comment: 'Made by Doubleuman, added the missing pin code to the archived SWF (which was from an unfinished FLA)'
     }
