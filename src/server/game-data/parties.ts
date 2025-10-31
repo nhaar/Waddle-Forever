@@ -4284,5 +4284,78 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'recreation:great_snow_race/party_note05.swf'
       }
     } 
+  },
+  {
+    name: 'The Fair',
+    date: '2011-09-22',
+    end: '2011-10-05',
+    roomChanges: {
+      beach: 'archives:TheFair2011Beach.swf',
+      beacon: 'archives:TheFair2011Beacon.swf',
+      party: 'archives:TheFair2011Party.swf',
+      coffee: 'archives:TheFair2011Coffee.swf',
+      cove: 'archives:TheFair2011Cove.swf',
+      dock: 'archives:TheFair2011Dock.swf',
+      forest: 'archives:TheFair2011Forest.swf',
+      party2: 'archives:TheFair2011Party2.swf',
+      party3: 'archives:TheFair2011Party3.swf',
+      berg: 'archives:TheFair2011Berg.swf',
+      dance: 'archives:TheFair2011Dance.swf',
+      pizza: 'archives:TheFair2011Pizza.swf',
+      plaza: 'archives:TheFair2011Plaza.swf',
+      mtn: 'archives:TheFair2011Mtn.swf',
+      village: 'archives:TheFair2011Village.swf',
+      forts: 'archives:TheFair2011Forts.swf',
+      rink: 'archives:TheFair2011Rink.swf',
+      town: 'archives:RoomsTown-TheFair2011.swf',
+    },
+    music: {
+      town: 297,
+      dock: 297,
+      village: 297,
+      forest: 297,
+      party3: 221,
+      coffee: 221,
+      pizza: 221,
+      party: 221,
+      beach: 297,
+      beacon: 297,
+      cove: 297,
+      berg: 297,
+      dance: 243,
+      plaza: 297,
+      mtn: 297,
+      forts: 297,
+      rink: 311
+    },
+    localChanges: {
+      'catalogues/prizebooth.swf': {
+        en: 'archives:TheFair2011Prizebooth.swf'
+      },
+      'catalogues/prizeboothmember.swf': {
+        en: 'archives:TheFair2011Prizeboothmember.swf'
+      },
+      'membership/party2.swf': {
+        en: ['archives:TheFair2011MembershipParty2.swf', 'oops_party3_room']
+      }
+    },
+    roomMemberStatus: {
+      party3: true
+    },
+    startscreens: [ 'archives:TheFair2011StartBillboards.swf' ],
+    updates: [
+      {
+        comment: 'The prize booths are updated',
+        date: '2011-09-29',
+        localChanges: {
+          'catalogues/prizebooth.swf': {
+            en: 'archives:TheFair2011Prizebooth2.swf'
+          },
+          'catalogues/prizeboothmember.swf': {
+            en: 'archives:TheFair2011Prizeboothmember2.swf'
+          }
+        }
+      }
+    ]
   }
 ];
