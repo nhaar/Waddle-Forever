@@ -2155,5 +2155,18 @@ export function getStampbook(version: Version): string {
     ]);
   }
 
+  if (isGreaterOrEqual(version, Update.ISLAND_ADVENTURE_11_START)) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        stamp_id: 426,
+        name: 'Music Maestro',
+        is_member: false,
+        rank: 2,
+        description: 'Solve a musical challenge at a party',
+        rank_token: 'medium'
+      }
+    ]);
+  }
+
   return JSON.stringify(newStampbook)
 }

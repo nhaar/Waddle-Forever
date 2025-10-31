@@ -4111,7 +4111,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Island Adventure Party',
-    date: '2011-07-21',
+    date: Update.ISLAND_ADVENTURE_11_START,
     end: '2011-08-04',
     construction: {
       date: '2011-07-14',
@@ -4156,6 +4156,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 291,
       'berg': 291
     },
+    activeMigrator: true,
     localChanges: {
       'close_ups/poster.swf': {
         'en': [ 'archives:IslandAdventureParty2011Party_poster.swf', 'party_poster' ]
@@ -4174,6 +4175,24 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       },
       'catalogues/party.swf': {
         'en': 'archives:IslandAdventureParty2011CatalogParty.swf'
+      },
+      'close_ups/party_note01.swf': {
+        'en': 'archives:IslandAdventureParty2011Party_note01.swf'
+      },
+      'close_ups/party_note02.swf': {
+        'en': 'archives:IslandAdventureParty2011Party_note02.swf'
+      },
+      'close_ups/party_note03.swf': {
+        'en': 'archives:IslandAdventureParty2011Party_note03.swf'
+      },
+      'close_ups/party_note04.swf': {
+        'en': 'archives:IslandAdventureParty2011Party_note04.swf'
+      },
+      'close_ups/party_note05.swf': {
+        'en': 'archives:IslandAdventureParty2011Party_note05.swf'
+      },
+      'close_ups/party_note06.swf': {
+        'en': ['archives:IslandAdventureParty2011Party_note06.swf', 'party_note06']
       }
     },
     roomMemberStatus: {
