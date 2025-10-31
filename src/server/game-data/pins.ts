@@ -55,11 +55,34 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:light_life_ring_pin.swf'
   },
   {
+    date: '2006-12-22',
+    end: '2007-01-05',
+    name: 'Candy Cane',
+    room: 'dance',
+    fileRef: 'archives:ArtworkRoomsDance42.swf',
+    frame: 2
+  },
+  {
     name: 'Ice Block',
     date: Update.ICE_BLOCK_PIN,
     end: '2007-03-02',
     room: 'berg',
     fileRef: 'recreation:berg_ice_block_pin.swf'
+  },
+  {
+    name: 'Microphone',
+    date: '2007-04-13',
+    end: '2007-04-27',
+    room: 'beacon',
+    fileRef: 'archives:Beacon41.swf'
+  },
+  {
+    name: 'Picnic Basket',
+    date: '2007-06-22',
+    end: '2007-07-06',
+    room: 'lodge',
+    fileRef: 'archives:ArtworkRoomsLodge46.swf',
+    frame: 2
   },
   {
     name: 'Paddleball',
@@ -77,14 +100,30 @@ export const PINS: Array<Pin> = [
   {
     name: 'Wreath',
     date: '2007-12-21',
-    end: '2008-01-04'
-    // only available in christmas party
+    end: '2008-01-04',
+    fileRef: 'archives:Attic42_Wreath_Pin.swf',
+    room: 'attic'
+  },
+  {
+    name: 'Rowboat',
+    date: '2008-02-01',
+    end: '2008-02-15',
+    fileRef: 'archives:Light46_Rowboat_Pin.swf',
+    room: 'light'
   },
   {
     name: 'Crayon',
     date: '2008-03-28',
-    end: '2008-04-11'
-    // only archived in april fools SWFs
+    end: '2008-04-11',
+    room: 'shack',
+    fileRef: 'archives:ArtworkRoomsShack41.swf'
+  },
+  {
+    name: 'Pyramid',
+    date: '2008-04-11',
+    end: '2008-04-25',
+    room: 'book',
+    fileRef: 'archives:Book43_Pyramid_Pin.swf'
   },
   {
     name: 'Treasure Chest',
