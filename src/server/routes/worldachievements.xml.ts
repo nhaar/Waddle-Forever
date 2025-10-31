@@ -572,25 +572,6 @@ const WORLD_STAMPS_TIMELINE: Array<{
     end: Update.WATER_HUNT_END
   },
   {
-    stamps: [
-      {
-        "name": "Snowboarder",
-        "id": 440,
-        "declarations": [
-          {
-            "event": "every 2 seconds",
-            "conditions": [
-              "user wearing only 3083 or 3084 or 3085",
-              "user isOnFrame 26",
-              "user in 300 or 100 or 200 or 851 or 852 or 853 or 854 or 855 or 856 or 857 or 858 or 859 or 860"
-            ]
-          }
-        ]
-      }
-    ],
-    start: '2011-08-25'
-  },
-  {
     start: Update.WILDERNESS_EXPEDITION_START,
     end: Update.WILDERNESS_EXPEDITION_END,
     stamps: [
@@ -763,6 +744,26 @@ const WORLD_STAMPS_TIMELINE: Array<{
               // white knight
               'user wearing 1253 and 4362'
             ],
+          }
+        ]
+      }
+    ]
+  },
+  {
+    start: Update.GREAT_SNOW_RACE_START,
+    end: Update.GREAT_SNOW_RACE_END,
+    stamps: [
+      {
+        id: 440,
+        name: 'Snowboarder',
+        declarations: [
+          {
+            event: 'every 2 seconds',
+            conditions: [
+              'user wearing only 3083 or 3084 or 3085',
+              'user isOnFrame 26',
+              'user in 300 or 100 or 200 or 851 or 852 or 853 or 854 or 855 or 856 or 857 or 858 or 859 or 860'
+            ]
           }
         ]
       }

@@ -4228,8 +4228,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   { name: 'Great Snow Race', 
-    date: '2011-08-25', 
-    end: '2011-08-31', 
+    date: Update.GREAT_SNOW_RACE_START, 
+    end: Update.GREAT_SNOW_RACE_END, 
     construction: { 
       date: '2011-08-18', 
       changes: { 

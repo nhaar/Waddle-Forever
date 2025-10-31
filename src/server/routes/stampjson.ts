@@ -2168,5 +2168,34 @@ export function getStampbook(version: Version): string {
     ]);
   }
 
+  if (isGreaterOrEqual(version, Update.GREAT_SNOW_RACE_START)) {
+    addStamps(newStampbook[CategoryID.Party] as Category, [
+      {
+        stamp_id: 440,
+        name: 'Snowboarder',
+        is_member: true,
+        rank: 1,
+        description: 'Do a snowboard dance at a party',
+        rank_token: 'easy'
+      },
+      {
+        stamp_id: 439,
+        name: 'Mountaineer',
+        is_member: false,
+        rank: 3,
+        description: 'Reach a mountain peak',
+        rank_token: 'hard'
+      },
+      {
+        stamp_id: 438,
+        name: 'Stunt Penguin',
+        is_member: false,
+        rank: 3,
+        description: 'Complete an obstacle course',
+        rank_token: 'hard'
+      }
+    ]);
+  }
+
   return JSON.stringify(newStampbook)
 }
