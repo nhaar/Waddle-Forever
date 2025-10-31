@@ -1229,6 +1229,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'halloween_2006/village.swf',
       comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'great_snow_race/party_note04.swf',
+      comment: 'Based on local/en/close_ups/party_op_medals_earned.swf (from vanilla media), added a function in the close button that interacts with the room code from party10 (Great Snow Race) to progress the Operation Hibernation scene'
     }
   ],
   [MOD]: [

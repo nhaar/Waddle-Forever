@@ -4265,7 +4265,10 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       }, 
       'catalogues/party.swf': { 
         'en': 'archives:TheGreatSnowRaceCatalogParty.swf' 
-      } 
+      },
+      'close_ups/party_note04.swf': {
+        'en': 'recreation:great_snow_race/party_note04.swf'
+      }
     } 
   }
 ];
