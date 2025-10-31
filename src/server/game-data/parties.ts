@@ -4204,5 +4204,46 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     music: {
       party: 125
     }
+  },
+  { name: 'Great Snow Race', 
+    date: '2011-08-25', 
+    end: '2011-08-31', 
+    construction: { 
+      date: '2011-08-18', 
+      changes: { 
+        village: 
+        'archives:TheGreatSnowRaceConstVillage.swf' 
+      } 
+    }, 
+    roomChanges: 
+    { 'town': 'archives:RoomsTown-GreatSnowRace.swf', 
+      'plaza': 'archives:TheGreatSnowRacePlaza.swf', 
+      'village': 'archives:TheGreatSnowRaceVillage.swf', 
+      'party1': 'archives:TheGreatSnowRaceParty1.swf', 
+      'party2': 'archives:TheGreatSnowRaceParty2.swf', 
+      'party3': 'archives:TheGreatSnowRaceParty3.swf', 
+      'party4': 'archives:TheGreatSnowRaceParty4.swf', 
+      'party5': 'archives:TheGreatSnowRaceParty5.swf', 
+      'party6': 'archives:TheGreatSnowRaceParty6.swf', 
+      'party7': 'archives:TheGreatSnowRaceParty7.swf', 
+      'party8': 'archives:TheGreatSnowRaceParty8.swf', 
+      'party9': 'archives:TheGreatSnowRaceParty9.swf', 
+      'party10': 'archives:TheGreatSnowRaceParty10.swf' 
+    }, 
+    music: { 
+      'party2': 294, 
+      'party3': 295, 
+      'party4': 295, 
+      'party5': 295, 
+      'party6': 256 
+    }, 
+    localChanges: { 
+      'close_ups/poster.swf': { 
+        'en': 'archives:TheGreatSnowRacePoster.swf' 
+      }, 
+      'catalogues/party.swf': { 
+        'en': 'archives:TheGreatSnowRaceCatalogParty.swf' 
+      } 
+    } 
   }
 ];
