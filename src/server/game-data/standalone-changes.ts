@@ -123,6 +123,12 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'catalogues/sport.swf': {
         'en': 'recreation:catalog/sport_cpip.swf'
+      },
+      'catalogues/fish.swf': {
+        'en': 'archives:TheFish2009.swf'
+      },
+      'catalogues/pets.swf': {
+        en: 'archives:May2008LoveYourPet.swf'
       }
     },
     music: {

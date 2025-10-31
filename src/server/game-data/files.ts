@@ -203,6 +203,10 @@ would need to investigated`
     {
       file: 'PuffleRoundupWhitePuffle.swf',
       comment: 'Removed domain check'
+    },
+    {
+      file: 'ArtworkRoomsTown-newyears.swf',
+      comment: 'Chat291.swf compatibility fixes'
     }
   ],
   [APPROXIMATION]: [
@@ -1269,6 +1273,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'catalog/igloo_cpip.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beacon41.swf',
+      comment: 'Made by Doubleuman, added the missing pin code to the archived SWF (which was from an unfinished FLA)'
     }
   ],
   [MOD]: [
