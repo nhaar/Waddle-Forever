@@ -186,6 +186,14 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }
   },
   {
+    startComment: 'A new years celebration is held at the Town',
+    date: '2005-12-31',
+    end: '2006-01-01',
+    roomChanges: {
+      town: 'fix:ArtworkRoomsTown-newyears.swf'
+    }
+  },
+  {
     name: 'Valentine\'s Day Celebration',
     date: '2006-02-14',
     end: '2006-02-15',

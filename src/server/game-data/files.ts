@@ -203,6 +203,10 @@ would need to investigated`
     {
       file: 'PuffleRoundupWhitePuffle.swf',
       comment: 'Removed domain check'
+    },
+    {
+      file: 'ArtworkRoomsTown-newyears.swf',
+      comment: 'Chat291.swf compatibility fixes'
     }
   ],
   [APPROXIMATION]: [
