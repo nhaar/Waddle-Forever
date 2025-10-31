@@ -111,6 +111,12 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'catalogues/adopt.swf': {
         'en': 'archives:Puffle_0711b.swf'
+      },
+      'catalogues/fish.swf': {
+        'en': 'archives:TheFish2009.swf'
+      },
+      'catalogues/pets.swf': {
+        en: 'archives:May2008LoveYourPet.swf'
       }
     },
     music: {
