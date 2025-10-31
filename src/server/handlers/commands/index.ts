@@ -35,12 +35,12 @@ class CommandsHandler {
   getCommandsHandler() {
     const commands = this._commands;
     return (client: Client, id: string, message: string) => {
-      const commandMatch = message.match(/^\!(\w+)(.*)/);
+      const commandMatch = message.match(/^(\!|COM )(\w+)(.*)/);
       if (commandMatch !== null) {
-        const keyword = commandMatch[1];
+        const keyword = commandMatch[2];
         const callbacks = commands.get(keyword);
         if (callbacks !== undefined) {
-          const args = commandMatch[2].split(/\s+/).slice(1);
+          const args = commandMatch[3].split(/\s+/).slice(1);
           callbacks.forEach(callback => callback(client, ...args));
         } else {
           logdebug(`Attempted to use command ${keyword}, but it doesn't exist`);
@@ -287,7 +287,7 @@ class BotCommands {
     return (client: Client, id: string, message: string) => {
       const commandMatch = message.match(/!b(\w+)/);
       if (commandMatch !== null) {
-        const command = commandMatch[1];
+        const command = commandMatch[2];
         const group = handler.runCommand(client, command);
 
         group.bots.forEach(bot => {
