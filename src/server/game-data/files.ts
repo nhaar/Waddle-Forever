@@ -1247,27 +1247,27 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
-      file: '2008-07-15-CataloguesAdopt.swf',
+      file: 'catalog/adopt_cpip.swf',
       comment: 'Made by Blue Kirby'
     },
     {
-      file: '2008-07-15-CataloguesCostume.swf',
+      file: 'catalog/costume_cpip.swf',
       comment: 'Made by Blue Kirby'
     },
     {
-      file: '2008-07-15-CataloguesHair.swf',
+      file: 'catalog/hair_cpip.swf',
       comment: 'Made by Blue Kirby'
     },
     {
-      file: '2008-07-15-RoomsShop.swf',
+      file: 'shop_cpip.swf',
       comment: 'Made by Blue Kirby'
     },
     {
-      file: '2008-07-15-CataloguesSport.swf',
+      file: 'catalog/sport_cpip.swf',
       comment: 'Made by Blue Kirby'
     },
     {
-      file: '2008-07-15-CataloguesIgloo.swf',
+      file: 'catalog/igloo_cpip.swf',
       comment: 'Made by Blue Kirby'
     }
   ],
