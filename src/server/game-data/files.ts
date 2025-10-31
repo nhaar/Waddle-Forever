@@ -1241,6 +1241,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'great_snow_race/party_note05.swf',
       comment: 'Currently same as party_note04, placeholder'
+    },
+    {
+      file: 'beacon41.swf',
+      comment: 'Made by Doubleuman, added the missing pin code to the archived SWF (which was from an unfinished FLA)'
     }
   ],
   [MOD]: [

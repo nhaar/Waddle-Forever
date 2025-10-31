@@ -74,7 +74,7 @@ export const PINS: Array<Pin> = [
     date: '2007-04-13',
     end: '2007-04-27',
     room: 'beacon',
-    fileRef: 'archives:Beacon41.swf'
+    fileRef: 'recreation:beacon41.swf'
   },
   {
     name: 'Picnic Basket',
