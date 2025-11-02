@@ -86,6 +86,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/toys/sculpture/RockAndPen.swf': 'recreation:festival_of_snow/rockandpen.swf',
   'artwork/toys/sculpture/Y4ssenGrego.swf': 'recreation:festival_of_snow/y4ssengrego.swf',
   'artwork/tools/807.swf': 'archives:AwardsEN807.swf',
-  'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf'
-
+  'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf',
+  'artwork/catalogue/adopt0703.swf': 'archives:Pets_0703.swf'
 };
