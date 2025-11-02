@@ -14,10 +14,10 @@ import { getModRouter } from './settings';
 import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 
-const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<Server> => {
-  handler.useEndpoints(server);
-
+const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<Server> => {  
   const gameServer = new Server(settingsManager);
+
+  handler.useEndpoints(gameServer, server);
 
   handler.bootServer(gameServer);
 

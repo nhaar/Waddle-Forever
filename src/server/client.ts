@@ -445,6 +445,20 @@ export class Server {
     return this._followers.get(player) ?? [];
   }
 
+  getVirtualDate(offset: number): Date {
+    const [year, month, day] = processVersion(this.settings.version);
+    // simulating PST time for the current day
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+
+    // date generates this time thinking in the same timezone as the user
+    // an arbitrary offset may be applied depending on how each client behaves
+    return new Date(year, month - 1, day, hour + offset, minute, second);
+  }
+
+
   get waddleConstructors() {
     if (this._waddleConstructors === undefined) {
       throw new Error('Have not initialized Waddle Games');
@@ -1095,17 +1109,7 @@ export class Client {
     TODO 3: how to handle status field
     */
 
-    const [year, month, day] = processVersion(this.version);
-    // simulating PST time for the current day
-    // local time needs to be taken into account since flash checks for that all the time
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const second = now.getSeconds();
-
-    // date generates this time thinking in the same timezone as the user
-    // need to offset by one hour in order for the in-game clock to be PST
-    const virtualDate = new Date(year, month - 1, day, hour - 1, minute, second);
+    const virtualDate = this.server.getVirtualDate(0);
     
     this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }

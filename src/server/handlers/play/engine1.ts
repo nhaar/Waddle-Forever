@@ -102,9 +102,11 @@ handler.xt(Handle.SetFrameOld, (client, frame) => {
 })
 
 // Logging in
-handler.post('/php/login.php', (body) => {
+handler.post('/php/login.php', (server, body) => {
   const { Username } = body;
   const penguin = Client.getPenguinFromName(Username);
+
+  const virtualDate = server.getVirtualDate(43);
 
   const params: Record<string, number | string> = {
     crumb: Client.engine1Crumb(penguin),
@@ -116,7 +118,8 @@ handler.post('/php/login.php', (body) => {
     h: '', // TODO what is?
     w: '100|0', // TODO what is?
     m: '', // TODO what is
-    il: penguin.getItems().join('|') // item list
+    il: penguin.getItems().join('|'), // item list
+    td: `${virtualDate.getUTCFullYear()}-${String(virtualDate.getUTCMonth()).padStart(2, '0')}-${String(virtualDate.getUTCDate()).padStart(2, '0')}:${virtualDate.getUTCHours()}:${virtualDate.getUTCMinutes()}:${virtualDate.getUTCSeconds()}` // used for the snow forts clock in later years
   }
 
   let response = ''
