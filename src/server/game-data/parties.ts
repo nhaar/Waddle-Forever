@@ -2100,6 +2100,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       party3: 272,
       coffee: 0
     },
+    localChanges: {
+      'catalogues/merch.swf': {
+        'en': 'approximation:mj2009_merch.swf'
+      },
+    },
     construction: {
       date: '2009-07-10',
       changes: {

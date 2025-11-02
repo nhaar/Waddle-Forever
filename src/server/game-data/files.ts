@@ -305,6 +305,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'engine.swf',
       comment: 'This is the legacy-media engine.swf, with the functions checkIsValidPosition(), teleportPlayer(), sendPlayerTeleport(), sendPlayerTeleportAndMove(), from archives file ClientEngine2012-10-17.swf (for April Fools 2011)'
+    },
+    {
+      file: 'mj2009_merch.swf',
+      comment: 'The 2008 merch catalog but with the ID of the access pass changed so that the party is functional. Art and other items need to be recreated'
     }
   ],
   [RECREATION]: [
