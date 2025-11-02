@@ -1295,6 +1295,18 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
+      file: 'winter_fiesta_2008/dance.swf',
+      comment: 'Made by slicedpizza39, took unfinished file Dance43.swf and added functionality'
+    },
+    {
+      file: 'winter_fiesta_2008/dock.swf',
+      comment: 'Made by slicedpizza39, took unfinished file Dock43.swf and added functionality'
+    },
+    {
+      file: 'winter_fiesta_2008/plaza.swf',
+      comment: 'Made by slicedpizza39, took unfinished file Plaza47.swf and added functionality'
+    },
+    {
       file: 'news_beta.swf',
       comment: 'Made by c6'
     }

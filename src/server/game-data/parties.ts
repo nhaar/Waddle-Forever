@@ -948,7 +948,10 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'coffee': 'archives:RoomsCoffee-WinterFiesta2008.swf',
       'village': 'archives:RoomsVillage-WinterFiesta2008.swf',
       'forts': 'archives:RoomsForts-WinterFiesta2008.swf',
-      'town': 'archives:RoomsTown-WinterFiesta2008.swf'
+      'town': 'archives:RoomsTown-WinterFiesta2008.swf',
+      dance: 'recreation:winter_fiesta_2008/dance.swf',
+      dock: 'recreation:winter_fiesta_2008/dock.swf',
+      plaza: 'recreation:winter_fiesta_2008/plaza.swf',
     },
     music: {
       'beach': 229,
