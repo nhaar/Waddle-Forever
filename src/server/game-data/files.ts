@@ -212,7 +212,7 @@ would need to investigated`
   [APPROXIMATION]: [
     {
       file: 'chat291_no_news.swf',
-      comment: 'First removed the Newspaper icon to simulate pre-newspapers, then modded the player icon button to open the news and change its hint to say "View News"',
+      comment: 'First removed the Newspaper icon to simulate pre-newspapers, then modded the player icon button to open the news and change its hint to say "View News". Then, took the mail icon from chat339 and replaced the star icon in the chatbar with it',
       base: 'unknown:chat291.swf'
     },
     {
