@@ -321,6 +321,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'map_shack.swf',
       comment: 'This is archives ArtworkMapsIsland10.swf but with the beach button removed for when the Mine Shack was released'
+    },
+    {
+      file: 'lounge_no_astro.swf',
+      comment: 'lounge10 from Mammoth but with the trigger and cabinet removed'
     }
   ],
   [RECREATION]: [
