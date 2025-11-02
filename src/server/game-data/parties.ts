@@ -657,6 +657,11 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         forest: 'archives:RoomsForest-CoveOpeningPartyPre_1.swf'
       }
     },
+    consequences: {
+      roomChanges: {
+        village: 'recreation:village_precpip_tour.swf'
+      }
+    },
     scavengerHunt2007: 'recreation:lost_map_hunt/handler.swf',
     generalChanges: {
       'chat506.swf': 'recreation:lost_map_hunt/chat506_edit.swf'

@@ -1289,6 +1289,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'beacon41.swf',
       comment: 'Made by Doubleuman, added the missing pin code to the archived SWF (which was from an unfinished FLA)'
+    },
+    {
+      file: 'village_precpip_tour.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
