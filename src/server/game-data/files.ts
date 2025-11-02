@@ -1293,6 +1293,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'village_precpip_tour.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'news_beta.swf',
+      comment: 'Made by c6'
     }
   ],
   [MOD]: [

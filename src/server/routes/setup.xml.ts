@@ -35,6 +35,10 @@ function getNewspapersTimeline() {
     date: FAN_ISSUE_DATE,
     info: 'fan'
   });
+  timeline.add({
+    date: Update.BETA_RELEASE,
+    info: 'beta'
+  });
   return timeline.getVersions();
 }
 

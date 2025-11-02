@@ -49,6 +49,7 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/fish.swf': 'mammoth:games/fish.swf',
   'load.swf': 'mammoth:load.swf',
   'artwork/news/newsfan.swf': 'archives:NewsFan.swf',
+  'artwork/news/newsbeta.swf': 'recreation:news_beta.swf',
   ...staticNewspaperFiles,
   'chat299.swf': 'fix:Chat299.swf',
   'chat506.swf': 'unknown:chat506.swf',
