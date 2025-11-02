@@ -143,9 +143,8 @@ export const PINS: Array<Pin> = [
     name: 'Ice Cream Cone',
     date: '2008-06-06',
     end: '2008-06-20',
-    // file is from water party, vanilla is not archived
     room: 'forest',
-    fileRef: 'archives:WPForest.swf'
+    fileRef: 'archives:Forest50_Icecream_Cone_Pin.swf'
   },
   {
     name: 'Treble Clef',
