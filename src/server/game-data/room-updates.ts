@@ -579,7 +579,8 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'shack',
     fileRef: 'archives:ArtworkRoomsShack10.swf',
-    date: Update.CAVE_OPENING_END
+    date: Update.CAVE_OPENING_END,
+    map: 'approximation:map_shack.swf'
   },
   {
     room: 'beach',

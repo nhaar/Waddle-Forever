@@ -313,6 +313,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'map_chat339.swf',
       comment: 'This is archives ArtworkMapsIsland5.swf but with the iceberg ID changed from 804 to be 805 as and ID changed with chat339.swf'
+    },
+    {
+      file: 'map_shack.swf',
+      comment: 'This is archives ArtworkMapsIsland10.swf but with the beach button removed for when the Mine Shack was released'
     }
   ],
   [RECREATION]: [
