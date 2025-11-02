@@ -379,7 +379,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     },
     {
       // precpip client with newspapers
-      fileRef: 'unknown:chat291.swf',
+      fileRef: 'approximation:chat291_no_april.swf',
       date: PRE_BOILER_ROOM_PAPERS[0]
     }
   ],

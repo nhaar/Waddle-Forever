@@ -271,6 +271,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'forts': 'archives:ArtworkRooms0401Forts.swf',
       'town': 'archives:ArtworkRooms0401Town.swf'
     },
+    generalChanges: {
+      'chat291.swf': 'unknown:chat291.swf'
+    },
     music: {
       'dance': 201,
       'forts': 201,
