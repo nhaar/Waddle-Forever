@@ -33,6 +33,13 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     map: "recreation:map_release.swf"
   },
   {
+    date: '2005-10-24',
+    comment: 'Club Penguin releases',
+    generalChanges: {
+      'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf'
+    }
+  },
+  {
     date: Update.PRE_CPIP_REWRITE_DATE,
     map: 'approximation:map_beach_changed_id.swf'
   },

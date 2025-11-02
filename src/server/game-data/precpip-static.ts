@@ -40,7 +40,7 @@ newspaperFiles.forEach((fileId, index) => {
 
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
-  'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf',
+  'artwork/characters/penguin.swf': 'approximation:penguin_no_shadow.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
   'games/astro.swf': 'mammoth:games/astro.swf',
   'games/beans.swf': 'mammoth:games/beans.swf',

@@ -325,6 +325,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'lounge_no_astro.swf',
       comment: 'lounge10 from Mammoth but with the trigger and cabinet removed'
+    },
+    {
+      file: 'penguin_no_shadow.swf',
+      comment: 'penguin.swf from Mammoth but with the shadow removed'
     }
   ],
   [RECREATION]: [
