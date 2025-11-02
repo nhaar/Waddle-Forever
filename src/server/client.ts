@@ -457,6 +457,12 @@ export class Server {
   }
 }
 
+function capitalizeName(name: string): string {
+  return name.split(' ').map((name => {
+    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
+  })).join(' ');
+}
+
 export class Client {
   private _socket: net.Socket | undefined;
   /** Reference to the server */
@@ -734,7 +740,7 @@ export class Client {
     let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
 
     if (data === undefined) {
-      data = Client.create(name);
+      data = Client.create(capitalizeName(name));
     }
 
     const [penguinData, id] = data;
