@@ -129,7 +129,8 @@ commands.add('age', ['number'], (client, age) => {
   client.update();
 });
 
-commands.add('rename', ['string'], (client, name) => {
+commands.add('rename', 'string', (client, ...names) => {
+  const name = names.join(' ');
   client.penguin.changeName(name);
   client.sendPenguinInfo();
   client.update();
