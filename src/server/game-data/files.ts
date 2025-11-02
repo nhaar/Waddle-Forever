@@ -309,6 +309,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'mj2009_merch.swf',
       comment: 'The 2008 merch catalog but with the ID of the access pass changed so that the party is functional. Art and other items need to be recreated'
+    },
+    {
+      file: 'map_chat339.swf',
+      comment: 'This is archives ArtworkMapsIsland5.swf but with the iceberg ID changed from 804 to be 805 as and ID changed with chat339.swf'
     }
   ],
   [RECREATION]: [
