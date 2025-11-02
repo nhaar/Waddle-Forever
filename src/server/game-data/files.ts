@@ -212,7 +212,7 @@ would need to investigated`
   [APPROXIMATION]: [
     {
       file: 'chat291_no_news.swf',
-      comment: 'Originally chat291.swf (based on the one currently in unknown). First removed the Newspaper icon to simulate pre-newspapers, then modded the player icon button to open the news and change its hint to say "View News". Then, took the mail icon from chat339 and replaced the star icon in the chatbar with it. Also took the penguin from chat339 and placed it on the login screen, while removing the april fools party note',
+      comment: 'Originally chat291.swf (based on the one currently in unknown). First removed the Newspaper icon to simulate pre-newspapers, then modded the player icon button to open the news and change its hint to say "View News". Then, took the mail icon from chat339 and replaced the star icon in the chatbar with it. Also took the penguin from chat339 and placed it on the login screen, while removing the april fools party note. Also removed the ability to click on the moderator badge to start the PSA quiz',
       base: 'unknown:chat291.swf'
     },
     {
