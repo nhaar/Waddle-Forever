@@ -1101,11 +1101,11 @@ export class Client {
     const now = new Date();
     const hour = now.getHours();
     const minute = now.getMinutes();
-    const offset = now.getTimezoneOffset();
-    const hourOffset = Math.floor(offset / 60);
-    const minuteOffset = offset % 60;
-    // not fully sure why + 22, maybe this code isn't timezone proof
-    const virtualDate = new Date(year, month - 1, day, hour + hourOffset + 22, minute + minuteOffset);
+    const second = now.getSeconds();
+
+    // date generates this time thinking in the same timezone as the user
+    // need to offset by one hour in order for the in-game clock to be PST
+    const virtualDate = new Date(year, month - 1, day, hour - 1, minute, second);
     
     this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }
