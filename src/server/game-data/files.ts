@@ -1325,6 +1325,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'halloween_2006/plaza.swf',
       comment: 'Made by VampLovr54'
+    },
+    {
+      file: 'halloween_2006/lodge.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
