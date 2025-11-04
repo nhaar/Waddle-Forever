@@ -4464,6 +4464,43 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
           ]
         }
       }
+    },
+    music: {
+      town: 251,
+      coffee: 252,
+      book: 252,
+      dance: 223,
+      lounge: 223,
+      shop: 252,
+      forts: 251,
+      rink: 251,
+      plaza: 251,
+      pet: 252,
+      pizza: 253,
+      forest: 251,
+      party3: 299,
+      party4: 300,
+      party7: 300,
+      party5: 298,
+      party2: 312,
+      party1: 251,
+      party6: 253,
+      cove: 251,
+      dock: 251,
+      beach: 251,
+      light: 252,
+      beacon: 251,
+      dojoext: 251,
+      dojo: 252,
+      dojohide: 251,
+      berg: 251,
+      cave: 252,
+      dojofire: 251,
+      mtn: 251,
+      lodge: 252,
+      village: 251,
+      attic: 252,
+      shack: 251
     }
   }
 ];
