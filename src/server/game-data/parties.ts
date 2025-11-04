@@ -4431,6 +4431,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     localChanges: {
       'close_ups/party_poster.swf': {
         'en': ['archives:HalloweenParty2011Poster.swf', 'party_poster']
+      },
+      'catalog/party.swf': {
+        en: [ 'archives:HalloweenParty2011CatalogParty.swf', 'party_catalogue' ]
       }
     },
     globalChanges: {
