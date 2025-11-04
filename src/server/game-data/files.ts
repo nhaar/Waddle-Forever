@@ -411,10 +411,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/rooms.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/safe_chat_messages.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
