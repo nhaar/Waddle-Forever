@@ -4189,6 +4189,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'berg': 291
     },
     activeMigrator: true,
+    mapNote: 'archives:IslandAdventureParty2011Party_map_note.swf',
     localChanges: {
       'close_ups/poster.swf': {
         'en': [ 'archives:IslandAdventureParty2011Party_poster.swf', 'party_poster' ]
