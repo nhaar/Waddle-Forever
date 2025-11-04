@@ -140,7 +140,7 @@ export function getLocalCrumbsOutput() {
     });
 
     huntTimeline.forEach((info) => {
-      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -162,7 +162,7 @@ export function getLocalCrumbsOutput() {
   });
 }
 
-function getHuntTimeline() {
+export function getHuntTimeline() {
   const timeline = new VersionsTimeline<undefined | HuntCrumbs>();
   timeline.add({
     date: Update.BETA_RELEASE,
@@ -302,7 +302,7 @@ export function getGlobalCrumbsOutput() {
     });
 
     huntTimeline.forEach((info) => {
-      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {

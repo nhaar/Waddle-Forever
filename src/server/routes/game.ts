@@ -15,6 +15,7 @@ import { getStartscreenXML } from "./startscreen.xml";
 import { getGeneralJson } from "./generaljson";
 import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
+import { getGameStrings } from "./gamestringsjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -84,6 +85,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/en/web_service/game_configs/rooms.json', (s) => {
     return getRoomsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
+    return getGameStrings(s.settings.version);
   });
   server.getData('servers.xml', (s) => getServersXml(s.targetIP));
   server.getData('setup.xml', (s) => {

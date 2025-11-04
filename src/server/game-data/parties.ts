@@ -4386,5 +4386,84 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       }
     ],
     mapNote: 'archives:TheFair2011Party_map_note.swf'
+  },
+  {
+    name: 'Halloween Party',
+    date: '2011-10-20',
+    end: '2011-11-03',
+    roomChanges: {
+      beach: 'archives:HalloweenParty2011Beach.swf',
+      beacon: 'archives:HalloweenParty2011Beacon.swf',
+      book: 'archives:HalloweenParty2011Book.swf',
+      cave: 'archives:HalloweenParty2011Cave.swf',
+      coffee: 'archives:HalloweenParty2011Coffee.swf',
+      cove: 'archives:HalloweenParty2011Cove.swf',
+      lounge: 'archives:HalloweenParty2011Lounge.swf',
+      dock: 'archives:HalloweenParty2011Dock.swf',
+      dojo: 'archives:HalloweenParty2011Dojo.swf',
+      dojoext: 'archives:HalloweenParty2011Dojoext.swf',
+      dojofire: 'archives:HalloweenParty2011Dojofire.swf',
+      forest: 'archives:HalloweenParty2011Forest.swf',
+      shop: 'archives:HalloweenParty2011Shop.swf',
+      berg: 'archives:HalloweenParty2011Berg.swf',
+      light: 'archives:HalloweenParty2011Light.swf',
+      attic: 'archives:HalloweenParty2011Attic.swf',
+      shack: 'archives:HalloweenParty2011Shack.swf',
+      dance: 'archives:HalloweenParty2011Dance.swf',
+      dojohide: 'archives:HalloweenParty2011Dojohide.swf',
+      pet: 'archives:HalloweenParty2011Pet.swf',
+      pizza: 'archives:HalloweenParty2011Pizza.swf',
+      plaza: 'archives:HalloweenParty2011Plaza.swf',
+      mtn: 'archives:HalloweenParty2011Mtn.swf',
+      lodge: 'archives:HalloweenParty2011Lodge.swf',
+      village: 'archives:HalloweenParty2011Village.swf',
+      forts: 'archives:HalloweenParty2011Forts.swf',
+      rink: 'archives:HalloweenParty2011Rink.swf',
+      town: 'archives:RoomsTown-HalloweenParty2011.swf',
+      party1: 'archives:HalloweenParty2011Party1.swf',
+      party2: 'archives:HalloweenParty2011Party2.swf',
+      party3: 'archives:HalloweenParty2011Party3.swf',
+      party4: 'archives:HalloweenParty2011Party4.swf',
+      party5: 'archives:HalloweenParty2011Party5.swf',
+      party6: 'archives:HalloweenParty2011Party6.swf',
+      party7: 'archives:HalloweenParty2011Party7.swf'
+    },
+    localChanges: {
+      'close_ups/party_poster.swf': {
+        'en': ['archives:HalloweenParty2011Poster.swf', 'party_poster']
+      }
+    },
+    globalChanges: {
+      'scavenger_hunt/scavenger_hunt.swf': 'archives:CandyGhostScavengerHuntScavenger_hunt.swf'
+    },
+    startscreens: [ 'archives:HalloweenParty2011PreStartBillboards.swf', 'archives:HalloweenParty2011StartBillboards.swf' ],
+    scavengerHunt2011: {
+      icon: 'archives:CandyGhostScavengerHuntScavenger_hunt_icon.swf',
+      global: {
+        member: false,
+        reward: 9114
+      },
+      lang: {
+        en: {
+          loading: 'Loading Scavenger Hunt',
+          title: 'CATCH THE CANDY GHOSTS',
+          start: '',
+          itemsFound: '%num% GHOST CAUGHT',
+          itemsFoundPlural: '%num% GHOSTS CAUGHT',
+          claim: 'Claim Prize',
+          continue: 'Continue',
+          clues: [
+            'SEARCH NEAR SAND AND SURF.',
+            'HEAD TO A SPOOKY HOUSE.',
+            'MAKE YOUR WAY TO A WOODEN SHACK.',
+            'FIND A POPULAR SPOT FOR TOUR GUIDES.',
+            'SEEK OUT A SNOWY SLOPE',
+            'WANDER INTO THE WOODS',
+            'LOOK TOWARD A TOWER OF LIGHT.',
+            'BE ON THE LOOKOUT FOR A BOAT.'
+          ]
+        }
+      }
+    }
   }
 ];
