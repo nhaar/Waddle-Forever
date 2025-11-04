@@ -39,7 +39,7 @@ export function getStartscreenXML(version: Version) {
 	
 	</startscreen>
 	`;
-	} else {
+	} else if (isLower(version, Update.AS3_STARTSCREEN_2)) {
 		return `
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -99,6 +99,66 @@ export function getStartscreenXML(version: Version) {
 		<billboard id="gen_cjevergreen_ninjarecruit" type="INTERNAL_LINK" src="login/backgrounds/ninja_recruitment.swf" href="rm=320#/login/" probability="0"/>
 		
 		<billboard id="mem_2011medieval" type="EXTERNAL_LINK" src="login/backgrounds/medievalparty.swf" href="http://www.clubpenguin.com/membership/" probability="0"/>
+
+		${screens.map((screen, i) => {
+			return `<billboard id="autogen-${i}" type="EXTERNAL_LINK" src="login/backgrounds/${screen}" href="http://www.clubpenguin.com/membership/" probability="1"/>`
+		}).join('\n')}
+		
+	</billboard_list>
+	
+</section>`;
+	} else {
+		return `<?xml version="1.0" encoding="UTF-8"?>
+
+<section id="START">
+	
+	<language>en</language>
+	
+	<cdn_url href="/play/start/"/>
+	
+	<button_list type="array" base_url="/">
+	
+		<button id="logo_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LogoButton" href="" x="380" y="305" target="_top"/>
+		
+		<button id="start_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LoginButton" href="login/" target="_top" x="410" y="405" fontSize="20">Login</button>
+		
+		<button id="create_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:CreateAccountButton" href="" target="_top" x="180" y="405" fontSize="18">Create a Penguin</button>
+		
+		<button id="membership_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:MembershipButton" href="http://betateam.www.clubpenguin.com/membership/" target="_top" x="440" y="287" fontSize="12">Buy a Membership</button>
+		
+	</button_list>
+	
+	<billboard_list type="array">
+		
+		<billboard id="gen_cjevergreen_orig" src="card_jitsu.swf" href="rm=320#/login/" probability="0"/>
+		
+		<billboard id="gen_cjevergreen_water" src="card_jitsu_water.swf" href="http://betateam.www.clubpenguin.com/membership/" probability="0"/>
+		
+		<billboard id="gen_cjevergreen_ninjarecruit" src="ninja_recruitment.swf" href="rm=320#/login/" probability="0"/>
+		
+		<billboard id="gen_epf_sysdef" src="system_defender.swf" href="rm=212#/login/" probability="0"/>
+		
+		<billboard id="puffle_rescue" src="puffle_rescue.swf" href="http://betateam.www.clubpenguin.com/membership/" probability="0"/>
+		
+		<billboard id="stamps_jetpack" src="jetpack.swf" href="http://betateam.www.clubpenguin.com/membership/" probability="0"/>
+		
+		<billboard id="gen_2011puffle-yellow" src="adopt_yellow.swf" href="rm=310#/login/" probability="0"/>
+		
+		<billboard id="gen_2011puffle-green" src="adopt_green.swf" href="rm=310#/login/" probability="0"/>
+		
+		<billboard id="gen_2011puffle-black" src="adopt_black.swf" href="rm=310#/login/" probability="0"/>
+		
+		<billboard id="gen_2011puffle-pink" src="adopt_pink.swf" href="rm=310#/login/" probability="0"/>
+		
+		<billboard id="stamps2_cart" src="stamps_3.swf" probability="0"/>
+		
+		<billboard id="gen_stamps_pufflelaunch" src="Billboard_Puffle_Launch.swf" probability="0"/>
+		
+		<billboard id="epf" src="epf.swf" href="rm=212#/login/" probability="0"/>
+		
+		<billboard id="mem_igloo_cust" src="login.swf" href="http://betateam.www.clubpenguin.com/membership/" probability="0"/>
+		
+		<billboard id="gen_2011adventure" src="island_adventure_party.swf" href="rm=400#/login/" probability="0"/>
 
 		${screens.map((screen, i) => {
 			return `<billboard id="autogen-${i}" type="EXTERNAL_LINK" src="login/backgrounds/${screen}" href="http://www.clubpenguin.com/membership/" probability="1"/>`

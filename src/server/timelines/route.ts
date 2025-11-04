@@ -537,8 +537,10 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
   screens.forEach((screen, i) => {
     if (typeof screen === 'string') {
       map.add(`play/v2/content/local/en/login/backgrounds/background${i}.swf`, screen, date, end);
+      map.add(`play/start/billboards/login/backgrounds/background${i}.swf`, screen, date, end);
     } else {
       map.add(`play/v2/content/local/en/login/backgrounds/${screen[0]}`, screen[1], date, end);
+      map.add(`play/start/billboards/login/backgrounds/${screen[0]}`, screen[1], date, end);
     }
   })
 }

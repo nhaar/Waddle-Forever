@@ -30,7 +30,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       } else {
         return 'default/websites/classic-cpip.html';
       }
-    } else if (!isEngine3(s.settings.version)) {
+    } else if (isLower(s.settings.version, '2016-01-01')) {
       return 'default/websites/classic-as3.html';
     } else {
       return 'default/websites/modern-as3.html';
@@ -47,9 +47,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.dir('', (s) => {
     if (isEngine1(s.settings.version)) {
       return 'default/websites/old';
-    } else if (isEngine2(s.settings.version)) {
+    } else if (isLower(s.settings.version, '2016-01-01')) {
       return 'default/websites/classic';
-    } else if (isEngine3(s.settings.version)) {
+    } else {
       return 'default/websites/modern';
     }
   })
@@ -99,6 +99,12 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return getWorldAchievementsXml(s.settings.version);
   });
   server.getData('play/v2/content/local/en/login/startscreen.xml', (s) => {
+    return getStartscreenXML(s.settings.version);
+  })
+  server.getData('playstart/xml/start_module_config.xml', (s) => {
+    return getStartscreenXML(s.settings.version);
+  })
+  server.getData('playstart/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
 
