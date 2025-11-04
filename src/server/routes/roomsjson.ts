@@ -251,6 +251,20 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Dojo Front"
     },
+    "322": {
+      "room_id": 322,
+      "room_key": "dojohide",
+      "name": "Ninja Hideout",
+      "display_name": "Ninja Hideout",
+      "music_id": 404,
+      "is_member": 0,
+      "path": "dojohide.swf",
+      "max_users": 80,
+      "jump_enabled": false,
+      "jump_disabled": true,
+      "required_item": null,
+      "short_name": "Ninja Hideout"
+    },
     "323": {
       "room_id": 323,
       "room_key": "agentcom",
