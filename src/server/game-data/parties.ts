@@ -4310,7 +4310,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'close_ups/party_note05.swf': {
         'en': 'recreation:great_snow_race/party_note05.swf'
       }
-    } 
+    },
+    mapNote: 'archives:TheGreatSnowRaceParty_map_note.swf'
   },
   {
     name: 'The Fair',
@@ -4383,6 +4384,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
           }
         }
       }
-    ]
+    ],
+    mapNote: 'archives:TheFair2011Party_map_note.swf'
   }
 ];
