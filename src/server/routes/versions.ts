@@ -105,18 +105,16 @@ export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
 }
 
-const ENGINE3_CUTOFF = '2012-##-##';
-
 export function isEngine1(version: Version): boolean {
   return isLower(version, Update.CPIP_UPDATE)
 }
 
 export function isEngine2(version: Version): boolean {
-  return isGreaterOrEqual(version, Update.CPIP_UPDATE) && isLower(version, ENGINE3_CUTOFF);
+  return isGreaterOrEqual(version, Update.CPIP_UPDATE) && isLower(version, Update.MODERN_AS3);
 }
 
 export function isEngine3(version: Version): boolean {
-  return isGreaterOrEqual(version, ENGINE3_CUTOFF);
+  return isGreaterOrEqual(version, Update.MODERN_AS3);
 }
 
 export function inInterval(version: Version, start: Version, end: Version, params?: {
