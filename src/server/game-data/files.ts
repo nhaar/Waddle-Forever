@@ -445,6 +445,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'rooms_common_label_fix.swf',
       comment: 'The vanilla media rooms_common.swf, but with the localize function of BaseRoom fixed so that it can be used with rooms from 2011'
+    },
+    {
+      file: 'modern_map.swf',
+      comment: 'map.swf from vanilla media, but with a fix for the map notes from 2011 (in frame1 code)'
     }
   ],
   [RECREATION]: [
