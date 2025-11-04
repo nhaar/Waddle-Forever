@@ -230,6 +230,14 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     }
   },
   {
+    // when room localization went from being "english" to "en"
+    date: '2011-10-20',
+    generalChanges: {
+      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
+      'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
+    }
+  },
+  {
     // placeholder 2017 version
     date: '2016-01-01',
     roomChanges: {
@@ -242,10 +250,6 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       shack: 'svanilla:media/play/v2/content/global/rooms/shack.swf',
       forest: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
       dojoext: 'svanilla:media/play/v2/content/global/rooms/dojoext.swf'
-    },
-    generalChanges: {
-      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
-      'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
     }
   }
 ];
