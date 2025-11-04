@@ -221,6 +221,32 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf'
     },
     startscreens: [ 'archives:LoginSystemDefender.swf' ]
+  },
+  {
+    date: Update.MODERN_AS3,
+    generalChanges: {
+      'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
+      'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf'
+    }
+  },
+  {
+    // placeholder 2017 version
+    date: '2016-01-01',
+    roomChanges: {
+      town: 'svanilla:media/play/v2/content/global/rooms/town.swf',
+      rink: 'svanilla:media/play/v2/content/global/rooms/rink.swf',
+      forts: 'svanilla:media/play/v2/content/global/rooms/forts.swf',
+      plaza: 'svanilla:media/play/v2/content/global/rooms/plaza.swf',
+      cove: 'svanilla:media/play/v2/content/global/rooms/cove.swf',
+      dock: 'svanilla:media/play/v2/content/global/rooms/dock.swf',
+      shack: 'svanilla:media/play/v2/content/global/rooms/shack.swf',
+      forest: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
+      dojoext: 'svanilla:media/play/v2/content/global/rooms/dojoext.swf'
+    },
+    generalChanges: {
+      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
+      'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
+    }
   }
 ];
 
@@ -394,10 +420,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       fileRef: 'approximation:shell.swf',
       date: Update.CPIP_UPDATE
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/client/shell.swf',
-      date: Update.MODERN_AS3
     }
   ],
   'play/v2/client/engine.swf': [

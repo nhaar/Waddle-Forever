@@ -22,10 +22,6 @@ type RoomUpdate = {
 export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   town: [
     {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/town.swf',
-      date: Update.MODERN_AS3
-    },
-    {
       // first vectorized version of the Town, possibly from 2007
       // unknown how to document it
       fileRef: 'archives:ArtworkRoomsTown40.swf',
@@ -33,10 +29,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
   ],
   rink: [
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/rink.swf',
-      date: Update.MODERN_AS3
-    },
     {
       // unknown date, you can now walk to the audience in the rink
       // only evidence is after april fools party
@@ -63,10 +55,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   forts: [
     {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/forts.swf',
-      date: Update.MODERN_AS3
-    },
-    {
       date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsForts40.swf',
       comment: 'The Snow Forts is redrawn'
@@ -78,10 +66,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   plaza: [
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/plaza.swf',
-      date: Update.MODERN_AS3
-    },
     {
       // date of vectorization is unknown
       date: Update.PRE_CPIP_REWRITE_DATE,
@@ -174,12 +158,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileRef: 'archives:RoomsCove.swf',
       date: Update.GAME_UPGRADES
-    },
-    {
-      // placeholder AS3 room
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/cove.swf',
-      date: Update.MODERN_AS3
-    },
+    }
   ],
   dance: [
     {
@@ -202,11 +181,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileRef: 'archives:RoomsDock_1.swf',
       date: Update.GAME_UPGRADES
-    },
-    {
-      // placeholder AS3 room
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/dock.swf',
-      date: Update.MODERN_AS3
     },
     {
       date: Update.ROOM_REDRAWS,
@@ -447,10 +421,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileRef: 'archives:RoomsShack-Early2011.swf',
       date: '2010-09-30'
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/shack.swf',
-      date: Update.MODERN_AS3
     }
   ],
   forest: [
@@ -467,10 +437,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'slippers07:media/artwork/rooms/forest.swf',
       date: '2007-06-01',
       comment: 'The whistles are removed from the Forest'
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
-      date: Update.MODERN_AS3
     }
   ],
   dojoext: [
@@ -478,10 +444,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:RoomsDojoext_2.swf',
       date: '2009-11-27',
       comment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard'
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/dojoext.swf',
-      date: Update.MODERN_AS3
     },
     {
       // this file we have has the white puffle, which I believe is only from the puffle party 2009

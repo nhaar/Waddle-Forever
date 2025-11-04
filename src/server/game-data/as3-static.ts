@@ -65,7 +65,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/client/puffle_gold_berry_machine.swf': 'svanilla:media/play/v2/client/puffle_gold_berry_machine.swf',
   'play/v2/client/puffle_gold_quest_progress.swf': 'svanilla:media/play/v2/client/puffle_gold_quest_progress.swf',
   'play/v2/client/puffle_treasure_infographic.swf': 'svanilla:media/play/v2/client/puffle_treasure_infographic.swf',
-  'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf',
   'play/v2/client/sentry.swf': 'svanilla:media/play/v2/client/sentry.swf',
   'play/v2/client/servers.swf': 'svanilla:media/play/v2/client/servers.swf',
   'play/v2/client/stampbook.swf': 'svanilla:media/play/v2/client/stampbook.swf',
