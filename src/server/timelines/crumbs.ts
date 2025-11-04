@@ -1,7 +1,7 @@
 import path from "path";
 import crypto from 'crypto';
 import { RoomName } from "../game-data/rooms";
-import { isGreater, isGreaterOrEqual, Version } from "../routes/versions";
+import { isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "../routes/versions";
 import { GlobalHuntCrumbs, HuntCrumbs, LocalHuntCrumbs, PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
@@ -20,7 +20,7 @@ export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 export const TICKET_ICON_PATH = 'tickets.swf';
 export const TICKET_INFO_PATH = 'ticket_info.swf';
 
-function getGlobalPathsTimeline() {
+export function getGlobalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
 
   PARTIES.forEach((party) => {
@@ -55,7 +55,7 @@ function getGlobalPathsTimeline() {
 
 }
 
-function getLocalPathsTimeline() {
+export function getLocalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
 
   PARTIES.forEach((party) => {
@@ -126,7 +126,7 @@ export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     localPathsTimeline.forEach((versions, localPath) => {
       versions.forEach((info) => {
-        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -228,7 +228,7 @@ export function getGlobalCrumbsOutput() {
     
     globalPathsTimeline.forEach((versions, globalPath) => {
       versions.forEach((info) => {
-        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {

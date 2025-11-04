@@ -13,6 +13,7 @@ import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
 import { getGeneralJson } from "./generaljson";
+import { getPathsJson } from "./pathsjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -76,6 +77,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/en/web_service/game_configs/general.json', (s) => {
     return getGeneralJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/paths.json', (s) => {
+    return getPathsJson(s.settings.version);
   });
   server.getData('servers.xml', (s) => getServersXml(s.targetIP));
   server.getData('setup.xml', (s) => {
