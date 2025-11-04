@@ -351,10 +351,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/general.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/igloo_floors.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },

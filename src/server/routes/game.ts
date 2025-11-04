@@ -12,6 +12,7 @@ import { Update } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
+import { getGeneralJson } from "./generaljson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -72,6 +73,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   // text file generating
   server.getData('en/web_service/stamps.json', (s) => {
     return getStampbook(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/general.json', (s) => {
+    return getGeneralJson(s.settings.version);
   });
   server.getData('servers.xml', (s) => getServersXml(s.targetIP));
   server.getData('setup.xml', (s) => {

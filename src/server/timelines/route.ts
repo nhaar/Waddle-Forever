@@ -163,6 +163,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
     if (changes.startscreens !== undefined) {
       addStartscreens(changes.startscreens, this, start, end);
     }
+
+    if (changes.mapNote !== undefined) {
+      this.add('play/v2/content/local/en/close_ups/party_map_note.swf', changes.mapNote, start, end);
+    }
   }
 
   addRoomChanges(roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) {

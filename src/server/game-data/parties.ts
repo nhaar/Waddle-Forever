@@ -91,6 +91,8 @@ export type PartyChanges = {
     // UI id might be required in the future if we find different ones
     infoFile: FileRef;
   };
+
+  mapNote?: FileRef;
 }
 
 export type Party = PartyChanges & {
