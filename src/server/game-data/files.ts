@@ -329,6 +329,122 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'penguin_no_shadow.swf',
       comment: 'penguin.swf from Mammoth but with the shadow removed'
+    },
+    {
+      file: 'game_configs/chunking_map.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/cover.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/furniture_items.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/game_strings.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/games.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/general.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloo_floors.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloo_locations.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloo_music_tracks.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloos.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/jokes.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/mascot_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/mascots.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/newspapers.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/paper_items.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/paths.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/penguin_action_frames.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/player_colors.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/polaroids.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/postcards.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/puffle_items.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/puffles.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/rooms.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/safe_chat_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/stamps_tokenized.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/stamps.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/tour_guide_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/weblogger.php',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/stage_script_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
     }
   ],
   [RECREATION]: [
