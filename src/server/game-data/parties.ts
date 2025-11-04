@@ -533,7 +533,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       shack: 'recreation:halloween_2006/shack.swf',
       village: 'recreation:halloween_2006/village.swf',
       'berg': 'archives:RoomsBerg-HalloweenParty2007.swf',
-      plaza: 'recreation:halloween_2006/plaza.swf'
+      plaza: 'recreation:halloween_2006/plaza.swf',
+      lodge: 'recreation:halloween_2006/lodge.swf'
     },
     music: {
       'town': 205,
@@ -542,7 +543,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'shack': 205,
       'village': 205,
       berg: 205,
-      'plaza': 205
+      'plaza': 205,
+      'lodge': 205
     }
   },
   {
