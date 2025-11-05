@@ -545,8 +545,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 205,
       berg: 205,
       'plaza': 205,
-      'lodge': 205,
-      'dance': 224
+      'lodge': 205
     }
   },
   {
