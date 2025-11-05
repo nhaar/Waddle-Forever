@@ -4516,5 +4516,49 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       book: 'archives:6thAnniversaryPartyBook.swf'
     },
     startscreens: [ 'archives:6AnniversaryPStartBillboards.swf' ]
+  },
+  {
+    name: 'Card-Jitsu Party',
+    date: '2011-11-24',
+    end: '2011-12-08',
+    startscreens: [ 'archives:CardJitsuPartyPreStartBillboards.swf', 'archives:BillboardsCard-jitsu-party.swf' ],
+    mapNote: 'archives:Card-JitsuPartyParty_map_note.swf',
+    roomChanges: {
+      beach: 'archives:Card-JitsuPartyBeach.swf',
+      coffee: 'archives:Card-JitsuPartyCoffee.swf',
+      cove: 'archives:Card-JitsuPartyCove.swf',
+      lounge: 'archives:Card-JitsuPartyLounge.swf',
+      dock: 'archives:Card-JitsuPartyDock.swf',
+      forest: 'archives:Card-JitsuPartyForest.swf',
+      dance: 'archives:Card-JitsuPartyDance.swf',
+      party1: 'archives:Card-JitsuPartyParty1.swf',
+      pizza: 'archives:Card-JitsuPartyPizza.swf',
+      plaza: 'archives:Card-JitsuPartyPlaza.swf',
+      forts: 'archives:Card-JitsuPartyForts.swf',
+      rink: 'archives:Card-JitsuPartyRink.swf',
+      stage: 'archives:11242011Stage.swf',
+      town: 'archives:RoomsTown-CardJitsuParty.swf'
+    },
+    music: {
+      rink: 116,
+      beach: 313,
+      coffee: 314,
+      cove: 313,
+      lounge: 314,
+      dock: 313,
+      forest: 313,
+      dance: 314,
+      party1: 314,
+      pizza: 314,
+      plaza: 313,
+      forts: 313,
+      stage: 313,
+      town: 313
+    },
+    localChanges: {
+      'prompts/cardjitsu_duringparty.swf': {
+        en: 'archives:Card-JitsuPartyCardjitsu_duringparty.swf'
+      }
+    }
   }
 ];
