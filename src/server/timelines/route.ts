@@ -19,7 +19,7 @@ import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
-import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH } from "./crumbs";
+import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { MAP_UPDATES } from "../game-data/game-map";
@@ -148,10 +148,12 @@ class FileTimelineMap extends TimelineMap<string, string> {
     }
 
     if (changes.fairCpip !== undefined) {
-      this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
-      this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
-      this.add('play/v2/content/global/tickets.swf', changes.fairCpip.iconFileId, start, end);
-      this.add('play/v2/content/global/ticket_info.swf', changes.fairCpip.infoFile, start, end);
+      if (isLower(start, Update.MODERN_AS3)) {
+        this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
+        this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
+      }
+      this.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, changes.fairCpip.iconFileId, start, end);
+      this.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, changes.fairCpip.infoFile, start, end);
     }
     if (changes.scavengerHunt2007 !== undefined && typeof changes.scavengerHunt2007 === 'string') {
       // theoretically you would have static egg files and signal the number

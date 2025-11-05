@@ -4385,7 +4385,14 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         }
       }
     ],
-    mapNote: 'archives:TheFair2011Party_map_note.swf'
+    fairCpip: {
+      iconFileId: 'archives:Ticket_icon-TheFair2010.swf',
+      infoFile: 'archives:Tickets-TheFair2009.swf'
+    },
+    mapNote: 'archives:TheFair2011Party_map_note.swf',
+    generalChanges: {
+      'play/v2/content/global/content/interface.swf': 'approximation:interface_fair_11.swf'
+    }
   },
   {
     name: 'Halloween Party',

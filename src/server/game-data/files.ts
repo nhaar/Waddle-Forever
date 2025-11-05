@@ -441,6 +441,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'modern_map.swf',
       comment: 'map.swf from vanilla media, but with a fix for the map notes from 2011 (in frame1 code)'
+    },
+    {
+      file: 'interface_fair_11.swf',
+      comment: 'interface from vanilla media, but with functions for the fair 2011 party'
     }
   ],
   [RECREATION]: [

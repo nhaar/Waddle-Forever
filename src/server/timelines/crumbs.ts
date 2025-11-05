@@ -17,8 +17,7 @@ const memberTimeline = getMemberTimeline();
 const huntTimeline = getHuntTimeline();
 
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
-export const TICKET_ICON_PATH = 'tickets.swf';
-export const TICKET_INFO_PATH = 'ticket_info.swf';
+export const TICKET_INFO_PATH = 'close_ups/tickets.swf';
 
 export function getGlobalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
@@ -46,8 +45,7 @@ export function getGlobalPathsTimeline() {
     }
 
     if (party.fairCpip !== undefined) {
-      timeline.add('ticket_icon', TICKET_ICON_PATH, party.date, party.end);
-      timeline.add('tickets', TICKET_INFO_PATH, party.date, party.end);
+      timeline.add('ticket_icon', SCAVENGER_ICON_PATH, party.date, party.end);
     }
   });
 
@@ -74,6 +72,10 @@ export function getLocalPathsTimeline() {
             }
           }
         })
+      }
+
+      if (party.fairCpip !== undefined) {
+        timeline.add('tickets', TICKET_INFO_PATH, party.date, party.end);
       }
     }
   });
