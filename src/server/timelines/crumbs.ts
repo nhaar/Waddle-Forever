@@ -216,7 +216,7 @@ function getBaseCrumbsOutput<CrumbContent>(
 export function getGlobalCrumbsOutput() {
   return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
     migratorTimeline.forEach((info) => {
-      if (isGreater(info.date, Update.CPIP_UPDATE)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {

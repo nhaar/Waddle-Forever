@@ -4560,5 +4560,167 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         en: 'archives:Card-JitsuPartyCardjitsu_duringparty.swf'
       }
     }
+  },
+  {
+    name: 'Holiday Party',
+    date: '2011-12-15',
+    end: '2011-12-29',
+    roomChanges: {
+      party2: 'archives:HolidayParty2011Party2.swf',
+      beach: 'archives:HolidayParty2011Beach.swf',
+      beacon: 'archives:HolidayParty2011Beacon1.swf',
+      book: 'archives:HolidayParty2011Book.swf',
+      shipquarters: 'archives:HolidayParty2011ShipQuarters.swf',
+      coffee: 'archives:HolidayParty2011Coffee.swf',
+      cove: 'archives:HolidayParty2011Cove.swf',
+      shipnest: 'archives:HolidayParty2011ShipNest.swf',
+      lounge: 'archives:HolidayParty2011Lounge.swf',
+      dock: 'archives:HolidayParty2011Dock.swf',
+      dojo: 'archives:HolidayParty2011Dojo.swf',
+      dojoext: 'archives:HolidayParty2011DojoExt.swf',
+      dojofire: 'archives:HolidayParty2011DojoFire.swf',
+      forest: 'archives:HolidayParty2011Forest.swf',
+      shop: 'archives:HolidayParty2011Shop.swf',
+      berg: 'archives:HolidayParty2011Berg.swf',
+      light: 'archives:HolidayParty2011Light1.swf',
+      attic: 'archives:HolidayParty2011Attic.swf',
+      party: 'archives:HolidayParty2011Party.swf',
+      shack: 'archives:HolidayParty2011Shack.swf',
+      dance: 'archives:HolidayParty2011Dance.swf',
+      dojohide: 'archives:HolidayParty2011DojoHide.swf',
+      ship: 'archives:HolidayParty2011Ship.swf',
+      pizza: 'archives:HolidayParty2011Pizza.swf',
+      plaza: 'archives:HolidayParty2011Plaza.swf',
+      shiphold: 'archives:HolidayParty2011ShipHold.swf',
+      mtn: 'archives:HolidayParty2011Mtn.swf',
+      lodge: 'archives:HolidayParty2011Lodge.swf',
+      village: 'archives:HolidayParty2011Village.swf',
+      forts: 'archives:HolidayParty2011Forts.swf',
+      rink: 'archives:HolidayParty2011Rink.swf',
+      town: 'archives:RoomsTown-HolidayParty2011.swf'
+    },
+    startscreens: [ 'archives:HolidayParty2011PreStartBillboards.swf', 'archives:HolidayParty2011StartBillboards.swf' ],
+    localChanges: {
+      'close_ups/party_poster.swf': {
+        en: ['archives:HolidayParty2011MagicSleighRide.swf', 'party_poster']
+      },
+      'close_ups/party_poster2.swf': {
+        en: ['archives:HolidayParty2011Bakery.swf', 'party_poster2']
+      },
+      'close_ups/donation.swf': {
+        en: ['archives:CFC2011Donation.swf', 'coins_for_change']
+      },
+      'close_ups/advent_note_dec15.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec15.swf'
+      },
+      'close_ups/advent_note_dec16.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec16.swf'
+      },
+      'close_ups/advent_note_dec17.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec17.swf'
+      },
+      'close_ups/advent_note_dec18.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec18.swf'
+      },
+      'close_ups/advent_note_dec19.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec19.swf'
+      },
+      'close_ups/advent_note_dec20.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec20.swf'
+      },
+      'close_ups/advent_note_dec21.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec21.swf'
+      },
+      'close_ups/advent_note_dec22.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec22.swf'
+      },
+      'close_ups/advent_note_dec23.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec23.swf'
+      },
+      'close_ups/advent_note_dec24.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec24.swf'
+      },
+      'close_ups/advent_note_dec25.swf': {
+        en: 'archives:HolidayParty2011AdventNoteDec25.swf'
+      }
+    },
+    updates: [
+      {
+        date: '2011-12-16',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-17',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-18',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-19',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-20',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-21',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-22',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-23',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-24',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+      {
+        date: '2011-12-25',
+        comment: 'A new item of the Advent Calendar is available'
+      },
+    ],
+    mapNote: 'archives:HolidayParty2011Party_map_note.swf',
+    music: {
+      party2: 315,
+      beach: 254,
+      beacon: 254,
+      book: 227,
+      shipquarters: 255,
+      coffee: 227,
+      cove: 254,
+      shipnest: 254,
+      lounge: 255,
+      dock: 254,
+      dojo: 254,
+      dojoext: 254,
+      dojofire: 254,
+      forest: 254,
+      shop: 255,
+      pet: 255,
+      berg: 227,
+      attic: 254,
+      party: 281,
+      shack: 254,
+      dance: 255,
+      dojohide: 254,
+      ship: 254,
+      pizza: 255,
+      plaza: 254,
+      shiphold: 255,
+      mtn: 254,
+      lodge: 255,
+      village: 254,
+      forts: 254,
+      rink: 254,
+      town: 254
+    },
+    activeMigrator: true
   }
 ];
