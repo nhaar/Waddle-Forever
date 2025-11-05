@@ -303,7 +303,7 @@ type VersionsInformation<EventInformation> = Array<{
  */
 export function processIndependentTimeline<EventInformation>(timeline: TimelineEvent<EventInformation>[]): VersionsInformation<EventInformation> {
   // filter things out with undefined, it should not be possible for the output to have undefineds
-  // on the way this is setup
+  // on the way this is setup, IF USING UNDEFINED FOR EVENTINFORMATION consider using null otherwise it will break!
   const versions = processTimeline<EventInformation, EventInformation, undefined | EventInformation>(timeline, (input) => {
     return input;
   }, () => {

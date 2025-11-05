@@ -144,7 +144,7 @@ export function getLocalCrumbsOutput() {
         timeline.push({
           date: info.date,
           info: {
-            hunt: info.info?.lang
+            hunt: info.info === null ? undefined : info.info.lang
           }
         });
       }
@@ -163,10 +163,10 @@ export function getLocalCrumbsOutput() {
 }
 
 export function getHuntTimeline() {
-  const timeline = new VersionsTimeline<undefined | HuntCrumbs>();
+  const timeline = new VersionsTimeline<null | HuntCrumbs>();
   timeline.add({
     date: Update.BETA_RELEASE,
-    info: undefined
+    info: null
   });
 
   PARTIES.forEach((party) => {
@@ -306,7 +306,7 @@ export function getGlobalCrumbsOutput() {
         timeline.push({
           date: info.date,
           info: {
-            hunt: info.info?.global
+            hunt: info.info === null ? undefined : info.info.global
           }
         });
       }
