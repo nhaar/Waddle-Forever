@@ -69,7 +69,16 @@ export const CPIP_CATALOGS: DateRefMap = {
   '2010-12-03': 'archives:PenguinStyleDec2010.swf',
   '2011-01-11': 'archives:January11Style.swf',
   '2011-02-11': 'archives:PenguinStyleFeb2011.swf',
-  '2011-03-11': 'archives:PenguinStyleMar2011.swf'
+  '2011-03-11': 'archives:PenguinStyleMar2011.swf',
+  '2011-04-01': 'archives:PenguinStyleApr2011.swf',
+  '2011-05-06': 'archives:PenguinStyleMay2011.swf',
+  '2011-06-03': 'archives:PenguinStyleJun2011.swf',
+  '2011-07-06': 'archives:PenguinStyleJul2011.swf',
+  '2011-08-04': 'archives:PenguinStyleAug2011.swf',
+  '2011-09-01': 'archives:PenguinStyleSept2011.swf',
+  '2011-10-06': 'archives:PenguinStyleOct2011.swf',
+  '2011-11-03': 'archives:PenguinStyleNov2011.swf',
+  '2011-12-01': 'archives:PenguinStyleDec2011.swf'
 };
 
 /** All furniture catalogs */
