@@ -1161,8 +1161,8 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Sound Room"
     },
-    "899": {
-      "room_id": 899,
+    "850": {
+      "room_id": 850,
       "room_key": "party",
       "name": "Party",
       "display_name": "Party",
