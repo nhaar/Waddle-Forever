@@ -106,7 +106,16 @@ export const FURNITURE_CATALOGS: DateRefMap = {
   '2010-12-10': 'archives:FurnDec2010.swf',
   '2011-01-14': 'archives:Jan-Feb2011BetterIgloos.swf',
   '2011-02-11': 'archives:Feb-Mar2011BetterIgloos.swf',
-  '2011-03-12': 'archives:Mar-Apr2011Furniture.swf'
+  '2011-03-11': 'archives:Mar-Apr2011Furniture.swf',
+  '2011-04-08': 'archives:AprMay2011Furniture.swf',
+  '2011-05-13': 'archives:May2011Furniture.swf',
+  '2011-06-10': 'archives:Jun2011Furniture.swf',
+  '2011-07-14': 'archives:Jul2011Furniture.swf',
+  '2011-08-11': 'archives:Aug-Sept2011Furniture.swf',
+  '2011-09-08': 'archives:SeptOct2011Furniture.swf',
+  '2011-10-13': 'archives:OctNov2011Furniture.swf',
+  '2011-11-10': 'archives:NovDec2011Furniture.swf',
+  '2011-12-15': 'archives:December2011Furniture.swf'
 };
 
 /** All igloo catalogs */
