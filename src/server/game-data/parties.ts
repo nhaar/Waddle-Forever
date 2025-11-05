@@ -4563,7 +4563,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Holiday Party',
-    date: '2011-12-15',
+    date: '2011-12-14',
     end: '2011-12-29',
     roomChanges: {
       party2: 'archives:HolidayParty2011Party2.swf',
