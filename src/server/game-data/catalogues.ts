@@ -69,7 +69,16 @@ export const CPIP_CATALOGS: DateRefMap = {
   '2010-12-03': 'archives:PenguinStyleDec2010.swf',
   '2011-01-11': 'archives:January11Style.swf',
   '2011-02-11': 'archives:PenguinStyleFeb2011.swf',
-  '2011-03-11': 'archives:PenguinStyleMar2011.swf'
+  '2011-03-11': 'archives:PenguinStyleMar2011.swf',
+  '2011-04-01': 'archives:PenguinStyleApr2011.swf',
+  '2011-05-06': 'archives:PenguinStyleMay2011.swf',
+  '2011-06-03': 'archives:PenguinStyleJun2011.swf',
+  '2011-07-06': 'archives:PenguinStyleJul2011.swf',
+  '2011-08-04': 'archives:PenguinStyleAug2011.swf',
+  '2011-09-01': 'archives:PenguinStyleSept2011.swf',
+  '2011-10-06': 'archives:PenguinStyleOct2011.swf',
+  '2011-11-03': 'archives:PenguinStyleNov2011.swf',
+  '2011-12-01': 'archives:PenguinStyleDec2011.swf'
 };
 
 /** All furniture catalogs */
@@ -97,7 +106,16 @@ export const FURNITURE_CATALOGS: DateRefMap = {
   '2010-12-10': 'archives:FurnDec2010.swf',
   '2011-01-14': 'archives:Jan-Feb2011BetterIgloos.swf',
   '2011-02-11': 'archives:Feb-Mar2011BetterIgloos.swf',
-  '2011-03-12': 'archives:Mar-Apr2011Furniture.swf'
+  '2011-03-11': 'archives:Mar-Apr2011Furniture.swf',
+  '2011-04-08': 'archives:AprMay2011Furniture.swf',
+  '2011-05-13': 'archives:May2011Furniture.swf',
+  '2011-06-10': 'archives:Jun2011Furniture.swf',
+  '2011-07-14': 'archives:Jul2011Furniture.swf',
+  '2011-08-11': 'archives:Aug-Sept2011Furniture.swf',
+  '2011-09-08': 'archives:SeptOct2011Furniture.swf',
+  '2011-10-13': 'archives:OctNov2011Furniture.swf',
+  '2011-11-10': 'archives:NovDec2011Furniture.swf',
+  '2011-12-15': 'archives:December2011Furniture.swf'
 };
 
 /** All igloo catalogs */
