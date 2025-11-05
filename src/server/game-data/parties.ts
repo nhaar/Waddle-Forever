@@ -4505,5 +4505,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       attic: 252,
       shack: 251
     }
+  },
+  {
+    name: '6th Anniversary Party',
+    date: '2011-10-23',
+    end: '2011-10-28',
+    roomChanges: {
+      town: 'archives:RoomsTown-6thAnniversaryParty.swf',
+      coffee: 'archives:6thAnniversaryPartyCoffee.swf',
+      book: 'archives:6thAnniversaryPartyBook.swf'
+    },
+    startscreens: [ 'archives:6AnniversaryPStartBillboards.swf' ]
   }
 ];
