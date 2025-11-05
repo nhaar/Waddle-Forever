@@ -1,0 +1,115 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #EEEEEE;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333333;
+}
+
+.note {
+  font-size: 12px;
+  color: #333333;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.center-spacer {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.warning-area {
+  width: 760px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.footer-table {
+  margin-top: -3px;
+}
+
+.footer {
+  background-image: url("images/footer_bkg.gif");
+  background-repeat: repeat-x;
+  background-position: top left;
+  height: 30px;
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+body {
+  margin-top: -1px;
+}
+
+.bg {
+  background-image: url("images/bkg_white.gif");
+  background-repeat: repeat-y;
+  background-position: center top;
+  width: 100%;
+  min-height: 50vh;
+  margin: 0;
+  padding-top: 3px;
+  text-align: center;
+}
+
+.event-text {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0.4em 0 0.2em 0;
+}
+
+.nudge {
+  position: relative;
+  left: 1px;
+}
+
+.nudge2 {
+  position: relative;
+  left: 2px;
+}
+
+.nudgetitle {
+  position: relative;
+  left: 1px;
+  top: 4px;
+}
+
+.nudgeuk {
+  position: relative;
+  left: 1px;
+  top: 2px;
+}
+
+.nudgetime {
+  position: relative;
+  top: 2px;
+}
+
+.nudgewednesday {
+  position: relative;
+  top: 4px;
+}
+
+.nudgew {
+  position: relative;
+  left: -1px;
+}
+
+.nudgesept {
+  position: relative;
+  top: 4px;
+}

@@ -1,7 +1,7 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampbook } from './stampjson';
-import { isEngine1, isEngine2, isEngine3, isLower } from "./versions";
+import { isEngine1, isEngine2, isEngine3, isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
 import { getDynamicMusicListData } from "../game-data/igloo-lists";
@@ -23,7 +23,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.addFileServer();
 
   server.get('/', (s) => {
-    if (isEngine1(s.settings.version)) {
+    if (isLowerOrEqual(s.settings.version, Update.BETA_PARTY)) {
+      return 'default/websites/beta.html';
+    } else if (isEngine1(s.settings.version)) {
       return 'default/websites/old-precpip.html';
     } else if (isEngine2(s.settings.version) && isLower(s.settings.version, Update.AS3_UPDATE)) {
       if (s.settings.minified_website) {
@@ -46,7 +48,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // serving the websites
   server.dir('', (s) => {
-    if (isEngine1(s.settings.version)) {
+    if (isLowerOrEqual(s.settings.version, Update.BETA_PARTY)) {
+      return 'default/websites/beta';
+    } else if (isEngine1(s.settings.version)) {
       return 'default/websites/old';
     } else if (isLower(s.settings.version, '2016-01-01')) {
       return 'default/websites/classic';
