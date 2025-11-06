@@ -5,6 +5,7 @@ import { getDateString } from '../../../common/utils';
 import { commandsHandler } from '../commands';
 import { Handle } from '../handles';
 import { processFurniture } from './igloo';
+import { isGreaterOrEqual } from '../../../server/routes/versions';
 
 const handler = new Handler();
 
@@ -103,9 +104,15 @@ handler.xt(Handle.SetFrameOld, (client, frame) => {
 })
 
 handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
-  // client misteriously removes the first element of the furniture
-  client.sendXt('jp', id, client.penguin.activeIgloo.type, ',' + Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+  const args: Array<string | number> = [id, client.penguin.activeIgloo.type, ];
   
+  // when igloo music was added, the music parameter is optional
+  if (isGreaterOrEqual(client.version, '2006-05-19')) {
+    args.push(client.penguin.activeIgloo.music);
+  }
+  
+  // client misteriously removes the first element of the furniture
+  client.sendXt('jp', ...args, ',' + Client.getFurnitureString(client.penguin.activeIgloo.furniture));
   const roomId = 2000 + id;
   client.joinRoom(roomId);
 });
@@ -126,9 +133,20 @@ handler.xt(Handle.AddFurnitureOld, (client, id) => {
   client.update();
 });
 
-handler.xt(Handle.UpdateIglooOld, (client, type, ...furnitureItems) => {
+handler.xt(Handle.UpdateIglooOld, (client, type, ...rest) => {
+  // music ID is placed at the start, though it may not be present
+  let furnitureItems: string[];
+  let music: number;
+  if (rest[0].includes('|')) {
+    furnitureItems = rest;
+    music = 0;
+  } else {
+    music = Number(rest[0]);
+    furnitureItems = rest.slice(1);
+  }
+  
   const igloo = processFurniture(furnitureItems);
-  client.penguin.updateIgloo({ furniture: igloo, type: Number(type) });
+  client.penguin.updateIgloo({ furniture: igloo, type: Number(type), music });
   client.update();
 });
 
