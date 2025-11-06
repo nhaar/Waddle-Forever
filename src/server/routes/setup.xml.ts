@@ -194,9 +194,9 @@ export function getSetupXml(version: Version, ip: string) {
 
    <Catalogues>
       <Clothing>${getFileName('clothing' + clothing, version)}</Clothing>
-      <Furniture>
-         <File>furniture0603</File>
-      </Furniture>
+      <Furntiture>
+         <File>furniture</File>
+      </Furntiture>
       <Igloo>
          <File>igloo0604</File>
       </Igloo>
