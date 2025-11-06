@@ -4,6 +4,7 @@ import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
 import { commandsHandler } from '../commands';
 import { Handle } from '../handles';
+import { processFurniture } from './igloo';
 
 const handler = new Handler();
 
@@ -100,6 +101,36 @@ handler.xt(Handle.GetInventory2007, (client) => {
 handler.xt(Handle.SetFrameOld, (client, frame) => {
   client.setFrame(frame);
 })
+
+handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
+  // client misteriously removes the first element of the furniture
+  client.sendXt('jp', id, client.penguin.activeIgloo.type, ',' + Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+  
+  const roomId = 2000 + id;
+  client.joinRoom(roomId);
+});
+
+handler.xt(Handle.GetFurnitureOld, (client) => {
+  const furniture: number[] = [];
+  client.penguin.getAllFurniture().forEach(furn => {
+    for (let i = 0; i < furn[1]; i++) {
+      furniture.push(furn[0]);
+    }
+  })
+
+  client.sendXt('gf', ...furniture);
+});
+
+handler.xt(Handle.AddFurnitureOld, (client, id) => {
+  client.buyFurniture(id);
+  client.update();
+});
+
+handler.xt(Handle.UpdateIglooOld, (client, type, ...furnitureItems) => {
+  const igloo = processFurniture(furnitureItems);
+  client.penguin.updateIgloo({ furniture: igloo, type: Number(type) });
+  client.update();
+});
 
 // Logging in
 handler.post('/php/login.php', (server, body) => {
