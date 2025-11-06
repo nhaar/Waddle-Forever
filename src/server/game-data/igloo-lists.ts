@@ -58,6 +58,22 @@ export const PRE_CPIP_IGLOO_LISTS: Array<{
   {
     date: '2006-12-08',
     igloo: 44
+  },
+  {
+    date: '2007-01-19',
+    igloo: 46
+  },
+  {
+    date: '2007-03-16',
+    igloo: 52
+  },
+  {
+    date: '2007-06-15',
+    igloo: 58
+  },
+  {
+    date: '2007-12-21',
+    igloo: 73
   }
 ];
 
