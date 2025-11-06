@@ -118,7 +118,22 @@ handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
   client.joinRoom(roomId);
 });
 
+handler.xt(Handle.GetIgloo2007, (client, id) => {
+  client.sendXt('gm', id, client.penguin.activeIgloo.type, client.penguin.activeIgloo.music, client.penguin.activeIgloo.flooring, Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+});
+
 handler.xt(Handle.GetFurnitureOld, (client) => {
+  const furniture: number[] = [];
+  client.penguin.getAllFurniture().forEach(furn => {
+    for (let i = 0; i < furn[1]; i++) {
+      furniture.push(furn[0]);
+    }
+  })
+
+  client.sendXt('gf', ...furniture);
+});
+
+handler.xt(Handle.GetFurniture2007, (client) => {
   const furniture: number[] = [];
   client.penguin.getAllFurniture().forEach(furn => {
     for (let i = 0; i < furn[1]; i++) {
@@ -148,6 +163,17 @@ handler.xt(Handle.UpdateIglooOld, (client, type, ...rest) => {
   
   const igloo = processFurniture(furnitureItems);
   client.penguin.updateIgloo({ furniture: igloo, type: Number(type), music });
+  client.update();
+});
+
+handler.xt(Handle.UpdateIgloo2007, (client, ...furnitureItems) => {
+  const igloo = processFurniture(furnitureItems);
+  client.penguin.updateIgloo({ furniture: igloo });
+  client.update();
+});
+
+handler.xt(Handle.UpdateIglooMusic2007, (client, music) => {
+  client.penguin.updateIgloo({ music });
   client.update();
 });
 
