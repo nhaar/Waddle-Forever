@@ -37,7 +37,7 @@ type Language = 'en';
 /** First element is file id used, then a list of all the crumbs that point to this path */
 export type CrumbIndicator = [FileRef, ...string[]];
 
-export type PartyChanges = {
+export type IslandChanges = {
   roomChanges?: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   // inside a map of each language
@@ -93,9 +93,12 @@ export type PartyChanges = {
   };
 
   mapNote?: FileRef;
+
+  /** For pre-cpip, if updates the version of the igloo SWF */
+  iglooVersion?: number;
 }
 
-export type Party = PartyChanges & {
+export type Party = IslandChanges & {
   name?: string;
   /** If true, then this will not be labeled a party in the timeline */
   event?: true;
@@ -110,7 +113,7 @@ export type Party = PartyChanges & {
   updates?: Array<{
     comment?: string;
     date: string;
-  } & PartyChanges>;
+  } & IslandChanges>;
 };
 
 type Construction = {

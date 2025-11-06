@@ -94,5 +94,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/rooms/igloo46.swf': 'archives:Igloo46.swf',
   'artwork/rooms/igloo52.swf': 'archives:Igloo52.swf',
   'artwork/rooms/igloo58.swf': 'archives:Igloo58.swf',
-  'artwork/rooms/igloo73.swf': 'archives:Igloo73.swf'
+  'artwork/rooms/igloo73.swf': 'archives:Igloo73.swf',
+  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf'
 };

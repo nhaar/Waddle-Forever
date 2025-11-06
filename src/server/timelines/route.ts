@@ -5,7 +5,7 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { PARTIES, PartyChanges, RoomChanges, CrumbIndicator } from "../game-data/parties";
+import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -97,7 +97,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
     })
   }
 
-  addPartyChanges(changes: PartyChanges, start: Version, end: Version | undefined = undefined) {
+  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
     const pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator) => {
       const fileRef = typeof info === 'string' ? info : info[0];
       const fullRoute = path.join(baseRoute, route);

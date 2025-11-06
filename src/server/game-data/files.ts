@@ -1445,6 +1445,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'halloween_2006/lodge.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'igloo_beta.swf',
+      comment: 'Made by Doubleuman, originally took the igloo1 fla, added the missing code and then compiled. Then took the igloo from an archived version of the Penguin Chat igloo (link: https://web.archive.org/web/20120426013749/http://www.swfcabin.com/swf-files/1233278154.swf), which also needed removing the stage and put it into the SWF. Finally, some fixes needed to be done which made this compatible with chat291, as igloo1 is from the ElectroServer client.'
     }
   ],
   [MOD]: [
