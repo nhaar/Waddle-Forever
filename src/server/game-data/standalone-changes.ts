@@ -216,6 +216,10 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     }
   },
   {
+    date: Update.STAMPS_RELEASE,
+    comment: 'Stamps are released'
+  },
+  {
     // implementing 2011 AS3 startscreens
     date: Update.AS3_STARTSCREEN,
     generalChanges: {

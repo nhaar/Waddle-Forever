@@ -15,6 +15,7 @@ import { ROOMS } from '../server/game-data/rooms';
 import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
 import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
 import { iterateEntries } from '../common/utils';
+import { STAMP_TIMELINE } from '../server/game-data/stamps';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -431,6 +432,12 @@ function addMigratorVisits(map: DayMap): void {
   });
 }
 
+function addStamps(map: DayMap): void {
+  STAMP_TIMELINE.forEach(update => {
+    addArrayEvents(map, 'other', update.date, 'New stamps are available');
+  });
+}
+
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
@@ -443,6 +450,7 @@ function updateTimeline(days: Day[]): Day[] {
   addStandalone(map);
   addGames(map);
   addMigratorVisits(map);
+  addStamps(map);
   return getDaysFromMap(map);
 }
 
