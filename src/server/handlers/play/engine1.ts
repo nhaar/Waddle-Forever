@@ -4,6 +4,9 @@ import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
 import { commandsHandler } from '../commands';
 import { Handle } from '../handles';
+import { processFurniture } from './igloo';
+import { isGreaterOrEqual } from '../../../server/routes/versions';
+import { Update } from '../../../server/game-data/updates';
 
 const handler = new Handler();
 
@@ -100,6 +103,79 @@ handler.xt(Handle.GetInventory2007, (client) => {
 handler.xt(Handle.SetFrameOld, (client, frame) => {
   client.setFrame(frame);
 })
+
+handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
+  const args: Array<string | number> = [id, client.penguin.activeIgloo.type, ];
+  
+  // when igloo music was added, the music parameter is optional
+  if (isGreaterOrEqual(client.version, Update.IGLOO_MUSIC)) {
+    args.push(client.penguin.activeIgloo.music);
+  }
+  
+  // client misteriously removes the first element of the furniture
+  client.sendXt('jp', ...args, ',' + Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+  const roomId = 2000 + id;
+  client.joinRoom(roomId);
+});
+
+handler.xt(Handle.GetIgloo2007, (client, id) => {
+  client.sendXt('gm', id, client.penguin.activeIgloo.type, client.penguin.activeIgloo.music, client.penguin.activeIgloo.flooring, Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+});
+
+handler.xt(Handle.GetFurnitureOld, (client) => {
+  const furniture: number[] = [];
+  client.penguin.getAllFurniture().forEach(furn => {
+    for (let i = 0; i < furn[1]; i++) {
+      furniture.push(furn[0]);
+    }
+  })
+
+  client.sendXt('gf', ...furniture);
+});
+
+handler.xt(Handle.GetFurniture2007, (client) => {
+  const furniture: number[] = [];
+  client.penguin.getAllFurniture().forEach(furn => {
+    for (let i = 0; i < furn[1]; i++) {
+      furniture.push(furn[0]);
+    }
+  })
+
+  client.sendXt('gf', ...furniture);
+});
+
+handler.xt(Handle.AddFurnitureOld, (client, id) => {
+  client.buyFurniture(id);
+  client.update();
+});
+
+handler.xt(Handle.UpdateIglooOld, (client, type, ...rest) => {
+  // music ID is placed at the start, though it may not be present
+  let furnitureItems: string[];
+  let music: number;
+  if (rest[0].includes('|')) {
+    furnitureItems = rest;
+    music = 0;
+  } else {
+    music = Number(rest[0]);
+    furnitureItems = rest.slice(1);
+  }
+  
+  const igloo = processFurniture(furnitureItems);
+  client.penguin.updateIgloo({ furniture: igloo, type: Number(type), music });
+  client.update();
+});
+
+handler.xt(Handle.UpdateIgloo2007, (client, ...furnitureItems) => {
+  const igloo = processFurniture(furnitureItems);
+  client.penguin.updateIgloo({ furniture: igloo });
+  client.update();
+});
+
+handler.xt(Handle.UpdateIglooMusic2007, (client, music) => {
+  client.penguin.updateIgloo({ music });
+  client.update();
+});
 
 // Logging in
 handler.post('/php/login.php', (server, body) => {

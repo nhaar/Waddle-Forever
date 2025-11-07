@@ -4,6 +4,7 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { getClothingTimeline } from "../timelines/clothing";
 import { getRoomFrameTimeline } from "../timelines/frame";
+import { getIglooTimeline } from "../timelines/igloo-version";
 import { getMusicTimeline } from "../timelines/music";
 import { Version, isLower } from "./versions";
 
@@ -12,6 +13,8 @@ const musicTimeline = getMusicTimeline();
 const frameTimeline = getRoomFrameTimeline();
 
 const clothingTimeline = getClothingTimeline();
+
+const iglooTimeline = getIglooTimeline();
 
 type OldRoom = {
   roomName: RoomName
@@ -194,9 +197,9 @@ export function getSetupXml(version: Version, ip: string) {
 
    <Catalogues>
       <Clothing>${getFileName('clothing' + clothing, version)}</Clothing>
-      <Furniture>
-         <File>furniture0603</File>
-      </Furniture>
+      <Furntiture>
+         <File>furniture</File>
+      </Furntiture>
       <Igloo>
          <File>igloo0604</File>
       </Igloo>
@@ -207,7 +210,7 @@ export function getSetupXml(version: Version, ip: string) {
 
    <Edit>6</Edit>
 
-   <Igloo>20</Igloo>
+   <Igloo>${findInVersion(version, iglooTimeline)}</Igloo>
 
    <Join>11</Join>
 

@@ -6,7 +6,7 @@ import { isEqual, isLower, processVersion, Version } from '../server/routes/vers
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from '../server/game-data/newspapers';
 import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/game-data/catalogues';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
-import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
+import { IGLOO_LISTS, PRE_CPIP_IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { PINS } from '../server/game-data/pins';
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from '../server/game-data/standalone-changes';
@@ -197,11 +197,13 @@ function addStagePlays(map: DayMap): void {
     if (update.notPremiere) {
       premieres.add(update.name);
     }
-    const stagePlay = premieres.has(update.name)
-      ? `${update.name} returns to The Stage`
-      : `${update.name} premieres at the Stage`;
+    if (update.hide !== true) {
+      const stagePlay = premieres.has(update.name)
+        ? `${update.name} returns to The Stage`
+        : `${update.name} premieres at the Stage`;
+      addEvents(map, update.date, { stagePlay });
+    }
     premieres.add(update.name);
-    addEvents(map, update.date, { stagePlay });
   });
 }
 
@@ -300,6 +302,10 @@ function addCatalogues(map: DayMap): DayMap {
 }
 
 function addIglooMusicLists(map: DayMap): void {
+  PRE_CPIP_IGLOO_LISTS.forEach((list) => {
+    addEvents(map, list.date, { musicList: true });
+  });
+  
   IGLOO_LISTS.forEach((list) => {
     addEvents(map, list.date, { musicList: true });
   })
@@ -468,6 +474,8 @@ function getConsumedTimeline(days: Day[]): Array<{
   month: number;
   events: Array<Event>
 }> {
+  let iglooMusicReleased = false;
+
   return days.map((day) => {
     const events: Event[] = [];
 
@@ -555,7 +563,14 @@ function getConsumedTimeline(days: Day[]): Array<{
       events.push({ text: day.events.stagePlay, type: EventType.Stage });
     }
     if (day.events.musicList === true) {
-      events.push({ text: 'New music is available for igloos', type: EventType.MusicList });
+      let text;
+      if (iglooMusicReleased) {
+        text = 'New music is available for igloos';
+      } else {
+        iglooMusicReleased = true;
+        text = 'Penguins can now add music to their igloo';
+      }
+      events.push({ text, type: EventType.MusicList });
     }
     if (day.events.newFurnitureCatalog === true) {
       events.push({ text: 'New furniture catalog available', type: EventType.FurnitureCatalog });

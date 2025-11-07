@@ -88,5 +88,12 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/toys/sculpture/Y4ssenGrego.swf': 'recreation:festival_of_snow/y4ssengrego.swf',
   'artwork/tools/807.swf': 'archives:AwardsEN807.swf',
   'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf',
-  'artwork/catalogue/adopt0703.swf': 'archives:Pets_0703.swf'
+  'artwork/catalogue/adopt0703.swf': 'archives:Pets_0703.swf',
+  'artwork/rooms/igloo20.swf': 'archives:Igloo20.swf',
+  'artwork/rooms/igloo44.swf': 'archives:Igloo44.swf',
+  'artwork/rooms/igloo46.swf': 'archives:Igloo46.swf',
+  'artwork/rooms/igloo52.swf': 'archives:Igloo52.swf',
+  'artwork/rooms/igloo58.swf': 'archives:Igloo58.swf',
+  'artwork/rooms/igloo73.swf': 'archives:Igloo73.swf',
+  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf'
 };

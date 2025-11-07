@@ -39,11 +39,11 @@ export const PRE_CPIP_CATALOGS: DateRefMap = {
   '2008-04-04': 'archives:Apr2008.swf',
   '2008-05-02': 'archives:May2008.swf',
   '2008-06-06': 'archives:Jun2008.swf',
+  '2008-07-04': 'archives:July08Style.swf',
 };
 
 /** All clothing catalogs available Post-CPIP */
 export const CPIP_CATALOGS: DateRefMap = {
-  '2008-07-04': 'archives:July08Style.swf',
   '2008-08-01': 'archives:PSAug2008.swf',
   '2008-09-05': 'archives:Sep2008.swf',
   '2008-10-03': 'archives:CatOct2008.swf',
@@ -83,6 +83,7 @@ export const CPIP_CATALOGS: DateRefMap = {
 
 /** All furniture catalogs */
 export const FURNITURE_CATALOGS: DateRefMap = {
+  '2005-10-24': 'archives:Furniture_0510.swf',
   '2008-06-20': 'archives:Jun-Jul2008Furniture.swf',
   '2008-07-18': 'archives:FurnJul2008.swf',
   '2008-08-29': 'archives:FurnAug2008.swf',

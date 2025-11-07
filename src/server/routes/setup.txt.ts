@@ -4,6 +4,7 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { getClothingTimeline } from "../timelines/clothing";
 import { getRoomFrameTimeline } from "../timelines/frame";
+import { getIglooTimeline } from "../timelines/igloo-version";
 import { getMigratorTimeline } from "../timelines/migrator";
 import { getMusicTimeline } from "../timelines/music";
 import { isGreaterOrEqual, Version } from "./versions";
@@ -17,6 +18,8 @@ const migratorTimeline = getMigratorTimeline();
 const eggTimeline = getEggTimeline();
 
 const clothingTimeline = getClothingTimeline();
+
+const iglooTimeline = getIglooTimeline();
 
 function getEggTimeline() {
   const timeline = new VersionsTimeline<number>();
@@ -76,7 +79,7 @@ export function getSetupTxt(date: Version, ip: string): string {
 &paper=86&
 &penguin=16&
 &puffle=2&
-&igloo=73&
+&igloo=${findInVersion(date, iglooTimeline)}&
 &basic=3&
 &map=16_forest&
 &phone=2&

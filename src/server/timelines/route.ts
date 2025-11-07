@@ -5,7 +5,7 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { PARTIES, PartyChanges, RoomChanges, CrumbIndicator } from "../game-data/parties";
+import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -19,7 +19,7 @@ import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
-import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH } from "./crumbs";
+import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { MAP_UPDATES } from "../game-data/game-map";
@@ -97,7 +97,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
     })
   }
 
-  addPartyChanges(changes: PartyChanges, start: Version, end: Version | undefined = undefined) {
+  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
     const pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator) => {
       const fileRef = typeof info === 'string' ? info : info[0];
       const fullRoute = path.join(baseRoute, route);
@@ -148,10 +148,12 @@ class FileTimelineMap extends TimelineMap<string, string> {
     }
 
     if (changes.fairCpip !== undefined) {
-      this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
-      this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
-      this.add('play/v2/content/global/tickets.swf', changes.fairCpip.iconFileId, start, end);
-      this.add('play/v2/content/global/ticket_info.swf', changes.fairCpip.infoFile, start, end);
+      if (isLower(start, Update.MODERN_AS3)) {
+        this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
+        this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
+      }
+      this.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, changes.fairCpip.iconFileId, start, end);
+      this.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, changes.fairCpip.infoFile, start, end);
     }
     if (changes.scavengerHunt2007 !== undefined && typeof changes.scavengerHunt2007 === 'string') {
       // theoretically you would have static egg files and signal the number
@@ -395,6 +397,7 @@ function addCatalogues(map: FileTimelineMap): void {
   });
 
   map.addDateRefMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
+  map.addDateRefMap('artwork/catalogue/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 
@@ -446,8 +449,10 @@ function addStagePlays(map: FileTimelineMap): void {
     const date = debut.date;
     const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
 
-    // Stage itself
-    addRoomRoute(map, date, 'stage', debut.stageFileRef);
+    if (debut.stageFileRef !== null) {
+      // Stage itself
+      addRoomRoute(map, date, 'stage', debut.stageFileRef);
+    }
 
     if (debut.plazaFileRef !== null) {
       // Plaza
@@ -459,10 +464,12 @@ function addStagePlays(map: FileTimelineMap): void {
       map.addRoomChanges(debut.roomChanges, date, end);
     }
 
-    // simply hardcoding every catalogue to be from 0712 for now
-    map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
-    // TODO only add costrume trunks to each specific engine
-    map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
+    if (debut.costumeTrunkFileRef !== null) {
+      // simply hardcoding every catalogue to be from 0712 for now
+      map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
+      // TODO only add costrume trunks to each specific engine
+      map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
+    }
   })
 }
 

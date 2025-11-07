@@ -1,6 +1,6 @@
 import { PermanentUpdateTimeline, ComplexTemporaryUpdateTimeline } from ".";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
-import { PartyChanges } from "./parties";
+import { IslandChanges } from "./parties";
 import { Update } from "./updates";
 
 type StandaloneChange = {
@@ -23,14 +23,20 @@ type StandaloneTemporaryChange = {
   }>
 }
 
-type PermanentUpdate = PartyChanges & {
+type PermanentUpdate = IslandChanges & {
   comment?: string;
 }
 
 export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   {
     date: Update.BETA_RELEASE,
-    map: "recreation:map_release.swf"
+    map: "recreation:map_release.swf",
+    iglooVersion: 1, // placeholder
+  },
+  {
+    date: '2005-09-13',
+    comment: 'Penguins can now purchase different types of igloo',
+    iglooVersion: 20
   },
   {
     date: '2005-10-24',
@@ -139,8 +145,6 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       }
     },
     music: {
-      // placeholder play
-      stage: 32,
       // no idea on this one's date, adding it here
       lounge: 6
     },
@@ -254,7 +258,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   }
 ];
 
-type TemporaryGroupUpdate = PartyChanges & {
+type TemporaryGroupUpdate = IslandChanges & {
   comment?: string;
   endComment?: string;
 };

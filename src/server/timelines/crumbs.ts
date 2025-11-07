@@ -10,6 +10,7 @@ import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
 import { getMemberTimeline } from "./member";
 import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
+import { STAGE_TIMELINE } from "../game-data/stage-plays";
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
@@ -17,8 +18,7 @@ const memberTimeline = getMemberTimeline();
 const huntTimeline = getHuntTimeline();
 
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
-export const TICKET_ICON_PATH = 'tickets.swf';
-export const TICKET_INFO_PATH = 'ticket_info.swf';
+export const TICKET_INFO_PATH = 'close_ups/tickets.swf';
 
 export function getGlobalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
@@ -46,8 +46,7 @@ export function getGlobalPathsTimeline() {
     }
 
     if (party.fairCpip !== undefined) {
-      timeline.add('ticket_icon', TICKET_ICON_PATH, party.date, party.end);
-      timeline.add('tickets', TICKET_INFO_PATH, party.date, party.end);
+      timeline.add('ticket_icon', SCAVENGER_ICON_PATH, party.date, party.end);
     }
   });
 
@@ -75,16 +74,46 @@ export function getLocalPathsTimeline() {
           }
         })
       }
+
+      if (party.fairCpip !== undefined) {
+        timeline.add('tickets', TICKET_INFO_PATH, party.date, party.end);
+      }
     }
   });
 
   return timeline.getVersionsMap();
 }
 
+function getStageScriptTimeline() {
+  const timeline = new VersionsTimeline<StageScript>();
+
+  const scripts = new Map<string, StageScript>();
+  STAGE_TIMELINE.forEach((debut) => {
+    let script = scripts.get(debut.name);
+    if (script === undefined) {
+      script = debut.script ?? []
+      scripts.set(debut.name, script);
+    } else {
+      if (debut.script !== undefined) {
+        script = debut.script;
+        scripts.set(debut.name, script);
+      }
+    }
+
+    timeline.add({
+      date: debut.date,
+      info: script
+    });
+  });
+
+  return timeline.getVersions();
+}
+
 const localPathsTimeline = getLocalPathsTimeline();
 const globalPathsTimeline = getGlobalPathsTimeline();
 const pricesTimeline = getPricesTimeline();
 const furniturePricesTimeline = getFurniturePricesTimeline();
+const stageTimeline = getStageScriptTimeline();
 
 /** Represents a unique global crumbs state */
 export type GlobalCrumbContent = {
@@ -97,9 +126,17 @@ export type GlobalCrumbContent = {
   hunt: GlobalHuntCrumbs | undefined;
 }
 
+export type StageScript = Array<{
+  note: string;
+} | {
+  name: string;
+  message: string;
+}>;
+
 export type LocalCrumbContent = {
   paths: Record<string, string | undefined>;
   hunt: LocalHuntCrumbs | undefined;
+  stageScript: StageScript;
 }
 
 export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
@@ -149,15 +186,28 @@ export function getLocalCrumbsOutput() {
         });
       }
     });
+
+    stageTimeline.forEach((info) => {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+        timeline.push({
+          date: info.date,
+          info: {
+            stageScript: info.info
+          }
+        });
+      }
+    });
   }, (prev, cur) => {
     return {
       paths: { ...prev.paths, ...cur.paths },
-      hunt: cur.hunt
+      hunt: cur.hunt,
+      stageScript: cur.stageScript ?? prev.stageScript
     };
   }, () => {
     return {
       paths: {},
-      hunt: undefined
+      hunt: undefined,
+      stageScript: findInVersion(Update.CPIP_UPDATE, stageTimeline) ?? []
     }
   });
 }
