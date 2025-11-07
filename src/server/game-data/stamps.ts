@@ -16,7 +16,11 @@ enum CategoryID {
   CartSurfer = "28",
   CardJitsu = "38",
   CardJitsuFire = "32",
-  CardJitsuWater = "34"
+  CardJitsuWater = "34",
+  SystemDefender = "46",
+  PuffleLaunch = "48",
+  TreasureHunt = "56",
+  Pufflescape = "57"
 }
 
 export type StampCategory = {
@@ -1228,6 +1232,102 @@ export const STAMP_TIMELINE: StampUpdate[] = [
     ]
   },
   {
+    date: '2011-01-14',
+    updates: [
+      {
+        id: CategoryID.SystemDefender,
+        category:   {
+        "name": "System Defender",
+        "description": "System Defender",
+        "parent_group_id": 8,
+        "display": "Games : System Defender",
+        "stamps": {
+          "320": {
+            "stamp_id": 320,
+            "name": "Bug Overload",
+            "is_member": false,
+            "rank": 1,
+            "description": "Protect the EPF mainframe from rogue bugs",
+            "rank_token": "easy"
+          },
+          "300": {
+            "stamp_id": 300,
+            "name": "Garbage Disposal",
+            "is_member": false,
+            "rank": 1,
+            "description": "Destroy 100 enemies in 1 level",
+            "rank_token": "easy"
+          },
+          "308": {
+            "stamp_id": 308,
+            "name": "Master Mechanic",
+            "is_member": false,
+            "rank": 2,
+            "description": "Fill every open socket with a cannon",
+            "rank_token": "medium"
+          },
+          "304": {
+            "stamp_id": 304,
+            "name": "Mono Mechanic",
+            "is_member": false,
+            "rank": 2,
+            "description": "Complete a game with only one type of cannon",
+            "rank_token": "medium"
+          },
+          "328": {
+            "stamp_id": 328,
+            "name": "Protobot Attack",
+            "is_member": false,
+            "rank": 3,
+            "description": "Protect the EPF mainframe from Ultimate Protobot",
+            "rank_token": "hard"
+          },
+          "298": {
+            "stamp_id": 298,
+            "name": "Ready For Duty",
+            "is_member": false,
+            "rank": 1,
+            "description": "Finish G's tutorial",
+            "rank_token": "easy"
+          },
+          "310": {
+            "stamp_id": 310,
+            "name": "Strategic Master",
+            "is_member": false,
+            "rank": 3,
+            "description": "Destroy 250 enemies without upgrading",
+            "rank_token": "hard"
+          },
+          "302": {
+            "stamp_id": 302,
+            "name": "Strategic Success",
+            "is_member": false,
+            "rank": 2,
+            "description": "Destroy 100 enemies without upgrading cannons",
+            "rank_token": "medium"
+          },
+          "312": {
+            "stamp_id": 312,
+            "name": "Tactical Ace",
+            "is_member": false,
+            "rank": 3,
+            "description": "Destroy 250 enemies without taking damage",
+            "rank_token": "hard"
+          },
+          "306": {
+            "stamp_id": 306,
+            "name": "Tactical Pro",
+            "is_member": false,
+            "rank": 2,
+            "description": "Destroy 100 enemies without taking damage",
+            "rank_token": "medium"
+          }
+        }
+      }
+      }
+    ]
+  },
+  {
     date: Update.WILDERNESS_EXPEDITION_START,
     updates: [
       {
@@ -1254,6 +1354,39 @@ export const STAMP_TIMELINE: StampUpdate[] = [
     ]
   },
   {
+    date: '2011-01-27',
+    updates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [
+          {
+            "stamp_id": 322,
+            "name": "Herbert Attacks",
+            "is_member": false,
+            "rank": 2,
+            "description": "Complete the level 'Herbert Attacks'",
+            "rank_token": "medium"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: '2011-02-10',
+    updates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [{
+        "stamp_id": 326,
+        "name": "Test Bot Trio",
+        "is_member": true,
+        "rank": 3,
+        "description": "Protect the EPF mainframe from the Test Bots",
+        "rank_token": "hard"
+      }]}
+    ]
+  },
+  {
     date: Update.PUFFLE_PARTY_11_START,
     updates: [
       {
@@ -1272,6 +1405,136 @@ export const STAMP_TIMELINE: StampUpdate[] = [
     ]
   },
   {
+    date: '2011-02-24',
+    updates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [
+          {
+            "stamp_id": 324,
+            "name": "Klutzy Attack",
+            "is_member": false,
+            "rank": 2,
+            "description": "Protect the EPF mainframe from Klutzy",
+            "rank_token": "medium"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: Update.PUFFLE_LAUNCH,
+    updates: [
+      {
+        id: CategoryID.PuffleLaunch,
+        category: {
+          "name": "Puffle Launch",
+          "description": "Puffle Launch",
+          "parent_group_id": 8,
+          "display": "Games : Puffle Launch",
+          "stamps": {
+            "334": {
+              "stamp_id": 334,
+              "name": "Begin Build",
+              "is_member": false,
+              "rank": 1,
+              "description": "Collect your first cannon piece",
+              "rank_token": "easy"
+            },
+            "340": {
+              "stamp_id": 340,
+              "name": "Crab Attack",
+              "is_member": false,
+              "rank": 2,
+              "description": "Defeat a crab boss once",
+              "rank_token": "medium"
+            },
+            '344': {
+              "stamp_id": 344,
+              "name": "Crab Battle",
+              "is_member": true,
+              "rank": 3,
+              "description": "Defeat 6 crab bosses in a single play session",
+              "rank_token": "hard"
+            },
+            '342': {
+              "stamp_id": 342,
+              "name": "Crab Crash",
+              "is_member": true,
+              "rank": 3,
+              "description": "Defeat 3 crab bosses in a single play session",
+              "rank_token": "hard"
+            },
+            '338': {
+              "stamp_id": 338,
+              "name": "Epic Cannon ",
+              "is_member": true,
+              "rank": 3,
+              "description": "Build the Epic Cannon",
+              "rank_token": "hard"
+            },
+            '336': {
+              "stamp_id": 336,
+              "name": "Launch Ready",
+              "is_member": false,
+              "rank": 2,
+              "description": "Build a cannon",
+              "rank_token": "medium"
+            },
+            '350': {
+              "stamp_id": 350,
+              "name": "Light Speed Launch",
+              "is_member": true,
+              "rank": 4,
+              "description": "Complete all 36 levels in under 18 minutes",
+              "rank_token": "extreme"
+            },
+            '346': {
+              "stamp_id": 346,
+              "name": "Quick Launch",
+              "is_member": true,
+              "rank": 2,
+              "description": "Complete all 36 levels in under 35 minutes",
+              "rank_token": "medium"
+            },
+            '348': {
+              "stamp_id": 348,
+              "name": "Supersonic Launch",
+              "is_member": true,
+              "rank": 3,
+              "description": "Complete all 36 levels in under 25 minutes",
+              "rank_token": "hard"
+            },
+            '354': {
+              "stamp_id": 354,
+              "name": "Turbo Battle",
+              "is_member": true,
+              "rank": 3,
+              "description": "Defeat the crab in turbo mode",
+              "rank_token": "hard"
+            },
+            '356': {
+              "stamp_id": 356,
+              "name": "Turbo Master",
+              "is_member": true,
+              "rank": 4,
+              "description": "Complete all 36 levels in turbo mode",
+              "rank_token": "extreme"
+            },
+            '352': {
+              "stamp_id": 352,
+              "name": "Turbo Time",
+              "is_member": true,
+              "rank": 2,
+              "description": "Complete a level in turbo mode",
+              "rank_token": "medium"
+            }
+          }
+        },
+      }
+    ]
+  },
+  {
     date: Update.APRIL_FOOLS_11_START,
     updates: [
       {
@@ -1284,6 +1547,106 @@ export const STAMP_TIMELINE: StampUpdate[] = [
             rank: 1,
             description: 'Throw your meal in a place where food is found',
             rank_token: 'easy'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: '2011-04-28',
+    updates: [
+      {
+        categoryId: CategoryID.Characters,
+        stamps: [
+          {
+            stamp_id: 358,
+            name: 'Rookie',
+            is_member: false,
+            rank: 4,
+            description: 'Be in the same room as Rookie',
+            rank_token: 'extreme'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: '2011-04-20',
+    updates: [
+      {
+        id: CategoryID.TreasureHunt,
+        category: {
+          "name": "Treasure Hunt",
+          "description": "Treasure Hunt Stamps",
+          "parent_group_id": 8,
+          "display": "Games : Treasure Hunt",
+          "stamps": {
+            '416': {
+              "stamp_id": 416,
+              "name": "Collector",
+              "is_member": false,
+              "rank": 2,
+              "description": "Collect 8 coins in a single game",
+              "rank_token": "medium"
+            },
+            '420': {
+              "stamp_id": 420,
+              "name": "Gem Expert",
+              "is_member": false,
+              "rank": 3,
+              "description": "Uncover a gem in only 3 moves",
+              "rank_token": "hard"
+            },
+            '422': {
+              "stamp_id": 422,
+              "name": "Gem Pro",
+              "is_member": false,
+              "rank": 4,
+              "description": "Uncover 2 gems in only 7 moves",
+              "rank_token": "extreme"
+            },
+            '414': {
+              "stamp_id": 414,
+              "name": "Gem Skills",
+              "is_member": false,
+              "rank": 2,
+              "description": "Uncover 2 gems in a single game",
+              "rank_token": "medium"
+            },
+            '418': {
+              "stamp_id": 418,
+              "name": "In the Rough",
+              "is_member": false,
+              "rank": 3,
+              "description": "Find a rare treasure",
+              "rank_token": "hard"
+            }
+          }
+        },
+      }
+    ]
+  },
+  {
+    date: Update.EARTH_DAY_2011_START,
+    updates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            name: 'Go Green',
+            stamp_id: 362,
+            description: 'Recycle 10 objects at the Recycling Plant',
+            rank: 1,
+            rank_token: 'easy',
+            is_member: false
+          },
+          {
+            name: 'Tree Mob',
+            stamp_id: 364,
+            description: 'Get 10 or more friends to dress up as trees',
+            rank: 2,
+            is_member: true,
+            rank_token: 'medium'
           }
         ]
       }
@@ -1326,6 +1689,24 @@ export const STAMP_TIMELINE: StampUpdate[] = [
     ]
   },
   {
+    date: '2011-08-18',
+    updates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [
+          {
+            "stamp_id": 443,
+            "name": "Track Herbert ",
+            "is_member": false,
+            "rank": 4,
+            "description": "Complete the level 'Track Herbert'",
+            "rank_token": "extreme"
+          }
+        ]
+      }
+    ]
+  },
+  {
     date: Update.GREAT_SNOW_RACE_START,
     updates: [
       {
@@ -1354,6 +1735,146 @@ export const STAMP_TIMELINE: StampUpdate[] = [
             rank: 3,
             description: 'Complete an obstacle course',
             rank_token: 'hard'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: Update.HALLOWEEN_2011_START,
+    updates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 444,
+            name: 'Trick-or-treat',
+            is_member: false,
+            rank: 2,
+            description: 'See 10 Trick-or-Treat igloos at the Halloween Party',
+            rank_token: 'medium'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: '2011-11-03',
+    updates: [
+      {
+        id: CategoryID.Pufflescape,
+        category: {
+          "name": "Pufflescape",
+          "description": "Pufflescape",
+          "parent_group_id": 8,
+          "display": "Games : Pufflescape",
+          "stamps": {
+            '429': {
+              "stamp_id": 429,
+              "name": "Bite in Time",
+              "is_member": false,
+              "rank": 2,
+              "description": "Eat a disappearing Puffle O",
+              "rank_token": "medium"
+            },
+            '427': {
+              "stamp_id": 427,
+              "name": "Bonus Snack",
+              "is_member": false,
+              "rank": 1,
+              "description": "Eat a bonus Puffle O",
+              "rank_token": "easy"
+            },
+            '436': {
+              "stamp_id": 436,
+              "name": "Epic Roller",
+              "is_member": true,
+              "rank": 3,
+              "description": "Complete level 22",
+              "rank_token": "hard"
+            },
+            '434': {
+              "stamp_id": 434,
+              "name": "Extreme Puzzler",
+              "is_member": true,
+              "rank": 2,
+              "description": "Complete level 12",
+              "rank_token": "medium"
+            },
+            '431': {
+              "stamp_id": 431,
+              "name": "Fast Food",
+              "is_member": false,
+              "rank": 3,
+              "description": "Eat all disappearing O's in one set of levels",
+              "rank_token": "hard"
+            },
+            '437': {
+              "stamp_id": 437,
+              "name": "Ice Master",
+              "is_member": true,
+              "rank": 3,
+              "description": "Complete the final level",
+              "rank_token": "hard"
+            },
+            '435': {
+              "stamp_id": 435,
+              "name": "Master Roller",
+              "is_member": true,
+              "rank": 2,
+              "description": "Complete level 17",
+              "rank_token": "medium"
+            },
+            '432': {
+              "stamp_id": 432,
+              "name": "On a Roll",
+              "is_member": false,
+              "rank": 1,
+              "description": "Complete level 4",
+              "rank_token": "easy"
+            },
+            '428': {
+              "stamp_id": 428,
+              "name": "Puffle O Feast",
+              "is_member": false,
+              "rank": 2,
+              "description": "Eat all regular Puffle O's in one set of levels",
+              "rank_token": "medium"
+            },
+            '433': {
+              "stamp_id": 433,
+              "name": "Puzzle Pro",
+              "is_member": false,
+              "rank": 1,
+              "description": "Complete level 8",
+              "rank_token": "easy"
+            },
+            '430': {
+              "stamp_id": 430,
+              "name": "Quick Snack",
+              "is_member": false,
+              "rank": 3,
+              "description": "Eat all disappearing O's in one level",
+              "rank_token": "hard"
+            }
+          }
+        },
+      }
+    ]
+  },
+  {
+    date: Update.HOLIDAY_11_START,
+    updates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            name: 'Epic Volunteer',
+            description: 'Give a 10,000 coin donation to Coins For Change.',
+            rank: 4,
+            rank_token: 'extreme',
+            is_member: false,
+            stamp_id: 296
           }
         ]
       }

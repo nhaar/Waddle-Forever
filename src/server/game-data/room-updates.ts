@@ -252,7 +252,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'The Pet Shop renovation finishes'
     },
     {
-      date: '2011-03-15',
+      date: Update.PUFFLE_LAUNCH,
       fileRef: 'archives:RoomsPet_5.swf',
       comment: 'Puffle Launch releases'
     }

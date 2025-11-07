@@ -3877,7 +3877,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Earth Day',
-    date: '2011-04-21',
+    date: Update.EARTH_DAY_2011_START,
     end: '2011-04-26',
     roomChanges: {
       dock: 'archives:EarthDay2011Dock.swf',
@@ -4401,7 +4401,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Halloween Party',
-    date: '2011-10-20',
+    date: Update.HALLOWEEN_2011_START,
     end: '2011-11-03',
     roomChanges: {
       beach: 'archives:HalloweenParty2011Beach.swf',
@@ -4575,7 +4575,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Holiday Party',
-    date: '2011-12-14',
+    date: Update.HOLIDAY_11_START,
     end: '2011-12-29',
     roomChanges: {
       party2: 'archives:HolidayParty2011Party2.swf',
