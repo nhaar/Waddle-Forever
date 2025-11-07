@@ -145,8 +145,6 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       }
     },
     music: {
-      // placeholder play
-      stage: 32,
       // no idea on this one's date, adding it here
       lounge: 6
     },

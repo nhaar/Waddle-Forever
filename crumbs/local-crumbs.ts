@@ -1,7 +1,7 @@
 import path from "path";
 import { extractPcode, replacePcode } from "../src/common/ffdec/ffdec";
 import { generateCrumbFiles } from "./base-crumbs";
-import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent } from "../src/server/timelines/crumbs";
+import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent, StageScript } from "../src/server/timelines/crumbs";
 import { LocalHuntCrumbs } from "../src/server/game-data/parties";
 
 const BASE_LOCAL_CRUMBS = path.join(__dirname, 'base_local_crumbs.swf');
@@ -28,6 +28,30 @@ function addLocalPath(crumbs: string, pathName: string, path: string): string {
     );
   }
   return lines.join('\n');
+}
+
+function addStageScript(crumbs: string, script: StageScript): string {
+  return `${crumbs}
+Push "script_messages"
+${script.reverse().map(msg => {
+  if ('note' in msg) {
+    return `Push "note"
+Push "${msg.note}"
+Push 1
+InitObject`;
+  } else {
+    return `Push "name"
+Push "${msg.name}"
+Push "message"
+Push "${msg.message}"
+Push 2
+InitObject`;
+  }
+}).join('\n')}
+Push ${script.length}
+Push "Array"
+NewObject
+DefineLocal`;
 }
 
 function addScavengerHunt(crumbs: string, hunt: LocalHuntCrumbs): string {
@@ -110,6 +134,8 @@ function applyChanges(crumbs: string, changes: Partial<LocalCrumbContent>): stri
   if (changes.hunt !== undefined) {
     newCrumbs = addScavengerHunt(newCrumbs, changes.hunt);
   }
+
+  newCrumbs = addStageScript(newCrumbs, changes.stageScript ?? []);
 
   return newCrumbs;
 }

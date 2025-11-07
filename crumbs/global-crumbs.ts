@@ -62,7 +62,7 @@ function changeRoomInfo(crumbs: string, roomInfo: RoomInfoChange): string {
               // the line always ends with ", \d+" where number is how many properties there are
               const propertiesMatch = lines[i].match(/^(.*), (\d+)\s*$/);
               if (propertiesMatch === null || propertiesMatch.length !== 3) {
-                throw new Error('Invalid global crumbs: Expected to find properties line definition with number at the end');
+                throw new Error('Invalid global crumbs: Expected to find properties line definition with number at the end\nPerhaps deobfuscation is on?');
               }
               lines[i] = `${propertiesMatch[1]}, "is_member", true, ${Number(propertiesMatch[2]) + 1}`;
             } else if (memberMatch !== null) {

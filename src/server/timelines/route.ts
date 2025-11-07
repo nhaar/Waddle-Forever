@@ -449,8 +449,10 @@ function addStagePlays(map: FileTimelineMap): void {
     const date = debut.date;
     const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
 
-    // Stage itself
-    addRoomRoute(map, date, 'stage', debut.stageFileRef);
+    if (debut.stageFileRef !== null) {
+      // Stage itself
+      addRoomRoute(map, date, 'stage', debut.stageFileRef);
+    }
 
     if (debut.plazaFileRef !== null) {
       // Plaza
@@ -462,10 +464,12 @@ function addStagePlays(map: FileTimelineMap): void {
       map.addRoomChanges(debut.roomChanges, date, end);
     }
 
-    // simply hardcoding every catalogue to be from 0712 for now
-    map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
-    // TODO only add costrume trunks to each specific engine
-    map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
+    if (debut.costumeTrunkFileRef !== null) {
+      // simply hardcoding every catalogue to be from 0712 for now
+      map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
+      // TODO only add costrume trunks to each specific engine
+      map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
+    }
   })
 }
 

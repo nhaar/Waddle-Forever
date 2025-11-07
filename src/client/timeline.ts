@@ -197,11 +197,13 @@ function addStagePlays(map: DayMap): void {
     if (update.notPremiere) {
       premieres.add(update.name);
     }
-    const stagePlay = premieres.has(update.name)
-      ? `${update.name} returns to The Stage`
-      : `${update.name} premieres at the Stage`;
+    if (update.hide !== true) {
+      const stagePlay = premieres.has(update.name)
+        ? `${update.name} returns to The Stage`
+        : `${update.name} premieres at the Stage`;
+      addEvents(map, update.date, { stagePlay });
+    }
     premieres.add(update.name);
-    addEvents(map, update.date, { stagePlay });
   });
 }
 
