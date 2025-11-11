@@ -136,6 +136,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     end: '2005-09-22',
     roomChanges: {
       'town': 'fix:Town-party.swf'
+    },
+    music: {
+      town: 2
     }
   },
   {
