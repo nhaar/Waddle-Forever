@@ -44,19 +44,23 @@ table {
 }
 
 body {
-  margin-top: -1px;
+  margin-top: -0px;
 }
 
 .bg {
-  background-image: url("images/bkg_white.gif");
-  background-repeat: repeat-y;
-  background-position: center top;
+  background-image: url("images/footer_bkg2.gif"), url("images/bkg_white.gif");
+  background-repeat: no-repeat, repeat-y;
+  background-position: center bottom, center top;
+
+  padding-bottom: 25px;
   width: 100%;
-  min-height: 50vh;
+  min-height: 30vh;
   margin: 0;
   padding-top: 3px;
   text-align: center;
+  margin-bottom: 30px;
 }
+
 
 .event-text {
   width: 100%;
@@ -84,13 +88,16 @@ h2 {
 
 .nudgetitle {
   position: relative;
-  left: 1px;
   top: 4px;
+}
+
+.nudgegmt {
+  position: relative;
+  left: -1px;
 }
 
 .nudgeuk {
   position: relative;
-  left: 1px;
   top: 2px;
 }
 
@@ -99,9 +106,16 @@ h2 {
   top: 2px;
 }
 
+.nudgetime2 {
+  position: relative;
+  top: 2px;
+  left: -1px;
+}
+
 .nudgewednesday {
   position: relative;
   top: 4px;
+  left: -1px;
 }
 
 .nudgew {
@@ -112,4 +126,5 @@ h2 {
 .nudgesept {
   position: relative;
   top: 4px;
+  left: -0px;
 }
