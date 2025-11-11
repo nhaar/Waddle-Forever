@@ -1457,6 +1457,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'april_fools_2007/pizza.swf',
       comment: 'Made by slicedpizza, with a fix from Doubleuman'
+    },
+    {
+      file: 'april_fools_2007/coffee.swf',
+      comment: 'Made by slicedpizza'
     }
   ],
   [MOD]: [

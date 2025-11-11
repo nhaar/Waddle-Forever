@@ -632,14 +632,16 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       berg: 'recreation:april_fools_2007/berg.swf',
       mine: 'recreation:april_fools_2007/mine.swf',
       beach: 'recreation:april_fools_2007/beach.swf',
-      pizza: 'recreation:april_fools_2007/pizza.swf'
+      pizza: 'recreation:april_fools_2007/pizza.swf',
+      coffee: 'recreation:april_fools_2007/coffee.swf'
     },
     music: {
       'shack': 201,
       'berg': 201,
       'mine': 201,
       'beach': 201,
-      pizza: 201
+      pizza: 201,
+      coffee: 201
     }
   },
   {
