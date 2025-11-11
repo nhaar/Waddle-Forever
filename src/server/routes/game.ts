@@ -1,6 +1,6 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { getStampbook } from './stampjson';
+import { getStampsJson } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
@@ -16,6 +16,7 @@ import { getGeneralJson } from "./generaljson";
 import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
 import { getGameStrings } from "./gamestringsjson";
+import { getChunkingMapJson } from "./chunkingmapjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -79,7 +80,13 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // text file generating
   server.getData('en/web_service/stamps.json', (s) => {
-    return getStampbook(s.settings.version);
+    return getStampsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/stamps.json', (s) => {
+    return getStampsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/chunking_map.json', (s) => {
+    return getChunkingMapJson(s.settings.version);
   });
   server.getData('play/en/web_service/game_configs/general.json', (s) => {
     return getGeneralJson(s.settings.version);

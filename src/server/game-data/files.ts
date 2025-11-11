@@ -331,10 +331,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'penguin.swf from Mammoth but with the shadow removed'
     },
     {
-      file: 'game_configs/chunking_map.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/cover.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },

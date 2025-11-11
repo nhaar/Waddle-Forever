@@ -9,7 +9,6 @@ import { RouteRefMap } from ".";
 export const AS3_STATIC_FILES: RouteRefMap = {
   'en/web_service/game_configs/mascots.jsonp': 'svanilla:media/play/en/web_service/game_configs/mascots.jsonp',
   'en/web_service/game_configs/rooms.jsonp': 'svanilla:media/play/en/web_service/game_configs/rooms.jsonp',
-  'play/en/web_service/game_configs/chunking_map.json': 'approximation:game_configs/chunking_map.json',
   'play/en/web_service/game_configs/cover.json': 'approximation:game_configs/cover.json',
   'play/en/web_service/game_configs/furniture_items.json': 'approximation:game_configs/furniture_items.json',
   'play/en/web_service/game_configs/games.json': 'approximation:game_configs/games.json',
@@ -30,7 +29,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/en/web_service/game_configs/puffles.json': 'approximation:game_configs/puffles.json',
   'play/en/web_service/game_configs/safe_chat_messages.json': 'approximation:game_configs/safe_chat_messages.json',
   'play/en/web_service/game_configs/stamps_tokenized.json': 'approximation:game_configs/stamps_tokenized.json',
-  'play/en/web_service/game_configs/stamps.json': 'approximation:game_configs/stamps.json',
   'play/en/web_service/game_configs/tour_guide_messages.json': 'approximation:game_configs/tour_guide_messages.json',
   'play/en/web_service/game_configs/stage_script_messages.json': 'approximation:game_configs/stage_script_messages.json',
   'play/en/web_service/game_configs/weblogger.php': 'approximation:game_configs/weblogger.php',
