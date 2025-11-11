@@ -31,9 +31,15 @@ export function getMusicTimeline() {
     });
   });
 
-  STAGE_TIMELINE.forEach((debut) => {
+  STAGE_TIMELINE.forEach((debut, i) => {
     const musicId = STAGE_PLAYS.find((stage) => stage.name === debut.name)?.musicId ?? 0;
     timeline.add('stage', musicId, debut.date);
+    if (debut.musicRooms !== undefined) {
+      const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
+      debut.musicRooms.forEach(room => {
+        timeline.add(room, musicId, debut.date, end);
+      });
+    }
   });
 
   PARTIES.forEach((party) => {

@@ -2,6 +2,7 @@ import { Update } from "./updates";
 import { Version } from "../routes/versions";
 import { RoomChanges } from "./parties";
 import { StageScript } from "../timelines/crumbs";
+import { RoomName } from "./rooms";
 
 /** All stage names */
 type StageName = 'Space Adventure' |
@@ -98,6 +99,8 @@ export const STAGE_TIMELINE: Array<{
   plazaFileRef: string | null;
   /** Temporary changes of rooms other than the plaza and stage */
   roomChanges?: RoomChanges;
+  /** Rooms beside stage that play the play's track */
+  musicRooms?: RoomName[];
   /** If a stage's premiere is not in the timeline, add this as true to the first appearance in the timeline */
   notPremiere?: true;
   /** Stage shouldn't be on timeline: used for highly defective stage plays that are placeholders */
@@ -2191,7 +2194,8 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:Apr2011NormanSwarmHasBeenTransformedCostume.swf', // from april 2011,
     roomChanges: {
       party1: 'archives:RoomsParty1-December2009.swf'
-    }
+    },
+    musicRooms: ['party1']
   },
   {
     date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
