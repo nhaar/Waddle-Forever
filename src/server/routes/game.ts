@@ -3,7 +3,7 @@ import { SettingsManager } from "../settings";
 import { getStampsJson } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
-import { getServersXml } from "../servers";
+import { getServersXml, WORLD_PORT } from "../servers";
 import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
@@ -62,7 +62,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // Pre CPIP server rewrite client uses these POST endpoints
   server.router.post('/setup.txt', (_, req) => {
-    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP));
+    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP, String(WORLD_PORT)));
   })
   server.router.post('/news.txt', (_, req) => {
     req.send(getNewsTxt(settingsManager.settings.version));
