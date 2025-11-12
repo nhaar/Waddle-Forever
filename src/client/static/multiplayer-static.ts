@@ -20,13 +20,13 @@ window.addEventListener('get-info', (e: any) => {
       break;
     case 'host':
       hostButton.checked = true;
-      info.style.display = 'block';
+      info.style.visibility = 'visible';
       ipInput.value = detail.ip;
       portInput.value = detail.port;
       break;
     case 'guest':
       guestButton.checked = true;
-      info.style.display = 'block';
+      info.style.visibility = 'visible';
       ipInput.value = detail.ip;
       portInput.value = detail.port;
       break;
@@ -35,20 +35,20 @@ window.addEventListener('get-info', (e: any) => {
 
 localButton.addEventListener('change', () => {
   if (localButton.checked) {
-    info.style.display = 'none';
+    info.style.visibility = 'hidden';
     mApi.update('local');
   }
 });
 
 guestButton.addEventListener('change', () => {
   if (guestButton.checked) {
-    info.style.display = 'block';
+    info.style.visibility = 'visible';
   }
 });
 
 hostButton.addEventListener('change', () => {
   if (hostButton.checked) {
-    info.style.display = 'block';
+    info.style.visibility = 'visible';
   }
 });
 
