@@ -2,7 +2,7 @@ import { findInVersion, VersionsTimeline } from "../game-data";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
-import { WORLD_PORT } from "../servers";
+import { WORLD_DELTA } from "../servers";
 import { getClothingTimeline } from "../timelines/clothing";
 import { getRoomFrameTimeline } from "../timelines/frame";
 import { getIglooTimeline } from "../timelines/igloo-version";
@@ -75,7 +75,7 @@ function getFileName(name: string, date: Version): string {
   }
 }
 
-export function getSetupXml(version: Version, ip: string) {
+export function getSetupXml(version: Version, ip: string, port: number) {
   const news = findInVersion(version, newspaperTimeline);
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
@@ -134,7 +134,7 @@ export function getSetupXml(version: Version, ip: string) {
         return `
       <${server}>
         <IP>${ip}</IP>
-        <Port>${WORLD_PORT}</Port>
+        <Port>${port + WORLD_DELTA}</Port>
         <Zone>w1</Zone>
       </${server}>
         `

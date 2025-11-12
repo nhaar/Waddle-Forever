@@ -6,6 +6,5 @@ addDispatchEventListeners([
 ], ipcRenderer);
 
 (window as any).api = {
-  updateTargetIP: (ip: string | undefined, port: string | undefined) => ipcRenderer.send('update-ip', { ip, port }),
-  reset: () => ipcRenderer.send('reset-ip')
+  update: (type: string | undefined, ip: string | undefined, port: string | undefined) => ipcRenderer.send('update', { ip, port, type })
 };

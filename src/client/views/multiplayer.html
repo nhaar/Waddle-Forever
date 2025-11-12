@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="base.css" rel="stylesheet" type="text/css" media="screen"/>
+  </head>
+  <body>
+
+    <div>
+      <input type="radio" id="local" name="type" />
+      <label for="local">Local (Offline Only)</label>
+
+      <input type="radio" id="guest" name="type" />
+      <label for="guest">Guest (Join Another Server)</label>
+
+      <input type="radio" id="host" name="type" />
+      <label for="host">Host (Invite Other People)</label>
+    </div>
+    <div id="info-input" style="display: none;">
+      <label for="ip-input">IP:</label>
+      <input placeholder="IP" id="ip-input" />
+      <label for="port-input">Port (if necessary):</label>
+      <input placeholder="Port" id="port-input" type="number" />
+      <button id="send">Update</button>
+    </div>
+    <script src="../static/multiplayer-static.js" type="module"></script>
+  </body>
+</html>

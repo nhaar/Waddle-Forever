@@ -3,7 +3,7 @@ import { SettingsManager } from "../settings";
 import { getStampsJson } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
-import { getServersXml, WORLD_PORT } from "../servers";
+import { getServersXml, WORLD_DELTA } from "../servers";
 import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
@@ -62,7 +62,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // Pre CPIP server rewrite client uses these POST endpoints
   server.router.post('/setup.txt', (_, req) => {
-    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP, String(WORLD_PORT)));
+    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP, settingsManager.targetPort));
   })
   server.router.post('/news.txt', (_, req) => {
     req.send(getNewsTxt(settingsManager.settings.version));
@@ -100,9 +100,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
     return getGameStrings(s.settings.version);
   });
-  server.getData('servers.xml', (s) => getServersXml(s.targetIP));
+  server.getData('servers.xml', (s) => getServersXml(s.targetIP, s.targetPort));
   server.getData('setup.xml', (s) => {
-    return getSetupXml(s.settings.version, s.targetIP);
+    return getSetupXml(s.settings.version, s.targetIP, s.targetPort);
   });
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);

@@ -41,7 +41,7 @@ function getEggTimeline() {
 }
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
-export function getSetupTxt(date: Version, ip: string, port: string): string {
+export function getSetupTxt(date: Version, ip: string, port: number): string {
   let roomMusic: Partial<Record<RoomName, number>> = {};
 
   let frames: Partial<Record<RoomName, number>> = {};

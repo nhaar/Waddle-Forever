@@ -2,11 +2,15 @@ import path from 'path';
 import { BrowserWindow, shell } from "electron";
 import { Store } from "./store";
 import { checkUpdates } from "./update";
-import { GlobalSettings, makeURL } from '../common/utils';
+import { GlobalSettings } from '../common/utils';
 import { SettingsManager } from '../server/settings';
+import { getSiteUrl } from './multiplayer';
 
 function getIP(clientSettings: GlobalSettings, serverSettings: SettingsManager) {
-  return clientSettings.targetIP ?? serverSettings.targetIP;
+  if (clientSettings.multiplayer.type === 'guest') {
+    return clientSettings.multiplayer.ip;
+  }
+  return serverSettings.targetIP;
 }
 
 export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
@@ -18,7 +22,7 @@ export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
 };
 
 export const loadMain = (window: BrowserWindow, settings: GlobalSettings, serverSettings: SettingsManager) => {
-  window.loadURL(makeURL(getIP(settings, serverSettings), settings.targetPort));
+  window.loadURL(getSiteUrl(settings, serverSettings));    
 }
 
 interface FiveIconByPlatforms {
