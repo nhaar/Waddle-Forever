@@ -191,7 +191,7 @@ export class Handler {
   handle (client: Client, data: string) {
     if (data.startsWith('<')) {
       this.handleXml(client, data);
-    } else {
+    } else if (data.startsWith('%xt')) {
       this.handleXt(client, data);
     }
   }
