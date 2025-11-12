@@ -4,7 +4,6 @@ import net from 'net';
 import { Handler } from './handlers';
 import { WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
-import oldHandler from './handlers/old'
 import loginHandler from './handlers/login'
 import { Client, Server } from './client';
 import { SettingsManager } from './settings';
@@ -73,9 +72,8 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   // TODO in the future, "world" and "old" should be merged somewhat
   await createServer('Login', 6112, loginHandler, settingsManager, server);
   const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server);
-  const oldWorld = await createServer('Old', 6114, oldHandler, settingsManager, server);
   
-  setApiServer(settingsManager, server, [world, oldWorld]);
+  setApiServer(settingsManager, server, [world]);
 
   await new Promise<void>((resolve, reject) => {
     server.listen(HTTP_PORT, () => {

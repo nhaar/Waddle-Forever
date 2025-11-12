@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export const WORLD_PORT = 9785
+export const WORLD_PORT = 6114
 
 export function getServerPopulation(): number {
   const seed = Math.random()
