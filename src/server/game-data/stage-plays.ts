@@ -19,7 +19,8 @@ type StageName = 'Space Adventure' |
   'Fairy Fables' |
   'Space Adventure Planet Y' |
   'Norman Swarm Has Been Transformed' |
-  'Secrets of the Bamboo Forest';
+  'Secrets of the Bamboo Forest' |
+  'Night of the Living Sled: Live';
 
 /** Data for each stage play */
 export const STAGE_PLAYS: Array<{
@@ -87,6 +88,10 @@ export const STAGE_PLAYS: Array<{
   {
     name: 'Space Adventure Planet Y',
     musicId: 38
+  },
+  {
+    name: 'Night of the Living Sled: Live',
+    musicId: 253
   }
 ];
 
@@ -200,7 +205,7 @@ export const STAGE_TIMELINE: Array<{
     date: '2007-12-14',
     name: 'The Twelfth Fish',
     // lost SWF
-    plazaFileRef: null,
+    plazaFileRef: 'recreation:plaza_tweltfh_fish.swf',
     stageFileRef: 'archives:RoomsStage-Christmas2007.swf',
     // costume trunk from may
     costumeTrunkFileRef: 'archives:May2008Costume.swf',
@@ -2472,5 +2477,12 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf',
     plazaFileRef: null,
     stageFileRef: 'archives:RoomsStage-February2011.swf'
+  },
+  {
+    date: Update.HALLOWEEN_2011_START,
+    name: 'Night of the Living Sled: Live',
+    stageFileRef: 'archives:Stage2011Oct19.swf',
+    plazaFileRef: 'recreation:plaza_notls.swf',
+    costumeTrunkFileRef: 'archives:NLSLCostumeTrunk.swf'
   }
 ];
