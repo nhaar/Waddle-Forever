@@ -5,7 +5,7 @@ import { GlobalSettings, makeURL } from "../common/utils";
 /** Creates the window which allows changing which IP the client connects to */
 export function createChangeClientIPWindow(globalSettings: GlobalSettings, mainWindow: BrowserWindow) {
   const window = new BrowserWindow({
-    height: 200,
+    height: 300,
     width: 500,
     title: "Change Client IP",
     webPreferences: {
@@ -17,9 +17,15 @@ export function createChangeClientIPWindow(globalSettings: GlobalSettings, mainW
 
   window.loadFile(path.join(__dirname, 'views/client-ip.html'));
 
+  window.webContents.on('did-finish-load', () => {
+    window.webContents.send('get-info', { ip: globalSettings.targetIP, port: globalSettings.targetPort });
+  });
+
   ipcMain.on('update-ip', (_, arg) => {
-    globalSettings.targetIP = arg;
-    mainWindow.loadURL(makeURL(arg));
+    const { ip, port } = arg;
+    globalSettings.targetIP = ip;
+    globalSettings.targetPort = port;
+    mainWindow.loadURL(makeURL(ip, port));
   });
 
   ipcMain.on('reset-ip', () => {

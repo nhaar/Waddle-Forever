@@ -40,7 +40,8 @@ let mainWindow: BrowserWindow;
 /** An object to keep global variables in memory across windows */
 let globalSettings : GlobalSettings = {
   isEditting: false,
-  targetIP: undefined
+  targetIP: undefined,
+  targetPort: undefined
 };
 
 app.on('ready', async () => {

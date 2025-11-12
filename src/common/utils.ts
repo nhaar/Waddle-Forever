@@ -12,10 +12,12 @@ export type GlobalSettings = {
   isEditting: boolean
   /** IP the client is targetting, undefined if using the local server */
   targetIP: string | undefined;
+  /** Target port of the main website, undefined if using default port */
+  targetPort: string | undefined;
 };
 
-export function makeURL(ip: string): string {
-  return `http://${ip}:${HTTP_PORT}`;
+export function makeURL(ip: string, port?: string): string {
+  return `http://${ip}:${port ?? HTTP_PORT}`;
 }
 
 export function addDispatchEventListeners(events: string[], ipcRenderer: IpcRenderer) {

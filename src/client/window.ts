@@ -18,7 +18,7 @@ export const toggleFullScreen = (store: Store, mainWindow: BrowserWindow) => {
 };
 
 export const loadMain = (window: BrowserWindow, settings: GlobalSettings, serverSettings: SettingsManager) => {
-  window.loadURL(makeURL(getIP(settings, serverSettings)));
+  window.loadURL(makeURL(getIP(settings, serverSettings), settings.targetPort));
 }
 
 interface FiveIconByPlatforms {
