@@ -204,7 +204,6 @@ export const STAGE_TIMELINE: Array<{
   {
     date: '2007-12-14',
     name: 'The Twelfth Fish',
-    // lost SWF
     plazaFileRef: 'recreation:plaza_tweltfh_fish.swf',
     stageFileRef: 'archives:RoomsStage-Christmas2007.swf',
     // costume trunk from may
