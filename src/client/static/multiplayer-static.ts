@@ -8,8 +8,8 @@ const portInput = document.getElementById('port-input')! as HTMLInputElement;
 const info = document.getElementById('info-input')! as HTMLDivElement;
 const sendButton = document.getElementById('send')! as HTMLButtonElement;
 
-function makeEmptyUndefined(str: string): string | undefined {
-  return str === '' ? undefined : str;
+function getPort(port: string): number | undefined {
+  return port === '' ? undefined : Number(port);
 }
 
 window.addEventListener('get-info', (e: any) => {
@@ -57,9 +57,9 @@ sendButton.addEventListener('click', () => {
     window.alert('Please provide an IP!');
   } else {
     if (guestButton.checked) {
-      mApi.update('guest', ipInput.value, makeEmptyUndefined(portInput.value));
+      mApi.update('guest', ipInput.value, getPort(portInput.value));
     } else {
-      mApi.update('host', ipInput.value, makeEmptyUndefined(portInput.value));
+      mApi.update('host', ipInput.value, getPort(portInput.value));
     }
   }
 });

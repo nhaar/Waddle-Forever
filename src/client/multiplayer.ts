@@ -50,7 +50,7 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
         break;
       case 'host':
         serverSettings.targetIP = ip;
-        serverSettings.targetPort = Number(port);
+        serverSettings.targetPort = port;
         globalSettings.multiplayer = { type };
         break;
       default:
