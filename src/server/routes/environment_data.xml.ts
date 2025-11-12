@@ -1,8 +1,6 @@
-import { HTTP_PORT } from "../../common/constants";
-
 /** XML file for AS3 client that records each of the relevant paths */
-export function getEnvironmentDataXml(ip: string): string {
-  const URL = `http://${ip}:${HTTP_PORT}/`;
+export function getEnvironmentDataXml(ip: string, port: number): string {
+  const URL = `http://${ip}:${port}/`;
   
   return `<environmentData>
 

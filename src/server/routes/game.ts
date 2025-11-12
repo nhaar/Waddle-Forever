@@ -108,7 +108,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return getVersionTxt(s.settings.version);
   });
   server.getData('play/web_service/environment_data.xml', (s) => {
-    return getEnvironmentDataXml(s.targetIP);
+    return getEnvironmentDataXml(s.targetIP, s.targetPort);
   });
   server.getData('web_service/worldachievements.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
