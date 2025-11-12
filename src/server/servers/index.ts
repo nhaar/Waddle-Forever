@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+import { HTTP_PORT } from '../../common/constants';
 
-export const WORLD_PORT = 6114
+export const WORLD_PORT = HTTP_PORT + 2;
 
-export const LOGIN_PORT = 8000
+export const LOGIN_PORT = HTTP_PORT + 1;
 
 export function getServerPopulation(): number {
   const seed = Math.random()
