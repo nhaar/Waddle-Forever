@@ -2,7 +2,7 @@ import { iterateEntries } from "../../common/utils";
 import { ROOMS } from "../game-data/rooms";
 import { getMapForDate } from "../timelines";
 import { getMusicTimeline } from "../timelines/music";
-import { Version } from "./versions";
+import { isLower, Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
 
@@ -321,7 +321,20 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Pizza"
     },
-    "340": {
+    "340": isLower(version, '2014-09-18') ? {
+      "room_id": 340,
+      "room_key": "stage",
+      "name": "Stage",
+      "display_name": "Stage",
+      "music_id": 0,
+      "is_member": 0,
+      "path": "stage.swf",
+      "max_users": 80,
+      "jump_enabled": false,
+      "jump_disabled": true,
+      "required_item": null,
+      "short_name": "Stage"
+    } : {
       "room_id": 340,
       "room_key": "mall",
       "name": "The Mall",
