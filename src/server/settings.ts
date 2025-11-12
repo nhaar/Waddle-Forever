@@ -4,6 +4,7 @@ import { Router, Request } from "express";
 import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
 import { isVersionValid, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
+import { LOGIN_DELTA, WORLD_DELTA } from './servers';
 
 export interface Settings {
   fps30: boolean
@@ -154,6 +155,14 @@ export class SettingsManager {
     const mods = getMods();
     this.usingMods = mods.length > 0
     return mods;
+  }
+
+  get loginPort() {
+    return this.targetPort + LOGIN_DELTA;
+  }
+
+  get worldPort() {
+    return this.targetPort + WORLD_DELTA;
   }
 }
 

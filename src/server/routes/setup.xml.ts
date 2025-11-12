@@ -2,7 +2,6 @@ import { findInVersion, VersionsTimeline } from "../game-data";
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
-import { WORLD_DELTA } from "../servers";
 import { getClothingTimeline } from "../timelines/clothing";
 import { getRoomFrameTimeline } from "../timelines/frame";
 import { getIglooTimeline } from "../timelines/igloo-version";
@@ -134,7 +133,7 @@ export function getSetupXml(version: Version, ip: string, port: number) {
         return `
       <${server}>
         <IP>${ip}</IP>
-        <Port>${port + WORLD_DELTA}</Port>
+        <Port>${port}</Port>
         <Zone>w1</Zone>
       </${server}>
         `
