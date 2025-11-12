@@ -3,6 +3,8 @@ import path from 'path';
 
 export const WORLD_PORT = 6114
 
+export const LOGIN_PORT = 8000
+
 export function getServerPopulation(): number {
   const seed = Math.random()
   if (seed < 0.1) {
@@ -226,7 +228,7 @@ export function getServersXml(ip: string): string {
 <?xml version="1.0" encoding="UTF-8"?>
 <servers>
    <environment name="live">
-      <login address="${ip}" port="6112" />
+      <login address="${ip}" port="${LOGIN_PORT}" />
       <redemption address="${ip}" port="9875" />
       ${locales.map((locale) => {
         return `

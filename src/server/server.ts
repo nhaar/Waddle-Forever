@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import net from 'net';
 
 import { Handler } from './handlers';
-import { WORLD_PORT } from './servers';
+import { LOGIN_PORT, WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
 import loginHandler from './handlers/login'
 import { Client, Server } from './client';
@@ -70,7 +70,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
 
   
   // TODO in the future, "world" and "old" should be merged somewhat
-  await createServer('Login', 6112, loginHandler, settingsManager, server);
+  await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server);
   const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server);
   
   setApiServer(settingsManager, server, [world]);
