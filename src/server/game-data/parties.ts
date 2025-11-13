@@ -4223,13 +4223,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': [ 'archives:IslandAdventureParty2011Party_poster3.swf', 'party_poster3' ]
       },
       'membership/party1.swf': {
-        'en': [ 'archives:IslandAdventureParty2011MembershipParty1.swf', 'oops_party1_room' ]
+        'en': [ 'archives:IslandAdventureParty2011MembershipParty1.swf', 'oops_party1_catalog' ]
       },
       'membership/party2.swf': {
-        'en': [ 'archives:IslandAdventureParty2011MembershipParty2.swf', 'oops_party2_room', 'oops_party3_room' ]
+        'en': [ 'archives:IslandAdventureParty2011MembershipParty2.swf', 'oops_party2_room' ]
       },
       'catalogues/party.swf': {
-        'en': 'archives:IslandAdventureParty2011CatalogParty.swf'
+        'en': ['archives:IslandAdventureParty2011CatalogParty.swf', 'party_catalogue']
       },
       'close_ups/party_note01.swf': {
         'en': 'archives:IslandAdventureParty2011Party_note01.swf'
