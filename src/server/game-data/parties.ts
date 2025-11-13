@@ -3972,9 +3972,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'catalogues/party.swf': {
         'en': 'archives:MedievalParty2011CatalogParty.swf'
       },
-      'catalogues/party2.swf': {
-        'en': 'archives:MedievalParty2011CatalogParty2.swf'
-      },
       'membership/party.swf': {
         'en': ['archives:MedievalParty2011MembershipParty2.swf', 'oops_party14_room', 'oops_party19_room']
       },
@@ -4088,7 +4085,18 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'party21': 309,
       'party22': 308,
       'party23': 41
-    }
+    },
+    updates: [
+      {
+        date: '2011-05-26',
+        comment: 'The party catalogue is updated',
+        localChanges: {
+          'catalogues/party.swf': {
+            'en': 'archives:MedievalParty2011CatalogParty2.swf'
+          },
+        }
+      }
+    ]
   },
   {
     name: 'Music Jam',
