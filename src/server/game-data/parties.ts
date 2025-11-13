@@ -4488,7 +4488,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       party3: true
     },
     globalChanges: {
-      'scavenger_hunt/scavenger_hunt.swf': 'archives:CandyGhostScavengerHuntScavenger_hunt.swf'
+      'scavenger_hunt/scavenger_hunt.swf': 'archives:CandyGhostScavengerHuntScavenger_hunt.swf',
+      'rooms/NOTLS3EN.swf': 'archives:RoomsNOTLS3EN-HalloweenParty2009.swf'
     },
     startscreens: [ 'archives:HalloweenParty2011PreStartBillboards.swf', 'archives:HalloweenParty2011StartBillboards.swf' ],
     scavengerHunt2011: {
