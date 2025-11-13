@@ -4343,7 +4343,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         'en': 'recreation:great_snow_race/party_note05.swf'
       }
     },
-    mapNote: 'archives:TheGreatSnowRaceParty_map_note.swf'
+    mapNote: 'archives:TheGreatSnowRaceParty_map_note.swf',
+    permanentChanges: {
+      // placeholder, this is the first instance of the modern sled racing being necessary
+      generalChanges: {
+        'play/v2/games/sled/SledRacer.swf': 'svanilla:media/play/v2/games/sled/SledRacer.swf'
+      }
+    }
   },
   {
     name: 'The Fair',

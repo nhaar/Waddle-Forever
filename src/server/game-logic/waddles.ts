@@ -34,6 +34,12 @@ export const WADDLE_ROOMS: WaddleRoomInfo[] = [
     game: 'sled'
   },
   {
+    waddleId: 104,
+    roomId: 855,
+    seats: 4,
+    game: 'sled'
+  },
+  {
     waddleId: 200,
     roomId: 320,
     seats: 2,
