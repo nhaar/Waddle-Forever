@@ -4259,8 +4259,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   },
   {
     name: 'Battle of Doom',
-    date: '2011-05-31',
-    end: '2011-06-07',
+    date: Update.BATTLE_DOOM_START,
+    end: Update.BATTLE_DOOM_END,
     roomChanges: {
       village: 'archives:BattleofDoomVillage.swf',
       agentlobbysolo: 'archives:BattleofDoomAgentlobbysolo.swf',

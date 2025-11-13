@@ -162,7 +162,9 @@ export enum Handle {
   GetIgloo2007,
   GetFurniture2007,
   UpdateIgloo2007,
-  UpdateIglooMusic2007
+  UpdateIglooMusic2007,
+  GetPartyOp,
+  SetPartyOp
 };
 
 /** Map of all the handles and their valid arguments */
@@ -308,7 +310,9 @@ export const HANDLE_ARGUMENTS = {
   [Handle.GetIgloo2007]: ['number'],
   [Handle.GetFurniture2007]: [],
   [Handle.UpdateIgloo2007]: 'string',
-  [Handle.UpdateIglooMusic2007]: ['number']
+  [Handle.UpdateIglooMusic2007]: ['number'],
+  [Handle.GetPartyOp]: [],
+  [Handle.SetPartyOp]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -381,7 +385,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'epfgr': Handle.GetEpfMedals,
       'epfai': Handle.AddEpfItem,
       'epfsa': Handle.BecomeEpfAgent,
-      'epfgrantreward': Handle.GrantEpfMedals
+      'epfgrantreward': Handle.GrantEpfMedals,
+      'epfgp': Handle.GetPartyOp,
+      'epfsp': Handle.SetPartyOp
     },
     'g': {
       'gm': Handle.GetIgloo,

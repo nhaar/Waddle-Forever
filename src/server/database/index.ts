@@ -426,6 +426,8 @@ export interface PenguinData {
   isNinja: boolean;
   senseiAttempts: number;
   cardWins: number;
+  /** If completed battle of doom or not */
+  battleOfDoom: boolean;
 }
 
 export default db;

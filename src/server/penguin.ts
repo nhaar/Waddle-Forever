@@ -58,6 +58,7 @@ export class Penguin {
   private _cards: Map<number, number>;
   private _cardProgress: CardJitsuProgress;
   private _cardWins: number;
+  private _battleOfDoom: boolean;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -112,6 +113,7 @@ export class Penguin {
     this._cards = parseJsonMap(data.cards, true);
     this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
     this._cardWins = data.cardWins;
+    this._battleOfDoom = data.battleOfDoom;
   }
 
   serialize(): PenguinData {
@@ -164,7 +166,8 @@ export class Penguin {
       cardProgress: this._cardProgress.xp,
       senseiAttempts: this._cardProgress.senseiAttempts,
       isNinja: this._cardProgress.isNinja,
-      cardWins: this._cardWins
+      cardWins: this._cardWins,
+      battleOfDoom: this._battleOfDoom
     }
   }
 
@@ -659,6 +662,14 @@ export class Penguin {
     return this._cardWins;
   }
 
+  get completedBattleOfDoom() {
+    return this._battleOfDoom;
+  }
+
+  setBattleOfDoomCompleted() {
+    this._battleOfDoom = true;
+  }
+
   static getDefault(id: number, name: string, isMember: boolean): Penguin {
     return new Penguin(id, {
       name,
@@ -714,7 +725,8 @@ export class Penguin {
       cardProgress: 0,
       isNinja: false,
       senseiAttempts: 0,
-      cardWins: 0
+      cardWins: 0,
+      battleOfDoom: false
     })
   }
 
