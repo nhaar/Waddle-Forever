@@ -27,7 +27,7 @@ export function getGlobalPathsTimeline() {
     if (party.globalChanges !== undefined) {
       Object.entries(party.globalChanges).forEach((pair) => {
         const [route, info] = pair;
-        if (typeof info !== 'number') {
+        if (typeof info !== 'string') {
           const [_, ...paths] = info;
           paths.forEach((globalPath) => {
             timeline.add(globalPath, route, party.date, party.end);
@@ -65,7 +65,7 @@ export function getLocalPathsTimeline() {
         Object.entries(party.localChanges).forEach((pair) => {
           const [route, langs] = pair;
           if (langs.en !== undefined) {
-            if (typeof langs.en !== 'number') {
+            if (typeof langs.en !== 'string') {
               const [_, ...paths] = langs.en;
               paths.forEach((path) => {
                 timeline.add(path, route, party.date, party.end);
