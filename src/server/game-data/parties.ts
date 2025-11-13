@@ -4278,6 +4278,18 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         en: [ 'svanilla:media/play/v2/content/local/en/close_ups/party_op_medals_earned.swf', 'party_op_medals_earned' ]
       }
     },
+    updates: [
+      {
+        date: '2011-06-06',
+        comment: 'The Battle of Doom is no longer playable',
+        roomChanges: {
+          party: 'archives:BattleofDoomParty2.swf'
+        },
+        music: {
+          party: 0
+        }
+      }
+    ],
     music: {
       party: 125
     }
