@@ -300,11 +300,11 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell.swf',
-      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added (2011_scavenger_hunt.as), and sendPlayerTeleport() from archives ClientShell2012-10-17.swf (used in April Fools 2011), from the same archives file the variable MSG_SHOW_CONTENT and function showAs3Content() were also implemented. In adition to this, for the Medieval Party 2011 Hydra Battle to work, a handleUpdatePlayer call was added to handleSendPlayerMove, such that x,y are properly updated, it is unknown how exactly it worked otherwise'
+      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added (2011_scavenger_hunt.as), and sendPlayerTeleport() from archives ClientShell2012-10-17.swf (used in April Fools 2011), from the same archives file the variable MSG_SHOW_CONTENT and function showAs3Content() were also implemented. In adition to this, for the Medieval Party 2011 Hydra Battle to work, a handleUpdatePlayer call was added to handleSendPlayerMove, such that x,y are properly updated, it is unknown how exactly it worked otherwise. For Medival Party 2011 support, a check for if can throw snowball is also added (together with engine.swf)'
     },
     {
       file: 'airtower.swf',
-      comment: 'Exact same as legacy-media airtower.swf but with PLAYER_TELEPORT added (from ClientAirtower2012-07-09.swf) (for April Fools 2011)'
+      comment: 'Exact same as legacy-media airtower.swf but with PLAYER_TELEPORT added (from ClientAirtower2012-07-09.swf) (for April Fools 2011). For Medival Party 2011 support, a check for if can throw snowball is also added (together with shell.swf)'
     },
     {
       file: 'engine.swf',
