@@ -308,7 +308,7 @@ export function getGlobalCrumbsOutput() {
 
     memberTimeline.forEach((versions, room) => {
       versions.forEach((info) => {
-        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {

@@ -4479,7 +4479,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       },
       'catalog/party.swf': {
         en: [ 'archives:HalloweenParty2011CatalogParty.swf', 'party_catalogue' ]
+      },
+      'membership/party3.swf': {
+        'en': ['archives:HalloweenParty2011NoticeParty3.swf', 'oops_party3_room']
       }
+    },
+    roomMemberStatus: {
+      party3: true
     },
     globalChanges: {
       'scavenger_hunt/scavenger_hunt.swf': 'archives:CandyGhostScavengerHuntScavenger_hunt.swf'
