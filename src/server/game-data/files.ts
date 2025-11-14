@@ -1469,6 +1469,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'holiday_beach_poster.swf',
       comment: 'Made by Boo0'
+    },
+    {
+      file: 'mjam_11_const/village.swf',
+      comment: 'Made by Jeff the Rock'
     }
   ],
   [MOD]: [

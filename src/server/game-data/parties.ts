@@ -4184,6 +4184,19 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'party2': true,
       'party3': true,
       'party4': true
+    },
+      construction: {
+      date: '2011-06-09',
+      changes: {
+        'beach': 'archives:RoomsBeach-MusicJam2010Pre.swf',
+        'coffee': 'archives:RoomsCoffee-MusicJam2010Pre.swf',
+        'cove': 'archives:RoomsCove-MusicJam2010Pre.swf',
+        'dock': 'archives:RoomsDock-MusicJam2010Pre.swf',
+        'forest': 'archives:RoomsForest-MusicJam2010Pre.swf',
+        'berg': 'archives:RoomsBerg-MusicJam2010Pre.swf',
+        'village': 'recreation:mjam_11_const/village.swf',
+        'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
+      }
     }
   },
   {
