@@ -564,6 +564,10 @@ function addParties(map: FileTimelineMap): void {
           map.addRoomChanges(update.changes, update.date, start);
         })
       }
+
+      if (party.construction.startscreens !== undefined) {
+        addStartscreens(party.construction.startscreens, map, constructionStart, start);
+      }
     }
   });
 }

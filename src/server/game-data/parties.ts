@@ -12,6 +12,8 @@ export type GlobalHuntCrumbs = {
   reward: number;
 }
 
+type Startscreens = Array<FileRef | [string, FileRef]>;
+
 export type LocalHuntCrumbs = {
   en: {
     loading: string;
@@ -65,7 +67,7 @@ export type IslandChanges = {
   activeMigrator?: MigratorVisit;
 
   /** A list of all backgrounds used for the startscreen. Each element bust be either a file, or a file and the exact name the startscreen uses for it */
-  startscreens?: Array<FileRef | [string, FileRef]>;
+  startscreens?: Startscreens;
 
   /** Scavenger Hunt icon is loaded by the dependency, must be specified */
   scavengerHunt2010?: {
@@ -119,6 +121,7 @@ export type Party = IslandChanges & {
 type Construction = {
   date: string;
   changes: RoomChanges;
+  startscreens?: Startscreens;
 
   comment?: string;
 
@@ -4611,6 +4614,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'prompts/cardjitsu_duringparty.swf': {
         en: 'archives:Card-JitsuPartyCardjitsu_duringparty.swf'
       }
+    },
+    construction: {
+      date: '2011-11-17',
+      changes: {
+        plaza: 'archives:Card-JitsuPartyConsPlaza.swf',
+        rink: 'archives:Card-JitsuPartyConsRink.swf',
+        town: 'archives:RoomsTown-CardJitsuPartyPre.swf'
+      },
+      startscreens: ['archives:StartBillboardsCardJitsuPartyPre.swf']
     }
   },
   {

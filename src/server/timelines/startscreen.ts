@@ -31,6 +31,9 @@ export function getStartscreenTimeline() {
     if (party.startscreens !== undefined) {
       addTimeline(party.startscreens, party.date, party.end);
     }
+    if (party.construction?.startscreens !== undefined) {
+      addTimeline(party.construction.startscreens, party.construction.date, party.date);
+    }
   });
 
   return timeline.getVersions();
