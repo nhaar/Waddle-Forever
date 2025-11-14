@@ -248,6 +248,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     comment: 'Pufflescape is released',
     globalChanges: {
       'content/map_triggers.json': 'archives:ClientMap_triggers-02142013.json'
+    },
+    roomChanges: {
+      pet: 'archives:RoomsPet_7.swf'
     }
   },
   {
