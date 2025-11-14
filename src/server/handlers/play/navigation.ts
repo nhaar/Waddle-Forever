@@ -91,6 +91,10 @@ handler.xt(Handle.SendSafeMessage, (client, id) => {
   client.sendSafeMessage(id);
 });
 
+handler.xt(Handle.SendLine, (client, line) => {
+  client.sendRoomXt('sl', client.penguin.id, line);
+});
+
 // player inventory thing? Not sure why this exists
 handler.xt(Handle.PBI, (client, id) => {
   client.sendXt('pbi', id);

@@ -164,7 +164,8 @@ export enum Handle {
   UpdateIgloo2007,
   UpdateIglooMusic2007,
   GetPartyOp,
-  SetPartyOp
+  SetPartyOp,
+  SendLine
 };
 
 /** Map of all the handles and their valid arguments */
@@ -312,7 +313,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.UpdateIgloo2007]: 'string',
   [Handle.UpdateIglooMusic2007]: ['number'],
   [Handle.GetPartyOp]: [],
-  [Handle.SetPartyOp]: ['number']
+  [Handle.SetPartyOp]: ['number'],
+  [Handle.SendLine]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -360,7 +362,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       'ss': Handle.SendSafeMessage,
       'pbi': Handle.PBI,
       'glr': Handle.GLR,
-      'h': Handle.Heartbeat
+      'h': Handle.Heartbeat,
+      'sl': Handle.SendLine
     },
     'r': {
       'gtc': Handle.GetTotalCoins
