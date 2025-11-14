@@ -4691,7 +4691,22 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         seats: 2,
         game: 'card'
       }
-    ]
+    ],
+    consequences: {
+      roomChanges: {
+        dock: 'archives:RoomsDock.swf',
+        beach: 'archives:RoomsBeach.swf',
+        beacon: 'archives:RoomsBeacon3.swf',
+        village: 'archives:RoomsVillage_3.swf',
+        forest: 'archives:RoomsForest_4.swf',
+        cove: 'archives:RoomsCove_2.swf',
+        berg: 'archives:RoomsBerg-Dec2011.swf',
+        shack: 'archives:RoomsShack-September2010.swf',
+        dojoext: 'archives:RoomsDojoext_4.swf',
+        dojofire: 'archives:RoomsFireDojo_2.swf',
+        dojohide: 'archives:RoomsDojohide_4.swf'
+      }
+    }
   },
   {
     name: 'Holiday Party',
