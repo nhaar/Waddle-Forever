@@ -231,6 +231,13 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     startscreens: [ 'archives:LoginSystemDefender.swf' ]
   },
   {
+    date: '2011-03-28',
+    // bits and bolts: currently doesn't work due to missing engine.swf functionality
+    roomChanges: {
+      lounge: 'archives:RoomsLounge_2.swf'
+    }
+  },
+  {
     date: Update.MODERN_AS3,
     comment: 'The map is revamped',
     generalChanges: {
