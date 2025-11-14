@@ -113,7 +113,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
   'play/v2/content/global/content/features.swf': 'svanilla:media/play/v2/content/global/content/features.swf',
   'play/v2/content/global/content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf',
-  'play/v2/content/global/content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
   'play/v2/content/global/content/party.swf': 'svanilla:media/play/v2/content/global/content/party.swf',
   'play/v2/content/global/content/prompts.swf': 'svanilla:media/play/v2/content/global/content/prompts.swf',
   'play/v2/content/global/interface/gold_nuggets_hud.swf': 'svanilla:media/play/v2/content/global/interface/gold_nuggets_hud.swf',

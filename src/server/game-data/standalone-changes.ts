@@ -237,7 +237,10 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf'
     },
-    map: 'archives:Map2011.swf'
+    globalChanges: {
+      'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
+    },
+    map: 'approximation:map_2011_party_note.swf'
   },
   {
     // when room localization went from being "english" to "en"
@@ -285,7 +288,10 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       shop: 'svanilla:media/play/v2/content/global/rooms/shop.swf',
       village: 'svanilla:media/play/v2/content/global/rooms/village.swf'
     },
-    map: 'approximation:modern_map.swf'
+    map: 'approximation:modern_map.swf',
+    globalChanges: {
+      'content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
+    }
   }
 ];
 

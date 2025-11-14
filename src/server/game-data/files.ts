@@ -437,6 +437,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'interface_fair_11.swf',
       comment: 'interface from vanilla media, but with functions for the fair 2011 party'
+    },
+    {
+      file: 'map_2011_party_note.swf',
+      comment: 'Map2011.swf from archives but with the party note functionality enabled to work with the 2016 SHELL'
     }
   ],
   [RECREATION]: [
