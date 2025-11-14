@@ -2,7 +2,7 @@ import path from "path";
 import crypto from 'crypto';
 import { RoomName } from "../game-data/rooms";
 import { isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "../routes/versions";
-import { GlobalHuntCrumbs, HuntCrumbs, LocalHuntCrumbs, PARTIES } from "../game-data/parties";
+import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs, PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
 import { getMapForDate } from ".";
@@ -54,6 +54,21 @@ export function getGlobalPathsTimeline() {
 
 }
 
+function addLocalChanges(changes: LocalChanges, timeline: TimelineMap<string, null | string>, date: Version, end: Version) {
+  // only 'en' support
+  Object.entries(changes).forEach((pair) => {
+    const [route, langs] = pair;
+    if (langs.en !== undefined) {
+      if (typeof langs.en !== 'string') {
+        const [_, ...paths] = langs.en;
+        paths.forEach((path) => {
+          timeline.add(path, route, date, end);
+        })
+      }
+    }
+  })
+}
+
 export function getLocalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
 
@@ -61,18 +76,10 @@ export function getLocalPathsTimeline() {
     // crumbs dont exist before this date
     if (isGreaterOrEqual(party.date, Update.CPIP_UPDATE)){
       if (party.localChanges !== undefined) {
-        // only 'en' support
-        Object.entries(party.localChanges).forEach((pair) => {
-          const [route, langs] = pair;
-          if (langs.en !== undefined) {
-            if (typeof langs.en !== 'string') {
-              const [_, ...paths] = langs.en;
-              paths.forEach((path) => {
-                timeline.add(path, route, party.date, party.end);
-              })
-            }
-          }
-        })
+        addLocalChanges(party.localChanges, timeline, party.date, party.end);
+      }
+      if (party.construction?.localChanges !== undefined) {
+        addLocalChanges(party.construction.localChanges, timeline, party.construction.date, party.date);
       }
 
       if (party.fairCpip !== undefined) {

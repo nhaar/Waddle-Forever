@@ -1465,6 +1465,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_notls.swf',
       comment: 'Made by ItzAle'
+    },
+    {
+      file: 'holiday_beach_poster.swf',
+      comment: 'Made by Boo0'
     }
   ],
   [MOD]: [

@@ -5,7 +5,7 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator } from "../game-data/parties";
+import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator, LocalChanges } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -97,30 +97,38 @@ class FileTimelineMap extends TimelineMap<string, string> {
     })
   }
 
-  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
-    const pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator) => {
-      const fileRef = typeof info === 'string' ? info : info[0];
-      const fullRoute = path.join(baseRoute, route);
-      if (end === undefined) {
-        this.add(fullRoute, fileRef, start);
-      } else {
-        this.add(fullRoute, fileRef, start, end);
-      }
+  pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator, start: Version, end: Version | undefined = undefined) => {
+    const fileRef = typeof info === 'string' ? info : info[0];
+    const fullRoute = path.join(baseRoute, route);
+    if (end === undefined) {
+      this.add(fullRoute, fileRef, start);
+    } else {
+      this.add(fullRoute, fileRef, start, end);
     }
+  }
+
+  addLocalChanges(changes: LocalChanges, start: Version, end: Version | undefined = undefined) {
+    iterateEntries(changes, (route, languages) => {
+      iterateEntries(languages, (language, info) => {
+        this.pushCrumbChange(path.join('play/v2/content/local', language), route, info, start, end);
+      })
+    })
+  }
+
+  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
 
     if (changes.roomChanges !== undefined) {
       this.addRoomChanges(changes.roomChanges, start, end);
     }
     if (changes.localChanges !== undefined) {
-      iterateEntries(changes.localChanges, (route, languages) => {
-        iterateEntries(languages, (language, info) => {
-          pushCrumbChange(path.join('play/v2/content/local', language), route, info);
-        })
-      })
+      this.addLocalChanges(changes.localChanges, start, end);
+    }
+    if (changes.construction?.localChanges !== undefined) {
+      this.addLocalChanges(changes.construction.localChanges, changes.construction.date, start);
     }
     if (changes.globalChanges !== undefined) {
       iterateEntries(changes.globalChanges, (route, info) => {
-        pushCrumbChange('play/v2/content/global', route, info);
+        this.pushCrumbChange('play/v2/content/global', route, info, start, end);
       });
     }
 

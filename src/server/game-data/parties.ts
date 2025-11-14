@@ -37,6 +37,8 @@ export type HuntCrumbs = {
 
 type Language = 'en';
 
+export type LocalChanges = Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
+
 /** First element is file id used, then a list of all the crumbs that point to this path */
 export type CrumbIndicator = [FileRef, ...string[]];
 
@@ -44,7 +46,7 @@ export type IslandChanges = {
   roomChanges?: RoomChanges;
   // a map of a path inside play/v2/content/local eg en/catalogues/party.swf mapping to a file
   // inside a map of each language
-  localChanges?: Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
+  localChanges?: LocalChanges;
   // maps route inside play/v2/global to either file Id or tuple [global_path name, file Id]
   globalChanges?: Record<string, FileRef | CrumbIndicator>
 
@@ -101,6 +103,8 @@ export type IslandChanges = {
   iglooVersion?: number;
 
   newWaddleRooms?: WaddleRoomInfo[];
+
+  construction?: Construction;
 }
 
 export type Party = IslandChanges & {
@@ -113,8 +117,6 @@ export type Party = IslandChanges & {
   startComment?: string;
   endComment?: string;
 
-  construction?: Construction;
-
   updates?: Array<{
     comment?: string;
     date: string;
@@ -125,6 +127,8 @@ type Construction = {
   date: string;
   changes: RoomChanges;
   startscreens?: Startscreens;
+
+  localChanges?: LocalChanges;
 
   comment?: string;
 
@@ -4816,6 +4820,18 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       rink: 254,
       town: 254
     },
-    activeMigrator: true
+    activeMigrator: true,
+    construction: {
+      date: '2011-12-08',
+      changes: {
+        beach: 'archives:HolidayParty2011ConsBeach.swf',
+        town: 'archives:RoomsTown-HolidayParty2011Pre.swf'
+      },
+      localChanges: {
+        'close_ups/poster.swf': {
+          en: ['recreation:holiday_beach_poster.swf', 'poster']
+        }
+      }
+    }
   }
 ];
