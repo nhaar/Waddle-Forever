@@ -33,7 +33,7 @@ function addLocalPath(crumbs: string, pathName: string, path: string): string {
 function addStageScript(crumbs: string, script: StageScript): string {
   return `${crumbs}
 Push "script_messages"
-${script.reverse().map(msg => {
+${[...script].reverse().map(msg => {
   if ('note' in msg) {
     return `Push "note"
 Push "${msg.note}"

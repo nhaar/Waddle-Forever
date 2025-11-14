@@ -20,7 +20,9 @@ type StageName = 'Space Adventure' |
   'Space Adventure Planet Y' |
   'Norman Swarm Has Been Transformed' |
   'Secrets of the Bamboo Forest' |
-  'Night of the Living Sled: Live';
+  'Night of the Living Sled: Live' |
+  'Battle of the Ancient Shadows' |
+  'A Humbug Holiday';
 
 /** Data for each stage play */
 export const STAGE_PLAYS: Array<{
@@ -92,6 +94,14 @@ export const STAGE_PLAYS: Array<{
   {
     name: 'Night of the Living Sled: Live',
     musicId: 253
+  },
+  {
+    name: 'Battle of the Ancient Shadows',
+    musicId: 314
+  },
+  {
+    name: 'A Humbug Holiday',
+    musicId: 255
   }
 ];
 
@@ -2658,6 +2668,13 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-December2010.swf' // accurate
   },
   {
+    date: '2011-01-27',
+    name: 'The Penguins that Time Forgot',
+    costumeTrunkFileRef: 'archives:September2009Costume.swf',
+    stageFileRef: 'archives:RoomsStage-Early2011.swf',
+    plazaFileRef: 'archives:RoomsPlaza-Play6.swf'
+  },
+  {
     date: Update.STAGE_FEB_11,
     name: 'The Haunting of the Viking Opera',
     costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf',
@@ -2665,10 +2682,70 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-February2011.swf'
   },
   {
+    date: '2011-03-17',
+    name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
+    stageFileRef: 'archives:2011Mar17Stage.swf',
+    costumeTrunkFileRef: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf',
+    plazaFileRef: 'archives:RoomsPlaza-Play3-2.swf'
+  },
+  {
+    date: '2011-04-14',
+    name: 'Norman Swarm Has Been Transformed',
+    stageFileRef: 'archives:2011Apr14Stage.swf',
+    roomChanges: {
+      party1: 'archives:RoomsParty1-Apr2011-NormanSwarmHasBeenTransformed.swf'
+    },
+    musicRooms: ['party1'],
+    costumeTrunkFileRef: 'archives:Apr2011NormanSwarmHasBeenTransformedCostume.swf',
+    plazaFileRef: 'archives:RoomsPlaza-Play14.swf'
+  },
+  {
+    date: '2011-05-19',
+    name: 'Underwater Adventure',
+    stageFileRef: 'archives:2011May19Stage.swf',
+    costumeTrunkFileRef: 'archives:May2011UnderwaterAdventureCostume.swf',
+    plazaFileRef: null
+  },
+  {
+    date: '2011-06-09',
+    name: 'Secrets of the Bamboo Forest',
+    stageFileRef: 'archives:2011Jun9Stage.swf',
+    costumeTrunkFileRef: 'archives:June2011SecretsOfTheBambooForestCostume.swf',
+    plazaFileRef: 'archives:RoomsPlaza-August2011.swf'
+  },
+  {
+    date: '2011-08-17',
+    name: 'Team Blue vs. Team Red',
+    stageFileRef: 'archives:Stage2011Aug17.swf',
+    costumeTrunkFileRef: 'archives:Costume2011Aug17.swf',
+    plazaFileRef: 'archives:RoomsPlaza_2-Play11.swf'
+  },
+  {
+    date: '2011-09-14',
+    name: 'Fairy Fables',
+    stageFileRef: 'archives:Stage14Sept2011.swf',
+    costumeTrunkFileRef: 'archives:Costume14Sept2011.swf',
+    plazaFileRef: 'archives:RoomsPlaza-Play10.swf'
+  },
+  {
     date: Update.HALLOWEEN_2011_START,
     name: 'Night of the Living Sled: Live',
     stageFileRef: 'archives:Stage2011Oct19.swf',
     plazaFileRef: 'recreation:plaza_notls.swf',
     costumeTrunkFileRef: 'archives:NLSLCostumeTrunk.swf'
+  },
+  {
+    date: '2011-11-23',
+    name: 'Battle of the Ancient Shadows',
+    stageFileRef: 'archives:11242011Stage.swf',
+    costumeTrunkFileRef: 'archives:ENCataloguesCostumeNov2011.swf',
+    plazaFileRef: null
+  },
+  {
+    date: '2011-12-14',
+    name: 'A Humbug Holiday',
+    stageFileRef: 'archives:12142011Stage.swf',
+    costumeTrunkFileRef: 'archives:ENCataloguesCostumeDec2011.swf',
+    plazaFileRef: 'archives:RoomsPlaza_2-Play18.swf'
   }
 ];
