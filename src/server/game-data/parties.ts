@@ -4852,11 +4852,6 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       changes: {
         beach: 'archives:HolidayParty2011ConsBeach.swf',
         town: 'archives:RoomsTown-HolidayParty2011Pre.swf'
-      },
-      localChanges: {
-        'close_ups/poster.swf': {
-          en: ['recreation:holiday_beach_poster.swf', 'poster']
-        }
       }
     }
   }
