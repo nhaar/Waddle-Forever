@@ -243,6 +243,14 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     map: 'approximation:map_2011_party_note.swf'
   },
   {
+    date: '2011-11-03',
+    map: 'approximation:map_dec_2011.swf',
+    comment: 'Pufflescape is released',
+    globalChanges: {
+      'content/map_triggers.json': 'archives:ClientMap_triggers-02142013.json'
+    }
+  },
+  {
     // when room localization went from being "english" to "en"
     date: '2011-10-20',
     generalChanges: {

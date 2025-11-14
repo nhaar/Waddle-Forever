@@ -441,6 +441,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'map_2011_party_note.swf',
       comment: 'Map2011.swf from archives but with the party note functionality enabled to work with the 2016 SHELL'
+    },
+    {
+      file: 'map_dec_2011.swf',
+      comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL'
     }
   ],
   [RECREATION]: [
