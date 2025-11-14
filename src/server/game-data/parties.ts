@@ -4253,7 +4253,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'village': 291,
       'berg': 291
     },
-    activeMigrator: true,
+    activeMigrator: 'archives:Jul2011Pirate.swf',
     mapNote: 'archives:IslandAdventureParty2011Party_map_note.swf',
     localChanges: {
       'close_ups/poster.swf': {
@@ -4868,7 +4868,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       rink: 254,
       town: 254
     },
-    activeMigrator: true,
+    activeMigrator: 'archives:Dec2011Pirate.swf',
     construction: {
       date: '2011-12-08',
       changes: {

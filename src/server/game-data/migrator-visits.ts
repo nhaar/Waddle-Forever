@@ -28,5 +28,15 @@ export const STANDALONE_MIGRATOR_VISITS: StandaloneMigratorVisits = [
     date: '2010-06-21',
     end: '2010-07-01',
     info: 'recreation:pirate_catalog/10_06.swf'
+  },
+  {
+    date: '2011-04-21',
+    end: '2011-05-01',
+    info: 'archives:Apr2011Pirate.swf'
+  },
+  {
+    date: '2011-09-22',
+    end: '2011-10-04',
+    info: 'archives:Sep2011Pirate.swf'
   }
 ];
