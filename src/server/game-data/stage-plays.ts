@@ -160,7 +160,7 @@ export const STAGE_TIMELINE: Array<{
         "message": "I forgot my line! Line, please!"
       },
       {
-        "name": "Captain::",
+        "name": "Captain:",
         "message": "Dear aliens, we come in peace!"
       },
       {
@@ -298,7 +298,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Jester:",
-        "message": "\"To dine, perchance to eat!"
+        "message": "To dine, perchance to eat!"
       },
       {
         "name": "Bard:",
@@ -361,11 +361,11 @@ export const STAGE_TIMELINE: Array<{
         "message": "Give it up for PEPPPPPPPYYYYYYY!"
       },
       {
-        "note": "Peppy runs into gym, audience cheers"
+        "note": "(Peppy runs into gym, audience cheers)"
       },
       {
         "name": "Peppy:",
-        "message": "ANY COOL BIRDS IN THE HOUSE TODAY? LEMME HEAR YA SAY BIRRRRRRRRD!"
+        "message": "ANY COOL BIRDS IN THE HOUSE TODAY? LEMME HEAR YA SAY BRRRRRRRRD!"
       },
       {
         "name": "Audience:",
@@ -380,25 +380,25 @@ export const STAGE_TIMELINE: Array<{
         "message": "ICE! ICE! ICE!"
       },
       {
-        "note": "Tate runs intothe gym"
+        "note": "(Tate runs into gym)"
       },
       {
         "name": "Tate:",
         "message": "Did somebody say ICE?!..."
       },
       {
-        "note": "Tate trips and falls"
+        "note": "(Tate trips and falls)"
       },
       {
         "name": "Tate:",
-        "message":"Oops! Didn\'t see those bleachers there..."
+        "message": "Oops! Didn\'t see those bleachers there..."
       },
       {
         "name": "Cheerleader:",
         "message": "Everyone give it up for Tate! GO BLUE!"
       },
       {
-        "note": "Tate trips and falls again, runs out of the gym"
+        "note": "(Tate trips and falls again, runs out of gym)"
       },
       {
         "name": "Grumpy Judge:",
@@ -406,26 +406,26 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"Oh man! I don\'t want to go out there!"
+        "message": "Oh man! I don\'t want to go out there!"
       },
       {
         "name": "Tate:",
-        "message":"C\'mon, you should go. You\'ll do better than me."
+        "message": "C\'mon, you should go. You\'ll do better than me."
       },
       {
         "name": "Zeus:",
-        "message":"But I don\'t even have a cool entrance!"
+        "message": "But I don\'t even have a cool entrance!"
       },
       {
-        "note":"Peppy enters the hallway to see what\'s happening"
+        "note": "(Peppy enters the hallway to see what\'s happening)"
       },
       {
         "name": "Peppy:",
-        "message":"HEY! TURN THOSEFROWNS UPSIDE-DOWN! DON\'T LEAVE ME TO BE THE CLOWN!"
+        "message": "HEY! TURN THOSEFROWNS UPSIDE-DOWN! DON\'T LEAVE ME TO BE THE CLOWN!"
       },
       {
         "name": "Zeus:",
-        "message":"But Peppy... I don\'t want to look dumb!"
+        "message": "But Peppy... I don\'t want to look dumb!"
       },
       {
         "name": "Grumpy:",
@@ -433,7 +433,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Tate:",
-        "message": "You could not do any worse than me, Zeus!"
+        "message": "You couldn\'t do any worse than me, Zeus!"
       },
       {
         "name": "Audience:",
@@ -449,11 +449,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"I just don\'t want to be alone out there."
+        "message": "I just don\'t want to be alone out there."
       },
       {
         "name": "Peppy:",
-        "message":"WELL WHY DIDN\'T YOU SAY SO!"
+        "message": "WELL WHY DIDN\'T YOU SAY SO!"
       },
       {
         "name": "Zeus:",
@@ -461,7 +461,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Peppy:",
-        "message":"LET\'S GO TOGETHER!AS A TEAM!"
+        "message": "LET\'S GO TOGETHER! AS A TEAM!"
       },
       {
         "name": "Tate:",
@@ -469,14 +469,14 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"Okay...maybe thatwould work... Let\'s try it!"
+        "message": "Okay...maybe that would work... Let\'s try it!"
       },
       {
-        "note": "The three mascots enter gym"
+        "note": "(The three mascots enter gym)"
       },
       {
         "name": "Audience:",
-        "message":"BLUE... TEAM... BACK AGAIN! TIME IS RIGHT SO LET\'S BEGIN!"
+        "message": "BLUE... TEAM... BACK AGAIN! TIME IS RIGHT SO LET\'S BEGIN!"
       },
       {
         "name": "Peppy:",
@@ -531,8 +531,6 @@ export const STAGE_TIMELINE: Array<{
       }
     ]
   },
-  // quest for golden puffle debut is lost, except its costume trunk
-  // still won't add it though
   {
     date: '2008-03-14',
     name: 'Space Adventure',
@@ -540,8 +538,48 @@ export const STAGE_TIMELINE: Array<{
     plazaFileRef: 'archives:ArtworkRoomsPlaza47.swf',
     stageFileRef: 'archives:SpaceAdventure1Stage.swf',
     // costume trunk from 2007
-    costumeTrunkFileRef: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf'
+    costumeTrunkFileRef: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf',
+    script: [
+      { note: "Space Adventure" },
+      { name: "Captain:", message: "Captain\'s journal, entry number 11-16..." },
+      { name: "Captain:", message: "We\'re flying toward Planet X to find alien life." },
+      { name: "Ensign:", message: "Speed set to carp two, ready to land." },
+      { name: "Robot:", message: "TWEEP! ERROR 500...ENGINE FAILING!" },
+      { name: "Captain:", message: "Ensign, increase emergency power!" },
+      { name: "Ensign", message: "Already used up all backup power, sir!" }, 
+      { name: "Robot:", message: "GLEEEEEP! ENGINE HAS STOPPED...NO POWER LEFT!" },
+      { name: "Captain:", message: "Prepare the survey team to investigate." },
+      { name: "Ensign:", message: "Captain, receiving a signal off the port bow." },
+      { name: "Captain:", message: "Tin Can 3000, what do you know about Planet X?" },
+      { name: "Robot:", message: "ERROR 404! NO RECORDS FOUND!" },
+      { note: "(Alien jumps out of alien spaceship)" },
+      { name: "Alien:", message: "Halt! I am Zip, ruler of Planet X! Who are you?" },
+      { name: "Captain:", message: "I am Captain Snow and this is my crew." },
+      { name: "Ensign:", message: "We came from Club Penguin, but our ship broke." },
+      { name: "Captain:", message: "Zip, we need your help to rebuild our engine." },
+      { name: "Alien:", message: "I don\'t just fix any old ship that lands here." },
+      { name: "Robot:", message: "CONNECTION...REFUSED BY HOST..." },
+      { name: "Ensign:", message: "But without our spaceship we can\'t get home!" },
+      { name: "Alien:", message: "Did you try clearing the ship computer\'s cache?" },
+      { name: "Ensign:", message: "Wait! I didn\'t! Thanks for the help! I\'ll try it!" },
+      { note: "(Ensign and Robot work on spaceship\'s computer)" },
+      { name: "Robot:", message: "ENGINES OPERATIONAL...TWEEP!" },
+      { name: "Captain:", message: "Thank you for your excellent help, Zip!" },
+      { name: "Alien:", message: "Wait! Can I go with you?" },
+      { name: "Robot:", message: "BLEEB! ERROR 407! REQUEST MORE DETAIL!" },
+      { name: "Ensign:", message: "Why do you want to go to Club Penguin?" },
+      { name: "Alien:", message: "My home isn\'t the same since the others left" },
+      { name: "Ensign:", message: "Well, we\'d love to have you on Club Penguin!" },
+      { name: "Captain:", message: "You have my permission to join us aboard, Zip." },
+      { name: "Captain:", message: "Ensign, set a course for the Plaza. Carp Five!" },
+      { name: "Ensign:", message: "Engines set for destination, Captain!" },
+      { name: "Captain:", message: "Let\'s get back to Club Penguin with our new friend!" },
+      { name: "All Cast:", message: "HOORAY FOR CLUB PENGUIN!" },
+      { note: "THE END" }
+    ]
   },
+  // quest for golden puffle debut is lost, except its costume trunk
+  // still won't add it though
   {
     date: '2008-05-09',
     name: 'The Twelfth Fish',
@@ -557,190 +595,43 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:RoomsStage-June2008.swf',
     costumeTrunkFileRef: 'archives:June08Costume.swf',
     script: [
-      {
-        "name": " Chester:",
-        "message": "Time to use this Time Travel 1000!"
-      },
-      {
-        "note": "(Time machine opens)"
-      },
-      {
-        "name": "Critteroo:",
-        "message": "UGG! DINO! UGG!"
-      },
-      {
-        "name": "Chester:",
-        "message": "What is this place? Where am I?"
-      },
-      {
-        "name": "Kek:",
-        "message": "GRUB! GRUB! GRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "I\'m in Grub? What\'s a Grub?"
-      },
-      {
-        "name": "Critteroo:",
-        "message": "LAVA! LAVA!"
-      },
-      {
-        "name": "Chester:",
-        "message": "Lava? I\'ve gotta get out of here!"
-      },
-      {
-        "note": "(Time machine breaks)"
-      },
-      {
-        "name": "Chester:",
-        "message": "Great, now I\'m stuck in Grub.  With lava. What next?"
-      },
-      {
-        "name": "Tiki:",
-        "message": "TIKI UGG!"
-      },
-      {
-        "name": "Chester:",
-        "message": "GRUB! Last time I buy a time machine for 10 coins..."
-      },
-      {
-        "name": "Kek:",
-        "message": "GRRRRRRRRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "Sigh. Grub? Is that a giant grub mask?"
-      },
-      {
-        "name": "Tiki:",
-        "message": "TIKI TIKI BOARD TIKI BOARD!"
-      },
-      {
-        "name": "Chester:",
-        "message": "Should I be scared? I don\'t feel scared even a bit!"
-      },
-      {
-        "name": "Critteroo:",
-        "message": "TIKI! TIKI ATOOK!"
-      },
-      {
-        "name": "Tiki:",
-        "message": "ABOOT! ABOOT!"
-      },
-      {
-        "name": "Kek:",
-        "message": "YUB NUB GRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "Okay, really now. Can\'t you just use real words?"
-      },
-      {
-        "name": "Critteroo:",
-        "message": "GRUB! TIKI GRUB-GRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "You do know you don\'t make any sense, right?"
-      },
-      {
-        "name": "Critteroo:",
-        "message": "LAVA NO TIKI GRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "Sigh. Okay, something about lava and grubs."
-      },
-      {
-        "name": "Tiki:",
-        "message": "ABOOOOOOT!"
-      },
-      {
-        "name": "Chester:",
-        "message": "You were wearing boots, but the grubs took them?"
-      },
-      {
-        "name": "Kek:",
-        "message": "LAVA NO LAVA! GRUB TIKI GRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "Let me guess. Your name is Tiki and you\'re a Grub?"
-      },
-      {
-        "name": "Tiki:",
-        "message": "ABOOT TIKI!"
-      },
-      {
-        "name": "Chester:",
-        "message": "I give up! I have no idea what you\'re saying."
-      },
-      {
-        "name": "Criteroo:",
-        "message": "Now you know how I feel!"
-      },
-      {
-        "name": "Chester:",
-        "message": "What? You understand me?"
-      },
-      {
-        "name": "Criteroo:",
-        "message": "Of course I do! What is that thing?"
-      },
-      {
-        "name": "Chester:",
-        "message": "A time machine.  We could explore. But it\'s broken."
-      },
-      {
-        "name": "Chester:",
-        "message": "Where would you go if it worked?"
-      },
-      {
-        "name": "Criteroo:",
-        "message": "Somewhere without Grub OR lava?"
-      },
-      {
-        "name": "Chester:",
-        "message": "Maybe Kek can fix it? Let\'s ask!"
-      },
-      {
-        "name": "Criteroo:",
-        "message": "NUB CLUB GRUB?"
-      },
-      {
-        "name": "Kek:",
-        "message": "TIKI GRUB-GRUB!"
-      },
-      {
-        "name": "Chester:",
-        "message": "I\'ll take that as a yes?"
-      },
-      {
-        "note": "THE END"
-      },
-      {
-        "note": "Director"
-      },
-      {
-        "name": "Director:",
-        "message": "Places everyone!"
-      },
-      {
-        "name": "Director:",
-        "message": "Take it again from the top!"
-      },
-      {
-        "name": "Director:",
-        "message": "Excellent work, team. Keep it up!"
-      },
-      {
-        "name": "Director:",
-        "message": "That\'s a wrap!"
-      },
-      {
-        "name": "Director:",
-        "message": "Take a bow everyone! "
-      }
+      { note: "The Penguins that Time Forgot" },
+      { name: "Chester:", message: "Time to try out this new Time Travel 1000!" },
+      { note: "(Time machine opens)" },
+      { name: "Critteroo:", message: "UGG! DINO! UGG!" },
+      { name: "Chester:", message: "What is this place? Where am I?" },
+      { name: "Kek:", message: "GRUB! GRUB! GRUB!" },
+      { name: "Chester:", message: "I\'m in Grub? What\'s a Grub?" },
+      { name: "Critteroo:", message: "LAVA! LAVA!" }, 
+      { name: "Chester:", message: "Lava?! I\'ve gotta get out of here!" },
+      { note: "(Time machine breaks)" },
+      { name: "Chester:", message: "Great, now I\'m stuck in some place called Grub." },
+      { name: "Tiki:", message: "TIKI UGG!" },
+      { name: "Kek:", message: "GRRRRRRRUB!" },
+      { name: "Chester:", message: "Now who\'s this with the big silly mask?" },
+      { name: "Tiki:", message: "TIKI TIKI BOARD TIKI BOARD!" },
+      { name: "Critteroo:", message: "TIKI! TIKI! ATOOK!" },
+      { name: "Tiki:", message: "ABOOT! ABOOT!" },
+      { name: "Kek:", message: "YUB NUB GRUB!" },
+      { name: "Chester:", message: "Okay, really now. Can\'t you just use real words?" },
+      { name: "Critteroo:", message: "GRUB! GRUB TIKI GRUB-GRUB!" },
+      { name: "Chester:", message: "You do know you don\'t make any sense, right?" },
+      { name: "Critteroo:", message: "LAVA NO TIKI GRUB!" },
+      { name: "Chester:", message: "Sigh. Okay, something about lava and grubs." },
+      { name: "Tiki:", message: "ABOOOOOOT" },
+      { name: "Chester:", message: "You were wearing boots, but the grubs took them?" },
+      { name: "Kek:", message: "LAVA NO LAVA! GRUB TIKI GRUB!" },
+      { name: "Chester:", message: "Let me guess, your name is Tiki and you\'re Grub." },
+      { name: "Tiki:", message: "ABOOT TIKI!" },
+      { name: "Critteroo:", message: "TIKI GRUB-GRUB!" },
+      { name: "Chester:", message: "I give up! I have no idea what you\'re saying." },
+      { name: "Kek:", message: "DINO YUB NUB LAVAAA!" },
+      { name: "Chester:", message: "Well, I may as well join in..." },
+      { name: "Chester:", message: "GRUB GRUB!" },
+      { name: "Tiki:", message: "TIKI BOARD BOARD!" },
+      { name: "Kek:", message: "LAVA DINO GRUB!" },
+      { name: "Chester:", message: "Last time I buy a time machine for 10 coins..." },
+      { note: "THE END" }
     ]
   },
   {
@@ -798,25 +689,25 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:August2008Costume.swf',
     script: [
       {
-        "note":"Team Blue\'s Rally 2"
+        "note": "Team Blue\'s Rally 2"
       },
       {
-        "note": "Zeus on stage alone"
-      },
-      {
-        "name": "Zeus:",
-        "message":"Oh no, it\'s time forthe big game already!"
+        "note": "(Zeus on stage alone)"
       },
       {
         "name": "Zeus:",
-        "message":"I can\'t believe I have to do this by myself."
+        "message": "Oh no, it\'s time for the big game already!"
       },
       {
-        "note": "Jupiter& Bella enter"
+        "name": "Zeus:",
+        "message": "I can\'t believe I have to do this by myself."
+      },
+      {
+        "note": "(Jupiter & Bella enter)"
       },
       {
         "name": "Bella:",
-        "message":"Hiya! I\'ll be the cheerleader for this match."
+        "message": "Hiya! I\'ll be the cheerleader for this match."
       },
       {
         "name": "Bella:",
@@ -832,19 +723,19 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Jupiter:",
-        "message":"The name\'s Jupiter."
+        "message": "The name\'s Jupiter."
       },
       {
         "name": "Zeus:",
-        "message":"I guess you\'re here to help cheer on Team Blue?"
+        "message": "I guess you\'re here to help cheer on Team Blue?"
       },
       {
         "name": "Jupiter:",
-        "message":"No way! I\'m here to make sure Red wins!"
+        "message": "No way! I\'m here to make sure Red wins!"
       },
       {
         "name": "Bella:",
-        "message":"RED IS GOOD! RED\'S THE BEST!"
+        "message": "RED IS GOOD! RED\'S THE BEST!"
       },
       {
         "name": "Bella:",
@@ -852,26 +743,26 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"But um.... I\'m supposed to be the moose mascot!"
+        "message": "But um.... I\'m supposed to be the moose mascot!"
       },
       {
         "name": "Zeus:",
-        "message":"I thought Team Red\'s mascot was an alien!"
+        "message": "I thought Team Red\'s mascot was an alien!"
       },
       {
         "name": "Jupiter:",
-        "message":"Antenna was LAST year\'s mascot!"
+        "message": "Antenna was LAST year\'s mascot!"
       },
       {
         "name": "Bella:",
-        "message":"LAST YEAR\'S OUT! THIS YEAR\'S IN!"
+        "message": "LAST YEAR\'S OUT! THIS YEAR\'S IN!"
       },
       {
         "name": "Bella:",
         "message": "See how my cheer was? Not too shabby, eh?"
       },
       {
-        "note": "Jeff the referee and both teams enter"
+        "note": "(Jeff the referee and both teams enter)"
       },
       {
         "name": "Jeff:",
@@ -891,11 +782,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"Wait um.... hey.... that\'s MY line!"
+        "message": "Wait um.... hey.... that\'s MY line!"
       },
       {
         "name": "Jupiter:",
-        "message":"No I\'m pretty sure it\'s MINE there, Zeussy!"
+        "message": "No I\'m pretty sure it\'s MINE there, Zeussy!"
       },
       {
         "name": "Jeff:",
@@ -907,14 +798,14 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Bella:",
-        "message":"Yeah right, that\'s what he says."
+        "message": "Yeah right, that\'s what he says."
       },
       {
-        "note": "Scoreboard breaks"
+        "note": "(Scoreboard breaks)"
       },
       {
         "name": "Jeff:",
-        "message":"Oh great, now the scoreboard\'s broken!"
+        "message": "Oh great, now the scoreboard\'s broken!"
       },
       {
         "name": "Bella:",
@@ -926,7 +817,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Bella:",
-        "message":"Ha! you didn\'t catch that one, did ya?"
+        "message": "Ha! you didn\'t catch that one, did ya?"
       },
       {
         "name": "Zeus:",
@@ -938,15 +829,15 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Jupiter:",
-        "message":"You\'ll have to earn it!"
+        "message": "You\'ll have to earn it!"
       },
       {
         "name": "Jupiter:",
-        "message":"This is TEAM RED\'S time to shine!"
+        "message": "This is TEAM RED\'S time to shine!"
       },
       {
         "name": "Bella:",
-        "message":"HE\'S GONNA SHINE THE CLOCK!"
+        "message": "HE\'S GONNA SHINE THE CLOCK!"
       },
       {
         "name": "Jupiter:",
@@ -954,23 +845,23 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Bella:",
-        "message": "Oh. I thought you were gonna fixthe scoreboard."
+        "message": "Oh. I thought you were gonna fix the scoreboard."
       },
       {
         "name": "Zeus:",
-        "message":"You know what?! I\'ve had enough of this!"
+        "message": "You know what?! I\'ve had enough of this!"
       },
       {
         "name": "Zeus:",
-        "message":"YOU\'RE NOT THE ONLY MOOSE IN TOWN!"
+        "message": "YOU\'RE NOT THE ONLY MOOSE IN TOWN!"
       },
       {
         "name": "Zeus:",
-        "message":"I\'m gonna show you who the original moose is!"
+        "message": "I\'m gonna show you who the original moose is!"
       },
       {
         "name": "Zeus:",
-        "message":"I\'m gonna encourage my team to go on!"
+        "message": "I\'m gonna encourage my team to go on!"
       },
       {
         "name": "Zeus:",
@@ -990,11 +881,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"Now let\'s bring this trophy BACK HOME!"
+        "message": "Now let\'s bring this trophy BACK HOME!"
       },
       {
         "name": "Bella:",
-        "message":"LET\'S HEAR IT FOR TEAM BLUE!"
+        "message": "LET\'S HEAR IT FOR TEAM BLUE!"
       },
       {
         "name": "Team Blue:",
@@ -1002,23 +893,20 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Jupiter:",
-        "message":"We\'ll see who this trophy belongs to..."
+        "message": "We\'ll see who this trophy belongs to..."
       },
       {
         "name": "Jeff:",
         "message": "Game on!"
       },
       {
-        "note": "Whistle blows and the game begins while Bella and other cheerleaders start doing team cheers"
+        "note": "(Whistle blows and the game begins while Bella and other cheerleaders start doing team cheers)"
       },
       {
         "note": "THE END"
       }
     ]
   },
-  // squidzoid july is also completely lost
-  // team blue rally 2 is completely lost
-  // post CPIP could be reconstructed
   {
     date: Update.RUBY_DEBUT,
     name: 'Ruby and the Ruby',
@@ -1035,15 +923,15 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Hammer:",
-        "message": "I was working late. A Terrible storm was raging."
+        "message": "I was working late. A terrible storm was raging."
       },
       {
         "name": "Ruby:",
-        "message": "You gotta help me!"
+        "message": "You\'ve got to help me!"
       },
       {
         "name": "Hammer:",
-        "message":"What\'s the problem madam?"
+        "message": "What\'s the problem, madam?"
       },
       {
         "name": "Ruby:",
@@ -1051,11 +939,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Hammer:",
-        "message": "Jacques Hammer at your service."
+        "message": "Jacque Hammer at your service."
       },
       {
         "name": "Ruby:",
-        "message":"Let\'s work together."
+        "message": "Let\'s work together."
       },
       {
         "name": "Hammer:",
@@ -1071,18 +959,18 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Ruby:",
-        "message": "I saw him throw something in the bin."
+        "message": "I saw him throw something in the bin..."
       },
       {
         "note": "Scene 2"
       },
       {
         "name": "Hammer:",
-        "message":"The name\'s Hammer - Jacques Hammer."
+        "message": "The name\'s Hammer - Jacque Hammer."
       },
       {
         "name": "Hammer:",
-        "message":"I\'ve got a few questions for you."
+        "message": "I\'ve got a few questions for you."
       },
       {
         "name": "Tenor:",
@@ -1098,11 +986,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Hammer:",
-        "message":"I bet you\'ve hopscotched away a few gems, right?"
+        "message": "I bet you\'ve hopscotched away a few gems, right?"
       },
       {
         "name": "Tenor:",
-        "message":"You\'re barking up the wrong tree, Hammer."
+        "message": "You\'re barking up the wrong tree, Hammer."
       },
       {
         "note": "Scene 3"
@@ -1113,7 +1001,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Dom:",
-        "message":"Hello Mr. Hammer. It\'s good to see you, sir."
+        "message": "Hello Mr. Hammer. It\'s good to see you, sir."
       },
       {
         "name": "Hammer:",
@@ -1121,23 +1009,23 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Dom:",
-        "message":"Sorry, Mr. Hammer, sir, I haven\'t."
+        "message": "Sorry, Mr. Hammer, sir, I haven\'t."
       },
       {
         "name": "Hammer:",
-        "message":"Where\'s Ms. Ruby?"
+        "message": "Where\'s Ms. Ruby?"
       },
       {
         "name": "Dom:",
-        "message":"She\'s arranging the flowers across the hall, sir."
+        "message": "She\'s arranging the flowers across the hall, sir."
       },
       {
         "name": "Hammer:",
-        "message":"That lady\'s trouble. I need to speak to her..."
+        "message": "That lady\'s trouble. I need to speak to her..."
       },
       {
         "name": "Dom:",
-        "message":"Don\'t forget to sign the guestbook, sir."
+        "message": "Don\'t forget to sign the guestbook, sir."
       },
       {
         "note": "Scene 4"
@@ -1148,7 +1036,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Ruby:",
-        "message":"Haven\'t you found it yet? I\'m busy."
+        "message": "Haven\'t you found it yet? I\'m busy."
       },
       {
         "note": "(Ruby exits)"
@@ -1166,7 +1054,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Hammer:",
-        "message":"Here\'syour gem, Ms. Ruby. It was safe all along."
+        "message": "Here\'s your gem, Ms. Ruby. It was safe all along."
       },
       {
         "name": "Ruby:",
@@ -1177,7 +1065,10 @@ export const STAGE_TIMELINE: Array<{
         "message": "Another day, another crime solved."
       },
       {
-        "note": "THE END"
+        "note": "Fin."
+      },
+      {
+        "note": "Director:"
       },
       {
         "name": "Director:",
@@ -1193,7 +1084,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message":"Scene 4. Let\'s see some effort here."
+        "message": "Scene 4. Let\'s see some effort here."
       },
       {
         "name": "Director:",
@@ -1201,7 +1092,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message":"Let\'s take it from the top."
+        "message": "Let\'s take it from the top."
       },
       {
         "name": "Director:",
@@ -1227,7 +1118,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Captain:",
-        "message":"Captain\'s journal, entry 30:16..."
+        "message": "Captain\'s journal, entry 30:16..."
       },
       {
         "name": "Captain:",
@@ -1242,7 +1133,7 @@ export const STAGE_TIMELINE: Array<{
         "message": "Wait! Watch out for the-"
       },
       {
-        "note": "Asteroid hits the SS Astro Barrier"
+        "note": "(Asteroid hits the SS Astro Barrier)"
       },
       {
         "name": "Robot:",
@@ -1254,7 +1145,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Ensign:",
-        "message":"Captain,it\'s thrown us off course!"
+        "message": "Captain, it\'s thrown us off course!"
       },
       {
         "name": "Captain:",
@@ -1266,7 +1157,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Ensign:",
-        "message":"Negative Captain. It\'s not working."
+        "message": "Negative Captain. It\'s not working."
       },
       {
         "name": "Zip:",
@@ -1274,7 +1165,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Ensign:",
-        "message":"I\'ve tried, but it won\'t reload!"
+        "message": "I\'ve tried, but it won\'t reload!"
       },
       {
         "name": "Captain:",
@@ -1289,11 +1180,11 @@ export const STAGE_TIMELINE: Array<{
         "message": "No, not Planet Y! My rivals the Qs live here!"
       },
       {
-        "note": "Ship crashesinto building"
+        "note": "(Ship crashes into building)"
       },
       {
         "name": "Qua:",
-        "message":"Visitors, you\'ve disturbed our meeting..."
+        "message": "Visitors, you\'ve disturbed our meeting..."
       },
       {
         "name": "Quip:",
@@ -1301,7 +1192,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Qua:",
-        "message":"We\'re planning to make a giant space craft."
+        "message": "We\'re planning to make a giant space craft."
       },
       {
         "name": "Quip:",
@@ -1321,15 +1212,15 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Quip:",
-        "message":"They own the bot. He can\'t destroy the craft..."
+        "message": "They own the bot. He can\'t destroy the craft..."
       },
       {
         "name": "Qua:",
-        "message":"Let\'s do it ourselves-we\'ll be fast!"
+        "message": "Let\'s do it ourselves-we\'ll be fast!"
       },
       {
         "name": "Zip:",
-        "message":"Restart the bot, and let\'s get out of here."
+        "message": "Restart the bot, and let\'s get out of here."
       },
       {
         "name": "Robot:",
@@ -1341,7 +1232,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Ensign:",
-        "message": "No! How are we going to get backthis time?"
+        "message": "No! How are we going to get back this time?"
       },
       {
         "name": "Robot:",
@@ -1353,7 +1244,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zip:",
-        "message":"It\'s working! Let\'s get out of here."
+        "message": "It\'s working! Let\'s get out of here."
       },
       {
         "name": "Captain:",
@@ -1379,11 +1270,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message":"Let\'s take it from the top!"
+        "message": "Let\'s take it from the top!"
       },
       {
         "name": "Director:",
-        "message":"It\'s a wrap!"
+        "message": "It\'s a wrap!"
       }
     ]
   },
@@ -1397,44 +1288,54 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:Jan10Stage.swf',
     script: [
       { note: "Fairy Fables" },
-      { name: "Twee:",message: "Once upon a time a prince was dressed all in red..." },
-      { name: "Prince Redhood:",message:"Red?! Are you sure? It\'s not really my color." },
+      { name: "Twee:",message: "Once upon a time a prince dressed all in red..." },
+      { name: "Redhood:",message:"Red?! Are you sure? It\'s not really my color." },
       { name: "Twee:",message:"Don\'t interrupt! I said he was dressed in RED!" },
-      { name: "Prince Redhood:",message: "Oh. All right, then. What a lovely day!" },
+      { name: "Redhood:",message: "Oh. All right, then. What a lovely day!" },
       { name: "Twee:",message: "He was taking croissants to a hungry princess." },
-      { name: "Prince Redhood:",message: "Golly, I hope she like pastries." },
+      { name: "Redhood:",message: "Golly, I hope she like pastries." },
       { name: "Twee:",message: "But suddenly, something jumped out of the trees!" },
-      { name: "Prince Redhood:",message: "Oh no! A scary looking sheep!" },
-      { name: "Big Bad Wool:",message:"BAA! I am the Big Bad Wool an I\'m hungry!" },
-      { name: "Prince Redhood:",message:"What great big teeth you\'ve got!" },
-      { name: "BigBad Wool:",message: "All the better to eat croissants with!" },
-      { name: "Prince Redhood:",message:"No chance, woolly! They\'re for the princess." },
-      { name: "Big Bad Wool:",message:"Well, then I\'ll huff and I\'ll puff..." },
+      { name: "Redhood:",message: "Oh no! A scary looking sheep!" },
+      { name: "Big Bad Wool:",message:"BAA! I am the Big Bad Wool and I\'m hungry!" },
+      { name: "Redhood:",message:"What great big teeth you\'ve got!" },
+      { name: "Big Bad Wool:",message: "All the better to eat croissants with!" },
+      { name: "Redhood:",message:"No chance, Woolly! They\'re for the princess." },
+      { name: "Big Bad Wool:",message:"BAA! Then I\'ll huff and I\'ll puff..." },
       { name: "Twee:",message: "And the Big Bad Wool blew all the trees down." },
-      { name: "Prince Redhood:",message: "Oh no! What am I going to do?" },
+      { name: "Redhood:",message: "Oh no! What am I going to do?" },
       { name: "Twee:",message: "You need to distract the sheep, of course!" },
-      { name: "Prince Redhood:",message: "Oh yes. Look over there!" },
+      { name: "Redhood:",message: "Oh yes. Look over there!" },
       { name: "Big Bad Wool:",message: "A unicorn flying through the sky? BAA-zaa!" },
-      { name: "Prince Redhood:",message: "Aha, now I can escape!" },
-      { name: "Twee::",message: "Finally the prince arrived at the castle." },
-      { name: "Prince Redhood:",message:"Now I will climb up Grumpunzel\'s long hair." },
+      { name: "Redhood:",message: "Aha, now I can escape!" },
+      { name: "Twee:",message: "Finally the prince arrived at the castle." },
+      { name: "Redhood:",message:"Now I will climb up Grumpunzel\'s long hair." },
       { name: "Twee:",message:"You\'ll have to make do with a ladder." },
-      { name: "Prince Redhood:",message: "If I must..." },
+      { name: "Redhood:",message: "If I must..." },
       { name: "Grumpunzel:",message: "La la la la..." },
-      { name: "Prince Redhood:",message:"She\'s totally lost in la la land. What do I do now?" },
+      { name: "Redhood:",message:"She\'s totally lost in la-la-land. What do I do now?" },
       { name: "Twee:",message: "Throw a magic snowball at her, of course!" },
-      { note: "(Prince Redhood throws a snowball at Grumpunzel)" },
+      { note: "(Redhood throws a snowball at Grumpunzel)" },
       { name: "Grumpunzel:",message:"Oi! What do you think you\'re doing?" },
-      { name: "Prince Redhood::",message:"Princess! I\'ve brought you some croissants!" },
+      { name: "Redhood:",message:"Princess! I\'ve brought you some croissants!" },
       { name: "Grumpunzel:",message: "Croissants? I asked for COOKIES!" },
-      { name: "Prince Redhood:",message:"Guess they don\'t call her Grumpunzel for nothing." },
-      { name: "Twee:",message: "I think she should go back to la la land. ZAP!" },
+      { name: "Redhood:",message:"Guess they don\'t call her Grumpunzel for nothing" },
+      { name: "Twee:",message: "I think she should go back to la-la-land. ZAP!" },
       { name: "Big Bad Wool:",message:"BAA! Excuse me! I\'m really hungry here!" },
       { name: "Twee:",message:"Well there are plenty of croissants to go \'round." },
-      { name: "Prince Redhood:",message:"You\'d better not wool them all down at once." },
+      { name: "Redhood:",message:"You\'d better not wool them all down at once." },
       { name: "Twee:",message: "And they lived happily ever after." },
-      { note: "THE END." }
-  ]
+      { note: "THE END." },
+      { note: "Twee Gives A Tour Of The Stage" },
+      { name: "Twee:",message: "Welcome to my Tree of Twos!" },
+      { name: "Twee:",message: "Let me show you around a bit." },
+      { name: "Twee:",message: "I love my books. I have two of every one." },
+      { name: "Twee:",message: "See my boombox? It has two speakers!" },
+      { name: "Twee:",message: "I wanted two unicorns, but I ran out of glue." },
+      { name: "Twee:",message: "I tried to have two princes in this play, too." },
+      { name: "Twee:",message: "This is my chair, made of two types of wood!" },
+      { name: "Twee:",message: "And the pond took me two days to make!" },
+      { name: "Twee:",message: "Hope you liked the tour. Enjoy the play!" }
+    ]
   },
   {
     date: '2008-12-12',
@@ -1454,7 +1355,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Alaska:",
-        "message":"Can\'t find rare gems without a little danger..."
+        "message": "Can\'t find rare puffles without a little danger..."
       },
       {
         "name": "Alaska:",
@@ -1462,11 +1363,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Yukon:",
-        "message":"Oh no! Run! It\'s a snowball trap!"
+        "message": "Oh no! Run! It\'s a snowball trap!"
       },
       {
         "name": "Alaska:",
-        "message":"What\'s an adventure without a few traps?"
+        "message": "What\'s an adventure without a few traps?"
       },
       {
         "name": "Yukon:",
@@ -1478,11 +1379,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Yukon:",
-        "message":"Look! The Golden Puffle! Let\'s get it!"
+        "message": "Look! The Golden Puffle! Let\'s get it!"
       },
       {
         "name": "Alaska:",
-        "message":"I\'ve been waiting a long, long time for this..."
+        "message": "I\'ve been waiting a long, long time for this..."
       },
       {
         "note": "(Door opens and Boris appears)"
@@ -1497,11 +1398,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Alaska:",
-        "message": "Quick, Yukon! Grab the Golden puffle!"
+        "message": "Quick, Yukon! Grab the Golden Puffle!"
       },
       {
         "name": "Yukon:",
-        "message":"Got it! Let\'s get out of here!"
+        "message": "Got it! Let\'s get out of here!"
       },
       {
         "name": "Boris:",
@@ -1509,15 +1410,15 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "King Ra-Ra:",
-        "message":"Don\'t let them take it, Boris!"
+        "message": "Don\'t let them take it, Boris!"
       },
       {
         "name": "Alaska:",
-        "message":"We\'ve gotta get out of here... fast!"
+        "message": "We\'ve gotta get out of here... fast!"
       },
       {
         "name": "Yukon:",
-        "message":"Oh no! We\'re trapped in the pyramid!"
+        "message": "Oh no! We\'re trapped in the pyramid!"
       },
       {
         "name": "Alaska:",
@@ -1525,7 +1426,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Yukon:",
-        "message":"Oh no! We\'re trapped in the pyramid!"
+        "message": "Oh no! We\'re trapped in the pyramid!"
       },
       {
         "name": "Boris:",
@@ -1533,7 +1434,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "King Ra-Ra:",
-        "message":"You can\'t escape the great pyramid!"
+        "message": "You can\'t escape the great pyramid!"
       },
       {
         "name": "King Ra-Ra:",
@@ -1541,7 +1442,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Alaska:",
-        "message":"I don\'t give up my quests that easy, Ra-Ra!"
+        "message": "I don\'t give up my quests that easy, Ra-Ra!"
       },
       {
         "name": "Boris:",
@@ -1560,18 +1461,18 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Alaska:",
-        "message":"What are you doing Yukon?! That\'s my treasure!"
+        "message": "What are you doing Yukon?! That\'s my treasure!"
       },
       {
         "note": "(Boris unwraps the Golden puffle)"
       },
       {
         "name": "Yukon:",
-        "message":"It\'s a puffle-shaped chocolate in gold wrapper!"
+        "message": "It\'s a puffle-shaped chocolate in gold wrapper!"
       },
       {
         "name": "King Ra-Ra:",
-        "message":"That\'s right! And Boris was really hungry!"
+        "message": "That\'s right! And Boris was really hungry!"
       },
       {
         "name": "Boris:",
@@ -1579,27 +1480,27 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "King Ra-Ra:",
-        "message":"That\'s why we had to get it back!"
+        "message": "That\'s why we had to get it back!"
       },
       {
         "name": "Alaska:",
-        "message":"Sigh. Guess it\'s not the rare puffle I thought."
+        "message": "Sigh. Guess it\'s not the rare puffle I thought."
       },
       {
         "name": "King Ra-Ra:",
-        "message": "Oh, but it israre!"
+        "message": "Oh, but it is rare!"
       },
       {
         "name": "King Ra-Ra:",
-        "message":"It is made of the island\'s rarest dark chocolate!"
+        "message": "It is made of the island\'s rarest dark chocolate!"
       },
       {
         "name": "Yukon:",
-        "message":"This isn\'t the puffle we were looking for."
+        "message": "These weren\'t the puffles we were looking for."
       },
       {
         "name": "Alaska:",
-        "message": "Do not fear, Yukon! New adventuresawait!"
+        "message": "Do not fear, Yukon! New adventures await!"
       },
       {
         "name": "King Ra-Ra:",
@@ -1611,10 +1512,13 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Boris:",
-        "message":"THAT\'S A WRAP!"
+        "message": "THAT\'S A WRAP!"
       },
       {
         "note": "THE END"
+      },
+      {
+        "note": "Director"
       },
       {
         "name": "Director:",
@@ -1630,7 +1534,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message":"That\'s a wrap!"
+        "message": "That\'s a wrap!"
       },
       {
         "name": "Director:",
@@ -1647,226 +1551,47 @@ export const STAGE_TIMELINE: Array<{
     costumeTrunkFileRef: 'archives:January2009Costume.swf',
     notPremiere: true,
     script: [
-      {
-        "note": "Squidzoid vs Shadow Guy & Gamma Gal"
-      },
-      {
-        "name": "Reporter:",
-        "message": "Action news live!"
-      },
-      {
-        "name": "Reporter:",
-        "message":"Tell us what\'s happening!"
-      },
-      {
-        "name": "Witness:",
-        "message":"There\'s a giant monster!"
-      },
-      {
-        "name": "Witness:",
-        "message": "No! Two of them!!!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "GRAWL! I HUNGRY!"
-      },
-      {
-        "name": "Reporter:",
-        "message":"\'GASP!\' They\'ll eat the entire city!"
-      },
-      {
-        "name": "Witness:",
-        "message": "Who will save us now?"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "The city needs our help!"
-      },
-      {
-        "name": "Gamma Gal:",
-        "message": "Super costume mega transform!"
-      },
-      {
-        "note": "(Heroes change into super suits)"
-      },
-      {
-        "name": "Witness:",
-        "message": "Hooray! The heroes have arrived!"
-      },
-      {
-        "name": "Reporter:",
-        "message": "Of course. Who else could save the day?"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "Freeze Squidzoid and Melmonst!"
-      },
-      {
-        "name": "Gamma Gal:",
-        "message":"You\'ve both eaten enough!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message":"BLARRG! YOU CAN\'T STOPUS!"
-      },
-      {
-        "name": "Gamma Gal:",
-        "message": "Oh yeah? PLASMA GLOW WAVE!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "RROOOOAAAARR!"
-      },
-      {
-        "name": "Reporter:",
-        "message": "The superheroes are using their powers!"
-      },
-      {
-        "name": "Witness:",
-        "message": "Hooray heroes! Nice going!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "PUNY HEROES!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message":"YOU\'RE NO MATCH FOR US!"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "Try this on for size! SHADOW WAVE!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "GLEEGRRAUWLL!"
-      },
-      {
-        "name": "Reporter:",
-        "message":"Wait! Squidzoid\'s running."
-      },
-      {
-        "name": "Reporter:",
-        "message": "But Melmonst is staying!"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "Not the most reliable sidekick."
-      },
-      {
-        "name": "Gamma Gal:",
-        "message":"You\'re right. Andhe does not say a lot."
-      },
-      {
-        "name": "Witness:",
-        "message":"We can\'t have monsters all over the city!"
-      },
-      {
-        "name": "Gamma Gal:",
-        "message": "Quick! With our powers combined!"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "For great justice!"
-      },
-      {
-        "name": "Gamma Gal:",
-        "message": "For freedom!!"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "For the love of pizza with extra olives!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "NO! THIS IS IMPOSSIBLE! GRRAAA!"
-      },
-      {
-        "name": "Witness:",
-        "message":"It\'s turning into a penguin!"
-      },
-      {
-        "note": "(Squidzoid turns into a penguin)"
-      },
-      {
-        "name": "Squidzoid:",
-        "message":"Hey, I\'m a penguin again."
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "What happened?"
-      },
-      {
-        "name": "Reporter:",
-        "message": "You turned into Squidzoid!"
-      },
-      {
-        "name": "Witness:",
-        "message": "And started eating the city!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "Oh! I had a monster appetite!"
-      },
-      {
-        "name": "Shadow Guy:",
-        "message":"But there\'s still Melmonst!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message": "Hmm... looks kind of stuck upthere."
-      },
-      {
-        "name": "Gamma Gal:",
-        "message": "Not a danger at all!"
-      },
-      {
-        "name": "Witness:",
-        "message": "It makes a nice ornament."
-      },
-      {
-        "name": "Gamma Gal:",
-        "message": "Looks like our work here is done!"
-      },
-      {
-        "name": "Squidzoid:",
-        "message":"Let\'s go geta fish pizza."
-      },
-      {
-        "name": "Shadow Guy:",
-        "message": "Extra olives, please!"
-      },
-      {
-        "name": "Reporter:",
-        "message": "The city is saved!"
-      },
-      {
-        "name": "Reporter:",
-        "message": "This reporter is signing off."
-      },
-      {
-        "note": "THE END"
-      },
-      {
-        "name": "Director:",
-        "message": "ACTION!"
-      },
-      {
-        "name": "Director:",
-        "message": "From the top."
-      },
-      {
-        "name": "Director:",
-        "message": "Places please!"
-      },
-      {
-        "name": "Director:",
-        "message": "Special effects please!"
-      },
-      {
-        "name": "Director:",
-        "message": "Bravo! Fantastic acting!"
-      }
+      { note: "Squidzoid vs Shadow Guy & Gamma Gal" },
+      { name: "Reporter:", message: "Action news live! Tell us what\'s happening!" },
+      { name: "Witness:", message: "I saw a monster eat the pet shop!" },
+      { name: "Squidzoid:", message: "GRAWL! I HUNGRY!" },
+      { name: "Witness:", message: "Who can save us now?" },
+      { name: "Shadow Guy:", message: "The city needs our help!" },
+      { name: "Gamma Gal:", message: "Super costume mega transform!" }, 
+      { note: "(Heroes change into super suits)" },
+      { name: "Witness:", message: "Look! The heroes have arrived!" },
+      { name: "Reporter:", message: "Here they come to save the day!" },
+      { name: "SG:", message: "Freeze Squidzoid! Drop that shop!" },
+      { name: "GG:", message: "I think you\'ve had enough to eat!" },
+      { name: "Squidzoid:", message: "BLARRG! YOU CAN\'T STOP ME!" },
+      { name: "GG:", message: "Oh yeah? Take this! PLASMA GLOW WAVE!" },
+      { name: "Squidzoid:", message: "RROOOOAAAARR!" },
+      { name: "Reporter:", message: "The superheroes are using their powers!" },
+      { name: "Witness:", message: "Hurray heroes! Nice going!" },
+      { name: "Squidzoid:", message: "PUNY HEROES! YOU\'RE NO MATCH FOR ME!" },
+      { name: "SG:", message: "Then try this on for size! SHADOW WAVE!" },
+      { name: "Squidzoid:", message: "GLEEGRRAUWLL!" },
+      { name: "Reporter:", message: "This just in! Squidzoid is trying to escape!" },
+      { name: "Witness:", message: "After it! Don\'t let it get away!" },
+      { name: "GG:", message: "Quick! With our powers combined!" },
+      { name: "SG:", message: "For great justice!" },
+      { name: "Squidzoid:", message: "NO! THIS IS IMPOSSIBLE! GRRAAA!" },
+      { name: "Witness:", message: "It\'s turning into a penguin!" },
+      { note: "(Squidzoid turns into a penguin.)" },
+      { name: "Squidzoid:", message: "Hey, I\'m a penguin again. What happened?" },
+      { name: "Reporter:", message: "You turned into Squidzoid!" },
+      { name: "Witness:", message: "And started eating the city!" },
+      { name: "Squidzoid:", message: "Oh! I had a monster appetite!" },
+      { name: "SG:", message: "With great power comes great hunger." },
+      { name: "GG:", message: "Looks like our work here is done!" },
+      { name: "Squidzoid:", message: "Let\'s go get a fish pizza." },
+      { name: "Reporter:", message: "The city is saved! This reporter is signing off." },
+      { note: "THE END" },
+      { note: "Director" },
+      { name: "Director:", message: "Places please!" },
+      { name: "Director:", message: "5 minute call, actors to the stage." },
+      { name: "Director:", message: "Let\'s take it from the top!" },
+      { name: "Director:", message: "It\'s a wrap!" }
     ]
   },
   {
@@ -1880,23 +1605,23 @@ export const STAGE_TIMELINE: Array<{
         "note": "Team Blue vs. Team Red"
       },
       {
-        "note": "A dodgeball event taking place in a high school"
+        "note": "(A dodgeball event taking place in a high school)"
       },
       {
         "name": "Jeff:",
-        "message":"It\'s the final match of the Dodgeball championship!"
+        "message": "It\'s the final match of the Dodgeball championship!"
       },
       {
         "name": "Zeus:",
-        "message":"Alright, here we go. Don\'t get nervous. Don\'t get nervous."
+        "message": "Alright, here we go. Don\'t get nervous. Don\'t get nervous."
       },
       {
         "name": "Tate:",
-        "message":"Arr! Don\'t worry Zeus, we\'re ready for this. Chin up, sailor!"
+        "message": "Arr! Don\'t worry Zeus, we\'re ready for this. Chin up, sailor!"
       },
       {
         "name": "Zeus:",
-        "message":"I\'ll try."
+        "message": "I\'ll try."
       },
       {
         "name": "Jeff:",
@@ -1965,7 +1690,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Tate:",
-        "message":"Oh no! I\'m down! I\'m down!"
+        "message": "Oh no! I\'m down! I\'m down!"
       },
       {
         "name": "Scarlet:",
@@ -1981,7 +1706,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"Oh no! I\'m all alone! I can\'t do this!"
+        "message": "Oh no! I\'m all alone! I can\'t do this!"
       },
       {
         "name": "Scarlet:",
@@ -2001,7 +1726,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Scarlet:",
-        "message":"Fine, I\'ll take off my shoes"
+        "message": "Fine, I\'ll take off my shoes"
       },
       {
         "name": "Jeff:",
@@ -2009,23 +1734,23 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Scarlet:",
-        "message":"Alright Zeus, any last words before you\'re out?"
+        "message": "Alright Zeus, any last words before you\'re out?"
       },
       {
         "name": "Zeus:",
-        "message":"Umm...How about \'yikes!\'"
+        "message": "Umm...How about \'yikes!\'"
       },
       {
         "name": "Jeff:",
-        "message":"TWEET! Foul! No saying \'yikes\' on the court!"
+        "message": "TWEET! Foul! No saying \'yikes\' on the court!"
       },
       {
         "name": "Scarlet:",
-        "message":"What? That\'s just silly!"
+        "message": "What? That\'s just silly!"
       },
       {
         "name": "Zeus:",
-        "message":"Umm, sorry? I won\'t do it again..."
+        "message": "Umm, sorry? I won\'t do it again..."
       },
       {
         "name": "Jeff:",
@@ -2049,7 +1774,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Scarlet:",
-        "message":"Okay, this is getting crazy! I\'m just going to throw the ball."
+        "message": "Okay, this is getting crazy! I\'m just going to throw the ball."
       },
       {
         "note": "(Scarlet throws a dodge ball)"
@@ -2078,30 +1803,30 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Zeus:",
-        "message":"But wait... YOU\'RE the ref!"
+        "message": "But wait... YOU\'RE the ref!"
       },
       {
         "name": "Scarlet:",
-        "message":"Yeah, I didn\'t mean to hit you."
+        "message": "Yeah, I didn\'t mean to hit you."
       },
       {
         "name": "Jeff:",
-        "message":"Doesn\'t matter. Rules are rules. TWEET! Game on!!"
+        "message": "Doesn\'t matter. Rules are rules. TWEET! Game on!!"
       },
       {
         "name": "Scarlet:",
-        "message":"Alright then. Let\'s finish this, Blue Team!"
+        "message": "Alright then. Let\'s finish this, Blue Team!"
       },
       {
         "name": "Zeus:",
-        "message":"You\'re on!"
+        "message": "You\'re on!"
       },
       {
-        "note":"(They finish the game. It\'s up to you to decide who wins!)"
+        "note": "(They finish the game. It\'s up to you to decide who wins!)"
       },
       {
         "name": "Tate:",
-        "message": "And the winneris..."
+        "message": "And the winner is..."
       },
       {
         "name": "Everyone:",
@@ -2113,7 +1838,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Everyone:",
-        "message":"IT\'S A TIE!"
+        "message": "IT\'S A TIE!"
       },
       {
         "note": "THE END."
@@ -2131,11 +1856,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message":"Let\'s take it from the top!"
+        "message": "Let\'s take it from the top!"
       },
       {
         "name": "Director:",
-        "message":"It\'s a wrap!"
+        "message": "It\'s a wrap!"
       }
     ]
   },
@@ -2151,7 +1876,58 @@ export const STAGE_TIMELINE: Array<{
     name: 'The Haunting of the Viking Opera',
     stageFileRef: 'archives:RoomsStage-February2011.swf', // from 2011
     plazaFileRef: 'recreation:plaza_haunting_of_the_viking_opera.swf',
-    costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf'
+    costumeTrunkFileRef: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf',
+    script: [
+      { note: "The Haunting of the Viking Opera" },
+      { name: "Hector:", message: "Alright everyone, it\'s time for Helga\'s solo. From the top!" },
+      { name: "Helga:", message: "NO! NO! A bajillion times NO! I will not sing!" },
+      { name: "Hector:", message: "Come on Helga! Your solo\'s the most important part of the play!" },
+      { name: "Helga:", message: "NO! As long as the ghost is ghosting, I will not sing!" },
+      { name: "Hector:", message: "Helga, please! There\'s no such thing as ghosts!" },
+      { name: "Bailey:", message: "Now now, miss \'elga, nothin\' to worry about. I\'m \'ere now" }, 
+      { name: "Helga:", message: "Oh, but what if the ghost throws a tomato or something?" },
+      { name: "Bailey:", message: "No worries. I\'ll \'appily take a tomato for you any day" },
+      { name: "Helga:", message: "Well...Alright. I\'ll do it. I\'ll sing." },
+      { name: "Hector:", message: "Wonderful! Alright everyone, places! Places!" },
+      { note: "(Everyone takes in their places)" },
+      { name: "Hector:", message: "All right, from the top. One...Two...Three...Action!" },
+      { name: "Ghost:", message: "OOOooooOOOOoooooOOOOoooOOO!!!!!" },
+      { name: "Bailey:", message: "Yikes! That doesn\'t sound right..." },
+      { name: "Helga:", message: "It\'s not me! IT\'S THE GHOST!" },
+      { name: "Ghost:", message: "OOOOooooOOOOOooOOOoooOOOO!!!!" },
+      { name: "Hector:", message: "Oh my goodness! The ghost is real?!" },
+      { name: "Helga:", message: "Don\'t just stand there, do something!" },
+      { name: "Bailey:", message: "Well, I ain\'t afraid of no ghost! Let me \'andle this!" },
+      { name: "Bailey:", message: "You there! You\'re under arrest! Haunting is against the law!" },
+      { note: "(Ghost begins to glow)" },
+      { name: "Ghost:", message: "OOOOoooOOOooOOOoOO!!!" },
+      { name: "Bailey:", message: "On second thought, maybe I\'ll let you off with a warning..." },
+      { name: "Hector:", message: "Maybe if we ask it nicely, it\'ll go haunt the Mine or something..." },
+      { name: "Helga:", message: "Oh fiddle sticks! I\'ve had enough! Shoo, ghost, shoo!" },
+      { name: "Ghost:", message: "OOOOOooooOOOOOooooOOO!!!" },
+      { name: "Helga:", message: "Hmph! You call that a G flat? I\'LL show you a G flat..." },
+      { name: "Helga:", message: "LA LA LA LAAAAAAAAAAAAAAAAAAAAAAA!!!" },
+      { name: "Ghost:", message: "OOOOoooOOOOooOOOO!!!" },
+      { name: "Helga:", message: "LAAAAAAAAAAAAAAAAAA!!!!!!" },
+      { name: "Bailey:", message: "BLIMEY! I CAN\'T EVEN HEAR MYSELF THINK!" },
+      { name: "Hector:", message: "WHAAAAT?!!" },
+      { note: "(There\'s a rumble and suddenly..." },
+      { note: "...a giant avalanche buries the ghost)" },
+      { name: "Helga:", message: "Now THAT\'S how you sing opera." },
+      { name: "Hector:", message: "I guess it\'s not over until the hat-lady sings!" },
+      { name: "Bailey:", message: "Alright, now let\'s see who\'s really behind the ghost!" },
+      { note: "(Bailey removes the Ghost\'s costume)" },
+      { name: "Hector:", message: "Why it\'s Moneek, our costume designer!" },
+      { name: "Moneek:", message: "Whoa, my head...What\'s going on here?" },
+      { name: "Hector:", message: "What were you doing in that sheet?" },
+      { name: "Moneek:", message: "Sorry, I got tangled in that sheet with my flashlight." },
+      { name: "Helga:", message: "Then why were you yelling \'OOOOooooOOOO!!\'" },
+      { name: "Moneek:", message: "Oh, it was too bright. It was hurting my eyes." },
+      { name: "Bailey:", message: "Well, I\'m glad we got all that cleared up!" },
+      { name: "Helga:", message: "And I finally got a chance to practice my solo!" },
+      { name: "Hector:", message: "Good show, everyone. Let\'s take it once more from the top!" },
+      { note: "THE END" }
+    ]
   },
   {
     date: '2009-06-12',
@@ -2163,8 +1939,7 @@ export const STAGE_TIMELINE: Array<{
   {
     date: '2009-07-10',
     name: 'Ruby and the Ruby',
-    // both 2 below are inaccurate
-    stageFileRef: 'archives:RoomsStage-December2010.swf',
+    stageFileRef: 'recreation:ruby_play_debut.swf',
     plazaFileRef: 'recreation:plaza_ruby_no_weather_09_july.swf',
     costumeTrunkFileRef: 'archives:July09Costume.swf',
     notPremiere: true
@@ -2174,21 +1949,170 @@ export const STAGE_TIMELINE: Array<{
     name: 'Underwater Adventure',
     stageFileRef: 'recreation:underwater_adventure_no_pin.swf', // recreation
     plazaFileRef: 'recreation:plaza_underwater_adventure.swf',
-    costumeTrunkFileRef: 'archives:May2011UnderwaterAdventureCostume.swf' // 2011
+    costumeTrunkFileRef: 'archives:May2011UnderwaterAdventureCostume.swf', // 2011
+    script: [
+      { note: "Underwater Adventure" },
+      { name: "Fiesel:", message: "And so our search for the lost town continues." },
+      { name: "Daisy:", message: "I don\'t think we should go that way!" },
+      { name: "Fiesel:", message: "There\'s nothing down here to be afraid of." },
+      { name: "Daisy:", message: "Nothing except that giant lobster?" },
+      { name: "Fiesel:", message: "It\'s just an underwater parking attendant!" },
+      { name: "Lobster:", message: "Move along now - no floating here!" }, 
+      { name: "Daisy:", message: "Can you tell us the way to the secret city?" },
+      { name: "Lobster:", message: "It would hardly be a secret if I told you!" },
+      { name: "Fiesel:", message: "What about treasure? Have you seen any?" },
+      { name: "Lobster:", message: "Sure, there\'s some over there. Now move along!" },
+      { name: "Daisy:", message: "Thanks for the treasure!" },
+      { name: "Mystic Fish:", message: "BLUB! BLUB!" },
+      { name: "Fiesel:", message: "The Mystic Fish! I wonder if it can help us?" },
+      { name: "Mystic Fish:", message: "Who disturbs me?" },
+      { name: "Fiesel:", message: "We are looking for adventure, oh wise fish!" },
+      { name: "Mystic Fish:", message: "To find a hidden land in the sea..." },
+      { name: "Mystic Fish:", message: "Swim down-stream. Now leave me be!" },
+      { name: "Daisy:", message: "I\'m not getting out of the submarine. I can\'t swim!" },
+      { name: "Fiesel:", message: "Oh great, a diver who can\'t swim." },
+      { name: "Fiesel:", message: "That\'s just brilliant!" },
+      { name: "Daisy:", message: "Is it too late for a swimming lesson?" },
+      { name: "Daisy:", message: "I wish I\'d brought my water wings!" },
+      { name: "Fiesel:", message: "Be brave and take my flipper." },
+      { name: "Fiesel:", message: "It\'s okay, there\'s a lifeguard over there!" },
+      { name: "Daisy:", message: "I can do it! I\'m swimming!" },
+      { name: "Fiesel:", message: "Look! The hidden city! We did it!" },
+      { name: "Daisy:", message: "Wow! I\'ve never seen so many merpenguins!" },
+      { name: "Bubbles:", message: "Welcome travellers!" },
+      { name: "Flippers:", message: "New friends! Let me tell you a joke." },
+      { name: "Bubbles:", message: "Oh no. Now you\'ve got him started." },
+      { name: "Flippers:", message: "What lies under the ocean and shivers?" },
+      { name: "Flippers:", message: "A nervous wreck!" },
+      { name: "Daisy:", message: "Lol! That\'s terrible!" },
+      { name: "Bubbles:", message: "Enough, Flippers! Let them explore the city." },
+      { name: "Flippers:", message: "Welcome to Penglantis - our home is yours!" },
+      { name: "Daisy:", message: "This is such an adventure!" },
+      { name: "Fiesel:", message: "And its only just begun!" },
+      { note: "THE END" },
+      { note: "Director" },
+      { name: "Director:", message: "Places please!" },
+      { name: "Director:", message: "Start swimming!" },
+      { name: "Director:", message: "Fantastic acting, well done" },
+      { name: "Director:", message: "Curtain call!" }
+    ]
   },
   {
     date: Update.PENGUINS_TIME_FORGOT_2009,
     name: 'The Penguins that Time Forgot',
     stageFileRef: 'archives:RoomsStage-September2009.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play6.swf',
-    costumeTrunkFileRef: 'archives:June08Costume.swf'
+    costumeTrunkFileRef: 'archives:June08Costume.swf',
+    script: [
+      { note: "The Penguins that Time Forgot" },
+      { name: "Chester:", message: "Time to use this Time Travel 1000!" },
+      { note: "(Time machine opens)" },
+      { name: "Critteroo:", message: "UGG! DINO! UGG!" },
+      { name: "Chester:", message: "What is this place? Where am I?" },
+      { name: "Kek:", message: "GRUB! GRUB! GRUB!" },
+      { name: "Chester:", message: "I\'m in Grub? What\'s a Grub?" },
+      { name: "Critteroo:", message: "LAVA! LAVA!" }, 
+      { name: "Chester:", message: "Lava?! I\'ve gotta get out of here!" },
+      { note: "(Time machine breaks)" },
+      { name: "Chester:", message: "Great, now I\'m stuck in Grub. With lava. What next?" },
+      { name: "Tiki:", message: "TIKI UGG!" },
+      { name: "Chester:", message: "GRUB! Last time I buy a time machine for 10 coins..." },
+      { name: "Kek:", message: "GRRRRRRRRUB!" },
+      { name: "Chester:", message: "Sigh. Grub? Is that a giant grub mask?" },
+      { name: "Tiki:", message: "TIKI TIKI BOARD TIKI BOARD!" },
+      { name: "Chester:", message: "Should I be scared? I don\'t feel scared even a bit!" },
+      { name: "Critteroo:", message: "TIKI! TIKI ATOOK!" },
+      { name: "Tiki:", message: "ABOOT! ABOOT!" },
+      { name: "Kek:", message: "YUB NUB GRUB!" },
+      { name: "Chester:", message: "Okay, really now. Can\'t you just use real words?" },
+      { name: "Critteroo:", message: "GRUB! TIKI GRUB-GRUB!" },
+      { name: "Chester:", message: "You do know you don\'t make any sense, right?" },
+      { name: "Critteroo:", message: "LAVA NO TIKI GRUB!" },
+      { name: "Chester:", message: "Sigh. Okay, something about lava and grubs." },
+      { name: "Tiki:", message: "ABOOOOOOT!" },
+      { name: "Chester:", message: "You were wearing boots, but the grubs took them?" },
+      { name: "Kek:", message: "LAVA NO LAVA! GRUB TIKI GRUB!" },
+      { name: "Chester:", message: "Let me guess, your name is Tiki and you\'re a Grub?" },
+      { name: "Tiki:", message: "ABOOT TIKI!" },
+      { name: "Chester:", message: "I give up! I have no idea what you\'re saying." },
+      { name: "Critteroo:", message: "Now you know how I feel!" },
+      { name: "Chester:", message: "What? You understand me?" },
+      { name: "Critteroo:", message: "Of course I do! What is that thing?" },
+      { name: "Chester:", message: "A time machine. We could explore. But it\'s broken." },
+      { name: "Chester:", message: "Where would you go if it worked?" },
+      { name: "Critteroo:", message: "Somewhere without Grub OR lava?" },
+      { name: "Chester:", message: "Maybe Kek can fix it? Let\'s ask!" },
+      { name: "Critteroo:", message: "NUB CLUB GRUB?" },
+      { name: "Kek:", message: "TIKI GRUB-GRUB!" },
+      { name: "Chester:", message: "I\'ll take that as a yes?" },
+      { note: "THE END" },
+      { note: "Director" },
+      { name: "Director:", message: "Places everyone!" },
+      { name: "Director:", message: "Take it again from the top!" },
+      { name: "Director:", message: "Excellent work, team. Keep it up!" },
+      { name: "Director:", message: "That\'s a wrap!" },
+      { name: "Director:", message: "Take a bow everyone!" }
+    ]
   },
   {
     date: '2009-10-09',
     name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
     stageFileRef: 'archives:RoomsStage-October2009.swf',
     plazaFileRef: 'archives:RoomsPlaza-Play3-2.swf',
-    costumeTrunkFileRef: 'archives:January2009Costume.swf' // from jan 2009
+    costumeTrunkFileRef: 'archives:January2009Costume.swf', // from jan 2009
+    script: [
+      { note: "Squidzoid vs Shadow Guy & Gamma Gal" },
+      { name: "Reporter:", message: "Action news live! Tell us what\'s happening!" },
+      { name: "Witness:", message: "There\'s a giant monster! No! Two of them!!!" },
+      { name: "Squidzoid:", message: "GRAWL! I HUNGRY!" },
+      { name: "Reporter:", message: "\'GASP!\' They\'ll eat the entire city!" },
+      { name: "Witness:", message: "Who will save us now?" },
+      { name: "Shadow Guy:", message: "The city needs our help!" },
+      { name: "Gamma Gal:", message: "Super costume mega transform!" }, 
+      { note: "(Heroes change into super suits)" },
+      { name: "Witness:", message: "Hooray! The heroes have arrived!" },
+      { name: "Reporter:", message: "Of course they have. Who else could save the day?" },
+      { name: "SG:", message: "Freeze Squidzoid and Melmonst!" },
+      { name: "GG:", message: "You\'ve both eaten enough!" },
+      { name: "Squidzoid:", message: "BLARRG! YOU CAN\'T STOP US!" },
+      { name: "GG:", message: "Oh yeah? Take this! PLASMA GLOW WAVE!" },
+      { name: "Squidzoid:", message: "RROOOOAAAARR!" },
+      { name: "Reporter:", message: "The superheroes are using their powers!" },
+      { name: "Witness:", message: "Hooray heroes! Nice going!" },
+      { name: "Squidzoid:", message: "PUNY HEROES! YOU\'RE NO MATCH FOR US!" },
+      { name: "SG:", message: "Then try this on for size! SHADOW WAVE!" },
+      { name: "Squidzoid:", message: "GLEEGRRAUWLL!" },
+      { name: "Reporter:", message: "Wait! Squidzoid\'s running. But Melmonst is staying!" },
+      { name: "SG:", message: "Not the most reliable sidekick." },
+      { name: "GG:", message: "You\'re right. And he doesn\'t say a lot." },
+      { name: "Witness:", message: "We can\'t have monsters all over the city!" },
+      { name: "GG:", message: "Quick! With our powers combined!" },
+      { name: "SG:", message: "For great justice!" },
+      { name: "GG:", message: "For freedom!!" },
+      { name: "SG:", message: "For the love of pizza with extra olives!" },
+      { name: "Squidzoid:", message: "NO! THIS IS IMPOSSIBLE! GRRAAA!" },
+      { name: "Witness:", message: "It\'s turning into a penguin!" },
+      { note: "(Squidzoid turns into a penguin.)" },
+      { name: "Squidzoid:", message: "Hey, I\'m a penguin again. What happened?" },
+      { name: "Reporter:", message: "You turned into Squidzoid!" },
+      { name: "Witness:", message: "And started eating the city!" },
+      { name: "Squidzoid:", message: "Oh! I had a monster appetite!" },
+      { name: "SG:", message: "But there\'s still Melmonst!" },
+      { name: "Squidzoid:", message: "Hmm...looks kind of stuck up there." },
+      { name: "GG:", message: "Not a danger at all!" },
+      { name: "Witness:", message: "It makes a nice ornament." },
+      { name: "GG:", message: "Looks like our work here is done!" },
+      { name: "Squidzoid:", message: "Let\'s go get a fish pizza." },
+      { name: "SG:", message: "Extra olives, please!" },
+      { name: "Reporter:", message: "The city is saved! This reporter is signing off." },
+      { note: "THE END" },
+      { note: "Director" },
+      { name: "Director:", message: "Places everyone!" },
+      { name: "Director:", message: "Take it again from the top!" },
+      { name: "Director:", message: "Excellent work, team. Keep it up!" },
+      { name: "Director:", message: "That\'s a wrap!" },
+      { name: "Director:", message: "Take a bow everyone!" }
+    ]
   },
   {
     date: '2009-11-13',
@@ -2199,7 +2123,81 @@ export const STAGE_TIMELINE: Array<{
     roomChanges: {
       party1: 'archives:RoomsParty1-December2009.swf'
     },
-    musicRooms: ['party1']
+    musicRooms: ['party1'],
+    script: [
+      { note: "Norman Swarm Has Been Transformed" },
+      { note: "Stand on the X\'s with the right amount of actors!" },
+      { note: "Make sure there\'s at least one bug with you..." },
+      { note: "Act 1: Overground" },
+      { note: "NORMAN SWARM" },
+      { name: "Norman Swarm:", message: "The laser! Look what it\'s done to me." },
+      { name: "Norman Swarm:", message: "I\'ve been transformed! I\'m SO very small!" },
+      { name: "Norman Swarm:", message: "I\'m like a bug! Is there a cure?" },
+      { name: "Norman Swarm:", message: "I must find a cure!!!" },
+      { name: "Norman Swarm:", message: "Now which way do we go?" },
+      { name: "Norman Swarm:", message: "What\'ll happen if we stand here?" },
+      { name: "Norman Swarm:", message: "I\'m not a bug! I\'m a penguin!" }, 
+      { name: "Norman Swarm:", message: "Where can I find this Gnome?" },
+      { name: "Norman Swarm:", message: "You look like you know your way around. Come with me!" },
+      { name: "Norman Swarm:", message: "It seems I need bugs to help me!" },
+      { note: "BONNIE THE MOTH" },
+      { name: "Bonnie the Moth:", message: "Just gotta find that wise Garden Gnome!" },
+      { name: "Bonnie the Moth:", message: "Hey! How\'s a spider like a top? Always spinning!" },
+      { name: "Bonnie the Moth:", message: "What did one snail say to another? Get ya next slime!" },
+      { name: "Bonnie the Moth:", message: "What\'s the biggest moth? A mammoth!" },
+      { name: "Bonnie the Moth:", message: "Hey! You! Bee-have yourself! Hahaha!" },
+      { name: "Bonnie the Moth:", message: "I could totally be wrong. But let\'s try standing here!" },
+      { note: "GLADYS THE SPIDER" },
+      { name: "Gladys the Spider:", message: "AHH! Help! A BUG!" },
+      { name: "Gladys the Spider:", message: "Say, I\'ve not seen a bug like you before!" },
+      { name: "Gladys the Spider:", message: "I AM? Oh my. No wonder I\'m scared of my own shadow." },
+      { name: "Gladys the Spider:", message: "Well, we\'d better get you to see the Garden Gnome." },
+      { name: "Gladys the Spider:", message: "Please don\'t give me a mirror. Bugs frighten me." },
+      { name: "Gladys the Spider:", message: "You like the web? Thanks. I made it myself." },
+      { name: "Gladys the Spider:", message: "This way. You can hold one of my hands if you wish." },
+      { note: "TONI THE SNAIL" },
+      { name: "Toni the Snail:", message: "I\'m no bug. I\'m a mollusk." },
+      { name: "Toni the Snail:", message: "It\'s hard keeping up with a house on your back." },
+      { name: "Toni the Snail:", message: "I guess you\'d better find the Garden Gnome." },
+      { name: "Toni the Snail:", message: "Make your way to the door. I\'ll be there...soon." },
+      { name: "Toni the Snail:", message: "A penguin? How\'d you get so little?" },
+      { name: "Toni the Snail:", message: "Slow and steady - it\'s not a race, you know!" },
+      { note: "FUZZ THE BEE" },
+      { name: "Fuzz the Bee:", message: "Whatdya know! A puny penguin! I\'ve seen everything now!" },
+      { name: "Fuzz the Bee:", message: "The Garden Gnome always has all the answers." },
+      { name: "Fuzz the Bee:", message: "Watch out for the water!" },
+      { name: "Fuzz the Bee:", message: "Hey! You\'re a strong swimmer!" },
+      { name: "Fuzz the Bee:", message: "High five...or figh hive! Ha!" },
+      { name: "Fuzz the Bee:", message: "Fly right this way! Oh...you don\'t fly? Too bad!" },
+      { note: "End of Act 1" },
+      { note: "Act 2: Underground" },
+      { name: "Garden Gnome:", message: "Garden bugs, welcome. Tell me your worries." },
+      { name: "Gladys the Spider:", message: "We\'ve brought a friend - he claims he\'s a penguin!" },
+      { name: "Bonnie the Moth:", message: "He\'s half the penguin he used to be. Even smaller, actually!" },
+      { name: "Fuzz the Bee:", message: "Said silly scientist has shrunk!" },
+      { name: "Norman Swarm:", message: "It\'s true, I\'ve been transformed!" },
+      { name: "Gladys the Spider:", message: "Do you have a cure for him?" },
+      { name: "Garden Gnome:", message: "Stand on the stones - make sure there\'s a bug!" },
+      { name: "Garden Gnome:", message: "You\'ve worked together and earned the treasure!" },
+      { name: "Garden Gnome:", message: "Take your pin, exit, and you\'ll be back to normal." },
+      { name: "Garden Gnome:", message: "Your pin is the cure!" },
+      { name: "Garden Gnome:", message: "Take it and transform to your regular size. Don\'t bump your head" },
+      { name: "Norman Swarm:", message: "Thank you, friends! It\'s time to take the door home." },
+      { name: "Toni the Snail:", message: "I made it! Did I miss anything?" },
+      { note: "THE END" },
+      { note: "DIRECTOR" },
+      { name: "Director:", message: "Places please!" },
+      { name: "Director:", message: "And...action!" },
+      { name: "Director:", message: "Fantastic acting. Well done!" },
+      { name: "Director:", message: "Try standing on the X\'s." },
+      { name: "Director:", message: "This isn\'t a rehearsal! Get into costume, please." },
+      { note: "EXTRAS" },
+      { name: "Director:", message: "Did you know the praying mantis can turn its head 180 degrees?!" },
+      { name: "Director:", message: "Ladybugs beat their wings 85 times a second in flight." },
+      { name: "Director:", message: "Snails are deaf!" },
+      { name: "Director:", message: "Spiders can jump up to 40 times their own body length." },
+      { name: "Director:", message: "Honeybees have hair on their eyes!" }
+    ]
   },
   {
     date: Update.QUEST_GOLD_PUFFLE_CHRISTMAS_2009,
@@ -2230,11 +2228,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Monkey King:",
-        "message": "The Treasure is so close! In that palace!"
+        "message": "The treasure is so close! In that palace!"
       },
       {
         "name": "Monkey King:",
-        "message": "... Where the Phoenix Queen Lives!"
+        "message": "... where the Phoenix Queen lives!"
       },
       {
         "name": "Funny Pig:",
@@ -2250,11 +2248,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Monkey King:",
-        "message": "No... well - maybe. How do we cross?"
+        "message": "No...well - maybe. How do we cross?"
       },
       {
         "name": "Funny Pig:",
-        "message": "There is a magic bridge!"
+        "message": "There is a magical bridge!"
       },
       {
         "name": "Funny Pig:",
@@ -2266,7 +2264,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Funny Pig:",
-        "message":"It\'s hidden in a place of light far away."
+        "message": "It\'s hidden in a place of light far away."
       },
       {
         "name": "Monkey King:",
@@ -2274,7 +2272,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Funny Pig:",
-        "message":"Let\'s search the whole Island together."
+        "message": "Let\'s search the whole Island together."
       },
       {
         "name": "Funny Pig:",
@@ -2293,7 +2291,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Funny Pig:",
-        "message": "And I found a Pizza! Candy topping!"
+        "message": "And I found a pizza! Candy topping!"
       },
       {
         "name": "Guardian Dog:",
@@ -2301,11 +2299,11 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Monkey King:",
-        "message":"But I\'m not a Monkey. I\'m the monkey KING!"
+        "message": "But I\'m not a monkey. I\'m the monkey KING!"
       },
       {
         "name": "Guardian Dog:",
-        "message":"I\'m the Guardian Dog! I keep the palace pest free."
+        "message": "I\'m the Guardian Dog! I keep the palace pest free."
       },
       {
         "name": "Guardian Dog:",
@@ -2313,15 +2311,15 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Monkey King:",
-        "message":"Alright... let\'s see... TURNS TO WIND"
+        "message": "Alright...let\'s see...TURNS TO WIND"
       },
       {
         "name": "Funny Pig:",
-        "message":"Ooh! What\'sthis strange wind?"
+        "message": "Ooh! What\'s this strange wind?"
       },
       {
         "name": "Guardian Dog:",
-        "message":"Pfft! Don\'t play games monkey! I know your tricks."
+        "message": "Pfft! Don\'t play games monkey! I know your tricks."
       },
       {
         "name": "Monkey King:",
@@ -2348,7 +2346,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Phoenix Queen:",
-        "message":"Greetings, Monkey! I\'ve been expecting you."
+        "message": "Greetings, Monkey! I\'ve been expecting you."
       },
       {
         "name": "Monkey King:",
@@ -2395,7 +2393,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message": "And... action!"
+        "message": "And...action!"
       },
       {
         "name": "Director:",
@@ -2403,7 +2401,7 @@ export const STAGE_TIMELINE: Array<{
       },
       {
         "name": "Director:",
-        "message":"Let\'s take it from the top!"
+        "message": "Let\'s take it from the top!"
       },
       {
         "name": "Director:",
@@ -2454,7 +2452,196 @@ export const STAGE_TIMELINE: Array<{
     stageFileRef: 'archives:HalloweenParty2010Stage.swf',
     roomChanges: {
       shack: 'archives:Mine_Shack_Gold_Feather_Pin.swf'
-    }
+    },
+    script: [
+      {
+        "note": "Secrets of the Bamboo Forest"
+      },
+      {
+        "note": "Act 1"
+      },
+      {
+        "name": "Monkey King:",
+        "message": "The treasure is so close! In that palace!"
+      },
+      {
+        "name": "Monkey King:",
+        "message": "... where the Phoenix Queen lives!"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Um...did you say treasure?"
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Yes! Do you know how to cross this river?"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Treasure? Like mud? Anchovies? Chocolate?"
+      },
+      {
+        "name": "Monkey King:",
+        "message": "No...well - maybe. How do we cross?"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "There is a magical bridge!"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "First we must find the Golden Feather."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Is it close by?"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "It\'s hidden far away, in a place where things grow...."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Lead the way, Funny Pig!"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Let\'s search the whole Island together."
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Maybe there will be some snacks along the way!"
+      },
+      {
+        "note": "Act 2"
+      },
+      {
+        "name": "Monkey King:",
+        "message": "We return with the feather!"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Hey, that stone just moved!"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "And I found a pizza! Candy topping!"
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "Monkey, this is not your place to be."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "But I\'m not a monkey. I\'m the monkey KING!"
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "I\'m the Guardian Dog! I keep the palace pest free."
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "You must prove yourself worthy to enter."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Alright...let\'s see...TURNS TO WIND"
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Ooh! What\'s this strange wind?"
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "Pfft! Don\'t play games monkey! I know your tricks."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "But of course. Hey... did you want some snacks?"
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "Snacks? No! The feather is your key."
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "If you found the feather, you may enter."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Thank you, Guardian Dog."
+      },
+      {
+        "name": "Guardian Dog:",
+        "message": "Sure thing, Monkey King! Kai-men-da-ji!"
+      },
+      {
+        "note": "Act 3"
+      },
+      {
+        "name": "Phoenix Queen:",
+        "message": "Greetings, Monkey! I\'ve been expecting you."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Phoenix Queen! It has been a long journey!"
+      },
+      {
+        "name": "Phoenix Queen:",
+        "message": "You are brave and clever!"
+      },
+      {
+        "name": "Phoenix Queen:",
+        "message": "I award you this very rare background."
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Wow! Do I get one too?"
+      },
+      {
+        "name": "Phoenix Queen:",
+        "message": "Alright. Just be sure not to gobble it."
+      },
+      {
+        "name": "Funny Pig:",
+        "message": "Sweet!"
+      },
+      {
+        "name": "Monkey King:",
+        "message": "Thank you, Phoenix Queen..."
+      },
+      {
+        "name": "Monkey King:",
+        "message": "I have enjoyed my adventure."
+      },
+      {
+        "name": "Phoenix Queen:",
+        "message": "Then you shall have more."
+      },
+      {
+        "note": "Director"
+      },
+      {
+        "name": "Director:",
+        "message": "Places please!"
+      },
+      {
+        "name": "Director:",
+        "message": "And...action!"
+      },
+      {
+        "name": "Director:",
+        "message": "To enter the palace you need the Golden Feather."
+      },
+      {
+        "name": "Director:",
+        "message": "Let\'s take it from the top!"
+      },
+      {
+        "name": "Director:",
+        "message": "Bravo! Fantastic acting!"
+      }
+    ]
   },
   {
     date: Update.PLANET_Y_2010,
