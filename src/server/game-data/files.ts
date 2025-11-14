@@ -423,10 +423,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/stage_script_messages.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'shell_modern_label_fix.swf',
       comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011'
     },

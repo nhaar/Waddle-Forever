@@ -17,6 +17,7 @@ import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
 import { getGameStrings } from "./gamestringsjson";
 import { getChunkingMapJson } from "./chunkingmapjson";
+import getStageScriptMessagesJson from "./stagemessagesjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -99,6 +100,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
     return getGameStrings(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/stage_script_messages.json', (s) => {
+    return getStageScriptMessagesJson(s.settings.version);
   });
   server.getData('servers.xml', (s) => getServersXml(s.targetIP, s.loginPort, s.worldPort));
   server.getData('setup.xml', (s) => {

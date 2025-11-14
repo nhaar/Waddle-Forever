@@ -91,7 +91,7 @@ export function getLocalPathsTimeline() {
   return timeline.getVersionsMap();
 }
 
-function getStageScriptTimeline() {
+export function getStageScriptTimeline() {
   const timeline = new VersionsTimeline<StageScript>();
 
   const scripts = new Map<string, StageScript>();

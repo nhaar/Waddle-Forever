@@ -30,7 +30,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/en/web_service/game_configs/safe_chat_messages.json': 'approximation:game_configs/safe_chat_messages.json',
   'play/en/web_service/game_configs/stamps_tokenized.json': 'approximation:game_configs/stamps_tokenized.json',
   'play/en/web_service/game_configs/tour_guide_messages.json': 'approximation:game_configs/tour_guide_messages.json',
-  'play/en/web_service/game_configs/stage_script_messages.json': 'approximation:game_configs/stage_script_messages.json',
   'play/en/web_service/game_configs/weblogger.php': 'approximation:game_configs/weblogger.php',
   'play/en/web_service/weblogger.php': 'svanilla:media/play/ru/web_service/weblogger.php',
   'play/v2/client/airtower.swf': 'svanilla:media/play/v2/client/airtower.swf',
