@@ -3570,7 +3570,20 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'archives:LoginHolidayParty2010.swf',
       'archives:CFC2010LoginScreen.SWF',
       'archives:LoginDec2010Membership.swf',
-      'archives:StartscreenENCoins_for_change_2-HolidayParty2010.swf']
+      'archives:StartscreenENCoins_for_change_2-HolidayParty2010.swf'],
+    construction: {
+      date: '2010-12-09',
+      changes: {
+        beach: 'archives:HolidayParty2011ConsBeach.swf',
+        lounge: 'archives:RoomsLounge-HolidayParty2009Pre.swf',
+        dance: 'archives:RoomsDance-HolidayParty2009Pre.swf',
+      },
+      localChanges: {
+        'close_ups/poster.swf': {
+          en: ['recreation:holiday_beach_poster.swf', 'poster']
+        }
+      }
+    }
   },
   {
     name: 'Wilderness Expedition',
