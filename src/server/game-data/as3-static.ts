@@ -972,6 +972,5 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/ru/logo.swf',
   'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf',
   'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
-  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf',
-  'play/v2/content/global/content/map.swf': 'approximation:modern_map.swf'
+  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf'
 }

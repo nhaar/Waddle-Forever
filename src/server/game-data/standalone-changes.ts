@@ -232,10 +232,12 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   },
   {
     date: Update.MODERN_AS3,
+    comment: 'The map is revamped',
     generalChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf'
-    }
+    },
+    map: 'archives:Map2011.swf'
   },
   {
     // when room localization went from being "english" to "en"
@@ -282,7 +284,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       pizza: 'svanilla:media/play/v2/content/global/rooms/pizza.swf',
       shop: 'svanilla:media/play/v2/content/global/rooms/shop.swf',
       village: 'svanilla:media/play/v2/content/global/rooms/village.swf'
-    }
+    },
+    map: 'approximation:modern_map.swf'
   }
 ];
 
