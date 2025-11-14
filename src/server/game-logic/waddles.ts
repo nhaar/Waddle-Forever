@@ -1,7 +1,7 @@
 /** Identifies the type of game */
 export type WaddleName = 'sled' | 'card' | 'fire';
 
-type WaddleRoomInfo = {
+export type WaddleRoomInfo = {
   waddleId: number;
   roomId: number;
   seats: number;
@@ -31,12 +31,6 @@ export const WADDLE_ROOMS: WaddleRoomInfo[] = [
     waddleId: 103,
     roomId: 230,
     seats: 2,
-    game: 'sled'
-  },
-  {
-    waddleId: 104,
-    roomId: 855,
-    seats: 4,
     game: 'sled'
   },
   {

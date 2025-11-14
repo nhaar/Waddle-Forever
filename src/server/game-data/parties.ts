@@ -3,6 +3,7 @@ import { MigratorVisit, ComplexTemporaryUpdateTimeline } from ".";
 import { FileRef } from "./files";
 import { RoomName } from "./rooms";
 import { Update } from "./updates";
+import { WaddleRoomInfo } from "../game-logic/waddles";
 
 // room name -> file Id
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
@@ -98,6 +99,8 @@ export type IslandChanges = {
 
   /** For pre-cpip, if updates the version of the igloo SWF */
   iglooVersion?: number;
+
+  newWaddleRooms?: WaddleRoomInfo[];
 }
 
 export type Party = IslandChanges & {
@@ -4352,7 +4355,15 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       generalChanges: {
         'play/v2/games/sled/SledRacer.swf': 'svanilla:media/play/v2/games/sled/SledRacer.swf'
       }
-    }
+    },
+    newWaddleRooms: [
+      {
+        waddleId: 104,
+        roomId: 855,
+        seats: 4,
+        game: 'sled'
+      }
+    ]
   },
   {
     name: 'The Fair',
@@ -4623,7 +4634,27 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
         town: 'archives:RoomsTown-CardJitsuPartyPre.swf'
       },
       startscreens: ['archives:StartBillboardsCardJitsuPartyPre.swf']
-    }
+    },
+    newWaddleRooms: [
+      {
+        waddleId: 200,
+        roomId: 801,
+        seats: 2,
+        game: 'card'
+      },
+      {
+        waddleId: 201,
+        roomId: 801,
+        seats: 2,
+        game: 'card'
+      },
+      {
+        waddleId: 202,
+        roomId: 801,
+        seats: 2,
+        game: 'card'
+      }
+    ]
   },
   {
     name: 'Holiday Party',

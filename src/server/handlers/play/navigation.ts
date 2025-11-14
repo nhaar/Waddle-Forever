@@ -1,6 +1,4 @@
-import { WADDLE_ROOMS } from '../../../server/game-logic/waddles';
 import { Handler } from '..';
-import { WaddleGame } from '../../../server/client';
 import { SledRace } from '../games/sled';
 import { CardJitsu } from '../games/card';
 import { Handle } from '../handles';

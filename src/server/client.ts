@@ -18,6 +18,7 @@ import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
+import { getExtraWaddleRooms } from './timelines/waddle-room';
 
 const versionsTimeline = getVersionsTimeline();
 
@@ -344,7 +345,8 @@ export class Server {
   }
 
   private init() {
-    WADDLE_ROOMS.forEach((waddle) => {
+    const extraWaddleRooms = getExtraWaddleRooms(this.settings.version) ?? [];
+    [...WADDLE_ROOMS, ...extraWaddleRooms].forEach((waddle) => {
       const room = this.getRoom(waddle.roomId);
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
