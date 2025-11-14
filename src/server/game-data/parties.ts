@@ -3672,7 +3672,14 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
           party13: 'archives:RoomsParty13-WildernessExpedition.swf'
         }
       }
-    ]
+    ],
+    consequences: {
+      localChanges: {
+        'catalogues/adopt.swf': {
+          'en': 'archives:Feb2011Adopt.swf'
+        },
+      }
+    }
   },
   {
     name: 'Puffle Party',
