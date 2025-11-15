@@ -65,10 +65,10 @@ export type As3Newspaper = {
   jokes: string | null;
   navigationBack: string | null;
   submit: string | null;
-  answers: string;
+  answers?: string;
   // seems like this is otherwise called topTips early on?
   secrets: string | null;
-  extraJokes: string | undefined;
+  extraJokes?: string;
   secret: string | undefined | null;
   iglooWinners?: string;
   featureMore?: string | null;
@@ -1810,7 +1810,7 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
   },
   {
     date: '2011-04-29',
-    headline: '',
+    headline: 'HARK! YE NEW PENGUIN STYLE!',
     askBack: 'archives:News289AskAuntArcticBack.swf',
     askFront: 'archives:News289AskAuntArcticFront.swf',
     featureMore: null,
@@ -1831,5 +1831,92 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     extraJokes: undefined,
     navigationBack: null,
     navigationFront: null
+  },
+  {
+    date: '2011-05-06',
+    headline: 'PREPARE YE KINGDOM TO PARTY',
+    askBack: 'archives:News290AskAuntArcticBack.swf',
+    askFront: 'archives:News290AskAuntArcticFront.swf',
+    featureStory: 'archives:News290FeatureStory.swf',
+    newsFlash: 'archives:News290NewsFlash.swf',
+    secret: 'archives:News290SecretOverlay.swf',
+    supportStory: 'archives:News290SupportStory.swf',
+    upcomingEvents: 'archives:News290UpcomingEvents.swf',
+    dividersBack: null,
+    dividersFront: null,
+    navigationBack: null,
+    navigationFront: null,
+    headerBack: null,
+    headerFront: null,
+    secrets: null,
+    submit: null,
+    jokes: null,
+    featureMore: null,
+    supportMore: null
+  },
+  {
+    date: '2011-05-13',
+    headline: 'KINGDOM CONSTRUCTION HATH BEGUN',
+    askBack: 'archives:News291AskAuntArcticBack.swf',
+    askFront: 'archives:News291AskAuntArcticFront.swf',
+    featureStory: 'archives:News291FeatureStory.swf',
+    newsFlash: 'archives:News291NewsFlash.swf',
+    secret: 'archives:News291SecretOverlay.swf',
+    supportStory: 'archives:News291SupportStory.swf',
+    upcomingEvents: 'archives:News291UpcomingEvents.swf',
+    headerBack: null,
+    headerFront: null,
+    navigationBack: null,
+    navigationFront: null,
+    secrets: null,
+    submit: null,
+    jokes: null,
+    dividersBack: null,
+    dividersFront: null,
+    featureMore: null,
+    supportMore: null
+  },
+  {
+    date: '2011-05-20',
+    headline: 'THE QUEST HATH BEGUN!',
+    askBack: 'archives:News292AskAuntArcticBack.swf',
+    askFront: 'archives:News292AskAuntArcticFront.swf',
+    featureStory: 'archives:News292FeatureStory.swf',
+    newsFlash: 'archives:News292NewsFlash.swf',
+    secret: 'archives:News292SecretOverlay.swf',
+    supportStory: 'archives:News292SupportStory.swf',
+    upcomingEvents: 'archives:News292UpcomingEvents.swf',
+    headerBack: null,
+    headerFront: null,
+    dividersBack: null,
+    dividersFront: null,
+    navigationBack: null,
+    navigationFront: null,
+    secrets: null,
+    submit: null,
+    jokes: null,
+    featureMore: null,
+    supportMore: null
+  },
+  {
+    date: '2011-05-27',
+    headline: 'PURPLE DRAGONS SIGHTED!',
+    askBack: 'archives:News293AskAuntArcticBack.swf',
+    askFront: 'archives:News293AskAuntArcticFront.swf',
+    featureStory: 'archives:News293FeatureStory.swf',
+    newsFlash: 'archives:News293NewsFlash.swf',
+    secret: 'archives:News293SecretOverlay.swf',
+    supportStory: 'archives:News293SupportStory.swf',
+    upcomingEvents: 'archives:News293UpcomingEvents.swf',
+    headerBack: null,
+    headerFront: null,
+    navigationBack: null,
+    navigationFront: null,
+    dividersBack: null,
+    dividersFront: null,
+    secrets: null,
+    submit: null,
+    jokes: null,
+    featureMore: null
   }
 ];
