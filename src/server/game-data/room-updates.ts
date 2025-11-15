@@ -559,7 +559,8 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'stage',
     fileRef: null,
-    date: Update.FIRST_STAGE_PLAY
+    date: Update.FIRST_STAGE_PLAY,
+    map: 'archives:Map2007Plaza.swf'
   },
   {
     room: 'agentcom',
