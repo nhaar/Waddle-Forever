@@ -764,13 +764,17 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       town: 'recreation:water_party_2007/town.swf',
       forest: 'recreation:water_party_2007/forest.swf',
       mtn: 'recreation:water_party_2007/mtn.swf',
-      dojo: 'recreation:water_party_2007/dojo.swf'
+      dojo: 'recreation:water_party_2007/dojo.swf',
+      beach: 'recreation:water_party_2007/beach.swf',
+      cove: 'recreation:water_party_2007/cove.swf'
     },
     music: {
       dojo: 217,
       town: 218,
       forest: 218,
-      mtn: 218
+      mtn: 218,
+      beach: 218,
+      cove: 218
     }
   },
   {
