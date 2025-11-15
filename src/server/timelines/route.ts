@@ -286,7 +286,13 @@ function addNewspapers(map: FileTimelineMap): void {
     if (news.iglooWinners !== undefined) {
       newspaperComponenets.push(['overlays/iglooWinners.swf', news.iglooWinners]);
     }
-    
+    if (news.featureMore !== undefined) {
+      newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore]);
+    }
+    if (news.extra !== undefined) {
+      newspaperComponenets.push(['overlays/extra.swf', news.extra]);
+    }
+     
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
       map.addDefault(path.join(newsPath, 'content', route), getMediaFilePath(file));

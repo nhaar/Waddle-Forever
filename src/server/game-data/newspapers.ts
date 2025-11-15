@@ -70,6 +70,8 @@ export type As3Newspaper = {
   extraJokes: string | undefined;
   secret: string | undefined;
   iglooWinners?: string;
+  featureMore?: string;
+  extra?: string;
 }
 
 export const AS2_NEWSPAPERS: As2Newspaper[] = [
@@ -1431,5 +1433,76 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     dividersFront: null,
     submit: null,
     extraJokes: undefined
+  },
+  {
+    date: '2011-01-07',
+    headline: 'ARE ELITE AGENTS AMONG US?',
+    askBack: 'archives:News273AskAuntArcticBack.swf',
+    askFront: 'archives:News273AskAuntArcticFront.swf',
+    featureMore: 'archives:News273FeatureMore.swf',
+    featureStory: 'archives:News273FeatureStory.swf',
+    headerBack: 'archives:News273HeaderBack.swf',
+    headerFront: 'archives:News273HeaderFront.swf',
+    jokes: 'archives:News273JokesAndRiddles.swf',
+    newsFlash: 'archives:News273NewsFlash.swf',
+    answers: 'archives:News273RiddlesAnswers.swf',
+    secret: 'archives:News273SecretOverlay.swf',
+    secrets: 'archives:News273Secrets.swf',
+    supportStory: 'archives:News273SupportStory.swf',
+    upcomingEvents: 'archives:News273UpcomingEvents.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
+  },
+  {
+    date: '2011-01-14',
+    headline: 'EXCITED EXPLORERS PREPARE FOR EXPEDITION',
+    askBack: 'archives:News274AskAuntArcticBack.swf',
+    askFront: 'archives:News274AskAuntArcticFront.swf',
+    featureMore: 'archives:News274FeatureMore.swf',
+    featureStory: 'archives:News274FeatureStory.swf',
+    headerBack: 'archives:News274HeaderBack.swf',
+    headerFront: 'archives:News274HeaderFront.swf',
+    jokes: 'archives:News274JokesAndRiddles.swf',
+    newsFlash: 'archives:News274NewsFlash.swf',
+    answers: 'archives:News274RiddlesAnswers.swf',
+    secret: 'archives:News274SecretOverlay.swf',
+    secrets: 'archives:News274Secrets.swf',
+    supportStory: 'archives:News274SupportStory.swf',
+    upcomingEvents: 'archives:News274UpcomingEvents.swf',
+    extra: 'archives:News274EpfInterview.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
+  },
+  {
+    date: '2011-01-21',
+    headline: 'BROWN PUFFLES DISCOVERED',
+    askBack: 'archives:News275AskAuntArcticBack.swf',
+    askFront: 'archives:News275AskAuntArcticFront.swf',
+    featureMore: 'archives:News275FeatureMore.swf',
+    featureStory: 'archives:News275FeatureStory.swf',
+    headerBack: 'archives:News275HeaderBack.swf',
+    headerFront: 'archives:News275HeaderFront.swf',
+    jokes: 'archives:News275JokesAndRiddles.swf',
+    newsFlash: 'archives:News275NewsFlash.swf',
+    answers: 'archives:News275RiddlesAnswers.swf',
+    secret: 'archives:News275SecretOverlay.swf',
+    secrets: 'archives:News275Secrets.swf',
+    supportStory: 'archives:News275SupportStory.swf',
+    upcomingEvents: 'archives:News275UpcomingEvents.swf',
+    extra: 'archives:News275FeatureTech.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
   }
 ];
