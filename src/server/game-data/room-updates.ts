@@ -463,7 +463,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
 export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'forts',
-    fileRef: 'approximation:forts_release.swf',
+    fileRef: 'fix:ArtworkRoomsForts.swf',
     date: '2005-09-12',
     otherRooms: {
       town: 'archives:ArtworkRoomsTown10.swf',

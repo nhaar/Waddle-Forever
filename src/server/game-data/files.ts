@@ -207,6 +207,10 @@ would need to investigated`
     {
       file: 'ArtworkRoomsTown-newyears.swf',
       comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'ArtworkRoomsForts.swf',
+      comment: 'Chat291.swf compatibility fixes'
     }
   ],
   [APPROXIMATION]: [
@@ -218,11 +222,6 @@ would need to investigated`
     {
       file: 'chat291_no_april.swf',
       comment: 'Originally chat291.swf from "unknown", adding the penguin from chat339 and removing the april fools note'
-    },
-    {
-      file: 'forts_release.swf',
-      comment: 'Removed ability to go to the Plaza, to simulate how the Snow Forts was during its release',
-      base: 'archives:ArtworkRoomsForts12.swf'
     },
     {
       file: 'town_release.swf',
