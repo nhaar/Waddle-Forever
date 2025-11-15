@@ -340,7 +340,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'game_configs/games.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
+      comment: 'Extracted from game_configs.bin from vanilla media, bean counters music id was modified'
     },
     {
       file: 'game_configs/igloo_floors.json',
