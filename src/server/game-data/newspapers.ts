@@ -53,25 +53,25 @@ export type As3Newspaper = {
   askFront: string;
   dividersFront: string | null;
   featureStory: string;
-  headerFront: string;
+  headerFront: string | null;
   navigationFront: string | null;
   newsFlash: string;
   supportStory: string;
   upcomingEvents: string;
   askBack: string;
-  supportMore?: string;
+  supportMore?: string | null;
   dividersBack: string | null;
-  headerBack: string;
-  jokes: string;
+  headerBack: string | null;
+  jokes: string | null;
   navigationBack: string | null;
   submit: string | null;
   answers: string;
   // seems like this is otherwise called topTips early on?
-  secrets: string;
+  secrets: string | null;
   extraJokes: string | undefined;
-  secret: string | undefined;
+  secret: string | undefined | null;
   iglooWinners?: string;
-  featureMore?: string;
+  featureMore?: string | null;
   extra?: string;
 }
 
@@ -1709,6 +1709,122 @@ export const AS3_NEWSPAPERS: As3Newspaper[] = [
     supportStory: 'archives:News284SupportStory.swf',
     upcomingEvents: 'archives:News284UpcomingEvents.swf',
     iglooWinners: 'archives:News284IglooWinners.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
+  },
+  {
+    date: '2011-04-01',
+    headline: 'BOX DIMENSION CAN\'T BE MAPPED',
+    askBack: 'archives:News285AskAuntArcticBack.swf',
+    askFront: 'archives:News285AskAuntArcticFront.swf',
+    featureStory: 'archives:News285FeatureStory.swf',
+    headerBack: 'archives:News285HeaderBack.swf',
+    headerFront: 'archives:News285HeaderFront.swf',
+    jokes: 'archives:News285JokesAndRiddles.swf',
+    newsFlash: 'archives:News285NewsFlash.swf',
+    answers: 'archives:News285RiddlesAnswers.swf',
+    secret: null,
+    secrets: 'archives:News285Secrets.swf',
+    supportStory: 'archives:News285SupportStory.swf',
+    upcomingEvents: 'archives:News285UpcomingEvents.swf',
+    dividersBack: 'archives:News285DividersBack.swf',
+    dividersFront: 'archives:News285DividersFront.swf',
+    submit: 'archives:News285SubmitYourContent.swf',
+    extraJokes: undefined,
+    navigationBack: 'archives:News285NavigationBack.swf',
+    navigationFront: 'archives:News285NavigationFront.swf'
+  },
+  {
+    date: '2011-04-08',
+    headline: 'IGLOOS GO GREEN',
+    askBack: 'archives:News286AskAuntArcticBack.swf',
+    askFront: 'archives:News286AskAuntArcticFront.swf',
+    featureMore: null,
+    featureStory: 'archives:News286FeatureStory.swf',
+    headerBack: null,
+    headerFront: null,
+    jokes: null,
+    newsFlash: 'archives:News286NewsFlash.swf',
+    answers: 'archives:News286RiddlesAnswers.swf',
+    secret: 'archives:News286SecretOverlay.swf',
+    secrets: null,
+    supportStory: 'archives:News286SupportStory.swf',
+    upcomingEvents: 'archives:News286UpcomingEvents.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
+  },
+  {
+    date: '2011-04-15',
+    headline: 'EARTH DAY SURPRISES ARE COMING',
+    askBack: 'archives:News287AskAuntArcticBack.swf',
+    askFront: 'archives:News287AskAuntArcticFront.swf',
+    featureMore: null,
+    featureStory: 'archives:News287FeatureStory.swf',
+    headerBack: null,
+    headerFront: null,
+    jokes: null,
+    newsFlash: 'archives:News287NewsFlash.swf',
+    answers: 'archives:News287RiddlesAnswers.swf',
+    secret: 'archives:News287SecretOverlay.swf',
+    secrets: null,
+    supportStory: 'archives:News287SupportStory.swf',
+    supportMore: null,
+    upcomingEvents: 'archives:News287UpcomingEvents.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
+  },
+  {
+    date: '2011-04-22',
+    headline: 'THE ISLAND CELEBRATES EARTH DAY!',
+    askBack: 'archives:News288AskAuntArcticBack.swf',
+    askFront: 'archives:News288AskAuntArcticFront.swf',
+    featureMore: null,
+    featureStory: 'archives:News288FeatureStory.swf',
+    headerBack: null,
+    headerFront: null,
+    jokes: null,
+    newsFlash: 'archives:News288NewsFlash.swf',
+    answers: 'archives:News288RiddlesAnswers.swf',
+    secret: 'archives:News288SecretOverlay.swf',
+    secrets: null,
+    supportStory: 'archives:News288SupportStory.swf',
+    upcomingEvents: 'archives:News288UpcomingEvents.swf',
+    dividersBack: null,
+    dividersFront: null,
+    submit: null,
+    extraJokes: undefined,
+    navigationBack: null,
+    navigationFront: null
+  },
+  {
+    date: '2011-04-29',
+    headline: '',
+    askBack: 'archives:News289AskAuntArcticBack.swf',
+    askFront: 'archives:News289AskAuntArcticFront.swf',
+    featureMore: null,
+    featureStory: 'archives:News289FeatureStory.swf',
+    headerBack: null,
+    headerFront: null,
+    jokes: null,
+    newsFlash: 'archives:News289NewsFlash.swf',
+    answers: 'archives:News289RiddlesAnswers.swf',
+    secret: 'archives:News289SecretOverlay.swf',
+    secrets: null,
+    supportStory: 'archives:News289SupportStory.swf',
+    supportMore: null,
+    upcomingEvents: 'archives:News289UpcomingEvents.swf',
     dividersBack: null,
     dividersFront: null,
     submit: null,

@@ -260,7 +260,7 @@ function addNewspapers(map: FileTimelineMap): void {
     const newsPath = `play/v2/content/local/en/news/${getMinifiedDate(news.date)}`;
     map.addDefault(path.join(newsPath, 'config.xml'), configXmlPath);
     const newspaperComponenets: Array<[string, string]> = [
-      ['front/header.swf', news.headerFront],
+      ['front/header.swf', news.headerFront ?? 'archives:News285HeaderFront.swf'],
       ['front/featureStory.swf', news.featureStory],
       ['front/supportStory.swf', news.supportStory],
       ['front/upcomingEvents.swf', news.upcomingEvents],
@@ -268,11 +268,11 @@ function addNewspapers(map: FileTimelineMap): void {
       ['front/askAuntArctic.swf', news.askFront],
       ['front/dividers.swf', news.dividersFront ?? 'archives:News268DividersFront.swf'],
       ['front/navigation.swf', news.navigationFront ?? 'archives:News268NavigationFront.swf'],
-      ['back/header.swf', news.headerBack],
+      ['back/header.swf', news.headerBack ?? 'archives:News285HeaderBack.swf'],
       ['back/askAuntArctic.swf', news.askBack],
-      ['back/secrets.swf', news.secrets],
+      ['back/secrets.swf', news.secrets ?? 'archives:News285Secrets.swf'],
       ['back/submitYourContent.swf', news.submit ?? 'archives:News268SubmitYourContent.swf'],
-      ['back/jokesAndRiddles.swf', news.jokes],
+      ['back/jokesAndRiddles.swf', news.jokes ?? 'archives:News285JokesAndRiddles.swf'],
       ['back/dividers.swf', news.dividersBack ?? 'archives:News268DividersBack.swf'],
       ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf'],
       ['overlays/riddlesAnswers.swf', news.answers],
@@ -280,17 +280,17 @@ function addNewspapers(map: FileTimelineMap): void {
     if (news.extraJokes !== undefined) {
       newspaperComponenets.push(['overlays/extraJokes.swf', news.extraJokes]);
     }
-    if (news.secret !== undefined) {
+    if (news.secret !== undefined && news.secret !== null) {
       newspaperComponenets.push(['overlays/secret.swf', news.secret]);
     }
     if (news.iglooWinners !== undefined) {
       newspaperComponenets.push(['overlays/iglooWinners.swf', news.iglooWinners]);
     }
     if (news.featureMore !== undefined) {
-      newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore]);
+      newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore ?? 'archives:News284FeatureMore.swf']);
     }
     if (news.supportMore !== undefined) {
-      newspaperComponenets.push(['overlays/supportMore.swf', news.supportMore]);
+      newspaperComponenets.push(['overlays/supportMore.swf', news.supportMore ?? 'archives:News282SupportMore.swf']);
     }
     if (news.extra !== undefined) {
       newspaperComponenets.push(['overlays/extra.swf', news.extra]);
