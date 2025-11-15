@@ -226,7 +226,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       'play/v2/client/club_penguin.swf': 'archives:ClientClubPenguin2011-03-28.swf',
       'play/v2/client/world.swf': 'archives:ClientWorld.swf',
       'play/v2/client/login.swf': 'archives:ClientLogin2011-08-20.swf',
-      'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf'
+      'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf',
+      'play/v2/client/newspaper.swf': 'approximation:newspaper_march_compatible.swf'
     },
     startscreens: [ 'archives:LoginSystemDefender.swf' ]
   },

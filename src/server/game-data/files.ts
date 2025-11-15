@@ -445,6 +445,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'map_dec_2011.swf',
       comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL'
+    },
+    {
+      file: 'newspaper_march_compatible.swf',
+      comment: 'Dec2010ClientNewspaper with a lot of code from the March 2011 club_penguin.swf in order to be compatible. Made by Randomno'
     }
   ],
   [RECREATION]: [
