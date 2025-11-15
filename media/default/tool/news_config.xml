@@ -80,6 +80,7 @@
 		<content id="iglooWinners" url="content/overlays/iglooWinners.swf" />
 		<content id="epfInterview" url="content/overlays/extra.swf" />
 		<content id="featureTech" url="content/overlays/extra.swf" />
+		<content id="featurePuffles" url="content/overlays/extra.swf" />
 						
 	</overlays>
 	
