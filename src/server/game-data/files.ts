@@ -448,7 +448,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'newspaper_march_compatible.swf',
-      comment: 'Dec2010ClientNewspaper with a lot of code from the March 2011 club_penguin.swf in order to be compatible. Made by Randomno'
+      comment: 'Dec2010ClientNewspaper.swf but replaced com.clubpenguin.lib.module calls to match 2011 club_penguin.swf in order to be compatible. Made by Randomno'
     }
   ],
   [RECREATION]: [

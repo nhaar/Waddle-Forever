@@ -289,6 +289,9 @@ function addNewspapers(map: FileTimelineMap): void {
     if (news.featureMore !== undefined) {
       newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore]);
     }
+    if (news.supportMore !== undefined) {
+      newspaperComponenets.push(['overlays/supportMore.swf', news.supportMore]);
+    }
     if (news.extra !== undefined) {
       newspaperComponenets.push(['overlays/extra.swf', news.extra]);
     }
