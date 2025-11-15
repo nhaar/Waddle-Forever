@@ -23,6 +23,9 @@ handler.xt(Handle.JoinRoomOld, (client, room) => {
 
 // Paying after minigame
 handler.xt(Handle.LeaveGame, (client, score) => {
+  if (!client.isEngine1) {
+    return;
+  }
   const coins = client.getCoinsFromScore(score);
   client.penguin.addCoins(coins);
   

@@ -15,7 +15,7 @@ handler.xt(Handle.JoinRoom, (client, ...args) => {
 // client requesting to leave a minigame
 handler.xt(Handle.LeaveGame, (client, score) => {
   // waddle games individually handle this
-  if (client.isInWaddleGame()) {
+  if (client.isInWaddleGame() || client.isEngine1) {
     return;
   }
 
