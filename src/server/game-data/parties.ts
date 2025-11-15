@@ -2142,7 +2142,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       pizza: 210,
       plaza: 271,
       town: 271,
-      party3: 272,
+      party3: 271,
       coffee: 0
     },
     localChanges: {
