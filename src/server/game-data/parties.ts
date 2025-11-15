@@ -2889,6 +2889,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       'attic': 'archives:MedievalParty2011Attic.swf',
       'mtn': 'archives:MedievalParty2011Mtn.swf',
       'rink': 'archives:Rooms0508Rink.swf',
+      'mine': 'archives:MedievalParty2011Mine.swf',
 
       // seemingly from 2009, unknown if accurate
       party1: 'archives:Rooms0508Party1.swf',
