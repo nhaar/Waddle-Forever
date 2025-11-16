@@ -4479,6 +4479,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       },
       'membership/party2.swf': {
         en: ['archives:TheFair2011MembershipParty2.swf', 'oops_party3_room']
+      },
+      'close_ups/poster.swf': {
+        en: ['archives:Fair2010Poster.swf', 'poster']
       }
     },
     roomMemberStatus: {
