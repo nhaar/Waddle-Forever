@@ -709,8 +709,9 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     permanentChanges: {
       map: 'archives:ArtworkMaps15.swf',
+      roomComment: 'Construction begins at the Cove',
       roomChanges: {
-        cove: 'recreation:cove_after_cove_opening_pre_cpip.swf'
+        cove: 'recreation:cove_hut_const.swf'
       }
     },
     consequences: {

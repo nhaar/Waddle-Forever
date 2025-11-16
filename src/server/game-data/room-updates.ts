@@ -156,6 +156,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   cove: [
     {
+      comment: 'Construction at the Cove finishes',
+      date: '2007-06-04',
+      fileRef: 'recreation:cove_after_cove_opening_pre_cpip.swf'
+    },
+    {
       fileRef: 'archives:RoomsCove.swf',
       date: Update.GAME_UPGRADES
     }

@@ -1496,6 +1496,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'dance_no_game_upgrades.swf',
       comment: 'Made by ItzAle, Dance Club without game upgrades'
+    },
+    {
+      file: 'cove_hut_const.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
