@@ -1698,9 +1698,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     },
     consequences: {
       roomChanges: {
-        // this is from june 26, when dj3k disks are added
-        // other SWFs in-between are lost
-        dance: 'archives:RoomsDance_2.swf'
+        dance: 'recreation:dance_no_game_upgrades.swf'
       }
     }
   },

@@ -1492,6 +1492,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_party_2007/cove.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'dance_no_game_upgrades.swf',
+      comment: 'Made by ItzAle, Dance Club without game upgrades'
     }
   ],
   [MOD]: [

@@ -172,6 +172,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'DJ3K is redesigned in the Dance Club'
     },
     {
+      // game upgrades
+      fileRef: 'archives:RoomsDance_2.swf',
+      date: '2009-06-26'
+    },
+    {
       fileRef: 'archives:Dance.swf',
       date: '2010-01-29',
       comment: 'The Dance Club now changes colors if a lot of monochrome penguins are present'
