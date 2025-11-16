@@ -4177,7 +4177,7 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     ],
     localChanges: {
       'close_ups/poster.swf': {
-        'en': 'archives:MusicJam2011Poster.swf'
+        'en': ['archives:MusicJam2011Poster.swf', 'party_poster']
       },
       'catalogues/party.swf': {
         'en': [ 'archives:MusicJam2011CatalogParty.swf', 'party_catalogue' ]
