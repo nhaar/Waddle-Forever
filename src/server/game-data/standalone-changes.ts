@@ -275,6 +275,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     generalChanges: {
       'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
       'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
+    },
+    roomChanges: {
+      lounge: 'archives:RoomsLounge_4.swf'
     }
   },
   {
