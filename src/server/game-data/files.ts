@@ -370,10 +370,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/newspapers.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/paper_items.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },

@@ -257,8 +257,11 @@ function addNewspapers(map: FileTimelineMap): void {
   
   const configXmlPath = getMediaFilePath('tool:news_config.xml');
   AS3_NEWSPAPERS.forEach((news) => {
-    const newsPath = `play/v2/content/local/en/news/${getMinifiedDate(news.date)}`;
-    map.addDefault(path.join(newsPath, 'config.xml'), configXmlPath);
+    const baseNewsPath = 'play/v2/content/local/en/news/';
+    const oldNewsPath = `${baseNewsPath}${getMinifiedDate(news.date)}`;
+    const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(news.date)}`;
+    map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+    map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
     const newspaperComponenets: Array<[string, string]> = [
       ['front/header.swf', news.headerFront ?? 'archives:News285HeaderFront.swf'],
       ['front/featureStory.swf', news.featureStory],
@@ -300,7 +303,8 @@ function addNewspapers(map: FileTimelineMap): void {
      
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
-      map.addDefault(path.join(newsPath, 'content', route), getMediaFilePath(file));
+      map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
+      map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
     }) 
   })
 }
