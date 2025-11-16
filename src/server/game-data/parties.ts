@@ -2924,7 +2924,10 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
 
       // from 2011, missing party 16 which is visibly different from 2011
       party14: 'archives:MedievalParty2011Party14.swf',
-      party15: 'archives:MedievalParty2011Party15.swf'
+      party15: 'archives:MedievalParty2011Party15.swf',
+      party16: 'archives:RoomsParty16-MedievalParty2010.swf',
+      'party17': 'archives:MedievalParty2011Party17.swf',
+      'party18': 'archives:MedievalParty2011Party18.swf',
     },
     music: {
       'beach': 233,
