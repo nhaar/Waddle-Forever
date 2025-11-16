@@ -419,7 +419,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_modern_label_fix.swf',
-      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011. In addition, the calls for updateListeners(PLAYER_FRAME had to be changed for the Island Adventure cove triggers to work properly'
+      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011. In addition, the calls for updateListeners(PLAYER_FRAME had to be changed for the Island Adventure cove triggers to work properly. For the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
     },
     {
       file: 'rooms_common_label_fix.swf',
@@ -428,10 +428,6 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'modern_map.swf',
       comment: 'map.swf from vanilla media, but with a fix for the map notes from 2011 (in frame1 code)'
-    },
-    {
-      file: 'interface_fair_11.swf',
-      comment: 'interface from vanilla media, but with functions for the fair 2011 party'
     },
     {
       file: 'map_2011_party_note.swf',
@@ -448,6 +444,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'dividers_blank.swf',
       comment: 'Dividers (specifically 268 front) but removed every shape so it looks blank.'
+    },
+    {
+      file: 'shell_2011_interface_fix.swf',
+      comment: 'shell.swf from vanilla media, but for the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
     }
   ],
   [RECREATION]: [

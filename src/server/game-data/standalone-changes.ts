@@ -251,7 +251,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     comment: 'The map is revamped',
     generalChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
-      'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf'
+      'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf'
     },
     globalChanges: {
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
@@ -273,7 +274,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     // when room localization went from being "english" to "en"
     date: '2011-10-20',
     generalChanges: {
-      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
+      'play/v2/client/shell.swf': 'approximation:shell_2011_interface_fix.swf',
       'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
     },
     roomChanges: {
@@ -321,6 +322,10 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     map: 'approximation:modern_map.swf',
     globalChanges: {
       'content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
+      'content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf'
+    },
+    generalChanges: {
+      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf'
     }
   }
 ];
