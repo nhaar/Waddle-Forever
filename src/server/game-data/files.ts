@@ -279,7 +279,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'wilderness_expedition/shell.swf',
-      comment: 'Modified version ot the legacy-media shell which added the function ownsPuffleType, used in the Wilderness Expedition 2011, which was recreated to fit this shell\'s functionality'
+      comment: 'Modified version ot the legacy-media shell which added the function ownsPuffleType, used in the Wilderness Expedition 2011, which was recreated to fit this shell\'s functionality. Because of the engine.swf modification, added the variable sendThrowEnabled.'
     },
     {
       file: 'temp_php_files/game_strings.php',
