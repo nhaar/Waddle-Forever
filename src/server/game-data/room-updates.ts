@@ -22,10 +22,6 @@ type RoomUpdate = {
 export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   town: [
     {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/town.swf',
-      date: Update.MODERN_AS3
-    },
-    {
       // first vectorized version of the Town, possibly from 2007
       // unknown how to document it
       fileRef: 'archives:ArtworkRoomsTown40.swf',
@@ -33,10 +29,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     },
   ],
   rink: [
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/rink.swf',
-      date: Update.MODERN_AS3
-    },
     {
       // unknown date, you can now walk to the audience in the rink
       // only evidence is after april fools party
@@ -63,20 +55,17 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   forts: [
     {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/forts.swf',
-      date: Update.MODERN_AS3
-    },
-    {
       date: Update.ROOM_REDRAWS,
       fileRef: 'archives:ArtworkRoomsForts40.swf',
       comment: 'The Snow Forts is redrawn'
+    },
+    {
+      date: '2007-02-23',
+      fileRef: 'archives:ArtworkRoomsForts41.swf',
+      comment: 'The Clock Tower is added to the Snow Forts'
     }
   ],
   plaza: [
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/plaza.swf',
-      date: Update.MODERN_AS3
-    },
     {
       // date of vectorization is unknown
       date: Update.PRE_CPIP_REWRITE_DATE,
@@ -167,14 +156,14 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
   ],
   cove: [
     {
-      fileRef: 'archives:RoomsCove.swf',
-      date: Update.GAME_UPGRADES
+      comment: 'Construction at the Cove finishes',
+      date: '2007-06-04',
+      fileRef: 'recreation:cove_after_cove_opening_pre_cpip.swf'
     },
     {
-      // placeholder AS3 room
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/cove.swf',
-      date: Update.MODERN_AS3
-    },
+      fileRef: 'archives:RoomsCove.swf',
+      date: Update.GAME_UPGRADES
+    }
   ],
   dance: [
     {
@@ -188,6 +177,11 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       comment: 'DJ3K is redesigned in the Dance Club'
     },
     {
+      // game upgrades
+      fileRef: 'archives:RoomsDance_2.swf',
+      date: '2009-06-26'
+    },
+    {
       fileRef: 'archives:Dance.swf',
       date: '2010-01-29',
       comment: 'The Dance Club now changes colors if a lot of monochrome penguins are present'
@@ -197,11 +191,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileRef: 'archives:RoomsDock_1.swf',
       date: Update.GAME_UPGRADES
-    },
-    {
-      // placeholder AS3 room
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/dock.swf',
-      date: Update.MODERN_AS3
     },
     {
       date: Update.ROOM_REDRAWS,
@@ -233,12 +222,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     }
   ],
   pet: [
-    {
-      // white puffle release
-      fileRef: 'archives:RoomsPet_4.swf',
-      date: '2009-03-06',
-      comment: 'White puffles are available in the Pet Shop'
-    },
     {
       // purple puffles release
       date: '2006-08-25',
@@ -273,12 +256,27 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:RoomsPet-Early2011.swf',
       comment: 'White Puffles are now in the Pet Shop'
     },
+    {
+      date: '2011-03-08',
+      fileRef: 'archives:Mar07.2011Pet.swf',
+      comment: 'The Pet Shop renovation finishes'
+    },
+    {
+      date: Update.PUFFLE_LAUNCH,
+      fileRef: 'archives:RoomsPet_5.swf',
+      comment: 'Puffle Launch releases'
+    }
   ],
   shop: [
     {
       // unknown date, vectorized 07 rooms
       date: Update.PRE_CPIP_REWRITE_DATE,
       fileRef: 'archives:ArtworkRoomsShop40.swf'
+    },
+    {
+      date: '2009-01-02',
+      fileRef: 'archives:RoomsShop.swf',
+      comment: 'The Big Wigs Catalog is merged with the Penguin Style'
     }
   ],
   coffee: [
@@ -433,10 +431,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
     {
       fileRef: 'archives:RoomsShack-Early2011.swf',
       date: '2010-09-30'
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/shack.swf',
-      date: Update.MODERN_AS3
     }
   ],
   forest: [
@@ -453,10 +447,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'slippers07:media/artwork/rooms/forest.swf',
       date: '2007-06-01',
       comment: 'The whistles are removed from the Forest'
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
-      date: Update.MODERN_AS3
     }
   ],
   dojoext: [
@@ -464,10 +454,6 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
       fileRef: 'archives:RoomsDojoext_2.swf',
       date: '2009-11-27',
       comment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard'
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/content/global/rooms/dojoext.swf',
-      date: Update.MODERN_AS3
     },
     {
       // this file we have has the white puffle, which I believe is only from the puffle party 2009
@@ -487,7 +473,7 @@ export const ROOM_UPDATES: RoomMap<RoomUpdate[]> = {
 export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'forts',
-    fileRef: 'approximation:forts_release.swf',
+    fileRef: 'fix:ArtworkRoomsForts.swf',
     date: '2005-09-12',
     otherRooms: {
       town: 'archives:ArtworkRoomsTown10.swf',
@@ -565,7 +551,8 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'shack',
     fileRef: 'archives:ArtworkRoomsShack10.swf',
-    date: Update.CAVE_OPENING_END
+    date: Update.CAVE_OPENING_END,
+    map: 'approximation:map_shack.swf'
   },
   {
     room: 'beach',
@@ -582,7 +569,8 @@ export const ROOM_OPENINGS: RoomOpening[] = [
   {
     room: 'stage',
     fileRef: null,
-    date: Update.FIRST_STAGE_PLAY
+    date: Update.FIRST_STAGE_PLAY,
+    map: 'archives:Map2007Plaza.swf'
   },
   {
     room: 'agentcom',
@@ -696,6 +684,13 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: '2008-04-21',
       fileRef: 'archives:ArtworkRoomsForts50.swf',
       comment: 'The Snow Forts clock breaks'
+    },
+    {
+      // unknown start date
+      date: '2006-10-24',
+      end: '2006-10-27',
+      fileRef: 'recreation:forts_broken_sign.swf',
+      comment: 'The Snow Forts sign breaks'
     }
   ],
   'lodge': [

@@ -12,4 +12,8 @@ type MapUpdate = {
 
 /** Standalone permanent map updates */
 export const MAP_UPDATES: PermanentUpdateTimeline<MapUpdate> = [
+  {
+    date: Update.CHAT_339,
+    fileRef: 'approximation:map_chat339.swf'
+  }
 ];

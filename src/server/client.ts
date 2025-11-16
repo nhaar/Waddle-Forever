@@ -18,6 +18,7 @@ import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
+import { getExtraWaddleRooms } from './timelines/waddle-room';
 
 const versionsTimeline = getVersionsTimeline();
 
@@ -344,7 +345,8 @@ export class Server {
   }
 
   private init() {
-    WADDLE_ROOMS.forEach((waddle) => {
+    const extraWaddleRooms = getExtraWaddleRooms(this.settings.version) ?? [];
+    [...WADDLE_ROOMS, ...extraWaddleRooms].forEach((waddle) => {
       const room = this.getRoom(waddle.roomId);
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
@@ -445,6 +447,20 @@ export class Server {
     return this._followers.get(player) ?? [];
   }
 
+  getVirtualDate(offset: number): Date {
+    const [year, month, day] = processVersion(this.settings.version);
+    // simulating PST time for the current day
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+
+    // date generates this time thinking in the same timezone as the user
+    // an arbitrary offset may be applied depending on how each client behaves
+    return new Date(year, month - 1, day, hour + offset, minute, second);
+  }
+
+
   get waddleConstructors() {
     if (this._waddleConstructors === undefined) {
       throw new Error('Have not initialized Waddle Games');
@@ -455,6 +471,12 @@ export class Server {
   set waddleConstructors(value: WaddleConstructors) {
     this._waddleConstructors = value;
   }
+}
+
+function capitalizeName(name: string): string {
+  return name.split(' ').map((name => {
+    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
+  })).join(' ');
 }
 
 export class Client {
@@ -734,7 +756,7 @@ export class Client {
     let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
 
     if (data === undefined) {
-      data = Client.create(name);
+      data = Client.create(capitalizeName(name));
     }
 
     const [penguinData, id] = data;
@@ -1089,17 +1111,7 @@ export class Client {
     TODO 3: how to handle status field
     */
 
-    const [year, month, day] = processVersion(this.version);
-    // simulating PST time for the current day
-    // local time needs to be taken into account since flash checks for that all the time
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const offset = now.getTimezoneOffset();
-    const hourOffset = Math.floor(offset / 60);
-    const minuteOffset = offset % 60;
-    // not fully sure why + 22, maybe this code isn't timezone proof
-    const virtualDate = new Date(year, month - 1, day, hour + hourOffset + 22, minute + minuteOffset);
+    const virtualDate = this.server.getVirtualDate(0);
     
     this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }

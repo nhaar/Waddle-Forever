@@ -4,6 +4,7 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { getClothingTimeline } from "../timelines/clothing";
 import { getRoomFrameTimeline } from "../timelines/frame";
+import { getIglooTimeline } from "../timelines/igloo-version";
 import { getMusicTimeline } from "../timelines/music";
 import { Version, isLower } from "./versions";
 
@@ -12,6 +13,8 @@ const musicTimeline = getMusicTimeline();
 const frameTimeline = getRoomFrameTimeline();
 
 const clothingTimeline = getClothingTimeline();
+
+const iglooTimeline = getIglooTimeline();
 
 type OldRoom = {
   roomName: RoomName
@@ -34,6 +37,10 @@ function getNewspapersTimeline() {
   timeline.add({
     date: FAN_ISSUE_DATE,
     info: 'fan'
+  });
+  timeline.add({
+    date: Update.BETA_RELEASE,
+    info: 'beta'
   });
   return timeline.getVersions();
 }
@@ -67,7 +74,7 @@ function getFileName(name: string, date: Version): string {
   }
 }
 
-export function getSetupXml(version: Version, ip: string) {
+export function getSetupXml(version: Version, ip: string, port: number) {
   const news = findInVersion(version, newspaperTimeline);
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
@@ -126,7 +133,7 @@ export function getSetupXml(version: Version, ip: string) {
         return `
       <${server}>
         <IP>${ip}</IP>
-        <Port>6114</Port>
+        <Port>${port}</Port>
         <Zone>w1</Zone>
       </${server}>
         `
@@ -190,9 +197,9 @@ export function getSetupXml(version: Version, ip: string) {
 
    <Catalogues>
       <Clothing>${getFileName('clothing' + clothing, version)}</Clothing>
-      <Furniture>
-         <File>furniture0603</File>
-      </Furniture>
+      <Furntiture>
+         <File>furniture</File>
+      </Furntiture>
       <Igloo>
          <File>igloo0604</File>
       </Igloo>
@@ -203,7 +210,7 @@ export function getSetupXml(version: Version, ip: string) {
 
    <Edit>6</Edit>
 
-   <Igloo>20</Igloo>
+   <Igloo>${findInVersion(version, iglooTimeline)}</Igloo>
 
    <Join>11</Join>
 

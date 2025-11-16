@@ -33,6 +33,17 @@ type GameName = 'Thin Ice' |
 
 /** Timeline of minigames in Pre-CPIP */
 export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
+  'Astro Barrier': [
+    {
+      '2006': 'astro.swf',
+      directory: 'astro/astro.swf',
+      fileRef: 'mammoth:games/astro.swf',
+      date: '2005-09-13',
+      roomChanges: {
+        lounge: 'mammoth:artwork/rooms/lounge10.swf'
+      }
+    }
+  ],
   'Thin Ice': [
     {
       date: '2006-12-19',
@@ -41,13 +52,6 @@ export const PRE_CPIP_GAME_UPDATES: Record<GameName, [PreCpipGameRelease]> = {
       roomChanges: {
         lounge: 'archives:ArtworkRoomsLounge40.swf'
       }
-    }
-  ],
-  'Astro Barrier': [
-    {
-      '2006': 'astro.swf',
-      directory: 'astro/astro.swf',
-      fileRef: 'mammoth:games/astro.swf'
     }
   ],
   'Bean Counters': [

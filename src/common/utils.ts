@@ -5,17 +5,21 @@ import fs from 'fs';
 import { WEBSITE } from './website';
 import { exec } from 'child_process';
 import { IpcRenderer } from 'electron';
-import { HTTP_PORT } from './constants';
+
+type MultiplayerSettings = { type: 'local'; } | {
+  type: 'guest';
+  ip: string;
+  port?: number;
+} | { type: 'host' };
 
 export type GlobalSettings = {
   /** In order to limit the number of setting windows */
   isEditting: boolean
-  /** IP the client is targetting, undefined if using the local server */
-  targetIP: string | undefined;
+  multiplayer: MultiplayerSettings;
 };
 
-export function makeURL(ip: string): string {
-  return `http://${ip}:${HTTP_PORT}`;
+export function makeUrl(ip: string, port: number): string {
+  return `http://${ip}:${port}`;
 }
 
 export function addDispatchEventListeners(events: string[], ipcRenderer: IpcRenderer) {
@@ -254,3 +258,18 @@ export class Vector {
     return vector;
   }
 }
+
+export const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];

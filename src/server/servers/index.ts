@@ -1,7 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import { HTTP_PORT } from '../../common/constants';
 
-export const WORLD_PORT = 9785
+export const WORLD_DELTA = 2;
+
+export const LOGIN_DELTA = 1;
+
+export const WORLD_PORT = HTTP_PORT + WORLD_DELTA;
+
+export const LOGIN_PORT = HTTP_PORT + LOGIN_DELTA;
 
 export function getServerPopulation(): number {
   const seed = Math.random()
@@ -221,18 +228,18 @@ const serverList: PenguinServer[] = locales.reduce<PenguinServer[]>((accumulator
   return [ ...accumulator, ...currentValue.servers]
 }, [])
 
-export function getServersXml(ip: string): string {
+export function getServersXml(ip: string, loginPort: number, worldPort: number): string {
   return `
 <?xml version="1.0" encoding="UTF-8"?>
 <servers>
    <environment name="live">
-      <login address="${ip}" port="6112" />
-      <redemption address="${ip}" port="9875" />
+      <login address="${ip}" port="${loginPort}" />
+      <redemption address="${ip}" port="${worldPort}" />
       ${locales.map((locale) => {
         return `
           <language locale="${locale.lang}">
             ${locale.servers.map((server) => {
-              return `<server id="${server.id}" name="${server.name}" safe="false" address="${ip}" port="${WORLD_PORT}" />`
+              return `<server id="${server.id}" name="${server.name}" safe="false" address="${ip}" port="${worldPort}" />`
             }).join('\n')}
           </language>
         `;

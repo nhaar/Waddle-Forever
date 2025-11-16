@@ -1,6 +1,6 @@
 import { PermanentUpdateTimeline, ComplexTemporaryUpdateTimeline } from ".";
 import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
-import { PartyChanges } from "./parties";
+import { IslandChanges } from "./parties";
 import { Update } from "./updates";
 
 type StandaloneChange = {
@@ -23,14 +23,27 @@ type StandaloneTemporaryChange = {
   }>
 }
 
-type PermanentUpdate = PartyChanges & {
+type PermanentUpdate = IslandChanges & {
   comment?: string;
 }
 
 export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   {
     date: Update.BETA_RELEASE,
-    map: "recreation:map_release.swf"
+    map: "recreation:map_release.swf",
+    iglooVersion: 1, // placeholder
+  },
+  {
+    date: '2005-09-13',
+    comment: 'Penguins can now purchase different types of igloo',
+    iglooVersion: 20
+  },
+  {
+    date: '2005-10-24',
+    comment: 'Club Penguin releases',
+    generalChanges: {
+      'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf'
+    }
   },
   {
     date: Update.PRE_CPIP_REWRITE_DATE,
@@ -68,7 +81,7 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       stage: 'archives:RoomsStage2008-07-15-Squidzoid.swf',
       lodge: 'recreation:lodge_cpip_start.swf',
       pet: 'recreation:pet_pre_white.swf',
-      shop: 'archives:RoomsShop.swf',
+      shop: 'recreation:shop_cpip.swf',
       coffee: 'archives:RoomsCoffee-January2010.swf',
       lounge: 'archives:RoomsLounge.swf',
       boiler: 'archives:RoomsBoiler-January2010.swf',
@@ -88,7 +101,9 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     },
     generalChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/client/login.swf': 'recreation:login_cpip.swf'
+      'play/v2/client/login.swf': 'recreation:login_cpip.swf',
+      // this puffle roundup is a placeholder, TODO needs to be updated
+      'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     localChanges: {
@@ -106,13 +121,36 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       },
       'catalogues/furniture.swf': {
         'en': 'recreation:catalog/furniture_cpip.swf'
+      },
+      'catalogues/adopt.swf': {
+        'en': 'recreation:catalog/adopt_cpip.swf'
+      },
+      'catalogues/costume.swf': {
+        'en': 'recreation:catalog/costume_cpip.swf'
+      },
+      'catalogues/hair.swf': {
+        'en': 'recreation:catalog/hair_cpip.swf'
+      },
+      'catalogues/igloo.swf': {
+        'en': 'recreation:catalog/igloo_cpip.swf'
+      },
+      'catalogues/sport.swf': {
+        'en': 'recreation:catalog/sport_cpip.swf'
+      },
+      'catalogues/fish.swf': {
+        'en': 'archives:TheFish2009.swf'
+      },
+      'catalogues/pets.swf': {
+        en: 'archives:May2008LoveYourPet.swf'
       }
     },
     music: {
-      // placeholder play
-      stage: 32,
       // no idea on this one's date, adding it here
       lounge: 6
+    },
+    roomMemberStatus: {
+      dojofire: true,
+      dojowater: true,
     },
     map: 'unknown:cpip_map_no_dojoext.swf'
   },
@@ -139,6 +177,30 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     ],
   },
   {
+    date: '2009-03-06',
+    comment: 'White Puffles are available to adopt',
+    roomChanges: {
+      pet: 'archives:RoomsPet_4.swf'
+    },
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'archives:Mar2009Adopt.swf'
+      }
+    }
+  },
+  {
+    date: '2010-02-25',
+    comment: 'Orange Puffles are available to adopt',
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
+      }
+    },
+    generalChanges: {
+      'play/v2/games/roundup/PuffleRoundup.swf': 'recreation:puffle_roundup_orange.swf'
+    }
+  },
+  {
     date: '2010-11-19',
     comment: 'The password warning is updated',
     generalChanges: {
@@ -152,10 +214,125 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
         'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
       }
     }
+  },
+  {
+    date: Update.STAMPS_RELEASE,
+    comment: 'Stamps are released'
+  },
+  {
+    // implementing 2011 AS3 startscreens
+    date: Update.AS3_STARTSCREEN,
+    generalChanges: {
+      'play/v2/client/club_penguin.swf': 'archives:ClientClubPenguin2011-03-28.swf',
+      'play/v2/client/world.swf': 'archives:ClientWorld.swf',
+      'play/v2/client/login.swf': 'archives:ClientLogin2011-08-20.swf',
+      'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf',
+      'play/v2/client/newspaper.swf': 'approximation:newspaper_march_compatible.swf'
+    },
+    startscreens: [ 
+      'archives:LoginAdopt_black.swf',
+      'archives:LoginAdopt_green.swf',
+      'archives:LoginAdopt_pink.swf',
+      'archives:LocalEnLoginBackgroundsAdopt_yellow.swf',
+      'archives:LoginDucky.swf',
+      'archives:LoginJetpack.swf',
+      'archives:LoginStamps3.swf'
+    ]
+  },
+  {
+    date: '2011-03-28',
+    // bits and bolts: currently doesn't work due to missing engine.swf functionality
+    roomChanges: {
+      lounge: 'archives:RoomsLounge_2.swf'
+    }
+  },
+  {
+    date: Update.MODERN_AS3,
+    comment: 'The map is revamped',
+    generalChanges: {
+      'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
+      'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
+      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf'
+    },
+    globalChanges: {
+      'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
+    },
+    map: 'approximation:map_2011_party_note.swf'
+  },
+  {
+    date: '2011-11-03',
+    map: 'approximation:map_dec_2011.swf',
+    comment: 'Pufflescape is released',
+    globalChanges: {
+      'content/map_triggers.json': 'archives:ClientMap_triggers-02142013.json'
+    },
+    roomChanges: {
+      pet: 'archives:RoomsPet_7.swf'
+    }
+  },
+  {
+    // when room localization went from being "english" to "en"
+    date: '2011-10-20',
+    generalChanges: {
+      'play/v2/client/shell.swf': 'approximation:shell_2011_interface_fix.swf',
+      'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
+    },
+    roomChanges: {
+      lounge: 'archives:RoomsLounge_4.swf'
+    }
+  },
+  {
+    // placeholder 2017 version
+    date: '2016-01-01',
+    roomChanges: {
+      town: 'svanilla:media/play/v2/content/global/rooms/town.swf',
+      rink: 'svanilla:media/play/v2/content/global/rooms/rink.swf',
+      forts: 'svanilla:media/play/v2/content/global/rooms/forts.swf',
+      plaza: 'svanilla:media/play/v2/content/global/rooms/plaza.swf',
+      cove: 'svanilla:media/play/v2/content/global/rooms/cove.swf',
+      dock: 'svanilla:media/play/v2/content/global/rooms/dock.swf',
+      shack: 'svanilla:media/play/v2/content/global/rooms/shack.swf',
+      forest: 'svanilla:media/play/v2/content/global/rooms/forest.swf',
+      dojoext: 'svanilla:media/play/v2/content/global/rooms/dojoext.swf',
+      agentcom: 'svanilla:media/play/v2/content/global/rooms/agentcom.swf',
+      agentlobbymulti: 'svanilla:media/play/v2/content/global/rooms/agentlobbymulti.swf',
+      attic: 'svanilla:media/play/v2/content/global/rooms/attic.swf',
+      beach: 'svanilla:media/play/v2/content/global/rooms/beach.swf',
+      beacon: 'svanilla:media/play/v2/content/global/rooms/beacon.swf',
+      boiler: 'svanilla:media/play/v2/content/global/rooms/boiler.swf',
+      book: 'svanilla:media/play/v2/content/global/rooms/book.swf',
+      cave: 'svanilla:media/play/v2/content/global/rooms/cave.swf',
+      cavemine: 'svanilla:media/play/v2/content/global/rooms/cavemine.swf',
+      coffee: 'svanilla:media/play/v2/content/global/rooms/coffee.swf',
+      dance: 'svanilla:media/play/v2/content/global/rooms/dance.swf',
+      dojo: 'svanilla:media/play/v2/content/global/rooms/dojo.swf',
+      dojofire: 'svanilla:media/play/v2/content/global/rooms/dojofire.swf',
+      dojowater: 'svanilla:media/play/v2/content/global/rooms/dojowater.swf',
+      lake: 'svanilla:media/play/v2/content/global/rooms/lake.swf',
+      light: 'svanilla:media/play/v2/content/global/rooms/light.swf',
+      lodge: 'svanilla:media/play/v2/content/global/rooms/lodge.swf',
+      lounge: 'svanilla:media/play/v2/content/global/rooms/lounge.swf',
+      mine: 'svanilla:media/play/v2/content/global/rooms/mine.swf',
+      mtn: 'svanilla:media/play/v2/content/global/rooms/mtn.swf',
+      pet: 'svanilla:media/play/v2/content/global/rooms/pet.swf',
+      pizza: 'svanilla:media/play/v2/content/global/rooms/pizza.swf',
+      shop: 'svanilla:media/play/v2/content/global/rooms/shop.swf',
+      village: 'svanilla:media/play/v2/content/global/rooms/village.swf'
+    },
+    map: 'approximation:modern_map.swf',
+    globalChanges: {
+      'content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
+      'content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf'
+    },
+    generalChanges: {
+      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
+      'play/v2/client/engine.swf': 'svanilla:media/play/v2/client/engine.swf'
+    }
   }
 ];
 
-type TemporaryGroupUpdate = PartyChanges & {
+type TemporaryGroupUpdate = IslandChanges & {
   comment?: string;
   endComment?: string;
 };
@@ -296,6 +473,15 @@ export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<Tempor
         comment: 'Rockhopper is seen closer from the telescope'
       }
     ]
+  },
+  {
+    date: '2011-03-01',
+    end: '2011-03-08',
+    comment: 'Renovation for the Pet Shop begins',
+    roomChanges: {
+      plaza: 'archives:PlazaConstructionMar2011.swf',
+      pet: 'archives:PetConstructionMar2011.swf'
+    }
   }
 ]
 
@@ -308,18 +494,14 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     },
     {
       // precpip client with newspapers
-      fileRef: 'unknown:chat291.swf',
+      fileRef: 'approximation:chat291_no_april.swf',
       date: PRE_BOILER_ROOM_PAPERS[0]
     }
   ],
   'play/v2/client/shell.swf': [
     {
-      fileRef: 'slegacy:media/play/v2/client/shell.swf',
+      fileRef: 'approximation:shell.swf',
       date: Update.CPIP_UPDATE
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/client/shell.swf',
-      date: Update.MODERN_AS3
     }
   ],
   'play/v2/client/engine.swf': [
@@ -329,12 +511,8 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     },
     {
       // engine that has EPF and stuff
-      fileRef: 'slegacy:media/play/v2/client/engine.swf',
+      fileRef: 'approximation:engine.swf',
       date: Update.EPF_RELEASE
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/client/engine.swf',
-      date: Update.MODERN_AS3
     }
   ],
   'play/v2/client/interface.swf': [
@@ -493,13 +671,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       date: '2011-02-17',
       fileRef: 'archives:Enm111.swf'
-    }
-  ],
-  'play/v2/games/roundup/PuffleRoundup.swf': [
-    {
-      // orange puffle version, must add white puffle version too later
-      date: Update.CPIP_UPDATE,
-      fileRef: 'recreation:puffle_roundup_orange.swf'
     }
   ],
   'play/v2/content/local/en/catalogues/costume.swf': [

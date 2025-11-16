@@ -4,6 +4,9 @@ import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
 import { commandsHandler } from '../commands';
 import { Handle } from '../handles';
+import { processFurniture } from './igloo';
+import { isGreaterOrEqual } from '../../../server/routes/versions';
+import { Update } from '../../../server/game-data/updates';
 
 const handler = new Handler();
 
@@ -20,6 +23,9 @@ handler.xt(Handle.JoinRoomOld, (client, room) => {
 
 // Paying after minigame
 handler.xt(Handle.LeaveGame, (client, score) => {
+  if (!client.isEngine1) {
+    return;
+  }
   const coins = client.getCoinsFromScore(score);
   client.penguin.addCoins(coins);
   
@@ -101,10 +107,85 @@ handler.xt(Handle.SetFrameOld, (client, frame) => {
   client.setFrame(frame);
 })
 
+handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
+  const args: Array<string | number> = [id, client.penguin.activeIgloo.type, ];
+  
+  // when igloo music was added, the music parameter is optional
+  if (isGreaterOrEqual(client.version, Update.IGLOO_MUSIC)) {
+    args.push(client.penguin.activeIgloo.music);
+  }
+  
+  // client misteriously removes the first element of the furniture
+  client.sendXt('jp', ...args, ',' + Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+  const roomId = 2000 + id;
+  client.joinRoom(roomId);
+});
+
+handler.xt(Handle.GetIgloo2007, (client, id) => {
+  client.sendXt('gm', id, client.penguin.activeIgloo.type, client.penguin.activeIgloo.music, client.penguin.activeIgloo.flooring, Client.getFurnitureString(client.penguin.activeIgloo.furniture));
+});
+
+handler.xt(Handle.GetFurnitureOld, (client) => {
+  const furniture: number[] = [];
+  client.penguin.getAllFurniture().forEach(furn => {
+    for (let i = 0; i < furn[1]; i++) {
+      furniture.push(furn[0]);
+    }
+  })
+
+  client.sendXt('gf', ...furniture);
+});
+
+handler.xt(Handle.GetFurniture2007, (client) => {
+  const furniture: number[] = [];
+  client.penguin.getAllFurniture().forEach(furn => {
+    for (let i = 0; i < furn[1]; i++) {
+      furniture.push(furn[0]);
+    }
+  })
+
+  client.sendXt('gf', ...furniture);
+});
+
+handler.xt(Handle.AddFurnitureOld, (client, id) => {
+  client.buyFurniture(id);
+  client.update();
+});
+
+handler.xt(Handle.UpdateIglooOld, (client, type, ...rest) => {
+  // music ID is placed at the start, though it may not be present
+  let furnitureItems: string[];
+  let music: number;
+  if (rest[0].includes('|')) {
+    furnitureItems = rest;
+    music = 0;
+  } else {
+    music = Number(rest[0]);
+    furnitureItems = rest.slice(1);
+  }
+  
+  const igloo = processFurniture(furnitureItems);
+  client.penguin.updateIgloo({ furniture: igloo, type: Number(type), music });
+  client.update();
+});
+
+handler.xt(Handle.UpdateIgloo2007, (client, ...furnitureItems) => {
+  const igloo = processFurniture(furnitureItems);
+  client.penguin.updateIgloo({ furniture: igloo });
+  client.update();
+});
+
+handler.xt(Handle.UpdateIglooMusic2007, (client, music) => {
+  client.penguin.updateIgloo({ music });
+  client.update();
+});
+
 // Logging in
-handler.post('/php/login.php', (body) => {
+handler.post('/php/login.php', (server, body) => {
   const { Username } = body;
   const penguin = Client.getPenguinFromName(Username);
+
+  const virtualDate = server.getVirtualDate(43);
 
   const params: Record<string, number | string> = {
     crumb: Client.engine1Crumb(penguin),
@@ -115,7 +196,9 @@ handler.post('/php/login.php', (body) => {
     ed: '10000-1-1', // EXPIRACY DATE TODO what is it for?
     h: '', // TODO what is?
     w: '100|0', // TODO what is?
-    m: '' // TODO what is
+    m: '', // TODO what is
+    il: penguin.getItems().join('|'), // item list
+    td: `${virtualDate.getUTCFullYear()}-${String(virtualDate.getUTCMonth()).padStart(2, '0')}-${String(virtualDate.getUTCDate()).padStart(2, '0')}:${virtualDate.getUTCHours()}:${virtualDate.getUTCMinutes()}:${virtualDate.getUTCSeconds()}` // used for the snow forts clock in later years
   }
 
   let response = ''

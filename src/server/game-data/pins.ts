@@ -40,6 +40,14 @@ export const PINS: Array<Pin> = [
     frame: 2
   },
   {
+    date: '2006-11-10',
+    end: '2006-11-24',
+    name: 'Jet Pack',
+    room: 'beach',
+    fileRef: 'archives:ArtworkRoomsBeach42.swf',
+    frame: 2
+  },
+  {
     date: '2006-11-24',
     end: '2006-12-08',
     name: 'Life Ring',
@@ -47,11 +55,42 @@ export const PINS: Array<Pin> = [
     fileRef: 'recreation:light_life_ring_pin.swf'
   },
   {
+    date: '2006-12-22',
+    end: '2007-01-05',
+    name: 'Candy Cane',
+    room: 'dance',
+    fileRef: 'archives:ArtworkRoomsDance42.swf',
+    frame: 2
+  },
+  {
     name: 'Ice Block',
     date: Update.ICE_BLOCK_PIN,
     end: '2007-03-02',
     room: 'berg',
     fileRef: 'recreation:berg_ice_block_pin.swf'
+  },
+  {
+    name: 'Microphone',
+    date: '2007-04-13',
+    end: '2007-04-27',
+    room: 'beacon',
+    fileRef: 'recreation:beacon41.swf'
+  },
+  {
+    name: 'Tulip',
+    date: '2007-05-11',
+    end: '2007-05-25',
+    room: 'sport',
+    fileRef: 'recreation:shop43.swf',
+    frame: 2
+  },
+  {
+    name: 'Picnic Basket',
+    date: '2007-06-22',
+    end: '2007-07-06',
+    room: 'lodge',
+    fileRef: 'archives:ArtworkRoomsLodge46.swf',
+    frame: 2
   },
   {
     name: 'Paddleball',
@@ -69,14 +108,30 @@ export const PINS: Array<Pin> = [
   {
     name: 'Wreath',
     date: '2007-12-21',
-    end: '2008-01-04'
-    // only available in christmas party
+    end: '2008-01-04',
+    fileRef: 'archives:Attic42_Wreath_Pin.swf',
+    room: 'attic'
+  },
+  {
+    name: 'Rowboat',
+    date: '2008-02-01',
+    end: '2008-02-15',
+    fileRef: 'archives:Light46_Rowboat_Pin.swf',
+    room: 'light'
   },
   {
     name: 'Crayon',
     date: '2008-03-28',
-    end: '2008-04-11'
-    // only archived in april fools SWFs
+    end: '2008-04-11',
+    room: 'shack',
+    fileRef: 'archives:ArtworkRoomsShack41.swf'
+  },
+  {
+    name: 'Pyramid',
+    date: '2008-04-11',
+    end: '2008-04-25',
+    room: 'book',
+    fileRef: 'archives:Book43_Pyramid_Pin.swf'
   },
   {
     name: 'Treasure Chest',
@@ -96,9 +151,8 @@ export const PINS: Array<Pin> = [
     name: 'Ice Cream Cone',
     date: '2008-06-06',
     end: '2008-06-20',
-    // file is from water party, vanilla is not archived
     room: 'forest',
-    fileRef: 'archives:WPForest.swf'
+    fileRef: 'archives:Forest50_Icecream_Cone_Pin.swf'
   },
   {
     name: 'Treble Clef',

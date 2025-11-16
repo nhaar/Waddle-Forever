@@ -1,7 +1,7 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { getStampbook } from './stampjson';
-import { isEngine1, isEngine2, isEngine3, isLower } from "./versions";
+import { getStampsJson } from './stampjson';
+import { isEngine1, isEngine2, isEngine3, isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
 import { getDynamicMusicListData } from "../game-data/igloo-lists";
@@ -12,6 +12,13 @@ import { Update } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
+import { getGeneralJson } from "./generaljson";
+import { getPathsJson } from "./pathsjson";
+import { getRoomsJson } from "./roomsjson";
+import { getGameStrings } from "./gamestringsjson";
+import { getChunkingMapJson } from "./chunkingmapjson";
+import getStageScriptMessagesJson from "./stagemessagesjson";
+import { getNewspapersJson } from "./newspapersjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -19,7 +26,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.addFileServer();
 
   server.get('/', (s) => {
-    if (isEngine1(s.settings.version)) {
+    if (isLowerOrEqual(s.settings.version, Update.BETA_PARTY)) {
+      return 'default/websites/beta.html';
+    } else if (isEngine1(s.settings.version)) {
       return 'default/websites/old-precpip.html';
     } else if (isEngine2(s.settings.version) && isLower(s.settings.version, Update.AS3_UPDATE)) {
       if (s.settings.minified_website) {
@@ -27,7 +36,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       } else {
         return 'default/websites/classic-cpip.html';
       }
-    } else if (!isEngine3(s.settings.version)) {
+    } else if (isLower(s.settings.version, '2016-01-01')) {
       return 'default/websites/classic-as3.html';
     } else {
       return 'default/websites/modern-as3.html';
@@ -42,18 +51,20 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // serving the websites
   server.dir('', (s) => {
-    if (isEngine1(s.settings.version)) {
+    if (isLowerOrEqual(s.settings.version, Update.BETA_PARTY)) {
+      return 'default/websites/beta';
+    } else if (isEngine1(s.settings.version)) {
       return 'default/websites/old';
-    } else if (isEngine2(s.settings.version)) {
+    } else if (isLower(s.settings.version, '2016-01-01')) {
       return 'default/websites/classic';
-    } else if (isEngine3(s.settings.version)) {
+    } else {
       return 'default/websites/modern';
     }
   })
 
   // Pre CPIP server rewrite client uses these POST endpoints
   server.router.post('/setup.txt', (_, req) => {
-    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP));
+    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP, settingsManager.worldPort));
   })
   server.router.post('/news.txt', (_, req) => {
     req.send(getNewsTxt(settingsManager.settings.version));
@@ -71,22 +82,52 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // text file generating
   server.getData('en/web_service/stamps.json', (s) => {
-    return getStampbook(s.settings.version);
+    return getStampsJson(s.settings.version);
   });
-  server.getData('servers.xml', (s) => getServersXml(s.targetIP));
+  server.getData('play/en/web_service/game_configs/stamps.json', (s) => {
+    return getStampsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/chunking_map.json', (s) => {
+    return getChunkingMapJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/general.json', (s) => {
+    return getGeneralJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/paths.json', (s) => {
+    return getPathsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/rooms.json', (s) => {
+    return getRoomsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
+    return getGameStrings(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/newspapers.json', (s) => {
+    return getNewspapersJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/stage_script_messages.json', (s) => {
+    return getStageScriptMessagesJson(s.settings.version);
+  });
+  server.getData('servers.xml', (s) => getServersXml(s.targetIP, s.loginPort, s.worldPort));
   server.getData('setup.xml', (s) => {
-    return getSetupXml(s.settings.version, s.targetIP);
+    return getSetupXml(s.settings.version, s.targetIP, s.worldPort);
   });
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);
   });
   server.getData('play/web_service/environment_data.xml', (s) => {
-    return getEnvironmentDataXml(s.targetIP);
+    return getEnvironmentDataXml(s.targetIP, s.targetPort);
   });
   server.getData('web_service/worldachievements.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
   });
   server.getData('play/v2/content/local/en/login/startscreen.xml', (s) => {
+    return getStartscreenXML(s.settings.version);
+  })
+  server.getData('playstart/xml/start_module_config.xml', (s) => {
+    return getStartscreenXML(s.settings.version);
+  })
+  server.getData('playstart/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
 

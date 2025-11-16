@@ -5,7 +5,7 @@ export const ORIGINAL_ROOMS: Partial<Record<RoomName, string>> = {
   'coffee': 'fix:ArtworkRoomsCoffee2.swf',
   'book': 'archives:Beta-book.swf',
   'dance': 'mammoth:artwork/rooms/dance10.swf',
-  'lounge': 'mammoth:artwork/rooms/lounge10.swf',
+  'lounge': 'approximation:lounge_no_astro.swf',
   'shop': 'mammoth:artwork/rooms/shop10.swf',
   'dock': 'mammoth:artwork/rooms/dock11.swf',
   'village': 'approximation:village_release.swf',

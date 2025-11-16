@@ -5,7 +5,7 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { PARTIES, PartyChanges, RoomChanges, CrumbIndicator } from "../game-data/parties";
+import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator, LocalChanges } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -19,7 +19,7 @@ import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
-import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH } from "./crumbs";
+import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { MAP_UPDATES } from "../game-data/game-map";
@@ -97,30 +97,38 @@ class FileTimelineMap extends TimelineMap<string, string> {
     })
   }
 
-  addPartyChanges(changes: PartyChanges, start: Version, end: Version | undefined = undefined) {
-    const pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator) => {
-      const fileRef = typeof info === 'string' ? info : info[0];
-      const fullRoute = path.join(baseRoute, route);
-      if (end === undefined) {
-        this.add(fullRoute, fileRef, start);
-      } else {
-        this.add(fullRoute, fileRef, start, end);
-      }
+  pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator, start: Version, end: Version | undefined = undefined) => {
+    const fileRef = typeof info === 'string' ? info : info[0];
+    const fullRoute = path.join(baseRoute, route);
+    if (end === undefined) {
+      this.add(fullRoute, fileRef, start);
+    } else {
+      this.add(fullRoute, fileRef, start, end);
     }
+  }
+
+  addLocalChanges(changes: LocalChanges, start: Version, end: Version | undefined = undefined) {
+    iterateEntries(changes, (route, languages) => {
+      iterateEntries(languages, (language, info) => {
+        this.pushCrumbChange(path.join('play/v2/content/local', language), route, info, start, end);
+      })
+    })
+  }
+
+  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
 
     if (changes.roomChanges !== undefined) {
       this.addRoomChanges(changes.roomChanges, start, end);
     }
     if (changes.localChanges !== undefined) {
-      iterateEntries(changes.localChanges, (route, languages) => {
-        iterateEntries(languages, (language, info) => {
-          pushCrumbChange(path.join('play/v2/content/local', language), route, info);
-        })
-      })
+      this.addLocalChanges(changes.localChanges, start, end);
+    }
+    if (changes.construction?.localChanges !== undefined) {
+      this.addLocalChanges(changes.construction.localChanges, changes.construction.date, start);
     }
     if (changes.globalChanges !== undefined) {
       iterateEntries(changes.globalChanges, (route, info) => {
-        pushCrumbChange('play/v2/content/global', route, info);
+        this.pushCrumbChange('play/v2/content/global', route, info, start, end);
       });
     }
 
@@ -143,11 +151,17 @@ class FileTimelineMap extends TimelineMap<string, string> {
       this.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', start, end);
       this.add(path.join('play/v2/content/global', changes.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), changes.scavengerHunt2010.iconFileId, start, end);
     }
+    if (changes.scavengerHunt2011 !== undefined) {
+      this.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), changes.scavengerHunt2011.icon, start, end);
+    }
+
     if (changes.fairCpip !== undefined) {
-      this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
-      this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
-      this.add('play/v2/content/global/tickets.swf', changes.fairCpip.iconFileId, start, end);
-      this.add('play/v2/content/global/ticket_info.swf', changes.fairCpip.infoFile, start, end);
+      if (isLower(start, Update.MODERN_AS3)) {
+        this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
+        this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
+      }
+      this.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, changes.fairCpip.iconFileId, start, end);
+      this.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, changes.fairCpip.infoFile, start, end);
     }
     if (changes.scavengerHunt2007 !== undefined && typeof changes.scavengerHunt2007 === 'string') {
       // theoretically you would have static egg files and signal the number
@@ -158,6 +172,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
 
     if (changes.startscreens !== undefined) {
       addStartscreens(changes.startscreens, this, start, end);
+    }
+
+    if (changes.mapNote !== undefined) {
+      this.add('play/v2/content/local/en/close_ups/party_map_note.swf', changes.mapNote, start, end);
     }
   }
 
@@ -239,39 +257,54 @@ function addNewspapers(map: FileTimelineMap): void {
   
   const configXmlPath = getMediaFilePath('tool:news_config.xml');
   AS3_NEWSPAPERS.forEach((news) => {
-    const newsPath = `play/v2/content/local/en/news/${getMinifiedDate(news.date)}`;
-    map.addDefault(path.join(newsPath, 'config.xml'), configXmlPath);
+    const baseNewsPath = 'play/v2/content/local/en/news/';
+    const oldNewsPath = `${baseNewsPath}${getMinifiedDate(news.date)}`;
+    const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(news.date)}`;
+    map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+    map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
     const newspaperComponenets: Array<[string, string]> = [
-      ['front/header.swf', news.headerFront],
+      ['front/header.swf', news.headerFront ?? 'archives:News285HeaderFront.swf'],
       ['front/featureStory.swf', news.featureStory],
       ['front/supportStory.swf', news.supportStory],
       ['front/upcomingEvents.swf', news.upcomingEvents],
       ['front/newsFlash.swf', news.newsFlash],
       ['front/askAuntArctic.swf', news.askFront],
-      ['front/dividers.swf', news.dividersFront ?? 'archives:News268DividersFront.swf'],
+      ['front/dividers.swf', news.dividersFront ?? 'approximation:dividers_blank.swf'],
       ['front/navigation.swf', news.navigationFront ?? 'archives:News268NavigationFront.swf'],
-      ['back/header.swf', news.headerBack],
+      ['back/header.swf', news.headerBack ?? 'archives:News285HeaderBack.swf'],
       ['back/askAuntArctic.swf', news.askBack],
-      ['back/secrets.swf', news.secrets],
+      ['back/secrets.swf', news.secrets ?? 'archives:News285Secrets.swf'],
       ['back/submitYourContent.swf', news.submit ?? 'archives:News268SubmitYourContent.swf'],
-      ['back/jokesAndRiddles.swf', news.jokes],
-      ['back/dividers.swf', news.dividersBack ?? 'archives:News268DividersBack.swf'],
-      ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf'],
-      ['overlays/riddlesAnswers.swf', news.answers],
+      ['back/jokesAndRiddles.swf', news.jokes ?? 'archives:News285JokesAndRiddles.swf'],
+      ['back/dividers.swf', news.dividersBack ?? 'approximation:dividers_blank.swf'],
+      ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf']
     ]
+    if (news.answers !== undefined) {
+      newspaperComponenets.push(['overlays/riddlesAnswers.swf', news.answers]);
+    }
     if (news.extraJokes !== undefined) {
       newspaperComponenets.push(['overlays/extraJokes.swf', news.extraJokes]);
     }
-    if (news.secret !== undefined) {
+    if (news.secret !== undefined && news.secret !== null) {
       newspaperComponenets.push(['overlays/secret.swf', news.secret]);
     }
     if (news.iglooWinners !== undefined) {
       newspaperComponenets.push(['overlays/iglooWinners.swf', news.iglooWinners]);
     }
-    
+    if (news.featureMore !== undefined) {
+      newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore ?? 'archives:News284FeatureMore.swf']);
+    }
+    if (news.supportMore !== undefined) {
+      newspaperComponenets.push(['overlays/supportMore.swf', news.supportMore ?? 'archives:News282SupportMore.swf']);
+    }
+    if (news.extra !== undefined) {
+      newspaperComponenets.push(['overlays/extra.swf', news.extra]);
+    }
+     
     newspaperComponenets.forEach((pair) => {
       const [route, file] = pair;
-      map.addDefault(path.join(newsPath, 'content', route), getMediaFilePath(file));
+      map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
+      map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
     }) 
   })
 }
@@ -387,6 +420,7 @@ function addCatalogues(map: FileTimelineMap): void {
   });
 
   map.addDateRefMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
+  map.addDateRefMap('artwork/catalogue/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
 
@@ -438,8 +472,10 @@ function addStagePlays(map: FileTimelineMap): void {
     const date = debut.date;
     const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
 
-    // Stage itself
-    addRoomRoute(map, date, 'stage', debut.stageFileRef);
+    if (debut.stageFileRef !== null) {
+      // Stage itself
+      addRoomRoute(map, date, 'stage', debut.stageFileRef);
+    }
 
     if (debut.plazaFileRef !== null) {
       // Plaza
@@ -451,10 +487,12 @@ function addStagePlays(map: FileTimelineMap): void {
       map.addRoomChanges(debut.roomChanges, date, end);
     }
 
-    // simply hardcoding every catalogue to be from 0712 for now
-    map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
-    // TODO only add costrume trunks to each specific engine
-    map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
+    if (debut.costumeTrunkFileRef !== null) {
+      // simply hardcoding every catalogue to be from 0712 for now
+      map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
+      // TODO only add costrume trunks to each specific engine
+      map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
+    }
   })
 }
 
@@ -529,8 +567,10 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
   screens.forEach((screen, i) => {
     if (typeof screen === 'string') {
       map.add(`play/v2/content/local/en/login/backgrounds/background${i}.swf`, screen, date, end);
+      map.add(`play/start/billboards/login/backgrounds/background${i}.swf`, screen, date, end);
     } else {
       map.add(`play/v2/content/local/en/login/backgrounds/${screen[0]}`, screen[1], date, end);
+      map.add(`play/start/billboards/login/backgrounds/${screen[0]}`, screen[1], date, end);
     }
   })
 }
@@ -546,6 +586,10 @@ function addParties(map: FileTimelineMap): void {
         party.construction.updates.forEach((update) => {
           map.addRoomChanges(update.changes, update.date, start);
         })
+      }
+
+      if (party.construction.startscreens !== undefined) {
+        addStartscreens(party.construction.startscreens, map, constructionStart, start);
       }
     }
   });

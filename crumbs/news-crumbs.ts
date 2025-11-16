@@ -6,6 +6,7 @@ import { getMinifiedDate } from '../src/server/timelines/route';
 import { NEWS_CRUMBS_PATH } from '../src/server/timelines/crumbs';
 import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/game-data/newspapers';
 import { Update } from '../src/server/game-data/updates';
+import { monthNames } from '../src/common/utils';
 
 type LabeledAs2Newspaper = As2Newspaper & { type: 'as2' };
 type LabeledAs3Newspaper = As3Newspaper & { type: 'as3' };
@@ -20,6 +21,10 @@ export function isNewspaperAfterCPIP(nextNewspaper: As2Newspaper | undefined) {
   return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, Update.CPIP_UPDATE);
 }
 
+function isNewspaperAfterJSON(nextNewspaper: As3Newspaper | undefined) {
+  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, Update.MODERN_AS3);
+}
+
 function getNewspaperMinifiedDate(news: Newspaper): string {
   // same format but without dahses in-between
   return getMinifiedDate(news.date)
@@ -27,20 +32,7 @@ function getNewspaperMinifiedDate(news: Newspaper): string {
 
 function getFullDate(news: Newspaper): string {
   const [year, month, day] = processVersion(news.date);
-  let monthname = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ][month - 1];
+  let monthname = monthNames[month - 1];
 
   return `${monthname} ${day}, ${year}`
 }
@@ -169,8 +161,8 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
   }
 
   // only generate news crumbs for post CPIP
-  const canGenerate = newspaper.type === 'as3' || (
-    isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])
+  const canGenerate = (newspaper.type === 'as3' && !isNewspaperAfterJSON(AS3_NEWSPAPERS[index + 1])) || (
+    newspaper.type === 'as2' && isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])
   );
 
   if (currentThings.length === 7 && canGenerate) {
@@ -205,9 +197,10 @@ export async function generateNewsCrumbsFiles(deletePrevious: boolean = false) {
     i++;
   }
 
+  i = 0;
   for (const newspaper of AS3_NEWSPAPERS) {
-    // index does not matter for this one
-    await processNewspaper({ ...newspaper, type: 'as3' }, 0);
+    await processNewspaper({ ...newspaper, type: 'as3' }, i);
+    i++
   }
 
   if (!deletePrevious) {

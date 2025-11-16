@@ -40,14 +40,16 @@ newspaperFiles.forEach((fileId, index) => {
 
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
-  'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf',
+  'artwork/characters/penguin.swf': 'approximation:penguin_no_shadow.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
   'games/astro.swf': 'mammoth:games/astro.swf',
   'games/beans.swf': 'mammoth:games/beans.swf',
   'games/biscuit.swf': 'mammoth:games/biscuit.swf',
   'games/puffle.swf': 'mammoth:games/puffle.swf',
+  'games/fish.swf': 'mammoth:games/fish.swf',
   'load.swf': 'mammoth:load.swf',
-  'artwork/news/newfan.swf': 'archives:NewsFan.swf',
+  'artwork/news/newsfan.swf': 'archives:NewsFan.swf',
+  'artwork/news/newsbeta.swf': 'recreation:news_beta.swf',
   ...staticNewspaperFiles,
   'chat299.swf': 'fix:Chat299.swf',
   'chat506.swf': 'unknown:chat506.swf',
@@ -85,6 +87,13 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/toys/sculpture/RockAndPen.swf': 'recreation:festival_of_snow/rockandpen.swf',
   'artwork/toys/sculpture/Y4ssenGrego.swf': 'recreation:festival_of_snow/y4ssengrego.swf',
   'artwork/tools/807.swf': 'archives:AwardsEN807.swf',
-  'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf'
-
+  'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf',
+  'artwork/catalogue/adopt0703.swf': 'archives:Pets_0703.swf',
+  'artwork/rooms/igloo20.swf': 'archives:Igloo20.swf',
+  'artwork/rooms/igloo44.swf': 'archives:Igloo44.swf',
+  'artwork/rooms/igloo46.swf': 'archives:Igloo46.swf',
+  'artwork/rooms/igloo52.swf': 'archives:Igloo52.swf',
+  'artwork/rooms/igloo58.swf': 'archives:Igloo58.swf',
+  'artwork/rooms/igloo73.swf': 'archives:Igloo73.swf',
+  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf'
 };

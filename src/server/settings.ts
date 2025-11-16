@@ -3,6 +3,8 @@ import path from 'path';
 import { Router, Request } from "express";
 import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
 import { isVersionValid, Version } from './routes/versions';
+import { HTTP_PORT } from '../common/constants';
+import { LOGIN_DELTA, WORLD_DELTA } from './servers';
 
 export interface Settings {
   fps30: boolean
@@ -73,6 +75,9 @@ export class SettingsManager {
   /** IP used by the server */
   targetIP: string;
 
+  /** HTTP port used by the server, undefined if default */
+  targetPort: number;
+
   constructor () {
     let settingsJson: any = {};
 
@@ -101,6 +106,7 @@ export class SettingsManager {
     this.updateSettings({});
 
     this.targetIP = '127.0.0.1';
+    this.targetPort = HTTP_PORT;
   }
 
   readString(object: any, property: string): string {
@@ -149,6 +155,14 @@ export class SettingsManager {
     const mods = getMods();
     this.usingMods = mods.length > 0
     return mods;
+  }
+
+  get loginPort() {
+    return this.targetPort + LOGIN_DELTA;
+  }
+
+  get worldPort() {
+    return this.targetPort + WORLD_DELTA;
   }
 }
 

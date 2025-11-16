@@ -154,7 +154,18 @@ export enum Handle {
   CardJitsuFireChooseElement,
   EPFStamps,
   OpenBook,
-  CloseBook
+  CloseBook,
+  JoinIglooOld,
+  GetFurnitureOld,
+  AddFurnitureOld,
+  UpdateIglooOld,
+  GetIgloo2007,
+  GetFurniture2007,
+  UpdateIgloo2007,
+  UpdateIglooMusic2007,
+  GetPartyOp,
+  SetPartyOp,
+  SendLine
 };
 
 /** Map of all the handles and their valid arguments */
@@ -292,21 +303,36 @@ export const HANDLE_ARGUMENTS = {
   [Handle.CardJitsuFireChooseElement]: ['string', 'string'],
   [Handle.EPFStamps]: ['number'],
   [Handle.OpenBook]: ['number'],
-  [Handle.CloseBook]: []
+  [Handle.CloseBook]: [],
+  [Handle.JoinIglooOld]: ['number', 'number'],
+  [Handle.GetFurnitureOld]: [],
+  [Handle.AddFurnitureOld]: ['number'],
+  [Handle.UpdateIglooOld]: 'string',
+  [Handle.GetIgloo2007]: ['number'],
+  [Handle.GetFurniture2007]: [],
+  [Handle.UpdateIgloo2007]: 'string',
+  [Handle.UpdateIglooMusic2007]: ['number'],
+  [Handle.GetPartyOp]: [],
+  [Handle.SetPartyOp]: ['number'],
+  [Handle.SendLine]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
     'jr': Handle.JoinRoomOld,
     'js': Handle.JoinServerOld,
+    'jp': Handle.JoinIglooOld,
     'ac': Handle.GetCoins,
     'ai': Handle.AddItemOld,
+    'af': Handle.AddFurnitureOld,
     'up': Handle.UpdatePenguinOld,
+    'ur': Handle.UpdateIglooOld,
     'il': Handle.GetInventoryOld,
     'sp': Handle.SetPositionOld,
     'se': Handle.SendEmoteOld,
     'sb': Handle.SnowballOld,
     'gi': Handle.GetInventory2007,
+    'gf': Handle.GetFurnitureOld,
     'sf': Handle.SetFrameOld,
     'sj': Handle.SendJokeOld,
     'ss': Handle.SendSafeMessageOld,
@@ -336,7 +362,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       'ss': Handle.SendSafeMessage,
       'pbi': Handle.PBI,
       'glr': Handle.GLR,
-      'h': Handle.Heartbeat
+      'h': Handle.Heartbeat,
+      'sl': Handle.SendLine
     },
     'r': {
       'gtc': Handle.GetTotalCoins
@@ -361,7 +388,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'epfgr': Handle.GetEpfMedals,
       'epfai': Handle.AddEpfItem,
       'epfsa': Handle.BecomeEpfAgent,
-      'epfgrantreward': Handle.GrantEpfMedals
+      'epfgrantreward': Handle.GrantEpfMedals,
+      'epfgp': Handle.GetPartyOp,
+      'epfsp': Handle.SetPartyOp
     },
     'g': {
       'gm': Handle.GetIgloo,
@@ -473,6 +502,12 @@ const HANDLER_MAPPING: HandlerMapping = {
   },
   'm': {
     'sm': Handle.SendMessageOld
+  },
+  'r': {
+    'gm': Handle.GetIgloo2007,
+    'gf': Handle.GetFurniture2007,
+    'ur': Handle.UpdateIgloo2007,
+    'um': Handle.UpdateIglooMusic2007
   }
 }
 

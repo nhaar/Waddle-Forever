@@ -1,6 +1,8 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
+import { isGreaterOrEqual, isLower, Version } from "../../../server/routes/versions";
+import { Update } from "../../../server/game-data/updates";
 
 const handler = new Handler();
 
@@ -62,6 +64,39 @@ handler.xt(Handle.EPFStamps, (client, stamp) => {
   } else {
     client.sendXt('epfsf', 'nem', stamp); // giving the stamp
   }
+});
+
+enum PartyOp {
+  BattleOfDoom
+};
+
+function getPartyOp(version: Version): PartyOp | undefined {
+  // TODO, if more party ops are needed, make timeline
+  if (isGreaterOrEqual(version, Update.BATTLE_DOOM_START) && isLower(version, Update.BATTLE_DOOM_END)) {
+    return PartyOp.BattleOfDoom;
+  }
+
+  return undefined;
+}
+
+handler.xt(Handle.GetPartyOp, (client) => {
+  const op = getPartyOp(client.version);
+
+  if (op === PartyOp.BattleOfDoom) {
+    client.sendXt('epfgp', client.penguin.completedBattleOfDoom ? 1 : 0);
+  }
+});
+
+handler.xt(Handle.SetPartyOp, (client, completed) => {
+  const op = getPartyOp(client.version);
+
+  if (completed === 1) {
+    if (op === PartyOp.BattleOfDoom) {
+      client.penguin.setBattleOfDoomCompleted();
+    }
+  }
+
+  client.update();
 });
 
 export default handler

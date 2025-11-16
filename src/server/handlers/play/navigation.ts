@@ -1,6 +1,4 @@
-import { WADDLE_ROOMS } from '../../../server/game-logic/waddles';
 import { Handler } from '..';
-import { WaddleGame } from '../../../server/client';
 import { SledRace } from '../games/sled';
 import { CardJitsu } from '../games/card';
 import { Handle } from '../handles';
@@ -17,7 +15,7 @@ handler.xt(Handle.JoinRoom, (client, ...args) => {
 // client requesting to leave a minigame
 handler.xt(Handle.LeaveGame, (client, score) => {
   // waddle games individually handle this
-  if (client.isInWaddleGame()) {
+  if (client.isInWaddleGame() || client.isEngine1) {
     return;
   }
 
@@ -93,6 +91,10 @@ handler.xt(Handle.SendSafeMessage, (client, id) => {
   client.sendSafeMessage(id);
 });
 
+handler.xt(Handle.SendLine, (client, line) => {
+  client.sendRoomXt('sl', client.penguin.id, line);
+});
+
 // player inventory thing? Not sure why this exists
 handler.xt(Handle.PBI, (client, id) => {
   client.sendXt('pbi', id);
@@ -158,7 +160,6 @@ handler.xt(Handle.LeaveWaddle, (client) => {
 
 handler.disconnect((client) => {
   client.disconnect();
-  client.update();
 })
 
 export default handler;

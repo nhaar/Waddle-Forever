@@ -71,5 +71,22 @@ export const STADIUM_UPDATES: StadiumUpdate[] = [
     fortsFileId: 'archives:RoomsForts.swf',
     catalogFileId: 'archives:December10Sport.swf',
     type: 'rink'
+  },
+  {
+    date: '2011-05-31',
+    townFileId: 'archives:RoomsTown_2.swf',
+    rinkFileId: 'archives:RoomsRink-May2011.swf',
+    mapFileId: 'archives:Map2008-2011Stadium.swf',
+    fortsFileId: 'archives:RoomsForts_2.swf',
+    type: 'stadium',
+    catalogFileId: 'archives:May2011Sport.swf'
+  },
+  {
+    date: '2011-12-08',
+    townFileId: 'archives:RoomsTown_3.swf',
+    rinkFileId: 'archives:RoomsRink-Dec2011.swf',
+    type: 'rink',
+    fortsFileId: 'archives:RoomsForts_3.swf',
+    catalogFileId: 'archives:Dec2011Sport.swf'
   }
 ];
