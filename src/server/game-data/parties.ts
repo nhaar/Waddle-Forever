@@ -637,6 +637,21 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     ]
   },
   {
+    name: 'St. Patrick\'s',
+    date: '2007-03-16',
+    end: '2007-03-19',
+    roomChanges: {
+      coffee: 'recreation:st_patrick_2007/coffee.swf'
+    },
+    music: {
+      'town': 208,
+      'dance': 208,
+      'coffee': 208,
+      'dock': 208,
+      'plaza': 208
+    }
+  },
+  {
     name: 'April Fools\' Party',
     date: '2007-03-30',
     end: '2007-04-02',
@@ -767,7 +782,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       mtn: 'recreation:water_party_2007/mtn.swf',
       dojo: 'recreation:water_party_2007/dojo.swf',
       beach: 'recreation:water_party_2007/beach.swf',
-      cove: 'recreation:water_party_2007/cove.swf'
+      cove: 'recreation:water_party_2007/cove.swf',
+      dock: 'recreation:water_party_2007/dock.swf'
     },
     music: {
       dojo: 217,
@@ -775,7 +791,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       forest: 218,
       mtn: 218,
       beach: 218,
-      cove: 218
+      cove: 218,
+      dock: 218
     }
   },
   {
