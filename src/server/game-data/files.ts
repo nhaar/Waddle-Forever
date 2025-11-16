@@ -1504,6 +1504,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'shop43.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'forts_broken_sign.swf',
+      comment: 'Made by VampLovr'
     }
   ],
   [MOD]: [

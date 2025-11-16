@@ -684,6 +684,13 @@ export const TEMPORARY_ROOM_UPDATES: Partial<Record<RoomName, TemporaryRoomUpdat
       end: '2008-04-21',
       fileRef: 'archives:ArtworkRoomsForts50.swf',
       comment: 'The Snow Forts clock breaks'
+    },
+    {
+      // unknown start date
+      date: '2006-10-24',
+      end: '2006-10-27',
+      fileRef: 'recreation:forts_broken_sign.swf',
+      comment: 'The Snow Forts sign breaks'
     }
   ],
   'lodge': [
