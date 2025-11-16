@@ -269,14 +269,14 @@ function addNewspapers(map: FileTimelineMap): void {
       ['front/upcomingEvents.swf', news.upcomingEvents],
       ['front/newsFlash.swf', news.newsFlash],
       ['front/askAuntArctic.swf', news.askFront],
-      ['front/dividers.swf', news.dividersFront ?? 'archives:News268DividersFront.swf'],
+      ['front/dividers.swf', news.dividersFront ?? 'approximation:dividers_blank.swf'],
       ['front/navigation.swf', news.navigationFront ?? 'archives:News268NavigationFront.swf'],
       ['back/header.swf', news.headerBack ?? 'archives:News285HeaderBack.swf'],
       ['back/askAuntArctic.swf', news.askBack],
       ['back/secrets.swf', news.secrets ?? 'archives:News285Secrets.swf'],
       ['back/submitYourContent.swf', news.submit ?? 'archives:News268SubmitYourContent.swf'],
       ['back/jokesAndRiddles.swf', news.jokes ?? 'archives:News285JokesAndRiddles.swf'],
-      ['back/dividers.swf', news.dividersBack ?? 'archives:News268DividersBack.swf'],
+      ['back/dividers.swf', news.dividersBack ?? 'approximation:dividers_blank.swf'],
       ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf']
     ]
     if (news.answers !== undefined) {
