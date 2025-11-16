@@ -3459,7 +3459,8 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
       {
         date: Update.PLANET_Y_2010,
         roomChanges: {
-          'plaza': 'recreation:water_hunt_planet_y.swf'
+          'plaza': 'recreation:water_hunt_planet_y.swf',
+          beach: 'recreation:water_hunt_beach_no_pin.swf'
         }
       }
     ],
