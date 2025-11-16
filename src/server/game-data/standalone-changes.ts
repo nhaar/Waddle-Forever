@@ -252,7 +252,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
     generalChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
-      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf'
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
+      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf'
     },
     globalChanges: {
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
@@ -325,7 +326,8 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       'content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf'
     },
     generalChanges: {
-      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf'
+      'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
+      'play/v2/client/engine.swf': 'svanilla:media/play/v2/client/engine.swf'
     }
   }
 ];
@@ -511,10 +513,6 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
       // engine that has EPF and stuff
       fileRef: 'approximation:engine.swf',
       date: Update.EPF_RELEASE
-    },
-    {
-      fileRef: 'svanilla:media/play/v2/client/engine.swf',
-      date: Update.MODERN_AS3
     }
   ],
   'play/v2/client/interface.swf': [

@@ -448,6 +448,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'shell_2011_interface_fix.swf',
       comment: 'shell.swf from vanilla media, but for the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
+    },
+    {
+      file: 'engine_modern_no_glow.swf',
+      comment: 'engine.swf from vanilla media, but with name glow removed'
     }
   ],
   [RECREATION]: [
