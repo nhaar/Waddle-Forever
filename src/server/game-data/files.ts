@@ -1500,6 +1500,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'cove_hut_const.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'shop43.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
