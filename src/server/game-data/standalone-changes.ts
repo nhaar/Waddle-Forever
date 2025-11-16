@@ -229,7 +229,15 @@ export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
       'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf',
       'play/v2/client/newspaper.swf': 'approximation:newspaper_march_compatible.swf'
     },
-    startscreens: [ 'archives:LoginSystemDefender.swf' ]
+    startscreens: [ 
+      'archives:LoginAdopt_black.swf',
+      'archives:LoginAdopt_green.swf',
+      'archives:LoginAdopt_pink.swf',
+      'archives:LocalEnLoginBackgroundsAdopt_yellow.swf',
+      'archives:LoginDucky.swf',
+      'archives:LoginJetpack.swf',
+      'archives:LoginStamps3.swf'
+    ]
   },
   {
     date: '2011-03-28',
