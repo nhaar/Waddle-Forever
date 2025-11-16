@@ -419,7 +419,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_modern_label_fix.swf',
-      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011'
+      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011. In addition, the calls for updateListeners(PLAYER_FRAME had to be changed for the Island Adventure cove triggers to work properly'
     },
     {
       file: 'rooms_common_label_fix.swf',
