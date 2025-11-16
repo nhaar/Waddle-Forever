@@ -4376,10 +4376,13 @@ export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
     }, 
     localChanges: { 
       'close_ups/poster.swf': { 
-        'en': 'archives:TheGreatSnowRacePoster.swf' 
+        'en': ['archives:TheGreatSnowRacePoster.swf', 'poster'] 
       }, 
       'catalogues/party.swf': { 
-        'en': 'archives:TheGreatSnowRaceCatalogParty.swf' 
+        'en': ['archives:TheGreatSnowRaceCatalogParty.swf', 'party_catalogue'] 
+      },
+      'close_ups/party_note02.swf': {
+        'en': 'recreation:great_snow_race/party_note02.swf'
       },
       'close_ups/party_note03.swf': {
         'en': 'recreation:great_snow_race/party_note03.swf'

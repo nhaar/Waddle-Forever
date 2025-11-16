@@ -1379,15 +1379,19 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'great_snow_race/party_note04.swf',
-      comment: 'Based on local/en/close_ups/party_op_medals_earned.swf (from vanilla media), added a function in the close button that interacts with the room code from party10 (Great Snow Race) to progress the Operation Hibernation scene. Also removed the medals animations that was present'
+      comment: 'Made by Blue Kirby, originally based on local/en/close_ups/party_op_medals_earned.swf (from vanilla media), added a function in the close button that interacts with the room code from party10 (Great Snow Race) to progress the Operation Hibernation scene. Also removed the medals animations that was present. Then Blue Kirby fixed the text'
     },
     {
       file: 'great_snow_race/party_note03.swf',
-      comment: 'Currently same as party_note04add, placeholder'
+      comment: 'Made by Blue Kirby, used party_note04 as a base and changed the text'
     },
     {
       file: 'great_snow_race/party_note05.swf',
-      comment: 'Currently same as party_note04, placeholder'
+      comment: 'Made by Blue Kirby, used party_note04 as a base and changed the text'
+    },
+    {
+      file: 'great_snow_race/party_note02.swf',
+      comment: 'Made by Blue Kirby, used party_note04 as a base and changed the text'
     },
     {
       file: 'april_fools_2007/beach.swf',
