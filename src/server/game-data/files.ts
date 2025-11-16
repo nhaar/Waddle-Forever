@@ -1506,6 +1506,14 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by VampLovr'
     },
     {
+      file: 'water_party_2007/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'st_patrick_2007/coffee.swf',
+      comment: 'Made by Slicedpizza'
+    },
+    {
       file: 'water_hunt_beach_no_pin.swf',
       comment: 'Made by ItzAle, removed the pin from the room'
     }
