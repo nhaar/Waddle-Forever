@@ -7,7 +7,8 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-10-24',
-    clothingCatalog: 'archives:Clothing_0510.swf'
+    clothingCatalog: 'archives:Clothing_0510.swf',
+    furnitureCatalog: 'archives:Furniture_0510.swf'
   },
   {
     date: '2005-11-01',
