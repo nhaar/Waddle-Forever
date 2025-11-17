@@ -83,6 +83,7 @@ export const CPIP_CATALOGS: DateRefMap = {
 
 /** All furniture catalogs */
 export const FURNITURE_CATALOGS: DateRefMap = {
+  '2005-09-21': 'recreation:furniture_Sep05.swf',
   '2005-10-24': 'archives:Furniture_0510.swf',
   '2008-06-20': 'archives:Jun-Jul2008Furniture.swf',
   '2008-07-18': 'archives:FurnJul2008.swf',

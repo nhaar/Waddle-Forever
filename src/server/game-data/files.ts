@@ -1524,6 +1524,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_hunt_beach_no_pin.swf',
       comment: 'Made by ItzAle, removed the pin from the room'
+    },
+    {
+      file: 'furniture_Sep05.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
