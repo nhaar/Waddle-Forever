@@ -22,7 +22,6 @@ import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-dat
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
-import { MAP_UPDATES } from "../game-data/game-map";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { PINS } from "../game-data/pins";
@@ -30,6 +29,7 @@ import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { getFileDateSignature } from "./clothing";
+import { UPDATES } from "../updates/updates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -407,9 +407,11 @@ function addStandaloneChanges(map: FileTimelineMap): void {
 }
 
 function addMapUpdates(map: FileTimelineMap): void {
-  MAP_UPDATES.forEach((update) => {
-    map.addGameMapUpdate(update.fileRef, update.date);
-  });
+  UPDATES.forEach((update) => {
+    if (update.update.map !== undefined) {
+      map.addGameMapUpdate(update.update.map, update.date, update.end);
+    }
+  })
 }
 
 function addCatalogues(map: FileTimelineMap): void {

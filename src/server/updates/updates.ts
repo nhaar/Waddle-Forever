@@ -10,7 +10,7 @@ import { UPDATES_2009 } from "./2009";
 import { UPDATES_2010 } from "./2010";
 import { UPDATES_2011 } from "./2011";
 
-export const UPDATES = [
+export const allUpdates = [
   ...UPDATES_2005,
   ...UPDATES_2006,
   ...UPDATES_2007,
@@ -23,8 +23,8 @@ export const UPDATES = [
 function enforceCorrectness() {
   let greatest: string | undefined = undefined;
   const seen = new Set<string>();
-  for (let i = 0; i < UPDATES.length; i++) {
-    const update = UPDATES[i];
+  for (let i = 0; i < allUpdates.length; i++) {
+    const update = allUpdates[i];
     if (greatest === undefined) {
       greatest = update.date;
     } else {
@@ -43,12 +43,12 @@ if (IS_DEV) {
   enforceCorrectness();
 }
 
-const consumed = consumeUpdates(UPDATES);
+export const UPDATES = consumeUpdates(allUpdates);
 
 export function createTimeline<T>(callback: (update: CPUpdate) => T | undefined): VersionsInformation<T> {
   const timeline = new VersionsTimeline<T>();
 
-  consumed.forEach((day) => {
+  UPDATES.forEach((day) => {
     const info = callback(day.update);
     if (info !== undefined) {
       timeline.add({

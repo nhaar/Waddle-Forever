@@ -1,6 +1,9 @@
+import { FileRef } from "../game-data/files";
 import { Version } from "../routes/versions"
 
-export type CPUpdate = {};
+export type CPUpdate = {
+  map?: FileRef;
+};
 
 type TemporaryUpdate = {
   end: Version;
