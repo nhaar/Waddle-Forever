@@ -1,3 +1,4 @@
+import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
 import { RoomName } from "../game-data/rooms";
 import { Version } from "../routes/versions"
@@ -51,17 +52,17 @@ export type CPUpdate = {
   localChanges?: LocalChanges;
 
   globalChanges?: GlobalChanges;
+
+  migrator?: boolean;
 };
 
-type TemporaryUpdate = {
-  end: Version;
-  consequences?: { date: Version; } & CPUpdate;
-  sub?: Array<{ date: Version; } & CPUpdate>;
-} & CPUpdate;
+export type Event = 'migrator-crash' |
+  'migrator-reconstruction';
 
 export type Update = {
   date: Version;
-  temp?: TemporaryUpdate[];
+  temp?: Partial<Record<Event, CPUpdate>>;
+  end?: Array<Event>;
 } & CPUpdate;
 
 export function consumeUpdates(updates: Update[]): Array<{
@@ -75,6 +76,9 @@ export function consumeUpdates(updates: Update[]): Array<{
     update: CPUpdate;
   }> = [];
 
+  const eventEnds = new Map<Event, Version>();
+  const temps: Array<{ date: Version; update: CPUpdate, event: Event }> = [];
+
   updates.forEach(update => {
     consumed.push({
       date: update.date,
@@ -82,31 +86,36 @@ export function consumeUpdates(updates: Update[]): Array<{
     })
 
     if (update.temp !== undefined) {
-      update.temp.forEach(temp => {
-        consumed.push({
+      iterateEntries(update.temp, (e, u) => {
+        temps.push({
           date: update.date,
-          end: temp.end,
-          update: temp
+          update: u,
+          event: e
         });
-
-        if (temp.consequences !== undefined) {
-          consumed.push({
-            date: temp.end,
-            update: temp.consequences
-          });
-        }
-
-        if (temp.sub !== undefined) {
-          temp.sub.forEach((subUpdate) => {
-            consumed.push({
-              date: subUpdate.date,
-              end: temp.end,
-              update: subUpdate
-            });
-          });
-        }
       });
     }
+
+    if (update.end !== undefined) {
+      update.end.forEach(event => {
+        if (eventEnds.has(event)) {
+          throw new Error(`Event ending twice: ${event}`);
+        }
+        eventEnds.set(event, update.date);
+      });
+    }
+  });
+
+  
+  temps.forEach(temp => {
+    const end = eventEnds.get(temp.event);
+    if (end === undefined) {
+      throw new Error(`No ending to event: ${temp.event}`);
+    }
+    consumed.push({
+      date: temp.date,
+      end: end,
+      update: temp.update
+    });
   });
 
   return consumed;

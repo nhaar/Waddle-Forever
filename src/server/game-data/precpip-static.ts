@@ -64,5 +64,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/roundup/roundup.swf': 'mammoth:games/puffle.swf',
   'games/mine/mine.swf': 'fix:CartSurfer2006.swf',
   'games/mine.swf': 'fix:CartSurfer2006.swf',
-  'games/waves/game.swf': 'archives:CatchinWavesGame.swf'
+  'games/waves/game.swf': 'archives:CatchinWavesGame.swf',
+  'artwork/tools/telescope0.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf'
 };

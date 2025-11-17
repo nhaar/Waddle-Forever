@@ -6,16 +6,170 @@ export const UPDATES_2008: Update[] = [
     clothingCatalog: 'archives:Clothing_0801.swf'
   },
   {
+    date: '2008-01-16',
+    // according to newspaper
+    // unsure if in the original game the animation replayed each time
+    // unless they had some interesting serverside code or the client in this day was different
+    // it probably just replayed each time
+    miscComments: ['Something happening with The Migrator can be viewed from the telescope'],
+    temp: {
+      'migrator-crash': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:BeaconTelescopeCrash.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-01-18',
+    // we know on 17th it was still the previous one
+    // this date below here is mostly an assumption, but it should be this at most
+    // by the 23rd
+    miscComments: ['The aftermath of The Migrator crash remains in the telescope'],
+    temp: {
+      'migrator-crash': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:TelescopeCrash2.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-01-23',
+    miscComments: ['Rockhopper lands in Club Penguin with a rowboat'],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:Beach45afterrockycrash.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-01-30',
+    miscComments: ['The Migrator\'s remains sink further'],
+    temp: {
+      'migrator-crash': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:TelescopeCrash3.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2008-02-01',
-    clothingCatalog: 'archives:Feb2008.swf'
+    miscComments: [
+      'Rockhopper is seen leaving Club Penguin from the telescope',
+      'Save the Migrator is setup at the Beach'
+    ],
+    clothingCatalog: 'archives:Feb2008.swf',
+    temp: {
+      'migrator-crash': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:TelescopeCrash4.swf'
+        }
+      },
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0403beach45.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-02-06',
+    miscComments: ['The Migrator is completely sunk'],
+    end: ['migrator-crash']
+  },
+  {
+    date: '2008-02-23',
+    miscComments: ['Pieces of The Migrator show up at the Beach'],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0223beach45.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-02-29',
+    miscComments: ['More pieces show up at the Beach'],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0229beach45.swf'
+        }
+      }
+    }
   },
   {
     date: '2008-03-07',
+    miscComments: ['Reconstruction of The Migrator begins'],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0307beach45.swf'
+        }
+      }
+    },
     clothingCatalog: 'archives:PenguinStyleMar2008.swf'
+  },
+  {
+    date: '2008-03-20',
+    miscComments: [
+      // the date for this is a conjecture, don't know when it actually happened
+      'Reconstruction of The Migrator progresses'
+    ],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0320beach45.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-03-27',
+    miscComments: ['Reconstruction of The Migrator progresses'],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0327beach45.swf'
+        }
+      }
+    }
   },
   {
     date: '2008-04-04',
     clothingCatalog: 'archives:Apr2008.swf'
+  },
+  {
+    date: '2008-04-10',
+    miscComments: ['The Migrator is cleaned up and a new device is at the Beach'],
+    temp: {
+      'migrator-reconstruction': {
+        rooms: {
+          beach: 'archives:0410beach45.swf'
+        },
+        migrator: true
+      }
+    }
+  },
+  {
+    date: '2008-04-17',
+    miscComments: ['Rockhopper is spotted through the telescope'],
+    temp: {
+      'migrator-reconstruction': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:Telescope0417.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2008-04-25',
+    end: ['migrator-reconstruction']
   },
   {
     date: '2008-05-02',

@@ -4,6 +4,7 @@ import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { PARTIES } from "../game-data/parties";
 import { STANDALONE_TEMPORARY_UPDATES } from "../game-data/standalone-changes";
 import { Update } from "../game-data/updates";
+import { UPDATES } from "../updates/updates";
 
 export function getMigratorTimeline() {
   const timeline = new VersionsTimeline<boolean>();
@@ -42,6 +43,23 @@ export function getMigratorTimeline() {
       })
     }
   })
+
+  UPDATES.forEach(update => {
+    if (update.update.migrator !== undefined) {
+      if (update.end === undefined) {
+        timeline.add({
+          date: update.date,
+          info: update.update.migrator
+        });
+      } else {
+        timeline.add({
+          date: update.date,
+          info: update.update.migrator,
+          end: update.end
+        });
+      }
+    }
+  });
 
   return timeline.getVersions();
 }
