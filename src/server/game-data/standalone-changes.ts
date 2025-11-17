@@ -1,14 +1,7 @@
 import { PermanentUpdateTimeline, ComplexTemporaryUpdateTimeline } from ".";
-import { PRE_BOILER_ROOM_PAPERS } from "./newspapers";
+import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
 import { IslandChanges } from "./parties";
 import { Update } from "./updates";
-
-type StandaloneChange = {
-  route: string;
-  fileId: number;
-  date: string;
-  comment?: string;
-};
 
 type StandaloneTemporaryChange = {
   startDate: string;
@@ -495,7 +488,7 @@ export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: st
     {
       // precpip client with newspapers
       fileRef: 'approximation:chat291_no_april.swf',
-      date: PRE_BOILER_ROOM_PAPERS[0]
+      date: NEWSPAPER_TIMELINE[0].date
     }
   ],
   'play/v2/client/shell.swf': [

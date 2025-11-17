@@ -15,7 +15,15 @@ export type CPUpdate = {
   /** Name of the game that is released this day */
   gameRelease?: string;
   /** File of all room changes */
-  rooms?: Partial<Record<RoomName, FileRef>>
+  rooms?: Partial<Record<RoomName, FileRef>>;
+
+  /**
+   * 'irregular': A new issue is released
+   * 'period-start': A new issue is released, and from here onwards, each issue is released after one week
+   * 'period-end': A new issue is released AND the newspaper stops releaseing weekly from here onwards
+   * 'fan': The fan issue is released
+   */
+  newspaper?: 'irregular' | 'period-start' | 'period-end' | 'fan';
 };
 
 type TemporaryUpdate = {

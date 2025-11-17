@@ -3,7 +3,6 @@ import path from 'path'
 import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from '../server/game-data/newspapers';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS, PRE_CPIP_IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
@@ -15,6 +14,7 @@ import { iterateEntries } from '../common/utils';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
+import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -268,20 +268,9 @@ function addGames(map: DayMap): void {
 }
 
 function addNewspapers(map: DayMap): DayMap {
-  // fan issue, a CPT issue which didn't have a proper number
-  addEvents(map, FAN_ISSUE_DATE, { newIssue: 'Fan issue of the newspaper released '});
-
-  PRE_BOILER_ROOM_PAPERS.forEach((date, index) => {
-    const issue = index + 1;
-    addEvents(map, date, { newIssue: issue });
+  NEWSPAPER_TIMELINE.forEach((update, i) => {
+    addEvents(map, update.date, { newIssue: i + 1});
   });
-
-  const preBoilerPapers = PRE_BOILER_ROOM_PAPERS.length;
-
-  [...AS2_NEWSPAPERS, ...AS3_NEWSPAPERS].forEach((news, index) => {
-    const issue = preBoilerPapers + index + 1;
-    addEvents(map, news.date, { newIssue: issue });
-  })
 
   return map;
 }
@@ -293,6 +282,9 @@ function addUpdates(map: DayMap): DayMap {
     }
     if (update.update.furnitureCatalog !== undefined) {
       addEvents(map, update.date, { newFurnitureCatalog: true });
+    }
+    if (update.update.newspaper === 'fan') {
+      addEvents(map, update.date, { newIssue: 'Fan issue of the newspaper released '});
     }
   });
   return map;

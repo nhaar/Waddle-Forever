@@ -324,8 +324,12 @@ export function processIndependentTimeline<EventInformation>(timeline: TimelineE
  * @returns undefined if it underflows (date is before first update)
  */
 export function findInVersion<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
+  return findInVersionFull(date, versions)?.info;
+}
+
+export function findInVersionFull<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
   if (versions.length === 1) {
-    return versions[0]['info'];
+    return versions[0];
   }
   
   const index = findEarliestDateHitIndex(date, versions);
@@ -333,7 +337,7 @@ export function findInVersion<EventInformation>(date: Version, versions: Version
     return undefined;
   }
   
-  return versions[index]['info'];
+  return versions[index];
 }
 
 /**
@@ -343,7 +347,7 @@ export function findInVersion<EventInformation>(date: Version, versions: Version
  * @param array Sorted array by date
  * @returns 
  */
-function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
+export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
   if (array.length < 2) {
     if (array.length === 1) {
       if (isLower(date, array[0].date)) {

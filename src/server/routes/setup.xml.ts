@@ -1,10 +1,10 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
-import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { getRoomFrameTimeline } from "../timelines/frame";
 import { getIglooTimeline } from "../timelines/igloo-version";
 import { getMusicTimeline } from "../timelines/music";
+import { NEWSPAPER_TIMELINE, FAN_ISSUE_DATE } from "../timelines/newspapers";
 import { Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
@@ -24,7 +24,7 @@ type OldRoom = {
 function getNewspapersTimeline() {
   // info is the issue ID ('fan' or number)
   const timeline = new VersionsTimeline<string>();
-  [...PRE_BOILER_ROOM_PAPERS, ...AS2_NEWSPAPERS].forEach((news, i) => {
+  NEWSPAPER_TIMELINE.forEach((news, i) => {
     const date = typeof news === 'string' ? news : news.date;
     timeline.add({
       date,

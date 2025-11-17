@@ -1,43 +1,3 @@
-import path from "path";
-
-// file id of newspapers in order
-// TODO place in newspapers.ts
-const newspaperFiles = [
-  'archives:News1.swf',
-  'archives:News2.swf',
-  'archives:News3.swf',
-  'archives:News4.swf',
-  'archives:News5.swf',
-  'archives:News6.swf',
-  'archives:News7.swf',
-  'archives:News8.swf',
-  'archives:News9.swf',
-  'archives:News10.swf',
-  'archives:News11.swf',
-  'archives:News12.swf',
-  'archives:News13.swf',
-  'archives:News14.swf',
-  'archives:News15.swf',
-  'archives:News16.swf',
-  'archives:News17.swf',
-  'archives:News18.swf',
-  'archives:News19.swf',
-  'archives:News20.swf',
-  'archives:News21.swf',
-  'archives:News22.swf',
-  'archives:News23.swf',
-  'archives:News24.swf',
-  'archives:News25.swf'
-];
-
-const staticNewspaperFiles: Record<string, string> = {};
-
-newspaperFiles.forEach((fileId, index) => {
-  const route = path.join('artwork/news', `news${index + 1}.swf`);
-  staticNewspaperFiles[route] = fileId;
-})
-
-
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
   'artwork/characters/penguin.swf': 'approximation:penguin_no_shadow.swf',
@@ -48,7 +8,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'load.swf': 'mammoth:load.swf',
   'artwork/news/newsfan.swf': 'archives:NewsFan.swf',
   'artwork/news/newsbeta.swf': 'recreation:news_beta.swf',
-  ...staticNewspaperFiles,
   'chat299.swf': 'fix:Chat299.swf',
   'chat506.swf': 'unknown:chat506.swf',
   'crumbs21.swf': 'slippers07:media/crumbs21.swf',

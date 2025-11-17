@@ -56,9 +56,17 @@ export const UPDATES_2010: Update[] = [
     clothingCatalog: 'archives:November10Style.swf'
   },
   {
+    date: '2010-11-11',
+    newspaper: 'period-end'
+  },
+  {
     date: '2010-11-12',
     furnitureCatalog: 'archives:FurnNov2010.swf',
     iglooCatalog: 'archives:November2010Igloo.swf'
+  },
+  {
+    date: '2010-11-19',
+    newspaper: 'period-start'
   },
   {
     date: '2010-12-03',

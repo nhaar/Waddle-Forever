@@ -11,7 +11,6 @@ import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { MUSIC_IDS } from "../game-data/music";
 import { POSTCARD_IDS } from "../game-data/postcard";
-import { AS2_NEWSPAPERS, AS3_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { getNewspaperName } from "../routes/news.txt";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
@@ -27,6 +26,8 @@ import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
+import { NEWSPAPER_TIMELINE } from "./newspapers";
+import { AS3_PAPERS, BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -229,76 +230,76 @@ function addFilesWithIds(map: FileTimelineMap): void {
 }
 
 function addNewspapers(map: FileTimelineMap): void {
-  AS2_NEWSPAPERS.forEach((news, index) => {
-    if (news.fileReference !== undefined) {
-      const issueNumber = index + PRE_BOILER_ROOM_PAPERS.length + 1;
+  const configXmlPath = getMediaFilePath('tool:news_config.xml');
+  NEWSPAPER_TIMELINE.forEach((update, i) => {
+    if (typeof update.info === 'string' || 'file' in update.info) {
+      const file = typeof update.info === 'string' ? update.info : update.info.file;
+      const issue = i + 1;
+
       // pre-cpip, before rewrite
-      map.addDefault(`artwork/news/news${issueNumber}.swf`, news.fileReference);
+      map.addDefault(`artwork/news/news${issue}.swf`, file);
       // pre-cpip, post rewrite
-      const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
-      map.addDefault(path.join('artwork/news', route2007), news.fileReference);
+      const route2007 = getNewspaperName(update.date).replace('|', '/') + '.swf';
+      map.addDefault(path.join('artwork/news', route2007), file);
 
       // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
-      map.addDefault(path.join('artwork/archives', `news${issueNumber + 1}.swf`), news.fileReference);
+      map.addDefault(path.join('artwork/archives', `news${issue + 1}.swf`), file);
 
       // post-cpip
-      const date = getMinifiedDate(news.date);
-      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, news.fileReference);
-    }
-  })
-  
-  const configXmlPath = getMediaFilePath('tool:news_config.xml');
-  AS3_NEWSPAPERS.forEach((news) => {
-    const baseNewsPath = 'play/v2/content/local/en/news/';
-    const oldNewsPath = `${baseNewsPath}${getMinifiedDate(news.date)}`;
-    const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(news.date)}`;
-    map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
-    map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
-    const newspaperComponenets: Array<[string, string]> = [
-      ['front/header.swf', news.headerFront ?? 'archives:News285HeaderFront.swf'],
-      ['front/featureStory.swf', news.featureStory],
-      ['front/supportStory.swf', news.supportStory],
-      ['front/upcomingEvents.swf', news.upcomingEvents],
-      ['front/newsFlash.swf', news.newsFlash],
-      ['front/askAuntArctic.swf', news.askFront],
-      ['front/dividers.swf', news.dividersFront ?? 'approximation:dividers_blank.swf'],
-      ['front/navigation.swf', news.navigationFront ?? 'archives:News268NavigationFront.swf'],
-      ['back/header.swf', news.headerBack ?? 'archives:News285HeaderBack.swf'],
-      ['back/askAuntArctic.swf', news.askBack],
-      ['back/secrets.swf', news.secrets ?? 'archives:News285Secrets.swf'],
-      ['back/submitYourContent.swf', news.submit ?? 'archives:News268SubmitYourContent.swf'],
-      ['back/jokesAndRiddles.swf', news.jokes ?? 'archives:News285JokesAndRiddles.swf'],
-      ['back/dividers.swf', news.dividersBack ?? 'approximation:dividers_blank.swf'],
-      ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf']
-    ]
-    if (news.answers !== undefined) {
-      newspaperComponenets.push(['overlays/riddlesAnswers.swf', news.answers]);
-    }
-    if (news.extraJokes !== undefined) {
-      newspaperComponenets.push(['overlays/extraJokes.swf', news.extraJokes]);
-    }
-    if (news.secret !== undefined && news.secret !== null) {
-      newspaperComponenets.push(['overlays/secret.swf', news.secret]);
-    }
-    if (news.iglooWinners !== undefined) {
-      newspaperComponenets.push(['overlays/iglooWinners.swf', news.iglooWinners]);
-    }
-    if (news.featureMore !== undefined) {
-      newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore ?? 'archives:News284FeatureMore.swf']);
-    }
-    if (news.supportMore !== undefined) {
-      newspaperComponenets.push(['overlays/supportMore.swf', news.supportMore ?? 'archives:News282SupportMore.swf']);
-    }
-    if (news.extra !== undefined) {
-      newspaperComponenets.push(['overlays/extra.swf', news.extra]);
-    }
-     
-    newspaperComponenets.forEach((pair) => {
-      const [route, file] = pair;
-      map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
-      map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
-    }) 
-  })
+      const date = getMinifiedDate(update.date);
+      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
+    } else {
+      const baseNewsPath = 'play/v2/content/local/en/news/';
+      const oldNewsPath = `${baseNewsPath}${getMinifiedDate(update.date)}`;
+      const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(update.date)}`;
+      map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+      map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
+      const newspaperComponenets: Array<[string, string]> = [
+        ['front/header.swf', update.info.headerFront ?? 'archives:News285HeaderFront.swf'],
+        ['front/featureStory.swf', update.info.featureStory],
+        ['front/supportStory.swf', update.info.supportStory],
+        ['front/upcomingEvents.swf', update.info.upcomingEvents],
+        ['front/newsFlash.swf', update.info.newsFlash],
+        ['front/askAuntArctic.swf', update.info.askFront],
+        ['front/dividers.swf', update.info.dividersFront ?? 'approximation:dividers_blank.swf'],
+        ['front/navigation.swf', update.info.navigationFront ?? 'archives:News268NavigationFront.swf'],
+        ['back/header.swf', update.info.headerBack ?? 'archives:News285HeaderBack.swf'],
+        ['back/askAuntArctic.swf', update.info.askBack],
+        ['back/secrets.swf', update.info.secrets ?? 'archives:News285Secrets.swf'],
+        ['back/submitYourContent.swf', update.info.submit ?? 'archives:News268SubmitYourContent.swf'],
+        ['back/jokesAndRiddles.swf', update.info.jokes ?? 'archives:News285JokesAndRiddles.swf'],
+        ['back/dividers.swf', update.info.dividersBack ?? 'approximation:dividers_blank.swf'],
+        ['back/navigation.swf', update.info.navigationBack ?? 'archives:News268NavigationBack.swf']
+      ]
+      if (update.info.answers !== undefined) {
+        newspaperComponenets.push(['overlays/riddlesAnswers.swf', update.info.answers]);
+      }
+      if (update.info.extraJokes !== undefined) {
+        newspaperComponenets.push(['overlays/extraJokes.swf', update.info.extraJokes]);
+      }
+      if (update.info.secret !== undefined && update.info.secret !== null) {
+        newspaperComponenets.push(['overlays/secret.swf', update.info.secret]);
+      }
+      if (update.info.iglooWinners !== undefined) {
+        newspaperComponenets.push(['overlays/iglooWinners.swf', update.info.iglooWinners]);
+      }
+      if (update.info.featureMore !== undefined) {
+        newspaperComponenets.push(['overlays/featureMore.swf', update.info.featureMore ?? 'archives:News284FeatureMore.swf']);
+      }
+      if (update.info.supportMore !== undefined) {
+        newspaperComponenets.push(['overlays/supportMore.swf', update.info.supportMore ?? 'archives:News282SupportMore.swf']);
+      }
+      if (update.info.extra !== undefined) {
+        newspaperComponenets.push(['overlays/extra.swf', update.info.extra]);
+      }
+      
+      newspaperComponenets.forEach((pair) => {
+        const [route, file] = pair;
+        map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
+        map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
+      }) 
+      }
+  });
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
@@ -340,8 +341,7 @@ function addCrumbs(map: FileTimelineMap): void {
   addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
   addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
 
-  // remove first 6 which have no crumbs
-  [...AS2_NEWSPAPERS.slice(6), ...AS3_NEWSPAPERS].forEach((newspaper) => {
+  NEWSPAPER_TIMELINE.forEach((newspaper) => {
     map.add('play/v2/content/local/en/news/news_crumbs.swf', path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'), newspaper.date);
   });
 }

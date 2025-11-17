@@ -15,15 +15,41 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-10-24',
     clothingCatalog: 'archives:Clothing_0510.swf',
-    furnitureCatalog: 'archives:Furniture_0510.swf'
+    furnitureCatalog: 'archives:Furniture_0510.swf',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2005-10-28',
+    newspaper: 'fan'
   },
   {
     date: '2005-11-01',
     clothingCatalog: 'archives:Clothing_0511.swf'
   },
   {
+    date: '2005-11-03',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-08',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-11',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-16',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-21',
+    newspaper: 'irregular'
+  },
+  {
     date: '2005-12-01',
-    clothingCatalog: 'archives:Clothing_0512.swf'
+    clothingCatalog: 'archives:Clothing_0512.swf',
+    newspaper: 'period-start'
   },
   {
     date: '2005-12-14',

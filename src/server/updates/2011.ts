@@ -44,12 +44,26 @@ export const UPDATES_2011: Update[] = [
     furnitureCatalog: 'archives:Jun2011Furniture.swf'
   },
   {
+    date: '2011-06-24',
+    newspaper: 'period-end'
+  },
+  {
     date: '2011-07-06',
-    clothingCatalog: 'archives:PenguinStyleJul2011.swf'
+    clothingCatalog: 'archives:PenguinStyleJul2011.swf',
+    newspaper: 'irregular'
   },
   {
     date: '2011-07-14',
-    furnitureCatalog: 'archives:Jul2011Furniture.swf'
+    furnitureCatalog: 'archives:Jul2011Furniture.swf',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2011-07-22',
+    newspaper: 'irregular'
+  },
+  {
+    date: '2011-07-28',
+    newspaper: 'period-start'
   },
   {
     date: '2011-08-04',
@@ -90,5 +104,9 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-15',
     furnitureCatalog: 'archives:December2011Furniture.swf'
+  },
+  {
+    date: '2011-12-29',
+    newspaper: 'period-end'
   }
 ];
