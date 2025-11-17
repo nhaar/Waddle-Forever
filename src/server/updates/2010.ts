@@ -19,7 +19,8 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-04-16',
-    furnitureCatalog: 'archives:FurnApr2010.swf'
+    furnitureCatalog: 'archives:FurnApr2010.swf',
+    iglooCatalog: 'archives:April2010Igloo.swf'
   },
   {
     date: '2010-05-07',
@@ -31,7 +32,8 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-08-20',
-    furnitureCatalog: 'archives:FurnitureAug10.swf'
+    furnitureCatalog: 'archives:FurnitureAug10.swf',
+    iglooCatalog: 'archives:August10Igloo.swf'
   },
   {
     date: '2010-09-03',
@@ -55,7 +57,8 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-11-12',
-    furnitureCatalog: 'archives:FurnNov2010.swf'
+    furnitureCatalog: 'archives:FurnNov2010.swf',
+    iglooCatalog: 'archives:November2010Igloo.swf'
   },
   {
     date: '2010-12-03',

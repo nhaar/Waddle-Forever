@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { DateRefMap, IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap } from "../game-data";
+import { IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import { Update } from "../game-data/updates";
 import path from "path";
@@ -22,7 +22,6 @@ import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-dat
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
-import { IGLOO_CATALOGS } from "../game-data/catalogues";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
@@ -30,7 +29,7 @@ import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { CLOTHING_TIMELINE } from "./clothing";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
-import { FURNITURE_TIMELINE } from "./furniture";
+import { FURNITURE_CATALOG_TIMELINE, IGLOO_CATALOG_TIMELINE } from "./furniture";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -61,11 +60,6 @@ class FileTimelineMap extends TimelineMap<string, string> {
     });
   }
 
-  addDateRefMap(route: string, dateMap: DateRefMap): void {
-    iterateEntries(dateMap, (date, fileRef) => {
-      this.add(route, fileRef, date);
-    });
-  }
 
   addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
     if (isLower(date, Update.CPIP_UPDATE)) {
@@ -421,12 +415,13 @@ function addCatalogues(map: FileTimelineMap): void {
     map.add('artwork/catalogue/clothing_.swf', update.info, update.date);
     map.add('play/v2/content/local/en/catalogues/clothing.swf', update.info, update.date);
   });
-  FURNITURE_TIMELINE.forEach(update => {
+  FURNITURE_CATALOG_TIMELINE.forEach(update => {
     map.add('artwork/catalogue/furniture.swf', update.info, update.date);
     map.add('play/v2/content/local/en/catalogues/furniture.swf', update.info, update.date);
   });
-  map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
-
+  IGLOO_CATALOG_TIMELINE.forEach(update => {
+    map.add('play/v2/content/local/en/catalogues/igloo.swf', update.info, update.date);
+  });
 
   const addRockhoperCatalog = (date: string, file: FileRef) => {
     map.add('play/v2/content/local/en/catalogues/pirate.swf', file, date);

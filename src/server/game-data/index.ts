@@ -11,9 +11,6 @@ export type RouteRefMap = Record<string, FileRef>;
  * */
 export type DateMap<Info> = Record<Version, Info>;
 
-/** A map that takes as keys dates/versions and as values a file reference associated with that date */
-export type DateRefMap = DateMap<FileRef>;
-
 /** A map that takes as keys an ID number (of any kind) and values a file reference associated with the ID */
 export type IdRefMap = Record<number, FileRef>;
 

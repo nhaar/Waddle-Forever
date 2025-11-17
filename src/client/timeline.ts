@@ -16,7 +16,7 @@ import { iterateEntries } from '../common/utils';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { CLOTHING_TIMELINE } from '../server/timelines/clothing';
-import { FURNITURE_TIMELINE } from '../server/timelines/furniture';
+import { FURNITURE_CATALOG_TIMELINE } from '../server/timelines/furniture';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -294,7 +294,7 @@ function addCatalogues(map: DayMap): DayMap {
   CLOTHING_TIMELINE.forEach(update => {
     addEvents(map, update.date, { newClothing: true });
   });
-  FURNITURE_TIMELINE.forEach(update => {
+  FURNITURE_CATALOG_TIMELINE.forEach(update => {
     addEvents(map, update.date, { newFurnitureCatalog: true });
   });
   return map;

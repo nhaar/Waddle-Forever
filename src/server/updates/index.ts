@@ -9,6 +9,8 @@ export type CPUpdate = {
   clothingCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   furnitureCatalog?: FileRef;
+  /** If a new catalog was released this day: its file */
+  iglooCatalog?: FileRef;
 };
 
 type TemporaryUpdate = {

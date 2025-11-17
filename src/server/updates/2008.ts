@@ -42,6 +42,10 @@ export const UPDATES_2008: Update[] = [
     clothingCatalog: 'archives:PSAug2008.swf'
   },
   {
+    date: '2008-08-15',
+    iglooCatalog: 'archives:August2008Igloo.swf'
+  },
+  {
     date: '2008-08-29',
     furnitureCatalog: 'archives:FurnAug2008.swf'
   },
