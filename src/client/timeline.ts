@@ -8,7 +8,6 @@ import { PRE_CPIP_CATALOGS, FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS, PRE_CPIP_IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
-import { PINS } from '../server/game-data/pins';
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
@@ -16,6 +15,7 @@ import { PRE_CPIP_GAME_UPDATES } from '../server/game-data/games';
 import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
 import { iterateEntries } from '../common/utils';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
+import { PIN_TIMELINE } from '../server/timelines/pins';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
   const timelinePicker = new BrowserWindow({
@@ -365,9 +365,11 @@ function addRoomUpdates(map: DayMap): void {
 }
 
 function addPinUpdates(map: DayMap): void {
-  PINS.forEach((pin) => {
-    addEvents(map, pin.date, { pin: pin.name });
-  })
+  PIN_TIMELINE.forEach((pin) => {
+    if (!('hidden' in pin && pin.hidden === true)) {
+      addEvents(map, pin.date, { pin: pin.name });
+    }
+  });
 }
 
 function addStandalone(map: DayMap): void {

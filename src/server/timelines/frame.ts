@@ -1,11 +1,11 @@
 import { getSubUpdateDates } from ".";
 import { TimelineMap } from "../game-data";
 import { PARTIES } from "../game-data/parties";
-import { PINS } from "../game-data/pins";
 import { TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
+import { PIN_TIMELINE } from "./pins";
 
 export function getRoomFrameTimeline() {
   const timeline = new TimelineMap<RoomName, number>();
@@ -16,8 +16,8 @@ export function getRoomFrameTimeline() {
     timeline.add(room as RoomName, 1, Update.BETA_RELEASE);
   })
 
-  PINS.forEach((pin) => {
-    if ('room' in pin && pin.frame !== undefined) {
+  PIN_TIMELINE.forEach(pin => {
+    if ('frame' in pin && pin.frame !== undefined) {
       timeline.add(pin.room, pin.frame, pin.date, pin.end);
     }
   });

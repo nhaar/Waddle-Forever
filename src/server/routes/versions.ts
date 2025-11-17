@@ -11,6 +11,16 @@ export function isVersionValid(version: string) : boolean {
   return getDateMatch(version) !== null;
 }
 
+function dateToVersion(date: Date): Version {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+export function addDays(version: Version, days: number): Version {
+  const [year, month, day] = processVersion(version);
+  const date = new Date(year, month - 1, day + days);
+  return dateToVersion(date);
+}
+
 /** Returns undefined if an invalid version, otherwise an array [year, month, day] */
 export function processVersion(version: string): [number, number, number] {
   const dateMatch = getDateMatch(version);

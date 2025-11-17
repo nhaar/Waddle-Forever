@@ -24,12 +24,12 @@ import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
-import { PINS } from "../game-data/pins";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { getFileDateSignature } from "./clothing";
 import { UPDATES } from "../updates/updates";
+import { PIN_TIMELINE } from "./pins";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -445,9 +445,9 @@ function addCatalogues(map: FileTimelineMap): void {
 }
 
 function addPins(map: FileTimelineMap): void {
-  PINS.forEach((pin) => {
-    if ('room' in pin && pin.fileRef !== undefined) {
-      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.fileRef);
+  PIN_TIMELINE.forEach(pin => {
+    if ('room' in pin) {
+      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.file);
     }
   });
 }

@@ -3,6 +3,8 @@ import { Version } from "../routes/versions"
 
 export type CPUpdate = {
   map?: FileRef;
+  /** True if this update is the first seasonal pin ever */
+  pin?: true;
 };
 
 type TemporaryUpdate = {
