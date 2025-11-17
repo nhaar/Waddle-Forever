@@ -1,46 +1,6 @@
 /** Module writes the data for all standalone updates related to the seasonal catalogs */
 
 import { DateRefMap } from ".";
-import { Update } from "./updates";
-
-/** All clothing catalogs available Post-CPIP */
-export const CPIP_CATALOGS: DateRefMap = {
-  '2008-08-01': 'archives:PSAug2008.swf',
-  '2008-09-05': 'archives:Sep2008.swf',
-  '2008-10-03': 'archives:CatOct2008.swf',
-  '2008-11-07': 'archives:CatNov2008.swf',
-  '2008-12-05': 'archives:December08Style.swf',
-  '2009-01-02': 'archives:January09Style.swf',
-  '2009-02-06': 'archives:CatFeb2009.swf',
-  '2009-03-06': 'archives:Mar2009.swf',
-  '2009-04-03': 'archives:PSApr2009.swf',
-  '2009-05-01': 'archives:May2009.swf',
-  '2009-08-07': 'archives:August09Style.swf',
-  '2009-09-04': 'archives:September09Style.swf',
-  '2009-10-02': 'archives:Oct2009.swf',
-  '2009-11-06': 'archives:November09Style.swf',
-  '2009-12-04': 'archives:December09Style.swf',
-  [Update.NEW_YEARS_2010_UPDATE]: 'archives:January10Style.swf',
-  '2010-02-05': 'archives:Feb10Clothing.swf',
-  '2010-04-01': 'archives:April10Style.swf',
-  '2010-05-07': 'archives:May2010.swf',
-  '2010-09-03': 'archives:September10Style.swf',
-  '2010-10-01': 'archives:PSOct2010.swf',
-  '2010-11-05': 'archives:November10Style.swf',
-  '2010-12-03': 'archives:PenguinStyleDec2010.swf',
-  '2011-01-11': 'archives:January11Style.swf',
-  '2011-02-11': 'archives:PenguinStyleFeb2011.swf',
-  '2011-03-11': 'archives:PenguinStyleMar2011.swf',
-  '2011-04-01': 'archives:PenguinStyleApr2011.swf',
-  '2011-05-06': 'archives:PenguinStyleMay2011.swf',
-  '2011-06-03': 'archives:PenguinStyleJun2011.swf',
-  '2011-07-06': 'archives:PenguinStyleJul2011.swf',
-  '2011-08-04': 'archives:PenguinStyleAug2011.swf',
-  '2011-09-01': 'archives:PenguinStyleSept2011.swf',
-  '2011-10-06': 'archives:PenguinStyleOct2011.swf',
-  '2011-11-03': 'archives:PenguinStyleNov2011.swf',
-  '2011-12-01': 'archives:PenguinStyleDec2011.swf'
-};
 
 /** All furniture catalogs */
 export const FURNITURE_CATALOGS: DateRefMap = {

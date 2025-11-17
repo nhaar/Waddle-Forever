@@ -22,7 +22,7 @@ import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-dat
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
-import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../game-data/catalogues";
+import { FURNITURE_CATALOGS, IGLOO_CATALOGS } from "../game-data/catalogues";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
@@ -418,9 +418,8 @@ function addCatalogues(map: FileTimelineMap): void {
   CLOTHING_TIMELINE.forEach(update => {
     map.add('artwork/catalogue/clothing.swf', update.info, update.date);
     map.add('artwork/catalogue/clothing_.swf', update.info, update.date);
+    map.add('play/v2/content/local/en/catalogues/clothing.swf', update.info, update.date);
   });
-
-  map.addDateRefMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
   map.addDateRefMap('artwork/catalogue/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
   map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);

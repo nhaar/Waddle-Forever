@@ -4,7 +4,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
 import { FAN_ISSUE_DATE, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS } from '../server/game-data/newspapers';
-import { FURNITURE_CATALOGS, CPIP_CATALOGS } from '../server/game-data/catalogues';
+import { FURNITURE_CATALOGS } from '../server/game-data/catalogues';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS, PRE_CPIP_IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
@@ -293,9 +293,6 @@ function addNewspapers(map: DayMap): DayMap {
 function addCatalogues(map: DayMap): DayMap {
   CLOTHING_TIMELINE.forEach(update => {
     addEvents(map, update.date, { newClothing: true });
-  });
-  Object.keys(CPIP_CATALOGS).forEach((date) => {
-    addEvents(map, date, { newClothing: true });
   });
   Object.keys(FURNITURE_CATALOGS).forEach((date) => {
     addEvents(map, date, { newFurnitureCatalog: true });
