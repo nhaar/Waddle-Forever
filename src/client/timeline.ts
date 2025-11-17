@@ -14,8 +14,6 @@ import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits'
 import { iterateEntries } from '../common/utils';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
-import { CLOTHING_TIMELINE } from '../server/timelines/clothing';
-import { FURNITURE_CATALOG_TIMELINE } from '../server/timelines/furniture';
 import { UPDATES } from '../server/updates/updates';
 
 export function createTimelinePicker (mainWindow: BrowserWindow) {
@@ -288,12 +286,14 @@ function addNewspapers(map: DayMap): DayMap {
   return map;
 }
 
-function addCatalogues(map: DayMap): DayMap {
-  CLOTHING_TIMELINE.forEach(update => {
-    addEvents(map, update.date, { newClothing: true });
-  });
-  FURNITURE_CATALOG_TIMELINE.forEach(update => {
-    addEvents(map, update.date, { newFurnitureCatalog: true });
+function addUpdates(map: DayMap): DayMap {
+  UPDATES.forEach(update => {
+    if (update.update.clothingCatalog !== undefined) {
+      addEvents(map, update.date, { newClothing: true });
+    }
+    if (update.update.furnitureCatalog !== undefined) {
+      addEvents(map, update.date, { newFurnitureCatalog: true });
+    }
   });
   return map;
 }
@@ -440,7 +440,7 @@ function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addParties(map);
   map = addNewspapers(map);
-  map = addCatalogues(map);
+  map = addUpdates(map);
   addIglooMusicLists(map);
   addRoomUpdates(map);
   addStagePlays(map);

@@ -25,10 +25,8 @@ import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UP
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
-import { CLOTHING_TIMELINE } from "./clothing";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
-import { FURNITURE_CATALOG_TIMELINE, IGLOO_CATALOG_TIMELINE } from "./furniture";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -409,19 +407,6 @@ function addMapUpdates(map: FileTimelineMap): void {
 }
 
 function addCatalogues(map: FileTimelineMap): void {
-  CLOTHING_TIMELINE.forEach(update => {
-    map.add('artwork/catalogue/clothing.swf', update.info, update.date);
-    map.add('artwork/catalogue/clothing_.swf', update.info, update.date);
-    map.add('play/v2/content/local/en/catalogues/clothing.swf', update.info, update.date);
-  });
-  FURNITURE_CATALOG_TIMELINE.forEach(update => {
-    map.add('artwork/catalogue/furniture.swf', update.info, update.date);
-    map.add('play/v2/content/local/en/catalogues/furniture.swf', update.info, update.date);
-  });
-  IGLOO_CATALOG_TIMELINE.forEach(update => {
-    map.add('play/v2/content/local/en/catalogues/igloo.swf', update.info, update.date);
-  });
-
   const addRockhoperCatalog = (date: string, file: FileRef) => {
     map.add('play/v2/content/local/en/catalogues/pirate.swf', file, date);
   }
@@ -559,6 +544,18 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
 
 function addUpdates(map: FileTimelineMap): void {
   UPDATES.forEach(update => {
+    if (update.update.clothingCatalog !== undefined) {
+      map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date);
+      map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date);
+      map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date);
+    }
+    if (update.update.furnitureCatalog !== undefined) {
+      map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date);
+      map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date);
+    }
+    if (update.update.iglooCatalog !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date);
+    }
     if (update.update.rooms !== undefined) {
       map.addRoomChanges(update.update.rooms, update.date, update.end);
     }
