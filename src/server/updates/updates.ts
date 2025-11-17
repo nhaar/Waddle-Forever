@@ -51,11 +51,18 @@ export function createTimeline<T>(callback: (update: CPUpdate) => T | undefined)
   UPDATES.forEach((day) => {
     const info = callback(day.update);
     if (info !== undefined) {
-      timeline.add({
-        date: day.date,
-        end: day.end,
-        info
-      });
+      if (day.end !== undefined) {
+        timeline.add({
+          info,
+          date: day.date,
+          end: day.end
+        });
+      } else {
+        timeline.add({
+          info,
+          date: day.date
+        });
+      }
     }
   });
 

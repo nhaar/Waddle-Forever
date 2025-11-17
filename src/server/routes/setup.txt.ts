@@ -2,7 +2,6 @@ import { findInVersion, VersionsTimeline } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
-import { getClothingTimeline } from "../timelines/clothing";
 import { getRoomFrameTimeline } from "../timelines/frame";
 import { getIglooTimeline } from "../timelines/igloo-version";
 import { getMigratorTimeline } from "../timelines/migrator";
@@ -16,8 +15,6 @@ const frameTimeline = getRoomFrameTimeline();
 const migratorTimeline = getMigratorTimeline();
 
 const eggTimeline = getEggTimeline();
-
-const clothingTimeline = getClothingTimeline();
 
 const iglooTimeline = getIglooTimeline();
 
@@ -65,8 +62,6 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
   // sending the ID of 1 because we don't have any information about these scavenger hunts
   const eggId = findInVersion(date, eggTimeline);
 
-  const clothing = findInVersion(date, clothingTimeline);
-
   const rooms = Object.entries(ROOMS).map((pair) => {
     const [room, info] = pair;
     const music = roomMusic[room as RoomName] ?? 0;
@@ -99,7 +94,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 &agentform=1&
 &newsform=2&
 
-&clothing=${clothing}&
+&clothing=&
 &sport=0711&
 &hair=0710&
 &furniture=0712&

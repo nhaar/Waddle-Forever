@@ -3,45 +3,6 @@
 import { DateRefMap } from ".";
 import { Update } from "./updates";
 
-/** All clothing catalogs that are released Pre-CPIP */
-export const PRE_CPIP_CATALOGS: DateRefMap = {
-  '2005-09-21': 'archives:September05Style.swf',
-  '2005-10-24': 'archives:Clothing_0510.swf',
-  '2005-11-01': 'archives:Clothing_0511.swf',
-  '2005-12-01': 'archives:Clothing_0512.swf',
-  '2006-01-01': 'archives:Clothing_0601.swf',
-  '2006-02-03': 'archives:Clothing_0602.swf',
-  '2006-03-03': 'archives:Clothing_0603.swf',
-  '2006-04-07': 'archives:Clothing_0604.swf',
-  '2006-05-05': 'archives:Clothing_0605.swf',
-  '2006-06-02': 'archives:Clothing_0606.swf',
-  '2006-07-07': 'archives:Clothing_0607.swf',
-  '2006-08-04': 'archives:Clothing_0608.swf',
-  '2006-09-01': 'archives:September06Style.swf',
-  '2006-10-06': 'archives:October06Style.swf',
-  '2006-11-03': 'archives:Nov06Style.swf',
-  '2006-12-01': 'archives:Dec06Style.swf',
-  '2007-01-05': 'archives:Clothing_0701.swf',
-  '2007-02-02': 'archives:Clothing_0702.swf',
-  '2007-03-02': 'archives:Clothing_0703.swf',
-  '2007-04-06': 'archives:Clothing_0704.swf',
-  '2007-05-04': 'archives:Clothing_0705.swf',
-  '2007-06-01': 'archives:Clothing_0706.swf',
-  '2007-07-06': 'archives:Clothing_0707.swf',
-  '2007-08-02': 'archives:August2007PenguinStyle.swf',
-  '2007-09-07': 'archives:September07Style.swf',
-  '2007-10-05': 'archives:PenguinStyleOct2007.swf',
-  '2007-11-02': 'archives:PenguinStyleNov2007.swf',
-  '2007-12-07': 'archives:Clothing_0712.swf',
-  '2008-01-04': 'archives:Clothing_0801.swf',
-  '2008-02-01': 'archives:Feb2008.swf',
-  '2008-03-07': 'archives:PenguinStyleMar2008.swf',
-  '2008-04-04': 'archives:Apr2008.swf',
-  '2008-05-02': 'archives:May2008.swf',
-  '2008-06-06': 'archives:Jun2008.swf',
-  '2008-07-04': 'archives:July08Style.swf',
-};
-
 /** All clothing catalogs available Post-CPIP */
 export const CPIP_CATALOGS: DateRefMap = {
   '2008-08-01': 'archives:PSAug2008.swf',

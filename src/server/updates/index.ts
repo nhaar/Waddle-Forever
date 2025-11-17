@@ -5,6 +5,8 @@ export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
   pin?: true;
+  /** If a new catalog was released this day: its file */
+  clothingCatalog?: FileRef;
 };
 
 type TemporaryUpdate = {
