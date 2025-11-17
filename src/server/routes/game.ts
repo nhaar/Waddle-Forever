@@ -4,7 +4,6 @@ import { getStampsJson } from './stampjson';
 import { isEngine1, isEngine2, isEngine3, isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
-import { getDynamicMusicListData } from "../game-data/igloo-lists";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
@@ -19,6 +18,7 @@ import { getGameStrings } from "./gamestringsjson";
 import { getChunkingMapJson } from "./chunkingmapjson";
 import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
+import { getDynamicMusicListData } from "../timelines/igloo-lists";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);

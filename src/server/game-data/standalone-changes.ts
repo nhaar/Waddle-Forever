@@ -1,6 +1,4 @@
-import { ComplexTemporaryUpdateTimeline } from ".";
 import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
-import { IslandChanges } from "./parties";
 import { Update } from "./updates";
 
 type StandaloneTemporaryChange = {
@@ -15,22 +13,6 @@ type StandaloneTemporaryChange = {
     comment?: string;
   }>
 }
-
-type TemporaryGroupUpdate = IslandChanges & {
-  comment?: string;
-  endComment?: string;
-};
-
-export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<TemporaryGroupUpdate> = [
-  {
-    // placeholder for the CPIP music list update, needs to be refactored somewhat depending on how future igloo lists are handled
-    date: Update.CPIP_UPDATE,
-    end: '2008-07-18',
-    globalChanges: {
-      'content/igloo_music.swf': 'recreation:igloo_music/cpip_start.swf'
-    }
-  }
-]
 
 export const STANDALONE_CHANGE: Record<string, Array<{ fileRef: string; date: string; comment?: string }>> = {
   'chat291.swf': [

@@ -285,11 +285,24 @@ export const UPDATES_2008: Update[] = [
         en: 'archives:May2008LoveYourPet.swf'
       }
     },
-    map: 'unknown:cpip_map_no_dojoext.swf'
+    map: 'unknown:cpip_map_no_dojoext.swf',
+    iglooList: {
+      file: 'recreation:igloo_music/cpip_start.swf',
+      hidden: true
+    }
   },
   {
     date: '2008-07-18',
-    furnitureCatalog: 'archives:FurnJul2008.swf'
+    furnitureCatalog: 'archives:FurnJul2008.swf',
+    iglooList: [
+      [{ display: 'Fiesta', id: 229, new: true }, { display: 'Jazz', id: 211 }],
+      [{ display: 'Aqua Grabber', id: 114, new: true }, { display: 'Ocean Voyage', id: 212 }],
+      [{ display: 'Medieval Town', id: 233, new: true }, { display: 'Cool Surf', id: 214 }],
+      [{ display: 'Pizza Parlor', id: 20 }, { display: 'Coffee Shop', id: 1 }],
+      [{ display: 'Superhero', id: 32 }, { display: 'Dance Mix 1', id: 2 }],
+      [{ display: 'Fall Fair', id: 221 }, { display: 'Dance Mix 2', id: 5 }],
+      [{ display: 'Folk Guitar', id: 209 }, { display: 'Water Party', id: 217 }]
+    ]
   },
   {
     date: '2008-08-01',
@@ -317,7 +330,16 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-10-17',
-    furnitureCatalog: 'archives:FurnOct2008.swf'
+    furnitureCatalog: 'archives:FurnOct2008.swf',
+    iglooList: [
+      [{ display: 'Halloween', id: 223, new: true }, { display: 'Pizza Parlor', id: 20 }],
+      [{ display: 'Halloween Dance', id: 224, new: true }, { display: 'Ocean Voyage', id: 212 }],
+      [{ display: 'Epic Battle', id: 236, new: true }, { display: 'Cool Surf', id: 214 }],
+      [{ display: 'Aqua Grabber', id: 114 }, { display: 'Coffee Shop', id: 1 }],
+      [{ display: 'Medieval Town', id: 233 }, { display: 'Superhero', id: 32 }],
+      [{ display: 'Fiesta', id: 229 }, { display: 'Dance Mix', id: 5 }],
+      [{ display: 'Fall Fair', id: 221 }, { display: 'Water Party', id: 217 }]
+    ]
   },
   {
     date: '2008-10-24',
@@ -338,7 +360,16 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-12-12',
-    furnitureCatalog: 'archives:FurnDec2008.swf'
+    furnitureCatalog: 'archives:FurnDec2008.swf',
+    iglooList: [
+      [{ display: 'Snowy Holiday', id: 227, new: true }, { display: 'Cool Surf', id: 214 }],
+      [{ display: 'Christmas Piano Medley', id: 255, new: true }, { display: 'Ocean Voyage', id: 212 }],
+      [{ display: 'Anniversary Party', id: 250, new: true }, { display: 'Medieval Town', id: 233 }],
+      [{ display: 'Pop Song', id: 243 }, { display: 'Epic Battle', id: 236 }],
+      [{ display: 'Team Blue 2', id: 36 }, { display: 'Superhero', id: 32 }],
+      [{ display: 'Fiesta', id: 229 }, { display: 'Aqua Grabber', id: 114 }],
+      [{ display: 'Fall Fair', id: 221 }, { display: 'Water Party', id: 217 }]
+    ]
   },
   {
     date: '2008-12-23',

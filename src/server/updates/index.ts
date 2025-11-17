@@ -18,7 +18,7 @@ type Song = {
 }
 
 /** Information for a song in a music list */
-type ListSong = Song & {
+export type ListSong = Song & {
   new?: true;
 };
 
@@ -26,10 +26,10 @@ type ListSong = Song & {
 type Row = [ListSong, ListSong];
 
 /** Represents a 2D music list */
-type IglooList = [Row, Row, Row, Row, Row, Row, Row];
+export type IglooList = [Row, Row, Row, Row, Row, Row, Row];
 
 /** Information for a song that is being added in a music list */
-type ListSongPatch = Song & {
+export type ListSongPatch = Song & {
   /** Row, column, starting at 1 */
   pos: [number, number];
 }

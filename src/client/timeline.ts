@@ -4,9 +4,8 @@ import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
-import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../server/game-data/standalone-changes';
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
@@ -291,17 +290,14 @@ function addUpdates(map: DayMap): DayMap {
         addArrayEvents(map, 'other', update.date, comment);
       }) 
     }
-    if (update.update.iglooList === true) {
+    if (
+      update.update.iglooList !== undefined && (
+        update.update.iglooList === true || !('hidden' in update.update.iglooList && update.update.iglooList.hidden === true)
+      )) {
       addEvents(map, update.date, { musicList: true });
     }
   });
   return map;
-}
-
-function addIglooMusicLists(map: DayMap): void {
-  IGLOO_LISTS.forEach((list) => {
-    addEvents(map, list.date, { musicList: true });
-  })
 }
 
 function addRoomUpdates(map: DayMap): void {
@@ -383,22 +379,6 @@ function addStandalone(map: DayMap): void {
     })
   })
 
-  STANDALONE_TEMPORARY_UPDATES.forEach((update) => {
-    if (update.comment !== undefined) {
-      addArrayEvents(map, 'other', update.date, update.comment);
-    }
-    if (update.updates !== undefined) {
-      update.updates.forEach(subUpdate => {
-        if (subUpdate.comment !== undefined) {
-          addArrayEvents(map, 'other', subUpdate.date ?? update.date, subUpdate.comment);
-        }
-        if (subUpdate.endComment !== undefined && typeof subUpdate.end === 'string') {
-          addArrayEvents(map, 'other', subUpdate.end, subUpdate.endComment);
-        }
-      })
-    }
-  });
-
   iterateEntries(STANDALONE_CHANGE, (_, updates) => {
     updates.forEach(update => {
       if (update.comment !== undefined) {
@@ -431,7 +411,6 @@ function updateTimeline(days: Day[]): Day[] {
   map = addParties(map);
   map = addNewspapers(map);
   map = addUpdates(map);
-  addIglooMusicLists(map);
   addRoomUpdates(map);
   addStagePlays(map);
   addPinUpdates(map);

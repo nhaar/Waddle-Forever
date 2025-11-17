@@ -20,9 +20,8 @@ import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from "../game-data/standalone-changes";
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
-import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
@@ -387,10 +386,6 @@ function addStandaloneChanges(map: FileTimelineMap): void {
       }
     })
   });
-
-  map.addComplexTemporaryUpdateTimeline(STANDALONE_TEMPORARY_UPDATES, (map, update, start, end) => {
-    map.addPartyChanges(update, start, end);
-  });
 }
 
 function addMapUpdates(map: FileTimelineMap): void {
@@ -425,23 +420,6 @@ function addPins(map: FileTimelineMap): void {
       addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.file);
     }
   });
-}
-
-function addMusicLists(map: FileTimelineMap): void {
-  const route = 'play/v2/content/global/content/igloo_music.swf';
-  map.addDefault(route, 'tool:dynamic_igloo_music.swf');
-  for (let i = 0; i < IGLOO_LISTS.length; i++) {
-    // using archived igloo lists as temporary updates on top of a single permanent one
-    const cur = IGLOO_LISTS[i];
-    if (typeof cur.fileRef === 'string') {
-      const start = cur.date;
-      if (i === IGLOO_LISTS.length) {
-        map.add(route, cur.fileRef, start);
-      } else {
-        map.add(route, cur.fileRef, start, IGLOO_LISTS[i + 1].date);
-      }
-    }
-  }
 }
 
 function addStagePlays(map: FileTimelineMap): void {
@@ -570,6 +548,14 @@ function addUpdates(map: FileTimelineMap): void {
         map.pushCrumbChange('play/v2/content/global', route, info, update.date, update.end);
       });
     }
+    if (update.update.iglooList !== undefined && update.update.iglooList !== true) {
+      const route = 'play/v2/content/global/content/igloo_music.swf';
+      if ('file' in update.update.iglooList) {
+        map.add(route, update.update.iglooList.file, update.date);
+      } else {
+        map.add(route, 'tool:dynamic_igloo_music.swf', update.date);
+      }
+    }
   });
 }
 
@@ -608,7 +594,6 @@ export function getRoutesTimeline() {
     addFilesWithIds,
     addCatalogues,
     addStagePlays,
-    addMusicLists,
     addStadiumUpdates,
     addCrumbs,
     addClothing,
