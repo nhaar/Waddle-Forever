@@ -37,6 +37,11 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:Clothing_0605.swf'
   },
   {
+    date: '2006-05-19',
+    iglooVersion: 20,
+    iglooList: true
+  },
+  {
     date: '2006-06-02',
     clothingCatalog: 'archives:Clothing_0606.swf'
   },
@@ -71,6 +76,11 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-12-01',
     clothingCatalog: 'archives:Dec06Style.swf'
+  },
+  {
+    date: '2006-12-08',
+    iglooList: true,
+    iglooVersion: 44
   },
   {
     date: '2006-12-19',

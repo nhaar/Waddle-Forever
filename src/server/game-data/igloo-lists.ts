@@ -1,7 +1,6 @@
 /** Module handles the igloo music lists files */
 
 import { isGreater, Version } from "../routes/versions"
-import { Update } from "./updates";
 
 /** Information for a song in a music list */
 type ListSong = Song & {
@@ -46,36 +45,6 @@ type MusicListPatch = MusicListBase & {
 
 /** Represents a generic update to the music list */
 type ListUpdate = MusicList | MusicListPatch;
-
-export const PRE_CPIP_IGLOO_LISTS: Array<{
-  date: Version;
-  igloo: number;
-}> = [
-  {
-    date: Update.IGLOO_MUSIC,
-    igloo: 20
-  },
-  {
-    date: '2006-12-08',
-    igloo: 44
-  },
-  {
-    date: '2007-01-19',
-    igloo: 46
-  },
-  {
-    date: '2007-03-16',
-    igloo: 52
-  },
-  {
-    date: '2007-06-15',
-    igloo: 58
-  },
-  {
-    date: '2007-12-21',
-    igloo: 73
-  }
-];
 
 /** All supported music lists, the first one is a full one, other elements may be patches or full ones */
 export const IGLOO_LISTS: [MusicList, ...Array<ListUpdate>] = [

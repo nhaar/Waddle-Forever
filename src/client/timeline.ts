@@ -4,7 +4,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
-import { IGLOO_LISTS, PRE_CPIP_IGLOO_LISTS } from '../server/game-data/igloo-lists';
+import { IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
@@ -291,15 +291,14 @@ function addUpdates(map: DayMap): DayMap {
         addArrayEvents(map, 'other', update.date, comment);
       }) 
     }
+    if (update.update.iglooList === true) {
+      addEvents(map, update.date, { musicList: true });
+    }
   });
   return map;
 }
 
 function addIglooMusicLists(map: DayMap): void {
-  PRE_CPIP_IGLOO_LISTS.forEach((list) => {
-    addEvents(map, list.date, { musicList: true });
-  });
-  
   IGLOO_LISTS.forEach((list) => {
     addEvents(map, list.date, { musicList: true });
   })

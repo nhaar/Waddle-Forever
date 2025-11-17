@@ -11,6 +11,11 @@ export const UPDATES_2007: Update[] = [
     miscComments: ['The map is vectorized']
   },
   {
+    date: '2007-01-19',
+    iglooList: true,
+    iglooVersion: 46
+  },
+  {
     date: '2007-02-02',
     clothingCatalog: 'archives:Clothing_0702.swf',
     miscComments: ['Rockhopper is seen from the telescope'],
@@ -49,6 +54,11 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:Clothing_0703.swf'
   },
   {
+    date: '2007-03-16',
+    iglooList: true,
+    iglooVersion: 52
+  },
+  {
     date: '2007-04-06',
     clothingCatalog: 'archives:Clothing_0704.swf'
   },
@@ -63,6 +73,11 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-06-04',
     gameRelease: 'Catchin\' Waves'
+  },
+  {
+    date: '2007-06-15',
+    iglooList: true,
+    iglooVersion: 58
   },
   {
     date: '2007-07-06',
@@ -87,5 +102,10 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-12-07',
     clothingCatalog: 'archives:Clothing_0712.swf'
+  },
+  {
+    date: '2007-12-21',
+    iglooList: true,
+    iglooVersion: 73
   }
 ];

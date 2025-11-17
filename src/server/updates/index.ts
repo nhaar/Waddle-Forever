@@ -11,6 +11,29 @@ type CrumbIndicator = [FileRef, ...string[]];
 type LocalChanges = Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
 type GlobalChanges = Record<string, FileRef | CrumbIndicator>;
 
+/** Information for a song in a music list */
+type Song = {
+  id: number;
+  display: string;
+}
+
+/** Information for a song in a music list */
+type ListSong = Song & {
+  new?: true;
+};
+
+/** Represents a row of a 2D music list */
+type Row = [ListSong, ListSong];
+
+/** Represents a 2D music list */
+type IglooList = [Row, Row, Row, Row, Row, Row, Row];
+
+/** Information for a song that is being added in a music list */
+type ListSongPatch = Song & {
+  /** Row, column, starting at 1 */
+  pos: [number, number];
+}
+
 export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
@@ -54,6 +77,11 @@ export type CPUpdate = {
   globalChanges?: GlobalChanges;
 
   migrator?: boolean;
+
+  iglooList?: true | {
+    file: FileRef;
+    hidden: boolean;
+  } | IglooList | ListSongPatch[];
 };
 
 export type Event = 'migrator-crash' |
