@@ -6,7 +6,7 @@ import { isEqual, isLower, processVersion, Version } from '../server/routes/vers
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { IGLOO_LISTS, PRE_CPIP_IGLOO_LISTS } from '../server/game-data/igloo-lists';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from '../server/game-data/standalone-changes';
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
@@ -397,12 +397,6 @@ function addStandalone(map: DayMap): void {
           addArrayEvents(map, 'other', subUpdate.end, subUpdate.endComment);
         }
       })
-    }
-  });
-
-  STANDALONE_UPDATES.forEach(update => {
-    if (update.comment !== undefined) {
-      addArrayEvents(map, 'other', update.date, update.comment);
     }
   });
 

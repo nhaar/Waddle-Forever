@@ -4,6 +4,7 @@ import { PARTIES } from "../game-data/parties";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
+import { UPDATES } from "../updates/updates";
 
 export function getMemberTimeline() {
   const timeline = new TimelineMap<RoomName, boolean>();

@@ -5,9 +5,9 @@ import { PARTIES } from "../game-data/parties";
 import { ROOM_MUSIC_TIMELINE } from "../game-data/room-updates";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
-import { STANDALONE_UPDATES } from "../game-data/standalone-changes";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
+import { UPDATES } from "../updates/updates";
 
 export function getMusicTimeline() {
   const timeline = new TimelineMap<RoomName, number>();
@@ -54,9 +54,9 @@ export function getMusicTimeline() {
     })
   })
 
-  STANDALONE_UPDATES.forEach((update) => {
-    if (update.music !== undefined) {
-      addMusic(update.music, update.date);
+  UPDATES.forEach(update => {
+    if (update.update.music !== undefined) {
+      addMusic(update.update.music, update.date, update.end);
     }
   });
 

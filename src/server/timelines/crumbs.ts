@@ -11,6 +11,7 @@ import { getMigratorTimeline } from "./migrator";
 import { getMemberTimeline } from "./member";
 import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
+import { UPDATES } from "../updates/updates";
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
@@ -87,6 +88,12 @@ export function getLocalPathsTimeline() {
       }
     }
   });
+
+  UPDATES.forEach((update) => {
+    if (update.update.localChanges !== undefined && update.end !== undefined) {
+      addLocalChanges(update.update.localChanges, timeline, update.date, update.end);
+    }
+  })
 
   return timeline.getVersionsMap();
 }

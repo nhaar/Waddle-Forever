@@ -2,6 +2,14 @@ import { FileRef } from "../game-data/files";
 import { RoomName } from "../game-data/rooms";
 import { Version } from "../routes/versions"
 
+/** Array of either file to a start screen, or a pair [startscreen name, file] */
+type Startscreens = Array<FileRef | [string, FileRef]>;
+type Language = 'en';
+/** First element is file id used, then a list of all the crumbs that point to this path */
+type CrumbIndicator = [FileRef, ...string[]];
+type LocalChanges = Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
+type GlobalChanges = Record<string, FileRef | CrumbIndicator>;
+
 export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
@@ -16,6 +24,11 @@ export type CPUpdate = {
   gameRelease?: string;
   /** File of all room changes */
   rooms?: Partial<Record<RoomName, FileRef>>;
+
+  /** All room music IDs */
+  music?: Partial<Record<RoomName, number>>;
+
+  memberRooms?: Partial<Record<RoomName, boolean>>;
 
   /**
    * 'irregular': A new issue is released
@@ -32,6 +45,12 @@ export type CPUpdate = {
   miscComments?: string[];
 
   fileChanges?: Record<string, FileRef>;
+
+  startscreens?: Startscreens;
+
+  localChanges?: LocalChanges;
+
+  globalChanges?: GlobalChanges;
 };
 
 type TemporaryUpdate = {

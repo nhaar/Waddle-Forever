@@ -10,6 +10,18 @@ export const UPDATES_2010: Update[] = [
     clothingCatalog: 'archives:Feb10Clothing.swf'
   },
   {
+    date: '2010-02-25',
+    miscComments: ['Orange Puffles are available to adopt'],
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
+      }
+    },
+    fileChanges: {
+      'play/v2/games/roundup/PuffleRoundup.swf': 'recreation:puffle_roundup_orange.swf'
+    }
+  },
+  {
     date: '2010-03-12',
     furnitureCatalog: 'archives:March10Furniture.swf'
   },
@@ -29,6 +41,18 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-05-14',
     furnitureCatalog: 'archives:May10Furniture.swf'
+  },
+  {
+    date: '2010-05-27',
+    localChanges: {
+      'forms/moderator.swf': {
+        'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
+      }
+    }
+  },
+  {
+    date: '2010-07-26',
+    miscComments: ['Stamps are released']
   },
   {
     date: '2010-08-20',
@@ -66,6 +90,10 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-11-19',
+    miscComments: ['The password warning is updated'],
+    fileChanges: {
+      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf'
+    },
     newspaper: 'period-start'
   },
   {

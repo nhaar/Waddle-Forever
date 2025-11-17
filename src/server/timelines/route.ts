@@ -20,14 +20,13 @@ import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
+import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES } from "../game-data/standalone-changes";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
-import { AS3_PAPERS, BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -389,10 +388,6 @@ function addStandaloneChanges(map: FileTimelineMap): void {
     })
   });
 
-  STANDALONE_UPDATES.forEach((update) => {
-    map.addPartyChanges(update, update.date);
-  });
-
   map.addComplexTemporaryUpdateTimeline(STANDALONE_TEMPORARY_UPDATES, (map, update, start, end) => {
     map.addPartyChanges(update, start, end);
   });
@@ -545,28 +540,35 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
 function addUpdates(map: FileTimelineMap): void {
   UPDATES.forEach(update => {
     if (update.update.clothingCatalog !== undefined) {
-      map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date);
-      map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date);
-      map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date);
+      map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date, update.end);
+      map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
+      map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date, update.end);
     }
     if (update.update.furnitureCatalog !== undefined) {
-      map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date);
-      map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date);
+      map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
+      map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
     }
     if (update.update.iglooCatalog !== undefined) {
-      map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date);
+      map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date, update.end);
     }
     if (update.update.rooms !== undefined) {
       map.addRoomChanges(update.update.rooms, update.date, update.end);
     }
     if (update.update.fileChanges !== undefined) {
       iterateEntries(update.update.fileChanges, (route, fileRef) => {
-        if (update.end === undefined) {
-          map.add(route, fileRef, update.date);
-        } else {
-          map.add(route, fileRef, update.date, update.end);
-        }
+        map.add(route, fileRef, update.date, update.end);
       })
+    }
+    if (update.update.startscreens !== undefined) {
+      addStartscreens(update.update.startscreens, map, update.date, update.end);
+    }
+    if (update.update.localChanges !== undefined) {
+      map.addLocalChanges(update.update.localChanges, update.date, update.end);
+    }
+    if (update.update.globalChanges !== undefined) {
+      iterateEntries(update.update.globalChanges, (route, info) => {
+        map.pushCrumbChange('play/v2/content/global', route, info, update.date, update.end);
+      });
     }
   });
 }

@@ -19,6 +19,15 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-03-06',
+    miscComments: ['White Puffles are available to adopt'],
+    rooms: {
+      pet: 'archives:RoomsPet_4.swf'
+    },
+    localChanges: {
+      'catalogues/adopt.swf': {
+        'en': 'archives:Mar2009Adopt.swf'
+      }
+    },
     clothingCatalog: 'archives:Mar2009.swf'
   },
   {
