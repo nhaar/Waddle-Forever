@@ -1,4 +1,4 @@
-import { PermanentUpdateTimeline, ComplexTemporaryUpdateTimeline } from ".";
+import { ComplexTemporaryUpdateTimeline } from ".";
 import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
 import { IslandChanges } from "./parties";
 import { Update } from "./updates";
@@ -28,32 +28,6 @@ export const STANDALONE_TEMPORARY_UPDATES: ComplexTemporaryUpdateTimeline<Tempor
     end: '2008-07-18',
     globalChanges: {
       'content/igloo_music.swf': 'recreation:igloo_music/cpip_start.swf'
-    }
-  },
-  {
-    date: '2007-02-02',
-    end: '2007-02-09',
-    generalChanges: {
-      'artwork/tools/telescope0.swf': 'archives:Telescope5.swf'
-    },
-    comment: 'Rockhopper is seen from the telescope',
-    updates: [
-      {
-        date: '2007-02-07',
-        generalChanges: {
-          'artwork/tools/telescope0.swf': 'archives:Telescope6.swf'
-        },
-        comment: 'Rockhopper is seen closer from the telescope'
-      }
-    ]
-  },
-  {
-    date: '2011-03-01',
-    end: '2011-03-08',
-    comment: 'Renovation for the Pet Shop begins',
-    roomChanges: {
-      plaza: 'archives:PlazaConstructionMar2011.swf',
-      pet: 'archives:PetConstructionMar2011.swf'
     }
   }
 ]

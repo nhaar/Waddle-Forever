@@ -57,7 +57,9 @@ export type CPUpdate = {
 };
 
 export type Event = 'migrator-crash' |
-  'migrator-reconstruction';
+  'migrator-reconstruction' |
+  'rockhopper-approach' |
+  'pet-renovation';
 
 export type Update = {
   date: Version;

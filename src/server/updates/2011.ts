@@ -34,6 +34,22 @@ export const UPDATES_2011: Update[] = [
     furnitureCatalog: 'archives:Feb-Mar2011BetterIgloos.swf'
   },
   {
+    date: '2011-03-01',
+    miscComments: ['Renovation for the Pet Shop begins'],
+    temp: {
+      'pet-renovation': {
+        rooms: {
+          plaza: 'archives:PlazaConstructionMar2011.swf',
+          pet: 'archives:PetConstructionMar2011.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2011-03-08',
+    end: ['pet-renovation']
+  },
+  {
     date: '2011-03-11',
     clothingCatalog: 'archives:PenguinStyleMar2011.swf',
     furnitureCatalog: 'archives:Mar-Apr2011Furniture.swf'

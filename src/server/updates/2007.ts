@@ -12,7 +12,30 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-02-02',
-    clothingCatalog: 'archives:Clothing_0702.swf'
+    clothingCatalog: 'archives:Clothing_0702.swf',
+    miscComments: ['Rockhopper is seen from the telescope'],
+    temp: {
+      'rockhopper-approach': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:Telescope5.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2007-02-07',
+    miscComments: ['Rockhopper is seen closer from the telescope'],
+    temp: {
+      'rockhopper-approach': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'archives:Telescope6.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2007-02-09',
+    end: ['rockhopper-approach']
   },
   {
     date: '2007-02-26',

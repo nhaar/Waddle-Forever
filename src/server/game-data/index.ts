@@ -47,14 +47,6 @@ export type TemporaryChange<ChangeInformation> = {
 /** A singular update on a timeline of events that are either permanent or temporary */
 export type TimelineEvent<ChangeInformation> = PermanentChange<ChangeInformation> | TemporaryChange<ChangeInformation>;
 
-/** Implementation of a permanent update with arbitrary information */
-type PermanentUpdate<UpdateInformation> = {
-  date: Version;
-} & UpdateInformation;
-
-/** List of many implementations of permanent updates */
-export type PermanentUpdateTimeline<UpdateInformation> = PermanentUpdate<UpdateInformation>[];
-
 /**
  * A complex implementation of a temporary change, which can be accompanied with sub-updates, as well as permanent updates
  * that could happen at the start or end of this temporary change
