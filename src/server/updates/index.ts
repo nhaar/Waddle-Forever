@@ -1,0 +1,62 @@
+import { Version } from "../routes/versions"
+
+export type CPUpdate = {};
+
+type TemporaryUpdate = {
+  end: Version;
+  consequences?: { date: Version; } & CPUpdate;
+  sub?: Array<{ date: Version; } & CPUpdate>;
+} & CPUpdate;
+
+export type Update = {
+  date: Version;
+  temp?: TemporaryUpdate[];
+} & CPUpdate;
+
+export function consumeUpdates(updates: Update[]): Array<{
+  date: Version;
+  end?: Version;
+  update: CPUpdate;
+}> {
+  const consumed: Array<{
+    date: Version;
+    end?: Version;
+    update: CPUpdate;
+  }> = [];
+
+  updates.forEach(update => {
+    consumed.push({
+      date: update.date,
+      update: update
+    })
+
+    if (update.temp !== undefined) {
+      update.temp.forEach(temp => {
+        consumed.push({
+          date: update.date,
+          end: temp.end,
+          update: temp
+        });
+
+        if (temp.consequences !== undefined) {
+          consumed.push({
+            date: temp.end,
+            update: temp.consequences
+          });
+        }
+
+        if (temp.sub !== undefined) {
+          temp.sub.forEach((subUpdate) => {
+            consumed.push({
+              date: subUpdate.date,
+              end: temp.end,
+              update: subUpdate
+            });
+          });
+        }
+      });
+    }
+  });
+
+  return consumed;
+}

@@ -289,7 +289,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
  * A sorted array which represents how an information changes through time
  * Each new element means that the information mutates on that given date
  * */
-type VersionsInformation<EventInformation> = Array<{
+export type VersionsInformation<EventInformation> = Array<{
   date: Version;
   info: EventInformation;
 }>;
