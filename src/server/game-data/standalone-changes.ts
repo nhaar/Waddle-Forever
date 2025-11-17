@@ -22,32 +22,6 @@ type PermanentUpdate = IslandChanges & {
 
 export const STANDALONE_UPDATES: PermanentUpdateTimeline<PermanentUpdate> = [
   {
-    date: Update.BETA_RELEASE,
-    map: "recreation:map_release.swf",
-    iglooVersion: 1, // placeholder
-  },
-  {
-    date: '2005-09-13',
-    comment: 'Penguins can now purchase different types of igloo',
-    iglooVersion: 20
-  },
-  {
-    date: '2005-10-24',
-    comment: 'Club Penguin releases',
-    generalChanges: {
-      'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf'
-    }
-  },
-  {
-    date: Update.PRE_CPIP_REWRITE_DATE,
-    map: 'approximation:map_beach_changed_id.swf'
-  },
-  {
-    date: '2007-01-15', // rough estimate date
-    map: 'recreation:map_vector_original.swf',
-    comment: 'The map is vectorized'
-  },
-  {
     date: Update.CPIP_UPDATE,
     comment: 'The Club Penguin Improvement Project is implemented',
     roomChanges: {

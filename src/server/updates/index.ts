@@ -24,6 +24,14 @@ export type CPUpdate = {
    * 'fan': The fan issue is released
    */
   newspaper?: 'irregular' | 'period-start' | 'period-end' | 'fan';
+
+  /** New version of the igloo swf */
+  iglooVersion?: number;
+
+  /** Misc. updates on this day to be added in the timeline */
+  miscComments?: string[];
+
+  fileChanges?: Record<string, FileRef>;
 };
 
 type TemporaryUpdate = {

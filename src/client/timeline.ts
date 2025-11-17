@@ -286,6 +286,11 @@ function addUpdates(map: DayMap): DayMap {
     if (update.update.newspaper === 'fan') {
       addEvents(map, update.date, { newIssue: 'Fan issue of the newspaper released '});
     }
+    if (update.update.miscComments !== undefined) {
+      update.update.miscComments.forEach(comment => {
+        addArrayEvents(map, 'other', update.date, comment);
+      }) 
+    }
   });
   return map;
 }

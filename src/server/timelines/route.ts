@@ -559,6 +559,15 @@ function addUpdates(map: FileTimelineMap): void {
     if (update.update.rooms !== undefined) {
       map.addRoomChanges(update.update.rooms, update.date, update.end);
     }
+    if (update.update.fileChanges !== undefined) {
+      iterateEntries(update.update.fileChanges, (route, fileRef) => {
+        if (update.end === undefined) {
+          map.add(route, fileRef, update.date);
+        } else {
+          map.add(route, fileRef, update.date, update.end);
+        }
+      })
+    }
   });
 }
 

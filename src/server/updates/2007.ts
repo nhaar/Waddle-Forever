@@ -6,6 +6,11 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:Clothing_0701.swf'
   },
   {
+    date: '2007-01-15',
+    map: 'recreation:map_vector_original.swf', // rough estimate date
+    miscComments: ['The map is vectorized']
+  },
+  {
     date: '2007-02-02',
     clothingCatalog: 'archives:Clothing_0702.swf'
   },

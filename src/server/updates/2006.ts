@@ -57,6 +57,10 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:September06Style.swf'
   },
   {
+    date: '2006-09-21',
+    map: 'approximation:map_beach_changed_id.swf'
+  },
+  {
     date: '2006-10-06',
     clothingCatalog: 'archives:October06Style.swf'
   },

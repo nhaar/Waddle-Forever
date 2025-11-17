@@ -2,11 +2,18 @@ import { Update } from ".";
 
 export const UPDATES_2005: Update[] = [
   {
+    date: '2005-08-22',
+    map: "recreation:map_release.swf",
+    iglooVersion: 1
+  },
+  {
     date: '2005-09-13',
     gameRelease: 'Astro Barrier',
     rooms: {
       lounge: 'mammoth:artwork/rooms/lounge10.swf'
-    }
+    },
+    iglooVersion: 20,
+    miscComments: ['Penguins can now purchase different types of igloo']
   },
   {
     date: '2005-09-21',
@@ -16,7 +23,11 @@ export const UPDATES_2005: Update[] = [
     date: '2005-10-24',
     clothingCatalog: 'archives:Clothing_0510.swf',
     furnitureCatalog: 'archives:Furniture_0510.swf',
-    newspaper: 'irregular'
+    newspaper: 'irregular',
+    fileChanges: {
+      'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf'
+    },
+    miscComments: ['Club Penguin releases']
   },
   {
     date: '2005-10-28',
