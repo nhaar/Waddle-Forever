@@ -1,4 +1,5 @@
 import { FileRef } from "../game-data/files";
+import { RoomName } from "../game-data/rooms";
 import { Version } from "../routes/versions"
 
 export type CPUpdate = {
@@ -11,6 +12,10 @@ export type CPUpdate = {
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
+  /** Name of the game that is released this day */
+  gameRelease?: string;
+  /** File of all room changes */
+  rooms?: Partial<Record<RoomName, FileRef>>
 };
 
 type TemporaryUpdate = {

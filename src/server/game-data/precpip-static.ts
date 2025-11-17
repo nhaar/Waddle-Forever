@@ -42,8 +42,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
   'artwork/characters/penguin.swf': 'approximation:penguin_no_shadow.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
-  'games/astro.swf': 'mammoth:games/astro.swf',
-  'games/beans.swf': 'mammoth:games/beans.swf',
   'games/biscuit.swf': 'mammoth:games/biscuit.swf',
   'games/puffle.swf': 'mammoth:games/puffle.swf',
   'games/fish.swf': 'mammoth:games/fish.swf',
@@ -95,5 +93,17 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/rooms/igloo52.swf': 'archives:Igloo52.swf',
   'artwork/rooms/igloo58.swf': 'archives:Igloo58.swf',
   'artwork/rooms/igloo73.swf': 'archives:Igloo73.swf',
-  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf'
+  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf',
+  'games/astro/astro.swf': 'mammoth:games/astro.swf',
+  'games/astro.swf': 'mammoth:games/astro.swf',
+  'games/thinice/game.swf': 'archives:ThinIce.swf',
+  'games/beans.swf': 'mammoth:games/beans.swf',
+  'games/beans/beans.swf': 'mammoth:games/beans.swf',
+  'games/pizza/game.swf': 'fix:Pizzatron3000-2007.swf',
+  'games/fish/fish.swf': 'mammoth:games/fish.swf',
+  'games/bbiscuit/bbiscuit.swf': 'mammoth:games/biscuit.swf',
+  'games/roundup/roundup.swf': 'mammoth:games/puffle.swf',
+  'games/mine/mine.swf': 'fix:CartSurfer2006.swf',
+  'games/mine.swf': 'fix:CartSurfer2006.swf',
+  'games/waves/game.swf': 'archives:CatchinWavesGame.swf'
 };

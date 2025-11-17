@@ -10,6 +10,13 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:Clothing_0702.swf'
   },
   {
+    date: '2007-02-26',
+    gameRelease: 'Pizzatron 3000',
+    rooms: {
+      pizza: 'recreation:pizza_2007.swf'
+    }
+  },
+  {
     date: '2007-03-02',
     clothingCatalog: 'archives:Clothing_0703.swf'
   },
@@ -24,6 +31,10 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-06-01',
     clothingCatalog: 'archives:Clothing_0706.swf'
+  },
+  {
+    date: '2007-06-04',
+    gameRelease: 'Catchin\' Waves'
   },
   {
     date: '2007-07-06',

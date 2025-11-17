@@ -25,7 +25,6 @@ import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UP
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { IGLOO_LISTS } from "../game-data/igloo-lists";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
-import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
 import { CLOTHING_TIMELINE } from "./clothing";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
@@ -494,21 +493,6 @@ function addStagePlays(map: FileTimelineMap): void {
   })
 }
 
-function addGames(map: FileTimelineMap): void {
-  Object.values(PRE_CPIP_GAME_UPDATES).forEach((updates) => {
-    const [release] = updates;
-    const fileRoute = path.join('games', release.directory);
-
-    map.addDefault(fileRoute, release.fileRef);
-    if (release.roomChanges !== undefined && release.date !== undefined) {
-      map.addRoomChanges(release.roomChanges, release.date);
-    }
-    if (release['2006'] !== undefined) {
-      map.addDefault(path.join('games', release['2006']), release.fileRef);
-    }
-  })
-}
-
 function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
   if (isLower(start, Update.CPIP_UPDATE)) {
     const fileName = `${room}.swf`
@@ -573,6 +557,14 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
   })
 }
 
+function addUpdates(map: FileTimelineMap): void {
+  UPDATES.forEach(update => {
+    if (update.update.rooms !== undefined) {
+      map.addRoomChanges(update.update.rooms, update.date, update.end);
+    }
+  });
+}
+
 function addParties(map: FileTimelineMap): void {
   map.addComplexTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
     map.addPartyChanges(party, start, end);
@@ -603,6 +595,7 @@ export function getRoutesTimeline() {
     addMapUpdates,
     // pins are specifically before party so that pins that update with a party don't override the party room
     addPins,
+    addUpdates,
     addParties,
     addFilesWithIds,
     addCatalogues,
@@ -613,7 +606,6 @@ export function getRoutesTimeline() {
     addClothing,
     addTimeSensitiveStaticFiles,
     addFurniture,
-    addGames,
     addStaticFiles,
     addNewspapers
   ];

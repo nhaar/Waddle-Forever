@@ -14,6 +14,13 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:Clothing_0603.swf'
   },
   {
+    date: '2006-03-10',
+    gameRelease: 'Ice Fishing',
+    rooms: {
+      lodge: 'mammoth:artwork/rooms/lodge11.swf'
+    }
+  },
+  {
     date: '2006-03-17',
     pin: true
   },
@@ -32,6 +39,10 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-06-02',
     clothingCatalog: 'archives:Clothing_0606.swf'
+  },
+  {
+    date: '2006-06-06',
+    gameRelease: 'Cart Surfer'
   },
   {
     date: '2006-07-07',
@@ -56,5 +67,12 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-12-01',
     clothingCatalog: 'archives:Dec06Style.swf'
+  },
+  {
+    date: '2006-12-19',
+    gameRelease: 'Thin Ice',
+    rooms: {
+      lounge: 'archives:ArtworkRoomsLounge40.swf'
+    }
   }
 ];
