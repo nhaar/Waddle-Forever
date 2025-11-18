@@ -20,7 +20,20 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-09-21',
-    clothingCatalog: 'archives:September05Style.swf'
+    clothingCatalog: 'archives:September05Style.swf',
+    party: {
+      name: 'Beta Test Party',
+      rooms: {
+        'town': 'fix:Town-party.swf'
+      },
+      music: {
+        town: 2
+      }
+    }
+  },
+  {
+    date: '2005-09-22',
+    party: null
   },
   {
     date: '2005-10-24',

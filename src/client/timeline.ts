@@ -273,6 +273,7 @@ function addNewspapers(map: DayMap): DayMap {
 }
 
 function addUpdates(map: DayMap): DayMap {
+  let partyName: string | undefined = undefined;
   UPDATES.forEach(update => {
     if (update.update.clothingCatalog !== undefined) {
       addEvents(map, update.date, { newClothing: true });
@@ -296,6 +297,14 @@ function addUpdates(map: DayMap): DayMap {
     }
     if (update.update.migrator !== false && update.update.migrator !== undefined) {
       addEvents(map, update.date, { migrator: true });
+    }
+    if (update.update.party !== undefined && update.update.party !== null) {
+      partyName = update.update.party.name;
+      addArrayEvents(map, 'partyStart', update.date, `The ${partyName} starts` );
+    }
+    if (update.update.party === null) {
+      addArrayEvents(map, 'partyEnd', update.date, `The ${partyName} ends`);
+      partyName = undefined;
     }
   });
   return map;

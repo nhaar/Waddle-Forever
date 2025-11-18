@@ -82,6 +82,10 @@ export type CPUpdate = {
     file: FileRef;
     hidden: boolean;
   } | IglooList | ListSongPatch[];
+
+  party?: {
+    name: string;
+  } & CPUpdate | null;
 };
 
 export type Event = 'migrator-crash' |
@@ -108,6 +112,8 @@ export function consumeUpdates(updates: Update[]): Array<{
 
   const eventEnds = new Map<Event, Version>();
   const temps: Array<{ date: Version; update: CPUpdate, event: Event }> = [];
+  let party: CPUpdate | undefined = undefined;
+  let partyDate: Version | undefined = undefined;
 
   updates.forEach(update => {
     consumed.push({
@@ -123,6 +129,26 @@ export function consumeUpdates(updates: Update[]): Array<{
           event: e
         });
       });
+    }
+
+    if (update.party !== undefined) {
+      if (update.party === null) {
+        if (party === undefined || partyDate === undefined) {
+          throw new Error('Party end mark outside of a party');
+        } else {
+          consumed.push({
+            date: partyDate,
+            update: party,
+            end: update.date
+          });
+        }
+      } else {
+        if (party !== undefined) {
+          throw new Error('Overwriting party');
+        }
+        partyDate = update.date;
+        party = update.party;
+      }
     }
 
     if (update.end !== undefined) {

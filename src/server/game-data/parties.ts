@@ -141,17 +141,6 @@ type Construction = {
 
 export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
-    name: 'Beta Test Party',
-    date: Update.BETA_PARTY,
-    end: '2005-09-22',
-    roomChanges: {
-      'town': 'fix:Town-party.swf'
-    },
-    music: {
-      town: 2
-    }
-  },
-  {
     name: 'Halloween Party 2005',
     date: '2005-10-27',
     end: '2005-11-01',
