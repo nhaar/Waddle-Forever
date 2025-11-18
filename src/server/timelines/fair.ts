@@ -2,6 +2,7 @@ import { VersionsTimeline } from "../game-data";
 import { PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { isGreaterOrEqual, Version } from "../routes/versions";
+import { UPDATES } from "../updates/updates";
 
 export function getFairTimeline() {
   const timeline = new VersionsTimeline<boolean>();
@@ -16,6 +17,16 @@ export function getFairTimeline() {
       timeline.add({
         date: party.date,
         end: party.end,
+        info: true
+      });
+    }
+  });
+
+  UPDATES.forEach(update => {
+    if (update.date !== undefined && update.update.fairCpip !== undefined) {
+      timeline.add({
+        date: update.date,
+        end: update.end,
         info: true
       });
     }

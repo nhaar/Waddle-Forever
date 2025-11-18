@@ -311,6 +311,9 @@ function addUpdates(map: DayMap): DayMap {
     if (update.update.roomComment !== undefined) {
       addEvents(map, update.date, { roomUpdate: update.update.roomComment });
     }
+    if (update.update.constructionComment !== undefined) {
+      addEvents(map, update.date, { partyConstruction: update.update.constructionComment });
+    }
   });
   return map;
 }

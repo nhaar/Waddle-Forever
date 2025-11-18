@@ -72,6 +72,8 @@ export type CPUpdate = {
 
   roomComment?: string;
 
+  constructionComment?: string;
+
   fileChanges?: Record<string, FileRef>;
 
   startscreens?: Startscreens;
@@ -88,6 +90,21 @@ export type CPUpdate = {
    * */
   scavengerHunt2007?: FileRef;
 
+  /** Scavenger Hunt icon is loaded by the dependency, must be specified */
+  scavengerHunt2010?: {
+    iconFileId: FileRef;
+    // if not supplied, will use a placeholder one
+    iconFilePath?: string;
+  };
+
+  /** If used the CPIP fair icon and its info */
+  fairCpip?: {
+    // exact ID
+    iconFileId: FileRef;
+    // UI id might be required in the future if we find different ones
+    infoFile: FileRef;
+  };
+
   iglooList?: true | {
     file: FileRef;
     hidden: boolean;
@@ -103,10 +120,12 @@ export type CPUpdate = {
 
 export type Event = 'party' |
   'party2' |
+  'const' |
   'migrator-crash' |
   'migrator-reconstruction' |
   'rockhopper-approach' |
-  'pet-renovation';
+  'pet-renovation' |
+  'earthquake';
 
 export type Update = {
   date: Version;
@@ -135,6 +154,25 @@ export function consumeUpdates(updates: Update[]): Array<{
 
     if (update.temp !== undefined) {
       iterateEntries(update.temp, (e, u) => {
+        if (e.startsWith('party')) {
+          const construction = events.get('const')?.[0];
+          if (construction !== undefined) {
+            const constructionComment = 'partyName' in u ? (
+              `Construction for the ${u.partyName} starts`
+            ): (
+              construction.update.constructionComment
+            );
+            if (constructionComment === undefined) {
+              throw new Error('Expected construction comment to be defined');
+            }
+            consumed.push({
+              date: construction.date,
+              end: update.date,
+              update: { ...construction.update, constructionComment }
+            });
+            events.delete('const');
+          }
+        }
         const eventsArray = events.get(e) ?? [];
         eventsArray.push({
           date: update.date,

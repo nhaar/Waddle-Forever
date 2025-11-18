@@ -51,6 +51,27 @@ export function getGlobalPathsTimeline() {
     }
   });
 
+  UPDATES.forEach(update => {
+    if (update.update.scavengerHunt2010 !== undefined) {
+      const huntIconPath = update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
+      timeline.add('scavenger_hunt_icon', huntIconPath, update.date, update.end);
+    }
+    if (update.update.globalChanges !== undefined) {
+      Object.entries(update.update.globalChanges).forEach((pair) => {
+        const [route, info] = pair;
+        if (typeof info !== 'string') {
+          const [_, ...paths] = info;
+          paths.forEach((globalPath) => {
+            timeline.add(globalPath, route, update.date, update.end);
+          })
+        }
+      })
+    }
+    if (update.update.fairCpip !== undefined) {
+      timeline.add('ticket_icon', SCAVENGER_ICON_PATH, update.date, update.end);
+    }
+  });
+
   return timeline.getVersionsMap();
 
 }
@@ -92,6 +113,10 @@ export function getLocalPathsTimeline() {
   UPDATES.forEach((update) => {
     if (update.update.localChanges !== undefined && update.end !== undefined) {
       addLocalChanges(update.update.localChanges, timeline, update.date, update.end);
+    
+    }
+    if (update.update.fairCpip !== undefined) {
+      timeline.add('tickets', TICKET_INFO_PATH, update.date, update.end);
     }
   })
 
