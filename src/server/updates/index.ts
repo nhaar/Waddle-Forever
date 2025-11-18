@@ -120,12 +120,15 @@ export type CPUpdate = {
 
 export type Event = 'party' |
   'party2' |
+  'party3' |
   'const' |
   'migrator-crash' |
   'migrator-reconstruction' |
   'rockhopper-approach' |
   'pet-renovation' |
-  'earthquake';
+  'earthquake' |
+  'event' |
+  'fire-construction';
 
 export type Update = {
   date: Version;
