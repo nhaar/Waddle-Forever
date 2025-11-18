@@ -5,6 +5,7 @@ import { TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
+import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 
 export function getRoomFrameTimeline() {
@@ -40,6 +41,12 @@ export function getRoomFrameTimeline() {
           addRoomFrames(update.roomFrames, date, end);
         }
       });
+    }
+  });
+
+  UPDATES.forEach(update => {
+    if (update.update.frames !== undefined && update.end !== undefined) {
+      addRoomFrames(update.update.frames, update.date, update.end);
     }
   });
 

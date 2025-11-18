@@ -297,9 +297,19 @@ function addUpdates(map: DayMap): DayMap {
     if (update.update.migrator !== false && update.update.migrator !== undefined) {
       addEvents(map, update.date, { migrator: true });
     }
-    if (update.update.partyName !== undefined && update.end !== undefined) {
-      addArrayEvents(map, 'partyStart', update.date, `The ${update.update.partyName} starts` );
-      addArrayEvents(map, 'partyEnd', update.end, `The ${update.update.partyName} ends`);
+    if (update.end !== undefined) {
+      if ('partyName' in update.update) {
+        addArrayEvents(map, 'partyStart', update.date, `The ${update.update.partyName} starts` );
+        addArrayEvents(map, 'partyEnd', update.end, `The ${update.update.partyName} ends`);
+      } else if ('partyStart' in update.update) {
+        addArrayEvents(map, 'partyStart', update.date, update.update.partyStart );
+        addArrayEvents(map, 'partyEnd', update.end, update.update.partyEnd);
+      } else if ('update' in update.update) {
+        addEvents(map, update.date, { partyUpdate: update.update.update });
+      }
+    }
+    if (update.update.roomComment !== undefined) {
+      addEvents(map, update.date, { roomUpdate: update.update.roomComment });
     }
   });
   return map;

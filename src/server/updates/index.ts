@@ -52,6 +52,8 @@ export type CPUpdate = {
   /** All room music IDs */
   music?: Partial<Record<RoomName, number>>;
 
+  frames?: Partial<Record<RoomName, number>>;
+
   memberRooms?: Partial<Record<RoomName, boolean>>;
 
   /**
@@ -68,6 +70,8 @@ export type CPUpdate = {
   /** Misc. updates on this day to be added in the timeline */
   miscComments?: string[];
 
+  roomComment?: string;
+
   fileChanges?: Record<string, FileRef>;
 
   startscreens?: Startscreens;
@@ -82,9 +86,14 @@ export type CPUpdate = {
     file: FileRef;
     hidden: boolean;
   } | IglooList | ListSongPatch[];
-
-  partyName?: string;
-};
+} & ({
+  partyName: string;
+} | {
+  partyStart: string;
+  partyEnd: string;
+} | {
+  update: string;
+} | {});
 
 export type Event = 'party' |
   'migrator-crash' |

@@ -155,5 +155,17 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-12-26',
     end: ['party']
+  },
+  {
+    date: '2005-12-31',
+    temp: {
+      party: {
+        partyStart: 'A new years celebration is held at the Town',
+        partyEnd: 'The fireworks end',
+        rooms: {
+          town: 'fix:ArtworkRoomsTown-newyears.swf'
+        }
+      }
+    }
   }
 ];

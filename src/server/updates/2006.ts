@@ -3,11 +3,80 @@ import { Update } from ".";
 export const UPDATES_2006: Update[] = [
   {
     date: '2006-01-01',
-    clothingCatalog: 'archives:Clothing_0601.swf'
+    clothingCatalog: 'archives:Clothing_0601.swf',
+    end: ['party']
+  },
+  {
+    date: '2006-01-27',
+    temp: {
+      party: {
+        partyName: 'Winter Luau',
+        rooms: {
+          dance: 'recreation:winter_luau/dance.swf',
+          dock: 'recreation:winter_luau/dock.swf',
+          forts: 'recreation:winter_luau/forts.swf',
+          town: 'recreation:winter_luau/town.swf'
+        },
+        music: {
+          dock: 11,
+          forts: 11,
+          town: 11,
+          dance: 10
+        }
+      }
+    }
+  },
+  {
+    date: '2006-01-29',
+    end: ['party']
   },
   {
     date: '2006-02-03',
     clothingCatalog: 'archives:Clothing_0602.swf'
+  },
+  {
+    date: '2006-02-14',
+    temp: {
+      party: {
+        partyName: "Valentine's Day Celebration",
+        rooms: {
+          'dance': 'archives:ArtworkRooms0214Dance.swf',
+          'lounge': 'archives:ArtworkRooms0214Lounge.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2006-02-15',
+    end: ['party']
+  },
+  {
+    date: '2006-02-24',
+    temp: {
+      party: {
+        partyName: 'Pizza Parlor Opening Party',
+        rooms: {
+          'forts': 'archives:ArtworkRoomsForts11.swf',
+          'pizza': 'archives:ArtworkRoomsPizza10.swf',
+          'town': 'archives:ArtworkRoomsTown13.swf'
+        },
+        music: {
+          'plaza': 2
+        },
+        frames: {
+          'town': 2
+        }
+      }
+    },
+  },
+  {
+    date: '2006-02-28',
+    rooms: {
+      // now has path to the plaza
+      forts: 'archives:ArtworkRoomsForts12.swf'
+    },
+    map: 'approximation:map_plaza_no_berg.swf',
+    end: ['party']
   },
   {
     date: '2006-03-03',
@@ -22,14 +91,86 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-03-17',
-    pin: true
+    pin: true,
+    temp: {
+      party: {
+        partyStart: 'A celebration for St. Patrick\'s Day and Puffles starts',
+        partyEnd: 'The St. Patrick\'s Day and Puffle party ends',
+        rooms: {
+          'village': 'archives:ArtworkRooms0401Village.swf',
+          'plaza': 'archives:ArtworkRoomsPlaza11.swf',
+          'town': 'archives:ArtworkRoomsTown12.swf'
+        },
+        frames: {
+          'village': 2
+        }
+      }
+    }
+  },
+  {
+    date: '2006-03-20',
+    end: ['party']
+  },
+  {
+    date: '2006-03-31',
+    temp: {
+      party: {
+        partyName: 'April Fools\' Party',
+        rooms: {
+          'dojo': 'archives:ArtworkRooms0401Dojo.swf',
+          'rink': 'archives:ArtworkRooms0401Rink.swf',
+          'dance': 'archives:ArtworkRooms0401Dance.swf',
+          'plaza': 'archives:ArtworkRoomsPlaza13.swf',
+          'lodge': 'archives:ArtworkRooms0401Lodge.swf',
+          'village': 'archives:ArtworkRooms0401Village.swf',
+          'forts': 'archives:ArtworkRooms0401Forts.swf',
+          'town': 'archives:ArtworkRooms0401Town.swf'
+        },
+        fileChanges: {
+          'chat291.swf': 'unknown:chat291.swf'
+        },
+        music: {
+          'dance': 201,
+          'forts': 201,
+          'rink': 201,
+          'town': 201,
+          'plaza': 201
+        },
+        frames: {
+          'plaza': 3
+        }
+      }
+    }
+  },
+  {
+    date: '2006-04-03',
+    end: ['party']
   },
   {
     date: '2006-04-07',
     clothingCatalog: 'archives:Clothing_0604.swf'
   },
   {
+    date: '2006-04-14',
+    temp: {
+      party: {
+        partyName: 'Easter Egg Hunt',
+        rooms: {
+          'book': 'archives:ArtworkRooms0416Book10.swf',
+          'berg': 'archives:ArtworkRooms0416Berg10.swf',
+          'dance': 'archives:ArtworkRooms0416Dance10.swf',
+          'pet': 'archives:ArtworkRooms0416Pet11.swf',
+          'mtn': 'archives:ArtworkRooms0416Mtn10.swf',
+          'lodge': 'archives:ArtworkRooms0416Lodge11.swf',
+          'village': 'archives:ArtworkRooms0416Village12.swf',
+          'forts': 'archives:ArtworkRooms0416Forts12.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2006-04-16',
+    end: ['party'],
     map: 'approximation:map_chat339.swf'
   },
   {
@@ -42,6 +183,40 @@ export const UPDATES_2006: Update[] = [
     iglooList: true
   },
   {
+    date: '2006-05-26',
+    temp: {
+      party: {
+        partyStart: 'Underground Opening Party',
+        rooms: {
+          'mine': 'archives:ArtworkRoomsMine10.swf',
+          boiler: 'recreation:cave_opening/boiler.swf',
+          cave: 'recreation:cave_opening/cave.swf',
+          plaza: 'recreation:cave_opening/plaza.swf',
+          dance: 'recreation:cave_opening/dance.swf'
+        },
+        frames: {
+          mine: 2
+        },
+        music: {
+          'boiler': 203,
+          'cave': 202,
+          'mine': 203,
+          'plaza': 203
+        }
+      }
+    },
+    rooms: {
+      // manhole path
+      plaza: 'archives:ArtworkRoomsPlaza17.swf',
+      // green puffle + boiler room trigger
+      dance: 'archives:ArtworkRoomsDance14.swf'
+    }
+  },
+  {
+    date: '2006-05-29',
+    end: ['party']
+  },
+  {
     date: '2006-06-02',
     clothingCatalog: 'archives:Clothing_0606.swf'
   },
@@ -50,12 +225,195 @@ export const UPDATES_2006: Update[] = [
     gameRelease: 'Cart Surfer'
   },
   {
+    date: '2006-06-16',
+    temp: {
+      party: {
+        partyName: 'Summer Party',
+        rooms: {
+          'beach': 'archives:ArtworkRooms0615Beach10.swf',
+          'boiler': 'archives:ArtworkRooms0615Boiler12.swf',
+          'dock': 'archives:ArtworkRooms0615Dock12.swf',
+          'dojo': 'archives:ArtworkRooms0615Dojo11.swf',
+          'berg': 'archives:ArtworkRooms0615Berg11.swf',
+          'shack': 'archives:ArtworkRooms0615Shack10.swf',
+          'dance': 'archives:ArtworkRooms0615Dance15.swf',
+          'plaza': 'archives:ArtworkRooms0615Plaza18.swf',
+          'mtn': 'archives:ArtworkRooms0516Mtn11.swf',
+          'village': 'archives:ArtworkRooms0615Village12.swf',
+          'forts': 'archives:ArtworkRooms0615Forts13.swf',
+          'town': 'archives:ArtworkRooms0615Town12.swf'
+        },
+        music: {
+          'beach': 204,
+          'boiler': 204,
+          'dock': 204,
+          'dojo': 204,
+          'berg': 204,
+          'shack': 204,
+          'dance': 204,
+          'plaza': 204,
+          'mtn': 204,
+          'village': 204,
+          'forts': 204,
+          'town': 204
+        }
+      }
+    },
+    roomComment: 'More rooms are visible from the HQ',
+    rooms: {
+      // now this has a path to the beach
+      village: 'archives:ArtworkRoomsVillage13.swf',
+      agent: 'archives:ArtworkRoomsAgent13.swf'
+    },
+    // beach opens
+    map: 'archives:ArtworkMapsIsland10.swf'
+  },
+  {
+    date: '2006-06-21',
+    temp: {
+      party: {
+        update: 'Two new items are available for the Summer Party',
+        rooms: {
+          'beach': 'archives:ArtworkRooms0615Beach11.swf',
+          'plaza': 'archives:ArtworkRooms0615Plaza19.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2006-06-25',
+    end: ['party']
+  },
+  {
     date: '2006-07-07',
     clothingCatalog: 'archives:Clothing_0607.swf'
   },
   {
+    date: '2006-07-14',
+    temp: {
+      party: {
+        partyName: 'Western Party',
+        rooms: {
+          plaza: 'archives:ArtworkRoomsPlaza20.swf',
+          forts: 'archives:ArtworkRoomsForts14.swf',
+          dance: 'archives:ArtworkRoomsDance15.swf',
+          town: 'archives:ArtworkRoomsTown14.swf'
+        },
+        music: {
+          // we dont know the exact origins of this but,
+          // we know it played, so I assume in every party
+          plaza: 55555,
+          forts: 55555,
+          dance: 55555,
+          town: 55555
+        },
+        frames: {
+          plaza: 2,
+          forts: 2,
+          dance: 2,
+          town: 2
+        }
+      }
+    }
+  },
+  {
+    date: '2006-07-17',
+    end: ['party']
+  },
+  {
+    date: '2006-07-21',
+    temp: {
+      party: {
+        partyName: 'Band Scavenger Hunt',
+        rooms: {
+          'boiler': 'archives:ArtworkRoomsBoiler11.swf',
+          'cave': 'archives:ArtworkRooms0721Cave13.swf',
+          'dock': 'archives:ArtworkRooms0721Dock10.swf',
+          'mtn': 'archives:ArtworkRooms0721Mtn10.swf',
+          'lodge': 'archives:ArtworkRooms0721Lodge14.swf',
+          'village': 'archives:ArtworkRooms0721Village12.swf',
+          'pet': 'archives:ArtworkRooms0721Pet11.swf',
+          'pizza': 'archives:ArtworkRooms0721Pizza13.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2006-07-23',
+    end: ['party']
+  },
+  {
     date: '2006-08-04',
     clothingCatalog: 'archives:Clothing_0608.swf'
+  },
+  {
+    date: '2006-08-11',
+    temp: {
+      party: {
+        partyName: 'Sports Party',
+        rooms: {
+          'beach': 'archives:ArtworkRoomsBeach13.swf',
+          'cave': 'archives:ArtworkRoomsCave14.swf',
+          'coffee': 'archives:ArtworkRoomsCoffee12.swf',
+          'dock': 'archives:ArtworkRoomsDock14.swf',
+          'rink': 'archives:ArtworkRoomsRink20.swf',
+          'pizza': 'archives:ArtworkRoomsPizza14.swf',
+          'plaza': 'archives:ArtworkRoomsPlaza21.swf',
+          'mtn': 'archives:ArtworkRoomsMtn12.swf',
+          'village': 'archives:ArtworkRoomsVillage15.swf',
+          'forts': 'archives:ArtworkRoomsForts16.swf',
+          'town': 'archives:ArtworkRoomsTown15.swf'
+        },
+        music: {
+          'beach': 213,
+          'cave': 213,
+          'coffee': 213,
+          'dock': 213,
+          'rink': 213,
+          'pizza': 213,
+          'plaza': 213,
+          'mtn': 213,
+          'forts': 213,
+          'town': 213,
+          'village': 213
+        },
+        frames: {
+          'beach': 2,
+          'cave': 2,
+          'coffee': 2,
+          'dock': 2,
+          'rink': 2,
+          'pizza': 2,
+          'plaza': 2,
+          'mtn': 2,
+          'village': 3,
+          'forts': 2,
+          'town': 2
+        }
+      }
+    }
+  },
+  {
+    date: '2006-08-18',
+    temp: {
+      party: {
+        update: 'A new item is in the Snow Forts for the Sports Party',
+        rooms: {
+          forts: 'archives:ArtworkRoomsForts17.swf'
+        },
+        frames: {
+          forts: 3
+        }
+      }
+    }
+  },
+  {
+    date: '2006-08-21',
+    roomComment: 'The pool becomes a part of the undeground after the Sports Party ends',
+    rooms: {
+      cave: 'archives:ArtworkRoomsCave40.swf',
+    },
+    end: ['party']
   },
   {
     date: '2006-09-01',
@@ -63,15 +421,112 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-09-21',
-    map: 'approximation:map_beach_changed_id.swf'
+    map: 'approximation:map_beach_changed_id.swf',
+    temp: {
+      party: {
+        partyName: 'Lighthouse Party',
+        rooms: {
+          light: 'recreation:lighthouse_party_2006/light.swf',
+          beacon: 'recreation:lighthouse_party_2006/beacon.swf',
+          beach: 'recreation:lighthouse_party_2006/beach.swf'
+        },
+        frames: {
+          'light': 2,
+          'beacon': 2
+        },
+        music: {
+          light: 55556,
+          beacon: 55556,
+          beach: 55557
+        }
+      }
+    },
+    rooms: {
+      // first room archived with the lighthouse open
+      // used for the party since the SWF for the beach in
+      // the party is also lost
+      beach: 'archives:ArtworkRoomsBeach41.swf'
+    }
+  },
+  {
+    date: '2006-09-24',
+    end: ['party']
   },
   {
     date: '2006-10-06',
     clothingCatalog: 'archives:October06Style.swf'
   },
   {
+    date: '2006-10-24',
+    temp: {
+      party: {
+        partyName: '1st Anniversary',
+        rooms: {
+          coffee: 'recreation:1st_anniversary_coffee.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2006-10-25',
+    end: ['party']
+  },
+  {
+    date: '2006-10-27',
+    temp: {
+      party: {
+        partyName: 'Halloween Party',
+        rooms: {
+          attic: 'recreation:halloween_2006/attic.swf',
+          pizza: 'recreation:halloween_2006/pizza.swf',
+          rink: 'recreation:halloween_2006/rink.swf',
+          mtn: 'recreation:halloween_2006/mtn.swf',
+          shack: 'recreation:halloween_2006/shack.swf',
+          village: 'recreation:halloween_2006/village.swf',
+          'berg': 'archives:RoomsBerg-HalloweenParty2007.swf',
+          plaza: 'recreation:halloween_2006/plaza.swf',
+          lodge: 'recreation:halloween_2006/lodge.swf',
+          dance: 'recreation:halloween_2006/dance.swf'
+        },
+        music: {
+          'town': 205,
+          'rink': 205,
+          'mtn': 205,
+          'shack': 205,
+          'village': 205,
+          berg: 205,
+          'plaza': 205,
+          'lodge': 205,
+          'dance': 205
+        }
+      }
+    }
+  },
+  {
+    date: '2006-11-01',
+    end: ['party']
+  },
+  {
     date: '2006-11-03',
     clothingCatalog: 'archives:Nov06Style.swf'
+  },
+  {
+    date: '2006-11-24',
+    temp: {
+      party: {
+        partyName: 'Color Party',
+        rooms: {
+          dojo: 'recreation:color_party_2006/dojo.swf'
+        },
+        music: {
+          dojo: 201
+        }
+      }
+    }
+  },
+  {
+    date: '2006-11-27',
+    end: ['party']
   },
   {
     date: '2006-12-01',
