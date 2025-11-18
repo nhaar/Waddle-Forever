@@ -69,6 +69,10 @@ export const UPDATES_2009: Update[] = [
     clothingCatalog: 'archives:May2009.swf'
   },
   {
+    date: '2009-05-22',
+    migrator: 'recreation:pirate_catalog/09_05.swf'
+  },
+  {
     date: '2009-05-29',
     iglooList: [
       { display: 'Flipper Stomper', id: 244, pos: [3, 1] },
@@ -79,6 +83,10 @@ export const UPDATES_2009: Update[] = [
       { display: 'Mix Maestro', id: 242, pos: [6, 2] },
       { display: 'Water Kongo', id: 217, pos: [7, 2] }
     ]
+  },
+  {
+    date: '2009-06-01',
+    migrator: false
   },
   {
     date: '2009-06-26',
@@ -104,7 +112,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-04',
-    clothingCatalog: 'archives:September09Style.swf'
+    clothingCatalog: 'archives:September09Style.swf',
+    migrator: 'recreation:pirate_catalog/09_09.swf'
   },
   {
     date: '2009-09-11',
@@ -114,6 +123,10 @@ export const UPDATES_2009: Update[] = [
         en: 'recreation:library/tales_vol_3.swf'
       }
     }
+  },
+  {
+    date: '2009-09-14',
+    migrator: false
   },
   {
     date: '2009-09-18',

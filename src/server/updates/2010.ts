@@ -123,12 +123,20 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-06-21',
+    migrator: 'recreation:pirate_catalog/10_06.swf'
+  },
+  {
     date: '2010-06-25',
     iglooList: [
       { display: 'The Viking Opera', id: 41, pos: [3, 1] },
       { display: 'Island Adventure', id: 291, pos: [5, 1] },
       { display: 'Ruby and the Ruby', id: 37, pos: [1, 2] }
     ]
+  },
+  {
+    date: '2010-07-01',
+    migrator: false
   },
   {
     date: '2010-07-26',

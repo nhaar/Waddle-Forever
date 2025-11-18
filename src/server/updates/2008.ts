@@ -355,7 +355,8 @@ export const UPDATES_2008: Update[] = [
       [{ display: 'Medieval Town', id: 233 }, { display: 'Superhero', id: 32 }],
       [{ display: 'Fiesta', id: 229 }, { display: 'Dance Mix', id: 5 }],
       [{ display: 'Fall Fair', id: 221 }, { display: 'Water Party', id: 217 }]
-    ]
+    ],
+    migrator: 'archives:RHRIOct2008.swf'
   },
   {
     date: '2008-10-24',
@@ -370,6 +371,10 @@ export const UPDATES_2008: Update[] = [
       }
     },
     startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ]
+  },
+  {
+    date: '2008-10-27',
+    migrator: false
   },
   {
     date: '2008-11-07',
@@ -390,7 +395,12 @@ export const UPDATES_2008: Update[] = [
       [{ display: 'Team Blue 2', id: 36 }, { display: 'Superhero', id: 32 }],
       [{ display: 'Fiesta', id: 229 }, { display: 'Aqua Grabber', id: 114 }],
       [{ display: 'Fall Fair', id: 221 }, { display: 'Water Party', id: 217 }]
-    ]
+    ],
+    migrator: 'recreation:pirate_catalog/08_12.swf'
+  },
+  {
+    date: '2008-12-22',
+    migrator: false
   },
   {
     date: '2008-12-23',

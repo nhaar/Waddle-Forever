@@ -8,8 +8,6 @@ import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATE
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
-import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
-import { iterateEntries } from '../common/utils';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
@@ -296,6 +294,9 @@ function addUpdates(map: DayMap): DayMap {
       )) {
       addEvents(map, update.date, { musicList: true });
     }
+    if (update.update.migrator !== false && update.update.migrator !== undefined) {
+      addEvents(map, update.date, { migrator: true });
+    }
   });
   return map;
 }
@@ -381,10 +382,6 @@ function addStandalone(map: DayMap): void {
 }
 
 function addMigratorVisits(map: DayMap): void {
-  STANDALONE_MIGRATOR_VISITS.forEach(visit => {
-    addEvents(map, visit.date, { migrator: true });
-  });
-
   PARTIES.forEach(party => {
     if (party.activeMigrator !== undefined) {
       addEvents(map, party.date, { migrator: true });

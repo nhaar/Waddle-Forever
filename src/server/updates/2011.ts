@@ -78,6 +78,14 @@ export const UPDATES_2011: Update[] = [
     furnitureCatalog: 'archives:AprMay2011Furniture.swf'
   },
   {
+    date: '2011-04-21',
+    migrator: 'archives:Apr2011Pirate.swf'
+  },
+  {
+    date: '2011-05-01',
+    migrator: false
+  },
+  {
     date: '2011-05-06',
     clothingCatalog: 'archives:PenguinStyleMay2011.swf'
   },
@@ -149,7 +157,12 @@ export const UPDATES_2011: Update[] = [
     date: '2011-09-22',
     fileChanges: {
       'play/v2/games/paddle/paddle.swf': 'slegacy:media/play/v2/games/paddle/paddle.swf'
-    }
+    },
+    migrator: 'archives:Sep2011Pirate.swf'
+  },
+  {
+    date: '2011-10-04',
+    migrator: false
   },
   {
     date: '2011-10-06',

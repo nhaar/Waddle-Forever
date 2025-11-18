@@ -21,7 +21,6 @@ import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-dat
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
-import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
@@ -394,12 +393,6 @@ function addCatalogues(map: FileTimelineMap): void {
     map.add('play/v2/content/local/en/catalogues/pirate.swf', file, date);
   }
 
-  STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
-    if (typeof visit.info === 'string') {
-      addRockhoperCatalog(visit.date, visit.info);
-    }
-  });
-
   PARTIES.forEach(party => {
     if (typeof party.activeMigrator === 'string') {
       addRockhoperCatalog(party.date, party.activeMigrator);
@@ -548,6 +541,9 @@ function addUpdates(map: FileTimelineMap): void {
       } else {
         map.add(route, 'tool:dynamic_igloo_music.swf', update.date);
       }
+    }
+    if (typeof update.update.migrator === 'string') {
+      map.add('play/v2/content/local/en/catalogues/pirate.swf', update.update.migrator, update.date);
     }
   });
 }

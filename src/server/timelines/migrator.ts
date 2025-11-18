@@ -1,6 +1,5 @@
 import { getSubUpdateDates } from ".";
 import { VersionsTimeline } from "../game-data";
-import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { UPDATES } from "../updates/updates";
@@ -22,25 +21,18 @@ export function getMigratorTimeline() {
     }
   });
 
-  STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
-    timeline.add({
-      date: visit.date,
-      end: visit.end,
-      info: true
-    });
-  });
-
   UPDATES.forEach(update => {
     if (update.update.migrator !== undefined) {
+      const migrator = update.update.migrator === false ? false : true;
       if (update.end === undefined) {
         timeline.add({
           date: update.date,
-          info: update.update.migrator
+          info: migrator
         });
       } else {
         timeline.add({
           date: update.date,
-          info: update.update.migrator,
+          info: migrator,
           end: update.end
         });
       }

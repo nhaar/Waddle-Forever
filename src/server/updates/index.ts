@@ -76,7 +76,7 @@ export type CPUpdate = {
 
   globalChanges?: GlobalChanges;
 
-  migrator?: boolean;
+  migrator?: boolean | string;
 
   iglooList?: true | {
     file: FileRef;
