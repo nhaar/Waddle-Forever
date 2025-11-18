@@ -6,6 +6,7 @@ import { getRoomFrameTimeline } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
 import { getMigratorTimeline } from "../timelines/migrator";
 import { getMusicTimeline } from "../timelines/music";
+import { UPDATES } from "../updates/updates";
 import { isGreaterOrEqual, Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
@@ -28,6 +29,15 @@ function getEggTimeline() {
         date: party.date,
         end: party.end,
         info: 1
+      });
+    }
+  });
+  UPDATES.forEach(update => {
+    if (update.update.scavengerHunt2007 !== undefined && update.end !== undefined) {
+      timeline.add({
+        date: update.date,
+        end: update.end,
+        info : 1
       });
     }
   });

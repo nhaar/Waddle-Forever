@@ -545,6 +545,11 @@ function addUpdates(map: FileTimelineMap): void {
     if (typeof update.update.migrator === 'string') {
       map.add('play/v2/content/local/en/catalogues/pirate.swf', update.update.migrator, update.date);
     }
+    if (update.end !== undefined) {
+      if (update.update.scavengerHunt2007 !== undefined) {
+        map.add('artwork/eggs/1.swf', update.update.scavengerHunt2007, update.date, update.end);
+      }
+    }
   });
 }
 

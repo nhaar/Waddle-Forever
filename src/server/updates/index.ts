@@ -82,6 +82,12 @@ export type CPUpdate = {
 
   migrator?: boolean | string;
 
+  /**
+   * For a scavenger hunt in the 2007-2008 client,
+   * writing what the file number of the egg file is
+   * */
+  scavengerHunt2007?: FileRef;
+
   iglooList?: true | {
     file: FileRef;
     hidden: boolean;
@@ -96,6 +102,7 @@ export type CPUpdate = {
 } | {});
 
 export type Event = 'party' |
+  'party2' |
   'migrator-crash' |
   'migrator-reconstruction' |
   'rockhopper-approach' |
