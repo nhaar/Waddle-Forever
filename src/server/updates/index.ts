@@ -83,12 +83,11 @@ export type CPUpdate = {
     hidden: boolean;
   } | IglooList | ListSongPatch[];
 
-  party?: {
-    name: string;
-  } & CPUpdate | null;
+  partyName?: string;
 };
 
-export type Event = 'migrator-crash' |
+export type Event = 'party' |
+  'migrator-crash' |
   'migrator-reconstruction' |
   'rockhopper-approach' |
   'pet-renovation';
@@ -110,10 +109,7 @@ export function consumeUpdates(updates: Update[]): Array<{
     update: CPUpdate;
   }> = [];
 
-  const eventEnds = new Map<Event, Version>();
-  const temps: Array<{ date: Version; update: CPUpdate, event: Event }> = [];
-  let party: CPUpdate | undefined = undefined;
-  let partyDate: Version | undefined = undefined;
+  const events = new Map<Event, Array<{ date: Version; update: CPUpdate; }>>();
 
   updates.forEach(update => {
     consumed.push({
@@ -123,57 +119,34 @@ export function consumeUpdates(updates: Update[]): Array<{
 
     if (update.temp !== undefined) {
       iterateEntries(update.temp, (e, u) => {
-        temps.push({
+        const eventsArray = events.get(e) ?? [];
+        eventsArray.push({
           date: update.date,
-          update: u,
-          event: e
+          update: u
         });
+        events.set(e, eventsArray);
       });
-    }
-
-    if (update.party !== undefined) {
-      if (update.party === null) {
-        if (party === undefined || partyDate === undefined) {
-          throw new Error('Party end mark outside of a party');
-        } else {
-          consumed.push({
-            date: partyDate,
-            update: party,
-            end: update.date
-          });
-          party = undefined;
-        }
-      } else {
-        if (party !== undefined) {
-          throw new Error('Overwriting party');
-        }
-        partyDate = update.date;
-        party = update.party;
-      }
     }
 
     if (update.end !== undefined) {
       update.end.forEach(event => {
-        if (eventEnds.has(event)) {
-          throw new Error(`Event ending twice: ${event}`);
+        const eventsArray = events.get(event);
+        if (eventsArray === undefined) {
+          throw new Error(`No such event to end: ${event}`);
         }
-        eventEnds.set(event, update.date);
+        eventsArray.forEach(temp => {
+          consumed.push({
+            date: temp.date,
+            end: update.date,
+            update: temp.update
+          });
+        });
+        events.delete(event);
       });
     }
   });
 
   
-  temps.forEach(temp => {
-    const end = eventEnds.get(temp.event);
-    if (end === undefined) {
-      throw new Error(`No ending to event: ${temp.event}`);
-    }
-    consumed.push({
-      date: temp.date,
-      end: end,
-      update: temp.update
-    });
-  });
 
   return consumed;
 }
