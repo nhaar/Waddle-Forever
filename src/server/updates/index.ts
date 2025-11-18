@@ -141,6 +141,7 @@ export function consumeUpdates(updates: Update[]): Array<{
             update: party,
             end: update.date
           });
+          party = undefined;
         }
       } else {
         if (party !== undefined) {

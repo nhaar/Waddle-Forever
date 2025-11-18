@@ -48,12 +48,27 @@ export const UPDATES_2005: Update[] = [
     miscComments: ['Club Penguin releases']
   },
   {
+    date: '2005-10-27',
+    party: {
+      name: 'Halloween Party',
+      rooms: {
+        'book': 'fix:Book2_03_halloween.swf',
+        'dance': 'fix:Dance1b_halloween.swf',
+        'lounge': 'fix:Lounge1_halloween.swf',
+        'dojo': 'fix:Dojo_halloween.swf',
+        'rink': 'fix:Icerink_halloween.swf',
+        'town': 'fix:Town_halloween.swf'
+      }
+    }
+  },
+  {
     date: '2005-10-28',
     newspaper: 'fan'
   },
   {
     date: '2005-11-01',
-    clothingCatalog: 'archives:Clothing_0511.swf'
+    clothingCatalog: 'archives:Clothing_0511.swf',
+    party: null
   },
   {
     date: '2005-11-03',
@@ -66,6 +81,17 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-11-11',
     newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-15',
+    party: {
+      name: 'The Great Puffle Discovery',
+      rooms: {
+        'dance': 'fix:Dance1b_pet.swf',
+        'forts': 'fix:Forts_pet.swf',
+        'rink': 'fix:Icerink_pet.swf'
+      }
+    }
   },
   {
     date: '2005-11-16',
@@ -81,10 +107,45 @@ export const UPDATES_2005: Update[] = [
     newspaper: 'period-start'
   },
   {
+    date: '2005-12-05',
+    party: null
+  },
+  {
     date: '2005-12-14',
     gameRelease: 'Puffle Roundup',
     rooms: {
       forts: 'fix:ArtworkRoomsForts3.swf'
     }
+  },
+  {
+    date: '2005-12-22',
+    rooms: {
+      village: 'archives:ArtworkRoomsVillage11.swf'
+    },
+    party: {
+      name: 'Christmas Party',
+      rooms: {
+        'coffee': 'fix:CP05Coffee.swf',
+        'dance': 'fix:CP05Dance.swf',
+        'lodge': 'fix:CP05Lodge.swf',
+        'rink': 'fix:CP05Rink.swf',
+        'shop': 'fix:CP05Shop.swf',
+        'town': 'fix:CP05Town.swf',
+        'village': 'fix:CP05Village.swf'
+      },
+      music: {
+        'town': 200,
+        'coffee': 200,
+        'dance': 200,
+        'shop': 200,
+        'village': 200,
+        'lodge': 200,
+        'rink': 200
+      }
+    }
+  },
+  {
+    date: '2005-12-26',
+    party: null
   }
 ];

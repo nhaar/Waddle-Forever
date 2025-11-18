@@ -141,58 +141,6 @@ type Construction = {
 
 export const PARTIES: ComplexTemporaryUpdateTimeline<Party> = [
   {
-    name: 'Halloween Party 2005',
-    date: '2005-10-27',
-    end: '2005-11-01',
-    roomChanges: {
-      'book': 'fix:Book2_03_halloween.swf',
-      'dance': 'fix:Dance1b_halloween.swf',
-      'lounge': 'fix:Lounge1_halloween.swf',
-      'dojo': 'fix:Dojo_halloween.swf',
-      'rink': 'fix:Icerink_halloween.swf',
-      'town': 'fix:Town_halloween.swf'
-    }
-  },
-  {
-    name: 'The Great Puffle Discovery',
-    date: '2005-11-15',
-    end: '2005-12-05',
-    roomChanges: {
-      'dance': 'fix:Dance1b_pet.swf',
-      'forts': 'fix:Forts_pet.swf',
-      'rink': 'fix:Icerink_pet.swf'
-    }
-  },
-  {
-    name: 'Christmas Party 2005',
-    date: '2005-12-22',
-    end: Update.CHRISTMAS_2005_ENDS,
-    roomChanges: {
-      'coffee': 'fix:CP05Coffee.swf',
-      'dance': 'fix:CP05Dance.swf',
-      'lodge': 'fix:CP05Lodge.swf',
-      'rink': 'fix:CP05Rink.swf',
-      'shop': 'fix:CP05Shop.swf',
-      'town': 'fix:CP05Town.swf',
-      'village': 'fix:CP05Village.swf'
-    },
-    music: {
-      'town': 200,
-      'coffee': 200,
-      'dance': 200,
-      'shop': 200,
-      'village': 200,
-      'lodge': 200,
-      'rink': 200
-    },
-    permanentChanges: {
-      roomChanges: {
-        // lodge is now accessible
-        village: 'archives:ArtworkRoomsVillage11.swf'
-      }
-    }
-  },
-  {
     startComment: 'A new years celebration is held at the Town',
     date: '2005-12-31',
     end: '2006-01-01',
