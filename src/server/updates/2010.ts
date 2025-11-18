@@ -12,7 +12,11 @@ export const UPDATES_2010: Update[] = [
       { display: 'Float in the Clouds', id: 277, pos: [4, 2] },
       { display: 'Planet Y', id: 38, pos: [5, 2] },
       { display: 'Orca Straw', id: 245, pos: [6, 1] }
-    ]
+    ],
+    fileChanges: {
+      // permanent dig poster after cave expedition
+      'play/v2/content/local/en/close_ups/digposter2.swf': 'slegacy:media/play/v2/content/local/en/close_ups/digposter2.swf' 
+    }
   },
   {
     date: '2010-02-05',
@@ -24,6 +28,9 @@ export const UPDATES_2010: Update[] = [
     localChanges: {
       'catalogues/adopt.swf': {
         'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
+      },
+      'postcards/111.swf': {
+        en: 'recreation:postcard_orange_puffle.swf'
       }
     },
     fileChanges: {
@@ -42,6 +49,14 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-03-12',
     furnitureCatalog: 'archives:March10Furniture.swf'
+  },
+  {
+    date: '2010-03-19',
+    localChanges: {
+      'catalogues/pets.swf': {
+        en: 'archives:Mar2010Pets.swf'
+      }
+    }
   },
   {
     date: '2010-03-26',
@@ -77,7 +92,22 @@ export const UPDATES_2010: Update[] = [
     furnitureCatalog: 'archives:May10Furniture.swf'
   },
   {
+    date: '2010-05-17',
+    miscComments: ['Mission 11: The Veggie Villain is added'],
+    localChanges: {
+      'forms/missions.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/forms/missions.swf'
+      }
+    }
+  },
+  {
     date: '2010-05-27',
+    fileChanges: {
+      // engine that has EPF and stuff
+      'play/v2/client/engine.swf': 'approximation:engine.swf',
+      // interface with EPF phone
+      'play/v2/client/interface.swf': 'recreation:interfaces/2010_may.swf'
+    },
     localChanges: {
       'forms/moderator.swf': {
         'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
@@ -102,7 +132,10 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-07-26',
-    miscComments: ['Stamps are released']
+    miscComments: ['Stamps are released'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf'
+    }
   },
   {
     date: '2010-08-20',
@@ -115,8 +148,19 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-08-26',
+    miscComments: ['The owned igloos list is added'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'unknown:interface_stamps.swf',
+      'play/v2/client/igloo.swf': 'slegacy:media/play/v2/client/igloo.swf'
+    }
+  },
+  {
     date: '2010-09-03',
-    clothingCatalog: 'archives:September10Style.swf'
+    clothingCatalog: 'archives:September10Style.swf',
+    fileChanges: {
+      'play/v2/games/paddle/paddle.swf': 'recreation:paddle_no_brown.swf'
+    }
   },
   {
     date: '2010-09-24',
@@ -129,6 +173,14 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-10-15',
     furnitureCatalog: 'archives:October10Furniture.swf'
+  },
+  {
+    date: '2010-10-23',
+    localChanges: {
+      'forms/library.swf': {
+        en: 'archives:ENFormsLibrary-2010.swf'
+      }
+    }
   },
   {
     date: '2010-11-05',
@@ -153,7 +205,11 @@ export const UPDATES_2010: Update[] = [
     date: '2010-11-19',
     miscComments: ['The password warning is updated'],
     fileChanges: {
-      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf'
+      'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf',
+      // this file is from Dec 2010, but will be using it as a placeholder
+      // one from november 2010 exists in archives, and should be included if they are different
+      'play/v2/client/club_penguin.swf': 'archives:Dec2010club_penguin.swf',
+      'play/v2/client/Newspaper.swf': 'archives:Dec2010ClientNewspaper.swf'
     },
     newspaper: 'period-start'
   },

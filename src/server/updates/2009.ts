@@ -10,6 +10,22 @@ export const UPDATES_2009: Update[] = [
     furnitureCatalog: 'archives:FurnJan2009.swf'
   },
   {
+    date: '2009-01-20',
+    miscComments: ['A membership badge is added to the player card'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/2009_jan.swf'
+    }
+  },
+  {
+    date: '2009-02-03',
+    miscComments: ['The Lime Green Dojo Clean book is added'],
+    localChanges: {
+      'forms/library.swf': {
+        en: 'recreation:library/lime_green.swf'
+      }
+    }
+  },
+  {
     date: '2009-02-06',
     clothingCatalog: 'archives:CatFeb2009.swf'
   },
@@ -91,6 +107,15 @@ export const UPDATES_2009: Update[] = [
     clothingCatalog: 'archives:September09Style.swf'
   },
   {
+    date: '2009-09-11',
+    miscComments: ['The Penguin Tales Volume 3 book is added'],
+    localChanges: {
+      'forms/library.swf': {
+        en: 'recreation:library/tales_vol_3.swf'
+      }
+    }
+  },
+  {
     date: '2009-09-18',
     furnitureCatalog: 'archives:FurnSep2009.swf'
   },
@@ -118,8 +143,25 @@ export const UPDATES_2009: Update[] = [
     ]
   },
   {
+    date: '2009-10-24',
+    localChanges: {
+      'forms/library.swf': {
+        en: 'recreation:library_2009.swf'
+      }
+    }
+  },
+  {
     date: '2009-11-06',
     clothingCatalog: 'archives:November09Style.swf'
+  },
+  {
+    date: '2009-11-13',
+    miscComments: ['The amulet is added to the Martial Artworks'],
+    localChanges: {
+      'catalogues/ninja.swf': {
+        en: 'archives:November09Ninja2.swf'
+      }
+    }
   },
   {
     date: '2009-11-21',

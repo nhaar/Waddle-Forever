@@ -5,7 +5,7 @@ import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
+import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
 import { STANDALONE_MIGRATOR_VISITS } from '../server/game-data/migrator-visits';
@@ -377,14 +377,6 @@ function addStandalone(map: DayMap): void {
         })
       }
     })
-  })
-
-  iterateEntries(STANDALONE_CHANGE, (_, updates) => {
-    updates.forEach(update => {
-      if (update.comment !== undefined) {
-        addArrayEvents(map, 'other', update.date, update.comment);
-      }
-    });
   })
 }
 

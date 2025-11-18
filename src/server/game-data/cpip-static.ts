@@ -270,5 +270,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'en/web_service/puffle_care.php': 'approximation:temp_php_files/puffle_care.php',
   'en/web_service/puffles.php': 'approximation:temp_php_files/puffles.php',
   'en/web_service/weblogger.php': 'approximation:temp_php_files/weblogger.php',
-  'playstart/swf/start_module.swf': 'archives:StartModuleBeta.swf'
+  'playstart/swf/start_module.swf': 'archives:StartModuleBeta.swf',
+  'play/v2/client/dependencies.json': 'slegacy:media/play/v2/client/dependencies.json' 
 };

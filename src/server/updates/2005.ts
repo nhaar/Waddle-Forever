@@ -4,7 +4,10 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-08-22',
     map: "recreation:map_release.swf",
-    iglooVersion: 1
+    iglooVersion: 1,
+    fileChanges: {
+      'chat291.swf': 'approximation:chat291_no_news.swf' // newspapers-less precpip client
+    }
   },
   {
     date: '2005-09-13',
@@ -25,6 +28,8 @@ export const UPDATES_2005: Update[] = [
     furnitureCatalog: 'archives:Furniture_0510.swf',
     newspaper: 'irregular',
     fileChanges: {
+      // precpip client with newspapers
+      'chat291.swf': 'approximation:chat291_no_april.swf',
       'artwork/characters/penguin.swf': 'mammoth:artwork/characters/penguin.swf'
     },
     miscComments: ['Club Penguin releases']

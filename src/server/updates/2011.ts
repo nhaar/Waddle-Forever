@@ -34,6 +34,14 @@ export const UPDATES_2011: Update[] = [
     furnitureCatalog: 'archives:Feb-Mar2011BetterIgloos.swf'
   },
   {
+    date: '2011-02-17',
+    localChanges: {
+      'postcards/111.swf': {
+        en: 'archives:Enm111.swf'
+      }
+    }
+  },
+  {
     date: '2011-03-01',
     miscComments: ['Renovation for the Pet Shop begins'],
     temp: {
@@ -136,6 +144,12 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-09-08',
     furnitureCatalog: 'archives:SeptOct2011Furniture.swf'
+  },
+  {
+    date: '2011-09-22',
+    fileChanges: {
+      'play/v2/games/paddle/paddle.swf': 'slegacy:media/play/v2/games/paddle/paddle.swf'
+    }
   },
   {
     date: '2011-10-06',

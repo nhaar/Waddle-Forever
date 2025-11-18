@@ -242,7 +242,14 @@ export const UPDATES_2008: Update[] = [
     },
     fileChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
+      'play/v2/client/shell.swf': 'approximation:shell.swf',
+      'play/v2/client/engine.swf': 'unknown:engine_2009.swf',
+      'play/v2/client/interface.swf': 'recreation:interfaces/2008_july.swf',
       'play/v2/client/login.swf': 'recreation:login_cpip.swf',
+      'play/v2/client/igloo.swf': 'recreation:client_igloo_cpip.swf',
+      'play/v2/content/global/binoculars/empty.swf': 'slegacy:media/play/v2/content/global/binoculars/empty.swf',
+      'play/v2/content/global/telescope/empty.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf',
+      'play/v2/content/global/igloo/assets/igloo_background.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf',
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
@@ -329,6 +336,15 @@ export const UPDATES_2008: Update[] = [
     clothingCatalog: 'archives:CatOct2008.swf'
   },
   {
+    date: '2008-10-07',
+    miscComments: ['Mission 9: Operation: Spy & Seek is added'],
+    localChanges: {
+      'forms/missions.swf': {
+        en: 'recreation:forms_missions/m9.swf'
+      }
+    }
+  },
+  {
     date: '2008-10-17',
     furnitureCatalog: 'archives:FurnOct2008.swf',
     iglooList: [
@@ -347,6 +363,11 @@ export const UPDATES_2008: Update[] = [
     fileChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
       'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
+    },
+    localChanges: {
+      'forms/library.swf': {
+        en: 'recreation:library/yearbook_08.swf'
+      }
     },
     startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ]
   },
@@ -383,5 +404,14 @@ export const UPDATES_2008: Update[] = [
       ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
       ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
     ]
+  },
+  {
+    date: '2008-12-29',
+    miscComments: ['Mission 10: Waddle Squad is added'],
+    localChanges: {
+      'forms/missions.swf': {
+        en: 'recreation:forms_missions/m10.swf'
+      }
+    }
   }
 ];

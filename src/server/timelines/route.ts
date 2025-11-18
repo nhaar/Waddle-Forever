@@ -20,7 +20,7 @@ import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
+import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
 import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
 import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
@@ -368,13 +368,6 @@ function addStadiumUpdates(map: FileTimelineMap): void {
 }
 
 function addStandaloneChanges(map: FileTimelineMap): void {
-  Object.entries(STANDALONE_CHANGE).forEach((pair) => {
-    const [route, updates] = pair;
-    updates.forEach((update) => {
-      map.add(route, update.fileRef, update.date);
-    })
-  });
-
   Object.entries(STANDALONE_TEMPORARY_CHANGE).forEach((pair) => {
     const [route, updates] = pair;
     updates.forEach((update) => {
