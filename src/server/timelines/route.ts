@@ -21,7 +21,6 @@ import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-dat
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
-import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
@@ -333,35 +332,6 @@ function addPins(map: FileTimelineMap): void {
   });
 }
 
-function addStagePlays(map: FileTimelineMap): void {
-  STAGE_TIMELINE.forEach((debut, i) => {
-    const date = debut.date;
-    const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
-
-    if (debut.stageFileRef !== null) {
-      // Stage itself
-      addRoomRoute(map, date, 'stage', debut.stageFileRef);
-    }
-
-    if (debut.plazaFileRef !== null) {
-      // Plaza
-      addRoomRoute(map, date, 'plaza', debut.plazaFileRef);
-    }
-
-    // temporary changes in other rooms
-    if (debut.roomChanges !== undefined) {
-      map.addRoomChanges(debut.roomChanges, date, end);
-    }
-
-    if (debut.costumeTrunkFileRef !== null) {
-      // simply hardcoding every catalogue to be from 0712 for now
-      map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
-      // TODO only add costrume trunks to each specific engine
-      map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
-    }
-  })
-}
-
 function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
   if (isLower(start, Update.CPIP_UPDATE)) {
     const fileName = `${room}.swf`
@@ -493,6 +463,14 @@ function addUpdates(map: FileTimelineMap): void {
     if (update.update.mapNote !== undefined) {
       map.add('play/v2/content/local/en/close_ups/party_map_note.swf', update.update.mapNote, update.date, update.end);
     }
+    if (update.update.stagePlay !== undefined) {
+      if (update.update.stagePlay.costumeTrunk !== null) {
+
+        // simply hardcoding every catalogue to be from 0712 for now
+        map.add('artwork/catalogue/costume_0712.swf', update.update.stagePlay.costumeTrunk, update.date);
+        map.add('play/v2/content/local/en/catalogues/costume.swf', update.update.stagePlay.costumeTrunk, update.date);
+      }
+    }
   });
 }
 
@@ -508,7 +486,6 @@ export function getRoutesTimeline() {
     addPins,
     addUpdates,
     addFilesWithIds,
-    addStagePlays,
     addStadiumUpdates,
     addCrumbs,
     addClothing,

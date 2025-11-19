@@ -516,6 +516,98 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:PenguinStyleNov2007.swf'
   },
   {
+    date: '2007-11-16',
+    stagePlay: {
+      name: 'Space Adventure',
+      script: [
+        {
+          "note": "Space Adventure"
+        },
+        {
+          "name": "Captain:",
+          "message": "Calculate coordinates!"
+        },
+        {
+          "name": "Robot:",
+          "message": "TWEE-BEEEP ... CALCULATING COORDINATES."
+        },
+        {
+          "name": "Ensign:",
+          "message": "Now landing on planet X."
+        },
+        {
+          "name": "Robot:",
+          "message": "SHIP BADLY DAMAGED... NEED REPAIRS."
+        },
+        {
+          "name": "Captain:",
+          "message": "The planet appears to be made of metal!"
+        },
+        {
+          "name": "Ensign:",
+          "message": "Captain, I am picking up an alien signal!"
+        },
+        {
+          "name": "Robot:",
+          "message": "BEEEP! I AM ROBOT! ALIEN APPROACHING!"
+        },
+        {
+          "name": "Alien:",
+          "message": "Take me to your bird-feeder!"
+        },
+        {
+          "name": "Ensign:",
+          "message": "I forgot my line! Line, please!"
+        },
+        {
+          "name": "Captain:",
+          "message": "Dear aliens, we come in peace!"
+        },
+        {
+          "name": "Alien:",
+          "message": "I am hungry! I wish I had some pizza!"
+        },
+        {
+          "name": "Ensign:",
+          "message": "You should join us, alien... We would love to have you at Club Penguin!"
+        },
+        {
+          "name": "Alien:",
+          "message": "Yes, earthlings! Let us unite as friends!"
+        },
+        {
+          "name": "Captain:",
+          "message": "Then we shall use the metal to fix the ship!"
+        },
+        {
+          "name": "Robot:",
+          "message": "BEEEEEEP! I, ROBOT, HAVEFIXED SHIP!"
+        },
+        {
+          "name": "Alien:",
+          "message": "Let us voyage together as a team!"
+        },
+        {
+          "name": "Captain:",
+          "message":"Engage the carp drive... Let\'s get back to Club Penguin with our new friend!"
+        },
+        {
+          "name": "Robot:",
+          "message": "BLABEEEEEP... HOORAY FOR CLUB PENGUIN!"
+        },
+        {
+          "name": "Captain:",
+          "message": "Blast off!"
+        }
+      ],
+      costumeTrunk: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf'
+    },
+    rooms: {
+      plaza: 'archives:ArtworkRoomsPlaza47.swf',
+      stage: 'archives:SpaceAdventure1Stage.swf'
+    }
+  },
+  {
     date: '2007-11-23',
     temp: {
       party: {

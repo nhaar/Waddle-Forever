@@ -1,6 +1,7 @@
 import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
 import { RoomName } from "../game-data/rooms";
+import { StageName, StageScript } from "../game-data/stage-plays";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
 
@@ -143,6 +144,15 @@ export type CPUpdate = {
   furniturePrices?: Partial<Record<number, number>>;
   mapNote?: string;
   newWaddleRooms?: WaddleRoomInfo[];
+
+  stagePlay?: {
+    name: StageName;
+    script?: StageScript;
+    hide?: true;
+    notPremiere?: true;
+    costumeTrunk: FileRef | null;
+  } & CPUpdate;
+
 } & ({
   partyName: string;
 } | {
@@ -170,20 +180,27 @@ export type Update = {
   end?: Array<Event>;
 } & CPUpdate;
 
+type TimeBoundInfo<T> = {
+  date: Version;
+  end?: Version;
+} & T;
+
+type UpdateTimeline = TimeBoundInfo<{ update: CPUpdate }>[];
+
 export function consumeUpdates(updates: Update[]): Array<{
   date: Version;
   end?: Version;
   update: CPUpdate;
 }> {
-  const consumed: Array<{
-    date: Version;
-    end?: Version;
-    update: CPUpdate;
-  }> = [];
+  const consumed: UpdateTimeline = [];
 
   const events = new Map<Event, Array<{ date: Version; update: CPUpdate; }>>();
+  let stagePlay: { date: Version; update: CPUpdate; name: StageName } | undefined = undefined;
 
-  updates.forEach(update => {
+
+  for (let i = 0; i < updates.length; i++) {
+    const update = updates[i];
+
     consumed.push({
       date: update.date,
       update: update
@@ -218,6 +235,19 @@ export function consumeUpdates(updates: Update[]): Array<{
         events.set(e, eventsArray);
       });
     }
+    if (update.stagePlay !== undefined) {
+      if (stagePlay !== undefined) {
+        consumed.push({
+          ...stagePlay,
+          end: update.date 
+        });
+      }
+      stagePlay = {
+        date: update.date,
+        update: update.stagePlay,
+        name: update.stagePlay.name
+      }
+    }
 
     if (update.end !== undefined) {
       update.end.forEach(event => {
@@ -235,7 +265,11 @@ export function consumeUpdates(updates: Update[]): Array<{
         events.delete(event);
       });
     }
-  });
+  }
+
+  if (stagePlay !== undefined) {
+    consumed.push(stagePlay);
+  }
 
   
 

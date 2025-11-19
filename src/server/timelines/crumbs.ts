@@ -9,9 +9,10 @@ import { getMusicTimeline } from "./music";
 import { getMigratorTimeline } from "./migrator";
 import { getMemberTimeline } from "./member";
 import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
-import { STAGE_TIMELINE } from "../game-data/stage-plays";
+import { StageScript } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
+
 
 const musicTimeline = getMusicTimeline();
 const migratorTimeline = getMigratorTimeline();
@@ -87,22 +88,24 @@ export function getStageScriptTimeline() {
   const timeline = new VersionsTimeline<StageScript>();
 
   const scripts = new Map<string, StageScript>();
-  STAGE_TIMELINE.forEach((debut) => {
-    let script = scripts.get(debut.name);
-    if (script === undefined) {
-      script = debut.script ?? []
-      scripts.set(debut.name, script);
-    } else {
-      if (debut.script !== undefined) {
-        script = debut.script;
-        scripts.set(debut.name, script);
+  UPDATES.forEach((update) => {
+    if (update.update.stagePlay !== undefined) {
+      let script = scripts.get(update.update.stagePlay.name);
+      if (script === undefined) {
+        script = update.update.stagePlay.script ?? []
+        scripts.set(update.update.stagePlay.name, script);
+      } else {
+        if (update.update.stagePlay.script !== undefined) {
+          script = update.update.stagePlay.script;
+          scripts.set(update.update.stagePlay.name, script);
+        }
       }
-    }
 
-    timeline.add({
-      date: debut.date,
-      info: script
-    });
+      timeline.add({
+        date: update.date,
+        info: script
+      });
+    }
   });
 
   return timeline.getVersions();
@@ -125,12 +128,7 @@ export type GlobalCrumbContent = {
   hunt: GlobalHuntCrumbs | undefined;
 }
 
-export type StageScript = Array<{
-  note: string;
-} | {
-  name: string;
-  message: string;
-}>;
+
 
 export type LocalCrumbContent = {
   paths: Record<string, string | undefined>;

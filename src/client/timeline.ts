@@ -2,7 +2,6 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
@@ -187,20 +186,7 @@ function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
 }
 
 function addStagePlays(map: DayMap): void {
-  const premieres = new Set<string>();
-  STAGE_TIMELINE.forEach((update) => {
-    // pre-emptively adding premieres that aren't archived
-    if (update.notPremiere) {
-      premieres.add(update.name);
-    }
-    if (update.hide !== true) {
-      const stagePlay = premieres.has(update.name)
-        ? `${update.name} returns to The Stage`
-        : `${update.name} premieres at the Stage`;
-      addEvents(map, update.date, { stagePlay });
-    }
-    premieres.add(update.name);
-  });
+
 }
 
 function addGames(map: DayMap): void {
@@ -220,6 +206,7 @@ function addNewspapers(map: DayMap): DayMap {
 }
 
 function addUpdates(map: DayMap): DayMap {
+  const premieres = new Set<string>();
   UPDATES.forEach(update => {
     if (update.update.clothingCatalog !== undefined) {
       addEvents(map, update.date, { newClothing: true });
@@ -263,6 +250,20 @@ function addUpdates(map: DayMap): DayMap {
     }
     if (update.update.partyComment !== undefined) {
       addEvents(map, update.date, { partyUpdate: update.update.partyComment });
+    }
+
+    if (update.update.stagePlay !== undefined) {
+      // pre-emptively adding premieres that aren't archived
+      if (update.update.stagePlay.notPremiere) {
+        premieres.add(update.update.stagePlay.name);
+      }
+      if (update.update.stagePlay.hide !== true) {
+        const stagePlay = premieres.has(update.update.stagePlay.name)
+          ? `${update.update.stagePlay.name} returns to The Stage`
+          : `${update.update.stagePlay.name} premieres at the Stage`;
+        addEvents(map, update.date, { stagePlay });
+      }
+      premieres.add(update.update.stagePlay.name);
     }
   });
   return map;

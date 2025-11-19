@@ -120,6 +120,17 @@ export const UPDATES_2011: Update[] = [
     }
   },
   {
+    date: '2011-01-27',
+    stagePlay: {
+      name: 'The Penguins that Time Forgot',
+      costumeTrunk: 'archives:September2009Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:RoomsStage-Early2011.swf',
+      plaza: 'archives:RoomsPlaza-Play6.swf'
+    }
+  },
+  {
     date: '2011-01-31',
     end: ['party'],
     localChanges: {
@@ -228,8 +239,13 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-02-25',
     rooms: {
-      'plaza': 'archives:PuffleParty2011Plaza(2).swf'
-    }
+      'plaza': 'archives:PuffleParty2011Plaza(2).swf',
+      stage: 'archives:RoomsStage-February2011.swf'
+    },
+    stagePlay: {
+      name: 'The Haunting of the Viking Opera',
+      costumeTrunk: 'archives:February2011HauntingOfTheVikingOperaCostumeTrunk.swf'
+    },
   },
   {
     date: '2011-02-28',
@@ -255,6 +271,16 @@ export const UPDATES_2011: Update[] = [
     date: '2011-03-11',
     clothingCatalog: 'archives:PenguinStyleMar2011.swf',
     furnitureCatalog: 'archives:Mar-Apr2011Furniture.swf'
+  },
+  {
+    date: '2011-03-17',
+    stagePlay: {
+      name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
+      costumeTrunk: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play3-2.swf'
+    }
   },
   {
     date: '2011-03-21',
@@ -422,6 +448,18 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-04-08',
     furnitureCatalog: 'archives:AprMay2011Furniture.swf'
+  },
+  {
+    date: '2011-04-14',
+    stagePlay: {
+      name: 'Norman Swarm Has Been Transformed',
+      costumeTrunk: 'archives:Apr2011NormanSwarmHasBeenTransformedCostume.swf' 
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play14.swf',
+      stage: 'archives:2011Apr14Stage.swf',
+      party1: 'archives:RoomsParty1-Apr2011-NormanSwarmHasBeenTransformed.swf'
+    }
   },
   {
     date: '2011-04-21',
@@ -653,6 +691,13 @@ export const UPDATES_2011: Update[] = [
           'party23': 41
         },
       }
+    },
+    stagePlay: {
+      name: 'Underwater Adventure',
+      costumeTrunk: 'archives:May2011UnderwaterAdventureCostume.swf'
+    },
+    rooms: {
+      stage: 'archives:2011May19Stage.swf'
     }
   },
   {
@@ -734,6 +779,13 @@ export const UPDATES_2011: Update[] = [
           'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
         }
       }
+    },
+    stagePlay: {
+      name: 'Secrets of the Bamboo Forest',
+      costumeTrunk: 'archives:June2011SecretsOfTheBambooForestCostume.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-August2011.swf'
     }
   },
   {
@@ -956,6 +1008,17 @@ export const UPDATES_2011: Update[] = [
     furnitureCatalog: 'archives:Aug-Sept2011Furniture.swf'
   },
   {
+    date: '2011-08-17',
+    stagePlay: {
+      name: 'Team Blue vs. Team Red',
+      costumeTrunk: 'archives:Costume2011Aug17.swf'
+    },
+    rooms: {
+      stage: 'archives:Stage2011Aug17.swf',
+      plaza: 'archives:RoomsPlaza_2-Play11.swf'
+    }
+  },
+  {
     date: '2011-08-18',
     temp: {
       const: {
@@ -1040,6 +1103,17 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-09-08',
     furnitureCatalog: 'archives:SeptOct2011Furniture.swf'
+  },
+  {
+    date: '2011-09-14',
+    stagePlay: {
+      name: 'Fairy Fables',
+      costumeTrunk: 'archives:Costume14Sept2011.swf'
+    },
+    rooms: {
+      stage: 'archives:Stage14Sept2011.swf',
+      plaza: 'archives:RoomsPlaza-Play10.swf'
+    }
   },
   {
     date: '2011-09-22',
@@ -1155,7 +1229,10 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
     },
     rooms: {
-      lounge: 'archives:RoomsLounge_4.swf'
+      lounge: 'archives:RoomsLounge_4.swf',
+
+      stage: 'archives:Stage2011Oct19.swf',
+      plaza: 'recreation:plaza_notls.swf'
     },
     temp: {
       party: {
@@ -1282,7 +1359,11 @@ export const UPDATES_2011: Update[] = [
           shack: 251
         }
       }
-    }
+    },
+    stagePlay: {
+      name: 'Night of the Living Sled: Live',
+      costumeTrunk: 'archives:NLSLCostumeTrunk.swf'
+    },
   },
   {
     date: '2011-10-23',
@@ -1331,6 +1412,17 @@ export const UPDATES_2011: Update[] = [
         startscreens: ['archives:StartBillboardsCardJitsuPartyPre.swf']
       }
     }
+  },
+  {
+    date: '2011-11-23',
+    stagePlay: {
+      name: 'Battle of the Ancient Shadows',
+      costumeTrunk: 'archives:ENCataloguesCostumeNov2011.swf'
+    },
+    rooms: {
+      stage: 'archives:11242011Stage.swf'
+    }
+
   },
   {
     date: '2011-11-24',
@@ -1552,6 +1644,14 @@ export const UPDATES_2011: Update[] = [
         },
         migrator: 'archives:Dec2011Pirate.swf',
       }
+    },
+    stagePlay: {
+      name: 'A Humbug Holiday',
+      costumeTrunk: 'archives:ENCataloguesCostumeDec2011.swf'
+    },
+    rooms: {
+      stage: 'archives:12142011Stage.swf',
+      plaza: 'archives:RoomsPlaza_2-Play18.swf'
     }
   },
   {

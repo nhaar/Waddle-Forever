@@ -20,6 +20,17 @@ export const UPDATES_2010: Update[] = [
     end: ['party']
   },
   {
+    date: '2010-01-08',
+    stagePlay: {
+      name: 'Fairy Fables',
+      costumeTrunk: 'archives:Jan10Stage.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play10.swf',
+      stage: 'archives:RoomsStage-June2009.swf'
+    }
+  },
+  {
     date: '2010-01-22',
     temp: {
       party: {
@@ -77,6 +88,206 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-02-05',
     clothingCatalog: 'archives:Feb10Clothing.swf'
+  },
+  {
+    date: '2010-02-11',
+    stagePlay: {
+      name: 'Secrets of the Bamboo Forest',
+      costumeTrunk: 'archives:October2010Costume.swf',
+      script: [
+        {
+          "note": "Secrets of the Bamboo Forest"
+        },
+        {
+          "note": "Act 1"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "The treasure is so close! In that palace!"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "... where the Phoenix Queen lives!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Um...did you say treasure?"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Yes! Do you know how to cross this river?"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Treasure? Like mud? Anchovies? Chocolate?"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "No...well - maybe. How do we cross?"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "There is a magical bridge!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "First we must find the Golden Feather."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Is it close by?"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "It\'s hidden in a place of light far away."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Lead the way, Funny Pig!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Let\'s search the whole Island together."
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Maybe there will be some snacks along the way!"
+        },
+        {
+          "note": "Act 2"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "We return with the feather!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Hey, that stone just moved!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "And I found a pizza! Candy topping!"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Monkey, this is not your place to be."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "But I\'m not a monkey. I\'m the monkey KING!"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "I\'m the Guardian Dog! I keep the palace pest free."
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "You must prove yourself worthy to enter."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Alright...let\'s see...TURNS TO WIND"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Ooh! What\'s this strange wind?"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Pfft! Don\'t play games monkey! I know your tricks."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "But of course. Hey... did you want some snacks?"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Snacks? No! The feather is your key."
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "If you found the feather, you may enter."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Thank you, Guardian Dog."
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Sure thing, Monkey King! Kai-men-da-ji!"
+        },
+        {
+          "note": "Act 3"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "Greetings, Monkey! I\'ve been expecting you."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Phoenix Queen! It has been a long journey!"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "You are brave and clever!"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "I award you this very rare background."
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Wow! Do I get one too?"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "Alright. Just be sure not to gobble it."
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Sweet!"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Thank you, Phoenix Queen..."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "I have enjoyed my adventure."
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "Then you shall have more."
+        },
+        {
+          "note": "Director"
+        },
+        {
+          "name": "Director:",
+          "message": "Places please!"
+        },
+        {
+          "name": "Director:",
+          "message": "And...action!"
+        },
+        {
+          "name": "Director:",
+          "message": "To enter the palace you need the Golden Feather."
+        },
+        {
+          "name": "Director:",
+          "message": "Let\'s take it from the top!"
+        },
+        {
+          "name": "Director:",
+          "message": "Bravo! Fantastic acting!"
+        }
+      ]
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-August2011.swf',
+      stage: 'archives:HalloweenParty2010Stage.swf'
+    }
   },
   {
     date: '2010-02-12',
@@ -227,7 +438,15 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-03-29',
-    end: ['party']
+    end: ['party'],
+    stagePlay: {
+      name: 'Quest for the Golden Puffle',
+      costumeTrunk: 'archives:December2008Costume.swf'
+    },
+    rooms: {
+      plaza: 'recreation:plaza_golden_puffle_no_weather.swf',
+      stage: 'archives:RoomsStage-May2010.swf'
+    }
   },
   {
     date: '2010-03-31',
@@ -553,6 +772,14 @@ export const UPDATES_2010: Update[] = [
           'town': 'archives:RoomsTown-IslandAdventureParty2010Pre.swf'
         }
       }
+    },
+    stagePlay: {
+      name: 'Ruby and the Ruby',
+      costumeTrunk: 'archives:July09Costume.swf'
+    },
+    rooms: {
+      plaza: 'recreation:plaza_ruby_no_weather.swf',
+      stage: 'recreation:stage_ruby_2010_june.swf'
     }
   },
   {
@@ -716,6 +943,16 @@ export const UPDATES_2010: Update[] = [
     }
   },
   {
+    date: '2010-07-21',
+    stagePlay: {
+      name: 'Underwater Adventure',
+      costumeTrunk: 'archives:May2011UnderwaterAdventureCostume.swf'
+    },
+    rooms: {
+      stage: 'recreation:underwater_adventure_no_pin.swf'
+    }
+  },
+  {
     date: '2010-07-26',
     miscComments: ['Stamps are released'],
     fileChanges: {
@@ -799,6 +1036,14 @@ export const UPDATES_2010: Update[] = [
           'beach': 'archives:RoomsBeach-PreFair2010.swf'
         }
       }
+    },
+    stagePlay: {
+      name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
+      costumeTrunk: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play3-2.swf',
+      stage: 'archives:RoomsStage-October2009.swf'
     }
   },
   {
@@ -889,12 +1134,226 @@ export const UPDATES_2010: Update[] = [
     end: ['party']
   },
   {
+    date: '2010-09-16',
+    stagePlay: {
+      name: 'Fairy Fables',
+      costumeTrunk: 'archives:Jan10Stage.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play10.swf',
+      stage: 'archives:RoomsStage-June2009.swf'
+    }
+  },
+  {
     date: '2010-09-24',
     furnitureCatalog: 'archives:FurnitureSept10.swf'
   },
   {
     date: '2010-10-01',
     clothingCatalog: 'archives:PSOct2010.swf'
+  },
+  {
+    date: '2010-10-08',
+    stagePlay: {
+      name: 'Secrets of the Bamboo Forest',
+      costumeTrunk: 'archives:October2010Costume.swf',
+      rooms: {
+        shack: 'archives:Mine_Shack_Gold_Feather_Pin.swf'
+      },
+      script: [
+        {
+          "note": "Secrets of the Bamboo Forest"
+        },
+        {
+          "note": "Act 1"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "The treasure is so close! In that palace!"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "... where the Phoenix Queen lives!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Um...did you say treasure?"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Yes! Do you know how to cross this river?"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Treasure? Like mud? Anchovies? Chocolate?"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "No...well - maybe. How do we cross?"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "There is a magical bridge!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "First we must find the Golden Feather."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Is it close by?"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "It\'s hidden far away, in a place where things grow...."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Lead the way, Funny Pig!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Let\'s search the whole Island together."
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Maybe there will be some snacks along the way!"
+        },
+        {
+          "note": "Act 2"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "We return with the feather!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Hey, that stone just moved!"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "And I found a pizza! Candy topping!"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Monkey, this is not your place to be."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "But I\'m not a monkey. I\'m the monkey KING!"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "I\'m the Guardian Dog! I keep the palace pest free."
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "You must prove yourself worthy to enter."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Alright...let\'s see...TURNS TO WIND"
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Ooh! What\'s this strange wind?"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Pfft! Don\'t play games monkey! I know your tricks."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "But of course. Hey... did you want some snacks?"
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Snacks? No! The feather is your key."
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "If you found the feather, you may enter."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Thank you, Guardian Dog."
+        },
+        {
+          "name": "Guardian Dog:",
+          "message": "Sure thing, Monkey King! Kai-men-da-ji!"
+        },
+        {
+          "note": "Act 3"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "Greetings, Monkey! I\'ve been expecting you."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Phoenix Queen! It has been a long journey!"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "You are brave and clever!"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "I award you this very rare background."
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Wow! Do I get one too?"
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "Alright. Just be sure not to gobble it."
+        },
+        {
+          "name": "Funny Pig:",
+          "message": "Sweet!"
+        },
+        {
+          "name": "Monkey King:",
+          "message": "Thank you, Phoenix Queen..."
+        },
+        {
+          "name": "Monkey King:",
+          "message": "I have enjoyed my adventure."
+        },
+        {
+          "name": "Phoenix Queen:",
+          "message": "Then you shall have more."
+        },
+        {
+          "note": "Director"
+        },
+        {
+          "name": "Director:",
+          "message": "Places please!"
+        },
+        {
+          "name": "Director:",
+          "message": "And...action!"
+        },
+        {
+          "name": "Director:",
+          "message": "To enter the palace you need the Golden Feather."
+        },
+        {
+          "name": "Director:",
+          "message": "Let\'s take it from the top!"
+        },
+        {
+          "name": "Director:",
+          "message": "Bravo! Fantastic acting!"
+        }
+      ]
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-August2011.swf',
+      stage: 'archives:HalloweenParty2010Stage.swf'
+    }
   },
   {
     date: '2010-10-15',
@@ -1174,7 +1633,15 @@ export const UPDATES_2010: Update[] = [
         }
       }
     },
-    newspaper: 'period-start'
+    newspaper: 'period-start',
+    stagePlay: {
+      name: 'Space Adventure Planet Y',
+      costumeTrunk: 'archives:2010SpacePlanetAdventureYCostumeTrunk.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play9.swf',
+      stage: 'archives:RoomsStage-November2010.swf'
+    }
   },
   {
     date: '2010-11-24',
@@ -1327,6 +1794,14 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-12-28',
-    end: ['party']
+    end: ['party'],
+    stagePlay: {
+      name: 'Ruby and the Ruby',
+      costumeTrunk: 'archives:July09Costume.swf'
+    },
+    rooms: {
+      plaza: 'recreation:plaza_ruby_no_weather.swf',
+      stage: 'archives:RoomsStage-December2010.swf'
+    }
   }
 ];
