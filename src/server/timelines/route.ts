@@ -5,7 +5,7 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator, LocalChanges } from "../game-data/parties";
+import { IslandChanges, RoomChanges, CrumbIndicator, LocalChanges } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -388,18 +388,6 @@ function addMapUpdates(map: FileTimelineMap): void {
   })
 }
 
-function addCatalogues(map: FileTimelineMap): void {
-  const addRockhoperCatalog = (date: string, file: FileRef) => {
-    map.add('play/v2/content/local/en/catalogues/pirate.swf', file, date);
-  }
-
-  PARTIES.forEach(party => {
-    if (typeof party.activeMigrator === 'string') {
-      addRockhoperCatalog(party.date, party.activeMigrator);
-    }
-  })
-}
-
 function addPins(map: FileTimelineMap): void {
   PIN_TIMELINE.forEach(pin => {
     if ('room' in pin) {
@@ -562,25 +550,11 @@ function addUpdates(map: FileTimelineMap): void {
       map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
       map.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, update.update.fairCpip.infoFile, update.date, update.end);
     }
-  });
-}
-
-function addParties(map: FileTimelineMap): void {
-  map.addComplexTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
-    map.addPartyChanges(party, start, end);
-    if (party.construction !== undefined) {
-      const constructionStart = party.construction.date;
-      map.addRoomChanges(party.construction.changes, constructionStart, start);
-  
-      if (party.construction.updates !== undefined) {
-        party.construction.updates.forEach((update) => {
-          map.addRoomChanges(update.changes, update.date, start);
-        })
-      }
-
-      if (party.construction.startscreens !== undefined) {
-        addStartscreens(party.construction.startscreens, map, constructionStart, start);
-      }
+    if (update.update.scavengerHunt2011 !== undefined) {
+      map.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), update.update.scavengerHunt2011.icon, update.date, update.end);
+    }
+    if (update.update.mapNote !== undefined) {
+      map.add('play/v2/content/local/en/close_ups/party_map_note.swf', update.update.mapNote, update.date, update.end);
     }
   });
 }
@@ -596,9 +570,7 @@ export function getRoutesTimeline() {
     // pins are specifically before party so that pins that update with a party don't override the party room
     addPins,
     addUpdates,
-    addParties,
     addFilesWithIds,
-    addCatalogues,
     addStagePlays,
     addStadiumUpdates,
     addCrumbs,

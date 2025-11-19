@@ -1,17 +1,17 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions";
+import { UPDATES } from "../updates/updates";
 
 export function getExtraWaddleRooms(version: Version) {
   const timeline = new VersionsTimeline<WaddleRoomInfo[]>();
 
-  PARTIES.forEach((party) => {
-    if (party.newWaddleRooms !== undefined) {
+  UPDATES.forEach(update => {
+    if (update.update.newWaddleRooms !== undefined) {
       timeline.add({
-        date: party.date,
-        end: party.end,
-        info: party.newWaddleRooms
+        date: update.date,
+        end: update.end,
+        info: update.update.newWaddleRooms
       });
     }
   });

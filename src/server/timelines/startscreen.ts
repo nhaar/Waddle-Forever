@@ -1,5 +1,4 @@
 import { VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { UPDATES } from "../updates/updates";
 
 export function getStartscreenTimeline() {
@@ -24,15 +23,6 @@ export function getStartscreenTimeline() {
   UPDATES.forEach(update => {
     if (update.update.startscreens !== undefined) {
       addTimeline(update.update.startscreens, update.date, update.end);
-    }
-  });
-
-  PARTIES.forEach((party) => {
-    if (party.startscreens !== undefined) {
-      addTimeline(party.startscreens, party.date, party.end);
-    }
-    if (party.construction?.startscreens !== undefined) {
-      addTimeline(party.construction.startscreens, party.construction.date, party.date);
     }
   });
 

@@ -1,5 +1,4 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { getRoomFrameTimeline } from "../timelines/frame";
@@ -22,15 +21,6 @@ function getEggTimeline() {
   timeline.add({
     date: Update.BETA_RELEASE,
     info: 0
-  });
-  PARTIES.forEach((party) => {
-    if (party.scavengerHunt2007 !== undefined) {
-      timeline.add({
-        date: party.date,
-        end: party.end,
-        info: 1
-      });
-    }
   });
   UPDATES.forEach(update => {
     if (update.update.scavengerHunt2007 !== undefined && update.end !== undefined) {

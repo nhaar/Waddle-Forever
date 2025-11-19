@@ -1,7 +1,6 @@
 import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
-import { PARTIES } from '../server/game-data/parties';
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
 import { STAGE_TIMELINE } from '../server/game-data/stage-plays';
 import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
@@ -204,58 +203,6 @@ function addStagePlays(map: DayMap): void {
   });
 }
 
-/** Adds all the parties to a timeline */
-function addParties(map: DayMap): DayMap {
-  for (let i = 0; i < PARTIES.length; i++) {
-    const party = PARTIES[i];
-
-    const partyStartProp = party.event === true ? 'other' : 'partyStart'
-
-    const partyStart = party.startComment === undefined
-      ? `The ${party.name} starts`
-      : party.startComment;
-    addArrayEvents(map, partyStartProp, party.date, partyStart );
-
-    const partyEndProp = party.event === true ? 'other' : 'partyEnd'
-
-    const partyEnd = party.endComment === undefined
-      ? `The ${party.name} ends`
-      : party.endComment;
-    addArrayEvents(map, partyEndProp, party.end, partyEnd);
-
-    if (party.construction !== undefined) {
-        const partyStart = party.construction.comment === undefined ?
-          `Construction for the ${party.name} starts` :
-          party.construction.comment;
-      
-        addEvents(map, party.construction.date, { partyConstruction: partyStart });
-
-        if (party.construction.updates !== undefined) {
-          party.construction.updates.forEach((update) => {
-            addEvents(map, update.date, { partyConstruction: update.comment });
-          })
-        }
-    }
-
-    if (party.updates !== undefined) {
-      for (const update of party.updates) {
-        if (update.comment !== undefined) {
-          addEvents(map, update.date, { partyUpdate: update.comment });
-        }
-      }
-    }
-
-    if (party.permanentChanges?.roomComment !== undefined) {
-      addEvents(map, party.date, { roomUpdate: party.permanentChanges.roomComment });
-    }
-    if (party.consequences?.roomComment !== undefined) {
-      addEvents(map, party.end, { roomUpdate: party.consequences.roomComment });
-    }
-  }
-
-  return map;
-}
-
 function addGames(map: DayMap): void {
   UPDATES.forEach(update => {
     if (update.update.gameRelease !== undefined) {
@@ -313,6 +260,9 @@ function addUpdates(map: DayMap): DayMap {
     }
     if (update.update.constructionComment !== undefined) {
       addEvents(map, update.date, { partyConstruction: update.update.constructionComment });
+    }
+    if (update.update.partyComment !== undefined) {
+      addEvents(map, update.date, { partyUpdate: update.update.partyComment });
     }
   });
   return map;
@@ -399,9 +349,9 @@ function addStandalone(map: DayMap): void {
 }
 
 function addMigratorVisits(map: DayMap): void {
-  PARTIES.forEach(party => {
-    if (party.activeMigrator !== undefined) {
-      addEvents(map, party.date, { migrator: true });
+  UPDATES.forEach(update => {
+    if (update.update.migrator !== undefined) {
+      addEvents(map, update.date, { migrator: true });
     }
   });
 }
@@ -414,7 +364,6 @@ function addStamps(map: DayMap): void {
 
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
-  map = addParties(map);
   map = addNewspapers(map);
   map = addUpdates(map);
   addRoomUpdates(map);

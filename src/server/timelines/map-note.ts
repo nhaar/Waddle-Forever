@@ -1,6 +1,6 @@
 import { VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
+import { UPDATES } from "../updates/updates";
 
 export function getMapNoteTimeline() {
   const timeline = new VersionsTimeline<boolean>();
@@ -10,11 +10,11 @@ export function getMapNoteTimeline() {
     info: false
   });
 
-  PARTIES.forEach((party) => {
-    if (party.mapNote !== undefined) {
+  UPDATES.forEach(update => {
+    if (update.update.mapNote !== undefined) {
       timeline.add({
-        date: party.date,
-        end: party.end,
+        date: update.date,
+        end: update.end,
         info: true
       });
     }

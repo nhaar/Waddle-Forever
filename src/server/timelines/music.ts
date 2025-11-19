@@ -1,7 +1,6 @@
 import { getSubUpdateDates } from ".";
 import { iterateEntries } from "../../common/utils";
 import { TimelineMap } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { ROOM_MUSIC_TIMELINE } from "../game-data/room-updates";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
 import { STAGE_PLAYS, STAGE_TIMELINE } from "../game-data/stage-plays";
@@ -41,18 +40,6 @@ export function getMusicTimeline() {
       });
     }
   });
-
-  PARTIES.forEach((party) => {
-    if (party.music !== undefined) {
-      addMusic(party.music, party.date, party.end);
-    }
-    party.updates?.forEach((update, i) => {
-      if (update.music !== undefined) {
-        const dates = getSubUpdateDates(party, i);
-        addMusic(update.music, dates.date, dates.end);
-      }
-    })
-  })
 
   UPDATES.forEach(update => {
     if (update.update.music !== undefined) {

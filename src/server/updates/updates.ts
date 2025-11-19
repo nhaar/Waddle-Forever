@@ -32,6 +32,8 @@ function enforceCorrectness() {
     } else {
       if (isGreater(greatest, update.date)) {
         throw new Error(`Date out of order: ${update.date}`);
+      } else {
+        greatest = update.date;
       }
     }
     if (seen.has(update.date)) {

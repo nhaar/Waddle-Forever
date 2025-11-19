@@ -1,6 +1,4 @@
-import { getSubUpdateDates } from ".";
 import { VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { UPDATES } from "../updates/updates";
 
@@ -9,16 +7,6 @@ export function getMigratorTimeline() {
   timeline.add({
     date: Update.BETA_RELEASE,
     info: false
-  });
-
-  PARTIES.forEach((party) => {
-    if (party.activeMigrator !== undefined) {
-      timeline.add({
-        date: party.date,
-        end: party.end,
-        info: true
-      });
-    }
   });
 
   UPDATES.forEach(update => {

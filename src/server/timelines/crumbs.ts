@@ -2,7 +2,7 @@ import path from "path";
 import crypto from 'crypto';
 import { RoomName } from "../game-data/rooms";
 import { isGreater, isGreaterOrEqual, isLower, isLowerOrEqual, Version } from "../routes/versions";
-import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs, PARTIES } from "../game-data/parties";
+import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../game-data/parties";
 import { Update } from "../game-data/updates";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
 import { getMapForDate } from ".";
@@ -24,33 +24,6 @@ export const TICKET_INFO_PATH = 'close_ups/tickets.swf';
 export function getGlobalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
 
-  PARTIES.forEach((party) => {
-    if (party.globalChanges !== undefined) {
-      Object.entries(party.globalChanges).forEach((pair) => {
-        const [route, info] = pair;
-        if (typeof info !== 'string') {
-          const [_, ...paths] = info;
-          paths.forEach((globalPath) => {
-            timeline.add(globalPath, route, party.date, party.end);
-          })
-        }
-      })
-    }
-
-    if (party.scavengerHunt2010 !== undefined) {
-      const huntIconPath = party.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
-      timeline.add('scavenger_hunt_icon', huntIconPath, party.date, party.end);
-    }
-
-    if (party.scavengerHunt2011 !== undefined) {
-      timeline.add('scavenger_hunt_icon', SCAVENGER_ICON_PATH, party.date, party.end);
-    }
-
-    if (party.fairCpip !== undefined) {
-      timeline.add('ticket_icon', SCAVENGER_ICON_PATH, party.date, party.end);
-    }
-  });
-
   UPDATES.forEach(update => {
     if (update.update.scavengerHunt2010 !== undefined) {
       const huntIconPath = update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
@@ -69,6 +42,9 @@ export function getGlobalPathsTimeline() {
     }
     if (update.update.fairCpip !== undefined) {
       timeline.add('ticket_icon', SCAVENGER_ICON_PATH, update.date, update.end);
+    }
+    if (update.update.scavengerHunt2011 !== undefined) {
+      timeline.add('scavenger_hunt_icon', SCAVENGER_ICON_PATH, update.date, update.end);
     }
   });
 
@@ -93,22 +69,6 @@ function addLocalChanges(changes: LocalChanges, timeline: TimelineMap<string, nu
 
 export function getLocalPathsTimeline() {
   const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
-
-  PARTIES.forEach((party) => {
-    // crumbs dont exist before this date
-    if (isGreaterOrEqual(party.date, Update.CPIP_UPDATE)){
-      if (party.localChanges !== undefined) {
-        addLocalChanges(party.localChanges, timeline, party.date, party.end);
-      }
-      if (party.construction?.localChanges !== undefined) {
-        addLocalChanges(party.construction.localChanges, timeline, party.construction.date, party.date);
-      }
-
-      if (party.fairCpip !== undefined) {
-        timeline.add('tickets', TICKET_INFO_PATH, party.date, party.end);
-      }
-    }
-  });
 
   UPDATES.forEach((update) => {
     if (update.update.localChanges !== undefined && update.end !== undefined) {
@@ -258,12 +218,12 @@ export function getHuntTimeline() {
     info: null
   });
 
-  PARTIES.forEach((party) => {
-    if (party.scavengerHunt2011 !== undefined) {
+  UPDATES.forEach(update => {
+    if (update.update.scavengerHunt2011 !== undefined) {
       timeline.add({
-        date: party.date,
-        end: party.end,
-        info: party.scavengerHunt2011
+        date: update.date,
+        end: update.end,
+        info: update.update.scavengerHunt2011
       });
     }
   });

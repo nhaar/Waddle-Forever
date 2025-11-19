@@ -1,6 +1,7 @@
 import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
 import { RoomName } from "../game-data/rooms";
+import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
@@ -33,6 +34,30 @@ export type ListSongPatch = Song & {
   /** Row, column, starting at 1 */
   pos: [number, number];
 }
+
+type GlobalHuntCrumbs = {
+  member: boolean;
+  reward: number;
+}
+
+type LocalHuntCrumbs = {
+  en: {
+    loading: string;
+    title: string;
+    start: string;
+    itemsFound: string;
+    itemsFoundPlural: string;
+    claim: string;
+    continue: string;
+    clues: [ string, string, string, string, string, string, string, string ];
+  }
+}
+
+type HuntCrumbs = {
+  global: GlobalHuntCrumbs;
+  lang: LocalHuntCrumbs;
+  icon: FileRef;
+};
 
 export type CPUpdate = {
   map?: FileRef;
@@ -74,6 +99,8 @@ export type CPUpdate = {
 
   constructionComment?: string;
 
+  partyComment?: string;
+
   fileChanges?: Record<string, FileRef>;
 
   startscreens?: Startscreens;
@@ -97,6 +124,8 @@ export type CPUpdate = {
     iconFilePath?: string;
   };
 
+  scavengerHunt2011?: HuntCrumbs
+
   /** If used the CPIP fair icon and its info */
   fairCpip?: {
     // exact ID
@@ -109,6 +138,11 @@ export type CPUpdate = {
     file: FileRef;
     hidden: boolean;
   } | IglooList | ListSongPatch[];
+
+  prices?: Partial<Record<number, number>>;
+  furniturePrices?: Partial<Record<number, number>>;
+  mapNote?: string;
+  newWaddleRooms?: WaddleRoomInfo[];
 } & ({
   partyName: string;
 } | {
