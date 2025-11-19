@@ -2,7 +2,6 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
@@ -288,14 +287,6 @@ function addRoomUpdates(map: DayMap): void {
       addEvents(map, update.date, { stadiumUpdate: update.comment ?? update.type });
     }
   });
-
-  Object.values(TEMPORARY_ROOM_UPDATES).forEach((updates) => {
-    updates.forEach((update) => {
-      if (update.comment !== undefined) {
-        addEvents(map, update.date, { roomUpdate: update.comment });
-      }
-    })
-  })
 }
 
 function addPinUpdates(map: DayMap): void {

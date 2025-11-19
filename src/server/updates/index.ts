@@ -66,6 +66,9 @@ export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
   pin?: true;
+  /** If the base SWF for a room that has a pin is updated with the pin in it */
+  pinRoomUpdate?: FileRef;
+
   /** If a new catalog was released this day: its file */
   clothingCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
@@ -174,7 +177,12 @@ export type Event = 'party' |
   'pet-renovation' |
   'earthquake' |
   'event' |
-  'fire-construction';
+  'fire-construction' |
+  'launchpad-construction' |
+  'town-launchpad' |
+  'broken-clock' |
+  'forts-sign' |
+  'attic-snow';
 
 export type Update = {
   date: Version;

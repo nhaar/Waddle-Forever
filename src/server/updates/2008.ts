@@ -627,10 +627,16 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-04-17',
     miscComments: ['Rockhopper is spotted through the telescope'],
+    roomComment: 'The Snow Forts clock breaks',
     temp: {
       'migrator-reconstruction': {
         fileChanges: {
           'artwork/tools/telescope0.swf': 'archives:Telescope0417.swf'
+        }
+      },
+      'broken-clock': {
+        rooms: {
+          forts: 'archives:ArtworkRoomsForts50.swf'
         }
       }
     }
@@ -983,6 +989,7 @@ export const UPDATES_2008: Update[] = [
       forest: 'archives:RoomsForest.swf',
       ship: 'archives:RoomsShip.swf'
     },
+    pinRoomUpdate: 'recreation:cove_cpip_firework_rocket_pin.swf',
     memberRooms: {
       dojofire: true,
       dojowater: true,
@@ -1460,7 +1467,12 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-09-05',
-    clothingCatalog: 'archives:Sep2008.swf'
+    clothingCatalog: 'archives:Sep2008.swf',
+    constructionComment: 'A construction begins at the Plaza for the Stage',
+    rooms: {
+      stage: 'recreation:plaza_ruby_construction.swf',
+
+    }
   },
   {
     date: '2008-09-12',
@@ -2497,6 +2509,14 @@ export const UPDATES_2008: Update[] = [
     localChanges: {
       'forms/missions.swf': {
         en: 'recreation:forms_missions/m10.swf'
+      }
+    },
+    roomComment: 'Snow is stored in the Attic',
+    temp: {
+      'attic-snow': {
+        rooms: {
+          attic: 'recreation:attic_dec08.swf'
+        }
       }
     }
   }

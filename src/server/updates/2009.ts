@@ -86,7 +86,16 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-01-16',
-    furnitureCatalog: 'archives:FurnJan2009.swf'
+    furnitureCatalog: 'archives:FurnJan2009.swf',
+    roomComment: 'The sign in the Attic is now bold',
+    // possible to-do, have CPUpdates inside pin start dates? this update is directly related to the pin
+    temp: {
+      'attic-snow': {
+        rooms: {
+          attic: 'archives:WinterFiesta2009SkiLodge.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-01-20',
@@ -562,7 +571,7 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-03-20',
     temp: {
-            party: {
+      party: {
         partyName: 'Penguin Play Awards',
         rooms: {
           party: 'archives:RoomsParty-PenguinPlayAwards2009.swf',
@@ -589,7 +598,8 @@ export const UPDATES_2009: Update[] = [
           village: 'archives:RoomsVillage-PenguinPlayAwards2009.swf'
         }
       }
-    }
+    },
+    end: ['attic-snow']
   },
   {
     date: '2009-03-22',

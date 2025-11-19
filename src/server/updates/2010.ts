@@ -468,12 +468,19 @@ export const UPDATES_2010: Update[] = [
     rooms: {
       plaza: 'recreation:plaza_golden_puffle_no_weather.swf',
       stage: 'archives:RoomsStage-May2010.swf'
+    },
+    temp: {
+      party2: {
+        rooms: {
+          plaza: 'recreation:aprilfools2010_plaza.swf'
+        }
+      }
     }
   },
   {
     date: '2010-03-31',
     temp: {
-      party: {
+      party2: {
         partyName: 'April Fools\' Party',
         rooms: {
           'dock': 'archives:RoomsDock-AprilFoolsParty2010.swf',
@@ -534,7 +541,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-04-05',
-    end: ['party']
+    end: ['party2']
   },
   {
     date: '2010-04-15',

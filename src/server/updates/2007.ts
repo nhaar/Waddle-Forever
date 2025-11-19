@@ -432,6 +432,21 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:September07Style.swf'
   },
   {
+    date: '2007-09-13',
+    roomComment: 'The Boiler Room is updated for the 100th newspaper',
+    temp: {
+      event: {
+        rooms: {
+          boiler: 'recreation:boiler_100_newspapers.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2007-09-20',
+    end: ['event']
+  },
+  {
     date: '2007-09-21',
     temp: {
       party: {

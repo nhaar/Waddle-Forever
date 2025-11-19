@@ -568,16 +568,52 @@ export const UPDATES_2006: Update[] = [
     end: ['party']
   },
   {
+    date: '2006-09-28',
+    constructionComment: 'A construction begins at the Town',
+    temp: {
+      'town-launchpad': {
+        rooms: {
+          town: 'archives:RoomsTown-LaunchPadConstruction.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2006-10-05',
+    constructionComment: 'A construction begins at the Plaza',
+    end: ['town-launchpad'],
+    temp: {
+      'launchpad-construction': {
+        rooms: {
+          plaza: 'archives:Plaza31.swf'
+        },
+        frames: {
+          plaza: 2
+        }
+      }
+    }
+  },
+  {
     date: '2006-10-06',
     clothingCatalog: 'archives:October06Style.swf'
   },
   {
+    date: '2006-10-13',
+    end: ['launchpad-construction']
+  },
+  {
     date: '2006-10-24',
+    roomComment: 'The Snow Forts sign breaks',
     temp: {
       party: {
         partyName: '1st Anniversary',
         rooms: {
           coffee: 'recreation:1st_anniversary_coffee.swf'
+        }
+      },
+      'forts-sign': {
+        rooms: {
+          forts: 'recreation:forts_broken_sign.swf'
         }
       }
     }

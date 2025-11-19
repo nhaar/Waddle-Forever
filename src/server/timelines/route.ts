@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap } from "../game-data";
+import { IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap, findEarliestDateHitIndex } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import { Update } from "../game-data/updates";
 import path from "path";
@@ -15,7 +15,6 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
@@ -324,7 +323,7 @@ function addMapUpdates(map: FileTimelineMap): void {
 
 function addPins(map: FileTimelineMap): void {
   PIN_TIMELINE.forEach(pin => {
-    if ('room' in pin) {
+    if ('file' in pin) {
       addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.file);
     }
   });
@@ -337,20 +336,6 @@ function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room
   } else {
     map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, start, end);
   }
-}
-
-function addRoomInfo(map: FileTimelineMap): void {
-  const addRoomChange = (room: RoomName, date: string, fileRef: string) => {
-    addRoomRoute(map, date, room, fileRef);
-  }
-
-  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
-    const [room, updates] = pair;
-    const roomName = room as RoomName;
-    updates.forEach((update) => {
-      addTempRoomRoute(map, update.date, update.end, roomName, update.fileRef);
-    })
-  })
 }
 
 function addStartscreens(screens: Array<string | [string, string]>, map: FileTimelineMap, date: Version, end?: Version): void {
@@ -440,6 +425,14 @@ function addUpdates(map: FileTimelineMap): void {
         map.add('play/v2/content/local/en/catalogues/costume.swf', update.update.stagePlay.costumeTrunk, update.date);
       }
     }
+    if (update.update.pinRoomUpdate !== undefined) {
+      const pin = PIN_TIMELINE[findEarliestDateHitIndex(update.date, PIN_TIMELINE)];
+      if ('room' in pin && pin.room !== undefined) {
+        addTempRoomRoute(map, update.date, pin.end, pin.room, update.update.pinRoomUpdate);
+      } else {
+        throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
+      }
+    }
   });
 }
 
@@ -448,7 +441,6 @@ export function getRoutesTimeline() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
-    addRoomInfo,
     addStandaloneChanges,
     addMapUpdates,
     // pins are specifically before party so that pins that update with a party don't override the party room

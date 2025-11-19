@@ -3,7 +3,8 @@ import { RoomName } from "./rooms"
 export type Pin = {
   name: string;
 } & ({
-  hidden: boolean
+  hidden: boolean;
+  room?: RoomName;
 } | {
   room: RoomName;
   file: string;
@@ -276,7 +277,8 @@ export const PINS: Array<Pin> = [
   },
   {
     name: 'Firework Rocket',
-    hidden: true
+    hidden: true,
+    room: 'cove'
   },
   {
     name: 'Treble Clef',
@@ -334,7 +336,9 @@ export const PINS: Array<Pin> = [
   },
   {
     name: 'Present',
-    hidden: false
+    hidden: false,
+    file: 'recreation:lodge_present_pin.swf',
+    room: 'lodge'
   },
   {
     name: 'Gingerbread Man',

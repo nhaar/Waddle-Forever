@@ -1,6 +1,5 @@
 import { getSubUpdateDates } from ".";
 import { TimelineMap } from "../game-data";
-import { TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
@@ -33,15 +32,6 @@ export function getRoomFrameTimeline() {
     if (update.update.frames !== undefined && update.end !== undefined) {
       addRoomFrames(update.update.frames, update.date, update.end);
     }
-  });
-
-  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
-    const [room, updates] = pair;
-    updates.forEach((update) => {
-      if (update.frame !== undefined) {
-        timeline.add(room as RoomName, update.frame, update.date, update.end);
-      }
-    });
   });
 
   return timeline.getVersionsMap();
