@@ -19,7 +19,8 @@ export const UPDATES_2005: Update[] = [
       'village': 'approximation:village_release.swf',
       'rink': 'approximation:rink_release.swf',
       'dojo': 'mammoth:artwork/rooms/dojo10.swf',
-      'agent': 'archives:ArtworkRoomsAgent10.swf' // HQ is disputed, maybe not original release
+      'agent': 'archives:ArtworkRoomsAgent10.swf', // HQ is disputed, maybe not original release
+      attic: 'archives:ArtworkRoomsAttic12.swf'
     }
   },
   {
@@ -76,6 +77,10 @@ export const UPDATES_2005: Update[] = [
           'town': 'fix:Town_halloween.swf'
         }
       }
+    },
+    roomComment: 'The book room was updated to have a new Mancala board',
+    rooms: {
+      book: 'archives:ArtworkRoomsBook11.swf'
     }
   },
   {
@@ -85,7 +90,11 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-11-01',
     clothingCatalog: 'archives:Clothing_0511.swf',
-    end: ['party']
+    end: ['party'],
+    rooms: {
+      // mancala was added at some random point I dont know
+      agent: 'fix:ArtworkRoomsAgent3.swf'
+    }
   },
   {
     date: '2005-11-03',
@@ -123,7 +132,12 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-12-01',
     clothingCatalog: 'archives:Clothing_0512.swf',
-    newspaper: 'period-start'
+    newspaper: 'period-start',
+
+    // an unknown update which removed the ability to click on the couch
+    rooms: {
+      coffee: 'mammoth:artwork/rooms/coffee11.swf'
+    }
   },
   {
     date: '2005-12-05',

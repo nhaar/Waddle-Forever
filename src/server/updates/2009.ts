@@ -3,7 +3,11 @@ import { Update } from ".";
 export const UPDATES_2009: Update[] = [
   {
     date: '2009-01-02',
-    clothingCatalog: 'archives:January09Style.swf'
+    clothingCatalog: 'archives:January09Style.swf',
+    roomComment: 'The Big Wigs Catalog is merged with the Penguin Style',
+    rooms: {
+      shop: 'archives:RoomsShop.swf'
+    }
   },
   {
     date: '2009-01-09',
@@ -606,6 +610,13 @@ export const UPDATES_2009: Update[] = [
           mtn: 'recreation:snow_sculpture_mtn_no_pin.swf'
         }
       }
+    },
+    rooms: {
+      // game upgrades
+      mtn: 'archives:RoomsMtn-January2010.swf',
+      cove: 'archives:RoomsCove.swf',
+      dock: 'archives:RoomsDock_1.swf',
+      lodge: 'archives:RoomsLodge.swf'
     }
   },
   {
@@ -716,7 +727,10 @@ export const UPDATES_2009: Update[] = [
     },
     rooms: {
       stage: 'archives:RoomsStage-May2010.swf',
-      plaza: 'recreation:plaza_golden_puffle_no_weather.swf'
+      plaza: 'recreation:plaza_golden_puffle_no_weather.swf',
+
+      // TODO maybe add this as consequence of party and add the commment? (can now turn lights on)
+      beacon: 'archives:PreAugust2011Beacon.swf'
     }
   },
   {
@@ -988,7 +1002,11 @@ export const UPDATES_2009: Update[] = [
       { display: 'Mountain Dojo', id: 21, pos: [2, 1] },
       { display: 'Silly to Funky', id: 258, pos: [5, 1] },
       { display: 'Planet Y', id: 38, pos: [5, 2] }
-    ]
+    ],
+    rooms: {
+      // game upgrades
+      dance: 'archives:RoomsDance_2.swf'
+    }
   },
   {
     date: '2009-07-10',
@@ -1094,6 +1112,10 @@ export const UPDATES_2009: Update[] = [
           town: 'archives:RoomsTown-FestivalofFlightPre.swf'
         }
       }
+    },
+    roomComment: 'Instruments can now be played at the Lighthouse',
+    rooms: {
+      light: 'archives:RoomsLight-January2010.swf'
     }
   },
   {
@@ -1755,6 +1777,9 @@ export const UPDATES_2009: Update[] = [
         },
         startscreens: ['archives:ENLoginBackgroundsCard_jitsu_fire-FireCelebrate.swf']
       }
+    },
+    rooms: {
+      dojohide: 'archives:RoomsDojohide_2.swf'
     }
   },
   {
@@ -1817,6 +1842,10 @@ export const UPDATES_2009: Update[] = [
           }
         }
       }
+    },
+    roomComment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard',
+    rooms: {
+      dojoext: 'archives:RoomsDojoext_2.swf'
     }
   },
   {

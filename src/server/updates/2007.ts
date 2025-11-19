@@ -28,7 +28,18 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-01-22',
-    end: ['party']
+    end: ['party'],
+    roomComment: 'A construction begins at the Plaza for a tour booth',
+    rooms: {
+      plaza: 'recreation:plaza_tour_const.swf'
+    }
+  },
+  {
+    date: '2007-01-26',
+    roomComment: 'Tours are now present in the Plaza',
+    rooms: {
+      plaza: 'archives:ArtworkRoomsPlaza44.swf'
+    }
   },
   {
     date: '2007-02-02',
@@ -117,10 +128,25 @@ export const UPDATES_2007: Update[] = [
     end: ['party']
   },
   {
+    date: '2007-02-23',
+    roomComment: 'The Clock Tower is added to the Snow Forts',
+    rooms: {
+      forts: 'archives:ArtworkRoomsForts41.swf'
+    }
+  },
+  {
     date: '2007-02-26',
     gameRelease: 'Pizzatron 3000',
     rooms: {
       pizza: 'recreation:pizza_2007.swf'
+    }
+  },
+  {
+    date: '2007-02-28',
+    // NOTE: this date is a PLACEHOLDER! we don't know the exact date of animations...
+    roomComment: 'The Pet Shop now has animations',
+    rooms: {
+      pet: 'archives:ArtworkRoomsPet44.swf'
     }
   },
   {
@@ -185,6 +211,13 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-04-06',
     clothingCatalog: 'archives:Clothing_0704.swf'
+  },
+  {
+    date: '2007-04-13',
+    roomComment: 'A stage is now built in the Lighthouse',
+    rooms: {
+      light: 'archives:Lighthouse2007.swf'
+    }
   },
   {
     date: '2007-04-27',
@@ -257,18 +290,28 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-05-29',
+    roomComment: 'As the Cove Opening party ends, the whistles remain in the Forest',
     rooms: {
-      plaza: 'recreation:plaza_may07.swf'
+      plaza: 'recreation:plaza_may07.swf',
+      forest: 'archives:RoomsForest-CoveOpeningPartyPre_2.swf'
     },
     end: ['party2']
   },
   {
     date: '2007-06-01',
-    clothingCatalog: 'archives:Clothing_0706.swf'
+    clothingCatalog: 'archives:Clothing_0706.swf',
+    roomComment: 'The whistles are removed from the Forest',
+    rooms: {
+      forest: 'slippers07:media/artwork/rooms/forest.swf'
+    }
   },
   {
     date: '2007-06-04',
-    gameRelease: 'Catchin\' Waves'
+    gameRelease: 'Catchin\' Waves',
+    roomComment: 'Construction at the Cove finishes',
+    rooms: {
+      cove: 'recreation:cove_after_cove_opening_pre_cpip.swf'
+    }
   },
   {
     date: '2007-06-08',
@@ -376,6 +419,13 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-08-27',
     end: ['party']
+  },
+  {
+    date: '2007-08-31',
+    roomComment: 'The Snow and Sports catalog is now available in the Sport Shop',
+    rooms: {
+      sport: 'archives:RoomsSport.swf'
+    }
   },
   {
     date: '2007-09-07',
@@ -638,6 +688,13 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-11-26',
     end: ['party']
+  },
+  {
+    date: '2007-11-30',
+    roomComment: 'Yellow Puffles are now in the Pet Shop',
+    rooms: {
+      pet: 'recreation:pet_nov07.swf'
+    }
   },
   {
     date: '2007-12-07',

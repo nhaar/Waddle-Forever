@@ -27,7 +27,15 @@ export const UPDATES_2010: Update[] = [
     },
     rooms: {
       plaza: 'archives:RoomsPlaza-Play10.swf',
-      stage: 'archives:RoomsStage-June2009.swf'
+      stage: 'archives:RoomsStage-June2009.swf',
+
+      mine: 'archives:RoomsMine-Rockslide1.swf'
+    }
+  },
+  {
+    date: '2010-01-15',
+    rooms: {
+      mine: 'archives:RoomsMine-Rockslide2.swf'
     }
   },
   {
@@ -77,8 +85,10 @@ export const UPDATES_2010: Update[] = [
       { display: 'Orca Straw', id: 245, pos: [6, 1] }
     ],
     end: ['party'],
+    roomComment: 'The Dance Club now changes colors if a lot of monochrome penguins are present',
     rooms: {
-      mine: 'archives:RoomsMine-PostCaveExpedition.swf'
+      mine: 'archives:RoomsMine-PostCaveExpedition.swf',
+      dance: 'archives:Dance.swf'
     },
     fileChanges: {
       // permanent dig poster after cave expedition
@@ -284,9 +294,11 @@ export const UPDATES_2010: Update[] = [
         }
       ]
     },
+    roomComment: 'The plants disappear from the Box Dimension',
     rooms: {
       plaza: 'archives:RoomsPlaza-August2011.swf',
-      stage: 'archives:HalloweenParty2010Stage.swf'
+      stage: 'archives:HalloweenParty2010Stage.swf',
+      boxdimension: 'slegacy:media/play/v2/content/global/rooms/boxdimension.swf'
     }
   },
   {
@@ -358,6 +370,7 @@ export const UPDATES_2010: Update[] = [
     date: '2010-02-25',
     end: ['party'],
     miscComments: ['Orange Puffles are available to adopt'],
+    roomComment: 'White Puffles are now in the Pet Shop',
     localChanges: {
       'catalogues/adopt.swf': {
         'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
@@ -368,6 +381,9 @@ export const UPDATES_2010: Update[] = [
     },
     fileChanges: {
       'play/v2/games/roundup/PuffleRoundup.swf': 'recreation:puffle_roundup_orange.swf'
+    },
+    rooms: {
+      pet: 'archives:RoomsPet-Early2011.swf'
     }
   },
   {
@@ -382,6 +398,12 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-03-12',
     furnitureCatalog: 'archives:March10Furniture.swf'
+  },
+  {
+    date: '2010-03-15',
+    rooms: {
+      mine: 'archives:RoomsMine_2.swf'
+    }
   },
   {
     date: '2010-03-18',
@@ -751,6 +773,11 @@ export const UPDATES_2010: Update[] = [
       'forms/moderator.swf': {
         'en': 'slegacy:media/play/v2/content/local/en/forms/moderator.swf'
       }
+    },
+    roomComment: 'The EPF Command Room is under construction',
+    rooms: {
+      village: 'archives:RoomsVillage_2.swf',
+      agentcom: 'archives:RoomsAgentcom-May2010.swf'
     }
   },
   {
@@ -760,6 +787,13 @@ export const UPDATES_2010: Update[] = [
       { display: 'The Quest', id: 266, pos: [5, 2] },
       { display: 'Jungle Jangles', id: 267, pos: [7, 2] }
     ]
+  },
+  {
+    date: '2010-06-03',
+    roomComment: 'Only the VR Room remains under construction',
+    rooms: {
+      agentcom: 'recreation:agentcom_nofieldops1.swf'
+    }
   },
   {
     date: '2010-06-10',
@@ -777,9 +811,27 @@ export const UPDATES_2010: Update[] = [
       name: 'Ruby and the Ruby',
       costumeTrunk: 'archives:July09Costume.swf'
     },
+    roomComment: 'The VR Room\'s construction is finished',
     rooms: {
       plaza: 'recreation:plaza_ruby_no_weather.swf',
-      stage: 'recreation:stage_ruby_2010_june.swf'
+      stage: 'recreation:stage_ruby_2010_june.swf',
+
+      agentcom: 'recreation:agentcom_nofieldops2.swf'
+    }
+  },
+  {
+    date: '2010-06-15',
+    roomComment: ['Field Ops are made available', 'A statue appears at the Mine Shack'],
+    rooms: {
+      agentcom: 'archives:RoomsAgentcom-June2010_3.swf',
+      shack: 'archives:RoomsShack-June2010.swf'
+    }
+  },
+  {
+    date: '2010-06-17',
+    rooms: {
+      // document this forest change
+      forest: 'archives:RoomsForest_3.swf'
     }
   },
   {
@@ -960,6 +1012,12 @@ export const UPDATES_2010: Update[] = [
     }
   },
   {
+    date: '2010-07-29',
+    rooms: {
+      shack: 'archives:RoomsShack-July2010.swf'
+    }
+  },
+  {
     date: '2010-08-05',
     temp: {
       const: {
@@ -1043,7 +1101,10 @@ export const UPDATES_2010: Update[] = [
     },
     rooms: {
       plaza: 'archives:RoomsPlaza-Play3-2.swf',
-      stage: 'archives:RoomsStage-October2009.swf'
+      stage: 'archives:RoomsStage-October2009.swf',
+
+      // TODO document this shack
+      shack: 'archives:RoomsShack-LateAugust2010.swf'
     }
   },
   {
@@ -1147,6 +1208,12 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-09-24',
     furnitureCatalog: 'archives:FurnitureSept10.swf'
+  },
+  {
+    date: '2010-09-30',
+    rooms: {
+      shack: 'archives:RoomsShack-Early2011.swf'
+    }
   },
   {
     date: '2010-10-01',
@@ -1380,6 +1447,10 @@ export const UPDATES_2010: Update[] = [
           'book': 218
         }
       }
+    },
+    roomComment: 'The Book Room now contains Penguin Art',
+    rooms: {
+      book: 'archives:BookWithPenguinArt.swf'
     }
   },
   {
@@ -1655,6 +1726,10 @@ export const UPDATES_2010: Update[] = [
           'dojowater': 'archives:WaterCelebrationDojowater.swf'
         }
       }
+    },
+    rooms: {
+      dojohide: 'archives:RoomsDojohide_3.swf',
+      dojowater: 'slegacy:media/play/v2/content/global/rooms/dojowater.swf'
     }
   },
   {

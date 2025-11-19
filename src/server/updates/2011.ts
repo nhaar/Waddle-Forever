@@ -265,12 +265,23 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-03-08',
-    end: ['pet-renovation']
+    end: ['pet-renovation'],
+    roomComment: 'The Pet Shop renovation finishes',
+    rooms: {
+      pet: 'archives:Mar07.2011Pet.swf'
+    }
   },
   {
     date: '2011-03-11',
     clothingCatalog: 'archives:PenguinStyleMar2011.swf',
     furnitureCatalog: 'archives:Mar-Apr2011Furniture.swf'
+  },
+  {
+    date: '2011-03-15',
+    roomComment: 'Puffle Launch releases',
+    rooms: {
+      pet: 'archives:RoomsPet_5.swf'
+    }
   },
   {
     date: '2011-03-17',

@@ -15,7 +15,7 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
+import { ROOM_OPENINGS, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
@@ -357,13 +357,6 @@ function addRoomInfo(map: FileTimelineMap): void {
     if (opening.map !== undefined) {
       map.addGameMapUpdate(opening.map, opening.date);
     }
-  })
-
-  Object.entries(ROOM_UPDATES).forEach((pair) => {
-    const [room, updates] = pair;
-    updates.forEach((update) => {
-      addRoomChange(room as RoomName, update.date, update.fileRef);
-    })
   })
 
   Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {

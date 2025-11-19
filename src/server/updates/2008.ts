@@ -314,8 +314,10 @@ export const UPDATES_2008: Update[] = [
         }
       ]
     },
+    roomComment: 'Construction of a new invention begins in the Iceberg',
     rooms: {
-      stage: 'archives:RoomsStage-February2008.swf'
+      stage: 'archives:RoomsStage-February2008.swf',
+      berg: 'archives:Berg401.swf'
     }
   },
   {
@@ -356,6 +358,17 @@ export const UPDATES_2008: Update[] = [
           dance: 202
         }
       }
+    },
+    roomComment: 'A poll is added to the Iceberg',
+    rooms: {
+      berg: 'archives:Rooms0215Berg40.swf'
+    }
+  },
+  {
+    date: '2008-02-19',
+    roomComment: 'The Aqua Grabber\'s construction is finished',
+    rooms: {
+      berg: 'archives:RoomsBerg-Feb2008.swf'
     }
   },
   {
@@ -605,6 +618,13 @@ export const UPDATES_2008: Update[] = [
     }
   },
   {
+    roomComment: 'The skyboxes are updated in the Pizza Parlor',
+    date: '2008-04-14',
+    rooms: {
+      pizza: 'recreation:pizza_2008.swf'
+    }
+  },
+  {
     date: '2008-04-17',
     miscComments: ['Rockhopper is spotted through the telescope'],
     temp: {
@@ -613,6 +633,12 @@ export const UPDATES_2008: Update[] = [
           'artwork/tools/telescope0.swf': 'archives:Telescope0417.swf'
         }
       }
+    }
+  },
+  {
+    date: '2008-04-21',
+    rooms: {
+      agent: 'recreation:agent_2008_apr_pre_cpip.swf'
     }
   },
   {
@@ -1369,7 +1395,11 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-08-15',
-    iglooCatalog: 'archives:August2008Igloo.swf'
+    iglooCatalog: 'archives:August2008Igloo.swf',
+    roomComment: 'DJ3K is redesigned in the Dance Club',
+    rooms: {
+      dance: 'recreation:dance_cpip_postmusicjam2.swf'
+    }
   },
   {
     date: '2008-08-18',
@@ -2057,6 +2087,23 @@ export const UPDATES_2008: Update[] = [
       dojo: 'archives:DojoGrandOpening2008.swf'
     },
     map: 'archives:Map2008-2011Stadium.swf'
+  },
+  {
+    date: '2008-11-17',
+    roomComment: 'The dojo now has the Card-Jitsu game',
+    rooms: {
+      dojo: 'archives:RoomsDojo.swf',
+      dojohide: 'archives:RoomsDojohide-1.swf',
+      // this file we have has the white puffle, which I believe is only from the puffle party 2009
+      dojoext: 'archives:RoomsDojoext2008.swf'
+    }
+  },
+  {
+    date: '2008-11-18',
+    rooms: {
+      // first time stadium was added, seemingly
+      agent: 'recreation:agent_2008_nov.swf'
+    }
   },
   {
     date: '2008-11-21',

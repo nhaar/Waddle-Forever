@@ -98,7 +98,7 @@ export type CPUpdate = {
   /** Misc. updates on this day to be added in the timeline */
   miscComments?: string[];
 
-  roomComment?: string;
+  roomComment?: string | string[];
 
   constructionComment?: string;
 

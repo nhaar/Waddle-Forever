@@ -2,7 +2,7 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
+import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { ROOMS } from '../server/game-data/rooms';
@@ -243,7 +243,12 @@ function addUpdates(map: DayMap): DayMap {
       }
     }
     if (update.update.roomComment !== undefined) {
-      addEvents(map, update.date, { roomUpdate: update.update.roomComment });
+      if (typeof update.update.roomComment === 'string') {
+        addEvents(map, update.date, { roomUpdate: update.update.roomComment });
+      } else {
+        // TODO array
+        addEvents(map, update.date, { roomUpdate: update.update.roomComment[0] });
+      }
     }
     if (update.update.constructionComment !== undefined) {
       addEvents(map, update.date, { partyConstruction: update.update.constructionComment });
@@ -283,14 +288,6 @@ function addRoomUpdates(map: DayMap): void {
     const [date, rooms] = pair;
     addEvents(map, date, {
       roomOpen: rooms
-    })
-  })
-
-  Object.values(ROOM_UPDATES).forEach((updates) => {
-    updates.forEach((update) => {
-      if (update.comment !== undefined) {
-        addEvents(map, update.date, { roomUpdate: update.comment });
-      }
     })
   })
 

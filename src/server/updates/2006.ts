@@ -4,7 +4,11 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-01-01',
     clothingCatalog: 'archives:Clothing_0601.swf',
-    end: ['party']
+    end: ['party'],
+    rooms: {
+      // it is unknown when the mountain was renovated to have ski animations
+      mtn: 'mammoth:artwork/rooms/mtn10.swf'
+    }
   },
   {
     date: '2006-01-27',
@@ -33,6 +37,13 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-02-03',
     clothingCatalog: 'archives:Clothing_0602.swf'
+  },
+  {
+    roomComment: 'Mancala is removed from the HQ',
+    date: '2006-02-11',
+    rooms: {
+      agent: 'archives:ArtworkRoomsAgent10.swf'
+    }
   },
   {
     date: '2006-02-14',
@@ -112,6 +123,13 @@ export const UPDATES_2006: Update[] = [
     end: ['party']
   },
   {
+    date: '2006-03-29',
+    roomComment: 'The HQ is redesigned',
+    rooms: {
+      agent: 'archives:ArtworkRoomsAgent11.swf'
+    }
+  },
+  {
     date: '2006-03-31',
     temp: {
       party: {
@@ -140,6 +158,15 @@ export const UPDATES_2006: Update[] = [
           'plaza': 3
         }
       }
+    }
+  },
+  {
+    date: '2006-04-01',
+    rooms: {
+      // unknown date, you can now walk to the audience in the rink
+      // only evidence is after april fools party
+      // the file is also seemingly a debug file
+      rink: 'fix:ArtworkRoomsRink12.swf'
     }
   },
   {
@@ -172,6 +199,13 @@ export const UPDATES_2006: Update[] = [
     date: '2006-04-16',
     end: ['party'],
     map: 'approximation:map_chat339.swf'
+  },
+  {
+    date: '2006-04-27',
+    roomComment: 'Find Four tables are added to the Ski Lodge',
+    rooms: {
+      lodge: 'archives:ArtworkRoomsLodge14.swf'
+    }
   },
   {
     date: '2006-05-05',
@@ -391,6 +425,10 @@ export const UPDATES_2006: Update[] = [
           'town': 2
         }
       }
+    },
+    roomComment: 'The Ice Rink now has score signs',
+    rooms: {
+      rink: 'archives:ArtworkRoomsRink22.swf'
     }
   },
   {
@@ -405,6 +443,10 @@ export const UPDATES_2006: Update[] = [
           forts: 3
         }
       }
+    },
+    rooms: {
+      // placeholder HQ update for the PSA missions
+      agent: 'archives:ArtworkRoomsAgent40.swf'
     }
   },
   {
@@ -414,6 +456,13 @@ export const UPDATES_2006: Update[] = [
       cave: 'archives:ArtworkRoomsCave40.swf',
     },
     end: ['party']
+  },
+  {
+    date: '2006-08-25',
+    roomComment: 'Purple Puffles are now in the Pet Shop',
+    rooms: {
+      pet: 'archives:ArtworkRoomsPet12.swf'
+    }
   },
   {
     date: '2006-09-01',
@@ -445,7 +494,34 @@ export const UPDATES_2006: Update[] = [
       // first room archived with the lighthouse open
       // used for the party since the SWF for the beach in
       // the party is also lost
-      beach: 'archives:ArtworkRoomsBeach41.swf'
+      beach: 'archives:ArtworkRoomsBeach41.swf',
+
+      // first vectorized version of the Town, possibly from 2007
+      // unknown how to document it
+      town: 'archives:ArtworkRoomsTown40.swf',
+
+      // date of vectorization is unknown
+      plaza: 'archives:ArtworkRoomsPlaza40.swf',
+
+      // placeholder vectorized room, unknown date
+      dance: 'archives:ArtworkRoomsDance50.swf',
+
+      // unknown vectorized
+      shop: 'archives:ArtworkRoomsShop40.swf'
+    }
+  },
+  {
+    date: '2006-09-22',
+    roomComment: 'Many rooms are vectorized',
+    rooms: {
+      village: 'archives:ArtworkRoomsVillage40.swf',
+      forts: 'archives:ArtworkRoomsForts40.swf',
+      mtn: 'archives:ArtworkRoomsMtn40.swf',
+      berg: 'archives:ArtworkRoomsBerg40.swf',
+      dock: 'archives:ArtworkRoomsDock40.swf',
+      pet: 'archives:ArtworkRoomsPet40.swf',
+      dojo: 'archives:ArtworkRoomsDojo41.swf',
+      shack: 'recreation:shack_vector.swf'
     }
   },
   {
@@ -511,6 +587,13 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:Nov06Style.swf'
   },
   {
+    date: '2006-11-06',
+    roomComment: 'The launchpad construction in the Beacon is finished',
+    rooms: {
+      beacon: 'archives:ArtworkRoomsBeacon41.swf'
+    }
+  },
+  {
     date: '2006-11-24',
     temp: {
       party: {
@@ -535,13 +618,24 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-12-08',
     iglooList: true,
-    iglooVersion: 44
+    iglooVersion: 44,
+    roomComment: 'Red Puffles are now in the Pet Shop',
+    rooms: {
+      pet: 'archives:ArtworkRoomsPet43.swf'
+    }
   },
   {
     date: '2006-12-19',
     gameRelease: 'Thin Ice',
     rooms: {
       lounge: 'archives:ArtworkRoomsLounge40.swf'
+    }
+  },
+  {
+    date: '2006-12-22',
+    roomComment: 'The Attic is vectorized',
+    rooms: {
+      attic: 'recreation:attic_dec2006.swf'
     }
   }
 ];
