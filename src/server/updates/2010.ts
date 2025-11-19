@@ -901,6 +901,12 @@ export const UPDATES_2010: Update[] = [
     date: '2010-07-01',
     migrator: false,
     temp: {
+      event: {
+        rooms: {
+          berg: 'archives:RoomsBerg-MusicJam2010Pre.swf',
+          mtn: 'archives:2010newyearfireworksskihill.swf'
+        }
+      },
       const: {
         rooms: {
           'beach': 'archives:RoomsBeach-MusicJam2010Pre.swf',
@@ -908,13 +914,23 @@ export const UPDATES_2010: Update[] = [
           'cove': 'archives:RoomsCove-MusicJam2010Pre.swf',
           'dock': 'archives:RoomsDock-MusicJam2010Pre.swf',
           'forest': 'archives:RoomsForest-MusicJam2010Pre.swf',
-          'berg': 'archives:RoomsBerg-MusicJam2010Pre.swf',
           'light': 'archives:RoomsLight-MusicJam2010Pre.swf',
           'village': 'archives:RoomsVillage-MusicJam2010Pre.swf',
           'forts': 'archives:RoomsForts-MusicJam2010Pre.swf'
         }
       }
     }
+  },
+  {
+    date: '2010-07-05',
+    temp: {
+      const: {
+        rooms: {
+          berg: 'recreation:iceberg_mjamconst_no_fireworks.swf'
+        }
+      }
+    },
+    end: ['event']
   },
   {
     date: '2010-07-09',
@@ -1437,6 +1453,17 @@ export const UPDATES_2010: Update[] = [
     furnitureCatalog: 'archives:October10Furniture.swf'
   },
   {
+    date: '2010-10-21',
+    miscComments: ['A storm is approaching and visible from the Cove'],
+    temp: {
+      event: {
+        fileChanges: {
+          'play/v2/content/global/binoculars/empty.swf': 'archives:Storm_on_horizon.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2010-10-23',
     localChanges: {
       'forms/library.swf': {
@@ -1568,7 +1595,8 @@ export const UPDATES_2010: Update[] = [
         },
         startscreens: ['archives:Halloween2010LoginScreen1.swf', 'archives:Halloween2010LoginScreen2.swf', 'archives:Halloween2010LoginScreen3.swf']
       }
-    }
+    },
+    end: ['event']
   },
   {
     date: '2010-11-04',

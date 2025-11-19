@@ -2,7 +2,6 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
@@ -297,26 +296,6 @@ function addPinUpdates(map: DayMap): void {
   });
 }
 
-function addStandalone(map: DayMap): void {
-  Object.values(STANDALONE_TEMPORARY_CHANGE).forEach((updates) => {
-    updates.forEach(update => {
-      if (update.comment !== undefined) {
-        addArrayEvents(map, 'other', update.startDate, update.comment);
-      }
-      if (update.endComment !== undefined) {
-        addArrayEvents(map, 'other', update.endDate, update.endComment);
-      }
-      if (update.updates !== undefined) {
-        update.updates.forEach((newUpdate) => {
-          if (newUpdate.comment !== undefined) {
-            addArrayEvents(map, 'other', update.endDate, newUpdate.comment);
-          }
-        })
-      }
-    })
-  })
-}
-
 function addMigratorVisits(map: DayMap): void {
   UPDATES.forEach(update => {
     if (update.update.migrator !== undefined) {
@@ -338,7 +317,6 @@ function updateTimeline(days: Day[]): Day[] {
   addRoomUpdates(map);
   addStagePlays(map);
   addPinUpdates(map);
-  addStandalone(map);
   addGames(map);
   addMigratorVisits(map);
   addStamps(map);

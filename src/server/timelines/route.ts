@@ -17,7 +17,6 @@ import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
-import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
@@ -299,20 +298,6 @@ function addStadiumUpdates(map: FileTimelineMap): void {
   });
 }
 
-function addStandaloneChanges(map: FileTimelineMap): void {
-  Object.entries(STANDALONE_TEMPORARY_CHANGE).forEach((pair) => {
-    const [route, updates] = pair;
-    updates.forEach((update) => {
-      map.add(route, update.fileRef, update.startDate, update.endDate);
-      if (update.updates !== undefined) {
-        update.updates.forEach((newUpdate) => {
-          map.add(route, newUpdate.fileRef, newUpdate.date, update.endDate);
-        })
-      }
-    })
-  });
-}
-
 function addMapUpdates(map: FileTimelineMap): void {
   UPDATES.forEach((update) => {
     if (update.update.map !== undefined) {
@@ -441,7 +426,6 @@ export function getRoutesTimeline() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
-    addStandaloneChanges,
     addMapUpdates,
     // pins are specifically before party so that pins that update with a party don't override the party room
     addPins,

@@ -700,11 +700,26 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-12-15',
+    miscComments: ['A tree is available to be decorated for Christmas'],
+    temp: {
+      event: {
+        rooms: {
+          plaza: 'archives:ArtworkRoomsPlaza42.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2006-12-19',
     gameRelease: 'Thin Ice',
     rooms: {
       lounge: 'archives:ArtworkRoomsLounge40.swf'
     }
+  },
+  {
+    date: '2006-12-21',
+    end: ['event']
   },
   {
     date: '2006-12-22',

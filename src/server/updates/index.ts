@@ -219,21 +219,23 @@ export function consumeUpdates(updates: Update[]): Array<{
     if (update.temp !== undefined) {
       iterateEntries(update.temp, (e, u) => {
         if (e.startsWith('party')) {
-          const construction = events.get('const')?.[0];
-          if (construction !== undefined) {
+          const constructions = events.get('const');
+          if (constructions !== undefined) {
             const constructionComment = 'partyName' in u ? (
               `Construction for the ${u.partyName} starts`
             ): (
-              construction.update.constructionComment
+              constructions[0].update.constructionComment
             );
             if (constructionComment === undefined) {
               throw new Error('Expected construction comment to be defined');
             }
-            consumed.push({
-              date: construction.date,
-              end: update.date,
-              update: { ...construction.update, constructionComment }
-            });
+            constructions.forEach(constUpdate => {
+              consumed.push({
+                date: constUpdate.date,
+                end: update.date,
+                update: { ...constUpdate.update, constructionComment }
+              });
+            })
             events.delete('const');
           }
         }

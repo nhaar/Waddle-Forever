@@ -718,6 +718,17 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:Clothing_0712.swf'
   },
   {
+    date: '2007-12-14',
+    miscComments: ['The Coins For Change event begins'],
+    temp: {
+      party: {
+        rooms: {
+          plaza: 'archives:RoomsPlaza-ChristmasParty2007Pre.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2007-12-21',
     iglooList: true,
     iglooVersion: 73,
