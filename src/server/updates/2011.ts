@@ -1,4 +1,5 @@
 import { Update } from ".";
+import { CategoryID } from "../game-data/stamps";
 
 export const UPDATES_2011: Update[] = [
   {
@@ -7,7 +8,100 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-14',
-    furnitureCatalog: 'archives:Jan-Feb2011BetterIgloos.swf'
+    furnitureCatalog: 'archives:Jan-Feb2011BetterIgloos.swf',
+    stampUpdates: [
+      {
+        category:   {
+          "name": "System Defender",
+          "description": "System Defender",
+          "parent_group_id": 8,
+          "display": "Games : System Defender",
+          group_id: CategoryID.SystemDefender,
+          "stamps": [
+            {
+              "stamp_id": 320,
+              "name": "Bug Overload",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Protect the EPF mainframe from rogue bugs",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 300,
+              "name": "Garbage Disposal",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Destroy 100 enemies in 1 level",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 308,
+              "name": "Master Mechanic",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Fill every open socket with a cannon",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 304,
+              "name": "Mono Mechanic",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Complete a game with only one type of cannon",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 328,
+              "name": "Protobot Attack",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Protect the EPF mainframe from Ultimate Protobot",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 298,
+              "name": "Ready For Duty",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Finish G's tutorial",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 310,
+              "name": "Strategic Master",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Destroy 250 enemies without upgrading",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 302,
+              "name": "Strategic Success",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Destroy 100 enemies without upgrading cannons",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 312,
+              "name": "Tactical Ace",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Destroy 250 enemies without taking damage",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 306,
+              "name": "Tactical Pro",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Destroy 100 enemies without taking damage",
+              "rank_token": "medium"
+            }
+          ]
+        }
+      }
+    ]
   },
   {
     date: '2011-01-17',
@@ -106,7 +200,30 @@ export const UPDATES_2011: Update[] = [
           'archives:LoginWildernessExpedition2.swf'
         ]
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            "stamp_id": 193,
+            "name": "Path Finder",
+            "is_member": 0,
+            "rank": 2,
+            description: 'Complete a maze at a party',
+            rank_token: 'medium'
+          },
+          {
+            "stamp_id": 292,
+            "name": "Out At Sea",
+            "is_member": 1,
+            "rank": 1,
+            "description": "Sail away from the island in a boat",
+            "rank_token": "easy"
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-01-24',
@@ -128,7 +245,22 @@ export const UPDATES_2011: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-Early2011.swf',
       plaza: 'archives:RoomsPlaza-Play6.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [
+          {
+            "stamp_id": 322,
+            "name": "Herbert Attacks",
+            "is_member": 0,
+            "rank": 2,
+            "description": "Complete the level 'Herbert Attacks'",
+            "rank_token": "medium"
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-01-31',
@@ -155,7 +287,19 @@ export const UPDATES_2011: Update[] = [
           'cave': 'archives:PuffleParty2010ConstCave.swf'
         }
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [{
+        "stamp_id": 326,
+        "name": "Test Bot Trio",
+        "is_member": 1,
+        "rank": 3,
+        "description": "Protect the EPF mainframe from the Test Bots",
+        "rank_token": "hard"
+      }]}
+    ]
   },
   {
     date: '2011-02-11',
@@ -234,7 +378,40 @@ export const UPDATES_2011: Update[] = [
           'archives:LoginPuffleParty2011(2).swf'
         ]
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 330,
+            name: 'Party Puffle',
+            is_member: 0,
+            rank: 1,
+            description: 'Walk your puffle to their party room',
+            rank_token: 'easy'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    date: '2011-02-24',
+    stampUpdates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [
+          {
+            "stamp_id": 324,
+            "name": "Klutzy Attack",
+            "is_member": 0,
+            "rank": 2,
+            "description": "Protect the EPF mainframe from Klutzy",
+            "rank_token": "medium"
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-02-25',
@@ -281,7 +458,116 @@ export const UPDATES_2011: Update[] = [
     roomComment: 'Puffle Launch releases',
     rooms: {
       pet: 'archives:RoomsPet_5.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        category: {
+          "name": "Puffle Launch",
+          "description": "Puffle Launch",
+          "parent_group_id": 8,
+          "display": "Games : Puffle Launch",
+          group_id: CategoryID.PuffleLaunch,
+          "stamps": [
+            {
+              "stamp_id": 334,
+              "name": "Begin Build",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Collect your first cannon piece",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 340,
+              "name": "Crab Attack",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Defeat a crab boss once",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 344,
+              "name": "Crab Battle",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Defeat 6 crab bosses in a single play session",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 342,
+              "name": "Crab Crash",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Defeat 3 crab bosses in a single play session",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 338,
+              "name": "Epic Cannon ",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Build the Epic Cannon",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 336,
+              "name": "Launch Ready",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Build a cannon",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 350,
+              "name": "Light Speed Launch",
+              "is_member": 1,
+              "rank": 4,
+              "description": "Complete all 36 levels in under 18 minutes",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 346,
+              "name": "Quick Launch",
+              "is_member": 1,
+              "rank": 2,
+              "description": "Complete all 36 levels in under 35 minutes",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 348,
+              "name": "Supersonic Launch",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Complete all 36 levels in under 25 minutes",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 354,
+              "name": "Turbo Battle",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Defeat the crab in turbo mode",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 356,
+              "name": "Turbo Master",
+              "is_member": 1,
+              "rank": 4,
+              "description": "Complete all 36 levels in turbo mode",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 352,
+              "name": "Turbo Time",
+              "is_member": 1,
+              "rank": 2,
+              "description": "Complete a level in turbo mode",
+              "rank_token": "medium"
+            }
+          ]
+        },
+      }
+    ]
   },
   {
     date: '2011-03-17',
@@ -439,14 +725,44 @@ export const UPDATES_2011: Update[] = [
           }
         }
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 332,
+            name: 'Food Fight',
+            is_member: 0,
+            rank: 1,
+            description: 'Throw your meal in a place where food is found',
+            rank_token: 'easy'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-03-28',
     rooms: {
       // bits and bolts: currently doesn't work due to missing engine.swf functionality
       lounge: 'archives:RoomsLounge_2.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Characters,
+        stamps: [
+          {
+            stamp_id: 358,
+            name: 'Rookie',
+            is_member: 0,
+            rank: 4,
+            description: 'Be in the same room as Rookie',
+            rank_token: 'extreme'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-04-01',
@@ -471,6 +787,62 @@ export const UPDATES_2011: Update[] = [
       stage: 'archives:2011Apr14Stage.swf',
       party1: 'archives:RoomsParty1-Apr2011-NormanSwarmHasBeenTransformed.swf'
     }
+  },
+  {
+    date: '2011-04-20',
+    stampUpdates: [
+      {
+        category: {
+          "name": "Treasure Hunt",
+          "description": "Treasure Hunt Stamps",
+          "parent_group_id": 8,
+          "display": "Games : Treasure Hunt",
+          group_id: CategoryID.TreasureHunt,
+          "stamps": [
+            {
+              "stamp_id": 416,
+              "name": "Collector",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Collect 8 coins in a single game",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 420,
+              "name": "Gem Expert",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Uncover a gem in only 3 moves",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 422,
+              "name": "Gem Pro",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Uncover 2 gems in only 7 moves",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 414,
+              "name": "Gem Skills",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Uncover 2 gems in a single game",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 418,
+              "name": "In the Rough",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Find a rare treasure",
+              "rank_token": "hard"
+            }
+          ]
+        },
+      }
+    ]
   },
   {
     date: '2011-04-21',
@@ -545,11 +917,218 @@ export const UPDATES_2011: Update[] = [
         },
         startscreens: [ 'archives:LoginEarth_day1.swf' ]
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            name: 'Go Green',
+            stamp_id: 362,
+            description: 'Recycle 10 objects at the Recycling Plant',
+            rank: 1,
+            rank_token: 'easy',
+            is_member: 0
+          },
+          {
+            name: 'Tree Mob',
+            stamp_id: 364,
+            description: 'Get 10 or more friends to dress up as trees',
+            rank: 2,
+            is_member: 1,
+            rank_token: 'medium'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-04-26',
-    end: ['party']
+    end: ['party'],
+    stampUpdates: [
+      {
+        category:   {
+          "name": "Pizzatron 3000",
+          "description": "Pizzatron Stamps",
+          "parent_group_id": 8,
+          "display": "Games : Pizzatron 3000",
+          "group_id": 54,
+          "stamps": [
+            {
+              "stamp_id": 404,
+              "name": "Candy Land",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Make 3 pink sauce and marshmallow pizzas to order",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 396,
+              "name": "Chef's Hat",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Make 20 pizzas without any mistakes",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 400,
+              "name": "Cocoa Beans",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Make 3 jellybean and chocolate pizzas to order",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 410,
+              "name": "Dessert Chef",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Make 40 candy pizzas without any mistakes",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 402,
+              "name": "Fiery Squids",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Make 3 hot sauce and squid pizzas to order",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 392,
+              "name": "Food Fiasco",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Make a mess of the kitchen with 3 wrong pizzas",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 394,
+              "name": "Just Dessert",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Play Pizzatron in Candy Mode",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 406,
+              "name": "Pizza Chef",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Make 30 pizzas without any mistakes",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 408,
+              "name": "Pizza Master",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Make 40 pizzas without any mistakes",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 398,
+              "name": "Spice Sea",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Make 3 hot sauce and shrimp pizzas to order",
+              "rank_token": "medium"
+            }
+          ]
+        }
+      },
+      {
+        category:   {
+          "name": "Ice Fishing",
+          "description": "Ice Fishing",
+          "parent_group_id": 8,
+          "display": "Games : Ice Fishing",
+          "group_id": 52,
+          "stamps": [
+            {
+              "stamp_id": 390,
+              "name": "Ace Angler",
+              "is_member": 1,
+              "rank": 4,
+              "description": "Hook 15 gray fish and Mullet with no worm lost",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 382,
+              "name": "Afishionado",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Catch 45 fish without any mistakes",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 380,
+              "name": "Crab Cuts",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Have 3 crabs cut your line and finish the game",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 376,
+              "name": "Fishtastic",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Catch 15 fish without any mistakes",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 388,
+              "name": "Fly Fisher",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Catch 63 fish in under 5 minutes",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 384,
+              "name": "Gray Goodies",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Catch 15 gray fish",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 386,
+              "name": "Prize Mullet",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Capture Mullet",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 374,
+              "name": "Shock King",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Get 3 shocks from jellyfish and finish the game",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 372,
+              "name": "Snack Attack",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Feed a fish to a shark",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 378,
+              "name": "Worm Win",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Finish the game without losing a worm",
+              "rank_token": "hard"
+            }
+          ]
+        }
+      }
+    ]
   },
   {
     date: '2011-05-01',
@@ -709,7 +1288,22 @@ export const UPDATES_2011: Update[] = [
     },
     rooms: {
       stage: 'archives:2011May19Stage.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 360,
+            name: 'Noble Knight',
+            is_member: 1,
+            rank: 2,
+            description: 'Wear a knight costume at the Medieval party',
+            rank_token: 'medium'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-05-26',
@@ -1007,7 +1601,22 @@ export const UPDATES_2011: Update[] = [
           'archives:LoginIslandAdventureParty2011.swf'
         ]
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 426,
+            name: 'Music Maestro',
+            is_member: 0,
+            rank: 2,
+            description: 'Solve a musical challenge at a party',
+            rank_token: 'medium'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-07-22',
@@ -1046,7 +1655,22 @@ export const UPDATES_2011: Update[] = [
           'archives:TheGreatSnowRaceConstVillage.swf' 
         } 
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.SystemDefender,
+        stamps: [
+          {
+            "stamp_id": 443,
+            "name": "Track Herbert ",
+            "is_member": 0,
+            "rank": 4,
+            "description": "Complete the level 'Track Herbert'",
+            "rank_token": "extreme"
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-08-25',
@@ -1109,7 +1733,38 @@ export const UPDATES_2011: Update[] = [
     // placeholder, this is the first instance of the modern sled racing being necessary
     fileChanges: {
       'play/v2/games/sled/SledRacer.swf': 'svanilla:media/play/v2/games/sled/SledRacer.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 440,
+            name: 'Snowboarder',
+            is_member: 1,
+            rank: 1,
+            description: 'Do a snowboard dance at a party',
+            rank_token: 'easy'
+          },
+          {
+            stamp_id: 439,
+            name: 'Mountaineer',
+            is_member: 0,
+            rank: 3,
+            description: 'Reach a mountain peak',
+            rank_token: 'hard'
+          },
+          {
+            stamp_id: 438,
+            name: 'Stunt Penguin',
+            is_member: 0,
+            rank: 3,
+            description: 'Complete an obstacle course',
+            rank_token: 'hard'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-08-31',
@@ -1383,6 +2038,21 @@ export const UPDATES_2011: Update[] = [
       name: 'Night of the Living Sled: Live',
       costumeTrunk: 'archives:NLSLCostumeTrunk.swf'
     },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            stamp_id: 444,
+            name: 'Trick-or-treat',
+            is_member: 0,
+            rank: 2,
+            description: 'See 10 Trick-or-Treat igloos at the Halloween Party',
+            rank_token: 'medium'
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-10-23',
@@ -1413,7 +2083,108 @@ export const UPDATES_2011: Update[] = [
       pet: 'archives:RoomsPet_7.swf'
     },
     clothingCatalog: 'archives:PenguinStyleNov2011.swf',
-    end: ['party']
+    end: ['party'],
+    stampUpdates: [
+      {
+        category: {
+          "name": "Pufflescape",
+          "description": "Pufflescape",
+          "parent_group_id": 8,
+          "display": "Games : Pufflescape",
+          group_id: CategoryID.Pufflescape,
+          "stamps": [
+            {
+              "stamp_id": 429,
+              "name": "Bite in Time",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Eat a disappearing Puffle O",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 427,
+              "name": "Bonus Snack",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Eat a bonus Puffle O",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 436,
+              "name": "Epic Roller",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Complete level 22",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 434,
+              "name": "Extreme Puzzler",
+              "is_member": 1,
+              "rank": 2,
+              "description": "Complete level 12",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 431,
+              "name": "Fast Food",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Eat all disappearing O's in one set of levels",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 437,
+              "name": "Ice Master",
+              "is_member": 1,
+              "rank": 3,
+              "description": "Complete the final level",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 435,
+              "name": "Master Roller",
+              "is_member": 1,
+              "rank": 2,
+              "description": "Complete level 17",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 432,
+              "name": "On a Roll",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Complete level 4",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 428,
+              "name": "Puffle O Feast",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Eat all regular Puffle O's in one set of levels",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 433,
+              "name": "Puzzle Pro",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Complete level 8",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 430,
+              "name": "Quick Snack",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Eat all disappearing O's in one level",
+              "rank_token": "hard"
+            }
+          ]
+        },
+      }
+    ]
   },
   {
     date: '2011-11-10',
@@ -1677,7 +2448,22 @@ export const UPDATES_2011: Update[] = [
     rooms: {
       stage: 'archives:12142011Stage.swf',
       plaza: 'archives:RoomsPlaza_2-Play18.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Party,
+        stamps: [
+          {
+            name: 'Epic Volunteer',
+            description: 'Give a 10,000 coin donation to Coins For Change.',
+            rank: 4,
+            rank_token: 'extreme',
+            is_member: 0,
+            stamp_id: 296
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2011-12-15',

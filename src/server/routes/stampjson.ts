@@ -2,10 +2,11 @@ import fs from 'fs';
 import path from 'path';
 
 import { getMediaFilePath } from "../game-data/files"
-import { StampCategory, STAMP_TIMELINE, Stamp } from "../game-data/stamps"
+import { StampCategory, Stamp } from "../game-data/stamps"
 import { Update } from "../game-data/updates"
 import { isGreaterOrEqual, isLower, Version } from "./versions"
 import { MEDIA_DIRECTORY } from '../../common/utils';
+import { UPDATES } from '../updates/updates';
 
 type Stampbook = StampCategory[];
 
@@ -977,24 +978,26 @@ export function getStampbook(version: Version): Stampbook {
   
   const newStampbook = JSON.parse(JSON.stringify(originalStampbook)) as Stampbook
 
-  for (let i = 0; i < STAMP_TIMELINE.length; i++) {
-    const update = STAMP_TIMELINE[i];
+  for (let i = 0; i < UPDATES.length; i++) {
+    const update = UPDATES[i];
     if (isLower(version, update.date)) {
       break;
     }
 
-    update.updates.forEach(u => {
-      if ('category' in u) {
-        newStampbook.push(u.category);
-      } else {
-        for (let i = 0; i < newStampbook.length; i++) {
-          if (newStampbook[i].group_id === u.categoryId) {
-            newStampbook[i].stamps.push(...u.stamps);
-            break;
+    if (update.update.stampUpdates !== undefined) {
+      update.update.stampUpdates.forEach(u => {
+        if ('category' in u) {
+          newStampbook.push(u.category);
+        } else {
+          for (let i = 0; i < newStampbook.length; i++) {
+            if (newStampbook[i].group_id === u.categoryId) {
+              newStampbook[i].stamps.push(...u.stamps);
+              break;
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 
   return newStampbook;

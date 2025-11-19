@@ -2,6 +2,7 @@ import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
 import { RoomName } from "../game-data/rooms";
 import { StageName, StageScript } from "../game-data/stage-plays";
+import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
 
@@ -76,6 +77,8 @@ export type CPUpdate = {
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
   sportCatalog?: FileRef;
+
+  stampUpdates?: StampUpdates
 
   /** Name of the game that is released this day */
   gameRelease?: string;

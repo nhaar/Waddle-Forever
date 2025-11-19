@@ -2,7 +2,6 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
@@ -266,6 +265,9 @@ function addUpdates(map: DayMap): DayMap {
       }
       premieres.add(update.update.stagePlay.name);
     }
+    if (update.update.stampUpdates !== undefined) {
+      addArrayEvents(map, 'other', update.date, 'New stamps are available');
+    }
   });
   return map;
 }
@@ -297,12 +299,6 @@ function addMigratorVisits(map: DayMap): void {
   });
 }
 
-function addStamps(map: DayMap): void {
-  STAMP_TIMELINE.forEach(update => {
-    addArrayEvents(map, 'other', update.date, 'New stamps are available');
-  });
-}
-
 function updateTimeline(days: Day[]): Day[] {
   let map = getDayMap(days);
   map = addNewspapers(map);
@@ -312,7 +308,6 @@ function updateTimeline(days: Day[]): Day[] {
   addPinUpdates(map);
   addGames(map);
   addMigratorVisits(map);
-  addStamps(map);
   return getDaysFromMap(map);
 }
 
