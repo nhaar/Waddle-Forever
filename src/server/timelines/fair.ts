@@ -2,12 +2,13 @@ import { VersionsTimeline } from "../game-data";
 import { Update } from "../game-data/updates";
 import { isGreaterOrEqual } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
+import { START_DATE } from "./dates";
 
 export function getFairTimeline() {
   const timeline = new VersionsTimeline<boolean>();
 
   timeline.add({
-    date: Update.BETA_RELEASE,
+    date: START_DATE,
     info: false
   });
 

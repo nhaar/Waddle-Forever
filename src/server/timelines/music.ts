@@ -5,6 +5,7 @@ import { STAGE_PLAYS } from "../game-data/stage-plays";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
+import { START_DATE } from "./dates";
 
 export function getMusicTimeline() {
   const timeline = new TimelineMap<RoomName, number>();
@@ -16,7 +17,7 @@ export function getMusicTimeline() {
   }
 
   Object.keys(ROOMS).forEach((room) => {
-    timeline.add(room as RoomName, 0, Update.BETA_RELEASE);
+    timeline.add(room as RoomName, 0, START_DATE);
   });
   
   UPDATES.forEach(update => {

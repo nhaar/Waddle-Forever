@@ -12,6 +12,7 @@ import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 import { StageScript } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
+import { START_DATE } from "./dates";
 
 
 const musicTimeline = getMusicTimeline();
@@ -212,7 +213,7 @@ export function getLocalCrumbsOutput() {
 export function getHuntTimeline() {
   const timeline = new VersionsTimeline<null | HuntCrumbs>();
   timeline.add({
-    date: Update.BETA_RELEASE,
+    date: START_DATE,
     info: null
   });
 

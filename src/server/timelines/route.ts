@@ -20,6 +20,7 @@ import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
 import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
+import { START_DATE } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -35,7 +36,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
   }
 
   addDefault(route: string, file: string): void {
-    this.add(route, file, Update.BETA_RELEASE);
+    this.add(route, file, START_DATE);
   }
 
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {

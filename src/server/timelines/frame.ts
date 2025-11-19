@@ -4,6 +4,7 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
+import { START_DATE } from "./dates";
 import { PIN_TIMELINE } from "./pins";
 
 export function getRoomFrameTimeline() {
@@ -12,7 +13,7 @@ export function getRoomFrameTimeline() {
   // adding defaults
   // TODO, not fond of design?
   Object.keys(ROOMS).forEach((room) => {
-    timeline.add(room as RoomName, 1, Update.BETA_RELEASE);
+    timeline.add(room as RoomName, 1, START_DATE);
   })
 
   PIN_TIMELINE.forEach(pin => {

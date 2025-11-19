@@ -1,6 +1,7 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { Update } from "../game-data/updates";
+import { START_DATE } from "../timelines/dates";
 import { getRoomFrameTimeline } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
 import { getMigratorTimeline } from "../timelines/migrator";
@@ -19,7 +20,7 @@ const eggTimeline = getEggTimeline();
 function getEggTimeline() {
   const timeline = new VersionsTimeline<number>();
   timeline.add({
-    date: Update.BETA_RELEASE,
+    date: START_DATE,
     info: 0
   });
   UPDATES.forEach(update => {
