@@ -60,6 +60,8 @@ export type HuntCrumbs = {
   icon: FileRef;
 };
 
+export type RoomChanges = Partial<Record<RoomName, FileRef>>;
+
 export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
@@ -73,7 +75,7 @@ export type CPUpdate = {
   /** Name of the game that is released this day */
   gameRelease?: string;
   /** File of all room changes */
-  rooms?: Partial<Record<RoomName, FileRef>>;
+  rooms?: RoomChanges;
 
   /** All room music IDs */
   music?: Partial<Record<RoomName, number>>;

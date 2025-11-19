@@ -5,7 +5,6 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { RoomChanges } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -24,7 +23,7 @@ import { STANDALONE_TEMPORARY_CHANGE } from "../game-data/standalone-changes";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
-import { CrumbIndicator, LocalChanges } from "../updates";
+import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
