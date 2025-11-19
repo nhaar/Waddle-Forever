@@ -198,6 +198,32 @@ export const UPDATES_2011: Update[] = [
         startscreens: [
           'archives:LoginWildernessExpedition.swf',
           'archives:LoginWildernessExpedition2.swf'
+        ],
+        worldStamps: [
+          {
+            name: 'Path Finder',
+            id: 193,
+            declarations: [
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  'user in 860'
+                ]
+              }
+            ]
+          },
+          {
+            name: 'Out At Sea',
+            id: 292,
+            declarations: [
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  'user in 862'
+                ]
+              }
+            ]
+          }
         ]
       }
     },
@@ -376,6 +402,94 @@ export const UPDATES_2011: Update[] = [
         startscreens: [
           'archives:LoginPuffleParty2011(1).swf',
           'archives:LoginPuffleParty2011(2).swf'
+        ],
+        worldStamps: [
+          {
+            name: 'Party Puffle',
+            id: 330,
+            declarations: [
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // blue puffle in forest
+                  'user in 809',
+                  'user wearing 750'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // pink puffle in berg
+                  'user in 805',
+                  'user wearing 751'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // black puffle in cave
+                  'user in 806',
+                  'user wearing 752'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // green puffle in beacon
+                  'user in 411',
+                  'user wearing 753'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // purple puffle in dance
+                  'user in 120',
+                  'user wearing 754'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // red puffle in cove
+                  'user in 810',
+                  'user wearing 755'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // yellow puffle in light
+                  'user in 410',
+                  'user wearing 756'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // white puffle in mine
+                  'user in 808',
+                  'user wearing 757'
+                ]
+              },
+              {
+                event: 'user enterRoom',
+                conditions: [
+                  // orange puffle in box dimension
+                  'user in 811',
+                  'user wearing 758'
+                ]
+              },
+              {
+                // brown puffle in lounge
+                event: 'user enterRoom',
+                conditions: [
+                  'user in 121',
+                  'user wearing 759'
+                ]
+              }
+            ]
+          }
         ]
       }
     },
@@ -723,7 +837,29 @@ export const UPDATES_2011: Update[] = [
               ]
             }
           }
-        }
+        },
+        worldStamps: [
+          {
+            name: 'Food Fight',
+            id: 332,
+            declarations: [
+              {
+                // candy dimension
+                event: 'any penguin snowballHit',
+                conditions: [
+                  'user in 854'
+                ]
+              },
+              {
+                // piza parlor
+                event: 'any penguin snowballHit',
+                conditions: [
+                  'user in 330'
+                ]
+              }
+            ]
+          }
+        ]
       }
     },
     stampUpdates: [
@@ -937,6 +1073,37 @@ export const UPDATES_2011: Update[] = [
             rank: 2,
             is_member: 1,
             rank_token: 'medium'
+          }
+        ]
+      }
+    ],
+    worldStamps: [
+      {
+        "name": "Go Green",
+        "id": 362,
+        "declarations": [
+          {
+            "event": "user snowballHit",
+            "conditions": [
+              "user in 122",
+              "event hasProperty x greaterThan 92",
+              "event hasProperty x lessThan 203",
+              "event hasProperty y greaterThan 48",
+              "event hasProperty y lessThan 128",
+              "event occurs 10"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tree Mob",
+        "id": 364,
+        "declarations": [
+          {
+            "event": "every 2 seconds",
+            "conditions": [
+              "anyWithUser 10 penguins wearing only 4147 or 14147"
+            ]
           }
         ]
       }
@@ -1280,6 +1447,32 @@ export const UPDATES_2011: Update[] = [
           'party22': 308,
           'party23': 41
         },
+        worldStamps: [
+          {
+            name: 'Noble Knight',
+            id: 360,
+            declarations: [
+              {
+                event: 'every 2 seconds',
+                conditions: [
+                  'user hasProperty is_member equals 1',
+                  // shield hand items
+                  'user wearing 723 or 724 or 725 or 5028 or 5058 or 5097 or 5099 or 5098 or 5100 or 5095'
+                ],
+                optionalConditions: [
+                  // standard knight
+                  'user wearing 688 and 794',
+                  // golden knight
+                  'user wearing 1052 and 4078',
+                  // iron knight
+                  'user wearing 1146 and 4219',
+                  // white knight
+                  'user wearing 1253 and 4362'
+                ],
+              }
+            ]
+          }
+        ]
       }
     },
     stagePlay: {
@@ -1726,6 +1919,22 @@ export const UPDATES_2011: Update[] = [
             roomId: 855,
             seats: 4,
             game: 'sled'
+          }
+        ],
+        worldStamps: [
+          {
+            id: 440,
+            name: 'Snowboarder',
+            declarations: [
+              {
+                event: 'every 2 seconds',
+                conditions: [
+                  'user wearing only 3083 or 3084 or 3085',
+                  'user isOnFrame 26',
+                  'user in 300 or 100 or 200 or 851 or 852 or 853 or 854 or 855 or 856 or 857 or 858 or 859 or 860'
+                ]
+              }
+            ]
           }
         ]
       }

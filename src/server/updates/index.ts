@@ -63,6 +63,17 @@ export type HuntCrumbs = {
 
 export type RoomChanges = Partial<Record<RoomName, FileRef>>;
 
+export type AchievementCode = {
+  event: string;
+  conditions: string[];
+  optionalConditions?: string[];
+}
+export type WorldStamp = {
+  name: string;
+  id: number;
+  declarations: AchievementCode[];
+}
+
 export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
@@ -79,6 +90,8 @@ export type CPUpdate = {
   sportCatalog?: FileRef;
 
   stampUpdates?: StampUpdates
+
+  worldStamps?: WorldStamp[]
 
   /** Name of the game that is released this day */
   gameRelease?: string;
