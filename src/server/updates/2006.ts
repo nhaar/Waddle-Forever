@@ -79,6 +79,10 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
+    rooms: {
+      pizza: 'archives:ArtworkRoomsPizza12.swf',
+      plaza: 'archives:ArtworkRoomsPlaza10.swf'
+    }
   },
   {
     date: '2006-02-28',
@@ -116,6 +120,10 @@ export const UPDATES_2006: Update[] = [
           'village': 2
         }
       }
+    },
+    rooms: {
+      plaza: 'archives:ArtworkRoomsPlaza12.swf',
+      pet: 'mammoth:artwork/rooms/pet11.swf'
     }
   },
   {
@@ -124,10 +132,12 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-03-29',
-    roomComment: 'The HQ is redesigned',
+    roomComment: ['The HQ is redesigned', 'A new secret room opens'],
     rooms: {
-      agent: 'archives:ArtworkRoomsAgent11.swf'
-    }
+      agent: 'archives:ArtworkRoomsAgent11.swf',
+      berg: 'mammoth:artwork/rooms/berg10.swf'
+    },
+    map: 'archives:ArtworkMapsIsland5.swf'
   },
   {
     date: '2006-03-31',
@@ -243,12 +253,20 @@ export const UPDATES_2006: Update[] = [
       // manhole path
       plaza: 'archives:ArtworkRoomsPlaza17.swf',
       // green puffle + boiler room trigger
-      dance: 'archives:ArtworkRoomsDance14.swf'
+      dance: 'archives:ArtworkRoomsDance14.swf',
+      // 2006 client boiler, the party vesion isn't archived
+      boiler: 'archives:ArtworkRoomsBoiler11.swf',
+      mine: 'archives:ArtworkRoomsMine13.swf'
     }
   },
   {
     date: '2006-05-29',
-    end: ['party']
+    end: ['party'],
+    rooms: {
+      boiler: 'archives:ArtworkRoomsCave13.swf',
+      shack: 'archives:ArtworkRoomsShack10.swf'
+    },
+    map: 'approximation:map_shack.swf'
   },
   {
     date: '2006-06-02',
@@ -293,11 +311,13 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
-    roomComment: 'More rooms are visible from the HQ',
+    roomComment: ['More rooms are visible from the HQ', 'A new room opens near the Dock'],
     rooms: {
       // now this has a path to the beach
       village: 'archives:ArtworkRoomsVillage13.swf',
-      agent: 'archives:ArtworkRoomsAgent13.swf'
+      agent: 'archives:ArtworkRoomsAgent13.swf',
+
+      beach: 'archives:ArtworkRoomsBeach12.swf'
     },
     // beach opens
     map: 'archives:ArtworkMapsIsland10.swf'
@@ -490,6 +510,7 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
+    roomComment: 'A new building opens at the Beach',
     rooms: {
       // first room archived with the lighthouse open
       // used for the party since the SWF for the beach in
@@ -507,7 +528,13 @@ export const UPDATES_2006: Update[] = [
       dance: 'archives:ArtworkRoomsDance50.swf',
 
       // unknown vectorized
-      shop: 'archives:ArtworkRoomsShop40.swf'
+      shop: 'archives:ArtworkRoomsShop40.swf',
+
+      // boiler room for the 2007 client
+      boiler: 'archives:ArtworkRoomsBoiler40.swf',
+
+      beacon: 'archives:ArtworkRoomsBeacon40.swf',
+      light: 'archives:ArtworkRoomsLight40.swf'
     }
   },
   {

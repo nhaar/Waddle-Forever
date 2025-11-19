@@ -2084,7 +2084,8 @@ export const UPDATES_2008: Update[] = [
     end: ['party'],
     roomComment: 'The dojo has a great reopening',
     rooms : {
-      dojo: 'archives:DojoGrandOpening2008.swf'
+      dojo: 'archives:DojoGrandOpening2008.swf',
+      dojoext: 'archives:DojoExtGrandOpening2008.swf'
     },
     map: 'archives:Map2008-2011Stadium.swf'
   },
@@ -2164,6 +2165,14 @@ export const UPDATES_2008: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-June2009.swf',
       plaza: 'archives:RoomsPlaza-Play10.swf'
+    }
+  },
+  {
+    date: '2008-11-24',
+    roomComment: 'A room for elite penguins opens',
+    rooms: {
+      agent: 'archives:RoomsAgent.swf',
+      agentcom: 'archives:RoomsAgentcomFormer.swf'
     }
   },
   {

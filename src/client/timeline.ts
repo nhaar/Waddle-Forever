@@ -2,10 +2,9 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { ROOM_MUSIC_TIMELINE, ROOM_OPENINGS, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
+import { ROOM_MUSIC_TIMELINE, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
-import { ROOMS } from '../server/game-data/rooms';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
@@ -276,13 +275,6 @@ function addUpdates(map: DayMap): DayMap {
 
 function addRoomUpdates(map: DayMap): void {
   const roomOpenings: Record<string, string[]> = {};
-
-  ROOM_OPENINGS.forEach((update) => {
-    if (roomOpenings[update.date] === undefined) {
-      roomOpenings[update.date] = [];
-    }
-    roomOpenings[update.date].push(ROOMS[update.room].name);
-  })
 
   Object.entries(roomOpenings).forEach((pair) => {
     const [date, rooms] = pair;

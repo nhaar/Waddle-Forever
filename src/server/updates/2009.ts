@@ -1758,7 +1758,9 @@ export const UPDATES_2009: Update[] = [
       dojohide: 'archives:RoomsDojohide_2.swf',
       stage: 'archives:RoomsStage-December2009.swf',
       plaza: 'archives:RoomsPlaza-Play14.swf',
-      party1: 'archives:RoomsParty1-December2009.swf'
+      party1: 'archives:RoomsParty1-December2009.swf',
+
+      dojofire: 'slegacy:media/play/v2/content/global/rooms/dojofire.swf'
     },
     end: ['fire-construction']
   },

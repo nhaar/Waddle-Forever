@@ -24,6 +24,16 @@ export const UPDATES_2005: Update[] = [
     }
   },
   {
+    date: '2005-09-12',
+    roomComment: 'A new room is opened near the Town',
+    rooms: {
+      forts: 'fix:ArtworkRoomsForts.swf',
+      town: 'archives:ArtworkRoomsTown10.swf',
+      rink: 'archives:ArtworkRoomsRink10.swf'
+    },
+    map: 'archives:ArtworkMapsIsland3.swf'
+  },
+  {
     date: '2005-09-13',
     gameRelease: 'Astro Barrier',
     rooms: {
@@ -98,7 +108,12 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-11-03',
-    newspaper: 'irregular'
+    newspaper: 'irregular',
+    roomComment: 'A new shop opens at the ski area',
+    rooms: {
+      sport: 'mammoth:artwork/rooms/sport11.swf',
+      village: 'approximation:village_sport.swf'
+    }
   },
   {
     date: '2005-11-08',
@@ -124,6 +139,14 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-11-16',
     newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-18',
+    roomComment: 'Penguins can now access the mountain at the ski area',
+    rooms: {
+      village: 'approximation:village_no_lodge.swf',
+      mtn: 'fix:Mtn1.swf'
+    }
   },
   {
     date: '2005-11-21',
@@ -152,8 +175,10 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-12-22',
+    roomComment: 'The lodge in the ski area is now open',
     rooms: {
-      village: 'archives:ArtworkRoomsVillage11.swf'
+      village: 'archives:ArtworkRoomsVillage11.swf',
+      lodge: 'archives:ArtworkRoomsLodge10.swf'
     },
     temp: {
     party: {

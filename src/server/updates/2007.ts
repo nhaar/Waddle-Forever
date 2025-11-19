@@ -567,6 +567,7 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-16',
+    roomComment: 'A new building opens at the Plaza',
     stagePlay: {
       name: 'Space Adventure',
       script: [
@@ -655,7 +656,8 @@ export const UPDATES_2007: Update[] = [
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza47.swf',
       stage: 'archives:SpaceAdventure1Stage.swf'
-    }
+    },
+    map: 'archives:Map2007Plaza.swf'
   },
   {
     date: '2007-11-23',
