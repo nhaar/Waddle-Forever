@@ -124,6 +124,7 @@ export const UPDATES_2011: Update[] = [
     temp: {
       party: {
         partyName: 'Wilderness Expedition',
+        freeBrownPuffle: true,
         rooms: {
           town: 'archives:RoomsTown-WildernessExpedition.swf',
           plaza: 'archives:WildernessExpeditionPlaza.swf',
