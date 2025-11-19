@@ -582,6 +582,8 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-16',
+    // added 604 because it has the stage, though have no idea of where it is from yet
+    chatVersion: 604,
     roomComment: 'A new building opens at the Plaza',
     stagePlay: {
       name: 'Space Adventure',

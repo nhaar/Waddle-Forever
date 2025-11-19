@@ -215,12 +215,14 @@ export const UPDATES_2006: Update[] = [
           'forts': 'archives:ArtworkRooms0416Forts12.swf'
         }
       }
-    }
+    },
+    chatVersion: 299
   },
   {
     date: '2006-04-16',
     end: ['party'],
-    map: 'approximation:map_chat339.swf'
+    map: 'approximation:map_chat339.swf',
+    chatVersion: 339
   },
   {
     date: '2006-04-27',
@@ -502,6 +504,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-09-21',
+    chatVersion: 506,
     map: 'approximation:map_beach_changed_id.swf',
     temp: {
       party: {

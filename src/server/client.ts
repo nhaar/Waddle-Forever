@@ -10,7 +10,6 @@ import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { getVersionsTimeline } from './routes/version.txt';
 import { Update } from './game-data/updates';
 import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
@@ -19,8 +18,7 @@ import { Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
-
-const versionsTimeline = getVersionsTimeline();
+import { VERSIONS_TIMELINE } from './routes/version.txt';
 
 type ServerType = 'Login' | 'World';
 
@@ -824,7 +822,7 @@ export class Client {
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
     if (isLower(this.version, Update.CPIP_UPDATE)) {
-      const version = findInVersion(this.version, versionsTimeline) ?? 0;
+      const version = findInVersion(this.version, VERSIONS_TIMELINE) ?? 0;
       const itemSet = OLD_CLIENT_ITEMS[version];
       items = items.filter((value) => itemSet.has(value));
     }

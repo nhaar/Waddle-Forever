@@ -116,6 +116,8 @@ export type CPUpdate = {
   /** New version of the igloo swf */
   iglooVersion?: number;
 
+  chatVersion?: number;
+
   /** Misc. updates on this day to be added in the timeline */
   miscComments?: string[];
 
