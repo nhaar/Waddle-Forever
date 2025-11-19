@@ -131,11 +131,23 @@ export const UPDATES_2006: Update[] = [
     end: ['party']
   },
   {
+    date: '2006-03-23',
+    roomComment: 'The Dance Club music is updated',
+    music: {
+      // switching to crossing over, unknown the exact date, it's around this time though
+      dance: 5,
+      lounge: 6
+    }
+  },
+  {
     date: '2006-03-29',
     roomComment: ['The HQ is redesigned', 'A new secret room opens'],
     rooms: {
       agent: 'archives:ArtworkRoomsAgent11.swf',
       berg: 'mammoth:artwork/rooms/berg10.swf'
+    },
+    music: {
+      agent: 7
     },
     map: 'archives:ArtworkMapsIsland5.swf'
   },

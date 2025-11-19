@@ -1,6 +1,5 @@
 import { iterateEntries } from "../../common/utils";
 import { TimelineMap } from "../game-data";
-import { ROOM_MUSIC_TIMELINE } from "../game-data/room-updates";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
 import { STAGE_PLAYS } from "../game-data/stage-plays";
 import { Update } from "../game-data/updates";
@@ -18,15 +17,6 @@ export function getMusicTimeline() {
 
   Object.keys(ROOMS).forEach((room) => {
     timeline.add(room as RoomName, 0, Update.BETA_RELEASE);
-  });
-    
-  // regular room IDs
-  iterateEntries(ROOM_MUSIC_TIMELINE, (room, musicTimeline) => {
-    const [firstSong, ...otherSongs] = musicTimeline;
-    timeline.add(room, firstSong, Update.BETA_RELEASE);
-    otherSongs.forEach((song) => {
-      timeline.add(room, song.musicId, song.date);
-    });
   });
   
   UPDATES.forEach(update => {

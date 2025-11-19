@@ -983,10 +983,6 @@ export const UPDATES_2008: Update[] = [
       forest: 'archives:RoomsForest.swf',
       ship: 'archives:RoomsShip.swf'
     },
-    music: {
-      // no idea on this one's date, adding it here
-      lounge: 6
-    },
     memberRooms: {
       dojofire: true,
       dojowater: true,
@@ -2087,6 +2083,10 @@ export const UPDATES_2008: Update[] = [
       dojo: 'archives:DojoGrandOpening2008.swf',
       dojoext: 'archives:DojoExtGrandOpening2008.swf'
     },
+    music: {
+      dojo: 21,
+      dojoext: 21
+    },
     map: 'archives:Map2008-2011Stadium.swf'
   },
   {
@@ -2097,6 +2097,9 @@ export const UPDATES_2008: Update[] = [
       dojohide: 'archives:RoomsDojohide-1.swf',
       // this file we have has the white puffle, which I believe is only from the puffle party 2009
       dojoext: 'archives:RoomsDojoext2008.swf'
+    },
+    music: {
+      dojoext: 0
     }
   },
   {

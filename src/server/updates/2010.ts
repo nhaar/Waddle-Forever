@@ -778,6 +778,9 @@ export const UPDATES_2010: Update[] = [
     rooms: {
       village: 'archives:RoomsVillage_2.swf',
       agentcom: 'archives:RoomsAgentcom-May2010.swf'
+    },
+    music: {
+      agentcom: 23
     }
   },
   {

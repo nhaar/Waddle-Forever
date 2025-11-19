@@ -2,7 +2,7 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
-import { ROOM_MUSIC_TIMELINE, TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
+import { TEMPORARY_ROOM_UPDATES } from '../server/game-data/room-updates';
 import { STANDALONE_TEMPORARY_CHANGE } from '../server/game-data/standalone-changes';
 import { STADIUM_UPDATES } from '../server/game-data/stadium-updates';
 import { STAMP_TIMELINE } from '../server/game-data/stamps';
@@ -282,18 +282,6 @@ function addRoomUpdates(map: DayMap): void {
       roomOpen: rooms
     })
   })
-
-  // add music room updates
-  Object.entries(ROOM_MUSIC_TIMELINE).forEach((pair) => {
-    const [_, timeline] = pair;
-    const [__, ...otherSongs] = timeline;
-
-    otherSongs.forEach((update) => {
-      if (update.comment !== undefined) {
-        addEvents(map, update.date, { roomUpdate: update.comment });
-      }
-    });
-  });
 
   STADIUM_UPDATES.forEach((update) => {
     if (update.type !== undefined || update.comment !== undefined) {

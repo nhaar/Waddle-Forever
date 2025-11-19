@@ -21,6 +21,23 @@ export const UPDATES_2005: Update[] = [
       'dojo': 'mammoth:artwork/rooms/dojo10.swf',
       'agent': 'archives:ArtworkRoomsAgent10.swf', // HQ is disputed, maybe not original release
       attic: 'archives:ArtworkRoomsAttic12.swf'
+    },
+    music: {
+      coffee: 1,
+      book: 1,
+      pizza: 20,
+      lounge: 0,
+      dance: 2,
+      agent: 0,
+      agentcom: 7,
+      dojo: 0,
+      boxdimension: 264,
+      dojofire: 22,
+      dojohide: 21,
+      dojoext: 0,
+      dojowater: 24,
+      boiler: 6,
+      stage: 0
     }
   },
   {
