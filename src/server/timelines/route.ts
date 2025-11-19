@@ -15,7 +15,6 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { ORIGINAL_ROOMS } from "../game-data/release-features";
 import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { STADIUM_UPDATES } from "../game-data/stadium-updates";
@@ -341,13 +340,6 @@ function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room
 }
 
 function addRoomInfo(map: FileTimelineMap): void {
-  for (const roomName in ROOMS) {
-    const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
-    if (originalRoomFile !== undefined) {
-      addRoomRoute(map, Update.BETA_RELEASE, roomName as RoomName, originalRoomFile);
-    }
-  }
-
   const addRoomChange = (room: RoomName, date: string, fileRef: string) => {
     addRoomRoute(map, date, room, fileRef);
   }
