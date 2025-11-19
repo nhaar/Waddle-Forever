@@ -7,6 +7,7 @@ import { Update } from "../game-data/updates"
 import { isGreaterOrEqual, isLower, Version } from "./versions"
 import { MEDIA_DIRECTORY } from '../../common/utils';
 import { UPDATES } from '../updates/updates';
+import { STAMPS_RELEASE } from '../timelines/dates';
 
 
 type OriginalStamps = Record<string, Stamp>;
@@ -29,7 +30,7 @@ function getOriginalStampbookJson(stampbook: Stampbook): string {
 }
 
 export function getStampbook(version: Version): Stampbook {
-  if (isLower(version, Update.STAMPS_RELEASE)) {
+  if (isLower(version, STAMPS_RELEASE)) {
     return []
   } else if (isGreaterOrEqual(version, '2016-01-01')) {
     // placeholder until the timeline is complete
