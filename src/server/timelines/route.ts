@@ -5,7 +5,7 @@ import { Update } from "../game-data/updates";
 import path from "path";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { IslandChanges, RoomChanges, CrumbIndicator, LocalChanges } from "../game-data/parties";
+import { RoomChanges } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -25,6 +25,7 @@ import { STAGE_TIMELINE } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
+import { CrumbIndicator, LocalChanges } from "../updates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -103,70 +104,6 @@ class FileTimelineMap extends TimelineMap<string, string> {
         this.pushCrumbChange(path.join('play/v2/content/local', language), route, info, start, end);
       })
     })
-  }
-
-  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
-
-    if (changes.roomChanges !== undefined) {
-      this.addRoomChanges(changes.roomChanges, start, end);
-    }
-    if (changes.localChanges !== undefined) {
-      this.addLocalChanges(changes.localChanges, start, end);
-    }
-    if (changes.construction?.localChanges !== undefined) {
-      this.addLocalChanges(changes.construction.localChanges, changes.construction.date, start);
-    }
-    if (changes.globalChanges !== undefined) {
-      iterateEntries(changes.globalChanges, (route, info) => {
-        this.pushCrumbChange('play/v2/content/global', route, info, start, end);
-      });
-    }
-
-    // adding just any route change in general for the party
-    if (changes.generalChanges !== undefined) {
-      iterateEntries(changes.generalChanges, (route, fileRef) => {
-        if (end === undefined) {
-          this.add(route, fileRef, start);
-        } else {
-          this.add(route, fileRef, start, end);
-        }
-      })
-    }
-
-    if (changes.map !== undefined) {
-      this.addGameMapUpdate(changes.map, start, end);
-    }
-
-    if (changes.scavengerHunt2010 !== undefined) {
-      this.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', start, end);
-      this.add(path.join('play/v2/content/global', changes.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), changes.scavengerHunt2010.iconFileId, start, end);
-    }
-    if (changes.scavengerHunt2011 !== undefined) {
-      this.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), changes.scavengerHunt2011.icon, start, end);
-    }
-
-    if (changes.fairCpip !== undefined) {
-      if (isLower(start, Update.MODERN_AS3)) {
-        this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
-        this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
-      }
-      this.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, changes.fairCpip.iconFileId, start, end);
-      this.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, changes.fairCpip.infoFile, start, end);
-    }
-    if (changes.scavengerHunt2007 !== undefined && typeof changes.scavengerHunt2007 === 'string') {
-      // theoretically you would have static egg files and signal the number
-      // but in practice for eggs where the number isn't known, we use 1 and thus
-      // we manage multiple egg files of ID 1
-      this.add('artwork/eggs/1.swf', changes.scavengerHunt2007, start, end);
-    }
-
-    if (changes.startscreens !== undefined) {
-      addStartscreens(changes.startscreens, this, start, end);
-    }
-
-    if (changes.mapNote !== undefined) {
-      this.add('play/v2/content/local/en/close_ups/party_map_note.swf', changes.mapNote, start, end);
-    }
   }
 
   addRoomChanges(roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) {

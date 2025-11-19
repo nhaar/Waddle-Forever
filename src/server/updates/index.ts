@@ -8,8 +8,8 @@ import { Version } from "../routes/versions"
 type Startscreens = Array<FileRef | [string, FileRef]>;
 type Language = 'en';
 /** First element is file id used, then a list of all the crumbs that point to this path */
-type CrumbIndicator = [FileRef, ...string[]];
-type LocalChanges = Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
+export type CrumbIndicator = [FileRef, ...string[]];
+export type LocalChanges = Record<string, Partial<Record<Language, FileRef | CrumbIndicator>>>;
 type GlobalChanges = Record<string, FileRef | CrumbIndicator>;
 
 /** Information for a song in a music list */
@@ -35,12 +35,12 @@ export type ListSongPatch = Song & {
   pos: [number, number];
 }
 
-type GlobalHuntCrumbs = {
+export type GlobalHuntCrumbs = {
   member: boolean;
   reward: number;
 }
 
-type LocalHuntCrumbs = {
+export type LocalHuntCrumbs = {
   en: {
     loading: string;
     title: string;
@@ -53,7 +53,7 @@ type LocalHuntCrumbs = {
   }
 }
 
-type HuntCrumbs = {
+export type HuntCrumbs = {
   global: GlobalHuntCrumbs;
   lang: LocalHuntCrumbs;
   icon: FileRef;
