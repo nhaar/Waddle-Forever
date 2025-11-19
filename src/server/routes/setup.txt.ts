@@ -48,12 +48,6 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
     frames[room] = findInVersion(date, versions);
   });
 
-  // sport shop, the only room to use frame 2
-  // TODO remove cheap workaround
-  if (isGreaterOrEqual(date, Update.SNOW_SPORT_RELEASE)) {
-    frames['sport'] = 2;
-  }
-
   const activeMigrator = findInVersion(date, migratorTimeline);
 
   // enabling scavenger hunt, by passing an ID you can choose a file. Right now we are always just

@@ -425,6 +425,9 @@ export const UPDATES_2007: Update[] = [
     roomComment: 'The Snow and Sports catalog is now available in the Sport Shop',
     rooms: {
       sport: 'archives:RoomsSport.swf'
+    },
+    frames: {
+      sport: 2
     }
   },
   {

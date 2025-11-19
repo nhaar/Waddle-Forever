@@ -19,6 +19,7 @@ import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
+import { STAMP_DATES } from './timelines/stamps';
 
 type ServerType = 'Login' | 'World';
 
@@ -984,11 +985,13 @@ export class Client {
    * Give a stamp to a player
    * @param stampId 
    * @param params.notify Default `true` - Whether to notify the client or not
-   * @param params.release Proper version string for when the stamp released (defaults to the stamp release date) 
    */
-  giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
+  giveStamp(stampId: number, params: { notify?: boolean } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = params.release ?? Update.STAMPS_RELEASE;
+    const releaseDate = STAMP_DATES[stampId];
+    if (releaseDate === undefined) {
+      throw new Error(`Stamp is never released: ${stampId}`);
+    }
     if (isGreaterOrEqual(this.version, releaseDate)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
@@ -999,10 +1002,6 @@ export class Client {
         this.sendXt('aabs', stampId);
       }
     }
-  }
-
-  addCardJitsuStamp(stampId: number): void {
-    this.giveStamp(stampId, { release: Update.CARD_JITSU_STAMPS });
   }
 
   static getFurnitureString(furniture: IglooFurniture): string {
@@ -1326,7 +1325,7 @@ export class Client {
       }
       const stamp = CardJitsuProgress.STAMP_AWARDS[i];
       if (stamp !== undefined) {
-        this.addCardJitsuStamp(stamp);
+        this.giveStamp(stamp);
       }
     }
     this.sendXt('cza', this.penguin.ninjaProgress.rank);
