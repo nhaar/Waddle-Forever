@@ -796,7 +796,15 @@ export const UPDATES_2010: Update[] = [
       { display: 'Knight\'s Challenge', id: 286, pos: [2, 2] },
       { display: 'The Quest', id: 266, pos: [5, 2] },
       { display: 'Jungle Jangles', id: 267, pos: [7, 2] }
-    ]
+    ],
+    roomComment: 'The Stadium returns',
+    rooms: {
+      town: 'archives:RoomsTown_2.swf',
+      forts: 'archives:ESForts-SoccerPitch.swf',
+      rink: 'archives:RoomsRink-May2010.swf'
+    },
+    sportCatalog: 'archives:May10Sport.swf',
+    map: 'archives:Map2008-2011Stadium.swf'
   },
   {
     date: '2010-06-03',
@@ -1233,7 +1241,15 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-09-24',
-    furnitureCatalog: 'archives:FurnitureSept10.swf'
+    furnitureCatalog: 'archives:FurnitureSept10.swf',
+    roomComment: 'The Stadium Games event starts, replacing the Soccer Pitch',
+    rooms: {
+      town: 'archives:RoomsTown-Stadium_Games.swf',
+      forts: 'archives:RoomsForts-Stadium_Games.swf',
+      rink: 'archives:RoomsRink-Stadium_Games.swf'
+    },
+    map: 'archives:Map-Stadium_Games.swf',
+    sportCatalog: 'archives:September10Sport.swf'
   },
   {
     date: '2010-09-30',
@@ -1903,7 +1919,15 @@ export const UPDATES_2010: Update[] = [
         },
         map: 'archives:HolidayParty2010Map.swf'
       }
-    }
+    },
+    rooms: {
+      town: 'archives:RoomsTown.swf',
+      rink: 'archives:RoomsRink-Dec2010.swf',
+      forts: 'archives:RoomsForts.swf'
+    },
+    map: 'archives:Map2008-2011Rink.swf',
+    sportCatalog: 'archives:December10Sport.swf',
+    roomComment: 'The Ice Rink returns'
   },
   {
     date: '2010-12-28',

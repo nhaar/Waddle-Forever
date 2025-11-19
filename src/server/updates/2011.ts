@@ -751,7 +751,15 @@ export const UPDATES_2011: Update[] = [
           }
         }
       }
-    }
+    },
+    roomComment: 'The Stadium returns',
+    rooms: {
+      town: 'archives:RoomsTown_2.swf',
+      rink: 'archives:RoomsRink-May2011.swf',
+      forts: 'archives:RoomsForts_2.swf'
+    },
+    map: 'archives:Map2008-2011Stadium.swf',
+    sportCatalog: 'archives:May2011Sport.swf'
   },
   {
     date: '2011-06-03',
@@ -1509,6 +1517,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-08',
     end: ['party'],
+    roomComment: 'The Ice Rink returns',
     rooms: {
       dock: 'archives:RoomsDock.swf',
       beach: 'archives:RoomsBeach.swf',
@@ -1520,8 +1529,13 @@ export const UPDATES_2011: Update[] = [
       shack: 'archives:RoomsShack-September2010.swf',
       dojoext: 'archives:RoomsDojoext_4.swf',
       dojofire: 'archives:RoomsFireDojo_2.swf',
-      dojohide: 'archives:RoomsDojohide_4.swf'
+      dojohide: 'archives:RoomsDojohide_4.swf',
+
+      town: 'archives:RoomsTown_3.swf',
+      rink: 'archives:RoomsRink-Dec2011.swf',
+      forts: 'archives:RoomsForts_3.swf'
     },
+    sportCatalog: 'archives:Dec2011Sport.swf',
     temp: {
       const: {
         rooms: {

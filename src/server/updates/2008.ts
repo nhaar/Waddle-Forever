@@ -1459,7 +1459,13 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-08-26',
-    end: ['party']
+    end: ['party'],
+    roomComment: 'The Soccer Pitch is now open for everyone, and temporarily replaces the Ice Rink',
+    rooms: {
+      rink: 'archives:RoomsRink_2.swf',
+      town: 'archives:RoomsTown_2.swf',
+      forts: 'archives:ESForts-SoccerPitch.swf'
+    }
   },
   {
     date: '2008-08-29',
@@ -2483,7 +2489,15 @@ export const UPDATES_2008: Update[] = [
           light: 254
         }
       }
-    }
+    },
+    roomComment: 'The Ice Rink returns',
+    rooms: {
+      town: 'archives:RoomsTown.swf',
+      forts: 'archives:FortsWithIceRinkStadium.swf',
+      rink: 'archives:RoomsRink.swf',
+      agent: 'archives:RoomsAgent.swf'
+    },
+    map: 'archives:Map2008-2011Rink.swf'
   },
   {
     date: '2008-12-22',

@@ -75,6 +75,8 @@ export type CPUpdate = {
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
+  sportCatalog?: FileRef;
+
   /** Name of the game that is released this day */
   gameRelease?: string;
   /** File of all room changes */

@@ -16,7 +16,6 @@ import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
-import { STADIUM_UPDATES } from "../game-data/stadium-updates";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
@@ -275,29 +274,6 @@ function addCrumbs(map: FileTimelineMap): void {
   });
 }
 
-function addStadiumUpdates(map: FileTimelineMap): void {
-  STADIUM_UPDATES.forEach((update) => {
-    const date = update.date;
-  if (isGreaterOrEqual(date, Update.CPIP_UPDATE) && isLower(date, Update.EPF_RELEASE)) {
-    const agent = 'play/v2/content/global/rooms/agent.swf';
-    if (update.type === 'rink') {
-      map.add(agent, 'archives:RoomsAgent.swf', date);
-    } else if (update.type === 'stadium') {
-      map.add(agent, 'archives:RoomsAgentFootball.swf', date);
-    }
-  }
-  if (update.mapFileId !== undefined) {
-    map.add('play/v2/content/global/content/map.swf', update.mapFileId, date);
-  }
-    map.add('play/v2/content/global/rooms/town.swf', update.townFileId, date);
-    map.add('play/v2/content/global/rooms/forts.swf', update.fortsFileId, date);
-    map.add('play/v2/content/global/rooms/rink.swf', update.rinkFileId, date);
-    if (update.catalogFileId !== undefined) {
-      map.add('play/v2/content/local/en/catalogues/sport.swf', update.catalogFileId, date);
-    }
-  });
-}
-
 function addMapUpdates(map: FileTimelineMap): void {
   UPDATES.forEach((update) => {
     if (update.update.map !== undefined) {
@@ -418,6 +394,9 @@ function addUpdates(map: FileTimelineMap): void {
         throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
       }
     }
+    if (update.update.sportCatalog !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/sport.swf', update.update.sportCatalog, update.date);
+    }
   });
 }
 
@@ -431,7 +410,6 @@ export function getRoutesTimeline() {
     addPins,
     addUpdates,
     addFilesWithIds,
-    addStadiumUpdates,
     addCrumbs,
     addClothing,
     addTimeSensitiveStaticFiles,

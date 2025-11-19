@@ -1006,6 +1006,17 @@ export const UPDATES_2009: Update[] = [
     end: ['party']
   },
   {
+    date: '2009-06-19',
+    rooms: {
+      rink: 'archives:RoomsRink_2.swf',
+      town: 'archives:RoomsTown_2.swf',
+      forts: 'archives:ESForts-SoccerPitch.swf',
+      agent: 'archives:RoomsAgentFootball.swf'
+    },
+    map: 'archives:Map2008-2011Stadium.swf',
+    roomComment: 'The Stadium returns'
+  },
+  {
     date: '2009-06-26',
     iglooList: [
       { display: 'Viking Opera', id: 41, pos: [1, 1] },
@@ -1855,10 +1866,17 @@ export const UPDATES_2009: Update[] = [
         }
       }
     },
-    roomComment: 'A video about Card-Jitsu fire is now on display at the Dojo Courtyard',
+    roomComment: ['A video about Card-Jitsu fire is now on display at the Dojo Courtyard', 'The Ice Rink returns'],
     rooms: {
-      dojoext: 'archives:RoomsDojoext_2.swf'
-    }
+      dojoext: 'archives:RoomsDojoext_2.swf',
+
+      town: 'archives:RoomsTown.swf',
+      forts: 'archives:FortsWithIceRinkStadium.swf',
+      rink: 'archives:RoomsRink.swf',
+      agent: 'archives:RoomsAgent.swf'
+    },
+    sportCatalog: 'archives:SportNov2009.swf',
+    map: 'archives:Map2008-2011Rink.swf'
   },
   {
     date: '2009-11-30',
