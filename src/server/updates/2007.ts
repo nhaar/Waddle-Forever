@@ -130,8 +130,16 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-02-23',
     roomComment: 'The Clock Tower is added to the Snow Forts',
+    miscComments: ['An object can be seen through the telescope'],
     rooms: {
       forts: 'archives:ArtworkRoomsForts41.swf'
+    },
+    temp: {
+      'telescope-bottle': {
+        fileChanges: {
+          'artwork/tools/telescope0.swf': 'recreation:telescope/bottle.swf'
+        }
+      }
     }
   },
   {
@@ -147,7 +155,8 @@ export const UPDATES_2007: Update[] = [
     roomComment: 'The Pet Shop now has animations',
     rooms: {
       pet: 'archives:ArtworkRoomsPet44.swf'
-    }
+    },
+    end: ['telescope-bottle']
   },
   {
     date: '2007-03-02',

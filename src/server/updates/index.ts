@@ -216,7 +216,8 @@ export type Event = 'party' |
   'town-launchpad' |
   'broken-clock' |
   'forts-sign' |
-  'attic-snow';
+  'attic-snow' |
+  'telescope-bottle';
 
 export type Update = {
   date: Version;
