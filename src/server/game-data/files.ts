@@ -1528,6 +1528,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'furniture_sep05.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'telescope/far_halloween.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

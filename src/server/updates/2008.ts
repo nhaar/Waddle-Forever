@@ -2061,19 +2061,20 @@ export const UPDATES_2008: Update[] = [
           town: 251
         },
         globalChanges: {
-          'igloo/assets/igloo_background.swf': 'recreation:halloween_2008/igloo_background.swf'
+          'igloo/assets/igloo_background.swf': 'recreation:halloween_2008/igloo_background.swf',
+          'telescope/empty.swf': 'recreation:telescope/far_halloween.swf'
         }
       }
     }
   },
   {
-    date: '2008-11-02',
-    end: ['party']
+    date: '2008-11-02'
   },
   {
     date: '2008-11-03',
+    end: ['party'],
     temp: {
-      party: {
+      party2: {
         partyStart: 'The Dig Out the Dojo event begins',
         partyEnd: 'The Dig Out the Dojo event ends',
         decorated: false,
@@ -2092,7 +2093,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-11-10',
     temp: {
-      party: {
+      party2: {
         update: 'The excavation progresses, and less snow covers the Dojo',
         rooms: {
           dojo: 'archives:DojoConstruction22008.swf',
@@ -2103,7 +2104,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-11-14',
-    end: ['party'],
+    end: ['party2'],
     roomComment: 'The dojo has a great reopening',
     rooms : {
       dojo: 'archives:DojoGrandOpening2008.swf',
