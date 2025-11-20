@@ -656,7 +656,8 @@ export const UPDATES_2006: Update[] = [
           berg: 205,
           'plaza': 205,
           'lodge': 205,
-          'dance': 205
+          'dance': 205,
+          'forts': 205
         }
       }
     }
