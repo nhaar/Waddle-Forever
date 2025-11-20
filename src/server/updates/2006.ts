@@ -205,6 +205,7 @@ export const UPDATES_2006: Update[] = [
     temp: {
       party: {
         partyName: 'Easter Egg Hunt',
+        decorated: false,
         rooms: {
           'book': 'archives:ArtworkRooms0416Book10.swf',
           'berg': 'archives:ArtworkRooms0416Berg10.swf',
@@ -395,6 +396,7 @@ export const UPDATES_2006: Update[] = [
     temp: {
       party: {
         partyName: 'Band Scavenger Hunt',
+        decorated: false,
         rooms: {
           'boiler': 'archives:ArtworkRoomsBoiler11.swf',
           'cave': 'archives:ArtworkRooms0721Cave13.swf',

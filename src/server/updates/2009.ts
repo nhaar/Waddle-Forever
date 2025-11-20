@@ -714,6 +714,7 @@ export const UPDATES_2009: Update[] = [
     temp: {
       party: {
         partyName: 'Easter Egg Hunt',
+        decorated: false,
         rooms: {
           beacon: 'archives:RoomsBeacon-EasterEggHunt2009.swf',
           cove: 'archives:RoomsCove-EasterEggHunt2009.swf',
@@ -1791,6 +1792,7 @@ export const UPDATES_2009: Update[] = [
     temp: {
       party: {
         partyName: 'Celebration of Fire',
+        decorated: false,
         rooms: {
           // I actually don't know if this dojo exterior
           // is from this date, archives lists it as being from later one

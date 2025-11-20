@@ -159,7 +159,7 @@ export const UPDATES_2007: Update[] = [
     iglooVersion: 52,
     temp: {
       party: {
-        partyName: 'St. Patrick\'s',
+        partyName: 'St. Patrick\'s Day Party',
         rooms: {
           coffee: 'recreation:st_patrick_2007/coffee.swf'
         },
@@ -246,6 +246,7 @@ export const UPDATES_2007: Update[] = [
     temp: {
       party: {
         partyName: 'Lost Map Hunt',
+        decorated: false,
         rooms: {
           mtn: 'recreation:lost_map_hunt/mtn.swf',
           village: 'recreation:lost_map_hunt/village.swf',

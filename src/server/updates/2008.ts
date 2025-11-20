@@ -506,6 +506,7 @@ export const UPDATES_2008: Update[] = [
     temp: {
       party: {
         partyName: 'Easter Egg Hunt',
+        decorated: false,
         rooms: {
           book: 'archives:RoomsBook-EasterEggHunt2008.swf',
           dock: 'archives:RoomsDock-EasterEggHunt2008.swf',
@@ -1152,6 +1153,7 @@ export const UPDATES_2008: Update[] = [
     temp: {
       party: {
         partyName: 'Paper Boat Scavenger Hunt',
+        decorated: false,
         rooms: {
           beach: 'archives:RoomsBeach-PaperBoatScavengerHunt2008.swf',
           cave: 'archives:RoomsCave-PaperBoatScavengerHunt2008.swf',
@@ -2073,6 +2075,7 @@ export const UPDATES_2008: Update[] = [
       party: {
         partyStart: 'The Dig Out the Dojo event begins',
         partyEnd: 'The Dig Out the Dojo event ends',
+        decorated: false,
         rooms: {
           dojo: 'archives:DojoConstruction2008.swf',
           dojoext: 'archives:DojoExtConstruction2008.swf'

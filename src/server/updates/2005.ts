@@ -151,6 +151,7 @@ export const UPDATES_2005: Update[] = [
     temp: {
       party: {
         partyName: 'The Great Puffle Discovery',
+        decorated: false,
         rooms: {
           'dance': 'fix:Dance1b_pet.swf',
           'forts': 'fix:Forts_pet.swf',
@@ -237,6 +238,7 @@ export const UPDATES_2005: Update[] = [
       party: {
         partyStart: 'A new years celebration is held at the Town',
         partyEnd: 'The fireworks end',
+        decorated: false,
         rooms: {
           town: 'fix:ArtworkRoomsTown-newyears.swf'
         }

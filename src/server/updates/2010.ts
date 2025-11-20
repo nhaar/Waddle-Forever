@@ -9,6 +9,7 @@ export const UPDATES_2010: Update[] = [
       party: {
         partyStart: 'New Year\'s Fireworks appear on the island',
         partyEnd: 'The New Year\'s celebration ends',
+        decorated: false,
         rooms: {
           mtn: 'archives:2010newyearfireworksskihill.swf',
           berg: 'archives:2010newyearfireworksiceberg.swf'
@@ -751,6 +752,7 @@ export const UPDATES_2010: Update[] = [
     temp: {
       party: {
         partyName: 'Popcorn Explosion',
+        decorated: false,
         rooms: {
           'agent': 'archives:RoomsAgent-PopcornExplosion.swf',
           'village': 'archives:RoomsVillage-PopcornExplosion.swf',
@@ -3118,6 +3120,7 @@ export const UPDATES_2010: Update[] = [
     temp: {
       party2: {
         partyName: 'Celebration of Water',
+        decorated: false,
         rooms: {
           'dojoext': 'archives:WaterCelebrationDojoext.swf',
           'dojohide': 'archives:WaterCelebrationDojohide.swf',

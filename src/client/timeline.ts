@@ -106,12 +106,11 @@ function getTimeline(): Day[] {
     }
     if (update.end !== undefined) {
       if ('partyName' in update.update) {
-        addEvent(map, update.date, `The ${update.update.partyName} starts`, 'party', 'start');
-        console.log(update.update.partyName, update.end);
-        addEvent(map, update.end, `The ${update.update.partyName} ends`, 'party', 'end');
+        addEvent(map, update.date, `The ${update.update.partyName} starts`, 'party', update.update.decorated === false ? undefined : 'start');
+        addEvent(map, update.end, `The ${update.update.partyName} ends`, 'party', update.update.decorated === false ? undefined :'end');
       } else if ('partyStart' in update.update) {
-        addEvent(map, update.date, update.update.partyStart, 'party', 'start');
-        addEvent(map, update.end, update.update.partyEnd, 'party', 'end');
+        addEvent(map, update.date, update.update.partyStart, 'party', update.update.decorated === false ? undefined :'start');
+        addEvent(map, update.end, update.update.partyEnd, 'party', update.update.decorated === false ? undefined :'end');
       } else if ('update' in update.update) {
         addEvent(map, update.date, update.update.update, 'party');
       }
