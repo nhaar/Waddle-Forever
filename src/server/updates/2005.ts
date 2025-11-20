@@ -66,6 +66,7 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-09-21',
     clothingCatalog: 'archives:September05Style.swf',
+    furnitureCatalog: 'recreation:furniture_sep05.swf',
     temp: {
       party: {
         partyName: 'Beta Test Party',

@@ -1310,10 +1310,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby'
     },
     {
-      file: 'forms_missions/m10.swf',
-      comment: 'Made by Blue Kirby'
-    },
-    {
       file: 'beacon_nolight.swf',
       comment: 'Made by joey, remove the ability to turn off the beacon light'
     },
@@ -1527,6 +1523,10 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'halloween_2006/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'furniture_sep05.swf',
       comment: 'Made by Doubleuman'
     }
   ],
