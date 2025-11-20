@@ -1479,6 +1479,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-09-05',
     clothingCatalog: 'archives:Sep2008.swf',
+    hairCatalog: 'archives:SptWigs.swf',
     constructionComment: 'A construction begins at the Plaza for the Stage',
     rooms: {
       stage: 'recreation:plaza_ruby_construction.swf',
@@ -2085,7 +2086,8 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-11-07',
-    clothingCatalog: 'archives:CatNov2008.swf'
+    clothingCatalog: 'archives:CatNov2008.swf',
+    hairCatalog: 'archives:NovWigs.swf'
   },
   {
     date: '2008-11-10',

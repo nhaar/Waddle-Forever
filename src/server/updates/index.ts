@@ -90,6 +90,7 @@ export type CPUpdate = {
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
   sportCatalog?: FileRef;
+  hairCatalog?: FileRef;
 
   stampUpdates?: StampUpdates
 
