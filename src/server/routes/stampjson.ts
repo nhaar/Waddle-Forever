@@ -3,11 +3,10 @@ import path from 'path';
 
 import { getMediaFilePath } from "../game-data/files"
 import { StampCategory, Stamp, Stampbook, ORIGINAL_STAMPBOOK } from "../game-data/stamps"
-import { Update } from "../game-data/updates"
 import { isGreaterOrEqual, isLower, Version } from "./versions"
 import { MEDIA_DIRECTORY } from '../../common/utils';
 import { UPDATES } from '../updates/updates';
-import { STAMPS_RELEASE } from '../timelines/dates';
+import { MODERN_AS3, PLACEHOLDER_AS3, STAMPS_RELEASE } from '../timelines/dates';
 
 
 type OriginalStamps = Record<string, Stamp>;
@@ -32,7 +31,7 @@ function getOriginalStampbookJson(stampbook: Stampbook): string {
 export function getStampbook(version: Version): Stampbook {
   if (isLower(version, STAMPS_RELEASE)) {
     return []
-  } else if (isGreaterOrEqual(version, '2016-01-01')) {
+  } else if (isGreaterOrEqual(version, PLACEHOLDER_AS3)) {
     // placeholder until the timeline is complete
     return JSON.parse(fs.readFileSync(path.join(MEDIA_DIRECTORY, getMediaFilePath('approximation:game_configs/stamps.json')), { encoding: 'utf-8' })) as Stampbook;
   }
@@ -67,7 +66,7 @@ export function getStampbook(version: Version): Stampbook {
 export function getStampsJson(version: Version) : string {
   const stampbook = getStampbook(version);
 
-  if (isLower(version, Update.MODERN_AS3)) {
+  if (isLower(version, MODERN_AS3)) {
     return getOriginalStampbookJson(stampbook);
   }
   return JSON.stringify(stampbook)

@@ -1674,6 +1674,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
+    engineUpdate: 'vanilla-engine',
     fileChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',

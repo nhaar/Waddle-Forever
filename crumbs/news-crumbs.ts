@@ -8,6 +8,7 @@ import {  } from '../src/server/game-data/newspapers';
 import { Update } from '../src/server/game-data/updates';
 import { monthNames } from '../src/common/utils';
 import { NEWSPAPER_TIMELINE } from '../src/server/timelines/newspapers';
+import { MODERN_AS3 } from '../src/server/timelines/dates';
 
 type LabeledAs2Newspaper = { date: Version; title: string; type: 'as2' };
 type LabeledAs3Newspaper = { date: Version; title: string; type: 'as3' };
@@ -23,7 +24,7 @@ export function isNewspaperAfterCPIP(date: Version | undefined) {
 }
 
 function isNewspaperAfterJSON(date: Version | undefined) {
-  return date === undefined || isGreaterOrEqual(date, Update.MODERN_AS3);
+  return date === undefined || isGreaterOrEqual(date, MODERN_AS3);
 }
 
 function getNewspaperMinifiedDate(news: Newspaper): string {

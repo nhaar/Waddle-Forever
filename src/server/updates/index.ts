@@ -139,6 +139,8 @@ export type CPUpdate = {
 
   freeBrownPuffle?: boolean;
 
+  engineUpdate?: 'vanilla-engine' | 'placeholder-2016';
+
   /**
    * For a scavenger hunt in the 2007-2008 client,
    * writing what the file number of the egg file is

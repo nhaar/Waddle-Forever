@@ -4,7 +4,7 @@ import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
 import { Penguin, PenguinEquipmentSlot } from './penguin';
 import { Stamp } from './game-logic/stamps';
-import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
+import { isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
@@ -20,6 +20,7 @@ import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { STAMP_DATES } from './timelines/stamps';
+import { isEngine1, isEngine2, isEngine3 } from './timelines/dates';
 
 type ServerType = 'Login' | 'World';
 

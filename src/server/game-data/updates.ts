@@ -3,8 +3,6 @@
  * used in multiple scenarios, and there is some logic connecting the updates
  */
 export enum Update {
-  /** Just a placeholder for skipping from 2010 to 2016 */
-  MODERN_AS3 = '2011-06-27',
   /** The day Club Penguin launched the CPIP engine */
   AS3_UPDATE = '2011-11-19',
   CPIP_UPDATE = '2008-07-15',

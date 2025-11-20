@@ -1,8 +1,7 @@
 import { VersionsTimeline } from "../game-data";
-import { Update } from "../game-data/updates";
 import { isGreaterOrEqual } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
-import { START_DATE } from "./dates";
+import { MODERN_AS3, START_DATE } from "./dates";
 
 export function getFairTimeline() {
   const timeline = new VersionsTimeline<boolean>();
@@ -13,7 +12,7 @@ export function getFairTimeline() {
   });
 
   UPDATES.forEach(update => {
-    if (update.date !== undefined && update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, Update.MODERN_AS3)) {
+    if (update.date !== undefined && update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, MODERN_AS3)) {
       timeline.add({
         date: update.date,
         end: update.end,

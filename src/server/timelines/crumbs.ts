@@ -12,7 +12,7 @@ import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 import { StageScript } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
-import { START_DATE } from "./dates";
+import { MODERN_AS3, START_DATE } from "./dates";
 
 
 const musicTimeline = getMusicTimeline();
@@ -161,7 +161,7 @@ export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     localPathsTimeline.forEach((versions, localPath) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -175,7 +175,7 @@ export function getLocalCrumbsOutput() {
     });
 
     huntTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -186,7 +186,7 @@ export function getLocalCrumbsOutput() {
     });
 
     stageTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -264,7 +264,7 @@ function getBaseCrumbsOutput<CrumbContent>(
 export function getGlobalCrumbsOutput() {
   return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
     migratorTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -276,7 +276,7 @@ export function getGlobalCrumbsOutput() {
     
     globalPathsTimeline.forEach((versions, globalPath) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -291,7 +291,7 @@ export function getGlobalCrumbsOutput() {
 
     musicTimeline.forEach((versions, room) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -306,7 +306,7 @@ export function getGlobalCrumbsOutput() {
 
     memberTimeline.forEach((versions, room) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -350,7 +350,7 @@ export function getGlobalCrumbsOutput() {
     });
 
     huntTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, Update.MODERN_AS3)) {
+      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {

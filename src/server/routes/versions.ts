@@ -1,5 +1,3 @@
-import { Update } from "../game-data/updates";
-
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;
 
@@ -113,18 +111,6 @@ export function isLower(left: string, right: string) {
 
 export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
-}
-
-export function isEngine1(version: Version): boolean {
-  return isLower(version, Update.CPIP_UPDATE)
-}
-
-export function isEngine2(version: Version): boolean {
-  return isGreaterOrEqual(version, Update.CPIP_UPDATE) && isLower(version, Update.MODERN_AS3);
-}
-
-export function isEngine3(version: Version): boolean {
-  return isGreaterOrEqual(version, Update.MODERN_AS3);
 }
 
 export function inInterval(version: Version, start: Version, end: Version, params?: {
