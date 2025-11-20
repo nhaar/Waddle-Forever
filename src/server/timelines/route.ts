@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex } from "../game-data";
+import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex, addRecordToMap } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
 import { isLower, Version } from "../routes/versions";
@@ -49,25 +49,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
     });
   }
 
-
-  addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
-    if (isLower(date, CPIP_UPDATE)) {
-      this.add('artwork/maps/island5.swf', fileRef, date, end);
-      // TODO would be best to only include the maps that end up factually being used
-      this.add('artwork/maps/16_forest.swf', fileRef, date, end);
-    } else {
-      this.add('play/v2/content/global/content/map.swf', fileRef, date, end);
-    }
-  }
-
   pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator, start: Version, end: Version | undefined = undefined) => {
     const fileRef = typeof info === 'string' ? info : info[0];
     const fullRoute = path.join(baseRoute, route);
-    if (end === undefined) {
-      this.add(fullRoute, fileRef, start);
-    } else {
-      this.add(fullRoute, fileRef, start, end);
-    }
+    this.add(fullRoute, fileRef, start, end);
   }
 
   addLocalChanges(changes: LocalChanges, start: Version, end: Version | undefined = undefined) {
@@ -82,21 +67,17 @@ class FileTimelineMap extends TimelineMap<string, string> {
     for (const room in roomChanges) {
       const roomName = room as RoomName;
       const fileId = roomChanges[roomName]!;
-      if (end === undefined) {
-        addRoomRoute(this, start, roomName, fileId);
-      } else {
-        addTempRoomRoute(this, start, end, roomName, fileId);
-      }
+      addRoomRoute(this, roomName, fileId, start, end);
     }
   }
 }
 
-function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: string) {
+function addRoomRoute(map: FileTimelineMap, room: RoomName, file: string, date: string, end?: string) {
   if (isLower(date, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
-    map.add(path.join('artwork/rooms', fileName), file, date);
+    map.add(path.join('artwork/rooms', fileName), file, date, end);
   } else {
-    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, date);
+    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, date, end);
   }
 }
 
@@ -224,14 +205,9 @@ function addStaticFiles(map: FileTimelineMap): void {
   addStatic(CPIP_AS3_STATIC_FILES);
 }
 
-/** Maps for each route its file timeline */
-// type TimelineMap = Map<string, FileTimeline>;
-
 function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
-
-
 
 /** Adds listeners to the global crumbs files */
 function addCrumbs(map: FileTimelineMap): void {
@@ -252,29 +228,12 @@ function addCrumbs(map: FileTimelineMap): void {
   });
 }
 
-function addMapUpdates(map: FileTimelineMap): void {
-  UPDATES.forEach((update) => {
-    if (update.update.map !== undefined) {
-      map.addGameMapUpdate(update.update.map, update.date, update.end);
-    }
-  })
-}
-
 function addPins(map: FileTimelineMap): void {
   PIN_TIMELINE.forEach(pin => {
     if ('file' in pin) {
-      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.file);
+      addRoomRoute(map, pin.room, pin.file, pin.date, pin.end);
     }
   });
-}
-
-function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
-  if (isLower(start, CPIP_UPDATE)) {
-    const fileName = `${room}.swf`
-    map.add(path.join('artwork/rooms', fileName), file, start, end);
-  } else {
-    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, start, end);
-  }
 }
 
 function addStartscreens(screens: Array<string | [string, string]>, map: FileTimelineMap, date: Version, end?: Version): void {
@@ -291,6 +250,11 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
 
 function addUpdates(map: FileTimelineMap): void {
   UPDATES.forEach(update => {
+    if (update.update.map !== undefined) {
+      map.add('artwork/maps/island5.swf', update.update.map, update.date, update.end);
+      map.add('artwork/maps/16_forest.swf', update.update.map, update.date, update.end);
+      map.add('play/v2/content/global/content/map.swf', update.update.map, update.date, update.end);
+    }
     if (update.update.clothingCatalog !== undefined) {
       map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date, update.end);
       map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
@@ -367,7 +331,7 @@ function addUpdates(map: FileTimelineMap): void {
     if (update.update.pinRoomUpdate !== undefined) {
       const pin = PIN_TIMELINE[findEarliestDateHitIndex(update.date, PIN_TIMELINE)];
       if ('room' in pin && pin.room !== undefined) {
-        addTempRoomRoute(map, update.date, pin.end, pin.room, update.update.pinRoomUpdate);
+        addRoomRoute(map, pin.room, update.update.pinRoomUpdate, update.date, pin.end);
       } else {
         throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
       }
@@ -383,7 +347,6 @@ export function getRoutesTimeline() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
-    addMapUpdates,
     // pins are specifically before party so that pins that update with a party don't override the party room
     addPins,
     addUpdates,
