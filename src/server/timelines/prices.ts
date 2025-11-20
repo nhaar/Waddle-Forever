@@ -1,6 +1,5 @@
 import { iterateEntries } from "../../common/utils";
 import { TimelineMap } from "../game-data";
-import { Update } from "../game-data/updates";
 import { FURNITURE } from "../game-logic/furniture";
 import { ITEMS } from "../game-logic/items";
 import { UPDATES } from "../updates/updates";

@@ -1,5 +1,4 @@
 import { findInVersion } from "../game-data";
-import { Update } from "../game-data/updates";
 import { AS3_STARTSCREEN, MODERN_AS3 } from "../timelines/dates";
 import { getStartscreenTimeline } from "../timelines/startscreen";
 import { isLower, Version } from "./versions";

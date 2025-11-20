@@ -1,8 +1,6 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
-import { isGreaterOrEqual, isLower, Version } from "../../../server/routes/versions";
-import { Update } from "../../../server/game-data/updates";
 import { findInVersion } from "../../../server/game-data";
 import { PARTY_OP_TIMELINE } from "../../../server/timelines/epf";
 

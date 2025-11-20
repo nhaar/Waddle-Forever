@@ -2,7 +2,6 @@ import path from "path";
 import crypto from 'crypto';
 import { RoomName } from "../game-data/rooms";
 import { isGreater, isLower, isLowerOrEqual, Version } from "../routes/versions";
-import { Update } from "../game-data/updates";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
 import { getMapForDate } from ".";
 import { getMusicTimeline } from "./music";

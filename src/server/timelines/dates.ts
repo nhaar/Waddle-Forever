@@ -1,4 +1,3 @@
-import { Update } from "../game-data/updates";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
 

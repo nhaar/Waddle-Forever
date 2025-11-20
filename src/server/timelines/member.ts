@@ -1,7 +1,6 @@
 import { iterateEntries } from "../../common/utils";
 import { TimelineMap } from "../game-data";
 import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
-import { Update } from "../game-data/updates";
 import { Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
 import { START_DATE } from "./dates";

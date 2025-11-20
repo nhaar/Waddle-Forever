@@ -1,11 +1,10 @@
 import { iterateEntries } from "../../common/utils";
 import { IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap, findEarliestDateHitIndex } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
-import { Update } from "../game-data/updates";
 import path from "path";
-import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
+import { isLower, Version } from "../routes/versions";
 import { getSubUpdateDates } from ".";
-import { RoomName, ROOMS } from "../game-data/rooms";
+import { RoomName } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { MUSIC_IDS } from "../game-data/music";
