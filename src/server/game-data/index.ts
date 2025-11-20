@@ -1,15 +1,8 @@
-import { iterateEntries } from "../../common/utils";
 import { isEqual, isLower, Version } from "../routes/versions"
 import { FileRef } from "./files";
 
 /** A map that takes as keys a game route and as values a file reference. Works as static serving for a single point in time */
 export type RouteRefMap = Record<string, FileRef>;
-
-/**
- * A map that takes as keys versions, and as values information of a certain type, used for
- * permanent changes
- * */
-export type DateMap<Info> = Record<Version, Info>;
 
 /** A map that takes as keys an ID number (of any kind) and values a file reference associated with the ID */
 export type IdRefMap = Record<number, FileRef>;
@@ -46,29 +39,6 @@ export type TemporaryChange<ChangeInformation> = {
 
 /** A singular update on a timeline of events that are either permanent or temporary */
 export type TimelineEvent<ChangeInformation> = PermanentChange<ChangeInformation> | TemporaryChange<ChangeInformation>;
-
-/**
- * A complex implementation of a temporary change, which can be accompanied with sub-updates, as well as permanent updates
- * that could happen at the start or end of this temporary change
- * */
-export type ComplexTemporaryUpdate<UpdateInformation> = {
-  date: Version;
-  end: Version;
-  /** All updates that happen within this temporary update */
-  updates?: Array<{
-    /** If not added, then it defaults to the start of the temporary update */
-    date?: Version;
-    /** If not supplied, ends when the next update shows, if null, ends when the whole group ends, otherwise the value stated */
-    end?: Version | null
-  } & UpdateInformation>;
-  /** Permanent changes applied at the beginning of this update */
-  permanentChanges?: UpdateInformation;
-  /** Permanent changes applied at the end of this update */
-  consequences?: UpdateInformation;
-} & UpdateInformation;
-
-/** List of many implementations of temporary updates */
-export type ComplexTemporaryUpdateTimeline<UpdateInformation> = Array<ComplexTemporaryUpdate<UpdateInformation>>;
 
 /**
  * Takes an unorganized sequence of temporary and permanent changes, and processes it into a sorted organized output
@@ -412,13 +382,6 @@ export class VersionsTimeline<EventInformation> {
     this._eventsTimeline = [];
   }
 
-  /** Adds all events from a date map */
-  addDateMap(dateMap: DateMap<EventInformation>) {
-    iterateEntries(dateMap, (date, info) => {
-      this.add({ date, info });
-    });
-  }
-
   /** Add an event to the timeline */
   add(event: TimelineEvent<EventInformation>) {
     this._eventsTimeline.push(event);
@@ -472,15 +435,6 @@ export class TimelineMap<Key, EventInformation> {
   }
 
   /**
-   * Consumes a date map onto a timeline
-   * @param key 
-   * @param dateMap 
-   */
-  addDateMap(key: Key, dateMap: DateMap<EventInformation>): void {
-    this.updateTimeline(key, (t) => t.addDateMap(dateMap));
-  }
-
-  /**
    * Updates the timeline of a member of the map
    * @param key 
    * @param updater 
@@ -526,9 +480,3 @@ export class TimelineMap<Key, EventInformation> {
     return map;
   }
 }
-
-/**
- * Represents a valid migrator visit. `true` means that a visit happens but the catalog is not updated,
- * if the catalog is updated, the catalog's file is listed
- * */
-export type MigratorVisit = true | FileRef;

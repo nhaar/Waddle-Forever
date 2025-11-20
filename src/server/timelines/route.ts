@@ -1,9 +1,8 @@
 import { iterateEntries } from "../../common/utils";
-import { IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap, findEarliestDateHitIndex } from "../game-data";
+import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
 import { isLower, Version } from "../routes/versions";
-import { getSubUpdateDates } from ".";
 import { RoomName } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
@@ -59,27 +58,6 @@ class FileTimelineMap extends TimelineMap<string, string> {
     } else {
       this.add('play/v2/content/global/content/map.swf', fileRef, date, end);
     }
-  }
-
-  addComplexTemporaryUpdateTimeline<UpdateInfo>(
-    timeline: ComplexTemporaryUpdateTimeline<UpdateInfo>,
-    applyUpdate: (map: FileTimelineMap, update: UpdateInfo, start: Version, end: Version | undefined) => void
-  ) {
-    timeline.forEach((tempUpdate) => {
-      applyUpdate(this, tempUpdate, tempUpdate.date, tempUpdate.end);
-      if (tempUpdate.updates !== undefined) {
-        for (let i = 0; i < tempUpdate.updates.length; i++) {
-          const { date, end } = getSubUpdateDates(tempUpdate, i);
-          applyUpdate(this, tempUpdate.updates[i], date, end);
-        }
-      }
-      if (tempUpdate.permanentChanges !== undefined) {
-        applyUpdate(this, tempUpdate.permanentChanges, tempUpdate.date, undefined);
-      }
-      if (tempUpdate.consequences !== undefined) {
-        applyUpdate(this, tempUpdate.consequences, tempUpdate.end, undefined);
-      }
-    })
   }
 
   pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator, start: Version, end: Version | undefined = undefined) => {
