@@ -4,8 +4,6 @@ import { replacePcode } from '../src/common/ffdec/ffdec';
 import { isGreaterOrEqual, processVersion, Version } from '../src/server/routes/versions';
 import { getMinifiedDate } from '../src/server/timelines/route';
 import { NEWS_CRUMBS_PATH } from '../src/server/timelines/crumbs';
-import {  } from '../src/server/game-data/newspapers';
-import { Update } from '../src/server/game-data/updates';
 import { monthNames } from '../src/common/utils';
 import { NEWSPAPER_TIMELINE } from '../src/server/timelines/newspapers';
 import { CPIP_UPDATE, MODERN_AS3 } from '../src/server/timelines/dates';
