@@ -1,41 +1,32 @@
+import { newTimelineMap } from ".";
 import { iterateEntries } from "../../common/utils";
-import { TimelineMap } from "../game-data";
-import { PARTIES } from "../game-data/parties";
-import { Update } from "../game-data/updates";
+import { addRecordToNumberMap, TimelineMap } from "../game-data";
 import { FURNITURE } from "../game-logic/furniture";
 import { ITEMS } from "../game-logic/items";
+import { UPDATES } from "../updates/updates";
+import { CPIP_UPDATE } from "./dates";
 
 /** Get price object for a blank state */
-export function getPricesTimeline() {
-  const timeline = new TimelineMap<number, number>();
+export const PRICES_TIMELINE = newTimelineMap<number, number>(timeline => {
   ITEMS.rows.forEach((item) => {
-    timeline.add(item.id, item.cost, Update.CPIP_UPDATE);
+    timeline.add(item.id, item.cost, CPIP_UPDATE);
   });
-
-  PARTIES.forEach((party) => {
-    if (party.prices !== undefined) {
-      iterateEntries(party.prices, (id, cost) => {
-        timeline.add(Number(id), cost, party.date, party.end);
-      });
+  
+  UPDATES.forEach(update => {
+    if (update.update.prices !== undefined) {
+      addRecordToNumberMap(timeline, update.update.prices, update.date, update.end);
     }
   });
+});
 
-  return timeline.getVersionsMap();
-}
-
-export function getFurniturePricesTimeline() {
-  const timeline = new TimelineMap<number, number>();
+export const FURNITURE_PRICES_TIMELINE = newTimelineMap<number, number>(timeline => {
   FURNITURE.rows.forEach((furniture) => {
-    timeline.add(furniture.id, furniture.cost, Update.CPIP_UPDATE);
+    timeline.add(furniture.id, furniture.cost, CPIP_UPDATE);
   });
-
-  PARTIES.forEach((party) => {
-    if (party.furniturePrices !== undefined) {
-      iterateEntries(party.furniturePrices, (id, cost) => {
-        timeline.add(Number(id), cost, party.date, party.end);
-      });
+  
+  UPDATES.forEach(update => {
+    if (update.update.furniturePrices !== undefined) {
+      addRecordToNumberMap(timeline, update.update.furniturePrices, update.date, update.end);
     }
-  });
-
-  return timeline.getVersionsMap();
-}
+  })
+});

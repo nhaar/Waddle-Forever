@@ -3,15 +3,12 @@ import net from 'net';
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
 import { Penguin, PenguinEquipmentSlot } from './penguin';
-import { Stamp } from './game-logic/stamps';
-import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
+import { isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
-import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
+import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { getVersionsTimeline } from './routes/version.txt';
-import { Update } from './game-data/updates';
 import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
@@ -19,8 +16,9 @@ import { Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
-
-const versionsTimeline = getVersionsTimeline();
+import { VERSIONS_TIMELINE } from './routes/version.txt';
+import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
+import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
 
 type ServerType = 'Login' | 'World';
 
@@ -823,8 +821,8 @@ export class Client {
     let items = this.penguin.getItems();
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.version, Update.CPIP_UPDATE)) {
-      const version = findInVersion(this.version, versionsTimeline) ?? 0;
+    if (isLower(this.version, CPIP_UPDATE)) {
+      const version = findInVersion(this.version, VERSIONS_TIMELINE) ?? 0;
       const itemSet = OLD_CLIENT_ITEMS[version];
       items = items.filter((value) => itemSet.has(value));
     }
@@ -927,33 +925,10 @@ export class Client {
   getEndgameStampsInformation (): [string, number, number, number] {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
-    if (this.room.id in roomStamps) {
-      let gameStamps = roomStamps[this.room.id];
-      // manually removing stamps if using a version before it was available
-      if (isLower(this.version, '2010-07-26')) {
-        gameStamps = [];
-      } else if (this.room.id === Room.JetPackAdventure) {
-        // Before puffle stamps
-        if (isLower(this.version, '2010-09-24')) {
-          gameStamps = [
-            Stamp.LiftOff,
-            Stamp.FuelRank1,
-            Stamp.JetPack5,
-            Stamp.Crash,
-            Stamp.FuelRank2,
-            Stamp.FuelRank3,
-            Stamp.FuelRank4,
-            Stamp.FuelRank5,
-            Stamp.OneUpLeader,
-            Stamp.Kerching,
-            Stamp.FuelCommand,
-            Stamp.FuelWings,
-            Stamp.OneUpCaptain,
-            Stamp.AcePilot,
-          ]
-        }
-      }
-      const stamps = gameStamps;
+    const gameRoom = GAME_STAMPS_TIMELINE.get(this.room.id);
+
+    if (gameRoom !== undefined) {
+      const stamps = isLower(this.version, STAMPS_RELEASE) ? [] : (findInVersion(this.version, gameRoom) ?? []);
 
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {
@@ -986,11 +961,13 @@ export class Client {
    * Give a stamp to a player
    * @param stampId 
    * @param params.notify Default `true` - Whether to notify the client or not
-   * @param params.release Proper version string for when the stamp released (defaults to the stamp release date) 
    */
-  giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
+  giveStamp(stampId: number, params: { notify?: boolean } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = params.release ?? Update.STAMPS_RELEASE;
+    const releaseDate = STAMP_DATES[stampId];
+    if (releaseDate === undefined) {
+      throw new Error(`Stamp is never released: ${stampId}`);
+    }
     if (isGreaterOrEqual(this.version, releaseDate)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
@@ -1001,10 +978,6 @@ export class Client {
         this.sendXt('aabs', stampId);
       }
     }
-  }
-
-  addCardJitsuStamp(stampId: number): void {
-    this.giveStamp(stampId, { release: Update.CARD_JITSU_STAMPS });
   }
 
   static getFurnitureString(furniture: IglooFurniture): string {
@@ -1328,7 +1301,7 @@ export class Client {
       }
       const stamp = CardJitsuProgress.STAMP_AWARDS[i];
       if (stamp !== undefined) {
-        this.addCardJitsuStamp(stamp);
+        this.giveStamp(stamp);
       }
     }
     this.sendXt('cza', this.penguin.ninjaProgress.rank);

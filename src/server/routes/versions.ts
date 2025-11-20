@@ -1,5 +1,3 @@
-import { Update } from "../game-data/updates";
-
 /** A string that follows a pattern YYY-MMM-DD, with months being the initials of each month with capital letter for a start */
 export type Version = string;
 
@@ -9,6 +7,16 @@ function getDateMatch(version: string) {
 
 export function isVersionValid(version: string) : boolean {
   return getDateMatch(version) !== null;
+}
+
+function dateToVersion(date: Date): Version {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+export function addDays(version: Version, days: number): Version {
+  const [year, month, day] = processVersion(version);
+  const date = new Date(year, month - 1, day + days);
+  return dateToVersion(date);
 }
 
 /** Returns undefined if an invalid version, otherwise an array [year, month, day] */
@@ -103,18 +111,6 @@ export function isLower(left: string, right: string) {
 
 export function isLowerOrEqual(left: string, right: string): boolean {
   return !isGreater(left, right)
-}
-
-export function isEngine1(version: Version): boolean {
-  return isLower(version, Update.CPIP_UPDATE)
-}
-
-export function isEngine2(version: Version): boolean {
-  return isGreaterOrEqual(version, Update.CPIP_UPDATE) && isLower(version, Update.MODERN_AS3);
-}
-
-export function isEngine3(version: Version): boolean {
-  return isGreaterOrEqual(version, Update.MODERN_AS3);
 }
 
 export function inInterval(version: Version, start: Version, end: Version, params?: {

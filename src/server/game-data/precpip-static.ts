@@ -1,56 +1,13 @@
-import path from "path";
-
-// file id of newspapers in order
-// TODO place in newspapers.ts
-const newspaperFiles = [
-  'archives:News1.swf',
-  'archives:News2.swf',
-  'archives:News3.swf',
-  'archives:News4.swf',
-  'archives:News5.swf',
-  'archives:News6.swf',
-  'archives:News7.swf',
-  'archives:News8.swf',
-  'archives:News9.swf',
-  'archives:News10.swf',
-  'archives:News11.swf',
-  'archives:News12.swf',
-  'archives:News13.swf',
-  'archives:News14.swf',
-  'archives:News15.swf',
-  'archives:News16.swf',
-  'archives:News17.swf',
-  'archives:News18.swf',
-  'archives:News19.swf',
-  'archives:News20.swf',
-  'archives:News21.swf',
-  'archives:News22.swf',
-  'archives:News23.swf',
-  'archives:News24.swf',
-  'archives:News25.swf'
-];
-
-const staticNewspaperFiles: Record<string, string> = {};
-
-newspaperFiles.forEach((fileId, index) => {
-  const route = path.join('artwork/news', `news${index + 1}.swf`);
-  staticNewspaperFiles[route] = fileId;
-})
-
-
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
   'artwork/characters/penguin.swf': 'approximation:penguin_no_shadow.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
-  'games/astro.swf': 'mammoth:games/astro.swf',
-  'games/beans.swf': 'mammoth:games/beans.swf',
   'games/biscuit.swf': 'mammoth:games/biscuit.swf',
   'games/puffle.swf': 'mammoth:games/puffle.swf',
   'games/fish.swf': 'mammoth:games/fish.swf',
   'load.swf': 'mammoth:load.swf',
   'artwork/news/newsfan.swf': 'archives:NewsFan.swf',
   'artwork/news/newsbeta.swf': 'recreation:news_beta.swf',
-  ...staticNewspaperFiles,
   'chat299.swf': 'fix:Chat299.swf',
   'chat506.swf': 'unknown:chat506.swf',
   'crumbs21.swf': 'slippers07:media/crumbs21.swf',
@@ -95,5 +52,18 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/rooms/igloo52.swf': 'archives:Igloo52.swf',
   'artwork/rooms/igloo58.swf': 'archives:Igloo58.swf',
   'artwork/rooms/igloo73.swf': 'archives:Igloo73.swf',
-  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf'
+  'artwork/rooms/igloo1.swf': 'recreation:igloo_beta.swf',
+  'games/astro/astro.swf': 'mammoth:games/astro.swf',
+  'games/astro.swf': 'mammoth:games/astro.swf',
+  'games/thinice/game.swf': 'archives:ThinIce.swf',
+  'games/beans.swf': 'mammoth:games/beans.swf',
+  'games/beans/beans.swf': 'mammoth:games/beans.swf',
+  'games/pizza/game.swf': 'fix:Pizzatron3000-2007.swf',
+  'games/fish/fish.swf': 'mammoth:games/fish.swf',
+  'games/bbiscuit/bbiscuit.swf': 'mammoth:games/biscuit.swf',
+  'games/roundup/roundup.swf': 'mammoth:games/puffle.swf',
+  'games/mine/mine.swf': 'fix:CartSurfer2006.swf',
+  'games/mine.swf': 'fix:CartSurfer2006.swf',
+  'games/waves/game.swf': 'archives:CatchinWavesGame.swf',
+  'artwork/tools/telescope0.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf'
 };

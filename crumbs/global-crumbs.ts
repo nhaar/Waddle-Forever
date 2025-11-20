@@ -7,7 +7,7 @@ import { extractPcode, replacePcode } from '../src/common/ffdec/ffdec';
 import { getGlobalCrumbsOutput, GLOBAL_CRUMBS_PATH, GlobalCrumbContent } from '../src/server/timelines/crumbs';
 import { generateCrumbFiles } from './base-crumbs';
 import { iterateEntries } from '../src/common/utils';
-import { GlobalHuntCrumbs } from '../src/server/game-data/parties';
+import { GlobalHuntCrumbs } from '../src/server/updates';
 
 const BASE_GLOBAL_CRUMBS = path.join(__dirname, 'base_global_crumbs.swf');
 

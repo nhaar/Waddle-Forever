@@ -1,38 +1,27 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { Update } from "../game-data/updates";
-import { getClothingTimeline } from "../timelines/clothing";
-import { getRoomFrameTimeline } from "../timelines/frame";
-import { getIglooTimeline } from "../timelines/igloo-version";
-import { getMigratorTimeline } from "../timelines/migrator";
-import { getMusicTimeline } from "../timelines/music";
-import { isGreaterOrEqual, Version } from "./versions";
-
-const musicTimeline = getMusicTimeline();
-
-const frameTimeline = getRoomFrameTimeline();
-
-const migratorTimeline = getMigratorTimeline();
+import { START_DATE } from "../timelines/dates";
+import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
+import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
+import { MIGRATOR_TIMELINE } from "../timelines/migrator";
+import { MUSIC_TIMELINE } from "../timelines/music";
+import { UPDATES } from "../updates/updates";
+import { Version } from "./versions";
 
 const eggTimeline = getEggTimeline();
-
-const clothingTimeline = getClothingTimeline();
-
-const iglooTimeline = getIglooTimeline();
 
 function getEggTimeline() {
   const timeline = new VersionsTimeline<number>();
   timeline.add({
-    date: Update.BETA_RELEASE,
+    date: START_DATE,
     info: 0
   });
-  PARTIES.forEach((party) => {
-    if (party.scavengerHunt2007 !== undefined) {
+  UPDATES.forEach(update => {
+    if (update.update.scavengerHunt2007 !== undefined && update.end !== undefined) {
       timeline.add({
-        date: party.date,
-        end: party.end,
-        info: 1
+        date: update.date,
+        end: update.end,
+        info : 1
       });
     }
   });
@@ -46,26 +35,18 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 
   let frames: Partial<Record<RoomName, number>> = {};
 
-  musicTimeline.forEach((versions, room) => {
+  MUSIC_TIMELINE.forEach((versions, room) => {
     roomMusic[room] = findInVersion(date, versions);
   });
-  frameTimeline.forEach((versions, room) => {
+  ROOM_FRAME_TIMELINE.forEach((versions, room) => {
     frames[room] = findInVersion(date, versions);
   });
 
-  // sport shop, the only room to use frame 2
-  // TODO remove cheap workaround
-  if (isGreaterOrEqual(date, Update.SNOW_SPORT_RELEASE)) {
-    frames['sport'] = 2;
-  }
-
-  const activeMigrator = findInVersion(date, migratorTimeline);
+  const activeMigrator = findInVersion(date, MIGRATOR_TIMELINE);
 
   // enabling scavenger hunt, by passing an ID you can choose a file. Right now we are always just
   // sending the ID of 1 because we don't have any information about these scavenger hunts
   const eggId = findInVersion(date, eggTimeline);
-
-  const clothing = findInVersion(date, clothingTimeline);
 
   const rooms = Object.entries(ROOMS).map((pair) => {
     const [room, info] = pair;
@@ -79,7 +60,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 &paper=86&
 &penguin=16&
 &puffle=2&
-&igloo=${findInVersion(date, iglooTimeline)}&
+&igloo=${findInVersion(date, IGLOO_VERSION_TIMELINE)}&
 &basic=3&
 &map=16_forest&
 &phone=2&
@@ -99,7 +80,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 &agentform=1&
 &newsform=2&
 
-&clothing=${clothing}&
+&clothing=&
 &sport=0711&
 &hair=0710&
 &furniture=0712&

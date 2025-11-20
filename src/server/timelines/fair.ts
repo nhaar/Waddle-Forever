@@ -1,25 +1,21 @@
-import { VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
-import { Update } from "../game-data/updates";
-import { isGreaterOrEqual, Version } from "../routes/versions";
+import { newVersionsTimeline } from ".";
+import { isGreaterOrEqual } from "../routes/versions";
+import { UPDATES } from "../updates/updates";
+import { MODERN_AS3, START_DATE } from "./dates";
 
-export function getFairTimeline() {
-  const timeline = new VersionsTimeline<boolean>();
-
+export const FAIR_TIMELINE = newVersionsTimeline<boolean>((timeline) => {
   timeline.add({
-    date: Update.BETA_RELEASE,
+    date: START_DATE,
     info: false
   });
 
-  PARTIES.forEach((party) => {
-    if (party.fairCpip && isGreaterOrEqual(party.date, Update.MODERN_AS3)) {
+  UPDATES.forEach(update => {
+    if (update.date !== undefined && update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, MODERN_AS3)) {
       timeline.add({
-        date: party.date,
-        end: party.end,
+        date: update.date,
+        end: update.end,
         info: true
       });
     }
   });
-
-  return timeline.getVersions();
-}
+});

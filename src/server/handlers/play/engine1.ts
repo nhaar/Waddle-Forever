@@ -6,7 +6,7 @@ import { commandsHandler } from '../commands';
 import { Handle } from '../handles';
 import { processFurniture } from './igloo';
 import { isGreaterOrEqual } from '../../../server/routes/versions';
-import { Update } from '../../../server/game-data/updates';
+import { IGLOO_MUSIC_RELEASE } from '../../../server/timelines/dates';
 
 const handler = new Handler();
 
@@ -111,7 +111,7 @@ handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
   const args: Array<string | number> = [id, client.penguin.activeIgloo.type, ];
   
   // when igloo music was added, the music parameter is optional
-  if (isGreaterOrEqual(client.version, Update.IGLOO_MUSIC)) {
+  if (isGreaterOrEqual(client.version, IGLOO_MUSIC_RELEASE)) {
     args.push(client.penguin.activeIgloo.music);
   }
   

@@ -1,8 +1,9 @@
 import path from "path";
 import { extractPcode, replacePcode } from "../src/common/ffdec/ffdec";
 import { generateCrumbFiles } from "./base-crumbs";
-import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent, StageScript } from "../src/server/timelines/crumbs";
-import { LocalHuntCrumbs } from "../src/server/game-data/parties";
+import { getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, LocalCrumbContent } from "../src/server/timelines/crumbs";
+import { LocalHuntCrumbs } from "../src/server/updates";
+import { StageScript } from "../src/server/game-data/stage-plays";
 
 const BASE_LOCAL_CRUMBS = path.join(__dirname, 'base_local_crumbs.swf');
 
