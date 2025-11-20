@@ -4,7 +4,6 @@
  */
 export enum Update {
   /** The day Club Penguin launched the CPIP engine */
-  AS3_UPDATE = '2011-11-19',
   CPIP_UPDATE = '2008-07-15',
   AS3_STARTSCREEN = '2011-01-17',
   AS3_STARTSCREEN_2 = '2011-06-27',

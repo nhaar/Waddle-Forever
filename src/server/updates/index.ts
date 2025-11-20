@@ -139,7 +139,7 @@ export type CPUpdate = {
 
   freeBrownPuffle?: boolean;
 
-  engineUpdate?: 'vanilla-engine' | 'placeholder-2016';
+  engineUpdate?: 'vanilla-engine' | 'as3';
 
   /**
    * For a scavenger hunt in the 2007-2008 client,

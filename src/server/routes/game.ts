@@ -19,7 +19,7 @@ import { getChunkingMapJson } from "./chunkingmapjson";
 import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
-import { isEngine1, isEngine2, isEngine3 } from "../timelines/dates";
+import { AS3_UPDATE, isEngine1, isEngine2, isEngine3 } from "../timelines/dates";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -31,7 +31,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
       return 'default/websites/beta.html';
     } else if (isEngine1(s.settings.version)) {
       return 'default/websites/old-precpip.html';
-    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, Update.AS3_UPDATE)) {
+    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
       if (s.settings.minified_website) {
         return 'default/websites/minified-cpip.html';
       } else {
