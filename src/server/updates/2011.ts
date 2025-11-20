@@ -1121,7 +1121,7 @@ export const UPDATES_2011: Update[] = [
           "description": "Pizzatron Stamps",
           "parent_group_id": 8,
           "display": "Games : Pizzatron 3000",
-          "group_id": 54,
+          "group_id": CategoryID.Pizzatron,
           "stamps": [
             {
               "stamp_id": 404,
@@ -1212,7 +1212,7 @@ export const UPDATES_2011: Update[] = [
           "description": "Ice Fishing",
           "parent_group_id": 8,
           "display": "Games : Ice Fishing",
-          "group_id": 52,
+          "group_id": CategoryID.IceFishing,
           "stamps": [
             {
               "stamp_id": 390,

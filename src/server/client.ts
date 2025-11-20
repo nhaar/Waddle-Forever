@@ -3,12 +3,11 @@ import net from 'net';
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
 import { Penguin, PenguinEquipmentSlot } from './penguin';
-import { Stamp } from './game-logic/stamps';
 import { isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
-import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
+import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
@@ -18,8 +17,8 @@ import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
-import { STAMP_DATES } from './timelines/stamps';
-import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3 } from './timelines/dates';
+import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
+import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
 
 type ServerType = 'Login' | 'World';
 
@@ -926,33 +925,10 @@ export class Client {
   getEndgameStampsInformation (): [string, number, number, number] {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
-    if (this.room.id in roomStamps) {
-      let gameStamps = roomStamps[this.room.id];
-      // manually removing stamps if using a version before it was available
-      if (isLower(this.version, '2010-07-26')) {
-        gameStamps = [];
-      } else if (this.room.id === Room.JetPackAdventure) {
-        // Before puffle stamps
-        if (isLower(this.version, '2010-09-24')) {
-          gameStamps = [
-            Stamp.LiftOff,
-            Stamp.FuelRank1,
-            Stamp.JetPack5,
-            Stamp.Crash,
-            Stamp.FuelRank2,
-            Stamp.FuelRank3,
-            Stamp.FuelRank4,
-            Stamp.FuelRank5,
-            Stamp.OneUpLeader,
-            Stamp.Kerching,
-            Stamp.FuelCommand,
-            Stamp.FuelWings,
-            Stamp.OneUpCaptain,
-            Stamp.AcePilot,
-          ]
-        }
-      }
-      const stamps = gameStamps;
+    const gameRoom = GAME_STAMPS_TIMELINE.get(this.room.id);
+
+    if (gameRoom !== undefined) {
+      const stamps = isLower(this.version, STAMPS_RELEASE) ? [] : (findInVersion(this.version, gameRoom) ?? []);
 
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {

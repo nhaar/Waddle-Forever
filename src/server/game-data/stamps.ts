@@ -7,6 +7,9 @@ export enum CategoryID {
   Games = 8,
   AquaGrabber = 13,
   JetPackAdventure = 11,
+  AstroBarrier = 14,
+  CatchinWaves = 15,
+  ThinIce = 16,
   PuffleRescue = 19,
   PSAMissions = 22,
   VideoGames = 25,
@@ -17,8 +20,42 @@ export enum CategoryID {
   CardJitsuWater = 34,
   SystemDefender = 46,
   PuffleLaunch = 48,
+  IceFishing = 52,
+  Pizzatron = 54,
   TreasureHunt = 56,
   Pufflescape = 57
+}
+
+export enum StampRoom {
+  AstroBarrier = 900,
+  IceFishing = 904,
+  CartSurfer = 905,
+  JetPackAdventure = 906,
+  ThinIce = 909,
+  Pizzatron = 910,
+  CatchinWaves = 912,
+  AquaGrabber = 916,
+  PuffleRescue = 949,
+  SystemDefender = 950,
+  PuffleLaunch = 955,
+  PuffleScape = 957,
+  CardJitsu = 998
+}
+
+export const STAMP_ROOMS: Record<number, StampRoom> = {
+  [CategoryID.AstroBarrier]: StampRoom.AstroBarrier,
+  [CategoryID.IceFishing]: StampRoom.IceFishing,
+  [CategoryID.CartSurfer]: StampRoom.CartSurfer,
+  [CategoryID.JetPackAdventure]: StampRoom.JetPackAdventure,
+  [CategoryID.ThinIce]: StampRoom.ThinIce,
+  [CategoryID.Pizzatron]: StampRoom.Pizzatron,
+  [CategoryID.CatchinWaves]: StampRoom.CatchinWaves,
+  [CategoryID.AquaGrabber]: StampRoom.AquaGrabber,
+  [CategoryID.PuffleRescue]: StampRoom.PuffleRescue,
+  [CategoryID.SystemDefender]: StampRoom.SystemDefender,
+  [CategoryID.PuffleLaunch]: StampRoom.PuffleLaunch,
+  [CategoryID.Pufflescape]: StampRoom.PuffleScape,
+  [CategoryID.CardJitsu]: StampRoom.CardJitsu,
 }
 
 export type StampCategory = {
@@ -511,7 +548,7 @@ export const ORIGINAL_STAMPBOOK: Stampbook = [
     "description": "Astro Barrier related stamps",
     "parent_group_id": 8,
     "display": "Games : Astro Barrier",
-    group_id: 14,
+    group_id: CategoryID.AstroBarrier,
     "stamps": [
       {
         "stamp_id": 55,
@@ -616,7 +653,7 @@ export const ORIGINAL_STAMPBOOK: Stampbook = [
     "description": "Stamps related to surfing",
     "parent_group_id": 8,
     "display": "Games : Catchin' Waves",
-    group_id: 15,
+    group_id: CategoryID.CatchinWaves,
     "stamps": [
       {
         "stamp_id": 95,
@@ -922,7 +959,7 @@ export const ORIGINAL_STAMPBOOK: Stampbook = [
     "description": "Don't fall through!",
     "parent_group_id": 8,
     "display": "Games : Thin Ice",
-    group_id: 16,
+    group_id: CategoryID.ThinIce,
     "stamps": [
       {
         "stamp_id": 63,
