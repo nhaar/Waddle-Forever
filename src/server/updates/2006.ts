@@ -644,7 +644,8 @@ export const UPDATES_2006: Update[] = [
           'berg': 'archives:RoomsBerg-HalloweenParty2007.swf',
           plaza: 'recreation:halloween_2006/plaza.swf',
           lodge: 'recreation:halloween_2006/lodge.swf',
-          dance: 'recreation:halloween_2006/dance.swf'
+          dance: 'recreation:halloween_2006/dance.swf',
+          forts: 'recreation:halloween_2006/forts.swf'
         },
         music: {
           'town': 205,
