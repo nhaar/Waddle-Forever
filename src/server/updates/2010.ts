@@ -561,6 +561,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-04-21',
+    roomComment: 'The Forest now has a path to the Mine Shack',
     temp: {
       party: {
         partyName: 'Earth Day',
@@ -848,8 +849,8 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-06-17',
+    roomComment: 'The Forest now has a path to the Hidden Lake',
     rooms: {
-      // document this forest change
       forest: 'archives:RoomsForest_3.swf'
     }
   },
@@ -1433,6 +1434,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-07-29',
+    roomComment: 'Grass grows on the patch near the mine shack',
     rooms: {
       shack: 'archives:RoomsShack-July2010.swf'
     }
@@ -1548,6 +1550,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-08-26',
     miscComments: ['The owned igloos list is added'],
+    roomComment: 'The tree near the mine shack grows longer',
     fileChanges: {
       'play/v2/client/interface.swf': 'unknown:interface_stamps.swf',
       'play/v2/client/igloo.swf': 'slegacy:media/play/v2/client/igloo.swf'
@@ -2363,6 +2366,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-09-30',
+    roomComment: 'The tree near the mine shack grows longer',
     rooms: {
       shack: 'archives:RoomsShack-Early2011.swf'
     }

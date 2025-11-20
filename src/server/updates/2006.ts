@@ -107,6 +107,7 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-03-17',
     pin: true,
+    roomComment: ['The Pet Shop is inaugurated'],
     temp: {
       party: {
         partyStart: 'A celebration for St. Patrick\'s Day and Puffles starts',
