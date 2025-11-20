@@ -1,13 +1,11 @@
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampsJson } from './stampjson';
-import { isLower, isLowerOrEqual } from "./versions";
 import { getSetupXml } from "./setup.xml";
 import { getServersXml } from "../servers";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
-import { Update } from "../game-data/updates";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
@@ -19,7 +17,9 @@ import { getChunkingMapJson } from "./chunkingmapjson";
 import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
-import { AS3_UPDATE, isEngine1, isEngine2, isEngine3 } from "../timelines/dates";
+import { isEngine2, isEngine3 } from "../timelines/dates";
+import { findInVersion } from "../game-data";
+import { INDEX_HTML_TIMELINE, WEBSITE_TIMELINE } from "../timelines/website";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -27,21 +27,12 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.addFileServer();
 
   server.get('/', (s) => {
-    if (isLowerOrEqual(s.settings.version, Update.BETA_PARTY)) {
-      return 'default/websites/beta.html';
-    } else if (isEngine1(s.settings.version)) {
-      return 'default/websites/old-precpip.html';
-    } else if (isEngine2(s.settings.version) && isLower(s.settings.version, AS3_UPDATE)) {
-      if (s.settings.minified_website) {
-        return 'default/websites/minified-cpip.html';
-      } else {
-        return 'default/websites/classic-cpip.html';
-      }
-    } else if (isLower(s.settings.version, '2016-01-01')) {
-      return 'default/websites/classic-as3.html';
-    } else {
-      return 'default/websites/modern-as3.html';
+    let name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
+    if (s.settings.minified_website && name === 'classic-cpip') {
+      name = 'minified-cpip'; 
     }
+
+    return `default/websites/${name}.html`;
   });
 
 
@@ -52,15 +43,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // serving the websites
   server.dir('', (s) => {
-    if (isLowerOrEqual(s.settings.version, Update.BETA_PARTY)) {
-      return 'default/websites/beta';
-    } else if (isEngine1(s.settings.version)) {
-      return 'default/websites/old';
-    } else if (isLower(s.settings.version, '2016-01-01')) {
-      return 'default/websites/classic';
-    } else {
-      return 'default/websites/modern';
-    }
+    const name = findInVersion(s.settings.version, WEBSITE_TIMELINE);
+
+    return `default/websites/${name}`;
   })
 
   // Pre CPIP server rewrite client uses these POST endpoints

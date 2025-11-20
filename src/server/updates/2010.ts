@@ -3080,6 +3080,7 @@ export const UPDATES_2010: Update[] = [
     date: '2010-11-19',
     miscComments: ['The password warning is updated'],
     engineUpdate: 'as3',
+    indexHtml: 'classic-as3',
     fileChanges: {
       'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf',
       // this file is from Dec 2010, but will be using it as a placeholder

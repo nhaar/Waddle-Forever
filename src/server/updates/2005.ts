@@ -6,6 +6,8 @@ export const UPDATES_2005: Update[] = [
     map: "recreation:map_release.swf",
     iglooVersion: 1,
     chatVersion: 291,
+    indexHtml: 'beta',
+    websiteFolder: 'beta',
     fileChanges: {
       'chat291.swf': 'approximation:chat291_no_news.swf' // newspapers-less precpip client
     },
@@ -77,7 +79,9 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-09-22',
-    end: ['party']
+    end: ['party'],
+    websiteFolder: 'old',
+    indexHtml: 'old-precpip'
   },
   {
     date: '2005-10-24',

@@ -424,6 +424,21 @@ export class VersionsTimeline<EventInformation> {
     this._eventsTimeline.push(event);
   }
 
+  addInfo(info: EventInformation, date: Version, end: Version | undefined) {
+    if (end === undefined) {
+      this.add({
+        date,
+        info
+      });
+    } else {
+      this.add({
+        date,
+        end,
+        info
+      });
+    }
+  }
+
   /** Get sorted versions array */
   getVersions() {
     return processIndependentTimeline(this._eventsTimeline);

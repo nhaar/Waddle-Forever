@@ -141,6 +141,9 @@ export type CPUpdate = {
 
   engineUpdate?: 'vanilla-engine' | 'as3' | 'cpip' | 'as3-startscreen' | 'igloo-music';
 
+  indexHtml?: string;
+  websiteFolder?: string;
+
   /**
    * For a scavenger hunt in the 2007-2008 client,
    * writing what the file number of the egg file is

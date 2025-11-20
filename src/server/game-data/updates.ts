@@ -4,7 +4,6 @@
  */
 export enum Update {
   /** The day Club Penguin launched the CPIP engine */
-  BETA_PARTY = '2005-09-21',
   BATTLE_DOOM_START = '2011-05-31',
   BATTLE_DOOM_END = '2011-06-07'
 }

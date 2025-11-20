@@ -1,4 +1,4 @@
-import { findInVersion, ComplexTemporaryUpdate, VersionsMap } from "../game-data";
+import { findInVersion, ComplexTemporaryUpdate, VersionsMap, VersionsTimeline, VersionsInformation } from "../game-data";
 import { Version } from "../routes/versions";
 
 export function getMapForDate<Key extends string | number, Value>(map: VersionsMap<Key, Value>, date: Version): Partial<Record<Key, Value>> {
@@ -31,4 +31,10 @@ export function getSubUpdateDates<UpdateInfo>(update: ComplexTemporaryUpdate<Upd
     throw new Error('Update cannot start and end on the same date');
   }
   return { date: finalDate, end };
+}
+
+export function newVersionsTimeline<T>(callback: (timeline: VersionsTimeline<T>) => void): VersionsInformation<T> {
+  const timeline = new VersionsTimeline<T>();
+  callback(timeline);
+  return timeline.getVersions();
 }

@@ -4,6 +4,8 @@ export const UPDATES_2016: Update[] = [
   {
     // placeholder 2017 version
     date: '2016-01-01',
+    websiteFolder: 'modern',
+    indexHtml: 'modern-as3',
     rooms: {
       town: 'svanilla:media/play/v2/content/global/rooms/town.swf',
       rink: 'svanilla:media/play/v2/content/global/rooms/rink.swf',
