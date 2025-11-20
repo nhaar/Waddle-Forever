@@ -8,7 +8,7 @@ import {  } from '../src/server/game-data/newspapers';
 import { Update } from '../src/server/game-data/updates';
 import { monthNames } from '../src/common/utils';
 import { NEWSPAPER_TIMELINE } from '../src/server/timelines/newspapers';
-import { MODERN_AS3 } from '../src/server/timelines/dates';
+import { CPIP_UPDATE, MODERN_AS3 } from '../src/server/timelines/dates';
 
 type LabeledAs2Newspaper = { date: Version; title: string; type: 'as2' };
 type LabeledAs3Newspaper = { date: Version; title: string; type: 'as3' };
@@ -20,7 +20,7 @@ type NewsSet = [number, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, N
 
 /** Check if a newspaper is accessible after CPIP, the argument is the newspaper after it or undefined if it's the "last" newspaper */
 export function isNewspaperAfterCPIP(date: Version | undefined) {
-  return date === undefined || isGreaterOrEqual(date, Update.CPIP_UPDATE);
+  return date === undefined || isGreaterOrEqual(date, CPIP_UPDATE);
 }
 
 function isNewspaperAfterJSON(date: Version | undefined) {

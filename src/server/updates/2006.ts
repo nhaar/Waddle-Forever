@@ -238,6 +238,7 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-05-19',
     iglooVersion: 20,
+    engineUpdate: 'igloo-music',
     iglooList: true
   },
   {

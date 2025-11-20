@@ -139,7 +139,7 @@ export type CPUpdate = {
 
   freeBrownPuffle?: boolean;
 
-  engineUpdate?: 'vanilla-engine' | 'as3';
+  engineUpdate?: 'vanilla-engine' | 'as3' | 'cpip' | 'as3-startscreen' | 'igloo-music';
 
   /**
    * For a scavenger hunt in the 2007-2008 client,

@@ -947,6 +947,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-07-15',
     miscComments: ['The Club Penguin Improvement Project is implemented'],
+    engineUpdate: 'cpip',
     rooms: {
       town: 'archives:RoomsTown.swf',
       rink: 'archives:RoomsRink.swf',

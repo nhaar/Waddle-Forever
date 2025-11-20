@@ -20,7 +20,7 @@ import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
 import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
-import { MODERN_AS3, START_DATE } from "./dates";
+import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -53,7 +53,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
 
 
   addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
-    if (isLower(date, Update.CPIP_UPDATE)) {
+    if (isLower(date, CPIP_UPDATE)) {
       this.add('artwork/maps/island5.swf', fileRef, date, end);
       // TODO would be best to only include the maps that end up factually being used
       this.add('artwork/maps/16_forest.swf', fileRef, date, end);
@@ -115,7 +115,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
 }
 
 function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: string) {
-  if (isLower(date, Update.CPIP_UPDATE)) {
+  if (isLower(date, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.add(path.join('artwork/rooms', fileName), file, date);
   } else {
@@ -232,7 +232,7 @@ function addNewspapers(map: FileTimelineMap): void {
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  map.addRouteMap(CPIP_STATIC_FILES, Update.CPIP_UPDATE);
+  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
   map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
 }
 
@@ -292,7 +292,7 @@ function addPins(map: FileTimelineMap): void {
 }
 
 function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
-  if (isLower(start, Update.CPIP_UPDATE)) {
+  if (isLower(start, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
     map.add(path.join('artwork/rooms', fileName), file, start, end);
   } else {

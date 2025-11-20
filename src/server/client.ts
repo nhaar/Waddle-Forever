@@ -20,7 +20,7 @@ import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { STAMP_DATES } from './timelines/stamps';
-import { isEngine1, isEngine2, isEngine3 } from './timelines/dates';
+import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3 } from './timelines/dates';
 
 type ServerType = 'Login' | 'World';
 
@@ -823,7 +823,7 @@ export class Client {
     let items = this.penguin.getItems();
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.version, Update.CPIP_UPDATE)) {
+    if (isLower(this.version, CPIP_UPDATE)) {
       const version = findInVersion(this.version, VERSIONS_TIMELINE) ?? 0;
       const itemSet = OLD_CLIENT_ITEMS[version];
       items = items.filter((value) => itemSet.has(value));

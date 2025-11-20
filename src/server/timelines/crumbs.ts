@@ -12,7 +12,7 @@ import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
 import { StageScript } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
-import { MODERN_AS3, START_DATE } from "./dates";
+import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
 
 
 const musicTimeline = getMusicTimeline();
@@ -24,7 +24,7 @@ export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 export const TICKET_INFO_PATH = 'close_ups/tickets.swf';
 
 export function getGlobalPathsTimeline() {
-  const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
+  const timeline = new TimelineMap<string, null | string>({ value: null, date: CPIP_UPDATE });
 
   UPDATES.forEach(update => {
     if (update.update.scavengerHunt2010 !== undefined) {
@@ -70,7 +70,7 @@ function addLocalChanges(changes: LocalChanges, timeline: TimelineMap<string, nu
 }
 
 export function getLocalPathsTimeline() {
-  const timeline = new TimelineMap<string, null | string>({ value: null, date: Update.CPIP_UPDATE });
+  const timeline = new TimelineMap<string, null | string>({ value: null, date: CPIP_UPDATE });
 
   UPDATES.forEach((update) => {
     if (update.update.localChanges !== undefined && update.end !== undefined) {
@@ -161,7 +161,7 @@ export function getLocalCrumbsOutput() {
   return getBaseCrumbsOutput<LocalCrumbContent>((timeline) => {
     localPathsTimeline.forEach((versions, localPath) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+        if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -175,7 +175,7 @@ export function getLocalCrumbsOutput() {
     });
 
     huntTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+      if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -186,7 +186,7 @@ export function getLocalCrumbsOutput() {
     });
 
     stageTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+      if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -205,7 +205,7 @@ export function getLocalCrumbsOutput() {
     return {
       paths: {},
       hunt: undefined,
-      stageScript: findInVersion(Update.CPIP_UPDATE, stageTimeline) ?? []
+      stageScript: findInVersion(CPIP_UPDATE, stageTimeline) ?? []
     }
   });
 }
@@ -237,7 +237,7 @@ function getBaseCrumbsOutput<CrumbContent>(
 ) {
   const timeline: TimelineEvent<Partial<CrumbContent>>[] = [
     {
-      date: Update.CPIP_UPDATE,
+      date: CPIP_UPDATE,
       info: getFirstCrumb()
     }
   ];
@@ -264,7 +264,7 @@ function getBaseCrumbsOutput<CrumbContent>(
 export function getGlobalCrumbsOutput() {
   return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
     migratorTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+      if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -276,7 +276,7 @@ export function getGlobalCrumbsOutput() {
     
     globalPathsTimeline.forEach((versions, globalPath) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+        if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -291,7 +291,7 @@ export function getGlobalCrumbsOutput() {
 
     musicTimeline.forEach((versions, room) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+        if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -306,7 +306,7 @@ export function getGlobalCrumbsOutput() {
 
     memberTimeline.forEach((versions, room) => {
       versions.forEach((info) => {
-        if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+        if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
             date: info.date,
             info: {
@@ -321,7 +321,7 @@ export function getGlobalCrumbsOutput() {
 
     pricesTimeline.forEach((versions, itemId) => {
       versions.forEach((info) => {
-        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        if (isGreater(info.date, CPIP_UPDATE)) {
           timeline.push({
             date: info.date,
             info: {
@@ -336,7 +336,7 @@ export function getGlobalCrumbsOutput() {
 
     furniturePricesTimeline.forEach((versions, itemId) => {
       versions.forEach((info) => {
-        if (isGreater(info.date, Update.CPIP_UPDATE)) {
+        if (isGreater(info.date, CPIP_UPDATE)) {
           timeline.push({
             date: info.date,
             info: {
@@ -350,7 +350,7 @@ export function getGlobalCrumbsOutput() {
     });
 
     huntTimeline.forEach((info) => {
-      if (isLowerOrEqual(Update.CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
+      if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
           info: {
@@ -386,12 +386,12 @@ export function getGlobalCrumbsOutput() {
     }
   }, () => {
     return {
-      prices: getMapForDate(pricesTimeline, Update.CPIP_UPDATE),
-      furniturePrices: getMapForDate(furniturePricesTimeline, Update.CPIP_UPDATE),
-      music: getMapForDate(musicTimeline, Update.CPIP_UPDATE),
-      newMigratorStatus: findInVersion(Update.CPIP_UPDATE, migratorTimeline) ?? false,
+      prices: getMapForDate(pricesTimeline, CPIP_UPDATE),
+      furniturePrices: getMapForDate(furniturePricesTimeline, CPIP_UPDATE),
+      music: getMapForDate(musicTimeline, CPIP_UPDATE),
+      newMigratorStatus: findInVersion(CPIP_UPDATE, migratorTimeline) ?? false,
       paths: {},
-      member: getMapForDate(memberTimeline, Update.CPIP_UPDATE),
+      member: getMapForDate(memberTimeline, CPIP_UPDATE),
       hunt: undefined
     }
   });

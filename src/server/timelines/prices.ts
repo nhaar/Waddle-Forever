@@ -4,12 +4,13 @@ import { Update } from "../game-data/updates";
 import { FURNITURE } from "../game-logic/furniture";
 import { ITEMS } from "../game-logic/items";
 import { UPDATES } from "../updates/updates";
+import { CPIP_UPDATE } from "./dates";
 
 /** Get price object for a blank state */
 export function getPricesTimeline() {
   const timeline = new TimelineMap<number, number>();
   ITEMS.rows.forEach((item) => {
-    timeline.add(item.id, item.cost, Update.CPIP_UPDATE);
+    timeline.add(item.id, item.cost, CPIP_UPDATE);
   });
 
   UPDATES.forEach(update => {
@@ -26,7 +27,7 @@ export function getPricesTimeline() {
 export function getFurniturePricesTimeline() {
   const timeline = new TimelineMap<number, number>();
   FURNITURE.rows.forEach((furniture) => {
-    timeline.add(furniture.id, furniture.cost, Update.CPIP_UPDATE);
+    timeline.add(furniture.id, furniture.cost, CPIP_UPDATE);
   });
 
   UPDATES.forEach(update => {
