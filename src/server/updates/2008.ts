@@ -2530,7 +2530,7 @@ export const UPDATES_2008: Update[] = [
     miscComments: ['Mission 10: Waddle Squad is added'],
     localChanges: {
       'forms/missions.swf': {
-        en: 'recreation:forms_missions/m10.swf'
+        en: 'archives:FormsMissionsM10.swf'
       }
     },
     roomComment: 'Snow is stored in the Attic',
