@@ -1,27 +1,18 @@
-import { iterateEntries } from "../../common/utils";
-import { TimelineMap } from "../game-data";
-import { RoomMap, RoomName, ROOMS } from "../game-data/rooms";
+import { newTimelineMap } from ".";
+import { addRecordToMap, TimelineMap } from "../game-data";
+import { RoomName, ROOMS } from "../game-data/rooms";
 import { STAGE_PLAYS } from "../game-data/stage-plays";
-import { Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
 import { START_DATE } from "./dates";
 
-export function getMusicTimeline() {
-  const timeline = new TimelineMap<RoomName, number>();
-
-  const addMusic = (music: RoomMap<number>, start: Version, end: Version | undefined = undefined) => {
-    iterateEntries(music, (room, musicId) => {
-      timeline.add(room, musicId, start, end);
-    });
-  }
-
+export const MUSIC_TIMELINE = newTimelineMap<RoomName, number>(timeline => {
   Object.keys(ROOMS).forEach((room) => {
     timeline.add(room as RoomName, 0, START_DATE);
   });
   
   UPDATES.forEach(update => {
     if (update.update.music !== undefined) {
-      addMusic(update.update.music, update.date, update.end);
+      addRecordToMap(timeline, update.update.music, update.date, update.end);
     }
     if (update.update.stagePlay !== undefined) {
       const name = update.update.stagePlay.name;
@@ -32,6 +23,4 @@ export function getMusicTimeline() {
       }
     }
   });
-
-  return timeline.getVersionsMap();
-}
+});

@@ -3,14 +3,10 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 import { START_DATE } from "../timelines/dates";
 import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
-import { getMigratorTimeline } from "../timelines/migrator";
-import { getMusicTimeline } from "../timelines/music";
+import { MIGRATOR_TIMELINE } from "../timelines/migrator";
+import { MUSIC_TIMELINE } from "../timelines/music";
 import { UPDATES } from "../updates/updates";
 import { Version } from "./versions";
-
-const musicTimeline = getMusicTimeline();
-
-const migratorTimeline = getMigratorTimeline();
 
 const eggTimeline = getEggTimeline();
 
@@ -39,14 +35,14 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 
   let frames: Partial<Record<RoomName, number>> = {};
 
-  musicTimeline.forEach((versions, room) => {
+  MUSIC_TIMELINE.forEach((versions, room) => {
     roomMusic[room] = findInVersion(date, versions);
   });
   ROOM_FRAME_TIMELINE.forEach((versions, room) => {
     frames[room] = findInVersion(date, versions);
   });
 
-  const activeMigrator = findInVersion(date, migratorTimeline);
+  const activeMigrator = findInVersion(date, MIGRATOR_TIMELINE);
 
   // enabling scavenger hunt, by passing an ID you can choose a file. Right now we are always just
   // sending the ID of 1 because we don't have any information about these scavenger hunts

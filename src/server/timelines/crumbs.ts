@@ -4,19 +4,16 @@ import { RoomName } from "../game-data/rooms";
 import { isGreater, isLower, isLowerOrEqual, Version } from "../routes/versions";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
 import { getMapForDate } from ".";
-import { getMusicTimeline } from "./music";
-import { getMigratorTimeline } from "./migrator";
-import { getMemberTimeline } from "./member";
-import { getFurniturePricesTimeline, getPricesTimeline } from "./prices";
+import { FURNITURE_PRICES_TIMELINE, PRICES_TIMELINE } from "./prices";
 import { StageScript } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
 import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
 import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
+import { MIGRATOR_TIMELINE } from "./migrator";
+import { MUSIC_TIMELINE } from "./music";
+import { MEMBER_TIMELINE } from "./member";
 
 
-const musicTimeline = getMusicTimeline();
-const migratorTimeline = getMigratorTimeline();
-const memberTimeline = getMemberTimeline();
 const huntTimeline = getHuntTimeline();
 
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
@@ -113,8 +110,6 @@ export function getStageScriptTimeline() {
 
 const localPathsTimeline = getLocalPathsTimeline();
 const globalPathsTimeline = getGlobalPathsTimeline();
-const pricesTimeline = getPricesTimeline();
-const furniturePricesTimeline = getFurniturePricesTimeline();
 const stageTimeline = getStageScriptTimeline();
 
 /** Represents a unique global crumbs state */
@@ -262,7 +257,7 @@ function getBaseCrumbsOutput<CrumbContent>(
  */
 export function getGlobalCrumbsOutput() {
   return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
-    migratorTimeline.forEach((info) => {
+    MIGRATOR_TIMELINE.forEach((info) => {
       if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
@@ -288,7 +283,7 @@ export function getGlobalCrumbsOutput() {
       })
     });
 
-    musicTimeline.forEach((versions, room) => {
+    MUSIC_TIMELINE.forEach((versions, room) => {
       versions.forEach((info) => {
         if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
@@ -303,7 +298,7 @@ export function getGlobalCrumbsOutput() {
       });
     });
 
-    memberTimeline.forEach((versions, room) => {
+    MEMBER_TIMELINE.forEach((versions, room) => {
       versions.forEach((info) => {
         if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
           timeline.push({
@@ -318,7 +313,7 @@ export function getGlobalCrumbsOutput() {
       });
     });
 
-    pricesTimeline.forEach((versions, itemId) => {
+    PRICES_TIMELINE.forEach((versions, itemId) => {
       versions.forEach((info) => {
         if (isGreater(info.date, CPIP_UPDATE)) {
           timeline.push({
@@ -333,7 +328,7 @@ export function getGlobalCrumbsOutput() {
       });
     });
 
-    furniturePricesTimeline.forEach((versions, itemId) => {
+    FURNITURE_PRICES_TIMELINE.forEach((versions, itemId) => {
       versions.forEach((info) => {
         if (isGreater(info.date, CPIP_UPDATE)) {
           timeline.push({
@@ -385,12 +380,12 @@ export function getGlobalCrumbsOutput() {
     }
   }, () => {
     return {
-      prices: getMapForDate(pricesTimeline, CPIP_UPDATE),
-      furniturePrices: getMapForDate(furniturePricesTimeline, CPIP_UPDATE),
-      music: getMapForDate(musicTimeline, CPIP_UPDATE),
-      newMigratorStatus: findInVersion(CPIP_UPDATE, migratorTimeline) ?? false,
+      prices: getMapForDate(PRICES_TIMELINE, CPIP_UPDATE),
+      furniturePrices: getMapForDate(FURNITURE_PRICES_TIMELINE, CPIP_UPDATE),
+      music: getMapForDate(MUSIC_TIMELINE, CPIP_UPDATE),
+      newMigratorStatus: findInVersion(CPIP_UPDATE, MIGRATOR_TIMELINE) ?? false,
       paths: {},
-      member: getMapForDate(memberTimeline, CPIP_UPDATE),
+      member: getMapForDate(MEMBER_TIMELINE, CPIP_UPDATE),
       hunt: undefined
     }
   });

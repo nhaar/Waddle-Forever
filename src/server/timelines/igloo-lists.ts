@@ -1,9 +1,8 @@
+import { newVersionsTimeline } from ".";
 import { findInVersion, VersionsTimeline } from "../game-data";
 import { Version } from "../routes/versions";
 import { IglooList, ListSong, ListSongPatch } from "../updates";
 import { UPDATES } from "../updates/updates";
-
-const timeline = new VersionsTimeline<IglooList>();
 
 /** Number of rows in a 2D music list */
 const ROWS = 7;
@@ -28,27 +27,26 @@ function isMusicList(arr: IglooList | ListSongPatch[]): arr is IglooList {
   return !('pos' in arr[0]);
 }
 
-let currentList: IglooList | undefined = undefined;
-
-UPDATES.forEach(update => {
-  const list = update.update.iglooList;
-  if (list !== undefined && list !== true && !('file' in list)) {
-    if (isMusicList(list)) {
-      currentList = list;
-    } else {
-      if (currentList === undefined) {
-        throw new Error('Patch came before a list');
+const IGLOO_LIST_TIMELINE = newVersionsTimeline<IglooList>((timeline) => {
+  let currentList: IglooList | undefined = undefined;
+  UPDATES.forEach(update => {
+    const list = update.update.iglooList;
+    if (list !== undefined && list !== true && !('file' in list)) {
+      if (isMusicList(list)) {
+        currentList = list;
+      } else {
+        if (currentList === undefined) {
+          throw new Error('Patch came before a list');
+        }
+        applyPatch(currentList, list);
       }
-      applyPatch(currentList, list);
+      timeline.add({
+        date: update.date,
+        info: JSON.parse(JSON.stringify(currentList)) as IglooList
+      });
     }
-    timeline.add({
-      date: update.date,
-      info: JSON.parse(JSON.stringify(currentList)) as IglooList
-    });
-  }
+  });
 });
-
-const IGLOO_LIST_TIMELINE = timeline.getVersions();
 
 /** Get the XML used by the dynamic igloo list tool for a given list */
 function getListXml(list: IglooList): string {

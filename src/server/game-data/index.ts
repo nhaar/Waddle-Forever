@@ -487,3 +487,9 @@ export function addRecordToMap<Key extends string, EventInformation>(map: Timeli
     map.add(key, info, date, end);
   });
 }
+
+export function addRecordToNumberMap<EventInformation>(map: TimelineMap<number, EventInformation>, record: Partial<Record<number, EventInformation>>, date: Version, end?: Version): void {
+  iterateEntries(record, (key, info) => {
+    map.add(Number(key), info, date, end);
+  });
+}

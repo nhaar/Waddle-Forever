@@ -1,15 +1,13 @@
-import { VersionsTimeline } from "../game-data";
+import { newVersionsTimeline } from ".";
 import { UPDATES } from "../updates/updates";
 import { START_DATE } from "./dates";
 
-export function getMapNoteTimeline() {
-  const timeline = new VersionsTimeline<boolean>();
-
+export const MAP_NOTE_TIMELINE = newVersionsTimeline<boolean>(timeline => {
   timeline.add({
     date: START_DATE,
     info: false
   });
-
+  
   UPDATES.forEach(update => {
     if (update.update.mapNote !== undefined) {
       timeline.add({
@@ -19,6 +17,4 @@ export function getMapNoteTimeline() {
       });
     }
   });
-
-  return timeline.getVersions();
-}
+});
