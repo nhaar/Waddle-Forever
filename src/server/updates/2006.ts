@@ -240,7 +240,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-05-19',
     iglooVersion: 20,
     engineUpdate: 'igloo-music',
-    iglooList: true
+    iglooList: 'Penguins can now add music to their igloo'
   },
   {
     date: '2006-05-26',

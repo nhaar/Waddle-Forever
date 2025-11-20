@@ -31,7 +31,7 @@ const IGLOO_LIST_TIMELINE = newVersionsTimeline<IglooList>((timeline) => {
   let currentList: IglooList | undefined = undefined;
   UPDATES.forEach(update => {
     const list = update.update.iglooList;
-    if (list !== undefined && list !== true && !('file' in list)) {
+    if (list !== undefined && list !== true && typeof list !== 'string' && !('file' in list)) {
       if (isMusicList(list)) {
         currentList = list;
       } else {

@@ -4,6 +4,7 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-08-22',
     map: "recreation:map_release.swf",
+    miscComments: ['Beta release'],
     iglooVersion: 1,
     chatVersion: 291,
     indexHtml: 'beta',

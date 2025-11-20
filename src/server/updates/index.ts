@@ -171,7 +171,7 @@ export type CPUpdate = {
     infoFile: FileRef;
   };
 
-  iglooList?: true | {
+  iglooList?: string | true | {
     file: FileRef;
     hidden: boolean;
   } | IglooList | ListSongPatch[];

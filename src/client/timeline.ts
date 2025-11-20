@@ -26,115 +26,16 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
   timelinePicker.webContents.on('did-finish-load', () => {
     timelinePicker.maximize();
     timelinePicker.show();
-    // TODO this array is currently hardcoded because of the previous system
-    // it should become dynamic in the next updates
-    let timeline: Day[] = [
-      {
-        date: '2005-08-22',
-        events: {
-          other: ['Beta release'],
-        }
-      },
-      {
-        date: '2010-01-08',
-        events: {
-          other: ['A rockslide appears in the Mine']
-        }
-      },
-      {
-        date: '2010-01-15',
-        events: {
-          other: ['The rockslide in the Mine progresses']
-        }
-      },
-      {
-        date: '2010-12-18',
-        events: {
-          partyUpdate: 'The lighthouse has more money (2)'
-        }
-      },
-      {
-        date: '2010-12-20',
-        events: {
-          other: ['Stadium Games party ends during the Holiday Party'],
-          partyUpdate: 'The lighthouse has more money (3)'
-        }
-      },
-      {
-        date: '2010-12-22',
-        events: {
-          partyUpdate: 'The lighthouse has more money (4)'
-        }
-      },
-      {
-        date: '2016-01-01',
-        events: {
-          other: ['test']
-        }
-      }
-    ]
-    timeline = updateTimeline(timeline);
-    timelinePicker.webContents.send('get-timeline', getConsumedTimeline(timeline));
+    timelinePicker.webContents.send('get-timeline', getConsumedTimeline(getTimeline()));
   });
 }
 
-type BaseEvents = {
-  /** Info is either the name of the party (placeholder message) or custom message with comment: true */
-  partyStart: string[];
-  /** Name of a party that ended this day */
-  partyEnd: string[]
-  /** Description of something that changed in a party today */
-  partyUpdate: string
-  /** Uncategorized thing that happened this day */
-  other: string[]
-  /** Number (or name) of new CPT issues that released this day */
-  newIssue: number | string
-  /** Name of a room that opened this day */
-  roomOpen: string[];
-  /** Description of how a room was updated this day */
-  roomUpdate: string;
-  /** Name of a minigame that released this day */
-  minigameRelease: string
-  pin: string;
-  /** If a clothing catalogue was released this day */
-  newClothing: boolean
-  /** Name of stage play that is debuting today if any */
-  stagePlay: string;
-  /** If a music list was released this day */
-  musicList: true;
-  newFurnitureCatalog: true;
-  partyConstruction: string;
-  stadiumUpdate: 'stadium' | 'rink' | string;
-  migrator: true;
-};
-
-/** All things that can happen in a single day */
-type Events = Partial<BaseEvents>;
-
-// some typescript witcher to get property that points to an array in T
-type ArrayProperties<T> = {
-  [K in keyof T]: T[K] extends any[] ? K : never
-}[keyof T];
-
-type EventsArrayProperty = ArrayProperties<BaseEvents>;
 
 // this type is duplicated in the timeline-static file, it should be the same type
 /** Representation of a day in the Club Penguin timeline */
 type Day = {
   date: Version
-  events: Events
-}
-
-type DayMap = Map<Version, Day>;
-
-/** Create a map of a day's date to their data */
-function getDayMap(days: Day[]): Map<Version, Day> {
-  const map = new Map<Version, Day>();
-  for (const version of days) {
-    map.set(version.date, version);
-  }
-
-  return map;
+  events: Event[]
 }
 
 /** Obtain an array of days in chronological order from a map */
@@ -155,101 +56,80 @@ function getDaysFromMap(map: Map<Version, Day>) {
   });
 }
 
-/** Add a new event to an array property */
-function addArrayEvents<Prop extends EventsArrayProperty>(map: Map<Version, Day>, prop: EventsArrayProperty, date: string, value: BaseEvents[Prop][number]) {
-  const day = map.get(date);
-  if (day === undefined) {
-    map.set(date, { date, events: { [prop]: [value] }});
-  } else {
-    const previousValue = day.events[prop];
-    if (previousValue === undefined) {
-      map.set(date, { date, events: { ...day.events, [prop]: [value] }});
-    } else {
-      map.set(date, { date, events: { ...day.events, [prop]: [...previousValue, value] }});
-    }
-  }
-}
-
 /** Add new events to a day inside a day map */
-function addEvents(map: Map<Version, Day>, date: string, events: Events): void {
+function addEvent(map: Map<Version, Day>, date: string, text: string, image: string, party?: 'start' | 'end'): void {
   const day = map.get(date);
+  const event = { text, image, party };
   if (day === undefined) {
-    map.set(date, { date, events });
+    map.set(date, { date, events: [event] });
   } else {
-    map.set(date, { date, events: { ...day.events, ...events } });
+    map.set(date, { date, events: [ ...day.events, event ] });
   }
 }
 
-function addStagePlays(map: DayMap): void {
+function getTimeline(): Day[] {
+  let map = new Map<string, Day>();
+  const premieres = new Set<string>();
 
-}
-
-function addGames(map: DayMap): void {
   UPDATES.forEach(update => {
     if (update.update.gameRelease !== undefined) {
-      addEvents(map, update.date, { minigameRelease: `${update.update.gameRelease} releases`});
+
+      addEvent(map, update.date, `${update.update.gameRelease} releases`, 'game');
     }
-  });
-}
-
-function addNewspapers(map: DayMap): DayMap {
-  NEWSPAPER_TIMELINE.forEach((update, i) => {
-    addEvents(map, update.date, { newIssue: i + 1});
-  });
-
-  return map;
-}
-
-function addUpdates(map: DayMap): DayMap {
-  const premieres = new Set<string>();
-  UPDATES.forEach(update => {
     if (update.update.clothingCatalog !== undefined) {
-      addEvents(map, update.date, { newClothing: true });
+      addEvent(map, update.date, 'A new edition of the Penguin Style is out', 'clothing');
     }
     if (update.update.furnitureCatalog !== undefined) {
-      addEvents(map, update.date, { newFurnitureCatalog: true });
+      addEvent(map, update.date, 'New furniture catalog available', 'furniture');
     }
     if (update.update.newspaper === 'fan') {
-      addEvents(map, update.date, { newIssue: 'Fan issue of the newspaper released '});
+      addEvent(map, update.date, 'Fan issue of the newspaper released', 'news');
     }
     if (update.update.miscComments !== undefined) {
       update.update.miscComments.forEach(comment => {
-        addArrayEvents(map, 'other', update.date, comment);
+        addEvent(map, update.date, comment, 'other');
       }) 
     }
     if (
-      update.update.iglooList !== undefined && (
-        update.update.iglooList === true || !('hidden' in update.update.iglooList && update.update.iglooList.hidden === true)
-      )) {
-      addEvents(map, update.date, { musicList: true });
+      update.update.iglooList !== undefined) {
+        if (typeof update.update.iglooList !== 'string') {
+          if (
+            update.update.iglooList === true || !('hidden' in update.update.iglooList && update.update.iglooList.hidden === true)
+          )
+          addEvent(map, update.date, 'New music is available for igloos', 'music');
+        } else {
+          addEvent(map, update.date, update.update.iglooList, 'music');
+        }
     }
     if (update.update.migrator !== false && update.update.migrator !== undefined) {
-      addEvents(map, update.date, { migrator: true });
+      addEvent(map, update.date, 'The migrator visits the island', 'migrator');
     }
     if (update.end !== undefined) {
       if ('partyName' in update.update) {
-        addArrayEvents(map, 'partyStart', update.date, `The ${update.update.partyName} starts` );
-        addArrayEvents(map, 'partyEnd', update.end, `The ${update.update.partyName} ends`);
+        addEvent(map, update.date, `The ${update.update.partyName} starts`, 'party', 'start');
+        console.log(update.update.partyName, update.end);
+        addEvent(map, update.end, `The ${update.update.partyName} ends`, 'party', 'end');
       } else if ('partyStart' in update.update) {
-        addArrayEvents(map, 'partyStart', update.date, update.update.partyStart );
-        addArrayEvents(map, 'partyEnd', update.end, update.update.partyEnd);
+        addEvent(map, update.date, update.update.partyStart, 'party', 'start');
+        addEvent(map, update.end, update.update.partyEnd, 'party', 'end');
       } else if ('update' in update.update) {
-        addEvents(map, update.date, { partyUpdate: update.update.update });
+        addEvent(map, update.date, update.update.update, 'party');
       }
     }
     if (update.update.roomComment !== undefined) {
       if (typeof update.update.roomComment === 'string') {
-        addEvents(map, update.date, { roomUpdate: update.update.roomComment });
+        addEvent(map, update.date, update.update.roomComment, 'room');
       } else {
-        // TODO array
-        addEvents(map, update.date, { roomUpdate: update.update.roomComment[0] });
+        update.update.roomComment.forEach(comment => {
+          addEvent(map, update.date, comment, 'room');
+        })
       }
     }
     if (update.update.constructionComment !== undefined) {
-      addEvents(map, update.date, { partyConstruction: update.update.constructionComment });
+      addEvent(map, update.date, update.update.constructionComment, 'const');
     }
     if (update.update.partyComment !== undefined) {
-      addEvents(map, update.date, { partyUpdate: update.update.partyComment });
+      addEvent(map, update.date, update.update.partyComment, 'party');
     }
 
     if (update.update.stagePlay !== undefined) {
@@ -261,191 +141,38 @@ function addUpdates(map: DayMap): DayMap {
         const stagePlay = premieres.has(update.update.stagePlay.name)
           ? `${update.update.stagePlay.name} returns to The Stage`
           : `${update.update.stagePlay.name} premieres at the Stage`;
-        addEvents(map, update.date, { stagePlay });
+        addEvent(map, update.date, stagePlay, 'stage');
       }
       premieres.add(update.update.stagePlay.name);
     }
     if (update.update.stampUpdates !== undefined) {
-      addArrayEvents(map, 'other', update.date, 'New stamps are available');
+      addEvent(map, update.date, 'New stamps are available', 'other');
     }
   });
-  return map;
-}
 
-function addRoomUpdates(map: DayMap): void {
-  const roomOpenings: Record<string, string[]> = {};
+  NEWSPAPER_TIMELINE.forEach((update, i) => {
+    addEvent(map, update.date, `Issue #${i + 1} of the newspaper releases`, 'news');
+  });
 
-  Object.entries(roomOpenings).forEach((pair) => {
-    const [date, rooms] = pair;
-    addEvents(map, date, {
-      roomOpen: rooms
-    })
-  })
-}
-
-function addPinUpdates(map: DayMap): void {
   PIN_TIMELINE.forEach((pin) => {
     if (!('hidden' in pin && pin.hidden === true)) {
-      addEvents(map, pin.date, { pin: pin.name });
+      addEvent(map, pin.date, `The ${pin.name} is now hidden in the island`, 'pin');
     }
   });
-}
 
-function addMigratorVisits(map: DayMap): void {
-  UPDATES.forEach(update => {
-    if (update.update.migrator !== undefined) {
-      addEvents(map, update.date, { migrator: true });
-    }
-  });
-}
-
-function updateTimeline(days: Day[]): Day[] {
-  let map = getDayMap(days);
-  map = addNewspapers(map);
-  map = addUpdates(map);
-  addRoomUpdates(map);
-  addStagePlays(map);
-  addPinUpdates(map);
-  addGames(map);
-  addMigratorVisits(map);
   return getDaysFromMap(map);
 }
 
-enum EventType {
-  PartyStart,
-  PartyEnd,
-  PartyUpdate,
-  Newspaper,
-  Room,
-  Construction,
-  PenguinStyle,
-  FurnitureCatalog,
-  MusicList,
-  Stage,
-  Game,
-  Pin,
-  Migrator,
-  Other
-};
-
-type Event = {
-  text: string;
-  type: EventType;
-};
+type Event = { text: string; image: string; party?: 'start' | 'end'; };
 
 function getConsumedTimeline(days: Day[]): Array<{
   year: number;
   day: number;
   month: number;
-  events: Array<Event>
+  events: Array<Event>;
+  party?: 'start' | 'end';
 }> {
-  let iglooMusicReleased = false;
-
   return days.map((day) => {
-    const events: Event[] = [];
-
-    const pushText = (text: string) => {
-      events.push({ text, type: EventType.Other });
-    }
-
-    if (day.events.partyStart !== undefined) {
-      day.events.partyStart.forEach((partyStart) => {
-        events.push({
-          type: EventType.PartyStart,
-          text: partyStart
-        });
-      })
-    }
-    if (day.events.partyEnd !== undefined) {
-      day.events.partyEnd.forEach((partyEnd) => {
-        events.push({
-          type: EventType.PartyEnd,
-          text: partyEnd
-        });
-      })
-    }
-    if (day.events.partyUpdate !== undefined) {
-      events.push({
-        text: day.events.partyUpdate,
-        type: EventType.PartyUpdate
-      })
-    }
-    if (day.events.partyConstruction !== undefined) {
-      events.push({ text: day.events.partyConstruction, type: EventType.Construction });
-    }
-    if (day.events.other !== undefined) {
-      day.events.other.forEach((other) => {
-        pushText(other);
-      })
-    }
-    if (day.events.roomOpen !== undefined) {
-      let text = day.events.roomOpen.length === 1 ? (
-        `Room "${day.events.roomOpen[0]}" opens`
-      ) : (
-        `Rooms "${day.events.roomOpen.join(', ')}" open`
-      );
-      events.push({ text, type: EventType.Room });
-    }
-    if (day.events.minigameRelease !== undefined) {
-      events.push({ text : day.events.minigameRelease, type: EventType.Game });
-    }
-    if (day.events.newClothing === true) {
-      events.push({ text: 'A new edition of the Penguin Style is out', type: EventType.PenguinStyle });
-      // pushText('A new edition of the Penguin Style is out');
-    }
-    if (day.events.newIssue !== undefined) {
-      const text = typeof day.events.newIssue === 'number' ? (
-        `Issue #${day.events.newIssue} of the newspaper releases`
-      ) : day.events.newIssue;
-      
-      if (day.events.newIssue)
-      events.push({
-        type: EventType.Newspaper,
-        text
-      });
-    }
-    if (day.events.roomUpdate !== undefined) {
-      events.push({
-        text: day.events.roomUpdate,
-        type: EventType.Room
-      })
-    }
-    if (day.events.stadiumUpdate !== undefined) {
-      let text = '';
-      if (day.events.stadiumUpdate === 'rink') {
-        text = 'The Ice Rink shows up for the season';
-      } else if (day.events.stadiumUpdate === 'stadium') {
-        text = 'The Soccer Pitch shows up for the season';
-      } else {
-        text = day.events.stadiumUpdate;
-      }
-      events.push({
-          text,
-          type: EventType.Room
-      });
-    }
-    if (day.events.stagePlay !== undefined) {
-      events.push({ text: day.events.stagePlay, type: EventType.Stage });
-    }
-    if (day.events.musicList === true) {
-      let text;
-      if (iglooMusicReleased) {
-        text = 'New music is available for igloos';
-      } else {
-        iglooMusicReleased = true;
-        text = 'Penguins can now add music to their igloo';
-      }
-      events.push({ text, type: EventType.MusicList });
-    }
-    if (day.events.newFurnitureCatalog === true) {
-      events.push({ text: 'New furniture catalog available', type: EventType.FurnitureCatalog });
-    }
-    if (day.events.pin !== undefined) {
-      events.push({ text: `The ${day.events.pin} is now hidden in the island`, type: EventType.Pin });
-    }
-    if (day.events.migrator === true) {
-      events.push({ text: 'The Migrator visits the island', type: EventType.Migrator });
-    }
 
     const [year, month, monthDay] = processVersion(day.date);
 
@@ -453,7 +180,7 @@ function getConsumedTimeline(days: Day[]): Array<{
       year,
       month,
       day: monthDay,
-      events
+      events: day.events
     }
   });
 }

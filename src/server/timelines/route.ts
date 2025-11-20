@@ -286,7 +286,7 @@ function addUpdates(map: FileTimelineMap): void {
         map.pushCrumbChange('play/v2/content/global', route, info, update.date, update.end);
       });
     }
-    if (update.update.iglooList !== undefined && update.update.iglooList !== true) {
+    if (update.update.iglooList !== undefined && update.update.iglooList !== true && typeof update.update.iglooList !== 'string') {
       const route = 'play/v2/content/global/content/igloo_music.swf';
       if ('file' in update.update.iglooList) {
         map.add(route, update.update.iglooList.file, update.date);

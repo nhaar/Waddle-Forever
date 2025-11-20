@@ -22,6 +22,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-01-08',
+    miscComments: ['A rockslide appears in the Mine'],
     stagePlay: {
       name: 'Fairy Fables',
       costumeTrunk: 'archives:Jan10Stage.swf'
@@ -35,6 +36,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-01-15',
+    miscComments: ['The rockslide in the Mine progresses'],
     rooms: {
       mine: 'archives:RoomsMine-Rockslide2.swf'
     }
@@ -3516,7 +3518,12 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-12-18',
+    miscComments: ['The lighthouse has more coins (stage 2)']
+  },
+  {
     date: '2010-12-20',
+    miscComments: ['The lighthouse has more coins (stage 3)', 'The Stadium Games event ends'],
     temp: {
       party: {
         rooms: {
@@ -3535,6 +3542,10 @@ export const UPDATES_2010: Update[] = [
     map: 'archives:Map2008-2011Rink.swf',
     sportCatalog: 'archives:December10Sport.swf',
     roomComment: 'The Ice Rink returns'
+  },
+  {
+    date: '2010-12-22',
+    miscComments: ['The lighthouse has more coins (stage 4)']
   },
   {
     date: '2010-12-28',
