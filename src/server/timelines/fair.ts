@@ -1,11 +1,9 @@
-import { VersionsTimeline } from "../game-data";
+import { newVersionsTimeline } from ".";
 import { isGreaterOrEqual } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
 import { MODERN_AS3, START_DATE } from "./dates";
 
-export function getFairTimeline() {
-  const timeline = new VersionsTimeline<boolean>();
-
+export const FAIR_TIMELINE = newVersionsTimeline<boolean>((timeline) => {
   timeline.add({
     date: START_DATE,
     info: false
@@ -20,6 +18,4 @@ export function getFairTimeline() {
       });
     }
   });
-
-  return timeline.getVersions();
-}
+});

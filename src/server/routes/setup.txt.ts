@@ -1,7 +1,7 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { START_DATE } from "../timelines/dates";
-import { getRoomFrameTimeline } from "../timelines/frame";
+import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
 import { getMigratorTimeline } from "../timelines/migrator";
 import { getMusicTimeline } from "../timelines/music";
@@ -9,8 +9,6 @@ import { UPDATES } from "../updates/updates";
 import { Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
-
-const frameTimeline = getRoomFrameTimeline();
 
 const migratorTimeline = getMigratorTimeline();
 
@@ -44,7 +42,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
   musicTimeline.forEach((versions, room) => {
     roomMusic[room] = findInVersion(date, versions);
   });
-  frameTimeline.forEach((versions, room) => {
+  ROOM_FRAME_TIMELINE.forEach((versions, room) => {
     frames[room] = findInVersion(date, versions);
   });
 

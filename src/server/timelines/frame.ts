@@ -1,13 +1,11 @@
-import { TimelineMap } from "../game-data";
+import { newTimelineMap } from ".";
+import { addRecordToMap } from "../game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
 import { START_DATE } from "./dates";
 import { PIN_TIMELINE } from "./pins";
 
-export function getRoomFrameTimeline() {
-  const timeline = new TimelineMap<RoomName, number>();
-
+export const ROOM_FRAME_TIMELINE = newTimelineMap<RoomName, number>((timeline) => {
   // adding defaults
   // TODO, not fond of design?
   Object.keys(ROOMS).forEach((room) => {
@@ -20,18 +18,9 @@ export function getRoomFrameTimeline() {
     }
   });
 
-  const addRoomFrames = (frames: Partial<Record<RoomName, number>>, start: Version, end: Version) => {
-    Object.entries(frames).forEach((pair) => {
-      const [room, frame] = pair;
-      timeline.add(room as RoomName, frame, start, end);
-    })
-  }
-
   UPDATES.forEach(update => {
     if (update.update.frames !== undefined && update.end !== undefined) {
-      addRoomFrames(update.update.frames, update.date, update.end);
+      addRecordToMap(timeline, update.update.frames, update.date, update.end);
     }
   });
-
-  return timeline.getVersionsMap();
-}
+});

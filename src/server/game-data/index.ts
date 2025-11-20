@@ -1,3 +1,4 @@
+import { iterateEntries } from "../../common/utils";
 import { isEqual, isLower, Version } from "../routes/versions"
 import { FileRef } from "./files";
 
@@ -479,4 +480,10 @@ export class TimelineMap<Key, EventInformation> {
 
     return map;
   }
+}
+
+export function addRecordToMap<Key extends string, EventInformation>(map: TimelineMap<Key, EventInformation>, record: Partial<Record<Key, EventInformation>>, date: Version, end?: Version): void {
+  iterateEntries(record, (key, info) => {
+    map.add(key, info, date, end);
+  });
 }

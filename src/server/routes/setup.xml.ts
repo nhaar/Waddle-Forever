@@ -1,15 +1,13 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { START_DATE } from "../timelines/dates";
-import { getRoomFrameTimeline } from "../timelines/frame";
+import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
 import { getMusicTimeline } from "../timelines/music";
 import { NEWSPAPER_TIMELINE, FAN_ISSUE_DATE } from "../timelines/newspapers";
 import { Version } from "./versions";
 
 const musicTimeline = getMusicTimeline();
-
-const frameTimeline = getRoomFrameTimeline();
 
 type OldRoom = {
   roomName: RoomName
@@ -78,7 +76,7 @@ export function getSetupXml(version: Version, ip: string, port: number) {
     patchMusic(rooms, { [room]: findInVersion(version, versions) });
   });
 
-  frameTimeline.forEach((versions, room) => {
+  ROOM_FRAME_TIMELINE.forEach((versions, room) => {
     patchFrame(rooms, { [room]: findInVersion(version, versions) });
   });
 

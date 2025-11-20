@@ -1,4 +1,4 @@
-import { findInVersion, VersionsMap, VersionsTimeline, VersionsInformation } from "../game-data";
+import { findInVersion, VersionsMap, VersionsTimeline, VersionsInformation, TimelineMap } from "../game-data";
 import { Version } from "../routes/versions";
 
 export function getMapForDate<Key extends string | number, Value>(map: VersionsMap<Key, Value>, date: Version): Partial<Record<Key, Value>> {
@@ -13,4 +13,10 @@ export function newVersionsTimeline<T>(callback: (timeline: VersionsTimeline<T>)
   const timeline = new VersionsTimeline<T>();
   callback(timeline);
   return timeline.getVersions();
+}
+
+export function newTimelineMap<Key, T>(callback: (timeline: TimelineMap<Key, T>) => void): Map<Key, VersionsInformation<T>> {
+  const timeline = new TimelineMap<Key, T>();
+  callback(timeline);
+  return timeline.getVersionsMap();
 }
