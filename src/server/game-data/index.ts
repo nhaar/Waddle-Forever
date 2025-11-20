@@ -424,7 +424,7 @@ export class VersionsTimeline<EventInformation> {
     this._eventsTimeline.push(event);
   }
 
-  addInfo(info: EventInformation, date: Version, end: Version | undefined) {
+  addInfo(info: EventInformation, date: Version, end?: Version | undefined) {
     if (end === undefined) {
       this.add({
         date,

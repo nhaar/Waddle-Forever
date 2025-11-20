@@ -1522,6 +1522,7 @@ export const UPDATES_2011: Update[] = [
     temp: {
       party2: {
         partyName: 'Battle of Doom',
+        battleOp: 'battle-of-doom',
         rooms: {
           village: 'archives:BattleofDoomVillage.swf',
           agentlobbysolo: 'archives:BattleofDoomAgentlobbysolo.swf',

@@ -74,6 +74,8 @@ export type WorldStamp = {
   declarations: AchievementCode[];
 }
 
+export type PartyOp = 'battle-of-doom';
+
 export type CPUpdate = {
   map?: FileRef;
   /** True if this update is the first seasonal pin ever */
@@ -143,6 +145,8 @@ export type CPUpdate = {
 
   indexHtml?: string;
   websiteFolder?: string;
+
+  battleOp?: PartyOp;
 
   /**
    * For a scavenger hunt in the 2007-2008 client,
