@@ -1536,6 +1536,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'telescope/bottle.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'furniture_dec06.swf',
+      comment: 'Made by Doubleuman, un-guided the hatch layers from fla'
     }
   ],
   [MOD]: [

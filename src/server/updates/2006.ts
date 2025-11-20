@@ -717,7 +717,8 @@ export const UPDATES_2006: Update[] = [
           plaza: 'archives:ArtworkRoomsPlaza42.swf'
         }
       }
-    }
+    },
+    furnitureCatalog: 'recreation:furniture_dec06.swf'
   },
   {
     date: '2006-12-19',

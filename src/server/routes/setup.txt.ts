@@ -83,7 +83,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 &clothing=&
 &sport=0711&
 &hair=0710&
-&furniture=0712&
+&furniture=&
 &upgrade=0712&
 &adopt=0711&
 &pets=0711&
