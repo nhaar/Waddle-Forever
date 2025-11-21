@@ -1540,6 +1540,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'furniture_dec06.swf',
       comment: 'Made by Doubleuman, un-guided the hatch layers from fla'
+    },
+    {
+      file: 'fireworks_2006/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'icebergwithfireworkswithcollision_01_01_2007.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
