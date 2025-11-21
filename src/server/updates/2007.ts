@@ -5,7 +5,7 @@ export const UPDATES_2007: Update[] = [
     date: '2007-01-01',
     temp: {
       party: {
-        update: 'The iceberg collision has been fixed',
+        update: 'The Iceberg's collision is fixed',
         rooms: {
           berg: 'recreation:icebergwithfireworkswithcollision_01_01_2007.swf'
         }
