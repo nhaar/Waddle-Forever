@@ -634,6 +634,7 @@ export const UPDATES_2006: Update[] = [
     temp: {
       party: {
         partyName: 'Halloween Party',
+        partyIcon: 'halloween',
         rooms: {
           attic: 'recreation:halloween_2006/attic.swf',
           pizza: 'recreation:halloween_2006/pizza.swf',

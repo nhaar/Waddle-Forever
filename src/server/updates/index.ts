@@ -193,10 +193,12 @@ export type CPUpdate = {
 } & ({
   partyName: string;
   decorated?: false;
+  partyIcon?: FileRef;
 } | {
   partyStart: string;
   partyEnd: string;
   decorated?: false;
+  partyIcon?: FileRef;
 } | {
   update: string;
 } | {});

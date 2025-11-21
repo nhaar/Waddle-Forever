@@ -2002,6 +2002,7 @@ export const UPDATES_2008: Update[] = [
     temp: {
       party: {
         partyName: 'Halloween Party',
+        partyIcon: 'halloween',
         rooms: {
           beach: 'archives:HPBeach.swf',
           beacon: 'archives:HPBeacon.swf',

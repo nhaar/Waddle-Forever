@@ -1590,6 +1590,7 @@ export const UPDATES_2009: Update[] = [
     temp: {
       party2: {
         partyName: 'Halloween Party',
+        partyIcon: 'halloween',
         rooms: {
           mtn: 'archives:HalloweenParty2010SkiHill.swf',
           beach: 'archives:HalloweenParty2009RoomsBeach.swf',

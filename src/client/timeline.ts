@@ -109,11 +109,12 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, 'The migrator visits the island', 'migrator');
     }
     if (update.end !== undefined) {
+      const icon = ('partyIcon' in update.update && update.update.partyIcon !== undefined) ? update.update.partyIcon : 'party';
       if ('partyName' in update.update) {
-        addEvent(map, update.date, `The ${update.update.partyName} starts`, 'party', update.update.decorated === false ? undefined : 'start');
+        addEvent(map, update.date, `The ${update.update.partyName} starts`, icon, update.update.decorated === false ? undefined : 'start');
         addEvent(map, update.end, `The ${update.update.partyName} ends`, 'party', update.update.decorated === false ? undefined :'end');
       } else if ('partyStart' in update.update) {
-        addEvent(map, update.date, update.update.partyStart, 'party', update.update.decorated === false ? undefined :'start');
+        addEvent(map, update.date, update.update.partyStart, icon, update.update.decorated === false ? undefined :'start');
         addEvent(map, update.end, update.update.partyEnd, 'party', update.update.decorated === false ? undefined :'end');
       } else if ('update' in update.update) {
         addEvent(map, update.date, update.update.update, 'party');
