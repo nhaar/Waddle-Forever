@@ -738,5 +738,16 @@ export const UPDATES_2006: Update[] = [
     rooms: {
       attic: 'recreation:attic_dec2006.swf'
     }
+  },
+  {
+    date: '2006-12-31',
+    temp: {
+      party: {
+        partyName: 'New Year Fireworks',
+        rooms: {
+          berg: 'recreation:fireworks_2006/berg.swf'
+        }
+      },
+    }
   }
 ];
