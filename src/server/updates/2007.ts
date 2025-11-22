@@ -202,6 +202,13 @@ export const UPDATES_2007: Update[] = [
     end: ['party']
   },
   {
+    date: '2007-03-26',
+    miscComments: ['The third secret agent mission is released'],
+    fileChanges: {
+      'artwork/tools/missions.swf': 'recreation:forms_missions/m3.swf'
+    }
+  },
+  {
     date: '2007-03-30',
     temp: {
       party: {
@@ -434,6 +441,13 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-08-02',
     clothingCatalog: 'archives:August2007PenguinStyle.swf'
+  },
+  {
+    date: '2007-08-07',
+    miscComments: ['The fourth secret agent mission is released'],
+    fileChanges: {
+      'artwork/tools/missions.swf': 'archives:ArtworkToolsMissions4.swf'
+    }
   },
   {
     date: '2007-08-24',

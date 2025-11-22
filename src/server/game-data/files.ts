@@ -1548,6 +1548,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'town_newyear.swf',
       comment: 'Made by Doubleuman, took the chat291 fix version and then fixed the laytering issue'
+    },
+    {
+      file: 'forms_missions/m3.swf',
+      comment: 'Made by Cyan, removed m4 from the m4 form'
     }
   ],
   [MOD]: [

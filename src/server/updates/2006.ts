@@ -482,9 +482,13 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
+    miscComments: ['The first secret agent mission is released'],
     rooms: {
       // placeholder HQ update for the PSA missions
       agent: 'archives:ArtworkRoomsAgent40.swf'
+    },
+    fileChanges: {
+      'artwork/tools/missions.swf': 'archives:ArtworkToolsMissions1.swf'
     }
   },
   {
@@ -694,7 +698,11 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-11-27',
-    end: ['party']
+    end: ['party'],
+    miscComments: ['The second secret agent mission is released'],
+    fileChanges: {
+      'artwork/tools/missions.swf': 'archives:ArtworkToolsMissions2.swf'
+    }
   },
   {
     date: '2006-12-01',
