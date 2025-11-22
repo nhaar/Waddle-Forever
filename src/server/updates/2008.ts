@@ -2094,7 +2094,8 @@ export const UPDATES_2008: Update[] = [
         partyEnd: 'The fireworks celebration ends',
         decorated: false,
         rooms: {
-          mtn: 'recreation:mtn_fireworks.swf'
+          mtn: 'recreation:mtn_fireworks.swf',
+          berg: 'archives:2010newyearfireworksiceberg.swf'
         }
       }
     }
@@ -2551,6 +2552,15 @@ export const UPDATES_2008: Update[] = [
     },
     roomComment: 'Snow is stored in the Attic',
     temp: {
+      party2: {
+        partyStart: 'A fireworks celebration begins at the Iceberg and Ski Hill',
+        partyEnd: 'The fireworks celebration ends',
+        decorated: false,
+        rooms: {
+          mtn: 'recreation:mtn_fireworks.swf',
+          berg: 'archives:2010newyearfireworksiceberg.swf'
+        }
+      },
       'attic-snow': {
         rooms: {
           attic: 'recreation:attic_dec08.swf'

@@ -7,7 +7,8 @@ export const UPDATES_2009: Update[] = [
     roomComment: 'The Big Wigs Catalog is merged with the Penguin Style',
     rooms: {
       shop: 'archives:RoomsShop.swf'
-    }
+    },
+    end: ['party2']
   },
   {
     date: '2009-01-09',
