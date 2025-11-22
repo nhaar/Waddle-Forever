@@ -1742,7 +1742,7 @@ export const UPDATES_2008: Update[] = [
     }
   },
   {
-    date: '2008-09-30',
+    date: '2008-09-29',
     temp: {
       party: {
         update: 'The plaza was decorated',
