@@ -1962,6 +1962,17 @@ export const UPDATES_2008: Update[] = [
     migrator: 'archives:RHRIOct2008.swf'
   },
   {
+    date: '2008-10-22',
+    miscComments: ['A storm is approaching and visible from the Cove'],
+    temp: {
+      event: {
+        fileChanges: {
+          'play/v2/content/global/binoculars/empty.swf': 'archives:Storm_on_horizon.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2008-10-24',
     miscComments: ['The start screen is updated with the introduction of Unlock Items Online'],
     fileChanges: {
@@ -1999,6 +2010,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-10-28',
+    end: ['event'],
     temp: {
       party: {
         partyName: 'Halloween Party',
