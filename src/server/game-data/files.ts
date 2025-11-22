@@ -1560,6 +1560,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'clocktower.swf',
       comment: 'Made by Doubleuman, the pre-cpip clock tower'
+    },
+    {
+      file: 'membership_inventory.swf',
+      comment: 'Made by lifeofgames477, the first post-cpip membership lock for the inventory'
     }
   ],
   [MOD]: [
