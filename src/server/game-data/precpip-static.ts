@@ -144,4 +144,5 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/quests/global/rooms/conclusion.swf': 'slegacy:media/play/v2/games/quests/q4/common/rooms/conclusion.swf',
   'games/quests/global/rooms/conclusion2.swf': 'slegacy:media/play/v2/games/quests/q4/common/rooms/conclusion.swf',
   'games/quests/global/rooms/conclusion3.swf': 'archives:GamesQuestsGlobalRoomsConclusion3.swf',
+  'artwork/help/clocktower.swf': 'recreation:clocktower.swf'
 };

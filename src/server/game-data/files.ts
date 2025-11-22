@@ -1556,6 +1556,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'mtn_fireworks.swf',
       comment: 'Made by Blue Kirby, removed game upgrades'
+    },
+    {
+      file: 'clocktower.swf',
+      comment: 'Made by Doubleuman, the pre-cpip clock tower'
     }
   ],
   [MOD]: [
