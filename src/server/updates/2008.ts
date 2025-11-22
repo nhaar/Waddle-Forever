@@ -1437,7 +1437,8 @@ export const UPDATES_2008: Update[] = [
           village: 'archives:PGSkiVillage.swf',
           forts: 'archives:RoomsForts-PenguinGames.swf',
           sport: 'archives:PGSportShop.swf',
-          town: 'archives:RoomsTown-PenguinGames.swf'
+          town: 'archives:RoomsTown-PenguinGames.swf',
+          pitch: 'archives:RoomsRink-PenguinGames.swf'
         },
         music: {
           beach: 213,
