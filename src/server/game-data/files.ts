@@ -1552,6 +1552,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'forms_missions/m3.swf',
       comment: 'Made by Cyan, removed m4 from the m4 form'
+    },
+    {
+      file: 'mtn_fireworks.swf',
+      comment: 'Made by Blue Kirby, removed game upgrades'
     }
   ],
   [MOD]: [

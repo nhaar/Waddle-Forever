@@ -2087,7 +2087,21 @@ export const UPDATES_2008: Update[] = [
     }
   },
   {
+    date: '2008-11-05',
+    temp: {
+      party: {
+        partyStart: 'A fireworks celebration begins at the Ski Hill',
+        partyEnd: 'The fireworks celebration ends',
+        decorated: false,
+        rooms: {
+          mtn: 'recreation:mtn_fireworks.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2008-11-07',
+    end: ['party'],
     clothingCatalog: 'archives:CatNov2008.swf',
     hairCatalog: 'archives:NovWigs.swf'
   },
