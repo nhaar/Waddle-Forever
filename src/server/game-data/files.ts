@@ -205,10 +205,6 @@ would need to investigated`
       comment: 'Removed domain check'
     },
     {
-      file: 'ArtworkRoomsTown-newyears.swf',
-      comment: 'Chat291.swf compatibility fixes'
-    },
-    {
       file: 'ArtworkRoomsForts.swf',
       comment: 'Chat291.swf compatibility fixes'
     }
@@ -1546,8 +1542,12 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
-      file: 'icebergwithfireworkswithcollision_01_01_2007.swf',
+      file: 'fireworks_2006/berg_collision.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'town_newyear.swf',
+      comment: 'Made by Doubleuman, took the chat291 fix version and then fixed the laytering issue'
     }
   ],
   [MOD]: [

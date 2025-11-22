@@ -743,7 +743,9 @@ export const UPDATES_2006: Update[] = [
     date: '2006-12-31',
     temp: {
       party: {
-        partyName: 'New Year Fireworks',
+        partyStart: 'A New Year\'s celebration is held at the Iceberg',
+        partyEnd: 'The fireworks celebration ends',
+        decorated: false,
         rooms: {
           berg: 'recreation:fireworks_2006/berg.swf'
         }

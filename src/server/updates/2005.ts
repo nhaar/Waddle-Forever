@@ -242,7 +242,7 @@ export const UPDATES_2005: Update[] = [
         partyEnd: 'The fireworks end',
         decorated: false,
         rooms: {
-          town: 'fix:ArtworkRoomsTown-newyears.swf'
+          town: 'recreation:town_newyear.swf'
         }
       }
     }
