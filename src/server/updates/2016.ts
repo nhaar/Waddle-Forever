@@ -46,6 +46,12 @@ export const UPDATES_2016: Update[] = [
       'content/map_triggers.json': 'svanilla:media/play/v2/content/global/content/map_triggers.json',
       'content/interface.swf': 'svanilla:media/play/v2/content/global/content/interface.swf'
     },
+    localChanges: {
+      // placeholder broken swf, this is from maybe 2015
+      'books/year0506.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/books/year0506.swf'
+      }
+    },
     fileChanges: {
       'play/v2/client/shell.swf': 'svanilla:media/play/v2/client/shell.swf',
       'play/v2/client/engine.swf': 'svanilla:media/play/v2/client/engine.swf'

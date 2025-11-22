@@ -192,7 +192,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/books/tales07.swf': 'slegacy:media/play/v2/content/local/en/books/tales07.swf',
   'play/v2/content/local/en/books/tales08.swf': 'slegacy:media/play/v2/content/local/en/books/tales08.swf',
   'play/v2/content/local/en/books/tales09.swf': 'slegacy:media/play/v2/content/local/en/books/tales09.swf',
-  'play/v2/content/local/en/books/year0506.swf': 'slegacy:media/play/v2/content/local/en/books/year0506.swf',
+  'play/v2/content/local/en/books/year0506.swf': 'archives:Yearbook0506.swf',
   'play/v2/content/local/en/books/year0607.swf': 'slegacy:media/play/v2/content/local/en/books/year0607.swf',
   'play/v2/content/local/en/books/year0708.swf': 'slegacy:media/play/v2/content/local/en/books/year0708.swf',
   'play/v2/content/local/en/books/year0809.swf': 'slegacy:media/play/v2/content/local/en/books/year0809.swf',
