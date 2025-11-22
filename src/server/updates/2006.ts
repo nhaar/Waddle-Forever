@@ -5,6 +5,8 @@ export const UPDATES_2006: Update[] = [
     date: '2006-01-01',
     clothingCatalog: 'archives:Clothing_0601.swf',
     end: ['party'],
+    indexHtml: 'old-precpip',
+    websiteFolder: 'old',
     rooms: {
       // it is unknown when the mountain was renovated to have ski animations
       mtn: 'mammoth:artwork/rooms/mtn10.swf'

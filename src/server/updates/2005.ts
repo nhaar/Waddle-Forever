@@ -82,8 +82,8 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-09-22',
     end: ['party'],
-    websiteFolder: 'old',
-    indexHtml: 'old-precpip'
+    websiteFolder: '2005-release',
+    indexHtml: '2005-release'
   },
   {
     date: '2005-10-24',
@@ -177,6 +177,11 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-11-21',
     newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-24',
+    indexHtml: '2005-11-24',
+    websiteFolder: '2005-11-24'
   },
   {
     date: '2005-12-01',
