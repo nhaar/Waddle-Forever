@@ -625,6 +625,11 @@ export const UPDATES_2008: Update[] = [
       pizza: 'recreation:pizza_2008.swf'
     }
   },
+  { 
+    date: '2008-04-15',
+    indexHtml: '2008-04-15',
+    websiteFolder: '2008-04-15'
+  },
   {
     date: '2008-04-17',
     miscComments: ['Rockhopper is spotted through the telescope'],
