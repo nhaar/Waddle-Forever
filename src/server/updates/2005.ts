@@ -82,8 +82,8 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-09-22',
     end: ['party'],
-    websiteFolder: '2005-release',
-    indexHtml: '2005-release'
+    websiteFolder: '2005-10-26',
+    indexHtml: '2005-10-26'
   },
   {
     date: '2005-10-24',
