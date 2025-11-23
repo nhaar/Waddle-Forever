@@ -1564,6 +1564,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'membership_inventory.swf',
       comment: 'Made by lifeofgames477, the first post-cpip membership lock for the inventory'
+    },
+    {
+      file: 'agent1.swf',
+      comment: 'Made by Randomno'
     }
   ],
   [MOD]: [

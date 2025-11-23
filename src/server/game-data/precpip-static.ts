@@ -146,5 +146,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/quests/global/rooms/conclusion3.swf': 'archives:GamesQuestsGlobalRoomsConclusion3.swf',
   'artwork/help/clocktower.swf': 'recreation:clocktower.swf',
   'play/v2/content/local/en/membership/inventory_equip.swf': 'recreation:membership_inventory.swf',
-  'edit/edit9.swf': 'archives:EditEdit8.swf'
+  'edit/edit9.swf': 'archives:EditEdit8.swf',
+  'artwork/forms/agent1.swf': 'recreation:agent1.swf'
 };
