@@ -1568,6 +1568,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'agent1.swf',
       comment: 'Made by Randomno'
+    },
+    {
+      file: 'chat339_instrument_hunt.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

@@ -408,6 +408,9 @@ export const UPDATES_2006: Update[] = [
           'village': 'archives:ArtworkRooms0721Village12.swf',
           'pet': 'archives:ArtworkRooms0721Pet11.swf',
           'pizza': 'archives:ArtworkRooms0721Pizza13.swf'
+        },
+        fileChanges: {
+          'chat339.swf': 'recreation:chat339_instrument_hunt.swf'
         }
       }
     }
