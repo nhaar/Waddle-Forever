@@ -1,7 +1,7 @@
 import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
 import { RoomName } from "../game-data/rooms";
-import { StageName, StageScript } from "../game-data/stage-plays";
+import { getStagePlayMusic, StageName, StageScript, STAGE_PLAYS } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
@@ -286,6 +286,12 @@ export function consumeUpdates(updates: Update[]): Array<{
     }
     if (update.stagePlay !== undefined) {
       if (stagePlay !== undefined) {
+        // exceptional play that plays music in a different room
+        if (stagePlay.name === 'Norman Swarm Has Been Transformed') {
+          stagePlay.update.music = {
+            party1: getStagePlayMusic(stagePlay.name)
+          }
+        }
         consumed.push({
           ...stagePlay,
           end: update.date 

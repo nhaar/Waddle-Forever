@@ -105,3 +105,7 @@ export const STAGE_PLAYS: Array<{
     musicId: 255
   }
 ];
+
+export function getStagePlayMusic(name: StageName): number {
+  return STAGE_PLAYS.find((stage) => stage.name === name)?.musicId ?? 0;
+}
