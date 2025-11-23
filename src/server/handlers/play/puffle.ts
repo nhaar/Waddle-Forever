@@ -5,8 +5,8 @@ import { Client } from "../../../server/client";
 import { choose, randomInt } from "../../../common/utils";
 import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
-import { isLower, isLowerOrEqual } from "../../../server/routes/versions";
-import { Update } from "../../../server/game-data/updates";
+import { BROWN_PUFFLE_TIMELINE } from "../../../server/timelines/puffles";
+import { findInVersion } from "../../../server/game-data";
 
 const handler = new Handler()
 
@@ -406,7 +406,7 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   }
   let cost = 800;
 
-  if (isLowerOrEqual(Update.WILDERNESS_EXPEDITION_START, client.version) && isLower(client.version, Update.WILDERNESS_EXPEDITION_END) && puffleType == 9) { // free brown puffle
+  if (puffleType == 9 && findInVersion(client.version, BROWN_PUFFLE_TIMELINE)) { // free brown puffle
     cost = 0;
   }
 

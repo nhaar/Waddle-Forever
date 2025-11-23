@@ -164,6 +164,21 @@ class JsonDatabase {
     }
   }
 
+  private migrate_1_3_0() {
+    const penguinsDir = path.join(DATABASE_DIRECTORY, 'penguins')
+    const penguins = fs.readdirSync(penguinsDir)
+    for (const penguin of penguins) {
+      if (penguin.match(/\d+\.json/) !== null) {
+        const penguinDir = path.join(penguinsDir, penguin)
+        const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
+
+        content.virtualRegistrationTimestamp = content.registration_date;
+
+        fs.writeFileSync(penguinDir, JSON.stringify(content))
+      }
+    }
+  }
+
   private migrateVersion(version: string): string {
     switch (version) {
       case '0.2.0':
@@ -200,6 +215,9 @@ class JsonDatabase {
       case '1.2.2':
         this.migrate_1_2_2();
         return '1.3.0';
+      case '1.3.0':
+        this.migrate_1_3_0();
+        return '1.3.1';
       default:
         throw new Error('Invalid database version: ' + version);
     }
@@ -405,6 +423,7 @@ export interface PenguinData {
   background: number
   coins: number
   registration_date: number
+  virtualRegistrationTimestamp: number
   minutes_played: number,
   // these records act as hash sets
   inventory: number[],

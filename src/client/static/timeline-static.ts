@@ -32,7 +32,7 @@ function getDescription(version: DateInfo): string {
       ${version.events.map((item) => {
         return `
         <div class="event-description-listing">
-          <img class="day-icon" src="${EVENT_IMAGE_MAP[item.type]}" />
+          <img class="day-icon" src="${item.image}.png" />
           <div class="event-description">
             ${item.text}
           </div>
@@ -56,26 +56,10 @@ function setSelectElements(month: number, year: number) {
   yearElement.value = String(year);
 }
 
-enum EventType {
-  PartyStart,
-  PartyEnd,
-  PartyUpdate,
-  Newspaper,
-  Room,
-  Construction,
-  PenguinStyle,
-  FurnitureCatalog,
-  MusicList,
-  Stage,
-  Game,
-  Pin,
-  Migrator,
-  Other
-};
-
 type Event = {
   text: string;
-  type: EventType
+  image: string
+  party?: 'start' | 'end'
 };
 
 /** Basic unit of information about a singular day in the timeline */
@@ -106,26 +90,6 @@ function getDateInfo(dateStr: string) : {
     day
   };
 }
-
-const OTHER_ELEMENT = 'other.png';
-const PARTY_ELEMENT = 'party.png';
-
-const EVENT_IMAGE_MAP: Record<EventType, string> = {
-  [EventType.PartyStart]: PARTY_ELEMENT,
-  [EventType.PartyEnd]: PARTY_ELEMENT,
-  [EventType.Newspaper]: 'news.png',
-  [EventType.Other]: OTHER_ELEMENT,
-  [EventType.Room]: 'room.png',
-  [EventType.Construction]: 'const.png',
-  [EventType.FurnitureCatalog]: 'furniture.png',
-  [EventType.MusicList]: 'music.png',
-  [EventType.Stage]: 'stage.png',
-  [EventType.Game]: 'game.png',
-  [EventType.PartyUpdate]: PARTY_ELEMENT,
-  [EventType.Pin]: 'pin.png',
-  [EventType.PenguinStyle]: 'style.png',
-  [EventType.Migrator]: 'migrator.png'
-};
 
 function getDateElement({ day, year, month, events, selected, inParty }: DateInfo,
   left: DateInfo | undefined,
@@ -169,25 +133,24 @@ function getDateElement({ day, year, month, events, selected, inParty }: DateInf
     classes.push('non-party-day');
   }
 
-  const icons = new Set<string>();
+  const sideIcons = new Set<string>();
 
   for (const event of events) {
-    const iconName = EVENT_IMAGE_MAP[event.type];
-    icons.add(iconName);
+    sideIcons.add(event.image);
   }
 
   let iconsArray: string[] = [];
   // preventing overflowing
-  if (icons.size <= 4) {
-    iconsArray = Array.from(icons.values());
+  if (sideIcons.size <= 4) {
+    iconsArray = Array.from(sideIcons.values());
   } else {
-    iconsArray = Array.from(icons.values()).filter((element) => element !== OTHER_ELEMENT).slice(0, 3);
-    iconsArray.push(OTHER_ELEMENT);
+    iconsArray = Array.from(sideIcons.values()).filter((element) => element !== 'other').slice(0, 3);
+    iconsArray.push('other');
   }
 
   const imageElements = iconsArray.map((imageName) => `
     <div class="image-container">
-      <img src="${imageName}" class="day-icon" />
+      <img src="${imageName}.png" class="day-icon" />
     </div>`);
 
   while (imageElements.length < 4) {
@@ -296,13 +259,13 @@ function createCalendar(
       daysToUse.push(dateInfoOfDate);
     } else {
       let dayDateInfo = day;
-      dayDateInfo.events.forEach((e) => {
-        if (e.type === EventType.PartyStart) {
+      dayDateInfo.events.forEach(e => {
+        if (e.party === 'start') {
           partyCount++;
-        } else if (e.type === EventType.PartyEnd) {
+        } else if (e.party === 'end') {
           partyCount--;
         }
-      })
+      });
       dayDateInfo = { ...dayDateInfo, inParty: partyCount > 0 };
       if (dateStr === currentVersion) {
         dayDateInfo = { ...dayDateInfo, selected: true };

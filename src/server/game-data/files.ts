@@ -205,10 +205,6 @@ would need to investigated`
       comment: 'Removed domain check'
     },
     {
-      file: 'ArtworkRoomsTown-newyears.swf',
-      comment: 'Chat291.swf compatibility fixes'
-    },
-    {
       file: 'ArtworkRoomsForts.swf',
       comment: 'Chat291.swf compatibility fixes'
     }
@@ -1107,7 +1103,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'lost_map_hunt/chat506_edit.swf',
-      comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work'
+      comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work. Later, added the code for PORTs and IPs'
     },
     {
       file: 'cove_cpip_firework_rocket_pin.swf',
@@ -1307,10 +1303,6 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'forms_missions/m9.swf',
-      comment: 'Made by Blue Kirby'
-    },
-    {
-      file: 'forms_missions/m10.swf',
       comment: 'Made by Blue Kirby'
     },
     {
@@ -1524,6 +1516,58 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_hunt_beach_no_pin.swf',
       comment: 'Made by ItzAle, removed the pin from the room'
+    },
+    {
+      file: 'halloween_2006/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'furniture_sep05.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'telescope/far_halloween.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'telescope/bottle.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'furniture_dec06.swf',
+      comment: 'Made by Doubleuman, un-guided the hatch layers from fla'
+    },
+    {
+      file: 'fireworks_2006/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'fireworks_2006/berg_collision.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'town_newyear.swf',
+      comment: 'Made by Doubleuman, took the chat291 fix version and then fixed the laytering issue'
+    },
+    {
+      file: 'forms_missions/m3.swf',
+      comment: 'Made by Cyan, removed m4 from the m4 form'
+    },
+    {
+      file: 'mtn_fireworks.swf',
+      comment: 'Made by Blue Kirby, removed game upgrades'
+    },
+    {
+      file: 'clocktower.swf',
+      comment: 'Made by Doubleuman, the pre-cpip clock tower'
+    },
+    {
+      file: 'membership_inventory.swf',
+      comment: 'Made by lifeofgames477, the first post-cpip membership lock for the inventory'
+    },
+    {
+      file: 'agent1.swf',
+      comment: 'Made by Randomno'
     }
   ],
   [MOD]: [

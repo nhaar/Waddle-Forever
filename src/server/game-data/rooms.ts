@@ -73,7 +73,8 @@ export type RoomName = 'town' |
   'party21' |
   'party22' |
   'party23' |
-  'party99';
+  'party99' |
+  'pitch';
 
 
 export type RoomMap<T> = Partial<Record<RoomName, T>>;
@@ -306,6 +307,11 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipName: null
   },
   'party': {
+    id: 850,
+    name: 'Party',
+    preCpipName: null
+  },
+  'pitch': {
     id: 850,
     name: 'Party',
     preCpipName: null

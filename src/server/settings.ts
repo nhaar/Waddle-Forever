@@ -76,7 +76,15 @@ export class SettingsManager {
   targetIP: string;
 
   /** HTTP port used by the server, undefined if default */
-  targetPort: number;
+  private _targetPort: number | undefined;
+
+  set targetPort(port: number | undefined) {
+    this._targetPort = port;
+  }
+
+  get targetPort(): number {
+    return this._targetPort ?? HTTP_PORT;
+  }
 
   constructor () {
     let settingsJson: any = {};

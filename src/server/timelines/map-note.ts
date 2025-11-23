@@ -1,24 +1,20 @@
-import { VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
-import { Update } from "../game-data/updates";
+import { newVersionsTimeline } from ".";
+import { UPDATES } from "../updates/updates";
+import { START_DATE } from "./dates";
 
-export function getMapNoteTimeline() {
-  const timeline = new VersionsTimeline<boolean>();
-
+export const MAP_NOTE_TIMELINE = newVersionsTimeline<boolean>(timeline => {
   timeline.add({
-    date: Update.BETA_RELEASE,
+    date: START_DATE,
     info: false
   });
-
-  PARTIES.forEach((party) => {
-    if (party.mapNote !== undefined) {
+  
+  UPDATES.forEach(update => {
+    if (update.update.mapNote !== undefined) {
       timeline.add({
-        date: party.date,
-        end: party.end,
+        date: update.date,
+        end: update.end,
         info: true
       });
     }
   });
-
-  return timeline.getVersions();
-}
+});

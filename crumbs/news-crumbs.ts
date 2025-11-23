@@ -1,28 +1,28 @@
 import path from 'path'
 import fs from 'fs'
 import { replacePcode } from '../src/common/ffdec/ffdec';
-import { isGreaterOrEqual, processVersion } from '../src/server/routes/versions';
+import { isGreaterOrEqual, processVersion, Version } from '../src/server/routes/versions';
 import { getMinifiedDate } from '../src/server/timelines/route';
 import { NEWS_CRUMBS_PATH } from '../src/server/timelines/crumbs';
-import { As2Newspaper, AS2_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS, AS3_NEWSPAPERS, As3Newspaper } from '../src/server/game-data/newspapers';
-import { Update } from '../src/server/game-data/updates';
 import { monthNames } from '../src/common/utils';
+import { NEWSPAPER_TIMELINE } from '../src/server/timelines/newspapers';
+import { CPIP_UPDATE, MODERN_AS3 } from '../src/server/timelines/dates';
 
-type LabeledAs2Newspaper = As2Newspaper & { type: 'as2' };
-type LabeledAs3Newspaper = As3Newspaper & { type: 'as3' };
-type Newspaper = LabeledAs2Newspaper | LabeledAs3Newspaper;
+type LabeledAs2Newspaper = { date: Version; title: string; type: 'as2' };
+type LabeledAs3Newspaper = { date: Version; title: string; type: 'as3' };
+type Newspaper = { date: Version; title: string; type: 'as3' | 'as2' };
 
 // number at the start is issue of the first
 // first newspaper is newest, last is oldest
 type NewsSet = [number, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper, Newspaper];
 
 /** Check if a newspaper is accessible after CPIP, the argument is the newspaper after it or undefined if it's the "last" newspaper */
-export function isNewspaperAfterCPIP(nextNewspaper: As2Newspaper | undefined) {
-  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, Update.CPIP_UPDATE);
+export function isNewspaperAfterCPIP(date: Version | undefined) {
+  return date === undefined || isGreaterOrEqual(date, CPIP_UPDATE);
 }
 
-function isNewspaperAfterJSON(nextNewspaper: As3Newspaper | undefined) {
-  return nextNewspaper === undefined || isGreaterOrEqual(nextNewspaper.date, Update.MODERN_AS3);
+function isNewspaperAfterJSON(date: Version | undefined) {
+  return date === undefined || isGreaterOrEqual(date, MODERN_AS3);
 }
 
 function getNewspaperMinifiedDate(news: Newspaper): string {
@@ -72,7 +72,7 @@ function generateNewsArrayAdd(main: number, index: number, newspaper: Newspaper)
   
   return `Push "news_crumbs"
 GetVariable
-Push ${index}, "key", "old_news${index}", "issue", "Issue:${main - 1 - index}", "date", "${getFullDate(newspaper)}", "title", "${newspaper.headline}", 4
+Push ${index}, "key", "old_news${index}", "issue", "Issue:${main - 1 - index}", "date", "${getFullDate(newspaper)}", "title", "${newspaper.title}", 4
 InitObject
 SetMember
 `
@@ -129,7 +129,7 @@ DefineLocal
 const currentThings: Array<(LabeledAs2Newspaper) | (LabeledAs3Newspaper)> = [];
 // this issue number should be first issue number in a boiler room -1, 
 // which matches with the length of this array
-let issueNumber = PRE_BOILER_ROOM_PAPERS.length;
+let issueNumber = 0;
 
 const BASE_NEWS_CRUMBS = path.join(__dirname, 'base_news_crumbs.swf');
 
@@ -161,8 +161,8 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
   }
 
   // only generate news crumbs for post CPIP
-  const canGenerate = (newspaper.type === 'as3' && !isNewspaperAfterJSON(AS3_NEWSPAPERS[index + 1])) || (
-    newspaper.type === 'as2' && isNewspaperAfterCPIP(AS2_NEWSPAPERS[index + 1])
+  const canGenerate = (newspaper.type === 'as3' && !isNewspaperAfterJSON(NEWSPAPER_TIMELINE[index + 1]?.date)) || (
+    newspaper.type === 'as2' && isNewspaperAfterCPIP(NEWSPAPER_TIMELINE[index + 1]?.date)
   );
 
   if (currentThings.length === 7 && canGenerate) {
@@ -191,16 +191,14 @@ export async function generateNewsCrumbsFiles(deletePrevious: boolean = false) {
       fs.unlinkSync(path.join(autoDir, file));
     })
   }
-  let i = 0;
-  for (const newspaper of AS2_NEWSPAPERS) {
-    await processNewspaper({ ...newspaper, type: 'as2' }, i);
-    i++;
-  }
-
-  i = 0;
-  for (const newspaper of AS3_NEWSPAPERS) {
-    await processNewspaper({ ...newspaper, type: 'as3' }, i);
-    i++
+  for (let j = 0; j < NEWSPAPER_TIMELINE.length; j++) {
+    const update = NEWSPAPER_TIMELINE[j];
+    if (typeof update.info !== 'string') {
+      const type = 'file' in update.info ? 'as2' : 'as3';
+      await processNewspaper({ date: update.date, title: update.info.title, type }, j);
+    } else {
+      issueNumber++;
+    }
   }
 
   if (!deletePrevious) {

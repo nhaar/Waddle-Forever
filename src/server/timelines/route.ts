@@ -1,35 +1,24 @@
 import { iterateEntries } from "../../common/utils";
-import { DateRefMap, IdRefMap, RouteRefMap, ComplexTemporaryUpdateTimeline, TimelineMap } from "../game-data";
+import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex, addRecordToMap } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
-import { Update } from "../game-data/updates";
 import path from "path";
-import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
-import { getSubUpdateDates } from ".";
-import { PARTIES, IslandChanges, RoomChanges, CrumbIndicator, LocalChanges } from "../game-data/parties";
-import { RoomName, ROOMS } from "../game-data/rooms";
+import { isLower, Version } from "../routes/versions";
+import { RoomName } from "../game-data/rooms";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
 import { MUSIC_IDS } from "../game-data/music";
 import { POSTCARD_IDS } from "../game-data/postcard";
-import { AS2_NEWSPAPERS, AS3_NEWSPAPERS, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
 import { getNewspaperName } from "../routes/news.txt";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { ORIGINAL_ROOMS } from "../game-data/release-features";
-import { ROOM_OPENINGS, ROOM_UPDATES, TEMPORARY_ROOM_UPDATES } from "../game-data/room-updates";
 import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
-import { STADIUM_UPDATES } from "../game-data/stadium-updates";
-import { STANDALONE_CHANGE, STANDALONE_TEMPORARY_CHANGE, STANDALONE_TEMPORARY_UPDATES, STANDALONE_UPDATES } from "../game-data/standalone-changes";
-import { MAP_UPDATES } from "../game-data/game-map";
-import { CPIP_CATALOGS, FURNITURE_CATALOGS, IGLOO_CATALOGS, PRE_CPIP_CATALOGS } from "../game-data/catalogues";
-import { STANDALONE_MIGRATOR_VISITS } from "../game-data/migrator-visits";
-import { PINS } from "../game-data/pins";
-import { IGLOO_LISTS } from "../game-data/igloo-lists";
-import { STAGE_TIMELINE } from "../game-data/stage-plays";
-import { PRE_CPIP_GAME_UPDATES } from "../game-data/games";
-import { getFileDateSignature } from "./clothing";
+import { UPDATES } from "../updates/updates";
+import { PIN_TIMELINE } from "./pins";
+import { NEWSPAPER_TIMELINE } from "./newspapers";
+import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
+import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -45,7 +34,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
   }
 
   addDefault(route: string, file: string): void {
-    this.add(route, file, Update.BETA_RELEASE);
+    this.add(route, file, START_DATE);
   }
 
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
@@ -60,51 +49,10 @@ class FileTimelineMap extends TimelineMap<string, string> {
     });
   }
 
-  addDateRefMap(route: string, dateMap: DateRefMap): void {
-    iterateEntries(dateMap, (date, fileRef) => {
-      this.add(route, fileRef, date);
-    });
-  }
-
-  addGameMapUpdate (fileRef: string, date: Version, end: Version | undefined = undefined): void {
-    if (isLower(date, Update.CPIP_UPDATE)) {
-      this.add('artwork/maps/island5.swf', fileRef, date, end);
-      // TODO would be best to only include the maps that end up factually being used
-      this.add('artwork/maps/16_forest.swf', fileRef, date, end);
-    } else {
-      this.add('play/v2/content/global/content/map.swf', fileRef, date, end);
-    }
-  }
-
-  addComplexTemporaryUpdateTimeline<UpdateInfo>(
-    timeline: ComplexTemporaryUpdateTimeline<UpdateInfo>,
-    applyUpdate: (map: FileTimelineMap, update: UpdateInfo, start: Version, end: Version | undefined) => void
-  ) {
-    timeline.forEach((tempUpdate) => {
-      applyUpdate(this, tempUpdate, tempUpdate.date, tempUpdate.end);
-      if (tempUpdate.updates !== undefined) {
-        for (let i = 0; i < tempUpdate.updates.length; i++) {
-          const { date, end } = getSubUpdateDates(tempUpdate, i);
-          applyUpdate(this, tempUpdate.updates[i], date, end);
-        }
-      }
-      if (tempUpdate.permanentChanges !== undefined) {
-        applyUpdate(this, tempUpdate.permanentChanges, tempUpdate.date, undefined);
-      }
-      if (tempUpdate.consequences !== undefined) {
-        applyUpdate(this, tempUpdate.consequences, tempUpdate.end, undefined);
-      }
-    })
-  }
-
   pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator, start: Version, end: Version | undefined = undefined) => {
     const fileRef = typeof info === 'string' ? info : info[0];
     const fullRoute = path.join(baseRoute, route);
-    if (end === undefined) {
-      this.add(fullRoute, fileRef, start);
-    } else {
-      this.add(fullRoute, fileRef, start, end);
-    }
+    this.add(fullRoute, fileRef, start, end);
   }
 
   addLocalChanges(changes: LocalChanges, start: Version, end: Version | undefined = undefined) {
@@ -115,89 +63,21 @@ class FileTimelineMap extends TimelineMap<string, string> {
     })
   }
 
-  addPartyChanges(changes: IslandChanges, start: Version, end: Version | undefined = undefined) {
-
-    if (changes.roomChanges !== undefined) {
-      this.addRoomChanges(changes.roomChanges, start, end);
-    }
-    if (changes.localChanges !== undefined) {
-      this.addLocalChanges(changes.localChanges, start, end);
-    }
-    if (changes.construction?.localChanges !== undefined) {
-      this.addLocalChanges(changes.construction.localChanges, changes.construction.date, start);
-    }
-    if (changes.globalChanges !== undefined) {
-      iterateEntries(changes.globalChanges, (route, info) => {
-        this.pushCrumbChange('play/v2/content/global', route, info, start, end);
-      });
-    }
-
-    // adding just any route change in general for the party
-    if (changes.generalChanges !== undefined) {
-      iterateEntries(changes.generalChanges, (route, fileRef) => {
-        if (end === undefined) {
-          this.add(route, fileRef, start);
-        } else {
-          this.add(route, fileRef, start, end);
-        }
-      })
-    }
-
-    if (changes.map !== undefined) {
-      this.addGameMapUpdate(changes.map, start, end);
-    }
-
-    if (changes.scavengerHunt2010 !== undefined) {
-      this.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', start, end);
-      this.add(path.join('play/v2/content/global', changes.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), changes.scavengerHunt2010.iconFileId, start, end);
-    }
-    if (changes.scavengerHunt2011 !== undefined) {
-      this.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), changes.scavengerHunt2011.icon, start, end);
-    }
-
-    if (changes.fairCpip !== undefined) {
-      if (isLower(start, Update.MODERN_AS3)) {
-        this.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', start, end);
-        this.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', start, end);
-      }
-      this.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, changes.fairCpip.iconFileId, start, end);
-      this.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, changes.fairCpip.infoFile, start, end);
-    }
-    if (changes.scavengerHunt2007 !== undefined && typeof changes.scavengerHunt2007 === 'string') {
-      // theoretically you would have static egg files and signal the number
-      // but in practice for eggs where the number isn't known, we use 1 and thus
-      // we manage multiple egg files of ID 1
-      this.add('artwork/eggs/1.swf', changes.scavengerHunt2007, start, end);
-    }
-
-    if (changes.startscreens !== undefined) {
-      addStartscreens(changes.startscreens, this, start, end);
-    }
-
-    if (changes.mapNote !== undefined) {
-      this.add('play/v2/content/local/en/close_ups/party_map_note.swf', changes.mapNote, start, end);
-    }
-  }
-
   addRoomChanges(roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) {
     for (const room in roomChanges) {
       const roomName = room as RoomName;
       const fileId = roomChanges[roomName]!;
-      if (end === undefined) {
-        addRoomRoute(this, start, roomName, fileId);
-      } else {
-        addTempRoomRoute(this, start, end, roomName, fileId);
-      }
+      addRoomRoute(this, roomName, fileId, start, end);
     }
   }
 }
 
-function addRoomRoute(map: FileTimelineMap, date: string, room: RoomName, file: string) {
-  if (isLower(date, Update.CPIP_UPDATE)) {
+function addRoomRoute(map: FileTimelineMap, room: RoomName, file: string, date: string, end?: string) {
+  if (isLower(date, CPIP_UPDATE)) {
     const fileName = `${room}.swf`
-    map.add(path.join('artwork/rooms', fileName), file, date);
+    map.add(path.join('artwork/rooms', fileName), file, date, end);
   } else {
-    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, date);
+    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, date, end);
   }
 }
 
@@ -237,81 +117,81 @@ function addFilesWithIds(map: FileTimelineMap): void {
 }
 
 function addNewspapers(map: FileTimelineMap): void {
-  AS2_NEWSPAPERS.forEach((news, index) => {
-    if (news.fileReference !== undefined) {
-      const issueNumber = index + PRE_BOILER_ROOM_PAPERS.length + 1;
+  const configXmlPath = getMediaFilePath('tool:news_config.xml');
+  NEWSPAPER_TIMELINE.forEach((update, i) => {
+    if (typeof update.info === 'string' || 'file' in update.info) {
+      const file = typeof update.info === 'string' ? update.info : update.info.file;
+      const issue = i + 1;
+
       // pre-cpip, before rewrite
-      map.addDefault(`artwork/news/news${issueNumber}.swf`, news.fileReference);
+      map.addDefault(`artwork/news/news${issue}.swf`, file);
       // pre-cpip, post rewrite
-      const route2007 = getNewspaperName(news.date).replace('|', '/') + '.swf';
-      map.addDefault(path.join('artwork/news', route2007), news.fileReference);
+      const route2007 = getNewspaperName(update.date).replace('|', '/') + '.swf';
+      map.addDefault(path.join('artwork/news', route2007), file);
 
       // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
-      map.addDefault(path.join('artwork/archives', `news${issueNumber + 1}.swf`), news.fileReference);
+      map.addDefault(path.join('artwork/archives', `news${issue + 1}.swf`), file);
 
       // post-cpip
-      const date = getMinifiedDate(news.date);
-      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, news.fileReference);
-    }
-  })
-  
-  const configXmlPath = getMediaFilePath('tool:news_config.xml');
-  AS3_NEWSPAPERS.forEach((news) => {
-    const baseNewsPath = 'play/v2/content/local/en/news/';
-    const oldNewsPath = `${baseNewsPath}${getMinifiedDate(news.date)}`;
-    const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(news.date)}`;
-    map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
-    map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
-    const newspaperComponenets: Array<[string, string]> = [
-      ['front/header.swf', news.headerFront ?? 'archives:News285HeaderFront.swf'],
-      ['front/featureStory.swf', news.featureStory],
-      ['front/supportStory.swf', news.supportStory],
-      ['front/upcomingEvents.swf', news.upcomingEvents],
-      ['front/newsFlash.swf', news.newsFlash],
-      ['front/askAuntArctic.swf', news.askFront],
-      ['front/dividers.swf', news.dividersFront ?? 'approximation:dividers_blank.swf'],
-      ['front/navigation.swf', news.navigationFront ?? 'archives:News268NavigationFront.swf'],
-      ['back/header.swf', news.headerBack ?? 'archives:News285HeaderBack.swf'],
-      ['back/askAuntArctic.swf', news.askBack],
-      ['back/secrets.swf', news.secrets ?? 'archives:News285Secrets.swf'],
-      ['back/submitYourContent.swf', news.submit ?? 'archives:News268SubmitYourContent.swf'],
-      ['back/jokesAndRiddles.swf', news.jokes ?? 'archives:News285JokesAndRiddles.swf'],
-      ['back/dividers.swf', news.dividersBack ?? 'approximation:dividers_blank.swf'],
-      ['back/navigation.swf', news.navigationBack ?? 'archives:News268NavigationBack.swf']
-    ]
-    if (news.answers !== undefined) {
-      newspaperComponenets.push(['overlays/riddlesAnswers.swf', news.answers]);
-    }
-    if (news.extraJokes !== undefined) {
-      newspaperComponenets.push(['overlays/extraJokes.swf', news.extraJokes]);
-    }
-    if (news.secret !== undefined && news.secret !== null) {
-      newspaperComponenets.push(['overlays/secret.swf', news.secret]);
-    }
-    if (news.iglooWinners !== undefined) {
-      newspaperComponenets.push(['overlays/iglooWinners.swf', news.iglooWinners]);
-    }
-    if (news.featureMore !== undefined) {
-      newspaperComponenets.push(['overlays/featureMore.swf', news.featureMore ?? 'archives:News284FeatureMore.swf']);
-    }
-    if (news.supportMore !== undefined) {
-      newspaperComponenets.push(['overlays/supportMore.swf', news.supportMore ?? 'archives:News282SupportMore.swf']);
-    }
-    if (news.extra !== undefined) {
-      newspaperComponenets.push(['overlays/extra.swf', news.extra]);
-    }
-     
-    newspaperComponenets.forEach((pair) => {
-      const [route, file] = pair;
-      map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
-      map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
-    }) 
-  })
+      const date = getMinifiedDate(update.date);
+      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
+    } else {
+      const baseNewsPath = 'play/v2/content/local/en/news/';
+      const oldNewsPath = `${baseNewsPath}${getMinifiedDate(update.date)}`;
+      const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(update.date)}`;
+      map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+      map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
+      const newspaperComponenets: Array<[string, string]> = [
+        ['front/header.swf', update.info.headerFront ?? 'archives:News285HeaderFront.swf'],
+        ['front/featureStory.swf', update.info.featureStory],
+        ['front/supportStory.swf', update.info.supportStory],
+        ['front/upcomingEvents.swf', update.info.upcomingEvents],
+        ['front/newsFlash.swf', update.info.newsFlash],
+        ['front/askAuntArctic.swf', update.info.askFront],
+        ['front/dividers.swf', update.info.dividersFront ?? 'approximation:dividers_blank.swf'],
+        ['front/navigation.swf', update.info.navigationFront ?? 'archives:News268NavigationFront.swf'],
+        ['back/header.swf', update.info.headerBack ?? 'archives:News285HeaderBack.swf'],
+        ['back/askAuntArctic.swf', update.info.askBack],
+        ['back/secrets.swf', update.info.secrets ?? 'archives:News285Secrets.swf'],
+        ['back/submitYourContent.swf', update.info.submit ?? 'archives:News268SubmitYourContent.swf'],
+        ['back/jokesAndRiddles.swf', update.info.jokes ?? 'archives:News285JokesAndRiddles.swf'],
+        ['back/dividers.swf', update.info.dividersBack ?? 'approximation:dividers_blank.swf'],
+        ['back/navigation.swf', update.info.navigationBack ?? 'archives:News268NavigationBack.swf']
+      ]
+      if (update.info.answers !== undefined) {
+        newspaperComponenets.push(['overlays/riddlesAnswers.swf', update.info.answers]);
+      }
+      if (update.info.extraJokes !== undefined) {
+        newspaperComponenets.push(['overlays/extraJokes.swf', update.info.extraJokes]);
+      }
+      if (update.info.secret !== undefined && update.info.secret !== null) {
+        newspaperComponenets.push(['overlays/secret.swf', update.info.secret]);
+      }
+      if (update.info.iglooWinners !== undefined) {
+        newspaperComponenets.push(['overlays/iglooWinners.swf', update.info.iglooWinners]);
+      }
+      if (update.info.featureMore !== undefined) {
+        newspaperComponenets.push(['overlays/featureMore.swf', update.info.featureMore ?? 'archives:News284FeatureMore.swf']);
+      }
+      if (update.info.supportMore !== undefined) {
+        newspaperComponenets.push(['overlays/supportMore.swf', update.info.supportMore ?? 'archives:News282SupportMore.swf']);
+      }
+      if (update.info.extra !== undefined) {
+        newspaperComponenets.push(['overlays/extra.swf', update.info.extra]);
+      }
+      
+      newspaperComponenets.forEach((pair) => {
+        const [route, file] = pair;
+        map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
+        map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
+      }) 
+      }
+  });
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  map.addRouteMap(CPIP_STATIC_FILES, Update.CPIP_UPDATE);
-  map.addRouteMap(AS3_STATIC_FILES, Update.MODERN_AS3);
+  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
+  map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
 }
 
 function addStaticFiles(map: FileTimelineMap): void {
@@ -325,14 +205,9 @@ function addStaticFiles(map: FileTimelineMap): void {
   addStatic(CPIP_AS3_STATIC_FILES);
 }
 
-/** Maps for each route its file timeline */
-// type TimelineMap = Map<string, FileTimeline>;
-
 function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
-
-
 
 /** Adds listeners to the global crumbs files */
 function addCrumbs(map: FileTimelineMap): void {
@@ -348,219 +223,17 @@ function addCrumbs(map: FileTimelineMap): void {
   addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
   addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
 
-  // remove first 6 which have no crumbs
-  [...AS2_NEWSPAPERS.slice(6), ...AS3_NEWSPAPERS].forEach((newspaper) => {
+  NEWSPAPER_TIMELINE.forEach((newspaper) => {
     map.add('play/v2/content/local/en/news/news_crumbs.swf', path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'), newspaper.date);
   });
 }
 
-function addStadiumUpdates(map: FileTimelineMap): void {
-  STADIUM_UPDATES.forEach((update) => {
-    const date = update.date;
-  if (isGreaterOrEqual(date, Update.CPIP_UPDATE) && isLower(date, Update.EPF_RELEASE)) {
-    const agent = 'play/v2/content/global/rooms/agent.swf';
-    if (update.type === 'rink') {
-      map.add(agent, 'archives:RoomsAgent.swf', date);
-    } else if (update.type === 'stadium') {
-      map.add(agent, 'archives:RoomsAgentFootball.swf', date);
-    }
-  }
-  if (update.mapFileId !== undefined) {
-    map.add('play/v2/content/global/content/map.swf', update.mapFileId, date);
-  }
-    map.add('play/v2/content/global/rooms/town.swf', update.townFileId, date);
-    map.add('play/v2/content/global/rooms/forts.swf', update.fortsFileId, date);
-    map.add('play/v2/content/global/rooms/rink.swf', update.rinkFileId, date);
-    if (update.catalogFileId !== undefined) {
-      map.add('play/v2/content/local/en/catalogues/sport.swf', update.catalogFileId, date);
-    }
-  });
-}
-
-function addStandaloneChanges(map: FileTimelineMap): void {
-  Object.entries(STANDALONE_CHANGE).forEach((pair) => {
-    const [route, updates] = pair;
-    updates.forEach((update) => {
-      map.add(route, update.fileRef, update.date);
-    })
-  });
-
-  Object.entries(STANDALONE_TEMPORARY_CHANGE).forEach((pair) => {
-    const [route, updates] = pair;
-    updates.forEach((update) => {
-      map.add(route, update.fileRef, update.startDate, update.endDate);
-      if (update.updates !== undefined) {
-        update.updates.forEach((newUpdate) => {
-          map.add(route, newUpdate.fileRef, newUpdate.date, update.endDate);
-        })
-      }
-    })
-  });
-
-  STANDALONE_UPDATES.forEach((update) => {
-    map.addPartyChanges(update, update.date);
-  });
-
-  map.addComplexTemporaryUpdateTimeline(STANDALONE_TEMPORARY_UPDATES, (map, update, start, end) => {
-    map.addPartyChanges(update, start, end);
-  });
-}
-
-function addMapUpdates(map: FileTimelineMap): void {
-  MAP_UPDATES.forEach((update) => {
-    map.addGameMapUpdate(update.fileRef, update.date);
-  });
-}
-
-function addCatalogues(map: FileTimelineMap): void {
-  iterateEntries(PRE_CPIP_CATALOGS, (date, file) => {
-    const signature = getFileDateSignature(date);
-    map.add(`artwork/catalogue/clothing_${signature}.swf`, file, date);
-    map.add(`artwork/catalogue/clothing${signature}.swf`, file, date);
-  });
-
-  map.addDateRefMap('play/v2/content/local/en/catalogues/clothing.swf', CPIP_CATALOGS);
-  map.addDateRefMap('artwork/catalogue/furniture.swf', FURNITURE_CATALOGS);
-  map.addDateRefMap('play/v2/content/local/en/catalogues/furniture.swf', FURNITURE_CATALOGS);
-  map.addDateRefMap('play/v2/content/local/en/catalogues/igloo.swf', IGLOO_CATALOGS);
-
-
-  const addRockhoperCatalog = (date: string, file: FileRef) => {
-    map.add('play/v2/content/local/en/catalogues/pirate.swf', file, date);
-  }
-
-  STANDALONE_MIGRATOR_VISITS.forEach((visit) => {
-    if (typeof visit.info === 'string') {
-      addRockhoperCatalog(visit.date, visit.info);
-    }
-  });
-
-  PARTIES.forEach(party => {
-    if (typeof party.activeMigrator === 'string') {
-      addRockhoperCatalog(party.date, party.activeMigrator);
-    }
-  })
-}
-
 function addPins(map: FileTimelineMap): void {
-  PINS.forEach((pin) => {
-    if ('room' in pin && pin.fileRef !== undefined) {
-      addTempRoomRoute(map, pin.date, pin.end, pin.room, pin.fileRef);
+  PIN_TIMELINE.forEach(pin => {
+    if ('file' in pin) {
+      addRoomRoute(map, pin.room, pin.file, pin.date, pin.end);
     }
   });
-}
-
-function addMusicLists(map: FileTimelineMap): void {
-  const route = 'play/v2/content/global/content/igloo_music.swf';
-  map.addDefault(route, 'tool:dynamic_igloo_music.swf');
-  for (let i = 0; i < IGLOO_LISTS.length; i++) {
-    // using archived igloo lists as temporary updates on top of a single permanent one
-    const cur = IGLOO_LISTS[i];
-    if (typeof cur.fileRef === 'string') {
-      const start = cur.date;
-      if (i === IGLOO_LISTS.length) {
-        map.add(route, cur.fileRef, start);
-      } else {
-        map.add(route, cur.fileRef, start, IGLOO_LISTS[i + 1].date);
-      }
-    }
-  }
-}
-
-function addStagePlays(map: FileTimelineMap): void {
-  STAGE_TIMELINE.forEach((debut, i) => {
-    const date = debut.date;
-    const end = i === STAGE_TIMELINE.length - 1 ? undefined : STAGE_TIMELINE[i + 1].date;
-
-    if (debut.stageFileRef !== null) {
-      // Stage itself
-      addRoomRoute(map, date, 'stage', debut.stageFileRef);
-    }
-
-    if (debut.plazaFileRef !== null) {
-      // Plaza
-      addRoomRoute(map, date, 'plaza', debut.plazaFileRef);
-    }
-
-    // temporary changes in other rooms
-    if (debut.roomChanges !== undefined) {
-      map.addRoomChanges(debut.roomChanges, date, end);
-    }
-
-    if (debut.costumeTrunkFileRef !== null) {
-      // simply hardcoding every catalogue to be from 0712 for now
-      map.add('artwork/catalogue/costume_0712.swf', debut.costumeTrunkFileRef, date);
-      // TODO only add costrume trunks to each specific engine
-      map.add('play/v2/content/local/en/catalogues/costume.swf', debut.costumeTrunkFileRef, date);
-    }
-  })
-}
-
-function addGames(map: FileTimelineMap): void {
-  Object.values(PRE_CPIP_GAME_UPDATES).forEach((updates) => {
-    const [release] = updates;
-    const fileRoute = path.join('games', release.directory);
-
-    map.addDefault(fileRoute, release.fileRef);
-    if (release.roomChanges !== undefined && release.date !== undefined) {
-      map.addRoomChanges(release.roomChanges, release.date);
-    }
-    if (release['2006'] !== undefined) {
-      map.addDefault(path.join('games', release['2006']), release.fileRef);
-    }
-  })
-}
-
-function addTempRoomRoute(map: FileTimelineMap, start: string, end: string, room: RoomName, file: string) {
-  if (isLower(start, Update.CPIP_UPDATE)) {
-    const fileName = `${room}.swf`
-    map.add(path.join('artwork/rooms', fileName), file, start, end);
-  } else {
-    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, start, end);
-  }
-}
-
-function addRoomInfo(map: FileTimelineMap): void {
-  for (const roomName in ROOMS) {
-    const originalRoomFile = ORIGINAL_ROOMS[roomName as RoomName];
-    if (originalRoomFile !== undefined) {
-      addRoomRoute(map, Update.BETA_RELEASE, roomName as RoomName, originalRoomFile);
-    }
-  }
-
-  const addRoomChange = (room: RoomName, date: string, fileRef: string) => {
-    addRoomRoute(map, date, room, fileRef);
-  }
-
-  ROOM_OPENINGS.forEach((opening) => {
-    if (opening.fileRef !== null) {
-      addRoomChange(opening.room, opening.date, opening.fileRef);
-    }
-    if (opening.otherRooms !== undefined) {
-      Object.entries(opening.otherRooms).forEach((pair) => {
-        const [room, fileRef] = pair;
-        addRoomChange(room as RoomName, opening.date, fileRef);
-      });
-    }
-    if (opening.map !== undefined) {
-      map.addGameMapUpdate(opening.map, opening.date);
-    }
-  })
-
-  Object.entries(ROOM_UPDATES).forEach((pair) => {
-    const [room, updates] = pair;
-    updates.forEach((update) => {
-      addRoomChange(room as RoomName, update.date, update.fileRef);
-    })
-  })
-
-  Object.entries(TEMPORARY_ROOM_UPDATES).forEach((pair) => {
-    const [room, updates] = pair;
-    const roomName = room as RoomName;
-    updates.forEach((update) => {
-      addTempRoomRoute(map, update.date, update.end, roomName, update.fileRef);
-    })
-  })
 }
 
 function addStartscreens(screens: Array<string | [string, string]>, map: FileTimelineMap, date: Version, end?: Version): void {
@@ -575,22 +248,101 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
   })
 }
 
-function addParties(map: FileTimelineMap): void {
-  map.addComplexTemporaryUpdateTimeline(PARTIES, (map, party, start, end) => {
-    map.addPartyChanges(party, start, end);
-    if (party.construction !== undefined) {
-      const constructionStart = party.construction.date;
-      map.addRoomChanges(party.construction.changes, constructionStart, start);
-  
-      if (party.construction.updates !== undefined) {
-        party.construction.updates.forEach((update) => {
-          map.addRoomChanges(update.changes, update.date, start);
-        })
-      }
+function addUpdates(map: FileTimelineMap): void {
+  UPDATES.forEach(update => {
+    if (update.update.map !== undefined) {
+      map.add('artwork/maps/island5.swf', update.update.map, update.date, update.end);
+      map.add('artwork/maps/16_forest.swf', update.update.map, update.date, update.end);
+      map.add('play/v2/content/global/content/map.swf', update.update.map, update.date, update.end);
+    }
+    if (update.update.clothingCatalog !== undefined) {
+      map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date, update.end);
+      map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
+      map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date, update.end);
+    }
+    if (update.update.hairCatalog !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/hair.swf', update.update.hairCatalog, update.date, update.end);
+    }
 
-      if (party.construction.startscreens !== undefined) {
-        addStartscreens(party.construction.startscreens, map, constructionStart, start);
+    if (update.update.furnitureCatalog !== undefined) {
+      map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
+      map.add('artwork/catalogue/furniture_.swf', update.update.furnitureCatalog, update.date, update.end);
+      map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
+    }
+    if (update.update.iglooCatalog !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date, update.end);
+    }
+    if (update.update.rooms !== undefined) {
+      map.addRoomChanges(update.update.rooms, update.date, update.end);
+    }
+    if (update.update.fileChanges !== undefined) {
+      iterateEntries(update.update.fileChanges, (route, fileRef) => {
+        map.add(route, fileRef, update.date, update.end);
+      })
+    }
+    if (update.update.startscreens !== undefined) {
+      addStartscreens(update.update.startscreens, map, update.date, update.end);
+    }
+    if (update.update.localChanges !== undefined) {
+      map.addLocalChanges(update.update.localChanges, update.date, update.end);
+    }
+    if (update.update.globalChanges !== undefined) {
+      iterateEntries(update.update.globalChanges, (route, info) => {
+        map.pushCrumbChange('play/v2/content/global', route, info, update.date, update.end);
+      });
+    }
+    if (update.update.iglooList !== undefined && update.update.iglooList !== true && typeof update.update.iglooList !== 'string') {
+      const route = 'play/v2/content/global/content/igloo_music.swf';
+      if ('file' in update.update.iglooList) {
+        map.add(route, update.update.iglooList.file, update.date);
+      } else {
+        map.add(route, 'tool:dynamic_igloo_music.swf', update.date);
       }
+    }
+    if (typeof update.update.migrator === 'string') {
+      map.add('play/v2/content/local/en/catalogues/pirate.swf', update.update.migrator, update.date);
+    }
+    if (update.end !== undefined) {
+      if (update.update.scavengerHunt2007 !== undefined) {
+        map.add('artwork/eggs/1.swf', update.update.scavengerHunt2007, update.date, update.end);
+      }
+    }
+    if (update.update.scavengerHunt2010 !== undefined) {
+      map.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', update.date, update.end);
+      map.add(path.join('play/v2/content/global', update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), update.update.scavengerHunt2010.iconFileId, update.date, update.end);
+    }
+    if (update.update.fairCpip !== undefined) {
+      if (isLower(update.date, MODERN_AS3)) {
+        map.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', update.date, update.end);
+        map.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', update.date, update.end);
+      }
+      map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
+      map.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, update.update.fairCpip.infoFile, update.date, update.end);
+    }
+    if (update.update.scavengerHunt2011 !== undefined) {
+      map.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), update.update.scavengerHunt2011.icon, update.date, update.end);
+    }
+    if (update.update.mapNote !== undefined) {
+      map.add('play/v2/content/local/en/close_ups/party_map_note.swf', update.update.mapNote, update.date, update.end);
+    }
+    if (update.update.stagePlay !== undefined) {
+      if (update.update.stagePlay.costumeTrunk !== null) {
+
+        // simply hardcoding every catalogue to be from 0712 for now
+        map.add('artwork/catalogue/costume_0712.swf', update.update.stagePlay.costumeTrunk, update.date);
+        map.add('play/v2/content/local/en/catalogues/costume.swf', update.update.stagePlay.costumeTrunk, update.date);
+      }
+    }
+    if (update.update.pinRoomUpdate !== undefined) {
+      const pin = PIN_TIMELINE[findEarliestDateHitIndex(update.date, PIN_TIMELINE)];
+      if ('room' in pin && pin.room !== undefined) {
+        addRoomRoute(map, pin.room, update.update.pinRoomUpdate, update.date, pin.end);
+      } else {
+        throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
+      }
+    }
+    if (update.update.sportCatalog !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/sport.swf', update.update.sportCatalog, update.date);
     }
   });
 }
@@ -600,22 +352,14 @@ export function getRoutesTimeline() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
-    addRoomInfo,
-    addStandaloneChanges,
-    addMapUpdates,
     // pins are specifically before party so that pins that update with a party don't override the party room
     addPins,
-    addParties,
+    addUpdates,
     addFilesWithIds,
-    addCatalogues,
-    addStagePlays,
-    addMusicLists,
-    addStadiumUpdates,
     addCrumbs,
     addClothing,
     addTimeSensitiveStaticFiles,
     addFurniture,
-    addGames,
     addStaticFiles,
     addNewspapers
   ];

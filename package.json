@@ -1,6 +1,6 @@
 {
   "name": "waddle-forever",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {

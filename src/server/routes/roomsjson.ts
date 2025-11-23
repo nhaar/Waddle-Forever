@@ -1,16 +1,13 @@
 import { iterateEntries } from "../../common/utils";
 import { ROOMS } from "../game-data/rooms";
 import { getMapForDate } from "../timelines";
-import { getMemberTimeline } from "../timelines/member";
-import { getMusicTimeline } from "../timelines/music";
+import { MEMBER_TIMELINE } from "../timelines/member";
+import { MUSIC_TIMELINE } from "../timelines/music";
 import { isLower, Version } from "./versions";
 
-const musicTimeline = getMusicTimeline();
-const memberTimeline = getMemberTimeline();
-
 export function getRoomsJson(version: Version): string {
-  const music = getMapForDate(musicTimeline, version);
-  const member = getMapForDate(memberTimeline, version);
+  const music = getMapForDate(MUSIC_TIMELINE, version);
+  const member = getMapForDate(MEMBER_TIMELINE, version);
 
   const json = {
     "100": {
@@ -2022,7 +2019,9 @@ export function getRoomsJson(version: Version): string {
   iterateEntries(ROOMS, (name, room) => {
     if (music[name] !== undefined) {
       const id = String(room.id);
-      if (id in json) {
+
+      // check for rooms that same ID eg stage and mall
+      if (id in json && json[id as keyof typeof json].room_key === name) {
         const musicId = music[name]
         const memberStatus = member[name];
         if (typeof musicId === 'number') {
