@@ -402,7 +402,7 @@ export const UPDATES_2006: Update[] = [
         rooms: {
           'boiler': 'archives:ArtworkRoomsBoiler11.swf',
           'cave': 'archives:ArtworkRooms0721Cave13.swf',
-          'dock': 'archives:ArtworkRooms0721Dock10.swf',
+          'dock': 'archives:ArtworkRooms0721Dock13.swf',
           'mtn': 'archives:ArtworkRooms0721Mtn10.swf',
           'lodge': 'archives:ArtworkRooms0721Lodge14.swf',
           'village': 'archives:ArtworkRooms0721Village12.swf',
