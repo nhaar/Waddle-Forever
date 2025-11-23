@@ -160,6 +160,8 @@ export const MUSIC_IDS: IdRefMap = {
   313: 'archives:Music313.swf',
   314: 'archives:Music314.swf',
   315: 'archives:Music315.swf',
+  316: 'archives:Music316.swf',
+  317: 'archives:Music317.swf',
   372: 'archives:Music372.swf',
   400: 'archives:Music400.swf',
   401: 'archives:Music401.swf',

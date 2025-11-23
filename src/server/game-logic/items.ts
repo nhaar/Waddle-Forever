@@ -2551,7 +2551,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [4515, 'Custom Hoodie', ItemType.Body, 400, true, false, false, false, false, false, '2017-03-30'],
   [4516, 'Custom Hoodie', ItemType.Body, 400, true, false, false, false, false, false, '2017-03-30'],
   [4517, 'Custom Hoodie', ItemType.Body, 400, true, false, false, false, false, false, '2017-03-30'],
-  [4518, 'Submarine Suit', ItemType.Body, 600, true, false, false, false, false, false, '2017-03-30'],
+  [4518, 'Submarine Suit', ItemType.Body, 0, true, false, false, false, false, false, '2017-03-30'],
   [4532, 'Bubble Dress', ItemType.Body, 500, true, false, false, false, false, false, '2017-03-30'],
   [4533, 'Sharp Black Vest', ItemType.Body, 450, true, false, false, false, false, false, '2017-03-30'],
   [4534, 'Layered Marshmallow Look', ItemType.Body, 330, true, false, false, false, false, false, '2017-03-30'],
