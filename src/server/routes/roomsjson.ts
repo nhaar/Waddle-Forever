@@ -2019,7 +2019,9 @@ export function getRoomsJson(version: Version): string {
   iterateEntries(ROOMS, (name, room) => {
     if (music[name] !== undefined) {
       const id = String(room.id);
-      if (id in json) {
+
+      // check for rooms that same ID eg stage and mall
+      if (id in json && json[id as keyof typeof json].room_key === name) {
         const musicId = music[name]
         const memberStatus = member[name];
         if (typeof musicId === 'number') {
