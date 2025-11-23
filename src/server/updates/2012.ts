@@ -201,7 +201,76 @@ export const UPDATES_2012: Update[] = [
     date: '2012-08-23',
     temp: {
       party: {
-        partyName: 'Adventure Party: Temple of Fruit'
+        partyName: 'Adventure Party: Temple of Fruit',
+        rooms: {
+          'town': 'archives:RoomsTown-TempleofFruit.swf',
+          'plaza': 'archives:APToFPlaza.swf',
+          'forts': 'archives:APToFForts.swf',
+          'beach': 'archives:APToFBeach.swf',
+          'forest': 'archives:APToFForest.swf',
+          'cove': 'archives:APToFCove.swf',
+          'dock': 'archives:APToFDock.swf',
+          'pizza': 'archives:APToFPizza.swf',
+          'dance': 'archives:APToFDance.swf',
+          'shop': 'archives:APToFShop.swf',
+          'party1': 'archives:APToFParty1.swf',
+          'party2': 'archives:APToFParty2.swf',
+          'party3': 'archives:APToFParty3.swf'
+        },
+        music: {
+          'town': 267,
+          'plaza': 268,
+          'pizza': 268,
+          'dock': 267,
+          'beach': 267,
+          'forest': 267,
+          'dance': 267,
+          'forts': 267,
+          'cove': 267,
+          'party1': 269,
+          'party2': 268,
+          'party3': 268 
+        },
+        globalChanges: {
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:APToFPartyScavengerHunt.swf',
+        },
+        localChanges: {
+          'catalogues/party_catalogue.swf': {
+            'en': ['archives:APToFCatalogParty.swf', 'party_catalogue', 'w.p0812.smoothie.clothing.catalogue']
+          }
+        },
+        mapNote: 'archives:APToFParty_note.swf',
+        startscreens: [
+          'archives:AdventureParty2012PreBillboard.swf'
+        ],
+        scavengerHunt2011: {
+          global: {
+            member: true,
+            reward: 0,
+          },
+          icon: 'archives:APToFPartyScavengerHuntIcon.swf',
+          lang: {
+            en: {
+              loading: 'Loading Scavenger Hunt',
+              title: 'Fruit Scavenger Hunt',
+              start: '',
+              claim: 'Enter Temple!',
+              itemsFound: '',
+              itemsFoundPlural: '',
+              continue: '',
+              clues: [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+              ],
+            }
+          }
+        }
       }
     }
   },
