@@ -17,7 +17,18 @@ export const UPDATES_2012: Update[] = [
     date: '2012-02-01',
     temp: {
       party2: {
-        partyName: 'Fashion Show'
+        partyName: 'Fashion Show',
+        rooms: {
+          'shop': 'archives:FashionShowShop.swf'
+        },
+        music: {
+          'shop': 321
+        },
+        startscreens: [
+          'archives:FashionShowStartBillboards.swf',
+          'archives:FashionShowMemberStartBillboards.swf',
+          'archives:FashionShowPreStartBillboards.swf'
+        ]
       }
     }
   },
