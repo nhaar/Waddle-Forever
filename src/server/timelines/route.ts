@@ -319,6 +319,9 @@ function addUpdates(map: FileTimelineMap): void {
       map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
       map.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, update.update.fairCpip.infoFile, update.date, update.end);
     }
+    if (update.update.partyIconFile !== undefined) {
+      map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.partyIconFile, update.date, update.end);
+    }
     if (update.update.scavengerHunt2011 !== undefined) {
       map.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), update.update.scavengerHunt2011.icon, update.date, update.end);
     }

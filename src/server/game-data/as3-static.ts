@@ -1077,5 +1077,14 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/ru/logo.swf',
   'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf',
   'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
-  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf'
+  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf',
+  'play/v2/games/icejam/bootstrap.swf': 'unknown:icejam/bootstrap.swf',
+  'play/v2/games/icejam/icejam.swf': 'unknown:icejam/icejam.swf',
+  'play/v2/games/icejam/lang/en/locale.swf': 'unknown:icejam/locale.swf',
+  'play/v2/games/icejam/icejam_level1.swf': 'archives:GamesIcejamIcejamLevel1.swf',
+  'play/v2/games/icejam/icejam_level2.swf': 'archives:GamesIcejamIcejamLevel2.swf',
+  'play/v2/games/icejam/icejam_level3.swf': 'archives:GamesIcejamIcejamLevel3.swf',
+  'play/v2/games/icejam/icejam_level4.swf': 'archives:GamesIcejamIcejamLevel4.swf',
+  'play/v2/games/icejam/icejam_level5.swf': 'archives:GamesIcejamIcejamLevel5.swf',
+  'play/v2/games/icejam/icejam_level6.swf': 'archives:GamesIcejamIcejamLevel6.swf'
 }

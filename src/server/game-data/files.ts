@@ -1662,6 +1662,22 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'halloween_telescope.swf',
       comment: 'No idea where I got this from, I thought it was from another party\'s archive, but nothing archived matched'
+    },
+    {
+      file: 'op_blackout_cinematic.f4v',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'icejam/bootstrap.swf',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'icejam/icejam.swf',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'icejam/locale.swf',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
     }
   ]
 };

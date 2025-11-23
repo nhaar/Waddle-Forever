@@ -249,7 +249,127 @@ export const UPDATES_2012: Update[] = [
     date: '2012-11-14',
     temp: {
       party: {
-        partyName: 'Operation: Blackout'
+        partyName: 'Operation: Blackout',
+        rooms: {
+          beach: 'archives:RoomsBeach-OperationBlackout.swf',
+          beacon: 'archives:RoomsBeacon-OperationBlackout.swf',
+          book: 'archives:RoomsBook-OperationBlackout.swf',
+          coffee: 'archives:RoomsCoffee-OperationBlackout.swf',
+          cove: 'archives:RoomsCove-OperationBlackout.swf',
+          dock: 'archives:RoomsDock-OperationBlackout.swf',
+          dojo: 'archives:RoomsDojo-OperationBlackout.swf',
+          dojoext: 'archives:RoomsDojoext-OperationBlackout.swf',
+          dojohide: 'archives:RoomsDojohide-OperationBlackout.swf',
+          agentcom: 'archives:RoomsAgentcom-OperationBlackout.swf',
+          agentlobbymulti: 'archives:RoomsAgentlobbymulti-OperationBlackout.swf',
+          dojofire: 'archives:RoomsDojofire-OperationBlackout.swf',
+          forest: 'archives:RoomsForest-OperationBlackout.swf',
+          shop: 'archives:RoomsShop-OperationBlackout.swf',
+          party4: 'archives:BlackoutParty4.swf',
+          berg: 'archives:BlackoutBerg.swf',
+          light: 'archives:BlackoutLight.swf',
+          party2: 'archives:RoomsParty2-OperationBlackout.swf',
+          attic: 'archives:BlackoutAttic.swf',
+          shack: 'archives:BlackoutShack.swf',
+          party1: 'archives:RoomsParty1-OperationBlackout.swf',
+          pet: 'archives:BlackoutPet.swf',
+          pizza: 'archives:BlackoutPizza.swf',
+          plaza: 'archives:BlackoutPlaza.swf',
+          party7: 'archives:BlackoutParty7.swf',
+          party6: 'archives:BlackoutParty6.swf',
+          party3: 'archives:RoomsParty3-OperationBlackout.swf',
+          party5: 'archives:BlackoutParty5.swf',
+          mtn: 'archives:BlackoutHill.swf',
+          lodge: 'archives:BlackoutLodge.swf',
+          village: 'archives:BlackoutVillage.swf',
+          forts: 'archives:BlackoutForts.swf',
+          rink: 'archives:BlackoutRink.swf',
+          stage: 'archives:BlackoutStage.swf',
+          town: 'archives:RoomsTown-OperationBlackout.swf'
+        },
+        music: {
+          beach: 342,
+          beacon: 342,
+          cove: 342,
+          dock: 342,
+          dojoext: 342,
+          forest: 342,
+          shop: 345,
+          party2: 343,
+          shack: 342,
+          party1: 11,
+          plaza: 342,
+          party7: 343,
+          party6: 343,
+          party3: 343,
+          party5: 343,
+          mtn: 342,
+          village: 342,
+          forts: 342,
+          rink: 342,
+          town: 342,
+          stage: 0
+        },
+        startscreens: [
+          'archives:SwfEpf-billboard-teaser.swf',
+          'archives:OperationBlackout2012Pre-Awareness.swf',
+          'archives:SwfEpf-billboard-3-save-island.swf'
+        ],
+        localChanges: {
+          'party/catalogue.swf': {
+            en: ['archives:OperationBlackoutCatalogParty.swf', 'party_catalogue']
+          },
+          'quest_interface.swf': {
+            en: ['archives:ENCloseUpsBlackoutQuestInterface.swf', 'w.p1112.blackout.blackoutquestinterface']
+          },
+          'video/op_blackout_cinematic.f4v': {
+            en: ['unknown:op_blackout_cinematic.f4v', 'w.p1112.blackout.cutscene']
+          }
+        },
+        partyIconFile: 'archives:OperationBlackoutGlobalContentPartyicon.swf',
+        fileChanges: {
+          'play/v2/client/video_player.swf': 'archives:OperationBlackoutClientVideoPlayer.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2012-11-16',
+    temp: {
+      party: {
+        update: 'The second stage of the operation is available'
+      }
+    }
+  },
+  {
+    date: '2012-11-18',
+    temp: {
+      party: {
+        update: 'The third stage of the operation is available, and the island has more snow'
+      }
+    }
+  },
+  {
+    date: '2012-11-20',
+    temp: {
+      party: {
+        update: 'The fourth stage of the operation is available'
+      }
+    }
+  },
+  {
+    date: '2012-11-22',
+    temp: {
+      party: {
+        update: 'The fifth stage of the operation is available, and the island has more snow'
+      }
+    }
+  },
+  {
+    date: '2012-11-24',
+    temp: {
+      party: {
+        update: 'The sixth stage of the operation is available'
       }
     }
   },

@@ -190,6 +190,8 @@ export type CPUpdate = {
     costumeTrunk: FileRef | null;
   } & CPUpdate;
 
+  partyIconFile?: FileRef;
+
 } & ({
   partyName: string;
   decorated?: false;
