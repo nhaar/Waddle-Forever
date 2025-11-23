@@ -243,34 +243,7 @@ export const UPDATES_2012: Update[] = [
         startscreens: [
           'archives:AdventureParty2012PreBillboard.swf'
         ],
-        scavengerHunt2011: {
-          global: {
-            member: true,
-            reward: 0,
-          },
-          icon: 'archives:APToFPartyScavengerHuntIcon.swf',
-          lang: {
-            en: {
-              loading: 'Loading Scavenger Hunt',
-              title: 'Fruit Scavenger Hunt',
-              start: '',
-              claim: 'Enter Temple!',
-              itemsFound: '',
-              itemsFoundPlural: '',
-              continue: '',
-              clues: [
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-              ],
-            }
-          }
-        }
+        partyIconFile: 'archives:APToFPartyScavengerHuntIcon.swf'
       }
     }
   },
