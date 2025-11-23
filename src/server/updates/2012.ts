@@ -236,7 +236,6 @@ export const UPDATES_2012: Update[] = [
     date: '2012-07-12',
     temp: {
       const: {
-        partyName: 'Make Your Mark: Ultimate Jam Construction',
         rooms: {
           'town': 'archives:RoomsTown-UltimateJamPre.swf',
           'mtn': 'archives:UltimateJamConsMtn.swf',
@@ -313,16 +312,14 @@ export const UPDATES_2012: Update[] = [
           'party4': 335
         },
         globalChanges: {
-          'scavenger_hunt/scavenger_hunt.swf': 'archives:UltimateJamScavengerHunt.swf',
-          
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:UltimateJamScavengerHunt.swf'
         },
         localChanges: {
           'catalogues/party.swf': {
             'en': ['archives:UltimateJamCatalog.swf', 'w.p0712.musicjam.clothing.catalogue']
           }
         },
-        mapNote: 'archives:UltimateJam_Party_map_note.swf',
-        
+        mapNote: 'archives:UltimateJam_Party_map_note.swf'
       }
     }
   },
