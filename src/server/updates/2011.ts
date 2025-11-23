@@ -2728,6 +2728,11 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-29',
     newspaper: 'period-end',
-    end: ['party']
+    end: ['party'],
+    temp: {
+      party2: {
+        partyName: 'Fireworks'
+      }
+    }
   }
 ];
