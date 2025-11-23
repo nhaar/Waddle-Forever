@@ -2731,7 +2731,13 @@ export const UPDATES_2011: Update[] = [
     end: ['party'],
     temp: {
       party2: {
-        partyName: 'Fireworks'
+        partyStart: 'Fireworks begin at the Ski Hill and Iceberg',
+        partyEnd: 'The fireworks celebration ends',
+        decorated: false,
+        rooms: {
+          mtn: 'archives:FireworksMtn.swf',
+          berg: 'archives:FireworksBerg.swf'
+        }
       }
     }
   }
