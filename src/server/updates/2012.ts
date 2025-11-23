@@ -248,6 +248,22 @@ export const UPDATES_2012: Update[] = [
     }
   },
   {
+    date: '2012-08-25',
+    temp: {
+      party: {
+        update: 'The apple is available in the Temple of Fruit'
+      }
+    }
+  },
+  {
+    date: '2012-08-29',
+    temp: {
+      party: {
+        update: 'The pineapple is available in the Temple of Fruit'
+      }
+    }
+  },
+  {
     date: '2012-09-05',
     end: ['party']
   },
