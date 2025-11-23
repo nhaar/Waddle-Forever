@@ -405,6 +405,7 @@ export interface PenguinData {
   background: number
   coins: number
   registration_date: number
+  virtualRegistrationTimestamp: number
   minutes_played: number,
   // these records act as hash sets
   inventory: number[],

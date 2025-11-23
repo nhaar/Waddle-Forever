@@ -2,7 +2,7 @@ import net from 'net';
 
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
-import { Penguin, PenguinEquipmentSlot } from './penguin';
+import { DefaultPenguinParams, Penguin, PenguinEquipmentSlot } from './penguin';
 import { isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
@@ -386,6 +386,27 @@ export class Server {
     this._playersById.set(id, client);
   }
 
+  getPenguinFromName (name: string): Penguin {
+    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
+    const date = this.getVirtualDate(0).getTime();
+
+    if (data === undefined) {
+      data = Client.create(capitalizeName(name), {
+        is_member: true,
+        virtualRegistrationTimestamp: date
+      });
+    }
+
+    
+    const [penguinData, id] = data;
+    
+    // fixing time traveling backwards
+    if (date < penguinData.virtualRegistrationTimestamp) {
+      penguinData.virtualRegistrationTimestamp = date;
+    }
+    return new Penguin(id, penguinData);
+  }
+
   /** Make an igloo open */
   openIgloo(id: number, igloo: Igloo): void {
     this._igloos.set(id, igloo);
@@ -658,7 +679,7 @@ export class Client {
 
   get age (): number {
     // difference converted into days
-    return Math.floor((Date.now() - this.penguin.registrationTimestamp) / 1000 / 86400);
+    return Math.floor((this.server.getVirtualDate(0).getTime() - this.penguin.virtualRegistration) / 1000 / 86400);
   }
 
   get memberAge (): number {
@@ -750,20 +771,9 @@ export class Client {
     }
   }
 
-  static getPenguinFromName (name: string): Penguin {
-    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
-
-    if (data === undefined) {
-      data = Client.create(capitalizeName(name));
-    }
-
-    const [penguinData, id] = data;
-
-    return new Penguin(id, penguinData);
-  }
-
   setPenguinFromName (name: string): void {
-    this._penguin = Client.getPenguinFromName(name)
+    this._penguin = this.server.getPenguinFromName(name)
+
     this._server.trackPlayer(this.penguin.id, this);
   }
 
@@ -777,12 +787,12 @@ export class Client {
     this._server.trackPlayer(id, this);
   }
 
-  static create (name: string, mascot = 0): [PenguinData, number] {
-    const defaultPenguin = Penguin.getDefault(0, name, true).serialize();
+  static create (name: string, params: DefaultPenguinParams = {}): [PenguinData, number] {
+    const defaultPenguin = Penguin.getDefault(0, name, params).serialize();
     return db.add<PenguinData>(Databases.Penguins, {
       ...defaultPenguin,
       name,
-      mascot
+      mascot: 0
     });
   }
 
@@ -1341,7 +1351,7 @@ class Bot extends Client {
 
   constructor(server: Server, name: string) {
     super(server, undefined, 'World');
-    this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name, true);
+    this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name);
   }
 
   get followInfo(): FollowInfo {
