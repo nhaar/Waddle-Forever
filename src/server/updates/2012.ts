@@ -236,7 +236,7 @@ export const UPDATES_2012: Update[] = [
         },
         localChanges: {
           'catalogues/party_catalogue.swf': {
-            'en': ['archives:APToFCatalogParty.swf', 'party_catalogue']
+            'en': ['archives:APToFCatalogParty.swf', 'party_catalogue', 'w.p0812.smoothie.clothing.catalogue']
           }
         },
         mapNote: 'archives:APToFParty_note.swf',
