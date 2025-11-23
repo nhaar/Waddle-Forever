@@ -292,10 +292,6 @@ export class Penguin {
     this._isMember = !this._isMember;
   }
 
-  setAge(days: number): void {
-    this._registrationTimestamp = Date.now() - days * 3600 * 24 * 1000;
-  }
-
   getItems(): number[] {
     return Array.from(this._inventory.values());
   }
@@ -669,6 +665,10 @@ export class Penguin {
 
   get virtualRegistration() {
     return this._virtualRegistrationTimestamp;
+  }
+
+  setVirtualRegistration(value: number) {
+    this._virtualRegistrationTimestamp = value;
   }
 
   setBattleOfDoomCompleted() {

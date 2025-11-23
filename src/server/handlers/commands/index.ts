@@ -123,8 +123,8 @@ commands.add('awards', [], (client) => {
   client.update();
 });
 
-commands.add('age', ['number'], (client, age) => {
-  client.penguin.setAge(age);
+commands.add('age', [], (client) => {
+  client.penguin.setVirtualRegistration(client.server.getVirtualDate(0).getTime());
   client.sendPenguinInfo();
   client.update();
 });
