@@ -173,7 +173,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/rooms/school.swf': 'svanilla:media/play/v2/content/global/rooms/school.swf',
   'play/v2/content/global/rooms/skatepark.swf': 'svanilla:media/play/v2/content/global/rooms/skatepark.swf',
   'play/v2/content/global/rooms/soundroom.swf': 'svanilla:media/play/v2/content/global/rooms/soundroom.swf',
-  'play/v2/content/global/stampbook/world_stamps.xml': 'svanilla:media/play/v2/content/global/stampbook/world_stamps.xml',
   'play/v2/games/pufflescape/levels/Level1.swf': 'svanilla:media/play/v2/games/pufflescape/levels/Level1.swf',
   'play/v2/games/pufflescape/levels/Level1Challenge.swf': 'svanilla:media/play/v2/games/pufflescape/levels/Level1Challenge.swf',
   'play/v2/games/pufflescape/levels/Level1Reverse.swf': 'svanilla:media/play/v2/games/pufflescape/levels/Level1Reverse.swf',

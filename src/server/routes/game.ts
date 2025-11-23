@@ -107,6 +107,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('web_service/worldachievements.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
   });
+  server.getData('play/v2/content/global/stampbook/world_stamps.xml', (s) => {
+    return getWorldAchievementsXml(s.settings.version);
+  });
   server.getData('play/v2/content/local/en/login/startscreen.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
