@@ -129,7 +129,54 @@ export const UPDATES_2012: Update[] = [
     end: ['party'],
     temp: {
       party2: {
-        partyName: 'April Fools\' Party'
+        partyName: 'April Fools\' Party',
+        rooms: {
+          'town': 'archives:RoomsTown-AprilFoolsParty2012.swf',
+          'plaza': 'archives:AprilFools2012Plaza.swf',
+          'forts': 'archives:AprilFools2012Forts.swf',
+          'boxdimension': 'archives:AprilFools2012Box.swf',
+          'party1': 'archives:AprilFools2012Party1.swf',
+          'party2': 'archives:AprilFools2012Party2.swf',
+          'party3': 'archives:AprilFools2012Party3.swf',
+          'party4': 'archives:AprilFools2012Party4.swf',
+          'party5': 'archives:AprilFools2012Party5.swf',
+          'party6': 'archives:AprilFools2012Party6.swf',
+          'party7': 'archives:AprilFools2012Party7.swf',
+          'party8': 'archives:AprilFools2012Party8.swf',
+          'party9': 'archives:AprilFools2012Party9.swf',
+          'party10': 'archives:AprilFools2012Party10.swf',
+        },
+        music: {
+          'town': 232,
+          'plaza': 232,
+          'forts': 232,
+          'boxdimension': 264,
+          'party1': 229,
+          'party2': 307,
+          'party3': 265,
+          'party4': 215,
+          'party5': 208,
+          'party6': 209,
+          'party7': 220,
+          'party8': 11,
+          'party9': 264,
+          'party10': 264
+        },
+        localChanges: {
+          'catalogues/party.swf': {
+            'en': ['archives:AprilFools2012PartyCatalog.swf', 'party_catalogue']
+          },
+          'membership/party9.swf': {
+            'en': 'archives:AprilFools2012Membership.swf'
+          }
+        },
+        mapNote: 'archives:AprilFools2012Party_map_note.swf',
+        startscreens: [
+          'archives:AprilFools2012StartBillboards.swf',
+        ],
+        memberRooms: {
+          party9: true,
+        }
       }
     }
   },
