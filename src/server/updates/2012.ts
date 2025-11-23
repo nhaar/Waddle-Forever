@@ -233,10 +233,96 @@ export const UPDATES_2012: Update[] = [
     end: ['party']
   },
   {
+    date: '2012-07-12',
+    temp: {
+      const: {
+        partyName: 'Make Your Mark: Ultimate Jam Construction',
+        rooms: {
+          'town': 'archives:RoomsTown-UltimateJamPre.swf',
+          'mtn': 'archives:UltimateJamConsMtn.swf',
+          'plaza': 'archives:UltimateJamConsPlaza.swf',
+          'beach': 'archives:UltimateJamConsBeach.swf',
+          'shack': 'archives:UltimateJamConsShack.swf',
+          'dock': 'archives:UltimateJamConsDock.swf',
+          'cove': 'archives:UltimateJamConsCove.swf',
+          'coffee': 'archives:UltimateJamConsCoffee.swf',
+          'forest': 'archives:UltimateJamConsForest.swf'
+        },
+        startscreens: [
+          'archives:UltimateJamPreBillboard.swf'
+        ]
+      }
+    }
+  },
+  {
     date: '2012-07-19',
     temp: {
       party: {
-        partyName: 'Make Your Mark: Ultimate Jam'
+        partyName: 'Make Your Mark: Ultimate Jam',
+        rooms: {
+          'town': 'archives:RoomsTown-UltimateJam.swf',
+          'beach': 'archives:UltimateJamBeach.swf',
+          'light': 'archives:UltimateJamLight.swf',
+          'beacon': 'archives:UltimateJamBeacon.swf',
+          'village': 'archives:UltimateJamVillage.swf',
+          'lodge': 'archives:UltimateJamLodge.swf',
+          'attic': 'archives:UltimateJamAttic.swf',
+          'dock': 'archives:UltimateJamDock.swf',
+          'coffee': 'archives:UltimateJamCoffee.swf',
+          'dance': 'archives:UltimateJamDance.swf',
+          'lounge': 'archives:UltimateJamLounge.swf',
+          'forts': 'archives:UltimateJamForts.swf',
+          'rink': 'archives:UltimateJamRink.swf',
+          'plaza': 'archives:UltimateJamPlaza.swf',
+          'stage': 'archives:UltimateJamStage.swf',
+          'pizza': 'archives:UltimateJamPizza.swf',
+          'forest': 'archives:UltimateJamForest.swf',
+          'cove': 'archives:UltimateJamCove.swf',
+          'berg': 'archives:UltimateJamBerg.swf',
+          'shack': 'archives:UltimateJamShack.swf',
+          'dojoext': 'archives:UltimateJamDojoExt.swf',
+          'dojohide': 'archives:UltimateJamDojoHide.swf',
+          'dojofire': 'archives:UltimateJamDojoFire.swf',
+          'mtn': 'archives:UltimateJamMtn.swf',
+          'party1': 'archives:UltimateJamParty1.swf',
+          'party2': 'archives:UltimateJamParty2.swf',
+          'party3': 'archives:UltimateJamParty3.swf',
+          'party4': 'archives:UltimateJamParty4.swf'
+        },
+        music: {
+          'town': 336,
+          'coffee': 0,
+          'beacon': 334,
+          'village': 292,
+          'lodge': 336,
+          'attic': 336,
+          'dock': 296,
+          'dance': 332,
+          'lounge': 271,
+          'forts': 336,
+          'rink': 250,
+          'plaza': 336,
+          'stage': 321,
+          'pizza': 271,
+          'forest': 333,
+          'cove': 333,
+          'berg': 334,
+          'shack': 321,
+          'mtn': 334,
+          'party3': 337,
+          'party4': 335
+        },
+        globalChanges: {
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:UltimateJamScavengerHunt.swf',
+          
+        },
+        localChanges: {
+          'catalogues/party.swf': {
+            'en': ['archives:UltimateJamCatalog.swf', 'w.p0712.musicjam.clothing.catalogue']
+          }
+        },
+        mapNote: 'archives:UltimateJam_Party_map_note.swf',
+        
       }
     }
   },
