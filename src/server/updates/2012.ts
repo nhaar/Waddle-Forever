@@ -237,11 +237,9 @@ export const UPDATES_2012: Update[] = [
         localChanges: {
           'catalogues/party_catalogue.swf': {
             'en': ['archives:APToFCatalogParty.swf', 'party_catalogue']
-          },
-          'close_ups/party_note01': {
-            'en': 'archives:APToFParty_note.swf'
           }
         },
+        mapNote: 'archives:APToFParty_note.swf',
         startscreens: [
           'archives:AdventureParty2012PreBillboard.swf'
         ],
