@@ -1143,6 +1143,16 @@ export const UPDATES_2010: Update[] = [
         ]
       },
       {
+        name: "183 days!",
+        id: 14,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: ['user hasProperty created_date greaterThan 182']
+          }
+        ]
+      },
+      {
         "name": "Going Places",
         "id": 15,
         "declarations": [
@@ -1207,6 +1217,16 @@ export const UPDATES_2010: Update[] = [
               "user wearing 263 or 240 or 10263",
               "event occurs 5"
             ]
+          }
+        ]
+      },
+      {
+        name: "365 days!",
+        id: 20,
+        declarations: [
+          {
+            event: 'user enterRoom',
+            conditions: ['user hasProperty created_date greaterThan 364']
           }
         ]
       },

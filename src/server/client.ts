@@ -576,8 +576,15 @@ export class Client {
     return this._socket === undefined;
   }
 
-  send (message: string): void {
-    this._socket?.write(message + '\0');
+  async send (message: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this._socket?.write(message + '\0', (err) => {
+        if (err !== undefined) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
   }
 
   private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
@@ -589,9 +596,9 @@ export class Client {
     this.send(this.getXtMessage(true, handler, ...args));
   }
 
-  sendXt (handler: string, ...args: Array<number | string>): void {
+  async sendXt (handler: string, ...args: Array<number | string>): Promise<void> {
     logverbose('\x1b[32mSending XT:\x1b[0m ', handler, args);
-    this.send(this.getXtMessage(false, handler, ...args));
+    await this.send(this.getXtMessage(false, handler, ...args));
   }
 
   static engine1Crumb (penguin: Penguin, roomInfo: {
@@ -889,9 +896,9 @@ export class Client {
     this._waddleGame = waddleGame;
   }
 
-  sendStamps (): void {
+  async sendStamps (): Promise<void> {
     // TODO this is actually not just for one's penguin, TODO multiplayer logic
-    this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
+    await this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
   }
 
   getPinString (): string {
@@ -1141,16 +1148,6 @@ export class Client {
       this.update();
     }
     this._socket?.end();
-  }
-
-  checkAgeStamps(): void {
-    const days = this.age;
-    if (days >= 183) {
-      this.giveStamp(14);
-      if (days >= 365) {
-        this.giveStamp(20);        
-      }
-    }
   }
 
   getCoinsFromScore(score: number): number {

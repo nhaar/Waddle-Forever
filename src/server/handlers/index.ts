@@ -131,7 +131,7 @@ export class Handler {
     Name extends HandleName
   >(
     name: Name,
-    method: (client: Client, ...args: GetArgumentsType<HandleArguments[Name]>) => void,
+    method: (client: Client, ...args: GetArgumentsType<HandleArguments[Name]>) => void | Promise<void>,
     params?: XtParams
   ) {
     const xt = handlePacketNames.get(name);
