@@ -633,6 +633,9 @@ export const UPDATES_2012: Update[] = [
           },
           'close_ups/party_note2.swf': {
             'en': ['archives:Halloween2012CloseUpsePartyNote2.swf', 'w.p1012.halloween.note.goggles']
+          },
+          'membership/party9.swf': {
+            'en': 'archives:ENMembershipPartyHalloween2012.swf'
           }
         },
         scavengerHunt2011: { //this is broken we need a better for scavenger hunt 1 and 2 for this party lol
