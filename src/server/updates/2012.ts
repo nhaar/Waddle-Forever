@@ -424,6 +424,11 @@ export const UPDATES_2012: Update[] = [
     map: 'archives:MapAug2012.swf',
     rooms: {
       coffee: 'archives:RoomsCoffee2.swf'
+    },
+    temp: {
+      party: {
+        update: 'Rooms around the island update with Smoothie Smash\'s release'
+      }
     }
   },
   {
