@@ -258,7 +258,6 @@ export const UPDATES_2012: Update[] = [
     date: '2012-04-12',
     temp: {
       const: {
-        partyName: 'Earth Day Construction',
         rooms: {
           'forts': 'archives:EarthDay2012ConsForts.swf'
         },
