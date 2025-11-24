@@ -135,7 +135,6 @@ export const UPDATES_2012: Update[] = [
     date: '2012-03-14',
     temp: {
       const: {
-        partyName: 'Puffle Party Construction',
         rooms: {
           'beacon': 'archives:PuffleParty2012ConstBeacon.swf',
           'berg': 'archives:PuffleParty2012ConstBerg.swf',
