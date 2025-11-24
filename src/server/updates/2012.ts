@@ -3,7 +3,8 @@ import { Update } from ".";
 export const UPDATES_2012: Update[] = [
   {
     date: '2012-01-05',
-    end: ['party2']
+    end: ['party2'],
+    clothingCatalog: 'archives:PenguinStyleJan2012.swf'
   },
   {
     date: '2012-01-19',
@@ -94,7 +95,8 @@ export const UPDATES_2012: Update[] = [
           'archives:FashionShowPreStartBillboards.swf'
         ]
       }
-    }
+    },
+    clothingCatalog: 'archives:PenguinStyleFeb2012.swf'
   },
   {
     date: '2012-02-02',
@@ -111,6 +113,10 @@ export const UPDATES_2012: Update[] = [
         partyName: 'Rockhopper\'s Quest',
       }
     }
+  },
+  {
+    date: '2012-03-01',
+    clothingCatalog: 'archives:PenguinStyleMar2012.swf'
   },
   {
     date: '2012-03-07',
@@ -190,7 +196,8 @@ export const UPDATES_2012: Update[] = [
       party: {
         partyName: 'Easter Egg Hunt'
       }
-    }
+    },
+    clothingCatalog: 'archives:PenguinStyleApr2012.swf'
   },
   {
     date: '2012-04-11',
@@ -209,6 +216,10 @@ export const UPDATES_2012: Update[] = [
     end: ['party']
   },
   {
+    date: '2012-05-03',
+    clothingCatalog: 'archives:PenguinStyleMay2012.swf'
+  },
+  {
     date: '2012-05-17',
     temp: {
       party: {
@@ -221,6 +232,10 @@ export const UPDATES_2012: Update[] = [
     end: ['party']
   },
   {
+    date: '2012-05-31',
+    clothingCatalog: 'archives:PenguinStyleJun2012.swf'
+  },
+  {
     date: '2012-06-14',
     temp: {
       party: {
@@ -231,6 +246,10 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-07-04',
     end: ['party']
+  },
+  {
+    date: '2012-07-05',
+    clothingCatalog: 'archives:PenguinStyleJul2012.swf'
   },
   {
     date: '2012-07-12',
@@ -328,6 +347,10 @@ export const UPDATES_2012: Update[] = [
     end: ['party']
   },
   {
+    date: '2012-08-02',
+    clothingCatalog: 'archives:PenguinStyleAug2012.swf'
+  },
+  {
     date: '2012-08-23',
     temp: {
       party: {
@@ -398,6 +421,10 @@ export const UPDATES_2012: Update[] = [
     end: ['party']
   },
   {
+    date: '2012-09-06',
+    clothingCatalog: 'archives:PenguinStyleSept2012.swf'
+  },
+  {
     date: '2012-09-20',
     temp: {
       party: {
@@ -407,7 +434,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-10-04',
-    end: ['party']
+    end: ['party'],
+    clothingCatalog: 'archives:PenguinStyleOct2012.swf'
   },
   {
     date: '2012-10-17',
@@ -431,7 +459,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-11-01',
-    end: ['party']
+    end: ['party'],
+    clothingCatalog: 'archives:PenguinStyleNov2012.swf'
   },
   {
     date: '2012-11-14',
@@ -517,7 +546,8 @@ export const UPDATES_2012: Update[] = [
         partyIconFile: 'archives:OperationBlackoutGlobalContentPartyicon.swf',
         fileChanges: {
           'play/v2/client/video_player.swf': 'archives:OperationBlackoutClientVideoPlayer.swf'
-        }
+        },
+        clothingCatalog: 'archives:HerbertStyleNov2012.swf'
       }
     }
   },
@@ -563,7 +593,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-12-06',
-    end: ['party']
+    end: ['party'],
+    clothingCatalog: 'archives:PenguinStyleDec2012.swf'
   },
   {
     date: '2012-12-20',
