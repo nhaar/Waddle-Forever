@@ -236,10 +236,70 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleJun2012.swf'
   },
   {
+    date: '2012-06-07',
+    temp: {
+      const: {
+        rooms: {
+          'dock': 'archives:MarvelSuperheroTakeoverConsDock.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2012-06-14',
     temp: {
       party: {
-        partyName: 'Marvel Super Hero Takeover'
+        partyName: 'Marvel Super Hero Takeover',
+        rooms: {
+          'town': 'archives:RoomsTown-Marvel2012.swf',
+          'beach': 'archives:MarvelSuperheroTakeoverBeach.swf',
+          'book': 'archives:MarvelSuperheroTakeoverBook.swf',
+          'coffee': 'archives:MarvelSuperheroTakeoverCoffee.swf',
+          'dock': 'archives:MarvelSuperheroTakeoverDock.swf',
+          'forest': 'archives:MarvelSuperheroTakeoverForest.swf',
+          'shop': 'archives:MarvelSuperheroTakeoverShop.swf',
+          'berg': 'archives:MarvelSuperheroTakeoverBerg.swf',
+          'pizza': 'archives:MarvelSuperheroTakeoverPizza.swf',
+          'shack': 'archives:MarvelSuperheroTakeoverShack.swf',
+          'village': 'archives:MarvelSuperheroTakeoverVillag.swf',
+          'plaza': 'archives:MarvelSuperheroTakeoverPlaza.swf',
+          'forts': 'archives:MarvelSuperheroTakeoverForts.swf',
+          'stage': 'archives:MarvelSuperheroTakeoverStage.swf',
+          'party1': 'archives:MarvelSuperheroTakeoverParty1.swf',
+          'party2': 'archives:MarvelSuperheroTakeoverParty2.swf',
+          'party3': 'archives:MarvelSuperheroTakeoverParty3.swf'
+        },
+        music: {
+          'town': 325,
+          'plaza': 325,
+          'forts': 325,
+          'dock': 325,
+          'party1': 326,
+          'party2': 330,
+          'party3': 325,
+          'coffee': 0,
+          'book': 0,
+          'pizza': 0
+        },
+        partyIconFile: 'archives:MarvelSuperHeroPartyGameIcon.swf',
+        mapNote: 'archives:MarvelSuperheroTakeoverParty_map_note.swf',
+        memberRooms: {
+          'party1': true 
+        },
+        localChanges: {
+          'membership/party1.swf': {
+            'en': ['archives:MarvelSuperheroTakeoverMember1.swf', 'oops_party1_room']
+          },
+          'catalogues/party.swf': {
+            'en': 'archives:MarvelSuperheroTakeoverCatalogParty.swf'
+          },
+          'catalogues/party2.swf': {
+            'en': 'archives:MarvelSuperheroTakeoverCatalogParty2.swf'
+          },
+          'close_ups/poster.swf': {
+            'en': ['archives:MarvelSuperheroTakeoverPoster.swf', 'party_poster']
+          }
+        }
       }
     }
   },
