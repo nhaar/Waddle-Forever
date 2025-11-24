@@ -455,7 +455,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'temple_of_fruit/forts.swf',
-      comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit snow forts working with the modded engine.swf'
+      comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit snow forts working with the modded engine.swf. Removed the Rockhopper catalogue that was probably added by cutestlesbian'
     }
   ],
   [RECREATION]: [
