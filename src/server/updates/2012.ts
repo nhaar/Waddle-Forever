@@ -257,6 +257,16 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-04-12',
+    temp: {
+      const: {
+        rooms: {
+          'forts': 'archives:EarthDay2012ConsForts.swf'
+        },
+        startscreens: [
+          'archives:EarthDay2012PreStartBillboards.swf'
+        ]
+      }
+    },
     furnitureCatalog: 'archives:Apr2012Furniture.swf',
     iglooCatalog: 'archives:IglooCatalogApr2012EN.swf'
   },
@@ -264,7 +274,23 @@ export const UPDATES_2012: Update[] = [
     date: '2012-04-19',
     temp: {
       party: {
-        partyName: 'Earth Day'
+        partyName: 'Earth Day',
+        rooms: {
+          'plaza': 'archives:EarthDay2012Plaza.swf',
+          'forts': 'archives:EarthDay2012SnowForts.swf',
+          'town': 'archives:RoomsTown-EarthDay2012.swf'
+        },
+        music: {
+          'plaza': 268,
+          'forts': 268,
+          'town': 268
+        },
+        localChanges: {
+          'catalogues/earth_day_catalog.swf': {
+            'en': 'archives:EarthDay2012Catalog.swf'
+          }
+        },
+        mapNote: 'archives:EarthDay2012Party_map_note.swf'
       }
     }
   },
