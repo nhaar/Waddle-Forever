@@ -109,7 +109,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-02-16',
-    furnitureCatalog: 'archives:FebMarch2012Furniture.swf'
+    furnitureCatalog: 'archives:FebMarch2012Furniture.swf',
+    iglooCatalog: 'archives:February2012Igloo.swf'
   },
   {
     date: '2012-02-24',
@@ -256,7 +257,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-04-12',
-    furnitureCatalog: 'archives:Apr2012Furniture.swf'
+    furnitureCatalog: 'archives:Apr2012Furniture.swf',
+    iglooCatalog: 'archives:IglooCatalogApr2012EN.swf'
   },
   {
     date: '2012-04-19',
@@ -276,7 +278,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-05-10',
-    furnitureCatalog: 'archives:May2012Furniture.swf'
+    furnitureCatalog: 'archives:May2012Furniture.swf',
+    iglooCatalog: 'archives:May2012Igloo.swf'
   },
   {
     date: '2012-05-17',
@@ -304,7 +307,8 @@ export const UPDATES_2012: Update[] = [
       }
     },
     furnitureCatalog: 'archives:June2012Furniture.swf',
-    sportCatalog: 'archives:Jun2012Sport.swf'
+    sportCatalog: 'archives:Jun2012Sport.swf',
+    iglooCatalog: 'archives:June2012Igloo.swf'
   },
   {
     date: '2012-06-14',
@@ -395,7 +399,8 @@ export const UPDATES_2012: Update[] = [
         ]
       }
     },
-    furnitureCatalog: 'archives:Jul2012Furniture.swf'
+    furnitureCatalog: 'archives:Jul2012Furniture.swf',
+    iglooCatalog: 'archives:Jul2012Igloo.swf'
   },
   {
     date: '2012-07-19',
@@ -465,6 +470,10 @@ export const UPDATES_2012: Update[] = [
         mapNote: 'archives:UltimateJam_Party_map_note.swf'
       }
     }
+  },
+  {
+    date: '2012-07-26',
+    iglooCatalog: 'archives:Aug2012Igloo.swf'
   },
   {
     date: '2012-08-01',
@@ -587,7 +596,7 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleOct2012.swf'
   },
   {
-    date: '2012-10-08',
+    date: '2012-10-11',
     temp: {
       const: {
         rooms: {
@@ -609,7 +618,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-10-11',
-    furnitureCatalog: 'archives:Oct2012Furniture.swf'
+    furnitureCatalog: 'archives:Oct2012Furniture.swf',
+    iglooCatalog: 'archives:ENCataloguesIglooOct2012.swf'
   },
   {
     date: '2012-10-17',
@@ -919,7 +929,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-12-13',
-    furnitureCatalog: 'archives:ENDec2012Furniture.swf'
+    furnitureCatalog: 'archives:ENDec2012Furniture.swf',
+    iglooCatalog: 'archives:IglooCatalogDec2012.swf'
   },
   {
     date: '2012-12-20',
