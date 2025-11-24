@@ -414,6 +414,7 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Adventure Party: Temple of Fruit',
+        migrator: 'archives:Aug2012Pirate.swf',
         rooms: {
           'town': 'archives:RoomsTown-TempleofFruit.swf',
           'plaza': 'archives:APToFPlaza.swf',
