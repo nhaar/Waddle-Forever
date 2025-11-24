@@ -299,7 +299,10 @@ export const UPDATES_2012: Update[] = [
           'close_ups/poster.swf': {
             'en': ['archives:MarvelSuperheroTakeoverPoster.swf', 'party_poster']
           }
-        }
+        },
+        startscreens: [
+          'archives:Billboards-super-hero-2.swf.swf'
+        ]
       }
     }
   },
