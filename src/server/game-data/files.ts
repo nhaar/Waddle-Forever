@@ -1642,7 +1642,7 @@ Originally from solero legacy-media, modified to work in the flat domain any por
   [UNKNOWN]: [
     {
       file: 'chat291.swf',
-      comment: 'I thought it was from Mammoth, but for some reason the bytes don\'t match'
+      comment: 'Originally from Mammoth. Seems like I have then modified the message functionality to add command support, I don\'t know if there are more changes. All mammoth did originally was remove the domain lock (and probably recompiled via FFDEC)'
     },
     {
       file: 'chat506.swf',
