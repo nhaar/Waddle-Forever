@@ -414,6 +414,7 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Adventure Party: Temple of Fruit',
+        migrator: 'archives:Apr2011Pirate.swf',
         rooms: {
           'town': 'archives:RoomsTown-TempleofFruit.swf',
           'plaza': 'archives:APToFPlaza.swf',
@@ -449,6 +450,9 @@ export const UPDATES_2012: Update[] = [
         localChanges: {
           'catalogues/party_catalogue.swf': {
             'en': ['archives:APToFCatalogParty.swf', 'party_catalogue', 'w.p0812.smoothie.clothing.catalogue']
+          },
+          'catalogues/pirate.swf': {
+            'en': 'archives:Aug2012Pirate.swf'
           }
         },
         mapNote: 'archives:APToFParty_note.swf',
