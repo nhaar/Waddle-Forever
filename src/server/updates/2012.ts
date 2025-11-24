@@ -224,14 +224,14 @@ export const UPDATES_2012: Update[] = [
               claim: 'Claim Prize',
               continue: 'Continue',
               clues: [
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
+                "The first egg's hid near shining gold, Somewhere deep and dark and cold.",
+                "The next egg's found near works of art, Plus lots of books to make you smart!",
+                "This next egg's near a snowy shore. It's hidden well. You must explore.",
+                "Now head towards a wooden shack. You're doing well, you're right on track!",
+                "Search now near a tall white chair, For watching waves. The egg is there.",
+                "The next one's sure to make you smile. Just like you, this egg's got style.",
+                "The next egg's near a chair that lifts. You're getting close, you must be swift!",
+                "The last egg's near a big, bright light. You're almost done, the end's in sight."
               ]
             }
           }
