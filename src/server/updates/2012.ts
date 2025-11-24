@@ -307,6 +307,7 @@ export const UPDATES_2012: Update[] = [
       }
     },
     furnitureCatalog: 'archives:June2012Furniture.swf',
+    sportCatalog: 'archives:Jun2012Sport.swf',
     iglooCatalog: 'archives:June2012Igloo.swf'
   },
   {
@@ -923,7 +924,8 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-12-06',
     end: ['party'],
-    clothingCatalog: 'archives:PenguinStyleDec2012.swf'
+    clothingCatalog: 'archives:PenguinStyleDec2012.swf',
+    sportCatalog: 'archives:Dec2012Sport.swf'
   },
   {
     date: '2012-12-13',
