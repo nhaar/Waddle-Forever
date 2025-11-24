@@ -448,6 +448,14 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'engine_modern_no_glow.swf',
       comment: 'engine.swf from vanilla media, but with name glow removed'
+    },
+    {
+      file: 'temple_of_fruit/party1.swf',
+      comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit top working with the modded engine.swf'
+    },
+    {
+      file: 'temple_of_fruit/forts.swf',
+      comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit snow forts working with the modded engine.swf'
     }
   ],
   [RECREATION]: [
@@ -1572,6 +1580,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'chat339_instrument_hunt.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'temple_of_fruit/engine.swf',
+      comment: 'Credit to Jeff the Rock and cutestlesbian. Engine with the Temple of Fruit transformations'
     }
   ],
   [MOD]: [

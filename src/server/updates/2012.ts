@@ -357,7 +357,7 @@ export const UPDATES_2012: Update[] = [
         rooms: {
           'town': 'archives:RoomsTown-TempleofFruit.swf',
           'plaza': 'archives:APToFPlaza.swf',
-          'forts': 'archives:APToFForts.swf',
+          'forts': 'approximation:temple_of_fruit/forts.swf',
           'beach': 'archives:APToFBeach.swf',
           'forest': 'archives:APToFForest.swf',
           'cove': 'archives:APToFCove.swf',
@@ -365,7 +365,7 @@ export const UPDATES_2012: Update[] = [
           'pizza': 'archives:APToFPizza.swf',
           'dance': 'archives:APToFDance.swf',
           'shop': 'archives:APToFShop.swf',
-          'party1': 'archives:APToFParty1.swf',
+          'party1': 'approximation:temple_of_fruit/party1.swf',
           'party2': 'archives:APToFParty2.swf',
           'party3': 'archives:APToFParty3.swf'
         },
@@ -395,7 +395,10 @@ export const UPDATES_2012: Update[] = [
         startscreens: [
           'archives:AdventureParty2012PreBillboard.swf'
         ],
-        partyIconFile: 'archives:APToFPartyScavengerHuntIcon.swf'
+        partyIconFile: 'archives:APToFPartyScavengerHuntIcon.swf',
+        fileChanges: {
+          'play/v2/client/engine.swf': 'recreation:temple_of_fruit/engine.swf'
+        }
       }
     }
   },

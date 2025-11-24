@@ -165,7 +165,8 @@ export enum Handle {
   UpdateIglooMusic2007,
   GetPartyOp,
   SetPartyOp,
-  SendLine
+  SendLine,
+  PlayerTransformation
 };
 
 /** Map of all the handles and their valid arguments */
@@ -314,7 +315,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.UpdateIglooMusic2007]: ['number'],
   [Handle.GetPartyOp]: [],
   [Handle.SetPartyOp]: ['number'],
-  [Handle.SendLine]: ['number']
+  [Handle.SendLine]: ['number'],
+  [Handle.PlayerTransformation]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -427,6 +429,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'pcid': Handle.EatPuffleItem,
       'revealgoldpuffle': Handle.RevealGoldPuffle,
       'rpqtc': Handle.SetRainbowQuestTaskComplete
+    },
+    'pt': {
+      'spts': Handle.PlayerTransformation
     },
     't': {
       'at': Handle.OpenBook,

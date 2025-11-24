@@ -514,6 +514,7 @@ export class Client {
   private _currentRoom: GameRoom | undefined;
   /** Reference to the player's information stored in the room */
   private _roomInfo: PlayerRoomInfo | undefined;
+  private _avatar: number = 0;
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -668,7 +669,7 @@ export class Client {
         this.frame,
         this.penguin.isMember ? 1 : 0,
         this.memberAge,
-        0, // TODO figure out what this "avatar" is
+        this._avatar,
         0, // TODO figure out what penguin state is
         0, // TODO figure out what party state is
         0, // TODO figure out what puffle state is
@@ -1336,6 +1337,14 @@ export class Client {
     }
 
     this.update();
+  }
+
+  setAvatar(id: number) {
+    this._avatar = id;
+  }
+
+  get avatar() {
+    return this._avatar;
   }
 }
 
