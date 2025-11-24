@@ -301,7 +301,7 @@ export const UPDATES_2012: Update[] = [
           }
         },
         startscreens: [
-          'archives:Billboards-super-hero-2.swf.swf'
+          'archives:Billboards-super-hero-2.swf'
         ]
       }
     }
