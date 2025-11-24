@@ -640,10 +640,7 @@ export const UPDATES_2012: Update[] = [
           'archives:HalloweenParty2012Pre-Awareness.swf'
         ]
       }
-    }
-  },
-  {
-    date: '2012-10-11',
+    },
     furnitureCatalog: 'archives:Oct2012Furniture.swf',
     iglooCatalog: 'archives:ENCataloguesIglooOct2012.swf'
   },
