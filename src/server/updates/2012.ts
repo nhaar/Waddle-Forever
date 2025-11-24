@@ -514,10 +514,156 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleOct2012.swf'
   },
   {
+    date: '2012-10-08',
+    temp: {
+      const: {
+        rooms: {
+          'forest': 'archives:HalloweenParty2012PreForest.swf',
+          'forts': 'archives:HalloweenParty2012PreForest.swf',
+          'plaza': 'archives:HalloweenParty2012PrePlaza.swf',
+          'town': 'archives:RoomsTown-HalloweenParty2012Pre.swf'
+        },
+        localChanges: {
+          'close_ups/party_poster.swf': {
+            'en': ['archives:HalloweenParty2012PreCloseUpsPoster.swf', 'party_poster']
+          }
+        },
+        startscreens: [
+          'archives:HalloweenParty2012Pre-Awareness.swf'
+        ]
+      }
+    }
+  },
+  {
     date: '2012-10-17',
     temp: {
       party: {
-        partyName: 'Halloween Party'
+        //we need the snowballs in mansion and the ghost transform
+        partyName: 'Halloween Party',
+        rooms: {
+          'attic': 'archives:HalloweenParty2012Attic.swf',
+          'beach': 'archives:HalloweenParty2012Beach.swf',
+          'beacon': 'archives:HalloweenParty2012Beacon.swf',
+          'berg': 'archives:HalloweenParty2012Berg.swf',
+          'book': 'archives:HalloweenParty2012Book.swf',
+          'cave': 'archives:HalloweenParty2012Cave.swf',
+          'coffee': 'archives:HalloweenParty2012Coffee.swf',
+          'cove': 'archives:HalloweenParty2012Cove.swf',
+          'dance': 'archives:HalloweenParty2012Dance.swf',
+          'dock': 'archives:HalloweenParty2012Dock.swf',
+          'dojo': 'archives:HalloweenParty2012Dojo.swf',
+          'dojoext': 'archives:HalloweenParty2012Dojoext.swf',
+          'dojofire': 'archives:HalloweenParty2012Dojofire.swf',
+          'dojohide': 'archives:HalloweenParty2012Dojohide.swf',
+          'forest': 'archives:HalloweenParty2012Forest.swf',
+          'forts': 'archives:HalloweenParty2012Forts.swf',
+          'light': 'archives:HalloweenParty2012Lighthouse.swf',
+          'lodge': 'archives:HalloweenParty2012Lodge.swf',
+          'lounge': 'archives:HalloweenParty2012Lounge.swf',
+          'mtn': 'archives:HalloweenParty2012Mtn.swf',
+          'pet': 'archives:HalloweenParty2012Pet.swf',
+          'pizza': 'archives:HalloweenParty2012Pizza.swf',
+          'plaza': 'archives:HalloweenParty2012Plaza.swf',
+          'rink': 'archives:HalloweenParty2012Rink.swf',
+          'shack': 'archives:HalloweenParty2012Shack.swf',
+          'shop': 'archives:HalloweenParty2012Shop.swf',
+          'village': 'archives:HalloweenParty2012Village.swf',
+          'town': 'archives:RoomsTown-HalloweenParty2012.swf',
+          'party1': 'archives:HalloweenParty2012Party1.swf',
+          'party2': 'archives:HalloweenParty2012Party2.swf',
+          'party3': 'archives:HalloweenParty2012Party3.swf',
+          'party4': 'archives:HalloweenParty2012Party4.swf',
+          'party5': 'archives:HalloweenParty2012Party5.swf',
+          'party6': 'archives:HalloweenParty2012Party6.swf',
+          'party7': 'archives:HalloweenParty2012Party7.swf',
+          'party8': 'archives:HalloweenParty2012Party8.swf',
+          'party9': 'archives:HalloweenParty2012Party9.swf'
+        },
+        music: {
+          'attic': 252,
+          'beach': 251,
+          'beacon': 251,
+          'book': 252,
+          'cave': 252,
+          'coffee': 252,
+          'cove': 251,
+          'dance': 223,
+          'dock': 251,
+          'dojo': 252,
+          'dojoext': 251,
+          'dojohide': 251,
+          'forest': 339,
+          'forts': 251,
+          'light': 252,
+          'lodge': 252,
+          'lounge': 223,
+          'mtn': 251,
+          'pizza': 253,
+          'plaza': 251,
+          'rink': 251,
+          'shack': 251,
+          'shop': 252,
+          'village': 251,
+          'town': 251,
+          'party1': 339,
+          'party2': 339,
+          'party3': 339,
+          'party4': 339,
+          'party5': 339,
+          'party6': 340,
+          'party7': 340,
+          'party8': 339,
+          'party9': 338
+        },
+        globalChanges: {
+          'telescope/telescope.swf': 'archives:Halloween2012TelescopeStormy.swf',
+          'binoculars/empty.swf': 'archives:Halloween2012BinocularsStormy.swf',
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:HalloweenParty2012ScavengerHunt.swf',
+          'scavenger_hunt/scavenger_hunt2.swf': 'archives:HalloweenParty2012ScavengerHunt2.swf'
+        },
+        localChanges: {
+          'telescope/party_telescope.swf': {
+            'en': ['archives:Halloween2012TelescopeParty.swf', 'w.p1012.halloween.attic.telescope']
+          },
+          'catalogues/party.swf': {
+            'en': 'archives:Halloween2012PartyCatalog.swf'
+          },
+          'close_ups/party_note1.swf': {
+            'en': 'archives:Halloween2012CloseUpsePartyNote1.swf'
+          },
+          'close_ups/party_note2.swf': {
+            'en': ['archives:Halloween2012CloseUpsePartyNote2.swf', 'w.p1012.halloween.note.goggles']
+          }
+        },
+        scavengerHunt2011: { //this is broken we need a better for scavenger hunt 1 and 2 for this party lol
+          global: {
+            member: false,
+            reward: 0
+          },
+          icon: 'archives:HalloweenParty2012ScavengerHuntIcon.swf', //the icon dont appear
+          lang: {
+            en: {
+              loading: 'Loading Scavenger Hunt',
+              title: 'Five Spooky-Keys',
+              start: '',
+              itemsFound: '%num% KEYS FOUND',
+              itemsFoundPlural: '%num% KEYS FOUND',
+              claim: '',
+              continue: '',
+              clues: [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                ''
+              ]
+            }
+          }
+        },
+        mapNote: 'archives:Halloween2012Party_map_note.swf'
       }
     }
   },
