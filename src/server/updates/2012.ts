@@ -14,7 +14,8 @@ export const UPDATES_2012: Update[] = [
           beach: 'archives:UnderwaterExpeditionConstBeach.swf'
         }
       }
-    }
+    },
+    furnitureCatalog: 'archives:JanFeb2012Furniture.swf'
   },
   {
     date: '2012-01-26',
@@ -107,6 +108,10 @@ export const UPDATES_2012: Update[] = [
     end: ['party2']
   },
   {
+    date: '2012-02-16',
+    furnitureCatalog: 'archives:FebMarch2012Furniture.swf'
+  },
+  {
     date: '2012-02-24',
     temp: {
       party: {
@@ -121,6 +126,10 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-03-07',
     end: ['party']
+  },
+  {
+    date: '2012-03-08',
+    furnitureCatalog: 'archives:Mar2012Furniture.swf'
   },
   {
     date: '2012-03-15',
@@ -246,6 +255,10 @@ export const UPDATES_2012: Update[] = [
     end: ['party']
   },
   {
+    date: '2012-04-12',
+    furnitureCatalog: 'archives:Apr2012Furniture.swf'
+  },
+  {
     date: '2012-04-19',
     temp: {
       party: {
@@ -260,6 +273,10 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-05-03',
     clothingCatalog: 'archives:PenguinStyleMay2012.swf'
+  },
+  {
+    date: '2012-05-10',
+    furnitureCatalog: 'archives:May2012Furniture.swf'
   },
   {
     date: '2012-05-17',
@@ -285,7 +302,8 @@ export const UPDATES_2012: Update[] = [
           'dock': 'archives:MarvelSuperheroTakeoverConsDock.swf'
         }
       }
-    }
+    },
+    furnitureCatalog: 'archives:June2012Furniture.swf'
   },
   {
     date: '2012-06-14',
@@ -375,7 +393,8 @@ export const UPDATES_2012: Update[] = [
           'archives:UltimateJamPreBillboard.swf'
         ]
       }
-    }
+    },
+    furnitureCatalog: 'archives:Jul2012Furniture.swf'
   },
   {
     date: '2012-07-19',
@@ -453,6 +472,10 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-08-02',
     clothingCatalog: 'archives:PenguinStyleAug2012.swf'
+  },
+  {
+    date: '2012-08-09',
+    furnitureCatalog: 'archives:Aug2012Furniture.swf'
   },
   {
     date: '2012-08-23',
@@ -546,6 +569,10 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleSept2012.swf'
   },
   {
+    date: '2012-09-13',
+    furnitureCatalog: 'archives:Sep2012Furniture.swf'
+  },
+  {
     date: '2012-09-20',
     temp: {
       party: {
@@ -578,6 +605,10 @@ export const UPDATES_2012: Update[] = [
         ]
       }
     }
+  },
+  {
+    date: '2012-10-11',
+    furnitureCatalog: 'archives:Oct2012Furniture.swf'
   },
   {
     date: '2012-10-17',
@@ -747,6 +778,10 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleNov2012.swf'
   },
   {
+    date: '2012-11-08',
+    furnitureCatalog: 'archives:Nov2012Furniture.swf'
+  },
+  {
     date: '2012-11-14',
     temp: {
       party: {
@@ -879,6 +914,10 @@ export const UPDATES_2012: Update[] = [
     date: '2012-12-06',
     end: ['party'],
     clothingCatalog: 'archives:PenguinStyleDec2012.swf'
+  },
+  {
+    date: '2012-12-13',
+    furnitureCatalog: 'archives:ENDec2012Furniture.swf'
   },
   {
     date: '2012-12-20',
