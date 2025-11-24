@@ -671,7 +671,21 @@ export const UPDATES_2012: Update[] = [
     date: '2012-10-23',
     temp: {
       party2: {
-        partyName: '7th Anniversary Party'
+        partyName: '7th Anniversary Party',
+        rooms: {
+          'coffee': 'archives:7thAnniversaryPartyCoffee.swf'
+        },
+        music: {
+          'coffee': 252
+        }
+      }
+    },
+    localChanges: {
+      'books/year1112.swf': {
+        'en': 'archives:BooksYear1112.swf'
+      },
+      'forms/library.swf': {
+        'en': 'archives:LibraryOct2012.swf'
       }
     }
   },
