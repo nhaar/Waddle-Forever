@@ -194,7 +194,48 @@ export const UPDATES_2012: Update[] = [
     date: '2012-04-05',
     temp: {
       party: {
-        partyName: 'Easter Egg Hunt'
+        partyName: 'Easter Egg Hunt',
+        rooms: {
+          'beach': 'archives:EasterEggHunt2012Beach.swf',
+          'beacon': 'archives:EasterEggHunt2012Beacon.swf',
+          'book': 'archives:EasterEggHunt2012Book.swf',
+          'cove': 'archives:EasterEggHunt2012Cove.swf',
+          'lake': 'archives:EasterEggHunt2012Lake.swf',
+          'shack': 'archives:EasterEggHunt2012Shack.swf',
+          'shop': 'archives:EasterEggHunt2012Shop.swf',
+          'village': 'archives:EasterEggHunt2012Village.swf'
+        },
+        globalChanges: {
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:EasterEggHunt2012Scavenger_hunt.swf'
+        },
+        scavengerHunt2011: {
+          icon: 'archives:EasterEggHunt2012Scavenger_hunt_icon.swf',
+          global: {
+            member: false,
+            reward: 1388,
+          },
+          lang: {
+            en: {
+              loading: 'Loading Scavenger Hunt',
+              title: 'Easter Egg Scavenger Hunt',
+              start: 'You have found',
+              itemsFound: 'You have found %num% eggs',
+              itemsFoundPlural: 'You have found %num% eggs',
+              claim: 'Claim Prize',
+              continue: 'Continue',
+              clues: [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+              ]
+            }
+          }
+        },
       }
     },
     clothingCatalog: 'archives:PenguinStyleApr2012.swf'
