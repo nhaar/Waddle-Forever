@@ -256,10 +256,6 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-04-12',
-    furnitureCatalog: 'archives:Apr2012Furniture.swf'
-  },
-  {
-    date: '2012-04-12',
     temp: {
       const: {
         partyName: 'Earth Day Construction',
@@ -270,7 +266,8 @@ export const UPDATES_2012: Update[] = [
           'archives:EarthDay2012PreStartBillboards.swf'
         ]
       }
-    }
+    },
+    furnitureCatalog: 'archives:Apr2012Furniture.swf'
   },
   {
     date: '2012-04-19',
