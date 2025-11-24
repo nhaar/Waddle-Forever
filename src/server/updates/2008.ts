@@ -1463,7 +1463,8 @@ export const UPDATES_2008: Update[] = [
           village: 213,
           forts: 213,
           sport: 249,
-          town: 213
+          town: 213,
+          pitch: 240
         }
       }
     }
