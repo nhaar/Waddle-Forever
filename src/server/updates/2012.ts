@@ -194,7 +194,48 @@ export const UPDATES_2012: Update[] = [
     date: '2012-04-05',
     temp: {
       party: {
-        partyName: 'Easter Egg Hunt'
+        partyName: 'Easter Egg Hunt',
+        rooms: {
+          'beach': 'archives:EasterEggHunt2012Beach.swf',
+          'beacon': 'archives:EasterEggHunt2012Beacon.swf',
+          'book': 'archives:EasterEggHunt2012Book.swf',
+          'cove': 'archives:EasterEggHunt2012Cove.swf',
+          'lake': 'archives:EasterEggHunt2012Lake.swf',
+          'shack': 'archives:EasterEggHunt2012Shack.swf',
+          'shop': 'archives:EasterEggHunt2012Shop.swf',
+          'village': 'archives:EasterEggHunt2012Village.swf'
+        },
+        globalChanges: {
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:EasterEggHunt2012Scavenger_hunt.swf'
+        },
+        scavengerHunt2011: {
+          icon: 'archives:EasterEggHunt2012Scavenger_hunt_icon.swf',
+          global: {
+            member: false,
+            reward: 1388,
+          },
+          lang: {
+            en: {
+              loading: 'Loading Scavenger Hunt',
+              title: 'Easter Egg Scavenger Hunt',
+              start: 'You have found',
+              itemsFound: 'You have found %num% eggs',
+              itemsFoundPlural: 'You have found %num% eggs',
+              claim: 'Claim Prize',
+              continue: 'Continue',
+              clues: [
+                "The first egg's hid near shining gold, Somewhere deep and dark and cold.",
+                "The next egg's found near works of art, Plus lots of books to make you smart!",
+                "This next egg's near a snowy shore. It's hidden well. You must explore.",
+                "Now head towards a wooden shack. You're doing well, you're right on track!",
+                "Search now near a tall white chair, For watching waves. The egg is there.",
+                "The next one's sure to make you smile. Just like you, this egg's got style.",
+                "The next egg's near a chair that lifts. You're getting close, you must be swift!",
+                "The last egg's near a big, bright light. You're almost done, the end's in sight."
+              ]
+            }
+          }
+        },
       }
     },
     clothingCatalog: 'archives:PenguinStyleApr2012.swf'
