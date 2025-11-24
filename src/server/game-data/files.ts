@@ -431,7 +431,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'map_dec_2011.swf',
-      comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL'
+      comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL. Later added a fix for the map notes from the later half of 2011, when it changed from note_container.goThereBtn to just goThereBtn'
     },
     {
       file: 'newspaper_march_compatible.swf',
