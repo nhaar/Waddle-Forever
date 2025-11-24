@@ -595,7 +595,7 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleOct2012.swf'
   },
   {
-    date: '2012-10-08',
+    date: '2012-10-11',
     temp: {
       const: {
         rooms: {
