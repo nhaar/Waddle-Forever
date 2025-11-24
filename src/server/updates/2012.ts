@@ -204,6 +204,7 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Easter Egg Hunt',
+        decorated: false,
         rooms: {
           'beach': 'archives:EasterEggHunt2012Beach.swf',
           'beacon': 'archives:EasterEggHunt2012Beacon.swf',
