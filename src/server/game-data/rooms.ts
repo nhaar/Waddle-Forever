@@ -312,7 +312,7 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipName: null
   },
   'pitch': {
-    id: 850,
+    id: 898,
     name: 'Party',
     preCpipName: null
   },
