@@ -259,7 +259,7 @@ export const UPDATES_2012: Update[] = [
     furnitureCatalog: 'archives:Apr2012Furniture.swf'
   },
   {
-    date: '2012-04-14',
+    date: '2012-04-12',
     temp: {
       const: {
         partyName: 'Earth Day Construction',
