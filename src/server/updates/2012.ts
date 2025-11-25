@@ -130,13 +130,91 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-03-08',
+    temp: {
+      const: {
+        rooms: {
+          'beacon': 'archives:PuffleParty2012ConstBeacon.swf',
+          'berg': 'archives:PuffleParty2012ConstBerg.swf',
+          'cave': 'archives:PuffleParty2012ConstCave.swf',
+          'cove': 'archives:PuffleParty2012ConstCove.swf',
+          'dance': 'archives:PuffleParty2012ConstDance.swf',
+          'forest': 'archives:PuffleParty2012ConstForest.swf',
+          'light': 'archives:PuffleParty2012ConstLight.swf',
+          'lounge': 'archives:PuffleParty2012ConstLounge.swf',
+          'mtn': 'archives:PuffleParty2012ConstMtn.swf'
+        },
+        startscreens: [
+          'archives:PuffleParty2012PreStartBillboards.swf'
+        ]
+      }
+    },
     furnitureCatalog: 'archives:Mar2012Furniture.swf'
   },
   {
     date: '2012-03-15',
     temp: {
       party: {
-        partyName: 'Puffle Party'
+        partyName: 'Puffle Party',
+        rooms: {
+          'beach': 'archives:PuffleParty2012Beach.swf',
+          'beacon': 'archives:PuffleParty2012Beacon.swf',
+          'berg': 'archives:PuffleParty2012Berg.swf',
+          'boxdimension': 'archives:PuffleParty2012Box.swf',
+          'cave': 'archives:PuffleParty2012Cave.swf',
+          'cove': 'archives:PuffleParty2012Cove.swf',
+          'dance': 'archives:PuffleParty2012Dance.swf',
+          'dock': 'archives:PuffleParty2012Dock.swf',
+          'forest': 'archives:PuffleParty2012Forest.swf',
+          'forts': 'archives:PuffleParty2012Forts.swf',
+          'light': 'archives:PuffleParty2012Light.swf',
+          'lodge': 'archives:PuffleParty2012Lodge.swf',
+          'lounge': 'archives:PuffleParty2012Lounge.swf',
+          'mtn': 'archives:PuffleParty2012Lounge.swf',
+          'plaza': 'archives:PuffleParty2012Plaza.swf',
+          'shack': 'archives:PuffleParty2012Shack.swf',
+          'village': 'archives:PuffleParty2012Village.swf',
+          'town': 'archives:RoomsTown-PuffleParty2012.swf',
+          'party1': 'archives:PuffleParty2012Party1.swf',
+          'party2': 'archives:PuffleParty2012Party2.swf',
+          'party3': 'archives:PuffleParty2012Party3.swf',
+          'party4': 'archives:PuffleParty2012Party4.swf'
+        },
+        music: {
+          'shack': 208,
+          'dance': 260,
+          'lounge': 260,
+          'light': 31,
+          'berg': 213,
+          'cave': 36,
+          'boxdimension': 264,
+          'lodge': 216,
+          'town': 261,
+          'plaza': 261,
+          'forest': 261,
+          'forts': 261,
+          'beach': 261,
+          'beacon': 261,
+          'village': 261,
+          'mtn': 261,
+          'party1': 261,
+          'party2': 282,
+          'party4': 216
+        },
+        localChanges: {
+          'catalogues/party.swf': {
+            'en': 'archives:PuffleParty2012Catalog.swf'
+          },
+          'membership/party3.swf': {
+            'en': ['archives:PuffleParty20121Membership.swf', 'oops_party3_room']
+          },
+          'membership/party4.swf': {
+            'en': ['archives:PuffleParty20122Membership.swf', 'oops_party4_room']
+          },
+          'close_ups/party_poster.swf': {
+            'en': ['archives:PuffleParty2012Poster.swf', 'party_poster']
+          }
+        },
+        mapNote: 'archives:PuffleParty2012Party_map_note.swf'
       }
     }
   },
