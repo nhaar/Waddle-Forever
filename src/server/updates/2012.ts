@@ -833,11 +833,15 @@ export const UPDATES_2012: Update[] = [
           }
         },
         fileChanges: {
-          'play/v2/client/engine.swf': 'approximation:ghosts/engine.swf'
+          'play/v2/client/engine.swf': 'approximation:ghosts/engine.swf',
         },
         partyIconFile: 'archives:HalloweenParty2012ScavengerHuntIcon.swf',
         mapNote: 'archives:Halloween2012Party_map_note.swf'
       }
+    },
+    fileChanges: {
+      'play/v2/client/shell.swf': 'approximation:shell_2012_halloween.swf',
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-HalloweenParty2012.swf'
     }
   },
   {

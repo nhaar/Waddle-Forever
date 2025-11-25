@@ -459,7 +459,11 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'ghosts/engine.swf',
-      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect)'
+      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect). Aditionally, for the INTERFACE to work, the function isPlayerTransformedIntoGhost is added'
+    },
+    {
+      file: 'shell_2012_halloween.swf',
+      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). TODO? Could just replace the 2016 shell'
     }
   ],
   [RECREATION]: [
