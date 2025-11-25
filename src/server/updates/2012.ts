@@ -694,10 +694,100 @@ export const UPDATES_2012: Update[] = [
     furnitureCatalog: 'archives:Sep2012Furniture.swf'
   },
   {
+    date: '2012-09-19',
+    temp: {
+      const: {
+        rooms: {
+          'beach': 'archives:Fair2012ConstBeach.swf'
+        },
+        startscreens: [
+          'archives:Fair2012Pre-Awareness.swf'
+        ]
+      }
+    }
+  },
+  {
     date: '2012-09-20',
     temp: {
       party: {
-        partyName: 'The Fair'
+        partyName: 'The Fair',
+        rooms: {
+          'beach': 'archives:Fair2012Beach.swf',
+          'beacon': 'archives:Fair2012Beacon.swf',
+          'berg': 'archives:Fair2012Berg.swf',
+          'cove': 'archives:Fair2012Cove.swf',
+          'dance': 'archives:Fair2012Dance.swf',
+          'dock': 'archives:Fair2012Dock.swf',
+          'forest': 'archives:Fair2012Forest.swf',
+          'forts': 'archives:Fair2012Forts.swf',
+          'mtn': 'archives:Fair2012Mtn.swf',
+          'pizza': 'archives:Fair2012Pizza.swf',
+          'plaza': 'archives:Fair2012Plaza.swf',
+          'rink': 'archives:Fair2012Rink.swf',
+          'village': 'archives:Fair2012Village.swf',
+          'town': 'archives:RoomsTown-TheFair2012.swf',
+          'party1': 'archives:Fair2012Party1.swf',
+          'party2': 'archives:Fair2012Party2.swf',
+          'party3': 'archives:Fair2012Party3.swf'
+        },
+        music: {
+          'beach': 297,
+          'beacon': 297,
+          'berg': 297,
+          'cove': 297,
+          'dance': 242,
+          'dock': 297,
+          'forest': 297,
+          'forts': 297,
+          'mtn': 297,
+          'pizza': 221,
+          'plaza': 297,
+          'rink': 311,
+          'village': 297,
+          'town': 297,
+          'party1': 221,
+          'party2': 221,
+          'party3': 221
+        },
+        startscreens: [
+          'archives:Fair2012Fair-Now.swf'
+        ],
+        localChanges: {
+          'catalogues/prizebooth.swf': {
+            'en': 'archives:Fair2012PrizeboothS1.swf'
+          },
+          'catalogues/prizeboothmember.swf': {
+            'en': 'archives:Fair2012MemberprizeboothS1.swf'
+          },
+          'close_ups/party_poster.swf': {
+            'en': ['archives:TheFair2012Poster.swf', 'poster']
+          }
+        },
+        mapNote: 'archives:TheFair2012Map_Party_note.swf',
+        fairCpip: {
+          iconFileId: 'archives:Fair2012TicketIcon.swf',
+          infoFile: 'archives:Fair2012Tickets.swf'
+        },
+      }
+    }
+  },
+  {
+    date: '2012-09-26',
+    temp: {
+      party: {
+        update: 'The prize booths are updated',
+        rooms: {
+          'forest': 'archives:Fair2012ForestS2.swf',
+          'party2': 'archives:Fair2012Party2S2.swf'
+        },
+        localChanges: {
+          'catalogues/prizebooth.swf': {
+            'en': 'archives:Fair2012PrizeboothS2.swf'
+          },
+          'catalogues/prizeboothmember.swf': {
+            'en': 'archives:Fair2012PrizeboothmemberS2.swf'
+          }
+        }
       }
     }
   },
