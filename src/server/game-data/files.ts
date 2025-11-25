@@ -459,7 +459,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'ghosts/engine.swf',
-      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect). Aditionally, for the INTERFACE to work, the function isPlayerTransformedIntoGhost is added'
+      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect). Aditionally, for the INTERFACE to work, the function isPlayerTransformedIntoGhost is added. For the ghost penguin to not get teleported in the middle of the animation, AvatarTransformationManager was modded a bit, in specific the function onTransformLoadComplete'
     },
     {
       file: 'shell_2012_halloween.swf',
