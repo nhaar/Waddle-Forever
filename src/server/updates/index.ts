@@ -192,6 +192,7 @@ export type CPUpdate = {
 
   partyIconFile?: FileRef;
 
+  activeFeatures?: string;
 } & ({
   partyName: string;
   decorated?: false;

@@ -1,7 +1,9 @@
+import { ACTIVE_FEATURES_TIMELINE } from '../../timelines/activefeatures';
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
 import { Handle } from '../handles';
 import { getClientPuffleIds } from './puffle';
+import { findInVersion } from '../../game-data';
 
 const handler = new Handler();
 
@@ -47,8 +49,7 @@ handler.xt(Handle.JoinServerNew, async (client, id) => {
   // // initializing penguin data
   client.sendXt('js', client.penguin.isAgent ? 1 : 0, 0, moderatorStatus, 0);
 
-  // unsure what this is for, seemingly uneeded
-  // client.sendXt('activefeatures');
+  client.sendXt('activefeatures', findInVersion(client.version, ACTIVE_FEATURES_TIMELINE) ?? '');
   client.sendPenguinInfo();
 
   await client.sendStamps()

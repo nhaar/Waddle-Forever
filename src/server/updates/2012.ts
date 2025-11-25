@@ -389,11 +389,19 @@ export const UPDATES_2012: Update[] = [
           },
           'close_ups/poster.swf': {
             'en': ['archives:MarvelSuperheroTakeoverPoster.swf', 'party_poster']
-          }
+          },
+          'close_ups/splashscreen.swf': {
+            en: ['archives:MarvelSuperheroTakeoverCloseupsLogin.swf', 'w.p2013.superhero.loginprompt']
+          },
         },
         startscreens: [
           'archives:Billboards-super-hero-2.swf'
-        ]
+        ],
+        activeFeatures: '20130424',
+        fileChanges: {
+          'play/v2/client/engine.swf': 'unknown:marvel/engine.swf',
+          'play/v2/content/global/content/party.swf': 'unknown:marvel/party.swf'
+        }
       }
     }
   },

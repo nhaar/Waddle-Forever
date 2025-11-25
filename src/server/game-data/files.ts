@@ -1694,6 +1694,14 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'icejam/locale.swf',
       comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'marvel/engine.swf',
+      comment: 'Origin unknown, given by cutestlesbian (based on marvel 2013)'
+    },
+    {
+      file: 'marvel/party.swf',
+      comment: 'Origin unknown, given by cutestlesbian (based on marvel 2013)'
     }
   ]
 };
