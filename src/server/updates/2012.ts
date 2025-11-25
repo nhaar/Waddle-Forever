@@ -691,10 +691,6 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-09-13',
-    furnitureCatalog: 'archives:Sep2012Furniture.swf'
-  },
-  {
-    date: '2012-09-19',
     temp: {
       const: {
         rooms: {
@@ -704,7 +700,8 @@ export const UPDATES_2012: Update[] = [
           'archives:Fair2012Pre-Awareness.swf'
         ]
       }
-    }
+    },
+    furnitureCatalog: 'archives:Sep2012Furniture.swf'
   },
   {
     date: '2012-09-20',
