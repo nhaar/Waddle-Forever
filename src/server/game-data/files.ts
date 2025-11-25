@@ -210,7 +210,7 @@ would need to investigated`
     },
     {
       file: 'HalloweenParty2012Party9.swf',
-      comment: 'Fix by cutestlestbian/Jeff The Rock for the room to work with the modded engine with ghost transformations'
+      comment: 'Fix by cutestlestbian/Jeff The Rock for the room to work with the modded engine with ghost transformations. Additionally, added a call to the scavenger hunt icon that changes it to the ghost scavenger hunt (this is theorized to have been in ENGINE.swf, but I added it here since ENGINE is modded as well. Will remove this fix later.)'
     }
   ],
   [APPROXIMATION]: [
