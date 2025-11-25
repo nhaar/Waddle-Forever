@@ -129,13 +129,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-03-08',
-    furnitureCatalog: 'archives:Mar2012Furniture.swf'
-  },
-  {
-    date: '2012-03-14',
     temp: {
       const: {
-        partyName: 'Puffle Party Construction',
         rooms: {
           'beacon': 'archives:PuffleParty2012ConstBeacon.swf',
           'berg': 'archives:PuffleParty2012ConstBerg.swf',
@@ -151,7 +146,8 @@ export const UPDATES_2012: Update[] = [
           'archives:PuffleParty2012PreStartBillboards.swf'
         ]
       }
-    }
+    },
+    furnitureCatalog: 'archives:Mar2012Furniture.swf'
   },
   {
     date: '2012-03-15',
