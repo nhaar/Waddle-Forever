@@ -202,6 +202,7 @@ export function getPathsJson(version: Version): string {
       "w.p0712.musicjam.scavengerhunt": "scavenger_hunt\/scavenger_hunt.swf",
       "oops_non_member_backstage": "membership\/party1.swf",
       "oops_member_prizebooth": "membership\/party1.swf",
+      "w.p1012.halloween.penguin.ghost": "penguin/penguin_ghost_%color%.swf", // for the modded ghosts engine.swf
       "w.p1012.halloween.penguin.ghost0": "penguin\/penguin_ghost_0.swf",
       "w.p1012.halloween.penguin.ghost1": "penguin\/penguin_ghost_1.swf",
       "w.p1012.halloween.penguin.ghost2": "penguin\/penguin_ghost_2.swf",

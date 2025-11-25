@@ -1086,5 +1086,21 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/icejam/icejam_level3.swf': 'archives:GamesIcejamIcejamLevel3.swf',
   'play/v2/games/icejam/icejam_level4.swf': 'archives:GamesIcejamIcejamLevel4.swf',
   'play/v2/games/icejam/icejam_level5.swf': 'archives:GamesIcejamIcejamLevel5.swf',
-  'play/v2/games/icejam/icejam_level6.swf': 'archives:GamesIcejamIcejamLevel6.swf'
+  'play/v2/games/icejam/icejam_level6.swf': 'archives:GamesIcejamIcejamLevel6.swf',
+  'play/v2/content/global/penguin/penguin_ghost_blue.swf': 'archives:PenguinGhost1.swf',
+  'play/v2/content/global/penguin/penguin_ghost_green.swf': 'archives:PenguinGhost2.swf',
+  'play/v2/content/global/penguin/penguin_ghost_pink.swf': 'archives:PenguinGhost3.swf',
+  'play/v2/content/global/penguin/penguin_ghost_black.swf': 'archives:PenguinGhost4.swf',
+  'play/v2/content/global/penguin/penguin_ghost_red.swf': 'archives:PenguinGhost5.swf',
+  'play/v2/content/global/penguin/penguin_ghost_orange.swf': 'archives:PenguinGhost6.swf',
+  'play/v2/content/global/penguin/penguin_ghost_yellow.swf': 'archives:PenguinGhost7.swf',
+  'play/v2/content/global/penguin/penguin_ghost_dark_purple.swf': 'archives:PenguinGhost8.swf',
+  'play/v2/content/global/penguin/penguin_ghost_brown.swf': 'archives:PenguinGhost9.swf',
+  'play/v2/content/global/penguin/penguin_ghost_peach.swf': 'archives:PenguinGhost10.swf',
+  'play/v2/content/global/penguin/penguin_ghost_dark_green.swf': 'archives:PenguinGhost11.swf',
+  'play/v2/content/global/penguin/penguin_ghost_light_blue.swf': 'archives:PenguinGhost12.swf',
+  'play/v2/content/global/penguin/penguin_ghost_lime_green.swf': 'archives:PenguinGhost13.swf',
+  'play/v2/content/global/penguin/penguin_ghost_sensei_gray.swf': 'archives:PenguinGhost14.swf',
+  'play/v2/content/global/penguin/penguin_ghost_aqua.swf': 'archives:PenguinGhost15.swf',
+  'play/v2/content/global/penguin/penguin_ghost_arctic_white.swf': 'archives:PenguinGhost16.swf'
 }

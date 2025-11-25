@@ -207,6 +207,10 @@ would need to investigated`
     {
       file: 'ArtworkRoomsForts.swf',
       comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'HalloweenParty2012Party9.swf',
+      comment: 'Fix by cutestlestbian/Jeff The Rock for the room to work with the modded engine with ghost transformations'
     }
   ],
   [APPROXIMATION]: [
@@ -456,6 +460,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'temple_of_fruit/forts.swf',
       comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit snow forts working with the modded engine.swf. Removed the Rockhopper catalogue that was probably added by cutestlesbian'
+    },
+    {
+      file: 'ghosts/engine.swf',
+      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations'
     }
   ],
   [RECREATION]: [
