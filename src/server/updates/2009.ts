@@ -1269,7 +1269,8 @@ export const UPDATES_2009: Update[] = [
           mtn: 'archives:RoomsMtn-TheFair2009.swf',
           village: 'archives:RoomsVillage-TheFair2009.swf',
           forts: 'archives:RoomsForts-TheFair2009.swf',
-          town: 'archives:RoomsTown-TheFair2009.swf'
+          town: 'archives:RoomsTown-TheFair2009.swf',
+          mine: 'recreation:'
         },
         music: {
           coffee: 221,
