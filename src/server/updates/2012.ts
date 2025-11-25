@@ -771,7 +771,7 @@ export const UPDATES_2012: Update[] = [
           'party6': 'archives:HalloweenParty2012Party6.swf',
           'party7': 'archives:HalloweenParty2012Party7.swf',
           'party8': 'archives:HalloweenParty2012Party8.swf',
-          'party9': 'fix:HalloweenParty2012Party9.swf'
+          'party9': 'archives:HalloweenParty2012Party9.swf'
         },
         music: {
           'attic': 252,

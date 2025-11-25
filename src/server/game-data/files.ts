@@ -207,10 +207,6 @@ would need to investigated`
     {
       file: 'ArtworkRoomsForts.swf',
       comment: 'Chat291.swf compatibility fixes'
-    },
-    {
-      file: 'HalloweenParty2012Party9.swf',
-      comment: 'Fix by cutestlestbian/Jeff The Rock for the room to work with the modded engine with ghost transformations. Additionally, added a call to the scavenger hunt icon that changes it to the ghost scavenger hunt (this is theorized to have been in ENGINE.swf, but I added it here since ENGINE is modded as well. Will remove this fix later.)'
     }
   ],
   [APPROXIMATION]: [
@@ -463,7 +459,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'ghosts/engine.swf',
-      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations'
+      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon'
     }
   ],
   [RECREATION]: [
