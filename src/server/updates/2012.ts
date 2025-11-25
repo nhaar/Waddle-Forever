@@ -169,7 +169,7 @@ export const UPDATES_2012: Update[] = [
           'light': 'archives:PuffleParty2012Light.swf',
           'lodge': 'archives:PuffleParty2012Lodge.swf',
           'lounge': 'archives:PuffleParty2012Lounge.swf',
-          'mtn': 'archives:PuffleParty2012Lounge.swf',
+          'mtn': 'archives:PuffleParty2012Mtn.swf',
           'plaza': 'archives:PuffleParty2012Plaza.swf',
           'shack': 'archives:PuffleParty2012Shack.swf',
           'village': 'archives:PuffleParty2012Village.swf',
