@@ -448,7 +448,8 @@ export const UPDATES_2012: Update[] = [
           'party3': 325,
           'coffee': 0,
           'book': 0,
-          'pizza': 0
+          'pizza': 0,
+          'stage': 0
         },
         mapNote: 'archives:MarvelSuperheroTakeoverParty_map_note.swf',
         memberRooms: {
