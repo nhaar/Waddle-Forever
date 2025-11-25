@@ -450,7 +450,6 @@ export const UPDATES_2012: Update[] = [
           'book': 0,
           'pizza': 0
         },
-        partyIconFile: 'archives:MarvelSuperHeroPartyGameIcon.swf',
         mapNote: 'archives:MarvelSuperheroTakeoverParty_map_note.swf',
         memberRooms: {
           'party1': true 
@@ -734,7 +733,6 @@ export const UPDATES_2012: Update[] = [
     date: '2012-10-17',
     temp: {
       party: {
-        //we need the snowballs in mansion and the ghost transform
         partyName: 'Halloween Party',
         rooms: {
           'attic': 'archives:HalloweenParty2012Attic.swf',
@@ -834,34 +832,7 @@ export const UPDATES_2012: Update[] = [
             'en': 'archives:ENMembershipPartyHalloween2012.swf'
           }
         },
-        scavengerHunt2011: { //this is broken we need a better for scavenger hunt 1 and 2 for this party lol
-          global: {
-            member: false,
-            reward: 0
-          },
-          icon: 'archives:HalloweenParty2012ScavengerHuntIcon.swf', //the icon dont appear
-          lang: {
-            en: {
-              loading: 'Loading Scavenger Hunt',
-              title: 'Five Spooky-Keys',
-              start: '',
-              itemsFound: '%num% KEYS FOUND',
-              itemsFoundPlural: '%num% KEYS FOUND',
-              claim: '',
-              continue: '',
-              clues: [
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                ''
-              ]
-            }
-          }
-        },
+        partyIconFile: 'archives:HalloweenParty2012ScavengerHuntIcon.swf',
         mapNote: 'archives:Halloween2012Party_map_note.swf'
       }
     }
