@@ -1417,7 +1417,8 @@ export const UPDATES_2009: Update[] = [
           rink: 'archives:Sensei_Fire_Hunt_rink.swf',
           town: 'archives:RoomsTown-FireScavengerHunt.swf',
           mine: 'recreation:fire_hunt/mine.swf',
-          light: 'recreation:fire_hunt/light.swf'
+          light: 'recreation:fire_hunt/light.swf',
+          book: 'recreation:fire_hunt/book.swf'
         },
         globalChanges: {
           'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Fire_Hunt_hunt_closeup.swf', 'easter_egg_hunt', 'easter_hunt'],

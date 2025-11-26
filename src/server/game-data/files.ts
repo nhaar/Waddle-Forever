@@ -1600,6 +1600,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fire_hunt/dojoext.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/book.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
