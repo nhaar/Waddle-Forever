@@ -20,6 +20,7 @@ import { getDynamicMusicListData } from "../timelines/igloo-lists";
 import { isEngine2, isEngine3 } from "../timelines/dates";
 import { findInVersion } from "../game-data";
 import { INDEX_HTML_TIMELINE, WEBSITE_TIMELINE } from "../timelines/website";
+import { getPaperItemsJson } from "./paperitemsjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -87,6 +88,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
     return getGameStrings(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/paper_items.json', (s) => {
+    return getPaperItemsJson(s.settings.version);
   });
   server.getData('play/en/web_service/game_configs/newspapers.json', (s) => {
     return getNewspapersJson(s.settings.version);
