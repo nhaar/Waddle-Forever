@@ -1710,6 +1710,10 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'marvel/party.swf',
       comment: 'Origin unknown, given by cutestlesbian (based on marvel 2013)'
+    },
+    {
+      file: 'ghosts/party.swf',
+      comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work'
     }
   ]
 };
