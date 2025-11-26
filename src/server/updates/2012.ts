@@ -847,6 +847,10 @@ export const UPDATES_2012: Update[] = [
     activeFeatures: '20141002'
   },
   {
+    date: '2012-10-20',
+    partyComment: 'A new item is available for the Ghost Scavenger Hunt'
+  },
+  {
     date: '2012-10-23',
     temp: {
       party2: {
@@ -867,6 +871,10 @@ export const UPDATES_2012: Update[] = [
         'en': 'archives:LibraryOct2012.swf'
       }
     }
+  },
+  {
+    date: '2012-10-24',
+    partyComment: 'A new item is available for the Ghost Scavenger Hunt'
   },
   {
     date: '2012-10-25',
