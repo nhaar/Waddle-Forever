@@ -1592,6 +1592,18 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'temple_of_fruit/engine.swf',
       comment: 'Credit to Jeff the Rock and cutestlesbian. Engine with the Temple of Fruit transformations. Removed the name glow'
+    },
+    {
+      file: 'fire_hunt/mine.swf',
+      comment: 'Of unknown origins, from some archive, a swf was fixed to be accurate by lifeofgames477 and VampLovr'
+    },
+    {
+      file: 'fire_hunt/light.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/dojoext.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [
