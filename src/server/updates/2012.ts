@@ -578,7 +578,8 @@ export const UPDATES_2012: Update[] = [
             'en': ['archives:UltimateJamCatalog.swf', 'w.p0712.musicjam.clothing.catalogue']
           }
         },
-        mapNote: 'archives:UltimateJam_Party_map_note.swf'
+        mapNote: 'archives:UltimateJam_Party_map_note.swf',
+        partyIconFile: 'archives:UltimateJamScavengerHuntIcon.swf'
       }
     }
   },
