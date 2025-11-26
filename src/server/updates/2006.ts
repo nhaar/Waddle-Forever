@@ -332,8 +332,9 @@ export const UPDATES_2006: Update[] = [
     },
     roomComment: ['More rooms are visible from the HQ', 'A new room opens near the Dock'],
     rooms: {
-      // now this has a path to the beach
+      // now these have a path to the beach
       village: 'archives:ArtworkRoomsVillage13.swf',
+      dock: 'archives:ArtworkRoomsDock13.swf',
       agent: 'archives:ArtworkRoomsAgent13.swf',
 
       beach: 'archives:ArtworkRoomsBeach12.swf'
@@ -615,7 +616,11 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-10-13',
-    end: ['launchpad-construction']
+    end: ['launchpad-construction'],
+    rooms: {
+      // Rockhopper arrival, TBA
+      dock: 'archives:Dock40.swf'
+    }
   },
   {
     date: '2006-10-24',
