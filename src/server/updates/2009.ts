@@ -1291,7 +1291,8 @@ export const UPDATES_2009: Update[] = [
           mtn: 221,
           village: 221,
           forts: 221,
-          town: 221
+          town: 221,
+          mine: 221
         },
         localChanges: {
           'catalogues/prizebooth.swf': {
