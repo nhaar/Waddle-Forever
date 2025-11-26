@@ -571,18 +571,34 @@ export const UPDATES_2012: Update[] = [
           'party3': 337,
           'party4': 335
         },
-        globalChanges: {
-          'scavenger_hunt/scavenger_hunt.swf': 'archives:UltimateJamScavengerHunt.swf'
-        },
         localChanges: {
           'catalogues/party.swf': {
             'en': ['archives:UltimateJamCatalog.swf', 'w.p0712.musicjam.clothing.catalogue']
+          },
+          'scavenger_hunt/scavenger_hunt.swf': {
+            en: ['archives:UltimateJamScavengerHunt.swf', 'w.party.announcement', 'scavenger_hunt']
           }
         },
         mapNote: 'archives:UltimateJam_Party_map_note.swf',
         partyIconFile: 'archives:UltimateJamScavengerHuntIcon.swf'
       }
-    }
+    },
+    unlockedDay: 1
+  },
+  {
+    date: '2012-07-20',
+    unlockedDay: 2,
+    partyComment: 'A new music challenge is available'
+  },
+  {
+    date: '2012-07-21',
+    unlockedDay: 3,
+    partyComment: 'A new music challenge is available'
+  },
+  {
+    date: '2012-07-22',
+    unlockedDay: 4,
+    partyComment: 'A new music challenge is available'
   },
   {
     date: '2012-07-26',

@@ -193,6 +193,9 @@ export type CPUpdate = {
   partyIconFile?: FileRef;
 
   activeFeatures?: string;
+
+  /** Used for the Ultimate Jam (2012 party) */
+  unlockedDay?: number;
 } & ({
   partyName: string;
   decorated?: false;
