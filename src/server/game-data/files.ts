@@ -1713,7 +1713,7 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     },
     {
       file: 'ghosts/party.swf',
-      comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work. After that, added a fix for the ghost hunter not being applying when logging in, and to require the ghost goggles. Removed a forced JSON utils export because it was breaking stamps somehow'
+      comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work. After that, added a fix for the ghost hunter not being applying when logging in. Removed a forced JSON utils export because it was breaking stamps somehow'
     }
   ]
 };
