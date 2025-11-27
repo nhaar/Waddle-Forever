@@ -463,7 +463,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'puffles/engine.swf',
-      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added. Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom to transform when entering party 4 (spa). Still need to modify unequip puffle function to work with the appropriate interface, and make puffles be hand items'
+      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added. Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom to transform when entering party 4 (spa). Modified updatePlayer to transform into penguin if need to, because INTERFACE simply unequips the hand item when you click to revert. Still need to make puffles be hand items'
     }
   ],
   [RECREATION]: [
