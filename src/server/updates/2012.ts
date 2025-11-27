@@ -214,8 +214,14 @@ export const UPDATES_2012: Update[] = [
             'en': ['archives:PuffleParty2012Poster.swf', 'party_poster']
           }
         },
-        mapNote: 'archives:PuffleParty2012Party_map_note.swf'
-      }
+        mapNote: 'archives:PuffleParty2012Party_map_note.swf',
+        fileChanges: {
+          'play/v2/client/engine.swf': 'approximation:puffles/engine.swf'
+        }
+      },
+    },
+    fileChanges: {
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
     }
   },
   {

@@ -1103,5 +1103,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/penguin_ghost_aqua.swf': 'archives:PenguinGhost15.swf',
   'play/v2/content/global/penguin/penguin_ghost_arctic_white.swf': 'archives:PenguinGhost16.swf',
   'play/v2/content/global/music/331.mp3': 'svanilla:media/play/v2/content/global/music/331.mp3',
-  'play/v2/content/local/en/music/tpsn.mp3': 'svanilla:media/play/v2/content/local/en/music/tpsn.mp3'
+  'play/v2/content/local/en/music/tpsn.mp3': 'svanilla:media/play/v2/content/local/en/music/tpsn.mp3',
+  'play/v2/content/global/penguin/puffle0.swf': 'archives:AvatarSpritesPuffleBlue.swf'
 }

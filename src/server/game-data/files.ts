@@ -460,6 +460,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'shell_2012_halloween.swf',
       comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). TODO? Could just replace the 2016 shell'
+    },
+    {
+      file: 'puffles/engine.swf',
+      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added (still need to fetch color from currenlty walked puffle). Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom (but stil need to change from lodge to party4, and only if walking a puffle). Still need to modify unequip puffle function to work with the appropriate interface'
     }
   ],
   [RECREATION]: [
