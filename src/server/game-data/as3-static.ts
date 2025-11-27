@@ -1104,5 +1104,15 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/penguin_ghost_arctic_white.swf': 'archives:PenguinGhost16.swf',
   'play/v2/content/global/music/331.mp3': 'svanilla:media/play/v2/content/global/music/331.mp3',
   'play/v2/content/local/en/music/tpsn.mp3': 'svanilla:media/play/v2/content/local/en/music/tpsn.mp3',
-  'play/v2/content/global/penguin/puffle0.swf': 'archives:AvatarSpritesPuffleBlue.swf'
+  'play/v2/content/global/penguin/puffle0.swf': 'archives:AvatarSpritesPuffleBlue.swf',
+  'play/v2/content/global/penguin/puffle1.swf': 'archives:AvatarSpritesPufflePink.swf',
+  'play/v2/content/global/penguin/puffle2.swf': 'archives:AvatarSpritesPuffleBlack.swf',
+  'play/v2/content/global/penguin/puffle3.swf': 'archives:AvatarSpritesPuffleGreen.swf',
+  'play/v2/content/global/penguin/puffle4.swf': 'archives:AvatarSpritesPufflePurple.swf',
+  'play/v2/content/global/penguin/puffle5.swf': 'archives:AvatarSpritesPuffleRed.swf',
+  'play/v2/content/global/penguin/puffle6.swf': 'archives:AvatarSpritesPuffleYellow.swf',
+  'play/v2/content/global/penguin/puffle7.swf': 'archives:AvatarSpritesPuffleWhite.swf',
+  'play/v2/content/global/penguin/puffle8.swf': 'archives:AvatarSpritesPuffleOrange.swf',
+  'play/v2/content/global/penguin/puffle9.swf': 'archives:AvatarSpritesPuffleBrown.swf',
+
 }

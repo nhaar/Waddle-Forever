@@ -463,7 +463,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'puffles/engine.swf',
-      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added (still need to fetch color from currenlty walked puffle). Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom (but stil need to change from lodge to party4, and only if walking a puffle). Still need to modify unequip puffle function to work with the appropriate interface'
+      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added. Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom to transform when entering party 4 (spa). Still need to modify unequip puffle function to work with the appropriate interface, and make puffles be hand items'
     }
   ],
   [RECREATION]: [
