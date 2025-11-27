@@ -221,7 +221,8 @@ export const UPDATES_2012: Update[] = [
       },
     },
     fileChanges: {
-      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf',
+      'play/v2/client/shell.swf': 'approximation:shell_2012_halloween.swf'
     }
   },
   {
@@ -951,7 +952,6 @@ export const UPDATES_2012: Update[] = [
       }
     },
     fileChanges: {
-      'play/v2/client/shell.swf': 'approximation:shell_2012_halloween.swf',
       'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-HalloweenParty2012.swf',
       'play/v2/content/global/content/party.swf': 'unknown:ghosts/party.swf'
     },

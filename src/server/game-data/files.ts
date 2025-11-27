@@ -459,7 +459,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2012_halloween.swf',
-      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). TODO? Could just replace the 2016 shell'
+      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand'
     },
     {
       file: 'puffles/engine.swf',
