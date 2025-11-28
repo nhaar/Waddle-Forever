@@ -490,6 +490,17 @@ export class Server {
   set waddleConstructors(value: WaddleConstructors) {
     this._waddleConstructors = value;
   }
+
+  getItemsFiltered(items: number[]) {
+    // pre-cpip engines have limited items, after
+    // that global_crumbs allow having all the items
+    if (isLower(this.settings.version, CPIP_UPDATE)) {
+      const itemSet = findInVersionStrict(this.settings.version, CLIENT_ITEMS_TIMELINE)
+      return items.filter((value) => itemSet.has(value));
+    } else {
+      return items;
+    }
+  }
 }
 
 function capitalizeName(name: string): string {
@@ -836,13 +847,7 @@ export class Client {
   }
 
   sendInventory(): void {
-    let items = this.penguin.getItems();
-    // pre-cpip engines have limited items, after
-    // that global_crumbs allow having all the items
-    if (isLower(this.version, CPIP_UPDATE)) {
-      const itemSet = findInVersionStrict(this.version, CLIENT_ITEMS_TIMELINE)
-      items = items.filter((value) => itemSet.has(value));
-    }
+    const items = this.server.getItemsFiltered(this.penguin.getItems())
     
     this.sendXt('gi', items.join('%'));
   }

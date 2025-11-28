@@ -198,7 +198,7 @@ handler.post('/php/login.php', (server, body) => {
     h: '', // TODO what is?
     w: '100|0', // TODO what is?
     m: '', // TODO what is
-    il: penguin.getItems().join('|'), // item list
+    il: server.getItemsFiltered(penguin.getItems()).join('|'), // item list
     td: `${virtualDate.getUTCFullYear()}-${String(virtualDate.getUTCMonth()).padStart(2, '0')}-${String(virtualDate.getUTCDate()).padStart(2, '0')}:${virtualDate.getUTCHours()}:${virtualDate.getUTCMinutes()}:${virtualDate.getUTCSeconds()}` // used for the snow forts clock in later years
   }
 
