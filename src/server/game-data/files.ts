@@ -199,18 +199,25 @@ would need to investigated`
     {
       file: 'RoomsPlaza-MusicJam2008.swf',
       comment: 'Added triggers and logic to this file that for some reason has unexisting logic'
+    },
+    {
+      file: 'PuffleRoundupWhitePuffle.swf',
+      comment: 'Removed domain check'
+    },
+    {
+      file: 'ArtworkRoomsForts.swf',
+      comment: 'Chat291.swf compatibility fixes'
     }
   ],
   [APPROXIMATION]: [
     {
       file: 'chat291_no_news.swf',
-      comment: 'Remove the Newspaper icon to simulare pre-newspapers',
+      comment: 'Originally chat291.swf (based on the one currently in unknown). First removed the Newspaper icon to simulate pre-newspapers, then modded the player icon button to open the news and change its hint to say "View News". Then, took the mail icon from chat339 and replaced the star icon in the chatbar with it. Also took the penguin from chat339 and placed it on the login screen, while removing the april fools party note. Also removed the ability to click on the moderator badge to start the PSA quiz',
       base: 'unknown:chat291.swf'
     },
     {
-      file: 'forts_release.swf',
-      comment: 'Removed ability to go to the Plaza, to simulate how the Snow Forts was during its release',
-      base: 'archives:ArtworkRoomsForts12.swf'
+      file: 'chat291_no_april.swf',
+      comment: 'Originally chat291.swf from "unknown", adding the penguin from chat339 and removing the april fools note'
     },
     {
       file: 'town_release.swf',
@@ -261,6 +268,186 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'take_tour.swf',
       comment: 'Modified version from the legacy media which makes it compatible with all interfaces. There must have existed an old version of this file from prior to May 27 2010 but this is an approximation that will work for all interfaces'
+    },
+    {
+      file: 'wilderness_expedition/interface.swf',
+      comment: 'Modified version of the at the time of comitting unknown:interface_stamps.swf which added the function adoptFreePuffle, used in the Wilderness Expedition 2011, which was recreated as none of the archived interfaces included it'
+    },
+    {
+      file: 'wilderness_expedition/shell.swf',
+      comment: 'Modified version ot the legacy-media shell which added the function ownsPuffleType, used in the Wilderness Expedition 2011, which was recreated to fit this shell\'s functionality. Because of the engine.swf modification, added the variable sendThrowEnabled.'
+    },
+    {
+      file: 'temp_php_files/game_strings.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/puffle_care.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/puffles.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'temp_php_files/weblogger.php',
+      comment: 'Placeholder, until logic for the JSON generation is created'
+    },
+    {
+      file: 'shell.swf',
+      comment: 'Exact same as legacy-media shell.swf, but with the function getScavengerHuntCrumbs() added (2011_scavenger_hunt.as), and sendPlayerTeleport() from archives ClientShell2012-10-17.swf (used in April Fools 2011), from the same archives file the variable MSG_SHOW_CONTENT and function showAs3Content() were also implemented. In adition to this, for the Medieval Party 2011 Hydra Battle to work, a handleUpdatePlayer call was added to handleSendPlayerMove, such that x,y are properly updated, it is unknown how exactly it worked otherwise. For Medival Party 2011 support, a check for if can throw snowball is also added (together with engine.swf). For the Battle of Doom to work fully, com.clubpenguin.services.EPFService was copied from this 2012 shell: https://web.archive.org/web/20120101000000*/http://media1.clubpenguin.com/play/v2/client/shell.swf'
+    },
+    {
+      file: 'airtower.swf',
+      comment: 'Exact same as legacy-media airtower.swf but with PLAYER_TELEPORT added (from ClientAirtower2012-07-09.swf) (for April Fools 2011). For Medival Party 2011 support, a check for if can throw snowball is also added (together with shell.swf)'
+    },
+    {
+      file: 'engine.swf',
+      comment: 'This is the legacy-media engine.swf, with the functions checkIsValidPosition(), teleportPlayer(), sendPlayerTeleport(), sendPlayerTeleportAndMove(), from archives file ClientEngine2012-10-17.swf (for April Fools 2011)'
+    },
+    {
+      file: 'mj2009_merch.swf',
+      comment: 'The 2008 merch catalog but with the ID of the access pass changed so that the party is functional. Art and other items need to be recreated'
+    },
+    {
+      file: 'map_chat339.swf',
+      comment: 'This is archives ArtworkMapsIsland5.swf but with the iceberg ID changed from 804 to be 805 as and ID changed with chat339.swf'
+    },
+    {
+      file: 'map_shack.swf',
+      comment: 'This is archives ArtworkMapsIsland10.swf but with the beach button removed for when the Mine Shack was released'
+    },
+    {
+      file: 'lounge_no_astro.swf',
+      comment: 'lounge10 from Mammoth but with the trigger and cabinet removed'
+    },
+    {
+      file: 'penguin_no_shadow.swf',
+      comment: 'penguin.swf from Mammoth but with the shadow removed'
+    },
+    {
+      file: 'game_configs/cover.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/furniture_items.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/games.json',
+      comment: 'Extracted from game_configs.bin from vanilla media, bean counters music id was modified. Fair games music ID was changed (placeholder)'
+    },
+    {
+      file: 'game_configs/igloo_floors.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloo_locations.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloo_music_tracks.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/igloos.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/jokes.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/mascot_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/mascots.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/paper_items.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/penguin_action_frames.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/player_colors.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/polaroids.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/postcards.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/puffle_items.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/puffles.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/safe_chat_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/stamps_tokenized.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/stamps.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/tour_guide_messages.json',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'game_configs/weblogger.php',
+      comment: 'Extracted from game_configs.bin from vanilla media'
+    },
+    {
+      file: 'shell_modern_label_fix.swf',
+      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011. In addition, the calls for updateListeners(PLAYER_FRAME had to be changed for the Island Adventure cove triggers to work properly. For the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
+    },
+    {
+      file: 'rooms_common_label_fix.swf',
+      comment: 'The vanilla media rooms_common.swf, but with the localize function of BaseRoom fixed so that it can be used with rooms from 2011'
+    },
+    {
+      file: 'modern_map.swf',
+      comment: 'map.swf from vanilla media, but with a fix for the map notes from 2011 (in frame1 code)'
+    },
+    {
+      file: 'map_2011_party_note.swf',
+      comment: 'Map2011.swf from archives but with the party note functionality enabled to work with the 2016 SHELL'
+    },
+    {
+      file: 'map_dec_2011.swf',
+      comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL'
+    },
+    {
+      file: 'newspaper_march_compatible.swf',
+      comment: 'Dec2010ClientNewspaper.swf but replaced com.clubpenguin.lib.module calls to match 2011 club_penguin.swf in order to be compatible. Made by Randomno'
+    },
+    {
+      file: 'dividers_blank.swf',
+      comment: 'Dividers (specifically 268 front) but removed every shape so it looks blank.'
+    },
+    {
+      file: 'shell_2011_interface_fix.swf',
+      comment: 'shell.swf from vanilla media, but for the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
+    },
+    {
+      file: 'engine_modern_no_glow.swf',
+      comment: 'engine.swf from vanilla media, but with name glow removed'
     }
   ],
   [RECREATION]: [
@@ -916,7 +1103,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'lost_map_hunt/chat506_edit.swf',
-      comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work'
+      comment: 'Made by Doubleuman, edit for chat506 that makes the hunt work. Later, added the code for PORTs and IPs'
     },
     {
       file: 'cove_cpip_firework_rocket_pin.swf',
@@ -1119,10 +1306,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby'
     },
     {
-      file: 'forms_missions/m10.swf',
-      comment: 'Made by Blue Kirby'
-    },
-    {
       file: 'beacon_nolight.swf',
       comment: 'Made by joey, remove the ability to turn off the beacon light'
     },
@@ -1169,6 +1352,222 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'catalog/furniture_cpip.swf',
       comment: 'Made by Blue Kirby. Ported the catalog to CPIP'
+    },
+    {
+      file: 'april_fools_2007/mine.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'lighthouse_party_2006/beacon.swf',
+      comment: 'Made by Doubleuman, comes from a previously compiled SWF of a FLA that was likely an earlier version, and it contained a depth error, which was fixed in this \"recreation\"'
+    },
+    {
+      file: 'halloween_2006/shack.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'water_party_2007/dojo.swf',
+      comment: 'Made by Doubleuman, added puddle, water balloons, changed block, based on a previously compiled SWF of a FLA that wasn\'t accurate'
+    },
+    {
+      file: 'halloween_2006/village.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'great_snow_race/party_note04.swf',
+      comment: 'Made by Blue Kirby, originally based on local/en/close_ups/party_op_medals_earned.swf (from vanilla media), added a function in the close button that interacts with the room code from party10 (Great Snow Race) to progress the Operation Hibernation scene. Also removed the medals animations that was present. Then Blue Kirby fixed the text'
+    },
+    {
+      file: 'great_snow_race/party_note03.swf',
+      comment: 'Made by Blue Kirby, used party_note04 as a base and changed the text'
+    },
+    {
+      file: 'great_snow_race/party_note05.swf',
+      comment: 'Made by Blue Kirby, used party_note04 as a base and changed the text'
+    },
+    {
+      file: 'great_snow_race/party_note02.swf',
+      comment: 'Made by Blue Kirby, used party_note04 as a base and changed the text'
+    },
+    {
+      file: 'april_fools_2007/beach.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'catalog/adopt_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/costume_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/hair_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'shop_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/sport_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'catalog/igloo_cpip.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'beacon41.swf',
+      comment: 'Made by Doubleuman, added the missing pin code to the archived SWF (which was from an unfinished FLA)'
+    },
+    {
+      file: 'village_precpip_tour.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'winter_fiesta_2008/dance.swf',
+      comment: 'Made by slicedpizza39, took unfinished file Dance43.swf and added functionality'
+    },
+    {
+      file: 'winter_fiesta_2008/dock.swf',
+      comment: 'Made by slicedpizza39, took unfinished file Dock43.swf and added functionality'
+    },
+    {
+      file: 'winter_fiesta_2008/plaza.swf',
+      comment: 'Made by slicedpizza39, took unfinished file Plaza47.swf and added functionality'
+    },
+    {
+      file: 'news_beta.swf',
+      comment: 'Made by c6'
+    },
+    {
+      file: 'halloween_2006/plaza.swf',
+      comment: 'Made by VampLovr54'
+    },
+    {
+      file: 'halloween_2006/lodge.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'halloween_2006/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'igloo_beta.swf',
+      comment: 'Made by Doubleuman, originally took the igloo1 fla, added the missing code and then compiled. Then took the igloo from an archived version of the Penguin Chat igloo (link: https://web.archive.org/web/20120426013749/http://www.swfcabin.com/swf-files/1233278154.swf), which also needed removing the stage and put it into the SWF. Finally, some fixes needed to be done which made this compatible with chat291, as igloo1 is from the ElectroServer client.'
+    },
+    {
+      file: 'april_fools_2007/pizza.swf',
+      comment: 'Made by slicedpizza, with a fix from Doubleuman'
+    },
+    {
+      file: 'april_fools_2007/coffee.swf',
+      comment: 'Made by slicedpizza'
+    },
+    {
+      file: 'plaza_tweltfh_fish.swf',
+      comment: 'Made by ItzAle'
+    },
+    {
+      file: 'plaza_notls.swf',
+      comment: 'Made by ItzAle'
+    },
+    {
+      file: 'holiday_beach_poster.swf',
+      comment: 'Made by Boo0'
+    },
+    {
+      file: 'mjam_11_const/village.swf',
+      comment: 'Made by Jeff the Rock'
+    },
+    {
+      file: 'water_party_2007/beach.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/cove.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'dance_no_game_upgrades.swf',
+      comment: 'Made by ItzAle, Dance Club without game upgrades'
+    },
+    {
+      file: 'cove_hut_const.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'shop43.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'forts_broken_sign.swf',
+      comment: 'Made by VampLovr'
+    },
+    {
+      file: 'water_party_2007/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'st_patrick_2007/coffee.swf',
+      comment: 'Made by Slicedpizza'
+    },
+    {
+      file: 'water_hunt_beach_no_pin.swf',
+      comment: 'Made by ItzAle, removed the pin from the room'
+    },
+    {
+      file: 'halloween_2006/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'furniture_sep05.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'telescope/far_halloween.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'telescope/bottle.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'furniture_dec06.swf',
+      comment: 'Made by Doubleuman, un-guided the hatch layers from fla'
+    },
+    {
+      file: 'fireworks_2006/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'fireworks_2006/berg_collision.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'town_newyear.swf',
+      comment: 'Made by Doubleuman, took the chat291 fix version and then fixed the laytering issue'
+    },
+    {
+      file: 'forms_missions/m3.swf',
+      comment: 'Made by Cyan, removed m4 from the m4 form'
+    },
+    {
+      file: 'mtn_fireworks.swf',
+      comment: 'Made by Blue Kirby, removed game upgrades'
+    },
+    {
+      file: 'clocktower.swf',
+      comment: 'Made by Doubleuman, the pre-cpip clock tower'
+    },
+    {
+      file: 'membership_inventory.swf',
+      comment: 'Made by lifeofgames477, the first post-cpip membership lock for the inventory'
+    },
+    {
+      file: 'agent1.swf',
+      comment: 'Made by Randomno'
     }
   ],
   [MOD]: [

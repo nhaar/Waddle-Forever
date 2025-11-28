@@ -16,6 +16,7 @@ import cardHandler from './games/card';
 import fireHandler from './games/fire';
 import matchHandler from './games/matchmaking';
 import ninjaHandler from './games/ninja';
+import engine1 from './play/engine1';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -37,5 +38,6 @@ handler.use(cardHandler);
 handler.use(matchHandler);
 handler.use(ninjaHandler);
 handler.use(fireHandler);
+handler.use(engine1);
 
 export default handler;

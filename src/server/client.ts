@@ -2,24 +2,23 @@ import net from 'net';
 
 import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
-import { Penguin, PenguinEquipmentSlot } from './penguin';
-import { Stamp } from './game-logic/stamps';
-import { isEngine1, isEngine2, isEngine3, isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
+import { DefaultPenguinParams, Penguin, PenguinEquipmentSlot } from './penguin';
+import { isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
-import { isGameRoom, isLiteralScoreGame, Room, roomStamps } from './game-logic/rooms';
+import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { getVersionsTimeline } from './routes/version.txt';
-import { Update } from './game-data/updates';
 import { findInVersion } from './game-data';
 import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
-
-const versionsTimeline = getVersionsTimeline();
+import { getExtraWaddleRooms } from './timelines/waddle-room';
+import { VERSIONS_TIMELINE } from './routes/version.txt';
+import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
+import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
 
 type ServerType = 'Login' | 'World';
 
@@ -344,7 +343,8 @@ export class Server {
   }
 
   private init() {
-    WADDLE_ROOMS.forEach((waddle) => {
+    const extraWaddleRooms = getExtraWaddleRooms(this.settings.version) ?? [];
+    [...WADDLE_ROOMS, ...extraWaddleRooms].forEach((waddle) => {
       const room = this.getRoom(waddle.roomId);
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
@@ -384,6 +384,27 @@ export class Server {
   /** Assign client object to a penguin ID */
   trackPlayer(id: number, client: Client): void {
     this._playersById.set(id, client);
+  }
+
+  getPenguinFromName (name: string): Penguin {
+    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
+    const date = this.getVirtualDate(0).getTime();
+
+    if (data === undefined) {
+      data = Client.create(capitalizeName(name), {
+        is_member: true,
+        virtualRegistrationTimestamp: date
+      });
+    }
+
+    
+    const [penguinData, id] = data;
+    
+    // fixing time traveling backwards
+    if (date < penguinData.virtualRegistrationTimestamp) {
+      penguinData.virtualRegistrationTimestamp = date;
+    }
+    return new Penguin(id, penguinData);
   }
 
   /** Make an igloo open */
@@ -445,6 +466,20 @@ export class Server {
     return this._followers.get(player) ?? [];
   }
 
+  getVirtualDate(offset: number): Date {
+    const [year, month, day] = processVersion(this.settings.version);
+    // simulating PST time for the current day
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+
+    // date generates this time thinking in the same timezone as the user
+    // an arbitrary offset may be applied depending on how each client behaves
+    return new Date(year, month - 1, day, hour + offset, minute, second);
+  }
+
+
   get waddleConstructors() {
     if (this._waddleConstructors === undefined) {
       throw new Error('Have not initialized Waddle Games');
@@ -455,6 +490,12 @@ export class Server {
   set waddleConstructors(value: WaddleConstructors) {
     this._waddleConstructors = value;
   }
+}
+
+function capitalizeName(name: string): string {
+  return name.split(' ').map((name => {
+    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
+  })).join(' ');
 }
 
 export class Client {
@@ -535,8 +576,15 @@ export class Client {
     return this._socket === undefined;
   }
 
-  send (message: string): void {
-    this._socket?.write(message + '\0');
+  async send (message: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this._socket?.write(message + '\0', (err) => {
+        if (err !== undefined) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
   }
 
   private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
@@ -548,9 +596,9 @@ export class Client {
     this.send(this.getXtMessage(true, handler, ...args));
   }
 
-  sendXt (handler: string, ...args: Array<number | string>): void {
+  async sendXt (handler: string, ...args: Array<number | string>): Promise<void> {
     logverbose('\x1b[32mSending XT:\x1b[0m ', handler, args);
-    this.send(this.getXtMessage(false, handler, ...args));
+    await this.send(this.getXtMessage(false, handler, ...args));
   }
 
   static engine1Crumb (penguin: Penguin, roomInfo: {
@@ -638,7 +686,7 @@ export class Client {
 
   get age (): number {
     // difference converted into days
-    return Math.floor((Date.now() - this.penguin.registrationTimestamp) / 1000 / 86400);
+    return Math.floor((this.server.getVirtualDate(0).getTime() - this.penguin.virtualRegistration) / 1000 / 86400);
   }
 
   get memberAge (): number {
@@ -730,20 +778,9 @@ export class Client {
     }
   }
 
-  static getPenguinFromName (name: string): Penguin {
-    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
-
-    if (data === undefined) {
-      data = Client.create(name);
-    }
-
-    const [penguinData, id] = data;
-
-    return new Penguin(id, penguinData);
-  }
-
   setPenguinFromName (name: string): void {
-    this._penguin = Client.getPenguinFromName(name)
+    this._penguin = this.server.getPenguinFromName(name)
+
     this._server.trackPlayer(this.penguin.id, this);
   }
 
@@ -757,12 +794,12 @@ export class Client {
     this._server.trackPlayer(id, this);
   }
 
-  static create (name: string, mascot = 0): [PenguinData, number] {
-    const defaultPenguin = Penguin.getDefault(0, name, true).serialize();
+  static create (name: string, params: DefaultPenguinParams = {}): [PenguinData, number] {
+    const defaultPenguin = Penguin.getDefault(0, name, params).serialize();
     return db.add<PenguinData>(Databases.Penguins, {
       ...defaultPenguin,
       name,
-      mascot
+      mascot: 0
     });
   }
 
@@ -801,8 +838,8 @@ export class Client {
     let items = this.penguin.getItems();
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.version, Update.CPIP_UPDATE)) {
-      const version = findInVersion(this.version, versionsTimeline) ?? 0;
+    if (isLower(this.version, CPIP_UPDATE)) {
+      const version = findInVersion(this.version, VERSIONS_TIMELINE) ?? 0;
       const itemSet = OLD_CLIENT_ITEMS[version];
       items = items.filter((value) => itemSet.has(value));
     }
@@ -859,9 +896,9 @@ export class Client {
     this._waddleGame = waddleGame;
   }
 
-  sendStamps (): void {
+  async sendStamps (): Promise<void> {
     // TODO this is actually not just for one's penguin, TODO multiplayer logic
-    this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
+    await this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
   }
 
   getPinString (): string {
@@ -905,33 +942,10 @@ export class Client {
   getEndgameStampsInformation (): [string, number, number, number] {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
-    if (this.room.id in roomStamps) {
-      let gameStamps = roomStamps[this.room.id];
-      // manually removing stamps if using a version before it was available
-      if (isLower(this.version, '2010-07-26')) {
-        gameStamps = [];
-      } else if (this.room.id === Room.JetPackAdventure) {
-        // Before puffle stamps
-        if (isLower(this.version, '2010-09-24')) {
-          gameStamps = [
-            Stamp.LiftOff,
-            Stamp.FuelRank1,
-            Stamp.JetPack5,
-            Stamp.Crash,
-            Stamp.FuelRank2,
-            Stamp.FuelRank3,
-            Stamp.FuelRank4,
-            Stamp.FuelRank5,
-            Stamp.OneUpLeader,
-            Stamp.Kerching,
-            Stamp.FuelCommand,
-            Stamp.FuelWings,
-            Stamp.OneUpCaptain,
-            Stamp.AcePilot,
-          ]
-        }
-      }
-      const stamps = gameStamps;
+    const gameRoom = GAME_STAMPS_TIMELINE.get(this.room.id);
+
+    if (gameRoom !== undefined) {
+      const stamps = isLower(this.version, STAMPS_RELEASE) ? [] : (findInVersion(this.version, gameRoom) ?? []);
 
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {
@@ -964,11 +978,13 @@ export class Client {
    * Give a stamp to a player
    * @param stampId 
    * @param params.notify Default `true` - Whether to notify the client or not
-   * @param params.release Proper version string for when the stamp released (defaults to the stamp release date) 
    */
-  giveStamp(stampId: number, params: { notify?: boolean, release?: string } = {}): void {
+  giveStamp(stampId: number, params: { notify?: boolean } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = params.release ?? Update.STAMPS_RELEASE;
+    const releaseDate = STAMP_DATES[stampId];
+    if (releaseDate === undefined) {
+      throw new Error(`Stamp is never released: ${stampId}`);
+    }
     if (isGreaterOrEqual(this.version, releaseDate)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
@@ -979,10 +995,6 @@ export class Client {
         this.sendXt('aabs', stampId);
       }
     }
-  }
-
-  addCardJitsuStamp(stampId: number): void {
-    this.giveStamp(stampId, { release: Update.CARD_JITSU_STAMPS });
   }
 
   static getFurnitureString(furniture: IglooFurniture): string {
@@ -1089,17 +1101,7 @@ export class Client {
     TODO 3: how to handle status field
     */
 
-    const [year, month, day] = processVersion(this.version);
-    // simulating PST time for the current day
-    // local time needs to be taken into account since flash checks for that all the time
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const offset = now.getTimezoneOffset();
-    const hourOffset = Math.floor(offset / 60);
-    const minuteOffset = offset % 60;
-    // not fully sure why + 22, maybe this code isn't timezone proof
-    const virtualDate = new Date(year, month - 1, day, hour + hourOffset + 22, minute + minuteOffset);
+    const virtualDate = this.server.getVirtualDate(0);
     
     this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }
@@ -1146,16 +1148,6 @@ export class Client {
       this.update();
     }
     this._socket?.end();
-  }
-
-  checkAgeStamps(): void {
-    const days = this.age;
-    if (days >= 183) {
-      this.giveStamp(14);
-      if (days >= 365) {
-        this.giveStamp(20);        
-      }
-    }
   }
 
   getCoinsFromScore(score: number): number {
@@ -1316,7 +1308,7 @@ export class Client {
       }
       const stamp = CardJitsuProgress.STAMP_AWARDS[i];
       if (stamp !== undefined) {
-        this.addCardJitsuStamp(stamp);
+        this.giveStamp(stamp);
       }
     }
     this.sendXt('cza', this.penguin.ninjaProgress.rank);
@@ -1356,7 +1348,7 @@ class Bot extends Client {
 
   constructor(server: Server, name: string) {
     super(server, undefined, 'World');
-    this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name, true);
+    this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name);
   }
 
   get followInfo(): FollowInfo {

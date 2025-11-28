@@ -9,8 +9,7 @@ import { GlobalSettings } from "../common/utils";
 import { createTimelinePicker } from "./timeline";
 import { createModsWindow } from "./mods";
 import { SettingsManager } from "../server/settings";
-import { createChangeClientIPWindow } from "./client-ip";
-import { createChangeServerIPWindow } from "./server-ip";
+import { createMultiplayerSettings } from "./multiplayer";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager): MenuItemConstructorOptions[] => {
   const app: MenuItemConstructorOptions = { 
@@ -88,12 +87,8 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
         click: () => { enableOrDisableDiscordRPCLocationTracking(store, mainWindow); }
       },
       {
-        label: 'Change the client IP',
-        click: () => { createChangeClientIPWindow(globalSettings, mainWindow); }
-      },
-      {
-        label: 'Change your server\'s IP',
-        click: () => { createChangeServerIPWindow(serverSettings, mainWindow) }
+        label: 'Multiplayer Settings',
+        click: () => { createMultiplayerSettings(globalSettings,serverSettings, mainWindow); }
       }
     ]
   };

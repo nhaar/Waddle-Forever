@@ -8,7 +8,7 @@ type XTCallback = (client: Client, ...args: string[]) => boolean
 type ClientCallback = (client: Client) => void
 type XMLCallback = (client: Client, data: string) => void
 
-type PostCallback = (body: any) => string
+type PostCallback = (server: Server, body: any) => string
 
 type XtParams = {
   once?: boolean
@@ -131,7 +131,7 @@ export class Handler {
     Name extends HandleName
   >(
     name: Name,
-    method: (client: Client, ...args: GetArgumentsType<HandleArguments[Name]>) => void,
+    method: (client: Client, ...args: GetArgumentsType<HandleArguments[Name]>) => void | Promise<void>,
     params?: XtParams
   ) {
     const xt = handlePacketNames.get(name);
@@ -191,7 +191,7 @@ export class Handler {
   handle (client: Client, data: string) {
     if (data.startsWith('<')) {
       this.handleXml(client, data);
-    } else {
+    } else if (data.startsWith('%xt')) {
       this.handleXt(client, data);
     }
   }
@@ -257,12 +257,12 @@ export class Handler {
   }
 
   /** Handlers that listen for POST requests in the HTTP server */
-  useEndpoints (server: Express) {
-    server.use(express.urlencoded({ extended: true }))
+  useEndpoints (gameServer: Server, expressServer: Express) {
+    expressServer.use(express.urlencoded({ extended: true }))
     // this is currently only required because of .php routes
     this.phpListeners.forEach((callback, path) => {
-      server.post(path, (req, res) => {
-        res.send(callback(req.body))
+      expressServer.post(path, (req, res) => {
+        res.send(callback(gameServer, req.body))
       })
     })
   }

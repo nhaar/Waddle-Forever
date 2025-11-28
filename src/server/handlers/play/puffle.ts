@@ -5,6 +5,8 @@ import { Client } from "../../../server/client";
 import { choose, randomInt } from "../../../common/utils";
 import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
+import { BROWN_PUFFLE_TIMELINE } from "../../../server/timelines/puffles";
+import { findInVersion } from "../../../server/game-data";
 
 const handler = new Handler()
 
@@ -402,13 +404,18 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   if (!client.isEngine2) {
     return;
   }
-  const PUFFLE_COST = 800
-  if (client.penguin.coins < PUFFLE_COST) {
+  let cost = 800;
+
+  if (puffleType == 9 && findInVersion(client.version, BROWN_PUFFLE_TIMELINE)) { // free brown puffle
+    cost = 0;
+  }
+
+  if (client.penguin.coins < cost) {
     // TODO no coins error
   } else if (false) {
     // TODO too many puffles error
   }
-  client.penguin.removeCoins(PUFFLE_COST)
+  client.penguin.removeCoins(cost)
   const puffle = client.penguin.addPuffle(puffleName, puffleType);
   client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
 

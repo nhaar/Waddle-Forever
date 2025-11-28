@@ -27,7 +27,7 @@ export const replacePcode = async (baseFilePath: string, outputFilePath: string,
     fs.mkdirSync(PCODE_DIR);
   }
 
-  const tempfile = path.join(PCODE_DIR, String(Date.now()) + '.pcode');
+  const tempfile = path.join(PCODE_DIR, String(Date.now()) + '-' + path.basename(outputFilePath) + '.pcode');
   fs.writeFileSync(tempfile, pcode);
   
   await runCommand(`"${getFfdecPath()}" -replace "${baseFilePath}" "${outputFilePath}" "${scriptName}" "${tempfile}"`);

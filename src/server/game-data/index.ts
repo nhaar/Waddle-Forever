@@ -5,15 +5,6 @@ import { FileRef } from "./files";
 /** A map that takes as keys a game route and as values a file reference. Works as static serving for a single point in time */
 export type RouteRefMap = Record<string, FileRef>;
 
-/**
- * A map that takes as keys versions, and as values information of a certain type, used for
- * permanent changes
- * */
-export type DateMap<Info> = Record<Version, Info>;
-
-/** A map that takes as keys dates/versions and as values a file reference associated with that date */
-export type DateRefMap = DateMap<FileRef>;
-
 /** A map that takes as keys an ID number (of any kind) and values a file reference associated with the ID */
 export type IdRefMap = Record<number, FileRef>;
 
@@ -49,37 +40,6 @@ export type TemporaryChange<ChangeInformation> = {
 
 /** A singular update on a timeline of events that are either permanent or temporary */
 export type TimelineEvent<ChangeInformation> = PermanentChange<ChangeInformation> | TemporaryChange<ChangeInformation>;
-
-/** Implementation of a permanent update with arbitrary information */
-type PermanentUpdate<UpdateInformation> = {
-  date: Version;
-} & UpdateInformation;
-
-/** List of many implementations of permanent updates */
-export type PermanentUpdateTimeline<UpdateInformation> = PermanentUpdate<UpdateInformation>[];
-
-/**
- * A complex implementation of a temporary change, which can be accompanied with sub-updates, as well as permanent updates
- * that could happen at the start or end of this temporary change
- * */
-export type ComplexTemporaryUpdate<UpdateInformation> = {
-  date: Version;
-  end: Version;
-  /** All updates that happen within this temporary update */
-  updates?: Array<{
-    /** If not added, then it defaults to the start of the temporary update */
-    date?: Version;
-    /** If not supplied, ends when the next update shows, if null, ends when the whole group ends, otherwise the value stated */
-    end?: Version | null
-  } & UpdateInformation>;
-  /** Permanent changes applied at the beginning of this update */
-  permanentChanges?: UpdateInformation;
-  /** Permanent changes applied at the end of this update */
-  consequences?: UpdateInformation;
-} & UpdateInformation;
-
-/** List of many implementations of temporary updates */
-export type ComplexTemporaryUpdateTimeline<UpdateInformation> = Array<ComplexTemporaryUpdate<UpdateInformation>>;
 
 /**
  * Takes an unorganized sequence of temporary and permanent changes, and processes it into a sorted organized output
@@ -289,7 +249,7 @@ export function processTimeline<EventInformation, EventInput, EventOutput>(
  * A sorted array which represents how an information changes through time
  * Each new element means that the information mutates on that given date
  * */
-type VersionsInformation<EventInformation> = Array<{
+export type VersionsInformation<EventInformation> = Array<{
   date: Version;
   info: EventInformation;
 }>;
@@ -303,7 +263,7 @@ type VersionsInformation<EventInformation> = Array<{
  */
 export function processIndependentTimeline<EventInformation>(timeline: TimelineEvent<EventInformation>[]): VersionsInformation<EventInformation> {
   // filter things out with undefined, it should not be possible for the output to have undefineds
-  // on the way this is setup
+  // on the way this is setup, IF USING UNDEFINED FOR EVENTINFORMATION consider using null otherwise it will break!
   const versions = processTimeline<EventInformation, EventInformation, undefined | EventInformation>(timeline, (input) => {
     return input;
   }, () => {
@@ -327,8 +287,12 @@ export function processIndependentTimeline<EventInformation>(timeline: TimelineE
  * @returns undefined if it underflows (date is before first update)
  */
 export function findInVersion<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
+  return findInVersionFull(date, versions)?.info;
+}
+
+export function findInVersionFull<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
   if (versions.length === 1) {
-    return versions[0]['info'];
+    return versions[0];
   }
   
   const index = findEarliestDateHitIndex(date, versions);
@@ -336,7 +300,7 @@ export function findInVersion<EventInformation>(date: Version, versions: Version
     return undefined;
   }
   
-  return versions[index]['info'];
+  return versions[index];
 }
 
 /**
@@ -346,7 +310,7 @@ export function findInVersion<EventInformation>(date: Version, versions: Version
  * @param array Sorted array by date
  * @returns 
  */
-function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
+export function findEarliestDateHitIndex<T extends { date: Version }>(date: Version, array: T[]): number {
   if (array.length < 2) {
     if (array.length === 1) {
       if (isLower(date, array[0].date)) {
@@ -419,16 +383,24 @@ export class VersionsTimeline<EventInformation> {
     this._eventsTimeline = [];
   }
 
-  /** Adds all events from a date map */
-  addDateMap(dateMap: DateMap<EventInformation>) {
-    iterateEntries(dateMap, (date, info) => {
-      this.add({ date, info });
-    });
-  }
-
   /** Add an event to the timeline */
   add(event: TimelineEvent<EventInformation>) {
     this._eventsTimeline.push(event);
+  }
+
+  addInfo(info: EventInformation, date: Version, end?: Version | undefined) {
+    if (end === undefined) {
+      this.add({
+        date,
+        info
+      });
+    } else {
+      this.add({
+        date,
+        end,
+        info
+      });
+    }
   }
 
   /** Get sorted versions array */
@@ -461,15 +433,6 @@ export class TimelineMap<Key, EventInformation> {
   /** Inherit to make changes to the information input */
   protected processInformation(info: EventInformation): EventInformation {
     return info;
-  }
-
-  /**
-   * Consumes a date map onto a timeline
-   * @param key 
-   * @param dateMap 
-   */
-  addDateMap(key: Key, dateMap: DateMap<EventInformation>): void {
-    this.updateTimeline(key, (t) => t.addDateMap(dateMap));
   }
 
   /**
@@ -519,8 +482,14 @@ export class TimelineMap<Key, EventInformation> {
   }
 }
 
-/**
- * Represents a valid migrator visit. `true` means that a visit happens but the catalog is not updated,
- * if the catalog is updated, the catalog's file is listed
- * */
-export type MigratorVisit = true | FileRef;
+export function addRecordToMap<Key extends string, EventInformation>(map: TimelineMap<Key, EventInformation>, record: Partial<Record<Key, EventInformation>>, date: Version, end?: Version): void {
+  iterateEntries(record, (key, info) => {
+    map.add(key, info, date, end);
+  });
+}
+
+export function addRecordToNumberMap<EventInformation>(map: TimelineMap<number, EventInformation>, record: Partial<Record<number, EventInformation>>, date: Version, end?: Version): void {
+  iterateEntries(record, (key, info) => {
+    map.add(Number(key), info, date, end);
+  });
+}

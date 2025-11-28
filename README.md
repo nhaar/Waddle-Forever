@@ -2,14 +2,14 @@
 
 Waddle Forever is composed of a localhost server emulator for Club Penguin and an Electron client with the server that can run the game out of the box, built with Node.js in TypeScript.
 
-Its main goals are accessible speedrunning, accessible sandbox Club Penguin and in the future for a complete singleplayer experience and archival of parties and events.
+It has the main goal to be as complete as possible of an archive of Club Penguin that can be downloaded easily by anyone!
 
 > [!IMPORTANT]  
 > Download links are available in the [website!](https://waddleforever.com/)
 
 # Progress
 
-At the moment, the program is at an early stage. A basic "AS2" gameplay is currently supported, including minigames, stamps and penguin customization.
+Waddle Forever is still in constant development. A decent amount of features are present, but the program is far from complete.
 
 The client has ambitious goals, so it is uncertain if they will be met. The main goals include:
 
@@ -48,6 +48,15 @@ To build you must have Node.js, npm and yarn installed. After cloning the code, 
 
 ```yarn install```
 
+In order to properly launch the game, you will also need to have FFDEC installed (version 24 or greater). Then, copy the `.env-template` file into `.env`, and edit it with the path to FFDEC (in Windows, the .bat file). Then you will want to run these commands to finish setting everything up:
+
+```
+yarn build-packages
+yarn global-crumbs
+yarn local-crumbs
+yarn news-crumbs
+```
+
 For running the client in development, run
 
 ```yarn start```
@@ -55,13 +64,6 @@ For running the client in development, run
 For running the server in development, run
 
 ```yarn dev```
-
-The game is built into zip files which are placed in the website. To build the zip files:
-
-```yarn build-media```
-```yarn build-win```
-
-Will leave all the files in the folder `zip`
 
 # Credits
 
@@ -73,4 +75,4 @@ Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunni
 
 Credits to Ben for developing the Scavenger Hunt dependency and dynamic Igloo List. Credits for Randomno for the modified igloo list.
 
-Special thanks for continued support, recreating, researching and or testing the game to: supermanover, Blue Kirby, Jeff The Rock, Resol van Lemmy, VampLovr, ungato, Zeldaboy, Ryboflavin, Bluestk, Levi
+Special thanks for continued support, recreating, researching and or testing the game to: Doubleuman, slicedpizza39, Cyan, Randomno, supermanover, Blue Kirby, Jeff The Rock, Resol van Lemmy, VampLovr, ungato, Zeldaboy, Ryboflavin, Bluestk, Levi
