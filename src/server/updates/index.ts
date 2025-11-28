@@ -196,6 +196,10 @@ export type CPUpdate = {
 
   /** Used for the Ultimate Jam (2012 party) */
   unlockedDay?: number;
+
+  /** For pre-cpip clients, in which items are stored in chat.swf, supply all items available in the chat.swf of that day */
+  clientFiles?: number[];
+  removeClientFiles?: number[];
 } & ({
   partyName: string;
   decorated?: false;

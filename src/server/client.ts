@@ -9,8 +9,7 @@ import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { findInVersion } from './game-data';
-import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
+import { findInVersion, findInVersionStrict } from './game-data';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { Vector } from '../common/utils';
 import { logverbose } from './logger';
@@ -19,6 +18,7 @@ import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
 import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
+import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
 
 type ServerType = 'Login' | 'World';
 
@@ -840,8 +840,7 @@ export class Client {
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
     if (isLower(this.version, CPIP_UPDATE)) {
-      const version = findInVersion(this.version, VERSIONS_TIMELINE) ?? 0;
-      const itemSet = OLD_CLIENT_ITEMS[version];
+      const itemSet = findInVersionStrict(this.version, CLIENT_ITEMS_TIMELINE)
       items = items.filter((value) => itemSet.has(value));
     }
     
