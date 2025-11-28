@@ -185,7 +185,8 @@ export const UPDATES_2007: Update[] = [
       party: {
         partyName: 'St. Patrick\'s Day Party',
         rooms: {
-          coffee: 'recreation:st_patrick_2007/coffee.swf'
+          coffee: 'recreation:st_patrick_2007/coffee.swf',
+          town: 'recreation:st_patrick_2007/town.swf'
         },
         music: {
           'town': 208,

@@ -1612,6 +1612,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fire_hunt/book.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'st_patrick_2007/town.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [
