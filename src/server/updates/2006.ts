@@ -552,7 +552,57 @@ export const UPDATES_2006: Update[] = [
     roomComment: 'The Ice Rink now has score signs',
     rooms: {
       rink: 'archives:ArtworkRoomsRink22.swf'
-    }
+    },
+    fileChanges: {
+      'chat339.swf': 'recreation:chat339_with_added_items.swf'
+    },
+    clientFiles: [
+      133,
+      134,
+      369,
+      561,
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      300,
+      301,
+      562,
+      113,
+      114,
+      182,
+      202,
+      206,
+      256,
+      279,
+      280,
+      282,
+      306,
+      307,
+      353,
+      922,
+      923,
+      924,
+      925,
+      282,
+      563,
+      167,
+      168,
+      270,
+      271,
+      272,
+      273,
+      274,
+      275,
+      926,
+      440
+    ]
   },
   {
     date: '2006-08-18',
@@ -596,9 +646,29 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:September06Style.swf'
   },
   {
+    date: '2006-09-15',
+    miscComments: ['The Lightbulb Hunt begins'],
+    temp: {
+      event: {
+        rooms: {
+          attic: 'recreation:lightbulb/attic.swf',
+          boiler: 'recreation:lightbulb/boiler.swf',
+          dance: 'recreation:lightbulb/dance.swf',
+          mine: 'recreation:lightbulb/mine.swf',
+          plaza: 'recreation:lightbulb/plaza.swf'
+        },
+        fileChanges: {
+          'chat339.swf': 'recreation:lightbulb/chat339.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2006-09-21',
     chatVersion: 506,
     map: 'approximation:map_beach_changed_id.swf',
+    miscComments: ['The Lightbulb Hunt ends'],
+    end: ['event'],
     temp: {
       party: {
         partyName: 'Lighthouse Party',

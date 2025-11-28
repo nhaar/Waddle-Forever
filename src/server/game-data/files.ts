@@ -1628,6 +1628,34 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_lighthouse_pin.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'chat339_with_added_items.swf',
+      comment: 'Made by Doubleuman. This technically has the lightbulb hunt, but it\'s turned off. Primarily it adds all missing items from the period chat339 was active in waddle forever'
+    },
+    {
+      file: 'lightbulb/chat339.swf',
+      comment: 'Same as the other chat 339 with added items but with the icon of the hunt available'
+    },
+    {
+      file: 'lightbulb/attic.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/boiler.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/mine.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/plaza.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
