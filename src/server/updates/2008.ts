@@ -2460,6 +2460,19 @@ export const UPDATES_2008: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-May2010.swf',
       plaza: 'recreation:plaza_golden_puffle_no_weather.swf'
+    },
+    miscComments: ['The Coins for Change event begins'],
+    temp: {
+      party: {
+        rooms: {
+          plaza: 'recreation:pre_christmas_08/plaza.swf',
+          beach: 'recreation:pre_christmas_08/beach.swf',
+          shipquarters: 'archives:RoomsShipquarters-ChristmasParty2008.swf',
+          ship: 'archives:RoomsShip-ChristmasParty2008.swf',
+          shiphold: 'archives:RoomsShiphold-ChristmasParty2008.swf',
+          shipnest: 'archives:RoomsShipnest-ChristmasParty2008.swf'
+        }
+      }
     }
   },
   {
@@ -2472,12 +2485,10 @@ export const UPDATES_2008: Update[] = [
           beacon: 'archives:RoomsBeacon-ChristmasParty2008.swf',
           boiler: 'archives:RoomsBoiler-ChristmasParty2008.swf',
           book: 'archives:RoomsBook-ChristmasParty2008.swf',
-          shipquarters: 'archives:RoomsShipquarters-ChristmasParty2008.swf',
           cave: 'archives:RoomsCave-ChristmasParty2008.swf',
           coffee: 'archives:RoomsCoffee-ChristmasParty2008.swf',
           agentcom: 'archives:RoomsAgentcom-ChristmasParty2008.swf',
           cove: 'archives:RoomsCove-ChristmasParty2008.swf',
-          shipnest: 'archives:RoomsShipnest-ChristmasParty2008.swf',
           lounge: 'archives:RoomsLounge-ChristmasParty2008.swf',
           dock: 'archives:RoomsDock-ChristmasParty2008.swf',
           dojo: 'archives:RoomsDojo-ChristmasParty2008.swf',
@@ -2490,10 +2501,8 @@ export const UPDATES_2008: Update[] = [
           shack: 'archives:RoomsShack-ChristmasParty2008.swf',
           dance: 'archives:RoomsDance-ChristmasParty2008.swf',
           dojohide: 'archives:RoomsDojohide-ChristmasParty2008.swf',
-          ship: 'archives:RoomsShip-ChristmasParty2008.swf',
           pizza: 'archives:RoomsPizza-ChristmasParty2008.swf',
           plaza: 'archives:RoomsPlaza-ChristmasParty2008.swf',
-          shiphold: 'archives:RoomsShiphold-ChristmasParty2008.swf',
           mtn: 'archives:RoomsMtn-ChristmasParty2008.swf',
           lodge: 'archives:RoomsLodge-ChristmasParty2008.swf',
           village: 'archives:RoomsVillage-ChristmasParty2008.swf',

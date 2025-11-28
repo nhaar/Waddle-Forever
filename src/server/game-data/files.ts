@@ -1616,6 +1616,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'st_patrick_2007/town.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'pre_christmas_08/plaza.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pre_christmas_08/beach.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [
