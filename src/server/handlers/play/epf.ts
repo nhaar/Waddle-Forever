@@ -1,6 +1,8 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
+import { findInVersion } from "../../../server/game-data";
+import { PARTY_OP_TIMELINE } from "../../../server/timelines/epf";
 
 const handler = new Handler();
 
@@ -62,6 +64,27 @@ handler.xt(Handle.EPFStamps, (client, stamp) => {
   } else {
     client.sendXt('epfsf', 'nem', stamp); // giving the stamp
   }
+});
+
+
+handler.xt(Handle.GetPartyOp, (client) => {
+  const op = findInVersion(client.version, PARTY_OP_TIMELINE);
+
+  if (op === 'battle-of-doom') {
+    client.sendXt('epfgp', client.penguin.completedBattleOfDoom ? 1 : 0);
+  }
+});
+
+handler.xt(Handle.SetPartyOp, (client, completed) => {
+  const op = findInVersion(client.version, PARTY_OP_TIMELINE);
+
+  if (completed === 1) {
+    if (op === 'battle-of-doom') {
+      client.penguin.setBattleOfDoomCompleted();
+    }
+  }
+
+  client.update();
 });
 
 export default handler

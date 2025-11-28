@@ -1,27 +1,21 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
-import { Update } from "../game-data/updates";
+import { UPDATES } from "../updates/updates";
 
-/** Map date and the version number it started using */
-const VERSIONS: Record<string, number> = {
-  [Update.BETA_RELEASE]: 291,
-  [Update.EGG_HUNT_2006_START]: 299,
-  [Update.CHAT_339]: 339,
-  [Update.PRE_CPIP_REWRITE_DATE]: 506,
-  // added 604 because it has the stage, though have no idea of where it is from yet
-  [Update.FIRST_STAGE_PLAY]: 604
-};
+const timeline = new VersionsTimeline<number>();
 
-export function getVersionsTimeline() {
-  const versionTimeline = new VersionsTimeline<number>();
-  versionTimeline.addDateMap(VERSIONS);
+UPDATES.forEach(update => {
+  if (update.update.chatVersion !== undefined) {
+    timeline.add({
+      date: update.date,
+      info: update.update.chatVersion
+    });
+  }
+});
 
-  return versionTimeline.getVersions();
-}
-
-const versionsTimeline = getVersionsTimeline();
+export const VERSIONS_TIMELINE = timeline.getVersions();
 
 /** Get the version.txt file used in preCPIP */
 export function getVersionTxt(date: string): string {
-  const version = findInVersion(date, versionsTimeline);
+  const version = findInVersion(date, VERSIONS_TIMELINE);
   return `&v=${version}\n`;
 }

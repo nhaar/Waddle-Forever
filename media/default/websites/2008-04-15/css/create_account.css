@@ -1,0 +1,1883 @@
+@charset "UTF-8";
+/* CSS Document */
+	
+	
+/* ______________________________________________________________
+   __________________________ Create Account _______________________ */
+	
+	
+body{font-family: Arial, Helvetica, sans-serif; 
+	color:#555; 
+	margin:0; 
+	padding:0; 
+	text-align:center; 
+	background: #fff; 
+	height:100%; 
+	width: 100%;
+	font-size:small;
+	min-width:1015px;
+	
+	font-size: x-small; /* IE5 Win */
+  	voice-family: "\"}\""; 
+  	voice-family: inherit;
+  	font-size: small;
+	}
+	
+html>body { /* be nice to Opera */
+	font-size: small;
+	}
+	
+strong { font-weight:bold;}
+	
+/* Main Layout
+________________________________________________________*/
+
+#flashNav{/*This houses the main home Flash navigation*/	
+	position: relative;
+	height: 134px;
+	width: 1022px;
+	margin:0 auto;
+	top: 0; 
+}
+
+#contwrap{
+	position: relative;
+	width: 836px;	
+	margin:0 auto;
+	text-align: left;
+	/*border: solid 1px #ff0000;*/
+}
+
+
+/*Main Elements
+_______________________________________________________*/
+	
+/* HTML Navigation */
+	
+/* Nav */
+#navBg ul#bu_nav{
+	position: absolute;
+	top: 6px;
+	left: 2px;
+	display: block;
+	list-style: none;
+	height:auto;
+	width: auto;
+	text-align: left;
+	overflow: hidden;
+}
+	#navBg ul#bu_nav li{
+		display: inline;
+		list-style: none;
+		margin:0 2px 0 0;
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:11px;
+		font-weight: 700;
+		color:#feb62a;
+		overflow:hidden;
+	}
+	#navBg ul#bu_nav .noMarg{
+		margin:0;
+	}
+		#navBg ul#bu_nav li a, #navBg ul#bu_nav li a:link, #navBg ul#bu_nav li a:visited{
+			font-family:Arial, Helvetica, sans-serif;
+			font-size:11px;
+			font-weight: 700;
+			color:#fff;
+			text-decoration: none;
+		}
+		#navBg ul#bu_nav li a:hover{
+			font-family:Arial, Helvetica, sans-serif;
+			color:#feb62a;
+			text-decoration: none;
+		}
+		#navBg ul#bu_nav li .active{
+			color:#fff;
+		}
+
+/* Footer Elements */
+	
+	/* Nav */
+	#ftrBg ul{
+	position: absolute;
+	top: 48px;
+	left: 215px;
+	display: block;
+	list-style: none;
+	height:auto;
+	width: 490px;
+	text-align: center;
+	}
+	#ftrBg ul li{
+		display: inline;
+		list-style: none;
+		margin:0 3px 0 0;
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:12px;
+		font-weight: 800;
+		color:#b4b4b4;
+	}
+	#ftrBg ul .noMarg{
+		margin:0;
+	}
+		#ftrBg ul li a, #ftrBg ul li a:link, #ftrBg ul li a:visited{
+			font-family:Arial, Helvetica, sans-serif;
+			font-size:11px;
+			font-weight: 700;
+			color:#b4b4b4;
+			text-decoration: none;
+		}
+		#ftrBg ul li a:hover{
+			font-family:Arial, Helvetica, sans-serif;
+			color:#045aa1;
+			text-decoration: none;
+		}
+		#ftrBg ul li .active{
+			color:#5ad0fa;
+		}
+	
+	#ftrBg p{
+	position: absolute;
+	top: 69px;
+	left: 230px;
+	height:auto;
+	width: 460px;
+	text-align: center;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:10.5px;
+	color:#a1a1a1;
+	}
+	
+#ftrWrap{
+	position: relative;
+	top: -8px;
+	left:0;
+	height:auto;
+	width: 836px;
+	margin: 0 auto;
+}
+	
+#ftrBg{
+	height:auto;
+	width: 836px;
+	margin: 0 auto;
+}
+
+#ftrContent{
+	height:auto;
+	width: 836px;
+	margin: 0 auto;
+}
+
+/* BELOW can be used to change the color of the Privacy Policy and Terms of Use links in the footer when necessary */
+
+#ftrContent ul li a.new:link{color:#ff9a00;}
+#ftrContent ul li a.new:visited{color:#ff9a00;}
+#ftrContent ul li a.new:hover{color:#ffcc00;}
+#ftrContent ul li a.new:active{color:#ff9a00;}
+
+
+
+#disGame{
+	display: block;
+	position: absolute;
+	top: 32px;
+	left: 48px;
+}
+
+#truste{
+	margin-right: 15px;
+}
+
+#contwrap .border { 
+	background:url(../images/game-border.gif) no-repeat;
+	width:784px;
+	height:502px;
+	margin: 0px auto;
+	padding: 10px 0 0 0;
+	text-align: center;
+	}
+
+#contwrap .flash{ 
+	width: 836px;
+	height: 528px;
+	margin: 0 auto;
+	padding: 10px 0 0 0;
+	text-align:center;
+	background:url(../images/game_border.gif) no-repeat center top;
+	/* border: solid red 1px; */
+	}
+
+#contwrap h2{
+	color:#00529b;
+	font-weight:bold;
+	font-size: 24px;
+}
+	#contwrap .pageName{
+		margin: 5px 0 25px 0;
+		width: 550px;
+	}
+
+#contwrap .box842{
+	position: relative;
+	width: 842px;
+	background: url(../images/box_842mid.gif) 0 0 repeat-y;
+}
+
+#contwrap .boxbtm{
+	position: relative;
+	top: 3px;
+}
+
+#contwrap .inner{
+	width: 842px;
+	height: auto;
+	background: url(../images/box_842top.gif) 0 0 no-repeat;
+}
+
+#contwrap .inner .content{
+	padding: 40px 25px 15px 35px;
+	width: 100%;
+}
+
+
+/* This is the progress indicator */
+
+#start{
+	position: absolute;
+	top: 8px;
+	left: 520px;
+	width: 258px;
+	height: 31px;
+}
+
+#prog_star{
+	position: absolute;
+	top: 10px;
+
+	left: 700px;
+	width: 258px;
+	height: 31px;
+	
+}
+
+#prog_star #graybar{
+	position: absolute;
+	top:5px;
+	left:7px;
+	width: 47px;
+	height: 3px;
+	background: url(../images/graybar.jpg) 0 0 no-repeat;
+}
+
+#prog_star #blubar1{ position: absolute; top:5px; left:1px; width: 47px; height: 3px; background: url(../images/bluebar.jpg) 0 0 no-repeat;}
+#prog_star #blubar2{ position: absolute; top:5px; left:1px; width: 96px; height: 3px; background: url(../images/bluebar.jpg) 0 0 no-repeat;}
+#prog_star #blubar3{
+	position: absolute;
+	top:5px;
+	left:1px;
+	width: 106px;
+	height: 3px;
+	background: url(../images/bluebar.jpg) 0 0 no-repeat;
+}
+#prog_star #blubar4{
+	position: absolute;
+	top:6px;
+	left:1px;
+	width: 161px;
+	height: 2px;
+	background: url(../images/bluebar.jpg) 0 0 no-repeat;
+}
+#prog_star #blubar5{ position: absolute; top:5px; left:1px; width: 238px; height: 3px; background: url(../images/bluebar.jpg) 0 0 no-repeat;}
+
+
+#prog_star #graydot1, #prog_star #bludot1{ position: absolute; top: 0; left:-1px;}
+#prog_star #graydot2, #prog_star #bludot2{ position: absolute; top: 0; left:46px;}
+#prog_star #graydot3, #prog_star #bludot3{ position: absolute; top: 0; left:95px;}
+#prog_star #graydot4, #prog_star #bludot4{ position: absolute; top: 0; left:144px;}
+#prog_star #graydot5, #prog_star #bludot5{ position: absolute; top: 0; left:192px;}
+#prog_star #graydot6, #prog_star #bludot6{ position: absolute; top: 0; left:236px;}
+
+#star{ position: absolute; top: -13px; left: -15px; width: 36px; height: 35px;}
+#star2{ position: absolute; top: -13px; left: 33px; width: 36px; height: 35px;}
+#star3{ position: absolute; top: -13px; left: 83px; width: 36px; height: 35px;}
+#star4{ position: absolute; top: -13px; left: 133px; width: 36px; height: 35px;}
+#star5{ position: absolute; top: -13px; left: 181px; width: 36px; height: 35px;}
+#star6{ position: absolute; top: -13px; left: 226px; width: 36px; height: 35px; }
+
+
+.dot_nomarg{
+	margin: 0 !important;
+}
+
+/*  Progstar 2   */
+
+#prog_star2{
+	position: absolute;
+	top: 10px;
+	left: 603px;
+	width: 258px;
+	height: 31px;
+	
+}
+
+#prog_star2 #graybar{
+	position: absolute;
+	top:5px;
+	left:7px;
+	width: 191px;
+	height: 3px;
+	background: url(../images/graybar.jpg) 0 0 no-repeat;
+}
+
+#prog_star2 #blubar1{ position: absolute; top:5px; left:1px; width: 47px; height: 3px; background: url(../images/bluebar.jpg) 0 0 no-repeat;}
+#prog_star2 #blubar2{ position: absolute; top:5px; left:1px; width: 96px; height: 3px; background: url(../images/bluebar.jpg) 0 0 no-repeat;}
+#prog_star2 #blubar3{
+	position: absolute;
+	top:6px;
+	left:1px;
+	width: 51px;
+	height: 2px;
+	background: url(../images/bluebar.jpg) 0 0 no-repeat;
+}
+#prog_star2 #blubar4{
+	position: absolute;
+	top:6px;
+	left:1px;
+	width: 161px;
+	height: 2px;
+	background: url(../images/bluebar.jpg) 0 0 no-repeat;
+}
+#prog_star2 #blubar5{
+	position: absolute;
+	top:5px;
+	left:1px;
+	width: 202px;
+	height: 3px;
+	background: url(../images/bluebar.jpg) 0 0 no-repeat;
+}
+
+
+#prog_star2 #graydot1, #prog_star2 #bludot1{ position: absolute; top: 0; left:-1px;}
+#prog_star2 #graydot2, #prog_star2 #bludot2{ position: absolute; top: 0; left:46px;}
+#prog_star2 #graydot3, #prog_star2 #bludot3{ position: absolute; top: 0; left:95px;}
+#prog_star2 #graydot4, #prog_star2 #bludot4{ position: absolute; top: 0; left:144px;}
+#prog_star2 #graydot5, #prog_star2 #bludot5{ position: absolute; top: 0; left:192px;}
+#prog_star2 #graydot6, #prog_star2 #bludot6{ position: absolute; top: 0; left:236px;}
+
+#star{ position: absolute; top: -13px; left: -15px; width: 36px; height: 35px;}
+#star2{ position: absolute; top: -13px; left: 33px; width: 36px; height: 35px;}
+#star3{ position: absolute; top: -13px; left: 83px; width: 36px; height: 35px;}
+#star4{ position: absolute; top: -13px; left: 133px; width: 36px; height: 35px;}
+#star5{ position: absolute; top: -13px; left: 181px; width: 36px; height: 35px;}
+#star6{ position: absolute; top: -13px; left: 226px; width: 36px; height: 35px; }
+
+
+
+/* Error box */
+
+.error_message{
+	float: left;
+	margin-left:160px;
+		}
+.errorbox {
+	float:none;
+	width:772px;
+	background-image: url(../images/errorbox_bkg2.gif);
+	background-color:#FFBD38;
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	}
+
+.errorbox_inner {
+	vertical-align: top;
+	padding-top: 0;
+	padding-right: 20px;
+	padding-bottom: 40px;
+	padding-left: 20px;
+	}
+	
+.errorbox_inner ul{
+	margin-left: 100px;
+	margin-top: 20px;
+	height: 30px;
+}
+
+.safetyicon{
+margin-top: 20px;
+}
+
+
+
+/* Step 1
+________________________________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#create #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 159px 0 0;
+	}
+		#create #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#create #contwrap .inner .span2 .ctrcol{
+		width: 190px;
+		height: 61px;
+		margin: 22px 220px 0 -84px;;
+	}
+	#create #contwrap .inner .span2 .ctrcol2{
+		width: 290px;
+		height: 61px;
+		margin: 22px 112px 0 0;
+	}
+	
+	#create #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+
+#create #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create #contwrap .inner .lcol, #create #contwrap .inner .rcol{
+	width: 375px;
+	margin-bottom: 25px;
+}
+
+#create #contwrap .inner .lcol p img, #create #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 8px;
+}
+	#create #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#create #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#create #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create #contwrap .inner .agree_form{
+	margin: 0 0 0 285px;
+	width: 490px;
+	padding: 
+}
+	#create #contwrap .inner .agree_form .chk input{
+		width: 1.2em;
+		height: 1.2em;
+	}
+	#create #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+	
+
+
+/* Step 2
+________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#create2 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 100px 0 0;
+	}
+		#create2 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#create2 #contwrap .inner .span2 .ctrcol{
+		width: 190px;
+		height: 61px;
+		margin: 22px 126px 0 0;
+	}
+	#create2 #contwrap .inner .span2 .ctrcol2{
+		width: 290px;
+		height: 61px;
+		margin: 22px 95px 0 0;
+	}
+	
+	#create2 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+
+#create2 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the main area */
+
+#create2 #contwrap .inner .fullwidth{
+	width: 775px;
+	margin-bottom: 25px;
+	float: left;
+}
+
+#create2 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#create2 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#choose_penguin{
+	padding-left:40px;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create2 #contwrap .inner .agree_form{
+	margin: 0 0 0 285px;
+	width: 490px;
+	padding: 
+}
+	#create2 #contwrap .inner .agree_form .chk input{
+		width: 1.2em;
+		height: 1.2em;
+	}
+	#create2 #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+
+
+/* These are the color choice button declarations */
+
+.colorbtn a{
+	display: block;
+	width: 117px;
+	height: 150px;
+	padding: 0;
+	border: 0;
+	text-indent: -9999px;
+	float: left;
+	margin-bottom: 35px;
+	outline: none;
+}
+
+
+/* dBLUE PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .dblue a:link, #create2 .content .dblue a, #create2 .content .dblue a:visited{	
+	background:transparent url(../images/button_dbluePeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .dblue a:hover {
+	background:transparent url(../images/button_dbluePeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .dblue a:focus, #create2 .content .dblue a:active {
+	background:transparent url(../images/button_dbluePeng.gif) 0 -150px no-repeat;
+}
+
+/* lGREEN PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .lgreen a:link, #create2 .content .lgreen a, #create2 .content .lgreen a:visited{	
+	background:transparent url(../images/button_lgreenPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .lgreen a:hover {
+	background:transparent url(../images/button_lgreenPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .lgreen a:focus, #create2 .content .lgreen a:active {
+	background:transparent url(../images/button_lgreenPeng.gif) 0 -150px no-repeat;
+}
+
+/* PINK PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .pink a:link, #create2 .content .pink a, #create2 .content .pink a:visited{	
+	background:transparent url(../images/button_pinkPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .pink a:hover {
+	background:transparent url(../images/button_pinkPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .pink a:focus, #create2 .content .pink a:active {
+	background:transparent url(../images/button_pinkPeng.gif) 0 -150px no-repeat;
+}
+
+/* BLACK PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .black a:link, #create2 .content .black a, #create2 .content .black a:visited{	
+	background:transparent url(../images/button_blackPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .black a:hover {
+	background:transparent url(../images/button_blackPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .black a:focus, #create2 .content .black a:active {
+	background:transparent url(../images/button_blackPeng.gif) 0 -150px no-repeat;
+}
+
+/* YELLOW PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .yellow a:link, #create2 .content .yellow a, #create2 .content .yellow a:visited{	
+	background:transparent url(../images/button_yellowPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .yellow a:hover {
+	background:transparent url(../images/button_yellowPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .yellow a:focus, #create2 .content .yellow a:acative {
+	background:transparent url(../images/button_yellowPeng.gif) 0 -150px no-repeat;
+}
+
+/* PURPLE PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .purple a:link, #create2 .content .purple a, #create2 .content .purple a:visited{	
+	background:transparent url(../images/button_purplePeng.gif) 0 0 no-repeat;
+	margin-right: 0;
+}	
+#create2 .content .purple a:hover {
+	background:transparent url(../images/button_purplePeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .purple a:focus, #create2 .content .purple a:active {
+	background:transparent url(../images/button_purplePeng.gif) 0 -150px no-repeat;
+}
+
+
+
+
+/* BROWN PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .brown a:link, #create2 .content .brown a, #create2 .content .brown a:visited{	
+	background:transparent url(../images/button_brownPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .brown a:hover {
+	background:transparent url(../images/button_brownPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .brown a:focus, #create2 .content .brown a:active {
+	background:transparent url(../images/button_brownPeng.gif) 0 -150px no-repeat;
+}
+
+/* SALMON PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .salmon a:link, #create2 .content .salmon a, #create2 .content .salmon a:visited{	
+	background:transparent url(../images/button_salmonPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .salmon a:hover {
+	background:transparent url(../images/button_salmonPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .salmon a:focus, #create2 .content .salmon a:active {
+	background:transparent url(../images/button_salmonPeng.gif) 0 -150px no-repeat;
+}
+
+/* RED PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .red a:link, #create2 .content .red a, #create2 .content .red a:visited{	
+	background:transparent url(../images/button_redPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .red a:hover {
+	background:transparent url(../images/button_redPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .red a:focus, #create2 .content .red a:active {
+	background:transparent url(../images/button_redPeng.gif) 0 -150px no-repeat;
+}
+
+/* ORANGE PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .orange a:link, #create2 .content .orange a, #create2 .content .orange a:visited{	
+	background:transparent url(../images/button_orangePeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .orange a:hover {
+	background:transparent url(../images/button_orangePeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .orange a:focus, #create2 .content .orange a:active {
+	background:transparent url(../images/button_orangePeng.gif) 0 -150px no-repeat;
+}
+
+/* dGREEN PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .dgreen a:link, #create2 .content .dgreen a, #create2 .content .dgreen a:visited{	
+	background:transparent url(../images/button_dgreenPeng.gif) 0 0 no-repeat;
+	margin-right: 12px;
+}	
+#create2 .content .dgreen a:hover {
+	background:transparent url(../images/button_dgreenPeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .dgreen a:focus, #create2 .content .dgreen a:active {
+	background:transparent url(../images/button_dgreenPeng.gif) 0 -150px no-repeat;
+}
+
+/* lBlue PENGUIN BUTTON ---------------------------------------------------- */
+#create2 .content .lblue a:link, #create2 .content .lblue a, #create2 .content .lblue a:visited{	
+	background:transparent url(../images/button_lbluePeng.gif) 0 0 no-repeat;
+	margin-right: 0;
+}	
+#create2 .content .lblue a:hover {
+	background:transparent url(../images/button_lbluePeng.gif) 0 -150px no-repeat;
+}
+#create2 .content .lblue a:focus, #create2 .content .lblue a:active {
+	background:transparent url(../images/button_lbluePeng.gif) 0 -150px no-repeat;
+}
+
+
+/* Step 3
+________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+	#create3 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 120px 0 0;
+	}
+		#create3 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 183px;
+			height: 89px;
+		}
+
+	#create3 #contwrap .inner .span2 .ctrcol{
+		width: 190px;
+		height: 61px;
+		margin: 22px 125px 0 0;
+	}
+	#create3 #contwrap .inner .span2 .ctrcol2{
+		width: 290px;
+		height: 61px;
+		margin: 22px 75px 0 0;
+	}
+	
+	#create3 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+
+#create3 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the main area -------------------------------- */
+
+#create3 #contwrap .inner .fullwidth{
+	width: 775px;
+	margin-bottom: 25px;
+	float: left;
+}
+
+#create3 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#create3 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#create3 #contwrap .table1{
+	width:285px;
+	margin: 0 0 0 247px;
+}
+	#create3 #contwrap .table1 td p{
+		margin-top: 8px;
+		text-align:center;
+	}
+
+#create3 #contwrap #pengColor{
+	position: relative;
+	top: -6px;
+	left: 270px;
+	width: 239px;
+	height: 269px;
+	margin: 0 0 25px 0;
+}
+
+
+#create3 #contwrap #step3pink{
+	position: relative;
+	top: -6px;
+	left: 270px;
+	width: 239px;
+	height: 266px;
+	background: url(../images/pink_step3.gif) 0 0 no-repeat;
+	margin: 0 0 25px 0;
+}
+
+#create3 #contwrap #postit1{
+	position: absolute;
+	top: 391px;
+	left: 106px;
+	width: 145px;
+	height: 118px;
+	background: url(../images/postit_namecheck.gif) 0 0 no-repeat;
+}
+
+#create3 #contwrap #postit2{
+	position: absolute;
+	top: 312px;
+	left: 603px;
+	width: 152px;
+	height: 123px;
+	background: url(../images/postit_realname.gif) 0 0 no-repeat;
+}
+
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create3 #contwrap .inner .agree_form{
+	margin: 0 0 0 285px;
+	width: 490px;
+	padding: 
+}
+
+	#create3 #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+	
+	#create3 table td{
+		text-align: center;
+	}
+
+/* Step 4
+________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#create4 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 170px 0 0;
+	}
+		#create4 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#create4 #contwrap .inner .span2 .ctrcol{
+		width: 190px;
+		height: 61px;
+		margin: 22px 130px 0 0;
+	}
+	#create4 #contwrap .inner .span2 .ctrcol2{
+		width: 175px;
+		height: 61px;
+		margin: 22px 210px 0 -70px;
+	}
+	
+	#create4 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+	
+	#create4 #contwrap .inner .fullwidth{
+		width: 775px;
+		margin-bottom: 25px;
+		float: left;
+	}
+	
+	#create4 #contwrap .inner .halfwidth{
+		width: 375px;
+	}
+
+#create4 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+
+#create4 #contwrap .inner .lcol, #create4 #contwrap .inner .rcol{
+	width: 375px;
+	margin-bottom: 25px;
+}
+
+#create4 #contwrap .inner .lcol p img, #create4 #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 8px;
+}
+	#create4 #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#create4 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#create4 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#create4 .red{
+	font-size: 11px;
+}
+
+#create4 #contwrap .inner .postit{
+	margin-left: 100px;
+}
+
+/* TABLES */
+#create4 #contwrap .inner .floatform{
+	margin: 15px 0;
+	width: 375px;
+}
+
+#create4 #contwrap .inner .floatform td{
+	text-align: right;
+	padding-bottom: 6px;
+}
+
+#create4 #contwrap .inner .txtin{
+	width:210px;
+	border:2px solid #ffbc3a;
+	height: 17px;
+	padding: 3px;
+	margin-left: 20px;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create4 #contwrap .inner .agree_form{
+	margin: 0 0 0 285px;
+	width: 490px;
+	padding: 
+}
+	#create4 #contwrap .inner .agree_form .chk input{
+		width: 1.2em;
+		height: 1.2em;
+	}
+	#create4 #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+	
+#create4 .centerPeng {
+	text-align:center;
+	position:relative;
+	margin-top:-80px;
+}	
+
+#create4 .centerPeng h4 {
+	text-align:center;
+}
+	
+.termsTA{
+	width: 375px;
+	height: 190px;
+	border:2px solid #ffbc3a;
+	padding: 3px;
+}
+
+.group{
+	margin-left: 10px;
+}
+
+
+/* Step 4.5
+________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#create45 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 170px 0 0;
+	}
+		#create45 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#create45 #contwrap .inner .span2 .ctrcol{
+		width: 190px;
+		height: 61px;
+		margin: 22px 130px 0 0;
+	}
+	#create45 #contwrap .inner .span2 .ctrcol2{
+		width: 175px;
+		height: 61px;
+		margin: 22px 140px 0 0;
+	}
+	
+	#create45 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+	
+	#create45 #contwrap .inner .fullwidth{
+		position: relative;
+		width: 775px;
+		margin-bottom: 55px;
+		margin-top: 15px;
+		float: left;
+	}
+	
+	#create45 #contwrap .inner .halfwidth{
+		position: relative;
+		width: 555px;
+	}
+
+#create45 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+h4 input{
+	position: relative;
+	top: -2px;
+	margin: 0;
+}
+/* This is the bottom row of the content box with the form fields etc */
+
+
+#create45 #contwrap .inner .lcol, #create45 #contwrap .inner .rcol{
+	width: 375px;
+	margin-bottom: 25px;
+}
+
+#create45 #contwrap .inner .lcol p img, #create45 #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 8px;
+}
+	#create45 #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#create45 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#create45 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#create45 .red{
+	font-size: 11px;
+}
+
+#create45 #contwrap .inner .postit{
+	margin-left: 100px;
+}
+
+/* TABLES */
+#create45 #contwrap .inner .floatform{
+	margin: 15px 0;
+	width: 375px;
+}
+
+#create45 #contwrap .inner .floatform td{
+	text-align: right;
+	padding-bottom: 6px;
+}
+
+#create45 #contwrap .inner .txtin{
+	width:200px;
+	border:2px solid #ffbc3a;
+	height: 17px;
+	padding: 3px 3px 5px 3px;
+	margin-left: 20px;
+}
+
+#create45 #contwrap .inner #parChild{
+	position: absolute;
+	top: -28px;
+	left: 554px;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create45 #contwrap .inner .agree_form{
+	margin: 0 0 0 285px;
+	width: 490px;
+	padding: 
+}
+	#create45 #contwrap .inner .agree_form .chk input{
+		width: 1.2em;
+		height: 1.2em;
+	}
+	#create45 #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+	
+.termsTA{
+	width: 375px;
+	height: 190px;
+	border:2px solid #ffbc3a;
+	padding: 3px;
+}
+
+.group{
+	margin-left: 10px;
+}
+
+
+
+/* Step 5
+________________________________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#create5 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 135px 0 0;
+	}
+		#create5 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#create5 #contwrap .inner .span2 .ctrcol{
+		width: 226px;
+		height: 61px;
+		margin: 22px 125px 0 0;
+	}
+	#create5 #contwrap .inner .span2 .ctrcol2{
+		width: 290px;
+		height: 61px;
+		margin: 22px 95px 0 0;
+	}
+	
+	#create5 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+
+#create5 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#create5 #contwrap .inner .lcol, #create5 #contwrap .inner .rcol{
+	width: 375px;
+	margin-bottom: 25px;
+}
+
+#create5 #contwrap .inner .lcol p img, #create5 #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 8px;
+}
+	#create5 #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#create5 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#create5 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#create5 #contwrap .inner .spclcol{
+	float: left;
+	margin: 0 0 33px 315px;
+	width: 350px;
+}
+	#create5 #contwrap .inner .spclcol h4{
+		margin-bottom: 17px;
+	}
+	
+#tuber{
+	position: absolute;
+	top: 165px;
+	left: 75px;
+	width: 157px;
+	height: 265px;
+	background: url(../images/tuber.gif) 0 0 no-repeat;
+}
+
+#create5 .content .playnow{
+	margin: 15px 0;
+}
+
+#create5 .content{
+	position: relative;
+}
+
+#create5 .content .playnow a:link, #create5 .content .playnow a, #create5 .content .playnow a:visited{	
+	background:transparent url(../images/playnow.gif) 0 0 no-repeat;
+	margin-right: 12px;
+	display: block;
+	width: 172px;
+	height: 74px;
+	padding: 0;
+	border: 0;
+	text-indent: -9999px;
+}	
+#create5 .content .playnow a:hover {
+	background:transparent url(../images/playnow.gif) 0 -74px no-repeat;
+}
+
+/*Activate
+________________________________________________________*/
+
+
+	
+	/* This is the top row of the content box with the logos etc */
+
+	#activate2 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 170px 0 0;
+	}
+	
+	#activate2 #contwrap .inner .span2 .lcol2{
+		width: 179px;
+		height: 89px;
+		margin: 0 95px 0 0;	}
+	
+		#activate2 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#activate2 #contwrap .inner .span2 .ctrcol{
+		width: 190px;
+		height: 61px;
+		margin: 22px 130px 0 0;
+	}
+	#activate2 #contwrap .inner .span2 .ctrcol2{
+		width: 350px;
+		height: 61px;
+
+	}
+	
+	#activate2 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+	
+	#activate2 #contwrap .inner .fullwidth{
+		width: 775px;
+		margin-bottom: 25px;
+		float: left;
+	}
+	
+	#activate2 #contwrap .inner .halfwidth{
+		width: 375px;
+	}
+
+#activate2 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+
+#activate2 #contwrap .inner .lcol, #activate2 #contwrap .inner .rcol{
+	width: 375px;
+	margin-bottom: 25px;
+}
+
+#activate2 #contwrap .inner .lcol p img, #activate2 #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 8px;
+}
+	#activate2 #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#activate2 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#activate2 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#activate2 .red{
+	font-size: 11px;
+}
+
+#activate2 #contwrap .inner .postit{
+	margin-left: 0px;
+}
+
+/* TABLES */
+#activate2 #contwrap .inner .floatform{
+	margin: 15px 0;
+	width: 375px;
+}
+
+#activate2 #contwrap .inner .floatform td{
+	text-align: right;
+	padding-bottom: 6px;
+}
+
+#activate2 #contwrap .inner .txtin{
+	width:210px;
+	border:2px solid #ffbc3a;
+	height: 17px;
+	padding: 3px;
+	margin-left: 20px;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#activate2 #contwrap .inner .agree_form{
+	margin: 0 0 0 375px;
+	width: 490px;
+	clear: both; 
+}
+	#activate2 #contwrap .inner .agree_form .chk input{
+		width: 1.2em;
+		height: 1.2em;
+	}
+	#activate2 #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+	
+#activate2 .centerPeng {
+	text-align:center;
+	position:relative;
+	margin-top:-80px;
+}	
+
+#activate2 .centerPeng h4 {
+	text-align:center;
+}
+	
+.termsTA{
+	width: 700px;
+	height: 190px;
+	border:2px solid #ffbc3a;
+	padding: 3px;
+	margin-left: 30px;
+}
+
+.group{
+	margin-left: 10px;
+}
+
+
+/* Step 4.5
+________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#activate1 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 170px 0 0;
+	}
+	
+	#activate2 #contwrap .inner .span2 .lcol2{
+		width: 179px;
+		height: 89px;
+		margin: 0 95px 0 0;
+	}
+	
+		#activate1 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#activate1 #contwrap .inner .span2 .ctrcol2{
+		width: 320px;
+		height: 100px;
+		margin: 80px 155px 30px -165px;
+		
+	}
+	
+	#activate1 #contwrap .inner .span2 .ctrcol3{
+		width: 320px;
+		height: 100px;
+		margin:80px 90px 30px -105px;
+		
+	}
+	#activate1 #contwrap .inner .textBoxes{
+		
+		width: 350px;
+		
+	
+	}
+	
+	#activate2 #contwrap .inner .span2 .ctrcol3{
+		width: 320px;
+		height: 61px;
+		margin: 40px 75px 0 0;
+		
+	}	
+	
+	#activate1 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+	
+	#activate1 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+	
+	#activate1 #contwrap .inner .fullwidth{
+		position: relative;
+		width: 775px;
+		margin-bottom: 55px;
+		margin-top: 15px;
+		float: left;
+	}
+	
+	#activate1 #contwrap .inner .halfwidth{
+		position: relative;
+		width: 555px;
+	}
+
+#activate1 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+h4 input{
+	position: relative;
+	top: -2px;
+	margin: 0;
+}
+/* This is the bottom row of the content box with the form fields etc */
+
+
+#activate1 #contwrap .inner .lcol, #activate1 #contwrap .inner .rcol{
+	width: 370px;
+	margin-bottom: 25px;
+	text-align:right;
+}
+
+#activate1 #contwrap .inner .lcol p img, #activate1 #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 0;
+}
+	#activate1 #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#activate1 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#activate1 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#activate1 .red{
+	font-size: 11px;
+}
+
+#activate1 #contwrap .inner .postit{
+	margin-left: 100px;
+}
+
+/* TABLES */
+#activate1 #contwrap .inner .floatform{
+	margin: 15px 0;
+	width: 375px;
+}
+
+#activate1 #contwrap .inner .floatform td{
+	text-align: right;
+	padding-bottom: 6px;
+}
+
+#activate1 #contwrap .inner .txtin{
+	width:200px;
+	border:2px solid #ffbc3a;
+	height: 17px;
+	padding: 3px 3px 5px 3px;
+	margin-left: 20px;
+}
+
+#activate1 #contwrap .inner #parChild{
+	position: absolute;
+	top: -28px;
+	left: 554px;
+}
+
+#activate1 #contwrap .inner .act1_img{
+	 margin-right:-50px;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#activate1 #contwrap .inner .agree_form{
+
+	margin: 0 0 0 285px;
+	width: 490px;
+	padding: 
+}
+	#activate1 #contwrap .inner .agree_form .chk input{
+		width: 1.2em;
+		height: 1.2em;
+	}
+	#activate1 #contwrap .inner .agree_form .btn{
+		float: right;
+	}
+	
+.termsTA{
+	width: 700px;
+	height: 190px;
+	border:2px solid #ffbc3a;
+	padding: 3px;
+	margin-left: 30px;
+}
+
+.group{
+	margin-left: 10px;
+}
+
+
+
+/* Step 5
+________________________________________________________________________________*/
+
+/* This is the top row of the content box with the logos etc */
+
+
+	#activate3 #contwrap .inner .span2 .lcol{
+		width: 179px;
+		height: 89px;
+		margin: 0 135px 0 0;
+	}
+		#activate3 #contwrap .inner h3{
+			text-indent: -9999px;
+			background: transparent url(../images/cp_logo.gif) 0 0 no-repeat;
+			width: 179px;
+			height: 89px;
+		}
+
+	#activate3 #contwrap .inner .span2 .ctrcol{
+		width: 226px;
+		height: 61px;
+		margin: 70px 189px -20px -60px;
+	}
+	#activate3 #contwrap .inner .span2 .ctrcol2{
+		width: 290px;
+		height: 61px;
+		margin: 22px 95px 0 0;
+	}
+	
+	#activate3 #contwrap .inner .span2 .rcol{
+		width: 130px;
+		height: 150px;
+		margin: -25px 0 0 0;
+	}
+
+#activate3 #contwrap .inner .floatHack_orange{
+	width: 770px;
+	margin: 15px 0 25px 0;
+}
+
+/* This is the bottom row of the content box with the form fields etc */
+
+#activate3 #contwrap .inner .lcol, #activate3 #contwrap .inner .rcol{
+	width: 375px;
+	margin-bottom: 25px;
+}
+
+#activate3 #contwrap .inner .lcol p img, #activate3 #contwrap .inner .rcol p img{
+	float: right;
+	margin: 0 0 8px 8px;
+}
+	#activate3 #contwrap .inner .lcol{
+		margin-right: 20px;
+	}
+
+#activate3 #contwrap .inner h4{
+	color: #2a5f94;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 0 0 3px 0;
+}
+#activate3 #contwrap .inner p{
+	margin: 0 0 8px 0;
+}
+
+#activate3 #contwrap .inner .spclcol{
+	float: left;
+	margin: 0 0 0 260px;
+	width: 550px;
+}
+	#activate3 #contwrap .inner .spclcol h4{
+		margin-top: 7px;
+		margin-bottom: 7px;
+	}
+	
+#tuber{
+	position: absolute;
+	top: 145px;
+	left: 75px;
+	width: 157px;
+	height: 265px;
+	background: url(../images/tuber.gif) 0 0 no-repeat;
+}
+
+#activate3 .content .playnow{
+	margin: 15px 0;
+}
+
+#activate3 .content{
+	position: relative;
+}
+
+#activate3 .content .playnow a:link, #activate3 .content .playnow a, #activate3 .content .playnow a:visited{	
+	background:transparent url(../images/playnow.gif) 0 0 no-repeat;
+	margin-right: 12px;
+	display: block;
+	width: 172px;
+	height: 74px;
+	padding: 0;
+	border: 0;
+	text-indent: -9999px;
+}	
+#activate3 .content .playnow a:hover {
+	background:transparent url(../images/playnow.gif) 0 -74px no-repeat;
+}
+	
+	
+	
+	
+/*Globals
+________________________________________________________*/
+
+
+em{
+	font-style: italic;
+}
+
+.red{
+	color: #d12f08;
+}
+
+.bold{
+	font-weight: bold;
+	float: left;
+}
+
+.txtin {
+	width:290px;
+	border:2px solid #ffbc3a;
+	height: 19px;
+	padding: 3px;
+	}
+
+	
+#contwrap .inner .span2{
+	width: 100%;
+}
+	
+.floatHack{
+	clear: both;
+	height: 0px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	visibility: hidden;
+}
+
+.floatHack_orange{
+	clear: both;
+	height: 0px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-top: 1px solid #ffbc3a;
+}
+
+img{
+	border: none !important;
+}
+	
+a:link {color: #00529b; text-decoration:none;}
+a:visited {color: #00529b; text-decoration:none;}
+a:hover {color: #000; text-decoration:none;}
+a:active {color: #00529b; text-decoration:none;}
+	
+.button {
+	text-indent: -9999px;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+	
+ul.bullets li {
+	list-style: url(../images/bullet.gif) outside;
+	margin:0 0 .5em 1em;
+}
+
+
+#hdrWrap{/*This houses the main background for the home page Flash navigation*/
+	position: relative;
+	height:32px !important;
+	width: 100%;
+	margin:0 0 25px 0; 
+	background: url(../images/playNavBg.gif) 0 0 repeat-x;
+	z-index:4;
+	overflow: hidden;
+}
+
+#htmlNav{/*This houses the main HTML navigation*/
+	width:842px;
+	height:32px !important;
+	margin: 0 auto;
+	position: relative;
+	top: 0px;
+	z-index:1;
+	overflow: hidden;
+}
+
+#bigscreen{
+	position: absolute;
+	top: 2px;
+	right: 329px;
+	width: 97px;
+	
+}
+	
+#sm_screen_button a {
+	background-image:url(../images/button_small_screen.gif);
+	background-position:0pt 0px;
+	background-repeat:no-repeat;
+	display:block;
+	float:right;
+	height:22px;
+	width:100px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 5px;
+}
+
+#sm_screen_button a:hover {
+background-position:0pt -30px;
+}
+
+#sm_screen_button a:active {
+background-position:0pt -30px;
+}
+
+#big_screen_button a {
+	background-image:url(../images/button_big_screen.gif);
+	background-position:0pt 0px;
+	background-repeat:no-repeat;
+	display:block;
+	float:right;
+	height:22px;
+	width:100px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 5px;
+}
+
+#big_screen_button a:hover {
+background-position:0pt -30px;
+}
+
+#big_screen_button a:active {
+background-position:0pt -30px;
+}
+
+	
+#logoff{
+	position: absolute;
+	top: 7px;
+	font-weight:bolder;
+	right: 0px;
+	font-size: 11px;
+}
+	
+#logoff a, #logoff a:link, #logoff a:visited{
+  color: #fff;
+	display: block;
+	border: none;
+	text-decoration: none;
+	font-size:11px;
+
+}
+
+#logoff a:hover{
+  color: #feb62a;
+	display: block;
+	border: none;
+	text-decoration: none;
+}
+
+.floatL{
+	float: left;
+}
+.floatR{
+	float: right;
+}
+
+.asterisk {
+color: #00529B;
+}
+
+
+.updated {
+font-size: 10px;
+}
+
+.langselect {
+top: 1px; background-image: url(/images/language_bg.gif); background-repeat: no-repeat;background-position: 0px 2px; position: absolute; right: 40px; width: 249px; height: 23px;
+}
+
+.langselectfield {
+color:#666; font-family:Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10px; margin-top: 3px;
+}
+
+.langselectgobutton {
+outline: none; margin-top: -3px; vertical-align:top;
+}
+
+.langselectlabel {
+color:#fff; font-family:Arial,Helvetica,sans-serif; font-weight: bolder; font-size: 11px; padding-left: 7px;
+}

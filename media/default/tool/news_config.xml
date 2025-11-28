@@ -72,12 +72,15 @@
 		
 		<content id="riddlesAnswers" url="content/overlays/riddlesAnswers.swf" />
 		<content id="submitYourContentForm" url="../forms/news.swf" />
-		<content id="secretOverlay" url="content/overlays/secretOverlay.swf" />	
+		<content id="secretOverlay" url="content/overlays/secret.swf" />	
 		<content id="featureMore" url="content/overlays/featureMore.swf" />	
 		<content id="supportMore" url="content/overlays/supportMore.swf" />
 		<content id="extraJokes" url="content/overlays/extraJokes.swf" />
 		<content id="secret" url="content/overlays/secret.swf" />
 		<content id="iglooWinners" url="content/overlays/iglooWinners.swf" />
+		<content id="epfInterview" url="content/overlays/extra.swf" />
+		<content id="featureTech" url="content/overlays/extra.swf" />
+		<content id="featurePuffles" url="content/overlays/extra.swf" />
 						
 	</overlays>
 	

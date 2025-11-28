@@ -1,4 +1,4 @@
-import { findInVersion, ComplexTemporaryUpdate, VersionsMap } from "../game-data";
+import { findInVersion, VersionsMap, VersionsTimeline, VersionsInformation, TimelineMap } from "../game-data";
 import { Version } from "../routes/versions";
 
 export function getMapForDate<Key extends string | number, Value>(map: VersionsMap<Key, Value>, date: Version): Partial<Record<Key, Value>> {
@@ -9,26 +9,14 @@ export function getMapForDate<Key extends string | number, Value>(map: VersionsM
   return dateMap;
 }
 
-export function getSubUpdateDates<UpdateInfo>(update: ComplexTemporaryUpdate<UpdateInfo>, index: number) {
-  if (update.updates === undefined) {
-    throw new Error('Update must have subupdates');
-  }
-  const subUpdate = update.updates[index];
-  let end = subUpdate.end;
+export function newVersionsTimeline<T>(callback: (timeline: VersionsTimeline<T>) => void): VersionsInformation<T> {
+  const timeline = new VersionsTimeline<T>();
+  callback(timeline);
+  return timeline.getVersions();
+}
 
-  if (end === undefined) {
-    const next = update.updates[index + 1];
-    if (next !== undefined && next.date !== undefined) {
-      end = next.date;
-    }
-  }
-  if (end === undefined || end === null) {
-    end = update.end;
-  }
-
-  const finalDate = subUpdate.date ?? update.date;
-  if (finalDate === end) {
-    throw new Error('Update cannot start and end on the same date');
-  }
-  return { date: finalDate, end };
+export function newTimelineMap<Key, T>(callback: (timeline: TimelineMap<Key, T>) => void): Map<Key, VersionsInformation<T>> {
+  const timeline = new TimelineMap<Key, T>();
+  callback(timeline);
+  return timeline.getVersionsMap();
 }

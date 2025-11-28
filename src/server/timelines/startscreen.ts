@@ -1,6 +1,5 @@
 import { VersionsTimeline } from "../game-data";
-import { PARTIES } from "../game-data/parties";
-import { STANDALONE_UPDATES } from "../game-data/standalone-changes";
+import { UPDATES } from "../updates/updates";
 
 export function getStartscreenTimeline() {
   const timeline = new VersionsTimeline<string[]>();
@@ -21,15 +20,9 @@ export function getStartscreenTimeline() {
     }
   }
 
-  STANDALONE_UPDATES.forEach((update) => {
-    if (update.startscreens !== undefined) {
-      addTimeline(update.startscreens, update.date);
-    }
-  });
-
-  PARTIES.forEach((party) => {
-    if (party.startscreens !== undefined) {
-      addTimeline(party.startscreens, party.date, party.end);
+  UPDATES.forEach(update => {
+    if (update.update.startscreens !== undefined) {
+      addTimeline(update.update.startscreens, update.date, update.end);
     }
   });
 

@@ -5,7 +5,7 @@ import { getClientPuffleIds } from './puffle';
 
 const handler = new Handler();
 
-handler.xt(Handle.JoinServer, (client) => {
+handler.xt(Handle.JoinServer, async (client) => {
   if (client.isEngine3) {
     return;
   }
@@ -23,19 +23,20 @@ handler.xt(Handle.JoinServer, (client) => {
 
   client.sendPenguinInfo();
 
+  // receiving inventory
+  // TODO proper inventory
+  // send stamps must be before join room
+  // for the 365 days stamp to work
+  await client.sendStamps();
+
   // joining spawn room // TODO more spawn rooms in the future?
   client.joinRoom(Room.Town);
 
-  // receiving inventory
-  // TODO proper inventory
-  client.sendStamps();
 
   client.sendPuffles();
-
-  client.checkAgeStamps();
 });
 
-handler.xt(Handle.JoinServerNew, (client, id) => {
+handler.xt(Handle.JoinServerNew, async (client, id) => {
   if (!client.isEngine3) {
     return;
   }
@@ -49,8 +50,10 @@ handler.xt(Handle.JoinServerNew, (client, id) => {
   // unsure what this is for, seemingly uneeded
   // client.sendXt('activefeatures');
   client.sendPenguinInfo();
+
+  await client.sendStamps()
+
   client.joinRoom(Room.Town);
-  client.sendStamps();
 
   // loading puffle inventory
   // this is important for things like identifying which puffles belong to you

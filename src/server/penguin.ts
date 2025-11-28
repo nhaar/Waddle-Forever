@@ -17,6 +17,8 @@ export type PenguinEquipped = {
 
 export type PenguinEquipmentSlot = keyof PenguinEquipped;
 
+export type DefaultPenguinParams = Partial<Pick<PenguinData, 'is_member' | 'virtualRegistrationTimestamp'>>;
+
 export class Penguin {
   private _id: number;
   private _name: string;
@@ -26,6 +28,7 @@ export class Penguin {
   private _equipped: PenguinEquipped;
   private _coins: number;
   private _registrationTimestamp: number;
+  private _virtualRegistrationTimestamp: number;
   private _minutesPlayed: number;
   private _inventory: Set<number>;
   private _stamps: Set<number>;
@@ -58,6 +61,7 @@ export class Penguin {
   private _cards: Map<number, number>;
   private _cardProgress: CardJitsuProgress;
   private _cardWins: number;
+  private _battleOfDoom: boolean;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -112,6 +116,8 @@ export class Penguin {
     this._cards = parseJsonMap(data.cards, true);
     this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
     this._cardWins = data.cardWins;
+    this._battleOfDoom = data.battleOfDoom;
+    this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp;
   }
 
   serialize(): PenguinData {
@@ -164,7 +170,9 @@ export class Penguin {
       cardProgress: this._cardProgress.xp,
       senseiAttempts: this._cardProgress.senseiAttempts,
       isNinja: this._cardProgress.isNinja,
-      cardWins: this._cardWins
+      cardWins: this._cardWins,
+      battleOfDoom: this._battleOfDoom,
+      virtualRegistrationTimestamp: this._virtualRegistrationTimestamp
     }
   }
 
@@ -214,10 +222,6 @@ export class Penguin {
 
   get isMember() {
     return this._isMember;
-  }
-
-  get registrationTimestamp() {
-    return this._registrationTimestamp;
   }
 
   get coins() {
@@ -286,10 +290,6 @@ export class Penguin {
 
   swapMember(): void {
     this._isMember = !this._isMember;
-  }
-
-  setAge(days: number): void {
-    this._registrationTimestamp = Date.now() - days * 3600 * 24 * 1000;
   }
 
   getItems(): number[] {
@@ -659,10 +659,26 @@ export class Penguin {
     return this._cardWins;
   }
 
-  static getDefault(id: number, name: string, isMember: boolean): Penguin {
+  get completedBattleOfDoom() {
+    return this._battleOfDoom;
+  }
+
+  get virtualRegistration() {
+    return this._virtualRegistrationTimestamp;
+  }
+
+  setVirtualRegistration(value: number) {
+    this._virtualRegistrationTimestamp = value;
+  }
+
+  setBattleOfDoomCompleted() {
+    this._battleOfDoom = true;
+  }
+
+  static getDefault(id: number, name: string, defaultParams: DefaultPenguinParams = {}): Penguin {
     return new Penguin(id, {
       name,
-      is_member: isMember,
+      is_member: defaultParams.is_member ?? true,
       is_agent: false,
       mascot: 0,
       color: 1,
@@ -676,6 +692,7 @@ export class Penguin {
       background: 0,
       coins: 500,
       registration_date: Date.now(),
+      virtualRegistrationTimestamp: defaultParams.virtualRegistrationTimestamp ?? (new Date(2005, 9, 24)).getTime(),
       minutes_played: 0,
       inventory: [1],
       stamps: [],
@@ -714,7 +731,8 @@ export class Penguin {
       cardProgress: 0,
       isNinja: false,
       senseiAttempts: 0,
-      cardWins: 0
+      cardWins: 0,
+      battleOfDoom: false
     })
   }
 

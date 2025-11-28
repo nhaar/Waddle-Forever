@@ -35,7 +35,7 @@ handler.xt(Handle.AddFurniture, (client, furniture) => {
   client.update();
 })
 
-function processFurniture(furnitureItems: string[]): IglooFurniture {
+export function processFurniture(furnitureItems: string[]): IglooFurniture {
   return furnitureItems.map((furnitureString) => {
     const [furniture, x, y, rotation, frame] = furnitureString.split('|').map((str) => Number(str))
     return {

@@ -549,7 +549,7 @@ export class CardJitsu extends WaddleGame {
     for (let i = 0; i <= client.penguin.ninjaProgress.rank; i++) {
       const stamp = CardJitsuProgress.STAMP_AWARDS[i];
       if (stamp !== undefined) {
-        client.addCardJitsuStamp(stamp);
+        client.giveStamp(stamp);
       }
     }
 
@@ -633,7 +633,7 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
       ninjas.forEach((n) => {
         const card = game.getCard(n.chosen);
         if (card.id === 256) {
-          game.players.forEach(player => player.addCardJitsuStamp(Stamp.SenseiCard));
+          game.players.forEach(player => player.giveStamp(Stamp.SenseiCard));
         }
         if (n.seat !== winner) {
           n.removeFlawless();
@@ -689,23 +689,23 @@ handler.waddleXt(Handle.CardJitsuPick, (game, client, action, sessionId) => {
         if (winnerNinja instanceof NinjaPlayer) {
           // TODO research order stamps are given?
           if (winningHand.oneElement) {
-            winnerNinja.player.addCardJitsuStamp(Stamp.OneElement);
+            winnerNinja.player.giveStamp(Stamp.OneElement);
           } else {
-            winnerNinja.player.addCardJitsuStamp(Stamp.ElementalWin);
+            winnerNinja.player.giveStamp(Stamp.ElementalWin);
           }
           if (winnerNinja.isFlawless) {
-            winnerNinja.player.addCardJitsuStamp(Stamp.FlawlessVictory);
+            winnerNinja.player.giveStamp(Stamp.FlawlessVictory);
           }
 
           const scoredCards = Object.values(winnerNinja.scores).flat().length;
           if (scoredCards >= 9) {
-            winnerNinja.player.addCardJitsuStamp(Stamp.FullDojo);
+            winnerNinja.player.giveStamp(Stamp.FullDojo);
           }
 
           winnerNinja.player.gainNinjaProgress(true);
 
           if (winnerNinja.player.penguin.cardJitsuWins >= 25) {
-            winnerNinja.player.addCardJitsuStamp(Stamp.MatchMaster);
+            winnerNinja.player.giveStamp(Stamp.MatchMaster);
           }
 
           // beating Sensei without Ninja Mask
