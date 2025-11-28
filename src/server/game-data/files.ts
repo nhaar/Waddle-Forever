@@ -366,10 +366,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/paper_items.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/penguin_action_frames.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
@@ -456,6 +452,18 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'temple_of_fruit/forts.swf',
       comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit snow forts working with the modded engine.swf. Removed the Rockhopper catalogue that was probably added by cutestlesbian'
+    },
+    {
+      file: 'ghosts/engine.swf',
+      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect). Aditionally, for the INTERFACE to work, the function isPlayerTransformedIntoGhost is added. For the ghost penguin to not get teleported in the middle of the animation, AvatarTransformationManager was modded a bit, in specific the function onTransformLoadComplete'
+    },
+    {
+      file: 'shell_2012_halloween.swf',
+      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand'
+    },
+    {
+      file: 'puffles/engine.swf',
+      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added. Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom to transform when entering party 4 (spa). Modified updatePlayer to transform into penguin if need to, because INTERFACE simply unequips the hand item when you click to revert. Still need to make puffles be hand items'
     }
   ],
   [RECREATION]: [
@@ -1588,6 +1596,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fair_2009/mine.swf',
       comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/mine.swf',
+      comment: 'Of unknown origins, from some archive, a swf was fixed to be accurate by lifeofgames477 and VampLovr'
+    },
+    {
+      file: 'fire_hunt/light.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/dojoext.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/book.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
@@ -1706,6 +1730,10 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'marvel/party.swf',
       comment: 'Origin unknown, given by cutestlesbian (based on marvel 2013)'
+    },
+    {
+      file: 'ghosts/party.swf',
+      comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work. After that, added a fix for the ghost hunter not being applying when logging in. Removed a forced JSON utils export because it was breaking stamps somehow. NOTE: the way party icon is setup is important as well, it might break the ghost scavenger hunt icon otherwise, if this file is to be replaced'
     }
   ]
 };

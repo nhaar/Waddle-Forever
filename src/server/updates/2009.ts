@@ -1417,7 +1417,10 @@ export const UPDATES_2009: Update[] = [
           forts: 'archives:Sensei_Fire_Hunt_forts.swf',
           sport: 'archives:Sensei_Fire_Hunt_sport.swf',
           rink: 'archives:Sensei_Fire_Hunt_rink.swf',
-          town: 'archives:RoomsTown-FireScavengerHunt.swf'
+          town: 'archives:RoomsTown-FireScavengerHunt.swf',
+          mine: 'recreation:fire_hunt/mine.swf',
+          light: 'recreation:fire_hunt/light.swf',
+          book: 'recreation:fire_hunt/book.swf'
         },
         globalChanges: {
           'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Fire_Hunt_hunt_closeup.swf', 'easter_egg_hunt', 'easter_hunt'],
@@ -1439,7 +1442,15 @@ export const UPDATES_2009: Update[] = [
       { display: 'Extra Anchovies', id: 270, pos: [7, 1] },
       { display: 'All the Fun of The Fair', id: 221, pos: [2, 2] },
       { display: 'Spicy Salsa', id: 229, pos: [6, 2] }
-    ]
+    ],
+    temp: {
+      party2: {
+        update: 'The volcano becomes active',
+        rooms: {
+          dojoext: 'recreation:fire_hunt/dojoext.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-09-25',

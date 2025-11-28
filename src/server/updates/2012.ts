@@ -130,14 +130,99 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-03-08',
+    temp: {
+      const: {
+        rooms: {
+          'beacon': 'archives:PuffleParty2012ConstBeacon.swf',
+          'berg': 'archives:PuffleParty2012ConstBerg.swf',
+          'cave': 'archives:PuffleParty2012ConstCave.swf',
+          'cove': 'archives:PuffleParty2012ConstCove.swf',
+          'dance': 'archives:PuffleParty2012ConstDance.swf',
+          'forest': 'archives:PuffleParty2012ConstForest.swf',
+          'light': 'archives:PuffleParty2012ConstLight.swf',
+          'lounge': 'archives:PuffleParty2012ConstLounge.swf',
+          'mtn': 'archives:PuffleParty2012ConstMtn.swf'
+        },
+        startscreens: [
+          'archives:PuffleParty2012PreStartBillboards.swf'
+        ]
+      }
+    },
     furnitureCatalog: 'archives:Mar2012Furniture.swf'
   },
   {
     date: '2012-03-15',
     temp: {
       party: {
-        partyName: 'Puffle Party'
-      }
+        partyName: 'Puffle Party',
+        rooms: {
+          'beach': 'archives:PuffleParty2012Beach.swf',
+          'beacon': 'archives:PuffleParty2012Beacon.swf',
+          'berg': 'archives:PuffleParty2012Berg.swf',
+          'boxdimension': 'archives:PuffleParty2012Box.swf',
+          'cave': 'archives:PuffleParty2012Cave.swf',
+          'cove': 'archives:PuffleParty2012Cove.swf',
+          'dance': 'archives:PuffleParty2012Dance.swf',
+          'dock': 'archives:PuffleParty2012Dock.swf',
+          'forest': 'archives:PuffleParty2012Forest.swf',
+          'forts': 'archives:PuffleParty2012Forts.swf',
+          'light': 'archives:PuffleParty2012Light.swf',
+          'lodge': 'archives:PuffleParty2012Lodge.swf',
+          'lounge': 'archives:PuffleParty2012Lounge.swf',
+          'mtn': 'archives:PuffleParty2012Mtn.swf',
+          'plaza': 'archives:PuffleParty2012Plaza.swf',
+          'shack': 'archives:PuffleParty2012Shack.swf',
+          'village': 'archives:PuffleParty2012Village.swf',
+          'town': 'archives:RoomsTown-PuffleParty2012.swf',
+          'party1': 'archives:PuffleParty2012Party1.swf',
+          'party2': 'archives:PuffleParty2012Party2.swf',
+          'party3': 'archives:PuffleParty2012Party3.swf',
+          'party4': 'archives:PuffleParty2012Party4.swf'
+        },
+        music: {
+          'shack': 208,
+          'dance': 260,
+          'lounge': 260,
+          'light': 31,
+          'berg': 213,
+          'cave': 36,
+          'boxdimension': 264,
+          'lodge': 216,
+          'town': 261,
+          'plaza': 261,
+          'forest': 261,
+          'forts': 261,
+          'beach': 261,
+          'beacon': 261,
+          'village': 261,
+          'mtn': 261,
+          'party1': 261,
+          'party2': 282,
+          'party4': 216
+        },
+        localChanges: {
+          'catalogues/party.swf': {
+            'en': 'archives:PuffleParty2012Catalog.swf'
+          },
+          'membership/party3.swf': {
+            'en': ['archives:PuffleParty20121Membership.swf', 'oops_party3_room']
+          },
+          'membership/party4.swf': {
+            'en': ['archives:PuffleParty20122Membership.swf', 'oops_party4_room']
+          },
+          'close_ups/party_poster.swf': {
+            'en': ['archives:PuffleParty2012Poster.swf', 'party_poster']
+          }
+        },
+        mapNote: 'archives:PuffleParty2012Party_map_note.swf',
+        fileChanges: {
+          'play/v2/client/engine.swf': 'approximation:puffles/engine.swf'
+        }
+      },
+    },
+    fileChanges: {
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf',
+      'play/v2/client/shell.swf': 'approximation:shell_2012_halloween.swf'
     }
   },
   {
@@ -370,9 +455,9 @@ export const UPDATES_2012: Update[] = [
           'party3': 325,
           'coffee': 0,
           'book': 0,
-          'pizza': 0
+          'pizza': 0,
+          'stage': 0
         },
-        partyIconFile: 'archives:MarvelSuperHeroPartyGameIcon.swf',
         mapNote: 'archives:MarvelSuperheroTakeoverParty_map_note.swf',
         memberRooms: {
           'party1': true 
@@ -493,17 +578,34 @@ export const UPDATES_2012: Update[] = [
           'party3': 337,
           'party4': 335
         },
-        globalChanges: {
-          'scavenger_hunt/scavenger_hunt.swf': 'archives:UltimateJamScavengerHunt.swf'
-        },
         localChanges: {
           'catalogues/party.swf': {
             'en': ['archives:UltimateJamCatalog.swf', 'w.p0712.musicjam.clothing.catalogue']
+          },
+          'scavenger_hunt/scavenger_hunt.swf': {
+            en: ['archives:UltimateJamScavengerHunt.swf', 'w.party.announcement', 'scavenger_hunt']
           }
         },
-        mapNote: 'archives:UltimateJam_Party_map_note.swf'
+        mapNote: 'archives:UltimateJam_Party_map_note.swf',
+        partyIconFile: 'archives:UltimateJamScavengerHuntIcon.swf'
       }
-    }
+    },
+    unlockedDay: 1
+  },
+  {
+    date: '2012-07-20',
+    unlockedDay: 2,
+    partyComment: 'A new music challenge is available'
+  },
+  {
+    date: '2012-07-21',
+    unlockedDay: 3,
+    partyComment: 'A new music challenge is available'
+  },
+  {
+    date: '2012-07-22',
+    unlockedDay: 4,
+    partyComment: 'A new music challenge is available'
   },
   {
     date: '2012-07-26',
@@ -614,13 +716,100 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-09-13',
+    temp: {
+      const: {
+        rooms: {
+          'beach': 'archives:Fair2012ConstBeach.swf'
+        },
+        startscreens: [
+          'archives:Fair2012Pre-Awareness.swf'
+        ]
+      }
+    },
     furnitureCatalog: 'archives:Sep2012Furniture.swf'
   },
   {
     date: '2012-09-20',
     temp: {
       party: {
-        partyName: 'The Fair'
+        partyName: 'The Fair',
+        rooms: {
+          'beach': 'archives:Fair2012Beach.swf',
+          'beacon': 'archives:Fair2012Beacon.swf',
+          'berg': 'archives:Fair2012Berg.swf',
+          'cove': 'archives:Fair2012Cove.swf',
+          'dance': 'archives:Fair2012Dance.swf',
+          'dock': 'archives:Fair2012Dock.swf',
+          'forest': 'archives:Fair2012Forest.swf',
+          'forts': 'archives:Fair2012Forts.swf',
+          'mtn': 'archives:Fair2012Mtn.swf',
+          'pizza': 'archives:Fair2012Pizza.swf',
+          'plaza': 'archives:Fair2012Plaza.swf',
+          'rink': 'archives:Fair2012Rink.swf',
+          'village': 'archives:Fair2012Village.swf',
+          'town': 'archives:RoomsTown-TheFair2012.swf',
+          'party1': 'archives:Fair2012Party1.swf',
+          'party2': 'archives:Fair2012Party2.swf',
+          'party3': 'archives:Fair2012Party3.swf'
+        },
+        music: {
+          'beach': 297,
+          'beacon': 297,
+          'berg': 297,
+          'cove': 297,
+          'dance': 242,
+          'dock': 297,
+          'forest': 297,
+          'forts': 297,
+          'mtn': 297,
+          'pizza': 221,
+          'plaza': 297,
+          'rink': 311,
+          'village': 297,
+          'town': 297,
+          'party1': 221,
+          'party2': 221,
+          'party3': 221
+        },
+        startscreens: [
+          'archives:Fair2012Fair-Now.swf'
+        ],
+        localChanges: {
+          'catalogues/prizebooth.swf': {
+            'en': 'archives:Fair2012PrizeboothS1.swf'
+          },
+          'catalogues/prizeboothmember.swf': {
+            'en': 'archives:Fair2012MemberprizeboothS1.swf'
+          },
+          'close_ups/party_poster.swf': {
+            'en': ['archives:TheFair2012Poster.swf', 'poster']
+          }
+        },
+        mapNote: 'archives:TheFair2012Map_Party_note.swf',
+        fairCpip: {
+          iconFileId: 'archives:Fair2012TicketIcon.swf',
+          infoFile: 'archives:Fair2012Tickets.swf'
+        },
+      }
+    }
+  },
+  {
+    date: '2012-09-26',
+    temp: {
+      party: {
+        update: 'The prize booths are updated',
+        rooms: {
+          'forest': 'archives:Fair2012ForestS2.swf',
+          'party2': 'archives:Fair2012Party2S2.swf'
+        },
+        localChanges: {
+          'catalogues/prizebooth.swf': {
+            'en': 'archives:Fair2012PrizeboothS2.swf'
+          },
+          'catalogues/prizeboothmember.swf': {
+            'en': 'archives:Fair2012PrizeboothmemberS2.swf'
+          }
+        }
       }
     }
   },
@@ -656,7 +845,6 @@ export const UPDATES_2012: Update[] = [
     date: '2012-10-17',
     temp: {
       party: {
-        //we need the snowballs in mansion and the ghost transform
         partyName: 'Halloween Party',
         rooms: {
           'attic': 'archives:HalloweenParty2012Attic.swf',
@@ -756,37 +944,22 @@ export const UPDATES_2012: Update[] = [
             'en': 'archives:ENMembershipPartyHalloween2012.swf'
           }
         },
-        scavengerHunt2011: { //this is broken we need a better for scavenger hunt 1 and 2 for this party lol
-          global: {
-            member: false,
-            reward: 0
-          },
-          icon: 'archives:HalloweenParty2012ScavengerHuntIcon.swf', //the icon dont appear
-          lang: {
-            en: {
-              loading: 'Loading Scavenger Hunt',
-              title: 'Five Spooky-Keys',
-              start: '',
-              itemsFound: '%num% KEYS FOUND',
-              itemsFoundPlural: '%num% KEYS FOUND',
-              claim: '',
-              continue: '',
-              clues: [
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                ''
-              ]
-            }
-          }
+        fileChanges: {
+          'play/v2/client/engine.swf': 'approximation:ghosts/engine.swf',
         },
+        partyIconFile: 'archives:HalloweenParty2012ScavengerHuntIcon.swf',
         mapNote: 'archives:Halloween2012Party_map_note.swf'
       }
-    }
+    },
+    fileChanges: {
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-HalloweenParty2012.swf',
+      'play/v2/content/global/content/party.swf': 'unknown:ghosts/party.swf'
+    },
+    activeFeatures: '20141002'
+  },
+  {
+    date: '2012-10-20',
+    partyComment: 'A new item is available for the Ghost Scavenger Hunt'
   },
   {
     date: '2012-10-23',
@@ -809,6 +982,10 @@ export const UPDATES_2012: Update[] = [
         'en': 'archives:LibraryOct2012.swf'
       }
     }
+  },
+  {
+    date: '2012-10-24',
+    partyComment: 'A new item is available for the Ghost Scavenger Hunt'
   },
   {
     date: '2012-10-25',
