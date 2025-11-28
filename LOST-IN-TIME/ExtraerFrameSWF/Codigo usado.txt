@@ -1,1 +1,0 @@
-$ffdec="C:\Program Files (x86)\FFDec\ffdec.jar"; $in=(Resolve-Path ".\Beta-town.swf").Path; $out=(Resolve-Path ".\out_frames" -ea SilentlyContinue); if(-not $out){$null=New-Item -ItemType Directory ".\out_frames"; $out=(Resolve-Path ".\out_frames").Path}; & java -jar $ffdec -cli -zoom 2 -export frame "$out" "$in"
