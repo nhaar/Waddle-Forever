@@ -45,6 +45,7 @@ handler.xt(Handle.JoinServerNew, async (client, id) => {
   // in Engine 3, the client reconnects, thus losing the login data, the only thing
   // we have is the ID granted by this handler
   client.setPenguinFromId(id);
+  client.unequipPuffle();
   const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
   // // initializing penguin data
   client.sendXt('js', client.penguin.isAgent ? 1 : 0, 0, moderatorStatus, 0);
