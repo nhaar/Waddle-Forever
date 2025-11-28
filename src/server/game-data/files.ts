@@ -1624,6 +1624,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'pre_christmas_08/beach.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'plaza_lighthouse_pin.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

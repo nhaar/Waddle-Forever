@@ -72,7 +72,8 @@ export const PINS: Array<Pin> = [
   },
   {
     name: 'Lighthouse',
-    hidden: true
+    room: 'plaza',
+    file: 'recreation:plaza_lighthouse_pin.swf'
   },
   {
     name: 'Telescope',
