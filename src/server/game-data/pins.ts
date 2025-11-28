@@ -20,15 +20,21 @@ export const PINS: Array<Pin> = [
   },
   {
     name: 'Music Note',
-    hidden: true
+    room: 'pizza',
+    file: 'archives:ArtworkRoomsPizza13.swf',
+    frame: 2
   },
   {
     name: 'Plant',
-    hidden: true
+    room: 'lounge',
+    file: 'archives:ArtworkRoomsLounge11.swf',
+    frame: 2
   },
   {
     name: 'Pizza Slice',
-    hidden: true
+    room: 'plaza',
+    file: 'archives:ArtworkRoomsPlaza14.swf',
+    frame: 4
   },
   {
     room: 'dock',
@@ -38,37 +44,51 @@ export const PINS: Array<Pin> = [
   },
   {
     name: 'Mining Lantern',
-    hidden: true
+    file: 'archives:ArtworkRoomsDance14.swf',
+    room: 'dance',
+    frame: 2
   },
   {
-    name: '	Beach Ball',
-    hidden: true
+    name: 'Beach Ball',
+    file: 'archives:ArtworkRoomsAttic12.swf',
+    room: 'attic',
+    frame: 2
   },
   {
     name: 'Sun',
-    hidden: true
+    file: 'archives:ArtworkRoomsBook11.swf',
+    room: 'book',
+    frame: 2
   },
   {
     name: 'Horse Shoe',
-    hidden: true
+    file: 'archives:ArtworkRoomsShack11.swf',
+    room: 'shack',
+    frame: 2
   },
   {
     name: 'Astro-Barrier Ship',
-    hidden: true
+    file: 'archives:ArtworkRoomsForts15.swf',
+    room: 'forts',
+    frame: 2
   },
   {
     name: 'Hockey Stick',
     room: 'village',
-    file: 'archives:ArtworkRoomsVillage15.swf',
+    file: 'archives:ArtworkRoomsVillage14.swf',
     frame: 2
   },
   {
     name: 'Soccer Ball',
-    hidden: true
+    file: 'archives:ArtworkRoomsShop11.swf',
+    room: 'shop',
+    frame: 2
   },
   {
     name: 'Pencil',
-    hidden: true
+    file: 'archives:ArtworkRoomsBook12.swf',
+    room: 'book',
+    frame: 2
   },
   {
     name: 'Lighthouse',
@@ -77,7 +97,9 @@ export const PINS: Array<Pin> = [
   },
   {
     name: 'Telescope',
-    hidden: true
+    file: 'archives:ArtworkRoomsMtn40.swf',
+    room: 'mtn',
+    frame: 2
   },
   {
     name: 'Jolly Roger Flag',

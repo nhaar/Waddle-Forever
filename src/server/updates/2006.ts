@@ -328,16 +328,17 @@ export const UPDATES_2006: Update[] = [
     date: '2006-05-26',
     temp: {
       party: {
-        partyStart: 'Underground Opening Party',
+        partyName: 'Underground Opening Party',
         rooms: {
           'mine': 'archives:ArtworkRoomsMine10.swf',
           boiler: 'recreation:cave_opening/boiler.swf',
           cave: 'recreation:cave_opening/cave.swf',
           plaza: 'recreation:cave_opening/plaza.swf',
-          dance: 'recreation:cave_opening/dance.swf'
+          dance: 'archives:ArtworkRoomsDance12.swf'
         },
         frames: {
-          mine: 2
+          mine: 2,
+          dance: 2
         },
         music: {
           'boiler': 203,

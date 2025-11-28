@@ -524,10 +524,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'By VamprLover. Cave Opening Party room'
     },
     {
-      file: 'cave_opening/dance.swf',
-      comment: 'By VamprLover. Cave Opening Party room'
-    },
-    {
       file: 'cave_opening/plaza.swf',
       comment: 'By VamprLover. Cave Opening Party room'
     },
