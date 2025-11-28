@@ -646,6 +646,17 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:September06Style.swf'
   },
   {
+    date: '2006-09-07',
+    constructionComment: 'Construction begins at the Beach',
+    temp: {
+      event: {
+        rooms: {
+          beach: 'archives:ArtworkRoomsBeach14.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2006-09-15',
     miscComments: ['The Lightbulb Hunt begins'],
     temp: {
