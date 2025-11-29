@@ -691,8 +691,12 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
-    date: '2006-09-15',
+    date: '2006-09-08',
     iglooVersion: 40,
+    iglooCatalog: 'archives:September2006Igloo.swf'
+  },
+  {
+    date: '2006-09-15',
     miscComments: ['The Lightbulb Hunt begins'],
     furnitureCatalog: 'archives:Furniture_0609.swf',
     temp: {
