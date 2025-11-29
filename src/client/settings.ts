@@ -24,6 +24,8 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
     parent: mainWindow
   });
 
+  settingsWindow.setMenu(null);
+
   settingsWindow.loadFile(path.join(__dirname, 'views/settings.html'));
 
   if (electronIsDev) {
