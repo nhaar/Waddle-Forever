@@ -6,12 +6,23 @@ import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 
-export function createTimelinePicker (mainWindow: BrowserWindow) {
-  const timelinePicker = new BrowserWindow({
+let timelinePicker: BrowserWindow | null;
+
+export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
+  if (timelinePicker) {
+    timelinePicker.focus();
+    return;
+  }
+
+  mainWindow.on('close', () => {
+    timelinePicker?.close();
+  });
+
+  timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/timeline-preload.js')
+      preload: path.join(__dirname, 'preload/timeline-preload.js'),
     }
   });
 
@@ -19,14 +30,18 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
 
   timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
 
+  timelinePicker.on('close', () => {
+    timelinePicker = null;
+  });
+
   ipcMain.on('update-version', () => {
     mainWindow.webContents.reloadIgnoringCache();
   });
 
   timelinePicker.webContents.on('did-finish-load', () => {
-    timelinePicker.maximize();
-    timelinePicker.show();
-    timelinePicker.webContents.send('get-timeline', getConsumedTimeline(getTimeline()));
+    timelinePicker?.maximize();
+    timelinePicker?.show();
+    timelinePicker?.webContents.send('get-timeline', getConsumedTimeline(getTimeline()));
   });
 }
 

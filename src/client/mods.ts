@@ -3,15 +3,24 @@ import electronIsDev from "electron-is-dev";
 import path from "path";
 import { MODS_DIRECTORY } from "../common/paths";
 
+let modsWindow: BrowserWindow | null;
+
 export const createModsWindow = async (mainWindow: BrowserWindow) => {
-  const modsWindow = new BrowserWindow({
+  if (modsWindow) {
+    modsWindow.focus();
+    return;
+  }
+  modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
     title: "Mods",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/mods-preload.js')
-    }
+      preload: path.join(__dirname, 'preload/mods-preload.js'),
+    },
+    parent: mainWindow
   });
+
+  modsWindow.setMenu(null);
 
   modsWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault();
@@ -21,8 +30,12 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
   modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
   modsWindow.webContents.on('did-finish-load', () => {
     if (electronIsDev) {
-      modsWindow.webContents.openDevTools();
+      modsWindow?.webContents.openDevTools();
     }
+  });
+
+  modsWindow.on('close', () => {
+    modsWindow = null;
   });
 
   ipcMain.on('update-mod', () => {

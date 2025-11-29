@@ -13,8 +13,6 @@ type MultiplayerSettings = { type: 'local'; } | {
 } | { type: 'host' };
 
 export type GlobalSettings = {
-  /** In order to limit the number of setting windows */
-  isEditting: boolean
   multiplayer: MultiplayerSettings;
 };
 

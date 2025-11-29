@@ -39,7 +39,6 @@ let mainWindow: BrowserWindow;
 
 /** An object to keep global variables in memory across windows */
 let globalSettings : GlobalSettings = {
-  isEditting: false,
   multiplayer: { type: 'local' }
 };
 
