@@ -66,8 +66,6 @@ export function getModRouter(s: SettingsManager): Router {
 export class SettingsManager {
   settings: Settings;
 
-  isEditting = false;
-
   usingMods = false;
 
   activeMods: string[] = [];

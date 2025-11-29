@@ -9,8 +9,9 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     height: 500,
     title: "Mods",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/mods-preload.js')
-    }
+      preload: path.join(__dirname, 'preload/mods-preload.js'),
+    },
+    parent: mainWindow
   });
 
   modsWindow.webContents.on('will-navigate', (event, url) => {

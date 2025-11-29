@@ -11,8 +11,9 @@ export function createTimelinePicker (mainWindow: BrowserWindow) {
     show: false,
     title: "Timeline",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/timeline-preload.js')
-    }
+      preload: path.join(__dirname, 'preload/timeline-preload.js'),
+    },
+    parent: mainWindow
   });
 
   timelinePicker.setMenu(null);
