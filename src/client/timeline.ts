@@ -13,13 +13,17 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
     timelinePicker.focus();
     return;
   }
+
+  mainWindow.on('close', () => {
+    timelinePicker?.close();
+  });
+
   timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
     webPreferences: {
       preload: path.join(__dirname, 'preload/timeline-preload.js'),
-    },
-    parent: mainWindow
+    }
   });
 
   timelinePicker.setMenu(null);
