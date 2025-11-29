@@ -13,6 +13,11 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-01-15',
+    iglooVersion: 15,
+    furnitureCatalog: 'archives:Furniture_0601.swf',
+  },
+  {
     date: '2006-01-27',
     temp: {
       party: {
@@ -64,6 +69,10 @@ export const UPDATES_2006: Update[] = [
     end: ['party']
   },
   {
+    date: '2006-02-17',
+    furnitureCatalog: 'archives:Furniture_0602.swf',
+  },
+  {
     date: '2006-02-24',
     temp: {
       party: {
@@ -108,6 +117,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-03-17',
+    furnitureCatalog: 'archives:Furniture_0603.swf',
     pin: true,
     roomComment: ['The Pet Shop is inaugurated'],
     temp: {
@@ -204,6 +214,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-14',
+    iglooCatalog: 'archives:April2006Igloo.swf',
     temp: {
       party: {
         partyName: 'Easter Egg Hunt',
@@ -308,6 +319,11 @@ export const UPDATES_2006: Update[] = [
     ]
   },
   {
+    date: '2006-04-21',
+    iglooVersion: 19,
+    furnitureCatalog: 'archives:Furniture_0604.swf',
+  },
+  {
     date: '2006-04-27',
     roomComment: 'Find Four tables are added to the Ski Lodge',
     rooms: {
@@ -319,8 +335,13 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:Clothing_0605.swf'
   },
   {
+    date: '2006-05-12',
+    iglooCatalog: 'archives:May2006Igloo.swf'
+  },
+  {
     date: '2006-05-19',
     iglooVersion: 20,
+    furnitureCatalog: 'archives:Furniture_0605.swf',
     engineUpdate: 'igloo-music',
     iglooList: 'Penguins can now add music to their igloo'
   },
@@ -376,7 +397,14 @@ export const UPDATES_2006: Update[] = [
     gameRelease: 'Cart Surfer'
   },
   {
+    date: '2006-06-09',
+    iglooVersion: 21,
+    iglooCatalog: 'archives:June2006Igloo.swf'
+  },
+  {
     date: '2006-06-16',
+    iglooVersion: 31,
+    furnitureCatalog:'archives:Furniture_0606.swf',
     temp: {
       party: {
         partyName: 'Summer Party',
@@ -444,6 +472,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-07-14',
+    iglooCatalog: 'July2006Igloo.swf',
     temp: {
       party: {
         partyName: 'Western Party',
@@ -476,6 +505,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-07-21',
+    furnitureCatalog: 'archives:Furniture_0607.swf',
     temp: {
       party: {
         partyName: 'Band Scavenger Hunt',
@@ -506,6 +536,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-08-11',
+    iglooCatalog: 'August2006Igloo.swf',
     temp: {
       party: {
         partyName: 'Sports Party',
@@ -607,6 +638,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-08-18',
+    iglooVersion: 33,
+    furnitureCatalog: 'archives:Furniture_0608.swf',
     temp: {
       party: {
         update: 'A new item is in the Snow Forts for the Sports Party',
@@ -659,7 +692,9 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-09-15',
+    iglooVersion: 40,
     miscComments: ['The Lightbulb Hunt begins'],
+    furnitureCatalog: 'archives:Furniture_0609.swf',
     temp: {
       event: {
         rooms: {
@@ -1181,6 +1216,10 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-10-20',
+    furnitureCatalog: 'archives:Furniture_0610.swf',
+  },
+  {
     date: '2006-10-24',
     roomComment: 'The Snow Forts sign breaks',
     temp: {
@@ -1251,6 +1290,12 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-11-17',
+    iglooVersion: 43,
+    furnitureCatalog: 'archives:Furniture_0611.swf',
+    iglooCatalog: 'archives:November2006Igloo.swf'
+  },
+  {
     date: '2006-11-24',
     temp: {
       party: {
@@ -1295,7 +1340,12 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
-    furnitureCatalog: 'recreation:furniture_dec06.swf'
+    furnitureCatalog: 'archives:Furniture_0612.swf',
+    iglooCatalog: 'recreation:igloo_catalog_dec06_v1.swf'
+  },
+  {
+    date: '2006-12-16',
+    iglooCatalog: 'archives:December2006Igloo.swf'
   },
   {
     date: '2006-12-19',
