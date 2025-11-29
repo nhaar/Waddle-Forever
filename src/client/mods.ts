@@ -20,6 +20,8 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     parent: mainWindow
   });
 
+  modsWindow.setMenu(null);
+
   modsWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault();
     shell.openExternal(url);
