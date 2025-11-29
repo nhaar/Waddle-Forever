@@ -18,8 +18,7 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
     height: 500,
     title: "Settings",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/settings-preload.js'),
-      devTools: false
+      preload: path.join(__dirname, 'preload/settings-preload.js')
     },
     parent: mainWindow
   });

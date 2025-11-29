@@ -18,7 +18,6 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
     title: "Timeline",
     webPreferences: {
       preload: path.join(__dirname, 'preload/timeline-preload.js'),
-      devTools: false
     },
     parent: mainWindow
   });
