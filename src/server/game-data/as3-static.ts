@@ -1130,5 +1130,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/penguin_car_lime_green.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_13.swf',
   'play/v2/content/global/penguin/penguin_car_sensei_gray.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_14.swf',
   'play/v2/content/global/penguin/penguin_car_aqua.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_15.swf',
-  'play/v2/content/global/penguin/penguin_car_arctic_white.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_16.swf'
+  'play/v2/content/global/penguin/penguin_car_arctic_white.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_16.swf',
+  'play/v2/content/global/penguin/penguin_frostbite.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_frostbite.swf'
 }

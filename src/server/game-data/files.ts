@@ -487,7 +487,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'holiday_2012/engine.swf',
-      comment: 'Originally engine_modern_no_glow. Added Reindeer and Toycar transformations. Added turnPlayerIntoPenguin function'
+      comment: 'Originally engine_modern_no_glow. Added Reindeer, Toycar and Frostbite transformations. Added turnPlayerIntoPenguin function'
     }
   ],
   [RECREATION]: [
