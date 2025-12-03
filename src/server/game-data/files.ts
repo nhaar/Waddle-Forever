@@ -479,7 +479,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2012_halloween.swf',
-      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand, and to unwalk puffle when updating hand. Must still figure how to make it remove the puffle from the igloo (prevent double walking). Added code to the sendBuyCookie function for the Holiday Party 2012'
+      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand, and to unwalk puffle when updating hand. Must still figure how to make it remove the puffle from the igloo (prevent double walking). Added code to the sendBuyCookie function for the Holiday Party 2012. Modified the getPlayerObjectById code to have the property is_transformed (Holiday Party 2012 interface compatibility)'
     },
     {
       file: 'puffles/engine.swf',
@@ -487,7 +487,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'holiday_2012/engine.swf',
-      comment: 'Originally engine_modern_no_glow. Added Reindeer and Toycar transformations'
+      comment: 'Originally engine_modern_no_glow. Added Reindeer and Toycar transformations. Added turnPlayerIntoPenguin function'
     }
   ],
   [RECREATION]: [
