@@ -95,7 +95,7 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, 'A new edition of the Penguin Style is out', 'clothing');
     }
     if (update.update.iglooCatalog !== undefined) {
-      addEvent(map, update.date, 'A new edition of Igloo Upgrades is out', 'clothing');
+      addEvent(map, update.date, 'A new edition of Igloo Upgrades is out', 'other');
     }
     if (update.update.hairCatalog !== undefined) {
       addEvent(map, update.date, 'A new Big Wigs catalog is available', 'other');
