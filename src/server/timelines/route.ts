@@ -270,8 +270,7 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
     }
     if (update.update.iglooCatalog !== undefined) {
-      map.add('artwork/catalogue/igloo0604.swf', update.update.iglooCatalog, update.date, update.end);
-	    map.add('artwork/catalogue/igloo_0712.swf', update.update.iglooCatalog, update.date, update.end);
+      map.add('artwork/catalogue/igloo_.swf', update.update.iglooCatalog, update.date, update.end);
       map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date, update.end);
     }
     if (update.update.rooms !== undefined) {
