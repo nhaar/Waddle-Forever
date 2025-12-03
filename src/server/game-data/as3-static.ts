@@ -1114,5 +1114,21 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/puffle7.swf': 'archives:AvatarSpritesPuffleWhite.swf',
   'play/v2/content/global/penguin/puffle8.swf': 'archives:AvatarSpritesPuffleOrange.swf',
   'play/v2/content/global/penguin/puffle9.swf': 'archives:AvatarSpritesPuffleBrown.swf',
-
+  'play/v2/content/global/penguin/penguin_reindeer.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_reindeer.swf',
+  'play/v2/content/global/penguin/penguin_car_blue.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_01.swf',
+  'play/v2/content/global/penguin/penguin_car_green.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_02.swf',
+  'play/v2/content/global/penguin/penguin_car_pink.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_03.swf',
+  'play/v2/content/global/penguin/penguin_car_black.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_04.swf',
+  'play/v2/content/global/penguin/penguin_car_red.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_05.swf',
+  'play/v2/content/global/penguin/penguin_car_orange.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_06.swf',
+  'play/v2/content/global/penguin/penguin_car_yellow.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_07.swf',
+  'play/v2/content/global/penguin/penguin_car_dark_purple.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_08.swf',
+  'play/v2/content/global/penguin/penguin_car_brown.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_09.swf',
+  'play/v2/content/global/penguin/penguin_car_peach.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_10.swf',
+  'play/v2/content/global/penguin/penguin_car_dark_green.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_11.swf',
+  'play/v2/content/global/penguin/penguin_car_light_blue.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_12.swf',
+  'play/v2/content/global/penguin/penguin_car_lime_green.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_13.swf',
+  'play/v2/content/global/penguin/penguin_car_sensei_gray.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_14.swf',
+  'play/v2/content/global/penguin/penguin_car_aqua.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_15.swf',
+  'play/v2/content/global/penguin/penguin_car_arctic_white.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_16.swf'
 }

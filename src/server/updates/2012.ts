@@ -1265,6 +1265,10 @@ export const UPDATES_2012: Update[] = [
             en: ['archives:ENFormsCoinsforChange2012.swf', 'coins_for_change']
           }
         },
+        fileChanges: {
+          'play/v2/content/global/content/interface.swf': 'archives:ClientInterfaceHolidayParty2012.swf',
+          'play/v2/client/engine.swf': 'approximation:holiday_2012/engine.swf'
+        },
         coinsForChange: true,
         migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
