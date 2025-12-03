@@ -40,6 +40,26 @@ const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
       comment: 'Chat291.swf compatibility fixes. Files from around 2005 need the code slightly changed due to not having proper spawn points and the triggers using room names instead of room IDs.'
     },
     {
+      file: 'Igloo1.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo2.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo3.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo5.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo6.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
       file: 'Mtn1.swf',
       comment: 'Chat291.swf compatibility fixes'
     },
@@ -1546,7 +1566,7 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
-      file: 'furniture_dec06.swf',
+      file: 'igloo_catalog_dec06_v1.swf',
       comment: 'Made by Doubleuman, un-guided the hatch layers from fla'
     },
     {

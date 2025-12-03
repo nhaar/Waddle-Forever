@@ -5,7 +5,7 @@ export const UPDATES_2005: Update[] = [
     date: '2005-08-22',
     map: "recreation:map_release.swf",
     miscComments: ['Beta release'],
-    iglooVersion: 1,
+    iglooVersion: 0,
     chatVersion: 291,
     indexHtml: 'beta',
     websiteFolder: 'beta',
@@ -173,8 +173,7 @@ export const UPDATES_2005: Update[] = [
     rooms: {
       lounge: 'mammoth:artwork/rooms/lounge10.swf'
     },
-    iglooVersion: 20,
-    miscComments: ['Penguins can now purchase different types of igloo']
+    iglooVersion: 1,
   },
   {
     date: '2005-09-21',
@@ -200,6 +199,7 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-10-24',
+    iglooVersion: 3,
     clothingCatalog: 'archives:Clothing_0510.swf',
     furnitureCatalog: 'archives:Furniture_0510.swf',
     newspaper: 'irregular',
@@ -290,6 +290,11 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-11-21',
     newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-22',
+    iglooVersion: 6,
+    iglooCatalog: 'archives:February2006Igloo.swf'
   },
   {
     date: '2005-11-24',
