@@ -1265,7 +1265,8 @@ export const UPDATES_2012: Update[] = [
             en: ['archives:ENFormsCoinsforChange2012.swf', 'coins_for_change']
           }
         },
-        coinsForChange: true
+        coinsForChange: true,
+        migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
     }
   },
