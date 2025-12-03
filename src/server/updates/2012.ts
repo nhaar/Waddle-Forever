@@ -1261,7 +1261,8 @@ export const UPDATES_2012: Update[] = [
           'membership/member8.swf': {
             'en': ['archives:HolidayParty2012Member8.swf', 'oops_buy_reindeer_cookie']
           }
-        }
+        },
+        coinsForChange: true
       }
     }
   },
