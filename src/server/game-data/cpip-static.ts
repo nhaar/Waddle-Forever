@@ -304,5 +304,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/awards/8006.swf': 'archives:AwardsEN8006.swf',
   'play/v2/content/local/en/awards/8007.swf': 'archives:AwardsEN8007.swf',
   'play/v2/content/local/en/awards/8008.swf': 'archives:AwardsEN8008.swf',
-  'play/v2/content/local/en/awards/8010.swf': 'archives:AwardsEN8010.swf'
+  'play/v2/content/local/en/awards/8010.swf': 'archives:AwardsEN8010.swf',
+  'play/v2/content/local/en/close_ups/rockhoppernote.swf': 'svanilla:media/play/v2/content/local/en/close_ups/rockhoppernote.swf',
 };
