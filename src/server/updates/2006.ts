@@ -390,7 +390,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-06-02',
-    clothingCatalog: 'archives:Clothing_0606.swf'
+    clothingCatalog: 'archives:Clothing_0606.swf',
   },
   {
     date: '2006-06-06',
@@ -399,7 +399,8 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-06-09',
     iglooVersion: 21,
-    iglooCatalog: 'archives:June2006Igloo.swf'
+    iglooCatalog: 'archives:June2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0606.swf'
   },
   {
     date: '2006-06-16',
@@ -473,6 +474,7 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-07-14',
     iglooCatalog: 'July2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0607.swf',
     temp: {
       party: {
         partyName: 'Western Party',
@@ -537,6 +539,7 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-08-11',
     iglooCatalog: 'August2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0608.swf',
     temp: {
       party: {
         partyName: 'Sports Party',
@@ -693,7 +696,8 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-09-08',
     iglooVersion: 40,
-    iglooCatalog: 'archives:September2006Igloo.swf'
+    iglooCatalog: 'archives:September2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0609.swf'
   },
   {
     date: '2006-09-15',

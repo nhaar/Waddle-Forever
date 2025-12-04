@@ -559,6 +559,10 @@ export const UPDATES_2007: Update[] = [
     clothingCatalog: 'archives:PenguinStyleOct2007.swf'
   },
   {
+    date: '2007-10-12',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0710.swf'
+  },
+  {
     date: '2007-10-24',
     temp: {
       party: {
@@ -781,6 +785,7 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-12-14',
     miscComments: ['The Coins For Change event begins'],
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0712.swf',
     temp: {
       party: {
         rooms: {

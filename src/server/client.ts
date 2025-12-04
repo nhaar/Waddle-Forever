@@ -386,6 +386,11 @@ export class Server {
     this._playersById.set(id, client);
   }
 
+  /** Retrieve an online player by penguin ID */
+  getPlayerById(id: number): Client | undefined {
+    return this._playersById.get(id);
+  }
+
   getPenguinFromName (name: string): Penguin {
     let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
     const date = this.getVirtualDate(0).getTime();

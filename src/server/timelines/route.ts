@@ -260,6 +260,10 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
       map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date, update.end);
     }
+    if (update.update.postcardCatalog !== undefined) {
+      map.add('artwork/catalogue/cards.swf', update.update.postcardCatalog, update.date, update.end);
+      map.add('artwork/catalogue/cards_0712.swf', update.update.postcardCatalog, update.date, update.end);
+    }
     if (update.update.hairCatalog !== undefined) {
       map.add('play/v2/content/local/en/catalogues/hair.swf', update.update.hairCatalog, update.date, update.end);
     }
