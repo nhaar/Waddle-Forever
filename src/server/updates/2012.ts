@@ -1263,6 +1263,9 @@ export const UPDATES_2012: Update[] = [
           },
           'cfc.swf': {
             en: ['archives:ENFormsCoinsforChange2012.swf', 'coins_for_change']
+          },
+          'close_ups/timer.swf': {
+            en: ['archives:HolidayParty2012TimerEN.swf', "w.p1212.holiday.avatar.timerPopup"]
           }
         },
         fileChanges: {
