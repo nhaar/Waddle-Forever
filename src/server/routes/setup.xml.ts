@@ -188,6 +188,7 @@ export function getSetupXml(version: Version, ip: string, port: number) {
       <Pets>
          <File>adopt0703</File>
       </Pets>
+      <Cards>cards</Cards>
    </Catalogues>
 
    <Edit>6</Edit>

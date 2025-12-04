@@ -98,6 +98,24 @@ handler.xt(Handle.SendActionOld, (client, id) => {
   client.sendAction(id);
 });
 
+handler.xt(Handle.SendCardOld, (client, recipientId, cardId, cost) => {
+    if (!client.isEngine1) {
+    return;
+  }
+  
+  const postcardCost = 10;
+  const recipient = client.server.getPlayerById(recipientId);
+  if (recipient !== undefined) {
+    recipient.penguin.receivePostcard(cardId, {senderId: client.penguin.id, senderName: client.penguin.name});
+    recipient.sendXt('sc', client.penguin.id, client.penguin.name, cardId);
+    recipient.update();
+  }
+
+  client.penguin.removeCoins(postcardCost);
+  client.sendXt('gc', client.penguin.coins);
+  client.update();
+});
+
 // handler for 2007 client
 handler.xt(Handle.GetInventory2007, (client) => {
   client.sendInventory();

@@ -103,6 +103,9 @@ function getTimeline(): Day[] {
     if (update.update.furnitureCatalog !== undefined) {
       addEvent(map, update.date, 'New furniture catalog available', 'furniture');
     }
+    if (update.update.postcardCatalog !== undefined) {
+      addEvent(map, update.date, 'A new postcard catalog is available', 'other');
+    }
     if (update.update.newspaper === 'fan') {
       addEvent(map, update.date, 'Fan issue of the newspaper released', 'news');
     }
