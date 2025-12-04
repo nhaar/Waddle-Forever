@@ -487,7 +487,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'holiday_2012/engine.swf',
-      comment: 'Originally engine_modern_no_glow. Added Reindeer, Toycar and Frostbite transformations. Added turnPlayerIntoPenguin function. Modified AvatarManager slightly so that the 2012 holiday party timer can fetch the time and so that the shell can update it'
+      comment: 'Originally engine_modern_no_glow. Added Reindeer, Toycar and Frostbite transformations. Added turnPlayerIntoPenguin function. Modified AvatarManager slightly so that the 2012 holiday party timer can fetch the time and so that the shell can update it. Removed Herbert transformation because it was conflicting with the reindeer puffle'
     }
   ],
   [RECREATION]: [
