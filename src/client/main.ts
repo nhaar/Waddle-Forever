@@ -51,7 +51,7 @@ app.on('ready', async () => {
     frame: false,
     resizable: false
   });
-  setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
+  await setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
 
   let mediaSuccess;
   try {
@@ -101,11 +101,17 @@ app.on('ready', async () => {
     await startServer(settingsManager);
 
     // this message box is useless, but for some reason, it is the only way for auto reload to work
-    await dialog.showMessageBox(mainWindow, {
+    const start = await dialog.showMessageBox(mainWindow, {
       buttons: ['Start'],
       title: 'Ready',
-      message: `Waddle Forever is Ready!`
+      message: `Waddle Forever is Ready!`,
+      defaultId: 0,
+      cancelId: 1
     });
+
+    if (start.response === 1) {
+      app.quit();
+    }
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {

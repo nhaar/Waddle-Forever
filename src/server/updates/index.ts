@@ -184,6 +184,8 @@ export type CPUpdate = {
   mapNote?: string;
   newWaddleRooms?: WaddleRoomInfo[];
 
+  coinsForChange?: true;
+
   stagePlay?: {
     name: StageName;
     script?: StageScript;

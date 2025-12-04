@@ -1144,7 +1144,129 @@ export const UPDATES_2012: Update[] = [
     date: '2012-12-20',
     temp: {
       party: {
-        partyName: 'Holiday Party'
+        partyName: 'Holiday Party',
+        rooms: {
+          'beach': 'archives:HolidayParty2012Beach.swf',
+          'beacon': 'archives:HolidayParty2012Beacon.swf',
+          'berg': 'archives:HolidayParty2012Berg.swf',
+          'coffee': 'archives:HolidayParty2012Coffee.swf',
+          'cove': 'archives:HolidayParty2012Cove.swf',
+          'dock': 'archives:HolidayParty2012Dock.swf',
+          'dojo': 'archives:HolidayParty2012Dojo.swf',
+          'dojoext': 'archives:HolidayParty2012DojoExt.swf',
+          'dojofire': 'archives:HolidayParty2012DojoFire.swf',
+          'dojohide': 'archives:HolidayParty2012DojoHide.swf',
+          'forest': 'archives:HolidayParty2012Forest.swf',
+          'forts': 'archives:HolidayParty2012Forts.swf',
+          'lodge': 'archives:HolidayParty2012Lodge.swf',
+          'mtn': 'archives:HolidayParty2012Mtn.swf',
+          'pet': 'archives:HolidayParty2012Pet.swf',
+          'pizza': 'archives:HolidayParty2012Pizza.swf',
+          'plaza': 'archives:HolidayParty2012Plaza.swf',
+          'rink': 'archives:HolidayParty2012Rink.swf',
+          'shack': 'archives:HolidayParty2012Shack.swf',
+          'shop': 'archives:HolidayParty2012Shop.swf',
+          'village': 'archives:HolidayParty2012Village.swf',
+          'town': 'archives:RoomsTown-HolidayParty2012.swf',
+          'agentlobbymulti': 'archives:HolidayParty2012EPFLobby.swf',
+          'agentlobbysolo': 'archives:HolidayParty2012EPFLobbySolo.swf',
+          'ship': 'archives:HolidayParty2012Ship.swf',
+          'shiphold': 'archives:HolidayParty2012ShipHold.swf',
+          'shipnest': 'archives:HolidayParty2012ShipNest.swf',
+          'shipquarters': 'archives:HolidayParty2012ShipQuarters.swf',
+          'party1': 'archives:HolidayParty2012Party1.swf',
+          'party2': 'archives:HolidayParty2012Party2.swf',
+          'party3': 'archives:HolidayParty2012Party3.swf'
+        },
+        music: {
+          'beach': 254,
+          'beacon': 255,
+          'shipquarters': 255,
+          'coffee': 255,
+          'cove': 254,
+          'shipnest': 254,
+          'dock': 347,
+          'dojo': 255,
+          'agentlobbymulti': 255,
+          'agentlobbysolo': 255,
+          'dojofire': 254,
+          'forest': 254,
+          'shop': 255,
+          'berg': 227,
+          'dojohide': 255,
+          'ship': 254,
+          'pet': 255,
+          'pizza': 255,
+          'plaza': 254,
+          'shiphold': 255,
+          'mtn': 254,
+          'lodge': 255,
+          'forts': 254,
+          'village': 254,
+          'shack': 254,
+          'rink': 254,
+          'town': 254,
+          'party1': 281,
+          'party2': 255,
+          'party3': 315
+        },
+        startscreens: [
+          'archives:SwfCfc-billboard.swf',
+          'archives:SwfHoliday-puffle-reindeer.swf',
+          'archives:SwfOld-holiday-billboard.swf'
+        ],
+        partyIconFile: 'archives:HolidayParty2012CloseUpsPartyIcon.swf',
+        mapNote: 'archives:HolidayParty2012Party_map_note.swf',
+        map: 'archives:HolidayParty2012Map.swf',
+        localChanges: {
+          'catalogues/party_catalogue_1.swf': {
+            'en': ['archives:ENHolidayParty2012Catalog1.swf', 'w.p1212.holiday.clothing.catalogue1']
+          },
+          'catalogues/party_catalogue_2.swf': {
+            'en': ['archives:ENHolidayParty2012Catalog2.swf', 'w.p1212.holiday.clothing.catalogue2']
+          },
+          'close_ups/CFC_poster.swf': {
+            'en': 'archives:HolidayParty2012CFC.swf'
+          },
+          'close_ups/party_poster.swf': {
+            'en': ['archives:HolidayParty2012Poster.swf', 'party_poster']
+          },
+          'close_ups/cookie_bakery_poster.swf': {
+            'en': ['archives:HolidayParty2012Party_noteEN.swf', 'w.p1212.holiday.bakery.help']
+          },
+          'close_ups/buy_cookie_poster.swf': {
+            'en': ['archives:HolidayParty2012Cookie_purchaseEN.swf', 'w.p1212.holiday.buycookie']
+          },
+          'membership/member1.swf': {
+            'en': ['archives:HolidayParty2012Member1.swf', 'oops_buy_frostbite_cookie']
+          },
+          'membership/member2.swf': {
+            'en': ['archives:HolidayParty2012Member2.swf', 'oops_party_login_calendar']
+          },
+          'membership/member3.swf': {
+            'en': ['archives:HolidayParty2012Member3.swf', 'oops_party_login_calendar']
+          },
+          'membership/member4.swf': {
+            'en': ['archives:HolidayParty2012Member4.swf', 'oops_party_login_calendar']
+          },
+          'membership/member5.swf': {
+            'en': ['archives:HolidayParty2012Member5.swf', 'oops_party_login_calendar']
+          },
+          'membership/member6.swf': {
+            'en': ['archives:HolidayParty2012Member6.swf', 'oops_party_login_calendar']
+          },
+          'membership/member7.swf': {
+            'en': ['archives:HolidayParty2012Member7.swf', 'oops_party_login_calendar']
+          },
+          'membership/member8.swf': {
+            'en': ['archives:HolidayParty2012Member8.swf', 'oops_buy_reindeer_cookie']
+          },
+          'cfc.swf': {
+            en: ['archives:ENFormsCoinsforChange2012.swf', 'coins_for_change']
+          }
+        },
+        coinsForChange: true,
+        migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
     }
   },

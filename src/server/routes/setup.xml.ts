@@ -183,7 +183,7 @@ export function getSetupXml(version: Version, ip: string, port: number) {
          <File>furniture</File>
       </Furntiture>
       <Igloo>
-         <File>igloo0604</File>
+         <File>igloo_</File>
       </Igloo>
       <Pets>
          <File>adopt0703</File>
