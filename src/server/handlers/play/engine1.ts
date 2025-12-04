@@ -99,10 +99,6 @@ handler.xt(Handle.SendActionOld, (client, id) => {
 });
 
 handler.xt(Handle.SendCardOld, (client, recipientId, cardId, cost) => {
-  if (!client.isEngine1) {
-    return;
-  }
-
   const postcardCost = 10;
   const recipient = client.server.getPlayerById(recipientId);
   if (recipient !== undefined) {

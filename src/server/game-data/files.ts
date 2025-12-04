@@ -1672,6 +1672,18 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'lightbulb/plaza.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'old_postcards/32.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'old_postcards/33.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'old_postcards/38.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
