@@ -390,7 +390,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-06-02',
-    clothingCatalog: 'archives:Clothing_0606.swf',
+    clothingCatalog: 'archives:Clothing_0606.swf'
   },
   {
     date: '2006-06-06',
