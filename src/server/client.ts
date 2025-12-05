@@ -392,6 +392,10 @@ export class Server {
     return this._playersById.get(id);
   }
 
+  /** Remove a player from the online map */
+  untrackPlayer(id: number): void {
+    this._playersById.delete(id);
+  }
   getPenguinFromName (name: string): Penguin {
     let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
     const date = this.getVirtualDate(0).getTime();
@@ -1157,6 +1161,9 @@ export class Client {
     this._penguin?.incrementPlayTime(minutesDelta);
     if (this._penguin !== undefined) {
       this.update();
+    }
+    if (this._penguin !== undefined) {
+      this.server.untrackPlayer(this._penguin.id);
     }
     this._socket?.end();
   }

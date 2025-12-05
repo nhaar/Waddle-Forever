@@ -94,6 +94,21 @@ export enum Handle {
   JoinServer,
   JoinServerNew,
   GetBuddies,
+  GetBuddiesB,
+  GetBuddyOnline,
+  GetBuddyOnlineB,
+  BuddyRequest,
+  BuddyRequestB,
+  BuddyAccept,
+  BuddyAcceptB,
+  BuddyDecline,
+  BuddyDeclineB,
+  BuddyRemove,
+  BuddyRemoveB,
+  BuddyMessage,
+  BuddyMessageB,
+  GetPlayerOld,
+  GetPlayerOldAlt,
   GN,
   GLR,
   Heartbeat,
@@ -245,6 +260,21 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinServer]: [],
   [Handle.JoinServerNew]: ['number'],
   [Handle.GetBuddies]: [],
+  [Handle.GetBuddiesB]: [],
+  [Handle.GetBuddyOnline]: [],
+  [Handle.GetBuddyOnlineB]: [],
+  [Handle.BuddyRequest]: ['number'],
+  [Handle.BuddyRequestB]: ['number'],
+  [Handle.BuddyAccept]: ['number'],
+  [Handle.BuddyAcceptB]: ['number'],
+  [Handle.BuddyDecline]: ['number'],
+  [Handle.BuddyDeclineB]: ['number'],
+  [Handle.BuddyRemove]: ['number'],
+  [Handle.BuddyRemoveB]: ['number'],
+  [Handle.BuddyMessage]: ['number', 'number'],
+  [Handle.BuddyMessageB]: ['number', 'number'],
+  [Handle.GetPlayerOld]: ['number'],
+  [Handle.GetPlayerOldAlt]: ['number'],
   [Handle.GN]: [],
   [Handle.GLR]: [],
   [Handle.Heartbeat]: [],
@@ -322,6 +352,15 @@ export const HANDLE_ARGUMENTS = {
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
+  'b': {
+    'gb': Handle.GetBuddiesB,
+    'go': Handle.GetBuddyOnlineB,
+    'br': Handle.BuddyRequestB,
+    'ba': Handle.BuddyAcceptB,
+    'bd': Handle.BuddyDeclineB,
+    'bm': Handle.BuddyMessageB,
+    'rb': Handle.BuddyRemoveB
+  },
   's': {
     'jr': Handle.JoinRoomOld,
     'js': Handle.JoinServerOld,
@@ -384,9 +423,14 @@ const HANDLER_MAPPING: HandlerMapping = {
       'upl': Handle.UpdatePin,
       'upp': Handle.UpdateBackground
     },
-    'b': {
-      'gb': Handle.GetBuddies
-    },
+    'gb': Handle.GetBuddies,
+    'go': Handle.GetBuddyOnline,
+    'bq': Handle.BuddyRequest,
+    'ba': Handle.BuddyAccept,
+    'bd': Handle.BuddyDecline,
+    'br': Handle.BuddyRemove,
+    'bm': Handle.BuddyMessage,
+    'gp': Handle.GetPlayerOld,
     'f': {
       'epfga': Handle.GetEpfStatus,
       'epfgf': Handle.GetFieldOps,
@@ -516,6 +560,9 @@ const HANDLER_MAPPING: HandlerMapping = {
     'gf': Handle.GetFurniture2007,
     'ur': Handle.UpdateIgloo2007,
     'um': Handle.UpdateIglooMusic2007
+  },
+  'p': {
+    'gp': Handle.GetPlayerOldAlt
   }
 }
 

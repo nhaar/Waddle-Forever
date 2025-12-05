@@ -49,6 +49,7 @@ export class Penguin {
   private _iglooTypes: Set<number>;
   private _iglooLocations: Set<number>;
   private _iglooFloorings: Set<number>;
+  private _buddies: Set<number>;
   private _mailSeq: number;
   private _puffleLaunchGameData: Buffer;
   private _mail: Array<Mail>;
@@ -104,6 +105,7 @@ export class Penguin {
     this._iglooTypes = parseJsonSet(data.iglooTypes);
     this._iglooLocations = parseJsonSet(data.iglooLocations);
     this._iglooFloorings = parseJsonSet(data.iglooFloorings);
+    this._buddies = new Set<number>((data.buddies ?? []).map((id) => Number(id)));
     this._mailSeq = data.mailSeq;
     this._puffleLaunchGameData = Buffer.from(data.puffleLaunchGameData ?? '', 'base64');
     this._mail = data.mail;
@@ -157,6 +159,7 @@ export class Penguin {
       iglooFloorings: dumpJsonSet(this._iglooFloorings),
       iglooLocations: dumpJsonSet(this._iglooLocations),
       iglooTypes: dumpJsonSet(this._iglooTypes),
+      buddies: Array.from(this._buddies.values()),
       mailSeq: this._mailSeq,
       puffleLaunchGameData: this._puffleLaunchGameData.toString('base64'),
       igloo: this._igloo,
@@ -455,6 +458,29 @@ export class Penguin {
 
   getIglooTypes(): number[] {
     return Array.from(this._iglooTypes.values());
+  }
+
+  getBuddies(): number[] {
+    return Array.from(this._buddies.values());
+  }
+
+  hasBuddy(id: number | string): boolean {
+    const numericId = Number(id);
+    return !Number.isNaN(numericId) && this._buddies.has(numericId);
+  }
+
+  addBuddy(id: number | string): void {
+    const numericId = Number(id);
+    if (!Number.isNaN(numericId)) {
+      this._buddies.add(numericId);
+    }
+  }
+
+  removeBuddy(id: number | string): void {
+    const numericId = Number(id);
+    if (!Number.isNaN(numericId)) {
+      this._buddies.delete(numericId);
+    }
   }
 
   getIglooLocations(): number[] {
