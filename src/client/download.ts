@@ -5,37 +5,62 @@ import https from 'https';
 import { logError, parseURL } from '../common/utils';
 import { showProgress } from './progress';
 
-async function downloadFile(url: string, destination: string, update: (progress: number) => void, finish: () => void) {
-  const file = fs.createWriteStream(destination);
+async function downloadFile(
+  url: string,
+  destination: string,
+  update: (progress: number) => void,
+  finish: () => void,
+  maxRedirects = 5
+): Promise<boolean> {
 
-  const { protocol } = parseURL(url)
-
-  const module = protocol === 'http' ? http : https
+  const { protocol } = parseURL(url);
+  const module = protocol === 'http' ? http : https;
 
   return await new Promise<boolean>((resolve, reject) => {
     module.get(url, (response) => {
-        const totalSize = Number(response.headers['content-length'])
-        let downloadedSize = 0;
+      // handle redirects
+      const status = response.statusCode ?? 0;
+      if ([301, 302, 303, 307, 308].includes(status)) {
+        const redirectURL = response.headers.location;
 
-        response.on('data', (chunk) => {
-          downloadedSize += chunk.length;
-          update(downloadedSize / totalSize);
-        })
+        if (redirectURL === undefined) {
+          return reject(new Error("Redirect with no location header"));
+        }
+        if (maxRedirects <= 0) {
+          return reject(new Error("Too many redirects"));
+        }
+        return resolve(
+          downloadFile(redirectURL, destination, update, finish, maxRedirects - 1)
+        );
+      }
 
-        response.pipe(file);
+      // non redirect
+      const file = fs.createWriteStream(destination);
+      const totalSize = Number(response.headers['content-length'] || 0);
+      let downloadedSize = 0;
 
-        file.on('finish', () => {
-          file.close();
-          finish();
-          resolve(true);
-        });
-    }).on('error', (err) => {
-        fs.unlink(destination, () => {});
-        logError('Error downloading', err);
+      response.on('data', (chunk) => {
+        downloadedSize += chunk.length;
+        if (totalSize > 0) {
+          update(downloadedSize / totalSize)
+        }
+      });
+
+      response.pipe(file);
+
+      file.on('finish', () => {
+        file.close();
         finish();
-        reject(err);
+        resolve(true);
+      });
+
+    }).on('error', (err) => {
+      fs.unlink(destination, () => {});
+      logError('Error downloading', err);
+      finish();
+      reject(err);
     });
-  })
+  });
 }
 
 interface ProgressObject {
