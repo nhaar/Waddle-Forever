@@ -3,10 +3,9 @@
 # get version via github api
 latest_tag=$(curl -s "https://api.github.com/repos/nhaar/Waddle-Forever/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 VERSION="${latest_tag#v}"
-URL="https://waddleforever.com"
 DEFAULT="default"
 CLIENT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/WaddleForeverClient-$VERSION.AppImage"
-DEFAULT_URL="$URL/media/$DEFAULT-$VERSION.zip"
+DEFAULT_URL="https://github.com/nhaar/Waddle-Forever/releases/download/v$VERSION/default.zip"
 DEST_FOLDER="./Waddle-Forever-$VERSION"
 DATA_FOLDER="$HOME/.waddleforever"
 DEFAULT_ZIP="default.zip"
