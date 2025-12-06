@@ -3,13 +3,10 @@ import http from 'http';
 import https from 'https';
 
 import { logError, parseURL } from '../common/utils';
-import { WEBSITE } from '../common/website';
 import { showProgress } from './progress';
 
-async function downloadFile(filename: string, destination: string, update: (progress: number) => void, finish: () => void) {
+async function downloadFile(url: string, destination: string, update: (progress: number) => void, finish: () => void) {
   const file = fs.createWriteStream(destination);
-
-  const url = `${WEBSITE}/${filename}`
 
   const { protocol } = parseURL(url)
 
@@ -46,7 +43,7 @@ interface ProgressObject {
   total: number
 }
 
-export async function download(filename: string, destination: string, progress?: ProgressObject): Promise<boolean> {
+export async function download(url: string, destination: string, progress?: ProgressObject): Promise<boolean> {
   let message = 'Downloading files'
   if (progress !== undefined) {
     message += ` (${progress.current} out of ${progress.total})`
@@ -54,6 +51,6 @@ export async function download(filename: string, destination: string, progress?:
   message += ': '
   
   return await showProgress(message, async (progress, end) => {
-    return await downloadFile(filename, destination, progress, end)
+    return await downloadFile(url, destination, progress, end)
   })
 }
