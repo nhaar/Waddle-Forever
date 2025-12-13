@@ -1,5 +1,5 @@
 import { isPositiveInteger } from '../common/utils';
-import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
+import db, { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage, Databases } from './database';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { PUFFLE_ITEMS } from './game-logic/puffle-item';
 
@@ -772,5 +772,13 @@ export class Penguin {
       location: 1,
       id
     };
+  }
+
+  static getById(id: number): Penguin | undefined {
+    const data = db.getById<PenguinData>(Databases.Penguins, id);
+    if (data === undefined) {
+      return undefined;
+    }
+    return new Penguin(id, data);
   }
 }

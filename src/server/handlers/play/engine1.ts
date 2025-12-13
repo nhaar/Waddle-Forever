@@ -17,13 +17,12 @@ function canHandleBuddy(client: Client): boolean {
   return client.isEngine1;
 }
 
-function getPenguinName(id: number): string | undefined {
-  const data = db.getById<PenguinData>(Databases.Penguins, id);
-  return data?.name;
+function getPenguinNameById(id: number): string | undefined {
+  return Penguin.getById(id)?.name;
 }
 
 function formatBuddyEntry(id: number, server: Client['server'], includeOnlineFlag: boolean): string {
-  const name = getPenguinName(id) ?? server.getPlayerById(id)?.penguin.name ?? 'Unknown';
+  const name = getPenguinNameById(id) ?? server.getPlayerById(id)?.penguin.name ?? 'Unknown';
   if (!includeOnlineFlag) {
     return `${id}|${name}`;
   }
@@ -32,11 +31,10 @@ function formatBuddyEntry(id: number, server: Client['server'], includeOnlineFla
 }
 
 function ensureBuddyPersisted(penguinId: number, buddyId: number): void {
-  const data = db.getById<PenguinData>(Databases.Penguins, penguinId);
-  if (data === undefined) {
+  const penguin = Penguin.getById(penguinId);
+  if (penguin === undefined) {
     return;
   }
-  const penguin = new Penguin(penguinId, data);
   if (!penguin.hasBuddy(buddyId)) {
     penguin.addBuddy(buddyId);
     db.update<PenguinData>(Databases.Penguins, penguinId, penguin.serialize());
@@ -238,8 +236,8 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
     return;
   }
 
-  const requesterData = db.getById<PenguinData>(Databases.Penguins, requesterNumericId);
-  if (requesterData === undefined) {
+  const requesterPenguin = Penguin.getById(requesterNumericId);
+  if (requesterPenguin === undefined) {
     return;
   }
 
@@ -250,10 +248,9 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
     ensureBuddyPersisted(client.penguin.id, requesterNumericId);
   }
 
-  const penguin = new Penguin(requesterNumericId, requesterData);
-  if (!penguin.hasBuddy(client.penguin.id)) {
-    penguin.addBuddy(client.penguin.id);
-    db.update<PenguinData>(Databases.Penguins, requesterNumericId, penguin.serialize());
+  if (!requesterPenguin.hasBuddy(client.penguin.id)) {
+    requesterPenguin.addBuddy(client.penguin.id);
+    db.update<PenguinData>(Databases.Penguins, requesterNumericId, requesterPenguin.serialize());
     ensureBuddyPersisted(requesterNumericId, client.penguin.id);
   }
 };
@@ -293,9 +290,8 @@ const handleBuddyRemove = (client: Client, buddyId: number) => {
     buddyClient.update();
   }
   if (buddyClient === undefined) {
-    const buddyData = db.getById<PenguinData>(Databases.Penguins, numericId);
-    if (buddyData !== undefined) {
-      const buddyPenguin = new Penguin(numericId, buddyData);
+    const buddyPenguin = Penguin.getById(numericId);
+    if (buddyPenguin !== undefined) {
       if (buddyPenguin.hasBuddy(client.penguin.id)) {
         buddyPenguin.removeBuddy(client.penguin.id);
         db.update<PenguinData>(Databases.Penguins, numericId, buddyPenguin.serialize());
@@ -353,9 +349,8 @@ const getPlayerOldHandler = (client: Client, playerId: number | string) => {
     client.sendXt('gp', target.penguinString, roomId);
     return;
   }
-  const data = db.getById<PenguinData>(Databases.Penguins, targetId);
-  if (data !== undefined) {
-    const penguin = new Penguin(targetId, data);
+  const penguin = Penguin.getById(targetId);
+  if (penguin !== undefined) {
     client.sendXt('gp', Client.engine1Crumb(penguin), 0);
     return;
   }
@@ -404,9 +399,8 @@ handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
   }
 
   if (igloo === undefined) {
-    const data = db.getById<PenguinData>(Databases.Penguins, ownerId);
-    if (data !== undefined) {
-      const penguin = new Penguin(ownerId, data);
+    const penguin = Penguin.getById(ownerId);
+    if (penguin !== undefined) {
       igloo = penguin.activeIgloo;
     }
   }
@@ -438,9 +432,8 @@ handler.xt(Handle.GetIgloo2007, (client, id) => {
   }
 
   if (igloo === undefined) {
-    const data = db.getById<PenguinData>(Databases.Penguins, targetId);
-    if (data !== undefined) {
-      const penguin = new Penguin(targetId, data);
+    const penguin = Penguin.getById(targetId);
+    if (penguin !== undefined) {
       igloo = penguin.activeIgloo;
     }
   }
@@ -548,9 +541,8 @@ handler.post('/php/gp.php', (server, body) => {
     return 'e=0&crumb=0|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0';
   }
 
-  const data = db.getById<PenguinData>(Databases.Penguins, penguinId);
-  if (data !== undefined) {
-    const penguin = new Penguin(penguinId, data);
+  const penguin = Penguin.getById(penguinId);
+  if (penguin !== undefined) {
     const crumb = Client.engine1Crumb(penguin);
     return `e=0&crumb=${crumb}`;
   }
