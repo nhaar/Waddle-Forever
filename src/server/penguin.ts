@@ -781,4 +781,8 @@ export class Penguin {
     }
     return new Penguin(id, data);
   }
+
+  update() {
+    db.update<PenguinData>(Databases.Penguins, this.id, this.serialize());
+  }
 }

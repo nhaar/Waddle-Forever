@@ -7,7 +7,6 @@ import { Handle } from '../handles';
 import { processFurniture } from './igloo';
 import { isGreaterOrEqual } from '../../../server/routes/versions';
 import { IGLOO_MUSIC_RELEASE } from '../../../server/timelines/dates';
-import db, { Databases, PenguinData } from '../../database';
 import { Penguin } from '../../penguin';
 
 const handler = new Handler();
@@ -37,7 +36,7 @@ function ensureBuddyPersisted(penguinId: number, buddyId: number): void {
   }
   if (!penguin.hasBuddy(buddyId)) {
     penguin.addBuddy(buddyId);
-    db.update<PenguinData>(Databases.Penguins, penguinId, penguin.serialize());
+    penguin.update();
   }
 }
 
@@ -223,8 +222,8 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
       client.update();
       requester.update();
       // persist both sides immediately
-      db.update<PenguinData>(Databases.Penguins, client.penguin.id, client.penguin.serialize());
-      db.update<PenguinData>(Databases.Penguins, requester.penguin.id, requester.penguin.serialize());
+      client.update();
+      requester.update();
       ensureBuddyPersisted(client.penguin.id, requesterNumericId);
       ensureBuddyPersisted(requesterNumericId, client.penguin.id);
     }
@@ -244,13 +243,12 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
   if (!client.penguin.hasBuddy(requesterNumericId)) {
     client.penguin.addBuddy(requesterNumericId);
     client.update();
-    db.update<PenguinData>(Databases.Penguins, client.penguin.id, client.penguin.serialize());
     ensureBuddyPersisted(client.penguin.id, requesterNumericId);
   }
 
   if (!requesterPenguin.hasBuddy(client.penguin.id)) {
     requesterPenguin.addBuddy(client.penguin.id);
-    db.update<PenguinData>(Databases.Penguins, requesterNumericId, requesterPenguin.serialize());
+    requesterPenguin.update();
     ensureBuddyPersisted(requesterNumericId, client.penguin.id);
   }
 };
@@ -294,7 +292,7 @@ const handleBuddyRemove = (client: Client, buddyId: number) => {
     if (buddyPenguin !== undefined) {
       if (buddyPenguin.hasBuddy(client.penguin.id)) {
         buddyPenguin.removeBuddy(client.penguin.id);
-        db.update<PenguinData>(Databases.Penguins, numericId, buddyPenguin.serialize());
+        buddyPenguin.update();
       }
     }
   }

@@ -816,7 +816,7 @@ export class Client {
 
   update (): void {
     if (!this.isBot) {
-      db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+      this.penguin.update()
     }
   }
 
