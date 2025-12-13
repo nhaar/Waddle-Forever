@@ -11,26 +11,10 @@ import db, { Databases, PenguinData } from '../../database';
 import { Penguin } from '../../penguin';
 
 const handler = new Handler();
-// track which buddy packet namespace a client uses: chat291-339 "s" vs chat506 "b"
-type BuddyProtocol = 's' | 'b';
-const buddyProtocol = new WeakMap<Client, BuddyProtocol>();
 
-function setBuddyProtocol(client: Client, proto: BuddyProtocol): void {
-  buddyProtocol.set(client, proto);
-}
-
-function getBuddyProtocol(client: Client): BuddyProtocol {
-  const stored = buddyProtocol.get(client);
-  if (stored !== undefined) {
-    return stored;
-  }
-  // fallback namespace before we see a buddy packet: treat all engine1 clients as "s" until they explicitly opt into "b"
-  return client.isEngine1 ? 's' : 'b';
-}
-
-// allow buddy handling for legacy (engine1) and chat506 ("b" namespace) clients
+// restrict post-cpip clients from using buddy system (not yet implemented)
 function canHandleBuddy(client: Client): boolean {
-  return client.isEngine1 || getBuddyProtocol(client) === 'b';
+  return client.isEngine1;
 }
 
 function getPenguinName(id: number): string | undefined {
@@ -72,13 +56,9 @@ function sendBuddyOnlineList(client: Client, excludeId?: number): void {
 // Joining server
 handler.xt(Handle.JoinServerOld, (client) => {
   client.sendXt('js')
-  // default protocol: pre-506 uses "s", chat506+ uses "b"
-  const isChat506OrLater = isGreaterOrEqual(client.version, '2006-09-21');
-  const proto: BuddyProtocol = client.isEngine1 && !isChat506OrLater ? 's' : 'b';
-  setBuddyProtocol(client, proto);
 
   // chat506+ expects an immediate buddy list + online list after login
-  if (proto === 'b') {
+  if (client.buddyProtocol === 'b') {
     handleGetBuddies(client);
     handleGetBuddyOnlineList(client);
   }
@@ -218,7 +198,7 @@ const handleBuddyRequest = (client: Client, targetId: number) => {
   if (client.penguin.hasBuddy(numericTargetId)) {
     return;
   }
-  const senderProtocol = getBuddyProtocol(client);
+  const senderProtocol = client.buddyProtocol;
   const requestCode = senderProtocol === 'b' ? 'br' : 'bq';
   target.sendXt(requestCode, client.penguin.id, client.penguin.name);
   target.update();
@@ -251,10 +231,8 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
       ensureBuddyPersisted(requesterNumericId, client.penguin.id);
     }
     requester.sendXt('ba', client.penguin.id, client.penguin.name);
-    if (getBuddyProtocol(client) === 'b') {
+    if (client.buddyProtocol === 'b') {
       handleGetBuddies(client);
-    }
-    if (getBuddyProtocol(requester) === 'b') {
       handleGetBuddies(requester);
     }
     return;
@@ -309,7 +287,7 @@ const handleBuddyRemove = (client: Client, buddyId: number) => {
   const buddyClient = client.server.getPlayerById(numericId);
   if (buddyClient !== undefined && buddyClient.penguin.hasBuddy(client.penguin.id)) {
     buddyClient.penguin.removeBuddy(client.penguin.id);
-    const removeProtocol = getBuddyProtocol(client);
+    const removeProtocol = client.buddyProtocol;
     const removeCode = removeProtocol === 'b' ? 'rb' : 'br';
     buddyClient.sendXt(removeCode, client.penguin.id, client.penguin.name);
     buddyClient.update();
@@ -340,26 +318,26 @@ const handleBuddyMessage = (client: Client, targetId: number, messageId: number)
   target.sendXt('bm', client.penguin.id, client.penguin.name, messageId);
 };
 
-handler.xt(Handle.GetBuddies, (client) => { setBuddyProtocol(client, 's'); handleGetBuddies(client); });
-handler.xt(Handle.GetBuddiesB, (client) => { setBuddyProtocol(client, 'b'); handleGetBuddies(client); });
+handler.xt(Handle.GetBuddies, handleGetBuddies);
+handler.xt(Handle.GetBuddiesB, handleGetBuddies);
 
-handler.xt(Handle.GetBuddyOnline, (client) => { setBuddyProtocol(client, 's'); handleGetBuddyOnlineList(client); });
-handler.xt(Handle.GetBuddyOnlineB, (client) => { setBuddyProtocol(client, 'b'); handleGetBuddyOnlineList(client); });
+handler.xt(Handle.GetBuddyOnline, handleGetBuddyOnlineList);
+handler.xt(Handle.GetBuddyOnlineB, handleGetBuddyOnlineList);
 
-handler.xt(Handle.BuddyRequest, (client, targetId) => { setBuddyProtocol(client, 's'); handleBuddyRequest(client, targetId); });
-handler.xt(Handle.BuddyRequestB, (client, targetId) => { setBuddyProtocol(client, 'b'); handleBuddyRequest(client, targetId); });
+handler.xt(Handle.BuddyRequest, handleBuddyRequest);
+handler.xt(Handle.BuddyRequestB, handleBuddyRequest);
 
-handler.xt(Handle.BuddyAccept, (client, requesterId) => { setBuddyProtocol(client, 's'); handleBuddyAccept(client, requesterId); });
-handler.xt(Handle.BuddyAcceptB, (client, requesterId) => { setBuddyProtocol(client, 'b'); handleBuddyAccept(client, requesterId); });
+handler.xt(Handle.BuddyAccept, handleBuddyAccept);
+handler.xt(Handle.BuddyAcceptB, handleBuddyAccept);
 
-handler.xt(Handle.BuddyDecline, (client, requesterId) => { setBuddyProtocol(client, 's'); handleBuddyDecline(client, requesterId); });
-handler.xt(Handle.BuddyDeclineB, (client, requesterId) => { setBuddyProtocol(client, 'b'); handleBuddyDecline(client, requesterId); });
+handler.xt(Handle.BuddyDecline, handleBuddyDecline);
+handler.xt(Handle.BuddyDeclineB, handleBuddyDecline);
 
-handler.xt(Handle.BuddyRemove, (client, buddyId) => { setBuddyProtocol(client, 's'); handleBuddyRemove(client, buddyId); });
-handler.xt(Handle.BuddyRemoveB, (client, buddyId) => { setBuddyProtocol(client, 'b'); handleBuddyRemove(client, buddyId); });
+handler.xt(Handle.BuddyRemove, handleBuddyRemove);
+handler.xt(Handle.BuddyRemoveB, handleBuddyRemove);
 
-handler.xt(Handle.BuddyMessage, (client, targetId, messageId) => { setBuddyProtocol(client, 's'); handleBuddyMessage(client, targetId, messageId); });
-handler.xt(Handle.BuddyMessageB, (client, targetId, messageId) => { setBuddyProtocol(client, 'b'); handleBuddyMessage(client, targetId, messageId); });
+handler.xt(Handle.BuddyMessage, handleBuddyMessage);
+handler.xt(Handle.BuddyMessageB, handleBuddyMessage);
 
 const getPlayerOldHandler = (client: Client, playerId: number | string) => {
   if (!client.isEngine1) {
