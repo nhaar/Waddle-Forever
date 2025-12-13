@@ -312,6 +312,9 @@ class GameRoom {
 /** Map of the waddle games and their constructors */
 type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGame>;
 
+// track which buddy packet namespace a client uses: chat291-339 "s" vs chat506 "b"
+type BuddyProtocol = 's' | 'b';
+
 /** Manages a gameplayer server */
 export class Server {
   /** All multiplayer rooms */
@@ -334,6 +337,8 @@ export class Server {
 
   private _waddleConstructors: WaddleConstructors | undefined;
 
+  private _buddyProtocol: BuddyProtocol | undefined;
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
@@ -349,6 +354,21 @@ export class Server {
       const room = this.getRoom(waddle.roomId);
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
+    this.setBuddyProtocol();
+  }
+
+  setBuddyProtocol() {
+    if (isEngine1(this._settingsManager.settings.version)) {
+      const chat = findInVersionStrict(this._settingsManager.settings.version, VERSIONS_TIMELINE);
+      this._buddyProtocol = chat >= 506 ? 'b' : 's';
+    } else {
+      // buddies for post-cpip not yet defined
+      this._buddyProtocol = undefined;
+    }
+  }
+
+  get buddyProtocol() {
+    return this._buddyProtocol;
   }
 
   get cardMatchmaking(): MatchMaker {
@@ -392,6 +412,10 @@ export class Server {
     return this._playersById.get(id);
   }
 
+  /** Remove a player from the online map */
+  untrackPlayer(id: number): void {
+    this._playersById.delete(id);
+  }
   getPenguinFromName (name: string): Penguin {
     let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
     const date = this.getVirtualDate(0).getTime();
@@ -792,7 +816,7 @@ export class Client {
 
   update (): void {
     if (!this.isBot) {
-      db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+      this.penguin.update()
     }
   }
 
@@ -1157,6 +1181,7 @@ export class Client {
     this._penguin?.incrementPlayTime(minutesDelta);
     if (this._penguin !== undefined) {
       this.update();
+      this.server.untrackPlayer(this._penguin.id);
     }
     this._socket?.end();
   }
@@ -1363,6 +1388,10 @@ export class Client {
       const VALUES = [333333, 333333, 333334];
       this.sendXt('gcfct', VALUES.map((amount, i) => `${i}|${amount}`).join(','));
     }
+  }
+
+  get buddyProtocol(): BuddyProtocol | undefined {
+    return this._server.buddyProtocol
   }
 }
 

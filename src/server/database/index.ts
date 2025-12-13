@@ -427,6 +427,7 @@ export interface PenguinData {
   registration_date: number
   virtualRegistrationTimestamp: number
   minutes_played: number,
+  buddies?: number[],
   // these records act as hash sets
   inventory: number[],
   stamps: number[],
