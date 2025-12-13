@@ -1326,6 +1326,13 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-11-28',
+    roomComment: 'The Coffee Shop is vectorized',
+    rooms: {
+      coffee: 'recreation:coffee_vector.swf'
+    }
+  },
+  {
     date: '2006-12-01',
     clothingCatalog: 'archives:Dec06Style.swf'
   },

@@ -1688,6 +1688,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'old_postcards/38.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'coffee_vector.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [
