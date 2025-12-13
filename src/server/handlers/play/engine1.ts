@@ -29,17 +29,6 @@ function formatBuddyEntry(id: number, server: Client['server'], includeOnlineFla
   return online ? `${id}|${name}|1` : `${id}|${name}`;
 }
 
-function ensureBuddyPersisted(penguinId: number, buddyId: number): void {
-  const penguin = Penguin.getById(penguinId);
-  if (penguin === undefined) {
-    return;
-  }
-  if (!penguin.hasBuddy(buddyId)) {
-    penguin.addBuddy(buddyId);
-    penguin.update();
-  }
-}
-
 function sendBuddyOnlineList(client: Client, excludeId?: number): void {
   const onlineIds = client.penguin.getBuddies().filter((id) => {
     if (excludeId !== undefined && id === excludeId) {
@@ -221,11 +210,6 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
       requester.penguin.addBuddy(client.penguin.id);
       client.update();
       requester.update();
-      // persist both sides immediately
-      client.update();
-      requester.update();
-      ensureBuddyPersisted(client.penguin.id, requesterNumericId);
-      ensureBuddyPersisted(requesterNumericId, client.penguin.id);
     }
     requester.sendXt('ba', client.penguin.id, client.penguin.name);
     if (client.buddyProtocol === 'b') {
@@ -243,13 +227,11 @@ const handleBuddyAccept = (client: Client, requesterId: number) => {
   if (!client.penguin.hasBuddy(requesterNumericId)) {
     client.penguin.addBuddy(requesterNumericId);
     client.update();
-    ensureBuddyPersisted(client.penguin.id, requesterNumericId);
   }
 
   if (!requesterPenguin.hasBuddy(client.penguin.id)) {
     requesterPenguin.addBuddy(client.penguin.id);
     requesterPenguin.update();
-    ensureBuddyPersisted(requesterNumericId, client.penguin.id);
   }
 };
 
