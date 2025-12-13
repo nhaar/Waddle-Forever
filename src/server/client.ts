@@ -1161,8 +1161,6 @@ export class Client {
     this._penguin?.incrementPlayTime(minutesDelta);
     if (this._penguin !== undefined) {
       this.update();
-    }
-    if (this._penguin !== undefined) {
       this.server.untrackPlayer(this._penguin.id);
     }
     this._socket?.end();
