@@ -1724,6 +1724,42 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'dojoext_2009.swf',
       comment: 'Made by Blue Kirby, Dojo Courtyard with ninja progress'
+    },
+    {
+      file: 'black_puffle_sight/village.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/forest.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojoext.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojohide.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojoext_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojohide_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings. Features a depth error in-game: the Black Puffle on the left is supposed to be on top of the Stone object, but will instead appear behind it, to compensate, the Black Puffle was placed a little higher than it is supposed to (should be fixed at some point)'
+    },
+    {
+      file: 'black_puffle_sight/forest_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings'
+    },
+    {
+      file: 'black_puffle_sight/village_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojoext_3_volcano.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings with active volcano'
     }
   ],
   [MOD]: [

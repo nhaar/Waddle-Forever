@@ -1343,7 +1343,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-11',
-    miscComments: ['The Penguin Tales Volume 3 book is added'],
+    miscComments: ['The Penguin Tales Volume 3 book is added', 'Strange sightings appear around the island'],
     localChanges: {
       'forms/library.swf': {
         en: 'recreation:library/tales_vol_3.swf'
@@ -1354,7 +1354,12 @@ export const UPDATES_2009: Update[] = [
         rooms: {
           cove: 'recreation:fair_09_cove_no_pin.swf',
           pizza: 'recreation:pizza_101_days_of_fun_pin_fair.swf',
-          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
+          'plaza': 'recreation:fair_09_penguins_time_forgot.swf',
+
+          forest: 'recreation:black_puffle_sight/forest.swf',
+          village: 'recreation:black_puffle_sight/village.swf',
+          dojohide: 'recreation:black_puffle_sight/dojohide.swf',
+          dojoext: 'recreation:black_puffle_sight/dojoext.swf'
         }
       }
     },
@@ -1501,17 +1506,30 @@ export const UPDATES_2009: Update[] = [
     date: '2009-09-28',
     end: ['party2'],
     constructionComment: 'Construction in the Ninja Hideout continues',
+    miscComments: ['Strange sightings appear around the island'],
     temp: {
-      'fire-construction': {
+      // black puffle sightings
+      event: {
         rooms: {
-          dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+          village: 'recreation:black_puffle_sight/village_3.swf',
+          dojoext: 'recreation:black_puffle_sight/dojoext_3.swf',
+          forest: 'recreation:black_puffle_sight/forest_3.swf',
+          dojohide: 'recreation:black_puffle_sight/dojohide_3.swf'
         }
       }
     }
   },
   {
     date: '2009-10-02',
-    clothingCatalog: 'archives:Oct2009.swf'
+    clothingCatalog: 'archives:Oct2009.swf',
+    miscComments: ['The volcano becomes active'],
+    temp: {
+      event: {
+        rooms: {
+          dojoext: 'recreation:black_puffle_sight/dojoext_3_volcano.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-10-09',
@@ -1575,7 +1593,16 @@ export const UPDATES_2009: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-October2009.swf',
       plaza: 'archives:RoomsPlaza-Play3-2.swf'
-    }
+    },
+    temp: {
+      // end of black puffle sight with construction
+      'fire-construction': {
+        rooms: {
+          dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+        }
+      }
+    },
+    end: ['event']
   },
   {
     date: '2009-10-11',
