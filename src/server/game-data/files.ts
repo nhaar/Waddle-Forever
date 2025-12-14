@@ -1282,7 +1282,7 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
     },
     {
-      file: 'interfaces/2009_jan.swf',
+      file: 'interfaces/membership_badge_3.swf',
       comment: 'Made by Blue Kirby. Built on top of the October 2009 interface but removing the owned igloos functionality'
     },
     {
@@ -1696,6 +1696,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'fire_hunt/book_pin.swf',
       comment: 'Made by Blue Kirby, based on Doubleuman\'s recreation'
+    },
+    {
+      file: 'interfaces/membership_badge.swf',
+      comment: 'Made by Blue Kirby, interface where the membership badge is only seen by the player itself'
+    },
+    {
+      file: 'interfaces/membership_badge_2.swf',
+      comment: 'Made by Blue Kirby, interface where the membership badge is seen by all, but with only the basic level available'
     }
   ],
   [MOD]: [

@@ -99,15 +99,18 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-01-19',
+    miscComments: ['Members can now see a special badge on their own player card'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge.swf'
+    }
+  },
+  {
     date: '2009-01-20',
-    miscComments: ['A membership badge is added to the player card'],
     end: ['party'],
     rooms: {
       dance: 'recreation:dance_no_game_upgrades.swf'
     },
-    fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/2009_jan.swf'
-    }
   },
   {
     date: '2009-01-23',
@@ -147,6 +150,13 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-01-25',
     end: ['party']
+  },
+  {
+    date: '2009-01-29',
+    miscComments: ['The membership badge can now be seen in other player cards'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_2.swf'
+    }
   },
   {
     date: '2009-02-03',
@@ -611,6 +621,13 @@ export const UPDATES_2009: Update[] = [
       { display: 'Twice upon a Time', id: 39, pos: [6, 2] },
       { display: 'Pterodactyl Ptune', id: 35, pos: [7, 2] }
     ]
+  },
+  {
+    date: '2009-03-24',
+    miscComments: ['The membership badge now features levels'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_3.swf'
+    }
   },
   {
     date: '2009-03-27',
