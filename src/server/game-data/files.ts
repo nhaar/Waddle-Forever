@@ -1635,7 +1635,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'st_patrick_2007/town.swf',
-      comment: 'Made by lifeofgames477'
+      comment: 'Made by lifeofgames477, with additional fixes by Randomno'
     },
     {
       file: 'pre_christmas_08/plaza.swf',
