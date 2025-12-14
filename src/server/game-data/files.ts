@@ -1692,6 +1692,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'coffee_vector.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/book_pin.swf',
+      comment: 'Made by Blue Kirby, based on Doubleuman\'s recreation'
     }
   ],
   [MOD]: [

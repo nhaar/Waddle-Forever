@@ -1457,7 +1457,8 @@ export const UPDATES_2009: Update[] = [
     temp: {
       party2: {
         rooms: {
-          pizza: 'recreation:fire_hunt_pizza_no_pin.swf'
+          pizza: 'recreation:fire_hunt_pizza_no_pin.swf',
+          book: 'recreation:fire_hunt/book_pin.swf'
         }
       }
     }
