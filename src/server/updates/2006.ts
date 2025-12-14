@@ -1378,6 +1378,28 @@ export const UPDATES_2006: Update[] = [
     roomComment: 'The Attic is vectorized',
     rooms: {
       attic: 'recreation:attic_dec2006.swf'
+    },
+    temp: {
+      party2: {
+        partyName: 'Christmas Party',
+        rooms: {
+          beacon: 'recreation:christmas_06/beacon.swf',
+          coffee: 'recreation:christmas_06/coffee.swf',
+          dance: 'recreation:christmas_06/dance.swf',
+          dock: 'recreation:christmas_06/dock.swf',
+          forts: 'recreation:christmas_06/forts.swf',
+          lodge: 'recreation:christmas_06/lodge.swf',
+          town: 'recreation:christmas_06/town.swf'
+        },
+        music: {
+          beacon: 200,
+          dance: 400,
+          dock: 200,
+          lodge: 400,
+          town: 200,
+          forts: 200
+        }
+      }
     }
   },
   {

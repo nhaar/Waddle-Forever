@@ -1760,6 +1760,34 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'black_puffle_sight/dojoext_3_volcano.swf',
       comment: 'Made by Blue Kirby, phase three of sightings with active volcano'
+    },
+    {
+      file: 'christmas_06/beacon.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'christmas_06/coffee.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/lodge.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/town.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

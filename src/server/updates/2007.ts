@@ -14,7 +14,7 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-01-02',
-    end: ['party']
+    end: ['party', 'party2']
   },
   {
     date: '2007-01-05',
