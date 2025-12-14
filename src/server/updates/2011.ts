@@ -1530,6 +1530,9 @@ export const UPDATES_2011: Update[] = [
           agentlobbymulti: 'archives:BattleofDoomAgentlobbymulti.swf',
           party: 'archives:BattleofDoomParty.swf'
         },
+        music: {
+          party: 125
+        },
         localChanges: {
           'herbert_taunt.swf': {
             en: [ 'archives:ENBattleofDoomHerbertTaunt.swf', 'herbert_taunt' ]
