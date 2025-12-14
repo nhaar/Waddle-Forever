@@ -1420,8 +1420,6 @@ export const UPDATES_2009: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-September2009.swf',
       plaza: 'archives:RoomsPlaza-Play6.swf',
-      // no comment yet, but the font breaks
-      dojohide: 'archives:RoomsDojohide-1.swf'
     }
   },
   {
