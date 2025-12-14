@@ -1708,6 +1708,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'dojoext.swf',
       comment: 'Made by Blue Kirby, the Dojo Courtyard when it originally came out, made from the archived SWF of puffle sighting with the puffle removed'
+    },
+    {
+      file: 'dojo_2008.swf',
+      comment: 'Made by jeoy, the original Dojo swf'
+    },
+    {
+      file: 'dojohide_2008.swf',
+      comment: 'Made by jeoy, the original Ninja Hideout swf'
+    },
+    {
+      file: 'dojohide_2009.swf',
+      comment: 'Made by jeoy, Ninja Hideout with ninja progress and proper font before it broke'
+    },
+    {
+      file: 'dojoext_2009.swf',
+      comment: 'Made by Blue Kirby, Dojo Courtyard with ninja progress'
     }
   ],
   [MOD]: [

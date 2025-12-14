@@ -945,6 +945,15 @@ export const UPDATES_2009: Update[] = [
     migrator: 'recreation:pirate_catalog/09_05.swf'
   },
   {
+    date: '2009-05-28',
+    roomComment: 'The dojo rooms are slightly revamped',
+    rooms: {
+      dojo: 'archives:RoomsDojo.swf',
+      dojohide: 'recreation:dojohide_2009.swf',
+      dojoext: 'recreation:dojoext_2009.swf'
+    }
+  },
+  {
     date: '2009-05-29',
     iglooList: [
       { display: 'Flipper Stomper', id: 244, pos: [3, 1] },
@@ -1405,7 +1414,9 @@ export const UPDATES_2009: Update[] = [
     },
     rooms: {
       stage: 'archives:RoomsStage-September2009.swf',
-      plaza: 'archives:RoomsPlaza-Play6.swf'
+      plaza: 'archives:RoomsPlaza-Play6.swf',
+      // no comment yet, but the font breaks
+      dojohide: 'archives:RoomsDojohide-1.swf'
     }
   },
   {
