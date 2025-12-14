@@ -474,7 +474,6 @@ export const UPDATES_2009: Update[] = [
           cove: 'archives:RoomsCove-PuffleParty2009.swf',
           dance: 'archives:RoomsDance-PuffleParty2009.swf',
           dock: 'archives:RoomsDock-PuffleParty2009.swf',
-          dojo: 'archives:RoomsDojoext2008.swf',
           forest: 'archives:RoomsForest-PuffleParty2009.swf',
           berg: 'archives:RoomsBerg-PuffleParty2009.swf',
           light: 'archives:RoomsLight-PuffleParty2009.swf',
@@ -504,6 +503,12 @@ export const UPDATES_2009: Update[] = [
           party: 259,
           village: 260
         },
+      },
+      // white puffle sighting
+      event: {
+        rooms: {
+          dojoext: 'archives:RoomsDojoext2008.swf'
+        }
       }
     }
   },
@@ -513,6 +518,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-03-06',
+    end: ['event'],
     miscComments: ['White Puffles are available to adopt'],
     rooms: {
       pet: 'archives:RoomsPet_4.swf'

@@ -1704,6 +1704,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'interfaces/membership_badge_2.swf',
       comment: 'Made by Blue Kirby, interface where the membership badge is seen by all, but with only the basic level available'
+    },
+    {
+      file: 'dojoext.swf',
+      comment: 'Made by Blue Kirby, the Dojo Courtyard when it originally came out, made from the archived SWF of puffle sighting with the puffle removed'
     }
   ],
   [MOD]: [

@@ -2157,8 +2157,7 @@ export const UPDATES_2008: Update[] = [
     rooms: {
       dojo: 'archives:RoomsDojo.swf',
       dojohide: 'archives:RoomsDojohide-1.swf',
-      // this file we have has the white puffle, which I believe is only from the puffle party 2009
-      dojoext: 'archives:RoomsDojoext2008.swf'
+      dojoext: 'recreation:dojoext.swf'
     },
     music: {
       dojoext: 0
