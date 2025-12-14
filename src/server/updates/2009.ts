@@ -1592,37 +1592,17 @@ export const UPDATES_2009: Update[] = [
       stage: 'archives:RoomsStage-October2009.swf',
       plaza: 'archives:RoomsPlaza-Play3-2.swf'
     },
+    miscComments: ['A storm begins to take over the island'],
     temp: {
-      // end of black puffle sight with construction
-      'fire-construction': {
+      storm: {
         rooms: {
-          dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+          dojoext: 'archives:2009_Storm_dojoext.swf',
+          dojohide: 'archives:2009_Storm_dojohide.swf',
+          dojo: 'recreation:2009_storm/dojo.swf'
         }
       }
     },
     end: ['event']
-  },
-  {
-    date: '2009-10-11',
-    miscComments: ['A storm takes over the island'],
-    temp: {
-      event: {
-        rooms: {
-          dojoext: 'archives:2009_Storm_dojoext.swf',
-          shack: 'archives:2009_Storm_shack.swf',
-          dojohide: 'archives:2009_Storm_dojohide.swf',
-          mtn: 'archives:2009_Storm_mtn.swf',
-          village: 'archives:2009_Storm_village.swf',
-          beach: 'recreation:2009_storm/beach.swf',
-          berg: 'recreation:2009_storm/berg.swf',
-          dock: 'recreation:2009_storm/dock.swf',
-          dojo: 'recreation:2009_storm/dojo.swf',
-          forts: 'recreation:2009_storm/forts.swf',
-          plaza: 'recreation:2009_storm/plaza.swf',
-          town: 'recreation:2009_storm/town.swf'
-        }
-      }
-    }
   },
   {
     date: '2009-10-16',
@@ -1632,7 +1612,33 @@ export const UPDATES_2009: Update[] = [
       { display: 'Ruby\'s Theme', id: 37, pos: [5, 1] },
       { display: 'Haunted Disco', id: 223, pos: [3, 2] },
       { display: 'Zero Gravity', id: 279, pos: [4, 2] }
-    ]
+    ],
+    miscComments: ['The storm advances over the island'],
+    temp: {
+      storm: {
+        rooms: {
+          village: 'archives:2009_Storm_village.swf',
+          mtn: 'archives:2009_Storm_mtn.swf',
+          berg: 'recreation:2009_storm/berg.swf',
+          shack: 'archives:2009_Storm_shack.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2009-10-23',
+    miscComments: ['The storm takes over the island'],
+    temp: {
+      storm: {
+        rooms: {
+          beach: 'recreation:2009_storm/beach.swf',
+          dock: 'recreation:2009_storm/dock.swf',
+          forts: 'recreation:2009_storm/forts.swf',
+          plaza: 'recreation:2009_storm/plaza.swf',
+          town: 'recreation:2009_storm/town.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-10-24',
@@ -1660,7 +1666,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-10-26',
-    end: ['party'],
+    end: ['party', 'storm'],
     temp: {
       party2: {
         partyName: 'Halloween Party',
@@ -1736,11 +1742,15 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-01',
-    end: ['party2']
-  },
-  {
-    date: '2009-11-02',
-    end: ['event']
+    end: ['party2'],
+    temp: {
+      // end of storm
+      'fire-construction': {
+        rooms: {
+          dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-11-05',

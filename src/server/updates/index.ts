@@ -233,7 +233,8 @@ export type Event = 'party' |
   'broken-clock' |
   'forts-sign' |
   'attic-snow' |
-  'telescope-bottle';
+  'telescope-bottle' |
+  'storm';
 
 export type Update = {
   date: Version;
