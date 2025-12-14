@@ -1,4 +1,5 @@
 import { Update } from ".";
+import { CategoryID } from "../game-data/stamps";
 
 export const UPDATES_2012: Update[] = [
   {
@@ -223,7 +224,22 @@ export const UPDATES_2012: Update[] = [
     fileChanges: {
       'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf',
       'play/v2/client/shell.swf': 'approximation:shell_2012_halloween.swf'
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Characters,
+        stamps: [
+          {
+            "stamp_id": 448,
+            "name": "PH",
+            "is_member": 0,
+            "rank": 1,
+            "description": "Be in the same room as PH",
+            "rank_token": "easy"
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2012-03-29',
@@ -704,7 +720,148 @@ export const UPDATES_2012: Update[] = [
       party: {
         update: 'Rooms around the island update with Smoothie Smash\'s release'
       }
-    }
+    },
+    stampUpdates: [
+      {
+        category:   {
+          "name": "Smoothie Smash",
+          "description": "Smoothie Smash",
+          "parent_group_id": 8,
+          "display": "Games : Smoothie Smash",
+          "group_id": 58,
+          "stamps": [
+            {
+              "stamp_id": 453,
+              "name": "Beary Berry",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Serve Herbert",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 452,
+              "name": "Berry Smart",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Serve Aunt Arctic",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 457,
+              "name": "Deflector",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Take no damage for 2 mins in survival mode",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 458,
+              "name": "Energizer",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Complete 20 recipes in one game",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 456,
+              "name": "Fruit Power",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Last 2 minutes in survival mode",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 463,
+              "name": "Fruit Smasher",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Smash 50 correct fruit in a row",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 455,
+              "name": "Fruit Splatter",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Smash 10 correct fruit in a row",
+              "rank_token": "medium"
+            },
+            {
+              "stamp_id": 450,
+              "name": "Fruit Squeeze",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Complete 5 recipes in one game",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 459,
+              "name": "Fruit Stomper",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Smash 20 correct fruit in a row",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 451,
+              "name": "Shipshake",
+              "is_member": 0,
+              "rank": 1,
+              "description": "Serve Rockhopper",
+              "rank_token": "easy"
+            },
+            {
+              "stamp_id": 465,
+              "name": "Smoothie Hero",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Take no damage for 4 mins in survival mode",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 464,
+              "name": "Smoothie Master",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Last 8 minutes in survival mode",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 461,
+              "name": "Smoothie Survivor ",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Take no damage for 3 mins in survival mode",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 460,
+              "name": "Smoothie Warrior",
+              "is_member": 0,
+              "rank": 3,
+              "description": "Last 4 minutes in survival mode",
+              "rank_token": "hard"
+            },
+            {
+              "stamp_id": 462,
+              "name": "Smoothie Zing",
+              "is_member": 0,
+              "rank": 4,
+              "description": "Complete 30 recipes in one game",
+              "rank_token": "extreme"
+            },
+            {
+              "stamp_id": 454,
+              "name": "Tasty Treat",
+              "is_member": 0,
+              "rank": 2,
+              "description": "Complete 10 recipes in one game",
+              "rank_token": "medium"
+            }
+          ]
+        }
+      }
+    ]
   },
   {
     date: '2012-09-05',
@@ -1087,7 +1244,22 @@ export const UPDATES_2012: Update[] = [
         },
         clothingCatalog: 'archives:HerbertStyleNov2012.swf'
       }
-    }
+    },
+    stampUpdates: [
+      {
+        categoryId: CategoryID.Characters,
+        stamps: [
+          {
+            "stamp_id": 466,
+            "name": "Herbert",
+            "is_member": 0,
+            "rank": 4,
+            "description": "Be in the same room as Herbert.",
+            "rank_token": "extreme"
+          }
+        ]
+      }
+    ]
   },
   {
     date: '2012-11-16',
