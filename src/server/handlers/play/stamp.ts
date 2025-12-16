@@ -37,11 +37,21 @@ handler.xt(Handle.GetRecentStamps, (client) => {
 });
 
 // save stamp book cover data
-handler.xt(Handle.SetStampbookCoverData, (client, color, highlight, pattern, icon) => {
-  client.penguin.stampbook.color = color;
-  client.penguin.stampbook.highlight = highlight;
-  client.penguin.stampbook.icon = icon;
-  client.penguin.stampbook.pattern = pattern;
+handler.xt(Handle.SetStampbookCoverData, (client, color, highlight, pattern, icon, ...stamps) => {
+  client.penguin.stampbook.color = Number(color);
+  client.penguin.stampbook.highlight = Number(highlight);
+  client.penguin.stampbook.icon = Number(icon);
+  client.penguin.stampbook.pattern = Number(pattern);
+  client.penguin.stampbook.stamps = stamps.map(stampString => {
+    const [_, id, x, y, rotation, depth] = stampString.split('|').map(n => Number(n));
+    return {
+      stamp: id,
+      x,
+      y,
+      rotation,
+      depth
+    }
+  })
   client.update();
 });
 

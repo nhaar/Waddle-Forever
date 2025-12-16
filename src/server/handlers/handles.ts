@@ -308,7 +308,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.GetStampbookCoverData]: ['string'],
   [Handle.GetPlayerStamps]: ['string'],
   [Handle.GetRecentStamps]: [],
-  [Handle.SetStampbookCoverData]: ['number', 'number', 'number', 'number'],
+  [Handle.SetStampbookCoverData]: 'string',
   [Handle.SetStampEarned]: ['number'],
   [Handle.EnterWaddleGame]: [],
   [Handle.UpdateWaddleGameSeats]: [],
