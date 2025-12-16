@@ -622,7 +622,11 @@ export const UPDATES_2009: Update[] = [
           {
             note: 'Penguin Play Awards'
           }
-        ]
+        ],
+        memberRooms: {
+          stage: true,
+          party: true
+        }
       },
       party: {
         partyName: 'Snow Sculpture Showcase',
@@ -662,6 +666,12 @@ export const UPDATES_2009: Update[] = [
         rooms: {
           // pin was removed mid-party
           mtn: 'recreation:snow_sculpture_mtn_no_pin.swf'
+        }
+      },
+      party2: {
+        update: 'Non-members are granted access to the Stage during the party',
+        memberRooms: {
+          stage: false
         }
       }
     },
