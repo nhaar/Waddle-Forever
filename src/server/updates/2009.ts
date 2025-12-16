@@ -524,6 +524,10 @@ export const UPDATES_2009: Update[] = [
     end: ['party']
   },
   {
+    date: '2009-02-27',
+    migrator: 'archives:RHRIFeb2009.swf'
+  },
+  {
     date: '2009-03-06',
     end: ['event'],
     miscComments: ['White Puffles are available to adopt'],
@@ -545,6 +549,10 @@ export const UPDATES_2009: Update[] = [
         }
       }
     }
+  },
+  {
+    date: '2009-03-09',
+    migrator: false
   },
   {
     date: '2009-03-13',
