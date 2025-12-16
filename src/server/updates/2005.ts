@@ -177,7 +177,7 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-09-21',
-    clothingCatalog: 'archives:September05Style.swf',
+    clothingCatalog: 'recreation:style_september_05.swf',
     furnitureCatalog: 'recreation:furniture_sep05.swf',
     temp: {
       party: {
