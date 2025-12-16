@@ -1250,6 +1250,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-10-27',
+    clothingCatalog: 'archives:October06Style_2.swf',
     temp: {
       party: {
         partyName: 'Halloween Party',
