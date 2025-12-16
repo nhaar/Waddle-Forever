@@ -577,6 +577,9 @@ export const UPDATES_2009: Update[] = [
           village: 262,
           party: 208,
           coffee: 262
+        },
+        memberRooms: {
+          party: true
         }
       },
       event: {
