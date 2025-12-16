@@ -29,6 +29,8 @@ export const UPDATES_2007: Update[] = [
     date: '2007-01-19',
     iglooList: true,
     iglooVersion: 46,
+    furnitureCatalog: 'archives:Furniture_0701.swf',
+    iglooCatalog: 'archives:Igloo_0701.swf',
     temp: {
       party: {
         partyName: 'Winter Fiesta',
@@ -51,6 +53,8 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-01-26',
+    // Love Your Pet catalog here
+    iglooVersion: 47,
     roomComment: 'Tours are now present in the Plaza',
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza44.swf'
@@ -128,6 +132,9 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-02-16',
+    furnitureCatalog: 'archives:Furniture_0702.swf',
+    iglooCatalog: 'archives:Igloo_0702.swf',
+    iglooVersion: 51,
     temp: {
       party: {
         update: 'The Migrator is gone',
@@ -183,7 +190,9 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-03-16',
     iglooList: true,
-    iglooVersion: 52,
+    iglooVersion: 53,
+    furnitureCatalog: 'archives:Furniture_0703.swf',
+    iglooCatalog: 'archives:Igloo_0703.swf',
     temp: {
       party: {
         partyName: 'St. Patrick\'s Day Party',
@@ -255,6 +264,11 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-04-20',
+    furnitureCatalog: 'archives:Furniture_0704.swf',
+    iglooCatalog: 'archives:Igloo_0704.swf',
+  },
+  {
     date: '2007-04-27',
     temp: {
       party: {
@@ -277,7 +291,14 @@ export const UPDATES_2007: Update[] = [
     end: ['party']
   },
   {
+    date: '2007-05-11',
+    // Love Your Pet catalog here
+    iglooVersion: 54,
+  },
+  {
     date: '2007-05-18',
+    furnitureCatalog: 'archives:Furniture_0705.swf',
+    iglooCatalog: 'archives:Igloo_0705.swf',
     temp: {
       party: {
         partyName: 'Lost Map Hunt',
@@ -378,7 +399,9 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-06-15',
     iglooList: true,
-    iglooVersion: 58,
+    iglooVersion: 57,
+    furnitureCatalog: 'archives:Furniture_0706.swf',
+    iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
         update: 'The beach gets updated for the Summer Kickoff Party',
@@ -439,6 +462,12 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-07-20',
+    iglooVersion: 58,
+    furnitureCatalog: 'archives:Furniture_0707.swf',
+    iglooCatalog: 'archives:Igloo_0707.swf',
+  },
+  {
     date: '2007-07-23',
     end: ['party']
   },
@@ -452,6 +481,12 @@ export const UPDATES_2007: Update[] = [
     fileChanges: {
       'artwork/tools/missions.swf': 'archives:ArtworkToolsMissions4.swf'
     }
+  },
+  {
+    date: '2007-08-17',
+    iglooVersion: 60,
+    furnitureCatalog: 'archives:August2007betterigloos.swf',
+    iglooCatalog: 'archives:August2007iglooupgrades.swf',
   },
   {
     date: '2007-08-24',
@@ -504,6 +539,10 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-09-14',
+    iglooVersion: 64,
+  },
+  {
     date: '2007-09-20',
     end: ['event']
   },
@@ -554,6 +593,12 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-09-28',
+    iglooVersion: 65,
+    furnitureCatalog: 'archives:September2007betterigloos.swf',
+    iglooCatalog: 'archives:September2007iglooupgrades.swf',
+  },
+  {
     date: '2007-10-01',
     end: ['party']
   },
@@ -564,6 +609,12 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-10-12',
     postcardCatalog: 'archives:ArtworkCatalogueCards_0710.swf'
+  },
+  {
+    date: '2007-10-19',
+    iglooVersion: 69,
+    furnitureCatalog: 'archives:October2007betterigloos.swf',
+    iglooCatalog: 'archives:October2007iglooupgrades.swf',
   },
   {
     date: '2007-10-24',
@@ -650,6 +701,9 @@ export const UPDATES_2007: Update[] = [
     date: '2007-11-16',
     // added 604 because it has the stage, though have no idea of where it is from yet
     chatVersion: 604,
+    iglooVersion: 70,
+    furnitureCatalog: 'archives:Furniture_0711.swf',
+    iglooCatalog: 'archives:November07Furniture.swf',
     roomComment: 'A new building opens at the Plaza',
     stagePlay: {
       name: 'Space Adventure',
@@ -776,6 +830,8 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-30',
+    // Love Your Pet catalog here
+    iglooVersion: 71,
     roomComment: 'Yellow Puffles are now in the Pet Shop',
     rooms: {
       pet: 'recreation:pet_nov07.swf'
@@ -789,6 +845,9 @@ export const UPDATES_2007: Update[] = [
     date: '2007-12-14',
     miscComments: ['The Coins For Change event begins'],
     postcardCatalog: 'archives:ArtworkCatalogueCards_0712.swf',
+    iglooVersion: 72,
+    furnitureCatalog: 'archives:Dec07Furniture.swf',
+    iglooCatalog: 'archives:December07Igloo.swf',
     temp: {
       party: {
         rooms: {
