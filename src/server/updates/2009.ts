@@ -156,6 +156,14 @@ export const UPDATES_2009: Update[] = [
     miscComments: ['The membership badge can now be seen in other player cards'],
     fileChanges: {
       'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_2.swf'
+    },
+    roomComment: 'The sign in the Attic is updated',
+    temp: {
+      'attic-snow': {
+        rooms: {
+          attic: 'archives:RoomsAttic-PuffleParty2009.swf'
+        }
+      }
     }
   },
   {
@@ -481,7 +489,6 @@ export const UPDATES_2009: Update[] = [
           pet: 'archives:PuffleParty2009-0220pet.swf',
           plaza: 'archives:RoomsPlaza-PuffleParty2009.swf',
           party: 'archives:RoomsParty-PuffleParty2009.swf',
-          attic: 'archives:RoomsAttic-PuffleParty2009.swf',
           village: 'archives:RoomsVillage-PuffleParty2009.swf',
           forts: 'archives:2009pufflepartysnowforts.swf',
           town: 'archives:Rooms0220Town.swf',
