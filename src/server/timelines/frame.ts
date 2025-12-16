@@ -19,7 +19,7 @@ export const ROOM_FRAME_TIMELINE = newTimelineMap<RoomName, number>((timeline) =
   });
 
   UPDATES.forEach(update => {
-    if (update.update.frames !== undefined && update.end !== undefined) {
+    if (update.update.frames !== undefined) {
       addRecordToMap(timeline, update.update.frames, update.date, update.end);
     }
   });
