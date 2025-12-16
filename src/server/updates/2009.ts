@@ -541,6 +541,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-03-13',
+    constructionComment: 'Construction for the Penguin Play Awards begins',
     temp: {
       party: {
         partyName: 'St. Patrick\'s Day Party',
@@ -550,7 +551,6 @@ export const UPDATES_2009: Update[] = [
           dance: 'archives:RoomsDance-StPatrickParty2009.swf',
           forts: 'archives:RoomsForts-StPatrickParty2009.swf',
           plaza: 'archives:StPatricksDayParty2009-Plaza.swf',
-          stage: 'archives:StPatricksDayParty2009-Stage.swf',
           forest: 'archives:RoomsForest-StPatrickParty2009.swf',
           party: 'archives:RoomsParty-StPatrickParty2009.swf',
           dock: 'archives:RoomsDock-StPatrickParty2009.swf',
@@ -571,6 +571,14 @@ export const UPDATES_2009: Update[] = [
           party: 208,
           coffee: 262
         }
+      },
+      event: {
+        rooms: {
+          stage: 'archives:StPatricksDayParty2009-Stage.swf'
+        },
+        music: {
+          stage: 0
+        }
       }
     }
   },
@@ -578,7 +586,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-17',
     end: ['party'],
     temp: {
-      const: {
+      event: {
         rooms: {
           plaza: 'recreation:penguin_play_awards_09_plaza_const.swf'
         }
@@ -588,7 +596,7 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-03-20',
     temp: {
-      party: {
+      party2: {
         partyName: 'Penguin Play Awards',
         rooms: {
           party: 'archives:RoomsParty-PenguinPlayAwards2009.swf',
@@ -604,7 +612,7 @@ export const UPDATES_2009: Update[] = [
           'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
         }
       },
-      party2: {
+      party: {
         partyName: 'Snow Sculpture Showcase',
         rooms: {
           beach: 'archives:RoomsBeach-PenguinPlayAwards2009.swf',
@@ -616,7 +624,7 @@ export const UPDATES_2009: Update[] = [
         }
       }
     },
-    end: ['attic-snow']
+    end: ['attic-snow', 'event']
   },
   {
     date: '2009-03-22',
