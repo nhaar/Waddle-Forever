@@ -143,6 +143,20 @@ handler.xt(Handle.SendActionOld, (client, id) => {
   client.sendAction(id);
 });
 
+handler.xt(Handle.OpenBookOld, (client, toyId, frame) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  client.sendRoomXt('at', client.penguin.id, toyId, frame);
+});
+
+handler.xt(Handle.CloseBookOld, (client) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  client.sendRoomXt('rt', client.penguin.id);
+});
+
 const handleGetBuddies = (client: Client) => {
   if (!canHandleBuddy(client)) {
     return;
