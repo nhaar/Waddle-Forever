@@ -806,7 +806,7 @@ export const UPDATES_2010: Update[] = [
     roomComment: 'The Stadium returns',
     rooms: {
       town: 'archives:RoomsTown_2.swf',
-      forts: 'archives:ESForts-SoccerPitch.swf',
+      forts: 'archives:RoomsForts_2.swf',
       rink: 'archives:RoomsRink-May2010.swf'
     },
     sportCatalog: 'archives:May10Sport.swf',
