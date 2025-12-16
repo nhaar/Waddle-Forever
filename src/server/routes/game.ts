@@ -21,6 +21,7 @@ import { isEngine2, isEngine3 } from "../timelines/dates";
 import { findInVersion } from "../game-data";
 import { INDEX_HTML_TIMELINE, WEBSITE_TIMELINE } from "../timelines/website";
 import { getPaperItemsJson } from "./paperitemsjson";
+import { getGamesJson } from "./gamesjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -85,6 +86,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/en/web_service/game_configs/rooms.json', (s) => {
     return getRoomsJson(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/games.json', (s) => {
+    return getGamesJson(s.settings.version);
   });
   server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
     return getGameStrings(s.settings.version);

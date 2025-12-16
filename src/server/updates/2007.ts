@@ -162,6 +162,9 @@ export const UPDATES_2007: Update[] = [
     gameRelease: 'Pizzatron 3000',
     rooms: {
       pizza: 'recreation:pizza_2007.swf'
+    },
+    gameMusic: {
+      pizzatron: 106
     }
   },
   {

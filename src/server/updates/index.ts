@@ -1,7 +1,8 @@
 import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
+import { GameName } from "../game-data/games";
 import { RoomName } from "../game-data/rooms";
-import { getStagePlayMusic, StageName, StageScript, STAGE_PLAYS } from "../game-data/stage-plays";
+import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
@@ -105,6 +106,8 @@ export type CPUpdate = {
 
   /** All room music IDs */
   music?: Partial<Record<RoomName, number>>;
+
+  gameMusic?: Partial<Record<GameName, number>>;
 
   frames?: Partial<Record<RoomName, number>>;
 
