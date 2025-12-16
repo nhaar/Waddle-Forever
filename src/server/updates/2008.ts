@@ -1489,8 +1489,7 @@ export const UPDATES_2008: Update[] = [
     hairCatalog: 'archives:SptWigs.swf',
     constructionComment: 'A construction begins at the Plaza for the Stage',
     rooms: {
-      stage: 'recreation:plaza_ruby_construction.swf',
-
+      plaza: 'recreation:plaza_ruby_construction.swf',
     }
   },
   {
