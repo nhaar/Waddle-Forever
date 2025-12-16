@@ -442,7 +442,12 @@ export const UPDATES_2010: Update[] = [
             'en': 'archives:March2010Costume.swf'
           }
         },
-        startscreens: ['archives:StartscreenPpa-PenguinPlayAwards2010.swf']
+        startscreens: ['archives:StartscreenPpa-PenguinPlayAwards2010.swf'],
+        playScript: [
+          {
+            note: 'Penguin Play Awards'
+          }
+        ]
       }
     }
   },

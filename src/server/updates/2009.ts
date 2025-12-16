@@ -617,7 +617,12 @@ export const UPDATES_2009: Update[] = [
         },
         globalChanges: {
           'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
-        }
+        },
+        playScript: [
+          {
+            note: 'Penguin Play Awards'
+          }
+        ]
       },
       party: {
         partyName: 'Snow Sculpture Showcase',

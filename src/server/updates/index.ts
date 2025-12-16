@@ -197,6 +197,9 @@ export type CPUpdate = {
     costumeTrunk: FileRef | null;
   } & CPUpdate;
 
+  /** An update of a stage script that is independent from the normal workflow of plays */
+  playScript?: StageScript;
+
   partyIconFile?: FileRef;
 
   activeFeatures?: string;
