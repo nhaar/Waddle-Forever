@@ -12,10 +12,20 @@ for (let i = 0; i < UPDATES.length; i++) {
 }
 PINS.forEach((pin) => {
   const next = addDays(version, 14);
-  PIN_TIMELINE.push({
-    date: version,
-    end: next,
-    ...pin
-  });
+  if (Array.isArray(pin)) {
+    pin.forEach(p => {
+      PIN_TIMELINE.push({
+        date: version,
+        end: next,
+        ...p
+      });
+    })
+  } else {
+    PIN_TIMELINE.push({
+      date: version,
+      end: next,
+      ...pin
+    });
+  }
   version = next;
 });

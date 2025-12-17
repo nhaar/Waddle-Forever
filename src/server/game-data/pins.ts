@@ -11,7 +11,7 @@ export type Pin = {
   frame?: number;
 });
 
-export const PINS: Array<Pin> = [
+export const PINS: Array<Pin | Pin[]> = [
   {
     name: 'Shamrock',
     room: 'coffee',
@@ -622,5 +622,27 @@ export const PINS: Array<Pin> = [
   {
     name: 'Party Favors',
     hidden: false
-  }
+  },
+  {
+    name: 'Sleeping Bag',
+    room: 'coffee',
+    file: 'archives:Coffee_Shop_Sleeping_Bag_Pin.swf'
+  },
+  {
+    name: 'Fire Extinguisher',
+    room: 'lounge',
+    file: 'archives:Dance_Lounge_Fire_Extinguisher_Pin.swf'
+  },
+  [
+    {
+      name: 'Blue Puffle',
+      room: 'attic',
+      file: 'archives:Lodge_Attic_Blue_Puffle_Pin.swf'
+    },
+    {
+      name: 'Red Puffle',
+      room: 'lake',
+      file: 'archives:Hidden_Lake_Red_Puffle_Pin.swf'
+    }
+  ]
 ];
