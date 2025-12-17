@@ -111,7 +111,7 @@ export class Handler {
   phpListeners: Map<string, PostCallback>;
   xmlListeners: Map<string, XMLCallback>;
   onBoot: Array<(s: Server) => void>;
-  private _commandHandler: ((client: Client, id: string, message: string) => void) | undefined;
+  private _commandHandler: ((client: Client, message: string) => void) | undefined;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
@@ -197,7 +197,7 @@ export class Handler {
     }
   }
 
-  addCommandsHandler(handler: (client: Client, id: string, message: string) => void) {
+  addCommandsHandler(handler: (client: Client, message: string) => void) {
     this._commandHandler = handler;
   }
 
@@ -207,7 +207,7 @@ export class Handler {
 
   runCommand (client: Client, command: string) {
     if (this._commandHandler !== undefined) {
-      this._commandHandler(client, '', '!' + command);
+      this._commandHandler(client, '!' + command);
     }
   }
 

@@ -5,7 +5,7 @@ import { Room } from "../../game-logic/rooms";
 import { CARDS } from "../../../server/game-logic/cards";
 import { RoomName, ROOMS } from "../../../server/game-data/rooms";
 import { randomInt, Vector } from "../../../common/utils";
-import { ArgumentsIndicator, GetArgumentsType, Handle } from "../handles";
+import { ArgumentsIndicator, GetArgumentsType } from "../handles";
 import { logdebug } from "../../../server/logger";
 
 const handler = new Handler();
@@ -34,7 +34,7 @@ class CommandsHandler {
 
   getCommandsHandler() {
     const commands = this._commands;
-    return (client: Client, id: string, message: string) => {
+    return (client: Client, message: string) => {
       const commandMatch = message.match(/^(\!|COM )(\w+)(.*)/);
       if (commandMatch !== null) {
         const keyword = commandMatch[2];
