@@ -1,16 +1,13 @@
 import path from 'path';
-import fs, { read } from 'fs';
+import fs from 'fs';
 import { BrowserWindow, dialog, shell } from 'electron';
 import { postJSON } from "../common/utils";
 import { VERSION } from '../common/version';
-import { showWarning } from './warning';
-
-// there used to be other versions, but it's been deprecated
-type VersionStatus = 'current' | 'notcurrent'
+import { SettingsManager } from '../server/settings';
 
 const UPDATE_PATH = path.join(process.cwd(), 'tempupdate');
 
-export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
+export async function checkUpdates (mainWindow: BrowserWindow, settings: SettingsManager): Promise<void> {
   if (fs.existsSync(UPDATE_PATH)) {
     fs.rmdirSync(UPDATE_PATH, { recursive: true })
   }
@@ -23,29 +20,24 @@ export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
     return;
   }
 
-  const readStatus = versionStatus.status
-  let status: VersionStatus
-  if (readStatus === 'current') {
-    status = readStatus
-  } else {
-    status = 'notcurrent'
+  const newVersion = versionStatus.version;
+  if (typeof newVersion !== 'string') {
+    return;
   }
   
-  if (status !== 'current') {
-    if (process.platform === 'linux') {
-      const result = await dialog.showMessageBox(mainWindow, {
-        buttons: ['Ignore', 'Update'],
-        title: 'New version available',
-        message: `A new version is available. Please redownload the game.`,
-        defaultId: 1,
-        cancelId: 0
-      });
-  
-      if (result.response === 1) {
-        shell.openExternal('https://waddleforever.com/linux')
-      }
-    } else {
-      await showWarning(mainWindow, 'New version available', 'A new version is available. Please redownload the game from the website to have access to the latest features and bugfixes.')
+  if (newVersion !== VERSION && settings.settings.ignored_version !== newVersion) {
+    const result = await dialog.showMessageBox(mainWindow, {
+      buttons: ['Ok', 'Don\'t Ask Again', 'Open Download Website'],
+      title: 'New version available',
+      message: `A new version is available (${newVersion}). Please redownload the game to have access to the latest features and bug fixes.`,
+      defaultId: 0,
+      cancelId: 1
+    });
+
+    if (result.response === 1) {
+      settings.updateSettings({ ignored_version: newVersion });
+    } else if (result.response === 2) {
+      shell.openExternal('https://waddleforever.com/');
     }
   }
 }
