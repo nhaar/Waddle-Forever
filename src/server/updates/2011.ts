@@ -1692,6 +1692,10 @@ export const UPDATES_2011: Update[] = [
     }
   },
   {
+    date: '2011-06-17',
+    pin: 'end'
+  },
+  {
     date: '2011-06-24',
     newspaper: 'period-end'
   },
@@ -1709,6 +1713,10 @@ export const UPDATES_2011: Update[] = [
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
     },
     map: 'approximation:map_2011_party_note.swf'
+  },
+  {
+    date: '2011-06-30',
+    pin: 'start'
   },
   {
     date: '2011-07-05',

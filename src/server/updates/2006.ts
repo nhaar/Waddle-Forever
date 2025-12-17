@@ -118,7 +118,7 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-03-17',
     furnitureCatalog: 'archives:Furniture_0603.swf',
-    pin: true,
+    pin: 'start',
     roomComment: ['The Pet Shop is inaugurated'],
     temp: {
       party: {

@@ -79,8 +79,8 @@ export type PartyOp = 'battle-of-doom';
 
 export type CPUpdate = {
   map?: FileRef;
-  /** True if this update is the first seasonal pin ever */
-  pin?: true;
+  /** Pin period indicator */
+  pin?: 'start' | 'end';
   /** If the base SWF for a room that has a pin is updated with the pin in it */
   pinRoomUpdate?: FileRef;
 
