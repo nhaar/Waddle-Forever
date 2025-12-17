@@ -227,6 +227,10 @@ would need to investigated`
     {
       file: 'ArtworkRoomsForts.swf',
       comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'ArtworkRoomsSkihill.swf',
+      comment: 'Chat291.swf compatibility fixes'
     }
   ],
   [APPROXIMATION]: [

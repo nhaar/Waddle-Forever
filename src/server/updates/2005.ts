@@ -20,10 +20,10 @@ export const UPDATES_2005: Update[] = [
       'lounge': 'approximation:lounge_no_astro.swf',
       'shop': 'mammoth:artwork/rooms/shop10.swf',
       'dock': 'mammoth:artwork/rooms/dock11.swf',
-      'village': 'approximation:village_release.swf',
+      'village': 'fix:ArtworkRoomsSkihill.swf',
       'rink': 'approximation:rink_release.swf',
       'dojo': 'mammoth:artwork/rooms/dojo10.swf',
-      'agent': 'archives:ArtworkRoomsAgent10.swf', // HQ is disputed, maybe not original release
+      'agent': 'archives:ArtworkRoomsAgent10.swf', // placeholder, not accessable
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
     music: {
@@ -196,6 +196,13 @@ export const UPDATES_2005: Update[] = [
     end: ['party'],
     websiteFolder: '2005-10-26',
     indexHtml: '2005-10-26'
+  },
+  {
+    date: '2005-10-20',
+    roomComment: 'A banner is added to the Ski Village',
+    rooms: {
+      village: 'approximation:village_release.swf'
+    }
   },
   {
     date: '2005-10-24',
