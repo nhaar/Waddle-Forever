@@ -1599,9 +1599,13 @@ export const UPDATES_2011: Update[] = [
     },
     stagePlay: {
       name: 'Secrets of the Bamboo Forest',
-      costumeTrunk: 'archives:June2011SecretsOfTheBambooForestCostume.swf'
+      costumeTrunk: 'archives:June2011SecretsOfTheBambooForestCostume.swf',
+      rooms: {
+        beacon: 'archives:RoomsBeacon-EnchantedFeatherPin.swf'
+      }
     },
     rooms: {
+      stage: 'archives:2011Jun9Stage.swf',
       plaza: 'archives:RoomsPlaza-August2011.swf'
     }
   },
