@@ -207,7 +207,7 @@ export class Handler {
 
   runCommand (client: Client, command: string) {
     if (this._commandHandler !== undefined) {
-      this._commandHandler(client, '!' + command);
+      this._commandHandler(client, command);
     }
   }
 
