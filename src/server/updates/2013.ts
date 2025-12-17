@@ -264,5 +264,13 @@ export const UPDATES_2013: Update[] = [
         ]
       }
     ]
+  },
+  {
+    date: '2013-07-18',
+    // target background redesign
+    fileChanges: {
+      'play/v2/content/global/clothing/photos/906.swf': 'slegacy:media/play/v2/content/global/clothing/photos/906.swf',
+      'play/v2/content/global/clothing/icons/906.swf': 'slegacy:media/play/v2/content/global/clothing/icons/906.swf'
+    }
   }
 ]
