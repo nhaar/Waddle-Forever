@@ -416,6 +416,41 @@ handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
   client.joinRoom(roomId);
 });
 
+// open igloo to the public
+handler.xt(Handle.OpenIglooOld, (client, id) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  if (id !== client.penguin.id) {
+    return;
+  }
+  client.server.openIgloo(client.penguin.id, client.penguin.activeIgloo);
+});
+
+// close igloo to the public
+handler.xt(Handle.CloseIglooOld, (client, id) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  if (id !== client.penguin.id) {
+    return;
+  }
+  client.server.closeIgloo(client.penguin.id);
+});
+
+// get list of open igloos (member igloos)
+handler.xt(Handle.GetOpenIgloosOld, (client) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  const players = client.server.getOpenIglooPlayers();
+  if (players.length === 0) {
+    client.sendXt('gr');
+    return;
+  }
+  client.sendXt('gr', ...players.map((p) => `${p.penguin.id}|${p.penguin.name}`));
+});
+
 handler.xt(Handle.GetIgloo2007, (client, id) => {
   const targetId = Number(id);
   const targetClient = client.server.getPlayerById(targetId);
