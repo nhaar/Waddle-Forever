@@ -644,5 +644,251 @@ export const PINS: Array<Pin | Pin[]> = [
       room: 'lake',
       file: 'archives:Hidden_Lake_Red_Puffle_Pin.swf'
     }
-  ]
+  ],
+  [
+    {
+      name: 'Green Puffle',
+      room: 'dojo',
+      file: 'archives:Dojo_Green_Puffle_Pin.swf'
+    },
+    {
+      name: 'Black Puffle',
+      room: 'eco',
+      file: 'archives:Recycling_Plant_Black_Puffle_Pin.swf'
+    }
+  ],
+  [
+    {
+      name: 'Purple Puffle',
+      room: 'pizza',
+      file: 'archives:Pizza_Parlor_Purple_Puffle_Pin.swf'
+    },
+    {
+      name: 'Pink Puffle',
+      room: 'cove',
+      file: 'archives:Cove_Pink_Puffle_Pin.swf'
+    }
+  ],
+  [
+    {
+      name: 'White Puffle',
+      room: 'book',
+      file: 'archives:Book_Room_White_Puffle_Pin.swf'
+    },
+    {
+      name: 'Yellow Puffle',
+      room: 'shack',
+      file: 'archives:Mine_Shack_Yellow_Puffle_Pin.swf'
+    }
+  ],
+  [
+    {
+      name: 'Brown Puffle',
+      hidden: true
+    },
+    {
+      name: 'Orange Puffle',
+      hidden: true
+    }
+  ],
+  {
+    name: 'Savanna Tree',
+    room: 'lodge',
+    file: 'archives:Ski_Lodge_Savanna_Tree_Pin.swf'
+  },
+  {
+    name: 'Medieval Shield',
+    hidden: true
+  },
+  {
+    name: 'Brazier',
+    hidden: false
+  },
+  {
+    name: 'Red Electric Guitar',
+    hidden: true
+  },
+  {
+    name: 'Stereo',
+    hidden: true
+  },
+  {
+    name: 'Tiki Mask',
+    room: 'dock',
+    file: 'archives:Dock_Tiki_Mask_Pin.swf'
+  },
+  {
+    name: 'Gold Anchor',
+    hidden: true
+  },
+  {
+    name: 'Tropical Bird',
+    room: 'shop',
+    file: 'archives:ShopWithTropicalBirdPin.swf'
+  },
+  {
+    name: 'Checkered Flag',
+    room: 'cove',
+    file: 'archives:Cove_Checkered_Flag_Pin.swf'
+  },
+  {
+    name: 'Polar Paw Print',
+    room: 'cave',
+    file: 'archives:Underground_Pool_Polar_Paw_Print_Pin.swf'
+  },
+  {
+    name: 'Balloon Bunch',
+    room: 'forest',
+    file: 'archives:Forest_Balloon_Bunch_Pin.swf'
+  },
+  {
+    name: 'Milkshake',
+    hidden: true
+  },
+  {
+    name: 'Fence',
+    room: 'beach',
+    file: 'archives:RoomsBeach-Pin4.swf'
+  },
+  {
+    name: 'Crystal Ball',
+    room: 'lake',
+    file: 'archives:Hidden_Lake_Crystal_Ball_Pin.swf'
+  },
+  {
+    name: 'Hot Sauce',
+    hidden: true
+  },
+  {
+    name: 'Blue Fish',
+    room: 'forts',
+    file: 'archives:Snow_Forts_Blue_Fish_Pin.swf'
+  },
+  {
+    name: 'Bonsai Tree',
+    room: 'lodge',
+    file: 'archives:Ski_Lodge_Bonsai_Tree_Pin.swf'
+  },
+  {
+    name: 'Reindeer',
+    hidden: false
+  },
+  {
+    name: 'Candy Swirl',
+    room: 'coffee',
+    file: 'archives:RoomsCoffeePin8.swf'
+  },
+  {
+    name: 'Conch Shell',
+    room: 'berg',
+    file: 'archives:Iceberg_Conch_Shell_Pin.swf'
+  },
+  {
+    name: 'Beach Chair',
+    hidden: true
+  },
+  {
+    name: 'Camera',
+    hidden: true
+  },
+  {
+    name: 'Helm',
+    hidden: true
+  },
+  {
+    name: 'Cheese',
+    room: 'boiler',
+    file: 'archives:BoilerWithCheesePin.swf'
+  },
+  {
+    name: 'Cake',
+    hidden: true
+  },
+  {
+    name: 'Easter Basket',
+    room: 'forest',
+    file: 'archives:Forest_Easter_Basket_Pin.swf'
+  },
+  {
+    name: 'Forest',
+    room: 'cave',
+    file: 'archives:RoomsCave-Pin8.swf'
+  },
+  {
+    name: 'Black Helm',
+    hidden: true
+  },
+  {
+    name: 'Scorn Crest',
+    hidden: false
+  },
+  {
+    name: 'Bean Bag',
+    room: 'coffee',
+    file: 'archives:RoomsCoffeePin9.swf'
+  },
+  {
+    name: 'Superhero',
+    hidden: false
+  },
+  {
+    name: 'Supervillain',
+    room: 'dojoext',
+    file: 'archives:Dojo_Courtyard_Supervillain_Pin.swf'
+  },
+  {
+    name: 'Dub-step Puffle',
+    room: 'lake',
+    file: 'archives:LakeDub-step_Puffle_Pin.swf'
+  },
+  {
+    name: 'Spotlight',
+    room: 'attic',
+    file: 'archives:RoomsAttic-Pin10.swf'
+  },
+  {
+    name: 'Banana Peel',
+    room: 'coffee',
+    file: 'archives:RoomsCoffeePin10.swf'
+  },
+  {
+    name: 'Fruit Combo',
+    room: 'berg',
+    file: 'archives:RoomsBerg-Pin9.swf'
+  },
+  {
+    name: 'Windmill',
+    room: 'dock',
+    file: 'archives:RoomsDock-Pin10.swf'
+  },
+  {
+    name: 'Triple Scoop',
+    room: 'lodge',
+    file: 'archives:RoomsLodge-Pin8.swf'
+  },
+  {
+    name: 'Puffle Bat',
+    room: 'beach',
+    file: 'archives:RoomsBeach-Pin5.swf'
+  },
+  {
+    name: '7th Anniversary Hat',
+    room: 'cavemine',
+    file: 'archives:RoomsCavemine_pin4.swf'
+  },
+  {
+    name: 'Gariwald Family Crest',
+    room: 'eco',
+    file: 'archives:RoomsEcoPin2.swf'
+  },
+  {
+    name: 'Heavy Weights',
+    room: 'boiler',
+    file: 'archives:RoomsBoiler-Pin13.swf'
+  },
+  {
+    name: 'First Aid',
+    room: 'mine',
+    file: 'archives:RoomsMine-Nov292012.swf'
+  }
 ];

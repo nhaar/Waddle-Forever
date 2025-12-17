@@ -539,8 +539,14 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-02-25',
+    temp: {
+      party: {
+        rooms: {
+          plaza: 'archives:PuffleParty2011Plaza(2).swf'
+        }
+      }
+    },
     rooms: {
-      'plaza': 'archives:PuffleParty2011Plaza(2).swf',
       stage: 'archives:RoomsStage-February2011.swf'
     },
     stagePlay: {
