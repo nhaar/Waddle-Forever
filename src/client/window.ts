@@ -56,7 +56,7 @@ const createWindow = async (store: Store, clientSettings: GlobalSettings, server
   mainWindow.setMenu(null);
   mainWindow.maximize();
   
-  await checkUpdates(mainWindow);
+  checkUpdates(mainWindow);
 
   loadMain(mainWindow, clientSettings, serverSettings);
 
