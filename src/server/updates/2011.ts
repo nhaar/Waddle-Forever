@@ -2296,7 +2296,10 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-10-28',
-    end: ['party2']
+    end: ['party2'],
+    fileChanges: {
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20111101.swf'
+    }
   },
   {
     date: '2011-11-03',
