@@ -83,6 +83,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/radarstrike/radarstrike.swf': 'svanilla:media/play/v2/games/radarstrike/radarstrike.swf',
   'play/v2/games/rhythmhack/rhythmhack.swf': 'svanilla:media/play/v2/games/rhythmhack/rhythmhack.swf',
   'play/v2/games/robots/bitsandbolts.mp3': 'svanilla:media/play/v2/games/robots/bitsandbolts.mp3',
+  'play/v2/games/robots/bitsandbolts_panic.mp3': 'archives:GamesBitsNBoltsPanic.mp3',
   'play/v2/games/robots/BitsNBolts.swf': 'svanilla:media/play/v2/games/robots/BitsNBolts.swf',
   'play/v2/games/robots/config.xml': 'svanilla:media/play/v2/games/robots/config.xml',
   'play/v2/games/robots/HostEmulator.swf': 'svanilla:media/play/v2/games/robots/HostEmulator.swf',
