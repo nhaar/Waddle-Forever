@@ -2618,6 +2618,26 @@ export const UPDATES_2011: Update[] = [
           }
         ]
       }
+    },
+    localChanges: {
+      'instructions/card_jitsu.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu.swf'
+      },
+      'instructions/card_jitsu_fire.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_fire.swf'
+      },
+      'instructions/card_jitsu_water.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_water.swf'
+      },
+      'close_ups/ninjabelts.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/close_ups/ninjabelts.swf'
+      },
+      'close_ups/fireItems.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/close_ups/fireItems.swf'
+      },
+      'close_ups/waterItems.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf'
+      }
     }
   },
   {
