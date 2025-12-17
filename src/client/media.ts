@@ -52,7 +52,11 @@ const checkMedia = async (mediaName: string): Promise<boolean> => {
   const TARGET_DIRECTORY = path.join(MEDIA_DIRECTORY, mediaName);
   if (!fs.existsSync(TARGET_DIRECTORY)) {
     isUpToDate = false;
-    fs.mkdirSync(TARGET_DIRECTORY);
+    try {
+      fs.mkdirSync(TARGET_DIRECTORY);
+    } catch (error) {
+      throw new AdminError();
+    }
   }
 
   const versionFile = path.join(TARGET_DIRECTORY, '.version');
@@ -92,7 +96,11 @@ const checkMedia = async (mediaName: string): Promise<boolean> => {
   return success;
 }
 
-export class AdminError extends Error {};
+export class AdminError extends Error {
+  constructor() {
+    super('Could not create media directory');
+  }
+};
 
 /**
  * Initializes the media folders, downloading when needed to update things
@@ -104,12 +112,12 @@ export const startMedia = async (): Promise<void> => {
     return;
   }
 
-  try {
-    if (!fs.existsSync(MEDIA_DIRECTORY)) {
+  if (!fs.existsSync(MEDIA_DIRECTORY)) {
+    try {
       fs.mkdirSync(MEDIA_DIRECTORY);
+    } catch (error) {
+      throw new AdminError();
     }
-  } catch (error) {
-    throw new AdminError('Could not create media directory');
   }
 
   // check media of name "string" if the "boolean" is true
