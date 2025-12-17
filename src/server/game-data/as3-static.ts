@@ -49,7 +49,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/client/minigame_end_screens.swf': 'svanilla:media/play/v2/client/minigame_end_screens.swf',
   'play/v2/client/newspaper.swf': 'svanilla:media/play/v2/client/newspaper.swf',
   'play/v2/client/notifications.swf': 'svanilla:media/play/v2/client/notifications.swf',
-  'play/v2/client/phone.swf': 'svanilla:media/play/v2/client/phone.swf',
   'play/v2/client/phrase_autocomplete.swf': 'svanilla:media/play/v2/client/phrase_autocomplete.swf',
   'play/v2/client/pigfarm_catalog.swf': 'svanilla:media/play/v2/client/pigfarm_catalog.swf',
   'play/v2/client/puffle_adoption.swf': 'svanilla:media/play/v2/client/puffle_adoption.swf',
