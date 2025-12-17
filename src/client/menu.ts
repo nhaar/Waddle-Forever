@@ -10,6 +10,7 @@ import { createTimelinePicker } from "./timeline";
 import { createModsWindow } from "./mods";
 import { SettingsManager } from "../server/settings";
 import { createMultiplayerSettings } from "./multiplayer";
+import { createCommands } from "./commands";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager): MenuItemConstructorOptions[] => {
   const app: MenuItemConstructorOptions = { 
@@ -89,6 +90,10 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Multiplayer Settings',
         click: () => { createMultiplayerSettings(globalSettings,serverSettings, mainWindow); }
+      },
+      {
+        label: 'Commands',
+        click: () => { createCommands(mainWindow); }
       }
     ]
   };
