@@ -2,7 +2,6 @@ import { Client } from '../../client';
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
-import { commandsHandler } from '../commands';
 import { Handle } from '../handles';
 import { processFurniture } from './igloo';
 import { isGreaterOrEqual } from '../../../server/routes/versions';
@@ -116,8 +115,6 @@ handler.xt(Handle.GetInventoryOld, (client) => {
 handler.xt(Handle.SendMessageOld, (client, id, message) => {
   client.sendMessage(message);
 });
-
-handler.xt(Handle.SendMessageOld, commandsHandler);
 
 handler.xt(Handle.SetPositionOld, (client, ...args) => {
   client.setPosition(...args);

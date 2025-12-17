@@ -515,14 +515,6 @@ botCommands.add('epfmeeting', [
   }
 ])
 
-export const commandsHandler = commands.getCommandsHandler();
-
-handler.xt(Handle.HandleSendMessage, (client, id, message) => {
-  client.sendMessage(message);
-});
-
-handler.xt(Handle.HandleSendMessage, commandsHandler);
-handler.xt(Handle.HandleSendMessage, botCommands.getCommandHandler());
-
+handler.addCommandsHandler(commands.getCommandsHandler());
 
 export default handler;

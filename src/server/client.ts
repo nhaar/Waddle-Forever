@@ -531,6 +531,18 @@ export class Server {
       return items;
     }
   }
+
+  getAllPlayersInfo() {
+    const players: Array<{ name: string; id: number; }> = [];
+    this._playersById.forEach((client, id) => {
+      players.push({
+        id,
+        name: client.penguin.name
+      });
+    });
+
+    return players;
+  }
 }
 
 function capitalizeName(name: string): string {
