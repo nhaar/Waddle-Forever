@@ -614,5 +614,13 @@ export const PINS: Array<Pin> = [
     name: 'Snowflakes',
     room: 'forts',
     file: 'archives:SnowForts.swf'
+  },
+  {
+    name: 'Snow Globe',
+    hidden: false
+  },
+  {
+    name: 'Party Favors',
+    hidden: false
   }
 ];

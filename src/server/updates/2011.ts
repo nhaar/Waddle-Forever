@@ -3,6 +3,10 @@ import { CategoryID } from "../game-data/stamps";
 
 export const UPDATES_2011: Update[] = [
   {
+    date: '2011-01-03',
+    end: ['party']
+  },
+  {
     date: '2011-01-11',
     clothingCatalog: 'archives:January11Style.swf'
   },

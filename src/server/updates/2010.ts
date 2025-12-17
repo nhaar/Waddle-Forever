@@ -3632,5 +3632,19 @@ export const UPDATES_2010: Update[] = [
       plaza: 'recreation:plaza_ruby_no_weather.swf',
       stage: 'archives:RoomsStage-December2010.swf'
     }
+  },
+  {
+    date: '2010-12-31',
+    temp: {
+      party: {
+        decorated: false,
+        partyStart: 'New Years fireworks appear at the Iceberg and Ski Hill',
+        partyEnd: 'The fireworks celebration ends',
+        rooms: {
+          berg: 'archives:2011newyearsfireworksiceberg.swf',
+          mtn: 'archives:2011newyearsfireworksskihill.swf'
+        }
+      }
+    }
   }
 ];
