@@ -2251,5 +2251,26 @@ export const AS3_PAPERS: As3Newspaper[] = [
     submit: 'archives:News323SubmitYourContent.swf',
     dividersBack: null,
     dividersFront: null
+  },
+  {
+    title: 'COINS FOR CHANGE RESULTS ARE IN!',
+    headerFront: 'archives:News324HeaderFront.swf',
+    featureStory: 'archives:News324FeatureStory.swf',
+    supportStory: 'archives:News324SupportStory.swf',
+    upcomingEvents: 'archives:News324UpcomingEvents.swf',
+    newsFlash: 'archives:News324NewsFlash.swf',
+    askFront: 'archives:News324AskAuntArcticFront.swf',
+    headerBack: 'archives:News324HeaderBack.swf',
+    askBack: 'archives:News324AskAuntArcticBack.swf',
+    jokes: 'archives:News324JokesAndRiddles.swf',
+    secrets: 'archives:News324Secret.swf',
+    secret: 'archives:News324SecretOverlay.swf',
+    featureMore: 'archives:News324FeatureMore.swf',
+    navigationBack: 'archives:News324NavigationBack.swf',
+    navigationFront: 'archives:News324NavigationFront.swf',
+    answers: 'archives:News324RiddlesAnswers.swf',
+    submit: 'archives:News324SubmitYourContent.swf',
+    dividersBack: null,
+    dividersFront: null
   }
 ];

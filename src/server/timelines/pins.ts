@@ -35,7 +35,7 @@ function pushPin() {
 
 for (let i = 0; i < UPDATES.length; i++) {
   if (inPeriod) {
-    while (isLower(version, UPDATES[i].date)) {
+    while (isLower(version, UPDATES[i].date) && inPeriod) {
       pushPin();
     }
   }
