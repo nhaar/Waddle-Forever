@@ -13,7 +13,7 @@ Old versions of Chromium can be found [here](https://vikyd.github.io/download-ch
 The Flash version is `winpep_debug`. If a newer version is already installed, the installer will block installation. To bypass this (on Windows) edit `HKEY_LOCAL_MACHINE\SOFTWARE\Macromedia\FlashPlayerPepper\Version` and `HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Macromedia\FlashPlayerPepper\Version`. [Direct link for flashplayer22_0r0_209_winpep_debug.exe](https://archive.org/download/flashplayerarchive/pub/flashplayer/installers/archive/fp_22.0.0.209_archive.zip/22_0_r0_209_debug%2Fflashplayer22_0r0_209_winpep_debug.exe).
 
 ## mm.cfg
-For either the standalone or the plugin it is necessary to create a `mm.cfg` file to enabled logging. For standalone player see [here](https://web.archive.org/web/20210216051441/https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html).
+For either the standalone or the plugin it is necessary to create a `mm.cfg` file to enable logging. For standalone player see [here](https://web.archive.org/web/20210216051441/https://helpx.adobe.com/flash-player/kb/configure-debugger-version-flash-player.html).
 
 For the Chromium plugin, the file should be in `AppData\Local\Chromium\User Data\Default\Pepper Data\Shockwave Flash\System\mm.cfg` and the log file will be in `AppData\Local\Chromium\User Data\Default\Pepper Data\Shockwave Flash\WritableRoot\Logs\flashlog.txt`.
 
