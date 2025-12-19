@@ -1784,6 +1784,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'style_september_05.swf',
       comment: 'Originally a recreation provided by v0rtex, listed as September05Style.swf in the archives wiki. Then, fixed the Hockey Stick ID which was the pin instead of the hand item'
+    },
+    {
+      file: 'mtn_lucky_coin_pin.swf',
+      comment: 'Made by Blue Kirby'
     }
   ],
   [MOD]: [

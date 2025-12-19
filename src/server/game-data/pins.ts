@@ -390,7 +390,8 @@ export const PINS: Array<Pin | Pin[]> = [
   },
   {
     name: 'Lucky Coin',
-    hidden: false
+    room: 'mtn',
+    file: 'recreation:mtn_lucky_coin_pin.swf'
   },
   {
     name: 'Top Hat',
