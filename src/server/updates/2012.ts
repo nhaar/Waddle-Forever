@@ -413,8 +413,8 @@ export const UPDATES_2012: Update[] = [
           'dock': 'archives:MedievalParty2012ConsDock.swf',
           'forts': 'archives:MedievalParty2012ConsForts.swf',
           'mtn': 'archives:MedievalParty2012ConsMtn.swf',
-          'plaza': 'archives:MedievalParty2012ConsPlaza.swf'
-          
+          'plaza': 'archives:MedievalParty2012ConsPlaza.swf',
+          town: 'archives:MedievalParty2012ConsTown.swf'
         },
         startscreens: [
           'archives:MedievalParty2012PreStartBillboards.swf'
