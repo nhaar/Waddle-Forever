@@ -348,7 +348,8 @@ export function getPathsJson(version: Version): string {
       "w.app.p2017.dialogprompt.february.iceberg.plaque": "close_ups\/170201_dialogue_iceberg_plaque.swf",
       "w.app.p2017.dialogprompt.february.alltasks.congrats": "close_ups\/170201_dialogue_alltasks_congrats.swf",
       "w.app.p2017.dialogprompt.february.iceberg.congrats": "close_ups\/170201_dialogue_iceberg_congrats.swf",
-      "w.app.p2017.dialogprompt.march.login": "close_ups\/170322_character_dialogue_login.swf"
+      "w.app.p2017.dialogprompt.march.login": "close_ups\/170322_character_dialogue_login.swf",
+      'w.p0512.medieval.lighthouse.telescope': 'close_ups/lighthouse_telescope.swf'
     },
     "local": {
       "801_award": "awards\/801.swf",

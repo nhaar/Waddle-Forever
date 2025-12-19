@@ -1137,5 +1137,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/scornbattle/lang/de/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/de/locale.swf',
   'play/v2/games/scornbattle/lang/es/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/es/locale.swf',
   'play/v2/games/scornbattle/lang/fr/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/fr/locale.swf',
-  'play/v2/games/scornbattle/lang/pt/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/pt/locale.swf'
+  'play/v2/games/scornbattle/lang/pt/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/pt/locale.swf',
+  'play/v2/content/global/close_ups/lighthouse_telescope.swf': 'archives:MedievalParty2012telescope.swf'
 }
