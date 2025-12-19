@@ -1711,7 +1711,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'dojohide_2009.swf',
-      comment: 'Made by jeoy, Ninja Hideout with ninja progress and proper font before it broke'
+      comment: 'Made by Blue Kirby, used an archive file as a base and took emporium assets from the christmas party 2008'
     },
     {
       file: 'dojoext_2009.swf',
