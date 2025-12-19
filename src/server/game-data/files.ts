@@ -1906,6 +1906,18 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'ghosts/party.swf',
       comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work. After that, added a fix for the ghost hunter not being applying when logging in. Removed a forced JSON utils export because it was breaking stamps somehow. NOTE: the way party icon is setup is important as well, it might break the ghost scavenger hunt icon otherwise, if this file is to be replaced'
+    },
+    {
+      file: 'medieval2012/party.swf',
+      comment: 'From JF archives, unknown modifications'
+    },
+    {
+      file: 'medieval2012/mdlv1.swf',
+      comment: 'From JF archives, first login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
+    },
+    {
+      file: 'medieval2012/mdlv2.swf',
+      comment: 'From JF archives, second login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
     }
   ]
 };

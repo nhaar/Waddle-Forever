@@ -73,6 +73,10 @@ export type RoomName = 'town' |
   'party21' |
   'party22' |
   'party23' |
+  'party24' |
+  'party25' |
+  'party26' |
+  'party27' |
   'party99' |
   'pitch';
 
@@ -429,6 +433,26 @@ export const ROOMS: Record<RoomName, Room> = {
   'party23': {
     id: 873,
     name: 'Party 23',
+    preCpipName: null
+  },
+  'party24': {
+    id: 874,
+    name: 'Party 24',
+    preCpipName: null
+  },
+  'party25': {
+    id: 875,
+    name: 'Party 25',
+    preCpipName: null
+  },
+  'party26': {
+    id: 876,
+    name: 'Party 26',
+    preCpipName: null
+  },
+  'party27': {
+    id: 877,
+    name: 'Party 27',
     preCpipName: null
   },
   'party99': {

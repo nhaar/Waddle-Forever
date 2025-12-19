@@ -18,4 +18,12 @@ handler.xt(Handle.DonateCoins, (client, choice, donation) => {
   client.update();
 })
 
+handler.xt(Handle.RetrieveMedieval2012, (client) => {
+  client.sendXt('sent', JSON.stringify({
+    'msgViewedArray': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    'communicatorMsgArray': [0, 0, 0, 0, 0],
+    'questTaskStatus': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}));
+});
+
 export default handler;

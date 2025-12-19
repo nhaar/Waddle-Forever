@@ -405,6 +405,22 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-05-10',
+    temp: {
+      const: {
+        rooms: {
+          'beach': 'archives:MedievalParty2012ConsBeach.swf',
+          'cave': 'archives:MedievalParty2012ConsCave.swf',
+          'dock': 'archives:MedievalParty2012ConsDock.swf',
+          'forts': 'archives:MedievalParty2012ConsForts.swf',
+          'mtn': 'archives:MedievalParty2012ConsMtn.swf',
+          'plaza': 'archives:MedievalParty2012ConsPlaza.swf',
+          town: 'archives:MedievalParty2012ConsTown.swf'
+        },
+        startscreens: [
+          'archives:MedievalParty2012PreStartBillboards.swf'
+        ]
+      }
+    },
     furnitureCatalog: 'archives:May2012Furniture.swf',
     iglooCatalog: 'archives:May2012Igloo.swf'
   },
@@ -412,7 +428,145 @@ export const UPDATES_2012: Update[] = [
     date: '2012-05-17',
     temp: {
       party: {
-        partyName: 'Medieval Party'
+        partyName: 'Medieval Party',
+        rooms: {
+          'attic': 'archives:MedievalParty2012attic.swf',
+          'beach': 'archives:MedievalParty2012beach.swf',
+          'beacon': 'archives:MedievalParty2012beacon.swf',
+          'boiler': 'archives:MedievalParty2012boiler.swf',
+          'book': 'archives:MedievalParty2012book.swf',
+          'cave': 'archives:MedievalParty2012cave.swf',
+          'coffee': 'archives:MedievalParty2012coffee.swf',
+          'cove': 'archives:MedievalParty2012cove.swf',
+          'dance': 'archives:MedievalParty2012dance.swf',
+          'dock': 'archives:MedievalParty2012dock.swf',
+          'eco': 'archives:MedievalParty2012eco.swf',
+          'forest': 'archives:MedievalParty2012forest.swf',
+          'forts': 'archives:MedievalParty2012forts.swf',
+          'light': 'archives:MedievalParty2012light.swf',
+          'lodge': 'archives:MedievalParty2012lodge.swf',
+          'lounge': 'archives:MedievalParty2012lounge.swf',
+          'mine': 'archives:MedievalParty2012mine.swf',
+          'mtn': 'archives:MedievalParty2012mtn.swf',
+          'pizza': 'archives:MedievalParty2012pizza.swf',
+          'plaza': 'archives:MedievalParty2012plaza.swf',
+          'rink': 'archives:MedievalParty2012rink.swf',
+          'shack': 'archives:MedievalParty2012shack.swf',
+          'shop': 'archives:MedievalParty2012shop.swf',
+          'village': 'archives:MedievalParty2012village.swf',
+          'town': 'archives:RoomsTown-MedievalParty2012.swf',
+          party1: 'archives:MedievalParty2012party1.swf',
+          party2: 'archives:MedievalParty2012arty2.swf',
+          party3: 'archives:MedievalParty2012Party3.swf',
+          party4: 'archives:MedievalParty2012Party4.swf',
+          party5: 'archives:MedievalParty2012Party5.swf',
+          party6: 'archives:MedievalParty2012Party6.swf',
+          party7: 'archives:MedievalParty2012Party7.swf',
+          party8: 'archives:MedievalParty2012Party8.swf',
+          party9: 'archives:MedievalParty2012Party9.swf',
+          party10: 'archives:MedievalParty2012Party10.swf',
+          party11: 'archives:MedievalParty2012Party11.swf',
+          party12: 'archives:MedievalParty2012Party12.swf',
+          party13: 'archives:MedievalParty2012Party13.swf',
+          party14: 'archives:MedievalParty2012Party14.swf',
+          party15: 'archives:MedievalParty2012Party15.swf',
+          party16: 'archives:MedievalParty2012Party16.swf',
+          party17: 'archives:MedievalParty2012Party17.swf',
+          party18: 'archives:MedievalParty2012Party18.swf',
+          party19: 'archives:MedievalParty2012Party19.swf',
+          party20: 'archives:MedievalParty2012Party20.swf',
+          party21: 'archives:MedievalParty2012Party21.swf',
+          party22: 'archives:MedievalParty2012Party22.swf',
+          party23: 'archives:MedievalParty2012Party23.swf',
+          party24: 'archives:MedievalParty2012party24.swf',
+          party25: 'archives:MedievalParty2012party25.swf',
+          party26: 'archives:MedievalParty2012party26.swf',
+          party27: 'archives:MedievalParty2012party27.swf'
+        },
+        music: {
+          'town': 233,
+          'plaza': 233,
+          'shack': 233,
+          'coffee': 234,
+          'book': 234,
+          'shop': 234,
+          'pizza': 234,
+          'village': 295,
+          'forest': 235,
+          'dock': 235,
+          'lodge': 235,
+          'attic': 235,
+          'cove': 235,
+          'beach': 305,
+          'light': 305,
+          'beacon': 305,
+          'mtn': 266,
+          party1: 235,
+          forts: 236,
+          rink: 236,
+          cave: 236,
+          party2: 266,
+          party3: 266,
+          party4: 266,
+          party5: 266,
+          party6: 266,
+          party7: 266,
+          party8: 266,
+          party9: 266,
+          party10: 266,
+          party11: 266,
+          party12: 266,
+          party13: 265,
+          party14: 286,
+          party15: 286,
+          party16: 287,
+          party17: 288,
+          party18: 265,
+          party19: 310,
+          party20: 310,
+          party21: 309,
+          party22: 308,
+          party23: 41,
+          party24: 266,
+          party25: 322,
+          party26: 323,
+          party27: 265
+        },
+        startscreens: [
+          'archives:MedievalParty2012StartBillboards.swf'
+        ],
+        localChanges: {
+          'close_ups/party_poster.swf': {
+            'en': ['archives:MedievalParty2012Quest.swf', 'party_poster']
+          },
+          'close_ups/party_note1.swf': {
+            'en': 'archives:MedievalParty2012Item.swf'
+          },
+          'close_ups/instructions.swf': {
+            'en': ['archives:ENCloseUpsInstructionsScroll.swf', 'instructions_quest']
+          },
+          'close_ups/InstructionsScroll2.swf': {
+            'en': 'archives:ENCloseUpsInstructionsScroll2.swf'
+          },
+          'close_ups/party_catalogue.swf': {
+            'en': ['archives:MedievalParty2012Catalog.swf', 'party_catalogue']
+          },
+          'membership/party1.swf': {
+            'en': ['archives:MedievalParty2012Member1.swf', 'oops_party2_room']
+          },
+          'membership/party2.swf': {
+            'en': ['archives:MedievalParty2012Member2.swf', 'oops_party26_room']
+          }
+        },
+        globalChanges: {
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:MedievalParty2012MedievalHunt.swf'
+        },
+        fileChanges: {
+          'play/v2/content/global/content/party.swf': 'unknown:medieval2012/party.swf'
+        },
+        activeFeatures: '2012',
+        mapNote: 'archives:MedievalParty2012Party_map_note.swf',
+        partyIconFile: 'archives:MedievalParty2012MedievalHuntIcon.swf'
       }
     }
   },
