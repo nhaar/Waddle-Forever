@@ -556,6 +556,9 @@ export const UPDATES_2012: Update[] = [
           },
           'membership/party2.swf': {
             'en': ['archives:MedievalParty2012Member2.swf', 'oops_party26_room']
+          },
+          'close_ups/party_note2.swf': {
+            en: 'archives:MedievalParty2012Sky.swf'
           }
         },
         globalChanges: {
