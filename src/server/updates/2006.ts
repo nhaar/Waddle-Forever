@@ -473,7 +473,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-07-14',
-    iglooCatalog: 'July2006Igloo.swf',
+    iglooCatalog: 'archives:July2006Igloo.swf',
     postcardCatalog: 'archives:ArtworkCatalogueCards_0607.swf',
     temp: {
       party: {
@@ -538,7 +538,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-08-11',
-    iglooCatalog: 'August2006Igloo.swf',
+    iglooCatalog: 'archives:August2006Igloo.swf',
     postcardCatalog: 'archives:ArtworkCatalogueCards_0608.swf',
     temp: {
       party: {
