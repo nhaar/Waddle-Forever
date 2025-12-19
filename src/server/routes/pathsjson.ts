@@ -614,6 +614,8 @@ export function getPathsJson(version: Version): string {
       "year1314_book": "books\/year1314.swf",
       "year1415_book": "books\/year1415.swf",
       "w.app.epfhandbook": "books\/EPF-handbook.swf",
+      'w.p0512.medieval.login1': 'close_ups/mdlv1.swf',
+      'w.p0512.medieval.login2': 'close_ups/mdlv2.swf',
       ...getMapForDate(localPathsTimeline, version)
     },
     "link": {
