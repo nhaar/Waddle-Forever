@@ -456,28 +456,32 @@ export const UPDATES_2012: Update[] = [
           'village': 'archives:MedievalParty2012village.swf',
           'town': 'archives:RoomsTown-MedievalParty2012.swf',
           party1: 'archives:MedievalParty2012party1.swf',
-          party2: 'MedievalParty2012arty2.swf',
-          party3: 'MedievalParty2012Party3.swf',
-          party4: 'MedievalParty2012Party4.swf',
-          party5: 'MedievalParty2012Party5.swf',
-          party6: 'MedievalParty2012Party6.swf',
-          party7: 'MedievalParty2012Party7.swf',
-          party8: 'MedievalParty2012Party8.swf',
-          party9: 'MedievalParty2012Party9.swf',
-          party10: 'MedievalParty2012Party10.swf',
-          party11: 'MedievalParty2012Party11.swf',
-          party12: 'MedievalParty2012Party12.swf',
-          party13: 'MedievalParty2012Party13.swf',
-          party14: 'MedievalParty2012Party14.swf',
-          party15: 'MedievalParty2012Party15.swf',
-          party16: 'MedievalParty2012Party16.swf',
-          party17: 'MedievalParty2012Party17.swf',
-          party18: 'MedievalParty2012Party18.swf',
-          party19: 'MedievalParty2012Party19.swf',
-          party20: 'MedievalParty2012Party20.swf',
-          party21: 'MedievalParty2012Party21.swf',
-          party22: 'MedievalParty2012Party22.swf',
-          party23: 'MedievalParty2012Party23.swf'
+          party2: 'archives:MedievalParty2012arty2.swf',
+          party3: 'archives:MedievalParty2012Party3.swf',
+          party4: 'archives:MedievalParty2012Party4.swf',
+          party5: 'archives:MedievalParty2012Party5.swf',
+          party6: 'archives:MedievalParty2012Party6.swf',
+          party7: 'archives:MedievalParty2012Party7.swf',
+          party8: 'archives:MedievalParty2012Party8.swf',
+          party9: 'archives:MedievalParty2012Party9.swf',
+          party10: 'archives:MedievalParty2012Party10.swf',
+          party11: 'archives:MedievalParty2012Party11.swf',
+          party12: 'archives:MedievalParty2012Party12.swf',
+          party13: 'archives:MedievalParty2012Party13.swf',
+          party14: 'archives:MedievalParty2012Party14.swf',
+          party15: 'archives:MedievalParty2012Party15.swf',
+          party16: 'archives:MedievalParty2012Party16.swf',
+          party17: 'archives:MedievalParty2012Party17.swf',
+          party18: 'archives:MedievalParty2012Party18.swf',
+          party19: 'archives:MedievalParty2012Party19.swf',
+          party20: 'archives:MedievalParty2012Party20.swf',
+          party21: 'archives:MedievalParty2012Party21.swf',
+          party22: 'archives:MedievalParty2012Party22.swf',
+          party23: 'archives:MedievalParty2012Party23.swf',
+          party24: 'archives:MedievalParty2012party24.swf',
+          party25: 'archives:MedievalParty2012party25.swf',
+          party26: 'archives:MedievalParty2012party26.swf',
+          party27: 'archives:MedievalParty2012party27.swf'
         },
         music: {
           'town': 233,
@@ -522,7 +526,11 @@ export const UPDATES_2012: Update[] = [
           party20: 310,
           party21: 309,
           party22: 308,
-          party23: 41
+          party23: 41,
+          party24: 266,
+          party25: 322,
+          party26: 323,
+          party27: 265
         },
         startscreens: [
           'archives:MedievalParty2012StartBillboards.swf'
@@ -550,7 +558,11 @@ export const UPDATES_2012: Update[] = [
             'en': ['archives:MedievalParty2012Member2.swf', 'oops_party26_room']
           }
         },
+        globalChanges: {
+          'scavenger_hunt/scavenger_hunt.swf': 'archives:MedievalParty2012MedievalHunt.swf'
+        },
         mapNote: 'archives:MedievalParty2012Party_map_note.swf',
+        partyIconFile: 'archives:MedievalParty2012MedievalHuntIcon.swf'
       }
     }
   },

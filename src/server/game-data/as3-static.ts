@@ -1130,5 +1130,12 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/penguin_car_sensei_gray.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_14.swf',
   'play/v2/content/global/penguin/penguin_car_aqua.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_15.swf',
   'play/v2/content/global/penguin/penguin_car_arctic_white.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_16.swf',
-  'play/v2/content/global/penguin/penguin_frostbite.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_frostbite.swf'
+  'play/v2/content/global/penguin/penguin_frostbite.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_frostbite.swf',
+  'play/v2/games/scornbattle/ScornBattle.swf': 'svanilla:media/play/v2/games/scornbattle/ScornBattle.swf',
+  'play/v2/games/scornbattle/HostEmulator.swf': 'svanilla:media/play/v2/games/scornbattle/HostEmulator.swf',
+  'play/v2/games/scornbattle/lang/en/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/en/locale.swf',
+  'play/v2/games/scornbattle/lang/de/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/de/locale.swf',
+  'play/v2/games/scornbattle/lang/es/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/es/locale.swf',
+  'play/v2/games/scornbattle/lang/fr/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/fr/locale.swf',
+  'play/v2/games/scornbattle/lang/pt/locale.swf': 'svanilla:media/play/v2/games/scornbattle/lang/pt/locale.swf'
 }
