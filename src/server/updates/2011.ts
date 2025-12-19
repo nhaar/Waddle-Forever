@@ -2316,7 +2316,8 @@ export const UPDATES_2011: Update[] = [
     date: '2011-10-28',
     end: ['party2'],
     fileChanges: {
-      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20111101.swf'
+      // update of the toolbar with the new buddy icon. though keep in mind that I early added the puffle party here because of a missing function from the rockhopper quest (showCutscene)
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
     }
   },
   {

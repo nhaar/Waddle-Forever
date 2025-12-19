@@ -109,6 +109,24 @@ export const UPDATES_2012: Update[] = [
     end: ['party2']
   },
   {
+    date: '2012-02-15',
+    temp: {
+      const: {
+        rooms: {
+          beach: 'archives:RockhoppersQuestConstBeach.swf'
+        },
+        startscreens: [
+          'archives:RockhoppersQuestPreStartBillboards.swf'
+        ],
+        localChanges: {
+          'close_ups/party_poster.swf': {
+            en: ['archives:RockhoppersQuestBeachPoster.swf', 'party_poster']
+          }
+        }
+      }
+    }
+  },
+  {
     date: '2012-02-16',
     furnitureCatalog: 'archives:FebMarch2012Furniture.swf',
     iglooCatalog: 'archives:February2012Igloo.swf'
@@ -118,6 +136,69 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Rockhopper\'s Quest',
+        rooms: {
+          beach: 'archives:RockhoppersQuestBeach.swf',
+          dock: 'archives:RockhoppersQuestDock.swf',
+          plaza: 'archives:RockhoppersQuestPlaza.swf',
+          forts: 'archives:RockhoppersQuestForts.swf',
+          town: 'archives:RoomsTown-RockhoppersQuest.swf',
+          party1: 'archives:RockhoppersQuestParty1.swf',
+          party2: 'archives:RockhoppersQuestParty2.swf',
+          party3: 'archives:RockhoppersQuestParty3.swf',
+          party4: 'archives:RockhoppersQuestParty4.swf',
+          party5: 'archives:RockhoppersQuestParty5.swf',
+          party7: 'archives:RockhoppersQuestParty7.swf',
+          party6: 'archives:RockhoppersQuestParty6.swf',
+          party8: 'archives:RockhoppersQuestParty8.swf'
+        },
+        migrator: true,
+        music: {
+          party1: 318,
+          party3: 318,
+          party5: 318,
+          party8: 318,
+          party2: 290,
+          party4: 269,
+          party6: 319,
+          party7: 320
+        },
+        startscreens: [
+          'archives:RockhoppersQuestMemberStartBillboards.swf',
+          'archives:RockhoppersQuestStartBillboards.swf'
+        ],
+        localChanges: {
+          'close_ups/party_poster.swf': {
+            en: ['archives:RockhoppersQuestPoster.swf', 'party_poster']
+          },
+          'close_ups/party_note01.swf': {
+            en: 'archives:RockhoppersQuestCPnote.swf'
+          },
+          'close_ups/party_note02.swf': {
+            en: 'archives:RockhoppersQuestTradingnote.swf'
+          },
+          'close_ups/party_note03.swf': {
+            en: 'archives:RockhoppersQuestDinosaurnote.swf'
+          },
+          'close_ups/party_note04.swf': {
+            en: 'archives:RockhoppersQuestShipwrecknote.swf'
+          },
+          'close_ups/party_note05.swf': {
+            en: 'archives:RockhoppersQuestRotenote.swf'
+          },
+          'close_ups/party_note06.swf': {
+            en: 'archives:RockhoppersQuestCargonote.swf'
+          },
+          'catalogues/party.swf': {
+            en: 'archives:RockhoppersQuestTraddingCatalog.swf'
+          },
+          'catalogues/party2.swf': {
+            en: 'archives:RockhoppersQuestDinoCatalog.swf'
+          },
+        },
+        globalChanges: {
+          'membership/party7.swf': 'archives:RockhoppersQuestMembership.swf'
+        },
+        mapNote: 'archives:RockhoppersQuestParty_map_note.swf'
       }
     }
   },
