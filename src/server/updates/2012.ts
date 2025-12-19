@@ -545,8 +545,8 @@ export const UPDATES_2012: Update[] = [
           'close_ups/instructions.swf': {
             'en': ['archives:ENCloseUpsInstructionsScroll.swf', 'instructions_quest']
           },
-          'close_ups/instructions2.swf': {
-            'en': ['archives:ENCloseUpsInstructionsScroll2.swf', 'instructions_quest']
+          'close_ups/InstructionsScroll2.swf': {
+            'en': 'archives:ENCloseUpsInstructionsScroll2.swf'
           },
           'close_ups/party_catalogue.swf': {
             'en': ['archives:MedievalParty2012Catalog.swf', 'party_catalogue']
