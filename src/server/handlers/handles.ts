@@ -188,7 +188,8 @@ export enum Handle {
   SetPartyOp,
   SendLine,
   PlayerTransformation,
-  RetrieveMedieval2012
+  RetrieveMedieval2012,
+  Medieval2012ViewedMessage
 };
 
 /** Map of all the handles and their valid arguments */
@@ -360,7 +361,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SetPartyOp]: ['number'],
   [Handle.SendLine]: ['number'],
   [Handle.PlayerTransformation]: ['number'],
-  [Handle.RetrieveMedieval2012]: ['string']
+  [Handle.RetrieveMedieval2012]: ['string'],
+  [Handle.Medieval2012ViewedMessage]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -536,7 +538,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       'jx': Handle.JoinTemporaryWaddle
     },
     'mdvl': {
-      'retrieve': Handle.RetrieveMedieval2012
+      'retrieve': Handle.RetrieveMedieval2012,
+      'msgviewed': Handle.Medieval2012ViewedMessage
     }
   },
   'z': {

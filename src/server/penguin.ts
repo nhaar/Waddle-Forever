@@ -63,6 +63,7 @@ export class Penguin {
   private _cardProgress: CardJitsuProgress;
   private _cardWins: number;
   private _battleOfDoom: boolean;
+  private _medieval2012Message: number;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -120,6 +121,7 @@ export class Penguin {
     this._cardWins = data.cardWins;
     this._battleOfDoom = data.battleOfDoom;
     this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp;
+    this._medieval2012Message = data.medieval2012Message ?? 0;
   }
 
   serialize(): PenguinData {
@@ -175,7 +177,8 @@ export class Penguin {
       isNinja: this._cardProgress.isNinja,
       cardWins: this._cardWins,
       battleOfDoom: this._battleOfDoom,
-      virtualRegistrationTimestamp: this._virtualRegistrationTimestamp
+      virtualRegistrationTimestamp: this._virtualRegistrationTimestamp,
+      medieval2012Message: this._medieval2012Message
     }
   }
 
@@ -691,6 +694,14 @@ export class Penguin {
 
   get virtualRegistration() {
     return this._virtualRegistrationTimestamp;
+  }
+
+  get medieval2012Message() {
+    return this._medieval2012Message;
+  }
+
+  set medieval2012Message(value: number) {
+    this._medieval2012Message = value;
   }
 
   setVirtualRegistration(value: number) {

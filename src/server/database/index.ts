@@ -470,6 +470,7 @@ export interface PenguinData {
   cardWins: number;
   /** If completed battle of doom or not */
   battleOfDoom: boolean;
+  medieval2012Message?: number;
 }
 
 export default db;

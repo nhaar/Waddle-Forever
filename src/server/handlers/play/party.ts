@@ -19,11 +19,16 @@ handler.xt(Handle.DonateCoins, (client, choice, donation) => {
 })
 
 handler.xt(Handle.RetrieveMedieval2012, (client) => {
+  const medievalMessage = client.penguin.medieval2012Message;
   client.sendXt('sent', JSON.stringify({
-    'msgViewedArray': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    'communicatorMsgArray': [0, 0, 0, 0, 0],
-    'questTaskStatus': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-}));
+    'msgViewedArray': [medievalMessage >= 1 ? 1 : 0, medievalMessage >= 2 ? 1 : 0]
+  }));
+});
+
+handler.xt(Handle.Medieval2012ViewedMessage, (client, messageIndex) => {
+  // message is index of an array (0-indexed)
+  client.penguin.medieval2012Message = messageIndex + 1;
+  client.penguin.update();
 });
 
 export default handler;
