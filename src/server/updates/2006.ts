@@ -1178,7 +1178,7 @@ export const UPDATES_2006: Update[] = [
       dock: 'archives:ArtworkRoomsDock40.swf',
       pet: 'archives:ArtworkRoomsPet40.swf',
       dojo: 'archives:ArtworkRoomsDojo41.swf',
-      shack: 'recreation:shack_vector.swf'
+      shack: 'archives:ArtworkRoomsShack40.swf'
     }
   },
   {
