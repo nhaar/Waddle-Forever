@@ -648,6 +648,9 @@ export const UPDATES_2010: Update[] = [
     },
     rooms: {
       forest: 'archives:RoomsForest_2.swf'
+    },
+    music: {
+      eco: 285
     }
   },
   {

@@ -89,7 +89,7 @@ export function getRoomsJson(version: Version): string {
       "room_key": "eco",
       "name": "eco",
       "display_name": "eco",
-      "music_id": 284,
+      "music_id": 0,
       "is_member": 0,
       "path": "eco.swf",
       "max_users": 80,
