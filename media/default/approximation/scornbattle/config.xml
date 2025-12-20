@@ -1,0 +1,11 @@
+<content>
+<gameID>9988776655</gameID>
+<gameLinkage/>
+<gameClass>com.clubpenguin.games.arrow.ArrowEngine</gameClass>
+<!-- 	<gameLocale>
+		en
+	</gameLocale>  -->
+<gameConfig> ScornBattleConfig.xml </gameConfig>
+<gameAssets> </gameAssets>
+<!--  A Comment in the xml  -->
+</content>

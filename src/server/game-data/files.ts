@@ -484,6 +484,22 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'holiday_2012/engine.swf',
       comment: 'Originally engine_modern_no_glow. Added Reindeer, Toycar and Frostbite transformations. Added turnPlayerIntoPenguin function. Modified AvatarManager slightly so that the 2012 holiday party timer can fetch the time and so that the shell can update it. Removed Herbert transformation because it was conflicting with the reindeer puffle'
+    },
+    {
+      file: 'scornbattle/scorn_battle.swf',
+      comment: 'Originally ScornBattle.swf from vanilla media, but in order to function with modern client, the code was changed, namely, the com.disney packages were ported from bits and bolts, and the EndGameVO class was also copied from there (raw AS3 edit in FFDEC was used, but it seems to work fine)'
+    },
+    {
+      file: 'scornbattle/config.xml',
+      comment: 'Because modern bits and bolts code was used in the scorn battle swf, this config xml is needed and it was adapted from bits and bolts to work with these swfs (credit to Jeff the Rock, this is from CPImagined)'
+    },
+    {
+      file: 'scornbattle/scorn.xml',
+      comment: 'Same reasoning as scornbattle/config.xml, this file is just a dummy file for the code to work'
+    },
+    {
+      file: 'scornbattle/en.xml',
+      comment: 'Same reasoning as scornbattle/config.xml, this file is the locale file written into xml'
     }
   ],
   [RECREATION]: [
