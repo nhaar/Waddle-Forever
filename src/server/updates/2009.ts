@@ -851,7 +851,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-17',
-    furnitureCatalog: 'archives:FurnApr2009.swf'
+    furnitureCatalog: 'archives:FurnApr2009.swf',
+    iglooCatalog: 'archives:April2009Igloo.swf'
   },
   {
     date: '2009-05-01',
@@ -1547,7 +1548,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-18',
-    furnitureCatalog: 'archives:FurnSep2009.swf'
+    furnitureCatalog: 'archives:FurnSep2009.swf',
+    iglooCatalog: 'archives:September2009Igloo.swf'
   },
   {
     date: '2009-09-21',
@@ -1684,6 +1686,7 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-10-16',
     furnitureCatalog: 'archives:OctoberFurn09.swf',
+    iglooCatalog: 'archives:OctoberIgloo09.swf',
     iglooList: [
       { display: 'Team Power', id: 33, pos: [1, 1] },
       { display: 'Ruby\'s Theme', id: 37, pos: [5, 1] },
@@ -1971,7 +1974,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-21',
-    furnitureCatalog: 'archives:NovemberFurn09.swf'
+    furnitureCatalog: 'archives:NovemberFurn09.swf',
+    iglooCatalog: 'archives:NovemberIgloo09.swf',
   },
   {
     date: '2009-11-23',
@@ -2053,6 +2057,7 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-12-11',
     furnitureCatalog: 'archives:December09Furniture.swf',
+    iglooCatalog: 'archives:December2009Igloos.swf',
     temp: {
       const: {
         rooms: {

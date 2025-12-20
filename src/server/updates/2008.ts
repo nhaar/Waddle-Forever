@@ -1963,6 +1963,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-10-17',
     furnitureCatalog: 'archives:FurnOct2008.swf',
+    iglooCatalog: 'archives:October2008Igloo.swf',
     iglooList: [
       [{ display: 'Halloween', id: 223, new: true }, { display: 'Pizza Parlor', id: 20 }],
       [{ display: 'Halloween Dance', id: 224, new: true }, { display: 'Ocean Voyage', id: 212 }],
@@ -2573,6 +2574,10 @@ export const UPDATES_2008: Update[] = [
       ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
       ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
     ]
+  },
+  {
+    date: '2008-12-26',
+    iglooCatalog: 'archives:IglooCatalogDec2008EN.swf'
   },
   {
     date: '2008-12-29',

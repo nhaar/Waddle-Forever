@@ -338,7 +338,8 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-02-11',
     clothingCatalog: 'archives:PenguinStyleFeb2011.swf',
-    furnitureCatalog: 'archives:Feb-Mar2011BetterIgloos.swf'
+    furnitureCatalog: 'archives:Feb-Mar2011BetterIgloos.swf',
+    iglooCatalog: 'archives:Feb2011Igloos.swf'
   },
   {
     date: '2011-02-17',
@@ -1321,7 +1322,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-05-13',
-    furnitureCatalog: 'archives:May2011Furniture.swf'
+    furnitureCatalog: 'archives:May2011Furniture.swf',
+    iglooCatalog: 'archives:May2011Igloo.swf'
   },
   {
     date: '2011-05-17',
@@ -1729,6 +1731,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-07-14',
     furnitureCatalog: 'archives:Jul2011Furniture.swf',
+    iglooCatalog: 'archives:July2011Igloo.swf',
     newspaper: 'irregular',
     temp: {
       const: {
@@ -2135,7 +2138,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-10-13',
-    furnitureCatalog: 'archives:OctNov2011Furniture.swf'
+    furnitureCatalog: 'archives:OctNov2011Furniture.swf',
+    iglooCatalog: 'archives:October2011Igloo.swf'
   },
   {
     date: '2011-10-20',
@@ -2435,7 +2439,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-11-10',
-    furnitureCatalog: 'archives:NovDec2011Furniture.swf'
+    furnitureCatalog: 'archives:NovDec2011Furniture.swf',
+    iglooCatalog: 'archives:November2011Igloo.swf'
   },
   {
     date: '2011-11-17',
@@ -2852,6 +2857,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-15',
     furnitureCatalog: 'archives:December2011Furniture.swf',
+    iglooCatalog: 'archives:December2011Igloo.swf',
     partyComment: 'A new item of the Advent Calendar is available'
   },
   {
