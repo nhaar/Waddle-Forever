@@ -35,7 +35,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/client/book.swf': 'svanilla:media/play/v2/client/book.swf',
   'play/v2/client/buddies.swf': 'svanilla:media/play/v2/client/buddies.swf',
   'play/v2/client/character_dialogue_puffletricks.swf': 'svanilla:media/play/v2/content/global/close_ups/character_dialogue_puffletricks.swf',
-  'play/v2/client/club_penguin.swf': 'svanilla:media/play/v2/client/club_penguin.swf',
   'play/v2/client/courtyard_sensei.swf': 'svanilla:media/play/v2/client/courtyard_sensei.swf',
   'play/v2/client/dependencies.json': 'svanilla:media/play/v2/client/dependencies.json',
   'play/v2/client/game_launcher.swf': 'svanilla:media/play/v2/client/game_launcher.swf',

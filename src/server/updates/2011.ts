@@ -1707,7 +1707,8 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
       'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
-      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf'
+      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf',
+      'play/v2/client/club_penguin.swf': 'approximation:club_penguin_2011.swf',
     },
     globalChanges: {
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
