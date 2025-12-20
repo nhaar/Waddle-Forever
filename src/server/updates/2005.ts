@@ -10,7 +10,9 @@ export const UPDATES_2005: Update[] = [
     indexHtml: 'beta',
     websiteFolder: 'beta',
     fileChanges: {
-      'chat291.swf': 'approximation:chat291_no_news.swf' // newspapers-less precpip client
+      'chat291.swf': 'approximation:chat291_no_news.swf', // newspapers-less precpip client
+      // placeholder catalogue so that it doesn't softlock
+      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf'
     },
     rooms: {
       'town': 'approximation:town_release.swf',
