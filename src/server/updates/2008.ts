@@ -10,6 +10,13 @@ export const UPDATES_2008: Update[] = [
     clothingCatalog: 'archives:Clothing_0801.swf'
   },
   {
+    date: '2008-01-09',
+    miscComments: ['The heart emote is back'],
+    fileChanges: {
+      'interface.swf': 'archives:SystemInterface71.swf'
+    }
+  },
+  {
     date: '2008-01-16',
     // according to newspaper
     // unsure if in the original game the animation replayed each time

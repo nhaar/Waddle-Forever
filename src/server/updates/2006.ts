@@ -721,6 +721,9 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-09-21',
     chatVersion: 506,
+    fileChanges: {
+      'interface.swf': 'recreation:old_interface/old_toolbar.swf'
+    },
     map: 'approximation:map_beach_changed_id.swf',
     miscComments: ['The Lightbulb Hunt ends'],
     end: ['event'],

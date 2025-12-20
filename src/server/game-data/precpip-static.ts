@@ -11,7 +11,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'chat299.swf': 'fix:Chat299.swf',
   'chat506.swf': 'unknown:chat506.swf',
   'crumbs21.swf': 'slippers07:media/crumbs21.swf',
-  'interface41.swf': 'slippers07:media/interface41.swf',
   'paper86.swf': 'slippers07:media/paper86.swf',
   'join/join13.swf': 'slippers07:media/join/join13.swf',
   'interface/errors4.swf': 'slippers07:media/interface/errors4.swf',

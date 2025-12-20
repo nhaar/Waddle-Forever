@@ -1812,6 +1812,22 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'mtn_lucky_coin_pin.swf',
       comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'old_interface/old_toolbar.swf',
+      comment: 'Made by Doubleuman, interface71 changed to have the old toolbar'
+    },
+    {
+      file: 'old_interface/new_toolbar.swf',
+      comment: 'Made by Doubleuman, interface71 with emotes from when laughing emote was updated'
+    },
+    {
+      file: 'old_interface/skull_heart_removed.swf',
+      comment: 'Made by Doubleuman, interface71 with emotes from when the skull and heart emotes were removed'
+    },
+    {
+      file: 'old_interface/new_emotes_no_heart.swf',
+      comment: 'Made by Doubleuman, interface71 with the emotes from when new emotes were added but before the heart emote was re-added'
     }
   ],
   [MOD]: [

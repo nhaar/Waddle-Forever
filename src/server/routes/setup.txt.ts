@@ -69,7 +69,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 &missions=&
 &journal=11&
 &crumbs=21&
-&interface=41&
+&interface=&
 &errors=4&
 &join=14&
 &edit=9&
