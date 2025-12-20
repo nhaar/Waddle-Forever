@@ -1740,9 +1740,5 @@ export const UPDATES_2012: Update[] = [
         migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
     }
-  },
-  {
-    date: '2012-12-31',
-    end: ['party']
   }
 ];

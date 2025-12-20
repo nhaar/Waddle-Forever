@@ -3,6 +3,10 @@ import { CategoryID } from "../game-data/stamps";
 
 export const UPDATES_2013: Update[] = [
   {
+    date: '2013-01-04',
+    end: ['party']
+  },
+  {
     date: '2013-05-23',
     stampUpdates: [
       {
