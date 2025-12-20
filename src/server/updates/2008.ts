@@ -1503,7 +1503,7 @@ export const UPDATES_2008: Update[] = [
     date: '2008-09-12',
     stagePlay: {
       name: 'Ruby and the Ruby',
-      costumeTrunk: 'archives:July09Costume.swf',
+      costumeTrunk: 'archives:September2008Costume.swf',
       script: [
         {
           "note": "Ruby and the Ruby"

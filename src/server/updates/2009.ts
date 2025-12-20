@@ -1443,7 +1443,7 @@ export const UPDATES_2009: Update[] = [
     },
     stagePlay: {
       name: 'The Penguins that Time Forgot',
-      costumeTrunk: 'archives:June08Costume.swf',
+      costumeTrunk: 'archives:September2009Costume.swf',
       script: [
         { note: "The Penguins that Time Forgot" },
         { name: "Chester:", message: "Time to use this Time Travel 1000!" },
