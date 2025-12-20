@@ -231,6 +231,10 @@ would need to investigated`
     {
       file: 'ArtworkRoomsSkihill.swf',
       comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'StartModuleBeta.swf',
+      comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself'
     }
   ],
   [APPROXIMATION]: [
