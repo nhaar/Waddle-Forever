@@ -1590,7 +1590,10 @@ export const UPDATES_2012: Update[] = [
       village: 'archives:RoomsVillage_4.swf',
       dock: 'archives:RoomsDock_2.swf',
       beach: 'archives:RoomsBeach-Dec2012.swf',
-      dance: 'archives:RoomsDance_5.swf'
+      dance: 'archives:RoomsDance_5.swf',
+      agentcom: 'archives:RoomsAgentcom-December2012.swf',
+      agentlobbymulti: 'archives:ENRoomsAgentLobbyMultiDec2012.swf',
+      agentlobbysolo: 'archives:ENRoomsAgentLobbySoloDec2012.swf'
     },
     music: {
       shop: 321
