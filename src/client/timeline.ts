@@ -100,6 +100,9 @@ function getTimeline(): Day[] {
     if (update.update.hairCatalog !== undefined) {
       addEvent(map, update.date, 'A new Big Wigs catalog is available', 'other');
     }
+    if (update.update.petFurniture !== undefined) {
+      addEvent(map, update.date, 'A new edition of Pet Furniture is available', 'other');
+    }
     if (update.update.furnitureCatalog !== undefined) {
       addEvent(map, update.date, 'New furniture catalog available', 'furniture');
     }

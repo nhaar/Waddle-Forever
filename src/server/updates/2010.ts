@@ -105,6 +105,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-02-11',
+    petFurniture: 'archives:Feb2010Pets.swf',
     stagePlay: {
       name: 'Secrets of the Bamboo Forest',
       costumeTrunk: 'archives:October2010Costume.swf',
@@ -499,11 +500,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-03-19',
-    localChanges: {
-      'catalogues/pets.swf': {
-        en: 'archives:Mar2010Pets.swf'
-      }
-    }
+    petFurniture: 'archives:Mar2010Pets.swf'
   },
   {
     date: '2010-03-26',

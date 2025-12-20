@@ -852,7 +852,8 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-04-17',
     furnitureCatalog: 'archives:FurnApr2009.swf',
-    iglooCatalog: 'archives:April2009Igloo.swf'
+    iglooCatalog: 'archives:April2009Igloo.swf',
+    petFurniture: 'archives:April2009Pets.swf'
   },
   {
     date: '2009-05-01',
