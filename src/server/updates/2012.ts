@@ -203,6 +203,17 @@ export const UPDATES_2012: Update[] = [
     }
   },
   {
+    date: '2012-02-29',
+    temp: {
+      party: {
+        update: 'A new item is available at the beach',
+        rooms: {
+          beach: 'archives:RockhoppersQuestBeach1.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2012-03-01',
     clothingCatalog: 'archives:PenguinStyleMar2012.swf'
   },
