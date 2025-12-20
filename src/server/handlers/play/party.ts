@@ -1,5 +1,8 @@
+import { Client } from "../../client";
 import { Handler } from "..";
 import { Handle } from "../handles";
+import { findInVersionStrict } from "../../game-data";
+import { BAKERY_TIMELINE } from "../../timelines/cfc";
 
 const handler = new Handler();
 
@@ -29,6 +32,29 @@ handler.xt(Handle.Medieval2012ViewedMessage, (client, messageIndex) => {
   // message is index of an array (0-indexed)
   client.penguin.medieval2012Message = messageIndex + 1;
   client.penguin.update();
+});
+
+function getBakeryStateArgs(client: Client): [string, string] {
+  return ['barsu', client.server.bakery.bakeryState]
+}
+
+handler.xt(Handle.GetBakeryState, (client) => {
+  client.sendXt(...getBakeryStateArgs(client));
+});
+
+function sendBakeryStateToRoom(client: Client) {
+  client.sendRoomXt(...getBakeryStateArgs(client));
+}
+
+handler.xt(Handle.SendEmote, (client, emote) => {
+  if (findInVersionStrict(client.version, BAKERY_TIMELINE) === false) {
+    return;
+  }
+  // party3
+  if (client.room.id === 853 && Number(emote) === client.server.bakery.emote) {
+    client.server.bakery.incrementCheer();
+    sendBakeryStateToRoom(client);
+  }
 });
 
 export default handler;

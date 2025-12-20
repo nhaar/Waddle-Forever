@@ -315,6 +315,36 @@ type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGa
 // track which buddy packet namespace a client uses: chat291-339 "s" vs chat506 "b"
 type BuddyProtocol = 's' | 'b';
 
+/** Controls the holiday party 2012 bakery room */
+class Bakery {
+  private _currentEmote: number = 1;
+  static CHEER_CAPACITY = 7;
+  private _cheerCount: number = 0;
+
+  get emote() {
+    return this._currentEmote;
+  }
+
+  get cheerCount() {
+    return this._cheerCount;
+  }
+
+  incrementCheer() {
+    this._cheerCount++;
+  }
+
+  get bakeryState() {
+    return JSON.stringify({
+      CurrentStation: 'CheerStation',
+      CheerStation: {
+        CheerCapacity: Bakery.CHEER_CAPACITY,
+        CurrentCheerCount: this.cheerCount,
+        Emote: this.emote
+      }
+    })
+  }
+}
+
 /** Manages a gameplayer server */
 export class Server {
   /** All multiplayer rooms */
@@ -339,12 +369,15 @@ export class Server {
 
   private _buddyProtocol: BuddyProtocol | undefined;
 
+  private _bakery: Bakery;
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
+    this._bakery = new Bakery(); 
     this.init();
   }
 
@@ -542,6 +575,10 @@ export class Server {
     });
 
     return players;
+  }
+
+  get bakery() {
+    return this._bakery;
   }
 }
 

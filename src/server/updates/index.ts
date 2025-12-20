@@ -189,6 +189,7 @@ export type CPUpdate = {
   newWaddleRooms?: WaddleRoomInfo[];
 
   coinsForChange?: true;
+  bakery?: true;
 
   stagePlay?: {
     name: StageName;

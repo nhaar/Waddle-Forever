@@ -189,7 +189,8 @@ export enum Handle {
   SendLine,
   PlayerTransformation,
   RetrieveMedieval2012,
-  Medieval2012ViewedMessage
+  Medieval2012ViewedMessage,
+  GetBakeryState
 };
 
 /** Map of all the handles and their valid arguments */
@@ -362,7 +363,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SendLine]: ['number'],
   [Handle.PlayerTransformation]: ['number'],
   [Handle.RetrieveMedieval2012]: ['string'],
-  [Handle.Medieval2012ViewedMessage]: ['number']
+  [Handle.Medieval2012ViewedMessage]: ['number'],
+  [Handle.GetBakeryState]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -442,7 +444,10 @@ const HANDLER_MAPPING: HandlerMapping = {
     'gb': Handle.GetBuddies,
     'go': Handle.GetBuddyOnline,
     'bq': Handle.BuddyRequest,
-    'ba': Handle.BuddyAccept,
+    'ba': {
+      '': Handle.BuddyAccept,
+      'barsu': Handle.GetBakeryState
+    },
     'bd': Handle.BuddyDecline,
     'br': Handle.BuddyRemove,
     'bm': Handle.BuddyMessage,
@@ -610,7 +615,12 @@ iterateEntries(HANDLER_MAPPING, (ext, dirs) => {
       iterateHandles(ext, dir, codes);
     } else {
       iterateEntries(codes, (code, names) => {
-        iterateHandles(ext, code, names, dir);
+        // "root handler"
+        if (code === '') {
+          iterateHandles(ext, dir, names);
+        } else {
+          iterateHandles(ext, code, names, dir);
+        }
       })
     }
   });

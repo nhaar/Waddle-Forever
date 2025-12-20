@@ -11,3 +11,13 @@ export const COINS_FOR_CHANGE_TIMELINE = newVersionsTimeline<boolean>(timeline =
     }
   })
 });
+
+export const BAKERY_TIMELINE = newVersionsTimeline<boolean>(timeline => {
+  timeline.addInfo(false, START_DATE);
+
+  UPDATES.forEach(update => {
+    if (update.update.bakery === true) {
+      timeline.addInfo(true, update.date, update.end);
+    }
+  });
+});

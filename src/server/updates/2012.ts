@@ -1737,6 +1737,7 @@ export const UPDATES_2012: Update[] = [
           'play/v2/client/engine.swf': 'approximation:holiday_2012/engine.swf'
         },
         coinsForChange: true,
+        bakery: true,
         migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
     }
