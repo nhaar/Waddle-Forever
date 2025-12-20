@@ -702,6 +702,10 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-06-14',
+    miscComments: ['The Book Room is renovated'],
+    rooms: {
+      book: 'archives:PlayV2ContentGlobalRoomsBook2.swf'
+    },
     temp: {
       party: {
         partyName: 'Marvel Super Hero Takeover',
@@ -1414,7 +1418,16 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-11-01',
     end: ['party'],
-    clothingCatalog: 'archives:PenguinStyleNov2012.swf'
+    clothingCatalog: 'archives:PenguinStyleNov2012.swf',
+    miscComments: ['Some rooms are renovated'],
+    rooms: {
+      dance: 'archives:RoomsDance_4.swf',
+      shop: 'archives:RoomsShop_3.swf',
+      pizza: 'archives:RoomsPizza_2.swf'
+    },
+    music: {
+      pizza: 344
+    }
   },
   {
     date: '2012-11-08',
@@ -1576,7 +1589,11 @@ export const UPDATES_2012: Update[] = [
       plaza: 'archives:RoomsPlaza_3.swf',
       village: 'archives:RoomsVillage_4.swf',
       dock: 'archives:RoomsDock_2.swf',
-      beach: 'archives:RoomsBeach-Dec2012.swf'
+      beach: 'archives:RoomsBeach-Dec2012.swf',
+      dance: 'archives:RoomsDance_5.swf'
+    },
+    music: {
+      shop: 321
     }
   },
   {
