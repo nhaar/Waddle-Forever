@@ -1568,7 +1568,16 @@ export const UPDATES_2012: Update[] = [
     date: '2012-12-06',
     end: ['party'],
     clothingCatalog: 'archives:PenguinStyleDec2012.swf',
-    sportCatalog: 'archives:Dec2012Sport.swf'
+    sportCatalog: 'archives:Dec2012Sport.swf',
+    roomComment: 'Outside rooms are renovated',
+    rooms: {
+      town: 'archives:RoomsTown_5.swf',
+      forts: 'archives:RoomsForts2012-Hockey.swf',
+      plaza: 'archives:RoomsPlaza_3.swf',
+      village: 'archives:RoomsVillage_4.swf',
+      dock: 'archives:RoomsDock_2.swf',
+      beach: 'archives:RoomsBeach-Dec2012.swf'
+    }
   },
   {
     date: '2012-12-13',
