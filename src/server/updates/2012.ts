@@ -656,6 +656,19 @@ export const UPDATES_2012: Update[] = [
     }
   },
   {
+    date: '2012-05-23',
+    temp: {
+      party: {
+        update: 'The medieval island changes',
+        rooms: {
+          party24: 'archives:RoomsParty24-11Feb2014.swf',
+          party26: 'archives:MedievalParty2012party26_2.swf',
+          party27: 'archives:RoomsParty27-11Feb2014.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2012-05-30',
     end: ['party']
   },
