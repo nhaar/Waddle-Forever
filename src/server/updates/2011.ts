@@ -126,9 +126,7 @@ export const UPDATES_2011: Update[] = [
       'archives:LoginAdopt_green.swf',
       'archives:LoginAdopt_pink.swf',
       'archives:LocalEnLoginBackgroundsAdopt_yellow.swf',
-      'archives:LoginDucky.swf',
-      'archives:LoginJetpack.swf',
-      'archives:LoginStamps3.swf'
+      'archives:LoginJetpack.swf'
     ],
     temp: {
       party: {
