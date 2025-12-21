@@ -307,6 +307,10 @@ class GameRoom {
   getWaddleRooms() {
     return Array.from(this._waddles.values());
   }
+
+  sendXt(handler: string, ...args: Array<string | number>) {
+    this.players.forEach((client) => client.sendXt(handler, ...args));
+  }
 }
 
 /** Map of the waddle games and their constructors */
@@ -315,12 +319,31 @@ type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGa
 // track which buddy packet namespace a client uses: chat291-339 "s" vs chat506 "b"
 type BuddyProtocol = 's' | 'b';
 
+type BakeryState = 'CheerStation' | 'MultiplierStation';
+type BakeryMultiplier = 'Small' | 'Medium' | 'Large';
+
 /** Controls the holiday party 2012 bakery room */
 class Bakery {
+  private _state: BakeryState = 'CheerStation';
+  
   private _currentEmote: number = 1;
   static CHEER_CAPACITY = 7;
   private _cheerCount: number = 0;
 
+  private _multiplierPenguins: Set<number> = new Set();
+  private _multiplierCount: number = 0;
+  private _countInterval: NodeJS.Timer | null = null;
+
+  private _bakery: GameRoom;
+
+  constructor(bakery: GameRoom) {
+    this._bakery = bakery;
+  }
+
+  get room() {
+    return this._bakery;
+  }
+  
   get emote() {
     return this._currentEmote;
   }
@@ -331,17 +354,67 @@ class Bakery {
 
   incrementCheer() {
     this._cheerCount++;
+    this.sendBakeryState();
+  
+    if (this._cheerCount >= Bakery.CHEER_CAPACITY) {
+      this.startMultiplier();
+    }
+  }
+
+  updateMultiplierPenguins(): void {
+    this.room.players.forEach((client) => {
+      // rough estimate, not sure how the original did it
+      if (client.x >= 610) {
+        this._multiplierPenguins.add(client.penguin.id);
+      } else {
+        this._multiplierPenguins.delete(client.penguin.id);
+      }
+    });
+  }
+
+  startMultiplier() {
+    this._state = 'MultiplierStation';
+    // start at 10 but as the original shows only gets to see 9
+    this._multiplierCount = 10;
+
+    this._countInterval = setInterval(() => {
+      this._multiplierCount--;
+      this.updateMultiplierPenguins();
+      this.sendBakeryState();
+      if (this._multiplierCount <= 0 && this._countInterval !== null) {
+        clearInterval(this._countInterval);
+      }
+    }, 1000);
+  }
+
+  getMultiplier(): BakeryMultiplier {
+    // none of these are confirmed values
+    if (this._multiplierPenguins.size >= 10) {
+      return 'Large';
+    }
+    if (this._multiplierPenguins.size >= 5) {
+      return 'Medium';
+    }
+    return 'Small';
   }
 
   get bakeryState() {
     return JSON.stringify({
-      CurrentStation: 'CheerStation',
+      CurrentStation: this._state,
       CheerStation: {
         CheerCapacity: Bakery.CHEER_CAPACITY,
         CurrentCheerCount: this.cheerCount,
         Emote: this.emote
+      },
+      MultiplierStation: {
+        Counter: this._multiplierCount,
+        Multiplier: this.getMultiplier()
       }
     })
+  }
+
+  sendBakeryState() {
+    this.room.sendXt('barsu', this.bakeryState);
   }
 }
 
@@ -377,7 +450,7 @@ export class Server {
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
-    this._bakery = new Bakery(); 
+    this._bakery = new Bakery(this.getRoom(853)); // party3 id 
     this.init();
   }
 
@@ -812,7 +885,7 @@ export class Client {
 
   /** Send a XT message to all players in a room */
   sendRoomXt(handler: string, ...args: Array<string | number>) {
-    this.room.players.forEach((client) => client.sendXt(handler, ...args));
+    this.room.sendXt(handler, ...args);
   }
 
   /** Check if playing a waddle game */

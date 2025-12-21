@@ -1,4 +1,3 @@
-import { Client } from "../../client";
 import { Handler } from "..";
 import { Handle } from "../handles";
 import { findInVersionStrict } from "../../game-data";
@@ -34,26 +33,17 @@ handler.xt(Handle.Medieval2012ViewedMessage, (client, messageIndex) => {
   client.penguin.update();
 });
 
-function getBakeryStateArgs(client: Client): [string, string] {
-  return ['barsu', client.server.bakery.bakeryState]
-}
-
 handler.xt(Handle.GetBakeryState, (client) => {
-  client.sendXt(...getBakeryStateArgs(client));
+  client.server.bakery.sendBakeryState();
 });
-
-function sendBakeryStateToRoom(client: Client) {
-  client.sendRoomXt(...getBakeryStateArgs(client));
-}
 
 handler.xt(Handle.SendEmote, (client, emote) => {
   if (findInVersionStrict(client.version, BAKERY_TIMELINE) === false) {
     return;
   }
   // party3
-  if (client.room.id === 853 && Number(emote) === client.server.bakery.emote) {
+  if (client.room === client.server.bakery.room && Number(emote) === client.server.bakery.emote) {
     client.server.bakery.incrementCheer();
-    sendBakeryStateToRoom(client);
   }
 });
 
