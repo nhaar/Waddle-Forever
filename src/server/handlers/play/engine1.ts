@@ -7,6 +7,8 @@ import { processFurniture } from './igloo';
 import { isGreaterOrEqual } from '../../../server/routes/versions';
 import { IGLOO_MUSIC_RELEASE } from '../../../server/timelines/dates';
 import { Penguin } from '../../penguin';
+import { FURNITURE } from '../../../server/game-logic/furniture';
+import { getFlooringCost, getIglooCost } from '../../../server/game-logic/iglooItems';
 
 const handler = new Handler();
 
@@ -80,6 +82,10 @@ handler.xt(Handle.LeaveGame, (client, score) => {
 // update client's coins
 handler.xt(Handle.GetCoins, (client) => {
   client.sendEngine1Coins();
+})
+
+handler.xt(Handle.GetCoins2007, (client) => {
+  client.sendXt('gc', client.penguin.coins);
 })
 
 handler.xt(Handle.AddItemOld, (client, item) => {
@@ -493,10 +499,37 @@ handler.xt(Handle.GetFurniture2007, (client) => {
   client.sendXt('gf', ...furniture);
 });
 
-handler.xt(Handle.AddFurnitureOld, (client, id) => {
-  client.buyFurniture(id);
+const handleAddFurniture = (client: Client, id: number) => {
+  const item = FURNITURE.getStrict(id);
+  client.buyFurniture(id, { cost: item.cost });
   client.update();
-});
+};
+
+handler.xt(Handle.AddFurnitureOld, handleAddFurniture);
+handler.xt(Handle.AddFurniture2007, handleAddFurniture);
+
+const handleAddIgloo = (client: Client, iglooType: number) => {
+  const cost = getIglooCost(iglooType);
+  client.penguin.removeCoins(cost);
+  client.penguin.addIgloo(iglooType);
+  // unknown if music was reset or not in the original
+  client.penguin.updateIgloo({ type: iglooType, music: 0, flooring: 0, furniture: [] });
+  client.sendXt('au', iglooType, client.penguin.coins);
+  client.update();
+};
+
+handler.xt(Handle.AddIglooOld, handleAddIgloo);
+handler.xt(Handle.AddIgloo2007, handleAddIgloo);
+
+const handleAddFlooring = (client: Client, flooring: number) => {
+  const cost = getFlooringCost(flooring);
+  client.penguin.updateIgloo({ flooring });
+  client.penguin.removeCoins(cost);
+  client.sendXt('ag', flooring, client.penguin.coins);
+  client.update();
+};
+
+handler.xt(Handle.AddFlooring2007, handleAddFlooring);
 
 handler.xt(Handle.UpdateIglooOld, (client, type, ...rest) => {
   // music ID is placed at the start, though it may not be present
