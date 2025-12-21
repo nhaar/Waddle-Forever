@@ -1419,7 +1419,8 @@ export const UPDATES_2008: Update[] = [
     roomComment: 'DJ3K is redesigned in the Dance Club',
     rooms: {
       dance: 'recreation:dance_cpip_postmusicjam2.swf'
-    }
+    },
+    sportCatalog: 'archives:SportAug08.swf'
   },
   {
     date: '2008-08-18',
@@ -2245,6 +2246,10 @@ export const UPDATES_2008: Update[] = [
       agent: 'archives:RoomsAgent.swf',
       agentcom: 'archives:RoomsAgentcomFormer.swf'
     }
+  },
+  {
+    date: '2008-11-28',
+    sportCatalog: 'archives:SASNov2008.swf'
   },
   {
     date: '2008-12-05',

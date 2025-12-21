@@ -11,6 +11,10 @@ export const UPDATES_2011: Update[] = [
     clothingCatalog: 'archives:January11Style.swf'
   },
   {
+    date: '2011-01-13',
+    sportCatalog: 'archives:SASJan2011.swf'
+  },
+  {
     date: '2011-01-14',
     furnitureCatalog: 'archives:Jan-Feb2011BetterIgloos.swf',
     gameRelease: 'System Defender',

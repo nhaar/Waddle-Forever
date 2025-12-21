@@ -167,6 +167,10 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-01-30',
+    sportCatalog: 'archives:SASJan2009.swf'
+  },
+  {
     date: '2009-02-03',
     miscComments: ['The Lime Green Dojo Clean book is added'],
     localChanges: {
@@ -729,7 +733,8 @@ export const UPDATES_2009: Update[] = [
       dock: 'archives:RoomsDock_1.swf',
       lodge: 'archives:RoomsLodge.swf'
     },
-    martialArtworks: 'archives:MAMar2009.swf'
+    martialArtworks: 'archives:MAMar2009.swf',
+    sportCatalog: 'archives:SASMar2009.swf'
   },
   {
     date: '2009-04-01',
@@ -1354,6 +1359,10 @@ export const UPDATES_2009: Update[] = [
       stage: 'recreation:underwater_adventure_no_pin.swf',
       plaza: 'recreation:plaza_underwater_adventure.swf'
     }
+  },
+  {
+    date: '2009-08-28',
+    sportCatalog: 'archives:SportAug09.swf'
   },
   {
     date: '2009-09-04',
