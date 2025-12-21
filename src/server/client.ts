@@ -19,7 +19,7 @@ import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
 import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
 import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
-import { COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
+import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
 
 type ServerType = 'Login' | 'World';
 
@@ -1572,8 +1572,8 @@ export class Client {
   sendCoinsForChange() {
     if (findInVersionStrict(this.version, COINS_FOR_CHANGE_TIMELINE)) {
       // placeholder donation values
-      const VALUES = [333333, 333333, 333334];
-      this.sendXt('gcfct', VALUES.map((amount, i) => `${i}|${amount}`).join(','));
+      const values = findInVersionStrict(this.version, CFC_VALUES_TIMELINE);
+      this.sendXt('gcfct', values.map((amount, i) => `${i}|${amount}`).join(','));
     }
   }
 

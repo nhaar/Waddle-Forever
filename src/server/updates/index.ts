@@ -190,6 +190,7 @@ export type CPUpdate = {
 
   coinsForChange?: true;
   bakery?: true;
+  cfcValues?: [number, number, number];
 
   stagePlay?: {
     name: StageName;

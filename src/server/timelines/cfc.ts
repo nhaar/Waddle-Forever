@@ -21,3 +21,11 @@ export const BAKERY_TIMELINE = newVersionsTimeline<boolean>(timeline => {
     }
   });
 });
+
+export const CFC_VALUES_TIMELINE = newVersionsTimeline<[number, number, number]>(timeline => {
+  UPDATES.forEach(update => {
+    if (update.update.cfcValues !== undefined) {
+      timeline.addInfo(update.update.cfcValues, update.date);
+    }
+  })
+});

@@ -1606,6 +1606,8 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-12-20',
+    // estimate values from a saraapril screenshot
+    cfcValues: [2132023700*0.406, 2132023700*0.297, 2132023700*0.297],
     temp: {
       party: {
         partyName: 'Holiday Party',
@@ -1741,5 +1743,10 @@ export const UPDATES_2012: Update[] = [
         migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
     }
+  },
+  {
+    date: '2012-12-26',
+    partyComment: 'Over 10 billion coins are donated for Coins For Change',
+    cfcValues: [10000000000*0.39, 10000000000*0.31, 10000000000*0.3]
   }
 ];
