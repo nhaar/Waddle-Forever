@@ -69,4 +69,14 @@ handler.xt(Handle.SendEnterHopper, (client, type) => {
   }
 });
 
+handler.xt(Handle.GetCookieInventory, (client) => {
+  // placeholder just so that the animation works
+  // cookie stock should theoreticailly increase when the bakery happens and decrease when a transformation happens
+  // none of that is implemented however
+  // and the max cookie variable is an unknown
+
+  // current, max
+  client.sendXt('ctc', 500, 1000);
+});
+
 export default handler;

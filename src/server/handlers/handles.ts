@@ -196,7 +196,8 @@ export enum Handle {
   RetrieveMedieval2012,
   Medieval2012ViewedMessage,
   GetBakeryState,
-  SendEnterHopper
+  SendEnterHopper,
+  GetCookieInventory
 };
 
 /** Map of all the handles and their valid arguments */
@@ -376,7 +377,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.RetrieveMedieval2012]: ['string'],
   [Handle.Medieval2012ViewedMessage]: ['number'],
   [Handle.GetBakeryState]: [],
-  [Handle.SendEnterHopper]: ['string']
+  [Handle.SendEnterHopper]: ['string'],
+  [Handle.GetCookieInventory]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -461,7 +463,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'ba': {
       '': Handle.BuddyAccept,
       'barsu': Handle.GetBakeryState,
-      'seh': Handle.SendEnterHopper
+      'seh': Handle.SendEnterHopper,
+      'ctc': Handle.GetCookieInventory
     },
     'bd': Handle.BuddyDecline,
     'br': Handle.BuddyRemove,
