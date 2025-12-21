@@ -401,6 +401,10 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-03-05',
+    migrator: 'archives:March2010Pirate.swf'
+  },
+  {
     date: '2010-03-12',
     furnitureCatalog: 'archives:March10Furniture.swf',
     iglooCatalog: 'archives:March2010Igloo.swf'
@@ -409,7 +413,8 @@ export const UPDATES_2010: Update[] = [
     date: '2010-03-15',
     rooms: {
       mine: 'archives:RoomsMine_2.swf'
-    }
+    },
+    migrator: false
   },
   {
     date: '2010-03-18',
@@ -2069,6 +2074,10 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-09-02',
+    migrator: 'archives:2010septemberpiratecatalog.swf'
+  },
+  {
     date: '2010-09-03',
     clothingCatalog: 'archives:September10Style.swf',
     fileChanges: {
@@ -2239,6 +2248,10 @@ export const UPDATES_2010: Update[] = [
         }
       }
     }
+  },
+  {
+    date: '2010-09-12',
+    migrator: false
   },
   {
     date: '2010-09-13',

@@ -2059,6 +2059,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-12-11',
     furnitureCatalog: 'archives:December09Furniture.swf',
     iglooCatalog: 'archives:December2009Igloos.swf',
+    migrator: 'archives:December2009Pirate.swf',
     temp: {
       const: {
         rooms: {
@@ -2139,7 +2140,6 @@ export const UPDATES_2009: Update[] = [
           village: 254,
           party: 281
         },
-        migrator: true,
         startscreens: ['archives:StartscreenChristmas-HolidayParty2009.swf']
       }
     }
@@ -2173,6 +2173,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-12-29',
+    migrator: false,
     end: ['party']
   }
 ];
