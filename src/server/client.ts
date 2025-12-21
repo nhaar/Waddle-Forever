@@ -11,7 +11,7 @@ import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
 import { findInVersion, findInVersionStrict } from './game-data';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
-import { Vector } from '../common/utils';
+import { choose, randomInt, Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
@@ -319,13 +319,18 @@ type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGa
 // track which buddy packet namespace a client uses: chat291-339 "s" vs chat506 "b"
 type BuddyProtocol = 's' | 'b';
 
-type BakeryState = 'CheerStation' | 'MultiplierStation';
+type BakeryState = 'IngredientsStation' | 'CheerStation' | 'MultiplierStation' | 'ResetStation';
 type BakeryMultiplier = 'Small' | 'Medium' | 'Large';
+type Ingredient = 'Candy' | 'Eggs' | 'Flour' | 'Milk' | 'Tire' | 'Hay';
 
 /** Controls the holiday party 2012 bakery room */
 class Bakery {
-  private _state: BakeryState = 'CheerStation';
+  private _state: BakeryState = 'IngredientsStation';
   
+  static MAGIC_INGREDIENTS: Ingredient[] = ['Hay', 'Tire', 'Candy'];
+  private _ingredients: Ingredient[] = [];
+  private _currentIngredient: number = 0;
+
   private _currentEmote: number = 1;
   static CHEER_CAPACITY = 7;
   private _cheerCount: number = 0;
@@ -338,6 +343,7 @@ class Bakery {
 
   constructor(bakery: GameRoom) {
     this._bakery = bakery;
+    this.startIngredients();
   }
 
   get room() {
@@ -372,19 +378,67 @@ class Bakery {
     });
   }
 
+  startIngredients() {
+    this._state = 'IngredientsStation';
+    this._currentIngredient = 0;
+    const magicIngredient = choose(Bakery.MAGIC_INGREDIENTS);
+    const ingredients: Ingredient[] = [];
+    const possibleIngredients: Ingredient[] = [magicIngredient, 'Milk', 'Eggs', 'Flour'];
+    while (possibleIngredients.length > 0) {
+      const i = randomInt(0, possibleIngredients.length - 1);
+      ingredients.push(...possibleIngredients.splice(i, 1));
+    }
+    this._ingredients = ingredients;
+    this.sendBakeryState();
+  }
+
+  startCheer() {
+    this._state = 'CheerStation';
+    this._cheerCount = 0;
+    this._currentEmote = choose([1, 2, 7]);
+    this.sendBakeryState();
+  }
+
   startMultiplier() {
     this._state = 'MultiplierStation';
-    // start at 10 but as the original shows only gets to see 9
-    this._multiplierCount = 10;
+    this._multiplierCount = 9;
+    this.updateMultiplierPenguins();
+    this.sendBakeryState();
 
     this._countInterval = setInterval(() => {
       this._multiplierCount--;
-      this.updateMultiplierPenguins();
-      this.sendBakeryState();
-      if (this._multiplierCount <= 0 && this._countInterval !== null) {
+
+      // use < 0 to give a full second before switching to next station
+      if (this._multiplierCount < 0 && this._countInterval !== null) {
         clearInterval(this._countInterval);
+        this.startReset();
+      } else {
+        this.updateMultiplierPenguins();
+        this.sendBakeryState();
       }
     }, 1000);
+  }
+
+  startReset(): void {
+    this._state = 'ResetStation';
+    this.sendBakeryState();
+
+    // estimate based on videos
+    setTimeout(() => {
+      this.startIngredients();
+    }, 6000);
+  }
+
+  get currentIngredient() {
+    return this._ingredients[this._currentIngredient];
+  }
+
+  nextIngredient() {
+    this._currentIngredient++;
+    this.sendBakeryState();
+    if (this._currentIngredient >= this._ingredients.length) {
+      this.startCheer();
+    }
   }
 
   getMultiplier(): BakeryMultiplier {
@@ -401,6 +455,14 @@ class Bakery {
   get bakeryState() {
     return JSON.stringify({
       CurrentStation: this._state,
+      IngredientsStation: this._ingredients.map((ingredient, i) => {
+        return {
+          IngredientType: ingredient,
+          // unknown if this total ever changed
+          TotalRequired: 1,
+          CurrentCount: this._currentIngredient > i ? 1 : 0
+        }
+      }),
       CheerStation: {
         CheerCapacity: Bakery.CHEER_CAPACITY,
         CurrentCheerCount: this.cheerCount,

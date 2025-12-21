@@ -190,7 +190,8 @@ export enum Handle {
   PlayerTransformation,
   RetrieveMedieval2012,
   Medieval2012ViewedMessage,
-  GetBakeryState
+  GetBakeryState,
+  SendEnterHopper
 };
 
 /** Map of all the handles and their valid arguments */
@@ -364,7 +365,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.PlayerTransformation]: ['number'],
   [Handle.RetrieveMedieval2012]: ['string'],
   [Handle.Medieval2012ViewedMessage]: ['number'],
-  [Handle.GetBakeryState]: []
+  [Handle.GetBakeryState]: [],
+  [Handle.SendEnterHopper]: ['string']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -446,7 +448,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'bq': Handle.BuddyRequest,
     'ba': {
       '': Handle.BuddyAccept,
-      'barsu': Handle.GetBakeryState
+      'barsu': Handle.GetBakeryState,
+      'seh': Handle.SendEnterHopper
     },
     'bd': Handle.BuddyDecline,
     'br': Handle.BuddyRemove,

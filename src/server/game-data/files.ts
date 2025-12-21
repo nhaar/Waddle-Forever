@@ -235,6 +235,10 @@ would need to investigated`
     {
       file: 'StartModuleBeta.swf',
       comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself'
+    },
+    {
+      file: 'HolidayParty2012Party3.swf',
+      comment: 'The original file was modified so that it automatically changes the snowball effect depending on where you step. It is unknown which mechanism was used to do this in the original, it is likely that maybe party.swf or engine.swf had a say on this, but since we can\'t know for sure it was easier to just mod this file. I took this code from JF archives, I am not sure if it comes from an original SWF or if it was made by NewCP team'
     }
   ],
   [APPROXIMATION]: [
@@ -479,7 +483,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2012_halloween.swf',
-      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand, and to unwalk puffle when updating hand. Must still figure how to make it remove the puffle from the igloo (prevent double walking). Added code to the sendBuyCookie function for the Holiday Party 2012. Modified the getPlayerObjectById code to have the property is_transformed (Holiday Party 2012 interface compatibility). Added the package com.clubpenguin.engine.avatar.AvatarExpirationTimer from the Holiday Party 2012 icon. Added the function setHolidayAvatarTransformation that enables the icon when a transformation happens, and added turnIntoPlayer which is called when the transformation expires. Changed the background to be white to match the website. For the holiday 2012 bakery, changed the functions sendRequestForBakeryState and handleBakeryStateUpdate'
+      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand, and to unwalk puffle when updating hand. Must still figure how to make it remove the puffle from the igloo (prevent double walking). Added code to the sendBuyCookie function for the Holiday Party 2012. Modified the getPlayerObjectById code to have the property is_transformed (Holiday Party 2012 interface compatibility). Added the package com.clubpenguin.engine.avatar.AvatarExpirationTimer from the Holiday Party 2012 icon. Added the function setHolidayAvatarTransformation that enables the icon when a transformation happens, and added turnIntoPlayer which is called when the transformation expires. Changed the background to be white to match the website. For the holiday 2012 bakery, changed the functions sendRequestForBakeryState, handleBakeryStateUpdate, and sendSnowBallEnterHopper'
     },
     {
       file: 'puffles/engine.swf',

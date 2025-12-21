@@ -47,4 +47,26 @@ handler.xt(Handle.SendEmote, (client, emote) => {
   }
 });
 
+handler.xt(Handle.SendEnterHopper, (client, type) => {
+  // this is a recreation of this handler, it is unknown if the original handler sent the snowball type or not
+  // the type was added to prevent bugs with people spamming snowballs
+  // however, the way this was added isn't perfect and it's likely it didn't really check the types, as the shell function
+  // never receives the snowball thrown event information, and instead I had to fetch it directly from the transformation
+  // which introduces the bug of the player walking mid snowball throw
+  const enumType = type.match(/\[ball(\w+)\|\d+\]/);
+  if (enumType !== null) {
+    const ingredient = {
+      'Candy': 'Candy',
+      'Egg': 'Eggs',
+      'Tire': 'Tire',
+      'Hay': 'Hay',
+      'Flour': 'Flour',
+      'Milk': 'Milk'
+    }[enumType[1]];
+    if (client.server.bakery.currentIngredient === ingredient) {
+      client.server.bakery.nextIngredient();
+    }
+  }
+});
+
 export default handler;

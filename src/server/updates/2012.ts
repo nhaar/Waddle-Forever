@@ -1640,7 +1640,7 @@ export const UPDATES_2012: Update[] = [
           'shipquarters': 'archives:HolidayParty2012ShipQuarters.swf',
           'party1': 'archives:HolidayParty2012Party1.swf',
           'party2': 'archives:HolidayParty2012Party2.swf',
-          'party3': 'archives:HolidayParty2012Party3.swf'
+          'party3': 'fix:HolidayParty2012Party3.swf'
         },
         music: {
           'beach': 254,
