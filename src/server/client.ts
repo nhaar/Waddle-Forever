@@ -339,15 +339,15 @@ class Bakery {
   private _multiplierCount: number = 0;
   private _countInterval: NodeJS.Timer | null = null;
 
-  private _bakery: GameRoom;
+  private _server: Server;
 
-  constructor(bakery: GameRoom) {
-    this._bakery = bakery;
+  constructor(server: Server) {
+    this._server = server;
     this.startIngredients();
   }
 
   get room() {
-    return this._bakery;
+    return this._server.getRoom(853);
   }
   
   get emote() {
@@ -515,7 +515,7 @@ export class Server {
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
-    this._bakery = new Bakery(this.getRoom(853)); // party3 id 
+    this._bakery = new Bakery(this); 
     this.init();
   }
 
