@@ -597,6 +597,7 @@ export const UPDATES_2012: Update[] = [
           rink: 236,
           boiler: 236,
           cave: 236,
+          mine: 236,
           party2: 266,
           party3: 266,
           party4: 266,
