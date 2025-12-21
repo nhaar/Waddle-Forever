@@ -363,7 +363,10 @@ class Bakery {
     this.sendBakeryState();
   
     if (this._cheerCount >= Bakery.CHEER_CAPACITY) {
-      this.startMultiplier();
+      // takes about 3 seconds to proceed
+      setTimeout(() => {
+        this.startMultiplier();
+      }, 3000);
     }
   }
 
