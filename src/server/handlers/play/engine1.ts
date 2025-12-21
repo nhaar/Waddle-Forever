@@ -512,6 +512,7 @@ const handleAddIgloo = (client: Client, iglooType: number) => {
   const cost = getIglooCost(iglooType);
   client.penguin.removeCoins(cost);
   client.penguin.addIgloo(iglooType);
+  // unknown if music was reset or not in the original
   client.penguin.updateIgloo({ type: iglooType, music: 0, flooring: 0, furniture: [] });
   client.sendXt('au', iglooType, client.penguin.coins);
   client.update();
