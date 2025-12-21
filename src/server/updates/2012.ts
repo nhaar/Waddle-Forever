@@ -151,7 +151,6 @@ export const UPDATES_2012: Update[] = [
           party6: 'archives:RockhoppersQuestParty6.swf',
           party8: 'archives:RockhoppersQuestParty8.swf'
         },
-        migrator: true,
         music: {
           party1: 318,
           party3: 318,
