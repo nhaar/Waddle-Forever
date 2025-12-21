@@ -1156,7 +1156,7 @@ export const UPDATES_2012: Update[] = [
     date: '2012-09-20',
     temp: {
       party: {
-        partyName: 'The Fair',
+        partyName: 'Fair',
         rooms: {
           'beach': 'archives:Fair2012Beach.swf',
           'beacon': 'archives:Fair2012Beacon.swf',
