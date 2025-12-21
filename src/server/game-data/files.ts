@@ -474,10 +474,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit top working with the modded engine.swf'
     },
     {
-      file: 'temple_of_fruit/forts.swf',
-      comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit snow forts working with the modded engine.swf. Removed the Rockhopper catalogue that was probably added by cutestlesbian'
-    },
-    {
       file: 'ghosts/engine.swf',
       comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect). Aditionally, for the INTERFACE to work, the function isPlayerTransformedIntoGhost is added. For the ghost penguin to not get teleported in the middle of the animation, AvatarTransformationManager was modded a bit, in specific the function onTransformLoadComplete'
     },

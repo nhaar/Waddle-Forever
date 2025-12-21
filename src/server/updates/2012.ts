@@ -915,7 +915,7 @@ export const UPDATES_2012: Update[] = [
         rooms: {
           'town': 'archives:RoomsTown-TempleofFruit.swf',
           'plaza': 'archives:APToFPlaza.swf',
-          'forts': 'approximation:temple_of_fruit/forts.swf',
+          'forts': 'archives:APToFForts.swf',
           'beach': 'archives:APToFBeach.swf',
           'forest': 'archives:APToFForest.swf',
           'cove': 'archives:APToFCove.swf',
