@@ -997,7 +997,7 @@ export const UPDATES_2008: Update[] = [
       cavemine: 'slegacy:media/play/v2/content/global/rooms/cavemine.swf',
       dojo: 'recreation:dojo_cpip_start.swf',
       shiphold: 'slegacy:media/play/v2/content/global/rooms/shiphold.swf',
-      shipnest: 'slegacy:media/play/v2/content/global/rooms/shipnest.swf',
+      shipnest: 'archives:ShipnestSeptember2009.swf',
       shipquarters: 'slegacy:media/play/v2/content/global/rooms/shipquarters.swf',
       agent: 'recreation:agent_2008_apr_cpip.swf',
       mine: 'archives:RoomsMine_1.swf',

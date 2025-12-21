@@ -276,5 +276,12 @@ export const UPDATES_2013: Update[] = [
       'play/v2/content/global/clothing/photos/906.swf': 'slegacy:media/play/v2/content/global/clothing/photos/906.swf',
       'play/v2/content/global/clothing/icons/906.swf': 'slegacy:media/play/v2/content/global/clothing/icons/906.swf'
     }
+  },
+  {
+    date: '2013-09-12',
+    roomComment: 'Sound is added to the Crow\'s Nest',
+    rooms: {
+      shipnest: 'archives:RoomsShipNest-Sept2013.swf'
+    }
   }
 ]

@@ -958,6 +958,9 @@ export const UPDATES_2012: Update[] = [
           'play/v2/client/engine.swf': 'recreation:temple_of_fruit/engine.swf'
         }
       }
+    },
+    rooms: {
+      shipnest: 'archives:RoomsShipnest.swf'
     }
   },
   {
