@@ -1696,6 +1696,10 @@ export const UPDATES_2011: Update[] = [
     pin: 'end'
   },
   {
+    date: '2011-06-23',
+    martialArtworks: 'archives:June2011Ninja.swf'
+  },
+  {
     date: '2011-06-24',
     newspaper: 'period-end'
   },
@@ -2703,7 +2707,8 @@ export const UPDATES_2011: Update[] = [
           town: 'archives:RoomsTown-HolidayParty2011Pre.swf'
         }
       }
-    }
+    },
+    martialArtworks: 'archives:ENCataloguesNinjaDecember2011.swf'
   },
   {
     date: '2011-12-14',

@@ -368,5 +368,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/clothing/paper/793_back.swf': 'svanilla:media/play/v2/content/global/clothing/paper/793_back.swf',
   'play/v2/content/local/en/books/xmas_book1.swf': 'archives:Apenguinchristmascarol.swf',
   'play/v2/content/local/en/books/xmas_book2.swf': 'archives:Christmasonrockhopperisland.swf',
-  'play/v2/content/local/en/books/xmas_book3.swf': 'archives:Pufflepaladventuresmusicmakesmagic.swf'
+  'play/v2/content/local/en/books/xmas_book3.swf': 'archives:Pufflepaladventuresmusicmakesmagic.swf',
+  'play/v2/content/local/en/catalogues/ninja.swf': 'archives:MANov2008.swf'
 };

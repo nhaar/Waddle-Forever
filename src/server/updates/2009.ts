@@ -728,7 +728,8 @@ export const UPDATES_2009: Update[] = [
       cove: 'archives:RoomsCove.swf',
       dock: 'archives:RoomsDock_1.swf',
       lodge: 'archives:RoomsLodge.swf'
-    }
+    },
+    martialArtworks: 'archives:MAMar2009.swf'
   },
   {
     date: '2009-04-01',
@@ -1850,12 +1851,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-13',
-    miscComments: ['The amulet is added to the Martial Artworks'],
-    localChanges: {
-      'catalogues/ninja.swf': {
-        en: 'archives:November09Ninja2.swf'
-      }
-    },
+    martialArtworks: 'archives:November09Ninja2.swf',
     constructionComment: 'Construction for the Fire Dojo begins',
     temp: {
       event: {

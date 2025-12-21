@@ -7,6 +7,10 @@ export const UPDATES_2013: Update[] = [
     end: ['party']
   },
   {
+    date: '2013-05-22',
+    martialArtworks: 'archives:ENCataloguesNinja-May2013.swf'
+  },
+  {
     date: '2013-05-23',
     stampUpdates: [
       {
@@ -276,6 +280,10 @@ export const UPDATES_2013: Update[] = [
       'play/v2/content/global/clothing/photos/906.swf': 'slegacy:media/play/v2/content/global/clothing/photos/906.swf',
       'play/v2/content/global/clothing/icons/906.swf': 'slegacy:media/play/v2/content/global/clothing/icons/906.swf'
     }
+  },
+  {
+    date: '2013-08-14',
+    martialArtworks: 'archives:ENCataloguesNinja-August2013.swf'
   },
   {
     date: '2013-09-12',

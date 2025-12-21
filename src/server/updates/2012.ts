@@ -698,7 +698,8 @@ export const UPDATES_2012: Update[] = [
     },
     furnitureCatalog: 'archives:June2012Furniture.swf',
     sportCatalog: 'archives:Jun2012Sport.swf',
-    iglooCatalog: 'archives:June2012Igloo.swf'
+    iglooCatalog: 'archives:June2012Igloo.swf',
+    martialArtworks: 'archives:June2012Ninja.swf'
   },
   {
     date: '2012-06-14',

@@ -95,6 +95,7 @@ export type CPUpdate = {
   sportCatalog?: FileRef;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
+  martialArtworks?: FileRef;
 
   stampUpdates?: StampUpdates
 
