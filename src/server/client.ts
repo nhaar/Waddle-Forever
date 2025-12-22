@@ -783,6 +783,8 @@ export class Client {
   // when digging gold nuggets for golden puffle
   private _isGoldNuggetState = false;
 
+  private _specialName: string | null = null;
+
   constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
     this._server = server;
     this._socket = socket;
@@ -895,7 +897,7 @@ export class Client {
     } else {
       return [
         this.penguin.id,
-        this.penguin.name,
+        this.name,
         1, // meant to be approval, but always approved, TODO: non approved names in the future
         this.penguin.color,
         this.penguin.head,
@@ -1021,8 +1023,18 @@ export class Client {
     }
   }
 
+  private checkSpecialName() {
+    if (this._penguin !== undefined) {
+      const mascot = MASCOTS.find(m => this._penguin?.id === m.id);
+      if (mascot?.display !== undefined) {
+        this._specialName = mascot.display;
+      }
+    }
+  }
+
   setPenguinFromName (name: string): void {
     this._penguin = this.server.getPenguinFromName(name)
+    this.checkSpecialName();
 
     this._server.trackPlayer(this.penguin.id, this);
   }
@@ -1034,6 +1046,7 @@ export class Client {
       throw new Error(`Could not find penguin of ID ${id}`);
     }
     this._penguin = new Penguin(id, penguin);
+    this.checkSpecialName();
     this._server.trackPlayer(id, this);
   }
 
@@ -1099,12 +1112,16 @@ export class Client {
     return this._currentWaddleRoom;
   }
 
+  get name() {
+    return this._specialName ?? this.penguin.name;
+  }
+
   joinWaddleRoom(waddleRoom: WaddleRoom): void {
     this._currentWaddleRoom = waddleRoom;
     const seatId = waddleRoom.addPlayer(this);
 
     this.sendXt('jw', seatId);
-    this.sendRoomXt('uw', waddleRoom.id, seatId, this.penguin.name, this.penguin.id);
+    this.sendRoomXt('uw', waddleRoom.id, seatId, this.name, this.penguin.id);
     const players = waddleRoom.players;
     // starts the game if all players have entered
     if (players.length === waddleRoom.size) {
