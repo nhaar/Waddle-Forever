@@ -614,6 +614,15 @@ handler.xt(Handle.JoinServerOld, (client) => {
 
 // Joining room
 handler.xt(Handle.JoinRoomOld, (client, room, x, y) => {
+  if (client.isEngine1 && client.isInWaddleGame() && client.waddleGame.name === 'sled') {
+    if (room !== client.waddleGame.roomId) {
+      client.waddleGame.removePlayer(client);
+      client.clearWaddleGame();
+      if ((client as unknown as { _currentWaddleRoom?: unknown })._currentWaddleRoom !== undefined) {
+        client.leaveWaddleRoom();
+      }
+    }
+  }
   client.joinRoom(room, x, y);
 })
 
@@ -663,8 +672,14 @@ handler.xt(Handle.LeaveWaddleGame, (client, score) => {
   if (!client.isEngine1) {
     return;
   }
-  if (getSledGame(client) === undefined) {
+  const game = getSledGame(client);
+  if (game === undefined) {
     return;
+  }
+  game.removePlayer(client);
+  client.clearWaddleGame();
+  if ((client as unknown as { _currentWaddleRoom?: unknown })._currentWaddleRoom !== undefined) {
+    client.leaveWaddleRoom();
   }
   // engine1 sled sends place (1-4); map to coins and close
   const place = Number(score);
@@ -1177,6 +1192,10 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
   // dispatch board moves for find four or mancala
   const findFourInfo = findFourPlayers.get(client.penguin.id);
   if (findFourInfo !== undefined) {
+    // Ignore non-table zm packets (e.g. sled racing uses 4 args).
+    if (moves.length !== 2) {
+      return;
+    }
     const column = moves[0];
     if (column === undefined) {
       return;
@@ -1215,6 +1234,10 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
   }
   const info = mancalaPlayers.get(client.penguin.id);
   if (info === undefined || !info.joinedGame || info.seatId === MANCALA_SPECTATOR_SEAT) {
+    return;
+  }
+  // Ignore non-table zm packets (e.g. sled racing uses 4 args).
+  if (moves.length !== 1) {
     return;
   }
   const cup = moves[0];

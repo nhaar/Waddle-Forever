@@ -237,6 +237,13 @@ export abstract class WaddleGame {
   sendXt(code: string, ...args: Array<number | string>) {
     this._players.forEach(p => p.sendXt(code, ...args));
   }
+
+  removePlayer(client: Client): void {
+    const index = this._players.indexOf(client);
+    if (index !== -1) {
+      this._players.splice(index, 1);
+    }
+  }
 }
 
 /** Information of a player that only persists during a room */
@@ -1162,6 +1169,10 @@ export class Client {
 
   setWaddleGame(waddleGame: WaddleGame): void {
     this._waddleGame = waddleGame;
+  }
+
+  clearWaddleGame(): void {
+    this._waddleGame = null;
   }
 
   async sendStamps (): Promise<void> {
