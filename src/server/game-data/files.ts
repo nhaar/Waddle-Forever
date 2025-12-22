@@ -36,6 +36,10 @@ const UNKNOWN = 'unknown';
 const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
   [FIX]: [
     {
+      file: 'Beta-book.swf',
+      comment: 'Chat291.swf compatibility fixes. Files from around 2005 need the code slightly changed due to not having proper spawn points and the triggers using room names instead of room IDs.'
+    },
+    {
       file: 'Book2_03_halloween.swf',
       comment: 'Chat291.swf compatibility fixes. Files from around 2005 need the code slightly changed due to not having proper spawn points and the triggers using room names instead of room IDs.'
     },
