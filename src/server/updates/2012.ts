@@ -735,10 +735,15 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-06-07',
+    roomComment: 'The Soccer Pitch returns',
     temp: {
       const: {
         rooms: {
-          'dock': 'archives:MarvelSuperheroTakeoverConsDock.swf'
+          'dock': 'archives:MarvelSuperheroTakeoverConsDock.swf',
+
+          rink: 'archives:RoomsRink-Mar2013.swf',
+          forts: 'archives:RoomsForts_4.swf',
+          town: 'archives:RoomsTown_4.swf'
         }
       }
     },
@@ -1851,7 +1856,7 @@ export const UPDATES_2012: Update[] = [
     end: ['party'],
     clothingCatalog: 'archives:PenguinStyleDec2012.swf',
     sportCatalog: 'archives:Dec2012Sport.swf',
-    roomComment: 'Outside rooms are renovated',
+    roomComment: 'Outside rooms are renovated, and the Ice Rink is back',
     rooms: {
       town: 'archives:RoomsTown_5.swf',
       forts: 'archives:RoomsForts2012-Hockey.swf',
@@ -1863,6 +1868,8 @@ export const UPDATES_2012: Update[] = [
       agentcom: 'archives:RoomsAgentcom-December2012.swf',
       agentlobbymulti: 'archives:ENRoomsAgentLobbyMultiDec2012.swf',
       agentlobbysolo: 'archives:ENRoomsAgentLobbySoloDec2012.swf',
+
+      rink: 'archives:RoomsRink-Dec2011.swf',
 
       stage: 'archives:ENRoomsStage-Dec2012.swf'
     },
