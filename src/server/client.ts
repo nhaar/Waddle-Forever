@@ -1129,8 +1129,23 @@ export class Client {
       const waddleGame = new Constructor(players);
       this.server.setWaddleGame(waddleRoom, waddleGame);
       waddleRoom.resetWaddle();
+      if (waddleGame.name === 'sled' && players.every((player) => player.isEngine1)) {
+        players.forEach((player) => {
+          player.sendXt('sw', waddleRoom.id, waddleGame.roomId, waddleRoom.size);
+        });
+        return;
+      }
       waddleGame.start();
     }
+  }
+
+  joinGameRoomOld(room: number, xtCode: string): void {
+    if (this._currentRoom !== undefined) {
+      this.leaveRoom();
+    }
+    this._currentRoom = this._server.getRoom(room);
+    this._roomInfo = undefined;
+    this.sendXt(xtCode, room);
   }
 
   leaveWaddleRoom(): void {

@@ -146,6 +146,15 @@ handler.xt(Handle.JoinWaddle, (client, waddle) => {
 });
 
 handler.xt(Handle.JoinTemporaryWaddle, (client, room, waddle, unknown) => {
+  if (client.isEngine1 || client.isEngine2) {
+    const roomId = waddle;
+    if (client.isInWaddleGame() && client.waddleGame.name === 'sled') {
+      if (roomId === client.waddleGame.roomId) {
+        client.joinGameRoomOld(roomId, 'jx');
+      }
+    }
+    return;
+  }
   const waddleRoom = client.server.getRoom(room).waddles.get(waddle);
   if (waddleRoom === undefined) {
     throw new Error('Player is joining Waddle Room, but it doesn\'t exist');
@@ -155,7 +164,15 @@ handler.xt(Handle.JoinTemporaryWaddle, (client, room, waddle, unknown) => {
 
 // leave a waddle room
 handler.xt(Handle.LeaveWaddle, (client) => {
+  if ((client as unknown as { _currentWaddleRoom?: unknown })._currentWaddleRoom === undefined) {
+    return;
+  }
+  const waddleRoom = client.waddleRoom;
+  const seatIndex = waddleRoom.seats.findIndex((seat) => seat?.penguin.id === client.penguin.id);
   client.leaveWaddleRoom();
+  if (seatIndex !== -1) {
+    client.sendRoomXt('uw', waddleRoom.id, seatIndex);
+  }
 });
 
 handler.xt(Handle.PlayerTransformation, (client, id) => {
