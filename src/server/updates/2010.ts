@@ -3574,7 +3574,7 @@ export const UPDATES_2010: Update[] = [
           'party': 281,
           'party99': 254
         },
-        migrator: true,
+        migrator: 'archives:Dec2010Pirate.swf',
         startscreens: [
           'archives:LoginHolidayParty2010.swf',
           'archives:CFC2010LoginScreen.SWF',
