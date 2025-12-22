@@ -712,8 +712,8 @@ export class Penguin {
     this._battleOfDoom = true;
   }
 
-  static getDefault(id: number, name: string, defaultParams: DefaultPenguinParams = {}): Penguin {
-    return new Penguin(id, {
+  static getDefaultData(name: string, defaultParams: DefaultPenguinParams = {}): PenguinData {
+    return {
       name,
       is_member: defaultParams.is_member ?? true,
       is_agent: false,
@@ -770,7 +770,11 @@ export class Penguin {
       senseiAttempts: 0,
       cardWins: 0,
       battleOfDoom: false
-    })
+    }
+  }
+
+  static getDefault(id: number, name: string, defaultParams: DefaultPenguinParams = {}): Penguin {
+    return new Penguin(id, Penguin.getDefaultData(name, defaultParams));
   }
 
   static getDefaultIgloo(id: number): Igloo {
@@ -791,6 +795,11 @@ export class Penguin {
       return undefined;
     }
     return new Penguin(id, data);
+  }
+
+  static add(id: number, penguin: PenguinData) {
+    db.update<PenguinData>(Databases.Penguins, id, penguin);
+    return new Penguin(id, penguin);
   }
 
   update() {

@@ -20,6 +20,7 @@ import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
 import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
 import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
 import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
+import { MASCOTS } from './game-data/mascots';
 
 type ServerType = 'Login' | 'World';
 
@@ -515,7 +516,8 @@ export class Server {
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
-    this._bakery = new Bakery(this); 
+    this._bakery = new Bakery(this);
+    this.createMascots();
     this.init();
   }
 
@@ -717,6 +719,18 @@ export class Server {
 
   get bakery() {
     return this._bakery;
+  }
+
+  createMascots() {
+    MASCOTS.forEach(mascot => {
+      let penguin = Penguin.getById(mascot.id);
+      if (penguin === undefined) {
+        penguin = Penguin.add(mascot.id, Penguin.getDefaultData(mascot.name));
+      }
+      mascot.starterItems.forEach(i => {
+        penguin?.addItem(i);
+      });
+    })
   }
 }
 
