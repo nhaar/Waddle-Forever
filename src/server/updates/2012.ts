@@ -8,6 +8,17 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleJan2012.swf'
   },
   {
+    date: '2012-01-12',
+    stagePlay: {
+      name: 'The Twelfth Fish',
+      costumeTrunk: 'archives:Jan2012Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:12112012Stage.swf',
+      plaza: 'archives:RoomsPlaza_2-Play2.swf'
+    }
+  },
+  {
     date: '2012-01-19',
     temp: {
       const: {
@@ -103,6 +114,17 @@ export const UPDATES_2012: Update[] = [
   {
     date: '2012-02-02',
     end: ['party']
+  },
+  {
+    date: '2012-02-09',
+    stagePlay: {
+      name: 'The Vikings That Time Forgot',
+      costumeTrunk: 'archives:Feb2012Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:RoomsStage-21Apr2015.swf',
+      plaza: 'archives:RoomsPlaza_2-Play19.swf'
+    }
   },
   {
     date: '2012-02-14',
@@ -330,7 +352,15 @@ export const UPDATES_2012: Update[] = [
           }
         ]
       }
-    ]
+    ],
+    stagePlay: {
+      name: 'Quest for the Golden Puffle',
+      costumeTrunk: 'archives:December2008Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:RoomsStage-May2010.swf',
+      plaza: 'archives:RoomsPlaza_2-Play5.swf'
+    }
   },
   {
     date: '2012-03-29',
@@ -488,7 +518,15 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-04-26',
-    end: ['party']
+    end: ['party'],
+    stagePlay: {
+      name: 'Ruby and the Ruby',
+      costumeTrunk: 'archives:Apr2012Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:04252012Stage.swf',
+      plaza: 'archives:RoomsPlaza_2-Play8.swf'
+    }
   },
   {
     date: '2012-05-03',
@@ -664,6 +702,14 @@ export const UPDATES_2012: Update[] = [
         mapNote: 'archives:MedievalParty2012Party_map_note.swf',
         partyIconFile: 'archives:MedievalParty2012MedievalHuntIcon.swf'
       }
+    },
+    stagePlay: {
+      name: 'Fairy Fables',
+      costumeTrunk: 'archives:May2012Costume.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play10.swf',
+      stage: 'archives:Stage14Sept2011.swf'
     }
   },
   {
@@ -780,7 +826,15 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-07-05',
-    clothingCatalog: 'archives:PenguinStyleJul2012.swf'
+    clothingCatalog: 'archives:PenguinStyleJul2012.swf',
+    stagePlay: {
+      name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
+      costumeTrunk: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza-Play3-2.swf',
+      stage: 'archives:2011Mar17Stage.swf'
+    }
   },
   {
     date: '2012-07-12',
@@ -901,7 +955,15 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-08-02',
-    clothingCatalog: 'archives:PenguinStyleAug2012.swf'
+    clothingCatalog: 'archives:PenguinStyleAug2012.swf',
+    stagePlay: {
+      name: 'Team Blue vs. Team Red',
+      costumeTrunk: 'archives:August2012Costume.swf'
+    },
+    rooms: {
+      plaza: 'archives:RoomsPlaza_2-Play11.swf',
+      stage: 'archives:RoomsStage-August2012.swf'
+    }
   },
   {
     date: '2012-08-09',
@@ -1140,7 +1202,15 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-09-06',
-    clothingCatalog: 'archives:PenguinStyleSept2012.swf'
+    clothingCatalog: 'archives:PenguinStyleSept2012.swf',
+    stagePlay: {
+      name: 'Space Adventure Planet Y',
+      costumeTrunk: 'archives:September2012Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:09062012Stage.swf',
+      plaza: 'archives:RoomsPlaza_2-Play9.swf'
+    }
   },
   {
     date: '2012-09-13',
@@ -1386,6 +1456,16 @@ export const UPDATES_2012: Update[] = [
     activeFeatures: '20141002'
   },
   {
+    date: '2012-10-18',
+    stagePlay: {
+      name: 'Night of the Living Sled: Live',
+      costumeTrunk: 'archives:October2012Costume.swf'
+    },
+    rooms: {
+      stage: 'archives:StageHalloween2012.swf'
+    }
+  },
+  {
     date: '2012-10-20',
     partyComment: 'A new item is available for the Ghost Scavenger Hunt'
   },
@@ -1427,10 +1507,17 @@ export const UPDATES_2012: Update[] = [
     rooms: {
       dance: 'archives:RoomsDance_4.swf',
       shop: 'archives:RoomsShop_3.swf',
-      pizza: 'archives:RoomsPizza_2.swf'
+      pizza: 'archives:RoomsPizza_2.swf',
+
+      stage: 'archives:04252012Stage.swf',
+      plaza: 'archives:RoomsPlaza_2-Play8.swf'
     },
     music: {
       pizza: 344
+    },
+    stagePlay: {
+      name: 'Ruby and the Ruby',
+      costumeTrunk: 'archives:November2012Costume.swf'
     }
   },
   {
@@ -1500,7 +1587,7 @@ export const UPDATES_2012: Update[] = [
           forts: 342,
           rink: 342,
           town: 342,
-          stage: 0
+          stage: 41
         },
         startscreens: [
           'archives:SwfEpf-billboard-teaser.swf',
@@ -1522,7 +1609,185 @@ export const UPDATES_2012: Update[] = [
         fileChanges: {
           'play/v2/client/video_player.swf': 'archives:OperationBlackoutClientVideoPlayer.swf'
         },
-        clothingCatalog: 'archives:HerbertStyleNov2012.swf'
+        clothingCatalog: 'archives:HerbertStyleNov2012.swf',
+        playScript: [
+          {
+            note: 'My Awesome Life - The Herbert Story'
+          },
+          {
+            name: 'Herbert',
+            message: 'Welcome to a very special production.'
+          },
+          {
+            name: 'Herbert',
+            message: 'Today, I\'ll be performing the role of Illustrious Leader.'
+          },
+          {
+            name: 'Herbert',
+            message: 'Flash photography is encouraged. Enjoy!'
+          },
+          {
+            name: 'Herbert',
+            message: 'takes deep breath'
+          },
+          {
+            name: 'Herbert',
+            message: 'I was born in the frozen landscapes of the Northern.'
+          },
+          {
+            name: 'Herbert',
+            message: 'I was an intelligent and sensitive cub. Gifted you could say.'
+          },
+          {
+            name: 'Herbert',
+            message: 'Yet there were none who appreciated my genius.'
+          },
+          {
+            name: 'Herbert',
+            message: 'So I bravely ventured out into the world.'
+          },
+          {
+            name: 'Herbert',
+            message: 'Alas! The storms of misfortune beset me.'
+          },
+          {
+            name: 'Herbert',
+            message: 'And I was blown to the snow-covered prison you call home.'
+          },
+          {
+            name: 'Herbert',
+            message: 'Here, I saw an opportunity.'
+          },
+          {
+            name: 'Herbert',
+            message: 'I could lead these poor penguins to prosperity!'
+          },
+          {
+            name: 'Herbert',
+            message: 'But a sinister group of secret agents attacked me!'
+          },
+          {
+            name: 'Herbert',
+            message: 'I wouldn\'t give up! With each ingenious plan...'
+          },
+          {
+            name: 'Herbert',
+            message: '...I got closer and closer to victory!'
+          },
+          {
+            name: 'Herbert',
+            message: 'We battled!'
+          },
+          {
+            note: 'Herbert battles the agents'
+          },
+          {
+            name: 'Herbert',
+            message: 'I blew up their HQ with an explosion of popcorn.'
+          },
+          {
+            name: 'Herbert',
+            message: 'And in return, one fiendish brute trapped me in an ice cage!'
+          },
+          {
+            name: 'Herbert',
+            message: 'But I escaped! I plotted my revenge, and one day...'
+          },
+          {
+            name: 'Herbert',
+            message: '...I blew up their base and took over the island!'
+          },
+          {
+            name: 'Herbert',
+            message: 'MWA HA HA HA HA!!!!'
+          },
+          {
+            name: 'Herbert',
+            message: 'And that\'s how I became the Illustrious Ruler of Club Herbert.'
+          },
+          {
+            name: 'Herbert',
+            message: 'The end.'
+          },
+          {
+            name: 'Herbert',
+            message: 'Thank you, thank you!'
+          },
+          {
+            name: 'Herbert',
+            message: 'You\'re too kind!'
+          },
+          {
+            note: 'Hecklers'
+          },
+          {
+            name: 'Huckle',
+            message: 'BOOO!!!'
+          },
+          {
+            name: 'Jekyll',
+            message: '(snore!)'
+          },
+          {
+            name: 'Huckle',
+            message: 'I want to see Quest for the Golden Puffle!'
+          },
+          {
+            name: 'Jekyll',
+            message: 'Do something funny!'
+          },
+          {
+            name: 'Huckle',
+            message: 'Throw a pie!'
+          },
+          {
+            name: 'Jekyll',
+            message: 'Take this!'
+          },
+          {
+            name: 'Huckle',
+            message: 'Have a free snowball!'
+          },
+          {
+            name: 'Jekyll',
+            message: 'Long live the EPF!'
+          },
+          {
+            name: 'Herbert',
+            message: 'Quiet, you!'
+          },
+          {
+            name: 'Herbert',
+            message: 'SHHHH!'
+          },
+          {
+            name: 'Herbert',
+            message: 'Hey! Who threw that?'
+          },
+          {
+            note: 'Director'
+          },
+          {
+            name: 'Director',
+            message: 'Places, please!'
+          },
+          {
+            name: 'Director',
+            message: '5 minute call, all actors to the stage!'
+          },
+          {
+            name: 'Director',
+            message: 'Let\'s take it from the top!'
+          },
+          {
+            name: 'Director',
+            message: 'That\'s a wrap!'
+          },
+          {
+            name: 'Director',
+            message: 'Take a bow, everyone!'
+          }
+        ]
       }
     },
     stampUpdates: [
@@ -1597,10 +1862,16 @@ export const UPDATES_2012: Update[] = [
       dance: 'archives:RoomsDance_5.swf',
       agentcom: 'archives:RoomsAgentcom-December2012.swf',
       agentlobbymulti: 'archives:ENRoomsAgentLobbyMultiDec2012.swf',
-      agentlobbysolo: 'archives:ENRoomsAgentLobbySoloDec2012.swf'
+      agentlobbysolo: 'archives:ENRoomsAgentLobbySoloDec2012.swf',
+
+      stage: 'archives:ENRoomsStage-Dec2012.swf'
     },
     music: {
       shop: 321
+    },
+    stagePlay: {
+      name: 'A Humbug Holiday',
+      costumeTrunk: 'archives:ENDecember2012Costume.swf'
     }
   },
   {
