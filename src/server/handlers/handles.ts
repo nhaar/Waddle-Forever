@@ -41,12 +41,20 @@ export enum Handle {
   JoinServerOld,
   GetCoins,
   GetCoins2007,
+  GetTableOld,
+  JoinTableOld,
+  LeaveTableOld,
+  GetTableGame,
+  JoinTableGame,
+  LeaveTableGame,
+  SendTableMove,
   AddItemOld,
   UpdatePenguinOld,
   BecomeAgent,
   GetInventoryOld,
   SendMessageOld,
   SetPositionOld,
+  SendTeleportOld,
   SendEmoteOld,
   SnowballOld,
   GetInventory2007,
@@ -205,7 +213,7 @@ export type HandleArguments = typeof HANDLE_ARGUMENTS;
 export const HANDLE_ARGUMENTS = {
   [Handle.SetPosition]: ['number', 'number'],
   [Handle.JoinRoom]: ['number', 'number', 'number'],
-  [Handle.JoinRoomOld]: ['number'],
+  [Handle.JoinRoomOld]: ['number', 'number', 'number'],
   [Handle.LeaveGame]: ['number'],
   [Handle.JoinIgloo]: ['number'],
   [Handle.JoinIglooNew]: ['number', 'string'],
@@ -221,12 +229,20 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinServerOld]: [],
   [Handle.GetCoins]: [],
   [Handle.GetCoins2007]: [],
+  [Handle.GetTableOld]: 'number',
+  [Handle.JoinTableOld]: ['number'],
+  [Handle.LeaveTableOld]: [],
+  [Handle.GetTableGame]: ['number'],
+  [Handle.JoinTableGame]: 'number',
+  [Handle.LeaveTableGame]: [],
+  [Handle.SendTableMove]: 'number',
   [Handle.AddItemOld]: ['number'],
   [Handle.UpdatePenguinOld]: ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number'],
   [Handle.BecomeAgent]: [],
   [Handle.GetInventoryOld]: [],
   [Handle.SendMessageOld]: ['string', 'string'],
   [Handle.SetPositionOld]: ['number', 'number'],
+  [Handle.SendTeleportOld]: ['number', 'number', 'number'],
   [Handle.SendEmoteOld]: ['string'],
   [Handle.SnowballOld]: ['string', 'string'],
   [Handle.GetInventory2007]: [],
@@ -337,7 +353,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.GetCards]: [],
   [Handle.JoinSled]: [],
   [Handle.SledRaceAction]: ['string', 'string', 'string', 'string'],
-  [Handle.LeaveWaddleGame]: [],
+  [Handle.LeaveWaddleGame]: 'number',
   [Handle.HandleSendMessage]: ['string', 'string'],
   [Handle.SendJokeOld]: ['string'],
   [Handle.SendSafeMessageOld]: ['string'],
@@ -397,6 +413,10 @@ const HANDLER_MAPPING: HandlerMapping = {
     'jp': Handle.JoinIglooOld,
     'ac': Handle.GetCoins,
     'gc': Handle.GetCoins2007,
+    'gt': Handle.GetTableOld,
+    'jt': Handle.JoinTableOld,
+    'lt': Handle.LeaveTableOld,
+    'jx': Handle.JoinTemporaryWaddle,
     'ai': Handle.AddItemOld,
     'af': Handle.AddFurnitureOld,
     'au': Handle.AddIglooOld,
@@ -524,6 +544,7 @@ const HANDLER_MAPPING: HandlerMapping = {
       'rt': Handle.CloseBook
     },
     'st': {
+      '_': Handle.SendTeleportOld,
       'gsbcd': Handle.GetStampbookCoverData,
       'gps': Handle.GetPlayerStamps,
       'gmres': Handle.GetRecentStamps,
@@ -557,9 +578,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'gcd': Handle.GetCards,
       'gfl': Handle.GetFireLevel
     },
-    'w': {
-      'jx': Handle.JoinTemporaryWaddle
-    },
     'mdvl': {
       'retrieve': Handle.RetrieveMedieval2012,
       'msgviewed': Handle.Medieval2012ViewedMessage
@@ -574,7 +592,7 @@ const HANDLER_MAPPING: HandlerMapping = {
     'zr': Handle.RollSpyDrills,
     'zc': Handle.SpyDrillsReward,
     'lw': Handle.LeaveWaddle,
-    'gz': Handle.EnterWaddleGame,
+    'gz': [Handle.EnterWaddleGame, Handle.GetTableGame],
     'uz': Handle.UpdateWaddleGameSeats,
     'zm': [
       Handle.SledRaceAction,
@@ -584,12 +602,13 @@ const HANDLER_MAPPING: HandlerMapping = {
       Handle.CardJitsuFireChooseTile,
       Handle.CardJitsuFireChooseCard,
       Handle.CardJitsuFireInfoReady,
-      Handle.CardJitsuFireChooseElement
+      Handle.CardJitsuFireChooseElement,
+      Handle.SendTableMove
     ],
     'jmm': Handle.JoinMatchMaking,
-    'jz': Handle.JoinSled,
+    'jz': [Handle.JoinSled, Handle.JoinTableGame],
     'jsen': Handle.JoinSensei,
-    'lz': Handle.LeaveWaddleMatch,
+    'lz': [Handle.LeaveWaddleMatch, Handle.LeaveTableGame],
     'epfsf': Handle.EPFStamps
   },
   'k': {
@@ -635,13 +654,14 @@ iterateEntries(HANDLER_MAPPING, (ext, dirs) => {
     if (typeof codes === 'number' || Array.isArray(codes)) {
       iterateHandles(ext, dir, codes);
     } else {
+      if ('_' in codes) {
+        iterateHandles(ext, dir, codes._);
+      }
       iterateEntries(codes, (code, names) => {
-        // "root handler"
-        if (code === '') {
-          iterateHandles(ext, dir, names);
-        } else {
-          iterateHandles(ext, code, names, dir);
+        if (code === '_') {
+          return;
         }
+        iterateHandles(ext, code, names, dir);
       })
     }
   });
