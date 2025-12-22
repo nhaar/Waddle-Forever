@@ -1451,7 +1451,10 @@ export const UPDATES_2012: Update[] = [
           'play/v2/client/engine.swf': 'approximation:ghosts/engine.swf',
         },
         partyIconFile: 'archives:HalloweenParty2012ScavengerHuntIcon.swf',
-        mapNote: 'archives:Halloween2012Party_map_note.swf'
+        mapNote: 'archives:Halloween2012Party_map_note.swf',
+        gameStrings: {
+          'scavenger_continue': 'CONTINUE'
+        }
       }
     },
     fileChanges: {

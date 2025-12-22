@@ -143,6 +143,9 @@ export type CPUpdate = {
 
   localChanges?: LocalChanges;
 
+  // only EN support currently
+  gameStrings?: Record<string, string>;
+
   globalChanges?: GlobalChanges;
 
   migrator?: boolean | string;

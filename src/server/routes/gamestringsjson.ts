@@ -1,11 +1,26 @@
-import { findInVersion } from "../game-data";
+import { findInVersion, findInVersionStrict } from "../game-data";
 import { getHuntTimeline } from "../timelines/crumbs";
+import { GAME_STRINGS_TIMELINE } from "../timelines/game-strings";
 import { Version } from "./versions";
 
 const huntTimeline = getHuntTimeline();
 
 export function getGameStrings(version: Version): string {
   const hunt = findInVersion(version, huntTimeline);
+  const gameStrings = { ...findInVersionStrict(version, GAME_STRINGS_TIMELINE) };
+  if (hunt !== null && hunt !== undefined) {
+    gameStrings['scavenger_title'] = hunt.lang.en.title;
+    gameStrings['scavenger_claim_prize'] = hunt.lang.en.claim;
+    gameStrings['scavenger_continue'] = hunt.lang.en.continue;
+    gameStrings['scavenger_clue0'] = hunt.lang.en.clues[0];
+    gameStrings['scavenger_clue1'] = hunt.lang.en.clues[1];
+    gameStrings['scavenger_clue2'] = hunt.lang.en.clues[2];
+    gameStrings['scavenger_clue3'] = hunt.lang.en.clues[3];
+    gameStrings['scavenger_clue4'] = hunt.lang.en.clues[4];
+    gameStrings['scavenger_clue5'] = hunt.lang.en.clues[5];
+    gameStrings['scavenger_clue6'] = hunt.lang.en.clues[6];
+    gameStrings['scavenger_clue7'] = hunt.lang.en.clues[7];
+  }
 
   const json = {
     "lang": [
@@ -5297,18 +5312,7 @@ export function getGameStrings(version: Version): string {
         "w.pufflecare.handler.finish",
         "done"
       ],
-      [
-        "scavenger_title",
-        hunt?.lang.en.title ?? ''
-      ],
-      [
-        "scavenger_claim_prize",
-        hunt?.lang.en.claim ?? ''
-      ],
-      [
-        "scavenger_continue",
-        hunt?.lang.en.continue ?? ''
-      ],
+      
       [
         "scavenger_items_found_plural",
         "%num% ghosts caught"
@@ -5316,38 +5320,6 @@ export function getGameStrings(version: Version): string {
       [
         "scavenger_items_found",
         "%num% eggs found"
-      ],
-      [
-        "scavenger_clue0",
-        hunt?.lang.en.clues[0] ?? ''
-      ],
-      [
-        "scavenger_clue1",
-        hunt?.lang.en.clues[1] ?? ''
-      ],
-      [
-        "scavenger_clue2",
-        hunt?.lang.en.clues[2] ?? ''
-      ],
-      [
-        "scavenger_clue3",
-        hunt?.lang.en.clues[3] ?? ''
-      ],
-      [
-        "scavenger_clue4",
-        hunt?.lang.en.clues[4] ?? ''
-      ],
-      [
-        "scavenger_clue5",
-        hunt?.lang.en.clues[5] ?? ''
-      ],
-      [
-        "scavenger_clue6",
-        hunt?.lang.en.clues[6] ?? ''
-      ],
-      [
-        "scavenger_clue7",
-        hunt?.lang.en.clues[7] ?? ''
       ],
       [
         "ignore_prompt_help",
@@ -9652,7 +9624,8 @@ export function getGameStrings(version: Version): string {
       [
         "w.app.february2017.login0322",
         "Thank you for making Club Penguin so incredibly inspiring. Waddle on, everyone!"
-      ]
+      ],
+      ...Object.entries(gameStrings)
     ],
     "error_lang": [
       [
