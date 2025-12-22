@@ -995,7 +995,6 @@ export class Client {
       this.leaveRoom();
     }
     this._currentRoom = this._server.getRoom(room);
-    const string = this.penguinString;
     if (isGameRoom(room)) {
       this._roomInfo = undefined;
       this.sendXt('jg', room);
@@ -1005,6 +1004,7 @@ export class Client {
       const xx = x ?? 0;
       const yy = y ?? 0;
       this.updateRoomInfo({ x: xx, y: yy });
+      const string = this.penguinString;
       this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
       this.sendRoomXt('ap', string);
       // it seems that the new x, y position of players must be sent via a new set position packet
