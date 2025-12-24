@@ -202,6 +202,7 @@ export function getPathsJson(version: Version): string {
       "w.p0712.musicjam.scavengerhunt": "scavenger_hunt\/scavenger_hunt.swf",
       "oops_non_member_backstage": "membership\/party1.swf",
       "oops_member_prizebooth": "membership\/party1.swf",
+      "w.p1012.halloween.penguin.ghost": "penguin/penguin_ghost_%color%.swf", // for the modded ghosts engine.swf
       "w.p1012.halloween.penguin.ghost0": "penguin\/penguin_ghost_0.swf",
       "w.p1012.halloween.penguin.ghost1": "penguin\/penguin_ghost_1.swf",
       "w.p1012.halloween.penguin.ghost2": "penguin\/penguin_ghost_2.swf",
@@ -347,7 +348,8 @@ export function getPathsJson(version: Version): string {
       "w.app.p2017.dialogprompt.february.iceberg.plaque": "close_ups\/170201_dialogue_iceberg_plaque.swf",
       "w.app.p2017.dialogprompt.february.alltasks.congrats": "close_ups\/170201_dialogue_alltasks_congrats.swf",
       "w.app.p2017.dialogprompt.february.iceberg.congrats": "close_ups\/170201_dialogue_iceberg_congrats.swf",
-      "w.app.p2017.dialogprompt.march.login": "close_ups\/170322_character_dialogue_login.swf"
+      "w.app.p2017.dialogprompt.march.login": "close_ups\/170322_character_dialogue_login.swf",
+      'w.p0512.medieval.lighthouse.telescope': 'close_ups/lighthouse_telescope.swf'
     },
     "local": {
       "801_award": "awards\/801.swf",
@@ -612,6 +614,8 @@ export function getPathsJson(version: Version): string {
       "year1314_book": "books\/year1314.swf",
       "year1415_book": "books\/year1415.swf",
       "w.app.epfhandbook": "books\/EPF-handbook.swf",
+      'w.p0512.medieval.login1': 'close_ups/mdlv1.swf',
+      'w.p0512.medieval.login2': 'close_ups/mdlv2.swf',
       ...getMapForDate(localPathsTimeline, version)
     },
     "link": {

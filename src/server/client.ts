@@ -9,16 +9,18 @@ import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { findInVersion } from './game-data';
-import { OLD_CLIENT_ITEMS } from './game-logic/client-items';
+import { findInVersion, findInVersionStrict } from './game-data';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
-import { Vector } from '../common/utils';
+import { choose, randomInt, Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
 import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
+import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
+import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
+import { MASCOTS } from './game-data/mascots';
 
 type ServerType = 'Login' | 'World';
 
@@ -306,10 +308,182 @@ class GameRoom {
   getWaddleRooms() {
     return Array.from(this._waddles.values());
   }
+
+  sendXt(handler: string, ...args: Array<string | number>) {
+    this.players.forEach((client) => client.sendXt(handler, ...args));
+  }
 }
 
 /** Map of the waddle games and their constructors */
 type WaddleConstructors = Record<WaddleName, new (players: Client[]) => WaddleGame>;
+
+// track which buddy packet namespace a client uses: chat291-339 "s" vs chat506 "b"
+type BuddyProtocol = 's' | 'b';
+
+type BakeryState = 'IngredientsStation' | 'CheerStation' | 'MultiplierStation' | 'ResetStation';
+type BakeryMultiplier = 'Small' | 'Medium' | 'Large';
+type Ingredient = 'Candy' | 'Eggs' | 'Flour' | 'Milk' | 'Tire' | 'Hay';
+
+/** Controls the holiday party 2012 bakery room */
+class Bakery {
+  private _state: BakeryState = 'IngredientsStation';
+  
+  static MAGIC_INGREDIENTS: Ingredient[] = ['Hay', 'Tire', 'Candy'];
+  private _ingredients: Ingredient[] = [];
+  private _currentIngredient: number = 0;
+
+  private _currentEmote: number = 1;
+  static CHEER_CAPACITY = 7;
+  private _cheerCount: number = 0;
+
+  private _multiplierPenguins: Set<number> = new Set();
+  private _multiplierCount: number = 0;
+  private _countInterval: NodeJS.Timer | null = null;
+
+  private _server: Server;
+
+  constructor(server: Server) {
+    this._server = server;
+    this.startIngredients();
+  }
+
+  get room() {
+    return this._server.getRoom(853);
+  }
+  
+  get emote() {
+    return this._currentEmote;
+  }
+
+  get cheerCount() {
+    return this._cheerCount;
+  }
+
+  incrementCheer() {
+    this._cheerCount++;
+    this.sendBakeryState();
+  
+    // only if exact, in order to only start the timeout once
+    if (this._cheerCount === Bakery.CHEER_CAPACITY) {
+      // takes about 3 seconds to proceed
+      setTimeout(() => {
+        this.startMultiplier();
+      }, 3000);
+    }
+  }
+
+  updateMultiplierPenguins(): void {
+    this.room.players.forEach((client) => {
+      // rough estimate, not sure how the original did it
+      if (client.x >= 610) {
+        this._multiplierPenguins.add(client.penguin.id);
+      } else {
+        this._multiplierPenguins.delete(client.penguin.id);
+      }
+    });
+  }
+
+  startIngredients() {
+    this._state = 'IngredientsStation';
+    this._currentIngredient = 0;
+    const magicIngredient = choose(Bakery.MAGIC_INGREDIENTS);
+    const ingredients: Ingredient[] = [];
+    const possibleIngredients: Ingredient[] = [magicIngredient, 'Milk', 'Eggs', 'Flour'];
+    while (possibleIngredients.length > 0) {
+      const i = randomInt(0, possibleIngredients.length - 1);
+      ingredients.push(...possibleIngredients.splice(i, 1));
+    }
+    this._ingredients = ingredients;
+    this.sendBakeryState();
+  }
+
+  startCheer() {
+    this._state = 'CheerStation';
+    this._cheerCount = 0;
+    this._currentEmote = choose([1, 2, 7]);
+    this.sendBakeryState();
+  }
+
+  startMultiplier() {
+    this._state = 'MultiplierStation';
+    this._multiplierCount = 9;
+    this.updateMultiplierPenguins();
+    this.sendBakeryState();
+
+    this._countInterval = setInterval(() => {
+      this._multiplierCount--;
+
+      // use < 0 to give a full second before switching to next station
+      if (this._multiplierCount < 0 && this._countInterval !== null) {
+        clearInterval(this._countInterval);
+        this.startReset();
+      } else {
+        this.updateMultiplierPenguins();
+        this.sendBakeryState();
+      }
+    }, 1000);
+  }
+
+  startReset(): void {
+    this._state = 'ResetStation';
+    this.sendBakeryState();
+
+    // estimate based on videos
+    setTimeout(() => {
+      this.startIngredients();
+    }, 6000);
+  }
+
+  get currentIngredient() {
+    return this._ingredients[this._currentIngredient];
+  }
+
+  nextIngredient() {
+    this._currentIngredient++;
+    this.sendBakeryState();
+    if (this._currentIngredient >= this._ingredients.length) {
+      this.startCheer();
+    }
+  }
+
+  getMultiplier(): BakeryMultiplier {
+    // none of these are confirmed values
+    if (this._multiplierPenguins.size >= 10) {
+      return 'Large';
+    }
+    if (this._multiplierPenguins.size >= 5) {
+      return 'Medium';
+    }
+    return 'Small';
+  }
+
+  get bakeryState() {
+    return JSON.stringify({
+      CurrentStation: this._state,
+      IngredientsStation: this._ingredients.map((ingredient, i) => {
+        return {
+          IngredientType: ingredient,
+          // unknown if this total ever changed
+          TotalRequired: 1,
+          CurrentCount: this._currentIngredient > i ? 1 : 0
+        }
+      }),
+      CheerStation: {
+        CheerCapacity: Bakery.CHEER_CAPACITY,
+        CurrentCheerCount: this.cheerCount,
+        Emote: this.emote
+      },
+      MultiplierStation: {
+        Counter: this._multiplierCount,
+        Multiplier: this.getMultiplier()
+      }
+    })
+  }
+
+  sendBakeryState() {
+    this.room.sendXt('barsu', this.bakeryState);
+  }
+}
 
 /** Manages a gameplayer server */
 export class Server {
@@ -333,12 +507,18 @@ export class Server {
 
   private _waddleConstructors: WaddleConstructors | undefined;
 
+  private _buddyProtocol: BuddyProtocol | undefined;
+
+  private _bakery: Bakery;
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
     this._igloos = new Map<number, Igloo>();
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
+    this._bakery = new Bakery(this);
+    this.createMascots();
     this.init();
   }
 
@@ -348,6 +528,21 @@ export class Server {
       const room = this.getRoom(waddle.roomId);
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
+    this.setBuddyProtocol();
+  }
+
+  setBuddyProtocol() {
+    if (isEngine1(this._settingsManager.settings.version)) {
+      const chat = findInVersionStrict(this._settingsManager.settings.version, VERSIONS_TIMELINE);
+      this._buddyProtocol = chat >= 506 ? 'b' : 's';
+    } else {
+      // buddies for post-cpip not yet defined
+      this._buddyProtocol = undefined;
+    }
+  }
+
+  get buddyProtocol() {
+    return this._buddyProtocol;
   }
 
   get cardMatchmaking(): MatchMaker {
@@ -386,6 +581,15 @@ export class Server {
     this._playersById.set(id, client);
   }
 
+  /** Retrieve an online player by penguin ID */
+  getPlayerById(id: number): Client | undefined {
+    return this._playersById.get(id);
+  }
+
+  /** Remove a player from the online map */
+  untrackPlayer(id: number): void {
+    this._playersById.delete(id);
+  }
   getPenguinFromName (name: string): Penguin {
     let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
     const date = this.getVirtualDate(0).getTime();
@@ -490,6 +694,45 @@ export class Server {
   set waddleConstructors(value: WaddleConstructors) {
     this._waddleConstructors = value;
   }
+
+  getItemsFiltered(items: number[]) {
+    // pre-cpip engines have limited items, after
+    // that global_crumbs allow having all the items
+    if (isLower(this.settings.version, CPIP_UPDATE)) {
+      const itemSet = findInVersionStrict(this.settings.version, CLIENT_ITEMS_TIMELINE)
+      return items.filter((value) => itemSet.has(value));
+    } else {
+      return items;
+    }
+  }
+
+  getAllPlayersInfo() {
+    const players: Array<{ name: string; id: number; }> = [];
+    this._playersById.forEach((client, id) => {
+      players.push({
+        id,
+        name: client.penguin.name
+      });
+    });
+
+    return players;
+  }
+
+  get bakery() {
+    return this._bakery;
+  }
+
+  createMascots() {
+    MASCOTS.forEach(mascot => {
+      let penguin = Penguin.getById(mascot.id);
+      if (penguin === undefined) {
+        penguin = Penguin.add(mascot.id, Penguin.getDefaultData(mascot.name));
+      }
+      mascot.starterItems.forEach(i => {
+        penguin?.addItem(i);
+      });
+    })
+  }
 }
 
 function capitalizeName(name: string): string {
@@ -514,6 +757,7 @@ export class Client {
   private _currentRoom: GameRoom | undefined;
   /** Reference to the player's information stored in the room */
   private _roomInfo: PlayerRoomInfo | undefined;
+  private _avatar: number = 0;
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -539,6 +783,8 @@ export class Client {
 
   // when digging gold nuggets for golden puffle
   private _isGoldNuggetState = false;
+
+  private _specialName: string | null = null;
 
   constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
     this._server = server;
@@ -652,7 +898,7 @@ export class Client {
     } else {
       return [
         this.penguin.id,
-        this.penguin.name,
+        this.name,
         1, // meant to be approval, but always approved, TODO: non approved names in the future
         this.penguin.color,
         this.penguin.head,
@@ -668,7 +914,7 @@ export class Client {
         this.frame,
         this.penguin.isMember ? 1 : 0,
         this.memberAge,
-        0, // TODO figure out what this "avatar" is
+        this._avatar,
         0, // TODO figure out what penguin state is
         0, // TODO figure out what party state is
         0, // TODO figure out what puffle state is
@@ -721,7 +967,7 @@ export class Client {
 
   /** Send a XT message to all players in a room */
   sendRoomXt(handler: string, ...args: Array<string | number>) {
-    this.room.players.forEach((client) => client.sendXt(handler, ...args));
+    this.room.sendXt(handler, ...args);
   }
 
   /** Check if playing a waddle game */
@@ -774,12 +1020,22 @@ export class Client {
 
   update (): void {
     if (!this.isBot) {
-      db.update<PenguinData>(Databases.Penguins, this.penguin.id, this.penguin.serialize());
+      this.penguin.update()
+    }
+  }
+
+  private checkSpecialName() {
+    if (this._penguin !== undefined) {
+      const mascot = MASCOTS.find(m => this._penguin?.id === m.id);
+      if (mascot?.display !== undefined) {
+        this._specialName = mascot.display;
+      }
     }
   }
 
   setPenguinFromName (name: string): void {
     this._penguin = this.server.getPenguinFromName(name)
+    this.checkSpecialName();
 
     this._server.trackPlayer(this.penguin.id, this);
   }
@@ -791,6 +1047,7 @@ export class Client {
       throw new Error(`Could not find penguin of ID ${id}`);
     }
     this._penguin = new Penguin(id, penguin);
+    this.checkSpecialName();
     this._server.trackPlayer(id, this);
   }
 
@@ -835,14 +1092,7 @@ export class Client {
   }
 
   sendInventory(): void {
-    let items = this.penguin.getItems();
-    // pre-cpip engines have limited items, after
-    // that global_crumbs allow having all the items
-    if (isLower(this.version, CPIP_UPDATE)) {
-      const version = findInVersion(this.version, VERSIONS_TIMELINE) ?? 0;
-      const itemSet = OLD_CLIENT_ITEMS[version];
-      items = items.filter((value) => itemSet.has(value));
-    }
+    const items = this.server.getItemsFiltered(this.penguin.getItems())
     
     this.sendXt('gi', items.join('%'));
   }
@@ -863,12 +1113,16 @@ export class Client {
     return this._currentWaddleRoom;
   }
 
+  get name() {
+    return this._specialName ?? this.penguin.name;
+  }
+
   joinWaddleRoom(waddleRoom: WaddleRoom): void {
     this._currentWaddleRoom = waddleRoom;
     const seatId = waddleRoom.addPlayer(this);
 
     this.sendXt('jw', seatId);
-    this.sendRoomXt('uw', waddleRoom.id, seatId, this.penguin.name, this.penguin.id);
+    this.sendRoomXt('uw', waddleRoom.id, seatId, this.name, this.penguin.id);
     const players = waddleRoom.players;
     // starts the game if all players have entered
     if (players.length === waddleRoom.size) {
@@ -1146,6 +1400,7 @@ export class Client {
     this._penguin?.incrementPlayTime(minutesDelta);
     if (this._penguin !== undefined) {
       this.update();
+      this.server.untrackPlayer(this._penguin.id);
     }
     this._socket?.end();
   }
@@ -1336,6 +1591,26 @@ export class Client {
     }
 
     this.update();
+  }
+
+  setAvatar(id: number) {
+    this._avatar = id;
+  }
+
+  get avatar() {
+    return this._avatar;
+  }
+
+  sendCoinsForChange() {
+    if (findInVersionStrict(this.version, COINS_FOR_CHANGE_TIMELINE)) {
+      // placeholder donation values
+      const values = findInVersionStrict(this.version, CFC_VALUES_TIMELINE);
+      this.sendXt('gcfct', values.map((amount, i) => `${i}|${amount}`).join(','));
+    }
+  }
+
+  get buddyProtocol(): BuddyProtocol | undefined {
+    return this._server.buddyProtocol
   }
 }
 

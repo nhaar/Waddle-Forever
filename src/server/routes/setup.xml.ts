@@ -1,10 +1,11 @@
-import { findInVersion, VersionsTimeline } from "../game-data";
+import { findInVersion, findInVersionStrict, VersionsTimeline } from "../game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { START_DATE } from "../timelines/dates";
 import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
 import { MUSIC_TIMELINE } from "../timelines/music";
 import { NEWSPAPER_TIMELINE, FAN_ISSUE_DATE } from "../timelines/newspapers";
+import { VERSIONS_TIMELINE } from "./version.txt";
 import { Version } from "./versions";
 
 type OldRoom = {
@@ -14,6 +15,10 @@ type OldRoom = {
   music?: number,
   frame?: number
 };
+
+function getFileName(chat: number, content: string): string {
+  return chat === 339 ? content : `<File>${content}</File>`
+}
 
 function getNewspapersTimeline() {
   // info is the issue ID ('fan' or number)
@@ -77,6 +82,8 @@ export function getSetupXml(version: Version, ip: string, port: number) {
   ROOM_FRAME_TIMELINE.forEach((versions, room) => {
     patchFrame(rooms, { [room]: findInVersion(version, versions) });
   });
+
+  const chat = findInVersionStrict(version, VERSIONS_TIMELINE);
 
   const servers = [
     'Blizzard',
@@ -176,18 +183,11 @@ export function getSetupXml(version: Version, ip: string, port: number) {
    </Games>
 
    <Catalogues>
-      <Clothing>
-          <File>clothing</File>
-      </Clothing>
-      <Furntiture>
-         <File>furniture</File>
-      </Furntiture>
-      <Igloo>
-         <File>igloo0604</File>
-      </Igloo>
-      <Pets>
-         <File>adopt0703</File>
-      </Pets>
+      <Clothing>${getFileName(chat, 'clothing')}</Clothing>
+      <Furntiture>${getFileName(chat, 'furniture')}</Furntiture>
+      <Igloo>${getFileName(chat, 'igloo_')}</Igloo>
+      <Pets>${getFileName(chat, 'adopt0703')}</Pets>
+      <Cards>cards</Cards>
    </Catalogues>
 
    <Edit>6</Edit>

@@ -1,5 +1,5 @@
 import { As3Newspaper, AS3_PAPERS, BoilerRoomPaper, BOILER_ROOM_PAPERS, PreBoilerRoomPaper, PRE_BOILER_ROOM_PAPERS } from "../game-data/newspapers";
-import { addDays, isLowerOrEqual, Version } from "../routes/versions";
+import { addDays, isLower, Version } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
 
 PRE_BOILER_ROOM_PAPERS
@@ -14,38 +14,51 @@ export const NEWSPAPER_TIMELINE: Array<{
 }> = [];
 
 let issue = 1;
-let periodStart: string | undefined = undefined;
+let current = '';
+let inPeriod = false;
 
-function pushPaper(date: Version) {
-    NEWSPAPER_TIMELINE.push({
-    date,
+function pushPaper(irregular?: Version) {
+  let next = '';
+  if (irregular === undefined) {
+    next = addDays(current, 7);
+  }
+  NEWSPAPER_TIMELINE.push({
+    date: irregular ?? current,
     info: papers[issue - 1]
   });
+  if (irregular === undefined) {
+    current = next;
+  }
   issue++;
+  if (issue > papers.length) {
+    inPeriod = false;
+  }
 }
 
 let fanDate: string = '';
 
 UPDATES.forEach(update => {
+  if (inPeriod) {
+    while (isLower(current, update.date) && inPeriod) {
+      pushPaper();
+    }
+  }
   if (update.update.newspaper !== undefined) {
     if (update.update.newspaper === 'irregular') {
-      if (periodStart !== undefined) {
+      if (inPeriod) {
         throw new Error('Irregular newspaper in the middle of a period');
       }
       pushPaper(update.date);
     } else if (update.update.newspaper === 'period-start') {
-      periodStart = update.date;
+      inPeriod = true;
+      current = update.date;
+      pushPaper();
     } else if (update.update.newspaper === 'period-end') {
-      if (periodStart === undefined) {
+      if (!inPeriod) {
         throw new Error('Period of newspaper ending without having a start');
       }
-      let current = periodStart;
-      while (isLowerOrEqual(current, update.date)) {
-        const next = addDays(current, 7);
-        pushPaper(current);
-        current = next;
-      }
-      periodStart = undefined;
+      pushPaper();
+      inPeriod = false;
     } else if (update.update.newspaper === 'fan') {
       fanDate = update.date;
     }

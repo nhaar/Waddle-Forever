@@ -10,6 +10,13 @@ export const UPDATES_2008: Update[] = [
     clothingCatalog: 'archives:Clothing_0801.swf'
   },
   {
+    date: '2008-01-09',
+    miscComments: ['The heart emote is back'],
+    fileChanges: {
+      'interface.swf': 'archives:SystemInterface71.swf'
+    }
+  },
+  {
     date: '2008-01-16',
     // according to newspaper
     // unsure if in the original game the animation replayed each time
@@ -990,7 +997,7 @@ export const UPDATES_2008: Update[] = [
       cavemine: 'slegacy:media/play/v2/content/global/rooms/cavemine.swf',
       dojo: 'recreation:dojo_cpip_start.swf',
       shiphold: 'slegacy:media/play/v2/content/global/rooms/shiphold.swf',
-      shipnest: 'slegacy:media/play/v2/content/global/rooms/shipnest.swf',
+      shipnest: 'archives:ShipnestSeptember2009.swf',
       shipquarters: 'slegacy:media/play/v2/content/global/rooms/shipquarters.swf',
       agent: 'recreation:agent_2008_apr_cpip.swf',
       mine: 'archives:RoomsMine_1.swf',
@@ -1412,7 +1419,8 @@ export const UPDATES_2008: Update[] = [
     roomComment: 'DJ3K is redesigned in the Dance Club',
     rooms: {
       dance: 'recreation:dance_cpip_postmusicjam2.swf'
-    }
+    },
+    sportCatalog: 'archives:SportAug08.swf'
   },
   {
     date: '2008-08-18',
@@ -1489,15 +1497,14 @@ export const UPDATES_2008: Update[] = [
     hairCatalog: 'archives:SptWigs.swf',
     constructionComment: 'A construction begins at the Plaza for the Stage',
     rooms: {
-      stage: 'recreation:plaza_ruby_construction.swf',
-
+      plaza: 'recreation:plaza_ruby_construction.swf',
     }
   },
   {
     date: '2008-09-12',
     stagePlay: {
       name: 'Ruby and the Ruby',
-      costumeTrunk: 'archives:July09Costume.swf',
+      costumeTrunk: 'archives:September2008Costume.swf',
       script: [
         {
           "note": "Ruby and the Ruby"
@@ -1957,6 +1964,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-10-17',
     furnitureCatalog: 'archives:FurnOct2008.swf',
+    iglooCatalog: 'archives:October2008Igloo.swf',
     iglooList: [
       [{ display: 'Halloween', id: 223, new: true }, { display: 'Pizza Parlor', id: 20 }],
       [{ display: 'Halloween Dance', id: 224, new: true }, { display: 'Ocean Voyage', id: 212 }],
@@ -2155,10 +2163,9 @@ export const UPDATES_2008: Update[] = [
     date: '2008-11-17',
     roomComment: 'The dojo now has the Card-Jitsu game',
     rooms: {
-      dojo: 'archives:RoomsDojo.swf',
-      dojohide: 'archives:RoomsDojohide-1.swf',
-      // this file we have has the white puffle, which I believe is only from the puffle party 2009
-      dojoext: 'archives:RoomsDojoext2008.swf'
+      dojo: 'recreation:dojo_2008.swf',
+      dojohide: 'recreation:dojohide_2008.swf',
+      dojoext: 'recreation:dojoext.swf'
     },
     music: {
       dojoext: 0
@@ -2239,6 +2246,10 @@ export const UPDATES_2008: Update[] = [
       agent: 'archives:RoomsAgent.swf',
       agentcom: 'archives:RoomsAgentcomFormer.swf'
     }
+  },
+  {
+    date: '2008-11-28',
+    sportCatalog: 'archives:SASNov2008.swf'
   },
   {
     date: '2008-12-05',
@@ -2460,6 +2471,19 @@ export const UPDATES_2008: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-May2010.swf',
       plaza: 'recreation:plaza_golden_puffle_no_weather.swf'
+    },
+    miscComments: ['The Coins for Change event begins'],
+    temp: {
+      party: {
+        rooms: {
+          plaza: 'recreation:pre_christmas_08/plaza.swf',
+          beach: 'recreation:pre_christmas_08/beach.swf',
+          shipquarters: 'archives:RoomsShipquarters-ChristmasParty2008.swf',
+          ship: 'archives:RoomsShip-ChristmasParty2008.swf',
+          shiphold: 'archives:RoomsShiphold-ChristmasParty2008.swf',
+          shipnest: 'archives:RoomsShipnest-ChristmasParty2008.swf'
+        }
+      }
     }
   },
   {
@@ -2472,12 +2496,10 @@ export const UPDATES_2008: Update[] = [
           beacon: 'archives:RoomsBeacon-ChristmasParty2008.swf',
           boiler: 'archives:RoomsBoiler-ChristmasParty2008.swf',
           book: 'archives:RoomsBook-ChristmasParty2008.swf',
-          shipquarters: 'archives:RoomsShipquarters-ChristmasParty2008.swf',
           cave: 'archives:RoomsCave-ChristmasParty2008.swf',
           coffee: 'archives:RoomsCoffee-ChristmasParty2008.swf',
           agentcom: 'archives:RoomsAgentcom-ChristmasParty2008.swf',
           cove: 'archives:RoomsCove-ChristmasParty2008.swf',
-          shipnest: 'archives:RoomsShipnest-ChristmasParty2008.swf',
           lounge: 'archives:RoomsLounge-ChristmasParty2008.swf',
           dock: 'archives:RoomsDock-ChristmasParty2008.swf',
           dojo: 'archives:RoomsDojo-ChristmasParty2008.swf',
@@ -2490,10 +2512,8 @@ export const UPDATES_2008: Update[] = [
           shack: 'archives:RoomsShack-ChristmasParty2008.swf',
           dance: 'archives:RoomsDance-ChristmasParty2008.swf',
           dojohide: 'archives:RoomsDojohide-ChristmasParty2008.swf',
-          ship: 'archives:RoomsShip-ChristmasParty2008.swf',
           pizza: 'archives:RoomsPizza-ChristmasParty2008.swf',
           plaza: 'archives:RoomsPlaza-ChristmasParty2008.swf',
-          shiphold: 'archives:RoomsShiphold-ChristmasParty2008.swf',
           mtn: 'archives:RoomsMtn-ChristmasParty2008.swf',
           lodge: 'archives:RoomsLodge-ChristmasParty2008.swf',
           village: 'archives:RoomsVillage-ChristmasParty2008.swf',
@@ -2559,6 +2579,10 @@ export const UPDATES_2008: Update[] = [
       ['create_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/create_more.swf'],
       ['explore_more.swf', 'slegacy:media/play/v2/content/local/en/login/backgrounds/explore_more.swf']
     ]
+  },
+  {
+    date: '2008-12-26',
+    iglooCatalog: 'archives:IglooCatalogDec2008EN.swf'
   },
   {
     date: '2008-12-29',

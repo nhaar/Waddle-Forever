@@ -31,9 +31,6 @@ function getOriginalStampbookJson(stampbook: Stampbook): string {
 export function getStampbook(version: Version): Stampbook {
   if (isLower(version, STAMPS_RELEASE)) {
     return []
-  } else if (isGreaterOrEqual(version, PLACEHOLDER_AS3)) {
-    // placeholder until the timeline is complete
-    return JSON.parse(fs.readFileSync(path.join(MEDIA_DIRECTORY, getMediaFilePath('approximation:game_configs/stamps.json')), { encoding: 'utf-8' })) as Stampbook;
   }
   
   const newStampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK)) as Stampbook

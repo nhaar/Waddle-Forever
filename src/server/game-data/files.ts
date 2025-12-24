@@ -40,6 +40,26 @@ const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
       comment: 'Chat291.swf compatibility fixes. Files from around 2005 need the code slightly changed due to not having proper spawn points and the triggers using room names instead of room IDs.'
     },
     {
+      file: 'Igloo1.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo2.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo3.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo5.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'Igloo6.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
       file: 'Mtn1.swf',
       comment: 'Chat291.swf compatibility fixes'
     },
@@ -207,6 +227,18 @@ would need to investigated`
     {
       file: 'ArtworkRoomsForts.swf',
       comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'ArtworkRoomsSkihill.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
+      file: 'StartModuleBeta.swf',
+      comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself'
+    },
+    {
+      file: 'HolidayParty2012Party3.swf',
+      comment: 'The original file was modified so that it automatically changes the snowball effect depending on where you step. It is unknown which mechanism was used to do this in the original, it is likely that maybe party.swf or engine.swf had a say on this, but since we can\'t know for sure it was easier to just mod this file. I took this code from JF archives, I am not sure if it comes from an original SWF or if it was made by NewCP team'
     }
   ],
   [APPROXIMATION]: [
@@ -334,10 +366,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/games.json',
-      comment: 'Extracted from game_configs.bin from vanilla media, bean counters music id was modified. Fair games music ID was changed (placeholder)'
-    },
-    {
       file: 'game_configs/igloo_floors.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
@@ -363,10 +391,6 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'game_configs/mascots.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
-      file: 'game_configs/paper_items.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
@@ -402,10 +426,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/stamps.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/tour_guide_messages.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
@@ -415,7 +435,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_modern_label_fix.swf',
-      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011. In addition, the calls for updateListeners(PLAYER_FRAME had to be changed for the Island Adventure cove triggers to work properly. For the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
+      comment: 'The vanilla media shell.swf, but with EN_LABEL changed so that it can be used with rooms from 2011. In addition, the calls for updateListeners(PLAYER_FRAME had to be changed for the Island Adventure cove triggers to work properly. For the 2011 August interface to work, code was added to setScavengerHuntCrumbs. Changed the background to be white to match the website'
     },
     {
       file: 'rooms_common_label_fix.swf',
@@ -431,7 +451,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'map_dec_2011.swf',
-      comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL'
+      comment: 'ContentMapDec2011.swf from archives, but with party note functionality from 2016 SHELL. Later added a fix for the map notes from the later half of 2011, when it changed from note_container.goThereBtn to just goThereBtn'
     },
     {
       file: 'newspaper_march_compatible.swf',
@@ -443,11 +463,51 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2011_interface_fix.swf',
-      comment: 'shell.swf from vanilla media, but for the 2011 August interface to work, code was added to setScavengerHuntCrumbs'
+      comment: 'shell.swf from vanilla media, but for the 2011 August interface to work, code was added to setScavengerHuntCrumbs. Changed the background to be white to match the website'
     },
     {
       file: 'engine_modern_no_glow.swf',
       comment: 'engine.swf from vanilla media, but with name glow removed'
+    },
+    {
+      file: 'temple_of_fruit/party1.swf',
+      comment: 'Credit to Jeff the Rock and cutestlesbian. Temple of Fruit top working with the modded engine.swf'
+    },
+    {
+      file: 'ghosts/engine.swf',
+      comment: 'Credit to cutestlesbian and Jeff the Rock. Moddified modern engine with ghost transformations. From their base engine, the function `turnPlayerIntoGhost` is recreated, it enables the transformation and turns on the ghost scavenger hunt icon, and finally it switches the room to ghost mode (to remove the goggle effect). Aditionally, for the INTERFACE to work, the function isPlayerTransformedIntoGhost is added. For the ghost penguin to not get teleported in the middle of the animation, AvatarTransformationManager was modded a bit, in specific the function onTransformLoadComplete. Removed name glow'
+    },
+    {
+      file: 'shell_2012_halloween.swf',
+      comment: 'Vanilla shell.swf, but with setAvatarTransformation function (added for compatibility with Halloween 2012 interface). Aditionally, changed attach puffle function in order to equip it to the hand, and to unwalk puffle when updating hand. Must still figure how to make it remove the puffle from the igloo (prevent double walking). Added code to the sendBuyCookie function for the Holiday Party 2012. Modified the getPlayerObjectById code to have the property is_transformed (Holiday Party 2012 interface compatibility). Added the package com.clubpenguin.engine.avatar.AvatarExpirationTimer from the Holiday Party 2012 icon. Added the function setHolidayAvatarTransformation that enables the icon when a transformation happens, and added turnIntoPlayer which is called when the transformation expires. Changed the background to be white to match the website. For the holiday 2012 bakery, changed the functions sendRequestForBakeryState, handleBakeryStateUpdate, sendSnowBallEnterHopper, sendRequestForCookieInventory and handleGetCookieStock'
+    },
+    {
+      file: 'puffles/engine.swf',
+      comment: 'Originally approximation:engine_modern_no_glow.swf, but with avatar transformation for puffles added. Also added turnPlayerIntoPuffle and isPlayerTransformedIntoPuffle (for original INTERFACE support). Modified sendJoinRoom to transform when entering party 4 (spa). Modified updatePlayer to transform into penguin if need to, because INTERFACE simply unequips the hand item when you click to revert'
+    },
+    {
+      file: 'holiday_2012/engine.swf',
+      comment: 'Originally engine_modern_no_glow. Added Reindeer, Toycar and Frostbite transformations. Added turnPlayerIntoPenguin function. Modified AvatarManager slightly so that the 2012 holiday party timer can fetch the time and so that the shell can update it. Removed Herbert transformation because it was conflicting with the reindeer puffle'
+    },
+    {
+      file: 'scornbattle/scorn_battle.swf',
+      comment: 'Originally ScornBattle.swf from vanilla media, but in order to function with modern client, the code was changed, namely, the com.disney packages were ported from bits and bolts, and the EndGameVO class was also copied from there (raw AS3 edit in FFDEC was used, but it seems to work fine)'
+    },
+    {
+      file: 'scornbattle/config.xml',
+      comment: 'Because modern bits and bolts code was used in the scorn battle swf, this config xml is needed and it was adapted from bits and bolts to work with these swfs (credit to Jeff the Rock, this is from CPImagined)'
+    },
+    {
+      file: 'scornbattle/scorn.xml',
+      comment: 'Same reasoning as scornbattle/config.xml, this file is just a dummy file for the code to work'
+    },
+    {
+      file: 'scornbattle/en.xml',
+      comment: 'Same reasoning as scornbattle/config.xml, this file is the locale file written into xml'
+    },
+    {
+      file: 'club_penguin_2011.swf',
+      comment: 'The vanilla media club_penguin.swf, but with the background changed to white to match the website'
     }
   ],
   [RECREATION]: [
@@ -505,10 +565,6 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'cave_opening/boiler.swf',
-      comment: 'By VamprLover. Cave Opening Party room'
-    },
-    {
-      file: 'cave_opening/dance.swf',
       comment: 'By VamprLover. Cave Opening Party room'
     },
     {
@@ -1170,10 +1226,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Cyan'
     },
     {
-      file: 'shack_vector.swf',
-      comment: 'Made by lifeofgames477, based using the april fools 2008 shacka as a base with elements from the 2009 version'
-    },
-    {
       file: 'pirate_party/coffee.swf',
       comment: 'Made by Cyan'
     },
@@ -1246,7 +1298,7 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
     },
     {
-      file: 'interfaces/2009_jan.swf',
+      file: 'interfaces/membership_badge_3.swf',
       comment: 'Made by Blue Kirby. Built on top of the October 2009 interface but removing the owned igloos functionality'
     },
     {
@@ -1534,7 +1586,7 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
-      file: 'furniture_dec06.swf',
+      file: 'igloo_catalog_dec06_v1.swf',
       comment: 'Made by Doubleuman, un-guided the hatch layers from fla'
     },
     {
@@ -1568,6 +1620,214 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'agent1.swf',
       comment: 'Made by Randomno'
+    },
+    {
+      file: 'chat339_instrument_hunt.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'temple_of_fruit/engine.swf',
+      comment: 'Credit to Jeff the Rock and cutestlesbian. Engine with the Temple of Fruit transformations. Removed the name glow'
+    },
+    {
+      file: 'fair_2009/mine.swf',
+      comment: 'Made by Lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/mine.swf',
+      comment: 'Of unknown origins, from some archive, a swf was fixed to be accurate by lifeofgames477 and VampLovr'
+    },
+    {
+      file: 'fire_hunt/light.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/dojoext.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/book.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'st_patrick_2007/town.swf',
+      comment: 'Made by lifeofgames477, with additional fixes by Randomno'
+    },
+    {
+      file: 'pre_christmas_08/plaza.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'pre_christmas_08/beach.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'plaza_lighthouse_pin.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'chat339_with_added_items.swf',
+      comment: 'Made by Doubleuman. This technically has the lightbulb hunt, but it\'s turned off. Primarily it adds all missing items from the period chat339 was active in waddle forever'
+    },
+    {
+      file: 'lightbulb/chat339.swf',
+      comment: 'Same as the other chat 339 with added items but with the icon of the hunt available'
+    },
+    {
+      file: 'lightbulb/attic.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/boiler.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/mine.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'lightbulb/plaza.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'old_postcards/32.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'old_postcards/33.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'old_postcards/38.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'coffee_vector.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'fire_hunt/book_pin.swf',
+      comment: 'Made by Blue Kirby, based on Doubleuman\'s recreation'
+    },
+    {
+      file: 'interfaces/membership_badge.swf',
+      comment: 'Made by Blue Kirby, interface where the membership badge is only seen by the player itself'
+    },
+    {
+      file: 'interfaces/membership_badge_2.swf',
+      comment: 'Made by Blue Kirby, interface where the membership badge is seen by all, but with only the basic level available'
+    },
+    {
+      file: 'dojoext.swf',
+      comment: 'Made by Blue Kirby, the Dojo Courtyard when it originally came out, made from the archived SWF of puffle sighting with the puffle removed'
+    },
+    {
+      file: 'dojo_2008.swf',
+      comment: 'Made by jeoy, the original Dojo swf'
+    },
+    {
+      file: 'dojohide_2008.swf',
+      comment: 'Made by jeoy, the original Ninja Hideout swf'
+    },
+    {
+      file: 'dojohide_2009.swf',
+      comment: 'Made by Blue Kirby, used an archive file as a base and took emporium assets from the christmas party 2008'
+    },
+    {
+      file: 'dojoext_2009.swf',
+      comment: 'Made by Blue Kirby, Dojo Courtyard with ninja progress'
+    },
+    {
+      file: 'black_puffle_sight/village.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/forest.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojoext.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojohide.swf',
+      comment: 'Made by Blue Kirby, phase one of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojoext_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojohide_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings. Features a depth error in-game: the Black Puffle on the left is supposed to be on top of the Stone object, but will instead appear behind it, to compensate, the Black Puffle was placed a little higher than it is supposed to (should be fixed at some point)'
+    },
+    {
+      file: 'black_puffle_sight/forest_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings'
+    },
+    {
+      file: 'black_puffle_sight/village_3.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings'
+    },
+    {
+      file: 'black_puffle_sight/dojoext_3_volcano.swf',
+      comment: 'Made by Blue Kirby, phase three of sightings with active volcano'
+    },
+    {
+      file: 'christmas_06/beacon.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'christmas_06/coffee.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/lodge.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/town.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'style_september_05.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'mtn_lucky_coin_pin.swf',
+      comment: 'Made by Blue Kirby'
+    },
+    {
+      file: 'old_interface/old_toolbar.swf',
+      comment: 'Made by Doubleuman, interface71 changed to have the old toolbar'
+    },
+    {
+      file: 'old_interface/new_toolbar.swf',
+      comment: 'Made by Doubleuman, interface71 with emotes from when laughing emote was updated'
+    },
+    {
+      file: 'old_interface/skull_heart_removed.swf',
+      comment: 'Made by Doubleuman, interface71 with emotes from when the skull and heart emotes were removed'
+    },
+    {
+      file: 'old_interface/new_emotes_no_heart.swf',
+      comment: 'Made by Doubleuman, interface71 with the emotes from when new emotes were added but before the heart emote was re-added'
     }
   ],
   [MOD]: [
@@ -1626,7 +1886,7 @@ Originally from solero legacy-media, modified to work in the flat domain any por
   [UNKNOWN]: [
     {
       file: 'chat291.swf',
-      comment: 'I thought it was from Mammoth, but for some reason the bytes don\'t match'
+      comment: 'Originally from Mammoth. Seems like I have then modified the message functionality to add command support, I don\'t know if there are more changes. All mammoth did originally was remove the domain lock (and probably recompiled via FFDEC)'
     },
     {
       file: 'chat506.swf',
@@ -1662,6 +1922,46 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'halloween_telescope.swf',
       comment: 'No idea where I got this from, I thought it was from another party\'s archive, but nothing archived matched'
+    },
+    {
+      file: 'op_blackout_cinematic.f4v',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'icejam/bootstrap.swf',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'icejam/icejam.swf',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'icejam/locale.swf',
+      comment: 'Origin unknown, found in a Solero mod of the party (by MonkeyKiller)'
+    },
+    {
+      file: 'marvel/engine.swf',
+      comment: 'Origin unknown, given by cutestlesbian (based on marvel 2013). Removed name glow'
+    },
+    {
+      file: 'marvel/party.swf',
+      comment: 'Origin unknown, given by cutestlesbian (based on marvel 2013)'
+    },
+    {
+      file: 'ghosts/party.swf',
+      comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work. After that, added a fix for the ghost hunter not being applying when logging in. Removed a forced JSON utils export because it was breaking stamps somehow. NOTE: the way party icon is setup is important as well, it might break the ghost scavenger hunt icon otherwise, if this file is to be replaced'
+    },
+    {
+      file: 'medieval2012/party.swf',
+      comment: 'From JF archives, unknown modifications'
+    },
+    {
+      file: 'medieval2012/mdlv1.swf',
+      comment: 'From JF archives, first login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
+    },
+    {
+      file: 'medieval2012/mdlv2.swf',
+      comment: 'From JF archives, second login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
     }
   ]
 };

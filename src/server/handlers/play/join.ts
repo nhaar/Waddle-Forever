@@ -1,7 +1,9 @@
+import { ACTIVE_FEATURES_TIMELINE } from '../../timelines/activefeatures';
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
 import { Handle } from '../handles';
 import { getClientPuffleIds } from './puffle';
+import { findInVersion } from '../../game-data';
 
 const handler = new Handler();
 
@@ -43,12 +45,12 @@ handler.xt(Handle.JoinServerNew, async (client, id) => {
   // in Engine 3, the client reconnects, thus losing the login data, the only thing
   // we have is the ID granted by this handler
   client.setPenguinFromId(id);
+  client.unequipPuffle();
   const moderatorStatus = client.penguin.mascot > 0 ? 3 : 0;
   // // initializing penguin data
   client.sendXt('js', client.penguin.isAgent ? 1 : 0, 0, moderatorStatus, 0);
 
-  // unsure what this is for, seemingly uneeded
-  // client.sendXt('activefeatures');
+  client.sendXt('activefeatures', findInVersion(client.version, ACTIVE_FEATURES_TIMELINE) ?? '');
   client.sendPenguinInfo();
 
   await client.sendStamps()
@@ -73,6 +75,9 @@ handler.xt(Handle.JoinServerNew, async (client, id) => {
   // TODO refactor these
   client.send('%xt%nxquestsettings%-1%{"ver":1,"spawnRoomId":800,"quests":[{"id":1,"name":"shopping","awards":[{"id":24023,"type":"penguinItem","n":1}],"tasks":[{"type":"room","description":"Visit the Clothes Shop","data":130}]},{"id":3,"name":"igloo","awards":[{"id":2166,"type":"furnitureItem","n":1}],"tasks":[{"type":"","description":"Visit your Igloo","data":null}]},{"id":2,"name":"puffle","awards":[{"id":70,"type":"puffleItem","n":1}],"tasks":[{"type":"room","description":"Visit the Pet Shop","data":310}]}]}%')
   client.send('%xt%nxquestdata%-1%{"quests":[{"id":1,"status":"prize claimed","tasks":[true]},{"id":3,"status":"prize claimed","tasks":[true]},{"id":2,"status":"prize claimed","tasks":[true]}]}%')
+
+  // TODO: this would periodically send to each player but right now this isn't fully implemented
+  client.sendCoinsForChange();
 });
 
 handler.xt(Handle.GetBuddies, (client) => {

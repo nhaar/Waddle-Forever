@@ -32,6 +32,7 @@ export enum Handle {
   SendFrame,
   Snowball,
   SendEmote,
+  SendCardOld,
   PBI,
   RoomRefresh,
   GetWaddle,
@@ -39,6 +40,7 @@ export enum Handle {
   JoinWaddle,
   JoinServerOld,
   GetCoins,
+  GetCoins2007,
   AddItemOld,
   UpdatePenguinOld,
   BecomeAgent,
@@ -79,6 +81,9 @@ export enum Handle {
   OpenIgloo,
   CloseIgloo,
   GetOpenIgloos,
+  OpenIglooOld,
+  CloseIglooOld,
+  GetOpenIgloosOld,
   GetInventory,
   AddItem,
   UpdateColor,
@@ -93,6 +98,21 @@ export enum Handle {
   JoinServer,
   JoinServerNew,
   GetBuddies,
+  GetBuddiesB,
+  GetBuddyOnline,
+  GetBuddyOnlineB,
+  BuddyRequest,
+  BuddyRequestB,
+  BuddyAccept,
+  BuddyAcceptB,
+  BuddyDecline,
+  BuddyDeclineB,
+  BuddyRemove,
+  BuddyRemoveB,
+  BuddyMessage,
+  BuddyMessageB,
+  GetPlayerOld,
+  GetPlayerOldAlt,
   GN,
   GLR,
   Heartbeat,
@@ -155,17 +175,29 @@ export enum Handle {
   EPFStamps,
   OpenBook,
   CloseBook,
+  OpenBookOld,
+  CloseBookOld,
   JoinIglooOld,
+  AddIglooOld,
   GetFurnitureOld,
   AddFurnitureOld,
   UpdateIglooOld,
   GetIgloo2007,
+  AddFlooring2007,
+  AddIgloo2007,
   GetFurniture2007,
+  AddFurniture2007,
   UpdateIgloo2007,
   UpdateIglooMusic2007,
   GetPartyOp,
   SetPartyOp,
-  SendLine
+  SendLine,
+  PlayerTransformation,
+  RetrieveMedieval2012,
+  Medieval2012ViewedMessage,
+  GetBakeryState,
+  SendEnterHopper,
+  GetCookieInventory
 };
 
 /** Map of all the handles and their valid arguments */
@@ -188,6 +220,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinWaddle]: ['number'],
   [Handle.JoinServerOld]: [],
   [Handle.GetCoins]: [],
+  [Handle.GetCoins2007]: [],
   [Handle.AddItemOld]: ['number'],
   [Handle.UpdatePenguinOld]: ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number'],
   [Handle.BecomeAgent]: [],
@@ -198,6 +231,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.SnowballOld]: ['string', 'string'],
   [Handle.GetInventory2007]: [],
   [Handle.SetFrameOld]: ['number'],
+  [Handle.SendCardOld]: ['number', 'number', 'number'],
   [Handle.GetEpfStatus]: [],
   [Handle.GetFieldOps]: [],
   [Handle.GetEpfMedals]: [],
@@ -228,6 +262,9 @@ export const HANDLE_ARGUMENTS = {
   [Handle.OpenIgloo]: ['string', 'string'],
   [Handle.CloseIgloo]: ['string'],
   [Handle.GetOpenIgloos]: [],
+  [Handle.OpenIglooOld]: ['number', 'string'],
+  [Handle.CloseIglooOld]: ['number'],
+  [Handle.GetOpenIgloosOld]: [],
   [Handle.GetInventory]: [],
   [Handle.AddItem]: ['number'],
   [Handle.UpdateColor]: ['number'],
@@ -242,6 +279,21 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinServer]: [],
   [Handle.JoinServerNew]: ['number'],
   [Handle.GetBuddies]: [],
+  [Handle.GetBuddiesB]: [],
+  [Handle.GetBuddyOnline]: [],
+  [Handle.GetBuddyOnlineB]: [],
+  [Handle.BuddyRequest]: ['number'],
+  [Handle.BuddyRequestB]: ['number'],
+  [Handle.BuddyAccept]: ['number'],
+  [Handle.BuddyAcceptB]: ['number'],
+  [Handle.BuddyDecline]: ['number'],
+  [Handle.BuddyDeclineB]: ['number'],
+  [Handle.BuddyRemove]: ['number'],
+  [Handle.BuddyRemoveB]: ['number'],
+  [Handle.BuddyMessage]: ['number', 'number'],
+  [Handle.BuddyMessageB]: ['number', 'number'],
+  [Handle.GetPlayerOld]: ['number'],
+  [Handle.GetPlayerOldAlt]: ['number'],
   [Handle.GN]: [],
   [Handle.GLR]: [],
   [Handle.Heartbeat]: [],
@@ -273,7 +325,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.GetStampbookCoverData]: ['string'],
   [Handle.GetPlayerStamps]: ['string'],
   [Handle.GetRecentStamps]: [],
-  [Handle.SetStampbookCoverData]: ['number', 'number', 'number', 'number'],
+  [Handle.SetStampbookCoverData]: 'string',
   [Handle.SetStampEarned]: ['number'],
   [Handle.EnterWaddleGame]: [],
   [Handle.UpdateWaddleGameSeats]: [],
@@ -304,33 +356,59 @@ export const HANDLE_ARGUMENTS = {
   [Handle.EPFStamps]: ['number'],
   [Handle.OpenBook]: ['number'],
   [Handle.CloseBook]: [],
+  [Handle.OpenBookOld]: ['number', 'number'],
+  [Handle.CloseBookOld]: [],
   [Handle.JoinIglooOld]: ['number', 'number'],
+  [Handle.AddIglooOld]: ['number'],
   [Handle.GetFurnitureOld]: [],
   [Handle.AddFurnitureOld]: ['number'],
   [Handle.UpdateIglooOld]: 'string',
   [Handle.GetIgloo2007]: ['number'],
+  [Handle.AddFlooring2007]: ['number'],
+  [Handle.AddIgloo2007]: ['number'],
   [Handle.GetFurniture2007]: [],
+  [Handle.AddFurniture2007]: ['number'],
   [Handle.UpdateIgloo2007]: 'string',
   [Handle.UpdateIglooMusic2007]: ['number'],
   [Handle.GetPartyOp]: [],
   [Handle.SetPartyOp]: ['number'],
-  [Handle.SendLine]: ['number']
+  [Handle.SendLine]: ['number'],
+  [Handle.PlayerTransformation]: ['number'],
+  [Handle.RetrieveMedieval2012]: ['string'],
+  [Handle.Medieval2012ViewedMessage]: ['number'],
+  [Handle.GetBakeryState]: [],
+  [Handle.SendEnterHopper]: ['string'],
+  [Handle.GetCookieInventory]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
+  'b': {
+    'gb': Handle.GetBuddiesB,
+    'go': Handle.GetBuddyOnlineB,
+    'br': Handle.BuddyRequestB,
+    'ba': Handle.BuddyAcceptB,
+    'bd': Handle.BuddyDeclineB,
+    'bm': Handle.BuddyMessageB,
+    'rb': Handle.BuddyRemoveB
+  },
   's': {
     'jr': Handle.JoinRoomOld,
     'js': Handle.JoinServerOld,
     'jp': Handle.JoinIglooOld,
     'ac': Handle.GetCoins,
+    'gc': Handle.GetCoins2007,
     'ai': Handle.AddItemOld,
     'af': Handle.AddFurnitureOld,
+    'au': Handle.AddIglooOld,
     'up': Handle.UpdatePenguinOld,
     'ur': Handle.UpdateIglooOld,
     'il': Handle.GetInventoryOld,
     'sp': Handle.SetPositionOld,
     'se': Handle.SendEmoteOld,
     'sb': Handle.SnowballOld,
+    'sc': Handle.SendCardOld,
+    'at': Handle.OpenBookOld,
+    'rt': Handle.CloseBookOld,
     'gi': Handle.GetInventory2007,
     'gf': Handle.GetFurnitureOld,
     'sf': Handle.SetFrameOld,
@@ -379,9 +457,19 @@ const HANDLER_MAPPING: HandlerMapping = {
       'upl': Handle.UpdatePin,
       'upp': Handle.UpdateBackground
     },
-    'b': {
-      'gb': Handle.GetBuddies
+    'gb': Handle.GetBuddies,
+    'go': Handle.GetBuddyOnline,
+    'bq': Handle.BuddyRequest,
+    'ba': {
+      '': Handle.BuddyAccept,
+      'barsu': Handle.GetBakeryState,
+      'seh': Handle.SendEnterHopper,
+      'ctc': Handle.GetCookieInventory
     },
+    'bd': Handle.BuddyDecline,
+    'br': Handle.BuddyRemove,
+    'bm': Handle.BuddyMessage,
+    'gp': Handle.GetPlayerOld,
     'f': {
       'epfga': Handle.GetEpfStatus,
       'epfgf': Handle.GetFieldOps,
@@ -428,6 +516,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'revealgoldpuffle': Handle.RevealGoldPuffle,
       'rpqtc': Handle.SetRainbowQuestTaskComplete
     },
+    'pt': {
+      'spts': Handle.PlayerTransformation
+    },
     't': {
       'at': Handle.OpenBook,
       'rt': Handle.CloseBook
@@ -468,6 +559,10 @@ const HANDLER_MAPPING: HandlerMapping = {
     },
     'w': {
       'jx': Handle.JoinTemporaryWaddle
+    },
+    'mdvl': {
+      'retrieve': Handle.RetrieveMedieval2012,
+      'msgviewed': Handle.Medieval2012ViewedMessage
     }
   },
   'z': {
@@ -504,10 +599,19 @@ const HANDLER_MAPPING: HandlerMapping = {
     'sm': Handle.SendMessageOld
   },
   'r': {
+    'or': Handle.OpenIglooOld,
+    'cr': Handle.CloseIglooOld,
+    'gr': Handle.GetOpenIgloosOld,
     'gm': Handle.GetIgloo2007,
     'gf': Handle.GetFurniture2007,
+    'ag': Handle.AddFlooring2007,
+    'au': Handle.AddIgloo2007,
+    'af': Handle.AddFurniture2007,
     'ur': Handle.UpdateIgloo2007,
     'um': Handle.UpdateIglooMusic2007
+  },
+  'p': {
+    'gp': Handle.GetPlayerOldAlt
   }
 }
 
@@ -532,7 +636,12 @@ iterateEntries(HANDLER_MAPPING, (ext, dirs) => {
       iterateHandles(ext, dir, codes);
     } else {
       iterateEntries(codes, (code, names) => {
-        iterateHandles(ext, code, names, dir);
+        // "root handler"
+        if (code === '') {
+          iterateHandles(ext, dir, names);
+        } else {
+          iterateHandles(ext, code, names, dir);
+        }
       })
     }
   });

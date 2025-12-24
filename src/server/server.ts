@@ -73,7 +73,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
   await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server);
   const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server);
   
-  setApiServer(settingsManager, server, [world]);
+  setApiServer(settingsManager, server, world, worldHandler);
 
   await new Promise<void>((resolve, reject) => {
     server.listen(HTTP_PORT, () => {

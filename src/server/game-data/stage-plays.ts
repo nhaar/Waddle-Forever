@@ -23,7 +23,8 @@ export type StageName = 'Space Adventure' |
   'Secrets of the Bamboo Forest' |
   'Night of the Living Sled: Live' |
   'Battle of the Ancient Shadows' |
-  'A Humbug Holiday';
+  'A Humbug Holiday' |
+  'The Vikings That Time Forgot';
 
 /** Data for each stage play */
 export const STAGE_PLAYS: Array<{
@@ -103,6 +104,10 @@ export const STAGE_PLAYS: Array<{
   {
     name: 'A Humbug Holiday',
     musicId: 255
+  },
+  {
+    name: 'The Vikings That Time Forgot',
+    musicId: 41
   }
 ];
 

@@ -260,16 +260,26 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
       map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date, update.end);
     }
+    if (update.update.postcardCatalog !== undefined) {
+      map.add('artwork/catalogue/cards.swf', update.update.postcardCatalog, update.date, update.end);
+      map.add('artwork/catalogue/cards_0712.swf', update.update.postcardCatalog, update.date, update.end);
+    }
     if (update.update.hairCatalog !== undefined) {
       map.add('play/v2/content/local/en/catalogues/hair.swf', update.update.hairCatalog, update.date, update.end);
     }
-
+    if (update.update.petFurniture !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/pets.swf', update.update.petFurniture, update.date, update.end);
+    }
+    if (update.update.martialArtworks !== undefined) {
+      map.add('play/v2/content/local/en/catalogues/ninja.swf', update.update.martialArtworks, update.date, update.end);
+    }
     if (update.update.furnitureCatalog !== undefined) {
       map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
       map.add('artwork/catalogue/furniture_.swf', update.update.furnitureCatalog, update.date, update.end);
       map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
     }
     if (update.update.iglooCatalog !== undefined) {
+      map.add('artwork/catalogue/igloo_.swf', update.update.iglooCatalog, update.date, update.end);
       map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date, update.end);
     }
     if (update.update.rooms !== undefined) {
@@ -318,6 +328,9 @@ function addUpdates(map: FileTimelineMap): void {
       }
       map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
       map.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, update.update.fairCpip.infoFile, update.date, update.end);
+    }
+    if (update.update.partyIconFile !== undefined) {
+      map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.partyIconFile, update.date, update.end);
     }
     if (update.update.scavengerHunt2011 !== undefined) {
       map.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), update.update.scavengerHunt2011.icon, update.date, update.end);

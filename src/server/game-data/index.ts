@@ -290,6 +290,14 @@ export function findInVersion<EventInformation>(date: Version, versions: Version
   return findInVersionFull(date, versions)?.info;
 }
 
+export function findInVersionStrict<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
+  const info = findInVersion(date, versions);
+  if (info === undefined) {
+    throw new Error(`Could not find version for date ${date}, ${versions}`);
+  }
+  return info;
+}
+
 export function findInVersionFull<EventInformation>(date: Version, versions: VersionsInformation<EventInformation>) {
   if (versions.length === 1) {
     return versions[0];

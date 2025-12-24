@@ -1,0 +1,18 @@
+<locale game="ScornBattle" language="English" version="1.0">
+	<entry id="txt_hint1" value="How to defeat the Dragon King:"/>
+	<entry id="txt_hint2" value="Use your mouse to aim your slingshot"/>
+	<entry id="txt_hint3" value="Hit many spheres at once for more powerful attacks"/>
+	<entry id="txt_hint4" value="Do not give up—you must win!"/>
+	<entry id="hint_btn_ishall" value="I shall!"/>
+	<entry id="combo_1" value="Good Shot!"/>
+	<entry id="combo_2" value="Heroic!"/>
+	<entry id="combo_3" value="Epic!"/>
+	<entry id="combo_4" value="Legendary!"/>
+	<entry id="gameover_firstletter_victory" value="V"/>
+	//first letter of victory
+	<entry id="gameover_txt_victory" value="ictory is yours!"/>
+	//victory without the first letter
+	<entry id="gameover_txt_defeated" value="You have defeated Scorn and saved the kingdom!"/>
+	<entry id="gameover_txt_bridge" value="Now cross the bridge into the Sky Kingdom, and bring peace back to Club Penguin..."/>
+	<entry id="gameover_btn_prize" value="Claim thy prize"/>
+</locale>

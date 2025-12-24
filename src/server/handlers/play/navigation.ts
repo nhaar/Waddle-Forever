@@ -158,6 +158,11 @@ handler.xt(Handle.LeaveWaddle, (client) => {
   client.leaveWaddleRoom();
 });
 
+handler.xt(Handle.PlayerTransformation, (client, id) => {
+  client.setAvatar(id);
+  client.sendRoomXt('spts', client.penguin.id, id);
+});
+
 handler.disconnect((client) => {
   client.disconnect();
 })

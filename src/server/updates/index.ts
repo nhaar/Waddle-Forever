@@ -1,7 +1,8 @@
 import { iterateEntries } from "../../common/utils";
 import { FileRef } from "../game-data/files";
+import { GameName } from "../game-data/games";
 import { RoomName } from "../game-data/rooms";
-import { getStagePlayMusic, StageName, StageScript, STAGE_PLAYS } from "../game-data/stage-plays";
+import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
@@ -78,8 +79,8 @@ export type PartyOp = 'battle-of-doom';
 
 export type CPUpdate = {
   map?: FileRef;
-  /** True if this update is the first seasonal pin ever */
-  pin?: true;
+  /** Pin period indicator */
+  pin?: 'start' | 'end';
   /** If the base SWF for a room that has a pin is updated with the pin in it */
   pinRoomUpdate?: FileRef;
 
@@ -89,8 +90,12 @@ export type CPUpdate = {
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
+  /** If a new catalog was released this day: its file */
+  postcardCatalog?: FileRef;
   sportCatalog?: FileRef;
   hairCatalog?: FileRef;
+  petFurniture?: FileRef;
+  martialArtworks?: FileRef;
 
   stampUpdates?: StampUpdates
 
@@ -103,6 +108,8 @@ export type CPUpdate = {
 
   /** All room music IDs */
   music?: Partial<Record<RoomName, number>>;
+
+  gameMusic?: Partial<Record<GameName, number>>;
 
   frames?: Partial<Record<RoomName, number>>;
 
@@ -135,6 +142,9 @@ export type CPUpdate = {
   startscreens?: Startscreens;
 
   localChanges?: LocalChanges;
+
+  // only EN support currently
+  gameStrings?: Record<string, string>;
 
   globalChanges?: GlobalChanges;
 
@@ -182,6 +192,10 @@ export type CPUpdate = {
   mapNote?: string;
   newWaddleRooms?: WaddleRoomInfo[];
 
+  coinsForChange?: true;
+  bakery?: true;
+  cfcValues?: [number, number, number];
+
   stagePlay?: {
     name: StageName;
     script?: StageScript;
@@ -190,6 +204,19 @@ export type CPUpdate = {
     costumeTrunk: FileRef | null;
   } & CPUpdate;
 
+  /** An update of a stage script that is independent from the normal workflow of plays */
+  playScript?: StageScript;
+
+  partyIconFile?: FileRef;
+
+  activeFeatures?: string;
+
+  /** Used for the Ultimate Jam (2012 party) */
+  unlockedDay?: number;
+
+  /** For pre-cpip clients, in which items are stored in chat.swf, supply all items available in the chat.swf of that day */
+  clientFiles?: number[];
+  removeClientFiles?: number[];
 } & ({
   partyName: string;
   decorated?: false;
@@ -219,7 +246,8 @@ export type Event = 'party' |
   'broken-clock' |
   'forts-sign' |
   'attic-snow' |
-  'telescope-bottle';
+  'telescope-bottle' |
+  'storm';
 
 export type Update = {
   date: Version;

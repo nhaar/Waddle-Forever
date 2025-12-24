@@ -1,5 +1,5 @@
 import { isPositiveInteger } from '../common/utils';
-import { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage } from './database';
+import db, { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage, Databases } from './database';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { PUFFLE_ITEMS } from './game-logic/puffle-item';
 
@@ -49,6 +49,7 @@ export class Penguin {
   private _iglooTypes: Set<number>;
   private _iglooLocations: Set<number>;
   private _iglooFloorings: Set<number>;
+  private _buddies: Set<number>;
   private _mailSeq: number;
   private _puffleLaunchGameData: Buffer;
   private _mail: Array<Mail>;
@@ -62,6 +63,7 @@ export class Penguin {
   private _cardProgress: CardJitsuProgress;
   private _cardWins: number;
   private _battleOfDoom: boolean;
+  private _medieval2012Message: number;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -104,6 +106,7 @@ export class Penguin {
     this._iglooTypes = parseJsonSet(data.iglooTypes);
     this._iglooLocations = parseJsonSet(data.iglooLocations);
     this._iglooFloorings = parseJsonSet(data.iglooFloorings);
+    this._buddies = new Set<number>((data.buddies ?? []).map((id) => Number(id)));
     this._mailSeq = data.mailSeq;
     this._puffleLaunchGameData = Buffer.from(data.puffleLaunchGameData ?? '', 'base64');
     this._mail = data.mail;
@@ -118,6 +121,7 @@ export class Penguin {
     this._cardWins = data.cardWins;
     this._battleOfDoom = data.battleOfDoom;
     this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp;
+    this._medieval2012Message = data.medieval2012Message ?? 0;
   }
 
   serialize(): PenguinData {
@@ -157,6 +161,7 @@ export class Penguin {
       iglooFloorings: dumpJsonSet(this._iglooFloorings),
       iglooLocations: dumpJsonSet(this._iglooLocations),
       iglooTypes: dumpJsonSet(this._iglooTypes),
+      buddies: Array.from(this._buddies.values()),
       mailSeq: this._mailSeq,
       puffleLaunchGameData: this._puffleLaunchGameData.toString('base64'),
       igloo: this._igloo,
@@ -172,7 +177,8 @@ export class Penguin {
       isNinja: this._cardProgress.isNinja,
       cardWins: this._cardWins,
       battleOfDoom: this._battleOfDoom,
-      virtualRegistrationTimestamp: this._virtualRegistrationTimestamp
+      virtualRegistrationTimestamp: this._virtualRegistrationTimestamp,
+      medieval2012Message: this._medieval2012Message
     }
   }
 
@@ -457,6 +463,29 @@ export class Penguin {
     return Array.from(this._iglooTypes.values());
   }
 
+  getBuddies(): number[] {
+    return Array.from(this._buddies.values());
+  }
+
+  hasBuddy(id: number | string): boolean {
+    const numericId = Number(id);
+    return !Number.isNaN(numericId) && this._buddies.has(numericId);
+  }
+
+  addBuddy(id: number | string): void {
+    const numericId = Number(id);
+    if (!Number.isNaN(numericId)) {
+      this._buddies.add(numericId);
+    }
+  }
+
+  removeBuddy(id: number | string): void {
+    const numericId = Number(id);
+    if (!Number.isNaN(numericId)) {
+      this._buddies.delete(numericId);
+    }
+  }
+
   getIglooLocations(): number[] {
     return Array.from(this._iglooLocations.values());
   }
@@ -667,6 +696,14 @@ export class Penguin {
     return this._virtualRegistrationTimestamp;
   }
 
+  get medieval2012Message() {
+    return this._medieval2012Message;
+  }
+
+  set medieval2012Message(value: number) {
+    this._medieval2012Message = value;
+  }
+
   setVirtualRegistration(value: number) {
     this._virtualRegistrationTimestamp = value;
   }
@@ -675,8 +712,8 @@ export class Penguin {
     this._battleOfDoom = true;
   }
 
-  static getDefault(id: number, name: string, defaultParams: DefaultPenguinParams = {}): Penguin {
-    return new Penguin(id, {
+  static getDefaultData(name: string, defaultParams: DefaultPenguinParams = {}): PenguinData {
+    return {
       name,
       is_member: defaultParams.is_member ?? true,
       is_agent: false,
@@ -733,7 +770,11 @@ export class Penguin {
       senseiAttempts: 0,
       cardWins: 0,
       battleOfDoom: false
-    })
+    }
+  }
+
+  static getDefault(id: number, name: string, defaultParams: DefaultPenguinParams = {}): Penguin {
+    return new Penguin(id, Penguin.getDefaultData(name, defaultParams));
   }
 
   static getDefaultIgloo(id: number): Igloo {
@@ -746,5 +787,22 @@ export class Penguin {
       location: 1,
       id
     };
+  }
+
+  static getById(id: number): Penguin | undefined {
+    const data = db.getById<PenguinData>(Databases.Penguins, id);
+    if (data === undefined) {
+      return undefined;
+    }
+    return new Penguin(id, data);
+  }
+
+  static add(id: number, penguin: PenguinData) {
+    db.update<PenguinData>(Databases.Penguins, id, penguin);
+    return new Penguin(id, penguin);
+  }
+
+  update() {
+    db.update<PenguinData>(Databases.Penguins, this.id, this.serialize());
   }
 }

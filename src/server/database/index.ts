@@ -222,6 +222,8 @@ class JsonDatabase {
         return '1.3.2';
       case '1.3.2':
         return '1.3.3';
+      case '1.3.3':
+        return '1.4.0';
       default:
         throw new Error('Invalid database version: ' + version);
     }
@@ -429,6 +431,7 @@ export interface PenguinData {
   registration_date: number
   virtualRegistrationTimestamp: number
   minutes_played: number,
+  buddies?: number[],
   // these records act as hash sets
   inventory: number[],
   stamps: number[],
@@ -469,6 +472,7 @@ export interface PenguinData {
   cardWins: number;
   /** If completed battle of doom or not */
   battleOfDoom: boolean;
+  medieval2012Message?: number;
 }
 
 export default db;

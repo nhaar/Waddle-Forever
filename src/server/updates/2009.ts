@@ -99,15 +99,18 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-01-19',
+    miscComments: ['Members can now see a special badge on their own player card'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge.swf'
+    }
+  },
+  {
     date: '2009-01-20',
-    miscComments: ['A membership badge is added to the player card'],
     end: ['party'],
     rooms: {
       dance: 'recreation:dance_no_game_upgrades.swf'
     },
-    fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/2009_jan.swf'
-    }
   },
   {
     date: '2009-01-23',
@@ -147,6 +150,25 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-01-25',
     end: ['party']
+  },
+  {
+    date: '2009-01-29',
+    miscComments: ['The membership badge can now be seen in other player cards'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_2.swf'
+    },
+    roomComment: 'The sign in the Attic is updated',
+    temp: {
+      'attic-snow': {
+        rooms: {
+          attic: 'archives:RoomsAttic-PuffleParty2009.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2009-01-30',
+    sportCatalog: 'archives:SASJan2009.swf'
   },
   {
     date: '2009-02-03',
@@ -464,7 +486,6 @@ export const UPDATES_2009: Update[] = [
           cove: 'archives:RoomsCove-PuffleParty2009.swf',
           dance: 'archives:RoomsDance-PuffleParty2009.swf',
           dock: 'archives:RoomsDock-PuffleParty2009.swf',
-          dojo: 'archives:RoomsDojoext2008.swf',
           forest: 'archives:RoomsForest-PuffleParty2009.swf',
           berg: 'archives:RoomsBerg-PuffleParty2009.swf',
           light: 'archives:RoomsLight-PuffleParty2009.swf',
@@ -472,7 +493,6 @@ export const UPDATES_2009: Update[] = [
           pet: 'archives:PuffleParty2009-0220pet.swf',
           plaza: 'archives:RoomsPlaza-PuffleParty2009.swf',
           party: 'archives:RoomsParty-PuffleParty2009.swf',
-          attic: 'archives:RoomsAttic-PuffleParty2009.swf',
           village: 'archives:RoomsVillage-PuffleParty2009.swf',
           forts: 'archives:2009pufflepartysnowforts.swf',
           town: 'archives:Rooms0220Town.swf',
@@ -494,6 +514,12 @@ export const UPDATES_2009: Update[] = [
           party: 259,
           village: 260
         },
+      },
+      // white puffle sighting
+      event: {
+        rooms: {
+          dojoext: 'archives:RoomsDojoext2008.swf'
+        }
       }
     }
   },
@@ -502,7 +528,12 @@ export const UPDATES_2009: Update[] = [
     end: ['party']
   },
   {
+    date: '2009-02-27',
+    migrator: 'archives:RHRIFeb2009.swf'
+  },
+  {
     date: '2009-03-06',
+    end: ['event'],
     miscComments: ['White Puffles are available to adopt'],
     rooms: {
       pet: 'archives:RoomsPet_4.swf'
@@ -524,7 +555,12 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-03-09',
+    migrator: false
+  },
+  {
     date: '2009-03-13',
+    constructionComment: 'Construction for the Penguin Play Awards begins',
     temp: {
       party: {
         partyName: 'St. Patrick\'s Day Party',
@@ -534,7 +570,6 @@ export const UPDATES_2009: Update[] = [
           dance: 'archives:RoomsDance-StPatrickParty2009.swf',
           forts: 'archives:RoomsForts-StPatrickParty2009.swf',
           plaza: 'archives:StPatricksDayParty2009-Plaza.swf',
-          stage: 'archives:StPatricksDayParty2009-Stage.swf',
           forest: 'archives:RoomsForest-StPatrickParty2009.swf',
           party: 'archives:RoomsParty-StPatrickParty2009.swf',
           dock: 'archives:RoomsDock-StPatrickParty2009.swf',
@@ -554,6 +589,17 @@ export const UPDATES_2009: Update[] = [
           village: 262,
           party: 208,
           coffee: 262
+        },
+        memberRooms: {
+          party: true
+        }
+      },
+      event: {
+        rooms: {
+          stage: 'archives:StPatricksDayParty2009-Stage.swf'
+        },
+        music: {
+          stage: 0
         }
       }
     }
@@ -562,7 +608,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-17',
     end: ['party'],
     temp: {
-      const: {
+      event: {
         rooms: {
           plaza: 'recreation:penguin_play_awards_09_plaza_const.swf'
         }
@@ -572,7 +618,7 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-03-20',
     temp: {
-      party: {
+      party2: {
         partyName: 'Penguin Play Awards',
         rooms: {
           party: 'archives:RoomsParty-PenguinPlayAwards2009.swf',
@@ -586,9 +632,54 @@ export const UPDATES_2009: Update[] = [
         },
         globalChanges: {
           'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
+        },
+        playScript: [
+          { note: "HOST" },
+          { name: "Host:", message: "You look like an amazing attentive audience." },
+          { name: "Host:", message: "And the winner for Best Overall Play is..." },
+          { name: "Host:", message: "Wow! The award for Best Costume goes to..." },
+          { name: "Host:", message: "Penguin Play Award for Best Music goes to..." },
+          { name: "Host:", message: "This year, Best Effects will be awarded to..." },
+          { name: "Host:", message: "The judges congratulate all the nominees!" }, 
+          { name: "Host:", message: "You, large squid monster in the back! Settle!" },
+          { name: "Host:", message: "Excuse me! Lady in red! You missing a jewel?" },
+          { name: "Host:", message: "Hey, Fairy! Did you bring croissants?" },
+          { name: "Host:", message: "Yo! Bring over that Shadow Wave!" },
+          { name: "Host:", message: "Hey - everyone quiet down!" },
+          { name: "Host:", message: "Shhhh! Let them speak!" },
+          { name: "Host:", message: "What happens if the MONSTER doesn\'t win?!" },
+          { name: "Host:", message: "Everyone looks so absolutely fabolous." },
+          { name: "Host:", message: "I\'m excited to see the winners on stage." },
+          { name: "Host:", message: "Dahhling...you look mahhvelous..." },
+          { note: "SPEECHES" },
+          { name: "Twee:", message: "Applause! Applause! Make it louder!" },
+          { name: "Alaska:", message: "Was told there\'d be rare puffles. Seen any?" },
+          { name: "Boris:", message: "TUMMMMMMY!" },
+          { name: "Chester:", message: "If I had a time machine, I\'d stay here. You?" },
+          { name: "Kek:", message: "GRUB TROPHY GRUB MAKE NUB FIRE?" },
+          { name: "Ruby:", message: "This trophy will look perfect next to my ruby!" },
+          { name: "Hammer:", message: "The judges need to look at nominees carefully..." },
+          { name: "Hammer:", message: "I\'ll lend them a magnifying glass." },
+          { name: "Squidzoid:", message: "PUNY AUDIENCE! I\'M CLEARLY THE WINNER." },
+          { name: "Shadow Guy:", message: "My fans make these fancy events worthwhile!" },
+          { name: "Gamma Gal:", message: "Wouldn\'t be where I am now without bad dudes." },
+          { name: "Twee:", message: "Are my wings the sparkliest you\'ve seen?" },
+          { name: "Chester:", message: "Okay, now. Give me TIME to talk. Heheheh..." },
+          { name: "Kek:", message: "SHINY...GRUB...PRETTY...UHN... ME EAT?" },
+          { name: "Squidzoid:", message: "RAWWRR! YES! EAT TROPHY!" },
+          { name: "Ruby:", message: "Where\'s Jacques? Someone\'s lifted my ruby!" },
+          { name: "Alaska:", message: "An honor to be here. Next adventure, please." },
+          { name: "Boris:", message: "GIVE ME THE TROOOOOOPHY!" },
+          { name: "Shadow Guy:", message: "I\'d like to thank my fans. And my Shadow Wave." },
+          { name: "Gamma Gal:", message: "For great justice!" },
+          { name: "Host:", message: "Thank you! You\'ve been a great audience!" }
+        ],
+        memberRooms: {
+          stage: true,
+          party: true
         }
       },
-      party2: {
+      party: {
         partyName: 'Snow Sculpture Showcase',
         rooms: {
           beach: 'archives:RoomsBeach-PenguinPlayAwards2009.swf',
@@ -600,7 +691,7 @@ export const UPDATES_2009: Update[] = [
         }
       }
     },
-    end: ['attic-snow']
+    end: ['attic-snow', 'event']
   },
   {
     date: '2009-03-22',
@@ -613,12 +704,25 @@ export const UPDATES_2009: Update[] = [
     ]
   },
   {
+    date: '2009-03-24',
+    miscComments: ['The membership badge now features levels'],
+    fileChanges: {
+      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_3.swf'
+    }
+  },
+  {
     date: '2009-03-27',
     temp: {
       party: {
         rooms: {
           // pin was removed mid-party
           mtn: 'recreation:snow_sculpture_mtn_no_pin.swf'
+        }
+      },
+      party2: {
+        update: 'Non-members are granted access to the Stage during the party',
+        memberRooms: {
+          stage: false
         }
       }
     },
@@ -628,7 +732,9 @@ export const UPDATES_2009: Update[] = [
       cove: 'archives:RoomsCove.swf',
       dock: 'archives:RoomsDock_1.swf',
       lodge: 'archives:RoomsLodge.swf'
-    }
+    },
+    martialArtworks: 'archives:MAMar2009.swf',
+    sportCatalog: 'archives:SASMar2009.swf'
   },
   {
     date: '2009-04-01',
@@ -751,7 +857,9 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-17',
-    furnitureCatalog: 'archives:FurnApr2009.swf'
+    furnitureCatalog: 'archives:FurnApr2009.swf',
+    iglooCatalog: 'archives:April2009Igloo.swf',
+    petFurniture: 'archives:April2009Pets.swf'
   },
   {
     date: '2009-05-01',
@@ -920,6 +1028,15 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-05-22',
     migrator: 'recreation:pirate_catalog/09_05.swf'
+  },
+  {
+    date: '2009-05-28',
+    roomComment: 'The dojo rooms are slightly revamped',
+    rooms: {
+      dojo: 'archives:RoomsDojo.swf',
+      dojohide: 'recreation:dojohide_2009.swf',
+      dojoext: 'recreation:dojoext_2009.swf'
+    }
   },
   {
     date: '2009-05-29',
@@ -1244,6 +1361,10 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-08-28',
+    sportCatalog: 'archives:SportAug09.swf'
+  },
+  {
     date: '2009-09-04',
     clothingCatalog: 'archives:September09Style.swf',
     migrator: 'recreation:pirate_catalog/09_09.swf',
@@ -1269,7 +1390,8 @@ export const UPDATES_2009: Update[] = [
           mtn: 'archives:RoomsMtn-TheFair2009.swf',
           village: 'archives:RoomsVillage-TheFair2009.swf',
           forts: 'archives:RoomsForts-TheFair2009.swf',
-          town: 'archives:RoomsTown-TheFair2009.swf'
+          town: 'archives:RoomsTown-TheFair2009.swf',
+          mine: 'recreation:fair_2009/mine.swf'
         },
         music: {
           coffee: 221,
@@ -1290,7 +1412,8 @@ export const UPDATES_2009: Update[] = [
           mtn: 221,
           village: 221,
           forts: 221,
-          town: 221
+          town: 221,
+          mine: 221
         },
         localChanges: {
           'catalogues/prizebooth.swf': {
@@ -1309,7 +1432,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-11',
-    miscComments: ['The Penguin Tales Volume 3 book is added'],
+    miscComments: ['The Penguin Tales Volume 3 book is added', 'Strange sightings appear around the island'],
     localChanges: {
       'forms/library.swf': {
         en: 'recreation:library/tales_vol_3.swf'
@@ -1320,13 +1443,18 @@ export const UPDATES_2009: Update[] = [
         rooms: {
           cove: 'recreation:fair_09_cove_no_pin.swf',
           pizza: 'recreation:pizza_101_days_of_fun_pin_fair.swf',
-          'plaza': 'recreation:fair_09_penguins_time_forgot.swf'
+          'plaza': 'recreation:fair_09_penguins_time_forgot.swf',
+
+          forest: 'recreation:black_puffle_sight/forest.swf',
+          village: 'recreation:black_puffle_sight/village.swf',
+          dojohide: 'recreation:black_puffle_sight/dojohide.swf',
+          dojoext: 'recreation:black_puffle_sight/dojoext.swf'
         }
       }
     },
     stagePlay: {
       name: 'The Penguins that Time Forgot',
-      costumeTrunk: 'archives:June08Costume.swf',
+      costumeTrunk: 'archives:September2009Costume.swf',
       script: [
         { note: "The Penguins that Time Forgot" },
         { name: "Chester:", message: "Time to use this Time Travel 1000!" },
@@ -1380,7 +1508,7 @@ export const UPDATES_2009: Update[] = [
     },
     rooms: {
       stage: 'archives:RoomsStage-September2009.swf',
-      plaza: 'archives:RoomsPlaza-Play6.swf'
+      plaza: 'archives:RoomsPlaza-Play6.swf',
     }
   },
   {
@@ -1415,7 +1543,10 @@ export const UPDATES_2009: Update[] = [
           forts: 'archives:Sensei_Fire_Hunt_forts.swf',
           sport: 'archives:Sensei_Fire_Hunt_sport.swf',
           rink: 'archives:Sensei_Fire_Hunt_rink.swf',
-          town: 'archives:RoomsTown-FireScavengerHunt.swf'
+          town: 'archives:RoomsTown-FireScavengerHunt.swf',
+          mine: 'recreation:fire_hunt/mine.swf',
+          light: 'recreation:fire_hunt/light.swf',
+          book: 'recreation:fire_hunt/book.swf'
         },
         globalChanges: {
           'scavenger_hunt/hunt_ui.swf': ['archives:Sensei_Fire_Hunt_hunt_closeup.swf', 'easter_egg_hunt', 'easter_hunt'],
@@ -1428,7 +1559,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-18',
-    furnitureCatalog: 'archives:FurnSep2009.swf'
+    furnitureCatalog: 'archives:FurnSep2009.swf',
+    iglooCatalog: 'archives:September2009Igloo.swf'
   },
   {
     date: '2009-09-21',
@@ -1437,14 +1569,23 @@ export const UPDATES_2009: Update[] = [
       { display: 'Extra Anchovies', id: 270, pos: [7, 1] },
       { display: 'All the Fun of The Fair', id: 221, pos: [2, 2] },
       { display: 'Spicy Salsa', id: 229, pos: [6, 2] }
-    ]
+    ],
+    temp: {
+      party2: {
+        update: 'The volcano becomes active',
+        rooms: {
+          dojoext: 'recreation:fire_hunt/dojoext.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-09-25',
     temp: {
       party2: {
         rooms: {
-          pizza: 'recreation:fire_hunt_pizza_no_pin.swf'
+          pizza: 'recreation:fire_hunt_pizza_no_pin.swf',
+          book: 'recreation:fire_hunt/book_pin.swf'
         }
       }
     }
@@ -1453,17 +1594,30 @@ export const UPDATES_2009: Update[] = [
     date: '2009-09-28',
     end: ['party2'],
     constructionComment: 'Construction in the Ninja Hideout continues',
+    miscComments: ['Strange sightings appear around the island'],
     temp: {
-      'fire-construction': {
+      // black puffle sightings
+      event: {
         rooms: {
-          dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+          village: 'recreation:black_puffle_sight/village_3.swf',
+          dojoext: 'recreation:black_puffle_sight/dojoext_3.swf',
+          forest: 'recreation:black_puffle_sight/forest_3.swf',
+          dojohide: 'recreation:black_puffle_sight/dojohide_3.swf'
         }
       }
     }
   },
   {
     date: '2009-10-02',
-    clothingCatalog: 'archives:Oct2009.swf'
+    clothingCatalog: 'archives:Oct2009.swf',
+    miscComments: ['The volcano becomes active'],
+    temp: {
+      event: {
+        rooms: {
+          dojoext: 'recreation:black_puffle_sight/dojoext_3_volcano.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-10-09',
@@ -1527,39 +1681,55 @@ export const UPDATES_2009: Update[] = [
     rooms: {
       stage: 'archives:RoomsStage-October2009.swf',
       plaza: 'archives:RoomsPlaza-Play3-2.swf'
+    },
+    miscComments: ['A storm begins to take over the island'],
+    temp: {
+      storm: {
+        rooms: {
+          dojoext: 'archives:2009_Storm_dojoext.swf',
+          dojohide: 'archives:2009_Storm_dojohide.swf',
+          dojo: 'recreation:2009_storm/dojo.swf'
+        }
+      }
+    },
+    end: ['event']
+  },
+  {
+    date: '2009-10-16',
+    furnitureCatalog: 'archives:OctoberFurn09.swf',
+    iglooCatalog: 'archives:OctoberIgloo09.swf',
+    iglooList: [
+      { display: 'Team Power', id: 33, pos: [1, 1] },
+      { display: 'Ruby\'s Theme', id: 37, pos: [5, 1] },
+      { display: 'Haunted Disco', id: 223, pos: [3, 2] },
+      { display: 'Zero Gravity', id: 279, pos: [4, 2] }
+    ],
+    miscComments: ['The storm advances over the island'],
+    temp: {
+      storm: {
+        rooms: {
+          village: 'archives:2009_Storm_village.swf',
+          mtn: 'archives:2009_Storm_mtn.swf',
+          berg: 'recreation:2009_storm/berg.swf',
+          shack: 'archives:2009_Storm_shack.swf'
+        }
+      }
     }
   },
   {
-    date: '2009-10-11',
-    miscComments: ['A storm takes over the island'],
+    date: '2009-10-23',
+    miscComments: ['The storm takes over the island'],
     temp: {
-      event: {
+      storm: {
         rooms: {
-          dojoext: 'archives:2009_Storm_dojoext.swf',
-          shack: 'archives:2009_Storm_shack.swf',
-          dojohide: 'archives:2009_Storm_dojohide.swf',
-          mtn: 'archives:2009_Storm_mtn.swf',
-          village: 'archives:2009_Storm_village.swf',
           beach: 'recreation:2009_storm/beach.swf',
-          berg: 'recreation:2009_storm/berg.swf',
           dock: 'recreation:2009_storm/dock.swf',
-          dojo: 'recreation:2009_storm/dojo.swf',
           forts: 'recreation:2009_storm/forts.swf',
           plaza: 'recreation:2009_storm/plaza.swf',
           town: 'recreation:2009_storm/town.swf'
         }
       }
     }
-  },
-  {
-    date: '2009-10-16',
-    furnitureCatalog: 'archives:OctoberFurn09.swf',
-    iglooList: [
-      { display: 'Team Power', id: 33, pos: [1, 1] },
-      { display: 'Ruby\'s Theme', id: 37, pos: [5, 1] },
-      { display: 'Haunted Disco', id: 223, pos: [3, 2] },
-      { display: 'Zero Gravity', id: 279, pos: [4, 2] }
-    ]
   },
   {
     date: '2009-10-24',
@@ -1587,7 +1757,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-10-26',
-    end: ['party'],
+    end: ['party', 'storm'],
     temp: {
       party2: {
         partyName: 'Halloween Party',
@@ -1663,11 +1833,15 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-01',
-    end: ['party2']
-  },
-  {
-    date: '2009-11-02',
-    end: ['event']
+    end: ['party2'],
+    temp: {
+      // end of storm
+      'fire-construction': {
+        rooms: {
+          dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-11-05',
@@ -1686,12 +1860,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-13',
-    miscComments: ['The amulet is added to the Martial Artworks'],
-    localChanges: {
-      'catalogues/ninja.swf': {
-        en: 'archives:November09Ninja2.swf'
-      }
-    },
+    martialArtworks: 'archives:November09Ninja2.swf',
     constructionComment: 'Construction for the Fire Dojo begins',
     temp: {
       event: {
@@ -1811,7 +1980,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-21',
-    furnitureCatalog: 'archives:NovemberFurn09.swf'
+    furnitureCatalog: 'archives:NovemberFurn09.swf',
+    iglooCatalog: 'archives:NovemberIgloo09.swf',
   },
   {
     date: '2009-11-23',
@@ -1893,6 +2063,8 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-12-11',
     furnitureCatalog: 'archives:December09Furniture.swf',
+    iglooCatalog: 'archives:December2009Igloos.swf',
+    migrator: 'archives:December2009Pirate.swf',
     temp: {
       const: {
         rooms: {
@@ -1973,7 +2145,6 @@ export const UPDATES_2009: Update[] = [
           village: 254,
           party: 281
         },
-        migrator: true,
         startscreens: ['archives:StartscreenChristmas-HolidayParty2009.swf']
       }
     }
@@ -2007,6 +2178,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-12-29',
+    migrator: false,
     end: ['party']
   }
 ];

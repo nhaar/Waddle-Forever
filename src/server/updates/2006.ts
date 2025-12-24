@@ -13,6 +13,11 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-01-15',
+    iglooVersion: 15,
+    furnitureCatalog: 'archives:Furniture_0601.swf',
+  },
+  {
     date: '2006-01-27',
     temp: {
       party: {
@@ -64,6 +69,10 @@ export const UPDATES_2006: Update[] = [
     end: ['party']
   },
   {
+    date: '2006-02-17',
+    furnitureCatalog: 'archives:Furniture_0602.swf',
+  },
+  {
     date: '2006-02-24',
     temp: {
       party: {
@@ -108,7 +117,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-03-17',
-    pin: true,
+    furnitureCatalog: 'archives:Furniture_0603.swf',
+    pin: 'start',
     roomComment: ['The Pet Shop is inaugurated'],
     temp: {
       party: {
@@ -204,6 +214,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-14',
+    iglooCatalog: 'archives:April2006Igloo.swf',
     temp: {
       party: {
         partyName: 'Easter Egg Hunt',
@@ -220,13 +231,97 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
-    chatVersion: 299
+    chatVersion: 299,
+    clientFiles: [
+      427,
+      224,
+      236,
+      362,
+      552,
+      553
+    ],
+    removeClientFiles: [104]
   },
   {
     date: '2006-04-16',
     end: ['party'],
     map: 'approximation:map_chat339.swf',
-    chatVersion: 339
+    chatVersion: 339,
+    clientFiles: [
+      409,
+      429,
+      457,
+      302,
+      194,
+      193,
+      215,
+      267,
+      269,
+      270,
+      272,
+      273,
+      274,
+      323,
+      325,
+      433,
+      434,
+      192,
+      217,
+      275,
+      327,
+      368,
+      329,
+      435,
+      436,
+      488,
+      461,
+      462,
+      463,
+      254,
+      255,
+      277,
+      278,
+      525,
+      526,
+      527,
+      528,
+      529,
+      530,
+      554,
+      555,
+      556,
+      557,
+      558,
+      559,
+      560,
+      561,
+      901,
+      902,
+      903,
+      904,
+      905,
+      906,
+      907,
+      908,
+      909,
+      910,
+      911,
+      912,
+      913,
+      914,
+      915,
+      916,
+      917,
+      918,
+      919,
+      920,
+      921
+    ]
+  },
+  {
+    date: '2006-04-21',
+    iglooVersion: 19,
+    furnitureCatalog: 'archives:Furniture_0604.swf',
   },
   {
     date: '2006-04-27',
@@ -240,8 +335,13 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:Clothing_0605.swf'
   },
   {
+    date: '2006-05-12',
+    iglooCatalog: 'archives:May2006Igloo.swf'
+  },
+  {
     date: '2006-05-19',
     iglooVersion: 20,
+    furnitureCatalog: 'archives:Furniture_0605.swf',
     engineUpdate: 'igloo-music',
     iglooList: 'Penguins can now add music to their igloo'
   },
@@ -249,16 +349,17 @@ export const UPDATES_2006: Update[] = [
     date: '2006-05-26',
     temp: {
       party: {
-        partyStart: 'Underground Opening Party',
+        partyName: 'Underground Opening Party',
         rooms: {
           'mine': 'archives:ArtworkRoomsMine10.swf',
           boiler: 'recreation:cave_opening/boiler.swf',
           cave: 'recreation:cave_opening/cave.swf',
           plaza: 'recreation:cave_opening/plaza.swf',
-          dance: 'recreation:cave_opening/dance.swf'
+          dance: 'archives:ArtworkRoomsDance12.swf'
         },
         frames: {
-          mine: 2
+          mine: 2,
+          dance: 2
         },
         music: {
           'boiler': 203,
@@ -296,7 +397,15 @@ export const UPDATES_2006: Update[] = [
     gameRelease: 'Cart Surfer'
   },
   {
+    date: '2006-06-09',
+    iglooVersion: 21,
+    iglooCatalog: 'archives:June2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0606.swf'
+  },
+  {
     date: '2006-06-16',
+    iglooVersion: 31,
+    furnitureCatalog:'archives:Furniture_0606.swf',
     temp: {
       party: {
         partyName: 'Summer Party',
@@ -332,8 +441,9 @@ export const UPDATES_2006: Update[] = [
     },
     roomComment: ['More rooms are visible from the HQ', 'A new room opens near the Dock'],
     rooms: {
-      // now this has a path to the beach
+      // now these have a path to the beach
       village: 'archives:ArtworkRoomsVillage13.swf',
+      dock: 'archives:ArtworkRoomsDock13.swf',
       agent: 'archives:ArtworkRoomsAgent13.swf',
 
       beach: 'archives:ArtworkRoomsBeach12.swf'
@@ -363,6 +473,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-07-14',
+    iglooCatalog: 'archives:July2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0607.swf',
     temp: {
       party: {
         partyName: 'Western Party',
@@ -395,6 +507,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-07-21',
+    furnitureCatalog: 'archives:Furniture_0607.swf',
     temp: {
       party: {
         partyName: 'Band Scavenger Hunt',
@@ -402,12 +515,15 @@ export const UPDATES_2006: Update[] = [
         rooms: {
           'boiler': 'archives:ArtworkRoomsBoiler11.swf',
           'cave': 'archives:ArtworkRooms0721Cave13.swf',
-          'dock': 'archives:ArtworkRooms0721Dock10.swf',
+          'dock': 'archives:ArtworkRooms0721Dock13.swf',
           'mtn': 'archives:ArtworkRooms0721Mtn10.swf',
           'lodge': 'archives:ArtworkRooms0721Lodge14.swf',
           'village': 'archives:ArtworkRooms0721Village12.swf',
           'pet': 'archives:ArtworkRooms0721Pet11.swf',
           'pizza': 'archives:ArtworkRooms0721Pizza13.swf'
+        },
+        fileChanges: {
+          'chat339.swf': 'recreation:chat339_instrument_hunt.swf'
         }
       }
     }
@@ -422,6 +538,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-08-11',
+    iglooCatalog: 'archives:August2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0608.swf',
     temp: {
       party: {
         partyName: 'Sports Party',
@@ -469,10 +587,62 @@ export const UPDATES_2006: Update[] = [
     roomComment: 'The Ice Rink now has score signs',
     rooms: {
       rink: 'archives:ArtworkRoomsRink22.swf'
-    }
+    },
+    fileChanges: {
+      'chat339.swf': 'recreation:chat339_with_added_items.swf'
+    },
+    clientFiles: [
+      133,
+      134,
+      369,
+      561,
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      300,
+      301,
+      562,
+      113,
+      114,
+      182,
+      202,
+      206,
+      256,
+      279,
+      280,
+      282,
+      306,
+      307,
+      353,
+      922,
+      923,
+      924,
+      925,
+      282,
+      563,
+      167,
+      168,
+      270,
+      271,
+      272,
+      273,
+      274,
+      275,
+      926,
+      440
+    ]
   },
   {
     date: '2006-08-18',
+    iglooVersion: 33,
+    furnitureCatalog: 'archives:Furniture_0608.swf',
     temp: {
       party: {
         update: 'A new item is in the Snow Forts for the Sports Party',
@@ -513,9 +683,50 @@ export const UPDATES_2006: Update[] = [
     clothingCatalog: 'archives:September06Style.swf'
   },
   {
+    date: '2006-09-07',
+    constructionComment: 'Construction begins at the Beach',
+    temp: {
+      event: {
+        rooms: {
+          beach: 'archives:ArtworkRoomsBeach14.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2006-09-08',
+    iglooVersion: 40,
+    iglooCatalog: 'archives:September2006Igloo.swf',
+    postcardCatalog: 'archives:ArtworkCatalogueCards_0609.swf'
+  },
+  {
+    date: '2006-09-15',
+    miscComments: ['The Lightbulb Hunt begins'],
+    furnitureCatalog: 'archives:Furniture_0609.swf',
+    temp: {
+      event: {
+        rooms: {
+          attic: 'recreation:lightbulb/attic.swf',
+          boiler: 'recreation:lightbulb/boiler.swf',
+          dance: 'recreation:lightbulb/dance.swf',
+          mine: 'recreation:lightbulb/mine.swf',
+          plaza: 'recreation:lightbulb/plaza.swf'
+        },
+        fileChanges: {
+          'chat339.swf': 'recreation:lightbulb/chat339.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2006-09-21',
     chatVersion: 506,
+    fileChanges: {
+      'interface.swf': 'recreation:old_interface/old_toolbar.swf'
+    },
     map: 'approximation:map_beach_changed_id.swf',
+    miscComments: ['The Lightbulb Hunt ends'],
+    end: ['event'],
     temp: {
       party: {
         partyName: 'Lighthouse Party',
@@ -560,7 +771,404 @@ export const UPDATES_2006: Update[] = [
 
       beacon: 'archives:ArtworkRoomsBeacon40.swf',
       light: 'archives:ArtworkRoomsLight40.swf'
-    }
+    },
+    clientFiles: [
+      13,
+      411,
+      415,
+      426,
+      428,
+      430,
+      431,
+      432,
+      437,
+      438,
+      439,
+      440,
+      441,
+      443,
+      444,
+      445,
+      446,
+      447,
+      448,
+      449,
+      450,
+      454,
+      455,
+      458,
+      460,
+      464,
+      465,
+      466,
+      467,
+      468,
+      469,
+      470,
+      471,
+      472,
+      473,
+      474,
+      475,
+      476,
+      477,
+      478,
+      479,
+      480,
+      482,
+      483,
+      485,
+      486,
+      487,
+      489,
+      490,
+      491,
+      492,
+      493,
+      494,
+      495,
+      496,
+      497,
+      498,
+      499,
+      650,
+      651,
+      652,
+      653,
+      654,
+      655,
+      656,
+      657,
+      658,
+      659,
+      660,
+      661,
+      662,
+      663,
+      664,
+      105,
+      111,
+      112,
+      113,
+      114,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      130,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      162,
+      166,
+      167,
+      168,
+      169,
+      170,
+      179,
+      180,
+      182,
+      183,
+      184,
+      185,
+      186,
+      191,
+      195,
+      303,
+      304,
+      305,
+      306,
+      307,
+      308,
+      309,
+      310,
+      312,
+      313,
+      314,
+      315,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      213,
+      223,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      239,
+      241,
+      242,
+      243,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250,
+      251,
+      256,
+      257,
+      259,
+      258,
+      260,
+      264,
+      265,
+      266,
+      268,
+      271,
+      276,
+      279,
+      280,
+      281,
+      282,
+      283,
+      284,
+      285,
+      286,
+      287,
+      288,
+      289,
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      760,
+      761,
+      762,
+      763,
+      764,
+      765,
+      766,
+      767,
+      768,
+      769,
+      770,
+      771,
+      772,
+      773,
+      774,
+      775,
+      778,
+      780,
+      781,
+      782,
+      321,
+      322,
+      324,
+      326,
+      328,
+      330,
+      331,
+      332,
+      333,
+      334,
+      335,
+      336,
+      337,
+      338,
+      339,
+      340,
+      341,
+      342,
+      343,
+      344,
+      345,
+      346,
+      347,
+      348,
+      349,
+      350,
+      353,
+      354,
+      355,
+      357,
+      358,
+      359,
+      360,
+      361,
+      364,
+      365,
+      367,
+      369,
+      370,
+      371,
+      372,
+      373,
+      374,
+      375,
+      376,
+      377,
+      378,
+      379,
+      380,
+      531,
+      532,
+      533,
+      534,
+      562,
+      563,
+      564,
+      565,
+      566,
+      567,
+      568,
+      569,
+      570,
+      571,
+      572,
+      573,
+      574,
+      575,
+      576,
+      577,
+      578,
+      579,
+      580,
+      581,
+      582,
+      583,
+      584,
+      585,
+      586,
+      587,
+      588,
+      589,
+      590,
+      591,
+      592,
+      593,
+      594,
+      595,
+      596,
+      597,
+      598,
+      599,
+      600,
+      601,
+      602,
+      603,
+      604,
+      605,
+      606,
+      701,
+      702,
+      703,
+      711,
+      712,
+      720,
+      721,
+      722,
+      750,
+      751,
+      752,
+      753,
+      754,
+      755,
+      756,
+      801,
+      802,
+      803,
+      804,
+      805,
+      806,
+      807,
+      808,
+      809,
+      810,
+      811,
+      812,
+      813,
+      814,
+      922,
+      923,
+      924,
+      925,
+      926,
+      927,
+      928,
+      929,
+      930,
+      931,
+      932,
+      933,
+      934,
+      935,
+      936,
+      937,
+      938,
+      939,
+      940,
+      941,
+      942,
+      943,
+      944,
+      945,
+      946,
+      947,
+      948,
+      949,
+      950,
+      951,
+      952,
+      953,
+      954,
+      955,
+      956,
+      957,
+      958,
+      959,
+      960,
+      961,
+      962,
+      963,
+      964,
+      965,
+      966,
+      967,
+      968,
+      969,
+      970,
+      971,
+      972,
+      973,
+      974,
+      975,
+      976,
+      977,
+      978,
+      979,
+      980,
+      981,
+      982,
+      983,
+      984
+    ]
   },
   {
     date: '2006-09-22',
@@ -573,7 +1181,7 @@ export const UPDATES_2006: Update[] = [
       dock: 'archives:ArtworkRoomsDock40.swf',
       pet: 'archives:ArtworkRoomsPet40.swf',
       dojo: 'archives:ArtworkRoomsDojo41.swf',
-      shack: 'recreation:shack_vector.swf'
+      shack: 'archives:ArtworkRoomsShack40.swf'
     }
   },
   {
@@ -612,7 +1220,15 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-10-13',
-    end: ['launchpad-construction']
+    end: ['launchpad-construction'],
+    rooms: {
+      // Rockhopper arrival, TBA
+      dock: 'archives:Dock40.swf'
+    }
+  },
+  {
+    date: '2006-10-20',
+    furnitureCatalog: 'archives:Furniture_0610.swf',
   },
   {
     date: '2006-10-24',
@@ -637,6 +1253,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-10-27',
+    clothingCatalog: 'archives:October06Style_2.swf',
     temp: {
       party: {
         partyName: 'Halloween Party',
@@ -685,6 +1302,12 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-11-17',
+    iglooVersion: 43,
+    furnitureCatalog: 'archives:Furniture_0611.swf',
+    iglooCatalog: 'archives:November2006Igloo.swf'
+  },
+  {
     date: '2006-11-24',
     temp: {
       party: {
@@ -704,6 +1327,13 @@ export const UPDATES_2006: Update[] = [
     miscComments: ['The second secret agent mission is released'],
     fileChanges: {
       'artwork/tools/missions.swf': 'archives:ArtworkToolsMissions2.swf'
+    }
+  },
+  {
+    date: '2006-11-28',
+    roomComment: 'The Coffee Shop is vectorized',
+    rooms: {
+      coffee: 'recreation:coffee_vector.swf'
     }
   },
   {
@@ -729,7 +1359,12 @@ export const UPDATES_2006: Update[] = [
         }
       }
     },
-    furnitureCatalog: 'recreation:furniture_dec06.swf'
+    furnitureCatalog: 'archives:Furniture_0612.swf',
+    iglooCatalog: 'recreation:igloo_catalog_dec06_v1.swf'
+  },
+  {
+    date: '2006-12-16',
+    iglooCatalog: 'archives:December2006Igloo.swf'
   },
   {
     date: '2006-12-19',
@@ -747,6 +1382,28 @@ export const UPDATES_2006: Update[] = [
     roomComment: 'The Attic is vectorized',
     rooms: {
       attic: 'recreation:attic_dec2006.swf'
+    },
+    temp: {
+      party2: {
+        partyName: 'Christmas Party',
+        rooms: {
+          beacon: 'recreation:christmas_06/beacon.swf',
+          coffee: 'recreation:christmas_06/coffee.swf',
+          dance: 'recreation:christmas_06/dance.swf',
+          dock: 'recreation:christmas_06/dock.swf',
+          forts: 'recreation:christmas_06/forts.swf',
+          lodge: 'recreation:christmas_06/lodge.swf',
+          town: 'recreation:christmas_06/town.swf'
+        },
+        music: {
+          beacon: 200,
+          dance: 400,
+          dock: 200,
+          lodge: 400,
+          town: 200,
+          forts: 200
+        }
+      }
     }
   },
   {

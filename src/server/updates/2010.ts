@@ -105,6 +105,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-02-11',
+    petFurniture: 'archives:Feb2010Pets.swf',
     stagePlay: {
       name: 'Secrets of the Bamboo Forest',
       costumeTrunk: 'archives:October2010Costume.swf',
@@ -400,14 +401,20 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-03-05',
+    migrator: 'archives:March2010Pirate.swf'
+  },
+  {
     date: '2010-03-12',
-    furnitureCatalog: 'archives:March10Furniture.swf'
+    furnitureCatalog: 'archives:March10Furniture.swf',
+    iglooCatalog: 'archives:March2010Igloo.swf'
   },
   {
     date: '2010-03-15',
     rooms: {
       mine: 'archives:RoomsMine_2.swf'
-    }
+    },
+    migrator: false
   },
   {
     date: '2010-03-18',
@@ -442,17 +449,63 @@ export const UPDATES_2010: Update[] = [
             'en': 'archives:March2010Costume.swf'
           }
         },
-        startscreens: ['archives:StartscreenPpa-PenguinPlayAwards2010.swf']
+        startscreens: ['archives:StartscreenPpa-PenguinPlayAwards2010.swf'],
+        playScript: [
+          { note: "HOST" },
+          { name: "Host:", message: "There\'s talent in this audience. I can feel it." },
+          { name: "Host:", message: "And the winner for Best Play is..." },
+          { name: "Host:", message: "Wow! The award for Best Costume goes to..." },
+          { name: "Host:", message: "Penguin Play Award for Best Music goes to..." },
+          { name: "Host:", message: "This year, Best Effects will be awarded to..." },
+          { name: "Host:", message: "Everyone\'s yawning. Quick - you!! Dance! Act! Sing!" }, 
+          { name: "Host:", message: "Hey, you - gross monster there! Settle down!" },
+          { name: "Host:", message: "Excuse me! Lady in red! Got an extra jewel?" },
+          { name: "Host:", message: "Hey, Fairy! Did you bring croissants?" },
+          { name: "Host:", message: "Yo! Bring over that Shadow Wave!" },
+          { name: "Host:", message: "Merman, dude. Can you stop splashing?" },
+          { name: "Host:", message: "Um...Who let Lobsters in here?!" },
+          { name: "Host:", message: "Shhhh! Let them speak!" },
+          { name: "Host:", message: "What happens to us if the squid doesn\'t win?!" },
+          { name: "Host:", message: "Everyone looks so absolutely fabolous." },
+          { name: "Host:", message: "I\'m excited to see the winners on stage." },
+          { name: "Host:", message: "Dahhling...you look mahhvelous..." },
+          { note: "AUDIENCE" },
+          { name: "Audience:", message: "[whispers] I simply adore your outfit." },
+          { name: "Audience:", message: "Genius! This event is the best." },
+          { name: "Audience:", message: "I get tired of listening to boring speeches." },
+          { name: "Audience:", message: "Let\'s all dress as lobsters and clap our claws!" },
+          { name: "Audience:", message: "Everybody on your choirs! ENCORE!" },
+          { name: "Audience:", message: "Are video cameras allowed in here?" },
+          { name: "Audience:", message: "How loud can we get? Everybody CHEER!" },
+          { note: "SPEECHES" },
+          { name: "Twee:", message: "Applause! Applause! Make it louder!" },
+          { name: "Alaska:", message: "Was told there\'d be rare puffles. Seen any?" },
+          { name: "Boris:", message: "TUMMMMMMY!" },
+          { name: "Bubbles:", message: "I\'m just happy to have traveled here today." },
+          { name: "Flippers:", message: "Can I tell a joke? Can I? Can I?" },
+          { name: "Ruby:", message: "This trophy will look perfect next to my ruby!" },
+          { name: "Hammer:", message: "The judges need to look at nominees carefully..." },
+          { name: "Hammer:", message: "I\'ll lend them a magnifying glass." },
+          { name: "Squidzoid:", message: "PUNY AUDIENCE! I\'M CLEARLY THE WINNER." },
+          { name: "Shadow Guy:", message: "My fans make these fancy events worthwhile!" },
+          { name: "Gamma Gal:", message: "Wouldn\'t be where I am now without bad dudes." },
+          { name: "Twee:", message: "See how my wings sparkle?" },
+          { name: "Flippers:", message: "Did you hear about the A, B, Seas? Get it?" },
+          { name: "Lobster:", message: "You\'ve had enough time on Stage. MOVE ALONG!" },
+          { name: "Squidzoid:", message: "RAWWRR! YES! EAT TROPHY!" },
+          { name: "Ruby:", message: "Where\'s Jacques? Someone\'s lifted my ruby!" },
+          { name: "Alaska:", message: "An honor to be here. Next adventure, please." },
+          { name: "Boris:", message: "GIVE ME THE TROOOOOOPHY!" },
+          { name: "Shadow Guy:", message: "I\'d like to thank my fans. And my Shadow Wave." },
+          { name: "Gamma Gal:", message: "For great justice!" },
+          { name: "Host:", message: "Thank you! You\'ve been a lovely audience!" }
+        ]
       }
     }
   },
   {
     date: '2010-03-19',
-    localChanges: {
-      'catalogues/pets.swf': {
-        en: 'archives:Mar2010Pets.swf'
-      }
-    }
+    petFurniture: 'archives:Mar2010Pets.swf'
   },
   {
     date: '2010-03-26',
@@ -598,6 +651,9 @@ export const UPDATES_2010: Update[] = [
     },
     rooms: {
       forest: 'archives:RoomsForest_2.swf'
+    },
+    music: {
+      eco: 285
     }
   },
   {
@@ -806,7 +862,7 @@ export const UPDATES_2010: Update[] = [
     roomComment: 'The Stadium returns',
     rooms: {
       town: 'archives:RoomsTown_2.swf',
-      forts: 'archives:ESForts-SoccerPitch.swf',
+      forts: 'archives:RoomsForts_2.swf',
       rink: 'archives:RoomsRink-May2010.swf'
     },
     sportCatalog: 'archives:May10Sport.swf',
@@ -2018,6 +2074,10 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-09-02',
+    migrator: 'archives:2010septemberpiratecatalog.swf'
+  },
+  {
     date: '2010-09-03',
     clothingCatalog: 'archives:September10Style.swf',
     fileChanges: {
@@ -2188,6 +2248,10 @@ export const UPDATES_2010: Update[] = [
         }
       }
     }
+  },
+  {
+    date: '2010-09-12',
+    migrator: false
   },
   {
     date: '2010-09-13',
@@ -3510,7 +3574,7 @@ export const UPDATES_2010: Update[] = [
           'party': 281,
           'party99': 254
         },
-        migrator: true,
+        migrator: 'archives:Dec2010Pirate.swf',
         startscreens: [
           'archives:LoginHolidayParty2010.swf',
           'archives:CFC2010LoginScreen.SWF',
@@ -3581,6 +3645,20 @@ export const UPDATES_2010: Update[] = [
     rooms: {
       plaza: 'recreation:plaza_ruby_no_weather.swf',
       stage: 'archives:RoomsStage-December2010.swf'
+    }
+  },
+  {
+    date: '2010-12-31',
+    temp: {
+      party: {
+        decorated: false,
+        partyStart: 'New Years fireworks appear at the Iceberg and Ski Hill',
+        partyEnd: 'The fireworks celebration ends',
+        rooms: {
+          berg: 'archives:2011newyearsfireworksiceberg.swf',
+          mtn: 'archives:2011newyearsfireworksskihill.swf'
+        }
+      }
     }
   }
 ];

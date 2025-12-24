@@ -12,6 +12,7 @@ import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
 import { MIGRATOR_TIMELINE } from "./migrator";
 import { MUSIC_TIMELINE } from "./music";
 import { MEMBER_TIMELINE } from "./member";
+import { STAGE_TIMELINE } from "./stage";
 
 
 const huntTimeline = getHuntTimeline();
@@ -81,36 +82,8 @@ export function getLocalPathsTimeline() {
   return timeline.getVersionsMap();
 }
 
-export function getStageScriptTimeline() {
-  const timeline = new VersionsTimeline<StageScript>();
-
-  const scripts = new Map<string, StageScript>();
-  UPDATES.forEach((update) => {
-    if (update.update.stagePlay !== undefined) {
-      let script = scripts.get(update.update.stagePlay.name);
-      if (script === undefined) {
-        script = update.update.stagePlay.script ?? []
-        scripts.set(update.update.stagePlay.name, script);
-      } else {
-        if (update.update.stagePlay.script !== undefined) {
-          script = update.update.stagePlay.script;
-          scripts.set(update.update.stagePlay.name, script);
-        }
-      }
-
-      timeline.add({
-        date: update.date,
-        info: script
-      });
-    }
-  });
-
-  return timeline.getVersions();
-}
-
 const localPathsTimeline = getLocalPathsTimeline();
 const globalPathsTimeline = getGlobalPathsTimeline();
-const stageTimeline = getStageScriptTimeline();
 
 /** Represents a unique global crumbs state */
 export type GlobalCrumbContent = {
@@ -122,8 +95,6 @@ export type GlobalCrumbContent = {
   newMigratorStatus: boolean;
   hunt: GlobalHuntCrumbs | undefined;
 }
-
-
 
 export type LocalCrumbContent = {
   paths: Record<string, string | undefined>;
@@ -179,7 +150,7 @@ export function getLocalCrumbsOutput() {
       }
     });
 
-    stageTimeline.forEach((info) => {
+    STAGE_TIMELINE.forEach((info) => {
       if (isLowerOrEqual(CPIP_UPDATE, info.date) && isLower(info.date, MODERN_AS3)) {
         timeline.push({
           date: info.date,
@@ -199,7 +170,7 @@ export function getLocalCrumbsOutput() {
     return {
       paths: {},
       hunt: undefined,
-      stageScript: findInVersion(CPIP_UPDATE, stageTimeline) ?? []
+      stageScript: findInVersion(CPIP_UPDATE, STAGE_TIMELINE) ?? []
     }
   });
 }

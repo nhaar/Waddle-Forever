@@ -5,12 +5,14 @@ export const UPDATES_2005: Update[] = [
     date: '2005-08-22',
     map: "recreation:map_release.swf",
     miscComments: ['Beta release'],
-    iglooVersion: 1,
+    iglooVersion: 0,
     chatVersion: 291,
     indexHtml: 'beta',
     websiteFolder: 'beta',
     fileChanges: {
-      'chat291.swf': 'approximation:chat291_no_news.swf' // newspapers-less precpip client
+      'chat291.swf': 'approximation:chat291_no_news.swf', // newspapers-less precpip client
+      // placeholder catalogue so that it doesn't softlock
+      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf'
     },
     rooms: {
       'town': 'approximation:town_release.swf',
@@ -20,10 +22,10 @@ export const UPDATES_2005: Update[] = [
       'lounge': 'approximation:lounge_no_astro.swf',
       'shop': 'mammoth:artwork/rooms/shop10.swf',
       'dock': 'mammoth:artwork/rooms/dock11.swf',
-      'village': 'approximation:village_release.swf',
+      'village': 'fix:ArtworkRoomsSkihill.swf',
       'rink': 'approximation:rink_release.swf',
       'dojo': 'mammoth:artwork/rooms/dojo10.swf',
-      'agent': 'archives:ArtworkRoomsAgent10.swf', // HQ is disputed, maybe not original release
+      'agent': 'archives:ArtworkRoomsAgent10.swf', // placeholder, not accessable
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
     music: {
@@ -42,7 +44,120 @@ export const UPDATES_2005: Update[] = [
       dojowater: 24,
       boiler: 6,
       stage: 0
-    }
+    },
+    clientFiles: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      401,
+      403,
+      408,
+      422,
+      451,
+      452,
+      404,
+      481,
+      405,
+      412,
+      410,
+      413,
+      484,
+      417,
+      453,
+      418,
+      402,
+      414,
+      420,
+      406,
+      421,
+      456,
+      419,
+      424,
+      425,
+      407,
+      423,
+      101,
+      102,
+      103,
+      106,
+      107,
+      108,
+      109,
+      110,
+      131,
+      171,
+      172,
+      173,
+      174,
+      175,
+      214,
+      216,
+      176,
+      177,
+      181,
+      201,
+      212,
+      219,
+      222,
+      221,
+      244,
+      252,
+      301,
+      235,
+      237,
+      238,
+      240,
+      263,
+      262,
+      218,
+      253,
+      261,
+      220,
+      233,
+      234,
+      351,
+      352,
+      363,
+      366,
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      508,
+      509,
+      510,
+      511,
+      512,
+      513,
+      514,
+      515,
+      516,
+      517,
+      518,
+      519,
+      520,
+      521,
+      522,
+      523,
+      524,
+      550,
+      551,
+      800,
+      104
+    ]
   },
   {
     date: '2005-09-12',
@@ -60,12 +175,11 @@ export const UPDATES_2005: Update[] = [
     rooms: {
       lounge: 'mammoth:artwork/rooms/lounge10.swf'
     },
-    iglooVersion: 20,
-    miscComments: ['Penguins can now purchase different types of igloo']
+    iglooVersion: 1,
   },
   {
     date: '2005-09-21',
-    clothingCatalog: 'archives:September05Style.swf',
+    clothingCatalog: 'recreation:style_september_05.swf',
     furnitureCatalog: 'recreation:furniture_sep05.swf',
     temp: {
       party: {
@@ -86,7 +200,15 @@ export const UPDATES_2005: Update[] = [
     indexHtml: '2005-10-26'
   },
   {
+    date: '2005-10-20',
+    roomComment: 'A banner is added to the Ski Village',
+    rooms: {
+      village: 'approximation:village_release.swf'
+    }
+  },
+  {
     date: '2005-10-24',
+    iglooVersion: 3,
     clothingCatalog: 'archives:Clothing_0510.swf',
     furnitureCatalog: 'archives:Furniture_0510.swf',
     newspaper: 'irregular',
@@ -177,6 +299,11 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-11-21',
     newspaper: 'irregular'
+  },
+  {
+    date: '2005-11-22',
+    iglooVersion: 6,
+    iglooCatalog: 'archives:February2006Igloo.swf'
   },
   {
     date: '2005-11-24',

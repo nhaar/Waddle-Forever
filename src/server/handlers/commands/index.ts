@@ -5,7 +5,7 @@ import { Room } from "../../game-logic/rooms";
 import { CARDS } from "../../../server/game-logic/cards";
 import { RoomName, ROOMS } from "../../../server/game-data/rooms";
 import { randomInt, Vector } from "../../../common/utils";
-import { ArgumentsIndicator, GetArgumentsType, Handle } from "../handles";
+import { ArgumentsIndicator, GetArgumentsType } from "../handles";
 import { logdebug } from "../../../server/logger";
 
 const handler = new Handler();
@@ -34,13 +34,13 @@ class CommandsHandler {
 
   getCommandsHandler() {
     const commands = this._commands;
-    return (client: Client, id: string, message: string) => {
-      const commandMatch = message.match(/^(\!|COM )(\w+)(.*)/);
+    return (client: Client, message: string) => {
+      const commandMatch = message.match(/^(\w+)(.*)/);
       if (commandMatch !== null) {
-        const keyword = commandMatch[2];
+        const keyword = commandMatch[1];
         const callbacks = commands.get(keyword);
         if (callbacks !== undefined) {
-          const args = commandMatch[3].split(/\s+/).slice(1);
+          const args = commandMatch[2].split(/\s+/).slice(1);
           callbacks.forEach(callback => callback(client, ...args));
         } else {
           logdebug(`Attempted to use command ${keyword}, but it doesn't exist`);
@@ -515,14 +515,6 @@ botCommands.add('epfmeeting', [
   }
 ])
 
-export const commandsHandler = commands.getCommandsHandler();
-
-handler.xt(Handle.HandleSendMessage, (client, id, message) => {
-  client.sendMessage(message);
-});
-
-handler.xt(Handle.HandleSendMessage, commandsHandler);
-handler.xt(Handle.HandleSendMessage, botCommands.getCommandHandler());
-
+handler.addCommandsHandler(commands.getCommandsHandler());
 
 export default handler;

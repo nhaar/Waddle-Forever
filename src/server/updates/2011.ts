@@ -3,12 +3,24 @@ import { CategoryID } from "../game-data/stamps";
 
 export const UPDATES_2011: Update[] = [
   {
+    date: '2011-01-03',
+    end: ['party']
+  },
+  {
     date: '2011-01-11',
     clothingCatalog: 'archives:January11Style.swf'
   },
   {
+    date: '2011-01-13',
+    sportCatalog: 'archives:SASJan2011.swf'
+  },
+  {
     date: '2011-01-14',
     furnitureCatalog: 'archives:Jan-Feb2011BetterIgloos.swf',
+    gameRelease: 'System Defender',
+    rooms: {
+      agentcom: 'archives:RoomsAgentcom-January2011.swf'
+    },
     stampUpdates: [
       {
         category:   {
@@ -118,9 +130,7 @@ export const UPDATES_2011: Update[] = [
       'archives:LoginAdopt_green.swf',
       'archives:LoginAdopt_pink.swf',
       'archives:LocalEnLoginBackgroundsAdopt_yellow.swf',
-      'archives:LoginDucky.swf',
-      'archives:LoginJetpack.swf',
-      'archives:LoginStamps3.swf'
+      'archives:LoginJetpack.swf'
     ],
     temp: {
       party: {
@@ -332,7 +342,8 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-02-11',
     clothingCatalog: 'archives:PenguinStyleFeb2011.swf',
-    furnitureCatalog: 'archives:Feb-Mar2011BetterIgloos.swf'
+    furnitureCatalog: 'archives:Feb-Mar2011BetterIgloos.swf',
+    iglooCatalog: 'archives:Feb2011Igloos.swf'
   },
   {
     date: '2011-02-17',
@@ -531,8 +542,14 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-02-25',
+    temp: {
+      party: {
+        rooms: {
+          plaza: 'archives:PuffleParty2011Plaza(2).swf'
+        }
+      }
+    },
     rooms: {
-      'plaza': 'archives:PuffleParty2011Plaza(2).swf',
       stage: 'archives:RoomsStage-February2011.swf'
     },
     stagePlay: {
@@ -1309,7 +1326,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-05-13',
-    furnitureCatalog: 'archives:May2011Furniture.swf'
+    furnitureCatalog: 'archives:May2011Furniture.swf',
+    iglooCatalog: 'archives:May2011Igloo.swf'
   },
   {
     date: '2011-05-17',
@@ -1530,6 +1548,9 @@ export const UPDATES_2011: Update[] = [
           agentlobbymulti: 'archives:BattleofDoomAgentlobbymulti.swf',
           party: 'archives:BattleofDoomParty.swf'
         },
+        music: {
+          party: 125
+        },
         localChanges: {
           'herbert_taunt.swf': {
             en: [ 'archives:ENBattleofDoomHerbertTaunt.swf', 'herbert_taunt' ]
@@ -1592,9 +1613,13 @@ export const UPDATES_2011: Update[] = [
     },
     stagePlay: {
       name: 'Secrets of the Bamboo Forest',
-      costumeTrunk: 'archives:June2011SecretsOfTheBambooForestCostume.swf'
+      costumeTrunk: 'archives:June2011SecretsOfTheBambooForestCostume.swf',
+      rooms: {
+        beacon: 'archives:RoomsBeacon-EnchantedFeatherPin.swf'
+      }
     },
     rooms: {
+      stage: 'archives:2011Jun9Stage.swf',
       plaza: 'archives:RoomsPlaza-August2011.swf'
     }
   },
@@ -1671,6 +1696,14 @@ export const UPDATES_2011: Update[] = [
     }
   },
   {
+    date: '2011-06-17',
+    pin: 'end'
+  },
+  {
+    date: '2011-06-23',
+    martialArtworks: 'archives:June2011Ninja.swf'
+  },
+  {
     date: '2011-06-24',
     newspaper: 'period-end'
   },
@@ -1682,12 +1715,17 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
       'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
-      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf'
+      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf',
+      'play/v2/client/club_penguin.swf': 'approximation:club_penguin_2011.swf',
     },
     globalChanges: {
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
     },
     map: 'approximation:map_2011_party_note.swf'
+  },
+  {
+    date: '2011-06-30',
+    pin: 'start'
   },
   {
     date: '2011-07-05',
@@ -1701,6 +1739,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-07-14',
     furnitureCatalog: 'archives:Jul2011Furniture.swf',
+    iglooCatalog: 'archives:July2011Igloo.swf',
     newspaper: 'irregular',
     temp: {
       const: {
@@ -2107,7 +2146,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-10-13',
-    furnitureCatalog: 'archives:OctNov2011Furniture.swf'
+    furnitureCatalog: 'archives:OctNov2011Furniture.swf',
+    iglooCatalog: 'archives:October2011Igloo.swf'
   },
   {
     date: '2011-10-20',
@@ -2285,7 +2325,11 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-10-28',
-    end: ['party2']
+    end: ['party2'],
+    fileChanges: {
+      // update of the toolbar with the new buddy icon. though keep in mind that I early added the puffle party here because of a missing function from the rockhopper quest (showCutscene)
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
+    }
   },
   {
     date: '2011-11-03',
@@ -2403,7 +2447,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-11-10',
-    furnitureCatalog: 'archives:NovDec2011Furniture.swf'
+    furnitureCatalog: 'archives:NovDec2011Furniture.swf',
+    iglooCatalog: 'archives:November2011Igloo.swf'
   },
   {
     date: '2011-11-17',
@@ -2422,7 +2467,124 @@ export const UPDATES_2011: Update[] = [
     date: '2011-11-23',
     stagePlay: {
       name: 'Battle of the Ancient Shadows',
-      costumeTrunk: 'archives:ENCataloguesCostumeNov2011.swf'
+      costumeTrunk: 'archives:ENCataloguesCostumeNov2011.swf',
+      script: [
+        { note: "Mix and match the scripts!" },
+        { note: "Battle of the Ancient Shadows" },
+        { note: "Costumes from this play change behind the screen." },
+        { name: "Ancient Dragon:", message: "Long ago we dragons ruled the island" },
+        { name: "Sage Fish:", message: "Ahh I must correct you, Ancient Dragon" },
+        { name: "Sage Fish:", message: "For it was we FISH who ruled the land" },
+        { name: "Ancient Dragon:", message: "Ha, you always DID have a funny  sense of humor" },
+        { name: "Ancient Dragon:", message: "Are you forgetting our great shadow battle?" },
+        { name: "Sage Fish:", message: "Not likely Ancient Dragon" }, 
+        { name: "Sage Fish:", message: "Perhaps YOU are forgetting YOUR great loss" },
+        { name: "Sage Fish:", message: "Went up in a puff of smoke, if I recall correctly" },
+        { name: "Ancient Dragon:", message: "You do NOT" },
+        { name: "Ancient Dragon:", message: "For it was we DRAGONS who triumphed!" },
+        { name: "Snow Monkey:", message: "Um, excuse me" },
+        { name: "Sage Fish:", message: "What is it?" },
+        { name: "Ancient Dragon:", message: "Yes, can\'t you see we\'re busy?" },
+        { name: "Snow Monkey:", message: "Well, um..." },
+        { name: "Sage Fish:", message: "Spit it out!" },
+        { name: "Snow Monkey:", message: "It\'s just that..." },
+        { name: "Ancient Dragon:", message: "Just say it!" },
+        { name: "Snow Monkey:", message: "What I want to say is..." },
+        { name: "Snow Monkey:", message: "I JUST THINK YOU GUYS ARE REALLY COOL!" },
+        { name: "Snow Monkey:", message: "blushes" },
+        { name: "Sage Fish:", message: "Oh!" },
+        { name: "Sage Fish:", message: "That\'s rather sweet" },
+        { name: "Ancient Dragon:", message: "Well Sage Fish you DID have a FEW good moves" },
+        { name: "Sage Fish:", message: "Yes Ancient Dragon, you are somewhat impressive" },
+        { name: "Snow Monkey:", message: "Can I make a request?" },
+        { name: "Sage Fish:", message: "But of course!" },
+        { name: "Snow Monkey:", message: "WOULD YOU GUYS BATTLE RIGHT NOW?!" },
+        { name: "Ancient Dragon:", message: "What do you say, Sage Fish?" },
+        { name: "Sage Fish:", message: "Why not? For old times\' sake" },
+        { name: "Snow Monkey:", message: "COOOOOL! Ok ready? BATTLE!" },
+        { name: "Ancient Dragon:", message: "HIIIIIYAAAAAAA!!!!" },
+        { name: "Sage Fish:", message: "WAAATATATATAAAAAA!" },
+        { name: "Snow Monkey:", message: "KEEEYOWWWWWWWWWWW!" },
+        { note: "Actions" },
+        { name: "Ancient Dragon:", message: "roasts marshmallow with fiery breath" },
+        { name: "Sage Fish:", message: "holds breath for really long time" },
+        { name: "Snow Monkey:", message: "slips on banana peel" },
+        { name: "Ancient Dragon:", message: "swooshes great tail" },
+        { name: "Sage Fish:", message: "squirts water" },
+        { name: "Snow Monkey:", message: "swings into audience" },
+        { note: "Fairy Fables" },
+        { name: "Redhood:", message: "Oh no! A scary looking sheep!" },
+        { name: "Big Bad Wool:", message: "BAA! I am the Big Bad Wool and I\'m hungry!" },
+        { name: "Twee:", message: "What great big teeth you\'ve got!" },
+        { name: "Big Bad Wool:", message: "All the better to eat croissants with!" },
+        { name: "Redhood:", message: "No chance, Woolly! They'\re for the princess." },
+        { name: "Redhood:", message: "Now I will climb up Grumpunzel\'s long hair." },
+        { name: "Grumpunzel:", message: "Oi! What do you think you\'re doing?" },
+        { name: "Redhood:", message: "Princess! I\'ve brought you some croissants!" },
+        { name: "Grumpunzel:", message: "Croissants? I asked for COOKIES!" },
+        { name: "Redhood:", message: "Guess they don\'t call her Grumpunzel for nothing." },
+        { name: "Twee:", message: "And they all lived happily ever after." },
+        { note: "Underwater Adventure" },
+        { name: "Lobster:", message: "Why didn\'t the squid\'s computer work?" },
+        { name: "Wise Fish:", message: "Wait, I know this. I am very wise, after all" },
+        { name: "Wise Fish:", message: "Was it too much seawater in the keyboard?" },
+        { name: "Lobster:", message: "No, it\'s because he had TENTACLE difficulties!" },
+        { name: "Wise Fish:", message: "PLANKTON!!! Ask me another, I\'ll get it for sure!" },
+        { name: "Bubbles:", message: "Okay, what fish only swims at night?" },
+        { name: "Wise Fish:", message: "It is, of course, a fish that cannot sleep!" },
+        { name: "Bubbles:", message: "Nope, sorry, Wise Fish. It\'s a STARfish!" },
+        { name: "Wise Fish:", message: "PLANKTON!!!" },
+        { name: "Flippers:", message: "LOL! No need to yell. Okay, my turn!" },
+        { name: "Flippers:", message: "What lies under the ocean and shivers?" },
+        { name: "Wise Fish:", message: "Is it me after missing all these punchlines?" },
+        { name: "Flippers:", message: "Close! It\'s a nervous wreck!" },
+        { name: "Wise Fish:", message: "Hey, that\'s pretty good." },
+        { name: "Flippers:", message: "Thanks! I also do birthday parties!" },
+        { note: "Ruby and the Ruby" },
+        { name: "Ruby:", message: "You\'ve got to help me!" },
+        { name: "Hammer:", message: "What\'s the problem, madam?" },
+        { name: "Ruby:", message: "Someone has stolen my gemstone!" },
+        { name: "Ruby:", message: "There was this fishy-looking guy outside." },
+        { name: "Hammer:", message: "And you suspect him?" },
+        { name: "Ruby:", message: "Haven\'t you found it yet? I\'m busy." },
+        { name: "Hammer:", message: "Here\'s your gem, Ms. Ruby. It was safe all along." },
+        { name: "Ruby:", message: "Oh, jolly well done, Hammer." },
+        { name: "Hammer:", message: "Another day, another crime solved." },
+        { note: "Squidzoid vs. Shadow Guy & Gamma Gal" },
+        { name: "Squidzoid:", message: "GRAWL! I HUNGRY!" },
+        { name: "Shadow Guy:", message: "Freeze Squidward! Drop that shop!" },
+        { name: "Squidzoid:", message: "BLARRG! YOU can\'t STOP ME!" },
+        { name: "Gamma Gal:", message: "Oh yeah? Take this! PLASMA GLOW WAVE!" },
+        { name: "Squidzoid:", message: "RROOOOAAAARR!" },
+        { name: "Shadow Guy:", message: "Quick! With our powers combined!" },
+        { name: "Squidzoid:", message: "NO! THIS IS IMPOSSIBLE! GRRAAA!" },
+        { name: "Squidzoid:", message: "Hey, I\'m a penguin again. What happened?" },
+        { name: "Gamma Gal:", message: "You turned into Squidzoid!" },
+        { name: "Shadow Guy:", message: "And started eating the city!" },
+        { name: "Squidzoid:", message: "Oh! I had a monster appetite!" },
+        { name: "Gamma Gal:", message: "Looks like our work here is done!" },
+        { name: "Squidzoid:", message: "Let\'s go get a fish pizza." },
+        { note: "Quest for the Golden Puffle" },
+        { name: "King Ra-Ra:", message: "Halt! Who dares enter the great pyramid!" },
+        { name: "Alaska:", message: "Quick, Yukon! Grab the Golden Puffle!" },
+        { name: "Yukon:", message: "Got it! Let\'s get out of here!" },
+        { name: "King Ra-Ra:", message: "Don\'t let them take it, Boris!" },
+        { name: "Boris:", message: "TUMMMMMY!" },
+        { name: "Alaska:", message: "We\'ve gotta get out of here...fast!" },
+        { name: "Yukon:", message: "Wait! I think I know how to stop all of this!" },
+        { note: "(Yukon gives Boris the Golden Puffle)" },
+        { name: "Boris:", message: "TUM MEEEEE!" },
+        { name: "Alaska:", message: "What are you doing, Yukon?! That\'s my treasure!" },
+        { note: "(Boris unwraps the Golden Puffle)" },
+        { name: "Yukon:", message: "It\'s a puffle-shaped chocolate in gold wrapper!" },
+        { name: "King Ra-Ra:", message: "That\'s right! And Boris was really hungry!" },
+        { name: "Boris:", message: "YUMMMMMMMY!" },
+        { note: "DIRECTOR" },
+        { name: "Director:", message: "Places please!" },
+        { name: "Director:", message: "And... action!" },
+        { name: "Director:", message: "Let\'s try that take again." },
+        { name: "Director:", message: "Fantastic acting. Well done!" }
+      ]
     },
     rooms: {
       stage: 'archives:11242011Stage.swf'
@@ -2494,6 +2656,26 @@ export const UPDATES_2011: Update[] = [
           }
         ]
       }
+    },
+    localChanges: {
+      'instructions/card_jitsu.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu.swf'
+      },
+      'instructions/card_jitsu_fire.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_fire.swf'
+      },
+      'instructions/card_jitsu_water.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/instructions/card_jitsu_water.swf'
+      },
+      'close_ups/ninjabelts.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/close_ups/ninjabelts.swf'
+      },
+      'close_ups/fireItems.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/close_ups/fireItems.swf'
+      },
+      'close_ups/waterItems.swf': {
+        en: 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf'
+      }
     }
   },
   {
@@ -2529,7 +2711,8 @@ export const UPDATES_2011: Update[] = [
           town: 'archives:RoomsTown-HolidayParty2011Pre.swf'
         }
       }
-    }
+    },
+    martialArtworks: 'archives:ENCataloguesNinjaDecember2011.swf'
   },
   {
     date: '2011-12-14',
@@ -2683,6 +2866,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-15',
     furnitureCatalog: 'archives:December2011Furniture.swf',
+    iglooCatalog: 'archives:December2011Igloo.swf',
     partyComment: 'A new item of the Advent Calendar is available'
   },
   {
@@ -2727,7 +2911,17 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-12-29',
-    newspaper: 'period-end',
-    end: ['party']
+    end: ['party'],
+    temp: {
+      party2: {
+        partyStart: 'Fireworks begin at the Ski Hill and Iceberg',
+        partyEnd: 'The fireworks celebration ends',
+        decorated: false,
+        rooms: {
+          mtn: 'archives:FireworksMtn.swf',
+          berg: 'archives:FireworksBerg.swf'
+        }
+      }
+    }
   }
 ];

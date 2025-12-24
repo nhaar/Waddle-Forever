@@ -111,6 +111,7 @@ export class Handler {
   phpListeners: Map<string, PostCallback>;
   xmlListeners: Map<string, XMLCallback>;
   onBoot: Array<(s: Server) => void>;
+  private _commandHandler: ((client: Client, message: string) => void) | undefined;
 
   constructor () {
     this.listeners = new Map<string, XTCallback[]>();
@@ -196,6 +197,20 @@ export class Handler {
     }
   }
 
+  addCommandsHandler(handler: (client: Client, message: string) => void) {
+    this._commandHandler = handler;
+  }
+
+  getCommandsHandler() {
+    return this._commandHandler;
+  }
+
+  runCommand (client: Client, command: string) {
+    if (this._commandHandler !== undefined) {
+      this._commandHandler(client, command);
+    }
+  }
+
   /** Handles responding to XML data */
   private handleXml (client: Client, data: string) {
     logdebug('Incoming XML data: ', data);
@@ -254,6 +269,10 @@ export class Handler {
       this.xmlListeners.set(action, callback);
     });
     this.onBoot = [...handler.onBoot, ...this.onBoot];
+    const comandsHandler = handler.getCommandsHandler();
+    if (comandsHandler !== undefined) {
+      this.addCommandsHandler(comandsHandler);
+    }
   }
 
   /** Handlers that listen for POST requests in the HTTP server */
