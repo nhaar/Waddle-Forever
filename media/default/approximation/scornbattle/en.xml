@@ -12,7 +12,7 @@
 	//first letter of victory
 	<entry id="gameover_txt_victory" value="ictory is yours!"/>
 	//victory without the first letter
-	<entry id="gameover_txt_defeated" value="You have defeated Scorn!"/>
-	<entry id="gameover_txt_bridge" value="Continue on, brave hero, for only you can save us from this blackout!"/>
+	<entry id="gameover_txt_defeated" value="You have defeated Scorn and saved the kingdom!"/>
+	<entry id="gameover_txt_bridge" value="Now cross the bridge into the Sky Kingdom, and bring peace back to Club Penguin..."/>
 	<entry id="gameover_btn_prize" value="Claim thy prize"/>
 </locale>
