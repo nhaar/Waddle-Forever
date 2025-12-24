@@ -1864,7 +1864,7 @@ export const UPDATES_2012: Update[] = [
       town: 'archives:RoomsTown_5.swf',
       forts: 'archives:RoomsForts2012-Hockey.swf',
       plaza: 'archives:RoomsPlaza_3.swf',
-      village: 'archives:RoomsVillage_4.swf',
+      village: 'archives:ENRoomsVillageDec2012.swf',
       dock: 'archives:RoomsDock_2.swf',
       beach: 'archives:RoomsBeach-Dec2012.swf',
       dance: 'archives:RoomsDance_5.swf',
