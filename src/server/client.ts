@@ -370,7 +370,8 @@ class Bakery {
     this._cheerCount++;
     this.sendBakeryState();
   
-    if (this._cheerCount >= Bakery.CHEER_CAPACITY) {
+    // only if exact, in order to only start the timeout once
+    if (this._cheerCount === Bakery.CHEER_CAPACITY) {
       // takes about 3 seconds to proceed
       setTimeout(() => {
         this.startMultiplier();

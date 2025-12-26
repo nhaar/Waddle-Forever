@@ -2,17 +2,16 @@ import { StaticDataTable } from "../../common/static-table";
 import { Version } from "../routes/versions";
 
 export enum ItemType {
-  Head,
-  Face,
-  Neck,
-  Body,
-  Hand,
-  Feet,
-  Pin,
-  Award,
-  Background,
-  Color,
-  Nothing
+  Color = 1,
+  Head = 2,
+  Face = 3,
+  Neck = 4,
+  Body = 5,
+  Hand = 6,
+  Feet = 7,
+  Pin = 8,
+  Background = 9,
+  Award = 10
 };
 
 export type Item = {
