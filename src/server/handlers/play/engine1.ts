@@ -98,6 +98,73 @@ const findFourPlayers = new Map<number, FindFourPlayerState>();
 const findFourSuppressCoins = new Set<number>();
 const mancalaSuppressCoins = new Set<number>();
 
+function forEachTableParticipant<T extends { tableId: number; joinedGame: boolean }>(
+  tableId: number,
+  server: Client['server'],
+  players: Map<number, T>,
+  callback: (player: Client) => void
+): void {
+  for (const [playerId, info] of players.entries()) {
+    if (info.tableId !== tableId || !info.joinedGame) {
+      continue;
+    }
+    const participant = server.getPlayerById(playerId);
+    if (participant !== undefined) {
+      callback(participant);
+    }
+  }
+}
+
+function countSeats(seats: Array<Client | null>): number {
+  return seats.filter((seat) => seat !== null).length;
+}
+
+function getSeatIndex(seats: Array<Client | null>, client: Client): number | undefined {
+  const seatIndex = seats.findIndex((seat) => seat?.penguin.id === client.penguin.id);
+  return seatIndex === -1 ? undefined : seatIndex;
+}
+
+function assignSeatIndex(seats: Array<Client | null>, client: Client): number | undefined {
+  const existingSeat = getSeatIndex(seats, client);
+  if (existingSeat !== undefined) {
+    return existingSeat;
+  }
+  const openSeat = seats.findIndex((seat) => seat === null);
+  if (openSeat === -1) {
+    return undefined;
+  }
+  seats[openSeat] = client;
+  return openSeat;
+}
+
+function sendTablePacket<T extends { tableId: number; joinedGame: boolean }>(
+  tableId: number,
+  server: Client['server'],
+  players: Map<number, T>,
+  handler: string,
+  ...args: Array<number | string>
+): void {
+  forEachTableParticipant(tableId, server, players, (player) => {
+    player.sendXt(handler, ...args);
+  });
+}
+
+function sendSeatRoster(
+  seats: Array<Client | null>,
+  handler: string,
+  broadcast: (handler: string, index: number, name: string) => void,
+  target?: Client
+): void {
+  seats.forEach((seat, index) => {
+    const name = seat?.penguin.name ?? '';
+    if (target !== undefined) {
+      target.sendXt(handler, index, name);
+      return;
+    }
+    broadcast(handler, index, name);
+  });
+}
+
 function createMancalaBoard(): number[] {
   return [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 }
@@ -124,7 +191,7 @@ function getMancalaTable(tableId: number, roomId: number, server: Client['server
 }
 
 function countMancalaSeats(table: MancalaTable): number {
-  return table.seats.filter(seat => seat !== null).length;
+  return countSeats(table.seats);
 }
 
 function resetMancalaTable(table: MancalaTable): void {
@@ -142,21 +209,11 @@ function broadcastTableUpdate(server: Client['server'], roomId: number, tableId:
 }
 
 function forEachMancalaParticipant(table: MancalaTable, callback: (player: Client) => void): void {
-  for (const [playerId, info] of mancalaPlayers.entries()) {
-    if (info.tableId !== table.id || !info.joinedGame) {
-      continue;
-    }
-    const participant = table.server.getPlayerById(playerId);
-    if (participant !== undefined) {
-      callback(participant);
-    }
-  }
+  forEachTableParticipant(table.id, table.server, mancalaPlayers, callback);
 }
 
 function sendMancalaPacket(table: MancalaTable, handler: string, ...args: Array<number | string>): void {
-  forEachMancalaParticipant(table, (player) => {
-    player.sendXt(handler, ...args);
-  });
+  sendTablePacket(table.id, table.server, mancalaPlayers, handler, ...args);
 }
 
 function sendMancalaUpdate(table: MancalaTable, seatId: number, name: string): void {
@@ -164,32 +221,15 @@ function sendMancalaUpdate(table: MancalaTable, seatId: number, name: string): v
 }
 
 function sendMancalaRoster(table: MancalaTable, target?: Client): void {
-  table.seats.forEach((seat, index) => {
-    const name = seat?.penguin.name ?? '';
-    if (target !== undefined) {
-      target.sendXt('uz', index, name);
-      return;
-    }
-    sendMancalaPacket(table, 'uz', index, name);
-  });
+  sendSeatRoster(table.seats, 'uz', (handler, index, name) => sendMancalaPacket(table, handler, index, name), target);
 }
 
 function getMancalaSeat(table: MancalaTable, client: Client): number | undefined {
-  const seatIndex = table.seats.findIndex(seat => seat?.penguin.id === client.penguin.id);
-  return seatIndex === -1 ? undefined : seatIndex;
+  return getSeatIndex(table.seats, client);
 }
 
 function assignMancalaSeat(table: MancalaTable, client: Client): number | undefined {
-  const existingSeat = getMancalaSeat(table, client);
-  if (existingSeat !== undefined) {
-    return existingSeat;
-  }
-  const openSeat = table.seats.findIndex(seat => seat === null);
-  if (openSeat === -1) {
-    return undefined;
-  }
-  table.seats[openSeat] = client;
-  return openSeat;
+  return assignSeatIndex(table.seats, client);
 }
 
 function clearMancalaTable(table: MancalaTable, quitterName: string): void {
@@ -340,7 +380,7 @@ function getFindFourTable(tableId: number, roomId: number, server: Client['serve
 }
 
 function countFindFourSeats(table: FindFourTable): number {
-  return table.seats.filter(seat => seat !== null).length;
+  return countSeats(table.seats);
 }
 
 function resetFindFourTable(table: FindFourTable): void {
@@ -364,21 +404,11 @@ function markMancalaSpectatorCoins(table: MancalaTable): void {
 }
 
 function forEachFindFourParticipant(table: FindFourTable, callback: (player: Client) => void): void {
-  for (const [playerId, info] of findFourPlayers.entries()) {
-    if (info.tableId !== table.id || !info.joinedGame) {
-      continue;
-    }
-    const participant = table.server.getPlayerById(playerId);
-    if (participant !== undefined) {
-      callback(participant);
-    }
-  }
+  forEachTableParticipant(table.id, table.server, findFourPlayers, callback);
 }
 
 function sendFindFourPacket(table: FindFourTable, handler: string, ...args: Array<number | string>): void {
-  forEachFindFourParticipant(table, (player) => {
-    player.sendXt(handler, ...args);
-  });
+  sendTablePacket(table.id, table.server, findFourPlayers, handler, ...args);
 }
 
 function sendFindFourUpdate(table: FindFourTable, seatId: number, name: string): void {
@@ -386,32 +416,15 @@ function sendFindFourUpdate(table: FindFourTable, seatId: number, name: string):
 }
 
 function sendFindFourRoster(table: FindFourTable, target?: Client): void {
-  table.seats.forEach((seat, index) => {
-    const name = seat?.penguin.name ?? '';
-    if (target !== undefined) {
-      target.sendXt('uz', index, name);
-      return;
-    }
-    sendFindFourPacket(table, 'uz', index, name);
-  });
+  sendSeatRoster(table.seats, 'uz', (handler, index, name) => sendFindFourPacket(table, handler, index, name), target);
 }
 
 function getFindFourSeat(table: FindFourTable, client: Client): number | undefined {
-  const seatIndex = table.seats.findIndex(seat => seat?.penguin.id === client.penguin.id);
-  return seatIndex === -1 ? undefined : seatIndex;
+  return getSeatIndex(table.seats, client);
 }
 
 function assignFindFourSeat(table: FindFourTable, client: Client): number | undefined {
-  const existingSeat = getFindFourSeat(table, client);
-  if (existingSeat !== undefined) {
-    return existingSeat;
-  }
-  const openSeat = table.seats.findIndex(seat => seat === null);
-  if (openSeat === -1) {
-    return undefined;
-  }
-  table.seats[openSeat] = client;
-  return openSeat;
+  return assignSeatIndex(table.seats, client);
 }
 
 function clearFindFourTable(table: FindFourTable, quitterName: string): void {
