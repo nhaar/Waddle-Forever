@@ -555,9 +555,9 @@ function findFourWin(
 }
 
 function awardFindFourCoins(table: FindFourTable, winnerSeat?: number): void {
-  const rewards = [10, 10];
+  const rewards = [5, 5];
   if (winnerSeat === 0 || winnerSeat === 1) {
-    rewards[winnerSeat] = 20;
+    rewards[winnerSeat] = 10;
   }
   for (const [playerId, info] of findFourPlayers.entries()) {
     if (info.tableId !== table.id || !info.joinedGame) {
