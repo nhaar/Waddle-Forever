@@ -175,6 +175,11 @@ export function getSetupXml(version: Version, ip: string, port: number) {
          <Music>0</Music>
          <Frame>1</Frame>
       </Mancala>
+      <Four>
+         <File>four</File>
+         <Music>0</Music>
+         <Frame>1</Frame>
+      </Four>
       <Mine>
         <File>mine</File>
         <Music>105</Music>

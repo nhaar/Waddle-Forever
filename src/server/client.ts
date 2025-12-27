@@ -237,6 +237,13 @@ export abstract class WaddleGame {
   sendXt(code: string, ...args: Array<number | string>) {
     this._players.forEach(p => p.sendXt(code, ...args));
   }
+
+  removePlayer(client: Client): void {
+    const index = this._players.indexOf(client);
+    if (index !== -1) {
+      this._players.splice(index, 1);
+    }
+  }
 }
 
 /** Information of a player that only persists during a room */
@@ -996,7 +1003,6 @@ export class Client {
       this.leaveRoom();
     }
     this._currentRoom = this._server.getRoom(room);
-    const string = this.penguinString;
     if (isGameRoom(room)) {
       this._roomInfo = undefined;
       this.sendXt('jg', room);
@@ -1006,6 +1012,7 @@ export class Client {
       const xx = x ?? 0;
       const yy = y ?? 0;
       this.updateRoomInfo({ x: xx, y: yy });
+      const string = this.penguinString;
       this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
       this.sendRoomXt('ap', string);
       // it seems that the new x, y position of players must be sent via a new set position packet
@@ -1130,8 +1137,23 @@ export class Client {
       const waddleGame = new Constructor(players);
       this.server.setWaddleGame(waddleRoom, waddleGame);
       waddleRoom.resetWaddle();
+      if (waddleGame.name === 'sled' && players.every((player) => player.isEngine1)) {
+        players.forEach((player) => {
+          player.sendXt('sw', waddleRoom.id, waddleGame.roomId, waddleRoom.size);
+        });
+        return;
+      }
       waddleGame.start();
     }
+  }
+
+  joinGameRoomOld(room: number, xtCode: string): void {
+    if (this._currentRoom !== undefined) {
+      this.leaveRoom();
+    }
+    this._currentRoom = this._server.getRoom(room);
+    this._roomInfo = undefined;
+    this.sendXt(xtCode, room);
   }
 
   leaveWaddleRoom(): void {
@@ -1148,6 +1170,10 @@ export class Client {
 
   setWaddleGame(waddleGame: WaddleGame): void {
     this._waddleGame = waddleGame;
+  }
+
+  clearWaddleGame(): void {
+    this._waddleGame = null;
   }
 
   async sendStamps (): Promise<void> {
