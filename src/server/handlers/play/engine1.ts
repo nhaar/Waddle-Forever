@@ -476,6 +476,17 @@ function getFindFourDropRow(board: number[][], column: number): number | undefin
   return undefined;
 }
 
+function isFindFourBoardFull(board: number[][]): boolean {
+  for (let x = 0; x < FIND_FOUR_WIDTH; x++) {
+    for (let y = 0; y < FIND_FOUR_HEIGHT; y++) {
+      if (board[x]?.[y] === 0) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 function findFourWin(
   board: number[][],
   lastX: number,
@@ -1239,6 +1250,14 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
       awardFindFourCoins(table, win.winner - 1);
       markFindFourSpectatorCoins(table);
       sendFindFourPacket(table, 'zo', win.x, win.y, win.direction);
+      resetFindFourRound(table);
+      return;
+    }
+    if (isFindFourBoardFull(table.board)) {
+      table.ended = true;
+      awardFindFourCoins(table);
+      markFindFourSpectatorCoins(table);
+      sendFindFourPacket(table, 'zo', -10, -10, 1);
       resetFindFourRound(table);
       return;
     }
