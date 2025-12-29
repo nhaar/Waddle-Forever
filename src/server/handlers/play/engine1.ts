@@ -115,8 +115,9 @@ handler.xt(Handle.BecomeAgent, (client) => {
 })
 
 handler.xt(Handle.SendInventory, () => {
+  // seemingly useless handler, it just sends the client's inventory to the server
   return;
-}, { once: true });
+});
 
 handler.xt(Handle.SendMessageOld, (client, id, message) => {
   client.sendMessage(message);
