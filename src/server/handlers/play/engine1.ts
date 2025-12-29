@@ -114,9 +114,10 @@ handler.xt(Handle.BecomeAgent, (client) => {
   client.update();
 })
 
-handler.xt(Handle.GetInventoryOld, (client) => {
-  client.sendInventory();
-}, { once: true });
+handler.xt(Handle.SendInventory, () => {
+  // seemingly useless handler, it just sends the client's inventory to the server
+  return;
+});
 
 handler.xt(Handle.SendMessageOld, (client, id, message) => {
   client.sendMessage(message);
@@ -591,6 +592,10 @@ handler.post('/php/login.php', (server, body) => {
   }
   return response 
 })
+
+handler.post('/php/online.php', () => {
+  return '0';
+});
 
 // returns a crumb for a given player ID
 handler.post('/php/gp.php', (server, body) => {
