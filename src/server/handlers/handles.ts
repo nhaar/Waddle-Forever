@@ -544,7 +544,7 @@ const HANDLER_MAPPING: HandlerMapping = {
       'rt': Handle.CloseBook
     },
     'st': {
-      '_': Handle.SendTeleportOld,
+      '': Handle.SendTeleportOld,
       'gsbcd': Handle.GetStampbookCoverData,
       'gps': Handle.GetPlayerStamps,
       'gmres': Handle.GetRecentStamps,
@@ -654,14 +654,13 @@ iterateEntries(HANDLER_MAPPING, (ext, dirs) => {
     if (typeof codes === 'number' || Array.isArray(codes)) {
       iterateHandles(ext, dir, codes);
     } else {
-      if ('_' in codes) {
-        iterateHandles(ext, dir, codes._);
-      }
       iterateEntries(codes, (code, names) => {
-        if (code === '_') {
-          return;
+        // "root handler"
+        if (code === '') {
+          iterateHandles(ext, dir, names);
+        } else {
+          iterateHandles(ext, code, names, dir);
         }
-        iterateHandles(ext, code, names, dir);
       })
     }
   });
