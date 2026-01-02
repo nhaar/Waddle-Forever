@@ -1137,6 +1137,7 @@ export class Client {
       const waddleGame = new Constructor(players);
       this.server.setWaddleGame(waddleRoom, waddleGame);
       waddleRoom.resetWaddle();
+      // 2006 sled race notification for starting the game
       if (waddleGame.name === 'sled' && players.every((player) => player.isEngine1)) {
         players.forEach((player) => {
           player.sendXt('sw', waddleRoom.id, waddleGame.roomId, waddleRoom.size);
