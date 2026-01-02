@@ -164,7 +164,7 @@ handler.xt(Handle.JoinTemporaryWaddle, (client, room, waddle, unknown) => {
 
 // leave a waddle room
 handler.xt(Handle.LeaveWaddle, (client) => {
-  if ((client as unknown as { _currentWaddleRoom?: unknown })._currentWaddleRoom === undefined) {
+  if (!client.hasWaddleRoom()) {
     return;
   }
   const waddleRoom = client.waddleRoom;

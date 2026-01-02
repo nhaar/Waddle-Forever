@@ -1120,6 +1120,10 @@ export class Client {
     return this._currentWaddleRoom;
   }
 
+  hasWaddleRoom() {
+    return this._currentRoom !== undefined;
+  }
+
   get name() {
     return this._specialName ?? this.penguin.name;
   }
