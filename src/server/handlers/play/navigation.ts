@@ -146,7 +146,7 @@ handler.xt(Handle.JoinWaddle, (client, waddle) => {
 });
 
 handler.xt(Handle.JoinTemporaryWaddle, (client, room, waddle, unknown) => {
-  if (client.isEngine1 || client.isEngine2) {
+  if (client.isEngine1) {
     const roomId = waddle;
     if (client.isInWaddleGame() && client.waddleGame.name === 'sled') {
       if (roomId === client.waddleGame.roomId) {

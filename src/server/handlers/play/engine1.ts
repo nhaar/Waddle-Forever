@@ -464,18 +464,6 @@ function serializeFindFourBoard(board: number[][]): string {
   return values.join(',');
 }
 
-function getFindFourDropRow(board: number[][], column: number): number | undefined {
-  if (column < 0 || column >= FIND_FOUR_WIDTH) {
-    return undefined;
-  }
-  for (let y = FIND_FOUR_HEIGHT - 1; y >= 0; y--) {
-    if (board[column]?.[y] === 0) {
-      return y;
-    }
-  }
-  return undefined;
-}
-
 function isFindFourBoardFull(board: number[][]): boolean {
   for (let x = 0; x < FIND_FOUR_WIDTH; x++) {
     for (let y = 0; y < FIND_FOUR_HEIGHT; y++) {
@@ -1220,10 +1208,11 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
     if (moves.length !== 2) {
       return;
     }
-    const column = moves[0];
-    if (column === undefined) {
-      return;
-    }
+      const column = moves[0];
+      const row = moves[1];
+      if (column === undefined || row === undefined) {
+        return;
+      }
     if (!findFourInfo.joinedGame || findFourInfo.seatId === FIND_FOUR_SPECTATOR_SEAT) {
       return;
     }
@@ -1238,13 +1227,23 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
     if (table.turn !== player) {
       return;
     }
-    const dropRow = getFindFourDropRow(table.board, column);
-    if (dropRow === undefined) {
-      return;
-    }
-    table.board[column][dropRow] = player + 1;
-    sendFindFourPacket(table, 'zm', player, column, dropRow);
-    const win = findFourWin(table.board, column, dropRow);
+      const columnIndex = Number(column);
+      const rowIndex = Number(row);
+      if (!Number.isFinite(columnIndex) || !Number.isFinite(rowIndex)) {
+        return;
+      }
+      if (columnIndex < 0 || columnIndex >= FIND_FOUR_WIDTH) {
+        return;
+      }
+      if (rowIndex < 0 || rowIndex >= FIND_FOUR_HEIGHT) {
+        return;
+      }
+      if (table.board[columnIndex]?.[rowIndex] !== 0) {
+        return;
+      }
+      table.board[columnIndex][rowIndex] = player + 1;
+      sendFindFourPacket(table, 'zm', player, columnIndex, rowIndex);
+      const win = findFourWin(table.board, columnIndex, rowIndex);
     if (win !== undefined) {
       table.ended = true;
       awardFindFourCoins(table, win.winner - 1);
