@@ -34,7 +34,7 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     }
   });
 
-  modsWindow.on('close', () => {
+  modsWindow.on('closed', () => {
     modsWindow = null;
   });
 

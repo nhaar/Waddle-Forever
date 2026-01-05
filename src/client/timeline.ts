@@ -14,7 +14,7 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
     return;
   }
 
-  mainWindow.on('close', () => {
+  mainWindow.on('closed', () => {
     timelinePicker?.close();
   });
 
@@ -30,7 +30,7 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
 
   timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
 
-  timelinePicker.on('close', () => {
+  timelinePicker.on('closed', () => {
     timelinePicker = null;
   });
 
