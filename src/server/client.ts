@@ -817,6 +817,10 @@ export class Client {
     return this.server.settings;
   }
 
+  hasPenguin(): boolean {
+    return this._penguin !== undefined;
+  }
+
   get penguin(): Penguin {
     return this._penguin ?? (() => { throw new Error('Getting penguin before initializing'); })();
   }

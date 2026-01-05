@@ -1,4 +1,4 @@
-import { Client } from '../../client';
+import { Client, Server } from '../../client';
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
@@ -41,9 +41,9 @@ function sendBuddyOnlineList(client: Client, excludeId?: number): void {
 }
 
 const MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
-const MANCALA_SPECTATOR_SEAT = 99;
 const FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
-const FIND_FOUR_SPECTATOR_SEAT = 99;
+// engine1 clients expect seats as 1-based; 99 is spectator
+const TABLE_SPECTATOR_SEAT = 99;
 const FIND_FOUR_WIDTH = 7;
 const FIND_FOUR_HEIGHT = 6;
 
@@ -55,56 +55,49 @@ function getSledGame(client: Client) {
   return client.waddleGame;
 }
 
-type MancalaTable = {
-  id: number;
-  roomId: number;
-  server: Client['server'];
-  seats: Array<Client | null>;
-  board: number[];
-  started: boolean;
-  ended: boolean;
-  turn: number;
-};
+type BoardType = 'find' | 'mancala';
 
-type MancalaPlayerState = {
-  tableId: number;
-  seatId: number;
-  joinedGame: boolean;
-};
-
-type FindFourTable = {
-  id: number;
-  roomId: number;
-  server: Client['server'];
-  seats: Array<Client | null>;
+type FindFourBoard = {
+  type: 'find';
   board: number[][];
+}
+
+type MancalaBoard = {
+  type: 'mancala';
+  board: number[];
+}
+
+type Board = FindFourBoard | MancalaBoard;
+
+type Table = {
+  id: number;
+  roomId: number;
+  server: Server;
+  seats: Array<Client | null>;
+  board: Board;
   started: boolean;
   ended: boolean;
   turn: number;
-};
+}
 
-type FindFourPlayerState = {
+type TablePlayerState = {
   tableId: number;
   seatId: number;
   joinedGame: boolean;
 };
 
 // in-memory state for engine1 table games.
-const mancalaTables = new Map<number, MancalaTable>();
-const mancalaPlayers = new Map<number, MancalaPlayerState>();
-const findFourTables = new Map<number, FindFourTable>();
-const findFourPlayers = new Map<number, FindFourPlayerState>();
+const tables = new Map<number, Table>();
+const playerTables = new Map<number, TablePlayerState>();
 // track spectators so we can suppress the 0-coin popup
-const findFourSuppressCoins = new Set<number>();
-const mancalaSuppressCoins = new Set<number>();
+const tableSpectators = new Set<number>();
 
-function forEachTableParticipant<T extends { tableId: number; joinedGame: boolean }>(
+function forEachTableParticipant(
   tableId: number,
-  server: Client['server'],
-  players: Map<number, T>,
+  server: Server,
   callback: (player: Client) => void
 ): void {
-  for (const [playerId, info] of players.entries()) {
+  for (const [playerId, info] of playerTables.entries()) {
     if (info.tableId !== tableId || !info.joinedGame) {
       continue;
     }
@@ -137,52 +130,74 @@ function assignSeatIndex(seats: Array<Client | null>, client: Client): number | 
   return openSeat;
 }
 
-function sendTablePacket<T extends { tableId: number; joinedGame: boolean }>(
+function sendTablePacket(
   tableId: number,
-  server: Client['server'],
-  players: Map<number, T>,
+  server: Server,
   handler: string,
   ...args: Array<number | string>
 ): void {
-  forEachTableParticipant(tableId, server, players, (player) => {
+  forEachTableParticipant(tableId, server, (player) => {
     player.sendXt(handler, ...args);
   });
 }
 
 function sendSeatRoster(
+  tableId: number,
+  server: Server,
   seats: Array<Client | null>,
   handler: string,
-  broadcast: (handler: string, index: number, name: string) => void,
   target?: Client
 ): void {
+
   seats.forEach((seat, index) => {
     const name = seat?.penguin.name ?? '';
     if (target !== undefined) {
       target.sendXt(handler, index, name);
       return;
     }
-    broadcast(handler, index, name);
+    sendTablePacket(tableId, server, 'uz', index, name);
   });
+}
+
+function createBoard(type: BoardType): Board {
+  switch (type) {
+    case 'find':
+      return { board: createFindFourBoard(), type };
+    case 'mancala':
+      return { board: createMancalaBoard(), type };
+  }
 }
 
 function createMancalaBoard(): number[] {
   return [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 }
 
-function getMancalaTable(tableId: number, roomId: number, server: Client['server']): MancalaTable {
-  let table = mancalaTables.get(tableId);
+function getTableType(tableId: number): BoardType {
+  if (MANCALA_TABLE_IDS.has(tableId)) {
+    return 'mancala'
+  } else if (FIND_FOUR_TABLE_IDS.has(tableId)) {
+    return 'find'
+  } else {
+      throw new Error('Unkown table ID');
+
+  }
+}
+
+function getTable(tableId: number, roomId: number, server: Server): Table {
+  let table = tables.get(tableId);
   if (table === undefined) {
+    const board = createBoard(getTableType(tableId));
     table = {
       id: tableId,
       roomId,
       server,
       seats: [null, null],
-      board: createMancalaBoard(),
+      board,
       started: false,
       ended: false,
       turn: 0
     };
-    mancalaTables.set(tableId, table);
+    tables.set(tableId, table);
   } else {
     table.roomId = roomId;
     table.server = server;
@@ -190,12 +205,8 @@ function getMancalaTable(tableId: number, roomId: number, server: Client['server
   return table;
 }
 
-function countMancalaSeats(table: MancalaTable): number {
-  return countSeats(table.seats);
-}
-
-function resetMancalaTable(table: MancalaTable): void {
-  table.board = createMancalaBoard();
+function resetTable(table: Table): void {
+  table.board = createBoard(table.board.type);
   table.started = false;
   table.ended = false;
   table.turn = 0;
@@ -208,31 +219,11 @@ function broadcastTableUpdate(server: Client['server'], roomId: number, tableId:
   });
 }
 
-function forEachMancalaParticipant(table: MancalaTable, callback: (player: Client) => void): void {
-  forEachTableParticipant(table.id, table.server, mancalaPlayers, callback);
+function sendTableUpdate(tableId: number, server: Server, seatId: number, name: string): void {
+  sendTablePacket(tableId, server, 'uz', seatId, name);
 }
 
-function sendMancalaPacket(table: MancalaTable, handler: string, ...args: Array<number | string>): void {
-  sendTablePacket(table.id, table.server, mancalaPlayers, handler, ...args);
-}
-
-function sendMancalaUpdate(table: MancalaTable, seatId: number, name: string): void {
-  sendMancalaPacket(table, 'uz', seatId, name);
-}
-
-function sendMancalaRoster(table: MancalaTable, target?: Client): void {
-  sendSeatRoster(table.seats, 'uz', (handler, index, name) => sendMancalaPacket(table, handler, index, name), target);
-}
-
-function getMancalaSeat(table: MancalaTable, client: Client): number | undefined {
-  return getSeatIndex(table.seats, client);
-}
-
-function assignMancalaSeat(table: MancalaTable, client: Client): number | undefined {
-  return assignSeatIndex(table.seats, client);
-}
-
-function clearMancalaTable(table: MancalaTable, quitterName: string): void {
+function clearTable(table: Table, quitterName: string): void {
   const notified = new Set<number>();
   table.seats.forEach((player) => {
     if (player !== null) {
@@ -240,24 +231,21 @@ function clearMancalaTable(table: MancalaTable, quitterName: string): void {
       notified.add(player.penguin.id);
     }
   });
-  forEachMancalaParticipant(table, (player) => {
+  forEachTableParticipant(table.id, table.server, (player) => {
     if (!notified.has(player.penguin.id)) {
       player.sendXt('cz', quitterName);
     }
   });
-  for (const [playerId, info] of mancalaPlayers.entries()) {
+  for (const [playerId, info] of playerTables.entries()) {
     if (info.tableId === table.id) {
-      mancalaPlayers.delete(playerId);
+      playerTables.delete(playerId);
     }
   }
   table.seats = [null, null];
-  resetMancalaTable(table);
+  resetTable(table);
   broadcastTableUpdate(table.server, table.roomId, table.id, 0);
 }
 
-function isMancalaTable(tableId: number): boolean {
-  return MANCALA_TABLE_IDS.has(tableId);
-}
 
 function isMancalaCupForPlayer(player: number, cup: number): boolean {
   return player === 0 ? cup >= 0 && cup <= 5 : cup >= 7 && cup <= 12;
@@ -321,9 +309,12 @@ function getMancalaScore(board: number[], player: number): number {
   return total;
 }
 
-function awardMancalaCoins(table: MancalaTable): void {
-  const scores = [getMancalaScore(table.board, 0), getMancalaScore(table.board, 1)];
-  for (const [playerId, info] of mancalaPlayers.entries()) {
+function awardMancalaCoins(table: Table, board: number[]): void {
+  awardTableCoins(table, [getMancalaScore(board, 0), getMancalaScore(board, 1)])
+}
+
+function awardTableCoins(table: Table, scores: [number, number]): void {
+  for (const [playerId, info] of playerTables.entries()) {
     if (info.tableId !== table.id || !info.joinedGame) {
       continue;
     }
@@ -342,14 +333,14 @@ function awardMancalaCoins(table: MancalaTable): void {
   }
 }
 
-function resetMancalaRound(table: MancalaTable): void {
-  resetMancalaTable(table);
+function resetTableRound(table: Table): void {
+  resetTable(table);
   table.seats = [null, null];
-  for (const [playerId, info] of mancalaPlayers.entries()) {
+  for (const [playerId, info] of playerTables.entries()) {
     if (info.tableId !== table.id) {
       continue;
     }
-    mancalaPlayers.set(playerId, { ...info, joinedGame: false });
+    playerTables.set(playerId, { ...info, joinedGame: false });
   }
   broadcastTableUpdate(table.server, table.roomId, table.id, 0);
 }
@@ -358,100 +349,17 @@ function createFindFourBoard(): number[][] {
   return Array.from({ length: FIND_FOUR_WIDTH }, () => Array(FIND_FOUR_HEIGHT).fill(0));
 }
 
-function getFindFourTable(tableId: number, roomId: number, server: Client['server']): FindFourTable {
-  let table = findFourTables.get(tableId);
-  if (table === undefined) {
-    table = {
-      id: tableId,
-      roomId,
-      server,
-      seats: [null, null],
-      board: createFindFourBoard(),
-      started: false,
-      ended: false,
-      turn: 0
-    };
-    findFourTables.set(tableId, table);
-  } else {
-    table.roomId = roomId;
-    table.server = server;
-  }
-  return table;
-}
-
-function countFindFourSeats(table: FindFourTable): number {
-  return countSeats(table.seats);
-}
-
-function resetFindFourTable(table: FindFourTable): void {
-  table.board = createFindFourBoard();
-  table.started = false;
-  table.ended = false;
-  table.turn = 0;
-}
-
-function markMancalaSpectatorCoins(table: MancalaTable): void {
+function markTableSpectatorCoins(table: Table): void {
   // spectators still request coins; flag them so GetCoins ignores it
-  for (const [playerId, info] of mancalaPlayers.entries()) {
+  for (const [playerId, info] of playerTables.entries()) {
     if (info.tableId !== table.id || !info.joinedGame) {
       continue;
     }
     if (info.seatId === 0 || info.seatId === 1) {
       continue;
     }
-    mancalaSuppressCoins.add(playerId);
+    tableSpectators.add(playerId);
   }
-}
-
-function forEachFindFourParticipant(table: FindFourTable, callback: (player: Client) => void): void {
-  forEachTableParticipant(table.id, table.server, findFourPlayers, callback);
-}
-
-function sendFindFourPacket(table: FindFourTable, handler: string, ...args: Array<number | string>): void {
-  sendTablePacket(table.id, table.server, findFourPlayers, handler, ...args);
-}
-
-function sendFindFourUpdate(table: FindFourTable, seatId: number, name: string): void {
-  sendFindFourPacket(table, 'uz', seatId, name);
-}
-
-function sendFindFourRoster(table: FindFourTable, target?: Client): void {
-  sendSeatRoster(table.seats, 'uz', (handler, index, name) => sendFindFourPacket(table, handler, index, name), target);
-}
-
-function getFindFourSeat(table: FindFourTable, client: Client): number | undefined {
-  return getSeatIndex(table.seats, client);
-}
-
-function assignFindFourSeat(table: FindFourTable, client: Client): number | undefined {
-  return assignSeatIndex(table.seats, client);
-}
-
-function clearFindFourTable(table: FindFourTable, quitterName: string): void {
-  const notified = new Set<number>();
-  table.seats.forEach((player) => {
-    if (player !== null) {
-      player.sendXt('cz', quitterName);
-      notified.add(player.penguin.id);
-    }
-  });
-  forEachFindFourParticipant(table, (player) => {
-    if (!notified.has(player.penguin.id)) {
-      player.sendXt('cz', quitterName);
-    }
-  });
-  for (const [playerId, info] of findFourPlayers.entries()) {
-    if (info.tableId === table.id) {
-      findFourPlayers.delete(playerId);
-    }
-  }
-  table.seats = [null, null];
-  resetFindFourTable(table);
-  broadcastTableUpdate(table.server, table.roomId, table.id, 0);
-}
-
-function isFindFourTable(tableId: number): boolean {
-  return FIND_FOUR_TABLE_IDS.has(tableId);
 }
 
 function serializeFindFourBoard(board: number[][]): string {
@@ -553,53 +461,12 @@ function findFourWin(
   return undefined;
 }
 
-function awardFindFourCoins(table: FindFourTable, winnerSeat?: number): void {
-  const rewards = [5, 5];
+function awardFindFourCoins(table: Table, winnerSeat?: number): void {
+  const rewards: [number, number] = [5, 5];
   if (winnerSeat === 0 || winnerSeat === 1) {
     rewards[winnerSeat] = 10;
   }
-  for (const [playerId, info] of findFourPlayers.entries()) {
-    if (info.tableId !== table.id || !info.joinedGame) {
-      continue;
-    }
-    if (info.seatId !== 0 && info.seatId !== 1) {
-      continue;
-    }
-    const player = table.server.getPlayerById(playerId);
-    if (player === undefined) {
-      continue;
-    }
-    const reward = rewards[info.seatId] ?? 0;
-    if (reward > 0) {
-      player.penguin.addCoins(reward);
-    }
-    player.update();
-  }
-}
-
-function markFindFourSpectatorCoins(table: FindFourTable): void {
-  // spectators still request coins; flag them so GetCoins ignores it
-  for (const [playerId, info] of findFourPlayers.entries()) {
-    if (info.tableId !== table.id || !info.joinedGame) {
-      continue;
-    }
-    if (info.seatId === 0 || info.seatId === 1) {
-      continue;
-    }
-    findFourSuppressCoins.add(playerId);
-  }
-}
-
-function resetFindFourRound(table: FindFourTable): void {
-  resetFindFourTable(table);
-  table.seats = [null, null];
-  for (const [playerId, info] of findFourPlayers.entries()) {
-    if (info.tableId !== table.id) {
-      continue;
-    }
-    findFourPlayers.set(playerId, { ...info, joinedGame: false });
-  }
-  broadcastTableUpdate(table.server, table.roomId, table.id, 0);
+  awardTableCoins(table, rewards);
 }
 
 // Joining server
@@ -712,7 +579,7 @@ handler.xt(Handle.LeaveWaddleGame, (client, score) => {
 
 // update client's coins
 handler.xt(Handle.GetCoins, (client) => {
-  if (findFourSuppressCoins.delete(client.penguin.id) || mancalaSuppressCoins.delete(client.penguin.id)) {
+  if (tableSpectators.delete(client.penguin.id)) {
     return;
   }
   client.sendEngine1Coins();
@@ -738,15 +605,8 @@ handler.xt(Handle.GetTableOld, (client, ...tableIds) => {
   }
   const entries: string[] = [];
   tableIds.forEach((tableId) => {
-    if (isMancalaTable(tableId)) {
-      const table = getMancalaTable(tableId, roomId, client.server);
-      entries.push(`${tableId}|${countMancalaSeats(table)}`);
-      return;
-    }
-    if (isFindFourTable(tableId)) {
-      const table = getFindFourTable(tableId, roomId, client.server);
-      entries.push(`${tableId}|${countFindFourSeats(table)}`);
-    }
+    const table = getTable(tableId, roomId, client.server);
+    entries.push(`${tableId}|${countSeats(table.seats)}`);
   });
   if (entries.length === 0) {
     client.sendXt('gt');
@@ -759,171 +619,100 @@ handler.xt(Handle.JoinTableOld, (client, tableId) => {
   if (!client.isEngine1) {
     return;
   }
-  if (!isMancalaTable(tableId) && !isFindFourTable(tableId)) {
-    return;
-  }
   const room = client.room;
   if (room === undefined) {
     return;
   }
 
   // clear any stale table seat if the player is switching tables
-  const existingMancala = mancalaPlayers.get(client.penguin.id);
-  if (existingMancala !== undefined && existingMancala.tableId !== tableId) {
-    const previousTable = mancalaTables.get(existingMancala.tableId);
+  const existingTable = playerTables.get(client.penguin.id);
+  if (existingTable !== undefined && existingTable.tableId !== tableId) {
+    const previousTable = tables.get(existingTable.tableId);
     if (previousTable !== undefined) {
-      const previousSeat = getMancalaSeat(previousTable, client);
+      const previousSeat = getSeatIndex(previousTable.seats, client);
       if (previousSeat !== undefined) {
         previousTable.seats[previousSeat] = null;
-        const remaining = countMancalaSeats(previousTable);
+        const remaining = countSeats(previousTable.seats);
         broadcastTableUpdate(previousTable.server, previousTable.roomId, previousTable.id, remaining);
         if (remaining === 0) {
-          resetMancalaTable(previousTable);
-          for (const [playerId, info] of mancalaPlayers.entries()) {
+          resetTable(previousTable);
+          for (const [playerId, info] of playerTables.entries()) {
             if (info.tableId === previousTable.id) {
-              mancalaPlayers.delete(playerId);
+              playerTables.delete(playerId);
             }
           }
         }
       }
     }
-    mancalaPlayers.delete(client.penguin.id);
+    playerTables.delete(client.penguin.id);
   }
 
-  const existingFindFour = findFourPlayers.get(client.penguin.id);
-  if (existingFindFour !== undefined && existingFindFour.tableId !== tableId) {
-    const previousTable = findFourTables.get(existingFindFour.tableId);
-    if (previousTable !== undefined) {
-      const previousSeat = getFindFourSeat(previousTable, client);
-      if (previousSeat !== undefined) {
-        previousTable.seats[previousSeat] = null;
-        const remaining = countFindFourSeats(previousTable);
-        broadcastTableUpdate(previousTable.server, previousTable.roomId, previousTable.id, remaining);
-        if (remaining === 0) {
-          resetFindFourTable(previousTable);
-          for (const [playerId, info] of findFourPlayers.entries()) {
-            if (info.tableId === previousTable.id) {
-              findFourPlayers.delete(playerId);
-            }
-          }
-        }
-      }
-    }
-    findFourPlayers.delete(client.penguin.id);
-  }
-
-  if (isMancalaTable(tableId)) {
-    const table = getMancalaTable(tableId, room.id, client.server);
-    const beforeCount = countMancalaSeats(table);
-
-    let seatId = getMancalaSeat(table, client);
-    if (seatId === undefined) {
-      const assigned = assignMancalaSeat(table, client);
-      seatId = assigned ?? MANCALA_SPECTATOR_SEAT;
-    }
-
-    mancalaPlayers.set(client.penguin.id, { tableId, seatId, joinedGame: false });
-
-    // first seated player resets a stale board
-    if (seatId !== MANCALA_SPECTATOR_SEAT && beforeCount === 0) {
-      resetMancalaTable(table);
-    }
-
-    if (seatId !== MANCALA_SPECTATOR_SEAT) {
-      const afterCount = countMancalaSeats(table);
-      if (afterCount !== beforeCount) {
-        broadcastTableUpdate(client.server, room.id, tableId, afterCount);
-      }
-    }
-
-    // engine1 clients expect seats as 1-based; 99 is spectator
-    const tableSeatId = seatId === MANCALA_SPECTATOR_SEAT ? seatId : seatId + 1;
-    client.sendXt('jt', tableId, tableSeatId);
-    return;
-  }
-
-  const table = getFindFourTable(tableId, room.id, client.server);
-  const beforeCount = countFindFourSeats(table);
-
-  let seatId = getFindFourSeat(table, client);
+  const table = getTable(tableId, room.id, client.server);
+  const beforeCount = countSeats(table.seats);
+  let seatId = getSeatIndex(table.seats, client);
   if (seatId === undefined) {
-    const assigned = assignFindFourSeat(table, client);
-    seatId = assigned ?? FIND_FOUR_SPECTATOR_SEAT;
+    const assigned = assignSeatIndex(table.seats, client);
+    seatId = assigned ?? TABLE_SPECTATOR_SEAT;
   }
-
-  findFourPlayers.set(client.penguin.id, { tableId, seatId, joinedGame: false });
-
+  
+  playerTables.set(client.penguin.id, { tableId, seatId, joinedGame: false });
   // first seated player resets a stale board
-  if (seatId !== FIND_FOUR_SPECTATOR_SEAT && beforeCount === 0) {
-    resetFindFourTable(table);
+  if (seatId !== TABLE_SPECTATOR_SEAT && beforeCount === 0) {
+    resetTable(table);
   }
-
-  if (seatId !== FIND_FOUR_SPECTATOR_SEAT) {
-    const afterCount = countFindFourSeats(table);
+  if (seatId !== TABLE_SPECTATOR_SEAT) {
+    const afterCount = countSeats(table.seats);
     if (afterCount !== beforeCount) {
       broadcastTableUpdate(client.server, room.id, tableId, afterCount);
     }
   }
-
-  // engine1 clients expect seats as 1-based; 99 is spectator
-  const tableSeatId = seatId === FIND_FOUR_SPECTATOR_SEAT ? seatId : seatId + 1;
+  // the index here is 1 based
+  const tableSeatId = seatId === TABLE_SPECTATOR_SEAT ? seatId : seatId + 1;
   client.sendXt('jt', tableId, tableSeatId);
 });
+
+function serializeBoard(board: Board): string {
+  switch (board.type) {
+    case 'mancala':
+      return board.board.join(',');
+    case 'find':
+      return serializeFindFourBoard(board.board);
+  }
+}
 
 handler.xt(Handle.LeaveTableOld, (client) => {
   if (!client.isEngine1) {
     return;
   }
   // old leave flow: free seat, broadcast count, and reset if empty
-  const findFourInfo = findFourPlayers.get(client.penguin.id);
-  if (findFourInfo !== undefined) {
-    const table = findFourTables.get(findFourInfo.tableId);
-    findFourPlayers.delete(client.penguin.id);
+  const tableInfo = playerTables.get(client.penguin.id);
+  if (tableInfo !== undefined) {
+    const table = tables.get(tableInfo.tableId);
+    playerTables.delete(client.penguin.id);
     if (table === undefined) {
       return;
     }
-    const seatIndex = getFindFourSeat(table, client);
+    const seatIndex = getSeatIndex(table.seats, client);
     if (seatIndex === undefined) {
       return;
     }
     table.seats[seatIndex] = null;
-    const count = countFindFourSeats(table);
+    const count = countSeats(table.seats);
     broadcastTableUpdate(table.server, table.roomId, table.id, count);
     if (count === 0) {
-      resetFindFourTable(table);
-      for (const [playerId, playerInfo] of findFourPlayers.entries()) {
+      resetTable(table);
+      for (const [playerId, playerInfo] of playerTables.entries()) {
         if (playerInfo.tableId === table.id) {
-          findFourPlayers.delete(playerId);
+          playerTables.delete(playerId);
         }
-      }
-    }
-    return;
-  }
-  const info = mancalaPlayers.get(client.penguin.id);
-  if (info === undefined) {
-    return;
-  }
-  const table = mancalaTables.get(info.tableId);
-  mancalaPlayers.delete(client.penguin.id);
-  if (table === undefined) {
-    return;
-  }
-  const seatIndex = getMancalaSeat(table, client);
-  if (seatIndex === undefined) {
-    return;
-  }
-  table.seats[seatIndex] = null;
-  const count = countMancalaSeats(table);
-  broadcastTableUpdate(table.server, table.roomId, table.id, count);
-  if (count === 0) {
-    resetMancalaTable(table);
-    for (const [playerId, playerInfo] of mancalaPlayers.entries()) {
-      if (playerInfo.tableId === table.id) {
-        mancalaPlayers.delete(playerId);
       }
     }
   }
 });
+
+function isTableId(tableId: number) {
+  return FIND_FOUR_TABLE_IDS.has(tableId) || MANCALA_TABLE_IDS.has(tableId);
+}
 
 handler.xt(Handle.GetTableGame, (client, tableId) => {
   if (!client.isEngine1) {
@@ -931,77 +720,40 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
   }
   // resolve table id from context so spectators can re-open correctly
   let resolvedTableId = tableId;
-  if (!isMancalaTable(resolvedTableId) && !isFindFourTable(resolvedTableId)) {
-    const existingFindFour = findFourPlayers.get(client.penguin.id);
-    const existingMancala = mancalaPlayers.get(client.penguin.id);
-    if (existingFindFour !== undefined) {
-      resolvedTableId = existingFindFour.tableId;
-    } else if (existingMancala !== undefined) {
-      resolvedTableId = existingMancala.tableId;
+  if (!isTableId(resolvedTableId)) {
+    const existingTable = playerTables.get(client.penguin.id);
+    if (existingTable !== undefined) {
+      resolvedTableId = existingTable.tableId;
     } else {
-      for (const [id, table] of findFourTables.entries()) {
-        if (getFindFourSeat(table, client) !== undefined) {
+      for (const [id, table] of tables.entries()) {
+        if (getSeatIndex(table.seats, client) !== undefined) {
           resolvedTableId = id;
           break;
         }
       }
-      if (!isFindFourTable(resolvedTableId)) {
-        for (const [id, table] of mancalaTables.entries()) {
-          if (getMancalaSeat(table, client) !== undefined) {
-            resolvedTableId = id;
-            break;
-          }
-        }
-      }
     }
   }
 
-  if (isMancalaTable(resolvedTableId)) {
-    const roomId = client.room?.id ?? mancalaTables.get(resolvedTableId)?.roomId ?? 0;
-    const table = getMancalaTable(resolvedTableId, roomId, client.server);
-    const name0 = table.seats[0]?.penguin.name ?? '';
-    const name1 = table.seats[1]?.penguin.name ?? '';
-    const boardState = table.board.join(',');
-
-    const existing = mancalaPlayers.get(client.penguin.id);
-    if (existing === undefined || existing.tableId !== resolvedTableId) {
-      const seatId = getMancalaSeat(table, client) ?? MANCALA_SPECTATOR_SEAT;
-      mancalaPlayers.set(client.penguin.id, { tableId: resolvedTableId, seatId, joinedGame: false });
-    }
-
-    const playerInfo = mancalaPlayers.get(client.penguin.id);
-    // when already in-game, include turn info
-    if (table.started && playerInfo?.joinedGame) {
-      client.sendXt('gz', name0, name1, boardState, table.turn);
-      return;
-    }
-    client.sendXt('gz', name0, name1, boardState);
-    return;
-  }
-
-  if (!isFindFourTable(resolvedTableId)) {
-    return;
-  }
-
-  const roomId = client.room?.id ?? findFourTables.get(resolvedTableId)?.roomId ?? 0;
-  const table = getFindFourTable(resolvedTableId, roomId, client.server);
+  const roomId = client.room?.id ?? tables.get(resolvedTableId)?.roomId ?? 0;
+  const table = getTable(resolvedTableId, roomId, client.server);
   const name0 = table.seats[0]?.penguin.name ?? '';
   const name1 = table.seats[1]?.penguin.name ?? '';
-  const boardState = serializeFindFourBoard(table.board);
 
-  const existing = findFourPlayers.get(client.penguin.id);
+  // game-depending logic  
+  const boardState = serializeBoard(table.board);
+
+  const existing = playerTables.get(client.penguin.id);
   if (existing === undefined || existing.tableId !== resolvedTableId) {
-    const seatId = getFindFourSeat(table, client) ?? FIND_FOUR_SPECTATOR_SEAT;
-    findFourPlayers.set(client.penguin.id, { tableId: resolvedTableId, seatId, joinedGame: false });
+    const seatId = getSeatIndex(table.seats, client) ?? TABLE_SPECTATOR_SEAT;
+    playerTables.set(client.penguin.id, { tableId: resolvedTableId, seatId, joinedGame: false });
   }
-
-  const playerInfo = findFourPlayers.get(client.penguin.id);
+  const playerInfo = playerTables.get(client.penguin.id);
   // when already in-game, include turn info
   if (table.started && playerInfo?.joinedGame) {
     client.sendXt('gz', name0, name1, boardState, table.turn);
-    return;
+  } else {
+    client.sendXt('gz', name0, name1, boardState);
   }
-  client.sendXt('gz', name0, name1, boardState);
 });
 
 handler.xt(Handle.JoinTableGame, (client) => {
@@ -1009,36 +761,36 @@ handler.xt(Handle.JoinTableGame, (client) => {
     return;
   }
   // join the game instance after table seat selection
-  let findFourInfo = findFourPlayers.get(client.penguin.id);
-  if (findFourInfo !== undefined && isFindFourTable(findFourInfo.tableId)) {
-    const roomId = client.room?.id ?? findFourTables.get(findFourInfo.tableId)?.roomId ?? 0;
-    const table = getFindFourTable(findFourInfo.tableId, roomId, client.server);
-    const currentSeat = getFindFourSeat(table, client);
-    let seatId = findFourInfo.seatId;
+  let tableInfo = playerTables.get(client.penguin.id);
+  if (tableInfo !== undefined) {
+    const roomId = client.room?.id ?? tables.get(tableInfo.tableId)?.roomId ?? 0;
+    const table = getTable(tableInfo.tableId, roomId, client.server);
+    const currentSeat = getSeatIndex(table.seats, client);
+    let seatId = tableInfo.seatId;
     if (currentSeat !== undefined) {
       seatId = currentSeat;
     } else if (seatId >= 0 && seatId < table.seats.length && table.seats[seatId] === null) {
       table.seats[seatId] = client;
     } else {
-      const assigned = assignFindFourSeat(table, client);
-      seatId = assigned ?? FIND_FOUR_SPECTATOR_SEAT;
+      const assigned = assignSeatIndex(table.seats, client);
+      seatId = assigned ?? TABLE_SPECTATOR_SEAT;
     }
 
-    if (seatId !== findFourInfo.seatId) {
-      findFourInfo = { ...findFourInfo, seatId };
+    if (seatId !== tableInfo.seatId) {
+      tableInfo = { ...tableInfo, seatId };
     }
 
-    const alreadyJoined = findFourInfo.joinedGame;
-    if (!findFourInfo.joinedGame) {
-      findFourInfo = { ...findFourInfo, joinedGame: true };
+    const alreadyJoined = tableInfo.joinedGame;
+    if (!tableInfo.joinedGame) {
+      tableInfo = { ...tableInfo, joinedGame: true };
     }
-    findFourPlayers.set(client.penguin.id, findFourInfo);
+    playerTables.set(client.penguin.id, tableInfo);
 
     client.sendXt('jz', seatId);
-    sendFindFourRoster(table, client);
+    sendSeatRoster(table.id, table.server, table.seats, 'uz', client);
 
-    if (!alreadyJoined && seatId !== FIND_FOUR_SPECTATOR_SEAT) {
-      sendFindFourUpdate(table, seatId, client.penguin.name);
+    if (!alreadyJoined && seatId !== TABLE_SPECTATOR_SEAT) {
+      sendTableUpdate(table.id, table.server, seatId, client.penguin.name);
     }
 
     // start the match when both players have joined
@@ -1047,12 +799,12 @@ handler.xt(Handle.JoinTableGame, (client) => {
         if (seat === null) {
           return false;
         }
-        return findFourPlayers.get(seat.penguin.id)?.joinedGame === true;
+        return playerTables.get(seat.penguin.id)?.joinedGame === true;
       });
       if (seatsReady) {
         table.started = true;
         table.turn = 0;
-        sendFindFourPacket(table, 'sz', table.turn);
+        sendTablePacket(table.id, table.server, 'sz', table.turn);
       }
       return;
     }
@@ -1060,61 +812,6 @@ handler.xt(Handle.JoinTableGame, (client) => {
     if (!alreadyJoined) {
       client.sendXt('sz', table.turn);
     }
-    return;
-  }
-
-  let info = mancalaPlayers.get(client.penguin.id);
-  if (info === undefined || !isMancalaTable(info.tableId)) {
-    return;
-  }
-  const roomId = client.room?.id ?? mancalaTables.get(info.tableId)?.roomId ?? 0;
-  const table = getMancalaTable(info.tableId, roomId, client.server);
-  const currentSeat = getMancalaSeat(table, client);
-  let seatId = info.seatId;
-  if (currentSeat !== undefined) {
-    seatId = currentSeat;
-  } else if (seatId >= 0 && seatId < table.seats.length && table.seats[seatId] === null) {
-    table.seats[seatId] = client;
-  } else {
-    const assigned = assignMancalaSeat(table, client);
-    seatId = assigned ?? MANCALA_SPECTATOR_SEAT;
-  }
-
-  if (seatId !== info.seatId) {
-    info = { ...info, seatId };
-  }
-
-  const alreadyJoined = info.joinedGame;
-  if (!info.joinedGame) {
-    info = { ...info, joinedGame: true };
-  }
-  mancalaPlayers.set(client.penguin.id, info);
-
-  client.sendXt('jz', seatId);
-  sendMancalaRoster(table, client);
-
-  if (!alreadyJoined && seatId !== MANCALA_SPECTATOR_SEAT) {
-    sendMancalaUpdate(table, seatId, client.penguin.name);
-  }
-
-  // start the match when both players have joined
-  if (!table.started) {
-    const seatsReady = table.seats.every((seat) => {
-      if (seat === null) {
-        return false;
-      }
-      return mancalaPlayers.get(seat.penguin.id)?.joinedGame === true;
-    });
-    if (seatsReady) {
-      table.started = true;
-      table.turn = 0;
-      sendMancalaPacket(table, 'sz', table.turn);
-    }
-    return;
-  }
-
-  if (!alreadyJoined) {
-    client.sendXt('sz', table.turn);
   }
 });
 
@@ -1123,187 +820,125 @@ handler.xt(Handle.LeaveTableGame, (client) => {
     return;
   }
   // leave the active game: spectators just close, players clear seats/reset
-  const findFourInfo = findFourPlayers.get(client.penguin.id);
-  if (findFourInfo !== undefined) {
-    const table = findFourTables.get(findFourInfo.tableId);
+  const tableInfo = playerTables.get(client.penguin.id);
+  if (tableInfo !== undefined) {
+    const table = tables.get(tableInfo.tableId);
     if (table === undefined) {
-      findFourPlayers.delete(client.penguin.id);
+      playerTables.delete(client.penguin.id);
       return;
     }
-    if (findFourInfo.seatId === FIND_FOUR_SPECTATOR_SEAT) {
+    if (tableInfo.seatId === TABLE_SPECTATOR_SEAT) {
       client.sendXt('lz');
-      findFourPlayers.delete(client.penguin.id);
+      playerTables.delete(client.penguin.id);
       return;
     }
     if (!table.started) {
-      const seatIndex = getFindFourSeat(table, client);
+      const seatIndex = getSeatIndex(table.seats, client);
       if (seatIndex !== undefined) {
         table.seats[seatIndex] = null;
       }
-      findFourPlayers.delete(client.penguin.id);
-      if (findFourInfo.seatId < 2) {
-        sendFindFourUpdate(table, findFourInfo.seatId, '');
+      playerTables.delete(client.penguin.id);
+      if (tableInfo.seatId < 2) {
+        sendTableUpdate(table.id, table.server, tableInfo.seatId, '');
       }
-      const count = countFindFourSeats(table);
+      const count = countSeats(table.seats);
       broadcastTableUpdate(table.server, table.roomId, table.id, count);
       if (count === 0) {
-        resetFindFourTable(table);
-        for (const [playerId, info] of findFourPlayers.entries()) {
+        resetTable(table);
+        for (const [playerId, info] of playerTables.entries()) {
           if (info.tableId === table.id) {
-            findFourPlayers.delete(playerId);
+            playerTables.delete(playerId);
           }
         }
       }
       return;
     }
-    clearFindFourTable(table, client.penguin.name);
-    return;
+    clearTable(table, client.penguin.name);
   }
-  const info = mancalaPlayers.get(client.penguin.id);
-  if (info === undefined) {
-    return;
-  }
-  const table = mancalaTables.get(info.tableId);
-  if (table === undefined) {
-    mancalaPlayers.delete(client.penguin.id);
-    return;
-  }
-  if (info.seatId === MANCALA_SPECTATOR_SEAT) {
-    client.sendXt('lz');
-    mancalaPlayers.delete(client.penguin.id);
-    return;
-  }
-  if (!table.started) {
-    const seatIndex = getMancalaSeat(table, client);
-    if (seatIndex !== undefined) {
-      table.seats[seatIndex] = null;
-    }
-    mancalaPlayers.delete(client.penguin.id);
-    if (info.seatId < 2) {
-      sendMancalaUpdate(table, info.seatId, '');
-    }
-    const count = countMancalaSeats(table);
-    broadcastTableUpdate(table.server, table.roomId, table.id, count);
-    if (count === 0) {
-      resetMancalaTable(table);
-      for (const [playerId, playerInfo] of mancalaPlayers.entries()) {
-        if (playerInfo.tableId === table.id) {
-          mancalaPlayers.delete(playerId);
-        }
-      }
-    }
-    return;
-  }
-  clearMancalaTable(table, client.penguin.name);
 });
 
 handler.xt(Handle.SendTableMove, (client, ...moves) => {
   if (!client.isEngine1) {
     return;
   }
+  let automaticTurnChange = true;
   // dispatch board moves for find four or mancala
-  const findFourInfo = findFourPlayers.get(client.penguin.id);
-  if (findFourInfo !== undefined) {
-    // Ignore non-table zm packets (e.g. sled racing uses 4 args).
-    if (moves.length !== 2) {
+  const tableInfo = playerTables.get(client.penguin.id);
+  if (tableInfo !== undefined) {
+    if (!tableInfo.joinedGame || tableInfo.seatId === TABLE_SPECTATOR_SEAT) {
       return;
     }
-      const column = moves[0];
-      const row = moves[1];
-      if (column === undefined || row === undefined) {
-        return;
-      }
-    if (!findFourInfo.joinedGame || findFourInfo.seatId === FIND_FOUR_SPECTATOR_SEAT) {
-      return;
-    }
-    const table = findFourTables.get(findFourInfo.tableId);
+    const table = tables.get(tableInfo.tableId);
     if (table === undefined || !table.started || table.ended) {
       return;
     }
-    const player = findFourInfo.seatId;
+    const player = tableInfo.seatId;
     if (player !== 0 && player !== 1) {
       return;
     }
     if (table.turn !== player) {
       return;
     }
-      const columnIndex = Number(column);
-      const rowIndex = Number(row);
-      if (!Number.isFinite(columnIndex) || !Number.isFinite(rowIndex)) {
-        return;
-      }
-      if (columnIndex < 0 || columnIndex >= FIND_FOUR_WIDTH) {
-        return;
-      }
-      if (rowIndex < 0 || rowIndex >= FIND_FOUR_HEIGHT) {
-        return;
-      }
-      if (table.board[columnIndex]?.[rowIndex] !== 0) {
-        return;
-      }
-      table.board[columnIndex][rowIndex] = player + 1;
-      sendFindFourPacket(table, 'zm', player, columnIndex, rowIndex);
-      const win = findFourWin(table.board, columnIndex, rowIndex);
-    if (win !== undefined) {
-      table.ended = true;
-      awardFindFourCoins(table, win.winner - 1);
-      markFindFourSpectatorCoins(table);
-      sendFindFourPacket(table, 'zo', win.x, win.y, win.direction);
-      resetFindFourRound(table);
-      return;
-    }
-    if (isFindFourBoardFull(table.board)) {
-      table.ended = true;
-      awardFindFourCoins(table);
-      markFindFourSpectatorCoins(table);
-      sendFindFourPacket(table, 'zo', -10, -10, 1);
-      resetFindFourRound(table);
-      return;
-    }
-    table.turn = table.turn === 0 ? 1 : 0;
-    return;
-  }
-  const info = mancalaPlayers.get(client.penguin.id);
-  if (info === undefined || !info.joinedGame || info.seatId === MANCALA_SPECTATOR_SEAT) {
-    return;
-  }
-  // Ignore non-table zm packets (e.g. sled racing uses 4 args).
-  if (moves.length !== 1) {
-    return;
-  }
-  const cup = moves[0];
-  if (cup === undefined) {
-    return;
-  }
-  const table = mancalaTables.get(info.tableId);
-  if (table === undefined || !table.started || table.ended) {
-    return;
-  }
-  const player = info.seatId;
-  if (table.turn !== player) {
-    return;
-  }
-  if (!isMancalaCupForPlayer(player, cup)) {
-    return;
-  }
-  if (table.board[cup] <= 0) {
-    return;
-  }
 
-  const { command, nextTurn, gameOver } = applyMancalaMove(table.board, player, cup);
-  const zmArgs: Array<number | string> = [player, cup];
-  if (command !== '') {
-    zmArgs.push(command);
-  }
-  sendMancalaPacket(table, 'zm', ...zmArgs);
-  table.turn = nextTurn;
-  if (gameOver) {
-    table.ended = true;
-    awardMancalaCoins(table);
-    markMancalaSpectatorCoins(table);
-    sendMancalaPacket(table, 'zo');
-    resetMancalaRound(table);
-  }
+
+    // table game specific logic
+    if (table.board.type === 'find') {
+      if (moves.length !== 2) {
+        // Ignore non-table zm packets (e.g. sled racing uses 4 args).
+        return;
+      }
+      const column = moves[0];
+      const dropRow = moves[1];
+      table.board.board[column][dropRow] = player + 1;
+      sendTablePacket(table.id, table.server, 'zm', player, column, dropRow);
+      const win = findFourWin(table.board.board, column, dropRow);
+      if (win !== undefined) {
+        table.ended = true;
+        awardFindFourCoins(table, win.winner - 1);
+        markTableSpectatorCoins(table);
+        sendTablePacket(table.id, table.server, 'zo', win.x, win.y, win.direction);
+        resetTableRound(table);
+        return;
+      } else if (isFindFourBoardFull(table.board.board)) {
+        table.ended = true;
+        awardFindFourCoins(table);
+        markTableSpectatorCoins(table);
+        sendTablePacket(table.id, table.server, 'zo', -10, -10, 1);
+        resetTableRound(table);
+        return;
+      }
+    } else if (table.board.type === 'mancala') {
+      if (moves.length !== 1) {
+        return;
+      }
+      const cup = moves[0];
+      if (!isMancalaCupForPlayer(player, cup)) {
+        return;
+      }
+      if (table.board.board[cup] <= 0) {
+        return;
+      }
+
+      const { command, nextTurn, gameOver } = applyMancalaMove(table.board.board, player, cup);
+      const zmArgs: Array<number | string> = [player, cup];
+      if (command !== '') {
+        zmArgs.push(command);
+      }
+      sendTablePacket(table.id, table.server, 'zm', ...zmArgs);
+      table.turn = nextTurn;
+      automaticTurnChange = false;
+      if (gameOver) {
+        table.ended = true;
+        awardMancalaCoins(table, table.board.board);
+        markTableSpectatorCoins(table);
+        sendTablePacket(table.id, table.server, 'zo');
+        resetTableRound(table);
+      }
+    }
+    if (automaticTurnChange) {
+      table.turn = table.turn === 0 ? 1 : 0;
+    }
+  }  
 });
 
 handler.xt(Handle.AddItemOld, (client, item) => {
@@ -1852,76 +1487,43 @@ handler.post('/php/gp.php', (server, body) => {
 });
 
 handler.disconnect((client) => {
-  const penguin = (client as unknown as { _penguin?: Penguin })._penguin;
-  const buddyIds = penguin?.getBuddies() ?? [];
-  const penguinId = penguin?.id;
-
-  if (penguin !== undefined) {
-    const findFourInfo = findFourPlayers.get(penguin.id);
-    if (findFourInfo !== undefined) {
-      const table = findFourTables.get(findFourInfo.tableId);
+  if (client.hasPenguin()) {
+    const tableInfo = playerTables.get(client.penguin.id);
+    if (tableInfo !== undefined) {
+      const table = tables.get(tableInfo.tableId);
       if (table === undefined) {
-        findFourPlayers.delete(penguin.id);
-      } else if (findFourInfo.seatId === FIND_FOUR_SPECTATOR_SEAT) {
-        findFourPlayers.delete(penguin.id);
-      } else if (table.started && findFourInfo.joinedGame) {
-        clearFindFourTable(table, penguin.name);
+        playerTables.delete(client.penguin.id);
+      } else if (tableInfo.seatId === TABLE_SPECTATOR_SEAT) {
+        playerTables.delete(client.penguin.id);
+      } else if (table.started && tableInfo.joinedGame) {
+        clearTable(table, client.penguin.name);
       } else {
-        const seatIndex = getFindFourSeat(table, client);
+        const seatIndex = getSeatIndex(table.seats, client);
         if (seatIndex !== undefined) {
           table.seats[seatIndex] = null;
-          const count = countFindFourSeats(table);
+          const count = countSeats(table.seats);
           broadcastTableUpdate(table.server, table.roomId, table.id, count);
           if (count === 0) {
-            resetFindFourTable(table);
-            for (const [playerId, info] of findFourPlayers.entries()) {
+            resetTable(table);
+            for (const [playerId, info] of playerTables.entries()) {
               if (info.tableId === table.id) {
-                findFourPlayers.delete(playerId);
+                playerTables.delete(playerId);
               }
             }
           }
         }
-        findFourPlayers.delete(penguin.id);
+        playerTables.delete(client.penguin.id);
       }
     }
-
-    const mancalaInfo = mancalaPlayers.get(penguin.id);
-    if (mancalaInfo !== undefined) {
-      const table = mancalaTables.get(mancalaInfo.tableId);
-      if (table === undefined) {
-        mancalaPlayers.delete(penguin.id);
-      } else if (mancalaInfo.seatId === MANCALA_SPECTATOR_SEAT) {
-        mancalaPlayers.delete(penguin.id);
-      } else if (table.started && mancalaInfo.joinedGame) {
-        clearMancalaTable(table, penguin.name);
-      } else {
-        const seatIndex = getMancalaSeat(table, client);
-        if (seatIndex !== undefined) {
-          table.seats[seatIndex] = null;
-          const count = countMancalaSeats(table);
-          broadcastTableUpdate(table.server, table.roomId, table.id, count);
-          if (count === 0) {
-            resetMancalaTable(table);
-            for (const [playerId, info] of mancalaPlayers.entries()) {
-              if (info.tableId === table.id) {
-                mancalaPlayers.delete(playerId);
-              }
-            }
-          }
-        }
-        mancalaPlayers.delete(penguin.id);
+  
+    client.disconnect();
+    client.penguin.getBuddies().forEach((buddyId) => {
+      const buddyClient = client.server.getPlayerById(buddyId);
+      if (buddyClient !== undefined) {
+        sendBuddyOnlineList(buddyClient, client.penguin.id);
       }
-    }
+    });
   }
-
-  client.disconnect();
-
-  buddyIds.forEach((buddyId) => {
-    const buddyClient = client.server.getPlayerById(buddyId);
-    if (buddyClient !== undefined) {
-      sendBuddyOnlineList(buddyClient, penguinId);
-    }
-  });
 });
 
 export default handler;
