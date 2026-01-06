@@ -55,20 +55,6 @@ function getSledGame(client: Client) {
   return client.waddleGame;
 }
 
-type BoardType = 'find' | 'mancala';
-
-type FindFourBoard = {
-  type: 'find';
-  board: number[][];
-}
-
-type MancalaBoard = {
-  type: 'mancala';
-  board: number[];
-}
-
-type Board = FindFourBoard | MancalaBoard;
-
 type TablePlayerState = {
   tableId: number;
   seatId: number;
