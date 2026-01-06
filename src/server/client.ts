@@ -21,6 +21,9 @@ import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './
 import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
 import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
 import { MASCOTS } from './game-data/mascots';
+import { Table } from './handlers/play/table';
+import { FindFourTable } from './handlers/play/find-four';
+import { MancalaTable } from './handlers/play/mancala';
 
 type ServerType = 'Login' | 'World';
 
@@ -518,6 +521,11 @@ export class Server {
 
   private _bakery: Bakery;
 
+  private _tables: Map<number, Table>;
+  
+  static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
+  static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
@@ -525,6 +533,7 @@ export class Server {
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
     this._bakery = new Bakery(this);
+    this._tables = new Map<number, Table>();
     this.createMascots();
     this.init();
   }
@@ -662,6 +671,32 @@ export class Server {
       this._rooms.set(roomId, room);
     }
     return room;
+  }
+
+  getTable(tableId: number, roomId: number): Table {
+    let table = this._tables.get(tableId);
+    if (table === undefined) {
+      if (Server.FIND_FOUR_TABLE_IDS.has(tableId)) {
+        table = new FindFourTable(tableId, roomId, this);
+      } else if (Server.MANCALA_TABLE_IDS.has(tableId)) {
+        table = new MancalaTable(tableId, roomId, this);
+      } else {
+        throw new Error('Unknown table id');
+      }
+
+      this._tables.set(tableId, table);
+    } else {
+      table.updateRoom(roomId);
+    }
+    return table;
+  }
+
+  getTableIfExists(tableId: number): Table | undefined {
+    return this._tables.get(tableId);
+  }
+
+  getTables() {
+    return this._tables.entries();
   }
 
   addFollower(bot: Bot, following: Client) {

@@ -10,8 +10,6 @@ import { Penguin } from '../../penguin';
 import { FURNITURE } from '../../../server/game-logic/furniture';
 import { getFlooringCost, getIglooCost } from '../../../server/game-logic/iglooItems';
 import { Table } from './table';
-import { FindFourTable } from './find-four';
-import { MancalaTable } from './mancala';
 
 const handler = new Handler();
 
@@ -43,8 +41,6 @@ function sendBuddyOnlineList(client: Client, excludeId?: number): void {
   client.sendXt('go', ...onlineIds);
 }
 
-const MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
-const FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
 // engine1 clients expect seats as 1-based; 99 is spectator
 
 // engine1 sled uses waddle state but uses old z% protocol
@@ -62,28 +58,10 @@ type TablePlayerState = {
 };
 
 // in-memory state for engine1 table games.
-const tables = new Map<number, Table>();
 const playerTables = new Map<number, TablePlayerState>();
 // track spectators so we can suppress the 0-coin popup
 const tableSpectators = new Set<number>();
 
-function getTable(tableId: number, roomId: number, server: Server): Table {
-  let table = tables.get(tableId);
-  if (table === undefined) {
-    if (FIND_FOUR_TABLE_IDS.has(tableId)) {
-      table = new FindFourTable(tableId, roomId, server);
-    } else if (MANCALA_TABLE_IDS.has(tableId)) {
-      table = new MancalaTable(tableId, roomId, server);
-    } else {
-      throw new Error('Unknown table id');
-    }
-
-    tables.set(tableId, table);
-  } else {
-    table.updateRoom(roomId);
-  }
-  return table;
-}
 
 function clearTable(table: Table): void {
   for (const [playerId, info] of playerTables.entries()) {
@@ -246,7 +224,7 @@ handler.xt(Handle.GetTableOld, (client, ...tableIds) => {
   }
   const entries: string[] = [];
   tableIds.forEach((tableId) => {
-    const table = getTable(tableId, roomId, client.server);
+    const table = client.server.getTable(tableId, roomId);
     entries.push(`${tableId}|${table.count}`);
   });
   if (entries.length === 0) {
@@ -268,7 +246,7 @@ handler.xt(Handle.JoinTableOld, (client, tableId) => {
   // clear any stale table seat if the player is switching tables
   const existingTable = playerTables.get(client.penguin.id);
   if (existingTable !== undefined && existingTable.tableId !== tableId) {
-    const previousTable = tables.get(existingTable.tableId);
+    const previousTable = client.server.getTableIfExists(existingTable.tableId);
     if (previousTable !== undefined) {
       const previousSeat = previousTable.getSeatIndex(client);
       if (previousSeat !== undefined) {
@@ -288,7 +266,7 @@ handler.xt(Handle.JoinTableOld, (client, tableId) => {
     playerTables.delete(client.penguin.id);
   }
 
-  const table = getTable(tableId, room.id, client.server);
+  const table = client.server.getTable(tableId, room.id);
   const beforeCount = table.count;
 
   const seatId = table.getSeatIndex(client) ?? table.assignSeatIndex(client);
@@ -316,7 +294,7 @@ handler.xt(Handle.LeaveTableOld, (client) => {
   // old leave flow: free seat, broadcast count, and reset if empty
   const tableInfo = playerTables.get(client.penguin.id);
   if (tableInfo !== undefined) {
-    const table = tables.get(tableInfo.tableId);
+    const table = client.server.getTableIfExists(tableInfo.tableId);
     playerTables.delete(client.penguin.id);
     if (table === undefined) {
       return;
@@ -340,7 +318,7 @@ handler.xt(Handle.LeaveTableOld, (client) => {
 });
 
 function isTableId(tableId: number) {
-  return FIND_FOUR_TABLE_IDS.has(tableId) || MANCALA_TABLE_IDS.has(tableId);
+  return Server.FIND_FOUR_TABLE_IDS.has(tableId) || Server.MANCALA_TABLE_IDS.has(tableId);
 }
 
 handler.xt(Handle.GetTableGame, (client, tableId) => {
@@ -354,7 +332,7 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
     if (existingTable !== undefined) {
       resolvedTableId = existingTable.tableId;
     } else {
-      for (const [id, table] of tables.entries()) {
+      for (const [id, table] of client.server.getTables()) {
         if (table.getSeatIndex(client) !== undefined) {
           resolvedTableId = id;
           break;
@@ -364,7 +342,7 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
   }
 
   const roomId = client.room.id;
-  const table = getTable(resolvedTableId, roomId, client.server);
+  const table = client.server.getTable(resolvedTableId, roomId);
   const name0 = table.getName(0);
   const name1 = table.getName(1);
 
@@ -392,7 +370,7 @@ handler.xt(Handle.JoinTableGame, (client) => {
   let tableInfo = playerTables.get(client.penguin.id);
   if (tableInfo !== undefined) {
     const roomId = client.room.id;
-    const table = getTable(tableInfo.tableId, roomId, client.server);
+    const table = client.server.getTable(tableInfo.tableId, roomId);
     const currentSeat = table.getSeatIndex(client);
     let seatId = tableInfo.seatId;
     if (currentSeat !== undefined) {
@@ -448,7 +426,7 @@ handler.xt(Handle.LeaveTableGame, (client) => {
   // leave the active game: spectators just close, players clear seats/reset
   const tableInfo = playerTables.get(client.penguin.id);
   if (tableInfo !== undefined) {
-    const table = tables.get(tableInfo.tableId);
+    const table = client.server.getTableIfExists(tableInfo.tableId);
     if (table === undefined) {
       playerTables.delete(client.penguin.id);
       return;
@@ -495,7 +473,7 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
     if (!tableInfo.joinedGame || tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT) {
       return;
     }
-    const table = tables.get(tableInfo.tableId);
+    const table = client.server.getTableIfExists(tableInfo.tableId);
     if (table === undefined || !table.started || table.ended) {
       return;
     }
@@ -1072,7 +1050,7 @@ handler.disconnect((client) => {
   if (client.hasPenguin()) {
     const tableInfo = playerTables.get(client.penguin.id);
     if (tableInfo !== undefined) {
-      const table = tables.get(tableInfo.tableId);
+      const table = client.server.getTableIfExists(tableInfo.tableId);
       if (table === undefined) {
         playerTables.delete(client.penguin.id);
       } else if (tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT) {
