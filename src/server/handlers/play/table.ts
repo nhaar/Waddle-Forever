@@ -5,6 +5,7 @@ export abstract class Table {
   private _id: number;
   private _roomId: number;
   private _seats: Array<Client | null>;
+  private _joined: [boolean, boolean];
   private _server: Server;
   private _started: boolean;
   private _ended: boolean;
@@ -23,6 +24,7 @@ export abstract class Table {
     this._turn = 0;
     this._server = server;
     this._spectators = new Set<Client>();
+    this._joined = [false, false];
     this.createBoard();
   }
 
@@ -106,6 +108,7 @@ export abstract class Table {
   resetRound() {
     this.reset();
     this._seats = [null, null];
+    this._joined = [false, false];
     this.broadcastUpdate();
   }
 
@@ -183,6 +186,18 @@ export abstract class Table {
 
   removeSpectator(client: Client) {
     this._spectators.delete(client);
+  }
+
+  hasJoined(index: number) {
+    return this._joined[index];
+  }
+
+  setJoined(index: number) {
+    this._joined[index] = true;
+  }
+
+  hasEveryoneJoined() {
+    return this._joined.every(value => value);
   }
 
   abstract createBoard(): void;

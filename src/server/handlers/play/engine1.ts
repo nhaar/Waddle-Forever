@@ -54,7 +54,6 @@ function getSledGame(client: Client) {
 type TablePlayerState = {
   tableId: number;
   seatId: number;
-  joinedGame: boolean;
 };
 
 // in-memory state for engine1 table games.
@@ -69,16 +68,6 @@ function clearTable(table: Table): void {
       playerTables.delete(playerId);
     }
   }
-}
-
-function resetTableRound(table: Table): void {
-  for (const [playerId, info] of playerTables.entries()) {
-    if (info.tableId !== table.id) {
-      continue;
-    }
-    playerTables.set(playerId, { ...info, joinedGame: false });
-  }
-  table.resetRound();
 }
 
 function markTableSpectatorCoins(table: Table): void {
@@ -246,6 +235,7 @@ handler.xt(Handle.JoinTableOld, (client, tableId) => {
   // clear any stale table seat if the player is switching tables
   const existingTable = playerTables.get(client.penguin.id);
   if (existingTable !== undefined && existingTable.tableId !== tableId) {
+    console.log('stale table');
     const previousTable = client.server.getTableIfExists(existingTable.tableId);
     if (previousTable !== undefined) {
       const previousSeat = previousTable.getSeatIndex(client);
@@ -271,7 +261,7 @@ handler.xt(Handle.JoinTableOld, (client, tableId) => {
 
   const seatId = table.getSeatIndex(client) ?? table.assignSeatIndex(client);
   
-  playerTables.set(client.penguin.id, { tableId, seatId, joinedGame: false });
+  playerTables.set(client.penguin.id, { tableId, seatId });
   // first seated player resets a stale board
   if (seatId !== Table.TABLE_SPECTATOR_SEAT && beforeCount === 0) {
     table.reset();
@@ -351,11 +341,11 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
   const existing = playerTables.get(client.penguin.id);
   if (existing === undefined || existing.tableId !== resolvedTableId) {
     const seatId = table.getSeatIndex(client) ?? Table.TABLE_SPECTATOR_SEAT;
-    playerTables.set(client.penguin.id, { tableId: resolvedTableId, seatId, joinedGame: false });
+    playerTables.set(client.penguin.id, { tableId: resolvedTableId, seatId });
   }
   const playerInfo = playerTables.get(client.penguin.id);
   // when already in-game, include turn info
-  if (table.started && playerInfo?.joinedGame) {
+  if (table.started && playerInfo !== undefined && table.hasJoined(playerInfo.seatId)) {
     client.sendXt('gz', name0, name1, boardState, table.turn);
   } else {
     client.sendXt('gz', name0, name1, boardState);
@@ -385,28 +375,22 @@ handler.xt(Handle.JoinTableGame, (client) => {
       tableInfo = { ...tableInfo, seatId };
     }
 
-    const alreadyJoined = tableInfo.joinedGame;
-    if (!tableInfo.joinedGame) {
-      tableInfo = { ...tableInfo, joinedGame: true };
+    const alreadyJoined = seatId !== Table.TABLE_SPECTATOR_SEAT && table.hasJoined(seatId);
+    if (seatId !== Table.TABLE_SPECTATOR_SEAT) {
+      table.setJoined(seatId);
     }
     playerTables.set(client.penguin.id, tableInfo);
 
     client.sendXt('jz', seatId);
     table.sendSeatRoaster('uz', client);
 
-    if (!alreadyJoined && seatId !== Table.TABLE_SPECTATOR_SEAT) {
+    if (seatId !== Table.TABLE_SPECTATOR_SEAT && !alreadyJoined) {
       table.sendUpdate(seatId, client.penguin.name);
     }
 
     // start the match when both players have joined
     if (!table.started) {
-      const seatsReady = table.seats.every((seat) => {
-        if (seat === null) {
-          return false;
-        }
-        return playerTables.get(seat.penguin.id)?.joinedGame === true;
-      });
-      if (seatsReady) {
+      if (table.hasEveryoneJoined()) {
         table.setStarted();
         table.sendPacket('sz', table.turn);
       }
@@ -470,11 +454,11 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
   // dispatch board moves for find four or mancala
   const tableInfo = playerTables.get(client.penguin.id);
   if (tableInfo !== undefined) {
-    if (!tableInfo.joinedGame || tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT) {
-      return;
-    }
     const table = client.server.getTableIfExists(tableInfo.tableId);
     if (table === undefined || !table.started || table.ended) {
+      return;
+    }
+    if (tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT || !table.hasJoined(tableInfo.seatId)) {
       return;
     }
     const player = tableInfo.seatId;
@@ -485,7 +469,6 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
       return;
     }
 
-
     // table game specific logic
     if (moves.length === table.moveLength) {
       markTableSpectatorCoins(table);
@@ -495,7 +478,7 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
         table.changeTurn();
       }
       if (reset) {
-        resetTableRound(table);
+        table.resetRound();
       }
     }
   }  
@@ -1055,7 +1038,7 @@ handler.disconnect((client) => {
         playerTables.delete(client.penguin.id);
       } else if (tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT) {
         playerTables.delete(client.penguin.id);
-      } else if (table.started && tableInfo.joinedGame) {
+      } else if (table.started && table.hasJoined(tableInfo.seatId)) {
         table.clear(client.penguin.name);
         clearTable(table);
       } else {
