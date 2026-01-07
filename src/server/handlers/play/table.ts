@@ -61,14 +61,10 @@ export abstract class Table {
     this.forEach(client => client.sendXt(handler, ...args));
   }
 
-  sendSeatRoaster(handler: string, target?: Client) {
+  sendSeatRoaster(handler: string, target: Client) {
     this._seats.forEach((seat, index) => {
       const name = seat?.penguin.name ?? '';
-      if (target !== undefined) {
         target.sendXt(handler, index, name);
-        return;
-      }
-      this.sendPacket('uz', index, name);
     });
   }
 
@@ -79,6 +75,7 @@ export abstract class Table {
   clear(quitterName: string) {
     this.forEach((player) => {
       if (player !== null) {
+        player.exitTable();
         player.sendXt('cz', quitterName);
       }
     });

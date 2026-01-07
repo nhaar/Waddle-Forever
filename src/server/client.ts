@@ -800,6 +800,9 @@ export class Client {
   /** Reference to the player's information stored in the room */
   private _roomInfo: PlayerRoomInfo | undefined;
   private _avatar: number = 0;
+
+  private _tableState: { id: number; seat: number } | undefined;
+
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -1681,6 +1684,18 @@ export class Client {
 
   get buddyProtocol(): BuddyProtocol | undefined {
     return this._server.buddyProtocol
+  }
+
+  enterTable(tableId: number, seat: number): void {
+    this._tableState = { id: tableId, seat };
+  }
+
+  getTable() {
+    return this._tableState;
+  }
+
+  exitTable() {
+    this._tableState = undefined;
   }
 }
 

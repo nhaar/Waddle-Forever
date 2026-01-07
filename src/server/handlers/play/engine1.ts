@@ -51,24 +51,8 @@ function getSledGame(client: Client) {
   return client.waddleGame;
 }
 
-type TablePlayerState = {
-  tableId: number;
-  seatId: number;
-};
-
-// in-memory state for engine1 table games.
-const playerTables = new Map<number, TablePlayerState>();
 // track spectators so we can suppress the 0-coin popup
 const tableSpectators = new Set<number>();
-
-
-function clearTable(table: Table): void {
-  for (const [playerId, info] of playerTables.entries()) {
-    if (info.tableId === table.id) {
-      playerTables.delete(playerId);
-    }
-  }
-}
 
 function markTableSpectatorCoins(table: Table): void {
   // spectators still request coins; flag them so GetCoins ignores it
@@ -232,36 +216,12 @@ handler.xt(Handle.JoinTableOld, (client, tableId) => {
     return;
   }
 
-  // clear any stale table seat if the player is switching tables
-  const existingTable = playerTables.get(client.penguin.id);
-  if (existingTable !== undefined && existingTable.tableId !== tableId) {
-    console.log('stale table');
-    const previousTable = client.server.getTableIfExists(existingTable.tableId);
-    if (previousTable !== undefined) {
-      const previousSeat = previousTable.getSeatIndex(client);
-      if (previousSeat !== undefined) {
-        previousTable.emptySeat(previousSeat);
-        const remaining = previousTable.count;
-        previousTable.broadcastUpdate();
-        if (remaining === 0) {
-          previousTable.reset();
-          for (const [playerId, info] of playerTables.entries()) {
-            if (info.tableId === previousTable.id) {
-              playerTables.delete(playerId);
-            }
-          }
-        }
-      }
-    }
-    playerTables.delete(client.penguin.id);
-  }
-
   const table = client.server.getTable(tableId, room.id);
   const beforeCount = table.count;
 
   const seatId = table.getSeatIndex(client) ?? table.assignSeatIndex(client);
   
-  playerTables.set(client.penguin.id, { tableId, seatId });
+  client.enterTable(tableId, seatId);
   // first seated player resets a stale board
   if (seatId !== Table.TABLE_SPECTATOR_SEAT && beforeCount === 0) {
     table.reset();
@@ -282,10 +242,10 @@ handler.xt(Handle.LeaveTableOld, (client) => {
     return;
   }
   // old leave flow: free seat, broadcast count, and reset if empty
-  const tableInfo = playerTables.get(client.penguin.id);
+  const tableInfo = client.getTable();
   if (tableInfo !== undefined) {
-    const table = client.server.getTableIfExists(tableInfo.tableId);
-    playerTables.delete(client.penguin.id);
+    const table = client.server.getTableIfExists(tableInfo.id);
+    client.exitTable();
     if (table === undefined) {
       return;
     }
@@ -298,11 +258,6 @@ handler.xt(Handle.LeaveTableOld, (client) => {
     table.broadcastUpdate();
     if (count === 0) {
       table.reset();
-      for (const [playerId, playerInfo] of playerTables.entries()) {
-        if (playerInfo.tableId === table.id) {
-          playerTables.delete(playerId);
-        }
-      }
     }
   }
 });
@@ -318,9 +273,9 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
   // resolve table id from context so spectators can re-open correctly
   let resolvedTableId = tableId;
   if (!isTableId(resolvedTableId)) {
-    const existingTable = playerTables.get(client.penguin.id);
+    const existingTable = client.getTable();
     if (existingTable !== undefined) {
-      resolvedTableId = existingTable.tableId;
+      resolvedTableId = existingTable.id;
     } else {
       for (const [id, table] of client.server.getTables()) {
         if (table.getSeatIndex(client) !== undefined) {
@@ -338,14 +293,14 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
 
   const boardState = table.serializeBoard();
 
-  const existing = playerTables.get(client.penguin.id);
-  if (existing === undefined || existing.tableId !== resolvedTableId) {
+  const existing = client.getTable();
+  if (existing === undefined || existing.id !== resolvedTableId) {
     const seatId = table.getSeatIndex(client) ?? Table.TABLE_SPECTATOR_SEAT;
-    playerTables.set(client.penguin.id, { tableId: resolvedTableId, seatId });
+    client.enterTable(resolvedTableId, seatId);
   }
-  const playerInfo = playerTables.get(client.penguin.id);
+  const playerInfo = client.getTable();
   // when already in-game, include turn info
-  if (table.started && playerInfo !== undefined && table.hasJoined(playerInfo.seatId)) {
+  if (table.started && playerInfo !== undefined && table.hasJoined(playerInfo.seat)) {
     client.sendXt('gz', name0, name1, boardState, table.turn);
   } else {
     client.sendXt('gz', name0, name1, boardState);
@@ -357,12 +312,12 @@ handler.xt(Handle.JoinTableGame, (client) => {
     return;
   }
   // join the game instance after table seat selection
-  let tableInfo = playerTables.get(client.penguin.id);
+  let tableInfo = client.getTable();
   if (tableInfo !== undefined) {
     const roomId = client.room.id;
-    const table = client.server.getTable(tableInfo.tableId, roomId);
+    const table = client.server.getTable(tableInfo.id, roomId);
     const currentSeat = table.getSeatIndex(client);
-    let seatId = tableInfo.seatId;
+    let seatId = tableInfo.seat;
     if (currentSeat !== undefined) {
       seatId = currentSeat;
     } else if (seatId >= 0 && seatId < Table.SEAT_LENGTH && table.getSeat(seatId) === null) {
@@ -371,15 +326,14 @@ handler.xt(Handle.JoinTableGame, (client) => {
       seatId = table.assignSeatIndex(client);
     }
 
-    if (seatId !== tableInfo.seatId) {
-      tableInfo = { ...tableInfo, seatId };
+    if (seatId !== tableInfo.seat) {
+      client.enterTable(tableInfo.id, seatId);
     }
 
     const alreadyJoined = seatId !== Table.TABLE_SPECTATOR_SEAT && table.hasJoined(seatId);
     if (seatId !== Table.TABLE_SPECTATOR_SEAT) {
       table.setJoined(seatId);
     }
-    playerTables.set(client.penguin.id, tableInfo);
 
     client.sendXt('jz', seatId);
     table.sendSeatRoaster('uz', client);
@@ -408,17 +362,18 @@ handler.xt(Handle.LeaveTableGame, (client) => {
     return;
   }
   // leave the active game: spectators just close, players clear seats/reset
-  const tableInfo = playerTables.get(client.penguin.id);
+  const tableInfo = client.getTable();
+
   if (tableInfo !== undefined) {
-    const table = client.server.getTableIfExists(tableInfo.tableId);
+    const table = client.server.getTableIfExists(tableInfo.id);
     if (table === undefined) {
-      playerTables.delete(client.penguin.id);
+      client.exitTable();
       return;
     }
-    if (tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT) {
+    if (tableInfo.seat === Table.TABLE_SPECTATOR_SEAT) {
       table.removeSpectator(client);
       client.sendXt('lz');
-      playerTables.delete(client.penguin.id);
+      client.exitTable();
       return;
     }
     if (!table.started) {
@@ -426,24 +381,18 @@ handler.xt(Handle.LeaveTableGame, (client) => {
       if (seatIndex !== undefined) {
         table.seats[seatIndex] = null;
       }
-      playerTables.delete(client.penguin.id);
-      if (tableInfo.seatId < 2) {
-        table.sendUpdate(tableInfo.seatId, '');
+      client.exitTable();
+      if (tableInfo.seat < 2) {
+        table.sendUpdate(tableInfo.seat, '');
       }
       const count = table.count;
       table.broadcastUpdate();
       if (count === 0) {
         table.reset();
-        for (const [playerId, info] of playerTables.entries()) {
-          if (info.tableId === table.id) {
-            playerTables.delete(playerId);
-          }
-        }
       }
       return;
     }
     table.clear(client.penguin.name);
-    clearTable(table);
   }
 });
 
@@ -452,16 +401,16 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
     return;
   }
   // dispatch board moves for find four or mancala
-  const tableInfo = playerTables.get(client.penguin.id);
+  const tableInfo = client.getTable();
   if (tableInfo !== undefined) {
-    const table = client.server.getTableIfExists(tableInfo.tableId);
+    const table = client.server.getTableIfExists(tableInfo.id);
     if (table === undefined || !table.started || table.ended) {
       return;
     }
-    if (tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT || !table.hasJoined(tableInfo.seatId)) {
+    if (tableInfo.seat === Table.TABLE_SPECTATOR_SEAT || !table.hasJoined(tableInfo.seat)) {
       return;
     }
-    const player = tableInfo.seatId;
+    const player = tableInfo.seat;
     if (player !== 0 && player !== 1) {
       return;
     }
@@ -1031,32 +980,23 @@ handler.post('/php/gp.php', (server, body) => {
 
 handler.disconnect((client) => {
   if (client.hasPenguin()) {
-    const tableInfo = playerTables.get(client.penguin.id);
+    const tableInfo = client.getTable();
     if (tableInfo !== undefined) {
-      const table = client.server.getTableIfExists(tableInfo.tableId);
-      if (table === undefined) {
-        playerTables.delete(client.penguin.id);
-      } else if (tableInfo.seatId === Table.TABLE_SPECTATOR_SEAT) {
-        playerTables.delete(client.penguin.id);
-      } else if (table.started && table.hasJoined(tableInfo.seatId)) {
-        table.clear(client.penguin.name);
-        clearTable(table);
-      } else {
-        const seatIndex = table.getSeatIndex(client);
-        if (seatIndex !== undefined) {
-          table.seats[seatIndex] = null;
-          const count = table.count;
-          table.broadcastUpdate();
-          if (count === 0) {
-            table.reset();
-            for (const [playerId, info] of playerTables.entries()) {
-              if (info.tableId === table.id) {
-                playerTables.delete(playerId);
-              }
+      const table = client.server.getTableIfExists(tableInfo.id);
+      if (table !== undefined && tableInfo.seat !== Table.TABLE_SPECTATOR_SEAT) {
+        if (table.started && table.hasJoined(tableInfo.seat)) {
+          table.clear(client.penguin.name);
+        } else {
+          const seatIndex = table.getSeatIndex(client);
+          if (seatIndex !== undefined) {
+            table.seats[seatIndex] = null;
+            const count = table.count;
+            table.broadcastUpdate();
+            if (count === 0) {
+              table.reset();
             }
           }
         }
-        playerTables.delete(client.penguin.id);
       }
     }
   
