@@ -1172,6 +1172,10 @@ export class Client {
     return this._currentWaddleRoom;
   }
 
+  isInWaddleRoom() {
+    return this._currentWaddleRoom !== undefined;
+  }
+
   hasWaddleRoom() {
     return this._currentRoom !== undefined;
   }

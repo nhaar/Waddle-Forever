@@ -79,7 +79,7 @@ handler.xt(Handle.JoinRoomOld, (client, room, x, y) => {
     if (room !== client.waddleGame.roomId) {
       client.waddleGame.removePlayer(client);
       client.clearWaddleGame();
-      if ((client as unknown as { _currentWaddleRoom?: unknown })._currentWaddleRoom !== undefined) {
+      if (client.isInWaddleRoom()) {
         client.leaveWaddleRoom();
       }
     }
@@ -139,7 +139,7 @@ handler.xt(Handle.LeaveWaddleGame, (client, score) => {
   }
   game.removePlayer(client);
   client.clearWaddleGame();
-  if ((client as unknown as { _currentWaddleRoom?: unknown })._currentWaddleRoom !== undefined) {
+  if (client.isInWaddleRoom()) {
     client.leaveWaddleRoom();
   }
   // engine1 sled sends place (1-4); map to coins and close
@@ -470,16 +470,8 @@ handler.xt(Handle.SendTeleportOld, (client, x, y, frame) => {
   if (!client.isEngine1) {
     return;
   }
-  const roomInfo = (client as unknown as { _roomInfo?: { x: number; y: number; frame: number } })._roomInfo;
-  if (roomInfo === undefined) {
-    return;
-  }
-  roomInfo.x = x;
-  roomInfo.y = y;
-  roomInfo.frame = frame;
-  if ((client as unknown as { _currentRoom?: unknown })._currentRoom === undefined) {
-    return;
-  }
+  client.setPosition(x, y);
+  client.setFrame(frame);
   client.sendRoomXt('st', client.penguin.id, x, y, frame);
 });
 
