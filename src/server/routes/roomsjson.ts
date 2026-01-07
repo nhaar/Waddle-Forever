@@ -1,7 +1,7 @@
 import { iterateEntries } from "../../common/utils";
 import { ROOMS } from "../game-data/rooms";
 import { getMapForDate } from "../timelines";
-import { PLACEHOLDER_AS3 } from "../timelines/dates";
+import { getDate } from "../timelines/dates";
 import { MEMBER_TIMELINE } from "../timelines/member";
 import { MUSIC_TIMELINE } from "../timelines/music";
 import { isLower, Version } from "./versions";
@@ -84,7 +84,7 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Arcade"
     },
-    "122": isLower(version, PLACEHOLDER_AS3) ? {
+    "122": isLower(version, getDate('placeholder-2016')) ? {
       "room_id": 122,
       "room_key": "eco",
       "name": "eco",

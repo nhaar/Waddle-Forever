@@ -117,7 +117,7 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-17',
-    engineUpdate: 'as3-startscreen',
+    dateReference: 'as3-startscreen',
     fileChanges: {
       'play/v2/client/club_penguin.swf': 'archives:ClientClubPenguin2011-03-28.swf',
       'play/v2/client/world.swf': 'archives:ClientWorld.swf',
@@ -1710,7 +1710,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
-    engineUpdate: 'vanilla-engine',
+    dateReference: 'vanilla-engine',
     fileChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',

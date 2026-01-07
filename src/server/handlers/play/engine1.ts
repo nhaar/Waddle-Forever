@@ -5,7 +5,7 @@ import { getDateString } from '../../../common/utils';
 import { Handle } from '../handles';
 import { processFurniture } from './igloo';
 import { isGreaterOrEqual } from '../../../server/routes/versions';
-import { IGLOO_MUSIC_RELEASE } from '../../../server/timelines/dates';
+import { getDate } from '../../../server/timelines/dates';
 import { Penguin } from '../../penguin';
 import { FURNITURE } from '../../../server/game-logic/furniture';
 import { getFlooringCost, getIglooCost } from '../../../server/game-logic/iglooItems';
@@ -753,7 +753,7 @@ handler.xt(Handle.JoinIglooOld, (client, id, isMember) => {
   const args: Array<string | number> = [ownerId, igloo.type];
 
   // when igloo music was added, the music parameter is optional
-  if (isGreaterOrEqual(client.version, IGLOO_MUSIC_RELEASE)) {
+  if (isGreaterOrEqual(client.version, getDate('igloo-music'))) {
     args.push(igloo.music);
   }
 

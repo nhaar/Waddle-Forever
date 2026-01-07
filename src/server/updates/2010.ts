@@ -1103,6 +1103,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-07-26',
     miscComments: ['Stamps are released'],
+    dateReference: 'stamps-release',
     fileChanges: {
       'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf'
     },
@@ -3172,7 +3173,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-11-19',
     miscComments: ['The password warning is updated'],
-    engineUpdate: 'as3',
+    dateReference: 'as3',
     indexHtml: 'classic-as3',
     fileChanges: {
       'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf',

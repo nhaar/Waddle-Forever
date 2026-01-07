@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex, addRecordToMap } from "../game-data";
+import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
 import { isLower, Version } from "../routes/versions";
@@ -18,7 +18,7 @@ import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
 import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
-import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
+import { START_DATE, getDate } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -73,7 +73,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
 }
 
 function addRoomRoute(map: FileTimelineMap, room: RoomName, file: string, date: string, end?: string) {
-  if (isLower(date, CPIP_UPDATE)) {
+  if (isLower(date, getDate('cpip'))) {
     const fileName = `${room}.swf`
     map.add(path.join('artwork/rooms', fileName), file, date, end);
   } else {
@@ -190,8 +190,8 @@ function addNewspapers(map: FileTimelineMap): void {
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
-  map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
+  map.addRouteMap(CPIP_STATIC_FILES, getDate('cpip'));
+  map.addRouteMap(AS3_STATIC_FILES, getDate('vanilla-engine'));
 }
 
 function addStaticFiles(map: FileTimelineMap): void {
@@ -322,7 +322,7 @@ function addUpdates(map: FileTimelineMap): void {
       map.add(path.join('play/v2/content/global', update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), update.update.scavengerHunt2010.iconFileId, update.date, update.end);
     }
     if (update.update.fairCpip !== undefined) {
-      if (isLower(update.date, MODERN_AS3)) {
+      if (isLower(update.date, getDate('vanilla-engine'))) {
         map.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', update.date, update.end);
         map.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', update.date, update.end);
       }

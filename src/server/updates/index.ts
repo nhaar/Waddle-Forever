@@ -152,7 +152,7 @@ export type CPUpdate = {
 
   freeBrownPuffle?: boolean;
 
-  engineUpdate?: 'vanilla-engine' | 'as3' | 'cpip' | 'as3-startscreen' | 'igloo-music';
+  dateReference?: DateReference;
 
   indexHtml?: string;
   websiteFolder?: string;
@@ -249,6 +249,14 @@ export type Event = 'party' |
   'telescope-bottle' |
   'storm' |
   'box-plants';
+
+export type DateReference = 'cpip' |
+  'as3' |
+  'vanilla-engine' |
+  'as3-startscreen' |
+  'igloo-music' |
+  'stamps-release' |
+  'placeholder-2016';
 
 export type Update = {
   date: Version;

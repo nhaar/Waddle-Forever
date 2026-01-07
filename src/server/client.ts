@@ -17,7 +17,7 @@ import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
-import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
+import { isEngine1, isEngine2, isEngine3, getDate } from './timelines/dates';
 import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
 import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
 import { MASCOTS } from './game-data/mascots';
@@ -742,7 +742,7 @@ export class Server {
   getItemsFiltered(items: number[]) {
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.settings.version, CPIP_UPDATE)) {
+    if (isLower(this.settings.version, getDate('cpip'))) {
       const itemSet = findInVersionStrict(this.settings.version, CLIENT_ITEMS_TIMELINE)
       return items.filter((value) => itemSet.has(value));
     } else {
@@ -1286,7 +1286,7 @@ export class Client {
     const gameRoom = GAME_STAMPS_TIMELINE.get(this.room.id);
 
     if (gameRoom !== undefined) {
-      const stamps = isLower(this.version, STAMPS_RELEASE) ? [] : (findInVersion(this.version, gameRoom) ?? []);
+      const stamps = isLower(this.version, getDate('stamps-release')) ? [] : (findInVersion(this.version, gameRoom) ?? []);
 
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {

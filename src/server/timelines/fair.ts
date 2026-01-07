@@ -1,7 +1,7 @@
 import { newVersionsTimeline } from ".";
 import { isGreaterOrEqual } from "../routes/versions";
 import { UPDATES } from "../updates/updates";
-import { MODERN_AS3, START_DATE } from "./dates";
+import { START_DATE, getDate } from "./dates";
 
 export const FAIR_TIMELINE = newVersionsTimeline<boolean>((timeline) => {
   timeline.add({
@@ -10,7 +10,7 @@ export const FAIR_TIMELINE = newVersionsTimeline<boolean>((timeline) => {
   });
 
   UPDATES.forEach(update => {
-    if (update.date !== undefined && update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, MODERN_AS3)) {
+    if (update.date !== undefined && update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, getDate('vanilla-engine'))) {
       timeline.add({
         date: update.date,
         end: update.end,

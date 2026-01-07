@@ -1,5 +1,5 @@
 import { findInVersion } from "../game-data";
-import { AS3_STARTSCREEN, MODERN_AS3 } from "../timelines/dates";
+import { getDate } from "../timelines/dates";
 import { getStartscreenTimeline } from "../timelines/startscreen";
 import { isLower, Version } from "./versions";
 
@@ -8,7 +8,7 @@ export function getStartscreenXML(version: Version) {
 
   const screens = findInVersion(version, startscreens) || [];
 
-	if (isLower(version, AS3_STARTSCREEN)) {
+	if (isLower(version, getDate('as3-startscreen'))) {
 		return `
 	<?xml version="1.0" encoding="UTF-8" ?>
 	<!-- EN -->
@@ -39,7 +39,7 @@ export function getStartscreenXML(version: Version) {
 	
 	</startscreen>
 	`;
-	} else if (isLower(version, MODERN_AS3)) {
+	} else if (isLower(version, getDate('vanilla-engine'))) {
 		return `
 <?xml version="1.0" encoding="UTF-8"?>
 
