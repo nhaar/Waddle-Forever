@@ -1,4 +1,4 @@
-import { Client } from '../../client';
+import { Client, Server } from '../../client';
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
 import { getDateString } from '../../../common/utils';
@@ -9,6 +9,7 @@ import { IGLOO_MUSIC_RELEASE } from '../../../server/timelines/dates';
 import { Penguin } from '../../penguin';
 import { FURNITURE } from '../../../server/game-logic/furniture';
 import { getFlooringCost, getIglooCost } from '../../../server/game-logic/iglooItems';
+import { Table } from './table';
 
 const handler = new Handler();
 
@@ -40,6 +41,16 @@ function sendBuddyOnlineList(client: Client, excludeId?: number): void {
   client.sendXt('go', ...onlineIds);
 }
 
+// engine1 clients expect seats as 1-based; 99 is spectator
+
+// engine1 sled uses waddle state but uses old z% protocol
+function getSledGame(client: Client) {
+  if (!client.isInWaddleGame() || client.waddleGame.name !== 'sled') {
+    return undefined;
+  }
+  return client.waddleGame;
+}
+
 // Joining server
 handler.xt(Handle.JoinServerOld, (client) => {
   client.sendXt('js')
@@ -63,13 +74,25 @@ handler.xt(Handle.JoinServerOld, (client) => {
 })
 
 // Joining room
-handler.xt(Handle.JoinRoomOld, (client, room) => {
-  client.joinRoom(room);
+handler.xt(Handle.JoinRoomOld, (client, room, x, y) => {
+  if (client.isEngine1 && client.isInWaddleGame() && client.waddleGame.name === 'sled') {
+    if (room !== client.waddleGame.roomId) {
+      client.waddleGame.removePlayer(client);
+      client.clearWaddleGame();
+      if (client.isInWaddleRoom()) {
+        client.leaveWaddleRoom();
+      }
+    }
+  }
+  client.joinRoom(room, x, y);
 })
 
 // Paying after minigame
 handler.xt(Handle.LeaveGame, (client, score) => {
   if (!client.isEngine1) {
+    return;
+  }
+  if (client.isInWaddleGame() && client.waddleGame.name === 'sled') {
     return;
   }
   const coins = client.getCoinsFromScore(score);
@@ -79,14 +102,319 @@ handler.xt(Handle.LeaveGame, (client, score) => {
   client.update();
 })
 
+handler.xt(Handle.JoinSled, (client) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  const game = getSledGame(client);
+  if (game === undefined) {
+    return;
+  }
+  // engine1 expects a compact name|color roster
+  const roster = game.players.map((player) => {
+    return `${player.penguin.name}|${player.penguin.color}`;
+  });
+  client.sendXt('uz', game.players.length, ...roster);
+});
+
+handler.xt(Handle.SledRaceAction, (client, id, x, y, time) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  const game = getSledGame(client);
+  if (game === undefined) {
+    return;
+  }
+  // relay sled movement to all players
+  game.sendXt('zm', id, x, y, time);
+});
+
+handler.xt(Handle.LeaveWaddleGame, (client, score) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  const game = getSledGame(client);
+  if (game === undefined) {
+    return;
+  }
+  game.removePlayer(client);
+  client.clearWaddleGame();
+  if (client.isInWaddleRoom()) {
+    client.leaveWaddleRoom();
+  }
+  // engine1 sled sends place (1-4); map to coins and close
+  const place = Number(score);
+  let reward = 0;
+  if (place === 1) {
+    reward = 20;
+  } else if (place === 2) {
+    reward = 10;
+  } else if (place === 3 || place === 4) {
+    reward = 5;
+  }
+  if (reward > 0) {
+    client.penguin.addCoins(reward);
+  }
+  client.sendXt('zo');
+  client.update();
+});
+
 // update client's coins
 handler.xt(Handle.GetCoins, (client) => {
+  if (client.server.removeSpectator(client.penguin.id)) {
+    return;
+  }
   client.sendEngine1Coins();
 })
 
 handler.xt(Handle.GetCoins2007, (client) => {
   client.sendXt('gc', client.penguin.coins);
 })
+
+handler.xt(Handle.GetTableOld, (client, ...tableIds) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  // return table occupancy counts for the requested table ids
+  if (tableIds.length === 0) {
+    client.sendXt('gt');
+    return;
+  }
+  const roomId = client.room?.id;
+  if (roomId === undefined) {
+    client.sendXt('gt');
+    return;
+  }
+  const entries: string[] = [];
+  tableIds.forEach((tableId) => {
+    const table = client.server.getTable(tableId, roomId);
+    entries.push(`${tableId}|${table.count}`);
+  });
+  if (entries.length === 0) {
+    client.sendXt('gt');
+    return;
+  }
+  client.sendXt('gt', ...entries);
+});
+
+handler.xt(Handle.JoinTableOld, (client, tableId) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  const room = client.room;
+  if (room === undefined) {
+    return;
+  }
+
+  const table = client.server.getTable(tableId, room.id);
+  const beforeCount = table.count;
+
+  const seatId = table.getSeatIndex(client) ?? table.assignSeatIndex(client);
+  
+  client.enterTable(tableId, seatId);
+  // first seated player resets a stale board
+  if (seatId !== Table.TABLE_SPECTATOR_SEAT && beforeCount === 0) {
+    table.reset();
+  }
+  if (seatId !== Table.TABLE_SPECTATOR_SEAT) {
+    const afterCount = table.count;
+    if (afterCount !== beforeCount) {
+      table.broadcastUpdate();
+    }
+  }
+  // the index here is 1 based
+  const tableSeatId = seatId === Table.TABLE_SPECTATOR_SEAT ? seatId : seatId + 1;
+  client.sendXt('jt', tableId, tableSeatId);
+});
+
+handler.xt(Handle.LeaveTableOld, (client) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  // old leave flow: free seat, broadcast count, and reset if empty
+  const tableInfo = client.getTable();
+  if (tableInfo !== undefined) {
+    const table = client.server.getTableIfExists(tableInfo.id);
+    client.exitTable();
+    if (table === undefined) {
+      return;
+    }
+    const seatIndex = table.getSeatIndex(client);
+    if (seatIndex === undefined) {
+      return;
+    }
+    table.emptySeat(seatIndex);
+    const count = table.count;
+    table.broadcastUpdate();
+    if (count === 0) {
+      table.reset();
+    }
+  }
+});
+
+function isTableId(tableId: number) {
+  return Server.FIND_FOUR_TABLE_IDS.has(tableId) || Server.MANCALA_TABLE_IDS.has(tableId);
+}
+
+handler.xt(Handle.GetTableGame, (client, tableId) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  // resolve table id from context so spectators can re-open correctly
+  let resolvedTableId = tableId;
+  if (!isTableId(resolvedTableId)) {
+    const existingTable = client.getTable();
+    if (existingTable !== undefined) {
+      resolvedTableId = existingTable.id;
+    } else {
+      for (const [id, table] of client.server.getTables()) {
+        if (table.getSeatIndex(client) !== undefined) {
+          resolvedTableId = id;
+          break;
+        }
+      }
+    }
+  }
+
+  const roomId = client.room.id;
+  const table = client.server.getTable(resolvedTableId, roomId);
+  const name0 = table.getName(0);
+  const name1 = table.getName(1);
+
+  const boardState = table.serializeBoard();
+
+  const existing = client.getTable();
+  if (existing === undefined || existing.id !== resolvedTableId) {
+    const seatId = table.getSeatIndex(client) ?? Table.TABLE_SPECTATOR_SEAT;
+    client.enterTable(resolvedTableId, seatId);
+  }
+  client.sendXt('gz', name0, name1, boardState);
+});
+
+handler.xt(Handle.JoinTableGame, (client) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  // join the game instance after table seat selection
+  let tableInfo = client.getTable();
+  if (tableInfo !== undefined) {
+    const roomId = client.room.id;
+    const table = client.server.getTable(tableInfo.id, roomId);
+    const currentSeat = table.getSeatIndex(client);
+    let seatId = tableInfo.seat;
+    if (currentSeat !== undefined) {
+      seatId = currentSeat;
+    } else if (seatId >= 0 && seatId < Table.SEAT_LENGTH && table.getSeat(seatId) === null) {
+      table.setSeat(client, seatId);
+    } else {
+      seatId = table.assignSeatIndex(client);
+    }
+
+    if (seatId !== tableInfo.seat) {
+      client.enterTable(tableInfo.id, seatId);
+    }
+
+    const alreadyJoined = seatId !== Table.TABLE_SPECTATOR_SEAT && table.hasJoined(seatId);
+    if (seatId !== Table.TABLE_SPECTATOR_SEAT) {
+      table.setJoined(seatId);
+    }
+
+    client.sendXt('jz', seatId);
+    table.sendSeatRoaster('uz', client);
+
+    if (seatId !== Table.TABLE_SPECTATOR_SEAT && !alreadyJoined) {
+      table.sendUpdate(seatId, client.penguin.name);
+    }
+
+    // start the match when both players have joined
+    if (!table.started) {
+      if (table.hasEveryoneJoined()) {
+        table.setStarted();
+        table.sendPacket('sz', table.turn);
+      }
+      return;
+    }
+
+    if (!alreadyJoined) {
+      client.sendXt('sz', table.turn);
+    }
+  }
+});
+
+handler.xt(Handle.LeaveTableGame, (client) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  // leave the active game: spectators just close, players clear seats/reset
+  const tableInfo = client.getTable();
+
+  if (tableInfo !== undefined) {
+    const table = client.server.getTableIfExists(tableInfo.id);
+    if (table === undefined) {
+      client.exitTable();
+      return;
+    }
+    if (tableInfo.seat === Table.TABLE_SPECTATOR_SEAT) {
+      table.removeSpectator(client);
+      client.sendXt('lz');
+      client.exitTable();
+      return;
+    }
+    if (!table.started) {
+      const seatIndex = table.getSeatIndex(client);
+      if (seatIndex !== undefined) {
+        table.seats[seatIndex] = null;
+      }
+      client.exitTable();
+      if (tableInfo.seat < 2) {
+        table.sendUpdate(tableInfo.seat, '');
+      }
+      const count = table.count;
+      table.broadcastUpdate();
+      if (count === 0) {
+        table.reset();
+      }
+      return;
+    }
+    table.clear(client.penguin.name);
+  }
+});
+
+handler.xt(Handle.SendTableMove, (client, ...moves) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  // dispatch board moves for find four or mancala
+  const tableInfo = client.getTable();
+  if (tableInfo !== undefined) {
+    const table = client.server.getTableIfExists(tableInfo.id);
+    if (table === undefined || !table.started || table.ended) {
+      return;
+    }
+    if (tableInfo.seat === Table.TABLE_SPECTATOR_SEAT || !table.hasJoined(tableInfo.seat)) {
+      return;
+    }
+    const player = tableInfo.seat;
+    if (player !== 0 && player !== 1) {
+      return;
+    }
+    if (table.turn !== player) {
+      return;
+    }
+
+    // table game specific logic
+    if (moves.length === table.moveLength) {
+      const reset = table.sendMove(moves);
+      // Ignore non-table zm packets (e.g. sled racing uses 4 args).
+      if (table.automaticTurnChange) {
+        table.changeTurn();
+      }
+      if (reset) {
+        table.resetRound();
+      }
+    }
+  }  
+});
 
 handler.xt(Handle.AddItemOld, (client, item) => {
   // TODO remove coins logic
@@ -124,7 +452,22 @@ handler.xt(Handle.SendMessageOld, (client, id, message) => {
 });
 
 handler.xt(Handle.SetPositionOld, (client, ...args) => {
-  client.setPosition(...args);
+  const [x, y] = args;
+  if (x === undefined || y === undefined) {
+    return;
+  }
+  const safeX = x <= 0 ? 20 : x;
+  const safeY = y <= 0 ? 20 : y;
+  client.setPosition(safeX, safeY);
+});
+
+handler.xt(Handle.SendTeleportOld, (client, x, y, frame) => {
+  if (!client.isEngine1) {
+    return;
+  }
+  client.setPosition(x, y);
+  client.setFrame(frame);
+  client.sendRoomXt('st', client.penguin.id, x, y, frame);
 });
 
 handler.xt(Handle.SendEmoteOld, (client, emote) => {
@@ -616,17 +959,35 @@ handler.post('/php/gp.php', (server, body) => {
 });
 
 handler.disconnect((client) => {
-  const penguin = (client as unknown as { _penguin?: Penguin })._penguin;
-  const buddyIds = penguin !== undefined ? penguin.getBuddies() : [];
-
-  client.disconnect();
-
-  buddyIds.forEach((buddyId) => {
-    const buddyClient = client.server.getPlayerById(buddyId);
-    if (buddyClient !== undefined) {
-      sendBuddyOnlineList(buddyClient, client.penguin.id);
+  if (client.hasPenguin()) {
+    const tableInfo = client.getTable();
+    if (tableInfo !== undefined) {
+      const table = client.server.getTableIfExists(tableInfo.id);
+      if (table !== undefined && tableInfo.seat !== Table.TABLE_SPECTATOR_SEAT) {
+        if (table.started && table.hasJoined(tableInfo.seat)) {
+          table.clear(client.penguin.name);
+        } else {
+          const seatIndex = table.getSeatIndex(client);
+          if (seatIndex !== undefined) {
+            table.seats[seatIndex] = null;
+            const count = table.count;
+            table.broadcastUpdate();
+            if (count === 0) {
+              table.reset();
+            }
+          }
+        }
+      }
     }
-  });
+  
+    client.disconnect();
+    client.penguin.getBuddies().forEach((buddyId) => {
+      const buddyClient = client.server.getPlayerById(buddyId);
+      if (buddyClient !== undefined) {
+        sendBuddyOnlineList(buddyClient, client.penguin.id);
+      }
+    });
+  }
 });
 
 export default handler;
