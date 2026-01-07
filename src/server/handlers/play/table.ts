@@ -206,4 +206,12 @@ export abstract class Table {
   abstract automaticTurnChange: boolean;
 
   abstract sendMove(moves: number[]): boolean;
+
+  endGame(...args: number[]) {
+    this.setEnded();
+    this._spectators.forEach(spectator => {
+      this._server.addSpectator(spectator.penguin.id);
+    });
+    this.sendPacket('zo', ...args);
+  }
 }

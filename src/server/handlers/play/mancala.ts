@@ -107,9 +107,8 @@ export class MancalaTable extends Table {
     this.sendPacket('zm', ...zmArgs);
     this._turn = nextTurn;
     if (gameOver) {
-      this.setEnded();
       this.awardMancalaCoins();
-      this.sendPacket('zo');
+      this.endGame();
       return true;
     }
     return false;

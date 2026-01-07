@@ -139,14 +139,12 @@ export class FindFourTable extends Table {
     this.sendPacket('zm', this.turn, column, dropRow);
     const win = this.findFourWin(column, dropRow);
     if (win !== undefined) {
-      this.setEnded();
       this.awardFindFourCoins(win.winner - 1);
-      this.sendPacket('zo', win.x, win.y, win.direction);
+      this.endGame(win.x, win.y, win.direction);
       return true;
     } else if (this.isFindFourBoardFull()) {
-      this.setEnded();
       this.awardFindFourCoins();
-      this.sendPacket('zo', -10, -10, 1);
+      this.endGame(-10, -10, 1);
       return true;
     }
     return false;

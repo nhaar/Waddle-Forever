@@ -522,6 +522,7 @@ export class Server {
   private _bakery: Bakery;
 
   private _tables: Map<number, Table>;
+  private _tableSectators: Set<number>;
   
   static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
   static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
@@ -534,6 +535,7 @@ export class Server {
     this._followers = new Map<Client, Bot[]>();
     this._bakery = new Bakery(this);
     this._tables = new Map<number, Table>();
+    this._tableSectators = new Set<number>();
     this.createMascots();
     this.init();
   }
@@ -775,6 +777,14 @@ export class Server {
       });
     })
   }
+
+  addSpectator(id: number): void {
+    this._tableSectators.add(id);
+  }
+
+  removeSpectator(id: number): boolean {
+    return this._tableSectators.delete(id);
+  }
 }
 
 function capitalizeName(name: string): string {
@@ -801,7 +811,7 @@ export class Client {
   private _roomInfo: PlayerRoomInfo | undefined;
   private _avatar: number = 0;
 
-  private _tableState: { id: number; seat: number } | undefined;
+  private _tableState: { id: number; seat: number } | undefined = undefined;
 
   sessionStart: number;
   serverType: ServerType

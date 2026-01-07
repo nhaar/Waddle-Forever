@@ -51,16 +51,6 @@ function getSledGame(client: Client) {
   return client.waddleGame;
 }
 
-// track spectators so we can suppress the 0-coin popup
-const tableSpectators = new Set<number>();
-
-function markTableSpectatorCoins(table: Table): void {
-  // spectators still request coins; flag them so GetCoins ignores it
-  table.spectators.forEach(spectator => {
-    tableSpectators.add(spectator.penguin.id);
-  });
-}
-
 // Joining server
 handler.xt(Handle.JoinServerOld, (client) => {
   client.sendXt('js')
@@ -171,7 +161,7 @@ handler.xt(Handle.LeaveWaddleGame, (client, score) => {
 
 // update client's coins
 handler.xt(Handle.GetCoins, (client) => {
-  if (tableSpectators.delete(client.penguin.id)) {
+  if (client.server.removeSpectator(client.penguin.id)) {
     return;
   }
   client.sendEngine1Coins();
@@ -420,7 +410,6 @@ handler.xt(Handle.SendTableMove, (client, ...moves) => {
 
     // table game specific logic
     if (moves.length === table.moveLength) {
-      markTableSpectatorCoins(table);
       const reset = table.sendMove(moves);
       // Ignore non-table zm packets (e.g. sled racing uses 4 args).
       if (table.automaticTurnChange) {
