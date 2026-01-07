@@ -20,7 +20,7 @@ export function createCommands(mainWindow: BrowserWindow) {
 
   commandsWindow.setMenu(null);
 
-  commandsWindow.on('close', () => {
+  commandsWindow.on('closed', () => {
     commandsWindow = null;
   });
 

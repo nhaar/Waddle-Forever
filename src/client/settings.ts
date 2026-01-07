@@ -33,7 +33,7 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
     });
   }
 
-  settingsWindow.on('close', () => {
+  settingsWindow.on('closed', () => {
     settingsWindow = null;
   });
 
