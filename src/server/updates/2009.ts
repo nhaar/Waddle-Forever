@@ -745,7 +745,6 @@ export const UPDATES_2009: Update[] = [
           beach: 'archives:RoomsBeach-AprilFoolsParty2009.swf',
           beacon: 'archives:RoomsBeacon-AprilFoolsParty2009.swf',
           boiler: 'archives:RoomsBoiler-AprilFoolsParty2009.swf',
-          boxdimension: 'archives:RoomsParty2-AprilFoolsParty2009.swf',
           party3: 'archives:RoomsParty3-AprilFoolsParty2009.swf',
           cave: 'archives:RoomsCave-AprilFoolsParty2009.swf',
           coffee: 'archives:RoomsCoffee-AprilFoolsParty2009.swf',
@@ -1122,7 +1121,14 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-16',
-    end: ['party']
+    end: ['party'],
+    temp: {
+      'box-plants': {
+        rooms: {
+          boxdimension: 'archives:RoomsBoxdimension-January2010.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-06-19',

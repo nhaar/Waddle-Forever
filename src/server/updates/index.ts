@@ -247,7 +247,8 @@ export type Event = 'party' |
   'forts-sign' |
   'attic-snow' |
   'telescope-bottle' |
-  'storm';
+  'storm' |
+  'box-plants';
 
 export type Update = {
   date: Version;

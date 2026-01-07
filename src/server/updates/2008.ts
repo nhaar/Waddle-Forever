@@ -976,8 +976,6 @@ export const UPDATES_2008: Update[] = [
       mtn: 'recreation:mtn_cpip_start.swf',
       berg: 'archives:RoomsBerg.swf',
       beacon: 'recreation:beacon_nolight.swf',
-      // post island adventure update
-      boxdimension: 'archives:RoomsBoxdimension-January2010.swf',
       cave: 'archives:RoomsCave.swf',
       // recreation of proper cove room here
       cove: 'recreation:cpip_cove_precatalog.swf',

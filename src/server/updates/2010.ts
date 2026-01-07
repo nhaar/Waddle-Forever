@@ -300,10 +300,10 @@ export const UPDATES_2010: Update[] = [
       ]
     },
     roomComment: 'The plants disappear from the Box Dimension',
+    end: ['box-plants'],
     rooms: {
       plaza: 'archives:RoomsPlaza-August2011.swf',
-      stage: 'archives:HalloweenParty2010Stage.swf',
-      boxdimension: 'slegacy:media/play/v2/content/global/rooms/boxdimension.swf'
+      stage: 'archives:HalloweenParty2010Stage.swf'
     }
   },
   {
