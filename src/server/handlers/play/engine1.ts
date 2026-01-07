@@ -288,13 +288,7 @@ handler.xt(Handle.GetTableGame, (client, tableId) => {
     const seatId = table.getSeatIndex(client) ?? Table.TABLE_SPECTATOR_SEAT;
     client.enterTable(resolvedTableId, seatId);
   }
-  const playerInfo = client.getTable();
-  // when already in-game, include turn info
-  if (table.started && playerInfo !== undefined && table.hasJoined(playerInfo.seat)) {
-    client.sendXt('gz', name0, name1, boardState, table.turn);
-  } else {
-    client.sendXt('gz', name0, name1, boardState);
-  }
+  client.sendXt('gz', name0, name1, boardState);
 });
 
 handler.xt(Handle.JoinTableGame, (client) => {
