@@ -10,7 +10,23 @@ export function getRoomsJson(version: Version): string {
   const music = getMapForDate(MUSIC_TIMELINE, version);
   const member = getMapForDate(MEMBER_TIMELINE, version);
 
-  const json = {
+  const json: Record<string, {
+    room_id: number,
+    room_key: string;
+    name: string;
+    display_name: string;
+    music_id: number;
+    is_member: 0 | 1;
+    path: string;
+    max_users: number;
+    jump_enabled: boolean;
+    jump_disabled: boolean;
+    required_item: number | null;
+    short_name: string;
+    pin_id?: number;
+    pin_x?: number;
+    pin_y?: number;
+  }> = {
     "100": {
       "room_id": 100,
       "room_key": "town",
@@ -2028,6 +2044,24 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Gold Mine"
     }
+  }
+
+  if (isLower(version, getDate('vr-room'))) {
+    json["213"] = 
+    {
+      "room_id":213,
+      "room_key":"agentvr",
+      "name":"Agent VR",
+      "display_name":"Agent VR",
+      "music_id":23,
+      "is_member":0,
+      "path":"agentvr.swf",
+      "max_users":80,
+      "jump_enabled":false,
+      "jump_disabled":true,
+      "required_item":null,
+      "short_name":"EPF Only"
+    };
   }
 
   iterateEntries(ROOMS, (name, room) => {

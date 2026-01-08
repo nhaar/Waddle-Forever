@@ -12,7 +12,8 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'igloo-music': undefined,
   'stamps-release': undefined,
   'vanilla-engine': undefined,
-  'placeholder-2016': undefined
+  'placeholder-2016': undefined,
+  'vr-room': undefined
 };
 
 const dateRefMap = new Map<DateReference, Version>();

@@ -256,7 +256,8 @@ export type DateReference = 'cpip' |
   'as3-startscreen' |
   'igloo-music' |
   'stamps-release' |
-  'placeholder-2016';
+  'placeholder-2016' |
+  'vr-room';
 
 export type Update = {
   date: Version;
