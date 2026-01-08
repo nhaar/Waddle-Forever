@@ -711,6 +711,15 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-03-26',
+    miscComments: ['The start screen is updated'],
+    temp: {
+      party3: {
+        startscreens: ['archives:LoginScreenAprilFools2009.swf']
+      }
+    }
+  },
+  {
     date: '2009-03-27',
     temp: {
       party: {
@@ -798,8 +807,7 @@ export const UPDATES_2009: Update[] = [
         },
         memberRooms: {
           party3: true
-        },
-        startscreens: ['archives:LoginScreenAprilFools2009.swf']
+        }
       }
     }
   },
