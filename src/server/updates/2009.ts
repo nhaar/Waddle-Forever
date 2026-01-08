@@ -691,17 +691,14 @@ export const UPDATES_2009: Update[] = [
         }
       }
     },
-    end: ['attic-snow', 'event']
-  },
-  {
-    date: '2009-03-22',
     iglooList: [
       { display: 'Noir Noises', id: 37, pos: [1, 1] },
       { display: 'Egyptian Wrap', id: 34, pos: [2, 1] },
       { display: 'For Great Justice', id: 32, pos: [5, 2] },
       { display: 'Twice upon a Time', id: 39, pos: [6, 2] },
       { display: 'Pterodactyl Ptune', id: 35, pos: [7, 2] }
-    ]
+    ],
+    end: ['attic-snow', 'event']
   },
   {
     date: '2009-03-24',
