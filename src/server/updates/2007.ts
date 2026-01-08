@@ -695,11 +695,22 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-01',
-    end: ['party']
+    end: ['party'],
+    constructionComment: 'A construction begins at the Plaza',
+    rooms: {
+      plaza: 'archives:RoomsPlaza-StageConstruction_1.swf'
+    }
   },
   {
     date: '2007-11-02',
     clothingCatalog: 'archives:PenguinStyleNov2007.swf'
+  },
+  {
+    date: '2007-11-08',
+    constructionComment: 'Construction progresses at the Plaza',
+    rooms: {
+      plaza: 'archives:RoomsPlaza-StageConstruction_2.swf'
+    }
   },
   {
     date: '2007-11-16',
