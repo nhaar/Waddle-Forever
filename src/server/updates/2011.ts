@@ -709,7 +709,8 @@ export const UPDATES_2011: Update[] = [
       costumeTrunk: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf'
     },
     rooms: {
-      plaza: 'archives:RoomsPlaza-Play3-2.swf'
+      plaza: 'archives:RoomsPlaza-Play3-2.swf',
+      stage: 'archives:2011Mar17Stage.swf'
     }
   },
   {
