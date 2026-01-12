@@ -616,6 +616,13 @@ export const UPDATES_2010: Update[] = [
     iglooCatalog: 'archives:April2010Igloo.swf'
   },
   {
+    date: '2010-04-19',
+    fileChanges: {
+      'play/v2/client/mail.swf': 'slegacy:media/play/v2/client/mail.swf'
+    },
+    miscComments: ['The mail interface changes']
+  },
+  {
     date: '2010-04-21',
     roomComment: 'The Forest now has a path to the Mine Shack',
     temp: {
