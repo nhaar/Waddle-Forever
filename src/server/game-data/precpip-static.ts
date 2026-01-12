@@ -222,5 +222,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/help/clocktower.swf': 'recreation:clocktower.swf',
   'play/v2/content/local/en/membership/inventory_equip.swf': 'recreation:membership_inventory.swf',
   'edit/edit9.swf': 'archives:EditEdit8.swf',
-  'artwork/forms/agent1.swf': 'recreation:agent1.swf'
+  'artwork/forms/agent1.swf': 'recreation:agent1.swf',
+  'artwork/tools/phone2.swf': 'archives:ArtworkToolsPhone1.swf'
 };
