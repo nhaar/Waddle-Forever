@@ -489,7 +489,6 @@ export const UPDATES_2009: Update[] = [
           forest: 'archives:RoomsForest-PuffleParty2009.swf',
           berg: 'archives:RoomsBerg-PuffleParty2009.swf',
           light: 'archives:RoomsLight-PuffleParty2009.swf',
-          mtn: 'archives:RoomsMtn-PuffleParty2009.swf',
           pet: 'archives:PuffleParty2009-0220pet.swf',
           plaza: 'archives:RoomsPlaza-PuffleParty2009.swf',
           party: 'archives:RoomsParty-PuffleParty2009.swf',
@@ -518,7 +517,8 @@ export const UPDATES_2009: Update[] = [
       // white puffle sighting
       event: {
         rooms: {
-          dojoext: 'archives:RoomsDojoext2008.swf'
+          dojoext: 'archives:RoomsDojoext2008.swf',
+          mtn: 'archives:RoomsMtn-PuffleParty2009.swf'
         }
       }
     }
