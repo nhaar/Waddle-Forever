@@ -834,7 +834,7 @@ export const UPDATES_2012: Update[] = [
     clothingCatalog: 'archives:PenguinStyleJul2012.swf',
     stagePlay: {
       name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
-      costumeTrunk: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf'
+      costumeTrunk: 'recreation:costume_jul_12.swf'
     },
     rooms: {
       plaza: 'archives:RoomsPlaza-Play3-2.swf',

@@ -1840,6 +1840,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'st_patrick_membership.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'costume_jul_12.swf',
+      comment: 'Made by ItzAle'
     }
   ],
   [MOD]: [
