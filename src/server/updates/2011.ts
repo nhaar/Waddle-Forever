@@ -1862,7 +1862,14 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-07-28',
-    newspaper: 'period-start'
+    newspaper: 'period-start',
+    temp: {
+      party: {
+        rooms: {
+          berg: 'recreation:berg_island_adventure_no_pin.swf'
+        }
+      }
+    }
   },
   {
     date: '2011-08-04',

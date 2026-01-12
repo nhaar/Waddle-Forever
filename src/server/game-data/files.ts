@@ -1848,6 +1848,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'plaza_squidzoid_2012.swf',
       comment: 'Made by ItzAle, Plaza with weather manipulation and the Squidzoid play'
+    },
+    {
+      file: 'berg_island_adventure_no_pin.swf',
+      comment: 'Made by ItzAle, removed the Gold Anchor pin from the Island Adventure 2011 Iceberg'
+    },
+    {
+      file: 'mtn_party_favors_pin.swf',
+      comment: 'Made by ItzAle, removed fireworks from the archived file'
     }
   ],
   [MOD]: [
