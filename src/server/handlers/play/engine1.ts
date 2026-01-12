@@ -482,9 +482,12 @@ handler.xt(Handle.SendJokeOld, (client, joke) => {
   client.sendJoke(joke);
 });
 
-handler.xt(Handle.SendSafeMessageOld, (client, id) => {
+const handleSafeMessageOld = (client: Client, id: string) => {
   client.sendSafeMessage(id);
-});
+};
+
+handler.xt(Handle.SendSafeMessageOld, handleSafeMessageOld);
+handler.xt(Handle.SendSafeMessageOldAlt, handleSafeMessageOld);
 
 handler.xt(Handle.SendActionOld, (client, id) => {
   client.sendAction(id);
