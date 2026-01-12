@@ -260,7 +260,7 @@ export const UPDATES_2007: Update[] = [
     date: '2007-04-13',
     roomComment: 'A stage is now built in the Lighthouse',
     rooms: {
-      light: 'archives:Lighthouse2007.swf'
+      light: 'archives:ArtworkRoomsLight46.swf'
     }
   },
   {
