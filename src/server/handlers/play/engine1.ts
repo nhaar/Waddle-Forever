@@ -53,7 +53,7 @@ function getSledGame(client: Client) {
 
 // Joining server
 handler.xt(Handle.JoinServerOld, (client) => {
-  client.sendXt('js')
+  client.sendXt('js', client.isAgent() ? 1 : 0);
 
   // chat506+ expects an immediate buddy list + online list after login
   if (client.buddyProtocol === 'b') {
@@ -438,8 +438,7 @@ handler.xt(Handle.UpdatePenguinOld, (client, color, head, face, neck, body, hand
 })
 
 handler.xt(Handle.BecomeAgent, (client) => {
-  client.buyItem(800);
-  client.update();
+  client.setAgentPending();
 })
 
 handler.xt(Handle.SendInventory, () => {
@@ -960,6 +959,10 @@ handler.post('/php/gp.php', (server, body) => {
 
 handler.disconnect((client) => {
   if (client.hasPenguin()) {
+    if (client.isAgentPending()) {
+      client.buyItem(800);
+      client.update();
+    }
     const tableInfo = client.getTable();
     if (tableInfo !== undefined) {
       const table = client.server.getTableIfExists(tableInfo.id);

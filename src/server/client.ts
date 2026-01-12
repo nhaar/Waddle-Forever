@@ -841,6 +841,8 @@ export class Client {
 
   private _specialName: string | null = null;
 
+  private _pendingAgent: boolean = false;
+
   constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
     this._server = server;
     this._socket = socket;
@@ -1710,6 +1712,18 @@ export class Client {
 
   exitTable() {
     this._tableState = undefined;
+  }
+
+  setAgentPending(): void {
+    this._pendingAgent = true;
+  }
+
+  isAgentPending(): boolean {
+    return this._pendingAgent;
+  }
+
+  isAgent(): boolean {
+    return this.penguin.hasItem(800);
   }
 }
 
