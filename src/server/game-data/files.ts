@@ -238,11 +238,15 @@ would need to investigated`
     },
     {
       file: 'StartModuleBeta.swf',
-      comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself'
+      comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself. Aditionally, removed analyticReportingAs3 request'
     },
     {
       file: 'HolidayParty2012Party3.swf',
       comment: 'The original file was modified so that it automatically changes the snowball effect depending on where you step. It is unknown which mechanism was used to do this in the original, it is likely that maybe party.swf or engine.swf had a say on this, but since we can\'t know for sure it was easier to just mod this file. I took this code from JF archives, I am not sure if it comes from an original SWF or if it was made by NewCP team'
+    },
+    {
+      file: 'PlayStartSwfStart.swf',
+      comment: 'Removed the tracking service, which downloads an external SWF which has no useful functionality. Required for truly offline play'
     }
   ],
   [APPROXIMATION]: [
