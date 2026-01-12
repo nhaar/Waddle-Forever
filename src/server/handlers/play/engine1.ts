@@ -10,6 +10,7 @@ import { Penguin } from '../../penguin';
 import { FURNITURE } from '../../../server/game-logic/furniture';
 import { getFlooringCost, getIglooCost } from '../../../server/game-logic/iglooItems';
 import { Table } from './table';
+import { ROOMS } from '../../game-data/rooms';
 
 const handler = new Handler();
 
@@ -257,7 +258,7 @@ function isTableId(tableId: number) {
 }
 
 handler.xt(Handle.GetTableGame, (client, tableId) => {
-  if (!client.isEngine1) {
+  if (!client.isEngine1 || client.room.id === ROOMS['rink'].id) {
     return;
   }
   // resolve table id from context so spectators can re-open correctly
