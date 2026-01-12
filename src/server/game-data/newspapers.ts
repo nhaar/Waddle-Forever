@@ -749,7 +749,7 @@ export const BOILER_ROOM_PAPERS: BoilerRoomPaper[] = [
     file: 'archives:ENNews196.swf'
   },
   {
-    title: 'MUSIC JAM 09 ENDS JULY 26!',
+    title: 'New Color Vote!',
     file: 'archives:ENNews197.swf'
   },
   {
