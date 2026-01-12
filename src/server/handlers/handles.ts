@@ -168,6 +168,7 @@ export enum Handle {
   HandleSendMessage,
   SendJokeOld,
   SendSafeMessageOld,
+  SendSafeMessageOldAlt,
   SendActionOld,
   SendJoke,
   SendSafeMessage,
@@ -357,6 +358,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.HandleSendMessage]: ['string', 'string'],
   [Handle.SendJokeOld]: ['string'],
   [Handle.SendSafeMessageOld]: ['string'],
+  [Handle.SendSafeMessageOldAlt]: ['string'],
   [Handle.SendActionOld]: ['string'],
   [Handle.SendJoke]: ['string'],
   [Handle.SendSafeMessage]: ['string'],
@@ -615,7 +617,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'spy': Handle.BecomeAgent
   },
   'm': {
-    'sm': Handle.SendMessageOld
+    'sm': Handle.SendMessageOld,
+    'ss': Handle.SendSafeMessageOldAlt
   },
   'r': {
     'or': Handle.OpenIglooOld,
