@@ -592,6 +592,11 @@ export const UPDATES_2009: Update[] = [
         },
         memberRooms: {
           party: true
+        },
+        localChanges: {
+          'membership/party.swf': {
+            en: ['recreation:st_patrick_membership.swf', 'oops_party_room']
+          }
         }
       },
       event: {

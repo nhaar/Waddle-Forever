@@ -1836,6 +1836,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'old_interface/new_emotes_no_heart.swf',
       comment: 'Made by Doubleuman, interface71 with the emotes from when new emotes were added but before the heart emote was re-added'
+    },
+    {
+      file: 'st_patrick_membership.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [
