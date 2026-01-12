@@ -161,7 +161,7 @@ async function processNewspaper(newspaper: LabeledAs2Newspaper | LabeledAs3Newsp
   }
 
   // only generate news crumbs for post CPIP
-  const canGenerate = (newspaper.type === 'as3' && !isNewspaperAfterJSON(NEWSPAPER_TIMELINE[index + 1]?.date)) || (
+  const canGenerate = (newspaper.type === 'as3' && !isNewspaperAfterJSON(NEWSPAPER_TIMELINE[index]?.date)) || (
     newspaper.type === 'as2' && isNewspaperAfterCPIP(NEWSPAPER_TIMELINE[index + 1]?.date)
   );
 
