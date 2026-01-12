@@ -1702,8 +1702,7 @@ export const UPDATES_2009: Update[] = [
           dojo: 'recreation:2009_storm/dojo.swf'
         }
       }
-    },
-    end: ['event']
+    }
   },
   {
     date: '2009-10-16',
@@ -1844,7 +1843,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-01',
-    end: ['party2'],
+    end: ['party2', 'event'],
     temp: {
       // end of storm
       'fire-construction': {
