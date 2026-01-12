@@ -837,7 +837,7 @@ export const UPDATES_2012: Update[] = [
       costumeTrunk: 'recreation:costume_jul_12.swf'
     },
     rooms: {
-      plaza: 'archives:RoomsPlaza-Play3-2.swf',
+      plaza: 'recreation:plaza_squidzoid_2012.swf',
       stage: 'archives:2011Mar17Stage.swf'
     }
   },

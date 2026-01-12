@@ -1844,6 +1844,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'costume_jul_12.swf',
       comment: 'Made by ItzAle'
+    },
+    {
+      file: 'plaza_squidzoid_2012.swf',
+      comment: 'Made by ItzAle, Plaza with weather manipulation and the Squidzoid play'
     }
   ],
   [MOD]: [
