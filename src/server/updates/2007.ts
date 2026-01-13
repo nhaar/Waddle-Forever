@@ -926,15 +926,15 @@ export const UPDATES_2007: Update[] = [
           'cove': 'archives:RoomsCove-ChristmasParty2007.swf',
           'dock': 'archives:RoomsDock-ChristmasParty2007.swf',
           'forest': 'archives:RoomsForest-ChristmasParty2007.swf',
-          'berg': 'archives:RoomsBerg-ChristmasParty2007.swf',
           'attic': 'archives:RoomsAttic-ChristmasParty2007.swf',
           'dance': 'archives:RoomsDance-ChristmasParty2007.swf',
           'plaza': 'archives:RoomsPlaza-ChristmasParty2007.swf',
-          'mtn': 'archives:RoomsMtn-ChristmasParty2007.swf',
           'lodge': 'archives:RoomsLodge-ChristmasParty2007.swf',
           'village': 'archives:RoomsVillage-ChristmasParty2007.swf',
           'forts': 'archives:RoomsForts-ChristmasParty2007.swf',
-          'town': 'archives:RoomsTown-ChristmasParty2007.swf'
+          'town': 'archives:RoomsTown-ChristmasParty2007.swf',
+          mtn: 'recreation:christmas_07/mtn.swf',
+          berg: 'recreation:christmas_07/berg.swf'
         },
         music: {
           'beach': 200,
@@ -963,6 +963,18 @@ export const UPDATES_2007: Update[] = [
         update: 'Scarves are now available at the Ski Village',
         frames: {
           village: 2
+        }
+      }
+    }
+  },
+  {
+    date: '2007-12-28',
+    temp: {
+      party: {
+        update: 'Fireworks begin at the Ski Hill and Iceberg',
+        rooms: {
+          'berg': 'archives:RoomsBerg-ChristmasParty2007.swf',
+          'mtn': 'archives:RoomsMtn-ChristmasParty2007.swf',
         }
       }
     }

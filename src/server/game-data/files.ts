@@ -1888,6 +1888,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_party_2007/forts.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_07/berg.swf',
+      comment: 'Made by lifeofgames477, removed the fireworks'
+    },
+    {
+      file: 'christmas_07/mtn.swf',
+      comment: 'Made by lifeofgames477, removed the fireworks'
     }
   ],
   [MOD]: [
