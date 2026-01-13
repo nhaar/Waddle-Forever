@@ -270,13 +270,16 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-04-27',
+    migrator: true,
     temp: {
       party: {
         partyName: 'Pirate Party',
         rooms: {
           'town': 'archives:RoomsTown-PirateParty2007.swf',
           'dock': 'archives:RoomsDock-PirateParty2007.swf',
-          coffee: 'recreation:pirate_party/coffee.swf'
+          coffee: 'recreation:pirate_party/coffee.swf',
+          ship: 'recreation:pirate_party/ship.swf',
+          shiphold: 'recreation:pirate_party/shiphold.swf'
         },
         music: {
           'town': 212,
@@ -286,9 +289,30 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-04-28',
+    temp: {
+      party: {
+        partyComment: 'A note is added to the Captain\'s Quarters door',
+        rooms: {
+          shiphold: 'recreation:pirate_party/shiphold2.swf'
+        }
+      }
+    },
+    fileChanges: {
+      'artwork/forms/rockhoppernote2.swf': 'recreation:rockhopper_note/pirate_party.swf'
+    }
+  },
+  {
+    date: '2007-05-02',
+    end: ['party'],
+    rooms: {
+      ship: 'archives:ArtworkRoomsShip50.swf'
+    }
+  },
+  {
     date: '2007-05-04',
     clothingCatalog: 'archives:Clothing_0705.swf',
-    end: ['party']
+    migrator: false
   },
   {
     date: '2007-05-11',

@@ -1856,6 +1856,26 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'mtn_party_favors_pin.swf',
       comment: 'Made by ItzAle, removed fireworks from the archived file'
+    },
+    {
+      file: 'pirate_party/ship.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'pirate_party/shiphold.swf',
+      comment: 'Made by Doubleuman, the Ship Hold at the start of the party'
+    },
+    {
+      file: 'pirate_party/shiphold2.swf',
+      comment: 'Made by Doubleuman, the Ship Hold after the note was added'
+    },
+    {
+      file: 'shiphold.swf',
+      comment: 'Made by Doubleuman, pre-cpip ship hold after Pirate Party ends'
+    },
+    {
+      file: 'rockhopper_note/pirate_party.swf',
+      comment: 'Made by Doubleuman, the original Rockhopper note 2'
     }
   ],
   [MOD]: [
