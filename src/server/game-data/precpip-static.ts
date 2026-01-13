@@ -224,6 +224,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'edit/edit9.swf': 'archives:EditEdit8.swf',
   'artwork/forms/agent1.swf': 'recreation:agent1.swf',
   'artwork/tools/phone2.swf': 'archives:ArtworkToolsPhone1.swf',
-  'artwork/books/journal.swf': 'archives:ArtworkBooksJournal1.swf',
+  'artwork/books/journal.swf': 'recreation:journal1.swf',
   'artwork/rooms/shiphold.swf': 'recreation:shiphold.swf'
 };

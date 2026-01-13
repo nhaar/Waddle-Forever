@@ -1896,6 +1896,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'christmas_07/mtn.swf',
       comment: 'Made by lifeofgames477, removed the fireworks'
+    },
+    {
+      file: 'journal1.swf',
+      comment: 'Made by Randomno, took ArtworkBooksJournal1.swf and added a close button'
     }
   ],
   [MOD]: [
