@@ -1876,6 +1876,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'rockhopper_note/pirate_party.swf',
       comment: 'Made by Doubleuman, the original Rockhopper note 2'
+    },
+    {
+      file: 'winter_fiesta_2007/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'winter_fiesta_2007/coffee.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
