@@ -1884,6 +1884,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'winter_fiesta_2007/coffee.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/forts.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

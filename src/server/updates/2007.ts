@@ -475,7 +475,8 @@ export const UPDATES_2007: Update[] = [
           dojo: 'recreation:water_party_2007/dojo.swf',
           beach: 'recreation:water_party_2007/beach.swf',
           cove: 'recreation:water_party_2007/cove.swf',
-          dock: 'recreation:water_party_2007/dock.swf'
+          dock: 'recreation:water_party_2007/dock.swf',
+          forts: 'recreation:water_party_2007/forts.swf'
         },
         music: {
           dojo: 217,
@@ -484,7 +485,8 @@ export const UPDATES_2007: Update[] = [
           mtn: 218,
           beach: 218,
           cove: 218,
-          dock: 218
+          dock: 218,
+          forts: 218
         }
       }
     }
