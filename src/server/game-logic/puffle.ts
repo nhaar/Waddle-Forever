@@ -11,6 +11,23 @@ type Puffle = {
   runawayPostcard: number | undefined
 };
 
+export const PUFFLE_DATA: Array<{
+  colour: number;
+  max_health: number;
+  max_hunger: number;
+  max_rest: number;
+}> = [
+  {colour:3394815,max_health:100,max_hunger:100,max_rest:100},
+  {colour:16764159,max_health:100,max_hunger:120,max_rest:80},
+  {colour:6710886,max_health:120,max_hunger:80,max_rest:100},
+  {colour:3394560,max_health:80,max_hunger:100,max_rest:120},
+  {colour:11362246,max_health:80,max_hunger:120,max_rest:80},
+  {colour:15615044,max_health:100,max_hunger:80,max_rest:120},
+  {colour:16776960,max_health:100,max_hunger:100,max_rest:100},
+  {colour:16777198,max_health:120,max_hunger:80,max_rest:100},
+  {colour:16750848,max_health:100,max_hunger:80,max_rest:120}
+];
+
 export const PUFFLES = new StaticDataTable<Puffle, [
   'id',
   'parentId',

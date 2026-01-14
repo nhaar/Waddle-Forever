@@ -58,7 +58,9 @@ export function emitSwf(code: Uint8Array): Uint8Array {
   ];
 
   bytes.push(...createHeader(headerless.length));
-  bytes.push(...headerless);
+  headerless.forEach(value => {
+    bytes.push(value);
+  });
 
   return new Uint8Array(bytes);
 }

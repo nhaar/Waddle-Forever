@@ -8,10 +8,13 @@ export enum Action {
   Add2 = 0x47,
   NewObject = 0x40,
   SetMember = 0x4F,
-  InitObject = 0x43
+  InitObject = 0x43,
+  GetMember = 0x4E,
+  InitArray = 0x42,
+  Pop = 0x17
 }
 
-export type PCodeRep = Array<[Action, ...Array<string | number>] | Action>;
+export type PCodeRep = Array<[Action, ...Array<string | number | boolean>] | Action>;
 
 export function createBytecode(code: PCodeRep): Uint8Array {
   const numbers: number[] = [];
@@ -32,6 +35,8 @@ export function createBytecode(code: PCodeRep): Uint8Array {
             if (typeof arg === 'number') {
               // this is a UI32
               bytes += 4;
+            } else if (typeof arg === 'boolean') {
+              bytes += 1;
             } else {
               // null terminated string
               bytes += arg.length + 1;
@@ -41,6 +46,8 @@ export function createBytecode(code: PCodeRep): Uint8Array {
           args.forEach(arg => {
             if (typeof arg === 'number') {
               numbers.push(0x07, ...to4BytesLittleEndian(arg));
+            } else if (typeof arg === 'boolean') {
+              numbers.push(0x05, arg ? 1 : 0);
             } else {
               const bytes = new TextEncoder().encode(arg);
               numbers.push(0x00, ...bytes, 0x00);

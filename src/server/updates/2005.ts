@@ -43,7 +43,8 @@ export const UPDATES_2005: Update[] = [
       dojoext: 0,
       dojowater: 24,
       boiler: 6,
-      stage: 0
+      stage: 0,
+      agentvr: 23
     },
     clientFiles: [
       1,

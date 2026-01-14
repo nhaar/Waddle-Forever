@@ -18,7 +18,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/en/web_service/game_configs/jokes.json': 'approximation:game_configs/jokes.json',
   'play/en/web_service/game_configs/mascot_messages.json': 'approximation:game_configs/mascot_messages.json',
   'play/en/web_service/game_configs/mascots.json': 'approximation:game_configs/mascots.json',
-  'play/en/web_service/game_configs/penguin_action_frames.json': 'approximation:game_configs/penguin_action_frames.json',
   'play/en/web_service/game_configs/player_colors.json': 'approximation:game_configs/player_colors.json',
   'play/en/web_service/game_configs/polaroids.json': 'approximation:game_configs/polaroids.json',
   'play/en/web_service/game_configs/postcards.json': 'approximation:game_configs/postcards.json',
