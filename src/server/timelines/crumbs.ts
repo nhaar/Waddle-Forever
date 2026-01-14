@@ -1,17 +1,11 @@
 import path from "path";
 import crypto from 'crypto';
-import { RoomName } from "../game-data/rooms";
 import { Version } from "../routes/versions";
 import { findInVersion, processTimeline, TimelineEvent, TimelineMap, VersionsTimeline } from "../game-data";
-import { getMapForDate } from ".";
-import { FURNITURE_PRICES_TIMELINE, PRICES_TIMELINE } from "./prices";
 import { StageScript } from "../game-data/stage-plays";
 import { UPDATES } from "../updates/updates";
-import { GlobalHuntCrumbs, HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
+import { HuntCrumbs, LocalChanges, LocalHuntCrumbs } from "../updates";
 import { START_DATE, getDate, isEngine2 } from "./dates";
-import { MIGRATOR_TIMELINE } from "./migrator";
-import { MUSIC_TIMELINE } from "./music";
-import { MEMBER_TIMELINE } from "./member";
 import { STAGE_TIMELINE } from "./stage";
 
 
@@ -83,18 +77,6 @@ export function getLocalPathsTimeline() {
 }
 
 const localPathsTimeline = getLocalPathsTimeline();
-const globalPathsTimeline = getGlobalPathsTimeline();
-
-/** Represents a unique global crumbs state */
-export type GlobalCrumbContent = {
-  prices: Record<number, number | undefined>;
-  furniturePrices: Record<number, number | undefined>;
-  music: Partial<Record<RoomName, number>>;
-  member: Partial<Record<RoomName, boolean>>;
-  paths: Record<string, string | undefined>;
-  newMigratorStatus: boolean;
-  hunt: GlobalHuntCrumbs | undefined;
-}
 
 export type LocalCrumbContent = {
   paths: Record<string, string | undefined>;
@@ -102,7 +84,6 @@ export type LocalCrumbContent = {
   stageScript: StageScript;
 }
 
-export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
 export const LOCAL_CRUMBS_PATH = path.join('default', 'auto', 'local_crumbs');
 export function getCrumbFileName(hash: string, id: number): string {
   return `${hash}-${id}.swf`;
@@ -219,144 +200,4 @@ function getBaseCrumbsOutput<CrumbContent>(
 
   const crumbsHash = getMd5(JSON.stringify(crumbs))
   return { hash: crumbsHash, crumbs };
-}
-
-/**
- * Get an output of the global crumbs timeline which includes a hash
- * identifying this timeline and the information of each version
- */
-export function getGlobalCrumbsOutput() {
-  return getBaseCrumbsOutput<GlobalCrumbContent>((timeline) => {
-    MIGRATOR_TIMELINE.forEach((info) => {
-      if (isEngine2(info.date)) {
-        timeline.push({
-          date: info.date,
-          info: {
-            newMigratorStatus: info.info
-          }
-        });
-      }
-    });
-    
-    globalPathsTimeline.forEach((versions, globalPath) => {
-      versions.forEach((info) => {
-        if (isEngine2(info.date)) {
-          timeline.push({
-            date: info.date,
-            info: {
-              paths: {
-                [globalPath]: info.info ?? undefined
-              }
-            }
-          });
-        }
-      })
-    });
-
-    MUSIC_TIMELINE.forEach((versions, room) => {
-      versions.forEach((info) => {
-        if (isEngine2(info.date)) {
-          timeline.push({
-            date: info.date,
-            info: {
-              music: {
-                [room]: info.info
-              }
-            }
-          });
-        }
-      });
-    });
-
-    MEMBER_TIMELINE.forEach((versions, room) => {
-      versions.forEach((info) => {
-        if (isEngine2(info.date)) {
-          timeline.push({
-            date: info.date,
-            info: {
-              member: {
-                [room]: info.info
-              }
-            }
-          });
-        }
-      });
-    });
-
-    PRICES_TIMELINE.forEach((versions, itemId) => {
-      versions.forEach((info) => {
-        if (isEngine2(info.date)) {
-          timeline.push({
-            date: info.date,
-            info: {
-              prices: {
-                [itemId]: info.info
-              }
-            }
-          });
-        }
-      });
-    });
-
-    FURNITURE_PRICES_TIMELINE.forEach((versions, itemId) => {
-      versions.forEach((info) => {
-        if (isEngine2(info.date)) {
-          timeline.push({
-            date: info.date,
-            info: {
-              furniturePrices: {
-                [itemId]: info.info
-              }
-            }
-          });
-        }
-      });
-    });
-
-    huntTimeline.forEach((info) => {
-      if (isEngine2(info.date)) {
-        timeline.push({
-          date: info.date,
-          info: {
-            hunt: info.info === null ? undefined : info.info.global
-          }
-        });
-      }
-    });
-  }, (prev, cur) => {
-    return {
-      music: {
-        ...prev.music,
-        ...cur.music
-      },
-      prices: {
-        ...prev.prices,
-        ...cur.prices
-      },
-      furniturePrices: {
-        ...prev.furniturePrices,
-        ...cur.furniturePrices
-      },
-      paths: {
-        ...prev.paths,
-        ...cur.paths
-      },
-      member: {
-        ...prev.member,
-        ...cur.member
-      },
-      newMigratorStatus: cur.newMigratorStatus === undefined ? prev.newMigratorStatus : cur.newMigratorStatus,
-      hunt: cur.hunt
-    }
-  }, () => {
-    return {
-      prices: getMapForDate(PRICES_TIMELINE, getDate('cpip')),
-      furniturePrices: getMapForDate(FURNITURE_PRICES_TIMELINE, getDate('cpip')),
-      music: getMapForDate(MUSIC_TIMELINE, getDate('cpip')),
-      newMigratorStatus: findInVersion(getDate('cpip'), MIGRATOR_TIMELINE) ?? false,
-      paths: {},
-      member: getMapForDate(MEMBER_TIMELINE, getDate('cpip')),
-      hunt: undefined
-    }
-  });
 }

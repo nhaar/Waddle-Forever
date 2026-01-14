@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { zip, OUT_DIR, createOut } from './zip';
-import { generateGlobalCrumbs } from '../crumbs/global-crumbs'
 import { generateLocalCrumbs } from '../crumbs/local-crumbs'
 import { VERSION } from '../src/common/version';
 
@@ -12,8 +11,6 @@ const dirs = fs.readdirSync(MEDIA_DIR);
 createOut();
 
 (async () => {
-  console.log('global crumbs');
-  await generateGlobalCrumbs();
   console.log('local crumbs');
   await generateLocalCrumbs();
   for (const dir of dirs) {

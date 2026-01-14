@@ -9,6 +9,14 @@ import { FURNITURE } from "../game-logic/furniture";
 import { ExclusiveType, ITEMS, ItemType } from "../game-logic/items";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
 import { GLOBAL_PATHS } from "../game-data/global-paths";
+import { findInVersionStrict } from "../game-data";
+import { MIGRATOR_TIMELINE } from "../timelines/migrator";
+import { getMapForDate } from "../timelines";
+import { MUSIC_TIMELINE } from "../timelines/music";
+import { MEMBER_TIMELINE } from "../timelines/member";
+import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
+import { getGlobalPathsTimeline, getHuntTimeline } from "../timelines/crumbs";
+
 
 function getIglooCrumbs(): PCodeRep {
   const code: PCodeRep = [];
@@ -40,14 +48,23 @@ function getFloorCrumbs(): PCodeRep {
   return code;
 }
 
-function getRoomCrumbs(): PCodeRep {
+function getRoomCrumbs(version: Version): PCodeRep {
   const code: PCodeRep = [];
 
+  const music = getMapForDate(MUSIC_TIMELINE, version);
+  const member = getMapForDate(MEMBER_TIMELINE, version);
+  
   iterateEntries(ROOMS, (room, info) => {
+    let total = 3;
+    let memberArgs: Array<string | boolean> = [];
+    if (member[room] === true) {
+      total += 1;
+      memberArgs = ['is_member', true];
+    }
     code.push(
       [Action.Push, "room_crumbs"],
       Action.GetVariable,
-      [Action.Push, room, "room_id", info.id, "music_id", 0, "path", `${room}.swf`, 3],
+      [Action.Push, room, "room_id", info.id, "music_id", music[room] ?? 0, "path", `${room}.swf`, ...memberArgs, total],
       Action.InitObject,
       Action.SetMember,
     )
@@ -70,8 +87,9 @@ function getPuffleCrumbs(): PCodeRep {
   return code;
 }
 
-function getFurnitureCrumbs(): PCodeRep {
+function getFurnitureCrumbs(version: Version): PCodeRep {
   const code: PCodeRep = [];
+  const prices = getMapForDate(FURNITURE_PRICES_TIMELINE, version);
   
   FURNITURE.rows.forEach(row => {
     let total = 3;
@@ -82,7 +100,6 @@ function getFurnitureCrumbs(): PCodeRep {
       4: 'TYPE_WALL'
     }[row.type];
     if (typeVar === undefined) {
-      console.log(row.type);
       throw new Error('Invalid furniture type');
     }
     const sortVar = {
@@ -120,8 +137,9 @@ function getFurnitureCrumbs(): PCodeRep {
       )
     }
 
+    const cost = prices[row.id] ?? row.cost;
     code.push(
-      [Action.Push, "cost", row.cost, total],
+      [Action.Push, "cost", cost, total],
       Action.InitObject,
       Action.SetMember
     );
@@ -130,8 +148,10 @@ function getFurnitureCrumbs(): PCodeRep {
   return code;
 }
 
-function getPaperCrumbs(): PCodeRep {
+function getPaperCrumbs(version: Version): PCodeRep {
   const code: PCodeRep = [];
+
+  const prices = getMapForDate(PRICES_TIMELINE, version);
   
   ITEMS.rows.forEach(item => {
     let total = 3;
@@ -213,8 +233,10 @@ function getPaperCrumbs(): PCodeRep {
       total++;
     }
 
+    const cost = prices[item.id] ?? item.cost;
+
     code.push(
-      [Action.Push, "cost", item.cost, "is_member", item.isMember, total],
+      [Action.Push, "cost", cost, "is_member", item.isMember, total],
       Action.InitObject,
       Action.SetMember,
     )
@@ -251,22 +273,50 @@ function getFrameHacks(): PCodeRep {
   return code;
 }
 
-function getGlobalPath(): PCodeRep {
+function getGlobalPath(version: Version): PCodeRep {
   const code: PCodeRep = [];
+  const paths = getMapForDate(getGlobalPathsTimeline(), version);
 
-  iterateEntries(GLOBAL_PATHS, (key, path) => {
-    code.push(
-      [Action.Push, "global_path"],
-      Action.GetVariable,
-      [Action.Push, key, path],
-      Action.SetMember
-    )
+  iterateEntries({ ... GLOBAL_PATHS, ...paths }, (key, path) => {
+    if (path !== undefined && path !== null) {
+      code.push(
+        [Action.Push, "global_path"],
+        Action.GetVariable,
+        [Action.Push, key, path],
+        Action.SetMember
+      )
+    }
   });
 
   return code;
 }
 
+function getScavengerHunt(reward: number, member: boolean) {
+  const code: PCodeRep = [
+    [Action.Push, "scavenger_hunt_crumbs", 0, "Object"],
+    Action.NewObject,
+    Action.DefineLocal,
+    [Action.Push, "scavenger_hunt_crumbs"],
+    Action.GetVariable,
+    [Action.Push, "hunt_active", true],
+    Action.SetMember,
+    [Action.Push, "scavenger_hunt_crumbs"],
+    Action.GetVariable,
+    [Action.Push, "member_hunt", member],
+    Action.SetMember,
+    [Action.Push, "scavenger_hunt_crumbs"],
+    Action.GetVariable,
+    [Action.Push, "itemRewardID", reward],
+    Action.SetMember
+  ];
+
+  return code;
+}
+
 export function getGlobalCrumbsSwf(version: Version): Buffer {
+  const migrator = findInVersionStrict(version, MIGRATOR_TIMELINE);
+  const hunt = findInVersionStrict(version, getHuntTimeline());
+
   const code: PCodeRep = [
     [Action.Push, "shell", 0, "_global"],
     Action.GetVariable,
@@ -291,7 +341,7 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     [Action.Push, "room_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getRoomCrumbs(),
+    ...getRoomCrumbs(version),
     [Action.Push, "puffle_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -349,7 +399,7 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     [Action.Push, "INTERACTIVE_FEED"],
     Action.GetMember,
     Action.DefineLocal,
-    ...getFurnitureCrumbs(),
+    ...getFurnitureCrumbs(version),
     [Action.Push, "paper_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -433,7 +483,7 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     Action.DefineLocal,
     [Action.Push, "PAPERDOLLDEPTH_BOTTOM_LAYER", 500],
     Action.DefineLocal,
-    ...getPaperCrumbs(),
+    ...getPaperCrumbs(version),
     [Action.Push, "player_colours", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -537,13 +587,13 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     [Action.Push, "global_path", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getGlobalPath(),
+    ...getGlobalPath(version),
     [Action.Push, "mascot_options", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
     [Action.Push, "mascot_options"],
     Action.GetVariable,
-    [Action.Push, "migrator_active", false],
+    [Action.Push, "migrator_active", migrator],
     Action.SetMember,
     [Action.Push, "rockhopper", "name", "Rockhopper", "gift_id", 959, 2],
     Action.InitObject,
@@ -621,6 +671,10 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     Action.GetVariable,
     Action.SetMember
   ];
+
+  if (hunt !== null) {
+    code.push(...getScavengerHunt(hunt.global.reward, hunt.global.member));
+  }
 
   return Buffer.from(emitSwf(createBytecode(code)));
 }
