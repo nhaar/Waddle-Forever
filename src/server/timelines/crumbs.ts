@@ -104,7 +104,6 @@ export type LocalCrumbContent = {
 
 export const GLOBAL_CRUMBS_PATH = path.join('default', 'auto', 'global_crumbs');
 export const LOCAL_CRUMBS_PATH = path.join('default', 'auto', 'local_crumbs');
-export const NEWS_CRUMBS_PATH = path.join('default', 'auto', 'news_crumbs');
 export function getCrumbFileName(hash: string, id: number): string {
   return `${hash}-${id}.swf`;
 }

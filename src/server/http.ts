@@ -13,7 +13,7 @@ type GetCallback = (settings: SettingsManager, route: string) => string | undefi
 
 type DirCallback = (settings: SettingsManager, dirPath: string) => string | undefined
 
-type DataCallback = (settings: SettingsManager) => string
+type DataCallback = (settings: SettingsManager) => string | Buffer
 
 type PathRepresentation = string | string[]
 

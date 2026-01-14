@@ -13,7 +13,7 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
+import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
@@ -222,10 +222,6 @@ function addCrumbs(map: FileTimelineMap): void {
 
   addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
   addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
-
-  NEWSPAPER_TIMELINE.forEach((newspaper) => {
-    map.add('play/v2/content/local/en/news/news_crumbs.swf', path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'), newspaper.date);
-  });
 }
 
 function addPins(map: FileTimelineMap): void {

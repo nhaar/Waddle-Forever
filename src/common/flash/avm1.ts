@@ -1,6 +1,6 @@
 import { to2BytesLittleEndian, to4BytesLittleEndian } from "./bytes";
 
-enum Action {
+export enum Action {
   Push = 0x96,
   GetVariable = 0x1C,
   CallMethod = 0x52,
@@ -11,9 +11,9 @@ enum Action {
   InitObject = 0x43
 }
 
-type PCodeRep = Array<[Action, ...Array<string | number>] | Action>;
+export type PCodeRep = Array<[Action, ...Array<string | number>] | Action>;
 
-function createBytecode(code: PCodeRep): Uint8Array {
+export function createBytecode(code: PCodeRep): Uint8Array {
   const numbers: number[] = [];
 
   code.forEach(line => {
