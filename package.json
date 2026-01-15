@@ -22,9 +22,6 @@
     "build-server-linux-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
     "build-media": "cross-env PRODUCTION_BUILD=PRODUCTION ts-node scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
-    "global-crumbs": "ts-node crumbs/global-crumbs.ts",
-    "news-crumbs": "ts-node crumbs/news-crumbs.ts",
-    "local-crumbs": "ts-node crumbs/local-crumbs.ts",
     "build-packages": "ts-node scripts/build-packages.ts",
     "debug-versions": "ts-node scripts/dump-versions.ts"
   },
