@@ -529,7 +529,7 @@ export const UPDATES_2010: Update[] = [
     temp: {
       party2: {
         rooms: {
-          plaza: 'recreation:aprilfools2010_plaza.swf'
+          plaza: 'archives:Plaza2010VotingBooth.swf'
         }
       }
     }

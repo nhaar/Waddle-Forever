@@ -556,10 +556,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'By VamprLover, recreation of the 2010 Music Jam Iceberg with the Penguin Band on break'
     },
     {
-      file: 'aprilfools2010_plaza.swf',
-      comment: 'By VamprLover, recreation of the Plaza with the PPA 2010 voting booth'
-    },
-    {
       file: 'agent_2008_apr_pre_cpip.swf',
       comment: 'By VamprLover, recreation of the April 21 2008 HQ in Pre-CPIP'
     },
