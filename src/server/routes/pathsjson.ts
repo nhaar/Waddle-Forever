@@ -1,8 +1,6 @@
 import { getMapForDate } from "../timelines";
-import { getLocalPathsTimeline } from "../timelines/crumbs";
+import { LOCAL_PATHS_TIMELINE } from "../timelines/crumbs";
 import { Version } from "./versions";
-
-const localPathsTimeline = getLocalPathsTimeline();
 
 export function getPathsJson(version: Version): string {
   const paths = {
@@ -616,7 +614,7 @@ export function getPathsJson(version: Version): string {
       "w.app.epfhandbook": "books\/EPF-handbook.swf",
       'w.p0512.medieval.login1': 'close_ups/mdlv1.swf',
       'w.p0512.medieval.login2': 'close_ups/mdlv2.swf',
-      ...getMapForDate(localPathsTimeline, version)
+      ...getMapForDate(LOCAL_PATHS_TIMELINE, version)
     },
     "link": {
       "main_web": "http:\/\/www.clubpenguin.com\/",

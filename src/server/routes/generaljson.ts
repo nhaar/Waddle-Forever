@@ -1,7 +1,7 @@
 
 
 import { findInVersion } from "../game-data";
-import { getHuntTimeline } from "../timelines/crumbs";
+import { HUNT_TIMELINE } from "../timelines/crumbs";
 import { FAIR_TIMELINE } from "../timelines/fair";
 import { MAP_NOTE_TIMELINE } from "../timelines/map-note";
 import { MIGRATOR_TIMELINE } from "../timelines/migrator";
@@ -9,9 +9,8 @@ import { PARTY_ICON_TIMELINE } from "../timelines/party-icon";
 import { UNLOCKED_DAY_TIMELINE } from "../timelines/unlocked-day";
 import { Version } from "./versions";
 
-const huntTimeline = getHuntTimeline();
 export function getGeneralJson(version: Version): string {
-  const hunt = findInVersion(version, huntTimeline);
+  const hunt = findInVersion(version, HUNT_TIMELINE);
   const fair = findInVersion(version, FAIR_TIMELINE);
   const partyIcon = findInVersion(version, PARTY_ICON_TIMELINE);
 

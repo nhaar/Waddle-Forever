@@ -13,7 +13,7 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { CrumbOutput, getCrumbFileName, getLocalCrumbsOutput, LOCAL_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
+import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
@@ -33,13 +33,13 @@ class FileTimelineMap extends TimelineMap<string, string> {
     }
   }
 
-  addDefault(route: string, file: string): void {
+  addStart(route: string, file: string): void {
     this.add(route, file, START_DATE);
   }
 
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
     iterateEntries(idMap, (id, file) => {
-      this.addDefault(path.join(parentDir, directory, `${id}.swf`), file);
+      this.addStart(path.join(parentDir, directory, `${id}.swf`), file);
     });
   }
   
@@ -124,23 +124,23 @@ function addNewspapers(map: FileTimelineMap): void {
       const issue = i + 1;
 
       // pre-cpip, before rewrite
-      map.addDefault(`artwork/news/news${issue}.swf`, file);
+      map.addStart(`artwork/news/news${issue}.swf`, file);
       // pre-cpip, post rewrite
       const route2007 = getNewspaperName(update.date).replace('|', '/') + '.swf';
-      map.addDefault(path.join('artwork/news', route2007), file);
+      map.addStart(path.join('artwork/news', route2007), file);
 
       // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
-      map.addDefault(path.join('artwork/archives', `news${issue + 1}.swf`), file);
+      map.addStart(path.join('artwork/archives', `news${issue + 1}.swf`), file);
 
       // post-cpip
       const date = getMinifiedDate(update.date);
-      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
+      map.addStart(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
     } else {
       const baseNewsPath = 'play/v2/content/local/en/news/';
       const oldNewsPath = `${baseNewsPath}${getMinifiedDate(update.date)}`;
       const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(update.date)}`;
-      map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
-      map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
+      map.addStart(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+      map.addStart(path.join(newNewsPath, 'config.xml'), configXmlPath);
       const newspaperComponenets: Array<[string, string]> = [
         ['front/header.swf', update.info.headerFront ?? 'archives:News285HeaderFront.swf'],
         ['front/featureStory.swf', update.info.featureStory],
@@ -182,8 +182,8 @@ function addNewspapers(map: FileTimelineMap): void {
       
       newspaperComponenets.forEach((pair) => {
         const [route, file] = pair;
-        map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
-        map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
+        map.addStart(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
+        map.addStart(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
       }) 
       }
   });
@@ -197,7 +197,7 @@ function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
 function addStaticFiles(map: FileTimelineMap): void {
   const addStatic = (stat: Record<string, string>) => {
     iterateEntries(stat, (route, fileRef) => {
-      map.addDefault(route, fileRef);
+      map.addStart(route, fileRef);
     });
   }
 
@@ -207,19 +207,6 @@ function addStaticFiles(map: FileTimelineMap): void {
 
 function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
-}
-
-/** Adds listeners to the global crumbs files */
-function addCrumbs(map: FileTimelineMap): void {
-  const addCrumb = <T>(crumbPath: string, route: string, output: CrumbOutput<T>) => {
-    const { hash, crumbs } = output;
-    /** So that different crumb generations don't use the same files, we hash it in the name */
-    crumbs.forEach((crumb) => {
-      const filePath = path.join(crumbPath, getCrumbFileName(hash, crumb.id));
-      map.add(route, filePath, crumb.date);
-    });
-  }
-
 }
 
 function addPins(map: FileTimelineMap): void {
@@ -363,7 +350,6 @@ export function getRoutesTimeline() {
     addPins,
     addUpdates,
     addFilesWithIds,
-    addCrumbs,
     addClothing,
     addTimeSensitiveStaticFiles,
     addFurniture,

@@ -10,7 +10,7 @@ import { LANG } from "../game-data/lang";
 import { FURNITURE } from "../game-logic/furniture";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
 import { ITEMS } from "../game-logic/items";
-import { getLocalPathsTimeline, getHuntTimeline } from "../timelines/crumbs";
+import { LOCAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 import { getMapForDate } from "../timelines";
 import { findInVersionStrict } from "../game-data";
 import { STAGE_TIMELINE } from "../timelines/stage";
@@ -18,7 +18,7 @@ import { STAGE_TIMELINE } from "../timelines/stage";
 function getLocalPaths(version: Version) {
   const code: PCodeRep = [];
 
-  const paths = getMapForDate(getLocalPathsTimeline(), version);
+  const paths = getMapForDate(LOCAL_PATHS_TIMELINE, version);
 
   iterateEntries({...LOCAL_PATHS, ...paths}, (key, path) => {
     if (path !== null && path !== undefined) {
@@ -49,7 +49,7 @@ function getStageScript(version: Version) {
 }
 
 function getHuntCrumbs(version: Version) {
-  const hunt = findInVersionStrict(version, getHuntTimeline());
+  const hunt = findInVersionStrict(version, HUNT_TIMELINE);
 
   const code: PCodeRep = [];
 

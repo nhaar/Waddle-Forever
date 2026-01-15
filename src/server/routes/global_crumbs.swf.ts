@@ -15,7 +15,7 @@ import { getMapForDate } from "../timelines";
 import { MUSIC_TIMELINE } from "../timelines/music";
 import { MEMBER_TIMELINE } from "../timelines/member";
 import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
-import { getGlobalPathsTimeline, getHuntTimeline } from "../timelines/crumbs";
+import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -275,7 +275,7 @@ function getFrameHacks(): PCodeRep {
 
 function getGlobalPath(version: Version): PCodeRep {
   const code: PCodeRep = [];
-  const paths = getMapForDate(getGlobalPathsTimeline(), version);
+  const paths = getMapForDate(GLOBAL_PATHS_TIMELINE, version);
 
   iterateEntries({ ... GLOBAL_PATHS, ...paths }, (key, path) => {
     if (path !== undefined && path !== null) {
@@ -315,7 +315,7 @@ function getScavengerHunt(reward: number, member: boolean) {
 
 export function getGlobalCrumbsSwf(version: Version): Buffer {
   const migrator = findInVersionStrict(version, MIGRATOR_TIMELINE);
-  const hunt = findInVersionStrict(version, getHuntTimeline());
+  const hunt = findInVersionStrict(version, HUNT_TIMELINE);
 
   const code: PCodeRep = [
     [Action.Push, "shell", 0, "_global"],

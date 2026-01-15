@@ -48,13 +48,10 @@ To build you must have Node.js, npm and yarn installed. After cloning the code, 
 
 ```yarn install```
 
-In order to properly launch the game, you will also need to have FFDEC installed (version 24 or greater). Then, copy the `.env-template` file into `.env`, and edit it with the path to FFDEC (in Windows, the .bat file). Then you will want to run these commands to finish setting everything up:
+In order to properly launch the program, you will also need to run a command that will setup the packages. This command would need to be run again if you ever add files to a media folder different from `default`, eg `clothing`.
 
 ```
 yarn build-packages
-yarn global-crumbs
-yarn local-crumbs
-yarn news-crumbs
 ```
 
 For running the client in development, run
