@@ -10,19 +10,113 @@ import { LANG } from "../game-data/lang";
 import { FURNITURE } from "../game-logic/furniture";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
 import { ITEMS } from "../game-logic/items";
+import { getLocalPathsTimeline, getHuntTimeline } from "../timelines/crumbs";
+import { getMapForDate } from "../timelines";
+import { findInVersionStrict } from "../game-data";
+import { STAGE_TIMELINE } from "../timelines/stage";
 
-function getLocalPaths() {
+function getLocalPaths(version: Version) {
   const code: PCodeRep = [];
 
-  iterateEntries(LOCAL_PATHS, (key, path) => {
-    code.push(
-      [Action.Push, "local_paths"],
-      Action.GetVariable,
-      [Action.Push, key],
-      [Action.Push, path],
-      Action.SetMember
-    );
+  const paths = getMapForDate(getLocalPathsTimeline(), version);
+
+  iterateEntries({...LOCAL_PATHS, ...paths}, (key, path) => {
+    if (path !== null && path !== undefined) {
+      code.push(
+        [Action.Push, "local_paths"],
+        Action.GetVariable,
+        [Action.Push, key],
+        [Action.Push, path],
+        Action.SetMember
+      );
+    }
   });
+
+  return code;
+}
+
+function getStageScript(version: Version) {
+  const script = findInVersionStrict(version, STAGE_TIMELINE);
+  
+  
+  const code: PCodeRep = [
+    [Action.Push, "script_messages"],
+    ...createJsonDeclaration(script),
+    Action.DefineLocal
+  ];
+
+  return code;
+}
+
+function getHuntCrumbs(version: Version) {
+  const hunt = findInVersionStrict(version, getHuntTimeline());
+
+  const code: PCodeRep = [];
+
+  if (hunt !== null) {
+    code.push(
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "scavenger_hunt", hunt.lang.en.loading],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "title", hunt.lang.en.title],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "start_string", hunt.lang.en.start],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "scavenger_items_found", hunt.lang.en.itemsFound],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "scavenger_items_found_plural", hunt.lang.en.itemsFoundPlural],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "claim_prize", hunt.lang.en.claim],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "continue", hunt.lang.en.continue],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue0", hunt.lang.en.clues[0]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue1", hunt.lang.en.clues[1]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue2", hunt.lang.en.clues[2]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue3", hunt.lang.en.clues[3]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue4", hunt.lang.en.clues[4]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue5", hunt.lang.en.clues[5]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue6", hunt.lang.en.clues[6]],
+      Action.SetMember,
+      [Action.Push, "lang"],
+      Action.GetVariable,
+      [Action.Push, "clue7", hunt.lang.en.clues[7]],
+      Action.SetMember
+    )
+  }
 
   return code;
 }
@@ -963,7 +1057,7 @@ export function getLocalCrumbsSwf(version: Version): Buffer {
     [Action.Push, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getLocalPaths(),
+    ...getLocalPaths(version),
     [Action.Push, "link_paths"],
     [Action.Push, 0],
     [Action.Push, "Object"],
@@ -3686,7 +3780,9 @@ export function getLocalCrumbsSwf(version: Version): Buffer {
     Action.InitObject,
     [Action.Push, 1],
     Action.InitArray,
-    Action.SetMember
+    Action.SetMember,
+    ...getStageScript(version),
+    ...getHuntCrumbs(version)
   ];
 
   const bytecode = [...treverseMessages, ...createBytecode(code)];

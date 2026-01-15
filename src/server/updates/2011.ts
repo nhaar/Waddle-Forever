@@ -846,14 +846,14 @@ export const UPDATES_2011: Update[] = [
               claim: 'Claim Prize',
               continue: 'Continue',
               clues: [
-                "Start where,\\norange puffles go,\\n\\nIn a room with\\na purple glow.\\n",
-                "Continue the search,\\namong the sand,\\n\\nWhere red mountains,\\nframe the land.\\n",
-                "This blank page\\nholds much potential\\n\\nYour imagination\\nis essential!\\n",
-                "If you find yourself\\nnext to Mars...\\n\\n...find something hidden\\nin the stars \\n",
-                "The stage is\\njust the thing\\n\\nTo find a clue\\nfit for a king\\n",
-                "Finding this one\\nwill turn you around\\n\\nIn a room\\nwhere up is down\\n",
-                "To free this piece:\\nyou\\'ll need a clue:\\n\\nFind your way\\nthrough bright pink brew \\n",
-                "This Scavenger Hunt\\nis extreme!\\n\\nFind this piece\\nby a chocolate stream\\n"
+                "Start where,\norange puffles go,\n\nIn a room with\na purple glow.\n",
+                "Continue the search,\namong the sand,\n\nWhere red mountains,\nframe the land.\n",
+                "This blank page\nholds much potential\n\nYour imagination\nis essential!\n",
+                "If you find yourself\nnext to Mars...\n\n...find something hidden\nin the stars \n",
+                "The stage is\njust the thing\n\nTo find a clue\nfit for a king\n",
+                "Finding this one\nwill turn you around\n\nIn a room\nwhere up is down\n",
+                "To free this piece:\nyou\\'ll need a clue:\n\nFind your way\nthrough bright pink brew \n",
+                "This Scavenger Hunt\nis extreme!\n\nFind this piece\nby a chocolate stream\n"
               ]
             }
           }
@@ -1031,14 +1031,14 @@ export const UPDATES_2011: Update[] = [
               claim: 'Claim Prize',
               continue: 'Continue',
               clues: [
-                'The first egg is\\nhidden way up high.\\nStart your search\\nnear a small bonsai',
-                'This clue requires\\na very short note:\\nFind this egg near\\na floating boat.',
-                'The next clue\\nis a total breeze.\\nLook for this egg\\naround some trees.',
-                'Go to where\\nthe lighting is dim.\\nThink of where\\nyou most like to swim.',
-                'You grasped the clues,\\nyou followed the signs...\\n...now find the polar bear\\nwrapped in vines!',
-                'You\'re almost done\\nso stay the course.\\nFind the room\\nwith a rocking horse.',
-                'Wrap up warm,\\nor you\'ll feel a chill.\\nSpot this egg\\non top of a hill.',
-                'With this last clue,\\nyou\'re good to go.\\nStart a machine\\nand make it snow.'
+                'The first egg is\nhidden way up high.\nStart your search\nnear a small bonsai',
+                'This clue requires\na very short note:\nFind this egg near\na floating boat.',
+                'The next clue\nis a total breeze.\nLook for this egg\naround some trees.',
+                'Go to where\nthe lighting is dim.\nThink of where\nyou most like to swim.',
+                'You grasped the clues,\nyou followed the signs...\n...now find the polar bear\nwrapped in vines!',
+                'You\'re almost done\nso stay the course.\nFind the room\nwith a rocking horse.',
+                'Wrap up warm,\nor you\'ll feel a chill.\nSpot this egg\non top of a hill.',
+                'With this last clue,\nyou\'re good to go.\nStart a machine\nand make it snow.'
               ],
               'itemsFound': '',
               itemsFoundPlural: '',
