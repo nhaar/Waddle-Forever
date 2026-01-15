@@ -1241,6 +1241,17 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-07-24',
+    temp: {
+      party: {
+        update: 'The Dock changes',
+        rooms: {
+          dock: 'archives:DockMusicJam2009.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2009-07-26',
     end: ['party']
   },
