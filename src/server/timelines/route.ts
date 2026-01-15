@@ -220,7 +220,6 @@ function addCrumbs(map: FileTimelineMap): void {
     });
   }
 
-  addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
 }
 
 function addPins(map: FileTimelineMap): void {

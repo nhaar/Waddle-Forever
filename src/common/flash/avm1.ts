@@ -1,3 +1,4 @@
+import { iterateEntries } from "../utils";
 import { to2BytesLittleEndian, to4BytesLittleEndian } from "./bytes";
 
 export enum Action {
@@ -11,7 +12,54 @@ export enum Action {
   InitObject = 0x43,
   GetMember = 0x4E,
   InitArray = 0x42,
-  Pop = 0x17
+  Pop = 0x17,
+  CallFunction = 0x3D
+}
+
+function addElement(code: PCodeRep, element: any): void {
+  if (Array.isArray(element)) {
+    addArray(code, element);
+  } else if (typeof element === 'object') {
+    addObject(code, element);
+  } else {
+    if (!['string', 'number', 'boolean'].includes(typeof element)) {
+      throw new Error('Invalid type for element');
+    }
+    code.push([Action.Push, element]);
+  }
+}
+
+function addArray(code: PCodeRep, array: any[]): void {
+  [...array].reverse().forEach(element => {
+    addElement(code, element);
+  });
+  code.push(
+    [Action.Push, array.length],
+    Action.InitArray
+  );
+}
+
+function addObject<T extends {}>(code: PCodeRep, obj: T): void {
+  iterateEntries(obj, (key, value) => {
+    code.push([Action.Push, key]);
+    addElement(code, value);
+  });
+  code.push(
+    [Action.Push, Object.keys(obj).length],
+    Action.InitObject
+  );
+}
+
+export function createJsonDeclaration(obj: any): PCodeRep {
+  const code: PCodeRep = [];
+
+  if (Array.isArray(obj)) {
+    addArray(code, obj);
+  } else {
+    addObject(code, obj);
+  }
+
+  return code;
 }
 
 export type PCodeRep = Array<[Action, ...Array<string | number | boolean>] | Action>;
@@ -39,7 +87,7 @@ export function createBytecode(code: PCodeRep): Uint8Array {
               bytes += 1;
             } else {
               // null terminated string
-              bytes += arg.length + 1;
+              bytes += (new TextEncoder().encode(arg)).length + 1;
             }
           });
           numbers.push(...to2BytesLittleEndian(bytes));

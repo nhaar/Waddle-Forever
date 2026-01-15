@@ -25,6 +25,7 @@ import { getGamesJson } from "./gamesjson";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
+import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -138,6 +139,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
     return getGlobalCrumbsSwf(s.settings.version);
+  });
+  server.getData('play/v2/content/local/en/crumbs/local_crumbs.swf', (s) => {
+    return getLocalCrumbsSwf(s.settings.version);
   });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
