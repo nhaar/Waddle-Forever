@@ -39,7 +39,7 @@ function getPaperItems(version: Version): PaperItem[] {
     has_back: i.hasBack ? "1" : undefined,
     make_secret_agent: i.makeAgent ? "1" : undefined,
     is_gift: i.isGift ? "1" : undefined,
-    exclusive: i.exclusive ? "1" : undefined,
+    exclusive: i.exclusive === 0 ? undefined : "1",
     type: i.type,
     is_member: i.isMember,
     prompt: i.name,

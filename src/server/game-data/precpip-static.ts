@@ -5,6 +5,7 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/biscuit.swf': 'mammoth:games/biscuit.swf',
   'games/puffle.swf': 'mammoth:games/puffle.swf',
   'games/fish.swf': 'mammoth:games/fish.swf',
+  'games/sled.swf': 'archives:SledRacing2006.swf',
   'load.swf': 'mammoth:load.swf',
   'artwork/news/newsfan.swf': 'archives:NewsFan.swf',
   'artwork/news/newsbeta.swf': 'recreation:news_beta.swf',
@@ -16,6 +17,11 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'interface/errors4.swf': 'slippers07:media/interface/errors4.swf',
   // coins for change for the only pre CPIP party!
   'artwork/forms/coinsforchange.swf': 'archives:ChristmasParty2007CoinsForChange.swf',
+  'games/mancala.swf': 'archives:Mancala2006.swf',
+  'games/mancala/mancala.swf': 'archives:Mancala2006.swf',
+  'games/four/game.swf': 'archives:FindFour2006.swf',
+  'games/four.swf': 'archives:FindFour2006.swf',
+  'games/sled/sled.swf': 'archives:SledRacing2006.swf',
   'chat604.swf': 'fix:Chat604.swf',
   'chat339.swf': 'fix:Chat339.swf',
   'artwork/forms/pollsub.swf': 'archives:ENClose_upsPollsub.swf',
@@ -216,5 +222,8 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/help/clocktower.swf': 'recreation:clocktower.swf',
   'play/v2/content/local/en/membership/inventory_equip.swf': 'recreation:membership_inventory.swf',
   'edit/edit9.swf': 'archives:EditEdit8.swf',
-  'artwork/forms/agent1.swf': 'recreation:agent1.swf'
+  'artwork/forms/agent1.swf': 'recreation:agent1.swf',
+  'artwork/tools/phone2.swf': 'archives:ArtworkToolsPhone1.swf',
+  'artwork/books/journal.swf': 'recreation:journal1.swf',
+  'artwork/rooms/shiphold.swf': 'recreation:shiphold.swf'
 };

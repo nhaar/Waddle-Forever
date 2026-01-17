@@ -427,10 +427,14 @@ export class TimelineMap<Key, EventInformation> {
   constructor(defaultInfo?: { value: EventInformation, date: Version }) {
     this._map = new Map<Key, VersionsTimeline<EventInformation>>;
     if (defaultInfo !== undefined) {
-      this._hasDefault = true;
-      this._default = defaultInfo.value;
-      this._defaultVersion = defaultInfo.date;
+      this.addDefault(defaultInfo);
     }
+  }
+
+  addDefault(defaultInfo: { value: EventInformation, date: Version }) {
+    this._hasDefault = true;
+    this._default = defaultInfo.value;
+    this._defaultVersion = defaultInfo.date;
   }
 
   /** Inherit to make changes to the key input */

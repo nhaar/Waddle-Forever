@@ -1,12 +1,10 @@
 import { findInVersion, findInVersionStrict } from "../game-data";
-import { getHuntTimeline } from "../timelines/crumbs";
+import { HUNT_TIMELINE } from "../timelines/crumbs";
 import { GAME_STRINGS_TIMELINE } from "../timelines/game-strings";
 import { Version } from "./versions";
 
-const huntTimeline = getHuntTimeline();
-
 export function getGameStrings(version: Version): string {
-  const hunt = findInVersion(version, huntTimeline);
+  const hunt = findInVersion(version, HUNT_TIMELINE);
   const gameStrings = { ...findInVersionStrict(version, GAME_STRINGS_TIMELINE) };
   if (hunt !== null && hunt !== undefined) {
     gameStrings['scavenger_title'] = hunt.lang.en.title;

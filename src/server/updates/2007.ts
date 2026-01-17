@@ -35,10 +35,14 @@ export const UPDATES_2007: Update[] = [
       party: {
         partyName: 'Winter Fiesta',
         rooms: {
-          'village': 'archives:Village40.swf'
+          'village': 'archives:Village40.swf',
+          forts: 'recreation:winter_fiesta_2007/forts.swf',
+          coffee: 'recreation:winter_fiesta_2007/coffee.swf'
         },
         music: {
-          'village': 206
+          'village': 206,
+          forts: 206,
+          coffee: 206
         }
       }
     }
@@ -260,7 +264,7 @@ export const UPDATES_2007: Update[] = [
     date: '2007-04-13',
     roomComment: 'A stage is now built in the Lighthouse',
     rooms: {
-      light: 'archives:Lighthouse2007.swf'
+      light: 'archives:ArtworkRoomsLight46.swf'
     }
   },
   {
@@ -270,13 +274,16 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-04-27',
+    migrator: true,
     temp: {
       party: {
         partyName: 'Pirate Party',
         rooms: {
           'town': 'archives:RoomsTown-PirateParty2007.swf',
           'dock': 'archives:RoomsDock-PirateParty2007.swf',
-          coffee: 'recreation:pirate_party/coffee.swf'
+          coffee: 'recreation:pirate_party/coffee.swf',
+          ship: 'recreation:pirate_party/ship.swf',
+          shiphold: 'recreation:pirate_party/shiphold.swf'
         },
         music: {
           'town': 212,
@@ -286,9 +293,30 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-04-28',
+    temp: {
+      party: {
+        partyComment: 'A note is added to the Captain\'s Quarters door',
+        rooms: {
+          shiphold: 'recreation:pirate_party/shiphold2.swf'
+        }
+      }
+    },
+    fileChanges: {
+      'artwork/forms/rockhoppernote2.swf': 'recreation:rockhopper_note/pirate_party.swf'
+    }
+  },
+  {
+    date: '2007-05-02',
+    end: ['party'],
+    rooms: {
+      ship: 'archives:ArtworkRoomsShip50.swf'
+    }
+  },
+  {
     date: '2007-05-04',
     clothingCatalog: 'archives:Clothing_0705.swf',
-    end: ['party']
+    migrator: false
   },
   {
     date: '2007-05-11',
@@ -381,7 +409,13 @@ export const UPDATES_2007: Update[] = [
           beach: 'recreation:summer_kickoff_2007/beach.swf',
           beacon: 'recreation:summer_kickoff_2007/beacon.swf',
           dojo: 'recreation:summer_kickoff_2007/dojo.swf',
-          mtn: 'recreation:summer_kickoff_2007/mtn.swf'
+          mtn: 'recreation:summer_kickoff_2007/mtn.swf',
+          cave: 'recreation:summer_kickoff_2007/cave.swf',
+          dance: 'recreation:summer_kickoff_2007/dance.swf',
+          village: 'recreation:summer_kickoff_2007/village.swf',
+          berg: 'recreation:summer_kickoff_2007/berg.swf',
+          forest: 'recreation:summer_kickoff_2007/forest.swf',
+          plaza: 'recreation:summer_kickoff_2007/plaza.swf'
         },
         music: {
           'town': 204,
@@ -391,7 +425,11 @@ export const UPDATES_2007: Update[] = [
           'dojo': 215,
           'beach': 216,
           'dock': 216,
-          'berg': 216
+          'berg': 216,
+          'cave': 215,
+          'village': 204,
+          'plaza': 204,
+          'forest': 204
         }
       }
     }
@@ -404,9 +442,10 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The beach gets updated for the Summer Kickoff Party',
+        update: 'The Beach and the Dance Club are updated',
         rooms: {
-          beach: 'recreation:summer_kickoff_2007/beach_update.swf'
+          beach: 'recreation:summer_kickoff_2007/beach_update.swf',
+          dance: 'recreation:summer_kickoff_2007/dance_update.swf'
         }
       }
     }
@@ -447,7 +486,8 @@ export const UPDATES_2007: Update[] = [
           dojo: 'recreation:water_party_2007/dojo.swf',
           beach: 'recreation:water_party_2007/beach.swf',
           cove: 'recreation:water_party_2007/cove.swf',
-          dock: 'recreation:water_party_2007/dock.swf'
+          dock: 'recreation:water_party_2007/dock.swf',
+          forts: 'recreation:water_party_2007/forts.swf'
         },
         music: {
           dojo: 217,
@@ -456,7 +496,8 @@ export const UPDATES_2007: Update[] = [
           mtn: 218,
           beach: 218,
           cove: 218,
-          dock: 218
+          dock: 218,
+          forts: 218
         }
       }
     }
@@ -695,11 +736,22 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-01',
-    end: ['party']
+    end: ['party'],
+    constructionComment: 'A construction begins at the Plaza',
+    rooms: {
+      plaza: 'archives:RoomsPlaza-StageConstruction_1.swf'
+    }
   },
   {
     date: '2007-11-02',
     clothingCatalog: 'archives:PenguinStyleNov2007.swf'
+  },
+  {
+    date: '2007-11-08',
+    constructionComment: 'Construction progresses at the Plaza',
+    rooms: {
+      plaza: 'archives:RoomsPlaza-StageConstruction_2.swf'
+    }
   },
   {
     date: '2007-11-16',
@@ -885,15 +937,15 @@ export const UPDATES_2007: Update[] = [
           'cove': 'archives:RoomsCove-ChristmasParty2007.swf',
           'dock': 'archives:RoomsDock-ChristmasParty2007.swf',
           'forest': 'archives:RoomsForest-ChristmasParty2007.swf',
-          'berg': 'archives:RoomsBerg-ChristmasParty2007.swf',
           'attic': 'archives:RoomsAttic-ChristmasParty2007.swf',
           'dance': 'archives:RoomsDance-ChristmasParty2007.swf',
           'plaza': 'archives:RoomsPlaza-ChristmasParty2007.swf',
-          'mtn': 'archives:RoomsMtn-ChristmasParty2007.swf',
           'lodge': 'archives:RoomsLodge-ChristmasParty2007.swf',
           'village': 'archives:RoomsVillage-ChristmasParty2007.swf',
           'forts': 'archives:RoomsForts-ChristmasParty2007.swf',
-          'town': 'archives:RoomsTown-ChristmasParty2007.swf'
+          'town': 'archives:RoomsTown-ChristmasParty2007.swf',
+          mtn: 'recreation:christmas_07/mtn.swf',
+          berg: 'recreation:christmas_07/berg.swf'
         },
         music: {
           'beach': 200,
@@ -922,6 +974,18 @@ export const UPDATES_2007: Update[] = [
         update: 'Scarves are now available at the Ski Village',
         frames: {
           village: 2
+        }
+      }
+    }
+  },
+  {
+    date: '2007-12-28',
+    temp: {
+      party: {
+        update: 'Fireworks begin at the Ski Hill and Iceberg',
+        rooms: {
+          'berg': 'archives:RoomsBerg-ChristmasParty2007.swf',
+          'mtn': 'archives:RoomsMtn-ChristmasParty2007.swf',
         }
       }
     }

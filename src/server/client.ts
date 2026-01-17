@@ -17,10 +17,13 @@ import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
 import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
-import { CPIP_UPDATE, isEngine1, isEngine2, isEngine3, STAMPS_RELEASE } from './timelines/dates';
+import { isEngine1, isEngine2, isEngine3, getDate } from './timelines/dates';
 import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
 import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
 import { MASCOTS } from './game-data/mascots';
+import { Table } from './handlers/play/table';
+import { FindFourTable } from './handlers/play/find-four';
+import { MancalaTable } from './handlers/play/mancala';
 
 type ServerType = 'Login' | 'World';
 
@@ -236,6 +239,13 @@ export abstract class WaddleGame {
   /** Send XT message to every player in the game */
   sendXt(code: string, ...args: Array<number | string>) {
     this._players.forEach(p => p.sendXt(code, ...args));
+  }
+
+  removePlayer(client: Client): void {
+    const index = this._players.indexOf(client);
+    if (index !== -1) {
+      this._players.splice(index, 1);
+    }
   }
 }
 
@@ -511,6 +521,12 @@ export class Server {
 
   private _bakery: Bakery;
 
+  private _tables: Map<number, Table>;
+  private _tableSectators: Set<number>;
+  
+  static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
+  static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
+
   constructor(settings: SettingsManager) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
@@ -518,6 +534,8 @@ export class Server {
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
     this._bakery = new Bakery(this);
+    this._tables = new Map<number, Table>();
+    this._tableSectators = new Set<number>();
     this.createMascots();
     this.init();
   }
@@ -657,6 +675,32 @@ export class Server {
     return room;
   }
 
+  getTable(tableId: number, roomId: number): Table {
+    let table = this._tables.get(tableId);
+    if (table === undefined) {
+      if (Server.FIND_FOUR_TABLE_IDS.has(tableId)) {
+        table = new FindFourTable(tableId, roomId, this);
+      } else if (Server.MANCALA_TABLE_IDS.has(tableId)) {
+        table = new MancalaTable(tableId, roomId, this);
+      } else {
+        throw new Error('Unknown table id');
+      }
+
+      this._tables.set(tableId, table);
+    } else {
+      table.updateRoom(roomId);
+    }
+    return table;
+  }
+
+  getTableIfExists(tableId: number): Table | undefined {
+    return this._tables.get(tableId);
+  }
+
+  getTables() {
+    return this._tables.entries();
+  }
+
   addFollower(bot: Bot, following: Client) {
     let prev = this._followers.get(following);
     if (prev === undefined) {
@@ -698,7 +742,7 @@ export class Server {
   getItemsFiltered(items: number[]) {
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
-    if (isLower(this.settings.version, CPIP_UPDATE)) {
+    if (isLower(this.settings.version, getDate('cpip'))) {
       const itemSet = findInVersionStrict(this.settings.version, CLIENT_ITEMS_TIMELINE)
       return items.filter((value) => itemSet.has(value));
     } else {
@@ -733,6 +777,14 @@ export class Server {
       });
     })
   }
+
+  addSpectator(id: number): void {
+    this._tableSectators.add(id);
+  }
+
+  removeSpectator(id: number): boolean {
+    return this._tableSectators.delete(id);
+  }
 }
 
 function capitalizeName(name: string): string {
@@ -758,6 +810,9 @@ export class Client {
   /** Reference to the player's information stored in the room */
   private _roomInfo: PlayerRoomInfo | undefined;
   private _avatar: number = 0;
+
+  private _tableState: { id: number; seat: number } | undefined = undefined;
+
   sessionStart: number;
   serverType: ServerType
   handledXts: Map<string, boolean>
@@ -786,6 +841,8 @@ export class Client {
 
   private _specialName: string | null = null;
 
+  private _pendingAgent: boolean = false;
+
   constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
     this._server = server;
     this._socket = socket;
@@ -808,6 +865,10 @@ export class Client {
 
   get settings(): Settings {
     return this.server.settings;
+  }
+
+  hasPenguin(): boolean {
+    return this._penguin !== undefined;
   }
 
   get penguin(): Penguin {
@@ -996,7 +1057,6 @@ export class Client {
       this.leaveRoom();
     }
     this._currentRoom = this._server.getRoom(room);
-    const string = this.penguinString;
     if (isGameRoom(room)) {
       this._roomInfo = undefined;
       this.sendXt('jg', room);
@@ -1006,6 +1066,7 @@ export class Client {
       const xx = x ?? 0;
       const yy = y ?? 0;
       this.updateRoomInfo({ x: xx, y: yy });
+      const string = this.penguinString;
       this.sendXt('jr', room, ...this.room.players.map((client) => client.penguinString));
       this.sendRoomXt('ap', string);
       // it seems that the new x, y position of players must be sent via a new set position packet
@@ -1113,6 +1174,14 @@ export class Client {
     return this._currentWaddleRoom;
   }
 
+  isInWaddleRoom() {
+    return this._currentWaddleRoom !== undefined;
+  }
+
+  hasWaddleRoom() {
+    return this._currentRoom !== undefined;
+  }
+
   get name() {
     return this._specialName ?? this.penguin.name;
   }
@@ -1130,8 +1199,24 @@ export class Client {
       const waddleGame = new Constructor(players);
       this.server.setWaddleGame(waddleRoom, waddleGame);
       waddleRoom.resetWaddle();
+      // 2006 sled race notification for starting the game
+      if (waddleGame.name === 'sled' && players.every((player) => player.isEngine1)) {
+        players.forEach((player) => {
+          player.sendXt('sw', waddleRoom.id, waddleGame.roomId, waddleRoom.size);
+        });
+        return;
+      }
       waddleGame.start();
     }
+  }
+
+  joinGameRoomOld(room: number, xtCode: string): void {
+    if (this._currentRoom !== undefined) {
+      this.leaveRoom();
+    }
+    this._currentRoom = this._server.getRoom(room);
+    this._roomInfo = undefined;
+    this.sendXt(xtCode, room);
   }
 
   leaveWaddleRoom(): void {
@@ -1148,6 +1233,10 @@ export class Client {
 
   setWaddleGame(waddleGame: WaddleGame): void {
     this._waddleGame = waddleGame;
+  }
+
+  clearWaddleGame(): void {
+    this._waddleGame = null;
   }
 
   async sendStamps (): Promise<void> {
@@ -1199,7 +1288,7 @@ export class Client {
     const gameRoom = GAME_STAMPS_TIMELINE.get(this.room.id);
 
     if (gameRoom !== undefined) {
-      const stamps = isLower(this.version, STAMPS_RELEASE) ? [] : (findInVersion(this.version, gameRoom) ?? []);
+      const stamps = isLower(this.version, getDate('stamps-release')) ? [] : (findInVersion(this.version, gameRoom) ?? []);
 
       const gameSessionStamps: number[] = [];
       this.sessionStamps.forEach((stamp) => {
@@ -1611,6 +1700,30 @@ export class Client {
 
   get buddyProtocol(): BuddyProtocol | undefined {
     return this._server.buddyProtocol
+  }
+
+  enterTable(tableId: number, seat: number): void {
+    this._tableState = { id: tableId, seat };
+  }
+
+  getTable() {
+    return this._tableState;
+  }
+
+  exitTable() {
+    this._tableState = undefined;
+  }
+
+  setAgentPending(): void {
+    this._pendingAgent = true;
+  }
+
+  isAgentPending(): boolean {
+    return this._pendingAgent;
+  }
+
+  isAgent(): boolean {
+    return this.penguin.hasItem(800);
   }
 }
 

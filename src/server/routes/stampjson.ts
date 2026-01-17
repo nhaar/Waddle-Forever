@@ -1,12 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-
-import { getMediaFilePath } from "../game-data/files"
 import { StampCategory, Stamp, Stampbook, ORIGINAL_STAMPBOOK } from "../game-data/stamps"
-import { isGreaterOrEqual, isLower, Version } from "./versions"
-import { MEDIA_DIRECTORY } from '../../common/utils';
+import { isLower, Version } from "./versions"
 import { UPDATES } from '../updates/updates';
-import { MODERN_AS3, PLACEHOLDER_AS3, STAMPS_RELEASE } from '../timelines/dates';
+import { getDate } from '../timelines/dates';
 
 
 type OriginalStamps = Record<string, Stamp>;
@@ -29,7 +24,7 @@ function getOriginalStampbookJson(stampbook: Stampbook): string {
 }
 
 export function getStampbook(version: Version): Stampbook {
-  if (isLower(version, STAMPS_RELEASE)) {
+  if (isLower(version, getDate('stamps-release'))) {
     return []
   }
   
@@ -63,7 +58,7 @@ export function getStampbook(version: Version): Stampbook {
 export function getStampsJson(version: Version) : string {
   const stampbook = getStampbook(version);
 
-  if (isLower(version, MODERN_AS3)) {
+  if (isLower(version, getDate('vanilla-engine'))) {
     return getOriginalStampbookJson(stampbook);
   }
   return JSON.stringify(stampbook)

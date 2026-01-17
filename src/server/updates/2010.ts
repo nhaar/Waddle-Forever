@@ -300,10 +300,10 @@ export const UPDATES_2010: Update[] = [
       ]
     },
     roomComment: 'The plants disappear from the Box Dimension',
+    end: ['box-plants'],
     rooms: {
       plaza: 'archives:RoomsPlaza-August2011.swf',
-      stage: 'archives:HalloweenParty2010Stage.swf',
-      boxdimension: 'slegacy:media/play/v2/content/global/rooms/boxdimension.swf'
+      stage: 'archives:HalloweenParty2010Stage.swf'
     }
   },
   {
@@ -529,7 +529,7 @@ export const UPDATES_2010: Update[] = [
     temp: {
       party2: {
         rooms: {
-          plaza: 'recreation:aprilfools2010_plaza.swf'
+          plaza: 'archives:Plaza2010VotingBooth.swf'
         }
       }
     }
@@ -614,6 +614,13 @@ export const UPDATES_2010: Update[] = [
     date: '2010-04-16',
     furnitureCatalog: 'archives:FurnApr2010.swf',
     iglooCatalog: 'archives:April2010Igloo.swf'
+  },
+  {
+    date: '2010-04-19',
+    fileChanges: {
+      'play/v2/client/mail.swf': 'slegacy:media/play/v2/client/mail.swf'
+    },
+    miscComments: ['The mail interface changes']
   },
   {
     date: '2010-04-21',
@@ -1103,6 +1110,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-07-26',
     miscComments: ['Stamps are released'],
+    dateReference: 'stamps-release',
     fileChanges: {
       'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf'
     },
@@ -3172,7 +3180,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-11-19',
     miscComments: ['The password warning is updated'],
-    engineUpdate: 'as3',
+    dateReference: 'as3',
     indexHtml: 'classic-as3',
     fileChanges: {
       'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf',

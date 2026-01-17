@@ -960,7 +960,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-07-15',
     miscComments: ['The Club Penguin Improvement Project is implemented'],
-    engineUpdate: 'cpip',
+    dateReference: 'cpip',
     indexHtml: 'classic-cpip',
     websiteFolder: 'classic',
     rooms: {
@@ -976,8 +976,6 @@ export const UPDATES_2008: Update[] = [
       mtn: 'recreation:mtn_cpip_start.swf',
       berg: 'archives:RoomsBerg.swf',
       beacon: 'recreation:beacon_nolight.swf',
-      // post island adventure update
-      boxdimension: 'archives:RoomsBoxdimension-January2010.swf',
       cave: 'archives:RoomsCave.swf',
       // recreation of proper cove room here
       cove: 'recreation:cpip_cove_precatalog.swf',
@@ -1746,6 +1744,9 @@ export const UPDATES_2008: Update[] = [
           village: 221,
           forts: 221,
           town: 221
+        },
+        fileChanges: {
+          'play/v2/games/paddle/paddle.swf': 'recreation:paddle_no_white.swf'
         },
         fairCpip: {
           iconFileId: 'archives:Ticket_icon-TheFair2009.swf',

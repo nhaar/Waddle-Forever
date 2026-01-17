@@ -18,16 +18,25 @@ export class SledRace extends WaddleGame {
 const handler = new WaddleHandler<SledRace>('sled');
 
 handler.waddleXt(Handle.JoinSled, (game, client) => {
+  if (client.isEngine1) {
+    return;
+  }
   client.sendXt('uz', game.seats, ...game.players.map((p) => {
     return [p.penguin.name, p.penguin.color, p.penguin.hand, p.penguin.name].join('|');
   }));
 });
 
 handler.waddleXt(Handle.SledRaceAction, (_, client, id, x, y, time) => {
+  if (client.isEngine1) {
+    return;
+  }
   client.sendWaddleXt('zm', id, x, y, time);
 });
 
-handler.waddleXt(Handle.LeaveWaddleGame, (game, client) => {
+handler.waddleXt(Handle.LeaveWaddleGame, (game, client, score) => {
+  if (client.isEngine1) {
+    return;
+  }
   client.penguin.addCoins(game.getPayout())
   client.sendXt('zo', client.penguin.coins, '', 0, 0, 0);
   client.update();

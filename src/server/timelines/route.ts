@@ -1,5 +1,5 @@
 import { iterateEntries } from "../../common/utils";
-import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex, addRecordToMap } from "../game-data";
+import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex } from "../game-data";
 import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
 import { isLower, Version } from "../routes/versions";
@@ -13,12 +13,12 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { CrumbOutput, getCrumbFileName, getGlobalCrumbsOutput, getLocalCrumbsOutput, GLOBAL_CRUMBS_PATH, LOCAL_CRUMBS_PATH, NEWS_CRUMBS_PATH, SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
+import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
 import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
-import { CPIP_UPDATE, MODERN_AS3, START_DATE } from "./dates";
+import { START_DATE, getDate } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -33,13 +33,13 @@ class FileTimelineMap extends TimelineMap<string, string> {
     }
   }
 
-  addDefault(route: string, file: string): void {
+  addStart(route: string, file: string): void {
     this.add(route, file, START_DATE);
   }
 
   addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
     iterateEntries(idMap, (id, file) => {
-      this.addDefault(path.join(parentDir, directory, `${id}.swf`), file);
+      this.addStart(path.join(parentDir, directory, `${id}.swf`), file);
     });
   }
   
@@ -73,7 +73,7 @@ class FileTimelineMap extends TimelineMap<string, string> {
 }
 
 function addRoomRoute(map: FileTimelineMap, room: RoomName, file: string, date: string, end?: string) {
-  if (isLower(date, CPIP_UPDATE)) {
+  if (isLower(date, getDate('cpip'))) {
     const fileName = `${room}.swf`
     map.add(path.join('artwork/rooms', fileName), file, date, end);
   } else {
@@ -124,23 +124,23 @@ function addNewspapers(map: FileTimelineMap): void {
       const issue = i + 1;
 
       // pre-cpip, before rewrite
-      map.addDefault(`artwork/news/news${issue}.swf`, file);
+      map.addStart(`artwork/news/news${issue}.swf`, file);
       // pre-cpip, post rewrite
       const route2007 = getNewspaperName(update.date).replace('|', '/') + '.swf';
-      map.addDefault(path.join('artwork/news', route2007), file);
+      map.addStart(path.join('artwork/news', route2007), file);
 
       // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
-      map.addDefault(path.join('artwork/archives', `news${issue + 1}.swf`), file);
+      map.addStart(path.join('artwork/archives', `news${issue + 1}.swf`), file);
 
       // post-cpip
       const date = getMinifiedDate(update.date);
-      map.addDefault(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
+      map.addStart(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
     } else {
       const baseNewsPath = 'play/v2/content/local/en/news/';
       const oldNewsPath = `${baseNewsPath}${getMinifiedDate(update.date)}`;
       const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(update.date)}`;
-      map.addDefault(path.join(oldNewsPath, 'config.xml'), configXmlPath);
-      map.addDefault(path.join(newNewsPath, 'config.xml'), configXmlPath);
+      map.addStart(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+      map.addStart(path.join(newNewsPath, 'config.xml'), configXmlPath);
       const newspaperComponenets: Array<[string, string]> = [
         ['front/header.swf', update.info.headerFront ?? 'archives:News285HeaderFront.swf'],
         ['front/featureStory.swf', update.info.featureStory],
@@ -182,22 +182,22 @@ function addNewspapers(map: FileTimelineMap): void {
       
       newspaperComponenets.forEach((pair) => {
         const [route, file] = pair;
-        map.addDefault(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
-        map.addDefault(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
+        map.addStart(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
+        map.addStart(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
       }) 
       }
   });
 }
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  map.addRouteMap(CPIP_STATIC_FILES, CPIP_UPDATE);
-  map.addRouteMap(AS3_STATIC_FILES, MODERN_AS3);
+  map.addRouteMap(CPIP_STATIC_FILES, getDate('cpip'));
+  map.addRouteMap(AS3_STATIC_FILES, getDate('vanilla-engine'));
 }
 
 function addStaticFiles(map: FileTimelineMap): void {
   const addStatic = (stat: Record<string, string>) => {
     iterateEntries(stat, (route, fileRef) => {
-      map.addDefault(route, fileRef);
+      map.addStart(route, fileRef);
     });
   }
 
@@ -207,25 +207,6 @@ function addStaticFiles(map: FileTimelineMap): void {
 
 function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
-}
-
-/** Adds listeners to the global crumbs files */
-function addCrumbs(map: FileTimelineMap): void {
-  const addCrumb = <T>(crumbPath: string, route: string, output: CrumbOutput<T>) => {
-    const { hash, crumbs } = output;
-    /** So that different crumb generations don't use the same files, we hash it in the name */
-    crumbs.forEach((crumb) => {
-      const filePath = path.join(crumbPath, getCrumbFileName(hash, crumb.id));
-      map.add(route, filePath, crumb.date);
-    });
-  }
-
-  addCrumb(GLOBAL_CRUMBS_PATH, 'play/v2/content/global/crumbs/global_crumbs.swf', getGlobalCrumbsOutput());
-  addCrumb(LOCAL_CRUMBS_PATH, 'play/v2/content/local/en/crumbs/local_crumbs.swf', getLocalCrumbsOutput());
-
-  NEWSPAPER_TIMELINE.forEach((newspaper) => {
-    map.add('play/v2/content/local/en/news/news_crumbs.swf', path.join(NEWS_CRUMBS_PATH, newspaper.date + '.swf'), newspaper.date);
-  });
 }
 
 function addPins(map: FileTimelineMap): void {
@@ -322,7 +303,7 @@ function addUpdates(map: FileTimelineMap): void {
       map.add(path.join('play/v2/content/global', update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), update.update.scavengerHunt2010.iconFileId, update.date, update.end);
     }
     if (update.update.fairCpip !== undefined) {
-      if (isLower(update.date, MODERN_AS3)) {
+      if (isLower(update.date, getDate('vanilla-engine'))) {
         map.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', update.date, update.end);
         map.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', update.date, update.end);
       }
@@ -369,7 +350,6 @@ export function getRoutesTimeline() {
     addPins,
     addUpdates,
     addFilesWithIds,
-    addCrumbs,
     addClothing,
     addTimeSensitiveStaticFiles,
     addFurniture,

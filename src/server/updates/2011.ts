@@ -117,12 +117,12 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-17',
-    engineUpdate: 'as3-startscreen',
+    dateReference: 'as3-startscreen',
     fileChanges: {
       'play/v2/client/club_penguin.swf': 'archives:ClientClubPenguin2011-03-28.swf',
       'play/v2/client/world.swf': 'archives:ClientWorld.swf',
       'play/v2/client/login.swf': 'archives:ClientLogin2011-08-20.swf',
-      'play/start/swf/start.swf': 'archives:PlayStartSwfStart.swf',
+      'play/start/swf/start.swf': 'fix:PlayStartSwfStart.swf',
       'play/v2/client/newspaper.swf': 'approximation:newspaper_march_compatible.swf'
     },
     startscreens: [ 
@@ -709,7 +709,8 @@ export const UPDATES_2011: Update[] = [
       costumeTrunk: 'archives:March2011SquidzoidVsShadowGuyAndGammaGalCostume.swf'
     },
     rooms: {
-      plaza: 'archives:RoomsPlaza-Play3-2.swf'
+      plaza: 'archives:RoomsPlaza-Play3-2.swf',
+      stage: 'archives:2011Mar17Stage.swf'
     }
   },
   {
@@ -845,14 +846,14 @@ export const UPDATES_2011: Update[] = [
               claim: 'Claim Prize',
               continue: 'Continue',
               clues: [
-                "Start where,\\norange puffles go,\\n\\nIn a room with\\na purple glow.\\n",
-                "Continue the search,\\namong the sand,\\n\\nWhere red mountains,\\nframe the land.\\n",
-                "This blank page\\nholds much potential\\n\\nYour imagination\\nis essential!\\n",
-                "If you find yourself\\nnext to Mars...\\n\\n...find something hidden\\nin the stars \\n",
-                "The stage is\\njust the thing\\n\\nTo find a clue\\nfit for a king\\n",
-                "Finding this one\\nwill turn you around\\n\\nIn a room\\nwhere up is down\\n",
-                "To free this piece:\\nyou\\'ll need a clue:\\n\\nFind your way\\nthrough bright pink brew \\n",
-                "This Scavenger Hunt\\nis extreme!\\n\\nFind this piece\\nby a chocolate stream\\n"
+                "Start where,\norange puffles go,\n\nIn a room with\na purple glow.\n",
+                "Continue the search,\namong the sand,\n\nWhere red mountains,\nframe the land.\n",
+                "This blank page\nholds much potential\n\nYour imagination\nis essential!\n",
+                "If you find yourself\nnext to Mars...\n\n...find something hidden\nin the stars \n",
+                "The stage is\njust the thing\n\nTo find a clue\nfit for a king\n",
+                "Finding this one\nwill turn you around\n\nIn a room\nwhere up is down\n",
+                "To free this piece:\nyou\\'ll need a clue:\n\nFind your way\nthrough bright pink brew \n",
+                "This Scavenger Hunt\nis extreme!\n\nFind this piece\nby a chocolate stream\n"
               ]
             }
           }
@@ -1030,14 +1031,14 @@ export const UPDATES_2011: Update[] = [
               claim: 'Claim Prize',
               continue: 'Continue',
               clues: [
-                'The first egg is\\nhidden way up high.\\nStart your search\\nnear a small bonsai',
-                'This clue requires\\na very short note:\\nFind this egg near\\na floating boat.',
-                'The next clue\\nis a total breeze.\\nLook for this egg\\naround some trees.',
-                'Go to where\\nthe lighting is dim.\\nThink of where\\nyou most like to swim.',
-                'You grasped the clues,\\nyou followed the signs...\\n...now find the polar bear\\nwrapped in vines!',
-                'You\'re almost done\\nso stay the course.\\nFind the room\\nwith a rocking horse.',
-                'Wrap up warm,\\nor you\'ll feel a chill.\\nSpot this egg\\non top of a hill.',
-                'With this last clue,\\nyou\'re good to go.\\nStart a machine\\nand make it snow.'
+                'The first egg is\nhidden way up high.\nStart your search\nnear a small bonsai',
+                'This clue requires\na very short note:\nFind this egg near\na floating boat.',
+                'The next clue\nis a total breeze.\nLook for this egg\naround some trees.',
+                'Go to where\nthe lighting is dim.\nThink of where\nyou most like to swim.',
+                'You grasped the clues,\nyou followed the signs...\n...now find the polar bear\nwrapped in vines!',
+                'You\'re almost done\nso stay the course.\nFind the room\nwith a rocking horse.',
+                'Wrap up warm,\nor you\'ll feel a chill.\nSpot this egg\non top of a hill.',
+                'With this last clue,\nyou\'re good to go.\nStart a machine\nand make it snow.'
               ],
               'itemsFound': '',
               itemsFoundPlural: '',
@@ -1710,7 +1711,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
-    engineUpdate: 'vanilla-engine',
+    dateReference: 'vanilla-engine',
     fileChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
       'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
@@ -1861,7 +1862,14 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-07-28',
-    newspaper: 'period-start'
+    newspaper: 'period-start',
+    temp: {
+      party: {
+        rooms: {
+          berg: 'recreation:berg_island_adventure_no_pin.swf'
+        }
+      }
+    }
   },
   {
     date: '2011-08-04',

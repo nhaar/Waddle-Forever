@@ -22,6 +22,10 @@ import { findInVersion } from "../game-data";
 import { INDEX_HTML_TIMELINE, WEBSITE_TIMELINE } from "../timelines/website";
 import { getPaperItemsJson } from "./paperitemsjson";
 import { getGamesJson } from "./gamesjson";
+import { getNewsCrumbsSwf } from "./news_crumbs.swf";
+import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
+import { FRAME_HACKS } from "../game-data/frame-hacks";
+import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -102,6 +106,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/en/web_service/game_configs/stage_script_messages.json', (s) => {
     return getStageScriptMessagesJson(s.settings.version);
   });
+  server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
+    return JSON.stringify(FRAME_HACKS)
+  })
   server.getData('servers.xml', (s) => getServersXml(s.targetIP, s.loginPort, s.worldPort));
   server.getData('setup.xml', (s) => {
     return getSetupXml(s.settings.version, s.targetIP, s.worldPort);
@@ -127,6 +134,15 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('playstart/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
+  server.getData('play/v2/content/local/en/news/news_crumbs.swf', (s) => {
+    return getNewsCrumbsSwf(s.settings.version);
+  });
+  server.getData('play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
+    return getGlobalCrumbsSwf(s.settings.version);
+  });
+  server.getData('play/v2/content/local/en/crumbs/local_crumbs.swf', (s) => {
+    return getLocalCrumbsSwf(s.settings.version);
+  });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
   server.getData('play/v2/content/global/en/igloo_music.xml', (s) => {

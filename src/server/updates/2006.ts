@@ -342,7 +342,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-05-19',
     iglooVersion: 20,
     furnitureCatalog: 'archives:Furniture_0605.swf',
-    engineUpdate: 'igloo-music',
+    dateReference: 'igloo-music',
     iglooList: 'Penguins can now add music to their igloo'
   },
   {

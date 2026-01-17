@@ -40,6 +40,10 @@ const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
       comment: 'Chat291.swf compatibility fixes. Files from around 2005 need the code slightly changed due to not having proper spawn points and the triggers using room names instead of room IDs.'
     },
     {
+      file: 'Beta-book.swf',
+      comment: 'Chat291.swf compatibility fixes'
+    },
+    {
       file: 'Igloo1.swf',
       comment: 'Chat291.swf compatibility fixes'
     },
@@ -234,11 +238,15 @@ would need to investigated`
     },
     {
       file: 'StartModuleBeta.swf',
-      comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself'
+      comment: 'For some reason, the blue background in modern club_penguin.swf\'s doesn\'t appear in the start screen, so this fix circumvents that by renabling the `initMainBackground` function (with some changes so that the depth would properly display), which is an unused function that enables the blue background that is present in the start module itself. Aditionally, removed analyticReportingAs3 request'
     },
     {
       file: 'HolidayParty2012Party3.swf',
       comment: 'The original file was modified so that it automatically changes the snowball effect depending on where you step. It is unknown which mechanism was used to do this in the original, it is likely that maybe party.swf or engine.swf had a say on this, but since we can\'t know for sure it was easier to just mod this file. I took this code from JF archives, I am not sure if it comes from an original SWF or if it was made by NewCP team'
+    },
+    {
+      file: 'PlayStartSwfStart.swf',
+      comment: 'Removed the tracking service, which downloads an external SWF which has no useful functionality. Required for truly offline play'
     }
   ],
   [APPROXIMATION]: [
@@ -394,10 +402,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/penguin_action_frames.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/player_colors.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
@@ -550,10 +554,6 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'mjam_10_berg_no_pb.swf',
       comment: 'By VamprLover, recreation of the 2010 Music Jam Iceberg with the Penguin Band on break'
-    },
-    {
-      file: 'aprilfools2010_plaza.swf',
-      comment: 'By VamprLover, recreation of the Plaza with the PPA 2010 voting booth'
     },
     {
       file: 'agent_2008_apr_pre_cpip.swf',
@@ -819,10 +819,6 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/town.swf',
-      comment: 'made by Victando'
-    },
-    {
-      file: 'summer_kickoff_2007/dock.swf',
       comment: 'made by Victando'
     },
     {
@@ -1828,6 +1824,106 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'old_interface/new_emotes_no_heart.swf',
       comment: 'Made by Doubleuman, interface71 with the emotes from when new emotes were added but before the heart emote was re-added'
+    },
+    {
+      file: 'st_patrick_membership.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'costume_jul_12.swf',
+      comment: 'Made by ItzAle'
+    },
+    {
+      file: 'plaza_squidzoid_2012.swf',
+      comment: 'Made by ItzAle, Plaza with weather manipulation and the Squidzoid play'
+    },
+    {
+      file: 'berg_island_adventure_no_pin.swf',
+      comment: 'Made by ItzAle, removed the Gold Anchor pin from the Island Adventure 2011 Iceberg'
+    },
+    {
+      file: 'mtn_party_favors_pin.swf',
+      comment: 'Made by ItzAle, removed fireworks from the archived file'
+    },
+    {
+      file: 'pirate_party/ship.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'pirate_party/shiphold.swf',
+      comment: 'Made by Doubleuman, the Ship Hold at the start of the party'
+    },
+    {
+      file: 'pirate_party/shiphold2.swf',
+      comment: 'Made by Doubleuman, the Ship Hold after the note was added'
+    },
+    {
+      file: 'shiphold.swf',
+      comment: 'Made by Doubleuman, pre-cpip ship hold after Pirate Party ends'
+    },
+    {
+      file: 'rockhopper_note/pirate_party.swf',
+      comment: 'Made by Doubleuman, the original Rockhopper note 2'
+    },
+    {
+      file: 'winter_fiesta_2007/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'winter_fiesta_2007/coffee.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'water_party_2007/forts.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_07/berg.swf',
+      comment: 'Made by lifeofgames477, removed the fireworks'
+    },
+    {
+      file: 'christmas_07/mtn.swf',
+      comment: 'Made by lifeofgames477, removed the fireworks'
+    },
+    {
+      file: 'journal1.swf',
+      comment: 'Made by Randomno, took ArtworkBooksJournal1.swf and added a close button'
+    },
+    {
+      file: 'summer_kickoff_2007/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/cave.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/dance_update.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/village.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/forest.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/plaza.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'paddle_no_white.swf',
+      comment: 'Made by lifeofgames477. Removed Brown, Orange and White puffles from the 2011 Puffle Paddle to simulate the Fair 2008\'s minigame'
     }
   ],
   [MOD]: [

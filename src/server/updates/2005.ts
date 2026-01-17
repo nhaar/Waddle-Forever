@@ -17,7 +17,7 @@ export const UPDATES_2005: Update[] = [
     rooms: {
       'town': 'approximation:town_release.swf',
       'coffee': 'fix:ArtworkRoomsCoffee2.swf',
-      'book': 'archives:Beta-book.swf',
+      'book': 'fix:Beta-book.swf',
       'dance': 'mammoth:artwork/rooms/dance10.swf',
       'lounge': 'approximation:lounge_no_astro.swf',
       'shop': 'mammoth:artwork/rooms/shop10.swf',
@@ -43,7 +43,8 @@ export const UPDATES_2005: Update[] = [
       dojoext: 0,
       dojowater: 24,
       boiler: 6,
-      stage: 0
+      stage: 0,
+      agentvr: 23
     },
     clientFiles: [
       1,

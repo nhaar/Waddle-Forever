@@ -489,7 +489,6 @@ export const UPDATES_2009: Update[] = [
           forest: 'archives:RoomsForest-PuffleParty2009.swf',
           berg: 'archives:RoomsBerg-PuffleParty2009.swf',
           light: 'archives:RoomsLight-PuffleParty2009.swf',
-          mtn: 'archives:RoomsMtn-PuffleParty2009.swf',
           pet: 'archives:PuffleParty2009-0220pet.swf',
           plaza: 'archives:RoomsPlaza-PuffleParty2009.swf',
           party: 'archives:RoomsParty-PuffleParty2009.swf',
@@ -518,7 +517,8 @@ export const UPDATES_2009: Update[] = [
       // white puffle sighting
       event: {
         rooms: {
-          dojoext: 'archives:RoomsDojoext2008.swf'
+          dojoext: 'archives:RoomsDojoext2008.swf',
+          mtn: 'archives:RoomsMtn-PuffleParty2009.swf'
         }
       }
     }
@@ -592,6 +592,11 @@ export const UPDATES_2009: Update[] = [
         },
         memberRooms: {
           party: true
+        },
+        localChanges: {
+          'membership/party.swf': {
+            en: ['recreation:st_patrick_membership.swf', 'oops_party_room']
+          }
         }
       },
       event: {
@@ -691,23 +696,29 @@ export const UPDATES_2009: Update[] = [
         }
       }
     },
-    end: ['attic-snow', 'event']
-  },
-  {
-    date: '2009-03-22',
     iglooList: [
       { display: 'Noir Noises', id: 37, pos: [1, 1] },
       { display: 'Egyptian Wrap', id: 34, pos: [2, 1] },
       { display: 'For Great Justice', id: 32, pos: [5, 2] },
       { display: 'Twice upon a Time', id: 39, pos: [6, 2] },
       { display: 'Pterodactyl Ptune', id: 35, pos: [7, 2] }
-    ]
+    ],
+    end: ['attic-snow', 'event']
   },
   {
     date: '2009-03-24',
     miscComments: ['The membership badge now features levels'],
     fileChanges: {
       'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_3.swf'
+    }
+  },
+  {
+    date: '2009-03-26',
+    miscComments: ['The start screen is updated'],
+    temp: {
+      party3: {
+        startscreens: ['archives:LoginScreenAprilFools2009.swf']
+      }
     }
   },
   {
@@ -745,7 +756,6 @@ export const UPDATES_2009: Update[] = [
           beach: 'archives:RoomsBeach-AprilFoolsParty2009.swf',
           beacon: 'archives:RoomsBeacon-AprilFoolsParty2009.swf',
           boiler: 'archives:RoomsBoiler-AprilFoolsParty2009.swf',
-          boxdimension: 'archives:RoomsParty2-AprilFoolsParty2009.swf',
           party3: 'archives:RoomsParty3-AprilFoolsParty2009.swf',
           cave: 'archives:RoomsCave-AprilFoolsParty2009.swf',
           coffee: 'archives:RoomsCoffee-AprilFoolsParty2009.swf',
@@ -799,8 +809,7 @@ export const UPDATES_2009: Update[] = [
         },
         memberRooms: {
           party3: true
-        },
-        startscreens: ['archives:LoginScreenAprilFools2009.swf']
+        }
       }
     }
   },
@@ -813,13 +822,10 @@ export const UPDATES_2009: Update[] = [
     end: ['party3']
   },
   {
-    date: '2009-04-09',
-    end: ['party', 'party2']
-  },
-  {
     date: '2009-04-10',
+    end: ['party', 'party2'],
     temp: {
-      party: {
+      party3: {
         partyName: 'Easter Egg Hunt',
         decorated: false,
         rooms: {
@@ -853,7 +859,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-13',
-    end: ['party']
+    end: ['party3']
   },
   {
     date: '2009-04-17',
@@ -1122,7 +1128,14 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-16',
-    end: ['party']
+    end: ['party'],
+    temp: {
+      'box-plants': {
+        rooms: {
+          boxdimension: 'archives:RoomsBoxdimension-January2010.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-06-19',
@@ -1221,6 +1234,17 @@ export const UPDATES_2009: Update[] = [
           }
         },
         startscreens: ['archives:LoginMusicJam2009.swf']
+      }
+    }
+  },
+  {
+    date: '2009-07-24',
+    temp: {
+      party: {
+        update: 'The Dock changes',
+        rooms: {
+          dock: 'archives:DockMusicJam2009.swf'
+        }
       }
     }
   },
@@ -1691,8 +1715,7 @@ export const UPDATES_2009: Update[] = [
           dojo: 'recreation:2009_storm/dojo.swf'
         }
       }
-    },
-    end: ['event']
+    }
   },
   {
     date: '2009-10-16',
@@ -1833,7 +1856,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-01',
-    end: ['party2'],
+    end: ['party2', 'event'],
     temp: {
       // end of storm
       'fire-construction': {

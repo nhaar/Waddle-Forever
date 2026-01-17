@@ -30,6 +30,7 @@ export type RoomName = 'town' |
   'agentcom' |
   'agentlobbysolo' |
   'agentlobbymulti' |
+  'agentvr' |
   'sport' |
   'mtn' |
   'shack' |
@@ -45,6 +46,7 @@ export type RoomName = 'town' |
   'beacon' |
   'stage' |
   'boxdimension' |
+  'underwater' |
   'shipquarters' |
   'shipnest' |
   'ship' |
@@ -200,6 +202,11 @@ export const ROOMS: Record<RoomName, Room> = {
     name: '',
     preCpipName: null
   },
+  'agentvr': {
+    id: 213,
+    name: '',
+    preCpipName: null
+  },
   'forts': {
     id: 801,
     name: 'Snow Forts',
@@ -283,6 +290,11 @@ export const ROOMS: Record<RoomName, Room> = {
   'boxdimension': {
     id: 811,
     name: 'Box Dimension',
+    preCpipName: null
+  },
+  'underwater': {
+    id: 815,
+    name: '',
     preCpipName: null
   },
   'stage': {

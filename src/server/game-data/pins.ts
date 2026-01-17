@@ -622,7 +622,8 @@ export const PINS: Array<Pin | Pin[]> = [
   },
   {
     name: 'Party Favors',
-    hidden: false
+    room: 'mtn',
+    file: 'recreation:mtn_party_favors_pin.swf'
   },
   {
     name: 'Sleeping Bag',
