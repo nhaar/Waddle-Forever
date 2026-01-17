@@ -442,7 +442,7 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The beach and dance gets updated for the Summer Kickoff Party',
+        update: 'The Beach and the Dance Club are updated',
         rooms: {
           beach: 'recreation:summer_kickoff_2007/beach_update.swf',
           dance: 'recreation:summer_kickoff_2007/dance_update.swf'
