@@ -822,13 +822,10 @@ export const UPDATES_2009: Update[] = [
     end: ['party3']
   },
   {
-    date: '2009-04-09',
-    end: ['party', 'party2']
-  },
-  {
     date: '2009-04-10',
+    end: ['party', 'party2'],
     temp: {
-      party: {
+      party3: {
         partyName: 'Easter Egg Hunt',
         decorated: false,
         rooms: {
@@ -862,7 +859,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-13',
-    end: ['party']
+    end: ['party3']
   },
   {
     date: '2009-04-17',
