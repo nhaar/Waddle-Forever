@@ -1745,6 +1745,9 @@ export const UPDATES_2008: Update[] = [
           forts: 221,
           town: 221
         },
+        fileChanges: {
+          'play/v2/games/paddle/paddle.swf': 'recreation:paddle_no_white.swf'
+        },
         fairCpip: {
           iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
           infoFile: 'recreation:fair_08_ticket_info.swf'
