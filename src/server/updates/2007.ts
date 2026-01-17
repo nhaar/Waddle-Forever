@@ -409,7 +409,13 @@ export const UPDATES_2007: Update[] = [
           beach: 'recreation:summer_kickoff_2007/beach.swf',
           beacon: 'recreation:summer_kickoff_2007/beacon.swf',
           dojo: 'recreation:summer_kickoff_2007/dojo.swf',
-          mtn: 'recreation:summer_kickoff_2007/mtn.swf'
+          mtn: 'recreation:summer_kickoff_2007/mtn.swf',
+          cave: 'recreation:summer_kickoff_2007/cave.swf',
+          dance: 'recreation:summer_kickoff_2007/dance.swf',
+          village: 'recreation:summer_kickoff_2007/village.swf',
+          berg: 'recreation:summer_kickoff_2007/berg.swf',
+          forest: 'recreation:summer_kickoff_2007/forest.swf',
+          plaza: 'recreation:summer_kickoff_2007/plaza.swf'
         },
         music: {
           'town': 204,
@@ -419,7 +425,11 @@ export const UPDATES_2007: Update[] = [
           'dojo': 215,
           'beach': 216,
           'dock': 216,
-          'berg': 216
+          'berg': 216,
+          'cave': 215,
+          'village': 204,
+          'plaza': 204,
+          'forest': 204
         }
       }
     }
@@ -432,9 +442,10 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The beach gets updated for the Summer Kickoff Party',
+        update: 'The beach and dance gets updated for the Summer Kickoff Party',
         rooms: {
-          beach: 'recreation:summer_kickoff_2007/beach_update.swf'
+          beach: 'recreation:summer_kickoff_2007/beach_update.swf',
+          dance: 'recreation:summer_kickoff_2007/dance_update.swf'
         }
       }
     }

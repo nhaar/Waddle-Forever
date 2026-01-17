@@ -822,10 +822,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'made by Victando'
     },
     {
-      file: 'summer_kickoff_2007/dock.swf',
-      comment: 'made by Victando'
-    },
-    {
       file: 'summer_kickoff_2007/mtn.swf',
       comment: 'made by Cyan'
     },
@@ -1892,6 +1888,38 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'journal1.swf',
       comment: 'Made by Randomno, took ArtworkBooksJournal1.swf and added a close button'
+    },
+    {
+      file: 'summer_kickoff_2007/dock.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/cave.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/dance.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/dance_update.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/village.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/berg.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/forest.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/plaza.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
