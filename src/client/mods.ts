@@ -36,6 +36,9 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
 
   modsWindow.on('closed', () => {
     modsWindow = null;
+    for (const event of ['update-mod', 'open-mods-folder']) {
+      ipcMain.removeAllListeners(event);
+    }
   });
 
   ipcMain.on('update-mod', () => {

@@ -32,6 +32,7 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
 
   timelinePicker.on('closed', () => {
     timelinePicker = null;
+    ipcMain.removeAllListeners('update-version');
   });
 
   ipcMain.on('update-version', () => {
