@@ -35,6 +35,9 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
 
   settingsWindow.on('closed', () => {
     settingsWindow = null;
+    for (const event of ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'reload-cache']) {
+      ipcMain.removeAllListeners(event);
+    }
   });
 
   ipcMain.on('download-package', (e, arg) => {

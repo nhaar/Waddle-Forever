@@ -4,6 +4,8 @@ import { SettingsManager } from "../server/settings";
 import { GlobalSettings, makeUrl } from "../common/utils";
 import { HTTP_PORT } from "../common/constants";
 
+let multiplayerWindow: BrowserWindow | null;
+
 export function getSiteUrl(settings: GlobalSettings, serverSettings: SettingsManager): string {
   if (settings.multiplayer.type === 'guest') {
     return makeUrl(settings.multiplayer.ip, settings.multiplayer.port ?? HTTP_PORT);
@@ -14,26 +16,36 @@ export function getSiteUrl(settings: GlobalSettings, serverSettings: SettingsMan
 
 /** Creates the window which allows changing which IP the client connects to */
 export function createMultiplayerSettings(globalSettings: GlobalSettings, serverSettings: SettingsManager, mainWindow: BrowserWindow) {
-  const window = new BrowserWindow({
+  if (multiplayerWindow) {
+    multiplayerWindow.focus();
+    return;
+  } 
+  multiplayerWindow = new BrowserWindow({
     height: 300,
     width: 500,
     title: "Multiplayer Settings",
     webPreferences: {
       preload: path.join(__dirname, 'preload/multiplayer-preload.js')
-    }
+    },
+    parent: mainWindow
   });
 
-  window.setMenu(null);
+  multiplayerWindow.setMenu(null);
 
-  window.loadFile(path.join(__dirname, 'views/multiplayer.html'));
+  multiplayerWindow.loadFile(path.join(__dirname, 'views/multiplayer.html'));
 
-  window.webContents.on('did-finish-load', () => {
+  multiplayerWindow.webContents.on('did-finish-load', () => {
     const multiplayerSettings: { type: string; ip?: string; port?: number } = globalSettings.multiplayer;
     if (multiplayerSettings.type === 'host') {
       multiplayerSettings.ip = serverSettings.targetIP;
       multiplayerSettings.port = serverSettings.targetPort;
     }
-    window.webContents.send('get-info', multiplayerSettings);
+    multiplayerWindow?.webContents.send('get-info', multiplayerSettings);
+  });
+
+  multiplayerWindow.on('closed', () => {
+    multiplayerWindow = null;
+    ipcMain.removeAllListeners('update');
   });
 
   ipcMain.on('update', (_, arg) => {
