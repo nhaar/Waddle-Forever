@@ -2,106 +2,126 @@ import { getSettings, post } from "./common-static.js";
 
 const api = (window as any).api;
 
-// TODO better system, less anys?
-
-const fpsInput = document.querySelector<HTMLInputElement>('.js-fps-input')!;
-const thinIceIgtInput = document.querySelector<HTMLInputElement>('.js-thin-ice-igt-input')!;
-const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input')!;
-const myPuffleInput = document.querySelector<HTMLInputElement>('.js-my-puffle-input')!;
-const jpaInput = document.querySelector<HTMLInputElement>('.js-jpa-level-input')!;
-const danceInput = document.querySelector<HTMLInputElement>('.js-dance-arrow-input')!;
-const memberInput = document.querySelector<HTMLInputElement>('.js-member-input')!;
-const websiteInput = document.querySelector<HTMLInputElement>('.js-website-input')!;
-const rainbowInput = document.querySelector<HTMLInputElement>('.rainbow-input')!;
-
 /** Update the settings object with the partial settings given */
 function update(settings: any) {
   post('update', settings);
 }
 
-getSettings().then((settings) => {
-  fpsInput.checked = settings['fps30'];
-  thinIceIgtInput.checked = settings['thin_ice_igt'];
-  clothingInput.checked = settings['clothing'];
-  myPuffleInput.checked = settings['modern_my_puffle'];
-  jpaInput.checked = settings['jpa_level_selector'];
-  danceInput.checked = settings['swap_dance_arrow'];
-  memberInput.checked = settings['always_member'];
-  websiteInput.checked = settings['minified_website'];
-  rainbowInput.checked = settings['no_rainbow_quest_wait'];
-});
+interface Setting {
+  /** The id for the setting from the settings api */
+  key: string
+  /** The query selector string for the input element controlling this setting */
+  elementId: string
+  /** The callback for when the "change" event is tripped. */
+  onChange: (target: HTMLInputElement) => void
+}
 
-fpsInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ fps30: e.target.checked });
-    api.reloadCacheless();
-  }
-});
-
-thinIceIgtInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ thin_ice_igt: e.target.checked });
-    api.clearCache();
-  }
-});
-
-clothingInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    if (e.target.checked) {
-      const download = window.confirm('Do you want to download the clothing package (around 600 MB)?');
-      if (download) {
-        api.download('clothing')
+/** Main array of all settings */
+const allSettings: Setting[] = [
+  {
+    key: 'fps30',
+    elementId: 'js-fps-input',
+    onChange: ({ checked }) => {
+      update({ fps30: checked });
+      api.reloadCacheless();
+    }
+  },
+  {
+    key: 'thin_ice_igt',
+    elementId: 'js-thin-ice-igt-input',
+    onChange: ({ checked }) => {
+      update({ thin_ice_igt: checked });
+      api.clearCache();
+    }
+  },
+  {
+    key: 'clothing',
+    elementId: 'js-clothing-input',
+    onChange: (target) => {
+      if (target.checked) {
+        const download = window.confirm('Do you want to download the clothing package (around 600 MB)?');
+        if (download) {
+          api.download('clothing')
+        }
+        target.checked = false;
+      } else {
+        const remove = window.confirm('Do you want to remove the clothing package (you will need to download it again if you wish to use it)');
+        if (remove) {
+          api.delete('clothing')
+        }
+        target.checked = true;
       }
-      e.target.checked = false;
-    } else {
-      const remove = window.confirm('Do you want to remove the clothing package (you will need to download it again if you wish to use it)');
-      if (remove) {
-        api.delete('clothing')
-      }
-      e.target.checked = true;
+    }
+  },
+  {
+    key: 'modern_my_puffle',
+    elementId: 'js-my-puffle-input',
+    onChange: ({ checked }) => {
+      update({ modern_my_puffle: checked });
+      api.clearCache();
+    }
+  },
+  {
+    key: 'jpa_level_selector',
+    elementId: 'js-jpa-level-input',
+    onChange: ({ checked }) => {
+      update({ jpa_level_selector: checked });
+      api.clearCache();
+    }
+  },
+  {
+    key: 'swap_dance_arrow',
+    elementId: 'js-dance-arrow-input',
+    onChange: ({ checked }) => {
+      update({ swap_dance_arrow: checked });
+      api.clearCache();
+    }
+  },
+  {
+    key: 'always_member',
+    elementId: 'js-member-input',
+    onChange: ({ checked }) => {
+      update({ always_member: checked });
+    }
+  },
+  {
+    key: 'minified_website',
+    elementId: 'js-website-input',
+    onChange: ({ checked }) => {
+      update({ minified_website: checked });
+      api.reload();
+    }
+  },
+  {
+    key: 'no_rainbow_quest_wait',
+    elementId: 'rainbow-input',
+    onChange: ({ checked }) => {
+      update({ no_rainbow_quest_wait: checked });
     }
   }
-})
+]
 
-myPuffleInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ modern_my_puffle: e.target.checked });
-    api.clearCache();
-  }
-})
+for (const setting of allSettings) {
+  const inputElement = document.querySelector<HTMLInputElement>(`.${setting.elementId}`)!;
+  inputElement.addEventListener('change', (e) => {
+    if (e.target instanceof HTMLInputElement) {
+      setting.onChange(e.target);
+    }
+  })
+}
 
-jpaInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ jpa_level_selector: e.target.checked });
-    api.clearCache();
-  }
-})
-
-danceInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ swap_dance_arrow: e.target.checked });
-    api.clearCache();
-  }
-})
-
-memberInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ always_member: e.target.checked });
-  }
-})
-
-websiteInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ minified_website: e.target.checked });
-    api.reload();
-  }
-})
-
-rainbowInput.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) {
-    update({ no_rainbow_quest_wait: e.target.checked });
+getSettings().then((settings) => {
+  for (const setting of allSettings) {
+    if (settings[setting.key] === undefined) {
+      console.log(`settings-static: Couldn't get setting "${setting.key}"!`)
+      continue;
+    }
+    const inputElement = document.querySelector<HTMLInputElement>(`.${setting.elementId}`)!;
+    inputElement.checked = settings[setting.key];
   }
 });
+
+const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input')!;
 
 window.addEventListener('finish-download', (e: any) => {
   const pack = e.detail;
