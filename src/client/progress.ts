@@ -4,7 +4,7 @@ import { BrowserWindow } from "electron";
 function createProgressBarWindow(prompt: string) {
   const progressBarWindow = new BrowserWindow({
       width: 300,
-      height: 100,
+      height: 200,
       frame: false, // cleaner look
       alwaysOnTop: false,
       resizable: false,
