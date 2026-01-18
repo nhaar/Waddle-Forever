@@ -4,19 +4,25 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #2e2c29;
+  background-image: radial-gradient(circle, #0280cd 20%, #027bc8 47%, #00529b 90%);
+  background-size: 100% 100%;
   color: white;
   margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
 }
+
 .progress-container {
-  width: 80%;
-  background-color: #333;
-  border-radius: 5px;
+  width: 65%;
+  border: 3px solid #0050789c;
+  padding: 4px;
+  margin: 5px 0 10px 0;
   overflow: hidden;
 }
+
 .progress-bar {
-  height: 20px;
+  height: 18px;
   width: 0;
-  background-color: #76c7c0;
+  background-color: #ffffff;
   transition: width 0.5s;
 }
