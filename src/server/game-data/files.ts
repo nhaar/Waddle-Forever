@@ -823,7 +823,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/mtn.swf',
-      comment: 'made by Cyan'
+      comment: 'Made by Doubleuman'
     },
     {
       file: 'summer_kickoff_2007/dojo.swf',

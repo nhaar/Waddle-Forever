@@ -420,10 +420,10 @@ export const UPDATES_2007: Update[] = [
         },
         music: {
           'town': 204,
-          'mtn': 204,
+          'mtn': 216,
           'light': 215,
           'beacon': 215,
-          'dojo': 215,
+          'dojo': 204,
           'beach': 216,
           'dock': 216,
           'berg': 216,
