@@ -17,7 +17,7 @@ import { getChunkingMapJson } from "./chunkingmapjson";
 import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
-import { isEngine2, isEngine3 } from "../timelines/dates";
+import { isEngine2, isEngine3, isPreCpip } from "../timelines/dates";
 import { findInVersion } from "../game-data";
 import { INDEX_HTML_TIMELINE, WEBSITE_TIMELINE } from "../timelines/website";
 import { getPaperItemsJson } from "./paperitemsjson";
@@ -27,26 +27,21 @@ import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 
-const minifiedSiteMap: Record<string, string> = {
-  'classic-cpip': 'minified-cpip',
-  '2008-04-15': 'minified-precpip',
-  'old-precpip': 'minified-precpip',
-  '2005-10-26': 'minified-precpip',
-  '2005-11-24': 'minified-precpip',
-  'beta': 'minified-precpip'
-}
-
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
   server.addFileServer();
 
   server.get('/', (s) => {
-    let name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
-    if (s.settings.minified_website && name! in minifiedSiteMap) {
-      name = `minified/${minifiedSiteMap[name!]}`; 
+    if (s.settings.minified_website) {
+      if (isPreCpip(s.settings.version)) {
+        return 'default/websites/minified/minified-precpip.html';
+      } else {
+        return 'default/websites/minified/minified-cpip.html';
+      }
     }
-
+    
+    const name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
     return `default/websites/${name}.html`;
   });
 
