@@ -27,6 +27,15 @@ import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 
+const minifiedSiteMap: Record<string, string> = {
+  'classic-cpip': 'minified-cpip',
+  '2008-04-15': 'minified-precpip',
+  'old-precpip': 'minified-precpip',
+  '2005-10-26': 'minified-precpip',
+  '2005-11-24': 'minified-precpip',
+  'beta': 'minified-precpip'
+}
+
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
@@ -34,8 +43,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.get('/', (s) => {
     let name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
-    if (s.settings.minified_website && name === 'classic-cpip') {
-      name = 'minified-cpip'; 
+    if (s.settings.minified_website && name! in minifiedSiteMap) {
+      name = `minified/${minifiedSiteMap[name!]}`; 
     }
 
     return `default/websites/${name}.html`;
