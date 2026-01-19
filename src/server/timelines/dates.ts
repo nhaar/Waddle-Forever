@@ -52,6 +52,10 @@ export function isEngine3(version: Version): boolean {
   return isGreaterOrEqual(version, getDate('vanilla-engine'));
 }
 
+export function isAS3(version: Version): boolean {
+  return isGreaterOrEqual(version, getDate('as3'));
+}
+
 export function isPreCpip(version: Version): boolean {
   return isLower(version, getDate('cpip'));
 }
