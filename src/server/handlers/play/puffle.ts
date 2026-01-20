@@ -296,6 +296,7 @@ function dig(client: Client, onCommand: boolean) {
       // Big Dig stamp
       client.giveStamp(493);
     }
+    client.penguin.addCoins(coins);
     sendPuffleDig(client, TreasureType.Coins, coins);
     client.update();
     return;
