@@ -38,8 +38,13 @@ function getActiveMods(): string[] {
   return fs.readFileSync(modsSettingsPath, { encoding: 'utf-8'} ).split('\n').map((value) => value.trim()).filter((value) => value !== '')
 }
 
+const FORBIDDEN_NAMES = new Set([
+  '.active_mods', // mod tracker for WF
+  '.DS_Store'   // macOS folder file
+]);
+
 function getMods(): string[] {
-  return fs.readdirSync(MODS_DIRECTORY).filter((name) => name !== '.active_mods');
+  return fs.readdirSync(MODS_DIRECTORY).filter((name) => !FORBIDDEN_NAMES.has(name));
 }
 
 export function getModRouter(s: SettingsManager): Router {

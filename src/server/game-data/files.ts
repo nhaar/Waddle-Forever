@@ -823,7 +823,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/mtn.swf',
-      comment: 'made by Cyan'
+      comment: 'Made by Doubleuman'
     },
     {
       file: 'summer_kickoff_2007/dojo.swf',
@@ -1924,6 +1924,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'paddle_no_white.swf',
       comment: 'Made by lifeofgames477. Removed Brown, Orange and White puffles from the 2011 Puffle Paddle to simulate the Fair 2008\'s minigame'
+    },
+    {
+      file: 'summer_kickoff_2007/coffee.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

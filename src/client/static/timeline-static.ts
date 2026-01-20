@@ -548,11 +548,11 @@ function setSelectedDateText(version: string) {
 }
 
 /** Update the timeline version */
-function updateVersion(version: string) {
+async function updateVersion(version: string) {
   currentVersion = version;
+  await post('update', { version });
   timelineApi.update();
   setSelectedDateText(version);
-  post('update', { version });
 }
 
 window.addEventListener('get-timeline', (e: any) => {

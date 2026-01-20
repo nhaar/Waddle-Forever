@@ -292,6 +292,11 @@ function dig(client: Client, onCommand: boolean) {
     // we will maintain this basic algorithm between 1 and 256.
     // TODO: Add a system which would increase coins with bigger age. (Granted, it wouldn't be very useful in a singleplayer client)
     const coins = randomInt(1, 256);
+    if (coins >= 50) {
+      // Big Dig stamp
+      client.giveStamp(493);
+    }
+    client.penguin.addCoins(coins);
     sendPuffleDig(client, TreasureType.Coins, coins);
     client.update();
     return;

@@ -17,7 +17,7 @@ import { getChunkingMapJson } from "./chunkingmapjson";
 import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
-import { isEngine2, isEngine3 } from "../timelines/dates";
+import { isEngine2, isEngine3, isPreCpip, isAS3 } from "../timelines/dates";
 import { findInVersion } from "../game-data";
 import { INDEX_HTML_TIMELINE, WEBSITE_TIMELINE } from "../timelines/website";
 import { getPaperItemsJson } from "./paperitemsjson";
@@ -33,9 +33,16 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.addFileServer();
 
   server.get('/', (s) => {
-    let name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
-    if (s.settings.minified_website && name === 'classic-cpip') {
-      name = 'minified-cpip'; 
+    const name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
+
+    if (s.settings.minified_website && name !== 'modern-as3') {
+      if (isAS3(s.settings.version)) {
+        return 'default/websites/minified/minified-classic-as3.html';
+      } else if (isPreCpip(s.settings.version)) {
+        return 'default/websites/minified/minified-precpip.html';
+      } else {
+        return 'default/websites/minified/minified-cpip.html';
+      }
     }
 
     return `default/websites/${name}.html`;

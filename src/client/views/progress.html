@@ -7,11 +7,14 @@
 </head>
 <body>
     <div>
-      <span id="prompt"></span>
-      <span id="progress-number">0%</span>
+      <img src="spinner.webp" width="60px">
     </div>
     <div class="progress-container">
       <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div>
+      <span id="prompt"></span>
+      <span id="progress-number">0%</span>
     </div>
     <script>
         const { ipcRenderer } = require('electron');
