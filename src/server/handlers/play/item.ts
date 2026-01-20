@@ -1,6 +1,7 @@
-import { ITEMS } from "../../game-logic/items";
+import { ITEMS, ItemType } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
+import { isGameRoom } from "../../game-logic/rooms";
 
 const handler = new Handler();
 
@@ -13,6 +14,13 @@ handler.xt(Handle.GetInventory, (client) => {
 handler.xt(Handle.AddItem, (client, id) => {
   client.buyItem(id);
   client.update();
+  // updating mission stampbook
+  if (isGameRoom(client.room.id)) {
+    const item = ITEMS.getStrict(id);
+    if (item.type === ItemType.Award) {
+      client.sendXt('qpa', client.penguin.id, id);
+    }
+  }
 });
 
 handler.xt(Handle.UpdateColor, (client, id) => {
