@@ -55,7 +55,8 @@ export const isLiteralScoreGame = (room: Room): boolean => {
     Room.DanceContest,
     Room.MyPuffle,
     Room.BurntOutBulbs,
-    Room.LimeGreenDojoClean
+    Room.LimeGreenDojoClean,
+    Room.PuffleScape
   ].includes(room);
 }
 
