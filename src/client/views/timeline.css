@@ -67,6 +67,7 @@
   position: sticky;
   top: 0;
   background-color: var(--background-solid);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
   left: 0;
   right: 0;
   display: flex;
