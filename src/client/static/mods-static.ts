@@ -25,7 +25,7 @@ function setupPage() {
       html += `
       <div>
         <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
-        <span>${mod}</span>
+        <label for="${mod}">${mod}</span>
       </div>
       `;
     }

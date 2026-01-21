@@ -3,16 +3,34 @@ body > * {
 }
 
 .settings {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   display: grid;
   row-gap: 4px;
   margin: 10px 0;
+  padding: 3px;
+  align-items: center;
 }
 
-.settings-header {
-  font-weight: bolder;
+.settings:hover {
+  background-color: #00529b;
+  border-radius: 15px;
 }
 
 input[type="checkbox"] {
   cursor: pointer;
+  width: 100%;
+  margin: 0;
+}
+
+label {
+  cursor: pointer;
+}
+
+hr {
+  border: none;
+  background-color: white;
+  width: 85%;
+  height: 2px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
