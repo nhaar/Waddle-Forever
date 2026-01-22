@@ -614,7 +614,7 @@ export class Server {
 
     if (data === undefined) {
       data = Client.create(capitalizeName(name), {
-        is_member: true,
+        is_member: this.settings.always_member,
         virtualRegistrationTimestamp: date
       });
     }

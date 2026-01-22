@@ -3,8 +3,8 @@ import { getSettings, post } from "./common-static.js";
 const api = (window as any).api;
 
 /** Update the settings object with the partial settings given */
-function update(settings: any) {
-  post('update', settings);
+function update(settings: any, reset?: boolean) {
+  post('update', { settings, reset });
 }
 
 interface Setting {
