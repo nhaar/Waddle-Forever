@@ -13,6 +13,9 @@ type SimpleServer = [string, (s: SettingsManager) => boolean, string];
 type CompoundServer = [string, (s: SettingsManager) => number | undefined, Record<number, string>];
 
 const simpleFeatures: SimpleServer[] = [
+  ['load.swf', (s) => {
+    return s.settings.fps30
+  }, 'tool:load30.swf'],
   ['boots.swf', (s) => {
     return s.settings.fps30
   }, 'tool:boots30.swf'],
