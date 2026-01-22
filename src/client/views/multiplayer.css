@@ -1,10 +1,28 @@
 .radio-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.radio-option {
+  margin: 3px;
+}
+
+.radio-option > label:hover {
+  background-color: #00529b;
+}
+
+.radio-option > label {
+  padding: 5px;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 20px;
 }
 
 #info-input {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  margin-top: -5px;
 }

@@ -1,9 +1,16 @@
 :root {
-  --background: #005bbb
+  --background: radial-gradient(circle, #0280cd 20%, #027bc8 47%, #00529b 90%);
+  --background-solid: #027bc8;
+  --mono-stack: Menlo, Monaco, 'Courier New', monospace;
 }
 
 body {
-  background-color: var(--background);
+  background-image: var(--background);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+
   color: white;
 
   display: flex;
@@ -14,4 +21,49 @@ body {
   font-family: Arial, sans-serif;
 
   user-select: none;
+}
+
+button {
+  color: white;
+  background-color: #0280CD;
+  padding: 5px;
+  margin: 4px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 
+    0px 0.3px 0 1.5px #003366,
+    -0.9px -0.9px 0 1.3px #00529B,
+    1.2px 1.2px 0 1.3px #00ccff,
+    inset 1px 0 0 0 #00ccff;
+}
+
+button:hover {
+  background-color: #0056a6;
+}
+
+button:active {
+  background-color: #00ccff;
+}
+
+button:focus {
+  outline: none;
+}
+
+input[type="text"],
+input[type="number"] {
+  border: solid 1px black;
+  font-family: var(--mono-stack);
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.select {
+  border: solid 1px black;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 3px;
 }

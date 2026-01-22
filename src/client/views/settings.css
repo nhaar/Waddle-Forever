@@ -1,18 +1,80 @@
+:root {
+  --check-svg: url("data:image/svg+xml,<svg width='11' height='11' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M10.85 0.55L10 1.3L6.25 5.7L4.2 9.15L2.45 10.3L1.75 8.55C1.45 7.85 1.16667 7.33333 0.9 7C0.666666 6.66667 0.366667 6.43333 0 6.3C0.6 5.56667 1.16667 5.2 1.7 5.2C2.13333 5.2 2.58333 5.73333 3.05 6.8L3.25 7.35C4.05 5.85 5.43333 4.15 7.4 2.25L9.35 0.6C9.68333 0.366667 10.0667 0.166667 10.5 0L10.85 0.55Z' fill='black'/></svg>")
+}
+
 body > * {
   text-align: center;
 }
 
-.settings {
-  grid-template-columns: 1fr 1fr;
+.settings-parent > label {
+  grid-template-columns: 2fr 1fr;
   display: grid;
   row-gap: 4px;
-  margin: 10px 0;
+  margin: 5px 0;
+  padding: 3px;
+  align-items: center;
+  vertical-align: middle;
+  border-radius: 15px;
+  cursor: pointer;
+
+  overflow: visible;
+  position: relative;
 }
 
-.settings-header {
-  font-weight: bolder;
+.settings-parent > label:hover {
+  background-color: #00529b;
 }
 
 input[type="checkbox"] {
   cursor: pointer;
+  margin: 0;
+}
+
+.settings-parent > label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.settings-parent > label .box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #003366;
+  background-color: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  position: relative;
+  overflow: visible;
+}
+
+.settings-parent > label:hover .box {
+  border: 2px solid #000;
+  background-color: #ffcc00;
+}
+
+.settings-parent > label input:checked + .box {
+  background-color: #ffcc00;
+}
+
+.settings-parent > label input:checked + .box::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 4px;
+  width: 100%;
+  height: 100%;
+  background-image: var(--check-svg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  overflow: visible;
+  transform: scale(1.15);
+}
+
+hr {
+  border: none;
+  background-color: white;
+  width: 85%;
+  height: 2px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }

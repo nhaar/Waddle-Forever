@@ -17,6 +17,7 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     webPreferences: {
       preload: path.join(__dirname, 'preload/mods-preload.js'),
     },
+    resizable: false,
     parent: mainWindow
   });
 

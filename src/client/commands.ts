@@ -15,6 +15,7 @@ export function createCommands(mainWindow: BrowserWindow) {
     webPreferences: {
       preload: path.join(__dirname, 'preload/commands-preload.js')
     },
+    resizable: false,
     parent: mainWindow
   });
 

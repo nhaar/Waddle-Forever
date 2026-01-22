@@ -24,6 +24,10 @@ refreshButton.addEventListener('click', updatePlayerSelect);
 
 commandButton.addEventListener('click', runCommand);
 
+window.addEventListener('load', () => {
+  commandInput.focus();
+})
+
 commandInput.addEventListener('keyup', (e) => {
   if (e.key === 'Enter') {
     runCommand();
