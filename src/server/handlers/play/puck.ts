@@ -12,11 +12,7 @@ function getPuckPosition(roomId: number, version: string): Array<number> | null 
   if (roomId === 802) {
     return puckPosition.vector;
   }
-  if (
-    roomId === 898 &&
-    isGreaterOrEqual(version, '2008-08-22') &&
-    isLower(version, '2008-08-26')
-  ) {
+  if (roomId === 898) {
     // Client is in the Pitch room during the Penguin Games 2008
     return puckPositionParty.vector;
   }
