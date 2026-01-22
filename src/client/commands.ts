@@ -12,6 +12,7 @@ export function createCommands(mainWindow: BrowserWindow) {
     width: 500,
     height: 300,
     title: "Commands",
+    icon: path.join(__dirname, '../../assets/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload/commands-preload.js')
     },

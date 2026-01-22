@@ -21,6 +21,7 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
   timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
+    icon: path.join(__dirname, '../../assets/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload/timeline-preload.js'),
     }

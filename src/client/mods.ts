@@ -14,6 +14,7 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     width: 500,
     height: 500,
     title: "Mods",
+    icon: path.join(__dirname, '../../assets/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload/mods-preload.js'),
     },

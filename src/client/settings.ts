@@ -17,6 +17,7 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
     width: 500,
     height: 500,
     title: "Settings",
+    icon: path.join(__dirname, '../../assets/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload/settings-preload.js')
     },

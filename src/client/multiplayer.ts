@@ -24,6 +24,7 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
     height: 300,
     width: 500,
     title: "Multiplayer Settings",
+    icon: path.join(__dirname, '../../assets/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload/multiplayer-preload.js')
     },
