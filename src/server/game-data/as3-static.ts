@@ -1069,7 +1069,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/news/papers/20170322/content/overlays/featureMore.swf': 'svanilla:media/play/v2/content/local/en/news/papers/20170322/content/overlays/featureMore.swf',
   'play/v2/content/local/en/news/papers/20170322/content/overlays/secretOverlay.swf': 'svanilla:media/play/v2/content/local/en/news/papers/20170322/content/overlays/secretOverlay.swf',
   'play/v2/client/map_triggers.swf': 'svanilla:media/play/v2/client/map_triggers.swf',
-  'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/ru/logo.swf',
+  'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/en/locale.xml',
   'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf',
   'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
   'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf',
