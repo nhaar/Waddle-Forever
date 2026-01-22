@@ -91,3 +91,4 @@ ffdec-path.ts
 
 # versions dump for debugging
 versions-dump.txt
+/mystuff
