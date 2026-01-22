@@ -9,10 +9,12 @@ export const UPDATES_2005: Update[] = [
     chatVersion: 291,
     indexHtml: 'beta',
     websiteFolder: 'beta',
+    clothingCatalog: 'approximation:style_august_05.swf',
+    furnitureCatalog: 'approximation:furniture_aug05.swf',
     fileChanges: {
       'chat291.swf': 'approximation:chat291_no_news.swf', // newspapers-less precpip client
       // placeholder catalogue so that it doesn't softlock
-      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf'
+      'artwork/catalogue/clothing.swf': 'approximation:style_august_05.swf'
     },
     rooms: {
       'town': 'approximation:town_release.swf',
@@ -192,7 +194,7 @@ export const UPDATES_2005: Update[] = [
           town: 2
         }
       }
-    } 
+    }
   },
   {
     date: '2005-09-22',
@@ -340,7 +342,7 @@ export const UPDATES_2005: Update[] = [
       lodge: 'archives:ArtworkRoomsLodge10.swf'
     },
     temp: {
-    party: {
+      party: {
         partyName: 'Christmas Party',
         rooms: {
           'coffee': 'fix:CP05Coffee.swf',
