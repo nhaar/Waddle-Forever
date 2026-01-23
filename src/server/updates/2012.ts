@@ -1445,6 +1445,9 @@ export const UPDATES_2012: Update[] = [
           },
           'membership/party9.swf': {
             'en': 'archives:ENMembershipPartyHalloween2012.swf'
+          },
+          'close_ups/party_poster.swf': {
+            'en': ['archives:HalloweenParty2012CloseUpsPoster.swf', 'party_poster']
           }
         },
         fileChanges: {
