@@ -98,6 +98,13 @@ const allSettings: Setting[] = [
     onChange: ({ checked }) => {
       update({ no_rainbow_quest_wait: checked });
     }
+  },
+  {
+    key: 'coin_multiplier',
+    elementId: 'js-coin-multiplier-input',
+    onChange: (target) => {
+      update({ coin_multiplier: Number(target.value) });
+    }
   }
 ]
 
