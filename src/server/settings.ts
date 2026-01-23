@@ -21,6 +21,7 @@ export interface Settings {
   /** Whether or not the user has answered if they want to install a package or not */
   answered_packages: string
   ignored_version: string
+  coin_multiplier: number
 }
 
 type PartialSettings = Partial<Settings>
@@ -114,6 +115,7 @@ export class SettingsManager {
       no_rainbow_quest_wait: this.readBoolean(settingsJson, 'no_rainbow_quest_wait', false),
       answered_packages: this.readString(settingsJson, 'answered_packages'),
       ignored_version: this.readString(settingsJson, 'ignored_version')
+      coin_multiplier: this.readNumber(settingsJson, 'coin_multiplier', 1)
     };
 
     this.updateSettings({});

@@ -66,7 +66,7 @@ commands.add('ai', ['number'], (client, id) => {
 });
 
 commands.add('ac', ['number'], (client, coins) => {
-  client.penguin.addCoins(coins);
+  client.penguin.addCoins(coins, false);
   if (client.isEngine1) {
     client.sendEngine1Coins();
   } else {

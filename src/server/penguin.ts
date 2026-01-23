@@ -1,5 +1,6 @@
 import { isPositiveInteger } from '../common/utils';
 import db, { PenguinData, PlayerPuffle, Stampbook, RainbowPuffleStage, Mail, Igloo, parseJsonSet, parseJsonRows, parseJsonMap, dumpJsonSet, dumpJsonRows, dumpJsonMap, isRainbowStage, Databases } from './database';
+import settingsManager from './settings';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { PUFFLE_ITEMS } from './game-logic/puffle-item';
 
@@ -322,8 +323,9 @@ export class Penguin {
     return this._inventory.has(item);
   }
 
-  addCoins (amount: number): void {
-    this._coins += amount;
+  addCoins(amount: number, applyMultiplier: boolean = true): void {
+    const multiplier = applyMultiplier ? settingsManager.settings.coin_multiplier : 1;
+    this._coins += Math.floor(amount * multiplier);
   }
 
   addIgloo(type: number): void {
