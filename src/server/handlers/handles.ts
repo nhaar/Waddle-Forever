@@ -209,6 +209,7 @@ export enum Handle {
   GetCookieInventory,
   GetHockeyGame,
   MoveHockeyPuck,
+  MoveHockeyPuckOld,
   UpdateHockeyGame
 };
 
@@ -402,6 +403,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.GetCookieInventory]: [],
   [Handle.GetHockeyGame]: [],
   [Handle.MoveHockeyPuck]: ['number', 'number', 'number', 'number', 'number'],
+  [Handle.MoveHockeyPuckOld]: ['number', 'number'],
   [Handle.UpdateHockeyGame]: ['number']
 } as const;
 
@@ -611,7 +613,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       Handle.CardJitsuFireChooseCard,
       Handle.CardJitsuFireInfoReady,
       Handle.CardJitsuFireChooseElement,
-      Handle.SendTableMove
+      Handle.SendTableMove,
+      Handle.MoveHockeyPuckOld
     ],
     'jmm': Handle.JoinMatchMaking,
     'jz': [Handle.JoinSled, Handle.JoinTableGame],
