@@ -72,10 +72,6 @@ const createWindow = async (store: Store, clientSettings: GlobalSettings, server
     }
   });
 
-  mainWindow.webContents.on('did-start-navigation', (event, url) => {
-    console.log("started navigate: " + url);
-  })
-
   return mainWindow;
 };
 
