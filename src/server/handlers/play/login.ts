@@ -17,6 +17,13 @@ handler.xml('rndK', (client) => {
 });
 
 handler.xml('login', (client, data) => {
+  const joinMatch = data.match(/<login z='j'>/);
+  if (client.isEngine1 && joinMatch) {
+    // join.swf sends 'j' as the login
+    client.send('<msg t="sys"><body action="logOK"></body></msg>');
+    return;
+  }
+
   const nicknameMatch = data.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
   if (nicknameMatch === null) {
     logdebug('No nickname provided during Login, terminating.');

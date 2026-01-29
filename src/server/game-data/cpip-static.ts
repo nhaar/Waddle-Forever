@@ -19,6 +19,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'pt/web_service/polaroids.json': 'slegacy:play/pt/web_service/polaroids.json',
   'play/v2/client/airtower.swf': 'approximation:airtower.swf',
   'play/v2/client/book.swf': 'slegacy:media/play/v2/client/book.swf',
+  'play/v2/client/create.swf': 'slegacy:media/play/v2/client/create.swf',
   'play/v2/client/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
   'play/v2/client/load.swf': 'slegacy:media/play/v2/client/load.swf',
   'play/v2/client/mail.swf': 'archives:ClientMail2009-06-15.swf',

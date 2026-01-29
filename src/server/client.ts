@@ -641,7 +641,7 @@ export class Server {
     const date = this.getVirtualDate(0).getTime();
 
     if (data === undefined) {
-      data = Client.create(capitalizeName(name), {
+      data = Client.create(name, 1, {
         is_member: this.settings.always_member,
         virtualRegistrationTimestamp: date
       });
@@ -1140,11 +1140,13 @@ export class Client {
     this._server.trackPlayer(id, this);
   }
 
-  static create (name: string, params: DefaultPenguinParams = {}): [PenguinData, number] {
-    const defaultPenguin = Penguin.getDefault(0, name, params).serialize();
+  static create (name: string, color: number = 1, params: DefaultPenguinParams = {}): [PenguinData, number] {
+    const capitalizedName = capitalizeName(name);
+    const defaultPenguin = Penguin.getDefault(0, capitalizedName, params).serialize();
     return db.add<PenguinData>(Databases.Penguins, {
       ...defaultPenguin,
-      name,
+      name: capitalizedName,
+      color,
       mascot: 0
     });
   }

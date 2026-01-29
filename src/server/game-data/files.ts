@@ -247,6 +247,10 @@ would need to investigated`
     {
       file: 'PlayStartSwfStart.swf',
       comment: 'Removed the tracking service, which downloads an external SWF which has no useful functionality. Required for truly offline play'
+    },
+    {
+      file: 'load.swf',
+      comment: 'From mammoth. Overrides the XMLSocket.connect function to always connect to 127.0.0.1:24107; Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url; Overrides String.split to make it think the URL is play.clubpenguin.com.'
     }
   ],
   [APPROXIMATION]: [
