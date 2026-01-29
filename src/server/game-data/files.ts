@@ -2028,7 +2028,7 @@ Originally from solero legacy-media, modified to work in the flat domain any por
     },
     {
       file: 'load30.swf',
-      comment: 'Copy of the pre-CPIP load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
+      comment: 'Copy of the fix version of load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
     },
     {
       file: 'news_config.xml',
