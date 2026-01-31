@@ -519,6 +519,9 @@ export class Server {
 
   private _buddyProtocol: BuddyProtocol | undefined;
 
+  private _puckPosition: Vector;
+  private _puckPositionParty: Vector;
+
   private _bakery: Bakery;
 
   private _tables: Map<number, Table>;
@@ -536,6 +539,8 @@ export class Server {
     this._bakery = new Bakery(this);
     this._tables = new Map<number, Table>();
     this._tableSectators = new Set<number>();
+    this._puckPosition = new Vector(0, 0);
+    this._puckPositionParty = new Vector(0, 0);
     this.createMascots();
     this.init();
   }
@@ -547,6 +552,7 @@ export class Server {
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
     });
     this.setBuddyProtocol();
+    this.resetPuckPosition();
   }
 
   setBuddyProtocol() {
@@ -583,6 +589,28 @@ export class Server {
     this._playersById = new Map<number, Client>();
     this._followers = new Map<Client, Bot[]>();
     this.init();
+  }
+
+  get puckPosition() {
+    return this._puckPosition.vector;
+  }
+
+  get puckPositionParty() {
+    return this._puckPositionParty.vector;
+  }
+
+  resetPuckPosition() {
+    if (isLower(this.settings.version, getDate('old-rink'))) {
+      // Earlier rinks had the puck on the main stage of the room
+      // instead of in the "game" mc later on
+      this.puckPosition[0] = 397;
+      this.puckPosition[1] = 240;
+    } else {
+      this.puckPosition[0] = 0;
+      this.puckPosition[1] = 0;
+    }
+    this.puckPositionParty[0] = 0;
+    this.puckPositionParty[1] = 0;
   }
 
   setCardMatchmaker(matchMaker: MatchMaker) {

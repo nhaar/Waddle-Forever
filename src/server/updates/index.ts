@@ -257,7 +257,8 @@ export type DateReference = 'cpip' |
   'igloo-music' |
   'stamps-release' |
   'placeholder-2016' |
-  'vr-room';
+  'vr-room' |
+  'old-rink';
 
 export type Update = {
   date: Version;

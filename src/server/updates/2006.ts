@@ -197,9 +197,11 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-01',
+    dateReference: 'old-rink',
     rooms: {
       // unknown date, you can now walk to the audience in the rink
       // only evidence is after april fools party
+      // the date referene here is used to signal the old ice rink changed which influences the puck functionality
       // the file is also seemingly a debug file
       rink: 'fix:ArtworkRoomsRink12.swf'
     }
