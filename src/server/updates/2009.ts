@@ -968,7 +968,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'catalogues/party.swf': {
-            'en': 'archives:ENCataloguesParty-MedievalParty2009.swf'
+            'en': ['archives:ENCataloguesParty-MedievalParty2009.swf', 'party_catalogue']
           }
         }
       }
