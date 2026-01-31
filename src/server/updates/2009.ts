@@ -815,7 +815,13 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-03',
-    clothingCatalog: 'archives:PSApr2009.swf'
+    clothingCatalog: 'archives:PSApr2009.swf',
+    miscComments: ['The collectible pin icon in the newspaper changes'],
+    localChanges: {
+      'news/20090402/20090402.swf': {
+        en: 'archives:ENNews181.swf'
+      }
+    }
   },
   {
     date: '2009-04-06',
