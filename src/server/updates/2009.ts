@@ -1060,7 +1060,13 @@ export const UPDATES_2009: Update[] = [
       { display: 'Summer Song', id: 216, pos: [1, 2] },
       { display: 'Mix Maestro', id: 242, pos: [6, 2] },
       { display: 'Water Kongo', id: 217, pos: [7, 2] }
-    ]
+    ],
+    miscComments: ['A new startscreen is added for the upcoming party'],
+    temp: {
+      event: {
+        startscreens: ['archives:AdventureParty2009ENLoginScreen1.swf']
+      }
+    }
   },
   {
     date: '2009-06-01',
@@ -1087,6 +1093,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-12',
+    end: ['event'],
     temp: {
       party: {
         partyName: 'Adventure Party',
