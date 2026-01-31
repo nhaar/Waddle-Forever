@@ -2166,7 +2166,7 @@ export const UPDATES_2008: Update[] = [
     date: '2008-11-17',
     roomComment: 'The dojo now has the Card-Jitsu game',
     rooms: {
-      dojo: 'recreation:dojo_2008.swf',
+      dojo: 'recreation:dojo_november_2008.swf',
       dojohide: 'recreation:dojohide_2008.swf',
       dojoext: 'recreation:dojoext.swf'
     },
@@ -2557,12 +2557,13 @@ export const UPDATES_2008: Update[] = [
         }
       }
     },
-    roomComment: 'The Ice Rink returns',
+    roomComment: 'The Ice Rink returns, and the Dojo now has instructions',
     rooms: {
       town: 'archives:RoomsTown.swf',
       forts: 'archives:FortsWithIceRinkStadium.swf',
       rink: 'archives:RoomsRink.swf',
-      agent: 'archives:RoomsAgent.swf'
+      agent: 'archives:RoomsAgent.swf',
+      dojo: 'recreation:dojo_2008.swf'
     },
     map: 'archives:Map2008-2011Rink.swf'
   },

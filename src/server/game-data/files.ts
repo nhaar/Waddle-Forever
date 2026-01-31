@@ -1964,6 +1964,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'medieval_2010/poster.swf',
       comment: 'Made by Bemy'
+    },
+    {
+      file: 'dojo_november_2008.swf',
+      comment: 'Made by ItzAle, removed the instructions from Jeoy\'s recreation'
     }
   ],
   [MOD]: [
