@@ -819,7 +819,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/town.swf',
-      comment: 'made by Victando'
+      comment: 'Made by Doubleuman'
     },
     {
       file: 'summer_kickoff_2007/mtn.swf',
@@ -1932,6 +1932,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'christmas_06/beach.swf',
       comment: 'Originally made by Fabi (uploaded by Boo), fixed by lifeofgames477 for pre-CPIP'
+    },
+    {
+      file: 'summer_kickoff_2007/book.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [

@@ -416,7 +416,8 @@ export const UPDATES_2007: Update[] = [
           berg: 'recreation:summer_kickoff_2007/berg.swf',
           forest: 'recreation:summer_kickoff_2007/forest.swf',
           plaza: 'recreation:summer_kickoff_2007/plaza.swf',
-          coffee: 'recreation:summer_kickoff_2007/coffee.swf'
+          coffee: 'recreation:summer_kickoff_2007/coffee.swf',
+          book: 'recreation:summer_kickoff_2007/book.swf'
         },
         music: {
           'town': 204,
@@ -431,7 +432,8 @@ export const UPDATES_2007: Update[] = [
           'village': 204,
           'plaza': 204,
           'forest': 204,
-          'coffee': 215
+          'coffee': 215,
+          book: 215
         }
       }
     }
