@@ -1054,10 +1054,10 @@ export const UPDATES_2009: Update[] = [
     date: '2009-05-29',
     iglooList: [
       { display: 'Flipper Stomper', id: 244, pos: [3, 1] },
-      { display: 'Coconut', id: 215, pos: [5, 1] },
-      { display: 'Catchin\' Waves Theme', id: 113, pos: [6, 1] },
-      { display: 'Puffle Ragtime', id: 261, pos: [7, 1] },
-      { display: 'Summer Song', id: 216, pos: [1, 2] },
+      { display: 'Coconut', id: 215, pos: [6, 1] },
+      { display: 'Catchin\' Waves Theme', id: 113, pos: [7, 1] },
+      { display: 'Puffle Ragtime', id: 261, pos: [1, 2] },
+      { display: 'Summer Song', id: 216, pos: [2, 2] },
       { display: 'Mix Maestro', id: 242, pos: [6, 2] },
       { display: 'Water Kongo', id: 217, pos: [7, 2] }
     ],
