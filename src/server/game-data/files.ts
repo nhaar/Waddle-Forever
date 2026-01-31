@@ -1960,6 +1960,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'forest_2008_sky.swf',
       comment: 'Made by ItzAle'
+    },
+    {
+      file: 'medieval_2010/poster.swf',
+      comment: 'Made by Bemy'
     }
   ],
   [MOD]: [
