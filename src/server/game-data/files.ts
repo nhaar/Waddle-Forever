@@ -1952,6 +1952,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'halloween_2006/town.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'coffee_precpip_clickable_sign.swf',
+      comment: 'Made by ItzAle'
+    },
+    {
+      file: 'forest_2008_sky.swf',
+      comment: 'Made by ItzAle'
     }
   ],
   [MOD]: [
