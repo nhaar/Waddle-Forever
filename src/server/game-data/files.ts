@@ -1968,6 +1968,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'dojo_november_2008.swf',
       comment: 'Made by ItzAle, removed the instructions from Jeoy\'s recreation'
+    },
+    {
+      file: 'rink_2008_sky.swf',
+      comment: 'Made by lifeofgames477. Used the vectorized recreation from ChrisCPI and changed the sky'
     }
   ],
   [MOD]: [

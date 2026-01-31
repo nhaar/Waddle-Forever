@@ -626,12 +626,13 @@ export const UPDATES_2008: Update[] = [
     }
   },
   {
-    roomComment: 'The skyboxes are updated in the Pizza Parlor and Forest, and the Coffee Shop has a clickable sign',
+    roomComment: 'The skyboxes are updated in some rooms, and the Coffee Shop has a clickable sign',
     date: '2008-04-14',
     rooms: {
       pizza: 'recreation:pizza_2008.swf',
       coffee: 'recreation:coffee_precpip_clickable_sign.swf',
-      forest: 'recreation:forest_2008_sky.swf'
+      forest: 'recreation:forest_2008_sky.swf',
+      rink: 'recreation:rink_2008_sky.swf'
     }
   },
   { 
