@@ -67,3 +67,34 @@ input[type="number"] {
   padding: 5px;
   border-radius: 3px;
 }
+
+.window-prompt {
+  z-index: 99;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.window {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  row-gap: 15px;
+  width: 75%;
+  padding: 10px;
+  background-color: #0280CD;
+  border: 2px solid #003366;
+  border-radius: 20px;
+  box-shadow: 
+    0px 0px 0 2px #fff,
+    0px 0px 0 4px #ffffff80,
+    inset 2px 2px 0 0 #00ccff,
+    inset -2px -2px 0 0 #00529B;
+}
