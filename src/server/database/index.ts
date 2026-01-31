@@ -228,6 +228,8 @@ class JsonDatabase {
         return '1.4.1';
       case '1.4.1':
         return '1.4.2';
+      case '1.4.2':
+        return '1.4.3';
       default:
         throw new Error('Invalid database version: ' + version);
     }
