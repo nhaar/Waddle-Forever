@@ -148,7 +148,7 @@ app.on('ready', async () => {
     const url:URL = new URL(details.url);
 
     if (url.pathname === "/play/v2/client/create.swf") {
-      dialog.showMessageBox({ message: "DON'T CREATE AN ACCOUNT" });
+      dialog.showMessageBox({ message: "You don't need to create accounts, simply type any username and password when logging in" });
       return;
     }
 

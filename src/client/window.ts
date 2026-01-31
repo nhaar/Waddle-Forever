@@ -63,11 +63,6 @@ const createWindow = async (store: Store, clientSettings: GlobalSettings, server
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (!url.includes('localhost') || !url.includes(getIP(clientSettings, serverSettings))) {
       event.preventDefault();
-
-      if (url.includes("clubpenguin.com")){
-        console.log("tried navigating to clubpenguin url");
-        return;
-      }
       shell.openExternal(url);
     }
   });
