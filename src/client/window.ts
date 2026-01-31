@@ -65,7 +65,8 @@ const createWindow = async (store: Store, clientSettings: GlobalSettings, server
       event.preventDefault();
       shell.openExternal(url);
     }
-  });  
+  });
+
   return mainWindow;
 };
 
