@@ -879,7 +879,12 @@ export const UPDATES_2009: Update[] = [
     temp: {
       const: {
         rooms: {
-          cave: 'recreation:medieval_09_const_cave.swf'
+          cave: 'recreation:medieval_09_const_cave.swf',
+          town: 'archives:RoomsTown-MedievalParty2010Pre.swf',
+          village: 'archives:RoomsVillage-MedievalParty2010Const.swf',
+          forts: 'archives:RoomsForts-MedievalParty2010Const.swf',
+          plaza: 'archives:RoomsPlaza-MedievalParty2010Const.swf',
+          beach: 'archives:MedievalParty2011ConstBeach.swf'
         }
       }
     }
