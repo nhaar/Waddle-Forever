@@ -10,24 +10,30 @@
       <div>
         Choose:
       </div>
-      <div>
-        <input type="radio" id="local" name="type" />
-        <label for="local">Local (Singleplayer Only)</label>
+      <div class="radio-option">
+        <label for="local">
+          <input type="radio" id="local" name="type" />
+          Local (Singleplayer Only)
+        </label>
       </div>
 
-      <div>
-        <input type="radio" id="guest" name="type" />
-        <label for="guest">Guest (Join Another Server)</label>
+      <div class="radio-option">
+        <label for="guest">
+          <input type="radio" id="guest" name="type" />
+          Guest (Join Another Server)
+        </label>
       </div>
 
-      <div>
-        <input type="radio" id="host" name="type" />
-        <label for="host">Host (Invite Other People)</label>
+      <div class="radio-option">
+        <label for="host">
+          <input type="radio" id="host" name="type" />
+          Host (Invite Other People)
+        </label>
       </div>
     </div>
     <div id="info-input" style="visibility: hidden;">
       <label for="ip-input">IP:</label>
-      <input placeholder="IP" id="ip-input" />
+      <input placeholder="IP" type="text" id="ip-input" />
       <label for="port-input">Port (LEAVE BLANK unless rerouting the port):</label>
       <input placeholder="Port" id="port-input" type="number" />
       <button id="send">Update</button>

@@ -3,8 +3,8 @@ import { getSettings, post } from "./common-static.js";
 const api = (window as any).api;
 
 /** Update the settings object with the partial settings given */
-function update(settings: any) {
-  post('update', settings);
+function update(settings: any, reset?: boolean) {
+  post('update', { settings, reset });
 }
 
 interface Setting {
@@ -102,7 +102,7 @@ const allSettings: Setting[] = [
 ]
 
 for (const setting of allSettings) {
-  const inputElement = document.querySelector<HTMLInputElement>(`.${setting.elementId}`)!;
+  const inputElement = document.getElementById(setting.elementId)! as HTMLInputElement;
   inputElement.addEventListener('change', (e) => {
     if (e.target instanceof HTMLInputElement) {
       setting.onChange(e.target);
@@ -116,12 +116,12 @@ getSettings().then((settings) => {
       console.log(`settings-static: Couldn't get setting "${setting.key}"!`)
       continue;
     }
-    const inputElement = document.querySelector<HTMLInputElement>(`.${setting.elementId}`)!;
+    const inputElement = document.getElementById(setting.elementId)! as HTMLInputElement;
     inputElement.checked = settings[setting.key];
   }
 });
 
-const clothingInput = document.querySelector<HTMLInputElement>('.js-clothing-input')!;
+const clothingInput = document.getElementById('js-clothing-input')! as HTMLInputElement;
 
 window.addEventListener('finish-download', (e: any) => {
   const pack = e.detail;

@@ -686,7 +686,7 @@ export const BOILER_ROOM_PAPERS: BoilerRoomPaper[] = [
   },
   {
     title: 'APRIL FOOLS PARTY',
-    file: 'archives:ENNews181.swf'
+    file: 'archives:ENNews181Original.swf'
   },
   {
     title: 'PRESENTING THE TOP PLAYS!',

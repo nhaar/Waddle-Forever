@@ -206,7 +206,11 @@ export enum Handle {
   Medieval2012ViewedMessage,
   GetBakeryState,
   SendEnterHopper,
-  GetCookieInventory
+  GetCookieInventory,
+  GetHockeyGame,
+  MoveHockeyPuck,
+  MoveHockeyPuckOld,
+  UpdateHockeyGame
 };
 
 /** Map of all the handles and their valid arguments */
@@ -396,7 +400,11 @@ export const HANDLE_ARGUMENTS = {
   [Handle.Medieval2012ViewedMessage]: ['number'],
   [Handle.GetBakeryState]: [],
   [Handle.SendEnterHopper]: ['string'],
-  [Handle.GetCookieInventory]: []
+  [Handle.GetCookieInventory]: [],
+  [Handle.GetHockeyGame]: [],
+  [Handle.MoveHockeyPuck]: ['number', 'number', 'number', 'number', 'number'],
+  [Handle.MoveHockeyPuckOld]: ['number', 'number'],
+  [Handle.UpdateHockeyGame]: ['number']
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -594,8 +602,8 @@ const HANDLER_MAPPING: HandlerMapping = {
     'zr': Handle.RollSpyDrills,
     'zc': Handle.SpyDrillsReward,
     'lw': Handle.LeaveWaddle,
-    'gz': [Handle.EnterWaddleGame, Handle.GetTableGame],
-    'uz': Handle.UpdateWaddleGameSeats,
+    'gz': [Handle.EnterWaddleGame, Handle.GetTableGame, Handle.GetHockeyGame],
+    'uz': [Handle.UpdateWaddleGameSeats, Handle.UpdateHockeyGame],
     'zm': [
       Handle.SledRaceAction,
       Handle.CardJitsuDeal,
@@ -605,13 +613,15 @@ const HANDLER_MAPPING: HandlerMapping = {
       Handle.CardJitsuFireChooseCard,
       Handle.CardJitsuFireInfoReady,
       Handle.CardJitsuFireChooseElement,
-      Handle.SendTableMove
+      Handle.SendTableMove,
+      Handle.MoveHockeyPuckOld
     ],
     'jmm': Handle.JoinMatchMaking,
     'jz': [Handle.JoinSled, Handle.JoinTableGame],
     'jsen': Handle.JoinSensei,
     'lz': [Handle.LeaveWaddleMatch, Handle.LeaveTableGame],
-    'epfsf': Handle.EPFStamps
+    'epfsf': Handle.EPFStamps,
+    'm': Handle.MoveHockeyPuck
   },
   'k': {
     'spy': Handle.BecomeAgent

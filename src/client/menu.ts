@@ -33,20 +33,34 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     submenu: [
       {
         label: 'Open Settings',
-        click: () => { createSettingsWindow(globalSettings, mainWindow); }
+        accelerator: 'CommandOrControl+,',
+        click: () => createSettingsWindow(globalSettings, mainWindow)
       },
       {
         label: 'Open Mods',
-        click: () => { createModsWindow(mainWindow) }
+        accelerator: 'CommandOrControl+M',
+        click: () => createModsWindow(mainWindow)
       },
       {
-        label: 'Clear Cache',
-        click: () => { clearCache(mainWindow); }
+        label: 'Open Multiplayer Settings',
+        click: () => createMultiplayerSettings(globalSettings,serverSettings, mainWindow)
+      },
+      {
+        label: 'Open Commands',
+        accelerator: 'CommandOrControl+D',
+        click: () => createCommands(mainWindow)
+      },
+      {
+        type: 'separator'
       },
       {
         label: 'Open Dev Tools',
         accelerator: 'CommandOrControl+Shift+I',
-        click: () => { openDevTools(mainWindow); }
+        click: () => openDevTools(mainWindow)
+      },
+      {
+        label: 'Clear Cache',
+        click: () => clearCache(mainWindow)
       },
       {
         label: 'Reload',
@@ -56,44 +70,18 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Reload Clear Cache',
         accelerator: 'CommandOrControl+R',
-        click: () => { mainWindow.webContents.reloadIgnoringCache(); }
+        click: () => mainWindow.webContents.reloadIgnoringCache()
       },
       {
-        label: 'Toggle Full Screen',
-        accelerator: 'F11',
-        click: () => { toggleFullScreen(store, mainWindow); }
-      },
-      { 
-        label: 'Zoom In',
-        role: 'zoomIn',
-        accelerator: 'CommandOrControl+=',
+        type: 'separator'
       },
       {
-        label: 'Zoom Out',
-        role: 'zoomOut',
-        accelerator: 'CommandOrControl+-',
-      },
-
-      {
-        label: 'Reset Zoom',
-        role: 'resetZoom',
-        accelerator: 'CommandOrControl+0',
+        label: 'Toggle Discord Rich Presence',
+        click: () => enableOrDisableDiscordRPC(store, mainWindow)
       },
       {
-        label: 'Enable/Disable Discord Rich Presence',
-        click: () => { enableOrDisableDiscordRPC(store, mainWindow); }
-      },
-      {
-        label: 'Enable/Disable room tracking through Discord Rich Presence',
-        click: () => { enableOrDisableDiscordRPCLocationTracking(store, mainWindow); }
-      },
-      {
-        label: 'Multiplayer Settings',
-        click: () => { createMultiplayerSettings(globalSettings,serverSettings, mainWindow); }
-      },
-      {
-        label: 'Commands',
-        click: () => { createCommands(mainWindow); }
+        label: 'Toggle room tracking through Discord Rich Presence',
+        click: () => enableOrDisableDiscordRPCLocationTracking(store, mainWindow)
       }
     ]
   };
@@ -101,20 +89,51 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   const timeline: MenuItemConstructorOptions = {
     id: '3',
     label: 'Timeline',
-    click: () => { createTimelinePicker(mainWindow); }
+    click: () => createTimelinePicker(mainWindow)
   };
 
   // only adding the submenu if Mac, because empty submenu leads to it not working on other OSes, and it's a necessary Mac feature
   if (process.platform === 'darwin') {
     timeline.submenu = [{ 
       label: 'Timeline Picker', 
-      click: () => { createTimelinePicker(mainWindow); }
+      click: () => createTimelinePicker(mainWindow)
     }];
   }
 
-return process.platform === 'darwin' ? 
-  [app, options, timeline] : 
-  [options, timeline];
+  // on Mac, stuff like copying/pasting does not work without this
+  const edit: MenuItemConstructorOptions = {
+    id: '4',
+    label: 'Edit',
+    submenu: [
+      { role: 'undo' },
+      { role: 'redo' },
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' },
+      { role: 'selectAll' }
+    ]
+  }
+
+  const view: MenuItemConstructorOptions = {
+    id: '4',
+    label: 'View',
+    submenu: [
+      { role: 'zoomIn', accelerator: 'CommandOrControl+Plus' },
+      { role: 'zoomOut', accelerator: 'CommandOrControl+-' },
+      { role: 'resetZoom' },
+      { type: 'separator' },
+      {
+        label: 'Toggle Full Screen',
+        accelerator: process.platform === 'darwin' ? 'Ctrl+Command+F' : 'F11',
+        click: () => toggleFullScreen(store, mainWindow)
+      },
+    ]
+  }
+
+  return process.platform === 'darwin' ? 
+    [app, options, timeline, edit, view] : 
+    [options, timeline, view];
 };
 
 const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager) => {

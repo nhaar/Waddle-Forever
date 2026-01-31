@@ -626,10 +626,13 @@ export const UPDATES_2008: Update[] = [
     }
   },
   {
-    roomComment: 'The skyboxes are updated in the Pizza Parlor',
+    roomComment: 'The skyboxes are updated in some rooms, and the Coffee Shop has a clickable sign',
     date: '2008-04-14',
     rooms: {
-      pizza: 'recreation:pizza_2008.swf'
+      pizza: 'recreation:pizza_2008.swf',
+      coffee: 'recreation:coffee_precpip_clickable_sign.swf',
+      forest: 'recreation:forest_2008_sky.swf',
+      rink: 'recreation:rink_2008_sky.swf'
     }
   },
   { 
@@ -2164,7 +2167,7 @@ export const UPDATES_2008: Update[] = [
     date: '2008-11-17',
     roomComment: 'The dojo now has the Card-Jitsu game',
     rooms: {
-      dojo: 'recreation:dojo_2008.swf',
+      dojo: 'recreation:dojo_november_2008.swf',
       dojohide: 'recreation:dojohide_2008.swf',
       dojoext: 'recreation:dojoext.swf'
     },
@@ -2555,12 +2558,13 @@ export const UPDATES_2008: Update[] = [
         }
       }
     },
-    roomComment: 'The Ice Rink returns',
+    roomComment: 'The Ice Rink returns, and the Dojo now has instructions',
     rooms: {
       town: 'archives:RoomsTown.swf',
       forts: 'archives:FortsWithIceRinkStadium.swf',
       rink: 'archives:RoomsRink.swf',
-      agent: 'archives:RoomsAgent.swf'
+      agent: 'archives:RoomsAgent.swf',
+      dojo: 'recreation:dojo_2008.swf'
     },
     map: 'archives:Map2008-2011Rink.swf'
   },

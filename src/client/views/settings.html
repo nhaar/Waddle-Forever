@@ -5,61 +5,91 @@
     <link href="base.css" rel="stylesheet" type="text/css" media="screen"/>
   </head>
   <body>
-    <div>
-      Settings
+    <!--<h2>Settings</h2>-->
+    <div style="margin: 10px 10px -10px 10px;">
+      When a setting is changed, the game will automatically clear cache or reload the game if needed.
     </div>
-    <div>
-      The game will automatically clear cache or reload the game if needed.
-    </div>
+
     <div class="settings-parent">
-      <div class="settings-header">
-        Additional Packages
-      </div>
-      <div class="settings">
-        <div>Clothing Package</div>
-        <input type="checkbox" class="js-clothing-input" />
-      </div>
-      <div class="settings-header">
-        Speedrun Related
-      </div>
-      <div class="settings">
-        <div>30 FPS</div>
-        <input type="checkbox" class="js-fps-input" />
+      <h3>Additional Packages</h3>
+      <label title="Download or remove the clothing package.">
+        Clothing Package
         <div>
-          Thin Ice IGT
+          <input type="checkbox" id="js-clothing-input">
+          <span class="box"></span>
         </div>
-        <input type="checkbox" class="js-thin-ice-igt-input" />
+      </label>
+
+      <hr>
+
+      <h3>Speedrun Related</h3>
+      <label title="Play in 30 FPS in between July 15, 2008 and November 19, 2010.">
+        30 FPS
         <div>
-          Jet Pack Adventure Level Selector
+          <input type="checkbox" id="js-fps-input">
+          <span class="box"></span>
         </div>
-        <input type="checkbox" class="js-jpa-level-input" />
-      </div>
-      <div class="settings-header">
-        Quality of Life
-      </div>
-      <div class="settings">
+      </label>
+
+      <label title="Display an in-game timer when playing Thin Ice.">
+        Thin Ice IGT
         <div>
-          Swap Dance Contest Arrow Keys
+          <input type="checkbox" id="js-thin-ice-igt-input">
+          <span class="box"></span>
         </div>
-        <input type="checkbox" class="js-dance-arrow-input" />
-        <div>Remove Puffle Quest Waiting</div>
-        <input type="checkbox" class="rainbow-input" />
-      </div>
-      <div class="settings-header">
-        Extra
-      </div>
-      <div class="settings">
-        <div>Simpler Website</div>
-        <input type="checkbox" class="js-website-input" />
-      </div>
-      <div class="settings">
-        <div>New Accounts Are Always a Member</div>
-        <input type="checkbox" class="js-member-input" />
-      </div>
-      <div class="settings">
-        <div>2013 My Puffle</div>
-        <input type="checkbox" class="js-my-puffle-input" />
-      </div>
+      </label>
+
+      <label title="Implements a level selector on the title screen of Jet Pack Adventure.">
+        Jet Pack Adventure Level Selector
+        <div>
+          <input type="checkbox" id="js-jpa-level-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <hr>
+
+      <h3>Quality of Life</h3>
+      <label title="Swaps the positions of the up and down arrows in Dance Contest.">
+        Swap Dance Contest Arrow Keys
+        <div>
+          <input type="checkbox" id="js-dance-arrow-input">
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Disables the wait time in-between tasks for the rainbow puffle quest.">
+        Remove Puffle Quest Waiting
+        <div>
+          <input type="checkbox" id="rainbow-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <hr>
+
+      <h3>Extra</h3>
+      <label title="Play in a minimal page where only the game itself is displayed.">
+        Simpler Website
+        <div>
+          <input type="checkbox" id="js-website-input" />
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <label title="When enabled, all newly created penguins will have membership.">
+        New Accounts Are Always a Member
+        <div>
+          <input type="checkbox" id="js-member-input" />
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Enables the newer, unused version of the 'My Puffle' Paint By Letters book (has newer puffle colors).">
+        2013 My Puffle
+        <div>
+          <input type="checkbox" id="js-my-puffle-input" />
+          <span class="box"></span>
+        </div>
+      </label>
     </div>
     <script>var exports = {};</script>
     <script src="../static/common-static.js" type="module"></script>

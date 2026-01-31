@@ -1,9 +1,16 @@
 :root {
-  --background: #005bbb
+  --background: radial-gradient(circle, #0280cd 20%, #027bc8 47%, #00529b 90%);
+  --background-solid: #027bc8;
+  --mono-stack: Menlo, Monaco, 'Courier New', monospace;
 }
 
 body {
-  background-color: var(--background);
+  background-image: var(--background);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+
   color: white;
 
   display: flex;
@@ -14,4 +21,80 @@ body {
   font-family: Arial, sans-serif;
 
   user-select: none;
+}
+
+button {
+  color: white;
+  background-color: #0280CD;
+  padding: 5px;
+  margin: 4px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 
+    0px 0.3px 0 1.5px #003366,
+    -0.9px -0.9px 0 1.3px #00529B,
+    1.2px 1.2px 0 1.3px #00ccff,
+    inset 1px 0 0 0 #00ccff;
+}
+
+button:hover {
+  background-color: #0056a6;
+}
+
+button:active {
+  background-color: #00ccff;
+}
+
+button:focus {
+  outline: none;
+}
+
+input[type="text"],
+input[type="number"] {
+  border: solid 1px black;
+  font-family: var(--mono-stack);
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.select {
+  border: solid 1px black;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.window-prompt {
+  z-index: 99;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.window {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  row-gap: 15px;
+  width: 75%;
+  padding: 10px;
+  background-color: #0280CD;
+  border: 2px solid #003366;
+  border-radius: 20px;
+  box-shadow: 
+    0px 0px 0 2px #fff,
+    0px 0px 0 4px #ffffff80,
+    inset 2px 2px 0 0 #00ccff,
+    inset -2px -2px 0 0 #00529B;
 }

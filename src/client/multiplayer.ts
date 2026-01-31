@@ -21,12 +21,13 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
     return;
   } 
   multiplayerWindow = new BrowserWindow({
-    height: 300,
-    width: 500,
+    height: 330,
+    width: 425,
     title: "Multiplayer Settings",
     webPreferences: {
       preload: path.join(__dirname, 'preload/multiplayer-preload.js')
     },
+    resizable: false,
     parent: mainWindow
   });
 

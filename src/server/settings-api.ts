@@ -20,9 +20,10 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
   }
 
   router.post('/update', (req, res) => {
-    s.updateSettings(req.body);
+    const reset = req.body.reset ?? false;
+    s.updateSettings(req.body.settings);
     res.sendStatus(200);
-    resetServers();
+    if (reset) resetServers();
   });
 
   router.get('/get', (_, res) => {

@@ -1,13 +1,13 @@
 import path from 'path'
 
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow, session, dialog } from "electron";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
-import createWindow from "./window";
+import createWindow, { loadMain } from "./window";
 import startServer from "../server/server";
 import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
@@ -143,7 +143,20 @@ app.on('ready', async () => {
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
   }
+
+  session.defaultSession.webRequest.onBeforeRequest((details, callback) => {
+    const url:URL = new URL(details.url);
+
+    if (url.pathname === "/play/v2/client/create.swf") {
+      dialog.showMessageBox({ message: "You don't need to create accounts, simply type any username and password when logging in" });
+      loadMain(mainWindow, globalSettings, settingsManager);
+      return;
+    }
+
+    callback({});
+  });
 });
+
 
 app.on('window-all-closed', async () => {
   // On macOS it is common for applications and their menu bar

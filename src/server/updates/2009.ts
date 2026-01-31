@@ -739,7 +739,6 @@ export const UPDATES_2009: Update[] = [
     },
     rooms: {
       // game upgrades
-      mtn: 'archives:RoomsMtn-January2010.swf',
       cove: 'archives:RoomsCove.swf',
       dock: 'archives:RoomsDock_1.swf',
       lodge: 'archives:RoomsLodge.swf'
@@ -815,7 +814,13 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-03',
-    clothingCatalog: 'archives:PSApr2009.swf'
+    clothingCatalog: 'archives:PSApr2009.swf',
+    miscComments: ['The collectible pin icon in the newspaper changes'],
+    localChanges: {
+      'news/20090402/20090402.swf': {
+        en: 'archives:ENNews181.swf'
+      }
+    }
   },
   {
     date: '2009-04-06',
@@ -868,12 +873,24 @@ export const UPDATES_2009: Update[] = [
     petFurniture: 'archives:April2009Pets.swf'
   },
   {
+    date: '2009-04-24',
+    roomComment: 'Game Upgrades are added to the Ski Hill',
+    rooms: {
+      mtn: 'archives:RoomsMtn-January2010.swf'
+    }
+  },
+  {
     date: '2009-05-01',
     clothingCatalog: 'archives:May2009.swf',
     temp: {
       const: {
         rooms: {
-          cave: 'recreation:medieval_09_const_cave.swf'
+          cave: 'recreation:medieval_09_const_cave.swf',
+          town: 'archives:RoomsTown-MedievalParty2010Pre.swf',
+          village: 'archives:RoomsVillage-MedievalParty2010Const.swf',
+          forts: 'archives:RoomsForts-MedievalParty2010Const.swf',
+          plaza: 'archives:RoomsPlaza-MedievalParty2010Const.swf',
+          beach: 'archives:MedievalParty2011ConstBeach.swf'
         }
       }
     }
@@ -962,7 +979,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'catalogues/party.swf': {
-            'en': 'archives:ENCataloguesParty-MedievalParty2009.swf'
+            'en': ['archives:ENCataloguesParty-MedievalParty2009.swf', 'party_catalogue']
           }
         }
       }
@@ -1023,7 +1040,7 @@ export const UPDATES_2009: Update[] = [
       ]
     },
     rooms: {
-      stage: 'archives:RoomsStage-February2011.swf',
+      stage: 'recreation:stage_viking_no_pin.swf',
       plaza: 'recreation:plaza_haunting_of_the_viking_opera.swf'
     }
   },
@@ -1033,7 +1050,18 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-05-22',
-    migrator: 'recreation:pirate_catalog/09_05.swf'
+    migrator: 'recreation:pirate_catalog/09_05.swf',
+    miscComments: ['Rockhopper arrives with plants'],
+    temp: {
+      'rockhopper-plants': {
+        rooms: {
+          ship: 'archives:RoomsShip-AdventureParty2009Const.swf',
+          shiphold: 'archives:RoomsHold-AdventureParty2009Const.swf',
+          shipnest: 'archives:RoomsNest-AdventureParty2009Const.swf',
+          beach: 'archives:RoomsBeach2-AdventureParty2009Const.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-05-28',
@@ -1048,31 +1076,40 @@ export const UPDATES_2009: Update[] = [
     date: '2009-05-29',
     iglooList: [
       { display: 'Flipper Stomper', id: 244, pos: [3, 1] },
-      { display: 'Coconut', id: 215, pos: [5, 1] },
-      { display: 'Catchin\' Waves Theme', id: 113, pos: [6, 1] },
-      { display: 'Puffle Ragtime', id: 261, pos: [7, 1] },
-      { display: 'Summer Song', id: 216, pos: [1, 2] },
+      { display: 'Coconut', id: 215, pos: [6, 1] },
+      { display: 'Catchin\' Waves Theme', id: 113, pos: [7, 1] },
+      { display: 'Puffle Ragtime', id: 261, pos: [1, 2] },
+      { display: 'Summer Song', id: 216, pos: [2, 2] },
       { display: 'Mix Maestro', id: 242, pos: [6, 2] },
       { display: 'Water Kongo', id: 217, pos: [7, 2] }
-    ]
+    ],
+    miscComments: ['A new startscreen is added for the upcoming party'],
+    temp: {
+      'rockhopper-plants': {
+        startscreens: ['archives:AdventureParty2009ENLoginScreen1.swf']
+      }
+    }
   },
   {
     date: '2009-06-01',
-    migrator: false
+    migrator: false,
+    temp: {
+      'rockhopper-plants': {
+        rooms: {
+          beach: 'archives:RoomsBeach-AdventureParty2009Const.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-06-05',
     temp: {
       const: {
         rooms: {
-          beach: 'archives:RoomsBeach-AdventureParty2009Const.swf',
-          shipnest: 'archives:RoomsNest-AdventureParty2009Const.swf',
           cove: 'archives:RoomsCove-AdventureParty2009Const.swf',
           dock: 'archives:RoomsDock-AdventureParty2009Const.swf',
           forest: 'archives:RoomsForest-AdventureParty2009Const.swf',
-          ship: 'archives:RoomsShip-AdventureParty2009Const.swf',
           plaza: 'archives:RoomsPlaza-AdventureParty2009Const.swf',
-          shiphold: 'archives:RoomsHold-AdventureParty2009Const.swf',
           forts: 'archives:RoomsForts-AdventureParty2009Const.swf',
           town: 'archives:RoomsTown-AdventureParty2009Const.swf'
         }
@@ -1081,6 +1118,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-12',
+    end: ['rockhopper-plants'],
     temp: {
       party: {
         partyName: 'Adventure Party',

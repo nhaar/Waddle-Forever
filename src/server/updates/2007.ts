@@ -416,7 +416,8 @@ export const UPDATES_2007: Update[] = [
           berg: 'recreation:summer_kickoff_2007/berg.swf',
           forest: 'recreation:summer_kickoff_2007/forest.swf',
           plaza: 'recreation:summer_kickoff_2007/plaza.swf',
-          coffee: 'recreation:summer_kickoff_2007/coffee.swf'
+          coffee: 'recreation:summer_kickoff_2007/coffee.swf',
+          book: 'recreation:summer_kickoff_2007/book.swf'
         },
         music: {
           'town': 204,
@@ -431,7 +432,8 @@ export const UPDATES_2007: Update[] = [
           'village': 204,
           'plaza': 204,
           'forest': 204,
-          'coffee': 215
+          'coffee': 215,
+          book: 215
         }
       }
     }
@@ -896,12 +898,16 @@ export const UPDATES_2007: Update[] = [
     },
     miscComments: ['Some emotes are removed'],
     fileChanges: {
-      'interface.swf': 'recreation:old_interface/skull_heart_removed.swf'
+      'interface.swf': 'recreation:old_interface/skull_heart_removed_old_logo.swf'
     }
   },
   {
     date: '2007-12-07',
-    clothingCatalog: 'archives:Clothing_0712.swf'
+    clothingCatalog: 'archives:Clothing_0712.swf',
+    miscComments: ['The logo in the startscreen is updated'],
+    fileChanges: {
+      'interface.swf': 'recreation:old_interface/skull_heart_removed.swf'
+    }
   },
   {
     date: '2007-12-08',
