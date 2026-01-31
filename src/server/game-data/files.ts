@@ -1940,6 +1940,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'stage_viking_no_pin.swf',
       comment: 'Made by Blue Kirby, removed the pin from the archived file'
+    },
+    {
+      file: 'rink_vector_precpip.swf',
+      comment: 'Made by ChrisCPI, vectorized ice rink before blue sky'
     }
   ],
   [MOD]: [

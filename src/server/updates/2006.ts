@@ -1233,6 +1233,13 @@ export const UPDATES_2006: Update[] = [
     furnitureCatalog: 'archives:Furniture_0610.swf',
   },
   {
+    date: '2006-10-21',
+    roomComment: 'The Ice Rink is vectorized',
+    rooms: {
+      rink: 'recreation:rink_vector_precpip.swf'
+    }
+  },
+  {
     date: '2006-10-24',
     roomComment: 'The Snow Forts sign breaks',
     temp: {
