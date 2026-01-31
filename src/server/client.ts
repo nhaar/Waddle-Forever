@@ -600,7 +600,7 @@ export class Server {
   }
 
   resetPuckPosition() {
-    if (isLower(this.settings.version, '2006-04-01')) {
+    if (isLower(this.settings.version, getDate('old-rink'))) {
       // Earlier rinks had the puck on the main stage of the room
       // instead of in the "game" mc later on
       this.puckPosition[0] = 397;
