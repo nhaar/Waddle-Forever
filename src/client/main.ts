@@ -7,7 +7,7 @@ import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
-import createWindow from "./window";
+import createWindow, { loadMain } from "./window";
 import startServer from "../server/server";
 import settingsManager from "../server/settings";
 import { showWarning } from "./warning";
@@ -149,6 +149,7 @@ app.on('ready', async () => {
 
     if (url.pathname === "/play/v2/client/create.swf") {
       dialog.showMessageBox({ message: "You don't need to create accounts, simply type any username and password when logging in" });
+      loadMain(mainWindow, globalSettings, settingsManager);
       return;
     }
 
