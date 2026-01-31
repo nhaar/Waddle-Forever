@@ -1039,7 +1039,18 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-05-22',
-    migrator: 'recreation:pirate_catalog/09_05.swf'
+    migrator: 'recreation:pirate_catalog/09_05.swf',
+    miscComments: ['Rockhopper arrives with plants'],
+    temp: {
+      'rockhopper-plants': {
+        rooms: {
+          ship: 'archives:RoomsShip-AdventureParty2009Const.swf',
+          shiphold: 'archives:RoomsHold-AdventureParty2009Const.swf',
+          shipnest: 'archives:RoomsNest-AdventureParty2009Const.swf',
+          beach: 'archives:RoomsBeach2-AdventureParty2009Const.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-05-28',
@@ -1063,28 +1074,31 @@ export const UPDATES_2009: Update[] = [
     ],
     miscComments: ['A new startscreen is added for the upcoming party'],
     temp: {
-      event: {
+      'rockhopper-plants': {
         startscreens: ['archives:AdventureParty2009ENLoginScreen1.swf']
       }
     }
   },
   {
     date: '2009-06-01',
-    migrator: false
+    migrator: false,
+    temp: {
+      'rockhopper-plants': {
+        rooms: {
+          beach: 'archives:RoomsBeach-AdventureParty2009Const.swf'
+        }
+      }
+    }
   },
   {
     date: '2009-06-05',
     temp: {
       const: {
         rooms: {
-          beach: 'archives:RoomsBeach-AdventureParty2009Const.swf',
-          shipnest: 'archives:RoomsNest-AdventureParty2009Const.swf',
           cove: 'archives:RoomsCove-AdventureParty2009Const.swf',
           dock: 'archives:RoomsDock-AdventureParty2009Const.swf',
           forest: 'archives:RoomsForest-AdventureParty2009Const.swf',
-          ship: 'archives:RoomsShip-AdventureParty2009Const.swf',
           plaza: 'archives:RoomsPlaza-AdventureParty2009Const.swf',
-          shiphold: 'archives:RoomsHold-AdventureParty2009Const.swf',
           forts: 'archives:RoomsForts-AdventureParty2009Const.swf',
           town: 'archives:RoomsTown-AdventureParty2009Const.swf'
         }
@@ -1093,7 +1107,7 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-12',
-    end: ['event'],
+    end: ['rockhopper-plants'],
     temp: {
       party: {
         partyName: 'Adventure Party',

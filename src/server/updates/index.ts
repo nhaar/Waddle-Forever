@@ -248,7 +248,8 @@ export type Event = 'party' |
   'attic-snow' |
   'telescope-bottle' |
   'storm' |
-  'box-plants';
+  'box-plants' |
+  'rockhopper-plants';
 
 export type DateReference = 'cpip' |
   'as3' |
