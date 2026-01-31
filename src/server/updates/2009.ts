@@ -739,7 +739,6 @@ export const UPDATES_2009: Update[] = [
     },
     rooms: {
       // game upgrades
-      mtn: 'archives:RoomsMtn-January2010.swf',
       cove: 'archives:RoomsCove.swf',
       dock: 'archives:RoomsDock_1.swf',
       lodge: 'archives:RoomsLodge.swf'
@@ -872,6 +871,13 @@ export const UPDATES_2009: Update[] = [
     furnitureCatalog: 'archives:FurnApr2009.swf',
     iglooCatalog: 'archives:April2009Igloo.swf',
     petFurniture: 'archives:April2009Pets.swf'
+  },
+  {
+    date: '2009-04-24',
+    roomComment: 'Game Upgrades are added to the Ski Hill',
+    rooms: {
+      mtn: 'archives:RoomsMtn-January2010.swf'
+    }
   },
   {
     date: '2009-05-01',
