@@ -1393,7 +1393,8 @@ export const UPDATES_2006: Update[] = [
           dock: 'recreation:christmas_06/dock.swf',
           forts: 'recreation:christmas_06/forts.swf',
           lodge: 'recreation:christmas_06/lodge.swf',
-          town: 'recreation:christmas_06/town.swf'
+          town: 'recreation:christmas_06/town.swf',
+          beach: 'recreation:christmas_06/beach.swf'
         },
         music: {
           beacon: 200,
@@ -1401,7 +1402,8 @@ export const UPDATES_2006: Update[] = [
           dock: 200,
           lodge: 400,
           town: 200,
-          forts: 200
+          forts: 200,
+          beach: 200
         }
       }
     }
