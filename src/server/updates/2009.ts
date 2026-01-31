@@ -1023,7 +1023,7 @@ export const UPDATES_2009: Update[] = [
       ]
     },
     rooms: {
-      stage: 'archives:RoomsStage-February2011.swf',
+      stage: 'recreation:stage_viking_no_pin.swf',
       plaza: 'recreation:plaza_haunting_of_the_viking_opera.swf'
     }
   },

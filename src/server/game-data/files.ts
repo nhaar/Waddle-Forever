@@ -1936,6 +1936,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'summer_kickoff_2007/book.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'stage_viking_no_pin.swf',
+      comment: 'Made by Blue Kirby, removed the pin from the archived file'
     }
   ],
   [MOD]: [
