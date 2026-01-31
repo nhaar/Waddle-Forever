@@ -1944,6 +1944,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'rink_vector_precpip.swf',
       comment: 'Made by ChrisCPI, vectorized ice rink before blue sky'
+    },
+    {
+      file: 'halloween_2006/coffee.swf',
+      comment: 'Made by VampLovr54'
+    },
+    {
+      file: 'halloween_2006/town.swf',
+      comment: 'Made by lifeofgames477'
     }
   ],
   [MOD]: [

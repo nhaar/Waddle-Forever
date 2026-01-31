@@ -1278,7 +1278,9 @@ export const UPDATES_2006: Update[] = [
           plaza: 'recreation:halloween_2006/plaza.swf',
           lodge: 'recreation:halloween_2006/lodge.swf',
           dance: 'recreation:halloween_2006/dance.swf',
-          forts: 'recreation:halloween_2006/forts.swf'
+          forts: 'recreation:halloween_2006/forts.swf',
+          coffee: 'recreation:halloween_2006/coffee.swf',
+          town: 'recreation:halloween_2006/town.swf'
         },
         music: {
           'town': 205,
@@ -1290,7 +1292,8 @@ export const UPDATES_2006: Update[] = [
           'plaza': 205,
           'lodge': 205,
           'dance': 205,
-          'forts': 205
+          'forts': 205,
+          coffee: 205
         }
       }
     }
