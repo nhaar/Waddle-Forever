@@ -898,12 +898,16 @@ export const UPDATES_2007: Update[] = [
     },
     miscComments: ['Some emotes are removed'],
     fileChanges: {
-      'interface.swf': 'recreation:old_interface/skull_heart_removed.swf'
+      'interface.swf': 'recreation:old_interface/skull_heart_removed_old_logo.swf'
     }
   },
   {
     date: '2007-12-07',
-    clothingCatalog: 'archives:Clothing_0712.swf'
+    clothingCatalog: 'archives:Clothing_0712.swf',
+    miscComments: ['The logo in the startscreen is updated'],
+    fileChanges: {
+      'interface.swf': 'recreation:old_interface/skull_heart_removed.swf'
+    }
   },
   {
     date: '2007-12-08',
