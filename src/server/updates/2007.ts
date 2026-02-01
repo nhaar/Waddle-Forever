@@ -441,6 +441,17 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-06-12',
+    temp: {
+      party: {
+        update: 'The Cove are updated',
+        rooms: {
+          cove: 'recreation:summer_kickoff_2007/cove_update.swf'
+        }
+      }
+    }
+  },
+  {
     date: '2007-06-15',
     iglooList: true,
     iglooVersion: 57,
@@ -448,11 +459,10 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The Beach, Dance Club and Cove are updated',
+        update: 'The Beach and The Dance Club are updated',
         rooms: {
           beach: 'recreation:summer_kickoff_2007/beach_update.swf',
-          dance: 'recreation:summer_kickoff_2007/dance_update.swf',
-          cove: 'recreation:summer_kickoff_2007/cove_update.swf'
+          dance: 'recreation:summer_kickoff_2007/dance_update.swf'
         }
       }
     }
