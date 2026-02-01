@@ -909,6 +909,11 @@ handler.xt(Handle.UpdateIglooMusic2007, (client, music) => {
 // Logging in
 handler.post('/php/login.php', (server, body) => {
   const { Username } = body;
+
+  if (server.settings.no_create_via_login && !server.penguinExists(Username)) {
+    return 'e=100';
+  }
+
   const penguin = server.getPenguinFromName(Username);
 
   const virtualDate = server.getVirtualDate(43);

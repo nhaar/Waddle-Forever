@@ -39,6 +39,12 @@ handler.xml('login', (client, data) => {
         name = name.replace(/_/g, ' ');
       }
 
+      // todo: error 101 is incorrect password
+      if (client.server.settings.no_create_via_login && !client.server.penguinExists(name)) {
+        client.sendXt('e', 100)
+        return
+      }
+
       client.setPenguinFromName(name);
     }
     console.log(`${client.penguin.name} is logging in`);

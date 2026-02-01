@@ -1,8 +1,6 @@
 import { Handler } from "..";
 import { Handle } from "../handles";
-import { Client } from "../../../server/client";
-import { Server } from "../../../server/client";
-import db, { Databases, PenguinData } from "../../../server/database";
+import { Client, Server } from "../../../server/client";
 
 interface NewPenguin {
   username: string,
@@ -31,10 +29,6 @@ function generateSessionId() {
     num = gen();
   }
   return String(num);
-}
-
-function nameExists(name: string) {
-  return db.get<PenguinData>(Databases.Penguins, 'name', name) !== undefined
 }
 
 function createPenguin(username: string, color: number, server: Server) {
@@ -68,7 +62,7 @@ handler.post('/create_account/create_account.php', (server, body) => {
 
   switch (body.action) {
     case 'validate_agreement':
-      /*if (body.agree_to_rules !== '1' && body.agree_to_terms !== '1') {
+      if (body.agree_to_rules !== '1' && body.agree_to_terms !== '1') {
         res += 'error=Please agree to the rules and terms'
         break
       }
@@ -79,7 +73,7 @@ handler.post('/create_account/create_account.php', (server, body) => {
       if (body.agree_to_terms !== '1') {
         res += 'error=Please agree to the terms'
         break
-      }*/
+      }
 
       res += 'success=1';
       break;
@@ -90,7 +84,7 @@ handler.post('/create_account/create_account.php', (server, body) => {
         break;
       }
 
-      if (nameExists(body.username)) {
+      if (server.penguinExists(body.username)) {
         res += 'error=This penguin already exists!'
         break
       }
@@ -114,7 +108,7 @@ handler.post('/create_account/create_account.php', (server, body) => {
 
 handler.post('/php/join.php', (server, body) => {
   const name = body.Username;
-  if (name.length < 3 || name.length > 12 || nameExists(name)) {
+  if (name.length < 3 || name.length > 12 || server.penguinExists(name)) {
     return 'e=700';
   }
 
@@ -124,7 +118,7 @@ handler.post('/php/join.php', (server, body) => {
 });
 
 handler.xt(Handle.CheckNameOld, (client, name) => {
-  const isValid = (name.length > 2 && name.length <= 12 && !nameExists(name)) ? 0 : 1;
+  const isValid = (name.length > 2 && name.length <= 12 && !client.server.penguinExists(name)) ? 0 : 1;
   client.sendXt('checkName', isValid, name);
 });
 

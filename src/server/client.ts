@@ -632,6 +632,10 @@ export class Server {
     return this._playersById.get(id);
   }
 
+  penguinExists(name: string): boolean {
+    return db.penguinExists(name);
+  }
+
   /** Remove a player from the online map */
   untrackPlayer(id: number): void {
     this._playersById.delete(id);

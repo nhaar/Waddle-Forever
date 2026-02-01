@@ -305,6 +305,10 @@ class JsonDatabase {
     return undefined;
   }
 
+  penguinExists(name: string): boolean {
+    return this.get<PenguinData>(Databases.Penguins, 'name', name) !== undefined
+  }
+
   add<T>(database: Databases, value: T): [T, number] {
     const seqDir = this.getSeqDir(database);
     const seq = Number(fs.readFileSync(seqDir, { encoding: 'utf-8' }));

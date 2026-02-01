@@ -98,6 +98,13 @@ const allSettings: Setting[] = [
     onChange: ({ checked }) => {
       update({ no_rainbow_quest_wait: checked });
     }
+  },
+  {
+    key: 'no_create_via_login',
+    elementId: 'createvialogin-input',
+    onChange: ({ checked }) => {
+      update({ no_create_via_login: checked });
+    }
   }
 ]
 
