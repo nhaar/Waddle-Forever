@@ -197,9 +197,11 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-01',
+    dateReference: 'old-rink',
     rooms: {
       // unknown date, you can now walk to the audience in the rink
       // only evidence is after april fools party
+      // the date referene here is used to signal the old ice rink changed which influences the puck functionality
       // the file is also seemingly a debug file
       rink: 'fix:ArtworkRoomsRink12.swf'
     }
@@ -1231,6 +1233,13 @@ export const UPDATES_2006: Update[] = [
     furnitureCatalog: 'archives:Furniture_0610.swf',
   },
   {
+    date: '2006-10-21',
+    roomComment: 'The Ice Rink is vectorized',
+    rooms: {
+      rink: 'recreation:rink_vector_precpip.swf'
+    }
+  },
+  {
     date: '2006-10-24',
     roomComment: 'The Snow Forts sign breaks',
     temp: {
@@ -1269,7 +1278,9 @@ export const UPDATES_2006: Update[] = [
           plaza: 'recreation:halloween_2006/plaza.swf',
           lodge: 'recreation:halloween_2006/lodge.swf',
           dance: 'recreation:halloween_2006/dance.swf',
-          forts: 'recreation:halloween_2006/forts.swf'
+          forts: 'recreation:halloween_2006/forts.swf',
+          coffee: 'recreation:halloween_2006/coffee.swf',
+          town: 'recreation:halloween_2006/town.swf'
         },
         music: {
           'town': 205,
@@ -1281,7 +1292,8 @@ export const UPDATES_2006: Update[] = [
           'plaza': 205,
           'lodge': 205,
           'dance': 205,
-          'forts': 205
+          'forts': 205,
+          coffee: 205
         }
       }
     }
@@ -1393,7 +1405,8 @@ export const UPDATES_2006: Update[] = [
           dock: 'recreation:christmas_06/dock.swf',
           forts: 'recreation:christmas_06/forts.swf',
           lodge: 'recreation:christmas_06/lodge.swf',
-          town: 'recreation:christmas_06/town.swf'
+          town: 'recreation:christmas_06/town.swf',
+          beach: 'recreation:christmas_06/beach.swf'
         },
         music: {
           beacon: 200,
@@ -1401,7 +1414,8 @@ export const UPDATES_2006: Update[] = [
           dock: 200,
           lodge: 400,
           town: 200,
-          forts: 200
+          forts: 200,
+          beach: 200
         }
       }
     }

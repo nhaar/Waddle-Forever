@@ -819,7 +819,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/town.swf',
-      comment: 'made by Victando'
+      comment: 'Made by Doubleuman'
     },
     {
       file: 'summer_kickoff_2007/mtn.swf',
@@ -1811,15 +1811,19 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'old_interface/old_toolbar.swf',
-      comment: 'Made by Doubleuman, interface71 changed to have the old toolbar'
+      comment: 'Made by Doubleuman, interface71 changed to have the old toolbar, and further modified by lifeofgames477 to add the old logo'
     },
     {
       file: 'old_interface/new_toolbar.swf',
-      comment: 'Made by Doubleuman, interface71 with emotes from when laughing emote was updated'
+      comment: 'Made by Doubleuman, interface71 with emotes from when laughing emote was updated, and further modified by lifeofgames477 to add the old logo'
     },
     {
       file: 'old_interface/skull_heart_removed.swf',
       comment: 'Made by Doubleuman, interface71 with emotes from when the skull and heart emotes were removed'
+    },
+    {
+      file: 'old_interface/skull_heart_removed_old_logo.swf',
+      comment: 'Originally the skull_heart_removed recreation, but with the old log added by lifeofgames477'
     },
     {
       file: 'old_interface/new_emotes_no_heart.swf',
@@ -1928,6 +1932,50 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'summer_kickoff_2007/coffee.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'christmas_06/beach.swf',
+      comment: 'Originally made by Fabi (uploaded by Boo), fixed by lifeofgames477 for pre-CPIP'
+    },
+    {
+      file: 'summer_kickoff_2007/book.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'stage_viking_no_pin.swf',
+      comment: 'Made by Blue Kirby, removed the pin from the archived file'
+    },
+    {
+      file: 'rink_vector_precpip.swf',
+      comment: 'Made by ChrisCPI, vectorized ice rink before blue sky'
+    },
+    {
+      file: 'halloween_2006/coffee.swf',
+      comment: 'Made by VampLovr54'
+    },
+    {
+      file: 'halloween_2006/town.swf',
+      comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'coffee_precpip_clickable_sign.swf',
+      comment: 'Made by ItzAle'
+    },
+    {
+      file: 'forest_2008_sky.swf',
+      comment: 'Made by ItzAle'
+    },
+    {
+      file: 'medieval_2010/poster.swf',
+      comment: 'Made by Bemy'
+    },
+    {
+      file: 'dojo_november_2008.swf',
+      comment: 'Made by ItzAle, removed the instructions from Jeoy\'s recreation'
+    },
+    {
+      file: 'rink_2008_sky.swf',
+      comment: 'Made by lifeofgames477. Used the vectorized recreation from ChrisCPI and changed the sky'
     }
   ],
   [MOD]: [

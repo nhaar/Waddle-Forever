@@ -789,6 +789,11 @@ export const UPDATES_2010: Update[] = [
           'party16': 287,
           'party17': 288,
           'party18': 265
+        },
+        localChanges: {
+          'close_ups/poster.swf': {
+            en: ['recreation:medieval_2010/poster.swf', 'party_poster']
+          }
         }
       }
     }

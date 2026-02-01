@@ -13,7 +13,8 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'stamps-release': undefined,
   'vanilla-engine': undefined,
   'placeholder-2016': undefined,
-  'vr-room': undefined
+  'vr-room': undefined,
+  'old-rink': undefined
 };
 
 const dateRefMap = new Map<DateReference, Version>();

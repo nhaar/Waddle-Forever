@@ -5,15 +5,34 @@
     <link href="mods.css" rel="stylesheet" type="text/css" media="screen"/>
   </head>
   <body>
-    <div>
+    <div class="mods-top">
       Pick which mods to use!
-      <br>
       <a href="https://waddleforever.com/mods">Click here to know more about mods</a>
-      <br>
-      <button id="open-mods-folder">Open Mods Folder</button>
-      <button id="update-mods" title="Refresh the list of mods">Refresh Mods</button>
+      <div>
+        <button id="open-mods-folder">Open Mods Folder</button>
+        <button id="update-mods" title="Refresh the list of mods">Refresh Mods</button>
+        <button id="mod-from-clipboard">Create Mod</button>
+      </div>
     </div>
     <div class="mods">
+    </div>
+    <div id="mods-clipboard-prompt" class="window-prompt" style="visibility: hidden;">
+      <div class="window">
+        <button style="align-self:flex-end;" onclick="document.getElementById('mods-clipboard-prompt').style.visibility = 'hidden'">
+          Cancel
+        </button>
+        <div>
+          Enter a name for the new mod
+          (You can also enter the name of an existing mod,
+          and the directory will be created in it):
+        </div>
+        <input type="text" id="create-mod-name-input" placeholder="Name of the mod">
+        <div>
+          Enter the directory that will be made in the mod (You may copy and paste a URL of a file):
+        </div>
+        <input type="text" id="create-mod-path-input" placeholder="play/v2/something/something">
+        <button id="create-mod-btn">Create Mod</button>
+      </div>
     </div>
     <script src="../static/common-static.js" type="module"></script>
     <script src="../static/mods-static.js" type="module"></script>

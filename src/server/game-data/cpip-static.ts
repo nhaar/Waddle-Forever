@@ -230,7 +230,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/fr/catalogues/lodge.swf': 'slegacy:media/play/v2/content/local/fr/catalogues/lodge.swf',
   'play/v2/content/local/fr/catalogues/mtn.swf': 'slegacy:media/play/v2/content/local/fr/catalogues/mtn.swf',
   'play/v2/content/local/pt/catalogues/adopt.swf': 'slegacy:media/play/v2/content/local/pt/catalogues/adopt.swf',
-  'play/v2/games/quests/q4/common/rooms/conclusion.swf': 'slegacy:media/play/v2/games/quests/q4/common/rooms/conclusion.swf',
+  'play/v2/games/quests/q4/common/rooms/conclusion.swf': 'archives:GamesQuestsGlobalRoomsConclusion3.swf',
   'play/v2/content/local/en/login/messages/icons/whats_new.swf': 'slegacy:media/play/v2/content/local/en/login/messages/icons/whats_new.swf',
   'play/v2/content/local/es/login/messages/icons/whats_new.swf': 'slegacy:media/play/v2/content/local/es/login/messages/icons/whats_new.swf',
   'play/v2/content/local/fr/login/messages/icons/whats_new.swf': 'slegacy:media/play/v2/content/local/fr/login/messages/icons/whats_new.swf',

@@ -2162,7 +2162,8 @@ export const UPDATES_2011: Update[] = [
     // when room localization went from being "english" to "en" (approximation)
     fileChanges: {
       'play/v2/client/shell.swf': 'approximation:shell_2011_interface_fix.swf',
-      'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf'
+      'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf',
+      'play/v2/content/local/en/catalogues/dance.swf': 'archives:Game_Upgrades_Dance_2011.swf'
     },
     rooms: {
       lounge: 'archives:RoomsLounge_4.swf',
