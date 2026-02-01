@@ -129,7 +129,7 @@ class MatchmakingRoom {
   private _matchmaker: MatchMaker;
   private _players: Client[];
   private _time = 0;
-  private _timer: NodeJS.Timer
+  private _timer: NodeJS.Timeout;
 
   constructor(matchmaker: MatchMaker) {
     this._matchmaker = matchmaker;
@@ -348,7 +348,7 @@ class Bakery {
 
   private _multiplierPenguins: Set<number> = new Set();
   private _multiplierCount: number = 0;
-  private _countInterval: NodeJS.Timer | null = null;
+  private _countInterval: NodeJS.Timeout | null = null;
 
   private _server: Server;
 
