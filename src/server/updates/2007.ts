@@ -417,7 +417,8 @@ export const UPDATES_2007: Update[] = [
           forest: 'recreation:summer_kickoff_2007/forest.swf',
           plaza: 'recreation:summer_kickoff_2007/plaza.swf',
           coffee: 'recreation:summer_kickoff_2007/coffee.swf',
-          book: 'recreation:summer_kickoff_2007/book.swf'
+          book: 'recreation:summer_kickoff_2007/book.swf',
+          cove: 'recreation:summer_kickoff_2007/cove.swf'
         },
         music: {
           'town': 204,
@@ -433,7 +434,8 @@ export const UPDATES_2007: Update[] = [
           'plaza': 204,
           'forest': 204,
           'coffee': 215,
-          book: 215
+          'book': 215,
+          'cove': 204
         }
       }
     }
@@ -446,10 +448,11 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The Beach and the Dance Club are updated',
+        update: 'The Beach, Dance Club and Cove are updated',
         rooms: {
           beach: 'recreation:summer_kickoff_2007/beach_update.swf',
-          dance: 'recreation:summer_kickoff_2007/dance_update.swf'
+          dance: 'recreation:summer_kickoff_2007/dance_update.swf',
+          cove: 'recreation:summer_kickoff_2007/cove_update.swf'
         }
       }
     }
