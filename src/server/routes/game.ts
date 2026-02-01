@@ -26,6 +26,7 @@ import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
+import getDependenciesJson from "./dependenciesjson";
 
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
@@ -128,6 +129,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('web_service/worldachievements.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
+  });
+  server.getData('play/v2/client/dependencies.json', (s) => {
+    return getDependenciesJson(s.settings.version, s.settings.remove_idle);
   });
   server.getData('play/v2/content/global/stampbook/world_stamps.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);

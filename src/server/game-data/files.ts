@@ -2007,20 +2007,16 @@ Originally from solero legacy-media, modified to work in the flat domain any por
       comment: 'Copy of boots.swf but in 30 FPS'
     },
     {
-      file: 'dependencies_scavenger_hunt.json',
-      comment: 'File to load the Scavenger Hunt. Should be integrated in the future'
-    },
-    {
       file: 'dynamic_igloo_music.swf',
       comment: 'File that loads the igloo music from a XML file. Originally by Ben, refined by Randomno to include bold names and remove pagination'
     },
     {
-      file: 'fair_dependencies.json',
-      comment: 'File to load the Fair dependency. Should be refactor as an "icon" dependency instead, similarly to Pre-CPIP eggs'
-    },
-    {
       file: 'fair_icon_adder.swf',
       comment: 'Modified from Ben\'s scavenger hunt mod'
+    },
+    {
+      file: 'idle_cancel.swf',
+      comment: 'A custom dependency that removes the idle disconnect timer. Only loads when the "remove_idle" setting is active.'
     },
     {
       file: 'load30.swf',

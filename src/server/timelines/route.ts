@@ -299,12 +299,10 @@ function addUpdates(map: FileTimelineMap): void {
       }
     }
     if (update.update.scavengerHunt2010 !== undefined) {
-      map.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', update.date, update.end);
       map.add(path.join('play/v2/content/global', update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), update.update.scavengerHunt2010.iconFileId, update.date, update.end);
     }
     if (update.update.fairCpip !== undefined) {
       if (isLower(update.date, getDate('vanilla-engine'))) {
-        map.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', update.date, update.end);
         map.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', update.date, update.end);
       }
       map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
