@@ -1978,11 +1978,11 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by lifeofgames477. Used the vectorized recreation from ChrisCPI and changed the sky'
     },
     {
-      file: 'summer_kickoff_20007/cove.swf',
+      file: 'summer_kickoff_2007/cove.swf',
       comment: 'Made by Doubleuman'
     },
     {
-      file: 'summer_kickoff_20007/cove_update.swf',
+      file: 'summer_kickoff_2007/cove_update.swf',
       comment: 'Made by Doubleuman'
     }
   ],
