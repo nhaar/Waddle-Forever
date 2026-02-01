@@ -1449,6 +1449,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     title: 'BOX DIMENSION CAN\'T BE MAPPED',
     askBack: 'archives:News285AskAuntArcticBack.swf',
     askFront: 'archives:News285AskAuntArcticFront.swf',
+    featureMore: null,
     featureStory: 'archives:News285FeatureStory.swf',
     headerBack: 'archives:News285HeaderBack.swf',
     headerFront: 'archives:News285HeaderFront.swf',
