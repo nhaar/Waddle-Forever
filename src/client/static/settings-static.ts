@@ -78,6 +78,14 @@ const allSettings: Setting[] = [
     }
   },
   {
+    key: 'remove_idle',
+    elementId: 'removeidle-input',
+    onChange: ({ checked }) => {
+      update({ remove_idle: checked });
+      api.reloadCacheless();
+    }
+  },
+  {
     key: 'always_member',
     elementId: 'js-member-input',
     onChange: ({ checked }) => {
