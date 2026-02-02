@@ -251,10 +251,6 @@ would need to investigated`
     {
       file: 'Paper86.swf',
       comment: 'Adds all missing items from April to mid-July 2008.'
-    },
-    {
-      file: 'MedievalParty2012party24.swf',
-      comment: 'Removed the jarring noises, using the proper sounds from RoomsParty24-11Feb2014.swf'
     }
   ],
   [APPROXIMATION]: [
