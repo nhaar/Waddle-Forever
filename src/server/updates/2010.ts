@@ -2796,14 +2796,6 @@ export const UPDATES_2010: Update[] = [
     furnitureCatalog: 'archives:October10Furniture.swf'
   },
   {
-    date: '2010-10-19',
-    localChanges: {
-      'news/forms/news.swf': {
-        en: 'svanilla:media/play/v2/content/local/en/news/forms/news.swf'
-      }
-    },
-  },
-  {
     date: '2010-10-21',
     miscComments: ['A storm is approaching and visible from the Cove'],
     temp: {
