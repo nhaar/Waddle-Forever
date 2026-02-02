@@ -1976,6 +1976,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'rink_2008_sky.swf',
       comment: 'Made by lifeofgames477. Used the vectorized recreation from ChrisCPI and changed the sky'
+    },
+    {
+      file: 'summer_kickoff_2007/cove.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/cove_update.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
