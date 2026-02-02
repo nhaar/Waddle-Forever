@@ -6,6 +6,7 @@ import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-pl
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
+import { BooleanSettingKey } from "../settings";
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
 type Startscreens = Array<FileRef | [string, FileRef]>;
@@ -114,6 +115,9 @@ export type CPUpdate = {
   frames?: Partial<Record<RoomName, number>>;
 
   memberRooms?: Partial<Record<RoomName, boolean>>;
+
+  /** Map a route to the file used on that date, and the setting that needs to be TRUE in order for this file to be used */
+  specialRoute?: Record<string, [FileRef, BooleanSettingKey]>;
 
   /**
    * 'irregular': A new issue is released

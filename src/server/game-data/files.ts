@@ -251,6 +251,10 @@ would need to investigated`
     {
       file: 'load.swf',
       comment: 'From mammoth. Overrides the XMLSocket.connect function to always connect to 127.0.0.1:24107; Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url; Overrides String.split to make it think the URL is play.clubpenguin.com.'
+    },
+    {
+      file: 'MedievalParty2012party24.swf',
+      comment: 'Removed the jarring noises, using the proper sounds from RoomsParty24-11Feb2014.swf'
     }
   ],
   [APPROXIMATION]: [
