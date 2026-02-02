@@ -247,6 +247,10 @@ would need to investigated`
     {
       file: 'PlayStartSwfStart.swf',
       comment: 'Removed the tracking service, which downloads an external SWF which has no useful functionality. Required for truly offline play'
+    },
+    {
+      file: 'Paper86.swf',
+      comment: 'Adds all missing items from April to mid-July 2008.'
     }
   ],
   [APPROXIMATION]: [
@@ -2144,7 +2148,7 @@ function enforceDocumentationCorrectness(): void {
       documentedFiles.add(cleanPath(doc.file))
     });
     files.forEach((file) => {
-      if (!documentedFiles.has(file)) {
+      if (!documentedFiles.has(file) && !file.endsWith('.DS_Store')) {
         missingFiles.push(path.join(key, file));
       }
     })
