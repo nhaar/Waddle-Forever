@@ -444,7 +444,7 @@ export const UPDATES_2007: Update[] = [
     date: '2007-06-12',
     temp: {
       party: {
-        update: 'The Cove are updated',
+        update: 'The Cove is updated',
         rooms: {
           cove: 'recreation:summer_kickoff_2007/cove_update.swf'
         }
@@ -459,7 +459,7 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The Beach and The Dance Club are updated',
+        update: 'The Beach and Night Club are updated',
         rooms: {
           beach: 'recreation:summer_kickoff_2007/beach_update.swf',
           dance: 'recreation:summer_kickoff_2007/dance_update.swf'
