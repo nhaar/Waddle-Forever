@@ -250,7 +250,7 @@ would need to investigated`
     },
     {
       file: 'Paper86.swf',
-      comment: 'From slippers 07; adds all missing items from April to mid-July 2008.'
+      comment: 'Adds all missing items from April to mid-July 2008.'
     }
   ],
   [APPROXIMATION]: [
