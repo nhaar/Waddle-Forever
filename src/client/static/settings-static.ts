@@ -100,14 +100,6 @@ const allSettings: Setting[] = [
     }
   },
   {
-    key: 'medieval_sound_fix',
-    elementId: 'medieval-sound-fix-input',
-    onChange: ({ checked }) => {
-      update({ medieval_sound_fix: checked });
-      api.clearCache();
-    }
-  },
-  {
     key: 'no_create_via_login',
     elementId: 'createvialogin-input',
     onChange: ({ checked }) => {

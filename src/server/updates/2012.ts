@@ -558,9 +558,6 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Medieval Party',
-        specialRoute: {
-          'play/v2/content/global/rooms/party24.swf': ['fix:MedievalParty2012party24.swf', 'medieval_sound_fix']
-        },
         rooms: {
           'attic': 'archives:MedievalParty2012attic.swf',
           'beach': 'archives:MedievalParty2012beach.swf',
@@ -720,9 +717,6 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         update: 'The medieval island changes',
-        specialRoute: {
-          'play/v2/content/global/rooms/party24.swf': ['archives:RoomsParty24-11Feb2014.swf', 'medieval_sound_fix']
-        },
         rooms: {
           party24: 'archives:RoomsParty24-11Feb2014.swf',
           party26: 'archives:MedievalParty2012party26_2.swf',
