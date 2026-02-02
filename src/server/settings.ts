@@ -6,22 +6,25 @@ import { isVersionValid, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
 
-export interface Settings {
-  fps30: boolean
-  thin_ice_igt: boolean
-  clothing: boolean
-  modern_my_puffle: boolean
-  remove_idle: boolean
-  jpa_level_selector: boolean
-  swap_dance_arrow: boolean
+export type BooleanSettingKey = 
+  'fps30' | 
+  'thin_ice_igt' |
+  'clothing' |
+  'modern_my_puffle' |
+  'remove_idle' |
+  'jpa_level_selector' |
+  'swap_dance_arrow' |
+  'always_member' |
+  'minified_website' |
+  'no_rainbow_quest_wait' |
+  'medieval_sound_fix';
+
+export type Settings = {
   version: Version
-  always_member: boolean
-  minified_website: boolean
-  no_rainbow_quest_wait: boolean
   /** Whether or not the user has answered if they want to install a package or not */
   answered_packages: string
   ignored_version: string
-}
+} & Record<BooleanSettingKey, boolean>;
 
 type PartialSettings = Partial<Settings>
 
@@ -113,7 +116,8 @@ export class SettingsManager {
       minified_website: this.readBoolean(settingsJson, 'minified_website', false),
       no_rainbow_quest_wait: this.readBoolean(settingsJson, 'no_rainbow_quest_wait', false),
       answered_packages: this.readString(settingsJson, 'answered_packages'),
-      ignored_version: this.readString(settingsJson, 'ignored_version')
+      ignored_version: this.readString(settingsJson, 'ignored_version'),
+      medieval_sound_fix: this.readBoolean(settingsJson, 'medieval_sound_fix', true)
     };
 
     this.updateSettings({});

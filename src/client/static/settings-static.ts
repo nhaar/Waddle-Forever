@@ -106,6 +106,14 @@ const allSettings: Setting[] = [
     onChange: ({ checked }) => {
       update({ no_rainbow_quest_wait: checked });
     }
+  },
+  {
+    key: 'medieval_sound_fix',
+    elementId: 'medieval-sound-fix-input',
+    onChange: ({ checked }) => {
+      update({ medieval_sound_fix: checked });
+      api.clearCache();
+    }
   }
 ]
 
