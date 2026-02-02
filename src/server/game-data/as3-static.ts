@@ -794,7 +794,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/news/papers/20170104/config.xml': 'svanilla:media/play/v2/content/local/ru/news/papers/20150630/config.xml',
   'play/v2/content/local/en/news/papers/20170201/config.xml': 'svanilla:media/play/v2/content/local/ru/news/papers/20150630/config.xml',
   'play/v2/content/local/en/news/papers/20170322/config.xml': 'svanilla:media/play/v2/content/local/ru/news/papers/20150630/config.xml',
-  'play/v2/content/local/en/news/papers/forms/news.swf': 'svanilla:media/play/v2/content/local/en/news/forms/news.swf',
   'mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/config/catalog/iglooedit.json': 'svanilla:play/mobile/cp-mobile-ui/clubpenguin_v1_6/pt_BR/deploy/metaplace/devicepng/config/catalog/iglooedit.json',
   'mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/config/catalog/penstyle.json': 'svanilla:play/mobile/cp-mobile-ui/clubpenguin_v1_6/pt_BR/deploy/metaplace/devicepng/config/catalog/penstyle.json',
   'mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/assets/catalog/iglooedit/00dec597-c41a-4af8-baa7-20b72ecc2f56_left_bg_617.png': 'svanilla:play/mobile/cp-mobile-ui/clubpenguin_v1_6/en_US/deploy/metaplace/devicepng/assets/catalog/iglooedit/00dec597-c41a-4af8-baa7-20b72ecc2f56_left_bg_617.png',
