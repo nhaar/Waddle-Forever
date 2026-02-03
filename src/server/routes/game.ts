@@ -149,7 +149,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return getNewsCrumbsSwf(s.settings.version);
   });
   server.getData('play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
-    return getGlobalCrumbsSwf(s.settings.version);
+    return getGlobalCrumbsSwf(s.settings.version, s.targetIP, s.loginPort, s.worldPort);
   });
   server.getData('play/v2/content/local/en/crumbs/local_crumbs.swf', (s) => {
     return getLocalCrumbsSwf(s.settings.version);

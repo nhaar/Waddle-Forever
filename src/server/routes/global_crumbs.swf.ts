@@ -16,6 +16,7 @@ import { MUSIC_TIMELINE } from "../timelines/music";
 import { MEMBER_TIMELINE } from "../timelines/member";
 import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
 import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
+import serverList from "../servers";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -29,6 +30,63 @@ function getIglooCrumbs(): PCodeRep {
       Action.SetMember
     );
   });
+
+  return code;
+}
+
+function getServerCrumbs(ip: string, loginPort: number, worldPort: number): PCodeRep {
+  const code: PCodeRep = [
+    // normal servers
+    [Action.Push, "servers"],
+    [Action.Push, 0],
+    [Action.Push, "Object"],
+    Action.NewObject,
+    Action.DefineLocal,
+    
+    // login server
+    [Action.Push, "login_server"],
+    [Action.Push, 0],
+    [Action.Push, "Object"],
+    Action.NewObject,
+    Action.DefineLocal,
+    [Action.Push, "login_server"],
+    Action.GetVariable,
+    [Action.Push, "ip"],
+    [Action.Push, ip],
+    [Action.Push, ip],
+    [Action.Push, 2],
+    Action.InitArray,
+    Action.SetMember,
+    [Action.Push, "login_server"],
+    Action.GetVariable,
+    [Action.Push, "even_port"],
+    [Action.Push, loginPort],
+    Action.SetMember,
+    [Action.Push, "login_server"],
+    Action.GetVariable,
+    [Action.Push, "odd_port"],
+    [Action.Push, worldPort],
+    Action.SetMember
+  ]
+
+  serverList.forEach(server => {
+    code.push(
+      [Action.Push, "servers"],
+      Action.GetVariable,
+      [Action.Push, server.id],
+      [Action.Push, "ip"],
+      [Action.Push, ip],
+      [Action.Push, "is_safe"],
+      [Action.Push, false],
+      [Action.Push, "port"],
+      [Action.Push, worldPort],
+      [Action.Push, 3],
+      Action.InitObject,
+      Action.SetMember
+    )
+  });
+
+
 
   return code;
 }
@@ -313,7 +371,7 @@ function getScavengerHunt(reward: number, member: boolean) {
   return code;
 }
 
-export function getGlobalCrumbsSwf(version: Version): Buffer {
+export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: number, worldPort: number): Buffer {
   const migrator = findInVersionStrict(version, MIGRATOR_TIMELINE);
   const hunt = findInVersionStrict(version, HUNT_TIMELINE);
 
@@ -670,94 +728,7 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     [Action.Push, 9, "sensei"],
     Action.GetVariable,
     Action.SetMember,
-    [Action.Push, "servers"],
-    [Action.Push, 0],
-    [Action.Push, "Object"],
-    Action.NewObject,
-    Action.DefineLocal,
-    [Action.Push, "servers"],
-    Action.GetVariable,
-    [Action.Push, 3000],
-    [Action.Push, "ip"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, "is_safe"],
-    [Action.Push, false],
-    [Action.Push, "port"],
-    [Action.Push, 24107],
-    [Action.Push, 3],
-    Action.InitObject,
-    Action.SetMember,
-    [Action.Push, "servers"],
-    Action.GetVariable,
-    [Action.Push, 3001],
-    [Action.Push, "ip"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, "is_safe"],
-    [Action.Push, false],
-    [Action.Push, "port"],
-    [Action.Push, 24107],
-    [Action.Push, 3],
-    Action.InitObject,
-    Action.SetMember,
-    [Action.Push, "servers"],
-    Action.GetVariable,
-    [Action.Push, 3002],
-    [Action.Push, "ip"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, "is_safe"],
-    [Action.Push, false],
-    [Action.Push, "port"],
-    [Action.Push, 24107],
-    [Action.Push, 3],
-    Action.InitObject,
-    Action.SetMember,
-    [Action.Push, "servers"],
-    Action.GetVariable,
-    [Action.Push, 3003],
-    [Action.Push, "ip"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, "is_safe"],
-    [Action.Push, false],
-    [Action.Push, "port"],
-    [Action.Push, 24107],
-    [Action.Push, 3],
-    Action.InitObject,
-    Action.SetMember,
-    [Action.Push, "servers"],
-    Action.GetVariable,
-    [Action.Push, 3004],
-    [Action.Push, "ip"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, "is_safe"],
-    [Action.Push, false],
-    [Action.Push, "port"],
-    [Action.Push, 24107],
-    [Action.Push, 3],
-    Action.InitObject,
-    Action.SetMember,
-    [Action.Push, "login_server"],
-    [Action.Push, 0],
-    [Action.Push, "Object"],
-    Action.NewObject,
-    Action.DefineLocal,
-    [Action.Push, "login_server"],
-    Action.GetVariable,
-    [Action.Push, "ip"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, "127.0.0.1"],
-    [Action.Push, 2],
-    Action.InitArray,
-    Action.SetMember,
-    [Action.Push, "login_server"],
-    Action.GetVariable,
-    [Action.Push, "even_port"],
-    [Action.Push, 24106],
-    Action.SetMember,
-    [Action.Push, "login_server"],
-    Action.GetVariable,
-    [Action.Push, "odd_port"],
-    [Action.Push, 24107],
-    Action.SetMember
+    ...getServerCrumbs(ip, loginPort, worldPort)
   ];
 
   if (hunt !== null) {
