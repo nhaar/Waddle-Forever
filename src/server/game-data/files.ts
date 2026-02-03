@@ -251,6 +251,10 @@ would need to investigated`
     {
       file: 'Paper86.swf',
       comment: 'Adds all missing items from April to mid-July 2008.'
+    },
+    {
+      file: 'ClientLoad2009-06-26.swf',
+      comment: 'Removed domain check.'
     }
   ],
   [APPROXIMATION]: [

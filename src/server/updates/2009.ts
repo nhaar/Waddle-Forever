@@ -1188,6 +1188,10 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-26',
+    fileChanges: {
+      'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
+      'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf'
+    },
     iglooList: [
       { display: 'Viking Opera', id: 41, pos: [1, 1] },
       { display: 'Mountain Dojo', id: 21, pos: [2, 1] },
@@ -1298,6 +1302,12 @@ export const UPDATES_2009: Update[] = [
       { display: 'All-Access Pass', id: 272, pos: [3, 2] },
       { display: 'Rocking Pizza', id: 271, pos: [5, 2] }
     ]
+  },
+  {
+    date: '2009-08-05',
+    fileChanges: {
+      'play/v2/client/shell.swf': 'archives:ClientShell2009-08-05.swf'
+    }
   },
   {
     date: '2009-08-07',

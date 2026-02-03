@@ -46,7 +46,65 @@ function getFairTimeline() {
   return timeline.getVersions();
 }
 
-const DEPENDENCIES_LEGACY = {
+const DEPENDENCIES_2009 = {
+	boot: [
+		{
+			id: 'airtower',
+			title: 'Communication'
+		},
+		{
+			id: 'sentry',
+			title: 'Communication'
+		}
+	],
+	
+	login: [
+		{
+			id: 'login',
+			title: 'Login Screen',
+		}
+	],
+	
+	join: [
+		{
+			id: 'engine',
+			title: 'Engine'
+		},
+		{
+			id: 'interface',
+			title: 'Interface'
+		},
+		{
+			id: 'gridview',
+			title: 'Gridview'
+		},
+		{
+			id: 'mail',
+			title: 'Mail'
+		},
+		{
+			id: 'book',
+			title: 'Mail'
+		}
+	],
+	
+	create: [
+		{
+			id: 'create',
+			title: 'Create Penguin'
+		}
+	],
+	
+	merch: [
+		{
+			id: 'app',
+			folder: 'merch/',
+			title: 'Communication'
+		}
+	]
+}
+
+const DEPENDENCIES_SLEGACY = {
   boot: [
     {
       id: 'servers',
@@ -180,7 +238,8 @@ export default function getDependenciesJson(version: Version, removeIdle: boolea
   const huntActive = findInVersion(version, scavengerTimeline);
   const fairActive = findInVersion(version, fairTimeline);
 
-  const base = isEngine3(version) ? DEPENDENCIES_VANILLA : DEPENDENCIES_LEGACY;
+  // temporary hack
+  const base = isEngine3(version) ? DEPENDENCIES_VANILLA : DEPENDENCIES_2009;
   const dependencies = JSON.parse(JSON.stringify(base));
 
   if (huntActive) {
