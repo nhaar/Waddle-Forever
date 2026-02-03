@@ -1117,7 +1117,8 @@ export const UPDATES_2010: Update[] = [
     miscComments: ['Stamps are released'],
     dateReference: 'stamps-release',
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf'
+      'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf',
+      'play/v2/client/shell.swf': 'approximation:shell.swf'
     },
     worldStamps: [
       {
