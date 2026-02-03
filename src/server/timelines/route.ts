@@ -237,9 +237,10 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('play/v2/content/global/content/map.swf', update.update.map, update.date, update.end);
     }
     if (update.update.clothingCatalog !== undefined) {
-      map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date, update.end);
-      map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
-      map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date, update.end);
+      const file = typeof update.update.clothingCatalog === 'string' ? update.update.clothingCatalog : update.update.clothingCatalog.file;
+      map.add('artwork/catalogue/clothing.swf', file, update.date, update.end);
+      map.add('artwork/catalogue/clothing_.swf', file, update.date, update.end);
+      map.add('play/v2/content/local/en/catalogues/clothing.swf', file, update.date, update.end);
     }
     if (update.update.postcardCatalog !== undefined) {
       map.add('artwork/catalogue/cards.swf', update.update.postcardCatalog, update.date, update.end);
