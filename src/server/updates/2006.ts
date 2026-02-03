@@ -385,7 +385,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-05-29',
     end: ['party'],
     rooms: {
-      boiler: 'archives:ArtworkRoomsCave13.swf',
+      cave: 'archives:ArtworkRoomsCave13.swf',
       shack: 'archives:ArtworkRoomsShack10.swf'
     },
     map: 'approximation:map_shack.swf'
