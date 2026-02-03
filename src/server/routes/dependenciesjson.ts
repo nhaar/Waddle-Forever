@@ -1,6 +1,6 @@
 import { findInVersion, VersionsTimeline } from "../game-data";
-import { Version } from "./versions";
-import { isEngine3 } from "../timelines/dates";
+import { isGreaterOrEqual, Version } from "./versions";
+import { getDate, isEngine3 } from "../timelines/dates";
 import { START_DATE } from "../timelines/dates";
 import { UPDATES } from "../updates/updates";
 
@@ -104,74 +104,8 @@ const DEPENDENCIES_2009 = {
 	]
 }
 
-const DEPENDENCIES_SLEGACY = {
-  boot: [
-    {
-      id: 'servers',
-      title: 'Communication'
-    },
-    {
-      id: 'airtower',
-      title: 'Communication'
-    },
-    {
-      id: 'sentry',
-      title: 'Communication'
-    }
-  ],
-  login: [
-    {
-      id: 'login',
-      title: 'Login Screen'
-    }
-  ],
-  join: [
-    {
-      id: 'engine',
-      title: 'Engine'
-    },
-    {
-      id: 'interface',
-      title: 'Interface'
-    },
-    {
-      id: 'gridview',
-      title: 'Gridview'
-    },
-    {
-      id: 'mail',
-      title: 'Mail'
-    },
-    {
-      id: 'book',
-      title: 'Mail'
-    },
-    {
-      id: 'stampbook',
-      title: 'StampBook'
-    }
-  ],
-  create: [
-    {
-      id: 'create',
-      title: 'Create Penguin'
-    }
-  ],
-  merch: [
-    {
-      id: 'app',
-      folder: 'merch/',
-      title: 'Communication'
-    }
-  ]
-}
-
 const DEPENDENCIES_VANILLA = {
   "boot": [
-    {
-      "id": "servers",
-      "title": "servers"
-    },
     {
       "id": "party",
       "title": "Party"
@@ -238,9 +172,19 @@ export default function getDependenciesJson(version: Version, removeIdle: boolea
   const huntActive = findInVersion(version, scavengerTimeline);
   const fairActive = findInVersion(version, fairTimeline);
 
-  // temporary hack
-  const base = isEngine3(version) ? DEPENDENCIES_VANILLA : DEPENDENCIES_2009;
+  const engine3 = isEngine3(version);
+
+  const base = engine3 ? DEPENDENCIES_VANILLA : DEPENDENCIES_2009;
   const dependencies = JSON.parse(JSON.stringify(base));
+
+  if (!engine3) {
+    if (isGreaterOrEqual(version, getDate('stamps-release'))) {
+      dependencies.join.push({
+        id: 'stampbook',
+        title: 'StampBook'
+      });
+    }
+  }
 
   if (huntActive) {
     dependencies.join.push({

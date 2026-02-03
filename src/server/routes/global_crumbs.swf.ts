@@ -17,6 +17,7 @@ import { MEMBER_TIMELINE } from "../timelines/member";
 import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
 import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 import serverList from "../servers";
+import { isEngine3 } from "../timelines/dates";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -34,40 +35,61 @@ function getIglooCrumbs(): PCodeRep {
   return code;
 }
 
-function getServerCrumbs(ip: string, loginPort: number, worldPort: number): PCodeRep {
+function getServerCrumbs(ip: string, loginPort: number, worldPort: number, modern: boolean): PCodeRep {
   const code: PCodeRep = [
     // normal servers
     [Action.Push, "servers"],
     [Action.Push, 0],
     [Action.Push, "Object"],
     Action.NewObject,
-    Action.DefineLocal,
-    
-    // login server
-    [Action.Push, "login_server"],
-    [Action.Push, 0],
-    [Action.Push, "Object"],
-    Action.NewObject,
-    Action.DefineLocal,
-    [Action.Push, "login_server"],
-    Action.GetVariable,
-    [Action.Push, "ip"],
-    [Action.Push, ip],
-    [Action.Push, ip],
-    [Action.Push, 2],
-    Action.InitArray,
-    Action.SetMember,
-    [Action.Push, "login_server"],
-    Action.GetVariable,
-    [Action.Push, "even_port"],
-    [Action.Push, loginPort],
-    Action.SetMember,
-    [Action.Push, "login_server"],
-    Action.GetVariable,
-    [Action.Push, "odd_port"],
-    [Action.Push, worldPort],
-    Action.SetMember
+    Action.DefineLocal
   ]
+
+  if (modern) {
+    code.push(
+      [Action.Push, "login_server"],
+      [Action.Push, 0],
+      [Action.Push, "Object"],
+      Action.NewObject,
+      Action.DefineLocal,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "ip"],
+      Action.SetMember,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "port"],
+      [Action.Push, loginPort],
+      Action.SetMember
+    )
+  } else {
+    // login server: ip is array and even and odd ports
+    code.push(
+      [Action.Push, "login_server"],
+      [Action.Push, 0],
+      [Action.Push, "Object"],
+      Action.NewObject,
+      Action.DefineLocal,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "ip"],
+      [Action.Push, ip],
+      [Action.Push, ip],
+      [Action.Push, 2],
+      Action.InitArray,
+      Action.SetMember,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "even_port"],
+      [Action.Push, loginPort],
+      Action.SetMember,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "odd_port"],
+      [Action.Push, worldPort],
+      Action.SetMember
+    )
+  }
 
   serverList.forEach(server => {
     code.push(
@@ -728,7 +750,7 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     [Action.Push, 9, "sensei"],
     Action.GetVariable,
     Action.SetMember,
-    ...getServerCrumbs(ip, loginPort, worldPort)
+    ...getServerCrumbs(ip, loginPort, worldPort, isEngine3(version))
   ];
 
   if (hunt !== null) {
