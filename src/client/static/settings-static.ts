@@ -93,6 +93,13 @@ const allSettings: Setting[] = [
     }
   },
   {
+    key: 'inventory_accuracy',
+    elementId: 'inventory-input',
+    onChange: ({ checked }) => {
+      update({ inventory_accuracy: checked });
+    }
+  },
+  {
     key: 'minified_website',
     elementId: 'js-website-input',
     onChange: ({ checked }) => {

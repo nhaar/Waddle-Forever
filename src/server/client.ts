@@ -24,6 +24,7 @@ import { MASCOTS } from './game-data/mascots';
 import { Table } from './handlers/play/table';
 import { FindFourTable } from './handlers/play/find-four';
 import { MancalaTable } from './handlers/play/mancala';
+import { ITEM_RELEASES } from './timelines/items';
 
 type ServerType = 'Login' | 'World';
 
@@ -770,12 +771,23 @@ export class Server {
   getItemsFiltered(items: number[]) {
     // pre-cpip engines have limited items, after
     // that global_crumbs allow having all the items
+
     if (isLower(this.settings.version, getDate('cpip'))) {
       const itemSet = findInVersionStrict(this.settings.version, CLIENT_ITEMS_TIMELINE)
-      return items.filter((value) => itemSet.has(value));
-    } else {
-      return items;
+      items = items.filter((value) => itemSet.has(value));
     }
+
+    if (this.settings.inventory_accuracy) {
+      return items.filter(id => {
+        const entry = ITEM_RELEASES.get(id);
+        if (entry === undefined) {
+          return false;
+        } else {
+          return isGreaterOrEqual(this.settings.version, entry);
+        }
+      });
+    }
+    return items;
   }
 
   getAllPlayersInfo() {
