@@ -87,7 +87,7 @@ export type CPUpdate = {
 
   /** If a new catalog was released this day: its file */
   clothingCatalog?: FileRef | {
-    file: FileRef;
+    file?: FileRef;
     newItems: number[];
     removedItems: number[];
   };

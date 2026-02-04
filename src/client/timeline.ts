@@ -92,7 +92,7 @@ function getTimeline(): Day[] {
 
       addEvent(map, update.date, `${update.update.gameRelease} releases`, 'game');
     }
-    if (update.update.clothingCatalog !== undefined) {
+    if (typeof update.update.clothingCatalog === 'string' || update.update.clothingCatalog?.file !== undefined) {
       addEvent(map, update.date, 'A new edition of the Penguin Style is out', 'clothing');
     }
     if (update.update.iglooCatalog !== undefined) {
