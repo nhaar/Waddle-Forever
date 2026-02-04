@@ -82,6 +82,7 @@ export type CatalogItems = {
   file?: FileRef;
   newItems: number[];
   removedItems: number[];
+  announce?: false;
 }
 
 export type CPUpdate = {
@@ -102,7 +103,7 @@ export type CPUpdate = {
   sportCatalog?: FileRef | CatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
-  martialArtworks?: FileRef;
+  martialArtworks?: FileRef | CatalogItems;
 
   /** List of items added to the elite gear catalog */
   eliteGearItems?: number[];

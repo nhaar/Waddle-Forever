@@ -927,7 +927,10 @@ export const UPDATES_2008: Update[] = [
     date: '2008-07-11',
     stagePlay: {
       name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
-      costumeTrunk: null,
+      costumeTrunk: {
+        newItems: [],
+        removedItems: []
+      },
       hide: true,
       script: [
         { note: "Squidzoid vs Shadow Guy & Gamma Gal" },
@@ -2182,6 +2185,11 @@ export const UPDATES_2008: Update[] = [
     },
     music: {
       dojoext: 0
+    },
+    martialArtworks: {
+      announce: false,
+      newItems: [4034],
+      removedItems: []
     }
   },
   {
