@@ -18,6 +18,7 @@ import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices"
 import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 import serverList from "../servers";
 import { isEngine3 } from "../timelines/dates";
+import { GAME_CRUMBS } from "../game-data/game-crumbs";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -110,6 +111,24 @@ function getServerCrumbs(ip: string, loginPort: number, worldPort: number, moder
 
 
 
+  return code;
+}
+
+function getGameCrumbs(): PCodeRep {
+  const code: PCodeRep = [
+    [Action.Push, "game_crumbs", 0, "Object"],
+    Action.NewObject,
+    Action.DefineLocal
+  ];
+  iterateEntries(GAME_CRUMBS, (game, crumb) => {
+    code.push(
+      [Action.Push, "game_crumbs"],
+      Action.GetVariable,
+      [Action.Push, game, "room_id", Number(crumb.room_id), "music_id", Number(crumb.music_id), "path", crumb.path, 3],
+      Action.InitObject,
+      Action.SetMember
+    )
+  });
   return code;
 }
 
@@ -750,7 +769,8 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     [Action.Push, 9, "sensei"],
     Action.GetVariable,
     Action.SetMember,
-    ...getServerCrumbs(ip, loginPort, worldPort, isEngine3(version))
+    ...getServerCrumbs(ip, loginPort, worldPort, isEngine3(version)),
+    ...getGameCrumbs()
   ];
 
   if (hunt !== null) {
