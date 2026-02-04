@@ -329,12 +329,11 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('play/v2/content/local/en/close_ups/party_map_note.swf', update.update.mapNote, update.date, update.end);
     }
     if (update.update.stagePlay !== undefined) {
-      if (update.update.stagePlay.costumeTrunk !== null) {
-
-        // simply hardcoding every catalogue to be from 0712 for now
-        map.add('artwork/catalogue/costume_0712.swf', update.update.stagePlay.costumeTrunk, update.date);
-        map.add('play/v2/content/local/en/catalogues/costume.swf', update.update.stagePlay.costumeTrunk, update.date);
-      }
+      
+      addCatalog(update.date, update.update.stagePlay.costumeTrunk, [
+        'artwork/catalogue/costume_0712.swf',
+        'play/v2/content/local/en/catalogues/costume.swf'
+      ], map, update.end);
     }
     if (update.update.pinRoomUpdate !== undefined) {
       const pin = PIN_TIMELINE[findEarliestDateHitIndex(update.date, PIN_TIMELINE)];

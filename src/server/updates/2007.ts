@@ -883,7 +883,21 @@ export const UPDATES_2007: Update[] = [
           "message": "Blast off!"
         }
       ],
-      costumeTrunk: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf'
+      costumeTrunk: {
+        file: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf',
+        newItems: [
+          458,
+          268,
+          245,
+          122,
+          276,
+          120,
+          266,
+          489,
+          984
+        ],
+        removedItems: []
+      }
     },
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza47.swf',

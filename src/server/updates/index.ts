@@ -211,7 +211,7 @@ export type CPUpdate = {
     script?: StageScript;
     hide?: true;
     notPremiere?: true;
-    costumeTrunk: FileRef | null;
+    costumeTrunk: FileRef | CatalogItems;
   } & CPUpdate;
 
   /** An update of a stage script that is independent from the normal workflow of plays */
