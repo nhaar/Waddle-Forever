@@ -743,6 +743,17 @@ export const UPDATES_2009: Update[] = [
       dock: 'archives:RoomsDock_1.swf',
       lodge: 'archives:RoomsLodge.swf'
     },
+    gameUpgrades: {
+      newItems: [
+        701,
+        702,
+        703,
+        711,
+        712,
+        321
+      ],
+      removed: []
+    },
     martialArtworks: 'archives:MAMar2009.swf',
     sportCatalog: 'archives:SASMar2009.swf'
   },
@@ -877,6 +888,14 @@ export const UPDATES_2009: Update[] = [
     roomComment: 'Game Upgrades are added to the Ski Hill',
     rooms: {
       mtn: 'archives:RoomsMtn-January2010.swf'
+    },
+    gameUpgrades: {
+      newItems: [
+        5021,
+        5047,
+        5046
+      ],
+      removed: []
     }
   },
   {
@@ -1197,6 +1216,14 @@ export const UPDATES_2009: Update[] = [
     rooms: {
       // game upgrades
       dance: 'archives:RoomsDance_2.swf'
+    },
+    gameUpgrades: {
+      newItems: [
+        5037,
+        5039,
+        5038
+      ],
+      removed: []
     }
   },
   {

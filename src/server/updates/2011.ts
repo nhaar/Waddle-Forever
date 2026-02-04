@@ -2180,6 +2180,12 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf',
       'play/v2/content/local/en/catalogues/dance.swf': 'archives:Game_Upgrades_Dance_2011.swf'
     },
+    gameUpgrades: {
+      newItems: [
+        5121
+      ],
+      removed: []
+    },
     rooms: {
       lounge: 'archives:RoomsLounge_4.swf',
 

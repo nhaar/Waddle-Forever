@@ -1083,6 +1083,17 @@ export const UPDATES_2010: Update[] = [
     }
   },
   {
+    date: '2010-07-12',
+    gameUpgrades: {
+      newItems: [
+        5071,
+        5072,
+        5070
+      ],
+      removed: []
+    }
+  },
+  {
     date: '2010-07-14',
     temp: {
       party: {
