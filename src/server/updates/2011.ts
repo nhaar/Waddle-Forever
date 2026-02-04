@@ -12,7 +12,13 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-13',
-    sportCatalog: 'archives:SASJan2011.swf'
+    sportCatalog: 'archives:SASJan2011.swf',
+    eliteGearItems: [
+      1217,
+      4300,
+      3063,
+      5089
+    ]
   },
   {
     date: '2011-01-14',
@@ -1315,6 +1321,15 @@ export const UPDATES_2011: Update[] = [
           ]
         }
       }
+    ]
+  },
+  {
+    date: '2011-04-28',
+    eliteGearItems: [
+      102,
+      3073,
+      4367,
+      6072
     ]
   },
   {

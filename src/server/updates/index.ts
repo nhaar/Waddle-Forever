@@ -104,6 +104,9 @@ export type CPUpdate = {
   petFurniture?: FileRef;
   martialArtworks?: FileRef;
 
+  /** List of items added to the elite gear catalog */
+  eliteGearItems?: number[];
+
   stampUpdates?: StampUpdates
 
   worldStamps?: WorldStamp[]
