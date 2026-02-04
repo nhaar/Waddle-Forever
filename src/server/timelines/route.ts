@@ -345,6 +345,7 @@ function addUpdates(map: FileTimelineMap): void {
       }
     }
     addCatalog(update.date, update.update.sportCatalog, [
+      'artwork/catalogue/sport_.swf',
       'play/v2/content/local/en/catalogues/sport.swf'
     ], map, update.end);
   });

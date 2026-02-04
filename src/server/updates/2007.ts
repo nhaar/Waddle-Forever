@@ -581,6 +581,7 @@ export const UPDATES_2007: Update[] = [
       sport: 2
     },
     sportCatalog: {
+      file: 'archives:Sport_0709.swf',
       newItems: [
         349,
         461,
@@ -781,7 +782,8 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-02',
-    clothingCatalog: 'archives:PenguinStyleNov2007.swf'
+    clothingCatalog: 'archives:PenguinStyleNov2007.swf',
+    sportCatalog: 'archives:Sport_0711.swf'
   },
   {
     date: '2007-11-08',
@@ -885,7 +887,10 @@ export const UPDATES_2007: Update[] = [
     },
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza47.swf',
-      stage: 'archives:SpaceAdventure1Stage.swf'
+      stage: 'archives:SpaceAdventure1Stage.swf',
+
+      // because of chat 604, sport shop with snow and sports
+      shop: 'archives:ArtworkRoomsShop46.swf'
     },
     map: 'archives:Map2007Plaza.swf'
   },
