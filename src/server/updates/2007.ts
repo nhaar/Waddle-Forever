@@ -579,6 +579,26 @@ export const UPDATES_2007: Update[] = [
     },
     frames: {
       sport: 2
+    },
+    sportCatalog: {
+      newItems: [
+        349,
+        461,
+        220,
+        406,
+        405,
+        254,
+        255,
+        701,
+        702,
+        703,
+        711,
+        712,
+        919,
+        921,
+        965
+      ],
+      removedItems: []
     }
   },
   {

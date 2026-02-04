@@ -78,6 +78,12 @@ export type WorldStamp = {
 
 export type PartyOp = 'battle-of-doom';
 
+export type CatalogItems = {
+  file?: FileRef;
+  newItems: number[];
+  removedItems: number[];
+}
+
 export type CPUpdate = {
   map?: FileRef;
   /** Pin period indicator */
@@ -86,18 +92,14 @@ export type CPUpdate = {
   pinRoomUpdate?: FileRef;
 
   /** If a new catalog was released this day: its file */
-  clothingCatalog?: FileRef | {
-    file?: FileRef;
-    newItems: number[];
-    removedItems: number[];
-  };
+  clothingCatalog?: FileRef | CatalogItems;
   /** If a new catalog was released this day: its file */
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   postcardCatalog?: FileRef;
-  sportCatalog?: FileRef;
+  sportCatalog?: FileRef | CatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
   martialArtworks?: FileRef;
