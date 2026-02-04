@@ -1017,7 +1017,7 @@ export const UPDATES_2008: Update[] = [
       'play/v2/client/engine.swf': 'unknown:engine_2009.swf',
       'play/v2/client/interface.swf': 'recreation:interfaces/2008_july.swf',
       'play/v2/client/login.swf': 'recreation:login_cpip.swf',
-      'play/v2/client/igloo.swf': 'recreation:client_igloo_cpip.swf',
+      'play/v2/client/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
       'play/v2/content/global/binoculars/empty.swf': 'slegacy:media/play/v2/content/global/binoculars/empty.swf',
       'play/v2/content/global/telescope/empty.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf',
       'play/v2/content/global/igloo/assets/igloo_background.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf',
