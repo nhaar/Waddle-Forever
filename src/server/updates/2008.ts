@@ -394,6 +394,10 @@ export const UPDATES_2008: Update[] = [
     }
   },
   {
+    date: '2008-02-28',
+    sportCatalog: 'archives:Sport_0802.swf'
+  },
+  {
     date: '2008-02-29',
     miscComments: ['More pieces show up at the Beach'],
     temp: {
@@ -666,6 +670,7 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-04-25',
     end: ['migrator-reconstruction'],
+    sportCatalog: 'archives:SportCatalog_0804.swf',
     temp: {
       party: {
         partyName: 'Rockhopper & Yarr\'s Arr-ival Parr-ty',
@@ -911,6 +916,10 @@ export const UPDATES_2008: Update[] = [
     end: ['earthquake']
   },
   {
+    date: '2008-06-27',
+    sportCatalog: 'archives:SASJun2008.swf'
+  },
+  {
     date: '2008-07-04',
     clothingCatalog: 'archives:July08Style.swf'
   },
@@ -918,7 +927,10 @@ export const UPDATES_2008: Update[] = [
     date: '2008-07-11',
     stagePlay: {
       name: 'Squidzoid vs. Shadow Guy and Gamma Gal',
-      costumeTrunk: null,
+      costumeTrunk: {
+        newItems: [],
+        removedItems: []
+      },
       hide: true,
       script: [
         { note: "Squidzoid vs Shadow Guy & Gamma Gal" },
@@ -2173,6 +2185,11 @@ export const UPDATES_2008: Update[] = [
     },
     music: {
       dojoext: 0
+    },
+    martialArtworks: {
+      announce: false,
+      newItems: [4034],
+      removedItems: []
     }
   },
   {

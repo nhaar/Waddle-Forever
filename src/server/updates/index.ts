@@ -6,6 +6,7 @@ import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-pl
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { Version } from "../routes/versions"
+import { BooleanSettingKey } from "../settings";
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
 type Startscreens = Array<FileRef | [string, FileRef]>;
@@ -77,6 +78,13 @@ export type WorldStamp = {
 
 export type PartyOp = 'battle-of-doom';
 
+export type CatalogItems = {
+  file?: FileRef;
+  newItems: number[];
+  removedItems: number[];
+  announce?: false;
+}
+
 export type CPUpdate = {
   map?: FileRef;
   /** Pin period indicator */
@@ -85,17 +93,21 @@ export type CPUpdate = {
   pinRoomUpdate?: FileRef;
 
   /** If a new catalog was released this day: its file */
-  clothingCatalog?: FileRef;
+  clothingCatalog?: FileRef | CatalogItems;
   /** If a new catalog was released this day: its file */
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   iglooCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   postcardCatalog?: FileRef;
-  sportCatalog?: FileRef;
+  sportCatalog?: FileRef | CatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
-  martialArtworks?: FileRef;
+  martialArtworks?: FileRef | CatalogItems;
+
+  /** List of items added to the elite gear catalog */
+  eliteGearItems?: number[];
+  gameUpgrades?: { newItems: number[]; removed: number[] };
 
   stampUpdates?: StampUpdates
 
@@ -114,6 +126,9 @@ export type CPUpdate = {
   frames?: Partial<Record<RoomName, number>>;
 
   memberRooms?: Partial<Record<RoomName, boolean>>;
+
+  /** Map a route to the file used on that date, and the setting that needs to be TRUE in order for this file to be used */
+  specialRoute?: Record<string, [FileRef, BooleanSettingKey]>;
 
   /**
    * 'irregular': A new issue is released
@@ -201,7 +216,7 @@ export type CPUpdate = {
     script?: StageScript;
     hide?: true;
     notPremiere?: true;
-    costumeTrunk: FileRef | null;
+    costumeTrunk: FileRef | CatalogItems;
   } & CPUpdate;
 
   /** An update of a stage script that is independent from the normal workflow of plays */

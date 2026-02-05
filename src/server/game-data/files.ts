@@ -247,6 +247,10 @@ would need to investigated`
     {
       file: 'PlayStartSwfStart.swf',
       comment: 'Removed the tracking service, which downloads an external SWF which has no useful functionality. Required for truly offline play'
+    },
+    {
+      file: 'Paper86.swf',
+      comment: 'Adds all missing items from April to mid-July 2008.'
     }
   ],
   [APPROXIMATION]: [
@@ -1976,6 +1980,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'rink_2008_sky.swf',
       comment: 'Made by lifeofgames477. Used the vectorized recreation from ChrisCPI and changed the sky'
+    },
+    {
+      file: 'summer_kickoff_2007/cove.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'summer_kickoff_2007/cove_update.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
@@ -2007,20 +2019,16 @@ Originally from solero legacy-media, modified to work in the flat domain any por
       comment: 'Copy of boots.swf but in 30 FPS'
     },
     {
-      file: 'dependencies_scavenger_hunt.json',
-      comment: 'File to load the Scavenger Hunt. Should be integrated in the future'
-    },
-    {
       file: 'dynamic_igloo_music.swf',
       comment: 'File that loads the igloo music from a XML file. Originally by Ben, refined by Randomno to include bold names and remove pagination'
     },
     {
-      file: 'fair_dependencies.json',
-      comment: 'File to load the Fair dependency. Should be refactor as an "icon" dependency instead, similarly to Pre-CPIP eggs'
-    },
-    {
       file: 'fair_icon_adder.swf',
       comment: 'Modified from Ben\'s scavenger hunt mod'
+    },
+    {
+      file: 'idle_cancel.swf',
+      comment: 'A custom dependency that removes the idle disconnect timer. Only loads when the "remove_idle" setting is active.'
     },
     {
       file: 'news_config.xml',
@@ -2144,7 +2152,7 @@ function enforceDocumentationCorrectness(): void {
       documentedFiles.add(cleanPath(doc.file))
     });
     files.forEach((file) => {
-      if (!documentedFiles.has(file)) {
+      if (!documentedFiles.has(file) && !file.endsWith('.DS_Store')) {
         missingFiles.push(path.join(key, file));
       }
     })

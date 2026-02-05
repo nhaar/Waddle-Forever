@@ -558,6 +558,9 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Medieval Party',
+        specialRoute: {
+          'play/v2/content/global/rooms/party24.swf': ['archives:RoomsParty24-11Feb2014.swf', 'medieval_sound_fix']
+        },
         rooms: {
           'attic': 'archives:MedievalParty2012attic.swf',
           'beach': 'archives:MedievalParty2012beach.swf',

@@ -17,7 +17,7 @@ import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
-import { CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
+import { CatalogItems, CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
 import { START_DATE, getDate } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
@@ -229,6 +229,17 @@ function addStartscreens(screens: Array<string | [string, string]>, map: FileTim
   })
 }
 
+function addCatalog(date: Version, input: FileRef | CatalogItems | undefined, paths: string[], map: FileTimelineMap, end: Version | undefined) {
+  if (input !== undefined) {
+    const file = typeof input === 'string' ? input : input.file;
+    if (file !== undefined) {
+      paths.forEach(p => {
+        map.add(p, file, date, end);
+      });
+    }
+  }
+}
+
 function addUpdates(map: FileTimelineMap): void {
   UPDATES.forEach(update => {
     if (update.update.map !== undefined) {
@@ -236,11 +247,11 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('artwork/maps/16_forest.swf', update.update.map, update.date, update.end);
       map.add('play/v2/content/global/content/map.swf', update.update.map, update.date, update.end);
     }
-    if (update.update.clothingCatalog !== undefined) {
-      map.add('artwork/catalogue/clothing.swf', update.update.clothingCatalog, update.date, update.end);
-      map.add('artwork/catalogue/clothing_.swf', update.update.clothingCatalog, update.date, update.end);
-      map.add('play/v2/content/local/en/catalogues/clothing.swf', update.update.clothingCatalog, update.date, update.end);
-    }
+    addCatalog(update.date, update.update.clothingCatalog, [
+      'artwork/catalogue/clothing.swf',
+      'artwork/catalogue/clothing_.swf',
+      'play/v2/content/local/en/catalogues/clothing.swf'
+    ], map, update.end);
     if (update.update.postcardCatalog !== undefined) {
       map.add('artwork/catalogue/cards.swf', update.update.postcardCatalog, update.date, update.end);
       map.add('artwork/catalogue/cards_0712.swf', update.update.postcardCatalog, update.date, update.end);
@@ -251,9 +262,7 @@ function addUpdates(map: FileTimelineMap): void {
     if (update.update.petFurniture !== undefined) {
       map.add('play/v2/content/local/en/catalogues/pets.swf', update.update.petFurniture, update.date, update.end);
     }
-    if (update.update.martialArtworks !== undefined) {
-      map.add('play/v2/content/local/en/catalogues/ninja.swf', update.update.martialArtworks, update.date, update.end);
-    }
+    addCatalog(update.date, update.update.martialArtworks, ['play/v2/content/local/en/catalogues/ninja.swf'], map, update.end);
     if (update.update.furnitureCatalog !== undefined) {
       map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
       map.add('artwork/catalogue/furniture_.swf', update.update.furnitureCatalog, update.date, update.end);
@@ -299,12 +308,10 @@ function addUpdates(map: FileTimelineMap): void {
       }
     }
     if (update.update.scavengerHunt2010 !== undefined) {
-      map.add('play/v2/client/dependencies.json', 'tool:dependencies_scavenger_hunt.json', update.date, update.end);
       map.add(path.join('play/v2/content/global', update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), update.update.scavengerHunt2010.iconFileId, update.date, update.end);
     }
     if (update.update.fairCpip !== undefined) {
       if (isLower(update.date, getDate('vanilla-engine'))) {
-        map.add('play/v2/client/dependencies.json', 'tool:fair_dependencies.json', update.date, update.end);
         map.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', update.date, update.end);
       }
       map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
@@ -320,12 +327,11 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('play/v2/content/local/en/close_ups/party_map_note.swf', update.update.mapNote, update.date, update.end);
     }
     if (update.update.stagePlay !== undefined) {
-      if (update.update.stagePlay.costumeTrunk !== null) {
-
-        // simply hardcoding every catalogue to be from 0712 for now
-        map.add('artwork/catalogue/costume_0712.swf', update.update.stagePlay.costumeTrunk, update.date);
-        map.add('play/v2/content/local/en/catalogues/costume.swf', update.update.stagePlay.costumeTrunk, update.date);
-      }
+      
+      addCatalog(update.date, update.update.stagePlay.costumeTrunk, [
+        'artwork/catalogue/costume_0712.swf',
+        'play/v2/content/local/en/catalogues/costume.swf'
+      ], map, update.end);
     }
     if (update.update.pinRoomUpdate !== undefined) {
       const pin = PIN_TIMELINE[findEarliestDateHitIndex(update.date, PIN_TIMELINE)];
@@ -335,9 +341,10 @@ function addUpdates(map: FileTimelineMap): void {
         throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
       }
     }
-    if (update.update.sportCatalog !== undefined) {
-      map.add('play/v2/content/local/en/catalogues/sport.swf', update.update.sportCatalog, update.date);
-    }
+    addCatalog(update.date, update.update.sportCatalog, [
+      'artwork/catalogue/sport_.swf',
+      'play/v2/content/local/en/catalogues/sport.swf'
+    ], map, update.end);
   });
 }
 

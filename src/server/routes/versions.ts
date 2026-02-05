@@ -63,19 +63,6 @@ function getVersionDetails(version: string): {
   };
 }
 
-/** Sort an array of versions from earliest to latest */
-export function sortVersions(versions: string[]): void {
-  versions.sort((a, b) => {
-    if (isLower(a, b)) {
-      return -1;
-    } else if (isEqual(a, b)) {
-      return 0;
-    } else {
-      return 1;
-    }
-  })
-}
-
 export function isEqual(left: string, right: string): boolean {
   const leftDetails = getVersionDetails(left);
   const rightDetails = getVersionDetails(right);

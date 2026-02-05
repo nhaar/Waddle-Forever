@@ -35,6 +35,7 @@ import { Action } from "../../common/flash/avm1";
 import { to2BytesLittleEndian } from "../../common/flash/bytes";
 import { FileRef, getMediaFilePath } from "../game-data/files";
 import { MEDIA_DIRECTORY } from '../../common/utils';
+import getDependenciesJson from "./dependenciesjson";
 
 /**
  * This function allows to replace the string constants of a SWF file. This is used to serve a SWF file but changing the value of certain strings when the server gives the file (dynamically changing)
@@ -194,6 +195,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('web_service/worldachievements.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
+  });
+  server.getData('play/v2/client/dependencies.json', (s) => {
+    return getDependenciesJson(s.settings.version, s.settings.remove_idle);
   });
   server.getData('play/v2/content/global/stampbook/world_stamps.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);

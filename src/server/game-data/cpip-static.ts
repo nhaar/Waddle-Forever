@@ -237,6 +237,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/fr/login/messages/icons/whats_new.swf': 'slegacy:media/play/v2/content/local/fr/login/messages/icons/whats_new.swf',
   'play/v2/content/local/pt/login/messages/icons/whats_new.swf': 'slegacy:media/play/v2/content/local/pt/login/messages/icons/whats_new.swf',
   'play/v2/client/scavenger_hunt.swf': 'tool:scavenger_hunt_2010.swf',
+  'play/v2/client/idle_cancel.swf': 'tool:idle_cancel.swf',
   'play/v2/games/quests/global/rooms/conclusion3.swf': 'archives:GamesQuestsGlobalRoomsConclusion3.swf',
   'play/v2/games/quests/q4/common/rooms/conclusion3.swf': 'archives:GamesQuestsGlobalRoomsConclusion3.swf',
   'play/v2/content/global/igloo/assets/igloo_storage.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_storage.swf',
@@ -272,7 +273,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'en/web_service/puffles.php': 'approximation:temp_php_files/puffles.php',
   'en/web_service/weblogger.php': 'approximation:temp_php_files/weblogger.php',
   'playstart/swf/start_module.swf': 'fix:StartModuleBeta.swf',
-  'play/v2/client/dependencies.json': 'slegacy:media/play/v2/client/dependencies.json' ,
   'play/v2/content/local/en/awards/801.swf': 'archives:AwardsEN801.swf',
   'play/v2/content/local/en/awards/802.swf': 'archives:AwardsEN802.swf',
   'play/v2/content/local/en/awards/803.swf': 'archives:AwardsEN803.swf',
@@ -371,5 +371,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/books/xmas_book2.swf': 'archives:Christmasonrockhopperisland.swf',
   'play/v2/content/local/en/books/xmas_book3.swf': 'archives:Pufflepaladventuresmusicmakesmagic.swf',
   'play/v2/content/local/en/catalogues/ninja.swf': 'archives:MANov2008.swf',
-  'play/v2/content/global/rooms/boxdimension.swf': 'archives:RoomsParty2-AprilFoolsParty2009.swf'
+  'play/v2/content/global/rooms/boxdimension.swf': 'archives:RoomsParty2-AprilFoolsParty2009.swf',
+  'play/v2/content/local/en/news/papers/forms/news.swf': 'svanilla:media/play/v2/content/local/en/news/forms/news.swf'
 };

@@ -417,7 +417,8 @@ export const UPDATES_2007: Update[] = [
           forest: 'recreation:summer_kickoff_2007/forest.swf',
           plaza: 'recreation:summer_kickoff_2007/plaza.swf',
           coffee: 'recreation:summer_kickoff_2007/coffee.swf',
-          book: 'recreation:summer_kickoff_2007/book.swf'
+          book: 'recreation:summer_kickoff_2007/book.swf',
+          cove: 'recreation:summer_kickoff_2007/cove.swf'
         },
         music: {
           'town': 204,
@@ -433,7 +434,19 @@ export const UPDATES_2007: Update[] = [
           'plaza': 204,
           'forest': 204,
           'coffee': 215,
-          book: 215
+          'book': 215,
+          'cove': 204
+        }
+      }
+    }
+  },
+  {
+    date: '2007-06-12',
+    temp: {
+      party: {
+        update: 'The Cove is updated',
+        rooms: {
+          cove: 'recreation:summer_kickoff_2007/cove_update.swf'
         }
       }
     }
@@ -446,7 +459,7 @@ export const UPDATES_2007: Update[] = [
     iglooCatalog: 'archives:Igloo_0706.swf',
     temp: {
       party: {
-        update: 'The Beach and the Dance Club are updated',
+        update: 'The Beach and Night Club are updated',
         rooms: {
           beach: 'recreation:summer_kickoff_2007/beach_update.swf',
           dance: 'recreation:summer_kickoff_2007/dance_update.swf'
@@ -566,6 +579,27 @@ export const UPDATES_2007: Update[] = [
     },
     frames: {
       sport: 2
+    },
+    sportCatalog: {
+      file: 'archives:Sport_0709.swf',
+      newItems: [
+        349,
+        461,
+        220,
+        406,
+        405,
+        254,
+        255,
+        701,
+        702,
+        703,
+        711,
+        712,
+        919,
+        921,
+        965
+      ],
+      removedItems: []
     }
   },
   {
@@ -748,7 +782,8 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-02',
-    clothingCatalog: 'archives:PenguinStyleNov2007.swf'
+    clothingCatalog: 'archives:PenguinStyleNov2007.swf',
+    sportCatalog: 'archives:Sport_0711.swf'
   },
   {
     date: '2007-11-08',
@@ -848,11 +883,28 @@ export const UPDATES_2007: Update[] = [
           "message": "Blast off!"
         }
       ],
-      costumeTrunk: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf'
+      costumeTrunk: {
+        file: 'archives:SpaceAdventurePlanetXCostumeTrunk.swf',
+        newItems: [
+          458,
+          268,
+          245,
+          122,
+          276,
+          120,
+          266,
+          489,
+          984
+        ],
+        removedItems: []
+      }
     },
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza47.swf',
-      stage: 'archives:SpaceAdventure1Stage.swf'
+      stage: 'archives:SpaceAdventure1Stage.swf',
+
+      // because of chat 604, sport shop with snow and sports
+      shop: 'archives:ArtworkRoomsShop46.swf'
     },
     map: 'archives:Map2007Plaza.swf'
   },

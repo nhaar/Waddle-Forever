@@ -78,10 +78,25 @@ const allSettings: Setting[] = [
     }
   },
   {
+    key: 'remove_idle',
+    elementId: 'removeidle-input',
+    onChange: ({ checked }) => {
+      update({ remove_idle: checked });
+      api.reloadCacheless();
+    }
+  },
+  {
     key: 'always_member',
     elementId: 'js-member-input',
     onChange: ({ checked }) => {
       update({ always_member: checked });
+    }
+  },
+  {
+    key: 'inventory_accuracy',
+    elementId: 'inventory-input',
+    onChange: ({ checked }) => {
+      update({ inventory_accuracy: checked });
     }
   },
   {
@@ -104,6 +119,14 @@ const allSettings: Setting[] = [
     elementId: 'createvialogin-input',
     onChange: ({ checked }) => {
       update({ no_create_via_login: checked });
+    }
+  },
+  {
+    key: 'medieval_sound_fix',
+    elementId: 'medieval-sound-fix-input',
+    onChange: ({ checked }) => {
+      update({ medieval_sound_fix: checked });
+      api.clearCache();
     }
   }
 ]

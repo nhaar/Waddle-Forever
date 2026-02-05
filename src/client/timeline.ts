@@ -5,6 +5,7 @@ import { isEqual, isLower, processVersion, Version } from '../server/routes/vers
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
+import { CatalogItems } from '../server/updates';
 
 let timelinePicker: BrowserWindow | null;
 
@@ -83,6 +84,18 @@ function addEvent(map: Map<Version, Day>, date: string, text: string, image: str
   }
 }
 
+function isCatalogAvailable(input: string | CatalogItems | undefined): boolean {
+  if (typeof input === 'string') {
+    return true;
+  } else {
+    if (input?.file === undefined || input.announce === false) {
+      return false
+    } else {
+      return true;
+    }
+  }
+}
+
 function getTimeline(): Day[] {
   let map = new Map<string, Day>();
   const premieres = new Set<string>();
@@ -92,7 +105,7 @@ function getTimeline(): Day[] {
 
       addEvent(map, update.date, `${update.update.gameRelease} releases`, 'game');
     }
-    if (update.update.clothingCatalog !== undefined) {
+    if (isCatalogAvailable(update.update.clothingCatalog)) {
       addEvent(map, update.date, 'A new edition of the Penguin Style is out', 'clothing');
     }
     if (update.update.iglooCatalog !== undefined) {
@@ -104,7 +117,7 @@ function getTimeline(): Day[] {
     if (update.update.petFurniture !== undefined) {
       addEvent(map, update.date, 'A new edition of Pet Furniture is available', 'other');
     }
-    if (update.update.martialArtworks !== undefined) {
+    if (isCatalogAvailable(update.update.martialArtworks)) {
       addEvent(map, update.date, 'The Martial Artworks is updated', 'other');
     }
     if (update.update.furnitureCatalog !== undefined) {

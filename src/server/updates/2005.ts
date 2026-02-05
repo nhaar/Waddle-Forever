@@ -28,6 +28,40 @@ export const UPDATES_2005: Update[] = [
       'agent': 'archives:ArtworkRoomsAgent10.swf', // placeholder, not accessable
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
+    clothingCatalog: {
+      newItems: [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        101,
+        102,
+        103,
+        131,
+        201,
+        212,
+        214,
+        219,
+        220,
+        221,
+        401,
+        403,
+        404,
+        405,
+        408,
+        452,
+        481
+      ],
+      removedItems: []
+    },
     music: {
       coffee: 1,
       book: 1,
@@ -180,7 +214,11 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-09-21',
-    clothingCatalog: 'recreation:style_september_05.swf',
+    clothingCatalog: {
+      file: 'recreation:style_september_05.swf',
+      newItems: [],
+      removedItems: []
+    },
     furnitureCatalog: 'recreation:furniture_sep05.swf',
     temp: {
       party: {
