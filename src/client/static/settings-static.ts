@@ -115,6 +115,13 @@ const allSettings: Setting[] = [
     }
   },
   {
+    key: 'no_create_via_login',
+    elementId: 'createvialogin-input',
+    onChange: ({ checked }) => {
+      update({ no_create_via_login: checked });
+    }
+  },
+  {
     key: 'medieval_sound_fix',
     elementId: 'medieval-sound-fix-input',
     onChange: ({ checked }) => {

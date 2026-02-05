@@ -18,6 +18,7 @@ import matchHandler from './games/matchmaking';
 import ninjaHandler from './games/ninja';
 import puckHandler from './play/puck';
 import engine1 from './play/engine1';
+import create from './play/create';
 import { Handler } from '.';
 
 const handler = new Handler();
@@ -41,5 +42,6 @@ handler.use(ninjaHandler);
 handler.use(fireHandler);
 handler.use(puckHandler);
 handler.use(engine1);
+handler.use(create);
 
 export default handler;

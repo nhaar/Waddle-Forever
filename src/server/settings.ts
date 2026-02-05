@@ -18,7 +18,8 @@ export type BooleanSettingKey =
   'minified_website' |
   'no_rainbow_quest_wait' |
   'medieval_sound_fix' |
-  'inventory_accuracy';
+  'inventory_accuracy' |
+  'no_create_via_login';
 
 export type Settings = {
   version: Version
@@ -116,6 +117,7 @@ export class SettingsManager {
       always_member: this.readBoolean(settingsJson, 'always_member', true),
       minified_website: this.readBoolean(settingsJson, 'minified_website', false),
       no_rainbow_quest_wait: this.readBoolean(settingsJson, 'no_rainbow_quest_wait', false),
+      no_create_via_login: this.readBoolean(settingsJson, 'no_create_via_login', false),
       answered_packages: this.readString(settingsJson, 'answered_packages'),
       ignored_version: this.readString(settingsJson, 'ignored_version'),
       medieval_sound_fix: this.readBoolean(settingsJson, 'medieval_sound_fix', true),

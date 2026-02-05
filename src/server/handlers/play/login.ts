@@ -17,6 +17,13 @@ handler.xml('rndK', (client) => {
 });
 
 handler.xml('login', (client, data) => {
+  const joinMatch = data.match(/<login z='j'>/);
+  if (client.isEngine1 && joinMatch) {
+    // join.swf sends 'j' as the login
+    client.send('<msg t="sys"><body action="logOK"></body></msg>');
+    return;
+  }
+
   const nicknameMatch = data.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
   if (nicknameMatch === null) {
     logdebug('No nickname provided during Login, terminating.');
@@ -30,6 +37,12 @@ handler.xml('login', (client, data) => {
       if (client.isEngine1) {
         // in pre-cpip, underscores represent spaces in names
         name = name.replace(/_/g, ' ');
+      }
+
+      // todo: error 101 is incorrect password
+      if (client.server.settings.no_create_via_login && !client.server.penguinExists(name)) {
+        client.sendXt('e', 100)
+        return
       }
 
       client.setPenguinFromName(name);

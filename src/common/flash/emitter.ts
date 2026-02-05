@@ -1,63 +1,93 @@
-import { to4BytesLittleEndian } from "./bytes";
+import { to2BytesLittleEndian, to4BytesLittleEndian } from "./bytes";
+import { SwfContent, SwfHeader } from "./parser";
 
-function createHeader(headerlessFileSize: number): Uint8Array {
-  const headerBytes = 21;
+function createHeader(header: SwfHeader, headerlessFileSize: number): Uint8Array {
+  const headerBytes = 12 + header.rect.length;
   return new Uint8Array([
     0x46, // F
     0x57, // W
     0x53, // S
-    0x09, // Version 9
+    header.version,
     ...to4BytesLittleEndian(headerlessFileSize + headerBytes),
     
-    // hardcoded RECT
-    0x78,
-    0x00,
-    0x07,
-    0x6C,
-    0x00,
-    0x00,
-    0x12,
-    0xC0,
-    0x00,
+    ...header.rect,
 
     0x00, // ignored byte
-    0x18, // FPS
+    header.framerate, // FPS
 
-    0x01, // frame count
-    0x00
+    ...to2BytesLittleEndian(header.frameCount)
   ]);
 }
 
-export function emitSwf(code: Uint8Array): Uint8Array {
+export enum TagType {
+  FileAttributes = 69,
+  SetBackgroundColor = 9,
+  DoAction = 12,
+  ShowFrame = 1,
+  End = 0
+}
+
+export function emitCrumbSwf(code: Uint8Array): Uint8Array {
+  return emitSwf({
+    header: {
+      version: 9,
+      framerate: 24,
+      frameCount: 1,
+      // hardcoded rect
+      rect: new Uint8Array([
+        0x78,
+        0x00,
+        0x07,
+        0x6C,
+        0x00,
+        0x00,
+        0x12,
+        0xC0,
+        0x00
+      ])
+    },
+    tags: [
+      {
+        type: TagType.FileAttributes,
+        content: new Uint8Array([0, 0 ,0 ,0])
+      },
+      {
+        type: TagType.SetBackgroundColor,
+        content: new Uint8Array([0xFF, 0xFF, 0xFF])
+      },
+      {
+        type: TagType.DoAction,
+        content: code
+      },
+      {
+        type: TagType.ShowFrame,
+        content: new Uint8Array([])
+      },
+      {
+        type: TagType.End,
+        content: new Uint8Array([])
+      }
+    ]
+  });
+}
+
+export function emitSwf(content: SwfContent): Uint8Array {
   const bytes: number[] = [];
 
-  const headerless: number[] = [
-    0x44, // hardcoded file attributes
-    0x11,
-    0x00,
-    0x00,
-    0x00,
-    0x00,
+  const headerless = content.tags.flatMap(tag => {
+    const bytes: number[] = [];
+    const length = tag.content.length
+    bytes.push(((tag.type & 0x03) << 6) | (length < 0x3F ? length : 0x3F));
+    bytes.push(tag.type >> 2);
+    if (length >= 0x3F) { 
+      bytes.push(...to4BytesLittleEndian(length))
+    }
+    tag.content.forEach(byte => bytes.push(byte));
+    return bytes;
+  });
 
-    0x43, // hardcoded background color tag
-    0x02,
-    0xFF,
-    0xFF,
-    0xFF,
 
-    0x3F, // hardcoded doAction tag header with length greater than 63
-    0x03,
-    ...to4BytesLittleEndian(code.length),
-    ...code,
-
-    0x40, // heardcoded show frame tag
-    0x00,
-
-    0x00, // end tag
-    0x00
-  ];
-
-  bytes.push(...createHeader(headerless.length));
+  createHeader(content.header, headerless.length).forEach(byte => bytes.push(byte));
   headerless.forEach(value => {
     bytes.push(value);
   });

@@ -13,7 +13,8 @@ export enum Action {
   GetMember = 0x4E,
   InitArray = 0x42,
   Pop = 0x17,
-  CallFunction = 0x3D
+  CallFunction = 0x3D,
+  ConstantPool = 0x88
 }
 
 function addElement(code: PCodeRep, element: any): void {

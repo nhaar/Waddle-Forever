@@ -1,6 +1,6 @@
 import { iterateEntries } from "../../common/utils";
 import { Action, createBytecode, createJsonDeclaration, PCodeRep } from "../../common/flash/avm1";
-import { emitSwf } from "../../common/flash/emitter";
+import { emitCrumbSwf } from "../../common/flash/emitter";
 import { LOCAL_PATHS } from "../game-data/local-paths";
 import { Version } from "./versions";
 import { SAFE_MESSAGES } from "../game-data/safe-messages";
@@ -3787,5 +3787,5 @@ export function getLocalCrumbsSwf(version: Version): Buffer {
 
   const bytecode = [...treverseMessages, ...createBytecode(code)];
 
-  return Buffer.from(emitSwf(new Uint8Array(bytecode)));
+  return Buffer.from(emitCrumbSwf(new Uint8Array(bytecode)));
 }

@@ -2031,16 +2031,20 @@ Originally from solero legacy-media, modified to work in the flat domain any por
       comment: 'A custom dependency that removes the idle disconnect timer. Only loads when the "remove_idle" setting is active.'
     },
     {
-      file: 'load30.swf',
-      comment: 'Copy of the pre-CPIP load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
-    },
-    {
       file: 'news_config.xml',
       comment: 'A XML file that is meant to work across all AS3 newspapers, linking all needed elements'
     },
     {
       file: 'scavenger_hunt_2010.swf',
       comment: 'By Ben, SWF that adds the scavenger hunt icon'
+    },
+    {
+      file: 'load.swf',
+      comment: 'From mammoth. Used dynamic constant replacement. Overrides the XMLSocket.connect function to always connect to IP:WORLD PORT (because of the hardcoded values in join.swf); Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url (also for join.swf); Overrides String.split to make it think the URL is play.clubpenguin.com (Can be used to bypass domain checks and reduce the amount of modified SWFs).'
+    },
+    {
+      file: 'load30.swf',
+      comment: 'Copy of tool:load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
     }
   ],
   [UNKNOWN]: [
