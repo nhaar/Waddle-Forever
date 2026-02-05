@@ -1,6 +1,6 @@
 import { iterateEntries } from "../../common/utils";
 import { Action, createBytecode, PCodeRep } from "../../common/flash/avm1";
-import { emitSwf } from "../../common/flash/emitter";
+import { emitCrumbSwf } from "../../common/flash/emitter";
 import { ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
 import { Version } from "./versions";
@@ -676,5 +676,5 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     code.push(...getScavengerHunt(hunt.global.reward, hunt.global.member));
   }
 
-  return Buffer.from(emitSwf(createBytecode(code)));
+  return Buffer.from(emitCrumbSwf(createBytecode(code)));
 }
