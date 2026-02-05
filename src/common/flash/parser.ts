@@ -20,7 +20,7 @@ export type SwfContent = {
   tags: SwfTag[];
 }
 
-function fromLE(...bytes: number[]) {
+export function fromLE(...bytes: number[]) {
   let value = 0;
   bytes.forEach((byte, i) => {
     value += byte * 2 ** (8 * i);
@@ -28,7 +28,7 @@ function fromLE(...bytes: number[]) {
   return value;
 }
 
-function parseSwf(data: Uint8Array): SwfContent {
+export function parseSwf(data: Uint8Array): SwfContent {
   const dataArray = [...data];
   dataArray.splice(0, 3);
   const version = dataArray.splice(0, 5)[0];

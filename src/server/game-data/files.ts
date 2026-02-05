@@ -247,10 +247,6 @@ would need to investigated`
     {
       file: 'PlayStartSwfStart.swf',
       comment: 'Removed the tracking service, which downloads an external SWF which has no useful functionality. Required for truly offline play'
-    },
-    {
-      file: 'load.swf',
-      comment: 'From mammoth. Overrides the XMLSocket.connect function to always connect to 127.0.0.1:24107; Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url; Overrides String.split to make it think the URL is play.clubpenguin.com.'
     }
   ],
   [APPROXIMATION]: [
@@ -2027,16 +2023,20 @@ Originally from solero legacy-media, modified to work in the flat domain any por
       comment: 'Modified from Ben\'s scavenger hunt mod'
     },
     {
-      file: 'load30.swf',
-      comment: 'Copy of the fix version of load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
-    },
-    {
       file: 'news_config.xml',
       comment: 'A XML file that is meant to work across all AS3 newspapers, linking all needed elements'
     },
     {
       file: 'scavenger_hunt_2010.swf',
       comment: 'By Ben, SWF that adds the scavenger hunt icon'
+    },
+    {
+      file: 'load.swf',
+      comment: 'From mammoth. Used dynamic constant replacement. Overrides the XMLSocket.connect function to always connect to IP:WORLD PORT (because of the hardcoded values in join.swf); Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url (also for join.swf); Overrides String.split to make it think the URL is play.clubpenguin.com (Can be used to bypass domain checks and reduce the amount of modified SWFs).'
+    },
+    {
+      file: 'load30.swf',
+      comment: 'Copy of tool:load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
     }
   ],
   [UNKNOWN]: [

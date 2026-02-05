@@ -19,7 +19,7 @@ function createHeader(header: SwfHeader, headerlessFileSize: number): Uint8Array
   ]);
 }
 
-enum TagType {
+export enum TagType {
   FileAttributes = 69,
   SetBackgroundColor = 9,
   DoAction = 12,

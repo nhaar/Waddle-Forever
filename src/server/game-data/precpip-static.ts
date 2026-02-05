@@ -6,7 +6,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/puffle.swf': 'mammoth:games/puffle.swf',
   'games/fish.swf': 'mammoth:games/fish.swf',
   'games/sled.swf': 'archives:SledRacing2006.swf',
-  'load.swf': 'fix:load.swf',
   'artwork/news/newsfan.swf': 'archives:NewsFan.swf',
   'artwork/news/newsbeta.swf': 'recreation:news_beta.swf',
   'chat299.swf': 'fix:Chat299.swf',
