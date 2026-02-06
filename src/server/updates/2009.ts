@@ -1171,7 +1171,13 @@ export const UPDATES_2009: Update[] = [
           town: 267,
           party: 267
         },
-        startscreens: ['archives:AdventureParty2009ENLoginScreen1.swf', 'archives:AdventureParty2009ENLoginScreen2.swf']
+        startscreens: ['archives:AdventureParty2009ENLoginScreen1.swf', 'archives:AdventureParty2009ENLoginScreen2.swf'],
+        scavengerHunt2010: {
+          iconFileId: 'recreation:adventure_09/hunt_icon.swf',
+        },
+        globalChanges: {
+          'scavenger_hunt/hunt_ui.swf': ['recreation:adventure_09/hunt_ui.swf', 'easter_egg_hunt', 'easter_hunt']
+        }
       }
     },
     stagePlay: {

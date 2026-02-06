@@ -1988,6 +1988,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'summer_kickoff_2007/cove_update.swf',
       comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'adventure_09/hunt_icon.swf',
+      comment: 'Made by Doubleuman'
+    },
+    {
+      file: 'adventure_09/hunt_ui.swf',
+      comment: 'Made by Doubleuman'
     }
   ],
   [MOD]: [
