@@ -1,4 +1,4 @@
-import { isRainbowStage } from "../../../server/database";
+import { isRainbowStage } from "@server/database";
 import { Handler } from "..";
 import { Handle } from "../handles";
 

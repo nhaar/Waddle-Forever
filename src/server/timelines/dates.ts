@@ -1,4 +1,4 @@
-import { iterateEntries } from "../../common/utils";
+import { iterateEntries } from "@common/utils";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
 import { DateReference } from "../updates";
 import { UPDATES } from "../updates/updates";

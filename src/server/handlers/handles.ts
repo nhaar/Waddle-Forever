@@ -1,4 +1,4 @@
-import { iterateEntries } from "../../common/utils";
+import { iterateEntries } from "@common/utils";
 
 /** Strings used to represent primitive types that can be used as an argument */
 export type TypePrimitiveIndicator = 'number' | 'string';

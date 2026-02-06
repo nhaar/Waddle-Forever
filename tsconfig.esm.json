@@ -9,6 +9,9 @@
     "outDir": "compiled/client/static",
     "baseUrl": ".",
     "paths": {
+      "@client/*": ["src/client/*"],
+      "@common/*": ["src/common/*"],
+      "@server/*": ["src/server/*"],
       "*": [
         "node_modules/*"
       ]

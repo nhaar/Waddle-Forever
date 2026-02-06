@@ -1,10 +1,10 @@
-import { WaddleName } from "../../../server/game-logic/waddles";
-import { Client, WaddleGame } from "../../../server/client";
+import { WaddleName } from "@server/game-logic/waddles";
+import { Client, WaddleGame } from "@server/client";
 import { WaddleHandler } from "./waddle";
 import { Handle } from "../handles";
-import { randomInt } from "../../../common/utils";
+import { randomInt } from "@common/utils";
 import { CardJitsu, Hand } from "./card";
-import { CardElement, CARDS } from "../../../server/game-logic/cards";
+import { CardElement, CARDS } from "@server/game-logic/cards";
 
 /** Descriptor used to know what end round animation the player is going through */
 enum NinjaState {

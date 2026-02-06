@@ -1,12 +1,12 @@
 import { PlayerPuffle } from "../../database";
 import { Handler } from "..";
 import { PUFFLES } from "../../game-logic/puffle";
-import { Client } from "../../../server/client";
-import { choose, randomInt } from "../../../common/utils";
+import { Client } from "@server/client";
+import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
-import { BROWN_PUFFLE_TIMELINE } from "../../../server/timelines/puffles";
-import { findInVersion } from "../../../server/game-data";
+import { BROWN_PUFFLE_TIMELINE } from "@server/timelines/puffles";
+import { findInVersion } from "@server/game-data";
 
 const handler = new Handler()
 

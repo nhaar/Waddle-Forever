@@ -1,5 +1,5 @@
 import { newTimelineMap } from ".";
-import { iterateEntries } from "../../common/utils";
+import { iterateEntries } from "@common/utils";
 import { addRecordToNumberMap, TimelineMap } from "../game-data";
 import { FURNITURE } from "../game-logic/furniture";
 import { ITEMS } from "../game-logic/items";

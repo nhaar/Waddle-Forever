@@ -1,5 +1,5 @@
 import { consumeUpdates, CPUpdate } from ".";
-import { IS_DEV } from "../../common/constants";
+import { IS_DEV } from "@common/constants";
 import { VersionsInformation, VersionsTimeline } from "../game-data";
 import { isGreater } from "../routes/versions";
 import { UPDATES_2005 } from "./2005";

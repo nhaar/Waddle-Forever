@@ -1,4 +1,4 @@
-import { choose } from "../../../common/utils";
+import { choose } from "@common/utils";
 import { Handler } from "..";
 import { SPY_DRILLS_DATA } from "../../game-logic/spy-drills";
 import { Handle } from "../handles";

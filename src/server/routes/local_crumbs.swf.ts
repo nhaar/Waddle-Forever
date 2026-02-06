@@ -1,6 +1,6 @@
-import { iterateEntries } from "../../common/utils";
-import { Action, createBytecode, createJsonDeclaration, PCodeRep } from "../../common/flash/avm1";
-import { emitCrumbSwf } from "../../common/flash/emitter";
+import { iterateEntries } from "@common/utils";
+import { Action, createBytecode, createJsonDeclaration, PCodeRep } from "@common/flash/avm1";
+import { emitCrumbSwf } from "@common/flash/emitter";
 import { LOCAL_PATHS } from "../game-data/local-paths";
 import { Version } from "./versions";
 import { SAFE_MESSAGES } from "../game-data/safe-messages";

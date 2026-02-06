@@ -2,7 +2,7 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 
-import { logError, parseURL } from '../common/utils';
+import { logError, parseURL } from '@common/utils';
 import { showProgress } from './progress';
 
 async function downloadFile(

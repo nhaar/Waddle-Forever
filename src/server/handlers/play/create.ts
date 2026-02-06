@@ -1,6 +1,6 @@
 import { Handler } from "..";
 import { Handle } from "../handles";
-import { Client, Server } from "../../../server/client";
+import { Client, Server } from "@server/client";
 
 interface NewPenguin {
   username: string,

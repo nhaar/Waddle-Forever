@@ -1,5 +1,5 @@
 import { findEarliestDateHitIndex, TimelineMap } from ".";
-import { iterateEntries } from "../../common/utils";
+import { iterateEntries } from "@common/utils";
 import { BooleanSettingKey, SettingsManager } from "../settings";
 import { START_DATE } from "../timelines/dates";
 import { UPDATES } from "../updates/updates";

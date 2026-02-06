@@ -1,8 +1,8 @@
-import { STARTER_DECKS } from "../../../server/game-logic/starter-deck";
+import { STARTER_DECKS } from "@server/game-logic/starter-deck";
 import { Handler } from "..";
-import { choose } from "../../../common/utils";
+import { choose } from "@common/utils";
 import { Handle } from "../handles";
-import { CARDS } from "../../../server/game-logic/cards";
+import { CARDS } from "@server/game-logic/cards";
 
 const handler = new Handler();
 

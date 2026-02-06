@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain, shell } from "electron";
 import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from "fs";
-import { MODS_DIRECTORY } from "../common/paths";
+import { MODS_DIRECTORY } from "@common/paths";
 
 let modsWindow: BrowserWindow | null;
 

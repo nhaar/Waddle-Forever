@@ -1,4 +1,4 @@
-import { MatchMaker, WaddleRoom } from "../../../server/client";
+import { MatchMaker, WaddleRoom } from "@server/client";
 import { Handler } from "..";
 import { CardJitsu } from "./card";
 import { Handle } from "../handles";

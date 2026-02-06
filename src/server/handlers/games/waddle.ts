@@ -1,6 +1,6 @@
-import { WaddleName } from "../../../server/game-logic/waddles";
+import { WaddleName } from "@server/game-logic/waddles";
 import { Handler } from "..";
-import { Client } from "../../../server/client";
+import { Client } from "@server/client";
 import { HandleName, HandleArguments, GetArgumentsType, ArgumentsIndicator } from "../handles";
 
 /** XT Handler but for a Waddle Game */

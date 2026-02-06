@@ -1,4 +1,4 @@
-import { StaticDataTable } from "../../common/static-table";
+import { StaticDataTable } from "@common/static-table";
 import { Version } from "../routes/versions";
 
 export enum ItemType {

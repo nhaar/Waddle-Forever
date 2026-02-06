@@ -1,5 +1,5 @@
-import { WaddleName } from "../../../server/game-logic/waddles";
-import { WaddleGame } from "../../../server/client";
+import { WaddleName } from "@server/game-logic/waddles";
+import { WaddleGame } from "@server/client";
 import { WaddleHandler } from "./waddle";
 import { Handle } from "../handles";
 

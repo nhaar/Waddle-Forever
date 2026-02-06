@@ -1,4 +1,4 @@
-import { StaticDataTable } from "../../common/static-table";
+import { StaticDataTable } from "@common/static-table";
 
 export type CardElement = 'f' | 's' | 'w';
 
