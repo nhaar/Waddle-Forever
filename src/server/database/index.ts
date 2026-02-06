@@ -483,6 +483,7 @@ export interface PenguinData {
   /** If completed battle of doom or not */
   battleOfDoom: boolean;
   medieval2012Message?: number;
+  noSave?: boolean;
 }
 
 export default db;

@@ -64,6 +64,7 @@ export class Penguin {
   private _cardWins: number;
   private _battleOfDoom: boolean;
   private _medieval2012Message: number;
+  private _noSave: boolean;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -122,6 +123,7 @@ export class Penguin {
     this._battleOfDoom = data.battleOfDoom;
     this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp;
     this._medieval2012Message = data.medieval2012Message ?? 0;
+    this._noSave = data.noSave ?? false;
   }
 
   serialize(): PenguinData {
@@ -178,7 +180,8 @@ export class Penguin {
       cardWins: this._cardWins,
       battleOfDoom: this._battleOfDoom,
       virtualRegistrationTimestamp: this._virtualRegistrationTimestamp,
-      medieval2012Message: this._medieval2012Message
+      medieval2012Message: this._medieval2012Message,
+      noSave: this._noSave
     }
   }
 
@@ -802,7 +805,17 @@ export class Penguin {
     return new Penguin(id, penguin);
   }
 
+  allowSave() {
+    this._noSave = false;
+  }
+
+  disableSave() {
+    this._noSave = true;
+  }
+
   update() {
-    db.update<PenguinData>(Databases.Penguins, this.id, this.serialize());
+    if (!this._noSave) {
+      db.update<PenguinData>(Databases.Penguins, this.id, this.serialize());
+    }
   }
 }

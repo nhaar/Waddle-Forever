@@ -180,6 +180,16 @@ commands.add('powercards', [], (client) => {
   client.update();
 });
 
+commands.add('nosave', [], (client) => {
+  client.penguin.allowSave();
+  client.update();
+  client.penguin.disableSave();
+});
+
+commands.add('enablesave', [], (client) => {
+  client.penguin.allowSave();
+});
+
 /** A given action for a bot group */
 type BotAction = {
   action: 'spawn';
