@@ -709,7 +709,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-24',
     miscComments: ['The membership badge now features levels'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_3.swf'
+      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf'
     }
   },
   {

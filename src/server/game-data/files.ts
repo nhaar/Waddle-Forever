@@ -1302,20 +1302,12 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
     },
     {
-      file: 'interfaces/membership_badge_3.swf',
-      comment: 'Made by Blue Kirby. Built on top of the October 2009 interface but removing the owned igloos functionality'
-    },
-    {
       file: 'interfaces/2010_may.swf',
       comment: 'Made by Supermanover and Blue Kirby. Initially, Super removed the stamps from the legacy media modified interface that was in WF. Blue Kirby removed the owned igloo functionality'
     },
     {
       file: 'interfaces/2010_july.swf',
       comment: 'Made by Blue Kirby. Built on top of the modified lgeacy media interface, removing the owned igloos functionality'
-    },
-    {
-      file: 'client_igloo_cpip.swf',
-      comment: 'Made by Blue Kirby, edit which removes the owned igloos button'
     },
     {
       file: 'startscreen/cpip.swf',
