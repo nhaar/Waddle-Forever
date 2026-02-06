@@ -9,6 +9,7 @@ type ClientCallback = (client: Client) => void
 type XMLCallback = (client: Client, data: string) => void
 
 type PostCallback = (server: Server, body: any) => string
+type GetCallback = (server: Server) => string;
 
 type XtParams = {
   once?: boolean
@@ -109,6 +110,7 @@ export class Handler {
   disconnectListeners: ClientCallback[];
   loginListeners: ClientCallback[];
   phpListeners: Map<string, PostCallback>;
+  getListeners: Map<string, GetCallback>;
   xmlListeners: Map<string, XMLCallback>;
   onBoot: Array<(s: Server) => void>;
   private _commandHandler: ((client: Client, message: string) => void) | undefined;
@@ -118,6 +120,7 @@ export class Handler {
     this.disconnectListeners = [];
     this.loginListeners = [];
     this.phpListeners = new Map<string, PostCallback>();
+    this.getListeners = new Map<string, GetCallback>();
     this.xmlListeners = new Map<string, XMLCallback>();
     this.onBoot = [];
   }
@@ -166,6 +169,10 @@ export class Handler {
 
   post (path: string, method: PostCallback): void {
     this.phpListeners.set(path, method);
+  }
+
+  get(path: string, method: GetCallback): void {
+    this.getListeners.set(path, method);
   }
 
   disconnect (method: ClientCallback): void {
@@ -265,6 +272,9 @@ export class Handler {
     handler.phpListeners.forEach((callback, name) => {
       this.phpListeners.set(name, callback);
     })
+    handler.getListeners.forEach((callback, name) => {
+      this.getListeners.set(name, callback);
+    })
     handler.xmlListeners.forEach((callback, action) => {
       this.xmlListeners.set(action, callback);
     });
@@ -282,6 +292,11 @@ export class Handler {
     this.phpListeners.forEach((callback, path) => {
       expressServer.post(path, (req, res) => {
         res.send(callback(gameServer, req.body))
+      })
+    })
+    this.getListeners.forEach((callback, path) => {
+      expressServer.get(path, (_, res) => {
+        res.send(callback(gameServer))
       })
     })
   }

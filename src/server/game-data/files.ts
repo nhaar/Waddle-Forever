@@ -255,6 +255,10 @@ would need to investigated`
     {
       file: 'ClientLoad2009-06-26.swf',
       comment: 'Removed domain check.'
+    },
+    {
+      file: 'ClientLoginJun2009.swf',
+      comment: 'Removed hardcoded domains'
     }
   ],
   [APPROXIMATION]: [

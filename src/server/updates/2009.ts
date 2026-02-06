@@ -1190,7 +1190,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-06-26',
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
-      'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf'
+      'play/v2/client/login.swf': 'fix:ClientLoginJun2009.swf'
     },
     iglooList: [
       { display: 'Viking Opera', id: 41, pos: [1, 1] },
