@@ -1,4 +1,4 @@
-import { iterateEntries } from "../../common/utils";
+import { iterateEntries } from "@common/utils";
 import { FileRef } from "../game-data/files";
 import { GameName } from "../game-data/games";
 import { RoomName } from "../game-data/rooms";

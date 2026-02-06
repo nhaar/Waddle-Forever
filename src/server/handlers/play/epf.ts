@@ -1,8 +1,8 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
-import { findInVersion } from "../../../server/game-data";
-import { PARTY_OP_TIMELINE } from "../../../server/timelines/epf";
+import { findInVersion } from "@server/game-data";
+import { PARTY_OP_TIMELINE } from "@server/timelines/epf";
 
 const handler = new Handler();
 

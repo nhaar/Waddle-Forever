@@ -1,4 +1,4 @@
-import { StaticDataTable } from "../../common/static-table";
+import { StaticDataTable } from "@common/static-table";
 
 type PuffleItemType = 'care' | 'food' | 'play' | 'head' | 'game' | 'sleep';
 type PlayType = 'none' | 'superplay' | 'bubblegum' | 'play' | 'sleep';

@@ -1,6 +1,6 @@
-import { iterateEntries } from "../../common/utils";
-import { Action, createBytecode, PCodeRep } from "../../common/flash/avm1";
-import { emitCrumbSwf } from "../../common/flash/emitter";
+import { iterateEntries } from "@common/utils";
+import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
+import { emitCrumbSwf } from "@common/flash/emitter";
 import { ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
 import { Version } from "./versions";

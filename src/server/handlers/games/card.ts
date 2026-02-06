@@ -1,12 +1,12 @@
-import { WaddleName } from "../../../server/game-logic/waddles";
-import { Client, WaddleGame, WaddleRoom } from "../../../server/client";
+import { WaddleName } from "@server/game-logic/waddles";
+import { Client, WaddleGame, WaddleRoom } from "@server/client";
 import { WaddleHandler } from "./waddle";
-import { choose, iterateEntries, randomInt } from "../../../common/utils";
-import { Card, CardColor, CardElement, CARDS } from "../../../server/game-logic/cards";
+import { choose, iterateEntries, randomInt } from "@common/utils";
+import { Card, CardColor, CardElement, CARDS } from "@server/game-logic/cards";
 import { Handle } from "../handles";
-import { CardJitsuProgress } from "../../../server/game-logic/ninja-progress";
-import { Stamp } from "../../../server/game-logic/stamps";
-import { Room } from "../../../server/game-logic/rooms";
+import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
+import { Stamp } from "@server/game-logic/stamps";
+import { Room } from "@server/game-logic/rooms";
 
 export class Hand {
   private _canDrawCards: number[];

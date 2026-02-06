@@ -5,10 +5,10 @@ import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } 
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
 import { createSettingsWindow } from "./settings";
-import { GlobalSettings } from "../common/utils";
+import { GlobalSettings } from "@common/utils";
 import { createTimelinePicker } from "./timeline";
 import { createModsWindow } from "./mods";
-import { SettingsManager } from "../server/settings";
+import { SettingsManager } from "@server/settings";
 import { createMultiplayerSettings } from "./multiplayer";
 import { createCommands } from "./commands";
 

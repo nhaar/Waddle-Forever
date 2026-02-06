@@ -1,4 +1,4 @@
-import { Client, Server } from "../../client";
+import { Client, Server } from "@server/client";
 
 /** Represents a table in a table game eg find four */
 export abstract class Table {

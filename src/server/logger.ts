@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { IS_DEV } from "../common/constants";
+import { IS_DEV } from "@common/constants";
 
 /**
  * Used to log things in debugging

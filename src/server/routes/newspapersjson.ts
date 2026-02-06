@@ -1,4 +1,4 @@
-import { monthNames } from "../../common/utils";
+import { monthNames } from "@common/utils";
 import { findEarliestDateHitIndex} from "../game-data";
 import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
 import { processVersion, Version } from "./versions";

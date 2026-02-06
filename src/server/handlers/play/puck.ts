@@ -1,6 +1,6 @@
 import { Handler } from "..";
 import { Handle } from "../handles";
-import { Client } from "../../../server/client";
+import { Client } from "@server/client";
 
 const handler = new Handler();
 

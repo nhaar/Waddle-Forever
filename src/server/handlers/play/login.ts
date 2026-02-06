@@ -1,6 +1,6 @@
 import serverList, { getServerPopulation } from "../../servers";
 import { Handler } from "..";
-import { logdebug } from "../../../server/logger";
+import { logdebug } from "@server/logger";
 
 const handler = new Handler();
 

@@ -1,12 +1,12 @@
-import { BotGroup, Client } from "../../../server/client";
+import { BotGroup, Client } from "@server/client";
 import { getHandlerCallback, Handler } from "..";
 import { ITEMS } from "../../game-logic/items";
 import { Room } from "../../game-logic/rooms";
-import { CARDS } from "../../../server/game-logic/cards";
-import { RoomName, ROOMS } from "../../../server/game-data/rooms";
-import { randomInt, Vector } from "../../../common/utils";
+import { CARDS } from "@server/game-logic/cards";
+import { RoomName, ROOMS } from "@server/game-data/rooms";
+import { randomInt, Vector } from "@common/utils";
 import { ArgumentsIndicator, GetArgumentsType } from "../handles";
-import { logdebug } from "../../../server/logger";
+import { logdebug } from "@server/logger";
 
 const handler = new Handler();
 

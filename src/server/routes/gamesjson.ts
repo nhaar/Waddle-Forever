@@ -1,4 +1,4 @@
-import { iterateEntries } from "../../common/utils";
+import { iterateEntries } from "@common/utils";
 import { GAME_CRUMBS } from "../game-data/game-crumbs";
 import { GAMES } from "../game-data/games";
 import { getMapForDate } from "../timelines";

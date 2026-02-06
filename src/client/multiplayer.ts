@@ -1,8 +1,8 @@
 import { BrowserWindow, ipcMain } from "electron";
 import path from "path";
-import { SettingsManager } from "../server/settings";
-import { GlobalSettings, makeUrl } from "../common/utils";
-import { HTTP_PORT } from "../common/constants";
+import { SettingsManager } from "@server/settings";
+import { GlobalSettings, makeUrl } from "@common/utils";
+import { HTTP_PORT } from "@common/constants";
 
 let multiplayerWindow: BrowserWindow | null;
 

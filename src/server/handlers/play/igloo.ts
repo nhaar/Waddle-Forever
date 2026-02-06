@@ -1,10 +1,10 @@
 import { getFlooringCost, getIglooCost } from "../../game-logic/iglooItems";
 import { Handler } from "..";
-import { Client } from "../../../server/client";
-import { IglooFurniture } from "../../../server/database";
+import { Client } from "@server/client";
+import { IglooFurniture } from "@server/database";
 import { Handle } from "../handles";
-import { isLower } from "../../../server/routes/versions";
-import { FURNITURE } from "../../../server/game-logic/furniture";
+import { isLower } from "@server/routes/versions";
+import { FURNITURE } from "@server/game-logic/furniture";
 
 const handler = new Handler();
 

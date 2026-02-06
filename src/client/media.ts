@@ -3,11 +3,11 @@ import fs from 'fs'
 
 import electronIsDev from "electron-is-dev";
 
-import { VERSION } from '../common/version';
-import settingsManager from '../server/settings';
+import { VERSION } from '@common/version';
+import settingsManager from '@server/settings';
 import { download } from './download';
 import { unzip } from './unzip';
-import { logError, MEDIA_DIRECTORY, postJSON } from '../common/utils';
+import { logError, MEDIA_DIRECTORY, postJSON } from '@common/utils';
 
 /**
  * Downloads and extracts a media folder from the website

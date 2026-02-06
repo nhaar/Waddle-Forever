@@ -3,7 +3,7 @@ import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from 'fs';
 import { downloadMediaFolder } from "./media";
-import { GlobalSettings, MEDIA_DIRECTORY } from "../common/utils";
+import { GlobalSettings, MEDIA_DIRECTORY } from "@common/utils";
 
 // preventing garbage collection
 let settingsWindow: BrowserWindow | null;

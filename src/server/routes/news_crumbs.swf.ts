@@ -1,6 +1,6 @@
-import { emitCrumbSwf } from "../../common/flash/emitter";
-import { monthNames } from "../../common/utils";
-import { Action, createBytecode, PCodeRep } from "../../common/flash/avm1";
+import { emitCrumbSwf } from "@common/flash/emitter";
+import { monthNames } from "@common/utils";
+import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
 import { findEarliestDateHitIndex } from "../game-data";
 import { As3Newspaper, BoilerRoomPaper, PreBoilerRoomPaper } from "../game-data/newspapers";
 import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";

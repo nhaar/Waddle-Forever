@@ -1,10 +1,10 @@
 /** Module handles information of all the files stored in the media folder */
 
 import path from "path";
-import { IS_DEV } from "../../common/constants";
+import { IS_DEV } from "@common/constants";
 import { PACKAGE_INFO } from "./package-info";
 import { PackageName } from "./packages";
-import { DEFAULT_DIRECTORY, getFilesInDirectory, iterateEntries } from "../../common/utils";
+import { DEFAULT_DIRECTORY, getFilesInDirectory, iterateEntries } from "@common/utils";
 
 /**
  * File reference is a term used in this code base to refer a string in the format
