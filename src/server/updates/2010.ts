@@ -848,7 +848,9 @@ export const UPDATES_2010: Update[] = [
       // engine that has EPF and stuff
       'play/v2/client/engine.swf': 'approximation:engine.swf',
       // interface with EPF phone
-      'play/v2/client/interface.swf': 'recreation:interfaces/2010_may.swf'
+      'play/v2/client/interface.swf': 'recreation:interfaces/2010_may.swf',
+      'play/v2/client/shell.swf': 'approximation:shell.swf',
+      'play/v2/client/load.swf': 'archives:ClientLoad2010-11-25.swf'
     },
     localChanges: {
       'forms/moderator.swf': {
@@ -1117,8 +1119,7 @@ export const UPDATES_2010: Update[] = [
     miscComments: ['Stamps are released'],
     dateReference: 'stamps-release',
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf',
-      'play/v2/client/shell.swf': 'approximation:shell.swf'
+      'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf'
     },
     worldStamps: [
       {
