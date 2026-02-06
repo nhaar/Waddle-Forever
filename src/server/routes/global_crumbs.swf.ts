@@ -16,6 +16,9 @@ import { MUSIC_TIMELINE } from "../timelines/music";
 import { MEMBER_TIMELINE } from "../timelines/member";
 import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
 import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
+import serverList from "../servers";
+import { isEngine3 } from "../timelines/dates";
+import { GAME_CRUMBS } from "../game-data/game-crumbs";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -30,6 +33,102 @@ function getIglooCrumbs(): PCodeRep {
     );
   });
 
+  return code;
+}
+
+function getServerCrumbs(ip: string, loginPort: number, worldPort: number, modern: boolean): PCodeRep {
+  const code: PCodeRep = [
+    // normal servers
+    [Action.Push, "servers"],
+    [Action.Push, 0],
+    [Action.Push, "Object"],
+    Action.NewObject,
+    Action.DefineLocal
+  ]
+
+  if (modern) {
+    code.push(
+      [Action.Push, "login_server"],
+      [Action.Push, 0],
+      [Action.Push, "Object"],
+      Action.NewObject,
+      Action.DefineLocal,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "ip"],
+      Action.SetMember,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "port"],
+      [Action.Push, loginPort],
+      Action.SetMember
+    )
+  } else {
+    // login server: ip is array and even and odd ports
+    code.push(
+      [Action.Push, "login_server"],
+      [Action.Push, 0],
+      [Action.Push, "Object"],
+      Action.NewObject,
+      Action.DefineLocal,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "ip"],
+      [Action.Push, ip],
+      [Action.Push, ip],
+      [Action.Push, 2],
+      Action.InitArray,
+      Action.SetMember,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "even_port"],
+      [Action.Push, loginPort],
+      Action.SetMember,
+      [Action.Push, "login_server"],
+      Action.GetVariable,
+      [Action.Push, "odd_port"],
+      [Action.Push, worldPort],
+      Action.SetMember
+    )
+  }
+
+  serverList.forEach(server => {
+    code.push(
+      [Action.Push, "servers"],
+      Action.GetVariable,
+      [Action.Push, server.id],
+      [Action.Push, "ip"],
+      [Action.Push, ip],
+      [Action.Push, "is_safe"],
+      [Action.Push, false],
+      [Action.Push, "port"],
+      [Action.Push, worldPort],
+      [Action.Push, 3],
+      Action.InitObject,
+      Action.SetMember
+    )
+  });
+
+
+
+  return code;
+}
+
+function getGameCrumbs(): PCodeRep {
+  const code: PCodeRep = [
+    [Action.Push, "game_crumbs", 0, "Object"],
+    Action.NewObject,
+    Action.DefineLocal
+  ];
+  iterateEntries(GAME_CRUMBS, (game, crumb) => {
+    code.push(
+      [Action.Push, "game_crumbs"],
+      Action.GetVariable,
+      [Action.Push, game, "room_id", Number(crumb.room_id), "music_id", Number(crumb.music_id), "path", crumb.path, 3],
+      Action.InitObject,
+      Action.SetMember
+    )
+  });
   return code;
 }
 
@@ -313,7 +412,7 @@ function getScavengerHunt(reward: number, member: boolean) {
   return code;
 }
 
-export function getGlobalCrumbsSwf(version: Version): Buffer {
+export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: number, worldPort: number): Buffer {
   const migrator = findInVersionStrict(version, MIGRATOR_TIMELINE);
   const hunt = findInVersionStrict(version, HUNT_TIMELINE);
 
@@ -669,7 +768,9 @@ export function getGlobalCrumbsSwf(version: Version): Buffer {
     Action.GetVariable,
     [Action.Push, 9, "sensei"],
     Action.GetVariable,
-    Action.SetMember
+    Action.SetMember,
+    ...getServerCrumbs(ip, loginPort, worldPort, isEngine3(version)),
+    ...getGameCrumbs()
   ];
 
   if (hunt !== null) {

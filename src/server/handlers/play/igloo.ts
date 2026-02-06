@@ -94,20 +94,18 @@ function discountIglooTypeCost(client: Client, type: number): void {
 // buying igloo
 handler.xt(Handle.AddIgloo, (client, igloo) => {
   discountIglooTypeCost(client, igloo);
-  client.penguin.addIgloo(igloo);
+  // pre owned igloos
+  if (isLower(client.version, '2010-08-26')) {
+    client.penguin.updateIgloo({ type: igloo });
+  } else {
+    client.penguin.addIgloo(igloo);
+  }
   client.sendXt('au', igloo, client.penguin.coins);
   client.update();
 })
 
 // saving igloo type
 handler.xt(Handle.UpdateIglooType, (client, type) => {
-  // adding support to the recreation of how it worked pre owned igloos (updating igloo type costed money)
-  if (isLower(client.version, '2010-08-26')) {
-    discountIglooTypeCost(client, type);
-    // a bit of a hack to notify the client of the coin change
-    client.sendXt('au', type, client.penguin.coins);
-  }
-
   client.penguin.updateIgloo({ type });
   client.update();
 })

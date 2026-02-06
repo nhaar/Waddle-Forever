@@ -5,7 +5,6 @@ import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getStampsJson } from './stampjson';
 import { getSetupXml } from "./setup.xml";
-import { getServersXml } from "../servers";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
@@ -183,7 +182,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
     return JSON.stringify(FRAME_HACKS)
   })
-  server.getData('servers.xml', (s) => getServersXml(s.targetIP, s.loginPort, s.worldPort));
   server.getData('setup.xml', (s) => {
     return getSetupXml(s.settings.version, s.targetIP, s.worldPort);
   });
@@ -215,7 +213,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return getNewsCrumbsSwf(s.settings.version);
   });
   server.getData('play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
-    return getGlobalCrumbsSwf(s.settings.version);
+    return getGlobalCrumbsSwf(s.settings.version, s.targetIP, s.loginPort, s.worldPort);
   });
   server.getData('play/v2/content/local/en/crumbs/local_crumbs.swf', (s) => {
     return getLocalCrumbsSwf(s.settings.version);
