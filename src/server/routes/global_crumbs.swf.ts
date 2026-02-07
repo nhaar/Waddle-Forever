@@ -8,7 +8,7 @@ import { PUFFLE_DATA } from "../game-logic/puffle";
 import { FURNITURE } from "../game-logic/furniture";
 import { ExclusiveType, ITEMS, ItemType } from "../game-logic/items";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
-import { GLOBAL_PATHS } from "../game-data/global-paths";
+import { GLOBAL_PATHS, COMPOSITE_GLOBAL_PATHS } from "../game-data/global-paths";
 import { findInVersionStrict } from "../game-data";
 import { MIGRATOR_TIMELINE } from "../timelines/migrator";
 import { getMapForDate } from "../timelines";
@@ -385,6 +385,18 @@ function getGlobalPath(version: Version): PCodeRep {
         Action.SetMember
       )
     }
+  });
+
+  iterateEntries({ ... COMPOSITE_GLOBAL_PATHS, ...paths }, (key, [path1, path2]) => {
+      code.push(
+        [Action.Push, "global_path"],
+        Action.GetVariable,
+        [Action.Push, key, path1],
+        Action.GetVariable,
+        [Action.Push, path2],
+        Action.Add2,
+        Action.SetMember
+      )
   });
 
   return code;

@@ -93,3 +93,11 @@ export const GLOBAL_PATHS: Record<string, string> = {
   stampbook_wordmark: "stampbook/wordmark/",
   stampbook_cover_storage: "stampbook/prompt/stampbook_cover_storage.swf",
 };
+
+// used before May 2009
+export const COMPOSITE_GLOBAL_PATHS: Record<string,any> = {
+  town: ["global_content", "/rooms/town.swf"],
+  coffee: ["global_content", "/rooms/coffee.swf"],
+  beans: ["game_path", "/beans/bootstrap.swf"],
+  penguin: ["global_content", "/beans/bootstrap.swf"]
+}

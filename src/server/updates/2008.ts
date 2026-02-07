@@ -1023,14 +1023,26 @@ export const UPDATES_2008: Update[] = [
       dojowater: true,
     },
     fileChanges: {
+      // TODO startscreen (almost definitely) wasn't used until Jan 2009
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/client/shell.swf': 'approximation:shell.swf',
-      'play/v2/client/engine.swf': 'unknown:engine_2009.swf',
-      'play/v2/client/interface.swf': 'recreation:interfaces/2008_july.swf',
-      'play/v2/client/login.swf': 'recreation:login_cpip.swf',
+      'play/v2/client/shell.swf': 'archives:ClientShell_January_2009.swf',
+      'play/v2/shell/shell.swf': 'archives:ClientShell_January_2009.swf',
+      'play/v2/airtower/airtower.swf': 'archives:ClientAirtower2009-06-15.swf',
+      'play/v2/gridview/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
+      'play/v2/client/engine.swf': 'archives:ClientEngine2009-06-15.swf',
+      'play/v2/engine/engine.swf': 'archives:ClientEngine2009-06-15.swf',
+      'play/v2/client/interface.swf': 'archives:ClientInterface-February2009.swf',
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-February2009.swf',
+      'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf',
+      'play/v2/login/login.swf': 'archives:ClientLoginJun2009.swf',
+      'play/v2/mail/inbox/mail.swf': 'archives:ClientMail2009-06-15.swf',
+      'play/v2/mail/book/book.swf': 'slegacy:media/play/v2/client/book.swf',
+      'play/v2/music/music.swf': 'archives:PlayV2MusicMusic2009-04-02.swf',
       'play/v2/client/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
+      'play/v2/igloo/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
       'play/v2/content/global/binoculars/empty.swf': 'slegacy:media/play/v2/content/global/binoculars/empty.swf',
       'play/v2/content/global/telescope/empty.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf',
+      // TODO igloo background wasn't used until late 2009?
       'play/v2/content/global/igloo/assets/igloo_background.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf',
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
