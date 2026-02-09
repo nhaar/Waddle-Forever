@@ -259,6 +259,10 @@ would need to investigated`
     {
       file: 'ClientLoginJun2009.swf',
       comment: 'Removed hardcoded domains'
+    },
+    {
+      file: 'load2008-08-15.swf',
+      comment: 'Found in various old trainers. Domain check has likely been removed. Further changes to fix paths.'
     }
   ],
   [APPROXIMATION]: [
@@ -2032,6 +2036,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'help.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'airtower_cpip.swf',
+      comment: 'Moved Airtower code out of class file and added shell.getLoginServer() call'
+    },
+    {
+      file: 'engine_cpip.swf',
+      comment: 'Made self-initialising. Changed .path to .file_path. Added showInterface call after roomInitiated.'
     }
   ],
   [MOD]: [

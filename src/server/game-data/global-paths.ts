@@ -1,3 +1,7 @@
+import { iterateEntries } from "../../common/utils";
+import { ROOMS } from "../game-data/rooms";
+import { GAME_CRUMBS } from "../game-data/game-crumbs";
+
 export const GLOBAL_PATHS: Record<string, string> = {
   'ninja_water_video': 'close_ups/ninja_water_video.swf',
   ninja_fire_video: 'close_ups/ninja_fire_video.swf',
@@ -94,10 +98,33 @@ export const GLOBAL_PATHS: Record<string, string> = {
   stampbook_cover_storage: "stampbook/prompt/stampbook_cover_storage.swf",
 };
 
-// used before May 2009
-export const COMPOSITE_GLOBAL_PATHS: Record<string,any> = {
-  town: ["global_content", "/rooms/town.swf"],
-  coffee: ["global_content", "/rooms/coffee.swf"],
-  beans: ["game_path", "/beans/bootstrap.swf"],
-  penguin: ["global_content", "/beans/bootstrap.swf"]
+// used before April/May 2009
+// TODO catalogues, forms, news (that's local crumbs anyway)
+export const COMPOSITE_GLOBAL_PATHS: Record<string, [string, string]> = {
+  ...getRoomPaths(),
+  ...getGamePaths(),
+  ...makePathsComposite()
+}
+
+function getRoomPaths(){
+  const result = {} as Record<string, [string, string]>;
+  iterateEntries(ROOMS, (room, _) => {
+    result[room] = ["global_content", `/rooms/${room}.swf`];
+  });
+  return result;
+}
+function getGamePaths(){
+  const result = {} as Record<string, [string, string]>;
+  iterateEntries(GAME_CRUMBS, (game, crumb) => {
+    result[game] = ["game_path", "/" + crumb.path];
+  });
+  return result;
+}
+
+function makePathsComposite(){
+    const result = {} as Record<string, [string, string]>;
+  iterateEntries(GLOBAL_PATHS, (key, path) => {
+    result[key] = ["global_content", "/" + path];
+  });
+  return result;
 }

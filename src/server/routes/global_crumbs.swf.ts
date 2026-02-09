@@ -387,17 +387,37 @@ function getGlobalPath(version: Version): PCodeRep {
     }
   });
 
-  iterateEntries({ ... COMPOSITE_GLOBAL_PATHS, ...paths }, (key, [path1, path2]) => {
-      code.push(
+  // TODO put below code in version check. Currently all paths in GLOBAL_PATHS are written twice
+  code.push(
+    [Action.Push, "global_content"],
+    [Action.Push, 0],
+    [Action.Push, "shell"],
+    Action.GetVariable,
+    [Action.Push, "getGlobalContentPath"],
+    Action.CallMethod,
+    Action.DefineLocal,
+    [Action.Push, "game_path"],
+    [Action.Push, 0],
+    [Action.Push, "shell"],
+    Action.GetVariable,
+    [Action.Push, "getGameContentPath"],
+    Action.CallMethod,
+    Action.DefineLocal
+  )
+
+  for (var key in COMPOSITE_GLOBAL_PATHS){
+    const [base, path] = COMPOSITE_GLOBAL_PATHS[key];
+    code.push(
         [Action.Push, "global_path"],
         Action.GetVariable,
-        [Action.Push, key, path1],
+        [Action.Push, key, base],
         Action.GetVariable,
-        [Action.Push, path2],
+        [Action.Push, path],
         Action.Add2,
         Action.SetMember
-      )
-  });
+  )
+  }
+  
 
   return code;
 }

@@ -1023,14 +1023,15 @@ export const UPDATES_2008: Update[] = [
       dojowater: true,
     },
     fileChanges: {
+      'play/v2/load.swf': 'fix:load2008-08-15.swf',
       // TODO startscreen (almost definitely) wasn't used until Jan 2009
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
       'play/v2/client/shell.swf': 'archives:ClientShell_January_2009.swf',
       'play/v2/shell/shell.swf': 'archives:ClientShell_January_2009.swf',
-      'play/v2/airtower/airtower.swf': 'archives:ClientAirtower2009-06-15.swf',
+      'play/v2/airtower/airtower.swf': 'recreation:airtower_cpip.swf',
       'play/v2/gridview/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
       'play/v2/client/engine.swf': 'archives:ClientEngine2009-06-15.swf',
-      'play/v2/engine/engine.swf': 'archives:ClientEngine2009-06-15.swf',
+      'play/v2/engine/engine.swf': 'recreation:engine_cpip.swf',
       'play/v2/client/interface.swf': 'archives:ClientInterface-February2009.swf',
       'play/v2/interface/interface.swf': 'archives:ClientInterface-February2009.swf',
       'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf',
