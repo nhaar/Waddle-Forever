@@ -1024,6 +1024,9 @@ export const UPDATES_2008: Update[] = [
     },
     fileChanges: {
       'play/v2/load.swf': 'fix:load2008-08-15.swf',
+      'setup/en.txt': 'approximation:en.txt',
+      'setup/global.txt': 'approximation:global.txt',
+      'setup/system.txt': 'approximation:system.txt',
       // TODO startscreen (almost definitely) wasn't used until Jan 2009
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
       'play/v2/client/shell.swf': 'archives:ClientShell_January_2009.swf',

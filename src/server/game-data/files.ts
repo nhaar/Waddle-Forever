@@ -262,7 +262,7 @@ would need to investigated`
     },
     {
       file: 'load2008-08-15.swf',
-      comment: 'Found in various old trainers. Domain check has likely been removed. Further changes to fix paths.'
+      comment: 'Found in various old trainers. Domain check has likely been removed. Further changes to fix paths, including in shell.'
     }
   ],
   [APPROXIMATION]: [
@@ -532,6 +532,18 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'login_no_101_days_of_fun.swf',
       comment: 'By Randomon, removed 101 days of fun on start screen. not accurate for all dates, needs more research'
+    },
+    {
+      file: 'en.txt',
+      comment: 'removed all versions'
+    },
+    {
+      file: 'global.txt',
+      comment: 'removed all versions'
+    },
+    {
+      file: 'system.txt',
+      comment: 'removed all versions'
     }
   ],
   [RECREATION]: [
