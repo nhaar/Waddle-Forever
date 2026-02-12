@@ -2167,7 +2167,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'close_ups/maze_map.swf': {
-            'en': 'archives:ENClose_upsMaze_map-WinterParty.swf'
+            'en': ['archives:ENClose_upsMaze_map-WinterParty.swf', 'maze_map']
           }
         }
       }
