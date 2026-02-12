@@ -144,7 +144,40 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-03-03',
-    clothingCatalog: 'archives:Clothing_0603.swf'
+    clothingCatalog: {
+      file: 'archives:Clothing_0603.swf',
+      newItems: [
+        176,
+        177,
+        181,
+        218,
+        261,
+        262,
+        263,
+        351,
+        352,
+        363,
+        366,
+        423,
+        424,
+        520,
+        521,
+        522,
+        523,
+        524
+      ],
+      removedItems: [
+        102,
+        106,
+        175,
+        301,
+        419,
+        420,
+        421,
+        453,
+        484
+      ]
+    }
   },
   {
     date: '2006-03-10',
