@@ -3,7 +3,26 @@ import { Update } from ".";
 export const UPDATES_2006: Update[] = [
   {
     date: '2006-01-01',
-    clothingCatalog: 'archives:Clothing_0601.swf',
+    clothingCatalog: {
+      file: 'archives:Clothing_0601.swf',
+      newItems: [
+        237,
+        238,
+        419,
+        108,
+        421,
+        420,
+        406,
+        253,
+        456
+      ],
+      removedItems: [
+        131,
+        408,
+        401,
+        201
+      ]
+    },
     end: ['party'],
     indexHtml: 'old-precpip',
     websiteFolder: 'old',
@@ -43,7 +62,26 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-02-03',
-    clothingCatalog: 'archives:Clothing_0602.swf'
+    clothingCatalog: {
+      file: 'archives:Clothing_0602.swf',
+      newItems: [
+        451,
+        212,
+        219,
+        422,
+        175,
+        174,
+        110,
+        404,
+        220,
+        405
+      ],
+      removedItems: [
+        220,
+        404,
+        405
+      ]
+    }
   },
   {
     roomComment: 'Mancala is removed from the HQ',

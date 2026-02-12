@@ -244,7 +244,37 @@ export const UPDATES_2005: Update[] = [
   {
     date: '2005-10-24',
     iglooVersion: 3,
-    clothingCatalog: 'archives:Clothing_0510.swf',
+    clothingCatalog: {
+      file: 'archives:Clothing_0510.swf',
+      newItems: [
+        106,
+        301,
+        244,
+        412,
+        252,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        518,
+        519
+      ],
+      removedItems: []
+    },
     furnitureCatalog: 'archives:Furniture_0510.swf',
     newspaper: 'irregular',
     fileChanges: {
@@ -281,7 +311,18 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-11-01',
-    clothingCatalog: 'archives:Clothing_0511.swf',
+    clothingCatalog: {
+      file: 'archives:Clothing_0511.swf',
+      newItems: [
+        484,
+        172,
+        410,
+        222
+      ],
+      removedItems: [
+        244
+      ]
+    },
     end: ['party'],
     rooms: {
       // mancala was added at some random point I dont know
@@ -347,7 +388,21 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-12-01',
-    clothingCatalog: 'archives:Clothing_0512.swf',
+    clothingCatalog: {
+      file: 'archives:Clothing_0512.swf',
+      newItems: [
+        453,
+        233,
+        234,
+        235,
+        417
+      ],
+      removedItems: [
+        219,
+        212,
+        403
+      ]
+    },
     newspaper: 'period-start',
 
     // an unknown update which removed the ability to click on the couch
