@@ -8,7 +8,7 @@ import { PUFFLE_DATA } from "../game-logic/puffle";
 import { FURNITURE } from "../game-logic/furniture";
 import { ExclusiveType, ITEMS, ItemType } from "../game-logic/items";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
-import { GLOBAL_PATHS, makePathsComposite } from "../game-data/global-paths";
+import { GLOBAL_PATHS, makeGlobalPathsComposite } from "../game-data/global-paths";
 import { findInVersionStrict } from "../game-data";
 import { MIGRATOR_TIMELINE } from "../timelines/migrator";
 import { getMapForDate } from "../timelines";
@@ -405,7 +405,7 @@ function getGlobalPath(version: Version): PCodeRep {
         newPaths[key] = value;
       }
     });
-    const compositePaths = makePathsComposite({ ...GLOBAL_PATHS, ...newPaths });
+    const compositePaths = makeGlobalPathsComposite({ ...GLOBAL_PATHS, ...newPaths });
     iterateEntries(compositePaths, (key, value) => {
       const [base, path] = value;
       code.push(

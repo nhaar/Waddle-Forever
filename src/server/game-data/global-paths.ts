@@ -100,7 +100,7 @@ export const GLOBAL_PATHS: Record<string, string> = {
 
 // used before April/May 2009
 // TODO catalogues, forms, news (that's local crumbs anyway)
-export function makePathsComposite(paths: Record<string, string>){
+export function makeGlobalPathsComposite(paths: Record<string, string>){
   const result: Record<string, [string, string]> = {};
   iterateEntries(paths, (key, path) => {
     result[key] = ["global_content", "/" + path];
