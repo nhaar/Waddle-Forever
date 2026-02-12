@@ -100,31 +100,17 @@ export const GLOBAL_PATHS: Record<string, string> = {
 
 // used before April/May 2009
 // TODO catalogues, forms, news (that's local crumbs anyway)
-export const COMPOSITE_GLOBAL_PATHS: Record<string, [string, string]> = {
-  ...getRoomPaths(),
-  ...getGamePaths(),
-  ...makePathsComposite()
-}
+export function makePathsComposite(paths: Record<string, string>){
+  const result: Record<string, [string, string]> = {};
+  iterateEntries(paths, (key, path) => {
+    result[key] = ["global_content", "/" + path];
+  });
 
-function getRoomPaths(){
-  const result = {} as Record<string, [string, string]>;
-  iterateEntries(ROOMS, (room, _) => {
+  iterateEntries(ROOMS, (room) => {
     result[room] = ["global_content", `/rooms/${room}.swf`];
   });
-  return result;
-}
-function getGamePaths(){
-  const result = {} as Record<string, [string, string]>;
   iterateEntries(GAME_CRUMBS, (game, crumb) => {
     result[game] = ["game_path", "/" + crumb.path];
-  });
-  return result;
-}
-
-function makePathsComposite(){
-    const result = {} as Record<string, [string, string]>;
-  iterateEntries(GLOBAL_PATHS, (key, path) => {
-    result[key] = ["global_content", "/" + path];
   });
   return result;
 }

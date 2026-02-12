@@ -15,7 +15,8 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'placeholder-2016': undefined,
   'vr-room': undefined,
   'old-rink': undefined,
-  'string-verify': undefined
+  'string-verify': undefined,
+  'composite-paths': undefined
 };
 
 const dateRefMap = new Map<DateReference, Version>();

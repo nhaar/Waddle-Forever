@@ -2033,7 +2033,8 @@ export const UPDATES_2008: Update[] = [
     miscComments: ['The start screen is updated with the introduction of Unlock Items Online'],
     fileChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
-      'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
+      // TODO reimplement this recreation
+      // 'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
     },
     localChanges: {
       'forms/library.swf': {

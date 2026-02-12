@@ -1215,10 +1215,14 @@ export const UPDATES_2009: Update[] = [
     date: '2009-06-26',
     // temporary, as this is the earliest it can work at the moment
     dayOfFun: 'start',
+
+    // day in which composite paths are no longer used
+    dateReference: 'composite-paths',
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
       'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf'
     },
+    indexHtml: 'classic-cpip-2',
     iglooList: [
       { display: 'Viking Opera', id: 41, pos: [1, 1] },
       { display: 'Mountain Dojo', id: 21, pos: [2, 1] },

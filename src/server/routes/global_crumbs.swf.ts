@@ -3,12 +3,12 @@ import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
-import { Version } from "./versions";
+import { isLower, Version } from "./versions";
 import { PUFFLE_DATA } from "../game-logic/puffle";
 import { FURNITURE } from "../game-logic/furniture";
 import { ExclusiveType, ITEMS, ItemType } from "../game-logic/items";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
-import { GLOBAL_PATHS, COMPOSITE_GLOBAL_PATHS } from "../game-data/global-paths";
+import { GLOBAL_PATHS, makePathsComposite } from "../game-data/global-paths";
 import { findInVersionStrict } from "../game-data";
 import { MIGRATOR_TIMELINE } from "../timelines/migrator";
 import { getMapForDate } from "../timelines";
@@ -17,7 +17,7 @@ import { MEMBER_TIMELINE } from "../timelines/member";
 import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
 import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 import serverList from "../servers";
-import { isEngine3 } from "../timelines/dates";
+import { getDate, isEngine3 } from "../timelines/dates";
 import { GAME_CRUMBS } from "../game-data/game-crumbs";
 import { GameName } from "@server/game-data/games";
 
@@ -379,39 +379,36 @@ function getFrameHacks(): PCodeRep {
 function getGlobalPath(version: Version): PCodeRep {
   const code: PCodeRep = [];
   const paths = getMapForDate(GLOBAL_PATHS_TIMELINE, version);
-
-  iterateEntries({ ... GLOBAL_PATHS, ...paths }, (key, path) => {
-    if (path !== undefined && path !== null) {
-      code.push(
-        [Action.Push, "global_path"],
-        Action.GetVariable,
-        [Action.Push, key, path],
-        Action.SetMember
-      )
-    }
-  });
+  const useCompositePaths = isLower(version, getDate('composite-paths'));
 
   // TODO put below code in version check. Currently all paths in GLOBAL_PATHS are written twice
-  code.push(
-    [Action.Push, "global_content"],
-    [Action.Push, 0],
-    [Action.Push, "shell"],
-    Action.GetVariable,
-    [Action.Push, "getGlobalContentPath"],
-    Action.CallMethod,
-    Action.DefineLocal,
-    [Action.Push, "game_path"],
-    [Action.Push, 0],
-    [Action.Push, "shell"],
-    Action.GetVariable,
-    [Action.Push, "getGameContentPath"],
-    Action.CallMethod,
-    Action.DefineLocal
-  )
-
-  for (var key in COMPOSITE_GLOBAL_PATHS){
-    const [base, path] = COMPOSITE_GLOBAL_PATHS[key];
+  if (useCompositePaths) {
     code.push(
+      [Action.Push, "global_content"],
+      [Action.Push, 0],
+      [Action.Push, "shell"],
+      Action.GetVariable,
+      [Action.Push, "getGlobalContentPath"],
+      Action.CallMethod,
+      Action.DefineLocal,
+      [Action.Push, "game_path"],
+      [Action.Push, 0],
+      [Action.Push, "shell"],
+      Action.GetVariable,
+      [Action.Push, "getGameContentPath"],
+      Action.CallMethod,
+      Action.DefineLocal
+    )
+    const newPaths: Record<string, string> = {};
+    iterateEntries(paths, (key, value) => {
+      if (value !== undefined && value !== null) {
+        newPaths[key] = value;
+      }
+    });
+    const compositePaths = makePathsComposite({ ...GLOBAL_PATHS, ...newPaths });
+    iterateEntries(compositePaths, (key, value) => {
+      const [base, path] = value;
+      code.push(
         [Action.Push, "global_path"],
         Action.GetVariable,
         [Action.Push, key, base],
@@ -419,7 +416,19 @@ function getGlobalPath(version: Version): PCodeRep {
         [Action.Push, path],
         Action.Add2,
         Action.SetMember
-  )
+      )
+    });
+  } else {
+      iterateEntries({ ... GLOBAL_PATHS, ...paths }, (key, path) => {
+      if (path !== undefined && path !== null) {
+        code.push(
+          [Action.Push, "global_path"],
+          Action.GetVariable,
+          [Action.Push, key, path],
+          Action.SetMember
+        )
+      }
+    });
   }
   
 
