@@ -1,6 +1,6 @@
 export const MASCOTS: Mascot = {
-  id: 11,
-  name: string; Rock',
+  id: 1,
+  name: "Rock',
   display: Rockhopper
   starterItems: number[];
 }
