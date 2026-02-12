@@ -142,35 +142,6 @@ const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
 Manually added the party99.swf entry for medieval 08 (technically the path was party.swf, this may be changed at some point)`
     },
     {
-      file: 'RoomsParty3-WinterParty.swf',
-      comment: `All the rooms in the Winter Party party that are marked as fix are because of an issue that i could
-not figure out with the game engine. When the room SWF loads, the player position
-obtained from the jr packet should have already been placed inside the penguin's mc coordinates
-however, for a mysterious reason, that is not the case, and engine.swf only updates it after
-the room checks, so I did a workaround of checking if _x != 0 as well since that
-is the default value
-this issue was broken with both the 2010 engine and the 2009 engine,
-indicating the issue might lie within shell.swf, or another SWF
-until those client files can be implemented, this party will have this workaround fix
-the issue in question is not being able to walk past the intersections of blue and orange paths`
-    },
-    {
-      file: 'RoomsParty4-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
-      file: 'RoomsParty5-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
-      file: 'RoomsParty6-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
-      file: 'RoomsParty10-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
       file: 'ArtworkRoomsCoffee2.swf',
       comment: `Chat291.swf compatibility fixes
 However, the auto-sitting doesnt seem to work with chat291 anyways, so that
