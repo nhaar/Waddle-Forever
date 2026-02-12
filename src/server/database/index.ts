@@ -38,8 +38,7 @@ class JsonDatabase {
         fs.readFileSync(versionFile, { encoding: 'utf-8' }).trim()
       ) : '0.2.0' // version 0.2.0 didnt have a .version file
       // any version before is not compatible with
-      // REMOVE THIS
-      if (false) {
+      if (version !== VERSION) {
         this.migrateDatabase(version);
       }
     } else { // create
