@@ -637,6 +637,10 @@ export const UPDATES_2008: Update[] = [
       coffee: 'recreation:coffee_precpip_clickable_sign.swf',
       forest: 'recreation:forest_2008_sky.swf',
       rink: 'recreation:rink_2008_sky.swf'
+    },
+    fileChanges: {
+      'artwork/tools/telescope0.swf': 'archives:TelescopeEmpty2010.swf',
+      'artwork/tools/binoculars1.swf': 'archives:BinocularsNormal.swf'
     }
   },
   { 
@@ -1045,8 +1049,8 @@ export const UPDATES_2008: Update[] = [
       'play/v2/client/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
       'play/v2/igloo/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
       'play/v2/content/global/binoculars/empty.swf': 'slegacy:media/play/v2/content/global/binoculars/empty.swf',
-      'play/v2/content/global/telescope/empty.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf',
       // TODO igloo background wasn't used until late 2009?
+      'play/v2/content/global/telescope/empty.swf': 'archives:TelescopeEmpty2010.swf',
       'play/v2/content/global/igloo/assets/igloo_background.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf',
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
@@ -1096,7 +1100,10 @@ export const UPDATES_2008: Update[] = [
       hidden: true
     },
     gameMusic: {
-      fish: 103
+      fish: 103,
+      cart: 105,
+      roundup: 102,
+      thinice: 111
     }
   },
   {

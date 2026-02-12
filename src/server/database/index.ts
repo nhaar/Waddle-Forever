@@ -233,6 +233,8 @@ class JsonDatabase {
         return '1.4.3';
       case '1.4.3':
         return '1.4.4';
+      case '1.4.4':
+        return '1.4.5';
       default:
         throw new Error('Invalid database version: ' + version);
     }
@@ -487,6 +489,12 @@ export interface PenguinData {
   battleOfDoom: boolean;
   medieval2012Message?: number;
   noSave?: boolean;
+  safeChat?: boolean;
+
+  /** Temporary data for cheaters who want the amulet to be completed */
+  fireNinja?: boolean;
+  waterNinja?: boolean;
+  snowNinja?: boolean;
 }
 
 export default db;

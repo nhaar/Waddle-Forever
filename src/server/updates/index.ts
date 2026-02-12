@@ -232,6 +232,8 @@ export type CPUpdate = {
   /** For pre-cpip clients, in which items are stored in chat.swf, supply all items available in the chat.swf of that day */
   clientFiles?: number[];
   removeClientFiles?: number[];
+
+  dayOfFun?: 'start' | 'end';
 } & ({
   partyName: string;
   decorated?: false;
@@ -274,7 +276,8 @@ export type DateReference = 'cpip' |
   'stamps-release' |
   'placeholder-2016' |
   'vr-room' |
-  'old-rink';
+  'old-rink' |
+  'string-verify';
 
 export type Update = {
   date: Version;

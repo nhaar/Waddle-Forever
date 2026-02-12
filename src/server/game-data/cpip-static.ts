@@ -39,7 +39,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/rooms/agentvr.swf': 'slegacy:media/play/v2/content/global/rooms/agentvr.swf',
   'play/v2/content/global/rooms/eco.swf': 'slegacy:media/play/v2/content/global/rooms/eco.swf',
   'play/v2/content/global/rooms/loader.swf': 'slegacy:media/play/v2/content/global/rooms/loader.swf',
-  'play/v2/content/global/rooms/underwater.swf': 'slegacy:media/play/v2/content/global/rooms/underwater.swf',
+  'play/v2/content/global/rooms/underwater.swf': 'archives:RoomsUnderwater-Early2011.swf',
   'play/v2/content/global/content/epf/epfinitiated.swf': 'slegacy:media/play/v2/content/global/content/epf/epfinitiated.swf',
   'play/v2/content/global/content/epf/epfmessage.swf': 'slegacy:media/play/v2/content/global/content/epf/epfmessage.swf',
   'play/v2/content/global/igloo/assets/room_box_animation.swf': 'slegacy:media/play/v2/content/global/igloo/assets/room_box_animation.swf',
@@ -375,5 +375,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'community/flash/activities.xml': 'archives:CommunityFlashActivities.xml',
   'play/v2/content/global/rooms/lake.swf': 'recreation:lake_no_ladder.swf',
   'play/v2/games/fish/bootstrap.swf': 'archives:GamesIceFishingBootstrap-2011.swf',
-  'play/v2/games/fish/IceFishing.swf': 'archives:GamesIceFishingMain-2011.swf'
+  'play/v2/games/fish/IceFishing.swf': 'archives:GamesIceFishingMain-2011.swf',
+  'play/v2/content/global/binoculars/empty.swf': 'archives:BinocularsNormal.swf',
 };

@@ -181,13 +181,42 @@ commands.add('powercards', [], (client) => {
 });
 
 commands.add('nosave', [], (client) => {
-  client.penguin.allowSave();
-  client.update();
   client.penguin.disableSave();
+  client.update(true);
 });
 
 commands.add('enablesave', [], (client) => {
   client.penguin.allowSave();
+  client.update();
+});
+
+commands.add('safechat', [], (client) => {
+  if (client.penguin.isSafeChat) {
+    client.penguin.disableSafeChat();
+  } else {
+    client.penguin.enableSafeChat();
+  }
+  client.update();
+});
+
+commands.add('amulet', ['string'], (client, element) => {
+  switch (element) {
+    case 'fire':
+      client.penguin.isFireNinja = !client.penguin.isFireNinja;
+      break;
+    case 'water':
+      client.penguin.isWaterNinja = !client.penguin.isWaterNinja;
+      break;
+    case 'snow':
+      client.penguin.isSnowNinja = !client.penguin.isSnowNinja;
+      break;
+  }
+  client.update();
+});
+
+commands.add('addcard', ['number', 'number'], (client, card, amount) => {
+  client.penguin.addCard(card, amount);
+  client.update();
 });
 
 /** A given action for a bot group */

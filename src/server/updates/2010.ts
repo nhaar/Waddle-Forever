@@ -850,7 +850,8 @@ export const UPDATES_2010: Update[] = [
       // interface with EPF phone
       'play/v2/client/interface.swf': 'recreation:interfaces/2010_may.swf',
       'play/v2/client/shell.swf': 'approximation:shell.swf',
-      'play/v2/client/load.swf': 'archives:ClientLoad2010-11-25.swf'
+      'play/v2/client/load.swf': 'archives:ClientLoad2010-11-25.swf',
+      'play/v2/client/login.swf': 'archives:ClientLoginDec2009.swf'
     },
     localChanges: {
       'forms/moderator.swf': {
@@ -937,7 +938,7 @@ export const UPDATES_2010: Update[] = [
     roomComment: 'The Forest now has a path to the Hidden Lake',
     rooms: {
       forest: 'archives:RoomsForest_3.swf',
-      lake: 'slegacy:media/play/v2/content/global/rooms/lake.swf'
+      lake: 'archives:HiddenLake2011.swf'
     }
   },
   {
@@ -3607,6 +3608,9 @@ export const UPDATES_2010: Update[] = [
           'forms/coins_for_change.swf': {
             'en': 'archives:2010coinsforchangedonate.swf'
           }
+        },
+        globalChanges: {
+          'telescope/empty.swf': 'recreation:telescope_holiday.swf'
         },
         music: {
           'attic': 255,

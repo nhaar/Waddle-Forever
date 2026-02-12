@@ -2250,7 +2250,8 @@ export const UPDATES_2011: Update[] = [
         globalChanges: {
           'scavenger_hunt/scavenger_hunt.swf': 'archives:CandyGhostScavengerHuntScavenger_hunt.swf',
           'rooms/NOTLS3EN.swf': 'archives:RoomsNOTLS3EN-HalloweenParty2009.swf',
-          'binoculars/empty.swf': 'archives:Halloween2012BinocularsStormy.swf'
+          'binoculars/empty.swf': 'archives:Halloween2012BinocularsStormy.swf',
+          'telescope/telescope.swf': 'unknown:halloween_telescope.swf'
         },
         startscreens: [ 'archives:HalloweenParty2011PreStartBillboards.swf', 'archives:HalloweenParty2011StartBillboards.swf' ],
         scavengerHunt2011: {
@@ -2729,6 +2730,9 @@ export const UPDATES_2011: Update[] = [
       dojoext: 'archives:RoomsDojoext_4.swf',
       dojofire: 'archives:RoomsFireDojo_2.swf',
       dojohide: 'archives:RoomsDojohide_4.swf',
+      mtn: 'archives:RoomsMtn-November2011.swf',
+      dojowater: 'archives:RoomsDojowater-Nov2011.swf',
+      dojo: 'archives:RoomsDojo_3.swf',
 
       town: 'archives:RoomsTown_3.swf',
       rink: 'archives:RoomsRink-Dec2011.swf',
@@ -2868,6 +2872,9 @@ export const UPDATES_2011: Update[] = [
           town: 254
         },
         migrator: 'archives:Dec2011Pirate.swf',
+        globalChanges: {
+          'telescope/telescope.swf': 'recreation:telescope_holiday.swf'
+        }
       }
     },
     stagePlay: {

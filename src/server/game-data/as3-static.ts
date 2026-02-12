@@ -1068,9 +1068,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/news/papers/20170322/content/overlays/secretOverlay.swf': 'svanilla:media/play/v2/content/local/en/news/papers/20170322/content/overlays/secretOverlay.swf',
   'play/v2/client/map_triggers.swf': 'svanilla:media/play/v2/client/map_triggers.swf',
   'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/en/locale.xml',
-  'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf',
   'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
-  'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf',
   'play/v2/games/icejam/bootstrap.swf': 'unknown:icejam/bootstrap.swf',
   'play/v2/games/icejam/icejam.swf': 'unknown:icejam/icejam.swf',
   'play/v2/games/icejam/lang/en/locale.swf': 'unknown:icejam/locale.swf',
@@ -1142,5 +1140,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/avatar/sprites/herbert.swf': 'svanilla:media/play/v2/content/global/avatar/sprites/herbert.swf',
   'play/v2/games/fish/bootstrap.swf': 'slegacy:media/play/v2/games/fish/bootstrap.swf',
   'play/v2/games/fish/IceFishing.swf': 'slegacy:media/play/v2/games/fish/IceFishing.swf',
-  'play/v2/content/global/telescope/telescope.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf'
+  'play/v2/content/global/telescope/telescope.swf': 'archives:TelescopeEmpty2010.swf',
+  'play/en/web_service/game_configs/cards.json': 'archives:ENWeb_serviceGame_configsCards.json',
+  'play/v2/client/ninja_progress.swf': 'archives:ClientNinja_progress.swf'
 }

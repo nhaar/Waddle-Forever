@@ -244,6 +244,7 @@ export class Handler {
   /** Handles responding to XT packets of data */
   private handleXt(client: Client, data: string) {
     const packet = new XtPacket(data);
+    logdebug('\x1b[33mIncoming XT:\x1b[0m ', packet);
     const callbacks = this.getCallback(packet);
     let handled = false;
     callbacks?.forEach((callback) => {

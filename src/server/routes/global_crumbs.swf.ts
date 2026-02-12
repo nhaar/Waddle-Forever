@@ -12,13 +12,14 @@ import { GLOBAL_PATHS, COMPOSITE_GLOBAL_PATHS } from "../game-data/global-paths"
 import { findInVersionStrict } from "../game-data";
 import { MIGRATOR_TIMELINE } from "../timelines/migrator";
 import { getMapForDate } from "../timelines";
-import { MUSIC_TIMELINE } from "../timelines/music";
+import { GAME_MUSIC_TIMELINE, MUSIC_TIMELINE } from "../timelines/music";
 import { MEMBER_TIMELINE } from "../timelines/member";
 import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
 import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 import serverList from "../servers";
 import { isEngine3 } from "../timelines/dates";
 import { GAME_CRUMBS } from "../game-data/game-crumbs";
+import { GameName } from "@server/game-data/games";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -114,17 +115,20 @@ function getServerCrumbs(ip: string, loginPort: number, worldPort: number, moder
   return code;
 }
 
-function getGameCrumbs(): PCodeRep {
+function getGameCrumbs(version: Version): PCodeRep {
+  const music = getMapForDate(GAME_MUSIC_TIMELINE, version);
+
   const code: PCodeRep = [
     [Action.Push, "game_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal
   ];
   iterateEntries(GAME_CRUMBS, (game, crumb) => {
+    const musicId = music[game as GameName];
     code.push(
       [Action.Push, "game_crumbs"],
       Action.GetVariable,
-      [Action.Push, game, "room_id", Number(crumb.room_id), "music_id", Number(crumb.music_id), "path", crumb.path, 3],
+      [Action.Push, game, "room_id", Number(crumb.room_id), "music_id", musicId ?? Number(crumb.music_id), "path", crumb.path, 3],
       Action.InitObject,
       Action.SetMember
     )
@@ -802,7 +806,7 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     Action.GetVariable,
     Action.SetMember,
     ...getServerCrumbs(ip, loginPort, worldPort, isEngine3(version)),
-    ...getGameCrumbs()
+    ...getGameCrumbs(version)
   ];
 
   if (hunt !== null) {

@@ -1001,10 +1001,13 @@ export class Client {
     if (isEngine1(this.version)) {
       return Client.engine1Crumb(this.penguin, { x: this.x, y: this.y, frame: this.frame });
     } else {
+      // meant to be approval, but always approved (1), TODO: non approved names in the future
+      const approval = isGreaterOrEqual(this.version, getDate('string-verify')) ? [1] : []
+
       return [
         this.penguin.id,
         this.name,
-        1, // meant to be approval, but always approved, TODO: non approved names in the future
+        ...approval, 
         this.penguin.color,
         this.penguin.head,
         this.penguin.face,
@@ -1123,9 +1126,9 @@ export class Client {
     }
   }
 
-  update (): void {
+  update (forceSave?: boolean): void {
     if (!this.isBot) {
-      this.penguin.update()
+      this.penguin.update(forceSave)
     }
   }
 
@@ -1492,7 +1495,7 @@ export class Client {
 
     const virtualDate = this.server.getVirtualDate(0);
     
-    this.sendXt('lp', this.penguinString, String(this.penguin.coins), 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
+  this.sendXt('lp', this.penguinString, String(this.penguin.coins), this.penguin.isSafeChat ? 1 : 0, 1440, virtualDate.getTime(), this.age, 0, this.penguin.minutesPlayed, -1, 7, 1, 4, 3);
   }
 
   getFurnitureString(): string {

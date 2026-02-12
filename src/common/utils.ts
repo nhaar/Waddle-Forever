@@ -170,6 +170,20 @@ export function choose<T>(array: T[]): T {
   return array[randomInt(0, array.length - 1)];
 }
 
+export function chooseN<T>(array: T[], n: number): T[] {
+  const chosen: T[] = [];
+  for (let i = 0; i < n; i++) {
+    if (array.length === 0) {
+      return chosen;
+    }
+    const randomIndex = randomInt(0, array.length - 1);
+    const element = array.splice(randomIndex, 1)[0];
+    chosen.push(element);
+  }
+
+  return chosen;
+}
+
 export function isPositiveInteger(n: number): boolean {
   return n > 0 && !isNaN(n) && Number.isInteger(n);
 }

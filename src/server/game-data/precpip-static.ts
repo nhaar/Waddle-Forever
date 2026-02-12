@@ -142,7 +142,7 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'games/mine/mine.swf': 'fix:CartSurfer2006.swf',
   'games/mine.swf': 'fix:CartSurfer2006.swf',
   'games/waves/game.swf': 'archives:CatchinWavesGame.swf',
-  'artwork/tools/telescope0.swf': 'slegacy:media/play/v2/content/global/telescope/empty.swf',
+  'artwork/tools/telescope0.swf': 'archives:ArtworkToolsTelescope0.swf',
   'games/quests/q1/quest.swf': 'slegacy:media/play/v2/games/quests/q1/quest.swf',
   'games/quests/q1/common/misc/items.swf': 'slegacy:media/play/v2/games/quests/q1/common/misc/items.swf',
   'games/quests/q1/common/misc/items2.swf': 'slegacy:media/play/v2/games/quests/q1/common/misc/items2.swf',
@@ -227,5 +227,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/forms/agent1.swf': 'recreation:agent1.swf',
   'artwork/tools/phone2.swf': 'archives:ArtworkToolsPhone1.swf',
   'artwork/books/journal.swf': 'recreation:journal1.swf',
-  'artwork/rooms/shiphold.swf': 'recreation:shiphold.swf'
+  'artwork/rooms/shiphold.swf': 'recreation:shiphold.swf',
+  'artwork/tools/binoculars1.swf': 'archives:ArtworkToolsBinoculars1.swf'
 };

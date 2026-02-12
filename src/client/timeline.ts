@@ -1,7 +1,7 @@
 import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
-import { isEqual, isLower, processVersion, Version } from '../server/routes/versions';
+import { isEqual, isLower, isLowerOrEqual, processVersion, Version, addDays } from '../server/routes/versions';
 import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
@@ -100,6 +100,9 @@ function getTimeline(): Day[] {
   let map = new Map<string, Day>();
   const premieres = new Set<string>();
 
+
+  let daysOfFunStartDate = '';
+
   UPDATES.forEach(update => {
     if (update.update.gameRelease !== undefined) {
 
@@ -191,6 +194,21 @@ function getTimeline(): Day[] {
     }
     if (update.update.stampUpdates !== undefined) {
       addEvent(map, update.date, 'New stamps are available', 'other');
+    }
+    if (update.update.dayOfFun !== undefined) {
+      if (update.update.dayOfFun === 'start') {
+        daysOfFunStartDate = update.date;
+      } else {
+        let currentDate = daysOfFunStartDate;
+        let daysElapsed = 0;
+        // temporary as earliest available is 23.
+        const daysOfFunStart = 23;
+        while (isLowerOrEqual(currentDate, update.date)) {
+          addEvent(map, currentDate, `101 Days of Fun activity #${daysElapsed + daysOfFunStart} starts`, 'daysoffun');
+          currentDate = addDays(currentDate, 1);
+          daysElapsed++;
+        }
+      }
     }
   });
 

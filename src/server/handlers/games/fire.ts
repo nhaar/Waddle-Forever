@@ -5,6 +5,7 @@ import { Handle } from "../handles";
 import { randomInt } from "@common/utils";
 import { CardJitsu, Hand } from "./card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
+import { Room } from "@server/game-logic/rooms";
 
 /** Descriptor used to know what end round animation the player is going through */
 enum NinjaState {
@@ -165,7 +166,7 @@ class Podium {
 }
 
 export class CardJitsuFire extends WaddleGame {
-  public roomId = 997;
+  public roomId = Room.CardJitsuFire;
 
   public name: WaddleName = 'fire';
 

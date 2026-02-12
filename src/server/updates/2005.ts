@@ -29,6 +29,7 @@ export const UPDATES_2005: Update[] = [
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
     clothingCatalog: {
+      file: 'recreation:style_september_05.swf',
       newItems: [
         1,
         2,
@@ -214,11 +215,6 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-09-21',
-    clothingCatalog: {
-      file: 'recreation:style_september_05.swf',
-      newItems: [],
-      removedItems: []
-    },
     furnitureCatalog: 'recreation:furniture_sep05.swf',
     temp: {
       party: {

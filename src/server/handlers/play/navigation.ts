@@ -4,6 +4,7 @@ import { CardJitsu } from '../games/card';
 import { Handle } from '../handles';
 import { CardJitsuFire } from '../games/fire';
 import { processVersion } from '../../routes/versions';
+import { Room } from '@server/game-logic/rooms';
 
 const handler = new Handler();
 
@@ -13,22 +14,29 @@ handler.xt(Handle.JoinRoom, (client, ...args) => {
   client.joinRoom(...args);
 });
 
+const CARD_JITSU_ROOMS = new Set<number>([Room.CardJitsu, Room.CardJitsuFire, Room.CardJitsuWater]);
+
 // client requesting to leave a minigame
 handler.xt(Handle.LeaveGame, (client, score) => {
   // waddle games individually handle this
-  if (client.isInWaddleGame() || client.isEngine1) {
+  // card jitsu sometimes has stamp endscreen
+  const isCardJitsu = CARD_JITSU_ROOMS.has(client.room.id);
+  if ((client.isInWaddleGame() && !isCardJitsu) || client.isEngine1) {
     return;
   }
 
   const stampInfo = client.getEndgameStampsInformation();
-  let coins = client.getCoinsFromScore(score);
 
-  // stamps double coins
-  if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {
-    coins *= 2;
+  if (!isCardJitsu) {
+    let coins = client.getCoinsFromScore(score);
+  
+    // stamps double coins
+    if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {
+      coins *= 2;
+    }
+  
+    client.penguin.addCoins(coins);
   }
-
-  client.penguin.addCoins(coins);
   
   client.sendXt('zo', String(client.penguin.coins), ...stampInfo);
   void client.update();

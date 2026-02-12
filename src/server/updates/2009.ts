@@ -1213,6 +1213,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-06-26',
+    // temporary, as this is the earliest it can work at the moment
+    dayOfFun: 'start',
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
       'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf'
@@ -1338,6 +1340,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-08-05',
+    // in this shell, the penguin string changes
+    dateReference: 'string-verify',
     fileChanges: {
       'play/v2/client/shell.swf': 'archives:ClientShell2009-08-05.swf'
     }
@@ -1615,6 +1619,10 @@ export const UPDATES_2009: Update[] = [
       stage: 'archives:RoomsStage-September2009.swf',
       plaza: 'archives:RoomsPlaza-Play6.swf',
     }
+  },
+  {
+    date: '2009-09-12',
+    dayOfFun: 'end'
   },
   {
     date: '2009-09-13',
@@ -1942,7 +1950,8 @@ export const UPDATES_2009: Update[] = [
         },
         globalChanges: {
           'rooms/NOTLS3EN.swf': 'archives:RoomsNOTLS3EN-HalloweenParty2009.swf',
-          'scavenger_hunt/hunt_ui.swf': ['recreation:halloween_2009/hunt_ui.swf', 'halloween_hunt']
+          'scavenger_hunt/hunt_ui.swf': ['recreation:halloween_2009/hunt_ui.swf', 'halloween_hunt'],
+          'telescope/empty.swf': 'unknown:halloween_telescope.swf'
         },
         scavengerHunt2010: {
           iconFileId: 'recreation:halloween_2008/hunt_icon.swf'
@@ -2264,7 +2273,10 @@ export const UPDATES_2009: Update[] = [
           village: 254,
           party: 281
         },
-        startscreens: ['archives:StartscreenChristmas-HolidayParty2009.swf']
+        startscreens: ['archives:StartscreenChristmas-HolidayParty2009.swf'],
+        globalChanges: {
+          'telescope/empty.swf': 'recreation:telescope_holiday.swf'
+        }
       }
     }
   },

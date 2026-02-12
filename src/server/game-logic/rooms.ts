@@ -41,6 +41,8 @@ export enum Room {
   DanceContest = 952,
   PuffleLaunch = 955,
   PuffleScape = 957,
+  CardJitsuWater = 995,
+  CardJitsuFire = 997,
   CardJitsu = 998
 }
 

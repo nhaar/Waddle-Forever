@@ -65,6 +65,11 @@ export class Penguin {
   private _battleOfDoom: boolean;
   private _medieval2012Message: number;
   private _noSave: boolean;
+  private _safeChat: boolean;
+
+  private _isFireNinja: boolean;
+  private _isWaterNinja: boolean;
+  private _isSnowNinja: boolean;
 
   constructor(id: number, data: PenguinData) {
     this._id = id;
@@ -124,6 +129,10 @@ export class Penguin {
     this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp;
     this._medieval2012Message = data.medieval2012Message ?? 0;
     this._noSave = data.noSave ?? false;
+    this._safeChat = data.safeChat ?? false;
+    this._isFireNinja = data.fireNinja ?? false;
+    this._isWaterNinja = data.waterNinja ?? false;
+    this._isSnowNinja = data.snowNinja ?? false;
   }
 
   serialize(): PenguinData {
@@ -181,7 +190,11 @@ export class Penguin {
       battleOfDoom: this._battleOfDoom,
       virtualRegistrationTimestamp: this._virtualRegistrationTimestamp,
       medieval2012Message: this._medieval2012Message,
-      noSave: this._noSave
+      noSave: this._noSave,
+      safeChat: this._safeChat,
+      fireNinja: this._isFireNinja,
+      waterNinja: this._isWaterNinja,
+      snowNinja: this._isSnowNinja
     }
   }
 
@@ -375,6 +388,18 @@ export class Penguin {
 
   get minutesPlayed() {
     return this._minutesPlayed;
+  }
+
+  get isSafeChat() {
+    return this._safeChat;
+  }
+
+  enableSafeChat() {
+    this._safeChat = true;
+  }
+
+  disableSafeChat() {
+    this._safeChat = false;
   }
 
   receivePostcard(postcard: number, info: {
@@ -715,6 +740,30 @@ export class Penguin {
     this._battleOfDoom = true;
   }
 
+  get isFireNinja() {
+    return this._isFireNinja;
+  }
+
+  set isFireNinja(value: boolean) {
+    this._isFireNinja = value;
+  }
+
+  get isWaterNinja() {
+    return this._isWaterNinja;
+  }
+
+  set isWaterNinja(value: boolean) {
+    this._isWaterNinja = value;
+  }
+
+  get isSnowNinja() {
+    return this._isSnowNinja;
+  }
+
+  set isSnowNinja(value: boolean) {
+    this._isSnowNinja = value;
+  }
+
   static getDefaultData(name: string, defaultParams: DefaultPenguinParams = {}): PenguinData {
     return {
       name,
@@ -813,8 +862,8 @@ export class Penguin {
     this._noSave = true;
   }
 
-  update() {
-    if (!this._noSave) {
+  update(forceSave?: boolean) {
+    if (forceSave === true || !this._noSave) {
       db.update<PenguinData>(Databases.Penguins, this.id, this.serialize());
     }
   }

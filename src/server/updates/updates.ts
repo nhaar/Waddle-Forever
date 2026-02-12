@@ -13,6 +13,7 @@ import { UPDATES_2012 } from "./2012";
 import { UPDATES_2013 } from "./2013";
 import { UPDATES_2014 } from "./2014";
 import { UPDATES_2016 } from "./2016";
+import { UPDATES_2015 } from "./2015";
 
 export const allUpdates = [
   ...UPDATES_2005,
@@ -25,6 +26,7 @@ export const allUpdates = [
   ...UPDATES_2012,
   ...UPDATES_2013,
   ...UPDATES_2014,
+  ...UPDATES_2015,
   ...UPDATES_2016
 ];
 

@@ -1,6 +1,6 @@
 import { STARTER_DECKS } from "@server/game-logic/starter-deck";
 import { Handler } from "..";
-import { choose } from "@common/utils";
+import { choose, chooseN } from "@common/utils";
 import { Handle } from "../handles";
 import { CARDS } from "@server/game-logic/cards";
 
@@ -8,7 +8,14 @@ const handler = new Handler();
 
 // get ninja rank
 handler.xt(Handle.GetNinjaRanks, (client) => {
-  client.sendXt('gnr', client.penguin.id, client.penguin.ninjaProgress.rank, 0, 0, 0);
+  client.sendXt(
+    'gnr',
+    client.penguin.id,
+    client.penguin.ninjaProgress.rank,
+    client.penguin.isFireNinja ? 5 : 0,
+    client.penguin.isWaterNinja ? 5 : 0,
+    client.penguin.isSnowNinja ? 13 : 0
+  );
 });
 
 // get card-jitsu level
@@ -43,6 +50,22 @@ handler.xt(Handle.AddItem, (client, id) => {
     normalCards.forEach(card => client.penguin.addCard(card, 1));
     client.penguin.addCard(choose(powerCards), 1);
   }
+  client.update();
+});
+
+function getAllPowerCards(): number[] {
+  return CARDS.rows.filter((card) => card.powerId > 0).map(card => card.id);
+}
+
+handler.xt(Handle.BuyPowerCards, (client) => {
+  const powerCards = getAllPowerCards();
+  const cards = chooseN(powerCards, 3);
+  cards.forEach(card => {
+    client.penguin.addCard(card, 1);
+  });
+  client.penguin.removeCoins(1500);
+  
+  client.sendXt('bpc', cards.join(','), client.penguin.coins);
   client.update();
 });
 

@@ -211,7 +211,8 @@ export enum Handle {
   GetHockeyGame,
   MoveHockeyPuck,
   MoveHockeyPuckOld,
-  UpdateHockeyGame
+  UpdateHockeyGame,
+  BuyPowerCards
 };
 
 /** Map of all the handles and their valid arguments */
@@ -406,7 +407,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.GetHockeyGame]: [],
   [Handle.MoveHockeyPuck]: ['number', 'number', 'number', 'number', 'number'],
   [Handle.MoveHockeyPuckOld]: ['number', 'number'],
-  [Handle.UpdateHockeyGame]: ['number']
+  [Handle.UpdateHockeyGame]: ['number'],
+  [Handle.BuyPowerCards]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -593,6 +595,9 @@ const HANDLER_MAPPING: HandlerMapping = {
     'mdvl': {
       'retrieve': Handle.RetrieveMedieval2012,
       'msgviewed': Handle.Medieval2012ViewedMessage
+    },
+    'cd': {
+      'bpc': Handle.BuyPowerCards
     }
   },
   'z': {

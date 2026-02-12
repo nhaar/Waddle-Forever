@@ -2154,7 +2154,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     dividersFront: null
   },
   {
-    title: 'NINJA HIDEOUT OPEN TO ALL!',
+    title: 'NINJA HIDEOUT OPEN TO ALL',
     headerFront: 'archives:News319HeaderFront.swf',
     featureStory: 'archives:News319FeatureStory.swf',
     supportStory: 'archives:News319SupportStory.swf',
@@ -2174,7 +2174,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     dividersFront: null
   },
   {
-    title: 'COINS FOR CHANGE IS COMING!',
+    title: 'COINS FOR CHANGE SOON!',
     headerFront: 'archives:News320HeaderFront.swf',
     featureStory: 'archives:News320FeatureStory.swf',
     supportStory: 'archives:News320SupportStory.swf',
@@ -2214,7 +2214,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     dividersFront: null
   },
   {
-    title: 'DONATE YE TREASURE TO COINS FOR CHANGE',
+    title: 'DONATE YE TREASURE!',
     headerFront: 'archives:News322HeaderFront.swf',
     featureStory: 'archives:News322FeatureStory.swf',
     supportStory: 'archives:News322SupportStory.swf',
@@ -2234,7 +2234,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     dividersFront: null
   },
   {
-    title: 'COINS FOR CHANGE FILLS THE LIGHTHOUSE!',
+    title: 'COINS FILL LIGHTHOUSE!',
     headerFront: 'archives:News323HeaderFront.swf',
     featureStory: 'archives:News323FeatureStory.swf',
     supportStory: 'archives:News323SupportStory.swf',
