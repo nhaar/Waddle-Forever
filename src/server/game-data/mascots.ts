@@ -1,7 +1,7 @@
-type Mascot = {
-  id: number;
-  name: string;
-  display?: string;
+export const MASCOTS: Mascot = {
+  id: 11,
+  name: string; Rockhopper',
+  display: Rockhopper
   starterItems: number[];
 }
 
