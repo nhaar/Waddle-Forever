@@ -1033,7 +1033,6 @@ export const UPDATES_2008: Update[] = [
       'setup/system.txt': 'approximation:system.txt',
       // TODO startscreen (almost definitely) wasn't used until Jan 2009
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/client/shell.swf': 'archives:ClientShell_January_2009.swf',
       'play/v2/shell/shell.swf': 'archives:ClientShell_January_2009.swf',
       'play/v2/airtower/airtower.swf': 'recreation:airtower_cpip.swf',
       'play/v2/gridview/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
