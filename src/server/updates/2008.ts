@@ -7,7 +7,54 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-01-04',
-    clothingCatalog: 'archives:Clothing_0801.swf'
+    clothingCatalog: {
+      file: 'archives:Clothing_0801.swf',
+      newItems: [
+        221,
+        223,
+        251,
+        286,
+        287,
+        342,
+        380,
+        411,
+        449,
+        450,
+        764,
+        904,
+        913,
+        979
+      ],
+      removedItems: [
+        137,
+        209,
+        233,
+        242,
+        265,
+        284,
+        290,
+        299,
+        338,
+        357,
+        359,
+        370,
+        373,
+        377,
+        378,
+        415,
+        423,
+        439,
+        446,
+        447,
+        454,
+        465,
+        481,
+        485,
+        933,
+        967,
+        978
+      ]
+    }
   },
   {
     date: '2008-01-09',
@@ -102,7 +149,51 @@ export const UPDATES_2008: Update[] = [
       'Rockhopper is seen leaving Club Penguin from the telescope',
       'Save the Migrator is setup at the Beach'
     ],
-    clothingCatalog: 'archives:Feb2008.swf',
+    clothingCatalog: {
+      file: 'archives:Feb2008.swf',
+      newItems: [
+        131,
+        181,
+        239,
+        308,
+        362,
+        403,
+        457,
+        478,
+        768,
+        769,
+        770,
+        924,
+        930,
+        980,
+        981
+      ],
+      removedItems: [
+        111,
+        117,
+        118,
+        182,
+        210,
+        260,
+        261,
+        262,
+        263,
+        296,
+        305,
+        312,
+        313,
+        314,
+        334,
+        347,
+        360,
+        372,
+        424,
+        927,
+        968,
+        969,
+        976
+      ]
+    },
     temp: {
       'migrator-crash': {
         fileChanges: {
@@ -418,7 +509,45 @@ export const UPDATES_2008: Update[] = [
         }
       }
     },
-    clothingCatalog: 'archives:PenguinStyleMar2008.swf'
+    clothingCatalog: {
+      file: 'archives:PenguinStyleMar2008.swf',
+      newItems: [
+        108,
+        110,
+        262,
+        291,
+        324,
+        351,
+        417,
+        660,
+        780,
+        781,
+        782,
+        923,
+        982,
+        983
+      ],
+      removedItems: [
+        113,
+        114,
+        203,
+        204,
+        213,
+        214,
+        234,
+        249,
+        306,
+        323,
+        352,
+        358,
+        403,
+        438,
+        770,
+        963,
+        966,
+        975
+      ]
+    }
   },
   {
     date: '2008-03-14',
@@ -615,7 +744,50 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-04-04',
-    clothingCatalog: 'archives:Apr2008.swf'
+    clothingCatalog: {
+      file: 'archives:Apr2008.swf',
+      newItems: [
+        167,
+        176,
+        177,
+        187,
+        188,
+        189,
+        275,
+        307,
+        381,
+        437,
+        464,
+        713,
+        783,
+        784,
+        785,
+        908,
+        922,
+        985,
+        986
+      ],
+      removedItems: [
+        169,
+        229,
+        232,
+        241,
+        243,
+        262,
+        289,
+        379,
+        419,
+        448,
+        467,
+        482,
+        483,
+        484,
+        930,
+        932,
+        935,
+        979
+      ]
+    }
   },
   {
     date: '2008-04-10',
@@ -710,7 +882,50 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-05-02',
-    clothingCatalog: 'archives:May2008.swf'
+    clothingCatalog: {
+      file: 'archives:May2008.swf',
+      newItems: [
+        196,
+        197,
+        198,
+        410,
+        667,
+        668,
+        669,
+        673,
+        718,
+        723,
+        724,
+        725,
+        793,
+        794,
+        795,
+        796,
+        797,
+        798,
+        963,
+        988,
+        989
+      ],
+      removedItems: [
+        221,
+        223,
+        251,
+        286,
+        287,
+        342,
+        380,
+        411,
+        449,
+        450,
+        464,
+        764,
+        785,
+        904,
+        913,
+        924
+      ]
+    }
   },
   {
     date: '2008-05-09',
@@ -792,7 +1007,53 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-06-06',
-    clothingCatalog: 'archives:Jun2008.swf'
+    clothingCatalog: {
+      file: 'archives:Jun2008.swf',
+      newItems: [
+        125,
+        139,
+        211,
+        267,
+        269,
+        270,
+        271,
+        272,
+        273,
+        297,
+        298,
+        382,
+        383,
+        384,
+        830,
+        831,
+        832,
+        833,
+        909,
+        910,
+        912,
+        991
+      ],
+      removedItems: [
+        110,
+        131,
+        181,
+        239,
+        291,
+        308,
+        324,
+        351,
+        362,
+        478,
+        768,
+        769,
+        781,
+        798,
+        923,
+        980,
+        981,
+        982
+      ]
+    }
   },
   {
     date: '2008-06-13',
@@ -925,7 +1186,46 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-07-04',
-    clothingCatalog: 'archives:July08Style.swf'
+    clothingCatalog: {
+      file: 'archives:July08Style.swf',
+      newItems: [
+        214,
+        368,
+        386,
+        387,
+        388,
+        433,
+        434,
+        728,
+        730,
+        731,
+        732,
+        839,
+        840,
+        841,
+        842,
+        843,
+        844,
+        846,
+        937,
+        946,
+        947,
+        994
+      ],
+      removedItems: [
+        108,
+        297,
+        417,
+        660,
+        780,
+        782,
+        795,
+        908,
+        983,
+        985,
+        986
+      ]
+    }
   },
   {
     date: '2008-07-11',
@@ -1163,7 +1463,53 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-08-01',
-    clothingCatalog: 'archives:PSAug2008.swf',
+    clothingCatalog: {
+      file: 'archives:PSAug2008.swf',
+      newItems: [
+        101,
+        281,
+        299,
+        465,
+        938,
+        952,
+        997,
+        3000,
+        3001,
+        4000,
+        4001,
+        5001,
+        6001,
+        6002,
+        6003,
+        6004,
+        6005,
+        6006
+      ],
+      removedItems: [
+        167,
+        176,
+        177,
+        187,
+        188,
+        189,
+        214,
+        275,
+        307,
+        381,
+        437,
+        457,
+        673,
+        713,
+        718,
+        783,
+        784,
+        796,
+        846,
+        922,
+        988,
+        989
+      ]
+    },
     temp: {
       party: {
         rooms: {
@@ -1514,7 +1860,51 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-09-05',
-    clothingCatalog: 'archives:Sep2008.swf',
+    clothingCatalog: {
+      file: 'archives:Sep2008.swf',
+      newItems: [
+        111,
+        219,
+        222,
+        312,
+        314,
+        929,
+        966,
+        1004,
+        1005,
+        1006,
+        3004,
+        4007,
+        4008,
+        4009,
+        4010,
+        4011,
+        5002,
+        9000
+      ],
+      removedItems: [
+        196,
+        197,
+        198,
+        211,
+        298,
+        299,
+        410,
+        465,
+        667,
+        668,
+        669,
+        723,
+        724,
+        725,
+        793,
+        794,
+        797,
+        910,
+        912,
+        963
+      ]
+    },
     hairCatalog: 'archives:SptWigs.swf',
     constructionComment: 'A construction begins at the Plaza for the Stage',
     rooms: {
@@ -1794,7 +2184,53 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-10-03',
-    clothingCatalog: 'archives:CatOct2008.swf'
+    clothingCatalog: {
+      file: 'archives:CatOct2008.swf',
+      newItems: [
+        106,
+        227,
+        244,
+        246,
+        247,
+        309,
+        354,
+        460,
+        472,
+        474,
+        928,
+        973,
+        1013,
+        1014,
+        1015,
+        2003,
+        3006,
+        4016,
+        4017,
+        4018,
+        9004
+      ],
+      removedItems: [
+        125,
+        139,
+        267,
+        269,
+        270,
+        271,
+        272,
+        273,
+        382,
+        383,
+        384,
+        830,
+        831,
+        832,
+        833,
+        909,
+        947,
+        991,
+        4011
+      ]
+    }
   },
   {
     date: '2008-10-06',
@@ -2161,7 +2597,63 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-11-07',
     end: ['party'],
-    clothingCatalog: 'archives:CatNov2008.swf',
+    clothingCatalog: {
+      file: 'archives:CatNov2008.swf',
+      newItems: [
+        175,
+        179,
+        213,
+        226,
+        243,
+        249,
+        342,
+        365,
+        380,
+        419,
+        467,
+        935,
+        939,
+        940,
+        1020,
+        4023,
+        4024,
+        5010,
+        5011,
+        9008
+      ],
+      removedItems: [
+        227,
+        244,
+        246,
+        247,
+        309,
+        354,
+        368,
+        388,
+        433,
+        434,
+        460,
+        472,
+        474,
+        730,
+        732,
+        841,
+        842,
+        843,
+        844,
+        937,
+        938,
+        952,
+        994,
+        1013,
+        1014,
+        1015,
+        3006,
+        4016,
+        4017,
+        4018
+      ]
+    },
     hairCatalog: 'archives:NovWigs.swf'
   },
   {
@@ -2293,7 +2785,47 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-12-05',
-    clothingCatalog: 'archives:December08Style.swf'
+    clothingCatalog: {
+      file: 'archives:December08Style.swf',
+      newItems: [
+        172,
+        284,
+        370,
+        420,
+        424,
+        447,
+        484,
+        933,
+        936,
+        978,
+        1026,
+        4041,
+        4042,
+        4043,
+        4044,
+        4045,
+        4046,
+        9011
+      ],
+      removedItems: [
+        342,
+        386,
+        387,
+        728,
+        731,
+        839,
+        840,
+        929,
+        946,
+        966,
+        997,
+        3000,
+        3001,
+        4001,
+        5001,
+        6001
+      ]  
+    }
   },
   {
     date: '2008-12-12',
