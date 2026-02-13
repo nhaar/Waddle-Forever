@@ -1294,7 +1294,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/2008_july.swf',
-      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of Feb 2009 interface, removing membership badge'
     },
     {
       file: 'interfaces/2010_may.swf',
@@ -1706,11 +1706,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/membership_badge.swf',
-      comment: 'Made by Blue Kirby, interface where the membership badge is only seen by the player itself'
-    },
-    {
-      file: 'interfaces/membership_badge_2.swf',
-      comment: 'Made by Blue Kirby, interface where the membership badge is seen by all, but with only the basic level available'
+      comment: 'Made by Blue Kirby, interface where the membership badge is only seen by the player itself, based on Feb 09 interface'
     },
     {
       file: 'dojoext.swf',

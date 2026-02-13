@@ -102,6 +102,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-19',
     miscComments: ['Members can now see a special badge on their own player card'],
     fileChanges: {
+      'play/v2/interface/interface.swf': 'recreation:interfaces/membership_badge.swf'
     }
   },
   {
@@ -154,6 +155,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-29',
     miscComments: ['The membership badge can now be seen in other player cards'],
     fileChanges: {
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-February2009.swf'
     },
     roomComment: 'The sign in the Attic is updated',
     temp: {
