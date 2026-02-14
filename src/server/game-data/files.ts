@@ -1294,7 +1294,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/2008_july.swf',
-      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of Feb 2009 interface, removing membership badge'
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of Feb 2009 interface, removing membership badge. Also removed showTutorialPrompt function call'
     },
     {
       file: 'interfaces/2010_may.swf',
