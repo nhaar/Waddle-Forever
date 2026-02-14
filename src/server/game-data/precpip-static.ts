@@ -70,7 +70,6 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/tools/817.swf': 'archives:AwardsEN817.swf',
   'artwork/tools/818.swf': 'archives:AwardsEN818.swf',
   'artwork/rooms/1026/danceNotice.swf': 'recreation:halloween_2007/dance_notice.swf',
-  'artwork/catalogue/adopt0703.swf': 'archives:Pets_0703.swf',
   'artwork/cards/1.swf': 'archives:ArtworkCards1.swf',
   'artwork/cards/2.swf': 'archives:ArtworkCards2.swf',
   'artwork/cards/3.swf': 'archives:ArtworkCards3.swf',

@@ -1054,6 +1054,7 @@ export const UPDATES_2008: Update[] = [
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
+    petFurniture: 'archives:May2008LoveYourPet.swf',
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'
@@ -1087,9 +1088,6 @@ export const UPDATES_2008: Update[] = [
       },
       'catalogues/fish.swf': {
         'en': 'archives:TheFish2009.swf'
-      },
-      'catalogues/pets.swf': {
-        en: 'archives:May2008LoveYourPet.swf'
       }
     },
     map: 'unknown:cpip_map_no_dojoext.swf',

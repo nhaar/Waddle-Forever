@@ -274,6 +274,7 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-03-15',
+    petFurniture: 'archives:ENCataloguesPetsMar2012.swf',
     temp: {
       party: {
         partyName: 'Puffle Party',

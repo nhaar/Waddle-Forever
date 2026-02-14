@@ -376,10 +376,8 @@ export const UPDATES_2010: Update[] = [
     end: ['party'],
     miscComments: ['Orange Puffles are available to adopt'],
     roomComment: 'White Puffles are now in the Pet Shop',
+    puffleCatalog: 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf',
     localChanges: {
-      'catalogues/adopt.swf': {
-        'en': 'slegacy:media/play/v2/content/local/en/catalogues/adopt.swf'
-      },
       'postcards/111.swf': {
         en: 'recreation:postcard_orange_puffle.swf'
       }

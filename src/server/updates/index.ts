@@ -103,6 +103,7 @@ export type CPUpdate = {
   sportCatalog?: FileRef | CatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
+  puffleCatalog?: FileRef;
   martialArtworks?: FileRef | CatalogItems;
 
   /** List of items added to the elite gear catalog */

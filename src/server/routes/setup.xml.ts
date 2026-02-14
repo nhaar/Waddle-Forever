@@ -191,7 +191,8 @@ export function getSetupXml(version: Version, ip: string, port: number) {
       <Clothing>${getFileName(chat, 'clothing')}</Clothing>
       <Furntiture>${getFileName(chat, 'furniture')}</Furntiture>
       <Igloo>${getFileName(chat, 'igloo_')}</Igloo>
-      <Pets>${getFileName(chat, 'adopt0703')}</Pets>
+      <Pets>${getFileName(chat, 'pets')}</Pets>
+      <Adopt>${getFileName(chat, 'adopt')}</Adopt>
       <Cards>cards</Cards>
    </Catalogues>
 

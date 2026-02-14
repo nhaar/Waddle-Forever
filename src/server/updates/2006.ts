@@ -216,6 +216,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-14',
+    // Placeholder, as the April edition of Love Your Pet is lost
+    petFurniture: 'archives:Pets_0605.swf',
     iglooCatalog: 'archives:April2006Igloo.swf',
     temp: {
       party: {
@@ -349,6 +351,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-05-26',
+    petFurniture: 'archives:Pets_0605.swf',
     temp: {
       party: {
         partyName: 'Underground Opening Party',
@@ -466,6 +469,10 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-06-23',
+    petFurniture: 'archives:Pets_0606.swf',
+  },
+  {
     date: '2006-06-25',
     end: ['party']
   },
@@ -533,6 +540,10 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-07-23',
     end: ['party']
+  },
+  {
+    date: '2006-07-26',
+    petFurniture: 'archives:Pets_0607.swf',
   },
   {
     date: '2006-08-04',
@@ -1310,6 +1321,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-10-05',
+    // Placeholder date based on fla's last modified date
+    petFurniture: 'archives:Pets_0610.swf',
     constructionComment: 'A construction begins at the Plaza',
     end: ['town-launchpad'],
     temp: {
@@ -1463,6 +1476,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-12-08',
     iglooList: true,
     iglooVersion: 44,
+    puffleCatalog: 'archives:Pets_0703.swf',
     roomComment: 'Red Puffles are now in the Pet Shop',
     rooms: {
       pet: 'archives:ArtworkRoomsPet43.swf'
