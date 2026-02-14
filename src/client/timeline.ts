@@ -109,25 +109,44 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, `${update.update.gameRelease} releases`, 'game');
     }
     if (isCatalogAvailable(update.update.clothingCatalog)) {
-      addEvent(map, update.date, 'A new edition of the Penguin Style is out', 'clothing');
+      addEvent(map, update.date, 'A new edition of Penguin Style is available', 'clothing');
     }
     if (update.update.iglooCatalog !== undefined) {
-      addEvent(map, update.date, 'A new edition of Igloo Upgrades is out', 'other');
+      const iglooCatalogName = isLower(update.date, '2011-12-15')
+        ? 'Igloo Upgrades'
+        : 'Igloo Catalog';
+      addEvent(map, update.date, `A new edition of ${iglooCatalogName} is available`, 'igloo');
+    }
+    if (update.update.puffleCatalog !== undefined) {
+      const puffleCatalogName = isLower(update.date, '2007-11-30')
+        ? 'Adopting and Caring for Your Puffle'
+        : 'Adopt A Puffle';
+      addEvent(map, update.date, `A new edition of ${puffleCatalogName} is available`, 'adopt');
     }
     if (update.update.hairCatalog !== undefined) {
-      addEvent(map, update.date, 'A new Big Wigs catalog is available', 'other');
+      addEvent(map, update.date, 'A new edition of Big Wigs is available', 'bigwigs');
     }
     if (update.update.petFurniture !== undefined) {
-      addEvent(map, update.date, 'A new edition of Pet Furniture is available', 'other');
+      const petCatalogName = isLower(update.date, '2007-11-30')
+        ? 'Love Your Pet'
+        : isLower(update.date, '2009-02-13')
+          ? 'Love Your Pet: Pet Furniture'
+          : isLower(update.date, '2011-10-04')
+            ? 'Pet Furniture: Love Your Pet'
+            : 'Puffle Catalog';
+      addEvent(map, update.date, `A new edition of ${petCatalogName} is available`, 'petfurniture');
     }
     if (isCatalogAvailable(update.update.martialArtworks)) {
-      addEvent(map, update.date, 'The Martial Artworks is updated', 'other');
+      addEvent(map, update.date, 'A new edition of Martial Artworks is available', 'martialartworks');
     }
     if (update.update.furnitureCatalog !== undefined) {
-      addEvent(map, update.date, 'New furniture catalog available', 'furniture');
+      const furnitureCatalogName = isLower(update.date, '2012-01-19')
+        ? 'Better Igloos'
+        : 'Furniture Catalog';
+      addEvent(map, update.date, `A new edition of ${furnitureCatalogName} is available`, 'furniture');
     }
     if (update.update.postcardCatalog !== undefined) {
-      addEvent(map, update.date, 'A new postcard catalog is available', 'other');
+      addEvent(map, update.date, 'A new postcard catalog is available', 'postcard');
     }
     if (update.update.newspaper === 'fan') {
       addEvent(map, update.date, 'Fan issue of the newspaper released', 'news');
