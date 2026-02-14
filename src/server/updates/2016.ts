@@ -990,7 +990,7 @@ export const UPDATES_2016: Update[] = [
     }
   },
   {
-    date: '2016-08-31',
+    date: '2016-08-03',
     clothingCatalog: {
       newItems: [
         1485,

@@ -183,7 +183,7 @@ export const UPDATES_2014: Update[] = [
     }
   },
   {
-    date: '2013-06-06',
+    date: '2014-03-06',
     clothingCatalog: {
       newItems: [
         322,
