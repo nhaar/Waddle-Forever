@@ -14,6 +14,7 @@ import { UPDATES_2013 } from "./2013";
 import { UPDATES_2014 } from "./2014";
 import { UPDATES_2016 } from "./2016";
 import { UPDATES_2015 } from "./2015";
+import { UPDATES_2017 } from "./2017";
 
 export const allUpdates = [
   ...UPDATES_2005,
@@ -27,7 +28,8 @@ export const allUpdates = [
   ...UPDATES_2013,
   ...UPDATES_2014,
   ...UPDATES_2015,
-  ...UPDATES_2016
+  ...UPDATES_2016,
+  ...UPDATES_2017
 ];
 
 function enforceCorrectness() {
