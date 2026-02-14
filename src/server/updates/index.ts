@@ -93,7 +93,7 @@ export type CPUpdate = {
   pinRoomUpdate?: FileRef;
 
   /** If a new catalog was released this day: its file */
-  clothingCatalog?: FileRef | CatalogItems;
+  clothingCatalog?: CatalogItems;
   /** If a new catalog was released this day: its file */
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
