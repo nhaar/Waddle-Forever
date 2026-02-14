@@ -102,7 +102,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-19',
     miscComments: ['Members can now see a special badge on their own player card'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge.swf'
+      'play/v2/interface/interface.swf': 'recreation:interfaces/membership_badge.swf'
     }
   },
   {
@@ -155,7 +155,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-29',
     miscComments: ['The membership badge can now be seen in other player cards'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_2.swf'
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-February2009.swf'
     },
     roomComment: 'The sign in the Attic is updated',
     temp: {
@@ -709,7 +709,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-24',
     miscComments: ['The membership badge now features levels'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf'
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-June2009.swf'
     }
   },
   {
@@ -1215,12 +1215,15 @@ export const UPDATES_2009: Update[] = [
     date: '2009-06-26',
     // temporary, as this is the earliest it can work at the moment
     dayOfFun: 'start',
+
+    // day in which composite paths are no longer used
+    dateReference: 'composite-paths',
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
-      'play/v2/client/login.swf': 'fix:ClientLoginJun2009.swf',
-      'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf'
-
+      'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf',
+      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf'
     },
+    indexHtml: 'classic-cpip-2',
     iglooList: [
       { display: 'Viking Opera', id: 41, pos: [1, 1] },
       { display: 'Mountain Dojo', id: 21, pos: [2, 1] },
@@ -2137,14 +2140,14 @@ export const UPDATES_2009: Update[] = [
           rink: 'archives:RoomsRink-WinterParty.swf',
           party: 'archives:RoomsParty-WinterParty.swf',
           party2: 'archives:RoomsParty2-WinterParty.swf',
-          party3: 'fix:RoomsParty3-WinterParty.swf',
-          party4: 'fix:RoomsParty4-WinterParty.swf',
-          party5: 'fix:RoomsParty5-WinterParty.swf',
-          party6: 'fix:RoomsParty6-WinterParty.swf',
+          party3: 'archives:RoomsParty3-WinterParty.swf',
+          party4: 'archives:RoomsParty4-WinterParty.swf',
+          party5: 'archives:RoomsParty5-WinterParty.swf',
+          party6: 'archives:RoomsParty6-WinterParty.swf',
           party7: 'archives:RoomsParty7-WinterParty.swf',
           party8: 'archives:RoomsParty8-WinterParty.swf',
           party9: 'archives:RoomsParty9-WinterParty.swf',
-          party10: 'fix:RoomsParty10-WinterParty.swf',
+          party10: 'archives:RoomsParty10-WinterParty.swf',
           party11: 'archives:RoomsParty11-WinterParty.swf'
         },
         music: {
@@ -2165,7 +2168,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'close_ups/maze_map.swf': {
-            'en': 'archives:ENClose_upsMaze_map-WinterParty.swf'
+            'en': ['archives:ENClose_upsMaze_map-WinterParty.swf', 'maze_map']
           }
         }
       }

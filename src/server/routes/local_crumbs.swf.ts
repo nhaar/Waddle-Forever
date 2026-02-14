@@ -1,8 +1,8 @@
 import { iterateEntries } from "@common/utils";
 import { Action, createBytecode, createJsonDeclaration, PCodeRep } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
-import { LOCAL_PATHS } from "../game-data/local-paths";
-import { Version } from "./versions";
+import { LOCAL_PATHS, makeLocalPathsComposite } from "../game-data/local-paths";
+import { isLower, Version } from "./versions";
 import { SAFE_MESSAGES } from "../game-data/safe-messages";
 import { MASCOT_MESSAGES } from "../game-data/mascot-messages";
 import { TOUR_GUIDE_MESSAGES } from "../game-data/tour-guide-messages";
@@ -15,23 +15,47 @@ import { getMapForDate } from "../timelines";
 import { findInVersionStrict } from "../game-data";
 import { STAGE_TIMELINE } from "../timelines/stage";
 import serverList from "../servers";
+import { getDate } from "@server/timelines/dates";
 
 function getLocalPaths(version: Version) {
   const code: PCodeRep = [];
 
   const paths = getMapForDate(LOCAL_PATHS_TIMELINE, version);
+  const useCompositePaths = isLower(version, getDate('composite-paths'));
 
-  iterateEntries({...LOCAL_PATHS, ...paths}, (key, path) => {
-    if (path !== null && path !== undefined) {
+  if (useCompositePaths) {
+    const newPaths: Record<string, string> = {};
+    iterateEntries(paths, (key, value) => {
+      if (value !== undefined && value !== null) {
+        newPaths[key] = value;
+      }
+    });
+    const compositePaths = makeLocalPathsComposite({ ...LOCAL_PATHS, ...newPaths });
+    iterateEntries(compositePaths, (key, value) => {
+      const [base, path] = value;
       code.push(
         [Action.Push, "local_paths"],
         Action.GetVariable,
-        [Action.Push, key],
+        [Action.Push, key, base],
+        Action.GetVariable,
         [Action.Push, path],
+        Action.Add2,
         Action.SetMember
-      );
-    }
-  });
+      )
+    });
+  } else {
+    iterateEntries({...LOCAL_PATHS, ...paths}, (key, path) => {
+      if (path !== null && path !== undefined) {
+        code.push(
+          [Action.Push, "local_paths"],
+          Action.GetVariable,
+          [Action.Push, key],
+          [Action.Push, path],
+          Action.SetMember
+        );
+      }
+    });
+  }
 
   return code;
 }

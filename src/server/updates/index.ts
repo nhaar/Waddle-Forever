@@ -277,7 +277,8 @@ export type DateReference = 'cpip' |
   'placeholder-2016' |
   'vr-room' |
   'old-rink' |
-  'string-verify';
+  'string-verify' |
+  'composite-paths';
 
 export type Update = {
   date: Version;

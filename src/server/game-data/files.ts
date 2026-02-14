@@ -142,35 +142,6 @@ const FILE_DOCUMENTATIONS: Record<string, FileDocumentation[]> = {
 Manually added the party99.swf entry for medieval 08 (technically the path was party.swf, this may be changed at some point)`
     },
     {
-      file: 'RoomsParty3-WinterParty.swf',
-      comment: `All the rooms in the Winter Party party that are marked as fix are because of an issue that i could
-not figure out with the game engine. When the room SWF loads, the player position
-obtained from the jr packet should have already been placed inside the penguin's mc coordinates
-however, for a mysterious reason, that is not the case, and engine.swf only updates it after
-the room checks, so I did a workaround of checking if _x != 0 as well since that
-is the default value
-this issue was broken with both the 2010 engine and the 2009 engine,
-indicating the issue might lie within shell.swf, or another SWF
-until those client files can be implemented, this party will have this workaround fix
-the issue in question is not being able to walk past the intersections of blue and orange paths`
-    },
-    {
-      file: 'RoomsParty4-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
-      file: 'RoomsParty5-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
-      file: 'RoomsParty6-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
-      file: 'RoomsParty10-WinterParty.swf',
-      comment: 'Winter Party room fix'
-    },
-    {
       file: 'ArtworkRoomsCoffee2.swf',
       comment: `Chat291.swf compatibility fixes
 However, the auto-sitting doesnt seem to work with chat291 anyways, so that
@@ -259,6 +230,10 @@ would need to investigated`
     {
       file: 'ClientLoginJun2009.swf',
       comment: 'Removed hardcoded domains'
+    },
+    {
+      file: 'load2008-08-15.swf',
+      comment: 'Found in various old trainers. Domain check has likely been removed. Further changes to fix paths, including in shell.'
     }
   ],
   [APPROXIMATION]: [
@@ -528,6 +503,18 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'login_no_101_days_of_fun.swf',
       comment: 'By Randomon, removed 101 days of fun on start screen. not accurate for all dates, needs more research'
+    },
+    {
+      file: 'en.txt',
+      comment: 'removed all versions'
+    },
+    {
+      file: 'global.txt',
+      comment: 'removed all versions'
+    },
+    {
+      file: 'system.txt',
+      comment: 'removed all versions'
     }
   ],
   [RECREATION]: [
@@ -1307,7 +1294,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/2008_july.swf',
-      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of the recreation from January 2009 but without the membership badge'
+      comment: 'Made by Blue Kirby. Theoretical first Post-CPIP interface, built on top of Feb 2009 interface, removing membership badge'
     },
     {
       file: 'interfaces/2010_may.swf',
@@ -1719,11 +1706,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'interfaces/membership_badge.swf',
-      comment: 'Made by Blue Kirby, interface where the membership badge is only seen by the player itself'
-    },
-    {
-      file: 'interfaces/membership_badge_2.swf',
-      comment: 'Made by Blue Kirby, interface where the membership badge is seen by all, but with only the basic level available'
+      comment: 'Made by Blue Kirby, interface where the membership badge is only seen by the player itself, based on Feb 09 interface'
     },
     {
       file: 'dojoext.swf',
@@ -2032,6 +2015,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'help.swf',
       comment: 'Made by lifeofgames477'
+    },
+    {
+      file: 'airtower_cpip.swf',
+      comment: 'Moved Airtower code out of class file and added shell.getLoginServer() call'
+    },
+    {
+      file: 'engine_cpip.swf',
+      comment: 'Used the Jun 2009 engine as base. Made self-initialising. Changed .path to .file_path. Added showInterface call after roomInitiated. Changed myMediaPath assigning for game_mc'
     },
     {
       file: 'telescope_holiday.swf',
