@@ -119,7 +119,7 @@ function getTimeline(): Day[] {
     }
     if (update.update.puffleCatalog !== undefined) {
       const puffleCatalogName = isLower(update.date, '2007-11-30')
-        ? 'Adopting and Caring for Your Puffle'
+        ? 'Adopting And Caring For Your Puffle'
         : 'Adopt A Puffle';
       addEvent(map, update.date, `A new edition of ${puffleCatalogName} is available`, 'adopt');
     }
