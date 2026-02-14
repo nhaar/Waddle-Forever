@@ -2022,7 +2022,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'engine_cpip.swf',
-      comment: 'Made self-initialising. Changed .path to .file_path. Added showInterface call after roomInitiated.'
+      comment: 'Used the Jun 2009 engine as base. Made self-initialising. Changed .path to .file_path. Added showInterface call after roomInitiated. Changed myMediaPath assigning for game_mc'
     },
     {
       file: 'telescope_holiday.swf',
