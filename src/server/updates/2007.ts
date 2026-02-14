@@ -945,7 +945,7 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-11-30',
     petFurniture: 'archives:Pet_0711.swf',
-    puffleCatalog: 'archives:Adopt200711.swf',
+    puffleCatalog: 'archives:ENNov2007.swf',
     iglooVersion: 71,
     roomComment: 'Yellow Puffles are now in the Pet Shop',
     rooms: {

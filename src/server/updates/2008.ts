@@ -1072,7 +1072,7 @@ export const UPDATES_2008: Update[] = [
         'en': 'recreation:catalog/furniture_cpip.swf'
       },
       'catalogues/adopt.swf': {
-        'en': 'recreation:catalog/adopt_cpip.swf'
+        'en': 'archives:Adopt200711.swf'
       },
       'catalogues/costume.swf': {
         'en': 'recreation:catalog/costume_cpip.swf'
