@@ -85,6 +85,11 @@ export type CatalogItems = {
   announce?: false;
 }
 
+export type UniqueCatalogItems = {
+  file?: FileRef;
+  items: number[];
+};
+
 export type CPUpdate = {
   map?: FileRef;
   /** Pin period indicator */
@@ -100,7 +105,7 @@ export type CPUpdate = {
   iglooCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   postcardCatalog?: FileRef;
-  sportCatalog?: FileRef | CatalogItems;
+  sportCatalog?: UniqueCatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
   martialArtworks?: FileRef | CatalogItems;

@@ -486,7 +486,35 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-02-28',
-    sportCatalog: 'archives:Sport_0802.swf'
+    sportCatalog: {
+      file: 'archives:Sport_0802.swf',
+      items: [
+        220,
+        254,
+        255,
+        349,
+        405,
+        406,
+        461,
+        701,
+        702,
+        703,
+        711,
+        712,
+        919,
+        453,
+        462,
+        463,
+        720,
+        721,
+        722,
+        974,
+        321,
+        775,
+        778,
+        918
+      ]
+    }
   },
   {
     date: '2008-02-29',
@@ -846,7 +874,33 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-04-25',
     end: ['migrator-reconstruction'],
-    sportCatalog: 'archives:SportCatalog_0804.swf',
+    sportCatalog: {
+      file: 'archives:SportCatalog_0804.swf',
+      items: [
+        220,
+        254,
+        255,
+        349,
+        461,
+        701,
+        702,
+        703,
+        711,
+        712,
+        919,
+        722,
+        321,
+        775,
+        778,
+        918,
+        435,
+        436,
+        717,
+        791,
+        792,
+        965
+      ]
+    },
     temp: {
       party: {
         partyName: 'Rockhopper & Yarr\'s Arr-ival Parr-ty',
@@ -1182,7 +1236,36 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-06-27',
-    sportCatalog: 'archives:SASJun2008.swf'
+    sportCatalog: {
+      file: 'archives:SASJun2008.swf',
+      items: [
+        254,
+        255,
+        349,
+        701,
+        702,
+        703,
+        711,
+        712,
+        321,
+        775,
+        778,
+        918,
+        435,
+        436,
+        717,
+        791,
+        792,
+        965,
+        385,
+        719,
+        726,
+        727,
+        836,
+        837,
+        993
+      ]
+    }
   },
   {
     date: '2008-07-04',
@@ -1787,7 +1870,43 @@ export const UPDATES_2008: Update[] = [
     rooms: {
       dance: 'recreation:dance_cpip_postmusicjam2.swf'
     },
-    sportCatalog: 'archives:SportAug08.swf'
+    sportCatalog: {
+      file: 'archives:SportAug08.swf',
+      items: [
+        254,
+        255,
+        349,
+        701,
+        702,
+        703,
+        711,
+        712,
+        321,
+        775,
+        778,
+        918,
+        435,
+        436,
+        717,
+        791,
+        792,
+        385,
+        719,
+        726,
+        727,
+        836,
+        837,
+        993,
+        453,
+        462,
+        463,
+        720,
+        721,
+        920,
+        4005,
+        4006
+      ]
+    }
   },
   {
     date: '2008-08-18',
@@ -2781,7 +2900,41 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-11-28',
-    sportCatalog: 'archives:SASNov2008.swf'
+    sportCatalog: {
+      file: 'archives:SASNov2008.swf',
+      items: [
+        254,
+        255,
+        701,
+        702,
+        703,
+        711,
+        712,
+        321,
+        775,
+        778,
+        918,
+        385,
+        726,
+        727,
+        993,
+        462,
+        463,
+        720,
+        721,
+        220,
+        277,
+        278,
+        361,
+        461,
+        464,
+        785,
+        919,
+        4040,
+        6011,
+        6013
+      ]
+    }
   },
   {
     date: '2008-12-05',

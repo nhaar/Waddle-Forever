@@ -216,7 +216,39 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-01-30',
-    sportCatalog: 'archives:SASJan2009.swf'
+    sportCatalog: {
+      file: 'archives:SASJan2009.swf',
+      items: [
+        701,
+        702,
+        703,
+        711,
+        712,
+        321,
+        993,
+        220,
+        277,
+        278,
+        361,
+        461,
+        919,
+        4040,
+        6011,
+        6013,
+        256,
+        353,
+        372,
+        958,
+        1036,
+        1037,
+        4053,
+        4054,
+        4055,
+        4056,
+        5018,
+        5019
+      ]
+    }
   },
   {
     date: '2009-02-03',
@@ -915,7 +947,32 @@ export const UPDATES_2009: Update[] = [
       removed: []
     },
     martialArtworks: 'archives:MAMar2009.swf',
-    sportCatalog: 'archives:SASMar2009.swf'
+    sportCatalog: {
+      file: 'archives:SASMar2009.swf',
+      items: [
+        993,
+        372,
+        958,
+        1037,
+        4055,
+        4056,
+        349,
+        405,
+        435,
+        436,
+        717,
+        791,
+        792,
+        965,
+        1045,
+        1046,
+        1047,
+        4070,
+        4071,
+        4072,
+        6017
+      ]
+    }
   },
   {
     date: '2009-04-01',
@@ -1366,6 +1423,30 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-05-29',
+    sportCatalog: {
+      items: [
+        993,
+        372,
+        4091,
+        727,
+        775,
+        778,
+        4088,
+        139,
+        4087,
+        382,
+        2003,
+        308,
+        239,
+        362,
+        4089,
+        313,
+        4090,
+        297,
+        975,
+        918
+      ]
+    },
     iglooList: [
       { display: 'Flipper Stomper', id: 244, pos: [3, 1] },
       { display: 'Coconut', id: 215, pos: [6, 1] },
@@ -1921,7 +2002,30 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-08-28',
-    sportCatalog: 'archives:SportAug09.swf'
+    sportCatalog: {
+      file: 'archives:SportAug09.swf',
+      items: [
+        297,
+        254,
+        255,
+        462,
+        463,
+        658,
+        671,
+        720,
+        721,
+        722,
+        726,
+        974,
+        998,
+        1078,
+        1079,
+        3002,
+        4115,
+        4116,
+        9040
+      ]
+    }
   },
   {
     date: '2009-09-04',
@@ -2796,7 +2900,35 @@ export const UPDATES_2009: Update[] = [
       rink: 'archives:RoomsRink.swf',
       agent: 'archives:RoomsAgent.swf'
     },
-    sportCatalog: 'archives:SportNov2009.swf',
+    sportCatalog: {
+      file: 'archives:SportNov2009.swf',
+      items: [
+        998,
+        220,
+        277,
+        278,
+        461,
+        464,
+        785,
+        919,
+        936,
+        1036,
+        1042,
+        1067,
+        1103,
+        4040,
+        4053,
+        4054,
+        4139,
+        4140,
+        4143,
+        4144,
+        5018,
+        5048,
+        6011,
+        6013
+      ]
+    },
     map: 'archives:Map2008-2011Rink.swf'
   },
   {

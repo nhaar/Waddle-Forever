@@ -71,7 +71,39 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-13',
-    sportCatalog: 'archives:SASJan2011.swf',
+    sportCatalog: {
+      file: 'archives:SASJan2011.swf',
+      items: [
+        220,
+        277,
+        278,
+        461,
+        919,
+        1036,
+        1042,
+        1067,
+        1103,
+        4040,
+        4053,
+        4054,
+        4139,
+        4140,
+        4143,
+        4144,
+        5018,
+        6011,
+        6013,
+        981,
+        1214,
+        1215,
+        3002,
+        4204,
+        4297,
+        4298,
+        4299,
+        9084
+      ]
+    },
     eliteGearItems: [
       1217,
       4300,
@@ -1905,7 +1937,31 @@ export const UPDATES_2011: Update[] = [
       forts: 'archives:RoomsForts_2.swf'
     },
     map: 'archives:Map2008-2011Stadium.swf',
-    sportCatalog: 'archives:May2011Sport.swf'
+    sportCatalog: {
+      file: 'archives:May2011Sport.swf',
+      items: [
+        3002,
+        313,
+        372,
+        722,
+        727,
+        918,
+        958,
+        993,
+        4089,
+        4090,
+        4091,
+        4346,
+        4347,
+        4348,
+        4349,
+        4350,
+        5091,
+        5092,
+        5093,
+        5094
+      ]
+    }
   },
   {
     date: '2011-06-03',
@@ -3555,7 +3611,37 @@ export const UPDATES_2011: Update[] = [
       rink: 'archives:RoomsRink-Dec2011.swf',
       forts: 'archives:RoomsForts_3.swf'
     },
-    sportCatalog: 'archives:Dec2011Sport.swf',
+    sportCatalog: {
+      file: 'archives:Dec2011Sport.swf',
+      items: [
+        3002,
+        220,
+        461,
+        919,
+        981,
+        1036,
+        1215,
+        1336,
+        1337,
+        1338,
+        4299,
+        4474,
+        4475,
+        4476,
+        4477,
+        4478,
+        4479,
+        4480,
+        4481,
+        4482,
+        4483,
+        4484,
+        5018,
+        6011,
+        6013,
+        9084
+      ]
+    },
     temp: {
       const: {
         rooms: {

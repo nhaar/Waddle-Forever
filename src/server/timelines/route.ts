@@ -17,7 +17,7 @@ import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
-import { CatalogItems, CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
+import { CatalogItems, CrumbIndicator, LocalChanges, RoomChanges, UniqueCatalogItems } from "../updates";
 import { START_DATE, getDate } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
@@ -240,6 +240,15 @@ function addCatalog(date: Version, input: FileRef | CatalogItems | undefined, pa
   }
 }
 
+function addUniqueCatalog(date: Version, input: UniqueCatalogItems, paths: string[], map: FileTimelineMap, end: Version | undefined) {
+  const file = input.file;
+  if (file !== undefined) {
+    paths.forEach(p => {
+      map.add(p, file, date, end);
+    });
+  }
+}
+
 function addUpdates(map: FileTimelineMap): void {
   UPDATES.forEach(update => {
     if (update.update.map !== undefined) {
@@ -341,10 +350,12 @@ function addUpdates(map: FileTimelineMap): void {
         throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
       }
     }
-    addCatalog(update.date, update.update.sportCatalog, [
-      'artwork/catalogue/sport_.swf',
-      'play/v2/content/local/en/catalogues/sport.swf'
-    ], map, update.end);
+    if (update.update.sportCatalog !== undefined) {
+      addUniqueCatalog(update.date, update.update.sportCatalog, [
+        'artwork/catalogue/sport_.swf',
+        'play/v2/content/local/en/catalogues/sport.swf'
+      ], map, update.end);
+    }
   });
 }
 

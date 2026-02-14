@@ -530,6 +530,31 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-02-26',
+    sportCatalog: {
+      items: [
+        436,
+        792,
+        1047,
+        791,
+        717,
+        4072,
+        405,
+        1045,
+        4070,
+        1046,
+        4071,
+        349,
+        6017,
+        1037,
+        4055,
+        4056,
+        372,
+        435,
+        958,
+        993,
+        965
+      ]
+    },
     iglooList: [
       { display: 'Jungle Quest', id: 269, pos: [2, 1] },
       { display: 'Flipper Jig', id: 262, pos: [7, 1] },
@@ -1169,7 +1194,31 @@ export const UPDATES_2010: Update[] = [
       forts: 'archives:RoomsForts_2.swf',
       rink: 'archives:RoomsRink-May2010.swf'
     },
-    sportCatalog: 'archives:May10Sport.swf',
+    sportCatalog: {
+      file: 'archives:May10Sport.swf',
+      items: [
+        372,
+        993,
+        139,
+        239,
+        297,
+        308,
+        313,
+        362,
+        382,
+        727,
+        775,
+        778,
+        918,
+        975,
+        2003,
+        4087,
+        4088,
+        4089,
+        4090,
+        4091
+      ]
+    },
     map: 'archives:Map2008-2011Stadium.swf'
   },
   {
@@ -3067,7 +3116,33 @@ export const UPDATES_2010: Update[] = [
       rink: 'archives:RoomsRink-Stadium_Games.swf'
     },
     map: 'archives:Map-Stadium_Games.swf',
-    sportCatalog: 'archives:September10Sport.swf'
+    sportCatalog: {
+      file: 'archives:September10Sport.swf',
+      items: [
+        918,
+        254,
+        255,
+        357,
+        974,
+        998,
+        1172,
+        2018,
+        2019,
+        2026,
+        2027,
+        4116,
+        4204,
+        4205,
+        4263,
+        4264,
+        4265,
+        4266,
+        5048,
+        6036,
+        6037,
+        6038
+      ]
+    }
   },
   {
     date: '2010-09-30',
@@ -4496,7 +4571,35 @@ export const UPDATES_2010: Update[] = [
       forts: 'archives:RoomsForts.swf'
     },
     map: 'archives:Map2008-2011Rink.swf',
-    sportCatalog: 'archives:December10Sport.swf',
+    sportCatalog: {
+      file: 'archives:December10Sport.swf',
+      items: [
+        998,
+        5048,
+        220,
+        277,
+        278,
+        461,
+        464,
+        785,
+        919,
+        936,
+        1036,
+        1042,
+        1067,
+        1103,
+        4040,
+        4053,
+        4054,
+        4139,
+        4140,
+        4143,
+        4144,
+        5018,
+        6011,
+        6013
+      ]
+    },
     roomComment: 'The Ice Rink returns'
   },
   {
