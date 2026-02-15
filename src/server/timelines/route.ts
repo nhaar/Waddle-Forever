@@ -12,7 +12,6 @@ import { getNewspaperName } from "../routes/news.txt";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
-import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
 import { PIN_TIMELINE } from "./pins";
@@ -202,7 +201,6 @@ function addStaticFiles(map: FileTimelineMap): void {
   }
 
   addStatic(PRE_CPIP_STATIC_FILES);
-  addStatic(CPIP_AS3_STATIC_FILES);
 }
 
 function sanitizePath(path: string): string {
