@@ -1437,10 +1437,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
-      file: 'catalog/adopt_cpip.swf',
-      comment: 'Made by Blue Kirby'
-    },
-    {
       file: 'catalog/costume_cpip.swf',
       comment: 'Made by Blue Kirby'
     },

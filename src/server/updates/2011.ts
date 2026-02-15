@@ -308,12 +308,7 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-31',
-    end: ['party'],
-    localChanges: {
-      'catalogues/adopt.swf': {
-        'en': 'archives:Feb2011Adopt.swf'
-      },
-    }
+    end: ['party']
   },
   {
     date: '2011-02-10',
@@ -353,6 +348,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-02-17',
+    miscComments: ['Brown Puffles are available to adopt'],
+    puffleCatalog: 'archives:Feb2011Adopt.swf',
     localChanges: {
       'postcards/111.swf': {
         en: 'archives:Enm111.swf'
@@ -582,6 +579,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-03-08',
     end: ['pet-renovation'],
+    petFurniture: 'archives:Mar2011Pets.swf',
     roomComment: 'The Pet Shop renovation finishes',
     rooms: {
       pet: 'archives:Mar07.2011Pet.swf'
@@ -2157,7 +2155,9 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-10-04',
-    migrator: false
+    petFurniture: 'archives:Oct2011Pets.swf',
+    migrator: false,
+    dateReference: 'pet-furniture-rename2'
   },
   {
     date: '2011-10-05',
@@ -2905,7 +2905,9 @@ export const UPDATES_2011: Update[] = [
     date: '2011-12-15',
     furnitureCatalog: 'archives:December2011Furniture.swf',
     iglooCatalog: 'archives:December2011Igloo.swf',
-    partyComment: 'A new item of the Advent Calendar is available'
+    partyComment: 'A new item of the Advent Calendar is available',
+    // igloo upgrades was renamed
+    dateReference: 'igloo-catalog-name'
   },
   {
     date: '2011-12-16',

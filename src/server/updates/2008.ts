@@ -1054,6 +1054,7 @@ export const UPDATES_2008: Update[] = [
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
+    petFurniture: 'archives:May2008LoveYourPet.swf',
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'
@@ -1071,7 +1072,7 @@ export const UPDATES_2008: Update[] = [
         'en': 'recreation:catalog/furniture_cpip.swf'
       },
       'catalogues/adopt.swf': {
-        'en': 'recreation:catalog/adopt_cpip.swf'
+        'en': 'archives:Adopt200711.swf'
       },
       'catalogues/costume.swf': {
         'en': 'recreation:catalog/costume_cpip.swf'
@@ -1087,9 +1088,6 @@ export const UPDATES_2008: Update[] = [
       },
       'catalogues/fish.swf': {
         'en': 'archives:TheFish2009.swf'
-      },
-      'catalogues/pets.swf': {
-        en: 'archives:May2008LoveYourPet.swf'
       }
     },
     map: 'unknown:cpip_map_no_dojoext.swf',

@@ -291,5 +291,9 @@ export const UPDATES_2013: Update[] = [
     rooms: {
       shipnest: 'archives:RoomsShipNest-Sept2013.swf'
     }
+  },
+  {
+    date: '2013-12-12',
+    petFurniture: 'ENCataloguesPetsDec2013.swf'
   }
 ]

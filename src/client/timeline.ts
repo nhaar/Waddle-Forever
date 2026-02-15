@@ -6,6 +6,7 @@ import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 import { CatalogItems } from '../server/updates';
+import { getDate } from '@server/timelines/dates';
 
 let timelinePicker: BrowserWindow | null;
 
@@ -109,25 +110,44 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, `${update.update.gameRelease} releases`, 'game');
     }
     if (isCatalogAvailable(update.update.clothingCatalog)) {
-      addEvent(map, update.date, 'A new edition of the Penguin Style is out', 'clothing');
+      addEvent(map, update.date, 'A new edition of Penguin Style is available', 'clothing');
     }
     if (update.update.iglooCatalog !== undefined) {
-      addEvent(map, update.date, 'A new edition of Igloo Upgrades is out', 'other');
+      const iglooCatalogName = isLower(update.date, getDate('igloo-catalog-name'))
+        ? 'Igloo Upgrades'
+        : 'Igloo Catalog';
+      addEvent(map, update.date, `A new edition of ${iglooCatalogName} is available`, 'igloo');
+    }
+    if (update.update.puffleCatalog !== undefined) {
+      const puffleCatalogName = isLower(update.date, getDate('adopt-catalog-name'))
+        ? 'Adopting And Caring For Your Puffle'
+        : 'Adopt A Puffle';
+      addEvent(map, update.date, `A new edition of ${puffleCatalogName} is available`, 'adopt');
     }
     if (update.update.hairCatalog !== undefined) {
-      addEvent(map, update.date, 'A new Big Wigs catalog is available', 'other');
+      addEvent(map, update.date, 'A new edition of Big Wigs is available', 'bigwigs');
     }
     if (update.update.petFurniture !== undefined) {
-      addEvent(map, update.date, 'A new edition of Pet Furniture is available', 'other');
+      const petCatalogName = isLower(update.date, getDate('adopt-catalog-name'))
+        ? 'Love Your Pet'
+        : isLower(update.date, getDate('pet-furniture-rename1'))
+          ? 'Love Your Pet: Pet Furniture'
+          : isLower(update.date, getDate('pet-furniture-rename2'))
+            ? 'Pet Furniture: Love Your Pet'
+            : 'Puffle Catalog';
+      addEvent(map, update.date, `A new edition of ${petCatalogName} is available`, 'petfurniture');
     }
     if (isCatalogAvailable(update.update.martialArtworks)) {
-      addEvent(map, update.date, 'The Martial Artworks is updated', 'other');
+      addEvent(map, update.date, 'A new edition of Martial Artworks is available', 'martialartworks');
     }
     if (update.update.furnitureCatalog !== undefined) {
-      addEvent(map, update.date, 'New furniture catalog available', 'furniture');
+      const furnitureCatalogName = isLower(update.date, getDate('furniture-catalog-name'))
+        ? 'Better Igloos'
+        : 'Furniture Catalog';
+      addEvent(map, update.date, `A new edition of ${furnitureCatalogName} is available`, 'furniture');
     }
     if (update.update.postcardCatalog !== undefined) {
-      addEvent(map, update.date, 'A new postcard catalog is available', 'other');
+      addEvent(map, update.date, 'A new postcard catalog is available', 'postcard');
     }
     if (update.update.newspaper === 'fan') {
       addEvent(map, update.date, 'Fan issue of the newspaper released', 'news');
