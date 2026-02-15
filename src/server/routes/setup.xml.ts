@@ -20,6 +20,10 @@ function getFileName(chat: number, content: string): string {
   return chat === 339 ? content : `<File>${content}</File>`
 }
 
+function getCatalog(header: string, chat: number, content: string): string {
+  return `<${header}>${getFileName(chat, content)}</${header}>`;
+}
+
 function getNewspapersTimeline() {
   // info is the issue ID ('fan' or number)
   const timeline = new VersionsTimeline<string>();
@@ -191,7 +195,8 @@ export function getSetupXml(version: Version, ip: string, port: number) {
       <Clothing>${getFileName(chat, 'clothing')}</Clothing>
       <Furntiture>${getFileName(chat, 'furniture')}</Furntiture>
       <Igloo>${getFileName(chat, 'igloo_')}</Igloo>
-      <Pets>${getFileName(chat, 'adopt0703')}</Pets>
+      ${getCatalog(chat === 339 ? 'Adopt' : 'Pets', chat, 'adopt_')}
+      ${getCatalog(chat === 339 ? 'Pets' : 'Pets2', chat, 'pets_')}
       <Cards>cards</Cards>
    </Catalogues>
 

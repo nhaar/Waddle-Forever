@@ -1410,18 +1410,34 @@ export const UPDATES_2008: Update[] = [
       dojowater: true,
     },
     fileChanges: {
+      'play/v2/load.swf': 'fix:load2008-08-15.swf',
+      'setup/en.txt': 'approximation:en.txt',
+      'setup/global.txt': 'approximation:global.txt',
+      'setup/system.txt': 'approximation:system.txt',
+      // TODO startscreen (almost definitely) wasn't used until Jan 2009
       'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
-      'play/v2/client/shell.swf': 'approximation:shell.swf',
-      'play/v2/client/engine.swf': 'unknown:engine_2009.swf',
-      'play/v2/client/interface.swf': 'recreation:interfaces/2008_july.swf',
-      'play/v2/client/login.swf': 'recreation:login_cpip.swf',
+      'play/v2/shell/shell.swf': 'archives:ClientShell_January_2009.swf',
+      'play/v2/airtower/airtower.swf': 'recreation:airtower_cpip.swf',
+      'play/v2/gridview/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
+      'play/v2/client/engine.swf': 'archives:ClientEngine2009-06-15.swf',
+      'play/v2/engine/engine.swf': 'recreation:engine_cpip.swf',
+      'play/v2/interface/interface.swf': 'recreation:interfaces/2008_july.swf',
+      'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf',
+      'play/v2/login/login.swf': 'archives:ClientLoginJun2009.swf',
+      'play/v2/mail/inbox/mail.swf': 'archives:ClientMail2009-06-15.swf',
+      'play/v2/mail/book/book.swf': 'slegacy:media/play/v2/client/book.swf',
+      'play/v2/music/music.swf': 'archives:PlayV2MusicMusic2009-04-02.swf',
       'play/v2/client/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
+      'play/v2/igloo/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
+      'play/v2/content/global/binoculars/empty.swf': 'slegacy:media/play/v2/content/global/binoculars/empty.swf',
+      // TODO igloo background wasn't used until late 2009?
       'play/v2/content/global/telescope/empty.swf': 'archives:TelescopeEmpty2010.swf',
       'play/v2/content/global/igloo/assets/igloo_background.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf',
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
     startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
+    petFurniture: 'archives:May2008LoveYourPet.swf',
     localChanges: {
       'forms/moderator.swf': {
         'en': 'recreation:pre_epf_moderator_form.swf'
@@ -1439,7 +1455,7 @@ export const UPDATES_2008: Update[] = [
         'en': 'recreation:catalog/furniture_cpip.swf'
       },
       'catalogues/adopt.swf': {
-        'en': 'recreation:catalog/adopt_cpip.swf'
+        'en': 'archives:Adopt200711.swf'
       },
       'catalogues/costume.swf': {
         'en': 'recreation:catalog/costume_cpip.swf'
@@ -1455,9 +1471,6 @@ export const UPDATES_2008: Update[] = [
       },
       'catalogues/fish.swf': {
         'en': 'archives:TheFish2009.swf'
-      },
-      'catalogues/pets.swf': {
-        en: 'archives:May2008LoveYourPet.swf'
       }
     },
     map: 'unknown:cpip_map_no_dojoext.swf',
@@ -2571,7 +2584,8 @@ export const UPDATES_2008: Update[] = [
     miscComments: ['The start screen is updated with the introduction of Unlock Items Online'],
     fileChanges: {
       'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
-      'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
+      // TODO reimplement this recreation
+      // 'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
     },
     localChanges: {
       'forms/library.swf': {

@@ -5,9 +5,10 @@ import { findEarliestDateHitIndex } from "../game-data";
 import { As3Newspaper, BoilerRoomPaper, PreBoilerRoomPaper } from "../game-data/newspapers";
 import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
 import { getMinifiedDate } from "../timelines/route";
-import { processVersion, Version } from "./versions";
+import { isLower, processVersion, Version } from "./versions";
+import { getDate } from "@server/timelines/dates";
 
-function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2'): PCodeRep {
+function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2', compositePaths: boolean): PCodeRep {
   let varname = ''
   if (n === -1) {
     varname = 'current_news'
@@ -25,7 +26,17 @@ function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2'): 
     `${minifiedDate}/${minifiedDate}.swf`
   );
 
-  //
+  if (compositePaths) {
+    return [
+      [Action.Push, "news_paths"],
+      Action.GetVariable,
+      [Action.Push, varname, 'local_content'],
+      Action.GetVariable,
+      [Action.Push, `/news/${newspaperPath}`],
+      Action.Add2,
+      Action.SetMember
+    ]
+  }
   return [
     [Action.Push, "news_paths"],
     Action.GetVariable,
@@ -62,6 +73,8 @@ function generateNewsArrayAdd(index: number, issue: number, date: Version, title
 export function getNewsCrumbsSwf(version: Version): Buffer {
   const newspaperIndex = findEarliestDateHitIndex(version, NEWSPAPER_TIMELINE); 
 
+  const useCompositePaths = isLower(version, getDate('composite-paths'));
+
   const code: PCodeRep = [
     [Action.Push, "SHELL", 0, "_global"],
     Action.GetVariable,
@@ -77,23 +90,31 @@ export function getNewsCrumbsSwf(version: Version): Buffer {
     Action.GetVariable,
     [Action.Push, "getLocalizedFolder"],
     Action.CallMethod,
-    Action.DefineLocal,
-    [Action.Push, "local_content", "root_path"],
-    Action.GetVariable,
-    [Action.Push, "content/local/"],
-    Action.Add2,
-    [Action.Push, "language_folder"],
-    Action.GetVariable,
-    Action.Add2,
-    Action.DefineLocal,
-    [Action.Push, "news_paths", 0, "Object"],
-    Action.NewObject,
     Action.DefineLocal
   ];
 
+  if (useCompositePaths) {
+    code.push(
+      [Action.Push, "local_content", "root_path"],
+      Action.GetVariable,
+      [Action.Push, "content/local/"],
+      Action.Add2,
+      [Action.Push, "language_folder"],
+      Action.GetVariable,
+      Action.Add2,
+      Action.DefineLocal
+    );
+  }
+
+  code.push(
+    [Action.Push, "news_paths", 0, "Object"],
+    Action.NewObject,
+    Action.DefineLocal
+  );
+
   for (let i = 0; i < 7; i++) {
     const newspaper = NEWSPAPER_TIMELINE[newspaperIndex - i];
-    code.push(...generateNewsPathAssign(i - 1, newspaper.date, getNewspaperType(newspaper.info)))
+    code.push(...generateNewsPathAssign(i - 1, newspaper.date, getNewspaperType(newspaper.info), useCompositePaths))
   }
   code.push(
     [Action.Push, "news_crumbs", 0, "Array"],

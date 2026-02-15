@@ -437,6 +437,10 @@ export const UPDATES_2014: Update[] = [
     }
   },
   {
+    date: '2014-04-17',
+    petFurniture: 'archives:ENCataloguesPetsApr2014.swf'
+  },
+  {
     date: '2014-05-08',
     clothingCatalog: {
       newItems: [

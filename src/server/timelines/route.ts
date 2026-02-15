@@ -269,7 +269,13 @@ function addUpdates(map: FileTimelineMap): void {
       map.add('play/v2/content/local/en/catalogues/hair.swf', update.update.hairCatalog, update.date, update.end);
     }
     if (update.update.petFurniture !== undefined) {
+      map.add('artwork/catalogue/pets_.swf', update.update.petFurniture, update.date, update.end);
       map.add('play/v2/content/local/en/catalogues/pets.swf', update.update.petFurniture, update.date, update.end);
+    }
+    if (update.update.puffleCatalog !== undefined) {
+      map.add('artwork/catalogue/adopt_.swf', update.update.puffleCatalog, update.date, update.end);
+      map.add('artwork/catalogue/puffle_.swf', update.update.puffleCatalog, update.date, update.end);
+      map.add('play/v2/content/local/en/catalogues/adopt.swf', update.update.puffleCatalog, update.date, update.end);
     }
     addCatalog(update.date, update.update.martialArtworks, ['play/v2/content/local/en/catalogues/ninja.swf'], map, update.end);
     if (update.update.furnitureCatalog !== undefined) {

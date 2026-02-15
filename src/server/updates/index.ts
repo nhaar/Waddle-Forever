@@ -108,6 +108,7 @@ export type CPUpdate = {
   sportCatalog?: UniqueCatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
+  puffleCatalog?: FileRef;
   martialArtworks?: FileRef | CatalogItems;
 
   /** List of items added to the elite gear catalog */
@@ -282,7 +283,13 @@ export type DateReference = 'cpip' |
   'placeholder-2016' |
   'vr-room' |
   'old-rink' |
-  'string-verify';
+  'string-verify' |
+  'composite-paths' |
+  'igloo-catalog-name' |
+  'adopt-catalog-name' |
+  'pet-furniture-rename1' |
+  'pet-furniture-rename2' |
+  'furniture-catalog-name';
 
 export type Update = {
   date: Version;

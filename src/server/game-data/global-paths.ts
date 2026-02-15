@@ -1,3 +1,7 @@
+import { iterateEntries } from "../../common/utils";
+import { ROOMS } from "../game-data/rooms";
+import { GAME_CRUMBS } from "../game-data/game-crumbs";
+
 export const GLOBAL_PATHS: Record<string, string> = {
   'ninja_water_video': 'close_ups/ninja_water_video.swf',
   ninja_fire_video: 'close_ups/ninja_fire_video.swf',
@@ -93,3 +97,20 @@ export const GLOBAL_PATHS: Record<string, string> = {
   stampbook_wordmark: "stampbook/wordmark/",
   stampbook_cover_storage: "stampbook/prompt/stampbook_cover_storage.swf",
 };
+
+// used before April/May 2009
+// TODO catalogues, forms, news (that's local crumbs anyway)
+export function makeGlobalPathsComposite(paths: Record<string, string>){
+  const result: Record<string, [string, string]> = {};
+  iterateEntries(paths, (key, path) => {
+    result[key] = ["global_content", "/" + path];
+  });
+
+  iterateEntries(ROOMS, (room) => {
+    result[room] = ["global_content", `/rooms/${room}.swf`];
+  });
+  iterateEntries(GAME_CRUMBS, (game, crumb) => {
+    result[game] = ["game_path", "/" + crumb.path];
+  });
+  return result;
+}

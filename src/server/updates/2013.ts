@@ -1497,5 +1497,9 @@ export const UPDATES_2013: Update[] = [
         6143
       ]
     }
+  },
+  {
+    date: '2013-12-12',
+    petFurniture: 'ENCataloguesPetsDec2013.swf'
   }
 ]

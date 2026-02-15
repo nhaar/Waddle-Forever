@@ -90,7 +90,7 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-01-26',
-    // Love Your Pet catalog here
+    petFurniture: 'archives:Jan2007Pets.swf',
     iglooVersion: 47,
     roomComment: 'Tours are now present in the Plaza',
     rooms: {
@@ -481,7 +481,7 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-05-11',
-    // Love Your Pet catalog here
+    petFurniture: 'archives:May2007Pets.swf',
     iglooVersion: 54,
   },
   {
@@ -1341,7 +1341,8 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-11-30',
-    // Love Your Pet catalog here
+    petFurniture: 'archives:Pet_0711.swf',
+    puffleCatalog: 'archives:ENNov2007.swf',
     iglooVersion: 71,
     roomComment: 'Yellow Puffles are now in the Pet Shop',
     rooms: {
@@ -1350,7 +1351,8 @@ export const UPDATES_2007: Update[] = [
     miscComments: ['Some emotes are removed'],
     fileChanges: {
       'interface.swf': 'recreation:old_interface/skull_heart_removed_old_logo.swf'
-    }
+    },
+    dateReference: 'adopt-catalog-name'
   },
   {
     date: '2007-12-07',

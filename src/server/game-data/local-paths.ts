@@ -1,3 +1,5 @@
+import { iterateEntries } from "@common/utils";
+
 export const LOCAL_PATHS: Record<string, string> = {
   "801_award": "awards/801.swf",
   "802_award": "awards/802.swf",
@@ -166,3 +168,11 @@ export const LOCAL_PATHS: Record<string, string> = {
   end_game_howto: "prompts/end_game_howto.swf",
   membership_inventory_equip: "membership/inventory_equip.swf"
 };
+
+export function makeLocalPathsComposite(paths: Record<string, string>){
+  const result: Record<string, [string, string]> = {};
+  iterateEntries(paths, (key, path) => {
+    result[key] = ["local_content", "/" + path];
+  });
+  return result;
+}
