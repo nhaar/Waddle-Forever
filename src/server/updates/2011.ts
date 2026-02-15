@@ -308,12 +308,7 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-31',
-    end: ['party'],
-    localChanges: {
-      'catalogues/adopt.swf': {
-        'en': 'archives:Feb2011Adopt.swf'
-      },
-    }
+    end: ['party']
   },
   {
     date: '2011-02-10',
@@ -354,7 +349,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-02-17',
     miscComments: ['Brown Puffles are available to adopt'],
-    puffleCatalog: 'archives:February10Pompoms.swf',
+    puffleCatalog: 'archives:Feb2011Adopt.swf',
     localChanges: {
       'postcards/111.swf': {
         en: 'archives:Enm111.swf'
@@ -584,7 +579,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-03-08',
     end: ['pet-renovation'],
-    petFurniture: 'Mar2011Pets.swf',
+    petFurniture: 'archives:Mar2011Pets.swf',
     roomComment: 'The Pet Shop renovation finishes',
     rooms: {
       pet: 'archives:Mar07.2011Pet.swf'
