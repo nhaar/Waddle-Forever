@@ -206,10 +206,10 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/v2/content/local/en/login/startscreen.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
-  server.getData('playstart/xml/start_module_config.xml', (s) => {
+  server.getData('play/start/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
-  server.getData('playstart/xml/start_module_config.xml', (s) => {
+  server.getData('play/start/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
   server.getData('play/v2/content/local/en/news/news_crumbs.swf', (s) => {

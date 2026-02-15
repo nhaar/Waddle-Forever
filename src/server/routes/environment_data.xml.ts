@@ -5,7 +5,7 @@ export function getEnvironmentDataXml(ip: string, port: number): string {
   return `<environmentData>
 
 	<!-- CP General Environment -->
-	<data name="play" value="${URL}play"></data>
+	<data name="play" value="${URL}play/"></data>
 	<data name="client" value="${URL}play/v2/client/"></data>
 	<data name="content" value="${URL}play/v2/content/"></data>
 	<data name="games" value="${URL}play/v2/games/"></data>
