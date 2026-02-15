@@ -59,7 +59,7 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 
 &paper=86&
 &penguin=16&
-&puffle=2&
+&puffle=&
 &igloo=${findInVersion(date, IGLOO_VERSION_TIMELINE)}&
 &basic=3&
 &map=16_forest&
@@ -85,8 +85,8 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 &hair=0710&
 &furniture=&
 &upgrade=&
-&adopt=0711&
-&pets=0711&
+&adopt=&
+&pets=&
 &fish=0703&
 &cards=0712&
 &pirate=0&
