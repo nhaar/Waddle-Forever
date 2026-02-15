@@ -280,7 +280,11 @@ export type DateReference = 'cpip' |
   'old-rink' |
   'string-verify' |
   'composite-paths' |
-  'igloo-catalog-name';
+  'igloo-catalog-name' |
+  'adopt-catalog-name' |
+  'pet-furniture-rename1' |
+  'pet-furniture-rename2' |
+  'furniture-catalog-name';
 
 export type Update = {
   date: Version;

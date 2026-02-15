@@ -32,7 +32,8 @@ export const UPDATES_2012: Update[] = [
       lake: 'archives:RoomsLake-Early2012.swf',
       underwater: 'archives:RoomsUnderwater-11Feb2014.swf'
     },
-    furnitureCatalog: 'archives:JanFeb2012Furniture.swf'
+    furnitureCatalog: 'archives:JanFeb2012Furniture.swf',
+    dateReference: 'furniture-catalog-name'
   },
   {
     date: '2012-01-26',

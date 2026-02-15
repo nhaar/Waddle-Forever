@@ -954,7 +954,8 @@ export const UPDATES_2007: Update[] = [
     miscComments: ['Some emotes are removed'],
     fileChanges: {
       'interface.swf': 'recreation:old_interface/skull_heart_removed_old_logo.swf'
-    }
+    },
+    dateReference: 'adopt-catalog-name'
   },
   {
     date: '2007-12-07',

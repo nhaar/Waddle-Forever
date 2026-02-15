@@ -2161,7 +2161,8 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-10-04',
     petFurniture: 'archives:Oct2011Pets.swf',
-    migrator: false
+    migrator: false,
+    dateReference: 'pet-furniture-rename2'
   },
   {
     date: '2011-10-05',

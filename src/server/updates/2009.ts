@@ -471,7 +471,8 @@ export const UPDATES_2009: Update[] = [
     rooms: {
       stage: 'archives:Stage2011Aug17.swf',
       plaza: 'recreation:plaza_team_blue_play.swf'
-    }
+    },
+    dateReference: 'pet-furniture-rename1'
   },
   {
     date: '2009-02-20',

@@ -119,7 +119,7 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, `A new edition of ${iglooCatalogName} is available`, 'igloo');
     }
     if (update.update.puffleCatalog !== undefined) {
-      const puffleCatalogName = isLower(update.date, '2007-11-30')
+      const puffleCatalogName = isLower(update.date, getDate('adopt-catalog-name'))
         ? 'Adopting And Caring For Your Puffle'
         : 'Adopt A Puffle';
       addEvent(map, update.date, `A new edition of ${puffleCatalogName} is available`, 'adopt');
@@ -128,11 +128,11 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, 'A new edition of Big Wigs is available', 'bigwigs');
     }
     if (update.update.petFurniture !== undefined) {
-      const petCatalogName = isLower(update.date, '2007-11-30')
+      const petCatalogName = isLower(update.date, getDate('adopt-catalog-name'))
         ? 'Love Your Pet'
-        : isLower(update.date, '2009-02-13')
+        : isLower(update.date, getDate('pet-furniture-rename1'))
           ? 'Love Your Pet: Pet Furniture'
-          : isLower(update.date, '2011-10-04')
+          : isLower(update.date, getDate('pet-furniture-rename2'))
             ? 'Pet Furniture: Love Your Pet'
             : 'Puffle Catalog';
       addEvent(map, update.date, `A new edition of ${petCatalogName} is available`, 'petfurniture');
@@ -141,7 +141,7 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, 'A new edition of Martial Artworks is available', 'martialartworks');
     }
     if (update.update.furnitureCatalog !== undefined) {
-      const furnitureCatalogName = isLower(update.date, '2012-01-19')
+      const furnitureCatalogName = isLower(update.date, getDate('furniture-catalog-name'))
         ? 'Better Igloos'
         : 'Furniture Catalog';
       addEvent(map, update.date, `A new edition of ${furnitureCatalogName} is available`, 'furniture');
