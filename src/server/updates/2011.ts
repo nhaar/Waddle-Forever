@@ -2909,7 +2909,9 @@ export const UPDATES_2011: Update[] = [
     date: '2011-12-15',
     furnitureCatalog: 'archives:December2011Furniture.swf',
     iglooCatalog: 'archives:December2011Igloo.swf',
-    partyComment: 'A new item of the Advent Calendar is available'
+    partyComment: 'A new item of the Advent Calendar is available',
+    // igloo upgrades was renamed
+    dateReference: 'igloo-catalog-name'
   },
   {
     date: '2011-12-16',

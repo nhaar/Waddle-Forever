@@ -6,6 +6,7 @@ import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 import { CatalogItems } from '../server/updates';
+import { getDate } from '@server/timelines/dates';
 
 let timelinePicker: BrowserWindow | null;
 
@@ -112,7 +113,7 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, 'A new edition of Penguin Style is available', 'clothing');
     }
     if (update.update.iglooCatalog !== undefined) {
-      const iglooCatalogName = isLower(update.date, '2011-12-15')
+      const iglooCatalogName = isLower(update.date, getDate('igloo-catalog-name'))
         ? 'Igloo Upgrades'
         : 'Igloo Catalog';
       addEvent(map, update.date, `A new edition of ${iglooCatalogName} is available`, 'igloo');

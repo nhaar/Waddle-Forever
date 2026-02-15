@@ -279,7 +279,8 @@ export type DateReference = 'cpip' |
   'vr-room' |
   'old-rink' |
   'string-verify' |
-  'composite-paths';
+  'composite-paths' |
+  'igloo-catalog-name';
 
 export type Update = {
   date: Version;
