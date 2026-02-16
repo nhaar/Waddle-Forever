@@ -107,7 +107,12 @@ export const UPDATES_2016: Update[] = [
       'play/v2/games/pufflescape/HostEmulator.swf': 'svanilla:media/play/v2/games/pufflescape/HostEmulator.swf',
       'play/v2/games/pufflescape/Main.swf': 'archives:GamesPufflescapeMain-20150909.swf',
       'play/v2/games/mine/CartSurfer.swf': 'svanilla:media/play/v2/games/mine/CartSurfer.swf',
-      'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf'
+      'play/v2/games/roundup/PuffleRoundup.swf': 'svanilla:media/play/v2/games/roundup/PuffleRoundup.swf',
+      'play/v2/games/quests/global/rooms/conclusion3.swf': 'svanilla:media/play/v2/games/quests/global/rooms/conclusion3.swf',
+      'play/v2/games/quests/q4/common/rooms/conclusion.swf': 'svanilla:media/play/v2/games/quests/global/rooms/conclusion3.swf',
+      'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
+      'play/v2/games/fish/bootstrap.swf': 'slegacy:media/play/v2/games/fish/bootstrap.swf',
+      'play/v2/games/fish/IceFishing.swf': 'slegacy:media/play/v2/games/fish/IceFishing.swf',
     }
   }
 ];

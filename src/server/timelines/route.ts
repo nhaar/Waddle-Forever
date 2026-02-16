@@ -10,7 +10,6 @@ import { MUSIC_IDS } from "../game-data/music";
 import { POSTCARD_IDS } from "../game-data/postcard";
 import { getNewspaperName } from "../routes/news.txt";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
-import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
@@ -190,7 +189,6 @@ function addNewspapers(map: FileTimelineMap): void {
 
 function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
   map.addRouteMap(CPIP_STATIC_FILES, getDate('cpip'));
-  map.addRouteMap(AS3_STATIC_FILES, getDate('vanilla-engine'));
 }
 
 function addStaticFiles(map: FileTimelineMap): void {

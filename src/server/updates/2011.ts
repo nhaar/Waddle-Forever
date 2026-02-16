@@ -129,7 +129,7 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/world.swf': 'archives:ClientWorld.swf',
       'play/v2/client/login.swf': 'archives:ClientLogin2011-08-20.swf',
       'play/start/swf/start.swf': 'fix:PlayStartSwfStart.swf',
-      'play/v2/client/newspaper.swf': 'approximation:newspaper_march_compatible.swf'
+      'play/v2/client/newspaper.swf': 'approximation:newspaper_march_compatible.swf',
     },
     startscreens: [ 
       'archives:LoginAdopt_black.swf',
@@ -1731,6 +1731,21 @@ export const UPDATES_2011: Update[] = [
       'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
       'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf',
       'play/v2/client/club_penguin.swf': 'approximation:club_penguin_2011.swf',
+      'play/v2/client/airtower.swf': 'svanilla:media/play/v2/client/airtower.swf',
+      'play/v2/client/gridview.swf': 'svanilla:media/play/v2/client/gridview.swf',
+      'play/v2/client/book.swf': 'svanilla:media/play/v2/client/book.swf',
+      'play/v2/client/igloo.swf': 'svanilla:media/play/v2/client/igloo.swf',
+      'play/v2/client/load.swf': 'svanilla:media/play/v2/client/load.swf',
+      'play/v2/client/login.swf': 'svanilla:media/play/v2/client/login.swf',
+      'play/v2/client/mail.swf': 'svanilla:media/play/v2/client/mail.swf',
+      'play/v2/client/newspaper.swf': 'svanilla:media/play/v2/client/newspaper.swf',
+      'play/v2/client/sentry.swf': 'svanilla:media/play/v2/client/sentry.swf',
+      'play/v2/client/stampbook.swf': 'svanilla:media/play/v2/client/stampbook.swf',
+      'play/v2/client/stamps.swf': 'svanilla:media/play/v2/client/stamps.swf',
+      'play/v2/client/world.swf': 'svanilla:media/play/v2/client/world.swf',
+      'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
+      'play/v2/content/global/penguin/penguin.swf': 'svanilla:media/play/v2/content/global/penguin/penguin.swf',
+      'play/v2/client/map_triggers.swf': 'svanilla:media/play/v2/client/map_triggers.swf',
     },
     globalChanges: {
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
