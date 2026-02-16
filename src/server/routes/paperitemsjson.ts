@@ -44,11 +44,11 @@ function getPaperItems(version: Version): PaperItem[] {
     is_member: i.isMember,
     prompt: i.name,
     is_bait: i.isBait ? "1" : undefined,
-    customDepth: String(i.customDepth) ?? undefined,
+    customDepth: i.customDepth === null ? undefined : String(i.customDepth),
     is_back: i.isBack ? "1" : undefined,
     make_tour_guide: i.isTour? "1" : undefined,
     is_medal: i.isMedal? "1" : undefined,
-    noPurchasPopup: i.noPurchasePopup? "1" : undefined,
+    noPurchasePopup: i.noPurchasePopup? "1" : undefined,
     is_game_achieavable: i.isGameAchievable? "1" : undefined
   })}); 
 }
