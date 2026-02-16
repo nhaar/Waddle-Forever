@@ -93,31 +93,64 @@ function replaceConstants(file: FileRef, constantValues: Record<string, string |
   return Buffer.from(emitSwf(swf));
 }
 
+function getWebsiteName(s: SettingsManager) {
+  const name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
+
+  if (s.settings.minified_website && name !== 'modern-as3') {
+    if (isAS3(s.settings.version)) {
+      return 'default/websites/minified/minified-classic-as3.html';
+    } else if (isPreCpip(s.settings.version)) {
+      return 'default/websites/minified/minified-precpip.html';
+    } else {
+      return 'default/websites/minified/minified-cpip.html';
+    }
+  }
+
+  return `default/websites/${name}.html`;
+}
+
+function injectRuffleIntoHtml(s: SettingsManager, page: string) {
+  const ruffleConfig = JSON.stringify({
+    socketProxy: [
+      {
+        host: s.targetIP,
+        port: s.loginPort,
+        proxyUrl: `ws://${s.targetIP}:${s.loginPort}`,
+      },
+      {
+        host: s.targetIP,
+        port: s.worldPort,
+        proxyUrl: `ws://${s.targetIP}:${s.worldPort}`,
+      },
+    ]
+  });
+
+  const html = fs.readFileSync(path.join(MEDIA_DIRECTORY, page), 'utf8');
+
+  const injectedScript = `
+    <script>
+      window.RufflePlayer = window.RufflePlayer || {};
+      window.RufflePlayer.config = ${ruffleConfig};
+    </script>
+  `;
+
+  return html.replace('</head>', `${injectedScript}</head>`);
+}
+
 export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   const server = new HttpServer(settingsManager);
 
   server.addFileServer();
 
-  server.get('/', (s) => {
-    const name = findInVersion(s.settings.version, INDEX_HTML_TIMELINE);
+  server.router.get('/', (req, res) => {
+    const page = getWebsiteName(settingsManager);
 
-    if (s.settings.minified_website && name !== 'modern-as3') {
-      if (isAS3(s.settings.version)) {
-        return 'default/websites/minified/minified-classic-as3.html';
-      } else if (isPreCpip(s.settings.version)) {
-        return 'default/websites/minified/minified-precpip.html';
-      } else {
-        return 'default/websites/minified/minified-cpip.html';
-      }
-    }
-
-    return `default/websites/${name}.html`;
-  });
-
+    res.send(injectRuffleIntoHtml(settingsManager, page));
+  })
 
   // Engine 3 login page requires this URL
-  server.get('/#/login', () => {
-    return `default/websites/modern-as3.html`;
+  server.router.get('/#/login', (req, res) => {
+    res.send(injectRuffleIntoHtml(settingsManager, 'default/websites/modern-as3.html'));
   })
 
   // serving the websites
