@@ -3181,7 +3181,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/actions/160.swf': 'svanilla:media/play/v2/content/global/penguin/actions/160.swf',
   'play/v2/content/global/penguin/actions/161.swf': 'svanilla:media/play/v2/content/global/penguin/actions/161.swf',
 'play/v2/content/global/rooms/cloudforest.swf': 'svanilla:media/play/v2/content/global/rooms/cloudforest.swf',
-  'play/v2/content/global/rooms/dojoextsolo.swf': 'svanilla:media/play/v2/content/global/rooms/dojoextsolo.swf',
   'play/v2/content/global/rooms/dojosnow.swf': 'svanilla:media/play/v2/content/global/rooms/dojosnow.swf',
   'play/v2/content/global/rooms/hotellobby.swf': 'svanilla:media/play/v2/content/global/rooms/hotellobby.swf',
   'play/v2/content/global/rooms/hotelroof.swf': 'svanilla:media/play/v2/content/global/rooms/hotelroof.swf',

@@ -1750,7 +1750,10 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/stamps.swf': 'unknown:2012_media/stamps.swf',
       'play/v2/client/world.swf': 'unknown:2012_media/world.swf',
       'play/en/web_service/game_configs/puffle_items.json': 'unknown:2012_media/puffle_items.json',
-      'play/v2/client/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
+      'play/v2/client/map_triggers.json': 'archives:Map_triggers_Beta_team.json',
+      'play/v2/content/global/rooms/dojoextsolo.swf': 'archives:DojoextsoloOld.swf',
+      'play/v2/content/global/rooms/dojohidesolo.swf': 'archives:RoomsDojohide_4.swf',
+      'play/v2/client/dojo_sensei.swf': 'archives:Dojo_sensei.swf'
     },
     dateReference: '2012-client',
     map: 'approximation:map_2011_party_note.swf',

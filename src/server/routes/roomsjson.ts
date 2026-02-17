@@ -323,6 +323,20 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": ""
     },
+    "325": {
+      "room_id":325,
+      "room_key":"dojohidesolo",
+      "name":"Dojo Hide Solo",
+      "display_name":"Dojo Hide Solo",
+      "music_id":0,
+      "is_member":0,
+      "path":"dojohidesolo.swf",
+      "max_users":80,
+      "jump_enabled":false,
+      "jump_disabled":true,
+      "required_item":null,
+      "short_name":""
+    },
     "326": {
       "room_id": 326,
       "room_key": "dojosnow",

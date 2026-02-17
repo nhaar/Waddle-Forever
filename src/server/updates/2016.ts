@@ -113,7 +113,8 @@ export const UPDATES_2016: Update[] = [
       'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
       'play/v2/games/fish/bootstrap.swf': 'slegacy:media/play/v2/games/fish/bootstrap.swf',
       'play/v2/games/fish/IceFishing.swf': 'slegacy:media/play/v2/games/fish/IceFishing.swf',
-      'play/en/web_service/game_configs/puffle_items.json': 'approximation:game_configs/puffle_items.json'
+      'play/en/web_service/game_configs/puffle_items.json': 'approximation:game_configs/puffle_items.json',
+      'play/v2/content/global/rooms/dojoextsolo.swf': 'svanilla:media/play/v2/content/global/rooms/dojoextsolo.swf'
     },
     newPuffleJson: [
       {
