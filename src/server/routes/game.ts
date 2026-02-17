@@ -10,7 +10,7 @@ import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
-import { getStartscreenXML } from "./startscreen.xml";
+import { getStartModuleXml, getStartscreenXML } from "./startscreen.xml";
 import { getGeneralJson } from "./generaljson";
 import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
@@ -35,6 +35,7 @@ import { to2BytesLittleEndian } from "@common/flash/bytes";
 import { FileRef, getMediaFilePath } from "../game-data/files";
 import { MEDIA_DIRECTORY } from '../../common/utils';
 import getDependenciesJson from "./dependenciesjson";
+import { getPufflesJsons } from './puffles.json';
 
 /**
  * This function allows to replace the string constants of a SWF file. This is used to serve a SWF file but changing the value of certain strings when the server gives the file (dynamically changing)
@@ -212,6 +213,12 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/start/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
+  server.getData('xml/start-module-xml', (s) => {
+    return getStartModuleXml(s.settings.version);
+  });
+  server.getData('play/en/web_service/game_configs/puffles.json', (s) => {
+    return getPufflesJsons(s.settings.version);
+  });
   server.getData('play/v2/content/local/en/news/news_crumbs.swf', (s) => {
     return getNewsCrumbsSwf(s.settings.version);
   });

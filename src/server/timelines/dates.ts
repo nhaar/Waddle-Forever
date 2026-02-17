@@ -21,7 +21,9 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'adopt-catalog-name': undefined,
   'pet-furniture-rename1': undefined,
   'pet-furniture-rename2': undefined,
-  'furniture-catalog-name': undefined
+  'furniture-catalog-name': undefined,
+  'as3-startscreen-2012': undefined,
+  '2012-client': undefined
 };
 
 const dateRefMap = new Map<DateReference, Version>();

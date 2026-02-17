@@ -1,10 +1,8 @@
-import { VersionsTimeline } from "../game-data";
+import { newVersionsTimeline } from ".";
 import { UPDATES } from "../updates/updates";
 
-export function getStartscreenTimeline() {
-  const timeline = new VersionsTimeline<string[]>();
-
-  const addTimeline = (screens: Array<string | [string, string]>, date: string, end?: string) => {
+export const START_SCREEN_TIMELINE = newVersionsTimeline<string[]>(timeline => {
+const addTimeline = (screens: Array<string | [string, string]>, date: string, end?: string) => {
     const resolvedScreens = screens.map((screen, i) => {
       if (typeof screen === 'string') {
         return `background${i}.swf`;
@@ -25,6 +23,4 @@ export function getStartscreenTimeline() {
       addTimeline(update.update.startscreens, update.date, update.end);
     }
   });
-
-  return timeline.getVersions();
-}
+})

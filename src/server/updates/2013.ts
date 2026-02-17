@@ -3,6 +3,33 @@ import { CategoryID } from "../game-data/stamps";
 
 export const UPDATES_2013: Update[] = [
   {
+    // placeholder
+    date: '2013-01-01',
+    dateReference: 'vanilla-engine',
+    fileChanges: {
+      'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
+      'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
+      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
+      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf',
+      'play/v2/client/club_penguin.swf': 'approximation:club_penguin_2011.swf',
+      'play/v2/client/airtower.swf': 'svanilla:media/play/v2/client/airtower.swf',
+      'play/v2/client/gridview.swf': 'svanilla:media/play/v2/client/gridview.swf',
+      'play/v2/client/book.swf': 'svanilla:media/play/v2/client/book.swf',
+      'play/v2/client/igloo.swf': 'svanilla:media/play/v2/client/igloo.swf',
+      'play/v2/client/load.swf': 'svanilla:media/play/v2/client/load.swf',
+      'play/v2/client/login.swf': 'svanilla:media/play/v2/client/login.swf',
+      'play/v2/client/mail.swf': 'svanilla:media/play/v2/client/mail.swf',
+      'play/v2/client/newspaper.swf': 'svanilla:media/play/v2/client/newspaper.swf',
+      'play/v2/client/sentry.swf': 'svanilla:media/play/v2/client/sentry.swf',
+      'play/v2/client/stampbook.swf': 'svanilla:media/play/v2/client/stampbook.swf',
+      'play/v2/client/stamps.swf': 'svanilla:media/play/v2/client/stamps.swf',
+      'play/v2/client/world.swf': 'svanilla:media/play/v2/client/world.swf',
+      'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
+      'play/v2/content/global/penguin/penguin.swf': 'svanilla:media/play/v2/content/global/penguin/penguin.swf',
+      'play/v2/client/map_triggers.swf': 'svanilla:media/play/v2/client/map_triggers.swf',
+    },
+  },
+  {
     date: '2013-01-04',
     end: ['party']
   },

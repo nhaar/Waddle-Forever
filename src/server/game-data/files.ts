@@ -405,10 +405,6 @@ so that it works with newer clients (newer being around 2007)`,
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
     {
-      file: 'game_configs/puffles.json',
-      comment: 'Extracted from game_configs.bin from vanilla media'
-    },
-    {
       file: 'game_configs/safe_chat_messages.json',
       comment: 'Extracted from game_configs.bin from vanilla media'
     },
@@ -2161,6 +2157,58 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'medieval2012/mdlv2.swf',
       comment: 'From JF archives, second login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
+    },
+    {
+      file: '2012_media/airtower.swf',
+      comment: 'All files in this 2012_media collection are seemingly from old CPPSes or just not uploaded to archives until recently. Provided by Misabr'
+    },
+    {
+      file: '2012_media/club_penguin.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/interface__.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/like_window_module.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/load.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/newspaper.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/notifications.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/puffle_adoption.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/sentry.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/stamps.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/world.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/start_module.swf',
+      comment: 'Cf 2012_media/airtower'
+    },
+    {
+      file: '2012_media/puffle_items.json',
+      comment: 'Cf 2012_media/airtower'
     }
   ]
 };

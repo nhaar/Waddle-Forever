@@ -1556,6 +1556,10 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-11-14',
+    dateReference: 'as3-startscreen-2012',
+    fileChanges: {
+      'play/start/swf/start_module.swf': 'unknown:2012_media/start_module.swf',
+    },
     temp: {
       party: {
         partyName: 'Operation: Blackout',

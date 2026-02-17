@@ -113,6 +113,19 @@ export const UPDATES_2016: Update[] = [
       'play/v2/games/thinice/ThinIce.swf': 'svanilla:media/play/v2/games/thinice/ThinIce.swf',
       'play/v2/games/fish/bootstrap.swf': 'slegacy:media/play/v2/games/fish/bootstrap.swf',
       'play/v2/games/fish/IceFishing.swf': 'slegacy:media/play/v2/games/fish/IceFishing.swf',
-    }
+      'play/en/web_service/game_configs/puffle_items.json': 'approximation:game_configs/puffle_items.json'
+    },
+    newPuffleJson: [
+      {
+        "puffle_id": 10,
+        "description": "Rainbow",
+        "color": "0x000000"
+      },
+      {
+        "puffle_id": 11,
+        "description": "Gold",
+        "color": "0x000000"
+      }
+    ]
   }
 ];

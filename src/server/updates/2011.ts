@@ -1724,33 +1724,90 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
-    dateReference: 'vanilla-engine',
     fileChanges: {
-      'play/v2/client/shell.swf': 'approximation:shell_modern_label_fix.swf',
-      'play/v2/client/rooms_common.swf': 'approximation:rooms_common_label_fix.swf',
-      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface20110830.swf',
-      'play/v2/client/engine.swf': 'approximation:engine_modern_no_glow.swf',
-      'play/v2/client/club_penguin.swf': 'approximation:club_penguin_2011.swf',
-      'play/v2/client/airtower.swf': 'svanilla:media/play/v2/client/airtower.swf',
-      'play/v2/client/gridview.swf': 'svanilla:media/play/v2/client/gridview.swf',
-      'play/v2/client/book.swf': 'svanilla:media/play/v2/client/book.swf',
-      'play/v2/client/igloo.swf': 'svanilla:media/play/v2/client/igloo.swf',
-      'play/v2/client/load.swf': 'svanilla:media/play/v2/client/load.swf',
-      'play/v2/client/login.swf': 'svanilla:media/play/v2/client/login.swf',
-      'play/v2/client/mail.swf': 'svanilla:media/play/v2/client/mail.swf',
-      'play/v2/client/newspaper.swf': 'svanilla:media/play/v2/client/newspaper.swf',
-      'play/v2/client/sentry.swf': 'svanilla:media/play/v2/client/sentry.swf',
-      'play/v2/client/stampbook.swf': 'svanilla:media/play/v2/client/stampbook.swf',
-      'play/v2/client/stamps.swf': 'svanilla:media/play/v2/client/stamps.swf',
-      'play/v2/client/world.swf': 'svanilla:media/play/v2/client/world.swf',
-      'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
-      'play/v2/content/global/penguin/penguin.swf': 'svanilla:media/play/v2/content/global/penguin/penguin.swf',
-      'play/v2/client/map_triggers.swf': 'svanilla:media/play/v2/client/map_triggers.swf',
+      'play/v2/client/airtower.swf': 'unknown:2012_media/airtower.swf',
+      'play/v2/client/book.swf': 'archives:ClientBook-20120823.swf',
+      'play/v2/client/catalog_viewer.swf': 'archives:ClientCatalog_viewer-20121006.swf',
+      'play/v2/client/club_penguin.swf': 'unknown:2012_media/club_penguin.swf',
+      'play/v2/client/courtyard_sensei.swf': 'archives:ClientCourtyard_sensei.swf',
+      'play/v2/client/engine.swf': 'archives:ClientEngine-20130410.swf',
+      'play/v2/client/game_launcher.swf': 'archives:ClientGame_launcher-20121006.swf',
+      'play/v2/client/gridview.swf': 'archives:ClientGridview-20120920.swf',
+      'play/v2/client/igloo.swf': 'archives:ClientIgloo2013-01-19.swf',
+      'play/v2/client/igloo_map.swf': 'archives:ClientIgloo_map-20150614.swf',
+      'play/v2/client/interface_.swf': 'archives:ClientInterface-20120826.swf',
+      'play/v2/client/interface__.swf': 'unknown:2012_media/interface__.swf',
+      'play/v2/client/like_window_module.swf': 'unknown:2012_media/like_window_module.swf',
+      'play/v2/client/load.swf': 'unknown:2012_media/load.swf',
+      'play/v2/client/login.swf': 'archives:Login.swf',
+      'play/v2/client/newspaper.swf': 'unknown:2012_media/newspaper.swf',
+      'play/v2/client/notifications.swf': 'unknown:2012_media/notifications.swf',
+      'play/v2/client/party.swf': 'archives:ClientParty-20131003.swf',
+      'play/v2/client/puffle_adoption.swf': 'unknown:2012_media/puffle_adoption.swf',
+      'play/v2/client/sentry.swf': 'unknown:2012_media/sentry.swf',
+      'play/v2/client/shell.swf': 'archives:ClientShell-20120920.swf',
+      'play/v2/client/stampbook.swf': 'archives:ClientStampbook-20120920.swf',
+      'play/v2/client/stamps.swf': 'unknown:2012_media/stamps.swf',
+      'play/v2/client/world.swf': 'unknown:2012_media/world.swf',
+      'play/en/web_service/game_configs/puffle_items.json': 'unknown:2012_media/puffle_items.json'
     },
+    dateReference: '2012-client',
     globalChanges: {
       'content/map_triggers.json': 'archives:Map_triggers_Beta_team.json'
     },
-    map: 'approximation:map_2011_party_note.swf'
+    map: 'approximation:map_2011_party_note.swf',
+    newPuffleJson: [
+      {
+        "puffle_id": 0,
+        "description": "Blue",
+        "color": "0x33ccff"
+      },
+      {
+        "puffle_id": 1,
+        "description": "Pink",
+        "color": "0xffccff"
+      },
+      {
+        "puffle_id": 2,
+        "description": "Black",
+        "color": "0x666666"
+      },
+      {
+        "puffle_id": 3,
+        "description": "Green",
+        "color": "0x33cc00"
+      },
+      {
+        "puffle_id": 4,
+        "description": "Purple",
+        "color": "0xad5fc6"
+      },
+      {
+        "puffle_id": 5,
+        "description": "Red",
+        "color": "0xee4444"
+      },
+      {
+        "puffle_id": 6,
+        "description": "Yellow",
+        "color": "0xffff00"
+      },
+      {
+        "puffle_id": 7,
+        "description": "White",
+        "color": "0xffffee"
+      },
+      {
+        "puffle_id": 8,
+        "description": "Orange",
+        "color": "0xff9900"
+      },
+      {
+        "puffle_id": 9,
+        "description": "Brown",
+        "color": "0x72491d"
+      }
+    ]
   },
   {
     date: '2011-06-30',

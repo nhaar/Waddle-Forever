@@ -3889,8 +3889,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/en/web_service/game_configs/player_colors.json': 'approximation:game_configs/player_colors.json',
   'play/en/web_service/game_configs/polaroids.json': 'approximation:game_configs/polaroids.json',
   'play/en/web_service/game_configs/postcards.json': 'approximation:game_configs/postcards.json',
-  'play/en/web_service/game_configs/puffle_items.json': 'approximation:game_configs/puffle_items.json',
-  'play/en/web_service/game_configs/puffles.json': 'approximation:game_configs/puffles.json',
   'play/en/web_service/game_configs/safe_chat_messages.json': 'approximation:game_configs/safe_chat_messages.json',
   'play/en/web_service/game_configs/stamps_tokenized.json': 'approximation:game_configs/stamps_tokenized.json',
   'play/en/web_service/game_configs/tour_guide_messages.json': 'approximation:game_configs/tour_guide_messages.json',

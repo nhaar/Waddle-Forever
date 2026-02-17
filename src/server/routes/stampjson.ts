@@ -58,7 +58,7 @@ export function getStampbook(version: Version): Stampbook {
 export function getStampsJson(version: Version) : string {
   const stampbook = getStampbook(version);
 
-  if (isLower(version, getDate('vanilla-engine'))) {
+  if (isLower(version, getDate('2012-client'))) {
     return getOriginalStampbookJson(stampbook);
   }
   return JSON.stringify(stampbook)

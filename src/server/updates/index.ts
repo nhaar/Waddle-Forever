@@ -85,6 +85,12 @@ export type CatalogItems = {
   announce?: false;
 }
 
+export type PuffleJson = {
+  puffle_id: number;
+  description: string;
+  color: string;
+};
+
 export type CPUpdate = {
   map?: FileRef;
   /** Pin period indicator */
@@ -235,6 +241,9 @@ export type CPUpdate = {
   removeClientFiles?: number[];
 
   dayOfFun?: 'start' | 'end';
+
+  /** New puffle added to puffles.json */
+  newPuffleJson?: Array<PuffleJson>
 } & ({
   partyName: string;
   decorated?: false;
@@ -284,7 +293,9 @@ export type DateReference = 'cpip' |
   'adopt-catalog-name' |
   'pet-furniture-rename1' |
   'pet-furniture-rename2' |
-  'furniture-catalog-name';
+  'furniture-catalog-name' |
+  'as3-startscreen-2012' |
+  '2012-client';
 
 export type Update = {
   date: Version;

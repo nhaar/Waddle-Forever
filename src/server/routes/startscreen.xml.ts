@@ -1,12 +1,11 @@
 import { findInVersion } from "../game-data";
 import { getDate } from "../timelines/dates";
-import { getStartscreenTimeline } from "../timelines/startscreen";
+import { START_SCREEN_TIMELINE } from "../timelines/startscreen";
 import { isLower, Version } from "./versions";
 
 export function getStartscreenXML(version: Version) {
-  const startscreens = getStartscreenTimeline();
 
-  const screens = findInVersion(version, startscreens) || [];
+  const screens = findInVersion(version, START_SCREEN_TIMELINE) || [];
 
 	if (isLower(version, getDate('as3-startscreen'))) {
 		return `
@@ -39,7 +38,7 @@ export function getStartscreenXML(version: Version) {
 	
 	</startscreen>
 	`;
-	} else if (isLower(version, getDate('vanilla-engine'))) {
+	} else if (isLower(version, getDate('as3-startscreen-2012'))) {
 		return `
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -47,7 +46,8 @@ export function getStartscreenXML(version: Version) {
 	
 	<language>en</language>
 	
-	<cdn_url href="http://media1.clubpenguin.com/play/"/>
+	<-- Originally media1 URL -->
+	<cdn_url href="/play/start/"/>
 	
 	<font_list type="array">
 		
@@ -55,17 +55,16 @@ export function getStartscreenXML(version: Version) {
 		
 	</font_list>
 	
-	<button_list type="array" base_url="http://play.clubpenguin.com/">
+	<-- Button list is changed to work with 2012 client -->
+	<button_list type="array">
 		
-		<button id="start_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:StartButton" href="login/" target="_top" x="380" y="390">Start</button>
+		<button id="start_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LoginButton" href="login/" target="_top" x="410" y="395" fontSize="20">Login</button>
 		
-		<button id="blog_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:BlogButton" href="http://community.clubpenguin.com/" target="_top" x="105" y="380">Check out what's new</button>
+		<button id="create_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:CreateAccountButton" href="create/" target="_top" x="180" y="395" fontSize="18">Create a Penguin</button>
 		
-		<button id="create_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:CreateAccountButton" href="create/" target="_top" x="650" y="370">Create a new Penguin</button>
-		
-		<button id="member_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:BecomeMemberButton" href="http://www.clubpenguin.com/membership/" target="_top" x="650" y="425">Become a member</button>
-		
-		<button id="unlock_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:UnlockItemButton" src="http://media1.clubpenguin.com/play/start/image/unlock-items-icon.swf" href="redeem/" target="_top" x="95" y="400">Unlock items online!</button>
+		<button id="membership_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:MembershipButton" href="http://www.clubpenguin.com/membership/" target="_top" x="440" y="287" fontSize="8">Learn More About Membership</button>
+	
+		<button id="logo_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LogoButton" href="http://www.clubpenguin.com/" x="380" y="305" target="_top"/>
 		
 	</button_list>
 	
@@ -105,6 +104,26 @@ export function getStartscreenXML(version: Version) {
 		}).join('\n')}
 		
 	</billboard_list>
+	
+</section>`;
+	} else if (isLower(version, getDate('vanilla-engine'))) {
+		return `<?xml version="1.0" encoding="UTF-8"?>
+
+<section id="START">
+	
+	<button_list type="array">
+		
+		<button id="start_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LoginButton" href="login/" target="_top" x="410" y="395" fontSize="20">Login</button>
+		
+		<button id="create_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:CreateAccountButton" href="create/" target="_top" x="180" y="395" fontSize="18">Create a Penguin</button>
+		
+		<button id="membership_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:MembershipButton" href="http://www.clubpenguin.com/membership/" target="_top" x="440" y="287" fontSize="8">Learn More About Membership</button>
+	
+		<button id="logo_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LogoButton" href="http://www.clubpenguin.com/" x="380" y="305" target="_top"/>
+		
+	</button_list>
+	
+	<legal>� 2012 Disney. Some features require a paid membership.</legal>
 	
 </section>`;
 	} else {
@@ -168,4 +187,18 @@ export function getStartscreenXML(version: Version) {
 	
 </section>`;
 	}
+}
+
+export function getStartModuleXml(version: Version) {
+	const screens = findInVersion(version, START_SCREEN_TIMELINE) || [];
+
+	return `<?xml version="1.0" encoding="UTF-8"?>
+<section id="START">
+	<language>en</language>
+	<billboard_list type="array">
+	${screens.map((screen, i) => {
+		return `<billboard id="${i}" src="swf/${screen}?response_type=embed" href="rm=100#/login/" probability="1"/>  `
+	})}
+	</billboard_list>
+</section>`
 }
