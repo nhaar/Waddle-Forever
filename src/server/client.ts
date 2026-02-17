@@ -1420,7 +1420,7 @@ export class Client {
   }
 
   getIglooString(igloo: Igloo): string {
-    if (this.isEngine2) {
+    if (isLower(this.version, getDate('2012-client'))) {
       const furnitureString = Client.getFurnitureString(igloo.furniture);
       return [
         igloo.type,
@@ -1429,7 +1429,6 @@ export class Client {
         furnitureString
       ].join('%');
     } else {
-      // This is Engine 3
       return Client.getEngine3IglooString(igloo, 1);
     }
   }
