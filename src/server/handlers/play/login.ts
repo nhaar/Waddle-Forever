@@ -1,6 +1,8 @@
 import serverList, { getServerPopulation } from "../../servers";
 import { Handler } from "..";
 import { logdebug } from "@server/logger";
+import { isGreaterOrEqual, isLower } from "@server/routes/versions";
+import { getDate } from "@server/timelines/dates";
 
 const handler = new Handler();
 
@@ -13,7 +15,7 @@ handler.xml('verChk', (client) => {
 handler.xml('rndK', (client) => {
   // random key generation
   // this is used for authentication, so it is not needed for us, we just send any key
-  client.send('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>');
+  client.send(`<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>`);
 });
 
 handler.xml('login', (client, data) => {
@@ -53,11 +55,33 @@ handler.xml('login', (client, data) => {
     buddies
     how will server size be handled after NPCs?
     */
-    // information regarding how many populations are in each server
-    client.sendXt('l', client.penguin.id, client.penguin.id, '', serverList.map((server) => {
+
+    // 'l' packet arguments:
+
+    // outside 2012 client
+    // 1 = ID
+    // 2 = ??
+    // 3 = ??
+    // 4 = server list
+
+    // 2012 client
+    // 1 = ID
+    // 2 = Friend SWID (??)
+    // 3 = login key (unknown what it is used for)
+    // 4 = friends login key (??)
+    // 5 = worlds with buddies
+    // 6 = server list
+
+    const serverString = serverList.map((server) => {
       const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
       return `${server.id},${population}`;
-    }).join('|'));
+    }).join('|');
+
+    if (isGreaterOrEqual(client.version, getDate('2012-client')) && isLower(client.version, getDate('vanilla-engine'))) {
+      client.sendXt('l', client.penguin.id, client.penguin.id, '', '', '', serverString);
+    } else {
+      client.sendXt('l', client.penguin.id, client.penguin.id, '', serverString);
+    }
   }
 })
 
