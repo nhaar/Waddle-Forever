@@ -46,7 +46,7 @@ export function getStartscreenXML(version: Version) {
 	
 	<language>en</language>
 	
-	<-- Originally media1 URL -->
+	<!-- Originally media1 URL -->
 	<cdn_url href="/play/start/"/>
 	
 	<font_list type="array">
@@ -55,7 +55,7 @@ export function getStartscreenXML(version: Version) {
 		
 	</font_list>
 	
-	<-- Button list is changed to work with 2012 client -->
+	<!-- Button list is changed to work with 2012 client -->
 	<button_list type="array">
 		
 		<button id="start_button" classpath="com:clubpenguin:web:play:startscreen:view:ui:LoginButton" href="login/" target="_top" x="410" y="395" fontSize="20">Login</button>
