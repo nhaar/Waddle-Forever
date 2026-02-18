@@ -234,6 +234,10 @@ would need to investigated`
     {
       file: 'load2008-08-15.swf',
       comment: 'Found in various old trainers. Domain check has likely been removed. Further changes to fix paths, including in shell.'
+    },
+    {
+      file: 'ClientShell2012-01-03.swf',
+      comment: 'Because of how game_strings.json\'s format changed, and there was not a way to get club_penguin.swf from jan 2012 to work with this (due to a lack of world.swf), the setLanguageObject and setLocalizedErrorObject were updated to change the format in real time'
     }
   ],
   [APPROXIMATION]: [
