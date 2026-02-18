@@ -2250,7 +2250,8 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/shell.swf': 'fix:ClientShell2012-01-03.swf',
       'play/v2/client/airtower.swf': 'unknown:2012_media/airtower.swf',
       'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf',
-      'play/v2/content/local/en/catalogues/dance.swf': 'archives:Game_Upgrades_Dance_2011.swf'
+      'play/v2/content/local/en/catalogues/dance.swf': 'archives:Game_Upgrades_Dance_2011.swf',
+      'play/v2/client/interface.swf': 'recreation:interfaces/halloween_2011.swf'
     },
     gameUpgrades: {
       newItems: [

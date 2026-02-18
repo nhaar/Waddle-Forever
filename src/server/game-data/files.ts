@@ -237,7 +237,7 @@ would need to investigated`
     },
     {
       file: 'ClientShell2012-01-03.swf',
-      comment: 'Because of how game_strings.json\'s format changed, and there was not a way to get club_penguin.swf from jan 2012 to work with this (due to a lack of world.swf), the setLanguageObject and setLocalizedErrorObject were updated to change the format in real time'
+      comment: 'Because of how game_strings.json\'s format changed, and there was not a way to get club_penguin.swf from jan 2012 to work with this (due to a lack of world.swf), the setLanguageObject and setLocalizedErrorObject were updated to change the format in real time. Similarly, setInventoryCrumbsObject had to be changed as well (for the same club_penguin.swf reason)'
     },
     {
       file: 'ClientShellBetaTeam.swf',
@@ -2027,6 +2027,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'telescope_holiday.swf',
       comment: 'Made by ItzAle, from the 2012 telescope as a base'
+    },
+    {
+      file: 'interfaces/halloween_2011.swf',
+      comment: 'Exact same as Aug 2011 interface, but the scavenger hunt package is taken from the nov 01 2011 interface so that it works with the halloween party 2011'
     }
   ],
   [MOD]: [
