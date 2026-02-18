@@ -2171,10 +2171,6 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
       comment: 'Cf 2012_media/airtower'
     },
     {
-      file: '2012_media/interface__.swf',
-      comment: 'Cf 2012_media/airtower'
-    },
-    {
       file: '2012_media/like_window_module.swf',
       comment: 'Cf 2012_media/airtower'
     },
