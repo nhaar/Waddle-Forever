@@ -238,6 +238,10 @@ would need to investigated`
     {
       file: 'ClientShell2012-01-03.swf',
       comment: 'Because of how game_strings.json\'s format changed, and there was not a way to get club_penguin.swf from jan 2012 to work with this (due to a lack of world.swf), the setLanguageObject and setLocalizedErrorObject were updated to change the format in real time'
+    },
+    {
+      file: 'ClientShellBetaTeam.swf',
+      comment: 'Similarly to ClientShell2012-01-03.swf, did the same updates to setLanguageObject and setLocalizedErrorObject. Furthermore, changed sendAs2Initialized to send the environment variable which was not used at the time of this shell, but is used in the club_penguin.swf that is being used with it'
     }
   ],
   [APPROXIMATION]: [

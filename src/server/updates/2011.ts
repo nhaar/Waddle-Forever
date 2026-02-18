@@ -1725,7 +1725,7 @@ export const UPDATES_2011: Update[] = [
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
     fileChanges: {
-      'play/v2/client/airtower.swf': 'unknown:2012_media/airtower.swf',
+      'play/v2/client/airtower.swf': 'archives:ClientAirtowerBetaTeam.swf',
       'play/v2/client/book.swf': 'archives:ClientBook-20120823.swf',
       'play/v2/client/catalog_viewer.swf': 'archives:ClientCatalog_viewer-20121006.swf',
       'play/v2/client/club_penguin.swf': 'unknown:2012_media/club_penguin.swf',
@@ -1743,7 +1743,7 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/party.swf': 'archives:ClientParty-20131003.swf',
       'play/v2/client/puffle_adoption.swf': 'unknown:2012_media/puffle_adoption.swf',
       'play/v2/client/sentry.swf': 'unknown:2012_media/sentry.swf',
-      'play/v2/client/shell.swf': 'fix:ClientShell2012-01-03.swf',
+      'play/v2/client/shell.swf': 'fix:ClientShellBetaTeam.swf',
       'play/v2/client/stampbook.swf': 'archives:ClientStampbook-20120920.swf',
       'play/v2/client/stamps.swf': 'unknown:2012_media/stamps.swf',
       'play/v2/client/world.swf': 'unknown:2012_media/world.swf',
@@ -2247,7 +2247,8 @@ export const UPDATES_2011: Update[] = [
     date: '2011-10-20',
     // when room localization went from being "english" to "en" (approximation)
     fileChanges: {
-      'play/v2/client/shell.swf': 'approximation:shell_2011_interface_fix.swf',
+      'play/v2/client/shell.swf': 'fix:ClientShell2012-01-03.swf',
+      'play/v2/client/airtower.swf': 'unknown:2012_media/airtower.swf',
       'play/v2/client/rooms_common.swf': 'svanilla:media/play/v2/client/rooms_common.swf',
       'play/v2/content/local/en/catalogues/dance.swf': 'archives:Game_Upgrades_Dance_2011.swf'
     },
