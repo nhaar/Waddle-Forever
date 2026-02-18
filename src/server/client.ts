@@ -1420,7 +1420,7 @@ export class Client {
   }
 
   getIglooString(igloo: Igloo): string {
-    if (isLower(this.version, getDate('2012-client'))) {
+    if (isLower(this.version, getDate('2012-sep-shell'))) {
       const furnitureString = Client.getFurnitureString(igloo.furniture);
       return [
         igloo.type,

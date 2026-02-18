@@ -1733,7 +1733,7 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/engine.swf': 'archives:EngineBetaTean.swf',
       'play/v2/client/game_launcher.swf': 'archives:ClientGame_launcher-20121006.swf',
       'play/v2/client/gridview.swf': 'archives:ClientGridview-20120920.swf',
-      'play/v2/client/igloo.swf': 'archives:ClientIgloo2013-01-19.swf',
+      'play/v2/client/igloo.swf': 'archives:ClientIgloo-20111215.swf',
       'play/v2/client/igloo_map.swf': 'archives:ClientIgloo_map-20150614.swf',
       'play/v2/client/like_window_module.swf': 'unknown:2012_media/like_window_module.swf',
       'play/v2/client/load.swf': 'unknown:2012_media/load.swf',
