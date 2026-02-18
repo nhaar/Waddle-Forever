@@ -7,6 +7,8 @@ import { RouteRefMap } from ".";
 /** Files to be served static in Post-CPIP */
 export const CPIP_STATIC_FILES: RouteRefMap = {
   'en/web_service/cover.json': 'slegacy:play/en/web_service/cover.json',
+  'play/en/web_service/cover.json': 'slegacy:play/en/web_service/cover.json',
+  'play/en/web_service/game_configs/cover.json': 'approximation:game_configs/cover.json',
   'en/web_service/epf.json': 'slegacy:play/en/web_service/epf.json',
   'en/web_service/polaroids.json': 'slegacy:play/en/web_service/polaroids.json',
   'web_service/weblogger.json': 'slegacy:play/web_service/weblogger.json',
@@ -3876,7 +3878,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/client/ninja_progress.swf': 'archives:ClientNinja_progress.swf',
   'en/web_service/game_configs/mascots.jsonp': 'svanilla:media/play/en/web_service/game_configs/mascots.jsonp',
   'en/web_service/game_configs/rooms.jsonp': 'svanilla:media/play/en/web_service/game_configs/rooms.jsonp',
-  'play/en/web_service/game_configs/cover.json': 'approximation:game_configs/cover.json',
   'play/en/web_service/game_configs/furniture_items.json': 'approximation:game_configs/furniture_items.json',
   'play/en/web_service/game_configs/igloo_floors.json': 'approximation:game_configs/igloo_floors.json',
   'play/en/web_service/game_configs/igloo_locations.json': 'approximation:game_configs/igloo_locations.json',
