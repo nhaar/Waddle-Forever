@@ -23,7 +23,8 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'pet-furniture-rename2': undefined,
   'furniture-catalog-name': undefined,
   'as3-startscreen-2012': undefined,
-  '2012-client': undefined
+  '2012-client': undefined,
+  '2012-sep-shell': undefined
 };
 
 const dateRefMap = new Map<DateReference, Version>();

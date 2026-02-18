@@ -295,7 +295,8 @@ export type DateReference = 'cpip' |
   'pet-furniture-rename2' |
   'furniture-catalog-name' |
   'as3-startscreen-2012' |
-  '2012-client';
+  '2012-client' |
+  '2012-sep-shell';
 
 export type Update = {
   date: Version;

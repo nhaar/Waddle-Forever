@@ -150,6 +150,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('en/web_service/stamps.json', (s) => {
     return getStampsJson(s.settings.version);
   });
+  server.getData('play/en/web_service/stamps.json', (s) => {
+    return getStampsJson(s.settings.version);
+  });
   server.getData('play/en/web_service/game_configs/stamps.json', (s) => {
     return getStampsJson(s.settings.version);
   });

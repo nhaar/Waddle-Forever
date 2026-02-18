@@ -250,7 +250,8 @@ export const UPDATES_2012: Update[] = [
       // here used to demark new loading screens, but there are more things to be done to get it to be accurate
       'play/v2/client/shell.swf': 'archives:ClientShell-20120920.swf',
       'play/v2/client/engine.swf': 'archives:ClientEngine-20130410.swf'
-    }
+    },
+    dateReference: '2012-sep-shell'
   },
   {
     date: '2012-03-07',
