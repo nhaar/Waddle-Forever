@@ -1,5 +1,5 @@
 import { getMapForDate } from "../timelines";
-import { LOCAL_PATHS_TIMELINE } from "../timelines/crumbs";
+import { GLOBAL_PATHS_TIMELINE, LOCAL_PATHS_TIMELINE } from "../timelines/crumbs";
 import { Version } from "./versions";
 
 export function getPathsJson(version: Version): string {
@@ -347,7 +347,8 @@ export function getPathsJson(version: Version): string {
       "w.app.p2017.dialogprompt.february.alltasks.congrats": "close_ups\/170201_dialogue_alltasks_congrats.swf",
       "w.app.p2017.dialogprompt.february.iceberg.congrats": "close_ups\/170201_dialogue_iceberg_congrats.swf",
       "w.app.p2017.dialogprompt.march.login": "close_ups\/170322_character_dialogue_login.swf",
-      'w.p0512.medieval.lighthouse.telescope': 'close_ups/lighthouse_telescope.swf'
+      'w.p0512.medieval.lighthouse.telescope': 'close_ups/lighthouse_telescope.swf',
+      ...getMapForDate(GLOBAL_PATHS_TIMELINE, version)
     },
     "local": {
       "801_award": "awards\/801.swf",
