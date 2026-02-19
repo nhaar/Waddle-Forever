@@ -7,6 +7,8 @@ import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
 import { BROWN_PUFFLE_TIMELINE } from "@server/timelines/puffles";
 import { findInVersion } from "@server/game-data";
+import { isLower } from "@server/routes/versions";
+import { getDate } from "@server/timelines/dates";
 
 const handler = new Handler()
 
@@ -525,7 +527,7 @@ handler.xt(Handle.AdoptPuffleNew, (client, puffleType, puffleName, puffleSubType
 
 // get puffles in igloo
 handler.xt(Handle.GetIglooPuffles, (client, id, iglooType) => {
-  if (client.isEngine2) {
+  if (isLower(client.version, getDate('2012-sep-shell'))) {
     const puffles = client.penguin.getPuffles().map((puffle) => {
       return [
         puffle.id,
@@ -550,7 +552,7 @@ handler.xt(Handle.GetIglooPuffles, (client, id, iglooType) => {
     }
   
     client.sendXt('pg', ...puffles);
-  } else if (client.isEngine3) {
+  } else {
     const isBackyard = iglooType === 'backyard';
     const puffles = client.penguin.getPuffles().filter((puffle) => {
       // filtering for backyard or igloo puffles
