@@ -630,7 +630,17 @@ handler.xt(Handle.CheckPuffleName, (client, puffleName) => {
 // endpoint that checks name used by some puffles (rainbow puffle, gold puffle)
 // potentially a predecessor to the one above
 handler.xt(Handle.CheckPuffleNameAlt, (client, puffleName) => {
-  client.sendXt('pcn', puffleName, 1);
+  // rainbow puffle, gold puffle in vanilla media
+  if (isGreaterOrEqual(client.version, getDate('vanilla-engine'))) {
+    client.sendXt('pcn', puffleName, 1);
+  } else {
+    // 2012 puffle adoption screen
+    if (puffleName.length > 4) {
+      client.sendXt('pcn');
+    } else {
+      client.sendError(441);
+    }
+  }
 })
 
 // get inventory for pet care items
