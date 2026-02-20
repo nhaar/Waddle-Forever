@@ -1754,6 +1754,11 @@ export const UPDATES_2011: Update[] = [
       'play/v2/content/global/rooms/dojohidesolo.swf': 'archives:RoomsDojohide_4.swf',
       'play/v2/client/dojo_sensei.swf': 'archives:Dojo_sensei.swf'
     },
+    gameStrings: {
+      "w.puffleadoption.dialog.yourcoins": "Your coins: %0%",
+      'w.puffleadoption.dialog.namepuffle.title': 'Please give your new puffle\na name',
+      "w.puffleadoption.dialog.costincludes.agree": "I, %0% agree to adopt %1% for 800 coins."
+    },
     dateReference: '2012-client',
     map: 'approximation:map_2011_party_note.swf',
     newPuffleJson: [

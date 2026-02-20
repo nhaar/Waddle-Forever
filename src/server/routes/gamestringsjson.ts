@@ -119,8 +119,8 @@ export function getGameStrings(version: Version): string {
         "Adopt"
       ],
       [
-        "w.puffleadoption.dialog.namepuffle.title",
-        "Ready to adopt\nyour new puffle?"
+        'w.puffleadoption.dialog.namepuffle.subtext',
+        'Be sure you like this name. It\ncan\'t be changed later.'
       ],
       [
         "w.puffleadoption.dialog.namepuffle.nameideas",
@@ -145,10 +145,6 @@ export function getGameStrings(version: Version): string {
       [
         "w.puffleadoption.dialog.costincludes.manual",
         "Manual"
-      ],
-      [
-        "w.puffleadoption.dialog.costincludes.agreement",
-        "I, %0% agree to adopt %1% for 400 coins."
       ],
       [
         "w.puffleadoption.dialog.costincludes.coins",
@@ -177,10 +173,6 @@ export function getGameStrings(version: Version): string {
       [
         "w.puffleadoption.dialog.maintitle",
         "Adopt"
-      ],
-      [
-        "w.puffleadoption.dialog.costincludes.agree",
-        "I, %0% agree to adopt %1% for 400 coins."
       ],
       [
         "w.puffleadoption.dialog.costincludes.prompt",
@@ -657,10 +649,6 @@ export function getGameStrings(version: Version): string {
       [
         "w.pufflecare.care.return.ok",
         "Ok"
-      ],
-      [
-        "w.puffleadoption.dialog.yourcoins",
-        "Your coins:\n%0%"
       ],
       [
         "w.pufflecare.certificate.thiscertifies",

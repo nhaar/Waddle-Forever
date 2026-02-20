@@ -127,6 +127,11 @@ export const UPDATES_2016: Update[] = [
         "description": "Gold",
         "color": "0x000000"
       }
-    ]
+    ],
+    gameStrings: {
+      "w.puffleadoption.dialog.yourcoins": "Your coins:\n%0%",
+      "w.puffleadoption.dialog.namepuffle.title": "Ready to adopt\nyour new puffle?",
+      "w.puffleadoption.dialog.costincludes.agree": "I, %0% agree to adopt %1% for 400 coins."
+    }
   }
 ];
