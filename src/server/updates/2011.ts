@@ -2446,8 +2446,8 @@ export const UPDATES_2011: Update[] = [
     date: '2011-11-03',
     miscComments: ['Pufflescape is released'],
     map: 'approximation:map_dec_2011.swf',
-    globalChanges: {
-      'content/map_triggers.json': 'archives:ClientMap_triggers-02142013.json'
+    fileChanges: {
+      'play/v2/client/map_triggers.json': 'archives:ClientMap_triggers-02142013.json'
     },
     rooms: {
       pet: 'archives:RoomsPet_7.swf'
