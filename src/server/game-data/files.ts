@@ -2031,6 +2031,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'interfaces/halloween_2011.swf',
       comment: 'Exact same as Aug 2011 interface, but the scavenger hunt package is taken from the nov 01 2011 interface so that it works with the halloween party 2011'
+    },
+    {
+      file: 'puffle_client/puffle_adoption_2012.swf',
+      comment: 'Used the Mar 2011 puffle adoption from revgreens and changed the code until it worked with the Oct 2012 club_penguin.swf'
+    },
+    {
+      file: 'puffle_client/puffle_certificate_2012.swf',
+      comment: 'Used the puffle certificate from mondo (suposeddly from mar 2011) and changed the code until it worked with the Oct 2012 club_penguin.swf'
     }
   ],
   [MOD]: [

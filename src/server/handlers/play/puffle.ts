@@ -7,7 +7,7 @@ import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
 import { BROWN_PUFFLE_TIMELINE } from "@server/timelines/puffles";
 import { findInVersion } from "@server/game-data";
-import { isLower } from "@server/routes/versions";
+import { isGreaterOrEqual, isLower } from "@server/routes/versions";
 import { getDate } from "@server/timelines/dates";
 
 const handler = new Handler()
@@ -408,7 +408,7 @@ const getPuffleString = (puffle: PlayerPuffle): string => {
 }
 
 handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
-  if (!client.isEngine2) {
+  if (isGreaterOrEqual(client.version, getDate('vanilla-engine'))) {
     return;
   }
   let cost = 800;
@@ -424,7 +424,12 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   }
   client.penguin.removeCoins(cost)
   const puffle = client.penguin.addPuffle(puffleName, puffleType);
-  client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
+
+  if (isGreaterOrEqual(client.version, getDate('2012-client'))) {
+    client.sendXt('pn', puffle.id);
+  } else {
+    client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
+  }
 
   client.addPostcard(111, { details: puffleName });
   client.update();
@@ -450,7 +455,7 @@ enum PuffleCategory {
 };
 
 handler.xt(Handle.AdoptPuffleNew, (client, puffleType, puffleName, puffleSubType) => {
-  if (!client.isEngine3) {
+  if (isLower(client.version, getDate('vanilla-engine'))) {
     return;
   }
 
@@ -586,8 +591,12 @@ handler.xt(Handle.WalkPuffle, (client, puffleId, walking) => {
 
   client.walkPuffle(puffleId);
 
-  // TODO make the room send XT to everyone
-  client.sendXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
+  if (isLower(client.version, getDate('2012-client'))) {
+    client.sendXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
+  } else {
+    // TODO last number is puffle hat
+    client.sendXt('pw', client.penguin.id, puffleId, walking, 0);
+  }
   client.update();
 })
 // walking puffle Engine 3
