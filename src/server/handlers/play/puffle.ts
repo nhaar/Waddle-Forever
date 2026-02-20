@@ -418,7 +418,8 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   }
 
   if (client.penguin.coins < cost) {
-    // TODO no coins error
+    client.sendError(401);
+    return;
   } else if (false) {
     // TODO too many puffles error
   }
@@ -427,6 +428,8 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
 
   if (isGreaterOrEqual(client.version, getDate('2012-client'))) {
     client.sendXt('pn', puffle.id);
+    // manually updating coins
+    client.sendPenguinInfo();
   } else {
     client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
   }
