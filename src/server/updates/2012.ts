@@ -347,13 +347,12 @@ export const UPDATES_2012: Update[] = [
         },
         mapNote: 'archives:PuffleParty2012Party_map_note.swf',
         fileChanges: {
-          'play/v2/client/engine.swf': 'approximation:puffles/engine.swf'
+          'play/v2/client/engine.swf': 'recreation:engines/puffle_party_2012.swf'
         }
       },
     },
     fileChanges: {
-      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf',
-      'play/v2/client/shell.swf': 'approximation:shell_2012_halloween.swf'
+      'play/v2/client/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
     },
     stampUpdates: [
       {

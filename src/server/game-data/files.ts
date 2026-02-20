@@ -2039,6 +2039,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'puffle_client/puffle_certificate_2012.swf',
       comment: 'Used the puffle certificate from mondo (suposeddly from mar 2011) and changed the code until it worked with the Oct 2012 club_penguin.swf'
+    },
+    {
+      file: 'engines/puffle_party_2012.swf',
+      comment: 'Originally archives ClientEngine2012-10-17.swf, code is modified to have support with the original interface of the time'
     }
   ],
   [MOD]: [
