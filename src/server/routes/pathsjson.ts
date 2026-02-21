@@ -1,6 +1,17 @@
+import { iterateEntries } from "@common/utils";
 import { getMapForDate } from "../timelines";
 import { GLOBAL_PATHS_TIMELINE, LOCAL_PATHS_TIMELINE } from "../timelines/crumbs";
 import { Version } from "./versions";
+
+function filterPaths(paths: Partial<Record<string, string | null>>): Record<string, string> {
+  const newPaths: Record<string, string> = {};
+  iterateEntries(paths, (key, value) => {
+    if (value !== null) {
+      newPaths[key] = value;
+    }
+  });
+  return newPaths;
+}
 
 export function getPathsJson(version: Version): string {
   const paths = {
@@ -358,7 +369,7 @@ export function getPathsJson(version: Version): string {
       "w.app.p2017.dialogprompt.february.iceberg.congrats": "close_ups\/170201_dialogue_iceberg_congrats.swf",
       "w.app.p2017.dialogprompt.march.login": "close_ups\/170322_character_dialogue_login.swf",
       'w.p0512.medieval.lighthouse.telescope': 'close_ups/lighthouse_telescope.swf',
-      ...getMapForDate(GLOBAL_PATHS_TIMELINE, version)
+      ...filterPaths(getMapForDate(GLOBAL_PATHS_TIMELINE, version))
     },
     "local": {
       "801_award": "awards\/801.swf",
@@ -625,7 +636,7 @@ export function getPathsJson(version: Version): string {
       "w.app.epfhandbook": "books\/EPF-handbook.swf",
       'w.p0512.medieval.login1': 'close_ups/mdlv1.swf',
       'w.p0512.medieval.login2': 'close_ups/mdlv2.swf',
-      ...getMapForDate(LOCAL_PATHS_TIMELINE, version)
+      ...filterPaths(getMapForDate(LOCAL_PATHS_TIMELINE, version))
     },
     "link": {
       "main_web": "http:\/\/www.clubpenguin.com\/",
