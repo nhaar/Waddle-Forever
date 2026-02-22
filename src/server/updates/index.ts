@@ -287,6 +287,7 @@ export type DateReference = 'cpip' |
   'placeholder-2016' |
   'vr-room' |
   'welcomesolo-room' |
+  'agentlobbysolo-room' |
   'old-rink' |
   'string-verify' |
   'composite-paths' |

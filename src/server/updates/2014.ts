@@ -2,6 +2,10 @@ import { Update } from ".";
 
 export const UPDATES_2014: Update[] = [
   {
+    date: '2014-02-13',
+    dateReference: 'agentlobbysolo-room'
+  },
+  {
     date: '2014-04-09',
     dateReference: 'welcomesolo-room'
   },

@@ -13,6 +13,7 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'stamps-release': undefined,
   'vanilla-engine': undefined,
   'placeholder-2016': undefined,
+  'agentlobbysolo-room': undefined,
   'vr-room': undefined,
   'welcomesolo-room': undefined,
   'old-rink': undefined,
