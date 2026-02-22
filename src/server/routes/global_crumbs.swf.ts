@@ -56,7 +56,7 @@ function getServerCrumbs(ip: string, loginPort: number, worldPort: number, moder
       Action.DefineLocal,
       [Action.Push, "login_server"],
       Action.GetVariable,
-      [Action.Push, "ip"],
+      [Action.Push, "ip", ip],
       Action.SetMember,
       [Action.Push, "login_server"],
       Action.GetVariable,
