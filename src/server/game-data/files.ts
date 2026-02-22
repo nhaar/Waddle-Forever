@@ -519,6 +519,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'system.txt',
       comment: 'removed all versions'
+    },
+    {
+      file: 'shell_2013.swf',
+      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files'
     }
   ],
   [RECREATION]: [
@@ -2043,6 +2047,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'engines/puffle_party_2012.swf',
       comment: 'Originally archives ClientEngine2012-10-17.swf, code is modified to have support with the original interface of the time'
+    },
+    {
+      file: 'engines/halloween_2012.swf',
+      comment: 'Originally archives ClientEngine-20130410.swf, added code for the ghost transformation, fixed the ghost teleporting mid-animation, added functions that the halloween party 2012 interface uses'
     }
   ],
   [MOD]: [
