@@ -2058,7 +2058,6 @@ export const UPDATES_2012: Update[] = [
         },
         fileChanges: {
           'play/v2/content/global/content/interface.swf': 'archives:ClientInterfaceHolidayParty2012.swf',
-          'play/v2/client/engine.swf': 'approximation:holiday_2012/engine.swf'
         },
         coinsForChange: true,
         bakery: true,
