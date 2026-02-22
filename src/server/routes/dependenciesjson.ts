@@ -184,6 +184,12 @@ export default function getDependenciesJson(version: Version, removeIdle: boolea
         title: 'StampBook'
       });
     }
+    if (isGreaterOrEqual(version, getDate('2012-client'))) {
+      dependencies.boot.push({
+        id: 'party',
+        title: 'Party'
+      })
+    }
   }
 
   if (huntActive) {

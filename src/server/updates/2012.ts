@@ -1487,9 +1487,8 @@ export const UPDATES_2012: Update[] = [
     fileChanges: {
       'play/v2/client/interface.swf': 'archives:ClientInterface-HalloweenParty2012.swf',
       'play/v2/client/shell.swf': 'approximation:shell_2013.swf',
-      'play/v2/content/global/content/party.swf': 'unknown:ghosts/party.swf'
-    },
-    activeFeatures: '20141002'
+      'play/v2/client/party.swf': 'unknown:ghosts/party.swf'
+    }
   },
   {
     date: '2012-10-18',
