@@ -4,7 +4,8 @@ import { VERSION } from '../../common/version';
 import { DATABASE_DIRECTORY } from '../../common/paths';
 
 export enum Databases {
-  Penguins = 'penguins'
+  Penguins = 'penguins',
+  TimelineComments = 'timeline-comments'
 }
 
 type JsonProperty = string | number | boolean
@@ -41,6 +42,7 @@ class JsonDatabase {
       if (version !== VERSION) {
         this.migrateDatabase(version);
       }
+      this.createSubDatabase(Databases.TimelineComments);
     } else { // create
       this.createDatabase();
     }
@@ -252,6 +254,7 @@ class JsonDatabase {
       fs.mkdirSync(DATABASE_DIRECTORY)
     }
     db.createSubDatabase(Databases.Penguins, 100);
+    db.createSubDatabase(Databases.TimelineComments);
     fs.writeFileSync(versionFile, VERSION);
   }
 

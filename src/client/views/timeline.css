@@ -66,6 +66,7 @@
 .timeline-header {
   position: sticky;
   top: 0;
+  z-index: 20;
   background-color: var(--background-solid);
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
   left: 0;
@@ -89,6 +90,284 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.3em;
+}
+
+
+.bitacora-layout {
+  display: grid;
+  grid-template-columns: minmax(20em, 30em) minmax(0, 1fr);
+  gap: 1em;
+  align-items: start;
+  min-height: calc(100vh - 10.5em);
+}
+
+.bitacora-card {
+  border: 1px solid #9cc9e5;
+  border-radius: 12px;
+  background: white;
+  color: #0b2a42;
+  padding: 1em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  min-height: 0;
+}
+
+.bitacora-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 0.6em;
+}
+
+.bitacora-input-row {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  margin-bottom: 0.7em;
+}
+
+.party-search {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #8dbfe2;
+  padding: 0.45em 0.85em;
+  font-size: 0.95em;
+}
+
+.favorites-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  user-select: none;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.favorites-filter > span {
+  color: #0b2a42;
+}
+
+.bitacora-results {
+  max-height: min(55vh, 31em);
+  overflow-y: auto;
+}
+
+.party-result-item {
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid #e8eef4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+
+.party-result-content {
+  flex: 1;
+}
+
+.party-result-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.party-note-indicator {
+  font-size: 0.75em;
+  line-height: 1;
+  border: 1px solid #8dbfe2;
+  border-radius: 999px;
+  padding: 0.16em 0.2em;
+  background: #fff;
+}
+
+.party-result-item:last-child {
+  border-bottom: none;
+}
+
+.party-result-item:hover {
+  background-color: #edf7ff;
+}
+
+.party-result-title {
+  font-weight: 600;
+}
+
+.party-result-subtitle {
+  font-size: 0.85em;
+  color: #4a6578;
+}
+
+.bitacora-description {
+  margin-bottom: 0.6em;
+}
+
+.favorite-heart-button {
+  border: none;
+  background: transparent;
+  font-size: 1.3em;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 999px;
+  padding: 0.2em;
+}
+
+.favorite-heart-button:hover {
+  background-color: #ffeef2;
+}
+
+
+.bitacora-mini-calendar {
+  margin-bottom: 0.8em;
+  padding: 0.7em;
+  border: 1px solid #d7e7f3;
+  border-radius: 10px;
+  background: #f7fbff;
+}
+
+.bitacora-mini-calendar-title {
+  font-size: 0.85em;
+  color: #35566f;
+  margin-bottom: 0.5em;
+}
+
+.bitacora-mini-calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+.bitacora-mini-calendar-mode {
+  font-size: 0.8em;
+  color: #3f5f76;
+  margin-bottom: 0.45em;
+}
+
+.mini-day-button {
+  border: 1px solid #8dbfe2;
+  background: white;
+  color: #0b2a42;
+  border-radius: 999px;
+  padding: 0.25em 0.6em;
+  font-size: 0.8em;
+  cursor: pointer;
+  position: relative;
+}
+
+.mini-day-button-commented {
+  padding-left: 1.05em;
+}
+
+.mini-day-comment-badge {
+  position: absolute;
+  top: -0.35em;
+  left: -0.25em;
+  font-size: 0.62em;
+  line-height: 1;
+  background: #fff;
+  border: 1px solid #8dbfe2;
+  border-radius: 999px;
+  padding: 0.16em 0.2em;
+}
+
+.mini-day-button.selected-mini-day {
+  background: #08549c;
+  color: white;
+  border-color: #08549c;
+}
+
+.bitacora-details-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7em;
+  margin-bottom: 0.6em;
+}
+
+.bitacora-details-head {
+  font-size: 1.05em;
+  font-weight: 700;
+  margin-bottom: 0;
+  min-width: 0;
+  flex: 1 1 18em;
+}
+
+.bitacora-details-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  max-width: 100%;
+}
+
+.bitacora-active-penguin {
+  font-size: 0.75em;
+  color: #35566f;
+  background: #eef6ff;
+  border: 1px solid #c8dff2;
+  border-radius: 999px;
+  padding: 0.2em 0.55em;
+  white-space: nowrap;
+}
+
+.bitacora-mode-button {
+
+  border: 1px solid #b8d4e8;
+  background: white;
+  color: #0b2a42;
+  font-size: 0.8em;
+  padding: 0.28em 0.58em;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  position: relative;
+}
+
+.bitacora-mode-button.active {
+  background: #08549c;
+  color: white;
+  border-color: #08549c;
+}
+
+.bitacora-button-comment-badge {
+  font-size: 0.72em;
+  line-height: 1;
+  border: 1px solid #8dbfe2;
+  border-radius: 999px;
+  padding: 0.15em 0.2em;
+  background: #fff;
+  color: #0b2a42;
+}
+
+.bitacora-mode-button.active .bitacora-button-comment-badge {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.bitacora-mode-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bitacora-comment-box {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 7.5em;
+  max-height: 32vh;
+  border: 1px solid #8dbfe2;
+  border-radius: 10px;
+  padding: 0.75em;
+  resize: vertical;
+  font-family: inherit;
+  display: block;
+  margin: 0.35em auto 0 auto;
+}
+
+
+.bitacora-status {
+  margin-top: 0.5em;
+  font-size: 0.85em;
+  color: #3f5f76;
 }
 
 body {
@@ -235,4 +514,20 @@ thead th {
 #as3-footer > button {
   padding: 8px;
   transform: scale(1.5);
+}
+
+
+@media (max-width: 1100px) {
+  .bitacora-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .bitacora-results {
+    max-height: 16.5em;
+  }
+
+  .bitacora-comment-box {
+    max-height: 40vh;
+  }
 }

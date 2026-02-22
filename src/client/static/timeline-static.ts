@@ -1,4 +1,4 @@
-import { getSettings, post } from "./common-static.js";
+import { getJson, getSettings, post } from "./common-static.js";
 
 const timelineApi = (window as any).api;
 
@@ -71,6 +71,700 @@ type DateInfo = {
   selected?: boolean;
   inParty: boolean;
 };
+
+type PartyInfo = {
+  id: string;
+  title: string;
+  startDate: string;
+  endDate?: string;
+  startDay: DateInfo;
+};
+
+function getPartyId(title: string, startDate: string): string {
+  return `${title.toLowerCase()}::${startDate}`;
+}
+
+function stripHtml(html: string): string {
+  const parser = new DOMParser();
+  return parser.parseFromString(html, 'text/html').body.textContent?.trim() ?? html;
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function normalizePartyTitle(text: string): string {
+  const plainText = stripHtml(text)
+    .replace(/\s+/g, ' ')
+    .replace(/\b(starts?|begins?|ends?)\b/gi, '')
+    .replace(/\s+-\s+/g, ' ')
+    .trim();
+
+  return plainText.length > 0 ? plainText : 'Unnamed Party';
+}
+
+function buildPartyIndex(days: DateInfo[]): PartyInfo[] {
+  const sortedDays = [...days].sort((a, b) => {
+    return getDateFromDateInfo(a).getTime() - getDateFromDateInfo(b).getTime();
+  });
+  const activeParties: Record<string, PartyInfo[]> = {};
+  const parties: PartyInfo[] = [];
+
+  for (const day of sortedDays) {
+    const date = getDateFormat(day);
+
+    day.events.forEach((event) => {
+      if (event.party === undefined) {
+        return;
+      }
+
+      const partyTitle = normalizePartyTitle(event.text);
+      const key = partyTitle.toLowerCase();
+
+      if (event.party === 'start') {
+        const partyInfo: PartyInfo = {
+          id: getPartyId(partyTitle, date),
+          title: partyTitle,
+          startDate: date,
+          startDay: day,
+        };
+
+        if (activeParties[key] === undefined) {
+          activeParties[key] = [];
+        }
+        activeParties[key].push(partyInfo);
+        parties.push(partyInfo);
+      }
+
+      if (event.party === 'end') {
+        const activeList = activeParties[key];
+        const partyToClose = activeList?.shift();
+        if (partyToClose !== undefined) {
+          partyToClose.endDate = date;
+        }
+      }
+    });
+  }
+
+  return parties.sort((a, b) => {
+    return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+  });
+}
+
+function getPartyDisplayName(party: PartyInfo): string {
+  const startInfo = getDateInfo(party.startDate);
+  return `${party.title} (${startInfo.year})`;
+}
+
+function getPartySubtitle(party: PartyInfo): string {
+  const startInfo = getDateInfo(party.startDate);
+  const startText = getFullDate(startInfo, true);
+  if (party.endDate === undefined) {
+    return `Started on ${startText}`;
+  }
+
+  const endInfo = getDateInfo(party.endDate);
+  return `${startText} → ${getFullDate(endInfo, true)}`;
+}
+
+function getPartySearchScore(query: string, party: PartyInfo): number {
+  const normalizedQuery = query.toLowerCase();
+  const title = party.title.toLowerCase();
+  const subtitle = getPartySubtitle(party).toLowerCase();
+
+  if (title === normalizedQuery) {
+    return 100;
+  }
+  if (title.startsWith(normalizedQuery)) {
+    return 80;
+  }
+  if (title.includes(normalizedQuery)) {
+    return 60;
+  }
+  if (subtitle.includes(normalizedQuery)) {
+    return 40;
+  }
+
+  return 0;
+}
+
+function setupBitacora(days: DateInfo[]) {
+  const partyFavorites = new Set<string>();
+  const partyIndex = buildPartyIndex(days);
+
+  const DAY_COMMENT_STORAGE_KEY = 'timeline-bitacora-comments';
+  const PARTY_COMMENT_STORAGE_KEY = 'timeline-bitacora-party-comments';
+  const LAST_PENGUIN_STORAGE_KEY = 'timeline-bitacora-last-penguin';
+
+  type ActivePenguin = { id: number; name: string; };
+
+  const dayComments: Record<string, string> = {};
+  const partyComments: Record<string, string> = {};
+  let activePenguin: ActivePenguin | null = null;
+  let saveCommentsTimeout: NodeJS.Timeout | undefined;
+
+  const assignComments = (target: Record<string, string>, source: Record<string, string>) => {
+    Object.keys(target).forEach((key) => {
+      delete target[key];
+    });
+    Object.entries(source).forEach(([key, value]) => {
+      if (typeof value === 'string' && value.trim().length > 0) {
+        target[key] = value;
+      }
+    });
+  };
+
+  const readLastPenguinFromStorage = (): ActivePenguin | null => {
+    try {
+      const raw = localStorage.getItem(LAST_PENGUIN_STORAGE_KEY);
+      if (raw === null) {
+        return null;
+      }
+      const parsed = JSON.parse(raw) as { id?: unknown; name?: unknown; };
+      if (typeof parsed.id !== 'number' || !Number.isInteger(parsed.id) || parsed.id <= 0) {
+        return null;
+      }
+      if (typeof parsed.name !== 'string' || parsed.name.trim().length === 0) {
+        return null;
+      }
+      return { id: parsed.id, name: parsed.name };
+    } catch (_error) {
+      return null;
+    }
+  };
+
+  const persistLastPenguin = (penguin: ActivePenguin) => {
+    localStorage.setItem(LAST_PENGUIN_STORAGE_KEY, JSON.stringify(penguin));
+  };
+
+  const getActivePenguin = async (): Promise<ActivePenguin | null> => {
+    const players = await getJson('players') as Array<{ id: number; name: string; }>;
+    if (Array.isArray(players) && players.length > 0 && typeof players[0].id === 'number' && typeof players[0].name === 'string') {
+      activePenguin = { id: players[0].id, name: players[0].name };
+      persistLastPenguin(activePenguin);
+      return activePenguin;
+    }
+
+    if (activePenguin !== null) {
+      return activePenguin;
+    }
+
+    activePenguin = readLastPenguinFromStorage();
+    return activePenguin;
+  };
+
+  const queueCommentsSave = () => {
+    if (saveCommentsTimeout !== undefined) {
+      clearTimeout(saveCommentsTimeout);
+    }
+
+    saveCommentsTimeout = setTimeout(async () => {
+      try {
+        const currentPenguin = await getActivePenguin();
+        if (currentPenguin === null) {
+          return;
+        }
+
+        await post('timeline-comments/save', {
+          penguinId: currentPenguin.id,
+          dayComments,
+          partyComments,
+          favoriteParties: Array.from(partyFavorites.values())
+        });
+      } catch (_error) {
+        statusElement.innerText = 'Could not sync notes to data storage.';
+      }
+    }, 120);
+  };
+
+  const loadCommentsFromServer = async () => {
+    const currentPenguin = await getActivePenguin();
+    if (currentPenguin === null) {
+      updateActivePenguinUI();
+      updateCommentAvailability();
+      statusElement.innerText = 'Log in with a penguin to sync and save your notes.';
+      return;
+    }
+
+    const data = await getJson(`timeline-comments/get/${currentPenguin.id}`) as {
+      dayComments?: Record<string, string>;
+      partyComments?: Record<string, string>;
+      favoriteParties?: string[];
+    };
+
+    assignComments(dayComments, data.dayComments ?? {});
+    assignComments(partyComments, data.partyComments ?? {});
+    partyFavorites.clear();
+    (data.favoriteParties ?? []).forEach((partyId) => {
+      if (typeof partyId === 'string') {
+        partyFavorites.add(partyId);
+      }
+    });
+
+    updateActivePenguinUI();
+    updateCommentAvailability();
+    renderParties();
+    renderDetails();
+  };
+  const dayMap: Record<string, DateInfo> = {};
+  days.forEach((day) => {
+    dayMap[getDateFormat(day)] = day;
+  });
+
+  let selectedEntry: { date: string; title: string; description: string; detailsHtml: string; } | null = null;
+  let selectedParty: PartyInfo | null = null;
+  let usePartyComment = false;
+  const partyById: Record<string, PartyInfo> = {};
+  partyIndex.forEach((party) => {
+    partyById[party.id] = party;
+  });
+
+  timelineElement.innerHTML = `
+  <div class="bitacora-layout">
+    <div class="bitacora-card">
+      <div class="bitacora-title">📚 Party Logbook</div>
+      <div class="bitacora-input-row">
+        <input id="bitacora-party-search" class="party-search" type="search" placeholder="Search for a party (Music Jam, Halloween, Holiday...)" />
+        <label class="favorites-filter" for="bitacora-favorites-only">
+          <input id="bitacora-favorites-only" type="checkbox" />
+          <span>❤️ Favorites only</span>
+        </label>
+      </div>
+      <div class="bitacora-title">🎉 Parties</div>
+      <div id="bitacora-party-results" class="bitacora-results"></div>
+    </div>
+    <div class="bitacora-card">
+      <div class="bitacora-details-head-row">
+        <div id="bitacora-details-head" class="bitacora-details-head">Select a party to open your logbook ✍️</div>
+        <div class="bitacora-details-meta">
+          <div id="bitacora-active-penguin" class="bitacora-active-penguin">🐧 Logbook owner: none</div>
+          <button id="bitacora-mode-party" class="bitacora-mode-button" title="Toggle party-wide note mode">🎉 Party note</button>
+        </div>
+      </div>
+      <div id="bitacora-details-body"></div>
+      <textarea id="bitacora-comment-box" class="bitacora-comment-box" placeholder="Write a note for this specific day..."></textarea>
+      <div id="bitacora-status" class="bitacora-status">Auto-save enabled. Your notes are saved instantly.</div>
+    </div>
+  </div>
+  `;
+
+  window.scrollTo({ top: 0, behavior: 'auto' });
+
+  const as3Footer = document.getElementById('as3-footer');
+  if (as3Footer !== null) {
+    as3Footer.innerHTML = '';
+  }
+
+  activePenguin = readLastPenguinFromStorage();
+
+  const partySearchElement = document.getElementById('bitacora-party-search') as HTMLInputElement;
+  const favoriteOnlyToggleElement = document.getElementById('bitacora-favorites-only') as HTMLInputElement;
+  const partyResultsElement = document.getElementById('bitacora-party-results') as HTMLDivElement;
+  const commentBox = document.getElementById('bitacora-comment-box') as HTMLTextAreaElement;
+  const detailsHead = document.getElementById('bitacora-details-head') as HTMLDivElement;
+  const detailsBody = document.getElementById('bitacora-details-body') as HTMLDivElement;
+  const statusElement = document.getElementById('bitacora-status') as HTMLDivElement;
+  const partyModeButton = document.getElementById('bitacora-mode-party') as HTMLButtonElement;
+  const activePenguinElement = document.getElementById('bitacora-active-penguin') as HTMLDivElement;
+
+  const updateActivePenguinUI = () => {
+    if (activePenguin === null) {
+      activePenguinElement.innerText = '🐧 Logbook owner: none';
+    } else {
+      activePenguinElement.innerText = `🐧 Logbook owner: ${activePenguin.name}`;
+    }
+  };
+
+  const updateCommentAvailability = () => {
+    const canComment = activePenguin !== null;
+    commentBox.disabled = !canComment;
+    if (!canComment) {
+      commentBox.value = '';
+      commentBox.placeholder = 'Log in (or use last penguin) to write notes.';
+    }
+  };
+
+  const updateModeButtonState = () => {
+    const partyHasComment = selectedParty !== null && hasCommentValue(partyComments[selectedParty.id]);
+    const commentBadge = partyHasComment
+      ? '<span class="bitacora-button-comment-badge" aria-label="Party note exists">💬</span>'
+      : '';
+    partyModeButton.innerHTML = `${commentBadge}<span>🎉 Party note</span>`;
+    partyModeButton.classList.toggle('active', usePartyComment);
+    partyModeButton.disabled = selectedParty === null || activePenguin === null;
+    partyModeButton.setAttribute('aria-pressed', usePartyComment ? 'true' : 'false');
+  };
+
+  const getCurrentCommentContext = (): { storageKey: string; key: string; label: string; } | null => {
+    if (selectedEntry === null) {
+      return null;
+    }
+
+    if (usePartyComment) {
+      if (selectedParty === null) {
+        return null;
+      }
+      return {
+        storageKey: PARTY_COMMENT_STORAGE_KEY,
+        key: selectedParty.id,
+        label: `party ${getPartyDisplayName(selectedParty)}`
+      };
+    }
+
+    return {
+      storageKey: DAY_COMMENT_STORAGE_KEY,
+      key: selectedEntry.date,
+      label: `day ${getFullDate(getDateInfo(selectedEntry.date), true)}`
+    };
+  };
+
+  const hasCommentValue = (value: string | undefined): boolean => {
+    return value !== undefined && value.trim().length > 0;
+  };
+
+  const readCurrentCommentValue = (): string => {
+    const context = getCurrentCommentContext();
+    if (context === null) {
+      return '';
+    }
+    if (context.storageKey === PARTY_COMMENT_STORAGE_KEY) {
+      return partyComments[context.key] ?? '';
+    }
+    return dayComments[context.key] ?? '';
+  };
+
+  const persistCurrentComment = () => {
+    if (activePenguin === null) {
+      statusElement.innerText = 'Log in with a penguin to save notes.';
+      return;
+    }
+
+    const context = getCurrentCommentContext();
+    if (context === null) {
+      return;
+    }
+
+    const value = commentBox.value;
+    if (context.storageKey === PARTY_COMMENT_STORAGE_KEY) {
+      if (value.trim().length === 0) {
+        delete partyComments[context.key];
+      } else {
+        partyComments[context.key] = value;
+      }
+      queueCommentsSave();
+    } else {
+      if (value.trim().length === 0) {
+        delete dayComments[context.key];
+      } else {
+        dayComments[context.key] = value;
+      }
+      queueCommentsSave();
+    }
+
+    statusElement.innerText = `Auto-saved ${context.label} note.`;
+  };
+
+
+  const updateSelectedDayCommentBadge = () => {
+    if (selectedEntry === null || usePartyComment) {
+      return;
+    }
+
+    const dayButton = detailsBody.querySelector(`[data-party-date="${selectedEntry.date}"]`);
+    if (!(dayButton instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    const hasComment = hasCommentValue(dayComments[selectedEntry.date]);
+    dayButton.classList.toggle('mini-day-button-commented', hasComment);
+
+    const existingBadge = dayButton.querySelector('.mini-day-comment-badge');
+    if (hasComment && existingBadge === null) {
+      dayButton.insertAdjacentHTML('afterbegin', '<span class="mini-day-comment-badge" aria-label="Has note">💬</span>');
+    } else if (!hasComment && existingBadge !== null) {
+      existingBadge.remove();
+    }
+  };
+
+  const refreshCommentEditor = () => {
+    updateActivePenguinUI();
+    updateCommentAvailability();
+    updateModeButtonState();
+    commentBox.placeholder = usePartyComment
+      ? 'Write a global note for this party...'
+      : 'Write a note for this specific day...';
+    commentBox.value = readCurrentCommentValue();
+    if (activePenguin === null) {
+      statusElement.innerText = 'Log in with a penguin to save notes.';
+    } else {
+      statusElement.innerText = usePartyComment
+        ? 'Party note mode active (auto-save enabled).'
+        : 'Day note mode active (auto-save enabled).';
+    }
+  };
+
+  commentBox.addEventListener('input', () => {
+    persistCurrentComment();
+    updateSelectedDayCommentBadge();
+    updateModeButtonState();
+    renderParties();
+  });
+
+  const getPartyDates = (party: PartyInfo): string[] => {
+    const datesInRange: string[] = [];
+    const endDate = party.endDate ?? party.startDate;
+    const startParts = getDateInfo(party.startDate);
+    const endParts = getDateInfo(endDate);
+    const startDate = new Date(startParts.year, startParts.month - 1, startParts.day);
+    const finalDate = new Date(endParts.year, endParts.month - 1, endParts.day);
+
+    for (let date = new Date(startDate); date <= finalDate; date.setDate(date.getDate() + 1)) {
+      const dateStr = getDateFormat({
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate()
+      });
+
+      // only keep days that are actually registered in timeline data
+      if (dayMap[dateStr] !== undefined) {
+        datesInRange.push(dateStr);
+      }
+    }
+
+    return datesInRange.length > 0 ? datesInRange : [party.startDate];
+  };
+
+  const partyHasAnyComment = (party: PartyInfo): boolean => {
+    if (hasCommentValue(partyComments[party.id])) {
+      return true;
+    }
+
+    const partyDates = getPartyDates(party);
+    return partyDates.some((date) => hasCommentValue(dayComments[date]));
+  };
+
+  const getDayDescriptionForBitacora = (date: string): string => {
+    const day = dayMap[date];
+    if (day === undefined) {
+      return '<div class="party-result-subtitle">This day is not registered in the timeline.</div>';
+    }
+    return getDescription(day);
+  };
+
+  const renderDetails = () => {
+    if (selectedEntry === null) {
+      detailsHead.innerText = 'Select a party to open your logbook ✍️';
+      detailsBody.innerHTML = '';
+      commentBox.value = '';
+      return;
+    }
+
+    detailsHead.innerText = selectedEntry.title;
+
+    const miniCalendarHtml = selectedParty === null ? '' : (() => {
+      const partyDates = getPartyDates(selectedParty);
+      const modeHint = usePartyComment
+        ? '<div class="bitacora-mini-calendar-mode">Party note mode is active. Select a day chip to switch back to day notes.</div>'
+        : '';
+      return `
+      <div class="bitacora-mini-calendar">
+        <div class="bitacora-mini-calendar-title">Select the exact day of the party:</div>
+        ${modeHint}
+        <div class="bitacora-mini-calendar-grid">
+          ${partyDates.map((date) => {
+            const parsedDate = getDateInfo(date);
+            const selectedClass = (!usePartyComment && selectedEntry?.date === date) ? 'selected-mini-day' : '';
+            const commentedClass = hasCommentValue(dayComments[date]) ? 'mini-day-button-commented' : '';
+            const commentBadge = hasCommentValue(dayComments[date])
+              ? '<span class="mini-day-comment-badge" aria-label="Has note">💬</span>'
+              : '';
+            return `<button class="mini-day-button ${selectedClass} ${commentedClass}" data-party-date="${date}">${commentBadge}<span>${parsedDate.day} ${MONTHS[parsedDate.month - 1].slice(0, 3)}</span></button>`;
+          }).join('')}
+        </div>
+      </div>`;
+    })();
+
+    detailsBody.innerHTML = `
+      <div class="party-result-subtitle bitacora-description">${escapeHtml(selectedEntry.description)}</div>
+      ${miniCalendarHtml}
+      ${selectedEntry.detailsHtml}
+    `;
+
+    detailsBody.querySelectorAll('[data-party-date]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        if (!(button instanceof HTMLElement)) {
+          return;
+        }
+        const date = button.dataset.partyDate;
+        if (date === undefined || selectedParty === null) {
+          return;
+        }
+
+        usePartyComment = false;
+        await openEntry(
+          date,
+          `🎉 ${getPartyDisplayName(selectedParty)}`,
+          `${getPartySubtitle(selectedParty)} · Selected day: ${getFullDate(getDateInfo(date), true)}`,
+          getDayDescriptionForBitacora(date),
+          selectedParty
+        );
+      });
+    });
+
+    refreshCommentEditor();
+  };
+
+  const openEntry = async (
+    date: string,
+    title: string,
+    description: string,
+    detailsHtml: string,
+    partyForCalendar: PartyInfo | null = null
+  ) => {
+    selectedEntry = { date, title, description, detailsHtml };
+    selectedParty = partyForCalendar;
+    usePartyComment = false;
+    const { month, year } = getDateInfo(date);
+    setSelectElements(month, year);
+    await updateVersion(date);
+    renderDetails();
+  };
+
+  const renderParties = () => {
+    const query = partySearchElement.value.trim();
+    const onlyFavorites = favoriteOnlyToggleElement.checked;
+
+    let filteredParties = partyIndex;
+    if (onlyFavorites) {
+      filteredParties = filteredParties.filter((party) => partyFavorites.has(party.id));
+    }
+
+    if (query.length > 0) {
+      filteredParties = filteredParties
+        .map((party) => ({ party, score: getPartySearchScore(query, party) }))
+        .filter(({ score }) => score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(({ party }) => party);
+    } else {
+      // default sort: favorites first, then newest first (existing order)
+      filteredParties = [...filteredParties].sort((a, b) => {
+        return Number(partyFavorites.has(b.id)) - Number(partyFavorites.has(a.id));
+      });
+    }
+
+    const matches = filteredParties.slice(0, 15);
+
+    if (matches.length === 0) {
+      partyResultsElement.innerHTML = `<div class="party-result-item"><div class="party-result-content"><div class="party-result-title">No parties found</div><div class="party-result-subtitle">Try another keyword or disable the favorites filter.</div></div></div>`;
+      return;
+    }
+
+    partyResultsElement.innerHTML = matches.map((party) => {
+      const heart = partyFavorites.has(party.id) ? '❤️' : '♡';
+      const hasAnyNote = partyHasAnyComment(party);
+      const noteIndicator = hasAnyNote
+        ? '<span class="party-note-indicator" aria-label="This party has notes">💬</span>'
+        : '';
+      return `
+      <div class="party-result-item" data-party-id="${party.id}" data-date="${party.startDate}">
+        <div class="party-result-content">
+          <div class="party-result-title">${escapeHtml(getPartyDisplayName(party))}</div>
+          <div class="party-result-subtitle">${escapeHtml(getPartySubtitle(party))}</div>
+        </div>
+        <div class="party-result-actions">
+          ${noteIndicator}
+          <button class="favorite-heart-button" data-favorite-toggle="true" data-party-id="${party.id}">${heart}</button>
+        </div>
+      </div>`;
+    }).join('');
+
+  };
+
+  partyResultsElement.addEventListener('click', async (event) => {
+    if (!(event.target instanceof HTMLElement)) {
+      return;
+    }
+
+    const targetItem = event.target.closest('.party-result-item');
+    if (!(targetItem instanceof HTMLElement)) {
+      return;
+    }
+
+    const partyId = targetItem.dataset.partyId;
+    if (partyId === undefined) {
+      return;
+    }
+
+    if (event.target.dataset.favoriteToggle === 'true') {
+      event.stopPropagation();
+      if (activePenguin === null) {
+        statusElement.innerText = 'Log in with a penguin to manage favorite parties.';
+        return;
+      }
+
+      if (partyFavorites.has(partyId)) {
+        partyFavorites.delete(partyId);
+      } else {
+        partyFavorites.add(partyId);
+      }
+      queueCommentsSave();
+      renderParties();
+      return;
+    }
+
+    const party = partyById[partyId];
+    if (party === undefined) {
+      return;
+    }
+
+    await openEntry(
+      party.startDate,
+      `🎉 ${getPartyDisplayName(party)}`,
+      getPartySubtitle(party),
+      getDayDescriptionForBitacora(party.startDate),
+      party
+    );
+  });
+
+  partyModeButton.onclick = () => {
+    if (selectedParty === null) {
+      statusElement.innerText = 'Select a party first to use party-level notes.';
+      return;
+    }
+
+    usePartyComment = !usePartyComment;
+    statusElement.innerText = usePartyComment
+      ? 'Party note mode enabled. Select any day chip to switch back to day notes.'
+      : 'Day note mode enabled.';
+    renderDetails();
+  };
+
+  let partySearchDebounce: NodeJS.Timeout | undefined;
+  partySearchElement.oninput = () => {
+    if (partySearchDebounce !== undefined) {
+      clearTimeout(partySearchDebounce);
+    }
+    partySearchDebounce = setTimeout(() => {
+      renderParties();
+    }, 80);
+  };
+  favoriteOnlyToggleElement.onchange = renderParties;
+
+  updateModeButtonState();
+  renderParties();
+  renderDetails();
+  loadCommentsFromServer().catch(() => {
+    statusElement.innerText = 'Could not sync notes from data storage.';
+  });
+
+  yearElement.onchange = () => setupBitacora(days);
+  monthElement.onchange = () => setupBitacora(days);
+}
 
 function getDateInfo(dateStr: string) : {
   year: number;
@@ -569,6 +1263,7 @@ window.addEventListener('get-timeline', (e: any) => {
 
   const calendarButton = document.getElementById('calendar-timeline')! as HTMLInputElement;
   const listButton = document.getElementById('list-timeline')! as HTMLInputElement;
+  const bitacoraButton = document.getElementById('bitacora-timeline')! as HTMLInputElement;
 
   calendarButton.addEventListener('change', (e) => {
     if (e.target instanceof HTMLInputElement && e.target.checked) {
@@ -579,6 +1274,12 @@ window.addEventListener('get-timeline', (e: any) => {
   listButton.addEventListener('change', (e) => {
     if (e.target instanceof HTMLInputElement && e.target.checked) {
       updateTimeline(days);
+    }
+  });
+
+  bitacoraButton.addEventListener('change', (e) => {
+    if (e.target instanceof HTMLInputElement && e.target.checked) {
+      setupBitacora(days);
     }
   });
 });
