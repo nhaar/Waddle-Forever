@@ -2060,6 +2060,24 @@ export function getRoomsJson(version: Version): string {
     }
   }
 
+  if (isLower(version, getDate('welcomesolo-room'))) {
+    json["112"] = 
+    {
+      "room_id": 112,
+      "room_key": "welcomesolo",
+      "name": "Welcome Solo",
+      "display_name": "Club Penguin",
+      "music_id": 0,
+      "is_member": 0,
+      "path": "welcomesolo.swf",
+      "max_users": 800,
+      "jump_enabled": false,
+      "jump_disabled": true,
+      "required_item": null,
+      "short_name": "Welcome"
+  };
+  }
+
   if (isLower(version, getDate('vr-room'))) {
     json["213"] = 
     {

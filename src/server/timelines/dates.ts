@@ -14,6 +14,7 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'vanilla-engine': undefined,
   'placeholder-2016': undefined,
   'vr-room': undefined,
+  'welcomesolo-room': undefined,
   'old-rink': undefined,
   'string-verify': undefined,
   'composite-paths': undefined,
