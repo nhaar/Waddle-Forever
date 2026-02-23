@@ -79,4 +79,11 @@ handler.xt(Handle.GetCookieInventory, (client) => {
   client.sendXt('ctc', 500, 1000);
 });
 
+handler.xt(Handle.PurchaseCookie, (client, avatar, charity) => {
+  // TODO charity would increment the coins amount
+  // buying cookie reduces cookie in stock
+
+  client.transformPlayer(avatar);
+});
+
 export default handler;

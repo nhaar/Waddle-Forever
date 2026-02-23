@@ -2057,7 +2057,8 @@ export const UPDATES_2012: Update[] = [
           'binoculars/empty.swf': 'archives:Binoculars-HolidayParty2015.swf'
         },
         fileChanges: {
-          'play/v2/content/global/content/interface.swf': 'archives:ClientInterfaceHolidayParty2012.swf',
+          'play/v2/client/interface.swf': 'archives:ClientInterfaceHolidayParty2012.swf',
+          'play/v2/client/engine.swf': 'recreation:engines/holiday_2012.swf'
         },
         coinsForChange: true,
         bakery: true,

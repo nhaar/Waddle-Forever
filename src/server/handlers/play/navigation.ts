@@ -185,8 +185,7 @@ handler.xt(Handle.LeaveWaddle, (client) => {
 });
 
 handler.xt(Handle.PlayerTransformation, (client, id) => {
-  client.setAvatar(id);
-  client.sendRoomXt('spts', client.penguin.id, id);
+  client.transformPlayer(id);
 });
 
 handler.get('/flash/date.php', (server) => {

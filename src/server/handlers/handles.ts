@@ -212,7 +212,9 @@ export enum Handle {
   MoveHockeyPuck,
   MoveHockeyPuckOld,
   UpdateHockeyGame,
-  BuyPowerCards
+  BuyPowerCards,
+  PurchaseCookie,
+  CanPurchaseCookie
 };
 
 /** Map of all the handles and their valid arguments */
@@ -408,7 +410,9 @@ export const HANDLE_ARGUMENTS = {
   [Handle.MoveHockeyPuck]: ['number', 'number', 'number', 'number', 'number'],
   [Handle.MoveHockeyPuckOld]: ['number', 'number'],
   [Handle.UpdateHockeyGame]: ['number'],
-  [Handle.BuyPowerCards]: []
+  [Handle.BuyPowerCards]: [],
+  [Handle.PurchaseCookie]: ['number', 'number'],
+  [Handle.CanPurchaseCookie]: []
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -498,7 +502,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       '': Handle.BuddyAccept,
       'barsu': Handle.GetBakeryState,
       'seh': Handle.SendEnterHopper,
-      'ctc': Handle.GetCookieInventory
+      'ctc': Handle.GetCookieInventory,
+      'cac': Handle.CanPurchaseCookie,
+      'ac': Handle.PurchaseCookie
     },
     'bd': Handle.BuddyDecline,
     'br': Handle.BuddyRemove,

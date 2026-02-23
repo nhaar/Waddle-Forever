@@ -2051,6 +2051,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'engines/halloween_2012.swf',
       comment: 'Originally archives ClientEngine-20130410.swf, added code for the ghost transformation, fixed the ghost teleporting mid-animation, added functions that the halloween party 2012 interface uses'
+    },
+    {
+      file: 'engines/holiday_2012.swf',
+      comment: 'Originally archives ClientEngine-20130410.swf, added code for the holiday transformations'
     }
   ],
   [MOD]: [

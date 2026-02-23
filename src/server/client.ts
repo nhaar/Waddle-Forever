@@ -1730,8 +1730,9 @@ export class Client {
     this.update();
   }
 
-  setAvatar(id: number) {
-    this._avatar = id;
+  transformPlayer(avatarId: number) {
+    this._avatar = avatarId;
+    this.sendRoomXt('spts', this.penguin.id, avatarId);
   }
 
   get avatar() {
