@@ -522,7 +522,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2013.swf',
-      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files. Modified getPlayerObjectById so that the holiday 2012 interface can recognize the transformation. Added setHolidayAvatarTransformation and turnIntoPlayer functions and listeners in the sendBuyCookie function (this may not be accurate but it is how it was previously done in WF and it works)'
+      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files. Modified getPlayerObjectById so that the holiday 2012 interface can recognize the transformation. Added setHolidayAvatarTransformation function and listeners in the sendBuyCookie function (this may not be accurate but it is how it was previously done in WF and it works)'
     }
   ],
   [RECREATION]: [
@@ -2054,7 +2054,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'engines/holiday_2012.swf',
-      comment: 'Originally archives ClientEngine-20130410.swf, added code for the holiday transformations. Added turnPlayerIntoPenguin function which is called by the INTERFACE'
+      comment: 'Originally archives ClientEngine-20130410.swf, added code for the holiday transformations. Added turnPlayerIntoPenguin function which is called by the INTERFACE. For some unexplicable reason, the AvatarExpirationManager.expireTimer method had a logic error, so had to fix it (sendTransformPlayer arguments updated)'
     }
   ],
   [MOD]: [
