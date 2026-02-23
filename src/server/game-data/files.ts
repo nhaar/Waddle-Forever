@@ -522,7 +522,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2013.swf',
-      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files'
+      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files. Modified getPlayerObjectById so that the holiday 2012 interface can recognize the transformation'
     }
   ],
   [RECREATION]: [
