@@ -2,6 +2,14 @@ import { Update } from ".";
 
 export const UPDATES_2014: Update[] = [
   {
+    date: '2014-02-13',
+    dateReference: 'agentlobbysolo-room'
+  },
+  {
+    date: '2014-04-09',
+    dateReference: 'welcomesolo-room'
+  },
+  {
     date: '2014-04-17',
     petFurniture: 'archives:ENCataloguesPetsApr2014.swf'
   },
@@ -17,7 +25,7 @@ export const UPDATES_2014: Update[] = [
     }
   },
   {
-    date: '2014-06-01',
+    date: '2014-05-21',
     dateReference: 'vr-room'
   },
   {
