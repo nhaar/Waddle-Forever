@@ -522,7 +522,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'shell_2013.swf',
-      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files. Modified getPlayerObjectById so that the holiday 2012 interface can recognize the transformation. Added setHolidayAvatarTransformation function and listeners in the sendBuyCookie function (this may not be accurate but it is how it was previously done in WF and it works)'
+      comment: 'Originally archives ClientShell.swf. Added set avatar transformation function to work with 2012 files. Modified getPlayerObjectById so that the holiday 2012 interface can recognize the transformation. Added setHolidayAvatarTransformation function and listeners in the sendBuyCookie function (this may not be accurate but it is how it was previously done in WF and it works). Updated sendSnowBallEnterHopper (requires the modded holiday engine)'
     },
     {
       file: 'party_placeholder.swf',
