@@ -213,7 +213,7 @@ would need to investigated`
     },
     {
       file: 'HolidayParty2012Party3.swf',
-      comment: 'The original file was modified so that it automatically changes the snowball effect depending on where you step. It is unknown which mechanism was used to do this in the original, it is likely that maybe party.swf or engine.swf had a say on this, but since we can\'t know for sure it was easier to just mod this file. I took this code from JF archives, I am not sure if it comes from an original SWF or if it was made by NewCP team'
+      comment: 'The original file was modified so that it automatically changes the snowball effect depending on where you step. It is unknown which mechanism was used to do this in the original, it is likely that maybe party.swf or engine.swf had a say on this, but since we can\'t know for sure it was easier to just mod this file. I originally took this code from JF archives, I am not sure if it comes from an original SWF or if it was made by NewCP team. With the 2013 engine, further changes were done. It boils down to changes in com.clubpenguin.world.rooms2012.holiday.CookieBaker (too late to document right now). Frame 1 code was changed so it can be used by the engine recreation'
     },
     {
       file: 'PlayStartSwfStart.swf',
@@ -2058,7 +2058,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'engines/holiday_2012.swf',
-      comment: 'Originally archives ClientEngine-20130410.swf, added code for the holiday transformations. Added turnPlayerIntoPenguin function which is called by the INTERFACE. For some unexplicable reason, the AvatarExpirationManager.expireTimer method had a logic error, so had to fix it (sendTransformPlayer arguments updated)'
+      comment: 'Originally archives ClientEngine-20130410.swf, added code for the holiday transformations. Added turnPlayerIntoPenguin function which is called by the INTERFACE. For some unexplicable reason, the AvatarExpirationManager.expireTimer method had a logic error, so had to fix it (sendTransformPlayer arguments updated). For snowballs to work in the bakery (dynamically change snowball depending on room), handleThrowBall and sendThrowBall were minimally added, the functions that add the API for a snowball type change is checkForRoomBall and the function that implements how it happens specifically (currently it uses the room code) is getRoomSnowball'
     }
   ],
   [MOD]: [
