@@ -7,7 +7,7 @@ import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
 import { BROWN_PUFFLE_TIMELINE } from "@server/timelines/puffles";
 import { findInVersion } from "@server/game-data";
-import { isGreaterOrEqual, isLower } from "@server/routes/versions";
+import { isGreaterOrEqual, isLower, Version } from "@server/routes/versions";
 import { getDate } from "@server/timelines/dates";
 
 const handler = new Handler()
@@ -393,20 +393,6 @@ function dig(client: Client, onCommand: boolean) {
   client.update();
 }
 
-const getPuffleString = (puffle: PlayerPuffle): string => {
-  return [
-    puffle.id,
-    puffle.name,
-    puffle.type,
-    100,
-    100,
-    100,
-    100,
-    100,
-    100
-  ].join('|')
-}
-
 handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   if (isGreaterOrEqual(client.version, getDate('vanilla-engine'))) {
     return;
@@ -431,7 +417,7 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
     // manually updating coins
     client.sendPenguinInfo();
   } else {
-    client.sendXt('pn', client.penguin.coins, getPuffleString(puffle));
+    client.sendXt('pn', client.penguin.coins, getPuffleString(client, puffle));
   }
 
   client.addPostcard(111, { details: puffleName });
@@ -533,25 +519,45 @@ handler.xt(Handle.AdoptPuffleNew, (client, puffleType, puffleName, puffleSubType
   cooldown: 2000
 });
 
+function getPuffleString(client: Client, puffle: PlayerPuffle): string {
+  if (isLower(client.version, getDate('2012-client'))) {
+    return [
+      puffle.id,
+      puffle.name,
+      puffle.type,
+      puffle.clean,
+      puffle.food,
+      puffle.rest,
+      100,
+      100,
+      100,
+      0,
+      0,
+      0,
+      puffle.id === client.walkingPuffle ? 1 : 0
+    ].join('|')
+  } else {
+    return [
+      puffle.id,
+      ...getClientPuffleIds(puffle.type),
+      puffle.name,
+      Math.round(Date.now()), // TODO puffle adoption date in puffle
+      puffle.food,
+      100, // TODO puffle play
+      puffle.rest,
+      puffle.clean,
+      0, // TODO puffle hat
+      0, 0, // TODO what are these 0?
+      puffle.id === client.walkingPuffle ? 1 : 0
+    ].join('|')
+  }
+}
+
 // get puffles in igloo
 handler.xt(Handle.GetIglooPuffles, (client, id, iglooType) => {
   if (isLower(client.version, getDate('2012-sep-shell'))) {
     const puffles = client.penguin.getPuffles().map((puffle) => {
-      return [
-        puffle.id,
-        puffle.name,
-        puffle.type,
-        puffle.clean,
-        puffle.food,
-        puffle.rest,
-        100,
-        100,
-        100,
-        0,
-        0,
-        0,
-        puffle.id === client.walkingPuffle ? 1 : 0
-      ].join('|')
+      return getPuffleString(client, puffle);
     })
   
     if (puffles.length >= 16) {
@@ -566,19 +572,7 @@ handler.xt(Handle.GetIglooPuffles, (client, id, iglooType) => {
       // filtering for backyard or igloo puffles
       return client.penguin.isInBackyard(puffle.id) === isBackyard;
     }).map((puffle) => {
-      return [
-        puffle.id,
-        ...getClientPuffleIds(puffle.type),
-        puffle.name,
-        Math.round(Date.now()), // TODO puffle adoption date in puffle
-        puffle.food,
-        100, // TODO puffle play
-        puffle.rest,
-        puffle.clean,
-        0, // TODO puffle hat
-        0, 0, // TODO what are these 0?
-        puffle.id === client.walkingPuffle ? 1 : 0
-      ].join('|')
+      return getPuffleString(client, puffle);
     })
     client.sendXt('pg', puffles.length, ...puffles);
   }
