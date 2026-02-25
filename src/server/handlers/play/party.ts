@@ -53,7 +53,7 @@ handler.xt(Handle.SendEnterHopper, (client, type) => {
   // however, the way this was added isn't perfect and it's likely it didn't really check the types, as the shell function
   // never receives the snowball thrown event information, and instead I had to fetch it directly from the transformation
   // which introduces the bug of the player walking mid snowball throw
-  const enumType = type.match(/\[ball(\w+)\|\d+\]/);
+  const enumType = type.match(/\[snowball\|ball(\w+)\|\d+\]/);
   if (enumType !== null) {
     const ingredient = {
       'Candy': 'Candy',
@@ -63,6 +63,7 @@ handler.xt(Handle.SendEnterHopper, (client, type) => {
       'Flour': 'Flour',
       'Milk': 'Milk'
     }[enumType[1]];
+
     if (client.server.bakery.currentIngredient === ingredient) {
       client.server.bakery.nextIngredient();
     }
