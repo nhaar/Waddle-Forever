@@ -25,6 +25,7 @@ import { Table } from './handlers/play/table';
 import { FindFourTable } from './handlers/play/find-four';
 import { MancalaTable } from './handlers/play/mancala';
 import { ITEM_RELEASES } from './timelines/items';
+import { getClientPuffleIds } from './handlers/play/puffle';
 
 type ServerType = 'Login' | 'World';
 
@@ -1454,8 +1455,25 @@ export class Client {
   }
 
   sendPuffles (): void {
+    const newFormat = isGreaterOrEqual(this.version, getDate('2012-client'));
+    const puffleCreature = isGreaterOrEqual(this.version, getDate('vanilla-engine'));
     const puffles = this.penguin.getPuffles().map((puffle) => {
-      return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
+      if (newFormat) {
+        return [
+        puffle.id,
+        ...(puffleCreature ? (getClientPuffleIds(puffle.type)) : [puffle.type]),
+        puffle.name,
+        10, // TODO, adoption date
+        puffle.food,
+        100, // TODO puffle play stat
+        puffle.rest,
+        puffle.clean,
+        0, // TODO puffle hat
+        0 // TODO unknown what this last one is
+      ].join('|');
+      } else {
+        return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
+      }
     })
     this.sendXt('pgu', ...puffles);
   }
