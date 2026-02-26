@@ -1743,6 +1743,7 @@ export const UPDATES_2011: Update[] = [
       'play/v2/client/party.swf': 'approximation:party_placeholder.swf',
       'play/v2/client/puffle_adoption.swf': 'recreation:puffle_client/puffle_adoption_2012.swf',
       'play/v2/client/puffle_certificate.swf': 'recreation:puffle_client/puffle_certificate_2012.swf',
+      'play/v2/client/puffle_care.swf': 'recreation:puffle_client/puffle_care_2012.swf',
       'play/v2/client/sentry.swf': 'unknown:2012_media/sentry.swf',
       'play/v2/client/shell.swf': 'fix:ClientShellBetaTeam.swf',
       'play/v2/client/stampbook.swf': 'archives:ClientStampbook-20120920.swf',

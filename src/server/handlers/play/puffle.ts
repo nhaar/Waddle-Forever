@@ -13,7 +13,7 @@ import { getDate } from "@server/timelines/dates";
 const handler = new Handler()
 
 /** Brush, bath, sleep, basically functionalities disguised as items */
-const BASE_CARE_INVENTORY = [1, 8, 37];
+const BASE_CARE_INVENTORY = [1, 2, 8, 37];
 
 /** ID of all items that are a puffle's favorite food */
 const PUFFLE_FOOD = [105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 128];

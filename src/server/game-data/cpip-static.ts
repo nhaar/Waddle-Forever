@@ -3932,5 +3932,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/interface/gold_nuggets_hud.swf': 'svanilla:media/play/v2/content/global/interface/gold_nuggets_hud.swf',
   'play/v2/content/global/logo/logo.swf': 'svanilla:media/play/v2/content/global/logo/logo.swf',
   'play/v2/games/pufflescape/lang/en/locale.xml': 'svanilla:media/play/v2/games/pufflescape/lang/en/locale.xml',
-  'play/v2/content/global/puffle/certificate/lang/en/CertificateHeadline.swf': 'archives:CertificateHeadline.swf'
+  'play/v2/content/global/puffle/certificate/lang/en/CertificateHeadline.swf': 'archives:CertificateHeadline.swf',
+  'play/v2/content/global/puffle/care_icons/care/leash.swf': 'archives:LeashPuffleCareIcon.swf'
 };

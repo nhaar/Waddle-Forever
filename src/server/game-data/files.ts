@@ -2059,6 +2059,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'engines/holiday_2012.swf',
       comment: 'Originally archives ClientEngine-20130410.swf, added code for the holiday transformations. Added turnPlayerIntoPenguin function which is called by the INTERFACE. For some unexplicable reason, the AvatarExpirationManager.expireTimer method had a logic error, so had to fix it (sendTransformPlayer arguments updated). For snowballs to work in the bakery (dynamically change snowball depending on room), handleThrowBall and sendThrowBall were minimally added, the functions that add the API for a snowball type change is checkForRoomBall and the function that implements how it happens specifically (currently it uses the room code) is getRoomSnowball'
+    },
+    {
+      file: 'puffle_client/puffle_care_2012.swf',
+      comment: 'Originally from mondo'
     }
   ],
   [MOD]: [
