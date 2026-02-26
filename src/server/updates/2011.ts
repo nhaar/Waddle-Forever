@@ -2440,8 +2440,8 @@ export const UPDATES_2011: Update[] = [
     date: '2011-10-28',
     end: ['party2'],
     fileChanges: {
-      // update of the toolbar with the new buddy icon. though keep in mind that I early added the puffle party here because of a missing function from the rockhopper quest (showCutscene)
-      'play/v2/content/global/content/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
+      // update of the toolbar with the new buddy icon
+      'play/v2/client/interface.swf': 'archives:ClientInterface20111101.swf'
     }
   },
   {
@@ -2789,6 +2789,10 @@ export const UPDATES_2011: Update[] = [
       'close_ups/waterItems.swf': {
         en: 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf'
       }
+    },
+    fileChanges: {
+      // earliest interface with dojo courtyard support + a function in rockhoper's quest
+      'play/v2/client/interface.swf': 'archives:ClientInterface-PuffleParty2012.swf'
     }
   },
   {
