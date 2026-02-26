@@ -3859,7 +3859,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/penguin/penguin_car_15.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_15.swf',
   'play/v2/content/global/penguin/penguin_car_16.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_car_16.swf',
   'play/v2/content/global/penguin/penguin_frostbite.swf': 'archives:PlayV2ContentGlobalPenguinPenguin_frostbite.swf',
-  'play/v2/games/scornbattle/ScornBattle.swf': 'approximation:scornbattle/scorn_battle.swf',
+  'play/v2/games/scornbattle/ScornBattle.swf': 'svanilla:media/play/v2/games/scornbattle/ScornBattle.swf',
   'play/v2/games/scornbattle/config.xml': 'approximation:scornbattle/config.xml',
   'play/v2/games/scornbattle/ScornBattleConfig.xml': 'approximation:scornbattle/scorn.xml',
   'play/v2/games/scornbattle/lang/en/locale.xml': 'approximation:scornbattle/en.xml',
