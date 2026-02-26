@@ -24,7 +24,8 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'furniture-catalog-name': undefined,
   'as3-startscreen-2012': undefined,
   '2012-client': undefined,
-  '2012-sep-shell': undefined
+  '2012-sep-shell': undefined,
+  'shell-locale': undefined
 };
 
 const dateRefMap = new Map<DateReference, Version>();

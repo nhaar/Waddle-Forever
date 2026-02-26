@@ -590,7 +590,7 @@ handler.xt(Handle.WalkPuffle, (client, puffleId, walking) => {
 
   if (isLower(client.version, getDate('2012-client'))) {
     client.sendXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
-  } else if (isLower(client.version, getDate('2012-sep-shell'))) {
+  } else if (isLower(client.version, getDate('shell-locale'))) {
     // beta team shell
     client.sendXt('pw', `${puffleId}|||||${walking}|${client.penguin.id}`);
   } else {

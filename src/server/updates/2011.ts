@@ -2260,6 +2260,7 @@ export const UPDATES_2011: Update[] = [
       'play/v2/content/local/en/catalogues/dance.swf': 'archives:Game_Upgrades_Dance_2011.swf',
       'play/v2/client/interface.swf': 'recreation:interfaces/halloween_2011.swf'
     },
+    dateReference: 'shell-locale',
     gameUpgrades: {
       newItems: [
         5121
