@@ -590,6 +590,9 @@ handler.xt(Handle.WalkPuffle, (client, puffleId, walking) => {
 
   if (isLower(client.version, getDate('2012-client'))) {
     client.sendXt('pw', client.penguin.id, `${puffleId}||||||||||||${walking}`);
+  } else if (isLower(client.version, getDate('2012-sep-shell'))) {
+    // beta team shell
+    client.sendXt('pw', `${puffleId}|||||${walking}|${client.penguin.id}`);
   } else {
     // TODO last number is puffle hat
     client.sendXt('pw', client.penguin.id, puffleId, walking, 0);

@@ -2062,7 +2062,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'puffle_client/puffle_care_2012.swf',
-      comment: 'Originally from mondo'
+      comment: 'Originally from mondo, code is modified to work with the late 2012 club_penguin.swf'
     }
   ],
   [MOD]: [
