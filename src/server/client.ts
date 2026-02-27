@@ -1242,8 +1242,9 @@ export class Client {
     this.sendXt('jw', seatId);
     this.sendRoomXt('uw', waddleRoom.id, seatId, this.name, this.penguin.id);
     const players = waddleRoom.players;
-    // starts the game if all players have entered
-    if (players.length === waddleRoom.size) {
+    const shouldStartSledSolo = waddleRoom.game === 'sled' && players.length >= 1;
+    // starts the game if all players have entered, or immediately for sled solo play
+    if (players.length === waddleRoom.size || shouldStartSledSolo) {
       const Constructor = this.server.waddleConstructors[waddleRoom.game];
       const waddleGame = new Constructor(players);
       this.server.setWaddleGame(waddleRoom, waddleGame);
@@ -1251,7 +1252,7 @@ export class Client {
       // 2006 sled race notification for starting the game
       if (waddleGame.name === 'sled' && players.every((player) => player.isEngine1)) {
         players.forEach((player) => {
-          player.sendXt('sw', waddleRoom.id, waddleGame.roomId, waddleRoom.size);
+          player.sendXt('sw', waddleRoom.id, waddleGame.roomId, players.length);
         });
         return;
       }

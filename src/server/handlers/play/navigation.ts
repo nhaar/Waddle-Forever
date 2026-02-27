@@ -140,6 +140,11 @@ handler.xt(Handle.CloseBook, (client) => {
   client.sendRoomXt('rt', client.penguin.id);
 });
 
+// Acknowledgement packet sent by some clients when using waddle interactions.
+handler.xt(Handle.WaddleInteractionAck, () => {
+  // no-op: this packet is informational only.
+});
+
 handler.boot(s => {
   s.waddleConstructors = {
     'card': CardJitsu,
