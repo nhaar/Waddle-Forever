@@ -212,7 +212,8 @@ export enum Handle {
   MoveHockeyPuck,
   MoveHockeyPuckOld,
   UpdateHockeyGame,
-  BuyPowerCards
+  BuyPowerCards,
+  WaddleInteractionAck
 };
 
 /** Map of all the handles and their valid arguments */
@@ -408,7 +409,8 @@ export const HANDLE_ARGUMENTS = {
   [Handle.MoveHockeyPuck]: ['number', 'number', 'number', 'number', 'number'],
   [Handle.MoveHockeyPuckOld]: ['number', 'number'],
   [Handle.UpdateHockeyGame]: ['number'],
-  [Handle.BuyPowerCards]: []
+  [Handle.BuyPowerCards]: [],
+  [Handle.WaddleInteractionAck]: 'string'
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
@@ -460,6 +462,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'ai': Handle.AddItem,
       'qpp': Handle.GetPinInformation,
       'qpa': Handle.GetMissionStamps
+    },
+    'bi': {
+      'ack': Handle.WaddleInteractionAck
     },
     'm': {
       'sm': Handle.HandleSendMessage
