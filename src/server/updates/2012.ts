@@ -836,12 +836,13 @@ export const UPDATES_2012: Update[] = [
         startscreens: [
           'archives:Billboards-super-hero-2.swf'
         ],
-        activeFeatures: '20130424',
         fileChanges: {
-          'play/v2/client/engine.swf': 'unknown:marvel/engine.swf',
-          'play/v2/content/global/content/party.swf': 'unknown:marvel/party.swf'
+          'play/v2/client/engine.swf': 'recreation:engines/marvel_2012.swf'
         }
       }
+    },
+    fileChanges: {
+      'play/v2/client/shell.swf': 'approximation:shell_2013.swf'
     }
   },
   {
@@ -1485,8 +1486,7 @@ export const UPDATES_2012: Update[] = [
       }
     },
     fileChanges: {
-      'play/v2/client/interface.swf': 'archives:ClientInterface-HalloweenParty2012.swf',
-      'play/v2/client/shell.swf': 'approximation:shell_2013.swf'
+      'play/v2/client/interface.swf': 'archives:ClientInterface-HalloweenParty2012.swf'
     }
   },
   {

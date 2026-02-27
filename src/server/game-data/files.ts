@@ -2063,6 +2063,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'medieval_2012/shell.swf',
       comment: 'Originally the Sep 2012 shell, modded in such a way that it can display the login screens from the medieval party 2012. The changes are all in frame1 and begin with updating show party announcement, the functions receiveMedievalData, sendMedievalCookie functions are added'
+    },
+    {
+      file: 'engines/marvel_2012.swf',
+      comment: 'Originally archives ClientEngine-20130410.swf, with code added to make power glove transformations work (check .as file)'
     }
   ],
   [MOD]: [
