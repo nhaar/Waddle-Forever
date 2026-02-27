@@ -3900,7 +3900,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/client/buddies.swf': 'svanilla:media/play/v2/client/buddies.swf',
   'play/v2/client/character_dialogue_puffletricks.swf': 'svanilla:media/play/v2/content/global/close_ups/character_dialogue_puffletricks.swf',
   'play/v2/client/courtyard_sensei.swf': 'svanilla:media/play/v2/client/courtyard_sensei.swf',
-  'play/v2/client/game_launcher.swf': 'svanilla:media/play/v2/client/game_launcher.swf',
   'play/v2/client/LikeWindow.swf': 'svanilla:media/play/v2/client/LikeWindow.swf',
   'play/v2/client/like_window_module.swf': 'svanilla:media/play/v2/client/like_window_module.swf',
   'play/v2/client/minigame_end_screens.swf': 'svanilla:media/play/v2/client/minigame_end_screens.swf',

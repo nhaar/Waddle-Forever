@@ -27,6 +27,7 @@ export const UPDATES_2013: Update[] = [
       'play/v2/content/global/content/archives.swf': 'svanilla:media/play/v2/content/global/content/archives.swf',
       'play/v2/content/global/penguin/penguin.swf': 'svanilla:media/play/v2/content/global/penguin/penguin.swf',
       'play/v2/client/map_triggers.swf': 'svanilla:media/play/v2/client/map_triggers.swf',
+      'play/v2/client/game_launcher.swf': 'svanilla:media/play/v2/client/game_launcher.swf'
     },
   },
   {
