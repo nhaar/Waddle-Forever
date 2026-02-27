@@ -2059,6 +2059,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'puffle_client/puffle_care_2012.swf',
       comment: 'Originally from mondo, code is modified to work with the late 2012 club_penguin.swf'
+    },
+    {
+      file: 'medieval_2012/shell.swf',
+      comment: 'Originally the Sep 2012 shell, modded in such a way that it can display the login screens from the medieval party 2012. The changes are all in frame1 and begin with updating show party announcement, the functions receiveMedievalData, sendMedievalCookie functions are added'
     }
   ],
   [MOD]: [
@@ -2187,24 +2191,12 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
       comment: 'Alledgedly originally the Halloween Party 2014 party.swf, with possible modifications, and in addition to that, modifications done by cutestlesbian for the ghost hunter transform to work. After that, added a fix for the ghost hunter not being applying when logging in. Removed a forced JSON utils export because it was breaking stamps somehow. NOTE: the way party icon is setup is important as well, it might break the ghost scavenger hunt icon otherwise, if this file is to be replaced (NOTE 2: the icon was working without icon in the new 2012 client reform, so this not is likely outdated). Seemingly the 2013 shell does not have anything activefeatures related so that was also hardcoded to always work independent of it'
     },
     {
-      file: 'medieval2012/party.swf',
-      comment: 'From JF archives, unknown modifications'
-    },
-    {
-      file: 'medieval2012/mdlv1.swf',
-      comment: 'From JF archives, first login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
-    },
-    {
-      file: 'medieval2012/mdlv2.swf',
-      comment: 'From JF archives, second login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
-    },
-    {
       file: '2012_media/airtower.swf',
       comment: 'All files in this 2012_media collection are seemingly from old CPPSes or just not uploaded to archives until recently. Provided by Misabr'
     },
     {
       file: '2012_media/club_penguin.swf',
-      comment: 'Cf 2012_media/airtower'
+      comment: 'Cf 2012_media/airtower. On top of the given file, com.clubpenguin.main.overlays.mediator.MembershipPromptMediator was modded to allow for using unmodified medieval party files'
     },
     {
       file: '2012_media/like_window_module.swf',

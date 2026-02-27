@@ -715,9 +715,8 @@ export const UPDATES_2012: Update[] = [
           'scavenger_hunt/scavenger_hunt.swf': 'archives:MedievalParty2012MedievalHunt.swf'
         },
         fileChanges: {
-          'play/v2/content/global/content/party.swf': 'unknown:medieval2012/party.swf'
+          'play/v2/client/shell.swf': 'recreation:medieval_2012/shell.swf'
         },
-        activeFeatures: '2012',
         mapNote: 'archives:MedievalParty2012Party_map_note.swf',
         partyIconFile: 'archives:MedievalParty2012MedievalHuntIcon.swf'
       }
