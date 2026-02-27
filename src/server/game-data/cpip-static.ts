@@ -11,6 +11,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/en/web_service/game_configs/cover.json': 'approximation:game_configs/cover.json',
   'en/web_service/epf.json': 'slegacy:play/en/web_service/epf.json',
   'en/web_service/polaroids.json': 'slegacy:play/en/web_service/polaroids.json',
+  'play/en/web_service/polaroids.json': 'slegacy:play/en/web_service/polaroids.json',
   'web_service/weblogger.json': 'slegacy:play/web_service/weblogger.json',
   'es/web_service/cover.json': 'slegacy:play/es/web_service/cover.json',
   'es/web_service/polaroids.json': 'slegacy:play/es/web_service/polaroids.json',
