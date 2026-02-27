@@ -597,7 +597,7 @@ export function getPathsJson(version: Version): string {
       "w.p0612.superhero.civilian.catalogue": "catalogues\/party2.swf",
       "w.p0612.superhero.treasure.catalogue": "",
       "w.p0712.musicjam.clothing.catalogue": "catalogues\/party.swf",
-      "w.party.announcement": "close_ups\/poster.swf",
+      "w.party.announcement": "close_ups\/announcement.swf",
       "w.p0712.musicjam.cadence.track": "music\/tpsn.mp3",
       "faq_membership": "close_ups\/faq_membership.swf",
       "w.p1012.halloween.note.gariwald": "close_ups\/party_note1.swf",

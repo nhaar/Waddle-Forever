@@ -345,6 +345,9 @@ function addUpdates(map: FileTimelineMap): void {
         throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
       }
     }
+    if (update.update.partyAnnouncement !== undefined) {
+      map.add('play/v2/content/local/en/close_ups/announcement.swf', update.update.partyAnnouncement, update.date, update.end);
+    }
     addCatalog(update.date, update.update.sportCatalog, [
       'artwork/catalogue/sport_.swf',
       'play/v2/content/local/en/catalogues/sport.swf'

@@ -1,5 +1,6 @@
 
 
+import { PARTY_ANNOUNCEMENT_TIMELINE } from "@server/timelines/party-announcement";
 import { findInVersion } from "../game-data";
 import { HUNT_TIMELINE } from "../timelines/crumbs";
 import { FAIR_TIMELINE } from "../timelines/fair";
@@ -13,6 +14,7 @@ export function getGeneralJson(version: Version): string {
   const hunt = findInVersion(version, HUNT_TIMELINE);
   const fair = findInVersion(version, FAIR_TIMELINE);
   const partyIcon = findInVersion(version, PARTY_ICON_TIMELINE);
+  const partyAnnouncement = findInVersion(version, PARTY_ANNOUNCEMENT_TIMELINE) !== null;
 
   return JSON.stringify({
     "mascot_options": {
@@ -23,7 +25,7 @@ export function getGeneralJson(version: Version): string {
       "hunt_active": hunt !== null || fair || partyIcon,
       "itemRewardID": hunt?.global.reward ?? 0,
       "isMapNoteActive": findInVersion(version, MAP_NOTE_TIMELINE),
-      "showPartyAnnouncement": false, "party_icon_active": false,
+      "showPartyAnnouncement": partyAnnouncement, "party_icon_active": false,
       unlockedDay: findInVersion(version, UNLOCKED_DAY_TIMELINE)
     },
     "igloo_options": {

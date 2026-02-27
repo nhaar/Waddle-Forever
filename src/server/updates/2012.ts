@@ -838,7 +838,8 @@ export const UPDATES_2012: Update[] = [
         ],
         fileChanges: {
           'play/v2/client/engine.swf': 'recreation:engines/marvel_2012.swf'
-        }
+        },
+        partyAnnouncement: 'archives:MarvelSuperheroTakeoverCloseupsLogin.swf'
       }
     },
     fileChanges: {

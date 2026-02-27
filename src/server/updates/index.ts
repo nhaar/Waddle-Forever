@@ -244,6 +244,8 @@ export type CPUpdate = {
 
   /** New puffle added to puffles.json */
   newPuffleJson?: Array<PuffleJson>
+
+  partyAnnouncement?: FileRef;
 } & ({
   partyName: string;
   decorated?: false;
