@@ -2070,7 +2070,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'engines/temple_of_fruit.swf',
-      comment: 'Originally archives ClientEngine-20130410.swf, with transformation code for the snowballs added in com.clubpenguin.engine.avatar.AvatarConfig'
+      comment: 'Originally archives ClientEngine-20130410.swf, with transformation code for the snowballs added in com.clubpenguin.engine.avatar.AvatarConfig. Added a section for isSmallPenguin in onTransformLoadComplete at AvatarTransformationManager'
     }
   ],
   [MOD]: [
