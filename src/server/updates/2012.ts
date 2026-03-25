@@ -1048,7 +1048,7 @@ export const UPDATES_2012: Update[] = [
         ],
         partyIconFile: 'archives:APToFPartyScavengerHuntIcon.swf',
         fileChanges: {
-          'play/v2/client/engine.swf': 'recreation:temple_of_fruit/engine.swf'
+          'play/v2/client/engine.swf': 'recreation:engines/temple_of_fruit.swf'
         }
       }
     },

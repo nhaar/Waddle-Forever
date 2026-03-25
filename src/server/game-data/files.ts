@@ -2067,6 +2067,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'engines/marvel_2012.swf',
       comment: 'Originally archives ClientEngine-20130410.swf, with code added to make power glove transformations work (check .as file)'
+    },
+    {
+      file: 'engines/temple_of_fruit.swf',
+      comment: 'Originally archives ClientEngine-20130410.swf, with transformation code for the snowballs added in com.clubpenguin.engine.avatar.AvatarConfig'
     }
   ],
   [MOD]: [
