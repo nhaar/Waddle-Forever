@@ -1051,7 +1051,6 @@ export const UPDATES_2008: Update[] = [
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
-    startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     petFurniture: 'archives:May2008LoveYourPet.swf',
     localChanges: {
       'forms/moderator.swf': {
@@ -2033,7 +2032,6 @@ export const UPDATES_2008: Update[] = [
         en: 'recreation:library/yearbook_08.swf'
       }
     },
-    startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ],
     temp: {
       party: {
         partyName: '3rd Anniversary Party',

@@ -1305,22 +1305,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby. Built on top of the modified lgeacy media interface, removing the owned igloos functionality'
     },
     {
-      file: 'startscreen/cpip.swf',
-      comment: 'Made by lifeofgames477, recreation of the original CPIP start screen'
-    },
-    {
-      file: 'startscreen/cpip_logo.swf',
-      comment: 'Made by lifeofgames477, this file is an extension of the CPIP startscreen recreation. The logo was placed in a separate SWF because the recreation was built on top of the startscreen that we had, though it is purely a functional dependency'
-    },
-    {
-      file: 'startscreen/unlock_items.swf',
-      comment: 'Made by Blue Kirby, built on top of lifeofgames\' recreation adding the unlock items functionality'
-    },
-    {
-      file: 'startscreen/unlock_items_logo.swf',
-      comment: 'Made by Blue Kirby, the logo was slightly altered, cf. lifeofgame\'s recreation for why this file exists'
-    },
-    {
       file: 'login_cpip.swf',
       comment: 'Made by Blue Kirby, server select screen without the unlock items button and with the proper save password warning'
     },
