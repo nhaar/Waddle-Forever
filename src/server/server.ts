@@ -104,7 +104,13 @@ const createServer = async (type: string, port: number, handler: Handler, settin
                 });
               })
             },
-            end: (d: any) => socket.end(d)
+            end: (d) => {
+              if (d === undefined) {
+                socket.end();
+              } else {
+                socket.end(d);
+              }
+            }
           }
 
           const client = makeClient(cs)
