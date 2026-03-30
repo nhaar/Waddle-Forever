@@ -2023,6 +2023,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'telescope_holiday.swf',
       comment: 'Made by ItzAle, from the 2012 telescope as a base'
+    },
+    {
+      file: 'LoginJul2008.swf',
+      comment: 'Made by Randomno from the Jun 2009 login'
+    },
+    {
+      file: 'LoginOct2008.swf',
+      comment: 'Made by Randomno from the Jun 2009 login'
     }
   ],
   [MOD]: [
