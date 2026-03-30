@@ -837,8 +837,13 @@ function capitalizeName(name: string): string {
   })).join(' ');
 }
 
+export interface ClientSocket {
+  write: (data: string) => Promise<void>;
+  end: (data?: string) => void;
+}
+
 export class Client {
-  private _socket: net.Socket | undefined;
+  private _socket: ClientSocket | undefined;
   /** Reference to the server */
   private _server: Server;
   protected _penguin: Penguin | undefined;
@@ -887,7 +892,7 @@ export class Client {
 
   private _pendingAgent: boolean = false;
 
-  constructor (server: Server, socket: net.Socket | undefined, type: ServerType) {
+  constructor (server: Server, socket: ClientSocket | undefined, type: ServerType) {
     this._server = server;
     this._socket = socket;
     this.serverType = type;
@@ -919,7 +924,7 @@ export class Client {
     return this._penguin ?? (() => { throw new Error('Getting penguin before initializing'); })();
   }
 
-  get socket(): net.Socket {
+  get socket(): ClientSocket {
     return this._socket ?? (() => { throw new Error('Getting socket before initializing'); })();
   }
 
@@ -928,14 +933,7 @@ export class Client {
   }
 
   async send (message: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this._socket?.write(message + '\0', (err) => {
-        if (err !== undefined) {
-          reject(err);
-        }
-        resolve();
-      });
-    });
+    return this.socket?.write(message)
   }
 
   private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {

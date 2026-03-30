@@ -1,11 +1,12 @@
 import express, { Express } from 'express';
 import net from 'net';
+import { WebSocketServer } from 'ws'
 
 import { Handler } from './handlers';
 import { LOGIN_PORT, WORLD_PORT } from './servers';
 import worldHandler from './handlers/world'
 import loginHandler from './handlers/login'
-import { Client, Server } from './client';
+import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';
@@ -20,31 +21,117 @@ const createServer = async (type: string, port: number, handler: Handler, settin
 
   handler.bootServer(gameServer);
 
-  await new Promise<void>((resolve, reject) => {
-    net.createServer((socket) => {
-      socket.setEncoding('utf8');
-  
-      console.log(`A client has connected to ${type}`);
+  function makeClient(cs: ClientSocket) {
+    return new Client(
+      gameServer,
+      cs,
+      type === 'Login' ? 'Login' : 'World'
+    );
+  }
 
-      const client = new Client(
-        gameServer,
-        socket,
-        type === 'Login' ? 'Login' : 'World'
-      );
-      socket.on('data', (data: Buffer) => {
-        const dataStr = data.toString().split('\0')[0];
-        handler.handle(client, dataStr);
+  await new Promise<void>((resolve, reject) => {
+    const wsServer = new WebSocketServer({ noServer: true });
+    
+    wsServer.on('connection', (ws, req) => {
+      console.log(`A client has connected to ${type} (WebSocket)`);
+
+      const cs: ClientSocket = {
+        write: async (message: string) => {
+          return new Promise<void>((resolve, reject) => {
+            ws.send(Buffer.from(message + '\0', 'utf8'), { binary: true }, (err) => {
+              if (err !== undefined) {
+                reject(err);
+              }
+              resolve();
+            });
+          })
+        },
+
+        end: (d) => ws.close(undefined, d)
+      }
+
+      const client = makeClient(cs)
+
+      ws.on('message', (data) => {
+        handler.handle(client, data.toString());
       });
-  
-      socket.on('close', () => {
+
+      ws.on('close', () => {
         for (const method of handler.disconnectListeners) {
           method(client);
         }
-        console.log('A client has disconnected');
+        console.log('A client has disconnected (WebSocket)');
       });
+
+      ws.emit('message', req)
+
+      ws.on('error', console.error)
+    });
+
+    function parseHeaders(data: string) {
+      const lines = data.split('\r\n');
+      const headers: Record<string, string> = {};
+      for (let i = 1; i < lines.length; i++) {
+        const [key, value] = lines[i].split(': ');
+        if (key && value) {
+          headers[key.toLowerCase()] = value;
+        }
+      }
+      return headers;
+    }
   
-      socket.on('error', (error) => {
-        console.error(error);
+    net.createServer((socket) => {
+      socket.once('data', (buffer) => {
+        const dataStr = buffer.toString()
+
+        if (dataStr.startsWith('GET')) {
+          // This is a websocket connection
+          wsServer.handleUpgrade({ headers: parseHeaders(dataStr), method: 'GET' } as any, socket, buffer, (ws) => {
+            wsServer.emit('connection', ws, dataStr);
+          });
+        } else {
+          socket.setEncoding('utf8')
+          console.log(`A client has connected to ${type}`);
+
+          const cs: ClientSocket = {
+            write: async (message: string) => {
+              return new Promise<void>((resolve, reject) => {
+                socket.write(message + '\0', (err) => {
+                  if (err !== undefined) {
+                    reject(err);
+                  }
+                  resolve();
+                });
+              })
+            },
+            end: (d) => {
+              if (d === undefined) {
+                socket.end();
+              } else {
+                socket.end(d);
+              }
+            }
+          }
+
+          const client = makeClient(cs)
+
+          socket.on('data', (data: Buffer) => {
+            const dataStr = data.toString().split('\0')[0];
+            handler.handle(client, dataStr);
+          });
+
+          socket.on('close', () => {
+            for (const method of handler.disconnectListeners) {
+              method(client);
+            }
+            console.log('A client has disconnected');
+          });
+
+          // Re-emit the data so the TCP handler gets the first packet too
+          socket.emit('data', buffer);
+
+          socket.on('error', console.error)
+        }
       });
     }).listen(port, () => {
       console.log(`${type} server listening on port ${port}`);
