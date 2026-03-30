@@ -31,7 +31,7 @@ export function getStartscreenXML(version: Version) {
 		
 		<messages>
 			<message>
-				<title>WHAT'S NEW?</title>
+				<title>CHECK OUT WHAT'S NEW</title>
 				<icon>whats_new.swf</icon>
 				<content type='url'>http://community.clubpenguin.com/blog/</content>
 			</message>

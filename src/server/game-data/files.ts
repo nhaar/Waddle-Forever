@@ -502,7 +502,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'login_no_101_days_of_fun.swf',
-      comment: 'By Randomon, removed 101 days of fun on start screen. not accurate for all dates, needs more research'
+      comment: 'By Randomno, removed 101 days of fun on start screen. not accurate for all dates, needs more research'
     },
     {
       file: 'en.txt',
