@@ -102,7 +102,8 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-19',
     miscComments: ['Members can now see a special badge on their own player card'],
     fileChanges: {
-      'play/v2/interface/interface.swf': 'recreation:interfaces/membership_badge.swf'
+      'play/v2/interface/interface.swf': 'recreation:interfaces/membership_badge.swf',
+      'play/v2/login/login.swf': 'approximation:login_no_101_days_of_fun.swf'
     }
   },
   {

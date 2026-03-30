@@ -1031,8 +1031,6 @@ export const UPDATES_2008: Update[] = [
       'setup/en.txt': 'approximation:en.txt',
       'setup/global.txt': 'approximation:global.txt',
       'setup/system.txt': 'approximation:system.txt',
-      // TODO startscreen (almost definitely) wasn't used until Jan 2009
-      'play/v2/client/startscreen.swf': 'recreation:startscreen/cpip.swf',
       'play/v2/shell/shell.swf': 'archives:ClientShell_January_2009.swf',
       'play/v2/airtower/airtower.swf': 'recreation:airtower_cpip.swf',
       'play/v2/gridview/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
@@ -1040,7 +1038,7 @@ export const UPDATES_2008: Update[] = [
       'play/v2/engine/engine.swf': 'recreation:engine_cpip.swf',
       'play/v2/interface/interface.swf': 'recreation:interfaces/2008_july.swf',
       'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf',
-      'play/v2/login/login.swf': 'archives:ClientLoginJun2009.swf',
+      'play/v2/login/login.swf': 'recreation:LoginJul2008.swf',
       'play/v2/mail/inbox/mail.swf': 'archives:ClientMail2009-06-15.swf',
       'play/v2/mail/book/book.swf': 'slegacy:media/play/v2/client/book.swf',
       'play/v2/music/music.swf': 'archives:PlayV2MusicMusic2009-04-02.swf',
@@ -1053,7 +1051,6 @@ export const UPDATES_2008: Update[] = [
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
     },
-    startscreens: [ 'recreation:startscreen/cpip_logo.swf' ],
     petFurniture: 'archives:May2008LoveYourPet.swf',
     localChanges: {
       'forms/moderator.swf': {
@@ -2028,16 +2025,13 @@ export const UPDATES_2008: Update[] = [
     date: '2008-10-24',
     miscComments: ['The start screen is updated with the introduction of Unlock Items Online'],
     fileChanges: {
-      'play/v2/client/startscreen.swf': 'recreation:startscreen/unlock_items.swf',
-      // TODO reimplement this recreation
-      // 'play/v2/client/login.swf': 'archives:ClientLogin2008.swf'
+      'play/v2/login/login.swf': 'recreation:LoginOct2008.swf',
     },
     localChanges: {
       'forms/library.swf': {
         en: 'recreation:library/yearbook_08.swf'
       }
     },
-    startscreens: [ 'recreation:startscreen/unlock_items_logo.swf' ],
     temp: {
       party: {
         partyName: '3rd Anniversary Party',

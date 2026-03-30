@@ -502,7 +502,7 @@ so that it works with newer clients (newer being around 2007)`,
     },
     {
       file: 'login_no_101_days_of_fun.swf',
-      comment: 'By Randomon, removed 101 days of fun on start screen. not accurate for all dates, needs more research'
+      comment: 'By Randomno, removed 101 days of fun on start screen. not accurate for all dates, needs more research'
     },
     {
       file: 'en.txt',
@@ -1305,22 +1305,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Blue Kirby. Built on top of the modified lgeacy media interface, removing the owned igloos functionality'
     },
     {
-      file: 'startscreen/cpip.swf',
-      comment: 'Made by lifeofgames477, recreation of the original CPIP start screen'
-    },
-    {
-      file: 'startscreen/cpip_logo.swf',
-      comment: 'Made by lifeofgames477, this file is an extension of the CPIP startscreen recreation. The logo was placed in a separate SWF because the recreation was built on top of the startscreen that we had, though it is purely a functional dependency'
-    },
-    {
-      file: 'startscreen/unlock_items.swf',
-      comment: 'Made by Blue Kirby, built on top of lifeofgames\' recreation adding the unlock items functionality'
-    },
-    {
-      file: 'startscreen/unlock_items_logo.swf',
-      comment: 'Made by Blue Kirby, the logo was slightly altered, cf. lifeofgame\'s recreation for why this file exists'
-    },
-    {
       file: 'login_cpip.swf',
       comment: 'Made by Blue Kirby, server select screen without the unlock items button and with the proper save password warning'
     },
@@ -2023,6 +2007,14 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'telescope_holiday.swf',
       comment: 'Made by ItzAle, from the 2012 telescope as a base'
+    },
+    {
+      file: 'LoginJul2008.swf',
+      comment: 'Made by Randomno from the Jun 2009 login'
+    },
+    {
+      file: 'LoginOct2008.swf',
+      comment: 'Made by Randomno from the Jun 2009 login'
     }
   ],
   [MOD]: [
