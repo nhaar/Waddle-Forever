@@ -142,15 +142,14 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   server.addFileServer();
 
-  server.router.get('/', (req, res) => {
-    const page = getWebsiteName(settingsManager);
-
-    res.send(injectRuffleIntoHtml(settingsManager, page));
+  server.getData('/', (s) => {
+    const page = getWebsiteName(s);
+    return injectRuffleIntoHtml(s, page);
   })
 
   // Engine 3 login page requires this URL
-  server.router.get('/#/login', (req, res) => {
-    res.send(injectRuffleIntoHtml(settingsManager, 'default/websites/modern-as3.html'));
+  server.getData('/#/login', (s) => {
+    return injectRuffleIntoHtml(s, 'default/websites/modern-as3.html');
   })
 
   // serving the websites
