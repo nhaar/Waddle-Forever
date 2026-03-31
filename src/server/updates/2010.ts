@@ -798,7 +798,8 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-05-14',
-    furnitureCatalog: 'archives:May10Furniture.swf'
+    furnitureCatalog: 'archives:May10Furniture.swf',
+    iglooCatalog: 'archives:May2010Igloo.swf'
   },
   {
     date: '2010-05-16',
