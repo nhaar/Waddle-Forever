@@ -16,6 +16,9 @@ import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
 import { VERSION } from '@common/version';
+import { timelinePicker } from "./timeline";
+import { modsWindow } from "./mods";
+import { settingsWindow } from "./settings";
 
 log.initialize();
 
@@ -143,6 +146,12 @@ app.on('ready', async () => {
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
   }
+
+  mainWindow.on('closed', () => {
+    timelinePicker?.close();
+    modsWindow?.close();
+    settingsWindow?.close();
+  });
 });
 
 

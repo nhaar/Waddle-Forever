@@ -6,7 +6,7 @@ import { downloadMediaFolder } from "./media";
 import { GlobalSettings, MEDIA_DIRECTORY } from "@common/utils";
 
 // preventing garbage collection
-let settingsWindow: BrowserWindow | null;
+export let settingsWindow: BrowserWindow | null;
 
 export const createSettingsWindow = async (globalSettings: GlobalSettings, mainWindow: BrowserWindow) => {
   if (settingsWindow) {
@@ -20,19 +20,12 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
     webPreferences: {
       preload: path.join(__dirname, 'preload/settings-preload.js')
     },
-    resizable: false,
-    parent: mainWindow
+    resizable: false
   });
 
   settingsWindow.setMenu(null);
 
   settingsWindow.loadFile(path.join(__dirname, 'views/settings.html'));
-
-  if (electronIsDev) {
-    settingsWindow.webContents.on('did-finish-load', () => {
-      settingsWindow?.webContents.openDevTools();
-    });
-  }
 
   settingsWindow.on('closed', () => {
     settingsWindow = null;

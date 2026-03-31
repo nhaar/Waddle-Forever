@@ -1,10 +1,9 @@
 import { BrowserWindow, ipcMain, shell } from "electron";
-import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from "fs";
 import { MODS_DIRECTORY } from "@common/paths";
 
-let modsWindow: BrowserWindow | null;
+export let modsWindow: BrowserWindow | null;
 
 export const createModsWindow = async (mainWindow: BrowserWindow) => {
   if (modsWindow) {
@@ -18,8 +17,7 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
     webPreferences: {
       preload: path.join(__dirname, 'preload/mods-preload.js'),
     },
-    resizable: false,
-    parent: mainWindow
+    resizable: false
   });
 
   modsWindow.setMenu(null);
@@ -30,11 +28,6 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
   })
 
   modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
-  modsWindow.webContents.on('did-finish-load', () => {
-    if (electronIsDev) {
-      modsWindow?.webContents.openDevTools();
-    }
-  });
 
   modsWindow.on('closed', () => {
     modsWindow = null;

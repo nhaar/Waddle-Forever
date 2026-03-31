@@ -8,17 +8,13 @@ import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 import { CatalogItems } from '../server/updates';
 import { getDate } from '@server/timelines/dates';
 
-let timelinePicker: BrowserWindow | null;
+export let timelinePicker: BrowserWindow | null;
 
 export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
   if (timelinePicker) {
     timelinePicker.focus();
     return;
   }
-
-  mainWindow.on('closed', () => {
-    timelinePicker?.close();
-  });
 
   timelinePicker = new BrowserWindow({
     show: false,
