@@ -1,25 +1,18 @@
 import { BrowserWindow, ipcMain, shell } from "electron";
-import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from "fs";
 import { MODS_DIRECTORY } from "@common/paths";
+import { getPopupCreator } from "./popups";
 
-let modsWindow: BrowserWindow | null;
-
-export const createModsWindow = async (mainWindow: BrowserWindow) => {
-  if (modsWindow) {
-    modsWindow.focus();
-    return;
-  }
-  modsWindow = new BrowserWindow({
+export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path'], (mainWindow: BrowserWindow) => {
+  const modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
     title: "Mods",
     webPreferences: {
       preload: path.join(__dirname, 'preload/mods-preload.js'),
     },
-    resizable: false,
-    parent: mainWindow
+    resizable: false
   });
 
   modsWindow.setMenu(null);
@@ -30,18 +23,6 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
   })
 
   modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
-  modsWindow.webContents.on('did-finish-load', () => {
-    if (electronIsDev) {
-      modsWindow?.webContents.openDevTools();
-    }
-  });
-
-  modsWindow.on('closed', () => {
-    modsWindow = null;
-    for (const event of ['update-mod', 'open-mods-folder', 'mod-from-path']) {
-      ipcMain.removeAllListeners(event);
-    }
-  });
 
   ipcMain.on('update-mod', () => {
     mainWindow.webContents.reloadIgnoringCache();
@@ -56,4 +37,6 @@ export const createModsWindow = async (mainWindow: BrowserWindow) => {
       event.reply('mod-created', err);
     })
   });
-};
+
+  return modsWindow;
+});
