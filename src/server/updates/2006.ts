@@ -59,7 +59,8 @@ export const UPDATES_2006: Update[] = [
         partyName: "Valentine's Day Celebration",
         rooms: {
           'dance': 'archives:ArtworkRooms0214Dance.swf',
-          'lounge': 'archives:ArtworkRooms0214Lounge.swf'
+          'lounge': 'archives:ArtworkRooms0214Lounge.swf',
+          coffee: 'recreation:coffee_valentine.swf'
         }
       }
     }

@@ -2015,6 +2015,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'winter_fiesta_2007/beach.swf',
       comment: 'Made by Cyan'
+    },
+    {
+      file: 'coffee_valentine.swf',
+      comment: 'Made by lifeofgames477, added the missing code to the file from the archives. From lifeofgames\' upload, further fixes were added for chat291 compatibility'
     }
   ],
   [MOD]: [
