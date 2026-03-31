@@ -3,43 +3,23 @@ import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from 'fs';
 import { downloadMediaFolder } from "./media";
-import { GlobalSettings, MEDIA_DIRECTORY } from "@common/utils";
+import { MEDIA_DIRECTORY } from "@common/utils";
+import { getPopupCreator } from "./popups";
 
-// preventing garbage collection
-let settingsWindow: BrowserWindow | null;
-
-export const createSettingsWindow = async (globalSettings: GlobalSettings, mainWindow: BrowserWindow) => {
-  if (settingsWindow) {
-    settingsWindow.focus();
-    return;
-  } 
-  settingsWindow = new BrowserWindow({
+export const createSettingsWindow = getPopupCreator('settings', ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'reload-cache'], (mainWindow: BrowserWindow) => {
+  const settingsWindow = new BrowserWindow({
     width: 500,
     height: 500,
     title: "Settings",
     webPreferences: {
       preload: path.join(__dirname, 'preload/settings-preload.js')
     },
-    resizable: false,
-    parent: mainWindow
+    resizable: false
   });
 
   settingsWindow.setMenu(null);
 
   settingsWindow.loadFile(path.join(__dirname, 'views/settings.html'));
-
-  if (electronIsDev) {
-    settingsWindow.webContents.on('did-finish-load', () => {
-      settingsWindow?.webContents.openDevTools();
-    });
-  }
-
-  settingsWindow.on('closed', () => {
-    settingsWindow = null;
-    for (const event of ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'reload-cache']) {
-      ipcMain.removeAllListeners(event);
-    }
-  });
 
   ipcMain.on('download-package', (e, arg) => {
     (async () => {
@@ -70,4 +50,6 @@ export const createSettingsWindow = async (globalSettings: GlobalSettings, mainW
   ipcMain.on('reload-cache', () => {
     mainWindow.webContents.reloadIgnoringCache();
   })
-};
+
+  return settingsWindow;
+});
