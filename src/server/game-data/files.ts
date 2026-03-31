@@ -1773,10 +1773,6 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Made by Doubleuman'
     },
     {
-      file: 'style_september_05.swf',
-      comment: 'Made by Doubleuman'
-    },
-    {
       file: 'mtn_lucky_coin_pin.swf',
       comment: 'Made by Blue Kirby'
     },

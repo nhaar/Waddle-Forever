@@ -29,7 +29,7 @@ export const UPDATES_2005: Update[] = [
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
     clothingCatalog: {
-      file: 'recreation:style_september_05.swf',
+      file: 'archives:Catalog1_06.swf',
       newItems: [
         1,
         2,
