@@ -1737,7 +1737,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     navigationBack: 'archives:News298NavigationBack.swf',
     navigationFront: 'archives:News298NavigationFront.swf',
     dividersBack: null,
-    dividersFront: null,
+    dividersFront: 'archives:News298Dividers.swf',
     secrets: 'archives:News298Secrets.swf',
     submit: 'archives:News298SubmitYourContent.swf',
   },
