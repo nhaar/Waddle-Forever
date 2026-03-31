@@ -234,6 +234,22 @@ would need to investigated`
     {
       file: 'load2008-08-15.swf',
       comment: 'Found in various old trainers. Domain check has likely been removed. Further changes to fix paths, including in shell.'
+    },
+    {
+      file: 'ArtworkRoomsDock3_luau.swf',
+      comment: 'Chat 291 compatibility fixes'
+    },
+    {
+      file: 'ArtworkRoomsDance2_luau.swf',
+      comment: 'Chat 291 compatibility fixes'
+    },
+    {
+      file: 'ArtworkRoomsForts3_luau.swf',
+      comment: 'Chat 291 compatibility fixes'
+    },
+    {
+      file: 'ArtworkRoomsTown4_luau.swf',
+      comment: 'Chat 291 compatibility fixes'
     }
   ],
   [APPROXIMATION]: [
@@ -655,22 +671,6 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'water_hunt_planet_y.swf',
       comment: 'Made by Blue Kirby, Water Hunt stage with Planet Y, including glitched T as seen from videos'
-    },
-    {
-      file: 'winter_luau/dance.swf',
-      comment: 'Winter Luau room recreation by Supermanover'
-    },
-    {
-      file: 'winter_luau/dock.swf',
-      comment: 'Winter Luau room recreation by Supermanover, with additional fixes from Randomno'
-    },
-    {
-      file: 'winter_luau/town.swf',
-      comment: 'Winter Luau room recreation by Supermanover'
-    },
-    {
-      file: 'winter_luau/forts.swf',
-      comment: 'Winter Luau room recreation by Supermanover'
     },
     {
       file: 'puffle_roundup_orange.swf',

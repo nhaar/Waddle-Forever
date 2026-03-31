@@ -23,10 +23,10 @@ export const UPDATES_2006: Update[] = [
       party: {
         partyName: 'Winter Luau',
         rooms: {
-          dance: 'recreation:winter_luau/dance.swf',
-          dock: 'recreation:winter_luau/dock.swf',
-          forts: 'recreation:winter_luau/forts.swf',
-          town: 'recreation:winter_luau/town.swf'
+          dance: 'fix:ArtworkRoomsDance2_luau.swf',
+          dock: 'fix:ArtworkRoomsDock3_luau.swf',
+          forts: 'fix:ArtworkRoomsForts3_luau.swf',
+          town: 'fix:ArtworkRoomsTown4_luau.swf'
         },
         music: {
           dock: 11,
