@@ -7,16 +7,10 @@ import { UPDATES } from '../server/updates/updates';
 import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 import { CatalogItems } from '../server/updates';
 import { getDate } from '@server/timelines/dates';
+import { getPopupCreator } from './popups';
 
-export let timelinePicker: BrowserWindow | null;
-
-export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
-  if (timelinePicker) {
-    timelinePicker.focus();
-    return;
-  }
-
-  timelinePicker = new BrowserWindow({
+export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow) => {
+  const timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
     webPreferences: {
@@ -28,11 +22,6 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
 
   timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
 
-  timelinePicker.on('closed', () => {
-    timelinePicker = null;
-    ipcMain.removeAllListeners('update-version');
-  });
-
   ipcMain.on('update-version', () => {
     mainWindow.webContents.reloadIgnoringCache();
   });
@@ -42,7 +31,9 @@ export const createTimelinePicker = async (mainWindow: BrowserWindow) => {
     timelinePicker?.show();
     timelinePicker?.webContents.send('get-timeline', getConsumedTimeline(getTimeline()));
   });
-}
+
+  return timelinePicker;
+});
 
 
 // this type is duplicated in the timeline-static file, it should be the same type

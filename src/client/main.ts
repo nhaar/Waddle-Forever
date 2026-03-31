@@ -16,9 +16,7 @@ import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
 import { VERSION } from '@common/version';
-import { timelinePicker } from "./timeline";
-import { modsWindow } from "./mods";
-import { settingsWindow } from "./settings";
+import { Popups } from './popups';
 
 log.initialize();
 
@@ -44,6 +42,8 @@ let mainWindow: BrowserWindow;
 let globalSettings : GlobalSettings = {
   multiplayer: { type: 'local' }
 };
+
+const popups: Popups = new Map<string, BrowserWindow>();
 
 app.on('ready', async () => {
   // setup window is necessary so that in case we need to
@@ -141,16 +141,16 @@ app.on('ready', async () => {
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, globalSettings, settingsManager);
+  startMenu(store, mainWindow, globalSettings, settingsManager, popups);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
   }
 
   mainWindow.on('closed', () => {
-    timelinePicker?.close();
-    modsWindow?.close();
-    settingsWindow?.close();
+    popups.forEach(win => {
+      win.close();
+    });
   });
 });
 
@@ -182,6 +182,6 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    startMenu(store, mainWindow, globalSettings, settingsManager);
+    startMenu(store, mainWindow, globalSettings, settingsManager, popups);
   }
 });
