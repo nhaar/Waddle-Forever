@@ -22,6 +22,15 @@ export const UPDATES_2010: Update[] = [
     end: ['party']
   },
   {
+    date: '2010-01-05',
+    miscComments: ['The Penguin Style year label is fixed'],
+    localChanges: {
+      'catalogues/clothing.swf': {
+        en: 'recreation:clothing_10_01.swf'
+      }
+    }
+  },
+  {
     date: '2010-01-08',
     miscComments: ['A rockslide appears in the Mine'],
     stagePlay: {

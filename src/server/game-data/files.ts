@@ -2019,6 +2019,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'coffee_valentine.swf',
       comment: 'Made by lifeofgames477, added the missing code to the file from the archives. From lifeofgames\' upload, further fixes were added for chat291 compatibility'
+    },
+    {
+      file: 'clothing_10_01.swf',
+      comment: 'Made by Randomno, the January 2010 penguin style but with the proper year label'
     }
   ],
   [MOD]: [
