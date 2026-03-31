@@ -2011,6 +2011,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'LoginOct2008.swf',
       comment: 'Made by Randomno from the Jun 2009 login'
+    },
+    {
+      file: 'winter_fiesta_2007/beach.swf',
+      comment: 'Made by Cyan'
     }
   ],
   [MOD]: [
