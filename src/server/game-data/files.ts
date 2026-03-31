@@ -814,11 +814,11 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/beach.swf',
-      comment: 'made by Cyan'
+      comment: 'made by Doubleuman'
     },
     {
       file: 'summer_kickoff_2007/beach_update.swf',
-      comment: 'made by Cyan (added Flower Headdress)'
+      comment: 'made by Doubleuman (added Flower Headdress)'
     },
     {
       file: 'summer_kickoff_2007/town.swf',
@@ -830,7 +830,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'summer_kickoff_2007/dojo.swf',
-      comment: 'made by Victando'
+      comment: 'made by Doubleuman'
     },
     {
       file: 'summer_kickoff_2007/beacon.swf',
