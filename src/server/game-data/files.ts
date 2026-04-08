@@ -1998,7 +1998,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'engine_cpip.swf',
-      comment: 'Used the Jun 2009 engine as base. Made self-initialising. Changed .path to .file_path. Added showInterface call after roomInitiated. Changed myMediaPath assigning for game_mc'
+      comment: 'Used the Jun 2009 engine as base. Made self-initialising. Changed .path to .file_path. Added showInterface call after roomInitiated. Changed myMediaPath assigning for game_mc. Added to the addPlayer function code to add balloon to the balloons_mc interface (fixes the balloons not showing up).'
     },
     {
       file: 'telescope_holiday.swf',
