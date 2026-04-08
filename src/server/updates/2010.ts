@@ -852,6 +852,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-05-27',
     end: ['party'],
+    indexHtml: 'classic-cpip-boots',
     fileChanges: {
       // engine that has EPF and stuff
       'play/v2/client/engine.swf': 'approximation:engine.swf',
