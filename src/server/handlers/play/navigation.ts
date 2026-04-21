@@ -96,6 +96,10 @@ handler.xt(Handle.SendJoke, (client, joke) => {
   client.sendJoke(joke);
 });
 
+handler.xt(Handle.HandleSendMessage, (client, _, msg) => {
+  client.sendMessage(msg);
+});
+
 handler.xt(Handle.SendSafeMessage, (client, id) => {
   client.sendSafeMessage(id);
 });
