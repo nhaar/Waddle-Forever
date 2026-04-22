@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow, dialog, shell } from "electron";
 import log from "electron-log";
 import { autoUpdater } from "electron-updater";
 import { startDiscordRPC } from "./discord";
@@ -17,6 +17,7 @@ import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
 import { VERSION } from '@common/version';
 import { Popups } from './popups';
+import { WEBSITE } from '@common/website';
 
 log.initialize();
 
@@ -100,6 +101,28 @@ app.on('ready', async () => {
     }
     settingsManager.updateSettings({ answered_packages: VERSION });
   }
+
+  if (!settingsManager.settings.faq_warning) {
+    const result = await dialog.showMessageBox(mainWindow, {
+      buttons: ['Take me to the FAQ', 'Understood'],
+      title: 'Heads-Up!',
+      message: `Welcome to Waddle Forever! If you know nothing about this client, you might be confused about some things:
+- You don't need to create an account, just log in with any name or password
+- The game is entirely offline
+- You can choose the day in the timeline, use commands, and more through the menu
+
+These are the most important things, but there is a full list of questions in our FAQ. If you're ever lost, you can read it in our website.`,
+      cancelId: 2
+    });
+
+    if (result.response === 0 || result.response === 1) {
+      if (result.response === 0) {
+        shell.openExternal(`${WEBSITE}/faq`);
+      }
+      settingsManager.updateSettings({ faq_warning: true });
+    }
+  }
+
   try {
     await startServer(settingsManager);
 

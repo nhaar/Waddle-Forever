@@ -19,7 +19,8 @@ export type BooleanSettingKey =
   'no_rainbow_quest_wait' |
   'medieval_sound_fix' |
   'inventory_accuracy' |
-  'no_create_via_login';
+  'no_create_via_login' |
+  'faq_warning';
 
 export type Settings = {
   version: Version
@@ -121,7 +122,8 @@ export class SettingsManager {
       answered_packages: this.readString(settingsJson, 'answered_packages'),
       ignored_version: this.readString(settingsJson, 'ignored_version'),
       medieval_sound_fix: this.readBoolean(settingsJson, 'medieval_sound_fix', true),
-      inventory_accuracy: this.readBoolean(settingsJson, 'inventory_accuracy', true)
+      inventory_accuracy: this.readBoolean(settingsJson, 'inventory_accuracy', true),
+      faq_warning: this.readBoolean(settingsJson, 'faq_warning', false)
     };
 
     this.updateSettings({});
