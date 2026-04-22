@@ -125,19 +125,6 @@ These are the most important things, but there is a full list of questions in ou
 
   try {
     await startServer(settingsManager);
-
-    // this message box is useless, but for some reason, it is the only way for auto reload to work
-    const start = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Start'],
-      title: 'Ready',
-      message: `Waddle Forever is Ready!`,
-      defaultId: 0,
-      cancelId: 1
-    });
-
-    if (start.response === 1) {
-      app.quit();
-    }
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {
