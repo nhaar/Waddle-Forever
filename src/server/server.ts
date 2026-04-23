@@ -102,7 +102,7 @@ const createServer = async (type: string, port: number, handler: Handler, settin
             write: async (message: string) => {
               return new Promise<void>((resolve, reject) => {
                 socket.write(message + '\0', (err) => {
-                  if (err !== undefined) {
+                  if (err) {
                     reject(err);
                   }
                   resolve();
