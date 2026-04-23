@@ -14,6 +14,11 @@ import { getModRouter } from './settings';
 import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 
+type StartServerError = {
+  type: 'items';
+  message: string;
+};
+
 const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<Server> => {  
   const gameServer = new Server(settingsManager);
 
@@ -144,7 +149,10 @@ const createServer = async (type: string, port: number, handler: Handler, settin
   return gameServer;
 };
 
-const startServer = async (settingsManager: SettingsManager): Promise<void> => {
+/** Returns a list of relevant errors with the startup */
+const startServer = async (settingsManager: SettingsManager): Promise<StartServerError[]> => {
+  const errors: StartServerError[] = [];
+
   db.loadDatabase();
 
   const server = express();
@@ -170,6 +178,17 @@ const startServer = async (settingsManager: SettingsManager): Promise<void> => {
       reject(err)
     })
   })
+
+  // mods that fail to initialize are turned off and the user must be warned about
+  const failedMods = settingsManager.initializeModItems();
+  if (failedMods.length > 0) {
+    errors.push({
+      type: 'items',
+      message: `Failed to initialize the following mods due to an improper items file: ${failedMods.join(', ')}`
+    });
+  }
+  
+  return errors;
 };
 
 export default startServer;

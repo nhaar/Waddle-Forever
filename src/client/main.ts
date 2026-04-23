@@ -9,7 +9,7 @@ import startMenu from "./menu";
 import createStore from "./store";
 import createWindow, { loadMain } from "./window";
 import startServer from "@server/server";
-import settingsManager from "@server/settings";
+import settingsManager, { ModItemsError } from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
@@ -124,7 +124,17 @@ These are the most important things, but there is a full list of questions in ou
   }
 
   try {
-    await startServer(settingsManager);
+    const errors = await startServer(settingsManager);
+    for (const err of errors) {
+      // warn user if there are any issues with their mods
+      if (err.type === 'items') {
+        await dialog.showMessageBox(mainWindow, {
+          buttons: ['OK'],
+          title: 'Error with Item Mods',
+          message: err.message
+        });
+      }
+    }
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {

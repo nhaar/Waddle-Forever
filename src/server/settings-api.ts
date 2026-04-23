@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 
-import { SettingsManager } from "./settings";
+import { ModItemsError, SettingsManager } from "./settings";
 import { Server } from './client';
 import { Handler } from './handlers';
 
@@ -33,8 +33,20 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
   router.post('/mod/update', (req, res) => {
     const { name, active } = req.body;
     if (active) {
-      s.setModActive(name);
+      // if the mod has issues, it will be raised and the response will warn the user back
+      try {
+        SettingsManager.loadCustomItems(name);
+        s.setModActive(name);
+      } catch (error) {
+        if (error instanceof ModItemsError) {
+          res.status(400).send(error.message);
+          return;
+        } else {
+          throw error;
+        }
+      }
     } else {
+      SettingsManager.unloadCustomItems(name);
       s.setModInactive(name);
     }
     res.sendStatus(200);

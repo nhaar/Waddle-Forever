@@ -3,7 +3,7 @@ const API_PATH = `${URL}settings-api/`;
 
 /** Post JSON to path in the settings api */
 export async function post(path: string, body: any) {
-  await fetch(`${API_PATH}${path}`, {
+  return await fetch(`${API_PATH}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

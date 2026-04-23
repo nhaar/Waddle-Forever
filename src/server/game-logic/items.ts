@@ -1,4 +1,5 @@
 import { StaticDataTable } from "@common/static-table";
+import { START_DATE } from "@server/timelines/dates";
 import { Version } from "../routes/versions";
 
 export enum ItemType {
@@ -48,12 +49,22 @@ export type Item = {
   isGameAchievable: boolean;
 }
 
+export type CustomItem = {
+  id: number;
+  name: string;
+  type: ItemType;
+  layer: number;
+  cost: number;
+  isMember: boolean;
+  isBack: boolean;
+};
+
 export function getCost(item: Item, date: Version): number {
   // todo implement with versions timeline
   return item.cost;
 }
 
-export const ITEMS = new StaticDataTable<Item, [
+class ItemTable extends StaticDataTable<Item, [
   'id',
   'name',
   'isMember',
@@ -76,7 +87,40 @@ export const ITEMS = new StaticDataTable<Item, [
   'isMedal',
   'noPurchasePopup',
   'isGameAchievable'
-]>([
+]> {
+  public addCustomItem(info: CustomItem) {
+    this.map.set(info.id, {
+      id: info.id,
+      name: info.name,
+      isMember: info.isMember,
+      type: info.type,
+      cost: info.cost,
+      isEPF: false,
+      isTour: false,
+      isTreasure: false,
+      releaseDate: START_DATE,
+      label: null,
+      layer: info.layer,
+      hasTranslations: false,
+      hasBack: info.isBack,
+      makeAgent: false,
+      isGift: false,
+      exclusive: 0,
+      isBait: false,
+      customDepth: null,
+      isBack: info.isBack,
+      isMedal: false,
+      noPurchasePopup: false,
+      isGameAchievable: false
+    });
+  }
+
+  public removeCustomItem(id: number) {
+    this.map.delete(id);
+  }
+}
+
+export const ITEMS = new ItemTable([
   'id',
   'name',
   'isMember',

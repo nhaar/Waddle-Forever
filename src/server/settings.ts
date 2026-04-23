@@ -1,10 +1,38 @@
 import fs from 'fs';
 import path from 'path';
 import { Router, Request } from "express";
-import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
+import { MODS_DIRECTORY, MOD_ITEMS_FILE, SETTINGS_PATH } from '../common/paths';
 import { isVersionValid, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
+import { CustomItem, ITEMS } from './game-logic/items';
+import { iterateEntries } from '@common/utils';
+
+
+// type declarations that are used to validate the properties of the custom item object
+
+// map of the possible property types and the result of typeof
+type ItemTypeName<T> =
+  T extends number ? 'number' :
+  T extends string ? 'string' :
+  T extends boolean ? 'boolean' :
+  'unknown';
+
+// record type to enforce the object below to be complete
+type ItemKeyTypes = {
+  [K in keyof CustomItem]: ItemTypeName<CustomItem[K]>;
+};
+
+// object used for validating a custom item
+const customItemKeys: ItemKeyTypes = {
+  cost: 'number',
+  id: 'number',
+  'isBack': 'boolean',
+  'isMember': 'boolean',
+  'layer': 'number',
+  'name': 'string',
+  'type': 'number'
+};
 
 export type BooleanSettingKey = 
   'fps30' | 
@@ -74,6 +102,8 @@ export function getModRouter(s: SettingsManager): Router {
   return router
 }
 
+/** Errors raised from incorrect items declaration for mods */
+export class ModItemsError extends Error {}
 
 export class SettingsManager {
   settings: Settings;
@@ -130,6 +160,75 @@ export class SettingsManager {
 
     this.targetIP = '127.0.0.1';
     this.targetPort = HTTP_PORT;
+  }
+
+  /** Get list of items defined by a mod */
+  static getModItems(modName: string): CustomItem[] {
+    const modItemsFile = path.join(MODS_DIRECTORY, modName, MOD_ITEMS_FILE);
+    if (fs.existsSync(modItemsFile)) {
+      const items = JSON.parse(fs.readFileSync(modItemsFile, { encoding: 'utf-8' }));
+
+      if (!Array.isArray(items)) {
+        throw new ModItemsError('Your mod contains invalid JSON, there should be an array (square brackets) with items inside.');
+      }
+
+      items.forEach(item => {
+        if (typeof item !== 'object' || item === null) {
+          throw new ModItemsError('Invalid JSON member inside the array (square brackets). It should contain an item which is defined with curly brackets');
+        }
+
+        iterateEntries(customItemKeys, (key, type) => {
+          if (!(key in item) || typeof item[key] !== type) {
+            throw new ModItemsError(`Invalid value for the ${key} of the item: ${key} must be a ${type}`);
+          }
+        });
+      })
+
+      items as CustomItem[];
+      return items;
+    }
+    return [];
+  }
+
+  /** Add items from a mod to memory */
+  static loadCustomItems(modName: string): void {
+    const modItems = SettingsManager.getModItems(modName);
+    const conflicts = modItems.filter(item => {
+      return ITEMS.has(item.id);
+    });
+    // only add items if there are no errors
+    if (conflicts.length === 0) {
+      modItems.forEach(item => ITEMS.addCustomItem(item));
+    } else {
+      throw new ModItemsError(`There was a conflict of item IDs, either with another mod, or with an item from the original game. Conflicting item IDs: ${conflicts.map(item => item.id).join(', ')}`);
+    }
+  }
+
+  /** Remove from memory items defined by a mod */
+  static unloadCustomItems(modName: string): void {
+    SettingsManager.getModItems(modName).forEach(item => {
+      ITEMS.removeCustomItem(item.id);
+    });
+  }
+
+  /** Load all custom items and set to inactive mods that caused an issue (and return them) */
+  initializeModItems(): string[] {
+    const failedMods: string[] = [];
+    for (const modName of this.activeMods) {
+      try {
+        SettingsManager.loadCustomItems(modName);
+      } catch (e) {
+        if (e instanceof ModItemsError) {
+          failedMods.push(modName);
+        }
+      }
+    }
+
+    failedMods.forEach(mod => {
+      this.setModInactive(mod);
+    });
+
+    return failedMods;
   }
 
   readString(object: any, property: string): string {

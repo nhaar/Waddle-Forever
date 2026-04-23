@@ -1,4 +1,8 @@
 import startServer from './server';
 import settingsManager from './settings';
 
-startServer(settingsManager);
+startServer(settingsManager).then(errors => {
+  errors.forEach(error => {
+    console.log(error.message);
+  })
+});

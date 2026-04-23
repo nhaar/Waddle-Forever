@@ -25,3 +25,79 @@ Hovering over the file displays the file path, which is everything after `http:/
 Then, our mod will be done! All you need to do is to restart the game, and enable it in the mods menu. Entering the game we can then see our mod in practice:
 
 ![Example Mod](./example-mod.png)
+
+# How to add custom items
+
+You can add custom items using the items file. In the folder of the mod, you must add a file named `items.json`. In the newest version of Waddle Forever, that file is created automatically if you use the `Create Mod` button. Here's an example of how you would add a single item:
+
+```json
+[
+  {
+    "id": 95000,
+    "name": "Example Item",
+    "type": 6,
+    "layer": 7000,
+    "cost": 0,
+    "isMember": false,
+    "isBack": false
+  }
+]
+```
+
+Keep in mind that:
+- ID must be any number, but it shouldn't overlap with any vanilla item or with any other mod.
+- Type must be a number, with these values:
+```
+Color: 1
+Head: 2
+Face: 3
+Neck: 4
+Body: 5
+Hand: 6
+Feet: 7
+Pin: 8
+Background: 9
+Award: 10
+```
+- Layer is the depth layer the item will be placed. This can be set to a custom value, but in general, the depth just depends on the type:
+
+```
+Color: 1500
+Head: 6000
+Face: 5000
+Neck: 4000
+Body: 3000
+Hand: 7000
+Feet: 2000
+Pin: 8000
+Background: 500
+Award: 0
+```
+
+- `isBack` refers to the item being a back item, for example, the wing items. Otherwise, leave it as false.
+
+## Example
+
+Consider the example item file written in the previous section. After writing the JSON file, your mod file structure will look something like this:
+
+```
+.
+└── mods/
+    └── CustomItemMod/
+        ├── items.json
+        └── play/
+            └── v2/
+                └── content/
+                    └── global/
+                        └── clothing/
+                            ├── icons/
+                            │   └── 95000.swf
+                            ├── paper/
+                            │   └── 95000.swf
+                            └── sprites/
+                                └── 95000.swf
+```
+
+Here the clothing files have been added as 95000, since that is the ID we have written in the JSON. Then, in-game, I can use the `ai` command to give the item to my penguin, and wear it.
+
+![Custom Item Example](./example-item.png)

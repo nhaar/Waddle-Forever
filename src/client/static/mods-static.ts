@@ -6,12 +6,22 @@ async function getMods() {
   return await getJson('mod/get');
 }
 
+// attempt to update a mod, returns server response
 async function updateMod(name: string, active: boolean) {
-  await post('mod/update', { name, active })
+  return await post('mod/update', { name, active })
 }
 
-async function setModActive(mod: string) {
-  await updateMod(mod, true);
+// return whether or not the mod was succesfully set to active
+async function setModActive(mod: string): Promise<boolean> {
+  const response = await updateMod(mod, true);
+  if (response.status === 400) {
+    window.alert(`Error with your mod: ${await response.text()}
+
+Please fix the error and then attempt to turn the mod on again.`);
+    return false;
+  } else {
+    return true;
+  }
 }
 
 async function setModInactive(mod: string) {
@@ -31,18 +41,27 @@ function setupPage() {
     }
   
     document.querySelector('.mods')!.innerHTML = html;
-  
+
     const inputs = document.querySelectorAll('input[type="checkbox"]');
     for (const input of inputs) {
       if (input instanceof HTMLInputElement) {
         input.addEventListener('change', (e) => {
           if (e.target instanceof HTMLInputElement) {
+            // will attempt to see if the mod has problems, if it has it will uncheck and won't update
             if (e.target.checked) {
-              setModActive(input.id);
+              setModActive(input.id).then(activate => {
+                if (activate) {
+                  modsApi.updateMod();
+                } else {
+                  if (e.target instanceof HTMLInputElement) {
+                    e.target.checked = false;
+                  }
+                }
+              });
             } else {
               setModInactive(input.id);
+              modsApi.updateMod();
             }
-            modsApi.updateMod();
           }
         })
       }
