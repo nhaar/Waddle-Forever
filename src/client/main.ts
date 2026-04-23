@@ -9,7 +9,7 @@ import startMenu from "./menu";
 import createStore from "./store";
 import createWindow, { loadMain } from "./window";
 import startServer from "@server/server";
-import settingsManager, { ModItemsError } from "@server/settings";
+import settingsManager from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";

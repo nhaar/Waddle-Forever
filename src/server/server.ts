@@ -10,7 +10,7 @@ import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
 import { createHttpServer } from './routes/game';
 import db from './database';
-import { getModRouter } from './settings';
+import { getModRouter } from './mods';
 import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 
@@ -157,7 +157,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
 
   const server = express();
 
-  server.use(getModRouter(settingsManager));
+  server.use(getModRouter(settingsManager.mods));
 
   const httpServer = createHttpServer(settingsManager);
 
@@ -180,7 +180,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
   })
 
   // mods that fail to initialize are turned off and the user must be warned about
-  const failedMods = settingsManager.initializeModItems();
+  const failedMods = settingsManager.mods.initializeModItems();
   if (failedMods.length > 0) {
     errors.push({
       type: 'items',

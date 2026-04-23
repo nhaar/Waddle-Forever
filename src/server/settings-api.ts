@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 
-import { ModItemsError, SettingsManager } from "./settings";
+import { SettingsManager } from "./settings";
+import { ModItemsError, ModManager } from './mods';
 import { Server } from './client';
 import { Handler } from './handlers';
 
@@ -35,8 +36,8 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
     if (active) {
       // if the mod has issues, it will be raised and the response will warn the user back
       try {
-        SettingsManager.loadCustomItems(name);
-        s.setModActive(name);
+        ModManager.loadCustomItems(name);
+        s.mods.setModActive(name);
       } catch (error) {
         if (error instanceof ModItemsError) {
           res.status(400).send(error.message);
@@ -46,19 +47,18 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
         }
       }
     } else {
-      SettingsManager.unloadCustomItems(name);
-      s.setModInactive(name);
+      ModManager.unloadCustomItems(name);
+      s.mods.setModInactive(name);
     }
     res.sendStatus(200);
     resetServers();
   });
 
   router.get('/mod/get', (_, res) => {
-    const activeMods = s.activeMods;
-    const mods = s.getMods();
+    const mods = s.mods.getMods();
     const modsRelation: Record<string, boolean> = {};
     for (const mod of mods) {
-      modsRelation[mod] = activeMods.includes(mod);
+      modsRelation[mod] = s.mods.isModActive(mod);
     }
     res.json(modsRelation);
   });
