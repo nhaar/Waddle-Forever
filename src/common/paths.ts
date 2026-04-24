@@ -39,6 +39,8 @@ export const DATABASE_DIRECTORY = path.join(USER_DATA_FOLDER, 'data');
 export const MODS_DIRECTORY = path.join(USER_DATA_FOLDER, 'mods');
 /** name of the file that contains custom items in a mod */
 export const MOD_ITEMS_FILE = 'items.json';
+/** name of the file that contains the custom frame hacks in a mod */
+export const MOD_HACKS_FILE = 'frames.json';
 export const SETTINGS_PATH = path.join(USER_DATA_FOLDER, 'settings.json');
 
 fs.mkdirSync(USER_DATA_FOLDER, { recursive: true });

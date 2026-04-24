@@ -352,26 +352,24 @@ function getPaperCrumbs(version: Version): PCodeRep {
 function getFrameHacks(): PCodeRep {
   const code: PCodeRep = [];
 
-  const ids: ['25', '26'] = ['25', '26'];
-  ids.forEach(value => {
-    const frames = FRAME_HACKS[value];
+  for (const [frame, hacks] of FRAME_HACKS.getEntries()) {
     code.push(
       [Action.Push, "frame_hacks"],
       Action.GetVariable,
-      [Action.Push, Number(value)]
+      [Action.Push, frame]
     );
-    [...frames].reverse().forEach(obj => {
+    [...hacks].reverse().forEach(obj => {
       code.push(
         [Action.Push, "head", obj.head, "face", obj.face, "neck", obj.neck, "body", obj.body, "hand", obj.hand, "feet", obj.feet, "secret_frame", obj.secret_frame, 7],
         Action.InitObject
       )
     });
     code.push(
-      [Action.Push, frames.length],
+      [Action.Push, hacks.length],
       Action.InitArray,
       Action.SetMember
     );
-  });
+  }
   
   return code;
 }

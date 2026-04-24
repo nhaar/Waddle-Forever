@@ -101,3 +101,28 @@ Consider the example item file written in the previous section. After writing th
 Here the clothing files have been added as 95000, since that is the ID we have written in the JSON. Then, in-game, I can use the `ai` command to give the item to my penguin, and wear it.
 
 ![Custom Item Example](./example-item.png)
+
+## Special Dances and Animations for Custom items
+
+If you want your item to produce a special dance, you can do so by using the frames file. In the folder of the mod, you must add a file named `frames.json`. In the newest version of Waddle Forever, that file is created automatically if you use the `Create Mod` button. This file is once again a JSON array (square brackets). Inside, you must add objects (enclosed by curly brackets) separated by comma, just like the items file. However, the content of the objects is different. Each object must define one specific set of items and what special animation they produce. Take a look at an example:
+
+```json
+[
+  {
+    "head": 0,
+    "face": 0,
+    "neck": 0,
+    "body": 0,
+    "hand": 95000,
+    "feet": 0,
+    "secret_frame": 57,
+    "frame": 26
+  }
+]
+```
+
+Through `head`, `face`, `neck`, `body`, `hand` and `feet`, you must make it explicit what combination of items we are dealing with. In this example, the penguin is wearing no items, except for the fact they are wearing our custom item from the previous section in their hand. With `secret_frame`, you must define the frame of the special animation. This is a value found inside the penguin SWF. If you want to use an already existing animation, you can take a look at the penguin SWF, or other items' declaration to find what the value of the `secret_frame` is. If you are making a new special animation, you will have to modify the penguin SWF and then write what is the new `secret_frame`. Finally, `frame` corresponds to how this animation is initiated. Does it initiate after waving, dancing? The value of the dance frame is 26, while the value of the wave frame is 25. In the example above, we are adding an animation of `secret_frame` 57 (the break dance) to `frame` 26 (dancing).
+
+After you've saved the file, restart the mod, and make sure to use the combination you've defined. You should now be able to use a special dance with the item.
+
+![Custom Animation Example](./example-animation.gif)

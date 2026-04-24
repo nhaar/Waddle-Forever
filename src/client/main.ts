@@ -127,10 +127,10 @@ These are the most important things, but there is a full list of questions in ou
     const errors = await startServer(settingsManager);
     for (const err of errors) {
       // warn user if there are any issues with their mods
-      if (err.type === 'items') {
+      if (err.type === 'mods') {
         await dialog.showMessageBox(mainWindow, {
           buttons: ['OK'],
-          title: 'Error with Item Mods',
+          title: 'Error with Mods',
           message: err.message
         });
       }

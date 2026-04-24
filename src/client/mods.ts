@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain, shell } from "electron";
 import path from "path";
 import fs from "fs";
-import { MODS_DIRECTORY, MOD_ITEMS_FILE } from "@common/paths";
+import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from "@common/paths";
 import { getPopupCreator } from "./popups";
 
 export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path'], (mainWindow: BrowserWindow) => {
@@ -39,6 +39,7 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
       // add mod extensions if creating the directory
       if (!dirExisted) {
         fs.writeFileSync(path.join(modDir, MOD_ITEMS_FILE), JSON.stringify([]));
+        fs.writeFileSync(path.join(modDir, MOD_HACKS_FILE), JSON.stringify([]));
       }
       event.reply('mod-created', err);
     })

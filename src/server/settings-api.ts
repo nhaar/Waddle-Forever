@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 
 import { SettingsManager } from "./settings";
-import { ModItemsError, ModManager } from './mods';
+import { ModError } from './mods';
 import { Server } from './client';
 import { Handler } from './handlers';
 
@@ -36,10 +36,9 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
     if (active) {
       // if the mod has issues, it will be raised and the response will warn the user back
       try {
-        ModManager.loadCustomItems(name);
         s.mods.setModActive(name);
       } catch (error) {
-        if (error instanceof ModItemsError) {
+        if (error instanceof ModError) {
           res.status(400).send(error.message);
           return;
         } else {
@@ -47,7 +46,6 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
         }
       }
     } else {
-      ModManager.unloadCustomItems(name);
       s.mods.setModInactive(name);
     }
     res.sendStatus(200);

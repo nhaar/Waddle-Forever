@@ -26,7 +26,7 @@ import { getPaperItemsJson } from "./paperitemsjson";
 import { getGamesJson } from "./gamesjson";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
-import { FRAME_HACKS } from "../game-data/frame-hacks";
+import { FRAME_HACKS } from '@server/game-data/frame-hacks';
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 import { fromLE, parseSwf } from "@common/flash/parser";
 import { emitSwf, TagType } from "@common/flash/emitter";
@@ -215,7 +215,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
     return getStageScriptMessagesJson(s.settings.version);
   });
   server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
-    return JSON.stringify(FRAME_HACKS)
+    return FRAME_HACKS.getJSON();
   })
   server.getData('setup.xml', (s) => {
     return getSetupXml(s.settings.version, s.targetIP, s.worldPort);

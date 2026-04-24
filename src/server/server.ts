@@ -15,7 +15,7 @@ import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 
 type StartServerError = {
-  type: 'items';
+  type: 'mods';
   message: string;
 };
 
@@ -180,11 +180,11 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
   })
 
   // mods that fail to initialize are turned off and the user must be warned about
-  const failedMods = settingsManager.mods.initializeModItems();
+  const failedMods = settingsManager.mods.initializeMods();
   if (failedMods.length > 0) {
     errors.push({
-      type: 'items',
-      message: `Failed to initialize the following mods due to an improper items file: ${failedMods.join(', ')}`
+      type: 'mods',
+      message: `The following mods had an issue during startup: ${failedMods.join(', ')}. They have been turned off.`
     });
   }
   
