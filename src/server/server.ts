@@ -8,11 +8,13 @@ import worldHandler from './handlers/world'
 import loginHandler from './handlers/login'
 import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
-import { createHttpServer } from './routes/game';
 import db from './database';
 import { getModRouter } from './mods';
 import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
+import { FileServer } from './file-server';
+import { GameData } from './timelines/game-data';
+import { getGeneratorsMap } from './file-generators';
 
 type StartServerError = {
   type: 'mods';
@@ -159,9 +161,11 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
 
   server.use(getModRouter(settingsManager.mods));
 
-  const httpServer = createHttpServer(settingsManager);
+  const gameData = new GameData(settingsManager);
 
-  server.use(httpServer.router);
+  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager.mods);
+
+  server.use(fileServer.getExpressRouter());
 
   
   // TODO in the future, "world" and "old" should be merged somewhat

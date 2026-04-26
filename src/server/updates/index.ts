@@ -5,7 +5,7 @@ import { RoomName } from "../game-data/rooms";
 import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
-import { Version } from "../routes/versions"
+import { isLower, Version } from "../routes/versions"
 import { BooleanSettingKey } from "../settings";
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
@@ -391,7 +391,26 @@ export function consumeUpdates(updates: Update[]): Array<{
     consumed.push(stagePlay);
   }
 
-  
+  return consumed.sort((a, b) => {
+    // lower dates come first
+    // but if on the same day, then permanent updates first
+    // if same date, only equal if both are permanent or both are temporary
+    
+    if (a.date === b.date) {
+      if (a.end === undefined) {
+        if (b.end === a.end) {
+          return 0;
+        }
+        return -1;
+      } else if (b.end === undefined) {
+        return 1;
+      }
+    } else if (isLower(a.date, b.date)) {
+      return -1
+    } else {
+      return 1;
+    }
 
-  return consumed;
+    return 0;
+  });
 }
