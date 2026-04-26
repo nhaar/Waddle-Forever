@@ -1,15 +1,10 @@
-import { iterateEntries } from "@common/utils";
-import { RouteRefMap, TimelineMap } from "../game-data";
+import { TimelineMap } from "../game-data";
 import { getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
 import { Version } from "../routes/versions";
 import { getNewspaperName } from "../routes/news.txt";
-import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
-import { AS3_STATIC_FILES } from "../game-data/as3-static";
-import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
-import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
-import { START_DATE, getDate } from "./dates";
+import { START_DATE } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
   protected override processKey(identifier: string): string {
@@ -27,13 +22,6 @@ class FileTimelineMap extends TimelineMap<string, string> {
   addStart(route: string, file: string): void {
     this.add(route, file, START_DATE);
   }
-  
-  addRouteMap(routeMap: RouteRefMap, date: Version): void {
-    iterateEntries(routeMap, (route, file) => {
-      this.add(route, file, date);
-    });
-  }
-
 }
 
 export function getMinifiedDate(date: Version): string {
@@ -113,22 +101,6 @@ function addNewspapers(map: FileTimelineMap): void {
   });
 }
 
-function addTimeSensitiveStaticFiles(map: FileTimelineMap): void {
-  map.addRouteMap(CPIP_STATIC_FILES, getDate('cpip'));
-  map.addRouteMap(AS3_STATIC_FILES, getDate('vanilla-engine'));
-}
-
-function addStaticFiles(map: FileTimelineMap): void {
-  const addStatic = (stat: Record<string, string>) => {
-    iterateEntries(stat, (route, fileRef) => {
-      map.addStart(route, fileRef);
-    });
-  }
-
-  addStatic(PRE_CPIP_STATIC_FILES);
-  addStatic(CPIP_AS3_STATIC_FILES);
-}
-
 function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
@@ -139,8 +111,6 @@ export function getRoutesTimeline() {
 
   const timelineProcessors = [
     // pins are specifically before party so that pins that update with a party don't override the party room
-    addTimeSensitiveStaticFiles,
-    addStaticFiles,
     addNewspapers
   ];
 

@@ -1,10 +1,14 @@
 import { iterateEntries, EventListener } from "@common/utils";
-import { IdRefMap } from "@server/game-data";
+import { IdRefMap, RouteRefMap } from "@server/game-data";
+import { AS3_STATIC_FILES } from "@server/game-data/as3-static";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "@server/game-data/clothing";
+import { CPIP_AS3_STATIC_FILES } from "@server/game-data/cpip-as3-static";
+import { CPIP_STATIC_FILES } from "@server/game-data/cpip-static";
 import { FileRef, getMediaFilePath } from "@server/game-data/files";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "@server/game-data/furniture";
 import { MUSIC_IDS } from "@server/game-data/music";
 import { POSTCARD_IDS } from "@server/game-data/postcard";
+import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
 import { RoomName } from "@server/game-data/rooms";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
@@ -87,6 +91,12 @@ export class GameData {
     });
   }
 
+  private addRouteMap(routeMap: RouteRefMap): void {
+    iterateEntries(routeMap, (route, file) => {
+      this.addRoute(route, file);
+    });
+  }
+
   private addDefaultFiles() {
     ['play/v2/content/global', ''].forEach((parentDir) => this.addIdMap(parentDir, 'music', MUSIC_IDS));
 
@@ -112,6 +122,8 @@ export class GameData {
     const furnitureDir = 'play/v2/content/global/furniture';
     this.addIdMap(furnitureDir, 'icons', FURNITURE_ICONS);
     this.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
+
+    this.addRouteMap(PRE_CPIP_STATIC_FILES);
   }
 
   public addListener(callback: () => void): void {
@@ -136,9 +148,12 @@ export class GameData {
             break;
           case 'cpip':
             this.state.preCpip = false;
+            this.addRouteMap(CPIP_STATIC_FILES);
+            this.addRouteMap(CPIP_AS3_STATIC_FILES);
             break;
           case 'vanilla-engine':
             this.state.vanillaEngine = true;
+            this.addRouteMap(AS3_STATIC_FILES);
           default:
             break;
         }
