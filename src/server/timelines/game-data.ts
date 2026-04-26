@@ -104,7 +104,7 @@ export class GameData {
   }
 
   private addNewspapers(): void {
-    const configXmlPath = getMediaFilePath('tool:news_config.xml');
+    const configXmlPath = 'tool:news_config.xml';
     NEWSPAPER_TIMELINE.forEach((update, i) => {
       if (typeof update.info === 'string' || 'file' in update.info) {
         const file = typeof update.info === 'string' ? update.info : update.info.file;
@@ -169,8 +169,8 @@ export class GameData {
         
         newspaperComponenets.forEach((pair) => {
           const [route, file] = pair;
-          this.addRoute(path.join(oldNewsPath, 'content', route), getMediaFilePath(file));
-          this.addRoute(path.join(newNewsPath, 'content', route), getMediaFilePath(file));
+          this.addRoute(path.join(oldNewsPath, 'content', route), file);
+          this.addRoute(path.join(newNewsPath, 'content', route), file);
         }) 
         }
     });
@@ -241,7 +241,7 @@ export class GameData {
       },
       'fileChanges': (v) => {
         iterateEntries(v, (route, fileRef) => {
-          this.state.files.set(route, getMediaFilePath(fileRef));
+          this.addRoute(route, fileRef);
         });
       },
       'stampUpdates': (v) => {
