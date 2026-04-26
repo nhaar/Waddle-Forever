@@ -299,11 +299,13 @@ type TimeBoundInfo<T> = {
 
 type UpdateTimeline = TimeBoundInfo<{ update: CPUpdate }>[];
 
-export function consumeUpdates(updates: Update[]): Array<{
+export type GameUpdate = {
   date: Version;
   end?: Version;
   update: CPUpdate;
-}> {
+};
+
+export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
   const consumed: UpdateTimeline = [];
 
   const events = new Map<Event, Array<{ date: Version; update: CPUpdate; }>>();

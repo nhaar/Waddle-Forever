@@ -2,7 +2,7 @@ import { iterateEntries, EventListener } from "@common/utils";
 import { getMediaFilePath } from "@server/game-data/files";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { UPDATES } from "@server/updates/updates";
+import { GameUpdate } from "@server/updates";
 
 /** Manages all the data related to the game at a particular point in time */
 export class GameData {
@@ -11,7 +11,7 @@ export class GameData {
 
   private updateListener = new EventListener();
 
-  constructor(settings: SettingsManager) {
+  constructor(private updates: GameUpdate[], settings: SettingsManager) {
     this.update(settings.settings.version);
     settings.addListener(() => {
       this.update(settings.settings.version);
@@ -25,7 +25,7 @@ export class GameData {
   public update(date: Version): void {
     this.files = new Map<string, string>();
 
-    for (const update of UPDATES) {
+    for (const update of this.updates) {
       // check every update until the current date
       if (isGreater(update.date, date)) {
         break;

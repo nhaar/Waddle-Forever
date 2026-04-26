@@ -1,4 +1,4 @@
-import { consumeUpdates, CPUpdate } from ".";
+import { consumeUpdates, CPUpdate, GameUpdate } from ".";
 import { IS_DEV } from "@common/constants";
 import { VersionsInformation, VersionsTimeline } from "../game-data";
 import { isGreater } from "../routes/versions";
@@ -53,6 +53,10 @@ function enforceCorrectness() {
 
 if (IS_DEV) {
   enforceCorrectness();
+}
+
+export function getUpdates(): GameUpdate[] {
+  return consumeUpdates(allUpdates);
 }
 
 export const UPDATES = consumeUpdates(allUpdates);
