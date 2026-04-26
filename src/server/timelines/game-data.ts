@@ -1,10 +1,11 @@
 import { iterateEntries, EventListener } from "@common/utils";
-import { getMediaFilePath } from "@server/game-data/files";
+import { FileRef, getMediaFilePath } from "@server/game-data/files";
+import { RoomName } from "@server/game-data/rooms";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CPUpdate, GameUpdate, HuntCrumbs } from "@server/updates";
+import { CPUpdateE, GameUpdate, HuntCrumbs } from "@server/updates";
 
 type GameState = {
   /** map of route -> path of file in media folder, meant for static files */
@@ -16,6 +17,7 @@ type GameState = {
   migrator: boolean;
   mapNote: boolean;
   unlockedDay: number | null;
+  preCpip: boolean;
 }
 
 function getFreshState(): GameState {
@@ -27,7 +29,8 @@ function getFreshState(): GameState {
     partyIcon: false,
     migrator: false,
     mapNote: false,
-    unlockedDay: null
+    unlockedDay: null,
+    preCpip: true
   };
 }
 
@@ -47,6 +50,11 @@ export class GameData {
     });
   }
 
+  private addRoom(room: RoomName, file: FileRef) {
+    const roomRoute = (this.state.preCpip ? 'artwork/rooms/' : 'play/v2/content/global/rooms/') + room + '.swf';
+    this.state.files.set(roomRoute, getMediaFilePath(file));
+  }
+
   public addListener(callback: () => void): void {
     this.updateListener.addListener(callback);
   }
@@ -55,13 +63,18 @@ export class GameData {
     this.date = date;
     this.state = getFreshState();
 
+    let pinRoom: RoomName | null = null;
+
     const actions: {
-      [K in keyof CPUpdate]: (v: Exclude<CPUpdate[K], undefined>, s: GameState) => void
+      [K in keyof CPUpdateE]: (v: Exclude<CPUpdateE[K], undefined>, s: GameState) => void
     } = {
      'dateReference': (v, s) => {
         switch (v) {
           case 'stamps-release':
             s.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
+            break;
+          case 'cpip':
+            s.preCpip = false;
             break;
           default:
             break;
@@ -103,6 +116,19 @@ export class GameData {
       },
       'unlockedDay': (v, s) => {
         s.unlockedDay = v;
+      },
+      'pinRoom': (v) => {
+        pinRoom = v;
+      },
+      'rooms': (v) => {
+        iterateEntries(v, (room, value) => {
+          this.addRoom(room, value);
+        });
+      },
+      'pinRoomUpdate': (v) => {
+        if (pinRoom !== null) {
+          this.addRoom(pinRoom, v);
+        }
       }
     }
 
@@ -117,9 +143,9 @@ export class GameData {
       }
 
       for (const key in actions) {
-        const value = update.update[key as keyof CPUpdate];
+        const value = update.update[key as keyof CPUpdateE];
         if (value !== undefined) {
-          const callback = actions[key as keyof CPUpdate] as (v: typeof value, s: GameState) => void;
+          const callback = actions[key as keyof CPUpdateE] as (v: typeof value, s: GameState) => void;
           callback(value, this.state);
         }
       }

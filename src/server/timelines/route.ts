@@ -15,7 +15,6 @@ import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { UPDATES } from "../updates/updates";
-import { PIN_TIMELINE } from "./pins";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
 import { CatalogItems, CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
 import { START_DATE, getDate } from "./dates";
@@ -209,14 +208,6 @@ function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
 
-function addPins(map: FileTimelineMap): void {
-  PIN_TIMELINE.forEach(pin => {
-    if ('file' in pin) {
-      addRoomRoute(map, pin.room, pin.file, pin.date, pin.end);
-    }
-  });
-}
-
 function addStartscreens(screens: Array<string | [string, string]>, map: FileTimelineMap, date: Version, end?: Version): void {
   screens.forEach((screen, i) => {
     if (typeof screen === 'string') {
@@ -339,14 +330,6 @@ function addUpdates(map: FileTimelineMap): void {
         'play/v2/content/local/en/catalogues/costume.swf'
       ], map, update.end);
     }
-    if (update.update.pinRoomUpdate !== undefined) {
-      const pin = PIN_TIMELINE[findEarliestDateHitIndex(update.date, PIN_TIMELINE)];
-      if ('room' in pin && pin.room !== undefined) {
-        addRoomRoute(map, pin.room, update.update.pinRoomUpdate, update.date, pin.end);
-      } else {
-        throw Error('Pin doesn\'t declare room, but is trying to change its SWF');
-      }
-    }
     addCatalog(update.date, update.update.sportCatalog, [
       'artwork/catalogue/sport_.swf',
       'play/v2/content/local/en/catalogues/sport.swf'
@@ -360,7 +343,6 @@ export function getRoutesTimeline() {
 
   const timelineProcessors = [
     // pins are specifically before party so that pins that update with a party don't override the party room
-    addPins,
     addUpdates,
     addFilesWithIds,
     addClothing,

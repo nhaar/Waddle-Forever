@@ -1,11 +1,12 @@
 import { iterateEntries } from "@common/utils";
+import { Pin, PINS } from "@server/game-data/pins";
 import { FileRef } from "../game-data/files";
 import { GameName } from "../game-data/games";
 import { RoomName } from "../game-data/rooms";
 import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
-import { isLower, Version } from "../routes/versions"
+import { addDays, isLower, Version } from "../routes/versions"
 import { BooleanSettingKey } from "../settings";
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
@@ -297,13 +298,85 @@ type TimeBoundInfo<T> = {
   end?: Version;
 } & T;
 
-type UpdateTimeline = TimeBoundInfo<{ update: CPUpdate }>[];
+type UpdateTimeline = TimeBoundInfo<{ update: CPUpdateE }>[];
+
+// todo refactor update timelines later
+// this is CPUpdateE which will become a DataUpdate of some sort
+export type CPUpdateE = CPUpdate & { pinRoom?: RoomName }
 
 export type GameUpdate = {
   date: Version;
   end?: Version;
-  update: CPUpdate;
+  update: CPUpdateE;
 };
+
+function consumePins(consumed: UpdateTimeline, updates: Update[]): void {
+  let pinIndex = 0;
+  let version = '';
+  let inPeriod = false;
+
+  function addPin(p: Pin, date: Version, end: Version) {
+    if ('file' in p) {
+      consumed.push({
+        date,
+        end,
+        update: {
+          rooms: {
+            [p.room]: p.file
+          },
+          'pinRoom': p.room
+        }
+      });
+    } else if ('room' in p) {
+      consumed.push({
+        date,
+        end,
+        update: {
+          'pinRoom': p.room
+        }
+      })
+    }
+  }
+
+  function pushPin() {
+    const pin = PINS[pinIndex];
+    const next = addDays(version, 14);
+    if (Array.isArray(pin)) {
+      consumed.push()
+      pin.forEach(p => {
+        addPin(p, version, next);
+      })
+    } else {
+      addPin(pin, version, next);
+    }
+    version = next;
+    pinIndex++;
+    if (pinIndex >= PINS.length) {
+      inPeriod = false;
+    }
+  }
+
+  for (let i = 0; i < updates.length; i++) {
+    if (inPeriod) {
+      while (isLower(version, updates[i].date) && inPeriod) {
+        pushPin();
+      }
+    }
+    if (updates[i].pin !== undefined) {
+      switch (updates[i].pin) {
+        case 'start':
+          version = updates[i].date;
+          inPeriod = true;
+          pushPin();
+          break;
+        case 'end':
+          pushPin();
+          inPeriod = false;
+          break;
+      }
+    }
+  }
+}
 
 export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
   const consumed: UpdateTimeline = [];
@@ -392,6 +465,8 @@ export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
   if (stagePlay !== undefined) {
     consumed.push(stagePlay);
   }
+
+  consumePins(consumed, updates);
 
   return consumed.sort((a, b) => {
     // lower dates come first
