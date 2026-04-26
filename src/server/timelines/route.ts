@@ -1,13 +1,8 @@
 import { iterateEntries } from "@common/utils";
-import { IdRefMap, RouteRefMap, TimelineMap } from "../game-data";
+import { RouteRefMap, TimelineMap } from "../game-data";
 import { getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
-import { isLower, Version } from "../routes/versions";
-import { RoomName } from "../game-data/rooms";
-import { FURNITURE_ICONS, FURNITURE_SPRITES } from "../game-data/furniture";
-import { ICONS, PAPER, PHOTOS, SPRITES } from "../game-data/clothing";
-import { MUSIC_IDS } from "../game-data/music";
-import { POSTCARD_IDS } from "../game-data/postcard";
+import { Version } from "../routes/versions";
 import { getNewspaperName } from "../routes/news.txt";
 import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
@@ -32,12 +27,6 @@ class FileTimelineMap extends TimelineMap<string, string> {
   addStart(route: string, file: string): void {
     this.add(route, file, START_DATE);
   }
-
-  addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
-    iterateEntries(idMap, (id, file) => {
-      this.addStart(path.join(parentDir, directory, `${id}.swf`), file);
-    });
-  }
   
   addRouteMap(routeMap: RouteRefMap, date: Version): void {
     iterateEntries(routeMap, (route, file) => {
@@ -47,48 +36,8 @@ class FileTimelineMap extends TimelineMap<string, string> {
 
 }
 
-function addRoomRoute(map: FileTimelineMap, room: RoomName, file: string, date: string, end?: string) {
-  if (isLower(date, getDate('cpip'))) {
-    const fileName = `${room}.swf`
-    map.add(path.join('artwork/rooms', fileName), file, date, end);
-  } else {
-    map.add(path.join('play/v2/content/global/rooms', `${room}.swf`), file, date, end);
-  }
-}
-
 export function getMinifiedDate(date: Version): string {
   return date.replaceAll('-', '');
-}
-
-function addFurniture(map: FileTimelineMap): void {
-  const furnitureDir = 'play/v2/content/global/furniture';
-  map.addIdMap(furnitureDir, 'icons', FURNITURE_ICONS);
-  map.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
-}
-
-function addClothing(map: FileTimelineMap): void {
-  const clothingDir = 'play/v2/content/global/clothing';
-  const preCpipClothingDir = 'artwork';
-
-  map.addIdMap(clothingDir, 'icons', ICONS);
-  map.addIdMap(clothingDir, 'paper', PAPER);
-
-  const preCpipPhotos: IdRefMap = {};
-  iterateEntries(PHOTOS, (id, file) => {
-    preCpipPhotos[Number(id) - 900] = file;
-  });
-
-  map.addIdMap(clothingDir, 'photos', PHOTOS);
-  map.addIdMap(preCpipClothingDir, 'photos', preCpipPhotos);
-
-  map.addIdMap(clothingDir, 'sprites', SPRITES);
-  map.addIdMap(preCpipClothingDir, 'items', SPRITES);
-}
-
-function addFilesWithIds(map: FileTimelineMap): void {
-  ['play/v2/content/global', ''].forEach((parentDir) => map.addIdMap(parentDir, 'music', MUSIC_IDS));
-
-  map.addIdMap('play/v2/content/local/en', 'postcards', POSTCARD_IDS);
 }
 
 function addNewspapers(map: FileTimelineMap): void {
@@ -190,10 +139,7 @@ export function getRoutesTimeline() {
 
   const timelineProcessors = [
     // pins are specifically before party so that pins that update with a party don't override the party room
-    addFilesWithIds,
-    addClothing,
     addTimeSensitiveStaticFiles,
-    addFurniture,
     addStaticFiles,
     addNewspapers
   ];

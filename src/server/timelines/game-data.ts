@@ -1,5 +1,10 @@
 import { iterateEntries, EventListener } from "@common/utils";
+import { IdRefMap } from "@server/game-data";
+import { ICONS, PAPER, PHOTOS, SPRITES } from "@server/game-data/clothing";
 import { FileRef, getMediaFilePath } from "@server/game-data/files";
+import { FURNITURE_ICONS, FURNITURE_SPRITES } from "@server/game-data/furniture";
+import { MUSIC_IDS } from "@server/game-data/music";
+import { POSTCARD_IDS } from "@server/game-data/postcard";
 import { RoomName } from "@server/game-data/rooms";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
@@ -76,6 +81,39 @@ export class GameData {
     this.addRoute(fullRoute, fileRef);
   }
 
+  private addIdMap(parentDir: string, directory: string, idMap: IdRefMap): void {
+    iterateEntries(idMap, (id, file) => {
+      this.addRoute(path.join(parentDir, directory, `${id}.swf`), file);
+    });
+  }
+
+  private addDefaultFiles() {
+    ['play/v2/content/global', ''].forEach((parentDir) => this.addIdMap(parentDir, 'music', MUSIC_IDS));
+
+    this.addIdMap('play/v2/content/local/en', 'postcards', POSTCARD_IDS);
+  
+    const clothingDir = 'play/v2/content/global/clothing';
+    const preCpipClothingDir = 'artwork';
+
+    this.addIdMap(clothingDir, 'icons', ICONS);
+    this.addIdMap(clothingDir, 'paper', PAPER);
+
+    const preCpipPhotos: IdRefMap = {};
+    iterateEntries(PHOTOS, (id, file) => {
+      preCpipPhotos[Number(id) - 900] = file;
+    });
+
+    this.addIdMap(clothingDir, 'photos', PHOTOS);
+    this.addIdMap(preCpipClothingDir, 'photos', preCpipPhotos);
+
+    this.addIdMap(clothingDir, 'sprites', SPRITES);
+    this.addIdMap(preCpipClothingDir, 'items', SPRITES);
+
+    const furnitureDir = 'play/v2/content/global/furniture';
+    this.addIdMap(furnitureDir, 'icons', FURNITURE_ICONS);
+    this.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
+  }
+
   public addListener(callback: () => void): void {
     this.updateListener.addListener(callback);
   }
@@ -83,6 +121,8 @@ export class GameData {
   public update(date: Version): void {
     this.date = date;
     this.state = getFreshState();
+
+    this.addDefaultFiles();
 
     let pinRoom: RoomName | null = null;
 
