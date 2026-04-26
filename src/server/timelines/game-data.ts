@@ -2,10 +2,9 @@ import { iterateEntries, EventListener } from "@common/utils";
 import { getMediaFilePath } from "@server/game-data/files";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
-import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
+import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { GameUpdate, HuntCrumbs } from "@server/updates";
-import { getDate } from "./dates";
+import { CPUpdate, GameUpdate, HuntCrumbs } from "@server/updates";
 
 type GameState = {
   /** map of route -> path of file in media folder, meant for static files */
@@ -56,6 +55,57 @@ export class GameData {
     this.date = date;
     this.state = getFreshState();
 
+    const actions: {
+      [K in keyof CPUpdate]: (v: Exclude<CPUpdate[K], undefined>, s: GameState) => void
+    } = {
+     'dateReference': (v, s) => {
+        switch (v) {
+          case 'stamps-release':
+            s.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
+            break;
+          default:
+            break;
+        }
+      },
+      'fileChanges': (v, s) => {
+        iterateEntries(v, (route, fileRef) => {
+          s.files.set(route, getMediaFilePath(fileRef));
+        });
+      },
+      'stampUpdates': (v, s) => {
+        v.forEach(u => {
+          if ('category' in u) {
+            s.stampbook.push(JSON.parse(JSON.stringify(u.category)));
+          } else {
+            for (let i = 0; i < s.stampbook.length; i++) {
+              if (s.stampbook[i].group_id === u.categoryId) {
+                s.stampbook[i].stamps.push(...u.stamps);
+                break;
+              }
+            }
+          }
+        });
+      },
+      'scavengerHunt2011': (v, s) => {
+        s.hunt = v;
+      },
+      'fairCpip': (_, s) => {
+        s.fair = true;
+      },
+      'partyIconFile': (_, s) => {
+        s.partyIcon = true;
+      },
+      'migrator': (v, s) => {
+        s.migrator = v === false ? false : true;
+      },
+      'mapNote': (_, s) => {
+        s.mapNote = true;
+      },
+      'unlockedDay': (v, s) => {
+        s.unlockedDay = v;
+      }
+    }
+
     for (const update of this.updates) {
       // check every update until the current date
       if (isGreater(update.date, date)) {
@@ -66,58 +116,12 @@ export class GameData {
         continue;
       }
 
-      if (update.update.dateReference !== undefined) {
-        switch (update.update.dateReference) {
-          case 'stamps-release':
-            this.state.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
-            break;
-          default:
-            break;
+      for (const key in actions) {
+        const value = update.update[key as keyof CPUpdate];
+        if (value !== undefined) {
+          const callback = actions[key as keyof CPUpdate] as (v: typeof value, s: GameState) => void;
+          callback(value, this.state);
         }
-      }
-
-      if (update.update.fileChanges !== undefined) {
-        iterateEntries(update.update.fileChanges, (route, fileRef) => {
-          this.state.files.set(route, getMediaFilePath(fileRef));
-        });
-      }
-
-      if (update.update.stampUpdates !== undefined) {
-        update.update.stampUpdates.forEach(u => {
-          if ('category' in u) {
-            this.state.stampbook.push(JSON.parse(JSON.stringify(u.category)));
-          } else {
-            for (let i = 0; i < this.state.stampbook.length; i++) {
-              if (this.state.stampbook[i].group_id === u.categoryId) {
-                this.state.stampbook[i].stamps.push(...u.stamps);
-                break;
-              }
-            }
-          }
-        });
-      }
-
-      if (update.update.scavengerHunt2011 !== undefined) {
-        this.state.hunt = update.update.scavengerHunt2011;
-      }
-
-      if (update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, getDate('vanilla-engine'))) {
-        this.state.fair = true;
-      }
-
-      if (update.update.partyIconFile !== undefined) {
-        this.state.partyIcon = true;
-      }
-
-      if (update.update.migrator !== undefined) {
-        this.state.migrator = update.update.migrator === false ? false : true;
-      }
-
-      if (update.update.mapNote !== undefined) {
-        this.state.mapNote = true;
-      }
-      if (update.update.unlockedDay !== undefined) {
-        this.state.unlockedDay = update.update.unlockedDay;
       }
       this.updateListener.fire();
     }
