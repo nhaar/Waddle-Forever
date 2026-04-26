@@ -4,9 +4,9 @@ import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
 import { findEarliestDateHitIndex } from "../game-data";
 import { As3Newspaper, BoilerRoomPaper, PreBoilerRoomPaper } from "../game-data/newspapers";
 import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
-import { getMinifiedDate } from "../timelines/route";
 import { isLower, processVersion, Version } from "./versions";
 import { getDate } from "@server/timelines/dates";
+import { getMinifiedDate } from "@server/timelines/game-data";
 
 function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2', compositePaths: boolean): PCodeRep {
   let varname = ''
