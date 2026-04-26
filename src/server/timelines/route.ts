@@ -1,6 +1,6 @@
 import { iterateEntries } from "@common/utils";
-import { IdRefMap, RouteRefMap, TimelineMap, findEarliestDateHitIndex } from "../game-data";
-import { FileRef, getMediaFilePath, isPathAReference } from "../game-data/files";
+import { IdRefMap, RouteRefMap, TimelineMap } from "../game-data";
+import { getMediaFilePath, isPathAReference } from "../game-data/files";
 import path from "path";
 import { isLower, Version } from "../routes/versions";
 import { RoomName } from "../game-data/rooms";
@@ -13,10 +13,7 @@ import { CPIP_STATIC_FILES } from "../game-data/cpip-static";
 import { AS3_STATIC_FILES } from "../game-data/as3-static";
 import { PRE_CPIP_STATIC_FILES } from "../game-data/precpip-static";
 import { CPIP_AS3_STATIC_FILES } from "../game-data/cpip-as3-static";
-import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
-import { UPDATES } from "../updates/updates";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
-import { CatalogItems, CrumbIndicator, LocalChanges, RoomChanges } from "../updates";
 import { START_DATE, getDate } from "./dates";
 
 class FileTimelineMap extends TimelineMap<string, string> {
@@ -48,27 +45,6 @@ class FileTimelineMap extends TimelineMap<string, string> {
     });
   }
 
-  pushCrumbChange = (baseRoute: string, route: string, info: FileRef | CrumbIndicator, start: Version, end: Version | undefined = undefined) => {
-    const fileRef = typeof info === 'string' ? info : info[0];
-    const fullRoute = path.join(baseRoute, route);
-    this.add(fullRoute, fileRef, start, end);
-  }
-
-  addLocalChanges(changes: LocalChanges, start: Version, end: Version | undefined = undefined) {
-    iterateEntries(changes, (route, languages) => {
-      iterateEntries(languages, (language, info) => {
-        this.pushCrumbChange(path.join('play/v2/content/local', language), route, info, start, end);
-      })
-    })
-  }
-
-  addRoomChanges(roomChanges: RoomChanges, start: Version, end: Version | undefined = undefined) {
-    for (const room in roomChanges) {
-      const roomName = room as RoomName;
-      const fileId = roomChanges[roomName]!;
-      addRoomRoute(this, roomName, fileId, start, end);
-    }
-  }
 }
 
 function addRoomRoute(map: FileTimelineMap, room: RoomName, file: string, date: string, end?: string) {
@@ -208,142 +184,12 @@ function sanitizePath(path: string): string {
   return path.replaceAll('\\', '/');
 }
 
-function addStartscreens(screens: Array<string | [string, string]>, map: FileTimelineMap, date: Version, end?: Version): void {
-  screens.forEach((screen, i) => {
-    if (typeof screen === 'string') {
-      map.add(`play/v2/content/local/en/login/backgrounds/background${i}.swf`, screen, date, end);
-      map.add(`play/start/billboards/login/backgrounds/background${i}.swf`, screen, date, end);
-    } else {
-      map.add(`play/v2/content/local/en/login/backgrounds/${screen[0]}`, screen[1], date, end);
-      map.add(`play/start/billboards/login/backgrounds/${screen[0]}`, screen[1], date, end);
-    }
-  })
-}
-
-function addCatalog(date: Version, input: FileRef | CatalogItems | undefined, paths: string[], map: FileTimelineMap, end: Version | undefined) {
-  if (input !== undefined) {
-    const file = typeof input === 'string' ? input : input.file;
-    if (file !== undefined) {
-      paths.forEach(p => {
-        map.add(p, file, date, end);
-      });
-    }
-  }
-}
-
-function addUpdates(map: FileTimelineMap): void {
-  UPDATES.forEach(update => {
-    if (update.update.map !== undefined) {
-      map.add('artwork/maps/island5.swf', update.update.map, update.date, update.end);
-      map.add('artwork/maps/16_forest.swf', update.update.map, update.date, update.end);
-      map.add('play/v2/content/global/content/map.swf', update.update.map, update.date, update.end);
-    }
-    addCatalog(update.date, update.update.clothingCatalog, [
-      'artwork/catalogue/clothing.swf',
-      'artwork/catalogue/clothing_.swf',
-      'play/v2/content/local/en/catalogues/clothing.swf'
-    ], map, update.end);
-    if (update.update.postcardCatalog !== undefined) {
-      map.add('artwork/catalogue/cards.swf', update.update.postcardCatalog, update.date, update.end);
-      map.add('artwork/catalogue/cards_0712.swf', update.update.postcardCatalog, update.date, update.end);
-    }
-    if (update.update.hairCatalog !== undefined) {
-      map.add('play/v2/content/local/en/catalogues/hair.swf', update.update.hairCatalog, update.date, update.end);
-    }
-    if (update.update.petFurniture !== undefined) {
-      map.add('artwork/catalogue/pets_.swf', update.update.petFurniture, update.date, update.end);
-      map.add('play/v2/content/local/en/catalogues/pets.swf', update.update.petFurniture, update.date, update.end);
-    }
-    if (update.update.puffleCatalog !== undefined) {
-      map.add('artwork/catalogue/adopt_.swf', update.update.puffleCatalog, update.date, update.end);
-      map.add('artwork/catalogue/puffle_.swf', update.update.puffleCatalog, update.date, update.end);
-      map.add('play/v2/content/local/en/catalogues/adopt.swf', update.update.puffleCatalog, update.date, update.end);
-    }
-    addCatalog(update.date, update.update.martialArtworks, ['play/v2/content/local/en/catalogues/ninja.swf'], map, update.end);
-    if (update.update.furnitureCatalog !== undefined) {
-      map.add('artwork/catalogue/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
-      map.add('artwork/catalogue/furniture_.swf', update.update.furnitureCatalog, update.date, update.end);
-      map.add('play/v2/content/local/en/catalogues/furniture.swf', update.update.furnitureCatalog, update.date, update.end);
-    }
-    if (update.update.iglooCatalog !== undefined) {
-      map.add('artwork/catalogue/igloo_.swf', update.update.iglooCatalog, update.date, update.end);
-      map.add('play/v2/content/local/en/catalogues/igloo.swf', update.update.iglooCatalog, update.date, update.end);
-    }
-    if (update.update.rooms !== undefined) {
-      map.addRoomChanges(update.update.rooms, update.date, update.end);
-    }
-    if (update.update.fileChanges !== undefined) {
-      iterateEntries(update.update.fileChanges, (route, fileRef) => {
-        map.add(route, fileRef, update.date, update.end);
-      })
-    }
-    if (update.update.startscreens !== undefined) {
-      addStartscreens(update.update.startscreens, map, update.date, update.end);
-    }
-    if (update.update.localChanges !== undefined) {
-      map.addLocalChanges(update.update.localChanges, update.date, update.end);
-    }
-    if (update.update.globalChanges !== undefined) {
-      iterateEntries(update.update.globalChanges, (route, info) => {
-        map.pushCrumbChange('play/v2/content/global', route, info, update.date, update.end);
-      });
-    }
-    if (update.update.iglooList !== undefined && update.update.iglooList !== true && typeof update.update.iglooList !== 'string') {
-      const route = 'play/v2/content/global/content/igloo_music.swf';
-      if ('file' in update.update.iglooList) {
-        map.add(route, update.update.iglooList.file, update.date);
-      } else {
-        map.add(route, 'tool:dynamic_igloo_music.swf', update.date);
-      }
-    }
-    if (typeof update.update.migrator === 'string') {
-      map.add('play/v2/content/local/en/catalogues/pirate.swf', update.update.migrator, update.date);
-    }
-    if (update.end !== undefined) {
-      if (update.update.scavengerHunt2007 !== undefined) {
-        map.add('artwork/eggs/1.swf', update.update.scavengerHunt2007, update.date, update.end);
-      }
-    }
-    if (update.update.scavengerHunt2010 !== undefined) {
-      map.add(path.join('play/v2/content/global', update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH), update.update.scavengerHunt2010.iconFileId, update.date, update.end);
-    }
-    if (update.update.fairCpip !== undefined) {
-      if (isLower(update.date, getDate('vanilla-engine'))) {
-        map.add('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf', update.date, update.end);
-      }
-      map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.fairCpip.iconFileId, update.date, update.end);
-      map.add(`play/v2/content/local/en/${TICKET_INFO_PATH}`, update.update.fairCpip.infoFile, update.date, update.end);
-    }
-    if (update.update.partyIconFile !== undefined) {
-      map.add(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, update.update.partyIconFile, update.date, update.end);
-    }
-    if (update.update.scavengerHunt2011 !== undefined) {
-      map.add(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), update.update.scavengerHunt2011.icon, update.date, update.end);
-    }
-    if (update.update.mapNote !== undefined) {
-      map.add('play/v2/content/local/en/close_ups/party_map_note.swf', update.update.mapNote, update.date, update.end);
-    }
-    if (update.update.stagePlay !== undefined) {
-      
-      addCatalog(update.date, update.update.stagePlay.costumeTrunk, [
-        'artwork/catalogue/costume_0712.swf',
-        'play/v2/content/local/en/catalogues/costume.swf'
-      ], map, update.end);
-    }
-    addCatalog(update.date, update.update.sportCatalog, [
-      'artwork/catalogue/sport_.swf',
-      'play/v2/content/local/en/catalogues/sport.swf'
-    ], map, update.end);
-  });
-}
-
 /** Get the object which knows all the file information needed to find the file for a given route */
 export function getRoutesTimeline() {
   const timelines = new FileTimelineMap();
 
   const timelineProcessors = [
     // pins are specifically before party so that pins that update with a party don't override the party room
-    addUpdates,
     addFilesWithIds,
     addClothing,
     addTimeSensitiveStaticFiles,

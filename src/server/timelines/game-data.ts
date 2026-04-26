@@ -5,7 +5,9 @@ import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CPUpdateE, GameUpdate, HuntCrumbs } from "@server/updates";
+import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs } from "@server/updates";
+import path from "path";
+import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 
 type GameState = {
   /** map of route -> path of file in media folder, meant for static files */
@@ -18,6 +20,7 @@ type GameState = {
   mapNote: boolean;
   unlockedDay: number | null;
   preCpip: boolean;
+  vanillaEngine: boolean;
 }
 
 function getFreshState(): GameState {
@@ -30,7 +33,8 @@ function getFreshState(): GameState {
     migrator: false,
     mapNote: false,
     unlockedDay: null,
-    preCpip: true
+    preCpip: true,
+    vanillaEngine: false
   };
 }
 
@@ -52,7 +56,24 @@ export class GameData {
 
   private addRoom(room: RoomName, file: FileRef) {
     const roomRoute = (this.state.preCpip ? 'artwork/rooms/' : 'play/v2/content/global/rooms/') + room + '.swf';
-    this.state.files.set(roomRoute, getMediaFilePath(file));
+    this.addRoute(roomRoute, file);
+  }
+
+  private addRoute(route: string, file: FileRef) {
+    this.state.files.set(route, getMediaFilePath(file));
+  }
+
+  private addCatalog(input: FileRef | CatalogItems, paths: string[]) {
+    const file = typeof input === 'string' ? input : input.file;
+    if (file !== undefined) {
+      paths.forEach(p => this.addRoute(p, file));
+    }
+  }
+
+  private addCrumbChange(baseRoute: string, route: string, info: FileRef | CrumbIndicator) {
+    const fileRef = typeof info === 'string' ? info : info[0];
+    const fullRoute = path.join(baseRoute, route);
+    this.addRoute(fullRoute, fileRef);
   }
 
   public addListener(callback: () => void): void {
@@ -66,56 +87,70 @@ export class GameData {
     let pinRoom: RoomName | null = null;
 
     const actions: {
-      [K in keyof CPUpdateE]: (v: Exclude<CPUpdateE[K], undefined>, s: GameState) => void
+      [K in keyof CPUpdateE]: (v: Exclude<CPUpdateE[K], undefined>) => void
     } = {
-     'dateReference': (v, s) => {
+     'dateReference': (v) => {
         switch (v) {
           case 'stamps-release':
-            s.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
+            this.state.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
             break;
           case 'cpip':
-            s.preCpip = false;
+            this.state.preCpip = false;
             break;
+          case 'vanilla-engine':
+            this.state.vanillaEngine = true;
           default:
             break;
         }
       },
-      'fileChanges': (v, s) => {
+      'fileChanges': (v) => {
         iterateEntries(v, (route, fileRef) => {
-          s.files.set(route, getMediaFilePath(fileRef));
+          this.state.files.set(route, getMediaFilePath(fileRef));
         });
       },
-      'stampUpdates': (v, s) => {
+      'stampUpdates': (v) => {
         v.forEach(u => {
           if ('category' in u) {
-            s.stampbook.push(JSON.parse(JSON.stringify(u.category)));
+            this.state.stampbook.push(JSON.parse(JSON.stringify(u.category)));
           } else {
-            for (let i = 0; i < s.stampbook.length; i++) {
-              if (s.stampbook[i].group_id === u.categoryId) {
-                s.stampbook[i].stamps.push(...u.stamps);
+            for (let i = 0; i < this.state.stampbook.length; i++) {
+              if (this.state.stampbook[i].group_id === u.categoryId) {
+                this.state.stampbook[i].stamps.push(...u.stamps);
                 break;
               }
             }
           }
         });
       },
-      'scavengerHunt2011': (v, s) => {
-        s.hunt = v;
+      'scavengerHunt2011': (v) => {
+        this.state.hunt = v;
+        this.addRoute(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), v.icon);
       },
-      'fairCpip': (_, s) => {
-        s.fair = true;
+      'fairCpip': (v) => {
+        if (this.state.vanillaEngine) {
+          this.state.fair = true;
+        } else {
+          this.addRoute('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf');
+        }
+        this.addRoute(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, v.iconFileId);
+        this.addRoute(`play/v2/content/local/en/${TICKET_INFO_PATH}`, v.infoFile);
       },
-      'partyIconFile': (_, s) => {
-        s.partyIcon = true;
+      'partyIconFile': (v) => {
+        this.state.partyIcon = true;
+        this.addRoute(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, v);
       },
-      'migrator': (v, s) => {
-        s.migrator = v === false ? false : true;
+      'migrator': (v) => {
+        this.state.migrator = v === false ? false : true;
+        if (typeof v === 'string') {
+          this.addRoute('play/v2/content/local/en/catalogues/pirate.swf', v);
+        }
       },
-      'mapNote': (_, s) => {
-        s.mapNote = true;
+      'mapNote': (v) => {
+        this.state.mapNote = true;
+        this.addRoute('play/v2/content/local/en/close_ups/party_map_note.swf', v);
       },
-      'unlockedDay': (v, s) => {
-        s.unlockedDay = v;
+      'unlockedDay': (v) => {
+        this.state.unlockedDay = v;
       },
       'pinRoom': (v) => {
         pinRoom = v;
@@ -129,6 +164,107 @@ export class GameData {
         if (pinRoom !== null) {
           this.addRoom(pinRoom, v);
         }
+      },
+      'map': (v) => {
+        if (this.state.preCpip) {
+          this.addRoute('artwork/maps/island5.swf', v);
+          this.addRoute('artwork/maps/16_forest.swf', v);
+        } else {
+          this.addRoute('play/v2/content/global/content/map.swf', v);
+        }
+      },
+      'clothingCatalog': (v) => {
+        this.addCatalog(v, this.state.preCpip ? ['artwork/catalogue/clothing.swf', 'artwork/catalogue/clothing_.swf'] : ['play/v2/content/local/en/catalogues/clothing.swf'])
+      },
+      'postcardCatalog': (v) => {
+        this.addRoute('artwork/catalogue/cards.swf', v);
+        this.addRoute('artwork/catalogue/cards_0712.swf', v);
+      },
+      'hairCatalog': (v) => {
+        this.addRoute('play/v2/content/local/en/catalogues/hair.swf', v);
+      },
+      'petFurniture': (v) => {
+        if (this.state.preCpip) {
+          this.addRoute('artwork/catalogue/pets_.swf', v);
+        } else {
+          this.addRoute('play/v2/content/local/en/catalogues/pets.swf', v);
+        }
+      },
+      'puffleCatalog': (v) => {
+        if (this.state.preCpip) {
+          this.addRoute('artwork/catalogue/adopt_.swf', v);
+          this.addRoute('artwork/catalogue/puffle_.swf', v);
+        } else {
+          this.addRoute('play/v2/content/local/en/catalogues/adopt.swf', v);
+        }
+      },
+      'martialArtworks': (v) => {
+        this.addCatalog(v, ['play/v2/content/local/en/catalogues/ninja.swf']);
+      },
+      'furnitureCatalog': (v) => {
+        if (this.state.preCpip) {
+          this.addRoute('artwork/catalogue/furniture.swf', v);
+          this.addRoute('artwork/catalogue/furniture_.swf', v);
+        } else {
+          this.addRoute('play/v2/content/local/en/catalogues/furniture.swf', v);
+        }
+      },
+      'iglooCatalog': (v) => {
+        if (this.state.preCpip) {
+          this.addRoute('artwork/catalogue/igloo_.swf', v);
+          this.addRoute('play/v2/content/local/en/catalogues/igloo.swf', v);
+        }
+      },
+      'startscreens': (v) => {
+        v.forEach((screen, i) => {
+          if (typeof screen === 'string') {
+            this.addRoute(`play/v2/content/local/en/login/backgrounds/background${i}.swf`, screen);
+            this.addRoute(`play/start/billboards/login/backgrounds/background${i}.swf`, screen);
+          } else {
+            this.addRoute(`play/v2/content/local/en/login/backgrounds/${screen[0]}`, screen[1]);
+            this.addRoute(`play/start/billboards/login/backgrounds/${screen[0]}`, screen[1]);
+          }
+        });
+      },
+      'localChanges': (v) => {
+        iterateEntries(v, (route, languages) => {
+          iterateEntries(languages, (language, info) => {
+            this.addCrumbChange(path.join('play/v2/content/local', language), route, info);
+          })
+        })
+      },
+      'globalChanges': (v) => {
+        iterateEntries(v, (route, info) => {
+          this.addCrumbChange('play/v2/content/global', route, info);
+        });
+      },
+      'iglooList': (v) => {
+        if (v !== true && typeof v !== 'string') {
+          const route = 'play/v2/content/global/content/igloo_music.swf';
+          if ('file' in v) {
+            this.addRoute(route, v.file);
+          } else {
+            this.addRoute(route, 'tool:dynamic_igloo_music.swf');
+          }
+        }
+      },
+      'scavengerHunt2007': (v) => {
+        this.addRoute('artwork/eggs/1.swf', v);
+      },
+      'scavengerHunt2010': (v) => {
+        this.addRoute(path.join('play/v2/content/global', v.iconFilePath ?? SCAVENGER_ICON_PATH), v.iconFileId);
+      },
+      'stagePlay': (v) => {
+        this.addCatalog(v.costumeTrunk, [
+          'artwork/catalogue/costume_0712.swf',
+          'play/v2/content/local/en/catalogues/costume.swf'
+        ]);
+      },
+      'sportCatalog': (v) => {
+        this.addCatalog(v, [
+          'artwork/catalogue/sport_.swf',
+          'play/v2/content/local/en/catalogues/sport.swf'
+        ]);
       }
     }
 
