@@ -3,7 +3,6 @@ import path from 'path';
 
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { getStampsJson } from './stampjson';
 import { getSetupXml } from "./setup.xml";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
@@ -178,12 +177,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('en/web_service/stamps.json', (s) => {
-    return getStampsJson(s.settings.version);
-  });
-  server.getData('play/en/web_service/game_configs/stamps.json', (s) => {
-    return getStampsJson(s.settings.version);
-  });
   server.getData('play/en/web_service/game_configs/chunking_map.json', (s) => {
     return getChunkingMapJson(s.settings.version);
   });

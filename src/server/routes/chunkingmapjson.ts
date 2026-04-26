@@ -1,9 +1,8 @@
 import { ITEMS } from "../game-logic/items";
-import { getStampbook } from "./stampjson";
 import { Version } from "./versions";
 
 export function getChunkingMapJson(version: Version): string {
-  const stampbook = getStampbook(version);
+  const stampbook: any[] = []//getStampbook(version);
 
   const paperItems: number[] = [];
   const chunk = 200;

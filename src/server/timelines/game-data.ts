@@ -1,8 +1,10 @@
 import { iterateEntries, EventListener } from "@common/utils";
 import { getMediaFilePath } from "@server/game-data/files";
-import { isGreater, Version } from "@server/routes/versions";
+import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
+import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 import { GameUpdate } from "@server/updates";
+import { getDate } from "./dates";
 
 /** Manages all the data related to the game at a particular point in time */
 export class GameData {
@@ -11,7 +13,12 @@ export class GameData {
 
   private updateListener = new EventListener();
 
+  private stampbook: Stampbook = [];
+
+  private date: string;
+
   constructor(private updates: GameUpdate[], settings: SettingsManager) {
+    this.date = settings.settings.version;
     this.update(settings.settings.version);
     settings.addListener(() => {
       this.update(settings.settings.version);
@@ -23,7 +30,9 @@ export class GameData {
   }
 
   public update(date: Version): void {
+    this.date = date;
     this.files = new Map<string, string>();
+    this.stampbook = isGreaterOrEqual(date, getDate('stamps-release')) ? JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK)) as Stampbook : [];
 
     for (const update of this.updates) {
       // check every update until the current date
@@ -41,11 +50,34 @@ export class GameData {
         });
       }
 
+      if (update.update.stampUpdates !== undefined) {
+        update.update.stampUpdates.forEach(u => {
+          if ('category' in u) {
+            this.stampbook.push(JSON.parse(JSON.stringify(u.category)));
+          } else {
+            for (let i = 0; i < this.stampbook.length; i++) {
+              if (this.stampbook[i].group_id === u.categoryId) {
+                this.stampbook[i].stamps.push(...u.stamps);
+                break;
+              }
+            }
+          }
+        });
+      }
+
       this.updateListener.fire();
     }
   }
 
   public lookupFile(route: string): string | undefined {
     return this.files.get(route);
+  }
+
+  public getDate() {
+    return this.date;
+  }
+
+  public getStampbook() {
+    return this.stampbook;
   }
 }

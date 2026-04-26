@@ -28,7 +28,7 @@ export class FileServer {
     }
   }
 
-  private async getFile(route: string): Promise<Buffer | undefined> {
+  private async getFile(route: string): Promise<Buffer | string | undefined> {
     let filePath;
     const modName = this.modFiles.get(route);
     if (modName !== undefined) {
