@@ -14,7 +14,6 @@ import { getGeneralJson } from "./generaljson";
 import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
 import { getGameStrings } from "./gamestringsjson";
-import { getChunkingMapJson } from "./chunkingmapjson";
 import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
@@ -177,9 +176,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/en/web_service/game_configs/chunking_map.json', (s) => {
-    return getChunkingMapJson(s.settings.version);
-  });
   server.getData('play/en/web_service/game_configs/general.json', (s) => {
     return getGeneralJson(s.settings.version);
   });

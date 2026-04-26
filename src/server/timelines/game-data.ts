@@ -1,6 +1,7 @@
 import { iterateEntries, EventListener } from "@common/utils";
 import { getMediaFilePath } from "@server/game-data/files";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
+import { ItemTable } from "@server/game-logic/items";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 import { GameUpdate } from "@server/updates";
@@ -17,7 +18,7 @@ export class GameData {
 
   private date: string;
 
-  constructor(private updates: GameUpdate[], settings: SettingsManager) {
+  constructor(private updates: GameUpdate[], private items: ItemTable, settings: SettingsManager) {
     this.date = settings.settings.version;
     this.update(settings.settings.version);
     settings.addListener(() => {
@@ -79,5 +80,9 @@ export class GameData {
 
   public getStampbook() {
     return this.stampbook;
+  }
+
+  public getItems() {
+    return this.items.rows;
   }
 }

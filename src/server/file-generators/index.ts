@@ -1,12 +1,14 @@
 import { iterateEntries } from "@common/utils";
 import { GameData } from "@server/timelines/game-data";
+import { getChunkingMapJson } from "./chunking_map.json";
 import { getStampsJson } from "./stamps.json";
 
 export type FileGenerator = (d: GameData) => Buffer | string;
 
 const GENERATORS: Record<string, FileGenerator> = {
   'en/web_service/stamps.json': getStampsJson,
-  'play/en/web_service/game_configs/stamps.json': getStampsJson
+  'play/en/web_service/game_configs/stamps.json': getStampsJson,
+  'play/en/web_service/game_configs/chunking_map.json': getChunkingMapJson
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

@@ -1,13 +1,13 @@
-import { ITEMS } from "../game-logic/items";
-import { Version } from "./versions";
+import { GameData } from "@server/timelines/game-data";
 
-export function getChunkingMapJson(version: Version): string {
-  const stampbook: any[] = []//getStampbook(version);
+export function getChunkingMapJson(d: GameData): string {
+  const stampbook = d.getStampbook();
 
   const paperItems: number[] = [];
   const chunk = 200;
-  for (let i = 0; i < ITEMS.rows.length; i += chunk) {
-    const left = ITEMS.rows.length - i;
+  const itemCount = d.getItems().length;
+  for (let i = 0; i < itemCount; i += chunk) {
+    const left = itemCount - i;
     if (left > chunk) {
       paperItems.push(chunk);
     } else {

@@ -64,7 +64,7 @@ export function getCost(item: Item, date: Version): number {
   return item.cost;
 }
 
-class ItemTable extends StaticDataTable<Item, [
+export class ItemTable extends StaticDataTable<Item, [
   'id',
   'name',
   'isMember',
