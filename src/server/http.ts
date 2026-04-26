@@ -6,7 +6,6 @@ import { MEDIA_DIRECTORY } from '../common/utils';
 import { findInVersion } from './game-data';
 import { specialServer } from './game-data/specials';
 import { logdebug } from './logger';
-import { getRoutesTimeline } from './timelines/route';
 
 type GetCallback = (settings: SettingsManager, route: string) => string | undefined
 
@@ -62,30 +61,30 @@ export class HttpServer {
   }
   
   addFileServer() {
-    const routesTimeline = getRoutesTimeline();
+    // const routesTimeline = getRoutesTimeline();
   
-    this.router.get('/*', (req: Request, res, next) => {
-      const route = req.params[0];
-      const special = specialServer.get(route);
-      const specialCheck = special?.check(this.settingsManager);
-      if (special === undefined || specialCheck === undefined) {
-        const info = routesTimeline.get(route);
-        if (info === undefined) {
-          next();
-        } else {
-          const filePath = findInVersion(this.settingsManager.settings.version, info);
-          if (filePath === undefined) {
-            console.log(info);
-            throw new Error('Could not find file, log output is above')
-          }
+    // this.router.get('/*', (req: Request, res, next) => {
+    //   const route = req.params[0];
+    //   const special = specialServer.get(route);
+    //   const specialCheck = special?.check(this.settingsManager);
+    //   if (special === undefined || specialCheck === undefined) {
+    //     const info = routesTimeline.get(route);
+    //     if (info === undefined) {
+    //       next();
+    //     } else {
+    //       const filePath = findInVersion(this.settingsManager.settings.version, info);
+    //       if (filePath === undefined) {
+    //         console.log(info);
+    //         throw new Error('Could not find file, log output is above')
+    //       }
   
-          logdebug(`Requested: ${route}, sending: ${filePath}`);
-          res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
-        }
-      } else {
-        res.sendFile(path.join(MEDIA_DIRECTORY, special.files[specialCheck]));
-      }
-    });
+    //       logdebug(`Requested: ${route}, sending: ${filePath}`);
+    //       res.sendFile(path.join(MEDIA_DIRECTORY, filePath));
+    //     }
+    //   } else {
+    //     res.sendFile(path.join(MEDIA_DIRECTORY, special.files[specialCheck]));
+    //   }
+    // });
   }
 
   /**
