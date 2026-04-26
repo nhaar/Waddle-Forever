@@ -10,7 +10,6 @@ import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
-import { getGeneralJson } from "./generaljson";
 import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
 import { getGameStrings } from "./gamestringsjson";
@@ -176,9 +175,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/en/web_service/game_configs/general.json', (s) => {
-    return getGeneralJson(s.settings.version);
-  });
   server.getData('play/en/web_service/game_configs/paths.json', (s) => {
     return getPathsJson(s.settings.version);
   });

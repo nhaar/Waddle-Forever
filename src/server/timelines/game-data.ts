@@ -4,7 +4,7 @@ import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { GameUpdate } from "@server/updates";
+import { GameUpdate, HuntCrumbs } from "@server/updates";
 import { getDate } from "./dates";
 
 /** Manages all the data related to the game at a particular point in time */
@@ -17,6 +17,18 @@ export class GameData {
   private stampbook: Stampbook = [];
 
   private date: string;
+
+  private hunt: HuntCrumbs | null = null;
+
+  private fair = false;
+
+  private partyIcon = false;
+
+  private migrator = false;
+
+  private mapNote = false;
+
+  private unlockedDay: number | null = null;
 
   constructor(private updates: GameUpdate[], private items: ItemTable, settings: SettingsManager) {
     this.date = settings.settings.version;
@@ -33,6 +45,12 @@ export class GameData {
   public update(date: Version): void {
     this.date = date;
     this.files = new Map<string, string>();
+    this.hunt = null;
+    this.fair = false;
+    this.partyIcon = false;
+    this.migrator = false;
+    this.mapNote = false;
+    this.unlockedDay = null;
     this.stampbook = isGreaterOrEqual(date, getDate('stamps-release')) ? JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK)) as Stampbook : [];
 
     for (const update of this.updates) {
@@ -66,6 +84,28 @@ export class GameData {
         });
       }
 
+      if (update.update.scavengerHunt2011 !== undefined) {
+        this.hunt = update.update.scavengerHunt2011;
+      }
+
+      if (update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, getDate('vanilla-engine'))) {
+        this.fair = true;
+      }
+
+      if (update.update.partyIconFile !== undefined) {
+        this.partyIcon = true;
+      }
+
+      if (update.update.migrator !== undefined) {
+        this.migrator = update.update.migrator === false ? false : true;
+      }
+
+      if (update.update.mapNote !== undefined) {
+        this.mapNote = true;
+      }
+      if (update.update.unlockedDay !== undefined) {
+        this.unlockedDay = update.update.unlockedDay;
+      }
       this.updateListener.fire();
     }
   }
@@ -84,5 +124,29 @@ export class GameData {
 
   public getItems() {
     return this.items.rows;
+  }
+
+  public getHunt() {
+    return this.hunt;
+  }
+
+  public getFair() {
+    return this.fair;
+  }
+
+  public getMigrator() {
+    return this.migrator;
+  }
+
+  public getPartyIcon() {
+    return this.partyIcon;
+  }
+
+  public getMapNote() {
+    return this.mapNote;
+  }
+
+  public getUnlockedDay() {
+    return this.unlockedDay;
   }
 }
