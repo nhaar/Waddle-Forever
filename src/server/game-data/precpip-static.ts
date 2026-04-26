@@ -50,7 +50,7 @@ export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
   'artwork/toys/sculpture/Vinje99.swf': 'recreation:festival_of_snow/vinje99.swf',
   'artwork/toys/sculpture/RockAndPen.swf': 'recreation:festival_of_snow/rockandpen.swf',
   'artwork/toys/sculpture/Y4ssenGrego.swf': 'recreation:festival_of_snow/y4ssengrego.swf',
-  'artwork/toys/1.swf': 'slegacy/media/play/v2/content/global/clothing/books/news.swf',
+  'artwork/toys/1.swf': 'slegacy:media/play/v2/content/global/clothing/books/news.swf',
   'artwork/tools/801.swf': 'archives:AwardsEN801.swf',
   'artwork/tools/802.swf': 'archives:AwardsEN802.swf',
   'artwork/tools/803.swf': 'archives:AwardsEN803.swf',
