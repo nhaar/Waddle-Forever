@@ -7,28 +7,38 @@ import { SettingsManager } from "@server/settings";
 import { GameUpdate, HuntCrumbs } from "@server/updates";
 import { getDate } from "./dates";
 
+type GameState = {
+  /** map of route -> path of file in media folder, meant for static files */
+  files: Map<string, string>;
+  stampbook: Stampbook;
+  hunt: HuntCrumbs | null;
+  fair: boolean;
+  partyIcon: boolean;
+  migrator: boolean;
+  mapNote: boolean;
+  unlockedDay: number | null;
+}
+
+function getFreshState(): GameState {
+  return {
+    files: new Map<string, string>(),
+    stampbook: [],
+    hunt: null,
+    fair: false,
+    partyIcon: false,
+    migrator: false,
+    mapNote: false,
+    unlockedDay: null
+  };
+}
+
 /** Manages all the data related to the game at a particular point in time */
 export class GameData {
-  /** map of route -> path of file in media folder, meant for static files */
-  private files = new Map<string, string>();
+  private state = getFreshState();
 
   private updateListener = new EventListener();
 
-  private stampbook: Stampbook = [];
-
   private date: string;
-
-  private hunt: HuntCrumbs | null = null;
-
-  private fair = false;
-
-  private partyIcon = false;
-
-  private migrator = false;
-
-  private mapNote = false;
-
-  private unlockedDay: number | null = null;
 
   constructor(private updates: GameUpdate[], private items: ItemTable, settings: SettingsManager) {
     this.date = settings.settings.version;
@@ -44,14 +54,7 @@ export class GameData {
 
   public update(date: Version): void {
     this.date = date;
-    this.files = new Map<string, string>();
-    this.hunt = null;
-    this.fair = false;
-    this.partyIcon = false;
-    this.migrator = false;
-    this.mapNote = false;
-    this.unlockedDay = null;
-    this.stampbook = isGreaterOrEqual(date, getDate('stamps-release')) ? JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK)) as Stampbook : [];
+    this.state = getFreshState();
 
     for (const update of this.updates) {
       // check every update until the current date
@@ -63,20 +66,30 @@ export class GameData {
         continue;
       }
 
+      if (update.update.dateReference !== undefined) {
+        switch (update.update.dateReference) {
+          case 'stamps-release':
+            this.state.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
+            break;
+          default:
+            break;
+        }
+      }
+
       if (update.update.fileChanges !== undefined) {
         iterateEntries(update.update.fileChanges, (route, fileRef) => {
-          this.files.set(route, getMediaFilePath(fileRef));
+          this.state.files.set(route, getMediaFilePath(fileRef));
         });
       }
 
       if (update.update.stampUpdates !== undefined) {
         update.update.stampUpdates.forEach(u => {
           if ('category' in u) {
-            this.stampbook.push(JSON.parse(JSON.stringify(u.category)));
+            this.state.stampbook.push(JSON.parse(JSON.stringify(u.category)));
           } else {
-            for (let i = 0; i < this.stampbook.length; i++) {
-              if (this.stampbook[i].group_id === u.categoryId) {
-                this.stampbook[i].stamps.push(...u.stamps);
+            for (let i = 0; i < this.state.stampbook.length; i++) {
+              if (this.state.stampbook[i].group_id === u.categoryId) {
+                this.state.stampbook[i].stamps.push(...u.stamps);
                 break;
               }
             }
@@ -85,33 +98,33 @@ export class GameData {
       }
 
       if (update.update.scavengerHunt2011 !== undefined) {
-        this.hunt = update.update.scavengerHunt2011;
+        this.state.hunt = update.update.scavengerHunt2011;
       }
 
       if (update.update.fairCpip !== undefined && isGreaterOrEqual(update.date, getDate('vanilla-engine'))) {
-        this.fair = true;
+        this.state.fair = true;
       }
 
       if (update.update.partyIconFile !== undefined) {
-        this.partyIcon = true;
+        this.state.partyIcon = true;
       }
 
       if (update.update.migrator !== undefined) {
-        this.migrator = update.update.migrator === false ? false : true;
+        this.state.migrator = update.update.migrator === false ? false : true;
       }
 
       if (update.update.mapNote !== undefined) {
-        this.mapNote = true;
+        this.state.mapNote = true;
       }
       if (update.update.unlockedDay !== undefined) {
-        this.unlockedDay = update.update.unlockedDay;
+        this.state.unlockedDay = update.update.unlockedDay;
       }
       this.updateListener.fire();
     }
   }
 
   public lookupFile(route: string): string | undefined {
-    return this.files.get(route);
+    return this.state.files.get(route);
   }
 
   public getDate() {
@@ -119,7 +132,7 @@ export class GameData {
   }
 
   public getStampbook() {
-    return this.stampbook;
+    return this.state.stampbook;
   }
 
   public getItems() {
@@ -127,26 +140,26 @@ export class GameData {
   }
 
   public getHunt() {
-    return this.hunt;
+    return this.state.hunt;
   }
 
   public getFair() {
-    return this.fair;
+    return this.state.fair;
   }
 
   public getMigrator() {
-    return this.migrator;
+    return this.state.migrator;
   }
 
   public getPartyIcon() {
-    return this.partyIcon;
+    return this.state.partyIcon;
   }
 
   public getMapNote() {
-    return this.mapNote;
+    return this.state.mapNote;
   }
 
   public getUnlockedDay() {
-    return this.unlockedDay;
+    return this.state.unlockedDay;
   }
 }
