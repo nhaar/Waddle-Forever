@@ -161,11 +161,10 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
 
   const server = express();
 
-  server.use(getModRouter(settingsManager.mods));
 
   const gameData = new GameData(getUpdates(), ITEMS, settingsManager);
 
-  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager.mods);
+  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager, settingsManager.mods);
 
   server.use(fileServer.getExpressRouter());
 

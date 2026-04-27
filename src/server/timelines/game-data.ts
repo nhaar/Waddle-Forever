@@ -36,6 +36,9 @@ type GameState = {
   unlockedDay: number | null;
   preCpip: boolean;
   vanillaEngine: boolean;
+  indexHtml: string;
+  as3: boolean;
+  website: string;
 }
 
 function getFreshState(): GameState {
@@ -49,7 +52,10 @@ function getFreshState(): GameState {
     mapNote: false,
     unlockedDay: null,
     preCpip: true,
-    vanillaEngine: false
+    vanillaEngine: false,
+    indexHtml: '',
+    as3: false,
+    website: ''
   };
 }
 
@@ -235,6 +241,10 @@ export class GameData {
           case 'vanilla-engine':
             this.state.vanillaEngine = true;
             this.addRouteMap(AS3_STATIC_FILES);
+            break;
+          case 'as3':
+            this.state.as3 = true;
+            break;
           default:
             break;
         }
@@ -401,6 +411,12 @@ export class GameData {
           'artwork/catalogue/sport_.swf',
           'play/v2/content/local/en/catalogues/sport.swf'
         ]);
+      },
+      'indexHtml': (v) => {
+        this.state.indexHtml = v;
+      },
+      'websiteFolder': (v) => {
+        this.state.website = v;
       }
     }
 
@@ -463,5 +479,21 @@ export class GameData {
 
   public getUnlockedDay() {
     return this.state.unlockedDay;
+  }
+
+  public getIndexHtml() {
+    return this.state.indexHtml;
+  }
+
+  public getAs3() {
+    return this.state.as3;
+  }
+
+  public isPreCpip() {
+    return this.state.preCpip;
+  }
+
+  public getWebsite() {
+    return this.state.website;
   }
 }
