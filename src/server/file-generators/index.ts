@@ -12,6 +12,7 @@ import { getNewspapersJson } from "./newspapers.json";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getPaperItemsJson } from "./paper_items.json";
 import { getPathsJson } from "./paths.json";
+import { getPenguinActionFramesJson } from "./penguin_action_frames.json";
 import { getRoomsJson } from "./rooms.json";
 import { getSetupXml } from "./setup.xml";
 import getStageScriptMessagesJson from "./stage_script_messages.json";
@@ -42,7 +43,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'web_service/worldachievements.xml': getWorldAchievementsXml,
   'play/v2/content/global/stampbook/world_stamps.xml': getWorldAchievementsXml,
   'play/en/web_service/game_configs/game_strings.json': getGameStrings,
-  'play/en/web_service/game_configs/newspapers.json': getNewspapersJson
+  'play/en/web_service/game_configs/newspapers.json': getNewspapersJson,
+  'play/en/web_service/game_configs/penguin_action_frames.json': getPenguinActionFramesJson
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

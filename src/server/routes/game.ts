@@ -98,9 +98,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
-    return FRAME_HACKS.getJSON();
-  })
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);
   });
