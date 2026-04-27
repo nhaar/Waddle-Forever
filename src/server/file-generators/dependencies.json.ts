@@ -1,50 +1,5 @@
-import { findInVersion, VersionsTimeline } from "../game-data";
-import { isGreaterOrEqual, Version } from "./versions";
-import { getDate, isEngine3 } from "../timelines/dates";
-import { START_DATE } from "../timelines/dates";
-import { UPDATES } from "../updates/updates";
-
-const scavengerTimeline = getScavengerTimeline();
-
-function getScavengerTimeline() {
-  const timeline = new VersionsTimeline<boolean>();
-  timeline.add({
-    date: START_DATE,
-    info: false
-  });
-  UPDATES.forEach(update => {
-    if (update.update.scavengerHunt2010 !== undefined && update.end !== undefined) {
-      timeline.add({
-        date: update.date,
-        end: update.end,
-        info: true
-      });
-    }
-  });
-
-  return timeline.getVersions();
-}
-
-const fairTimeline = getFairTimeline();
-
-function getFairTimeline() {
-  const timeline = new VersionsTimeline<boolean>();
-  timeline.add({
-    date: START_DATE,
-    info: false
-  });
-  UPDATES.forEach(update => {
-    if (update.update.fairCpip !== undefined && update.end !== undefined) {
-      timeline.add({
-        date: update.date,
-        end: update.end,
-        info: true
-      });
-    }
-  });
-
-  return timeline.getVersions();
-}
+import { SettingsManager } from "@server/settings";
+import { GameData } from "@server/timelines/game-data";
 
 const DEPENDENCIES_2009 = {
 	boot: [
@@ -168,17 +123,16 @@ const DEPENDENCIES_VANILLA = {
   ]
 }
 
-export default function getDependenciesJson(version: Version, removeIdle: boolean) {
-  const huntActive = findInVersion(version, scavengerTimeline);
-  const fairActive = findInVersion(version, fairTimeline);
+export default function getDependenciesJson(d: GameData, s: SettingsManager) {
+  const hunt = d.isHuntActive();
+  const fair = d.getFair();
 
-  const engine3 = isEngine3(version);
 
-  const base = engine3 ? DEPENDENCIES_VANILLA : DEPENDENCIES_2009;
+  const base = d.isVanillaEngine() ? DEPENDENCIES_VANILLA : DEPENDENCIES_2009;
   const dependencies = JSON.parse(JSON.stringify(base));
 
-  if (!engine3) {
-    if (isGreaterOrEqual(version, getDate('stamps-release'))) {
+  if (!d.isVanillaEngine()) {
+    if (d.stampsReleased()) {
       dependencies.join.push({
         id: 'stampbook',
         title: 'StampBook'
@@ -186,21 +140,21 @@ export default function getDependenciesJson(version: Version, removeIdle: boolea
     }
   }
 
-  if (huntActive) {
+  if (hunt) {
     dependencies.join.push({
       id: 'scavenger_hunt',
       title: 'Interface'
     })
   }
 
-  if (fairActive && !isEngine3(version)) {
+  if (fair && !d.isVanillaEngine()) {
     dependencies.join.push({
       id: 'fair',
       title: 'Interface'
     })
   }
 
-  if (removeIdle) {
+  if (s.settings.remove_idle) {
     dependencies.join.push({
       id: 'idle_cancel',
       title: 'Interface'

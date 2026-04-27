@@ -70,7 +70,7 @@ export class FileServer {
     if (filePath === undefined) {
       const generator = this.dynamicFiles.get(route);
       if (generator !== undefined) {
-        return generator(this.gameData);
+        return generator(this.gameData, this.settings);
       }
     } else {
       return await this.readFile(filePath);

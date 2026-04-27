@@ -39,6 +39,8 @@ type GameState = {
   indexHtml: string;
   as3: boolean;
   website: string;
+  scavenger: boolean;
+  stamps: boolean;
 }
 
 function getFreshState(): GameState {
@@ -55,7 +57,9 @@ function getFreshState(): GameState {
     vanillaEngine: false,
     indexHtml: '',
     as3: false,
-    website: ''
+    website: '',
+    scavenger: false,
+    stamps: false
   };
 }
 
@@ -232,6 +236,7 @@ export class GameData {
         switch (v) {
           case 'stamps-release':
             this.state.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
+            this.state.stamps = true;
             break;
           case 'cpip':
             this.state.preCpip = false;
@@ -273,11 +278,10 @@ export class GameData {
         this.addRoute(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), v.icon);
       },
       'fairCpip': (v) => {
-        if (this.state.vanillaEngine) {
-          this.state.fair = true;
-        } else {
+        if (!this.state.vanillaEngine) {
           this.addRoute('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf');
         }
+        this.state.fair = true;
         this.addRoute(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, v.iconFileId);
         this.addRoute(`play/v2/content/local/en/${TICKET_INFO_PATH}`, v.infoFile);
       },
@@ -398,6 +402,7 @@ export class GameData {
         this.addRoute('artwork/eggs/1.swf', v);
       },
       'scavengerHunt2010': (v) => {
+        this.state.scavenger = true;
         this.addRoute(path.join('play/v2/content/global', v.iconFilePath ?? SCAVENGER_ICON_PATH), v.iconFileId);
       },
       'stagePlay': (v) => {
@@ -495,5 +500,17 @@ export class GameData {
 
   public getWebsite() {
     return this.state.website;
+  }
+
+  public isHuntActive() {
+    return this.state.scavenger;
+  }
+
+  public isVanillaEngine() {
+    return this.state.vanillaEngine;
+  }
+
+  public stampsReleased() {
+    return this.state.stamps;
   }
 }
