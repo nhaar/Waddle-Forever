@@ -1,8 +1,6 @@
-import { getMapForDate } from "../timelines";
-import { LOCAL_PATHS_TIMELINE } from "../timelines/crumbs";
-import { Version } from "./versions";
+import { GameData } from "@server/timelines/game-data";
 
-export function getPathsJson(version: Version): string {
+export function getPathsJson(d: GameData): string {
   const paths = {
     "global": {
       "puffle_cookie": "puffle\/icons\/cookie.swf",
@@ -614,7 +612,7 @@ export function getPathsJson(version: Version): string {
       "w.app.epfhandbook": "books\/EPF-handbook.swf",
       'w.p0512.medieval.login1': 'close_ups/mdlv1.swf',
       'w.p0512.medieval.login2': 'close_ups/mdlv2.swf',
-      ...getMapForDate(LOCAL_PATHS_TIMELINE, version)
+      ...Object.fromEntries(d.getLocalPaths())
     },
     "link": {
       "main_web": "http:\/\/www.clubpenguin.com\/",

@@ -10,10 +10,8 @@ import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
-import { getPathsJson } from "./pathsjson";
 import { getRoomsJson } from "./roomsjson";
 import { getGameStrings } from "./gamestringsjson";
-import getStageScriptMessagesJson from "./stagemessagesjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
 import { isEngine2, isEngine3 } from "../timelines/dates";
@@ -22,7 +20,6 @@ import { getGamesJson } from "./gamesjson";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { FRAME_HACKS } from '@server/game-data/frame-hacks';
-import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 import { fromLE, parseSwf } from "@common/flash/parser";
 import { emitSwf, TagType } from "@common/flash/emitter";
 import { Action } from "@common/flash/avm1";
@@ -111,9 +108,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/en/web_service/game_configs/paths.json', (s) => {
-    return getPathsJson(s.settings.version);
-  });
   server.getData('play/en/web_service/game_configs/rooms.json', (s) => {
     return getRoomsJson(s.settings.version);
   });
@@ -131,9 +125,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/en/web_service/game_configs/newspapers.json', (s) => {
     return getNewspapersJson(s.settings.version);
-  });
-  server.getData('play/en/web_service/game_configs/stage_script_messages.json', (s) => {
-    return getStageScriptMessagesJson(s.settings.version);
   });
   server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
     return FRAME_HACKS.getJSON();
@@ -167,9 +158,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   });
   server.getData('play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
     return getGlobalCrumbsSwf(s.settings.version, s.targetIP, s.loginPort, s.worldPort);
-  });
-  server.getData('play/v2/content/local/en/crumbs/local_crumbs.swf', (s) => {
-    return getLocalCrumbsSwf(s.settings.version);
   });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod

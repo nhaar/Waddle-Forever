@@ -36,34 +36,6 @@ export const GLOBAL_PATHS_TIMELINE = newTimelineMap<string, null | string>(timel
   });
 });
 
-export const LOCAL_PATHS_TIMELINE = newTimelineMap<string, null | string>(timeline => {
-  timeline.addDefault({ value: null, date: getDate('cpip') });
-
-  UPDATES.forEach((update) => {
-    if (update.update.localChanges !== undefined && update.end !== undefined) {
-      addLocalChanges(update.update.localChanges, timeline, update.date, update.end);
-    
-    }
-    if (update.update.fairCpip !== undefined) {
-      timeline.add('tickets', TICKET_INFO_PATH, update.date, update.end);
-    }
-  });
-});
-
-function addLocalChanges(changes: LocalChanges, timeline: TimelineMap<string, null | string>, date: Version, end: Version) {
-  // only 'en' support
-  Object.entries(changes).forEach((pair) => {
-    const [route, langs] = pair;
-    if (langs.en !== undefined) {
-      if (typeof langs.en !== 'string') {
-        const [_, ...paths] = langs.en;
-        paths.forEach((path) => {
-          timeline.add(path, route, date, end);
-        })
-      }
-    }
-  })
-}
 
 export const HUNT_TIMELINE = newVersionsTimeline<null | HuntCrumbs>(timeline => {
   timeline.addInfo(null, START_DATE);

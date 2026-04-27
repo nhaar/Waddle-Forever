@@ -2,7 +2,6 @@ import { iterateEntries } from "@common/utils";
 import { Action, createBytecode, createJsonDeclaration, PCodeRep } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { LOCAL_PATHS, makeLocalPathsComposite } from "../game-data/local-paths";
-import { isLower, Version } from "./versions";
 import { SAFE_MESSAGES } from "../game-data/safe-messages";
 import { MASCOT_MESSAGES } from "../game-data/mascot-messages";
 import { TOUR_GUIDE_MESSAGES } from "../game-data/tour-guide-messages";
@@ -10,26 +9,21 @@ import { LANG } from "../game-data/lang";
 import { FURNITURE } from "../game-logic/furniture";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
 import { ITEMS } from "../game-logic/items";
-import { LOCAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
-import { getMapForDate } from "../timelines";
-import { findInVersionStrict } from "../game-data";
-import { STAGE_TIMELINE } from "../timelines/stage";
 import serverList from "../servers";
-import { getDate } from "@server/timelines/dates";
+import { GameData } from "@server/timelines/game-data";
+import { StageScript } from "@server/game-data/stage-plays";
+import { HuntCrumbs } from "@server/updates";
 
-function getLocalPaths(version: Version) {
+function getLocalPaths(paths: Map<string, string>, useCompositePaths: boolean) {
   const code: PCodeRep = [];
-
-  const paths = getMapForDate(LOCAL_PATHS_TIMELINE, version);
-  const useCompositePaths = isLower(version, getDate('composite-paths'));
 
   if (useCompositePaths) {
     const newPaths: Record<string, string> = {};
-    iterateEntries(paths, (key, value) => {
+    paths.forEach((value, key) => {
       if (value !== undefined && value !== null) {
         newPaths[key] = value;
       }
-    });
+    })
     const compositePaths = makeLocalPathsComposite({ ...LOCAL_PATHS, ...newPaths });
     iterateEntries(compositePaths, (key, value) => {
       const [base, path] = value;
@@ -44,7 +38,7 @@ function getLocalPaths(version: Version) {
       )
     });
   } else {
-    iterateEntries({...LOCAL_PATHS, ...paths}, (key, path) => {
+    [...Object.entries(LOCAL_PATHS), ...paths.entries()].forEach(([key, path]) => {
       if (path !== null && path !== undefined) {
         code.push(
           [Action.Push, "local_paths"],
@@ -60,9 +54,9 @@ function getLocalPaths(version: Version) {
   return code;
 }
 
-function getLinkPaths(version: Version) {
+function getLinkPaths(isNewShell2009: boolean) {
   const code: PCodeRep = [];
-  const useAffiliateLinks = isLower(version, getDate('string-verify'));
+  const useAffiliateLinks = !isNewShell2009;
 
   const linkPaths = useAffiliateLinks ? "master_link_paths" : "link_paths";
 
@@ -174,10 +168,7 @@ function getLinkPaths(version: Version) {
     return code;
 }
 
-function getStageScript(version: Version) {
-  const script = findInVersionStrict(version, STAGE_TIMELINE);
-  
-  
+function getStageScript(script: StageScript) {
   const code: PCodeRep = [
     [Action.Push, "script_messages"],
     ...createJsonDeclaration(script),
@@ -187,9 +178,7 @@ function getStageScript(version: Version) {
   return code;
 }
 
-function getHuntCrumbs(version: Version) {
-  const hunt = findInVersionStrict(version, HUNT_TIMELINE);
-
+function getHuntCrumbs(hunt: HuntCrumbs | null) {
   const code: PCodeRep = [];
 
   if (hunt !== null) {
@@ -925,7 +914,7 @@ function getLangError(): PCodeRep {
   ];
 }
 
-export function getLocalCrumbsSwf(version: Version): Buffer {
+export function getLocalCrumbsSwf(d: GameData): Buffer {
   // hardcoded hex dump of the function's bytecode
   const treverseMessages = [
     0x8e, 0x1e, 0x00, 0x74, 0x72, 0x65, 0x76, 0x65, 
@@ -1220,13 +1209,13 @@ export function getLocalCrumbsSwf(version: Version): Buffer {
     [Action.Push, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getLocalPaths(version),
+    ...getLocalPaths(d.getLocalPaths(), d.useCompositePaths()),
     [Action.Push, "link_paths"],
     [Action.Push, 0],
     [Action.Push, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getLinkPaths(version),
+    ...getLinkPaths(d.isNewShell2009()),
     [Action.Push, "lang"],
     [Action.Push, 0],
     [Action.Push, "Object"],
@@ -3861,8 +3850,8 @@ export function getLocalCrumbsSwf(version: Version): Buffer {
     Action.InitArray,
     Action.SetMember,
     ...getServerCrumbs(),
-    ...getStageScript(version),
-    ...getHuntCrumbs(version)
+    ...getStageScript(d.getStageScript()),
+    ...getHuntCrumbs(d.getHunt())
   ];
 
   const bytecode = [...treverseMessages, ...createBytecode(code)];

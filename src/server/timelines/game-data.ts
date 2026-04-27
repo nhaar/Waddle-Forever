@@ -10,6 +10,7 @@ import { MUSIC_IDS } from "@server/game-data/music";
 import { POSTCARD_IDS } from "@server/game-data/postcard";
 import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
 import { RoomName } from "@server/game-data/rooms";
+import { StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { ItemTable } from "@server/game-logic/items";
 import { getNewspaperName } from "@server/routes/news.txt";
@@ -41,6 +42,10 @@ type GameState = {
   website: string;
   scavenger: boolean;
   stamps: boolean;
+  stageScript: StageScript;
+  localPaths: Map<string, string>;
+  compositePaths: boolean;
+  newShell2009: boolean;
 }
 
 function getFreshState(): GameState {
@@ -59,7 +64,11 @@ function getFreshState(): GameState {
     as3: false,
     website: '',
     scavenger: false,
-    stamps: false
+    stamps: false,
+    stageScript: [],
+    localPaths: new Map<string, string>(),
+    compositePaths: false,
+    newShell2009: false
   };
 }
 
@@ -228,6 +237,7 @@ export class GameData {
     this.addDefaultFiles();
 
     let pinRoom: RoomName | null = null;
+    const scripts = new Map<string, StageScript>();
 
     const actions: {
       [K in keyof CPUpdateE]: (v: Exclude<CPUpdateE[K], undefined>) => void
@@ -249,6 +259,12 @@ export class GameData {
             break;
           case 'as3':
             this.state.as3 = true;
+            break;
+          case 'composite-paths':
+            this.state.compositePaths = true;
+            break;
+          case 'string-verify':
+            this.state.newShell2009 = true;
             break;
           default:
             break;
@@ -284,6 +300,8 @@ export class GameData {
         this.state.fair = true;
         this.addRoute(`play/v2/content/global/${SCAVENGER_ICON_PATH}`, v.iconFileId);
         this.addRoute(`play/v2/content/local/en/${TICKET_INFO_PATH}`, v.infoFile);
+
+        this.state.localPaths.set('tickets', TICKET_INFO_PATH);
       },
       'partyIconFile': (v) => {
         this.state.partyIcon = true;
@@ -379,7 +397,16 @@ export class GameData {
       'localChanges': (v) => {
         iterateEntries(v, (route, languages) => {
           iterateEntries(languages, (language, info) => {
+            // updating the route file
             this.addCrumbChange(path.join('play/v2/content/local', language), route, info);
+
+            // updating the key -> route
+            if (typeof info !== 'string') {
+              const [_, ...paths] = info;
+              paths.forEach((path) => {
+                this.state.localPaths.set(path, route);
+              })
+            }
           })
         })
       },
@@ -410,6 +437,19 @@ export class GameData {
           'artwork/catalogue/costume_0712.swf',
           'play/v2/content/local/en/catalogues/costume.swf'
         ]);
+
+        let script = scripts.get(v.name);
+        if (script === undefined) {
+          script = v.script ?? []
+          scripts.set(v.name, script);
+        } else {
+          if (v.script !== undefined) {
+            script = v.script;
+            scripts.set(v.name, script);
+          }
+        }
+
+        this.state.stageScript = script;
       },
       'sportCatalog': (v) => {
         this.addCatalog(v, [
@@ -422,6 +462,9 @@ export class GameData {
       },
       'websiteFolder': (v) => {
         this.state.website = v;
+      },
+      'playScript': (v) => {
+        this.state.stageScript = v;
       }
     }
 
@@ -512,5 +555,21 @@ export class GameData {
 
   public stampsReleased() {
     return this.state.stamps;
+  }
+
+  public getStageScript() {
+    return this.state.stageScript;
+  }
+
+  public getLocalPaths() {
+    return this.state.localPaths;
+  }
+
+  public useCompositePaths() {
+    return this.state.compositePaths;
+  }
+
+  public isNewShell2009() {
+    return this.state.newShell2009;
   }
 }
