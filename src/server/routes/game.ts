@@ -3,7 +3,6 @@ import path from 'path';
 
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
@@ -98,9 +97,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('version.txt', (s) => {
-    return getVersionTxt(s.settings.version);
-  });
   server.getData('play/web_service/environment_data.xml', (s) => {
     return getEnvironmentDataXml(s.targetIP, s.targetPort);
   });

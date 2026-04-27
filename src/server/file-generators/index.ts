@@ -18,6 +18,7 @@ import { getSetupXml } from "./setup.xml";
 import getStageScriptMessagesJson from "./stage_script_messages.json";
 import { getStampsJson } from "./stamps.json";
 import { getStartscreenXML } from "./startscreen.xml";
+import { getVersionTxt } from "./version.txt";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 
 export type FileGenerator = (d: GameData, s: SettingsManager) => Buffer | string;
@@ -44,7 +45,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/v2/content/global/stampbook/world_stamps.xml': getWorldAchievementsXml,
   'play/en/web_service/game_configs/game_strings.json': getGameStrings,
   'play/en/web_service/game_configs/newspapers.json': getNewspapersJson,
-  'play/en/web_service/game_configs/penguin_action_frames.json': getPenguinActionFramesJson
+  'play/en/web_service/game_configs/penguin_action_frames.json': getPenguinActionFramesJson,
+  'version.txt': getVersionTxt
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {
