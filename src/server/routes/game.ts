@@ -7,7 +7,6 @@ import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
-import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
 import { isEngine2, isEngine3 } from "../timelines/dates";
 import { FRAME_HACKS } from '@server/game-data/frame-hacks';
@@ -99,9 +98,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/en/web_service/game_configs/newspapers.json', (s) => {
-    return getNewspapersJson(s.settings.version);
-  });
   server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
     return FRAME_HACKS.getJSON();
   })

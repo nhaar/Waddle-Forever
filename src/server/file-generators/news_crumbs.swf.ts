@@ -3,7 +3,7 @@ import { monthNames } from "@common/utils";
 import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
 import { GameData } from "@server/timelines/game-data";
 
-function getMinifiedDate(year: number, month: number, day: number) {
+export function getNewspaperDate(year: number, month: number, day: number) {
   return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
 }
 
@@ -15,7 +15,7 @@ function generateNewsPathAssign(n: number, year: number, month: number, day: num
     varname = `old_news${n}`
   }
 
-  const minifiedDate = getMinifiedDate(year, month, day);
+  const minifiedDate = getNewspaperDate(year, month, day);
 
   const newspaperPath = as3 ? (
     minifiedDate
@@ -44,7 +44,7 @@ function generateNewsPathAssign(n: number, year: number, month: number, day: num
   ]
 }
 
-function getFullDate(year: number, month: number, day: number): string {
+export function getFullDate(year: number, month: number, day: number): string {
   let monthname = monthNames[month - 1];
   return `${monthname} ${day}, ${year}`
 }

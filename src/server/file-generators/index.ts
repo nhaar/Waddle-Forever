@@ -8,6 +8,7 @@ import { getGameStrings } from "./game_strings.json";
 import { getGeneralJson } from "./general.json";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
+import { getNewspapersJson } from "./newspapers.json";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getPaperItemsJson } from "./paper_items.json";
 import { getPathsJson } from "./paths.json";
@@ -40,7 +41,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'playstart/xml/start_module_config.xml': getStartscreenXML,
   'web_service/worldachievements.xml': getWorldAchievementsXml,
   'play/v2/content/global/stampbook/world_stamps.xml': getWorldAchievementsXml,
-  'play/en/web_service/game_configs/game_strings.json': getGameStrings
+  'play/en/web_service/game_configs/game_strings.json': getGameStrings,
+  'play/en/web_service/game_configs/newspapers.json': getNewspapersJson
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {
