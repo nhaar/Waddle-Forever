@@ -1,14 +1,11 @@
 import { iterateEntries } from "@common/utils";
+import { GameData } from "@server/timelines/game-data";
 import { ROOMS } from "../game-data/rooms";
-import { getMapForDate } from "../timelines";
 import { getDate } from "../timelines/dates";
-import { MEMBER_TIMELINE } from "../timelines/member";
-import { MUSIC_TIMELINE } from "../timelines/music";
-import { isLower, Version } from "./versions";
 
-export function getRoomsJson(version: Version): string {
-  const music = getMapForDate(MUSIC_TIMELINE, version);
-  const member = getMapForDate(MEMBER_TIMELINE, version);
+export function getRoomsJson(d: GameData): string {
+  const music = d.getRoomsMusic();
+  const member = d.getRoomsMember();
 
   const json: Record<string, {
     room_id: number,
@@ -100,20 +97,7 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Arcade"
     },
-    "122": isLower(version, getDate('placeholder-2016')) ? {
-      "room_id": 122,
-      "room_key": "eco",
-      "name": "eco",
-      "display_name": "eco",
-      "music_id": 0,
-      "is_member": 0,
-      "path": "eco.swf",
-      "max_users": 80,
-      "jump_enabled": false,
-      "jump_disabled": true,
-      "required_item": null,
-      "short_name": "Recycling Plant"
-    } : {
+    "122": d.hasSchool() ? {
       "room_id": 122,
       "room_key": "school",
       "name": "school",
@@ -126,6 +110,19 @@ export function getRoomsJson(version: Version): string {
       "jump_disabled": true,
       "required_item": null,
       "short_name": "School"
+    } : {
+      "room_id": 122,
+      "room_key": "eco",
+      "name": "eco",
+      "display_name": "eco",
+      "music_id": 0,
+      "is_member": 0,
+      "path": "eco.swf",
+      "max_users": 80,
+      "jump_enabled": false,
+      "jump_disabled": true,
+      "required_item": null,
+      "short_name": "Recycling Plant"
     },
     "130": {
       "room_id": 130,
@@ -351,20 +348,7 @@ export function getRoomsJson(version: Version): string {
       "required_item": null,
       "short_name": "Pizza"
     },
-    "340": isLower(version, '2014-09-18') ? {
-      "room_id": 340,
-      "room_key": "stage",
-      "name": "Stage",
-      "display_name": "Stage",
-      "music_id": 0,
-      "is_member": 0,
-      "path": "stage.swf",
-      "max_users": 80,
-      "jump_enabled": false,
-      "jump_disabled": true,
-      "required_item": null,
-      "short_name": "Stage"
-    } : {
+    "340": d.hasMall() ? {
       "room_id": 340,
       "room_key": "mall",
       "name": "The Mall",
@@ -377,6 +361,19 @@ export function getRoomsJson(version: Version): string {
       "jump_disabled": true,
       "required_item": null,
       "short_name": "Mall"
+    } : {
+      "room_id": 340,
+      "room_key": "stage",
+      "name": "Stage",
+      "display_name": "Stage",
+      "music_id": 0,
+      "is_member": 0,
+      "path": "stage.swf",
+      "max_users": 80,
+      "jump_enabled": false,
+      "jump_disabled": true,
+      "required_item": null,
+      "short_name": "Stage"
     },
     "400": {
       "room_id": 400,
@@ -2046,7 +2043,7 @@ export function getRoomsJson(version: Version): string {
     }
   }
 
-  if (isLower(version, getDate('vr-room'))) {
+  if (d.hasVRRoom()) {
     json["213"] = 
     {
       "room_id":213,
@@ -2065,17 +2062,19 @@ export function getRoomsJson(version: Version): string {
   }
 
   iterateEntries(ROOMS, (name, room) => {
-    if (music[name] !== undefined) {
+    const musicId = music.get(name);
+    const isMember = member.get(name);
+    if (musicId !== undefined || isMember !== undefined) {
       const id = String(room.id);
 
       // check for rooms that same ID eg stage and mall
       if (id in json && json[id as keyof typeof json].room_key === name) {
-        const musicId = music[name]
-        const memberStatus = member[name];
-        if (typeof musicId === 'number') {
+        const musicId = music.get(name)
+        const memberStatus = member.get(name);
+        if (musicId !== undefined) {
           json[id as keyof typeof json].music_id = musicId;
         } 
-        if (typeof memberStatus === 'boolean') {
+        if (isMember !== undefined) {
           json[id as keyof typeof json].is_member = memberStatus ? 1 : 0;
         }
       }

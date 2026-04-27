@@ -1,4 +1,5 @@
 import { iterateEntries } from "@common/utils";
+import { AS3_PAPERS, BOILER_ROOM_PAPERS, PRE_BOILER_ROOM_PAPERS } from "@server/game-data/newspapers";
 import { Pin, PINS } from "@server/game-data/pins";
 import { FileRef } from "../game-data/files";
 import { GameName } from "../game-data/games";
@@ -285,7 +286,8 @@ export type DateReference = 'cpip' |
   'adopt-catalog-name' |
   'pet-furniture-rename1' |
   'pet-furniture-rename2' |
-  'furniture-catalog-name';
+  'furniture-catalog-name' |
+  'mall';
 
 export type Update = {
   date: Version;
@@ -302,13 +304,84 @@ type UpdateTimeline = TimeBoundInfo<{ update: CPUpdateE }>[];
 
 // todo refactor update timelines later
 // this is CPUpdateE which will become a DataUpdate of some sort
-export type CPUpdateE = CPUpdate & { pinRoom?: RoomName }
+export type CPUpdateE = CPUpdate & { 
+  pinRoom?: RoomName;
+  issue?: number | 'fan'
+}
 
 export type GameUpdate = {
   date: Version;
   end?: Version;
   update: CPUpdateE;
 };
+
+function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
+  const papers = [...PRE_BOILER_ROOM_PAPERS, ...BOILER_ROOM_PAPERS, ...AS3_PAPERS];
+
+  let issue = 1;
+  let current = '';
+  let inPeriod = false;
+
+  function pushPaper(irregular?: Version) {
+    let next = '';
+    if (irregular === undefined) {
+      next = addDays(current, 7);
+    }
+
+    consumed.push({
+      date: irregular ?? current,
+      update: {
+        issue: issue
+      }
+    });
+    if (irregular === undefined) {
+      current = next;
+    }
+    issue++;
+    if (issue > papers.length) {
+      inPeriod = false;
+    }
+  }
+
+  let fanDate: string = '';
+
+  updates.forEach(update => {
+    if (inPeriod) {
+      while (isLower(current, update.date) && inPeriod) {
+        pushPaper();
+      }
+    }
+    if (update.newspaper !== undefined) {
+      if (update.newspaper === 'irregular') {
+        if (inPeriod) {
+          throw new Error('Irregular newspaper in the middle of a period');
+        }
+        pushPaper(update.date);
+      } else if (update.newspaper === 'period-start') {
+        inPeriod = true;
+        current = update.date;
+        pushPaper();
+      } else if (update.newspaper === 'period-end') {
+        if (!inPeriod) {
+          throw new Error('Period of newspaper ending without having a start');
+        }
+        pushPaper();
+        inPeriod = false;
+      } else if (update.newspaper === 'fan') {
+        fanDate = update.date;
+      }
+    }
+  });
+
+  if (fanDate === '') {
+    throw new Error('No fan issue found');
+  }
+
+  consumed.push({
+    date: fanDate,
+    update: { issue: 'fan' }
+  });
+}
 
 function consumePins(consumed: UpdateTimeline, updates: Update[]): void {
   let pinIndex = 0;
@@ -467,6 +540,7 @@ export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
   }
 
   consumePins(consumed, updates);
+  consumeNewspapers(consumed, updates);
 
   return consumed.sort((a, b) => {
     // lower dates come first

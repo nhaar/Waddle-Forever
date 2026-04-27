@@ -3,9 +3,14 @@ import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { getChunkingMapJson } from "./chunking_map.json";
 import getDependenciesJson from "./dependencies.json";
+import { getGamesJson } from "./games.json";
 import { getGeneralJson } from "./general.json";
+import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
+import { getPaperItemsJson } from "./paper_items.json";
 import { getPathsJson } from "./paths.json";
+import { getRoomsJson } from "./rooms.json";
+import { getSetupXml } from "./setup.xml";
 import getStageScriptMessagesJson from "./stage_script_messages.json";
 import { getStampsJson } from "./stamps.json";
 
@@ -19,7 +24,13 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/v2/client/dependencies.json': getDependenciesJson,
   'play/v2/content/local/en/crumbs/local_crumbs.swf': getLocalCrumbsSwf,
   'play/en/web_service/game_configs/stage_script_messages.json': getStageScriptMessagesJson,
-  'play/en/web_service/game_configs/paths.json': getPathsJson
+  'play/en/web_service/game_configs/paths.json': getPathsJson,
+  'play/v2/content/global/crumbs/global_crumbs.swf': getGlobalCrumbsSwf,
+  'play/en/web_service/game_configs/games.json': getGamesJson,
+  'en/web_service/games.json': getGamesJson,
+  'play/en/web_service/game_configs/paper_items.json': getPaperItemsJson,
+  'play/en/web_service/game_configs/rooms.json': getRoomsJson,
+  'setup.xml': getSetupXml
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

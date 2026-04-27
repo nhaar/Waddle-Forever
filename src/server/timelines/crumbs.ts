@@ -8,33 +8,6 @@ import { TimelineMap } from "../game-data";
 export const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 export const TICKET_INFO_PATH = 'close_ups/tickets.swf';
 
-export const GLOBAL_PATHS_TIMELINE = newTimelineMap<string, null | string>(timeline => {
-  timeline.addDefault({ value: null, date: getDate('cpip') });
-
-  UPDATES.forEach(update => {
-    if (update.update.scavengerHunt2010 !== undefined) {
-      const huntIconPath = update.update.scavengerHunt2010.iconFilePath ?? SCAVENGER_ICON_PATH;
-      timeline.add('scavenger_hunt_icon', huntIconPath, update.date, update.end);
-    }
-    if (update.update.globalChanges !== undefined) {
-      Object.entries(update.update.globalChanges).forEach((pair) => {
-        const [route, info] = pair;
-        if (typeof info !== 'string') {
-          const [_, ...paths] = info;
-          paths.forEach((globalPath) => {
-            timeline.add(globalPath, route, update.date, update.end);
-          })
-        }
-      })
-    }
-    if (update.update.fairCpip !== undefined) {
-      timeline.add('ticket_icon', SCAVENGER_ICON_PATH, update.date, update.end);
-    }
-    if (update.update.scavengerHunt2011 !== undefined) {
-      timeline.add('scavenger_hunt_icon', SCAVENGER_ICON_PATH, update.date, update.end);
-    }
-  });
-});
 
 
 export const HUNT_TIMELINE = newVersionsTimeline<null | HuntCrumbs>(timeline => {

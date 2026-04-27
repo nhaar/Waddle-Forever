@@ -3,22 +3,17 @@ import path from 'path';
 
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { getSetupXml } from "./setup.xml";
 import { getVersionTxt } from "./version.txt";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
 import { getStartscreenXML } from "./startscreen.xml";
-import { getRoomsJson } from "./roomsjson";
 import { getGameStrings } from "./gamestringsjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
 import { isEngine2, isEngine3 } from "../timelines/dates";
-import { getPaperItemsJson } from "./paperitemsjson";
-import { getGamesJson } from "./gamesjson";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
-import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { FRAME_HACKS } from '@server/game-data/frame-hacks';
 import { fromLE, parseSwf } from "@common/flash/parser";
 import { emitSwf, TagType } from "@common/flash/emitter";
@@ -108,20 +103,8 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/en/web_service/game_configs/rooms.json', (s) => {
-    return getRoomsJson(s.settings.version);
-  });
-  server.getData('play/en/web_service/game_configs/games.json', (s) => {
-    return getGamesJson(s.settings.version);
-  });
-  server.getData('en/web_service/games.json', (s) => {
-    return getGamesJson(s.settings.version);
-  });
   server.getData('play/en/web_service/game_configs/game_strings.json', (s) => {
     return getGameStrings(s.settings.version);
-  });
-  server.getData('play/en/web_service/game_configs/paper_items.json', (s) => {
-    return getPaperItemsJson(s.settings.version);
   });
   server.getData('play/en/web_service/game_configs/newspapers.json', (s) => {
     return getNewspapersJson(s.settings.version);
@@ -129,9 +112,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/en/web_service/game_configs/penguin_action_frames.json', () => {
     return FRAME_HACKS.getJSON();
   })
-  server.getData('setup.xml', (s) => {
-    return getSetupXml(s.settings.version, s.targetIP, s.worldPort);
-  });
   server.getData('version.txt', (s) => {
     return getVersionTxt(s.settings.version);
   });
@@ -155,9 +135,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   })
   server.getData('play/v2/content/local/en/news/news_crumbs.swf', (s) => {
     return getNewsCrumbsSwf(s.settings.version);
-  });
-  server.getData('play/v2/content/global/crumbs/global_crumbs.swf', (s) => {
-    return getGlobalCrumbsSwf(s.settings.version, s.targetIP, s.loginPort, s.worldPort);
   });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod

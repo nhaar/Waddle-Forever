@@ -4,7 +4,7 @@ import { START_DATE } from "../timelines/dates";
 import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
 import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
 import { MIGRATOR_TIMELINE } from "../timelines/migrator";
-import { MUSIC_TIMELINE } from "../timelines/music";
+// import { MUSIC_TIMELINE } from "../timelines/music";
 import { UPDATES } from "../updates/updates";
 import { Version } from "./versions";
 
@@ -35,9 +35,9 @@ export function getSetupTxt(date: Version, ip: string, port: number): string {
 
   let frames: Partial<Record<RoomName, number>> = {};
 
-  MUSIC_TIMELINE.forEach((versions, room) => {
-    roomMusic[room] = findInVersion(date, versions);
-  });
+  // MUSIC_TIMELINE.forEach((versions, room) => {
+  //   roomMusic[room] = findInVersion(date, versions);
+  // });
   ROOM_FRAME_TIMELINE.forEach((versions, room) => {
     frames[room] = findInVersion(date, versions);
   });

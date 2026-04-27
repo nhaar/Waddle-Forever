@@ -1,25 +1,18 @@
 import { iterateEntries } from "@common/utils";
 import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
-import { ROOMS } from "../game-data/rooms";
+import { RoomName, ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
-import { isLower, Version } from "./versions";
 import { PUFFLE_DATA } from "../game-logic/puffle";
 import { FURNITURE } from "../game-logic/furniture";
 import { ExclusiveType, ITEMS, ItemType } from "../game-logic/items";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
 import { GLOBAL_PATHS, makeGlobalPathsComposite } from "../game-data/global-paths";
-import { findInVersionStrict } from "../game-data";
-import { MIGRATOR_TIMELINE } from "../timelines/migrator";
-import { getMapForDate } from "../timelines";
-import { GAME_MUSIC_TIMELINE, MUSIC_TIMELINE } from "../timelines/music";
-import { MEMBER_TIMELINE } from "../timelines/member";
-import { PRICES_TIMELINE, FURNITURE_PRICES_TIMELINE } from "../timelines/prices";
-import { GLOBAL_PATHS_TIMELINE, HUNT_TIMELINE } from "../timelines/crumbs";
 import serverList from "../servers";
-import { getDate, isEngine3 } from "../timelines/dates";
 import { GAME_CRUMBS } from "../game-data/game-crumbs";
 import { GameName } from "@server/game-data/games";
+import { GameData } from "@server/timelines/game-data";
+import { SettingsManager } from "@server/settings";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -115,8 +108,8 @@ function getServerCrumbs(ip: string, loginPort: number, worldPort: number, moder
   return code;
 }
 
-function getGameCrumbs(version: Version): PCodeRep {
-  const music = getMapForDate(GAME_MUSIC_TIMELINE, version);
+function getGameCrumbs(music: Map<GameName, number>): PCodeRep {
+  // const music = getMapForDate(GAME_MUSIC_TIMELINE, version);
 
   const code: PCodeRep = [
     [Action.Push, "game_crumbs", 0, "Object"],
@@ -124,7 +117,7 @@ function getGameCrumbs(version: Version): PCodeRep {
     Action.DefineLocal
   ];
   iterateEntries(GAME_CRUMBS, (game, crumb) => {
-    const musicId = music[game as GameName];
+    const musicId = music.get(game as GameName);
     code.push(
       [Action.Push, "game_crumbs"],
       Action.GetVariable,
@@ -151,23 +144,24 @@ function getFloorCrumbs(): PCodeRep {
   return code;
 }
 
-function getRoomCrumbs(version: Version): PCodeRep {
+function getRoomCrumbs(music: Map<RoomName, number>, member: Map<RoomName, boolean>): PCodeRep {
   const code: PCodeRep = [];
 
-  const music = getMapForDate(MUSIC_TIMELINE, version);
-  const member = getMapForDate(MEMBER_TIMELINE, version);
+  // const music = getMapForDate(MUSIC_TIMELINE, version);
+  // const member = getMapForDate(MEMBER_TIMELINE, version);
   
+
   iterateEntries(ROOMS, (room, info) => {
     let total = 3;
     let memberArgs: Array<string | boolean> = [];
-    if (member[room] === true) {
+    if (member.get(room) === true) {
       total += 1;
       memberArgs = ['is_member', true];
     }
     code.push(
       [Action.Push, "room_crumbs"],
       Action.GetVariable,
-      [Action.Push, room, "room_id", info.id, "music_id", music[room] ?? 0, "path", `${room}.swf`, ...memberArgs, total],
+      [Action.Push, room, "room_id", info.id, "music_id", music.get(room) ?? 0, "path", `${room}.swf`, ...memberArgs, total],
       Action.InitObject,
       Action.SetMember,
     )
@@ -190,9 +184,9 @@ function getPuffleCrumbs(): PCodeRep {
   return code;
 }
 
-function getFurnitureCrumbs(version: Version): PCodeRep {
+function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
   const code: PCodeRep = [];
-  const prices = getMapForDate(FURNITURE_PRICES_TIMELINE, version);
+  // const prices = getMapForDate(FURNITURE_PRICES_TIMELINE, version);
   
   FURNITURE.rows.forEach(row => {
     let total = 3;
@@ -240,7 +234,7 @@ function getFurnitureCrumbs(version: Version): PCodeRep {
       )
     }
 
-    const cost = prices[row.id] ?? row.cost;
+    const cost = prices.get(row.id) ?? row.cost;
     code.push(
       [Action.Push, "cost", cost, total],
       Action.InitObject,
@@ -251,11 +245,9 @@ function getFurnitureCrumbs(version: Version): PCodeRep {
   return code;
 }
 
-function getPaperCrumbs(version: Version): PCodeRep {
+function getPaperCrumbs(prices: Map<number, number>): PCodeRep {
   const code: PCodeRep = [];
 
-  const prices = getMapForDate(PRICES_TIMELINE, version);
-  
   ITEMS.rows.forEach(item => {
     let total = 3;
     const type = {
@@ -336,7 +328,7 @@ function getPaperCrumbs(version: Version): PCodeRep {
       total++;
     }
 
-    const cost = prices[item.id] ?? item.cost;
+    const cost = prices.get(item.id) ?? item.cost;
 
     code.push(
       [Action.Push, "cost", cost, "is_member", item.isMember, total],
@@ -374,10 +366,8 @@ function getFrameHacks(): PCodeRep {
   return code;
 }
 
-function getGlobalPath(version: Version): PCodeRep {
+function getGlobalPath(paths: Map<string, string>, useCompositePaths: boolean): PCodeRep {
   const code: PCodeRep = [];
-  const paths = getMapForDate(GLOBAL_PATHS_TIMELINE, version);
-  const useCompositePaths = isLower(version, getDate('composite-paths'));
 
   // TODO put below code in version check. Currently all paths in GLOBAL_PATHS are written twice
   if (useCompositePaths) {
@@ -398,7 +388,7 @@ function getGlobalPath(version: Version): PCodeRep {
       Action.DefineLocal
     )
     const newPaths: Record<string, string> = {};
-    iterateEntries(paths, (key, value) => {
+    paths.forEach((value, key) => {
       if (value !== undefined && value !== null) {
         newPaths[key] = value;
       }
@@ -417,7 +407,7 @@ function getGlobalPath(version: Version): PCodeRep {
       )
     });
   } else {
-      iterateEntries({ ... GLOBAL_PATHS, ...paths }, (key, path) => {
+    [...Object.entries(GLOBAL_PATHS), ...paths.entries()].forEach(([key, path]) => {
       if (path !== undefined && path !== null) {
         code.push(
           [Action.Push, "global_path"],
@@ -429,7 +419,6 @@ function getGlobalPath(version: Version): PCodeRep {
     });
   }
   
-
   return code;
 }
 
@@ -455,9 +444,9 @@ function getScavengerHunt(reward: number, member: boolean) {
   return code;
 }
 
-export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: number, worldPort: number): Buffer {
-  const migrator = findInVersionStrict(version, MIGRATOR_TIMELINE);
-  const hunt = findInVersionStrict(version, HUNT_TIMELINE);
+export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
+  const migrator = d.getMigrator();
+  const hunt = d.getHunt();
 
   const code: PCodeRep = [
     [Action.Push, "shell", 0, "_global"],
@@ -483,7 +472,7 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     [Action.Push, "room_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getRoomCrumbs(version),
+    ...getRoomCrumbs(d.getRoomsMusic(), d.getRoomsMember()),
     [Action.Push, "puffle_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -541,7 +530,7 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     [Action.Push, "INTERACTIVE_FEED"],
     Action.GetMember,
     Action.DefineLocal,
-    ...getFurnitureCrumbs(version),
+    ...getFurnitureCrumbs(d.getFurniturePrices()),
     [Action.Push, "paper_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -625,7 +614,7 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     Action.DefineLocal,
     [Action.Push, "PAPERDOLLDEPTH_BOTTOM_LAYER", 500],
     Action.DefineLocal,
-    ...getPaperCrumbs(version),
+    ...getPaperCrumbs(d.getItemPrices()),
     [Action.Push, "player_colours", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -729,7 +718,7 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     [Action.Push, "global_path", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getGlobalPath(version),
+    ...getGlobalPath(d.getGlobalPaths(), d.useCompositePaths()),
     [Action.Push, "mascot_options", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
@@ -812,8 +801,8 @@ export function getGlobalCrumbsSwf(version: Version, ip: string, loginPort: numb
     [Action.Push, 9, "sensei"],
     Action.GetVariable,
     Action.SetMember,
-    ...getServerCrumbs(ip, loginPort, worldPort, isEngine3(version)),
-    ...getGameCrumbs(version)
+    ...getServerCrumbs(s.targetIP, s.loginPort, s.worldPort, d.isVanillaEngine()),
+    ...getGameCrumbs(d.getGamesMusic())
   ];
 
   if (hunt !== null) {

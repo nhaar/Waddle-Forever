@@ -1,7 +1,4 @@
-import { ITEMS } from "../game-logic/items";
-import { getMapForDate } from "../timelines";
-import { PRICES_TIMELINE } from "../timelines/prices";
-import { Version } from "./versions";
+import { GameData } from "@server/timelines/game-data";
 
 type PaperItem = {
   paper_item_id: number;
@@ -26,12 +23,13 @@ type PaperItem = {
   is_game_achievable?: "1";
 }
 
-function getPaperItems(version: Version): PaperItem[] {
-  const costs = getMapForDate(PRICES_TIMELINE, version);
-  return ITEMS.rows.map(i => {
+export function getPaperItemsJson(d: GameData): string {
+  const costs = d.getItemPrices();
+  
+  const items: PaperItem[] = d.getItems().map(i => {
     return ({
     paper_item_id: i.id,
-    cost: costs[i.id] ?? i.cost,
+    cost: costs.get(i.id) ?? i.cost,
     label: i.label ?? i.name,
     layer: i.layer,
     is_epf: i.isEPF ? "1" : undefined,
@@ -50,9 +48,7 @@ function getPaperItems(version: Version): PaperItem[] {
     is_medal: i.isMedal? "1" : undefined,
     noPurchasPopup: i.noPurchasePopup? "1" : undefined,
     is_game_achieavable: i.isGameAchievable? "1" : undefined
-  })}); 
-}
+  })});
 
-export function getPaperItemsJson(version: Version): string {
-  return JSON.stringify(getPaperItems(version));
+  return JSON.stringify(items);
 }

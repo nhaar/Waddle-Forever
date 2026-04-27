@@ -6,12 +6,14 @@ import { CPIP_AS3_STATIC_FILES } from "@server/game-data/cpip-as3-static";
 import { CPIP_STATIC_FILES } from "@server/game-data/cpip-static";
 import { FileRef, getMediaFilePath } from "@server/game-data/files";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "@server/game-data/furniture";
+import { GameName } from "@server/game-data/games";
 import { MUSIC_IDS } from "@server/game-data/music";
 import { POSTCARD_IDS } from "@server/game-data/postcard";
 import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
 import { RoomName } from "@server/game-data/rooms";
-import { StageScript } from "@server/game-data/stage-plays";
+import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
+import { FURNITURE } from "@server/game-logic/furniture";
 import { ItemTable } from "@server/game-logic/items";
 import { getNewspaperName } from "@server/routes/news.txt";
 import { isGreater, Version } from "@server/routes/versions";
@@ -46,6 +48,19 @@ type GameState = {
   localPaths: Map<string, string>;
   compositePaths: boolean;
   newShell2009: boolean;
+  roomMusic: Map<RoomName, number>;
+  roomMember: Map<RoomName, boolean>;
+  gameMusic: Map<GameName, number>;
+  furniturePrices: Map<number, number>;
+  itemPrices: Map<number, number>;
+  globalPaths: Map<string, string>;
+  school: boolean;
+  mall: boolean;
+  vr: boolean;
+  issue: number | string;
+  roomsFrame: Map<RoomName, number>;
+  chatVersion: number;
+  iglooVersion: number;
 }
 
 function getFreshState(): GameState {
@@ -68,7 +83,20 @@ function getFreshState(): GameState {
     stageScript: [],
     localPaths: new Map<string, string>(),
     compositePaths: false,
-    newShell2009: false
+    newShell2009: false,
+    roomMusic: new Map<RoomName, number>(),
+    roomMember: new Map<RoomName, boolean>(),
+    gameMusic: new Map<GameName, number>(),
+    furniturePrices: new Map<number, number>(),
+    itemPrices: new Map<number, number>(),
+    globalPaths: new Map<string, string>(),
+    school: false,
+    mall: false,
+    vr: true,
+    issue: 1,
+    roomsFrame: new Map<RoomName, number>(),
+    chatVersion: 0,
+    iglooVersion: 0
   };
 }
 
@@ -195,7 +223,7 @@ export class GameData {
     });
   }
 
-  private addDefaultFiles() {
+  private addDefaultInfo() {
     ['play/v2/content/global', ''].forEach((parentDir) => this.addIdMap(parentDir, 'music', MUSIC_IDS));
 
     this.addIdMap('play/v2/content/local/en', 'postcards', POSTCARD_IDS);
@@ -224,6 +252,15 @@ export class GameData {
     this.addRouteMap(PRE_CPIP_STATIC_FILES);
 
     this.addNewspapers();
+
+    // furniture prices
+    FURNITURE.rows.forEach((furniture) => {
+      this.state.furniturePrices.set(furniture.id, furniture.cost);
+    });
+
+    this.items.rows.forEach((item) => {
+      this.state.itemPrices.set(item.id, item.cost);
+    });
   }
 
   public addListener(callback: () => void): void {
@@ -234,7 +271,7 @@ export class GameData {
     this.date = date;
     this.state = getFreshState();
 
-    this.addDefaultFiles();
+    this.addDefaultInfo();
 
     let pinRoom: RoomName | null = null;
     const scripts = new Map<string, StageScript>();
@@ -266,6 +303,15 @@ export class GameData {
           case 'string-verify':
             this.state.newShell2009 = true;
             break;
+          case 'placeholder-2016':
+            this.state.school = true;
+            break;
+          case 'mall':
+            this.state.mall = true;
+            break;
+          case 'vr-room':
+            this.state.vr = false;
+            break;
           default:
             break;
         }
@@ -292,6 +338,8 @@ export class GameData {
       'scavengerHunt2011': (v) => {
         this.state.hunt = v;
         this.addRoute(path.join('play/v2/content/global', SCAVENGER_ICON_PATH), v.icon);
+
+        this.state.globalPaths.set('scavenger_hunt_icon', SCAVENGER_ICON_PATH);
       },
       'fairCpip': (v) => {
         if (!this.state.vanillaEngine) {
@@ -302,6 +350,8 @@ export class GameData {
         this.addRoute(`play/v2/content/local/en/${TICKET_INFO_PATH}`, v.infoFile);
 
         this.state.localPaths.set('tickets', TICKET_INFO_PATH);
+
+        this.state.globalPaths.set('ticket_icon', SCAVENGER_ICON_PATH);
       },
       'partyIconFile': (v) => {
         this.state.partyIcon = true;
@@ -412,7 +462,16 @@ export class GameData {
       },
       'globalChanges': (v) => {
         iterateEntries(v, (route, info) => {
+          // add file to the routes
           this.addCrumbChange('play/v2/content/global', route, info);
+
+          // add routes to the keys
+          if (typeof info !== 'string') {
+            const [_, ...paths] = info;
+            paths.forEach((globalPath) => {
+              this.state.globalPaths.set(globalPath, route);
+            })
+          }
         });
       },
       'iglooList': (v) => {
@@ -431,13 +490,18 @@ export class GameData {
       'scavengerHunt2010': (v) => {
         this.state.scavenger = true;
         this.addRoute(path.join('play/v2/content/global', v.iconFilePath ?? SCAVENGER_ICON_PATH), v.iconFileId);
+
+        const huntIconPath = v.iconFilePath ?? SCAVENGER_ICON_PATH;
+        this.state.globalPaths.set('scavenger_hunt_icon', huntIconPath);
       },
       'stagePlay': (v) => {
+        // costume trunk
         this.addCatalog(v.costumeTrunk, [
           'artwork/catalogue/costume_0712.swf',
           'play/v2/content/local/en/catalogues/costume.swf'
         ]);
 
+        // stage script
         let script = scripts.get(v.name);
         if (script === undefined) {
           script = v.script ?? []
@@ -450,6 +514,9 @@ export class GameData {
         }
 
         this.state.stageScript = script;
+
+        // room music
+        this.state.roomMusic.set('stage', getStagePlayMusic(v.name));
       },
       'sportCatalog': (v) => {
         this.addCatalog(v, [
@@ -465,6 +532,40 @@ export class GameData {
       },
       'playScript': (v) => {
         this.state.stageScript = v;
+      },
+      'music': (v) => {
+        iterateEntries(v, (room, music) => {
+          this.state.roomMusic.set(room, music);
+        });
+      },
+      'memberRooms': (v) => {
+        iterateEntries(v, (room, member) => {
+          this.state.roomMember.set(room, member);
+        });
+      },
+      'gameMusic': (v) => {
+        iterateEntries(v, (game, music) => {
+          this.state.gameMusic.set(game, music);
+        })
+      },
+      'furniturePrices': (v) => {
+        iterateEntries(v, (key, value) => {
+          this.state.furniturePrices.set(Number(key), value);
+        });
+      },
+      'prices': (v) => {
+        iterateEntries(v, (key, value) => {
+          this.state.itemPrices.set(Number(key), value);
+        })
+      },
+      'issue': (v) => {
+        this.state.issue = v;
+      },
+      'chatVersion': (v) => {
+        this.state.chatVersion = v;
+      },
+      'iglooVersion': (v) => {
+        this.state.iglooVersion = v;
       }
     }
 
@@ -571,5 +672,57 @@ export class GameData {
 
   public isNewShell2009() {
     return this.state.newShell2009;
+  }
+
+  public getRoomsMusic() {
+    return this.state.roomMusic;
+  }
+
+  public getRoomsMember() {
+    return this.state.roomMember;
+  }
+
+  public getGamesMusic() {
+    return this.state.gameMusic;
+  }
+
+  public getFurniturePrices() {
+    return this.state.furniturePrices;
+  }
+
+  public getItemPrices() {
+    return this.state.itemPrices;
+  }
+
+  public getGlobalPaths() {
+    return this.state.globalPaths;
+  }
+
+  public hasSchool() {
+    return this.state.school;
+  }
+
+  public hasMall() {
+    return this.state.mall;
+  }
+
+  public hasVRRoom() {
+    return this.state.vr;
+  }
+
+  public getIssue() {
+    return this.state.issue;
+  }
+
+  public getRoomsFrame() {
+    return this.state.roomsFrame;
+  }
+
+  public getChatVersion() {
+    return this.state.chatVersion;
+  }
+
+  public getIglooVersion() {
+    return this.state.iglooVersion;
   }
 }

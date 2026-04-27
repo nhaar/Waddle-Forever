@@ -1,12 +1,6 @@
-import { findInVersion, findInVersionStrict, VersionsTimeline } from "../game-data";
+import { SettingsManager } from "@server/settings";
+import { GameData } from "@server/timelines/game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
-import { START_DATE } from "../timelines/dates";
-import { ROOM_FRAME_TIMELINE } from "../timelines/frame";
-import { IGLOO_VERSION_TIMELINE } from "../timelines/igloo-version";
-import { MUSIC_TIMELINE } from "../timelines/music";
-import { NEWSPAPER_TIMELINE, FAN_ISSUE_DATE } from "../timelines/newspapers";
-import { VERSIONS_TIMELINE } from "./version.txt";
-import { Version } from "./versions";
 
 type OldRoom = {
   roomName: RoomName
@@ -24,49 +18,27 @@ function getCatalog(header: string, chat: number, content: string): string {
   return `<${header}>${getFileName(chat, content)}</${header}>`;
 }
 
-function getNewspapersTimeline() {
-  // info is the issue ID ('fan' or number)
-  const timeline = new VersionsTimeline<string>();
-  NEWSPAPER_TIMELINE.forEach((news, i) => {
-    const date = typeof news === 'string' ? news : news.date;
-    timeline.add({
-      date,
-      info: String(i + 1)
-    });
-  })
-  timeline.add({
-    date: FAN_ISSUE_DATE,
-    info: 'fan'
-  });
-  timeline.add({
-    date: START_DATE,
-    info: 'beta'
-  });
-  return timeline.getVersions();
-}
-
-const newspaperTimeline = getNewspapersTimeline();
-
-function patchMusic(rooms: OldRoom[], music: Partial<Record<RoomName, number>>) {
+function patchMusic(rooms: OldRoom[], music: Map<RoomName, number>) {
   for (const room of rooms) {
-    const musicId = music[room.roomName];
+    const musicId = music.get(room.roomName);
     if (musicId !== undefined) {
       room.music = musicId;
     }
   }
 }
 
-function patchFrame(rooms: OldRoom[], frames: Partial<Record<RoomName, number>>) {
+function patchFrame(rooms: OldRoom[], frames: Map<RoomName, number>) {
   for (const room of rooms) {
-    const frameId = frames[room.roomName];
+    const frameId = frames.get(room.roomName);
     if (frameId !== undefined) {
       room.frame = frameId;
     }
   }
 }
 
-export function getSetupXml(version: Version, ip: string, port: number) {
-  const news = findInVersion(version, newspaperTimeline);
+export function getSetupXml(d: GameData, s: SettingsManager) {
+  const news = d.getIssue();
+  // const news = findInVersion(version, newspaperTimeline);
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
     return pair[1].preCpipName !== null;
@@ -79,15 +51,10 @@ export function getSetupXml(version: Version, ip: string, port: number) {
     }
   });
 
-  MUSIC_TIMELINE.forEach((versions, room) => {
-    patchMusic(rooms, { [room]: findInVersion(version, versions) });
-  });
+  patchMusic(rooms, d.getRoomsMusic());
+  patchFrame(rooms, d.getRoomsFrame());
 
-  ROOM_FRAME_TIMELINE.forEach((versions, room) => {
-    patchFrame(rooms, { [room]: findInVersion(version, versions) });
-  });
-
-  const chat = findInVersionStrict(version, VERSIONS_TIMELINE);
+  const chat = d.getChatVersion();
 
   const servers = [
     'Blizzard',
@@ -123,8 +90,8 @@ export function getSetupXml(version: Version, ip: string, port: number) {
         server = server.replace(' ', ''); // it doesn't like spaces
         return `
       <${server}>
-        <IP>${ip}</IP>
-        <Port>${port}</Port>
+        <IP>${s.targetIP}</IP>
+        <Port>${s.worldPort}</Port>
         <Zone>w1</Zone>
       </${server}>
         `
@@ -202,7 +169,7 @@ export function getSetupXml(version: Version, ip: string, port: number) {
 
    <Edit>6</Edit>
 
-   <Igloo>${findInVersion(version, IGLOO_VERSION_TIMELINE)}</Igloo>
+   <Igloo>${d.getIglooVersion()}</Igloo>
 
    <Join>11</Join>
 
