@@ -64,6 +64,7 @@ type GameState = {
   startscreens: string[];
   as3Startscreen: boolean;
   worldStamps: WorldStamp[];
+  gameStrings: Map<string, string>;
 }
 
 function getFreshState(): GameState {
@@ -102,7 +103,8 @@ function getFreshState(): GameState {
     iglooVersion: 0,
     startscreens: [],
     as3Startscreen: false,
-    worldStamps: []
+    worldStamps: [],
+    gameStrings: new Map<string, string>()
   };
 }
 
@@ -589,6 +591,9 @@ export class GameData {
       },
       'worldStamps': (v) => {
         v.forEach(e => this.state.worldStamps.push(e));
+      },
+      'gameStrings': (v) => {
+        this.state.gameStrings = new Map(Object.entries(v));
       }
     }
 
@@ -763,5 +768,9 @@ export class GameData {
 
   public getWorldStamps() {
     return this.state.worldStamps;
+  }
+
+  public getGameStrings() {
+    return this.state.gameStrings;
   }
 }

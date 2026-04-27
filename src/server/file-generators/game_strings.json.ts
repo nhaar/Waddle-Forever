@@ -1,11 +1,8 @@
-import { findInVersion, findInVersionStrict } from "../game-data";
-import { HUNT_TIMELINE } from "../timelines/crumbs";
-import { GAME_STRINGS_TIMELINE } from "../timelines/game-strings";
-import { Version } from "./versions";
+import { GameData } from "@server/timelines/game-data";
 
-export function getGameStrings(version: Version): string {
-  const hunt = findInVersion(version, HUNT_TIMELINE);
-  const gameStrings = { ...findInVersionStrict(version, GAME_STRINGS_TIMELINE) };
+export function getGameStrings(d: GameData): string {
+  const hunt = d.getHunt();
+  const gameStrings = Object.fromEntries(d.getGameStrings());
   if (hunt !== null && hunt !== undefined) {
     gameStrings['scavenger_title'] = hunt.lang.en.title;
     gameStrings['scavenger_claim_prize'] = hunt.lang.en.claim;

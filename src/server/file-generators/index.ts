@@ -4,6 +4,7 @@ import { GameData } from "@server/timelines/game-data";
 import { getChunkingMapJson } from "./chunking_map.json";
 import getDependenciesJson from "./dependencies.json";
 import { getGamesJson } from "./games.json";
+import { getGameStrings } from "./game_strings.json";
 import { getGeneralJson } from "./general.json";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
@@ -38,7 +39,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/v2/content/local/en/login/startscreen.xml': getStartscreenXML,
   'playstart/xml/start_module_config.xml': getStartscreenXML,
   'web_service/worldachievements.xml': getWorldAchievementsXml,
-  'play/v2/content/global/stampbook/world_stamps.xml': getWorldAchievementsXml
+  'play/v2/content/global/stampbook/world_stamps.xml': getWorldAchievementsXml,
+  'play/en/web_service/game_configs/game_strings.json': getGameStrings
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {
