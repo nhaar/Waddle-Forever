@@ -3,6 +3,7 @@ import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { getChunkingMapJson } from "./chunking_map.json";
 import getDependenciesJson from "./dependencies.json";
+import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getGamesJson } from "./games.json";
 import { getGameStrings } from "./game_strings.json";
 import { getGeneralJson } from "./general.json";
@@ -46,7 +47,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/en/web_service/game_configs/game_strings.json': getGameStrings,
   'play/en/web_service/game_configs/newspapers.json': getNewspapersJson,
   'play/en/web_service/game_configs/penguin_action_frames.json': getPenguinActionFramesJson,
-  'version.txt': getVersionTxt
+  'version.txt': getVersionTxt,
+  'play/web_service/environment_data.xml': getEnvironmentDataXml
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

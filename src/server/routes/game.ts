@@ -5,7 +5,6 @@ import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
 import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
-import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
 import { isEngine2, isEngine3 } from "../timelines/dates";
 import { FRAME_HACKS } from '@server/game-data/frame-hacks';
@@ -97,9 +96,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   );
 
   // text file generating
-  server.getData('play/web_service/environment_data.xml', (s) => {
-    return getEnvironmentDataXml(s.targetIP, s.targetPort);
-  });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
   server.getData('play/v2/content/global/en/igloo_music.xml', (s) => {

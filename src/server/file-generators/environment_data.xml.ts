@@ -1,6 +1,9 @@
+import { SettingsManager } from "@server/settings";
+import { GameData } from "@server/timelines/game-data";
+
 /** XML file for AS3 client that records each of the relevant paths */
-export function getEnvironmentDataXml(ip: string, port: number): string {
-  const URL = `http://${ip}:${port}/`;
+export function getEnvironmentDataXml(_: GameData, s: SettingsManager): string {
+  const URL = `http://${s.targetIP}:${s.targetPort}/`;
   
   return `<environmentData>
 
