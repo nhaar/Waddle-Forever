@@ -7,7 +7,7 @@ import { RoomName } from "../game-data/rooms";
 import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
-import { addDays, isLower, Version } from "../routes/versions"
+import { addDays, isLower, processVersion, Version } from "../routes/versions"
 import { BooleanSettingKey } from "../settings";
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
@@ -306,7 +306,13 @@ type UpdateTimeline = TimeBoundInfo<{ update: CPUpdateE }>[];
 // this is CPUpdateE which will become a DataUpdate of some sort
 export type CPUpdateE = CPUpdate & { 
   pinRoom?: RoomName;
-  issue?: number | 'fan'
+  issue?: {
+    year: number;
+    month: number;
+    day: number;
+    edition: number | 'fan';
+    title: string;
+  }
 }
 
 export type GameUpdate = {
@@ -322,16 +328,31 @@ function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
   let current = '';
   let inPeriod = false;
 
+  function getIssue(date: Version, issue: number | 'fan', title: string | null) {
+    const [year, month, day] = processVersion(date);
+    return {
+      year,
+      month,
+      day,
+      edition: issue,
+      title: title ?? ''
+    };
+  }
+
   function pushPaper(irregular?: Version) {
     let next = '';
     if (irregular === undefined) {
       next = addDays(current, 7);
     }
 
+    const paper = papers[issue - 1];
+
+    const title = typeof paper === 'string' ? null : paper.title;
+
     consumed.push({
       date: irregular ?? current,
       update: {
-        issue: issue
+        issue: getIssue(irregular ?? current, issue, title)
       }
     });
     if (irregular === undefined) {
@@ -379,7 +400,7 @@ function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
 
   consumed.push({
     date: fanDate,
-    update: { issue: 'fan' }
+    update: { issue: getIssue(fanDate, 'fan', null) }
   });
 }
 

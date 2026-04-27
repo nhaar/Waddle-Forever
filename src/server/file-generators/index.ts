@@ -7,6 +7,7 @@ import { getGamesJson } from "./games.json";
 import { getGeneralJson } from "./general.json";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
+import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getPaperItemsJson } from "./paper_items.json";
 import { getPathsJson } from "./paths.json";
 import { getRoomsJson } from "./rooms.json";
@@ -30,7 +31,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'en/web_service/games.json': getGamesJson,
   'play/en/web_service/game_configs/paper_items.json': getPaperItemsJson,
   'play/en/web_service/game_configs/rooms.json': getRoomsJson,
-  'setup.xml': getSetupXml
+  'setup.xml': getSetupXml,
+  'play/v2/content/local/en/news/news_crumbs.swf': getNewsCrumbsSwf
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

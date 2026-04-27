@@ -1,14 +1,13 @@
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { monthNames } from "@common/utils";
 import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
-import { findEarliestDateHitIndex } from "../game-data";
-import { As3Newspaper, BoilerRoomPaper, PreBoilerRoomPaper } from "../game-data/newspapers";
-import { NEWSPAPER_TIMELINE } from "../timelines/newspapers";
-import { isLower, processVersion, Version } from "./versions";
-import { getDate } from "@server/timelines/dates";
-import { getMinifiedDate } from "@server/timelines/game-data";
+import { GameData } from "@server/timelines/game-data";
 
-function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2', compositePaths: boolean): PCodeRep {
+function getMinifiedDate(year: number, month: number, day: number) {
+  return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
+}
+
+function generateNewsPathAssign(n: number, year: number, month: number, day: number, as3: boolean, compositePaths: boolean): PCodeRep {
   let varname = ''
   if (n === -1) {
     varname = 'current_news'
@@ -16,9 +15,9 @@ function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2', c
     varname = `old_news${n}`
   }
 
-  const minifiedDate = getMinifiedDate(date);
+  const minifiedDate = getMinifiedDate(year, month, day);
 
-  const newspaperPath = type === 'as3' ? (
+  const newspaperPath = as3 ? (
     minifiedDate
   ) : (
     // TODO not sure why legacy media was setup like this, local_crumbs
@@ -45,35 +44,25 @@ function generateNewsPathAssign(n: number, date: Version, type: 'as3' | 'as2', c
   ]
 }
 
-function getNewspaperType(newspaper: PreBoilerRoomPaper | BoilerRoomPaper | As3Newspaper): 'as2' | 'as3' {
-  if (typeof newspaper === 'string') {
-    throw new Error('Pre boiler room newspapers are never requested by news_crumbs')
-  }
-  
-  return 'file' in newspaper ? 'as2' : 'as3';
-}
-
-function getFullDate(date: Version): string {
-  const [year, month, day] = processVersion(date);
+function getFullDate(year: number, month: number, day: number): string {
   let monthname = monthNames[month - 1];
-
   return `${monthname} ${day}, ${year}`
 }
 
-function generateNewsArrayAdd(index: number, issue: number, date: Version, title: string): PCodeRep {
+function generateNewsArrayAdd(index: number, issue: number, year: number, month: number, day: number, title: string): PCodeRep {
   return [
     [Action.Push, "news_crumbs"],
     Action.GetVariable,
-    [Action.Push, index, "key", `old_news${index}`, "issue", `Issue:${issue}`, "date", getFullDate(date), "title", title, 4],
+    [Action.Push, index, "key", `old_news${index}`, "issue", `Issue:${issue}`, "date", getFullDate(year, month, day), "title", title, 4],
     Action.InitObject,
     Action.SetMember
   ]
 }
 
-export function getNewsCrumbsSwf(version: Version): Buffer {
-  const newspaperIndex = findEarliestDateHitIndex(version, NEWSPAPER_TIMELINE); 
+export function getNewsCrumbsSwf(d: GameData): Buffer {
+  const issues = d.getActiveIssues();
 
-  const useCompositePaths = isLower(version, getDate('composite-paths'));
+  const useCompositePaths = d.useCompositePaths();
 
   const code: PCodeRep = [
     [Action.Push, "SHELL", 0, "_global"],
@@ -112,21 +101,18 @@ export function getNewsCrumbsSwf(version: Version): Buffer {
     Action.DefineLocal
   );
 
-  for (let i = 0; i < 7; i++) {
-    const newspaper = NEWSPAPER_TIMELINE[newspaperIndex - i];
-    code.push(...generateNewsPathAssign(i - 1, newspaper.date, getNewspaperType(newspaper.info), useCompositePaths))
+  for (let i = 0; i < issues.length; i++) {
+    const newspaper = issues[i];
+    code.push(...generateNewsPathAssign(i - 1, newspaper.year, newspaper.month, newspaper.day, newspaper.as3, useCompositePaths))
   }
   code.push(
     [Action.Push, "news_crumbs", 0, "Array"],
     Action.NewObject,
     Action.DefineLocal
   );
-  for (let i = 0; i < 6; i++) {
-    const newspaper = NEWSPAPER_TIMELINE[newspaperIndex - i - 1];
-    if (typeof newspaper.info === 'string') {
-      throw new Error('Invalid newspaper without a headline');
-    }
-    code.push(...generateNewsArrayAdd(i, newspaperIndex - i, newspaper.date, newspaper.info.title))
+  for (let i = 1; i < issues.length; i++) {
+    const newspaper = issues[i];
+    code.push(...generateNewsArrayAdd(i - 1, Number(newspaper.edition), newspaper.year, newspaper.month, newspaper.day, newspaper.title));
   }
 
   return Buffer.from(emitCrumbSwf(createBytecode(code)));

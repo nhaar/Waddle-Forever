@@ -13,7 +13,6 @@ import { getGameStrings } from "./gamestringsjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
 import { isEngine2, isEngine3 } from "../timelines/dates";
-import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { FRAME_HACKS } from '@server/game-data/frame-hacks';
 import { fromLE, parseSwf } from "@common/flash/parser";
 import { emitSwf, TagType } from "@common/flash/emitter";
@@ -133,9 +132,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('playstart/xml/start_module_config.xml', (s) => {
     return getStartscreenXML(s.settings.version);
   })
-  server.getData('play/v2/content/local/en/news/news_crumbs.swf', (s) => {
-    return getNewsCrumbsSwf(s.settings.version);
-  });
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
   server.getData('play/v2/content/global/en/igloo_music.xml', (s) => {

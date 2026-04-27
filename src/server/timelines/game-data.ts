@@ -57,7 +57,7 @@ type GameState = {
   school: boolean;
   mall: boolean;
   vr: boolean;
-  issue: number | string;
+  issues: Array<{ year: number; month: number; day: number; edition: number | string; as3: boolean; title: string; }>;
   roomsFrame: Map<RoomName, number>;
   chatVersion: number;
   iglooVersion: number;
@@ -93,7 +93,7 @@ function getFreshState(): GameState {
     school: false,
     mall: false,
     vr: true,
-    issue: 1,
+    issues: [],
     roomsFrame: new Map<RoomName, number>(),
     chatVersion: 0,
     iglooVersion: 0
@@ -559,7 +559,10 @@ export class GameData {
         })
       },
       'issue': (v) => {
-        this.state.issue = v;
+        if (this.state.issues.length >= 7) {
+          this.state.issues.pop();
+          this.state.issues.splice(0, 0, { ...v, as3: this.state.as3 });
+        }
       },
       'chatVersion': (v) => {
         this.state.chatVersion = v;
@@ -711,7 +714,7 @@ export class GameData {
   }
 
   public getIssue() {
-    return this.state.issue;
+    return this.state.issues[0].edition;
   }
 
   public getRoomsFrame() {
@@ -724,5 +727,9 @@ export class GameData {
 
   public getIglooVersion() {
     return this.state.iglooVersion;
+  }
+
+  public getActiveIssues() {
+    return this.state.issues;
   }
 }
