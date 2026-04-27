@@ -1,6 +1,5 @@
-import { WORLD_STAMPS_TIMELINE } from "../timelines/worldstamps";
+import { GameData } from "@server/timelines/game-data";
 import { AchievementCode, WorldStamp } from "../updates";
-import { isGreaterOrEqual, isLower, Version } from "./versions";
 
 type WorldAchievements = Array<AchievementCode & {
   stamp: number;
@@ -45,14 +44,10 @@ class WorldAchievementsXml {
   }
 }
 
-export function getWorldAchievementsXml(version: Version): string {
+export function getWorldAchievementsXml(d: GameData): string {
   const worldAchievements = new WorldAchievementsXml();
-
-  WORLD_STAMPS_TIMELINE.forEach(update => {
-    if (isGreaterOrEqual(version, update.start) && (update.end === undefined || isLower(version, update.end))) {
-      worldAchievements.addWorldStamps(update.stamps);
-    }
-  });
+  const worldStamps = d.getWorldStamps();
+  worldAchievements.addWorldStamps(worldStamps);
 
   return worldAchievements.serialize();
 }

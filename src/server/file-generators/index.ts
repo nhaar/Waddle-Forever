@@ -15,6 +15,7 @@ import { getSetupXml } from "./setup.xml";
 import getStageScriptMessagesJson from "./stage_script_messages.json";
 import { getStampsJson } from "./stamps.json";
 import { getStartscreenXML } from "./startscreen.xml";
+import { getWorldAchievementsXml } from "./worldachievements.xml";
 
 export type FileGenerator = (d: GameData, s: SettingsManager) => Buffer | string;
 
@@ -35,7 +36,9 @@ const GENERATORS: Record<string, FileGenerator> = {
   'setup.xml': getSetupXml,
   'play/v2/content/local/en/news/news_crumbs.swf': getNewsCrumbsSwf,
   'play/v2/content/local/en/login/startscreen.xml': getStartscreenXML,
-  'playstart/xml/start_module_config.xml': getStartscreenXML
+  'playstart/xml/start_module_config.xml': getStartscreenXML,
+  'web_service/worldachievements.xml': getWorldAchievementsXml,
+  'play/v2/content/global/stampbook/world_stamps.xml': getWorldAchievementsXml
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

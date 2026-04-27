@@ -18,7 +18,7 @@ import { ItemTable } from "@server/game-logic/items";
 import { getNewspaperName } from "@server/routes/news.txt";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs } from "@server/updates";
+import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, WorldStamp } from "@server/updates";
 import path from "path";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
@@ -63,6 +63,7 @@ type GameState = {
   iglooVersion: number;
   startscreens: string[];
   as3Startscreen: boolean;
+  worldStamps: WorldStamp[];
 }
 
 function getFreshState(): GameState {
@@ -100,7 +101,8 @@ function getFreshState(): GameState {
     chatVersion: 0,
     iglooVersion: 0,
     startscreens: [],
-    as3Startscreen: false
+    as3Startscreen: false,
+    worldStamps: []
   };
 }
 
@@ -302,7 +304,7 @@ export class GameData {
             this.state.as3 = true;
             break;
           case 'composite-paths':
-            this.state.compositePaths = true;
+            this.state.compositePaths = false;
             break;
           case 'string-verify':
             this.state.newShell2009 = true;
@@ -584,6 +586,9 @@ export class GameData {
       },
       'iglooVersion': (v) => {
         this.state.iglooVersion = v;
+      },
+      'worldStamps': (v) => {
+        v.forEach(e => this.state.worldStamps.push(e));
       }
     }
 
@@ -754,5 +759,9 @@ export class GameData {
 
   public afterAs3Startscreen() {
     return this.state.as3Startscreen;
+  }
+
+  public getWorldStamps() {
+    return this.state.worldStamps;
   }
 }
