@@ -14,6 +14,7 @@ import { getRoomsJson } from "./rooms.json";
 import { getSetupXml } from "./setup.xml";
 import getStageScriptMessagesJson from "./stage_script_messages.json";
 import { getStampsJson } from "./stamps.json";
+import { getStartscreenXML } from "./startscreen.xml";
 
 export type FileGenerator = (d: GameData, s: SettingsManager) => Buffer | string;
 
@@ -32,7 +33,9 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/en/web_service/game_configs/paper_items.json': getPaperItemsJson,
   'play/en/web_service/game_configs/rooms.json': getRoomsJson,
   'setup.xml': getSetupXml,
-  'play/v2/content/local/en/news/news_crumbs.swf': getNewsCrumbsSwf
+  'play/v2/content/local/en/news/news_crumbs.swf': getNewsCrumbsSwf,
+  'play/v2/content/local/en/login/startscreen.xml': getStartscreenXML,
+  'playstart/xml/start_module_config.xml': getStartscreenXML
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

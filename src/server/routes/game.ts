@@ -8,7 +8,6 @@ import { getSetupTxt } from "./setup.txt";
 import { getNewsTxt } from "./news.txt";
 import { getEnvironmentDataXml } from "./environment_data.xml";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
-import { getStartscreenXML } from "./startscreen.xml";
 import { getGameStrings } from "./gamestringsjson";
 import { getNewspapersJson } from "./newspapersjson";
 import { getDynamicMusicListData } from "../timelines/igloo-lists";
@@ -123,15 +122,6 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.getData('play/v2/content/global/stampbook/world_stamps.xml', (s) => {
     return getWorldAchievementsXml(s.settings.version);
   });
-  server.getData('play/v2/content/local/en/login/startscreen.xml', (s) => {
-    return getStartscreenXML(s.settings.version);
-  })
-  server.getData('playstart/xml/start_module_config.xml', (s) => {
-    return getStartscreenXML(s.settings.version);
-  })
-  server.getData('playstart/xml/start_module_config.xml', (s) => {
-    return getStartscreenXML(s.settings.version);
-  })
 
   // serving dynamic igloo data for ben/randomno's dynamic igloo music list mod
   server.getData('play/v2/content/global/en/igloo_music.xml', (s) => {

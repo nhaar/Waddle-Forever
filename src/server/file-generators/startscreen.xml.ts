@@ -1,14 +1,9 @@
-import { findInVersion } from "../game-data";
-import { getDate } from "../timelines/dates";
-import { getStartscreenTimeline } from "../timelines/startscreen";
-import { isLower, Version } from "./versions";
+import { GameData } from "@server/timelines/game-data";
 
-export function getStartscreenXML(version: Version) {
-  const startscreens = getStartscreenTimeline();
+export function getStartscreenXML(d: GameData) {
+  const screens = d.getStartScreens();
 
-  const screens = findInVersion(version, startscreens) || [];
-
-	if (isLower(version, getDate('as3-startscreen'))) {
+  if (!d.afterAs3Startscreen()) {
 		return `
 	<?xml version="1.0" encoding="UTF-8" ?>
 	<!-- EN -->
@@ -39,7 +34,7 @@ export function getStartscreenXML(version: Version) {
 	
 	</startscreen>
 	`;
-	} else if (isLower(version, getDate('vanilla-engine'))) {
+	} else if (!d.isVanillaEngine()) {
 		return `
 <?xml version="1.0" encoding="UTF-8"?>
 

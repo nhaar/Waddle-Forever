@@ -61,6 +61,8 @@ type GameState = {
   roomsFrame: Map<RoomName, number>;
   chatVersion: number;
   iglooVersion: number;
+  startscreens: string[];
+  as3Startscreen: boolean;
 }
 
 function getFreshState(): GameState {
@@ -96,7 +98,9 @@ function getFreshState(): GameState {
     issues: [],
     roomsFrame: new Map<RoomName, number>(),
     chatVersion: 0,
-    iglooVersion: 0
+    iglooVersion: 0,
+    startscreens: [],
+    as3Startscreen: false
   };
 }
 
@@ -312,6 +316,9 @@ export class GameData {
           case 'vr-room':
             this.state.vr = false;
             break;
+          case 'as3-startscreen':
+            this.state.as3Startscreen = true;
+            break;
           default:
             break;
         }
@@ -434,14 +441,22 @@ export class GameData {
         }
       },
       'startscreens': (v) => {
-        v.forEach((screen, i) => {
+        const screenFiles: string[] = [];
+        const resolvedScreens = v.map((screen, i) => {
           if (typeof screen === 'string') {
-            this.addRoute(`play/v2/content/local/en/login/backgrounds/background${i}.swf`, screen);
-            this.addRoute(`play/start/billboards/login/backgrounds/background${i}.swf`, screen);
+            screenFiles.push(screen);
+            return `background${i}.swf`;
           } else {
-            this.addRoute(`play/v2/content/local/en/login/backgrounds/${screen[0]}`, screen[1]);
-            this.addRoute(`play/start/billboards/login/backgrounds/${screen[0]}`, screen[1]);
+            screenFiles.push(screen[1]);
+            return screen[0];
           }
+        });
+
+        this.state.startscreens = resolvedScreens;
+        screenFiles.forEach((file, i) => {
+          const screen = resolvedScreens[i];
+          this.addRoute(`play/v2/content/local/en/login/backgrounds/${screen}`, file);
+          this.addRoute(`play/start/billboards/login/backgrounds/${screen}`, file);
         });
       },
       'localChanges': (v) => {
@@ -731,5 +746,13 @@ export class GameData {
 
   public getActiveIssues() {
     return this.state.issues;
+  }
+
+  public getStartScreens() {
+    return this.state.startscreens;
+  }
+
+  public afterAs3Startscreen() {
+    return this.state.as3Startscreen;
   }
 }
