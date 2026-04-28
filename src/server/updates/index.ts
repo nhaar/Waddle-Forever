@@ -1,5 +1,5 @@
 import { iterateEntries } from "@common/utils";
-import { AS3_PAPERS, BOILER_ROOM_PAPERS, PRE_BOILER_ROOM_PAPERS } from "@server/game-data/newspapers";
+import { As3Newspaper, As3NewspaperFiles, AS3_PAPERS, BoilerRoomPaper, BOILER_ROOM_PAPERS, PreBoilerRoomPaper, PRE_BOILER_ROOM_PAPERS } from "@server/game-data/newspapers";
 import { Pin, PINS } from "@server/game-data/pins";
 import { FileRef } from "../game-data/files";
 import { GameName } from "../game-data/games";
@@ -302,17 +302,24 @@ type TimeBoundInfo<T> = {
 
 type UpdateTimeline = TimeBoundInfo<{ update: CPUpdateE }>[];
 
-// todo refactor update timelines later
-// this is CPUpdateE which will become a DataUpdate of some sort
-export type CPUpdateE = CPUpdate & { 
-  pinRoom?: RoomName;
-  issue?: {
+type NewspaperIssue = {
     year: number;
     month: number;
     day: number;
     edition: number | 'fan';
     title: string;
-  }
+  } & ({
+    type: 'as2';
+    file: FileRef;
+  } | ({
+    type: 'as3'
+  } & As3NewspaperFiles));
+
+// todo refactor update timelines later
+// this is CPUpdateE which will become a DataUpdate of some sort
+export type CPUpdateE = CPUpdate & { 
+  pinRoom?: RoomName;
+  issue?: NewspaperIssue;
 }
 
 export type GameUpdate = {
@@ -328,14 +335,23 @@ function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
   let current = '';
   let inPeriod = false;
 
-  function getIssue(date: Version, issue: number | 'fan', title: string | null) {
+  function getIssue(date: Version, issue: number | 'fan', title: string | null, paper: PreBoilerRoomPaper | BoilerRoomPaper | As3Newspaper): NewspaperIssue {
     const [year, month, day] = processVersion(date);
+    let obj: { type: 'as2', file: FileRef} | ({ type: 'as3' } & As3NewspaperFiles);
+    if (typeof paper === 'string') {
+      obj = { type: 'as2', file: paper };
+    } else if ('askFront' in paper) {
+      obj = { type: 'as3', ...paper };
+    } else {
+      obj = { type: 'as2', ...paper };
+    }
     return {
       year,
       month,
       day,
       edition: issue,
-      title: title ?? ''
+      title: title ?? '',
+      ...obj
     };
   }
 
@@ -352,7 +368,7 @@ function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
     consumed.push({
       date: irregular ?? current,
       update: {
-        issue: getIssue(irregular ?? current, issue, title)
+        issue: getIssue(irregular ?? current, issue, title, paper)
       }
     });
     if (irregular === undefined) {
@@ -400,7 +416,8 @@ function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
 
   consumed.push({
     date: fanDate,
-    update: { issue: getIssue(fanDate, 'fan', null) }
+    // todo move hardcoded file out of here
+    update: { issue: getIssue(fanDate, 'fan', null, 'archives:NewsFan.swf') }
   });
 }
 

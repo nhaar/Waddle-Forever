@@ -1,4 +1,5 @@
 import { iterateEntries, EventListener } from "@common/utils";
+import { getNewspaperName } from "@server/file-generators/news.txt";
 import { IdRefMap, RouteRefMap } from "@server/game-data";
 import { AS3_STATIC_FILES } from "@server/game-data/as3-static";
 import { ICONS, PAPER, PHOTOS, SPRITES } from "@server/game-data/clothing";
@@ -15,16 +16,14 @@ import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
 import { FURNITURE } from "@server/game-logic/furniture";
 import { ItemTable } from "@server/game-logic/items";
-import { getNewspaperName } from "@server/routes/news.txt";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, WorldStamp } from "@server/updates";
 import path from "path";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
-import { NEWSPAPER_TIMELINE } from "./newspapers";
 
-export function getMinifiedDate(date: Version): string {
-  return date.replaceAll('-', '');
+export function getNewspaperDate(year: number, month: number, day: number) {
+  return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
 }
 
 function isMusicList(arr: IglooList | ListSongPatch[]): arr is IglooList {
@@ -185,79 +184,6 @@ export class GameData {
     });
   }
 
-  private addNewspapers(): void {
-    const configXmlPath = 'tool:news_config.xml';
-    NEWSPAPER_TIMELINE.forEach((update, i) => {
-      if (typeof update.info === 'string' || 'file' in update.info) {
-        const file = typeof update.info === 'string' ? update.info : update.info.file;
-        const issue = i + 1;
-
-        // pre-cpip, before rewrite
-        this.addRoute(`artwork/news/news${issue}.swf`, file);
-        // pre-cpip, post rewrite
-        const route2007 = getNewspaperName(update.date).replace('|', '/') + '.swf';
-        this.addRoute(path.join('artwork/news', route2007), file);
-
-        // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
-        this.addRoute(path.join('artwork/archives', `news${issue + 1}.swf`), file);
-
-        // post-cpip
-        const date = getMinifiedDate(update.date);
-        this.addRoute(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
-      } else {
-        const baseNewsPath = 'play/v2/content/local/en/news/';
-        const oldNewsPath = `${baseNewsPath}${getMinifiedDate(update.date)}`;
-        const newNewsPath = `${baseNewsPath}papers/${getMinifiedDate(update.date)}`;
-        this.addRoute(path.join(oldNewsPath, 'config.xml'), configXmlPath);
-        this.addRoute(path.join(newNewsPath, 'config.xml'), configXmlPath);
-        const newspaperComponenets: Array<[string, string]> = [
-          ['front/header.swf', update.info.headerFront ?? 'archives:News285HeaderFront.swf'],
-          ['front/featureStory.swf', update.info.featureStory],
-          ['front/supportStory.swf', update.info.supportStory],
-          ['front/upcomingEvents.swf', update.info.upcomingEvents],
-          ['front/newsFlash.swf', update.info.newsFlash],
-          ['front/askAuntArctic.swf', update.info.askFront],
-          ['front/dividers.swf', update.info.dividersFront ?? 'approximation:dividers_blank.swf'],
-          ['front/navigation.swf', update.info.navigationFront ?? 'archives:News268NavigationFront.swf'],
-          ['back/header.swf', update.info.headerBack ?? 'archives:News285HeaderBack.swf'],
-          ['back/askAuntArctic.swf', update.info.askBack],
-          ['back/secrets.swf', update.info.secrets ?? 'archives:News285Secrets.swf'],
-          ['back/submitYourContent.swf', update.info.submit ?? 'archives:News268SubmitYourContent.swf'],
-          ['back/jokesAndRiddles.swf', update.info.jokes ?? 'archives:News285JokesAndRiddles.swf'],
-          ['back/dividers.swf', update.info.dividersBack ?? 'approximation:dividers_blank.swf'],
-          ['back/navigation.swf', update.info.navigationBack ?? 'archives:News268NavigationBack.swf']
-        ]
-        if (update.info.answers !== undefined) {
-          newspaperComponenets.push(['overlays/riddlesAnswers.swf', update.info.answers]);
-        }
-        if (update.info.extraJokes !== undefined) {
-          newspaperComponenets.push(['overlays/extraJokes.swf', update.info.extraJokes]);
-        }
-        if (update.info.secret !== undefined && update.info.secret !== null) {
-          newspaperComponenets.push(['overlays/secret.swf', update.info.secret]);
-        }
-        if (update.info.iglooWinners !== undefined) {
-          newspaperComponenets.push(['overlays/iglooWinners.swf', update.info.iglooWinners]);
-        }
-        if (update.info.featureMore !== undefined) {
-          newspaperComponenets.push(['overlays/featureMore.swf', update.info.featureMore ?? 'archives:News284FeatureMore.swf']);
-        }
-        if (update.info.supportMore !== undefined) {
-          newspaperComponenets.push(['overlays/supportMore.swf', update.info.supportMore ?? 'archives:News282SupportMore.swf']);
-        }
-        if (update.info.extra !== undefined) {
-          newspaperComponenets.push(['overlays/extra.swf', update.info.extra]);
-        }
-        
-        newspaperComponenets.forEach((pair) => {
-          const [route, file] = pair;
-          this.addRoute(path.join(oldNewsPath, 'content', route), file);
-          this.addRoute(path.join(newNewsPath, 'content', route), file);
-        }) 
-        }
-    });
-  }
-
   private addDefaultInfo() {
     ['play/v2/content/global', ''].forEach((parentDir) => this.addIdMap(parentDir, 'music', MUSIC_IDS));
 
@@ -285,8 +211,6 @@ export class GameData {
     this.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
 
     this.addRouteMap(PRE_CPIP_STATIC_FILES);
-
-    this.addNewspapers();
 
     // furniture prices
     FURNITURE.rows.forEach((furniture) => {
@@ -624,6 +548,80 @@ export class GameData {
         if (this.state.issues.length >= 7) {
           this.state.issues.pop();
           this.state.issues.splice(0, 0, { ...v, as3: this.state.as3 });
+
+          if (v.type === 'as2'
+            // typeof update.info === 'string' || 'file' in update.info
+          ) {
+            const file = v.file;
+            const issue = v.edition;
+
+
+            // pre-cpip, before rewrite
+            this.addRoute(`artwork/news/news${issue}.swf`, file);
+            // pre-cpip, post rewrite
+            const route2007 = getNewspaperName(v.year, v.month, v.day).replace('|', '/') + '.swf';
+            this.addRoute(path.join('artwork/news', route2007), file);
+
+            // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
+            if (typeof issue === 'number') {
+              this.addRoute(path.join('artwork/archives', `news${issue + 1}.swf`), file);
+            }
+
+            // post-cpip
+            const date = getNewspaperDate(v.year, v.month, v.day);
+            this.addRoute(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
+          } else {
+            const baseNewsPath = 'play/v2/content/local/en/news/';
+            const oldNewsPath = `${baseNewsPath}${getNewspaperDate(v.year, v.month, v.day)}`;
+            const newNewsPath = `${baseNewsPath}papers/${getNewspaperDate(v.year, v.month, v.day)}`;
+            const configXmlPath = 'tool:news_config.xml';
+            this.addRoute(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+            this.addRoute(path.join(newNewsPath, 'config.xml'), configXmlPath);
+            const newspaperComponenets: Array<[string, string]> = [
+              ['front/header.swf', v.headerFront ?? 'archives:News285HeaderFront.swf'],
+              ['front/featureStory.swf', v.featureStory],
+              ['front/supportStory.swf', v.supportStory],
+              ['front/upcomingEvents.swf', v.upcomingEvents],
+              ['front/newsFlash.swf', v.newsFlash],
+              ['front/askAuntArctic.swf', v.askFront],
+              ['front/dividers.swf', v.dividersFront ?? 'approximation:dividers_blank.swf'],
+              ['front/navigation.swf', v.navigationFront ?? 'archives:News268NavigationFront.swf'],
+              ['back/header.swf', v.headerBack ?? 'archives:News285HeaderBack.swf'],
+              ['back/askAuntArctic.swf', v.askBack],
+              ['back/secrets.swf', v.secrets ?? 'archives:News285Secrets.swf'],
+              ['back/submitYourContent.swf', v.submit ?? 'archives:News268SubmitYourContent.swf'],
+              ['back/jokesAndRiddles.swf', v.jokes ?? 'archives:News285JokesAndRiddles.swf'],
+              ['back/dividers.swf', v.dividersBack ?? 'approximation:dividers_blank.swf'],
+              ['back/navigation.swf', v.navigationBack ?? 'archives:News268NavigationBack.swf']
+            ]
+            if (v.answers !== undefined) {
+              newspaperComponenets.push(['overlays/riddlesAnswers.swf', v.answers]);
+            }
+            if (v.extraJokes !== undefined) {
+              newspaperComponenets.push(['overlays/extraJokes.swf', v.extraJokes]);
+            }
+            if (v.secret !== undefined && v.secret !== null) {
+              newspaperComponenets.push(['overlays/secret.swf', v.secret]);
+            }
+            if (v.iglooWinners !== undefined) {
+              newspaperComponenets.push(['overlays/iglooWinners.swf', v.iglooWinners]);
+            }
+            if (v.featureMore !== undefined) {
+              newspaperComponenets.push(['overlays/featureMore.swf', v.featureMore ?? 'archives:News284FeatureMore.swf']);
+            }
+            if (v.supportMore !== undefined) {
+              newspaperComponenets.push(['overlays/supportMore.swf', v.supportMore ?? 'archives:News282SupportMore.swf']);
+            }
+            if (v.extra !== undefined) {
+              newspaperComponenets.push(['overlays/extra.swf', v.extra]);
+            }
+            
+            newspaperComponenets.forEach((pair) => {
+              const [route, file] = pair;
+              this.addRoute(path.join(oldNewsPath, 'content', route), file);
+              this.addRoute(path.join(newNewsPath, 'content', route), file);
+            }) 
+          }
         }
       },
       'chatVersion': (v) => {

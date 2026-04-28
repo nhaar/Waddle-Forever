@@ -1,11 +1,7 @@
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { monthNames } from "@common/utils";
 import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
-import { GameData } from "@server/timelines/game-data";
-
-export function getNewspaperDate(year: number, month: number, day: number) {
-  return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
-}
+import { GameData, getNewspaperDate } from "@server/timelines/game-data";
 
 function generateNewsPathAssign(n: number, year: number, month: number, day: number, as3: boolean, compositePaths: boolean): PCodeRep {
   let varname = ''

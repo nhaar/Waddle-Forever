@@ -1,5 +1,5 @@
-import { GameData } from "@server/timelines/game-data";
-import { getFullDate, getNewspaperDate } from "./news_crumbs.swf";
+import { GameData, getNewspaperDate } from "@server/timelines/game-data";
+import { getFullDate } from "./news_crumbs.swf";
 
 export function getNewspapersJson(d: GameData): string {
   const papers = d.getActiveIssues();
