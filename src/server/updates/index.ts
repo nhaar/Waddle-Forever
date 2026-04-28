@@ -8,7 +8,7 @@ import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-pl
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
 import { addDays, isLower, processVersion, Version } from "../routes/versions"
-import { BooleanSettingKey } from "../settings";
+import { BooleanSettingKey, SettingsManager } from "../settings";
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
 type Startscreens = Array<FileRef | [string, FileRef]>;
@@ -31,6 +31,8 @@ export type ListSong = Song & {
 
 /** Represents a row of a 2D music list */
 type Row = [ListSong, ListSong];
+
+export type StaticFile = FileRef | ((s: SettingsManager) => FileRef);
 
 /** Represents a 2D music list */
 export type IglooList = [Row, Row, Row, Row, Row, Row, Row];
@@ -155,7 +157,7 @@ export type CPUpdate = {
 
   partyComment?: string;
 
-  fileChanges?: Record<string, FileRef>;
+  fileChanges?: Record<string, StaticFile>;
 
   startscreens?: Startscreens;
 

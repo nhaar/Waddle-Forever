@@ -63,6 +63,9 @@ export class FileServer {
     } else {
       filePath = this.gameData.lookupFile(route);
       if (filePath !== undefined) {
+        if (typeof filePath !== 'string') {
+          filePath = filePath(this.settings);
+        }
         filePath = path.join(MEDIA_DIRECTORY, filePath);
       }
     }

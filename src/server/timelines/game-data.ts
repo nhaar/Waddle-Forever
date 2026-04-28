@@ -18,7 +18,7 @@ import { FURNITURE } from "@server/game-logic/furniture";
 import { ItemTable } from "@server/game-logic/items";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, WorldStamp } from "@server/updates";
+import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, StaticFile, WorldStamp } from "@server/updates";
 import path from "path";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 
@@ -51,7 +51,7 @@ function applyPatch(list: IglooList, songs: ListSongPatch[]): void {
 
 type GameState = {
   /** map of route -> path of file in media folder, meant for static files */
-  files: Map<string, string>;
+  files: Map<string, string | ((s: SettingsManager) => string)>;
   stampbook: Stampbook;
   hunt: HuntCrumbs | null;
   fair: boolean;
@@ -155,8 +155,13 @@ export class GameData {
     this.addRoute(roomRoute, file);
   }
 
-  private addRoute(route: string, file: FileRef) {
-    this.state.files.set(route.replaceAll('\\', '/'), getMediaFilePath(file));
+  private addRoute(route: string, file: StaticFile) {
+    const sanitized = route.replaceAll('\\', '/');
+    if (typeof file === 'string') {
+      this.state.files.set(sanitized, getMediaFilePath(file));
+    } else {
+      this.state.files.set(sanitized, (s: SettingsManager) => getMediaFilePath(file(s)));
+    }
   }
 
   private addCatalog(input: FileRef | CatalogItems, paths: string[]) {
@@ -659,7 +664,7 @@ export class GameData {
     }
   }
 
-  public lookupFile(route: string): string | undefined {
+  public lookupFile(route: string): string | ((s: SettingsManager) => string) | undefined {
     return this.state.files.get(route);
   }
 
