@@ -8,6 +8,7 @@ import { getGamesJson } from "./games.json";
 import { getGameStrings } from "./game_strings.json";
 import { getGeneralJson } from "./general.json";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
+import { getIglooMusicXml } from "./igloo_music.xml";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
 import { getNewspapersJson } from "./newspapers.json";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
@@ -48,7 +49,8 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/en/web_service/game_configs/newspapers.json': getNewspapersJson,
   'play/en/web_service/game_configs/penguin_action_frames.json': getPenguinActionFramesJson,
   'version.txt': getVersionTxt,
-  'play/web_service/environment_data.xml': getEnvironmentDataXml
+  'play/web_service/environment_data.xml': getEnvironmentDataXml,
+  'play/v2/content/global/en/igloo_music.xml': getIglooMusicXml
 };
 
 export function getGeneratorsMap(): Map<string, FileGenerator> {

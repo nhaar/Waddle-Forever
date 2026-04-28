@@ -18,13 +18,36 @@ import { ItemTable } from "@server/game-logic/items";
 import { getNewspaperName } from "@server/routes/news.txt";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, WorldStamp } from "@server/updates";
+import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, WorldStamp } from "@server/updates";
 import path from "path";
 import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
 import { NEWSPAPER_TIMELINE } from "./newspapers";
 
 export function getMinifiedDate(date: Version): string {
   return date.replaceAll('-', '');
+}
+
+function isMusicList(arr: IglooList | ListSongPatch[]): arr is IglooList {
+  return !('pos' in arr[0]);
+}
+
+/** Number of rows in a 2D music list */
+export const ROWS = 7;
+/** Number of columns in a 2D music list */
+export const COLS = 2;
+
+/** Applies a patch to a music list */
+function applyPatch(list: IglooList, songs: ListSongPatch[]): void {
+  // clear all previous "news"
+  for (let i = 0; i < ROWS; i++) {
+    for (let j = 0; j < COLS; j++) {
+      list[i][j].new = undefined;
+    }
+  }
+  songs.forEach((song) => {
+    const [row, col] = song.pos;
+    list[row - 1][col - 1] = { id: song.id, display: song.display, new: true };
+  });
 }
 
 type GameState = {
@@ -65,6 +88,7 @@ type GameState = {
   as3Startscreen: boolean;
   worldStamps: WorldStamp[];
   gameStrings: Map<string, string>;
+  iglooMusic: IglooList | null
 }
 
 function getFreshState(): GameState {
@@ -104,7 +128,8 @@ function getFreshState(): GameState {
     startscreens: [],
     as3Startscreen: false,
     worldStamps: [],
-    gameStrings: new Map<string, string>()
+    gameStrings: new Map<string, string>(),
+    iglooMusic: null
   };
 }
 
@@ -283,6 +308,7 @@ export class GameData {
 
     let pinRoom: RoomName | null = null;
     const scripts = new Map<string, StageScript>();
+    let currentList: IglooList | null = null;
 
     const actions: {
       [K in keyof CPUpdateE]: (v: Exclude<CPUpdateE[K], undefined>) => void
@@ -494,12 +520,25 @@ export class GameData {
         });
       },
       'iglooList': (v) => {
+        // not boolean or string: is igloo list
         if (v !== true && typeof v !== 'string') {
           const route = 'play/v2/content/global/content/igloo_music.swf';
+          
+          // has file: non dynamic
           if ('file' in v) {
             this.addRoute(route, v.file);
           } else {
+            // dynamic
             this.addRoute(route, 'tool:dynamic_igloo_music.swf');
+
+            if (isMusicList(v)) {
+              currentList = v;
+            } else {
+              if (currentList === null) {
+                throw new Error('Patch came before a list');
+              }
+              applyPatch(currentList, v);
+            }
           }
         }
       },
@@ -772,5 +811,9 @@ export class GameData {
 
   public getGameStrings() {
     return this.state.gameStrings;
+  }
+
+  public getIglooList() {
+    return this.state.iglooMusic;
   }
 }
