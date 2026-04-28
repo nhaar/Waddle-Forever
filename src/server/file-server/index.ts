@@ -135,11 +135,9 @@ export class FileServer {
     });
 
     // html file
-    ['/', '/#/login'].forEach(route => {
-      router.get(route, (_, res) => {
-        this.getIndexHtml().then(file => {
-          res.type('html').send(injectRuffleIntoHtml(this.settings, file));
-        });
+    router.get('/', (_, res) => {
+      this.getIndexHtml().then(file => {
+        res.type('html').send(injectRuffleIntoHtml(this.settings, file));
       });
     });
 
