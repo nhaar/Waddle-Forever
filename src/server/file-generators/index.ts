@@ -10,12 +10,14 @@ import { getGeneralJson } from "./general.json";
 import { getGlobalCrumbsSwf } from "./global_crumbs.swf";
 import { getIglooMusicXml } from "./igloo_music.xml";
 import { getLocalCrumbsSwf } from "./local_crumbs.swf";
+import { getNewsTxt } from "./news.txt";
 import { getNewspapersJson } from "./newspapers.json";
 import { getNewsCrumbsSwf } from "./news_crumbs.swf";
 import { getPaperItemsJson } from "./paper_items.json";
 import { getPathsJson } from "./paths.json";
 import { getPenguinActionFramesJson } from "./penguin_action_frames.json";
 import { getRoomsJson } from "./rooms.json";
+import { getSetupTxt } from "./setup.txt";
 import { getSetupXml } from "./setup.xml";
 import getStageScriptMessagesJson from "./stage_script_messages.json";
 import { getStampsJson } from "./stamps.json";
@@ -25,7 +27,7 @@ import { getWorldAchievementsXml } from "./worldachievements.xml";
 
 export type FileGenerator = (d: GameData, s: SettingsManager) => Buffer | string;
 
-const GENERATORS: Record<string, FileGenerator> = {
+const GET_GENERATORS: Record<string, FileGenerator> = {
   'en/web_service/stamps.json': getStampsJson,
   'play/en/web_service/game_configs/stamps.json': getStampsJson,
   'play/en/web_service/game_configs/chunking_map.json': getChunkingMapJson,
@@ -53,8 +55,21 @@ const GENERATORS: Record<string, FileGenerator> = {
   'play/v2/content/global/en/igloo_music.xml': getIglooMusicXml
 };
 
-export function getGeneratorsMap(): Map<string, FileGenerator> {
+const POST_GENERATORS: Record<string, FileGenerator> = {
+  'setup.txt': getSetupTxt,
+  'news.txt': getNewsTxt
+};
+
+function createGeneratorsMap(obj: Record<string, FileGenerator>): Map<string, FileGenerator> {
   const map = new Map<string, FileGenerator>();
-  iterateEntries(GENERATORS, (key, value) => map.set(key, value));
+  iterateEntries(obj, (key, value) => map.set(key, value));
   return map;
+}
+
+export function getGeneratorsMap(): Map<string, FileGenerator> {
+  return createGeneratorsMap(GET_GENERATORS);
+}
+
+export function postGeneratorsMap(): Map<string, FileGenerator> {
+  return createGeneratorsMap(POST_GENERATORS);
 }

@@ -39,7 +39,7 @@ export class FileServer {
   /** Maps file route -> name of the mod that is using this route */
   private modFiles = new Map<string, string>();
 
-  constructor(private gameData: GameData, private dynamicFiles: Map<string, FileGenerator>, private settings: SettingsManager, modManager: ModManager) {
+  constructor(private gameData: GameData, private dynamicFiles: Map<string, FileGenerator>, private settings: SettingsManager, private postGenerators: Map<string, FileGenerator>, modManager: ModManager) {
     this.updateModFiles(modManager);
     modManager.addListener(() => {
       this.updateModFiles(modManager);
@@ -124,6 +124,14 @@ export class FileServer {
           res.status(200).send(binary);
         }
       });
+    });
+    router.post('/*', (req: Request, res, next) => {
+      const generator = this.postGenerators.get(req.params[0]);
+      if (generator === undefined) {
+        next();
+      } else {
+        res.send(generator(this.gameData, this.settings));
+      }
     });
 
     // html file

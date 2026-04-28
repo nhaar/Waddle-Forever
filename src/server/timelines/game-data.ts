@@ -88,7 +88,8 @@ type GameState = {
   as3Startscreen: boolean;
   worldStamps: WorldStamp[];
   gameStrings: Map<string, string>;
-  iglooMusic: IglooList | null
+  iglooMusic: IglooList | null;
+  egg: number;
 }
 
 function getFreshState(): GameState {
@@ -129,7 +130,8 @@ function getFreshState(): GameState {
     as3Startscreen: false,
     worldStamps: [],
     gameStrings: new Map<string, string>(),
-    iglooMusic: null
+    iglooMusic: null,
+    egg: 0
   };
 }
 
@@ -544,6 +546,8 @@ export class GameData {
       },
       'scavengerHunt2007': (v) => {
         this.addRoute('artwork/eggs/1.swf', v);
+
+        this.state.egg = 1;
       },
       'scavengerHunt2010': (v) => {
         this.state.scavenger = true;
@@ -815,5 +819,9 @@ export class GameData {
 
   public getIglooList() {
     return this.state.iglooMusic;
+  }
+
+  public getEgg() {
+    return this.state.egg;
   }
 }

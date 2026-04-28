@@ -15,7 +15,6 @@ import { choose, randomInt, Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
 import { getExtraWaddleRooms } from './timelines/waddle-room';
-import { VERSIONS_TIMELINE } from './routes/version.txt';
 import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
 import { isEngine1, isEngine2, isEngine3, getDate } from './timelines/dates';
 import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
@@ -25,6 +24,7 @@ import { Table } from './handlers/play/table';
 import { FindFourTable } from './handlers/play/find-four';
 import { MancalaTable } from './handlers/play/mancala';
 import { ITEM_RELEASES } from './timelines/items';
+import { GameData } from './timelines/game-data';
 
 type ServerType = 'Login' | 'World';
 
@@ -531,7 +531,7 @@ export class Server {
   static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
   static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
 
-  constructor(settings: SettingsManager) {
+  constructor(settings: SettingsManager, private gameData: GameData) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
     this._igloos = new Map<number, Igloo>();
@@ -557,8 +557,8 @@ export class Server {
   }
 
   setBuddyProtocol() {
-    if (isEngine1(this._settingsManager.settings.version)) {
-      const chat = findInVersionStrict(this._settingsManager.settings.version, VERSIONS_TIMELINE);
+    if (this.gameData.isPreCpip()) {
+      const chat = this.gameData.getChatVersion();
       this._buddyProtocol = chat >= 506 ? 'b' : 's';
     } else {
       // buddies for post-cpip not yet defined

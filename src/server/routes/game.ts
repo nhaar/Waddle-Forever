@@ -3,8 +3,6 @@ import path from 'path';
 
 import { HttpServer } from "../http";
 import { SettingsManager } from "../settings";
-import { getSetupTxt } from "./setup.txt";
-import { getNewsTxt } from "./news.txt";
 import { isEngine2, isEngine3 } from "../timelines/dates";
 import { FRAME_HACKS } from '@server/game-data/frame-hacks';
 import { fromLE, parseSwf } from "@common/flash/parser";
@@ -77,12 +75,7 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
   server.addFileServer();
 
   // Pre CPIP server rewrite client uses these POST endpoints
-  server.router.post('/setup.txt', (_, req) => {
-    req.send(getSetupTxt(settingsManager.settings.version, settingsManager.targetIP, settingsManager.worldPort));
-  })
-  server.router.post('/news.txt', (_, req) => {
-    req.send(getNewsTxt(settingsManager.settings.version));
-  })
+
 
   // text file generating
 

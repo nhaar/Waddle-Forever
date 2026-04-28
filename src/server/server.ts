@@ -14,7 +14,7 @@ import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 import { FileServer } from './file-server';
 import { GameData } from './timelines/game-data';
-import { getGeneratorsMap } from './file-generators';
+import { getGeneratorsMap, postGeneratorsMap } from './file-generators';
 import { getUpdates } from './updates/updates';
 import { ITEMS } from './game-logic/items';
 
@@ -23,8 +23,8 @@ type StartServerError = {
   message: string;
 };
 
-const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express): Promise<Server> => {  
-  const gameServer = new Server(settingsManager);
+const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express, gameData: GameData): Promise<Server> => {  
+  const gameServer = new Server(settingsManager, gameData);
 
   handler.useEndpoints(gameServer, server);
 
@@ -164,14 +164,14 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
 
   const gameData = new GameData(getUpdates(), ITEMS, settingsManager);
 
-  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager, settingsManager.mods);
+  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager, postGeneratorsMap(), settingsManager.mods);
 
   server.use(fileServer.getExpressRouter());
 
   
   // TODO in the future, "world" and "old" should be merged somewhat
-  await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server);
-  const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server);
+  await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server, gameData);
+  const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server, gameData);
   
   setApiServer(settingsManager, server, world, worldHandler);
 
