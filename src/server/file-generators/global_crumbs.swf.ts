@@ -109,8 +109,6 @@ function getServerCrumbs(ip: string, loginPort: number, worldPort: number, moder
 }
 
 function getGameCrumbs(music: Map<GameName, number>): PCodeRep {
-  // const music = getMapForDate(GAME_MUSIC_TIMELINE, version);
-
   const code: PCodeRep = [
     [Action.Push, "game_crumbs", 0, "Object"],
     Action.NewObject,
@@ -147,10 +145,6 @@ function getFloorCrumbs(): PCodeRep {
 function getRoomCrumbs(music: Map<RoomName, number>, member: Map<RoomName, boolean>): PCodeRep {
   const code: PCodeRep = [];
 
-  // const music = getMapForDate(MUSIC_TIMELINE, version);
-  // const member = getMapForDate(MEMBER_TIMELINE, version);
-  
-
   iterateEntries(ROOMS, (room, info) => {
     let total = 3;
     let memberArgs: Array<string | boolean> = [];
@@ -186,7 +180,6 @@ function getPuffleCrumbs(): PCodeRep {
 
 function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
   const code: PCodeRep = [];
-  // const prices = getMapForDate(FURNITURE_PRICES_TIMELINE, version);
   
   FURNITURE.rows.forEach(row => {
     let total = 3;

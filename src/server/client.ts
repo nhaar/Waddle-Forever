@@ -9,7 +9,6 @@ import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { findInVersion, findInVersionStrict } from './game-data';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { choose, randomInt, Vector } from '../common/utils';
 import { logverbose } from './logger';
