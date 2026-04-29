@@ -1,13 +1,21 @@
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
+import { overrideBootsSwf } from "./30fps";
 import { overrideIndexHtml } from "./index.html";
 import { overrideLoadSwf } from "./load.swf";
+import { overrideDanceContest, overrideJPALevelSelector, overrideThinIce } from "./mods";
+import { overrideMyPuffle } from "./mypuffle";
 
 export type OverriderFunction = (d: GameData, s: SettingsManager, b: Buffer | string) => Promise<Buffer | string>;
 
 export const OVERRIDERS: Record<string, OverriderFunction> = {
   '': overrideIndexHtml,
-  'load.swf': overrideLoadSwf
+  'load.swf': overrideLoadSwf,
+  'boots.swf': overrideBootsSwf,
+  'play/v2/games/book1/bootstrap.swf': overrideMyPuffle,
+  'play/v2/games/dancing/dance.swf': overrideDanceContest,
+  'play/v2/games/jetpack/JetpackAdventures.swf': overrideJPALevelSelector,
+  'play/v2/games/thinice/ThinIce.swf': overrideThinIce
 };
 
 export class FileOverrider {
