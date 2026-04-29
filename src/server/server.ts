@@ -9,7 +9,6 @@ import loginHandler from './handlers/login'
 import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
 import db from './database';
-import { getModRouter } from './mods';
 import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 import { FileServer } from './file-server';

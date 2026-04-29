@@ -253,24 +253,3 @@ export class ModManager {
     return this._activeMods.has(name);
   }
 }
-
-export function getModRouter(m: ModManager): Router {
-  const router = Router();
-  
-  router.get('/*', (req: Request, res, next) => {
-    if (!m.usingMods) {
-      next();
-      return;
-    }
-    for (const mod of m.getActiveModNames()) {
-      const modFilePath = path.join(MODS_DIRECTORY, mod, req.params[0]);
-      if (fs.existsSync(modFilePath)) {
-        res.sendFile(modFilePath);
-        return;
-      }
-    } 
-    next();
-  })
-
-  return router
-}
