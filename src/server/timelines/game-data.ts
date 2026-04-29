@@ -1,4 +1,4 @@
-import { iterateEntries, EventListener } from "@common/utils";
+import { iterateEntries, EventListener, toForwardSlash } from "@common/utils";
 import { getNewspaperName } from "@server/file-generators/news.txt";
 import { IdRefMap, RouteRefMap } from "@server/game-data";
 import { AS3_STATIC_FILES } from "@server/game-data/as3-static";
@@ -179,7 +179,7 @@ export class GameData {
   }
 
   private addRoute(route: string, file: FileRef) {
-    this.state.files.set(route.replaceAll('\\', '/'), getMediaFilePath(file));
+    this.state.files.set(toForwardSlash(route), getMediaFilePath(file));
   }
 
   private addCatalog(input: FileRef | CatalogItems, paths: string[]) {

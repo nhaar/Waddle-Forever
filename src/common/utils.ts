@@ -295,6 +295,10 @@ export async function readFile(filePath: string) {
   });
 }
 
+export function toForwardSlash(s: string): string {
+  return s.replaceAll('\\', '/')
+}
+
 export const monthNames = [
   'January',
   'February',

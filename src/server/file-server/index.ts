@@ -5,7 +5,7 @@ import fs from 'fs';
 import { MODS_DIRECTORY } from '@common/paths';
 import { ModManager } from '@server/mods';
 import { FileGenerator } from '@server/file-generators';
-import { MEDIA_DIRECTORY, readFile } from '@common/utils';
+import { MEDIA_DIRECTORY, readFile, toForwardSlash } from '@common/utils';
 import { SettingsManager } from '@server/settings';
 import { FileOverrider, OverriderFunction } from './overriders';
 
@@ -28,7 +28,7 @@ export class FileServer {
     this.modFiles = new Map<string, string>();
     for (const mod of modManager.getActiveMods()) {
       mod.getFiles().forEach(file => {
-        this.modFiles.set(file, mod.getName());
+        this.modFiles.set(toForwardSlash(file), mod.getName());
       })        
     }
   }
