@@ -294,6 +294,6 @@ export const UPDATES_2013: Update[] = [
   },
   {
     date: '2013-12-12',
-    petFurniture: 'ENCataloguesPetsDec2013.swf'
+    petFurniture: 'archives:ENCataloguesPetsDec2013.swf'
   }
 ]

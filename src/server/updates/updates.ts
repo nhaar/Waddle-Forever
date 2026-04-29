@@ -1,6 +1,5 @@
-import { consumeUpdates, CPUpdate } from ".";
+import { consumeUpdates, GameUpdate } from ".";
 import { IS_DEV } from "@common/constants";
-import { VersionsInformation, VersionsTimeline } from "../game-data";
 import { isGreater } from "../routes/versions";
 import { UPDATES_2005 } from "./2005";
 import { UPDATES_2006 } from "./2006";
@@ -55,28 +54,8 @@ if (IS_DEV) {
   enforceCorrectness();
 }
 
-export const UPDATES = consumeUpdates(allUpdates);
-
-export function createTimeline<T>(callback: (update: CPUpdate) => T | undefined): VersionsInformation<T> {
-  const timeline = new VersionsTimeline<T>();
-
-  UPDATES.forEach((day) => {
-    const info = callback(day.update);
-    if (info !== undefined) {
-      if (day.end !== undefined) {
-        timeline.add({
-          info,
-          date: day.date,
-          end: day.end
-        });
-      } else {
-        timeline.add({
-          info,
-          date: day.date
-        });
-      }
-    }
-  });
-
-  return timeline.getVersions();
+export function getUpdates(): GameUpdate[] {
+  return consumeUpdates(allUpdates);
 }
+
+export const UPDATES = consumeUpdates(allUpdates);

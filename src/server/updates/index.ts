@@ -1,12 +1,13 @@
 import { iterateEntries } from "@common/utils";
+import { As3Newspaper, As3NewspaperFiles, AS3_PAPERS, BoilerRoomPaper, BOILER_ROOM_PAPERS, PreBoilerRoomPaper, PRE_BOILER_ROOM_PAPERS } from "@server/game-data/newspapers";
+import { Pin, PINS } from "@server/game-data/pins";
 import { FileRef } from "../game-data/files";
 import { GameName } from "../game-data/games";
 import { RoomName } from "../game-data/rooms";
 import { getStagePlayMusic, StageName, StageScript } from "../game-data/stage-plays";
 import { StampUpdates } from "../game-data/stamps";
 import { WaddleRoomInfo } from "../game-logic/waddles";
-import { Version } from "../routes/versions"
-import { BooleanSettingKey } from "../settings";
+import { addDays, isLower, processVersion, Version } from "../routes/versions"
 
 /** Array of either file to a start screen, or a pair [startscreen name, file] */
 type Startscreens = Array<FileRef | [string, FileRef]>;
@@ -128,9 +129,6 @@ export type CPUpdate = {
 
   memberRooms?: Partial<Record<RoomName, boolean>>;
 
-  /** Map a route to the file used on that date, and the setting that needs to be TRUE in order for this file to be used */
-  specialRoute?: Record<string, [FileRef, BooleanSettingKey]>;
-
   /**
    * 'irregular': A new issue is released
    * 'period-start': A new issue is released, and from here onwards, each issue is released after one week
@@ -170,7 +168,7 @@ export type CPUpdate = {
 
   dateReference?: DateReference;
 
-  indexHtml?: string;
+  indexHtml?: FileRef;
   websiteFolder?: string;
 
   battleOp?: PartyOp;
@@ -284,7 +282,8 @@ export type DateReference = 'cpip' |
   'adopt-catalog-name' |
   'pet-furniture-rename1' |
   'pet-furniture-rename2' |
-  'furniture-catalog-name';
+  'furniture-catalog-name' |
+  'mall';
 
 export type Update = {
   date: Version;
@@ -297,13 +296,200 @@ type TimeBoundInfo<T> = {
   end?: Version;
 } & T;
 
-type UpdateTimeline = TimeBoundInfo<{ update: CPUpdate }>[];
+type UpdateTimeline = TimeBoundInfo<{ update: CPUpdateE }>[];
 
-export function consumeUpdates(updates: Update[]): Array<{
+type NewspaperIssue = {
+    year: number;
+    month: number;
+    day: number;
+    edition: number | 'fan';
+    title: string;
+  } & ({
+    type: 'as2';
+    file: FileRef;
+  } | ({
+    type: 'as3'
+  } & As3NewspaperFiles));
+
+// todo refactor update timelines later
+// this is CPUpdateE which will become a DataUpdate of some sort
+export type CPUpdateE = CPUpdate & { 
+  pinRoom?: { room: RoomName, frame?: number; };
+  hiddenPin?: string;
+  issue?: NewspaperIssue;
+}
+
+export type GameUpdate = {
   date: Version;
   end?: Version;
-  update: CPUpdate;
-}> {
+  update: CPUpdateE;
+};
+
+function consumeNewspapers(consumed: UpdateTimeline, updates: Update[]) {
+  const papers = [...PRE_BOILER_ROOM_PAPERS, ...BOILER_ROOM_PAPERS, ...AS3_PAPERS];
+
+  let issue = 1;
+  let current = '';
+  let inPeriod = false;
+
+  function getIssue(date: Version, issue: number | 'fan', title: string | null, paper: PreBoilerRoomPaper | BoilerRoomPaper | As3Newspaper): NewspaperIssue {
+    const [year, month, day] = processVersion(date);
+    let obj: { type: 'as2', file: FileRef} | ({ type: 'as3' } & As3NewspaperFiles);
+    if (typeof paper === 'string') {
+      obj = { type: 'as2', file: paper };
+    } else if ('askFront' in paper) {
+      obj = { type: 'as3', ...paper };
+    } else {
+      obj = { type: 'as2', ...paper };
+    }
+    return {
+      year,
+      month,
+      day,
+      edition: issue,
+      title: title ?? '',
+      ...obj
+    };
+  }
+
+  function pushPaper(irregular?: Version) {
+    let next = '';
+    if (irregular === undefined) {
+      next = addDays(current, 7);
+    }
+
+    const paper = papers[issue - 1];
+
+    const title = typeof paper === 'string' ? null : paper.title;
+
+    consumed.push({
+      date: irregular ?? current,
+      update: {
+        issue: getIssue(irregular ?? current, issue, title, paper)
+      }
+    });
+    if (irregular === undefined) {
+      current = next;
+    }
+    issue++;
+    if (issue > papers.length) {
+      inPeriod = false;
+    }
+  }
+
+  let fanDate: string = '';
+
+  updates.forEach(update => {
+    if (inPeriod) {
+      while (isLower(current, update.date) && inPeriod) {
+        pushPaper();
+      }
+    }
+    if (update.newspaper !== undefined) {
+      if (update.newspaper === 'irregular') {
+        if (inPeriod) {
+          throw new Error('Irregular newspaper in the middle of a period');
+        }
+        pushPaper(update.date);
+      } else if (update.newspaper === 'period-start') {
+        inPeriod = true;
+        current = update.date;
+        pushPaper();
+      } else if (update.newspaper === 'period-end') {
+        if (!inPeriod) {
+          throw new Error('Period of newspaper ending without having a start');
+        }
+        pushPaper();
+        inPeriod = false;
+      } else if (update.newspaper === 'fan') {
+        fanDate = update.date;
+      }
+    }
+  });
+
+  if (fanDate === '') {
+    throw new Error('No fan issue found');
+  }
+
+  consumed.push({
+    date: fanDate,
+    // todo move hardcoded file out of here
+    update: { issue: getIssue(fanDate, 'fan', null, 'archives:NewsFan.swf') }
+  });
+}
+
+function consumePins(consumed: UpdateTimeline, updates: Update[]): void {
+  let pinIndex = 0;
+  let version = '';
+  let inPeriod = false;
+
+  function addPin(p: Pin, date: Version, end: Version) {
+    const announcement = (!('hidden' in p) || !p.hidden) ? p.name : undefined;
+    if ('file' in p) {
+      consumed.push({
+        date,
+        end,
+        update: {
+          rooms: {
+            [p.room]: p.file
+          },
+          'pinRoom': { room: p.room, frame: p.frame },
+          'hiddenPin': announcement
+        }
+      });
+    } else if ('room' in p) {
+      consumed.push({
+        date,
+        end,
+        update: {
+          'pinRoom': p.room === undefined ? undefined : { room: p.room },
+          'hiddenPin': announcement
+        }
+      })
+    }
+  }
+
+  function pushPin() {
+    const pin = PINS[pinIndex];
+    const next = addDays(version, 14);
+    if (Array.isArray(pin)) {
+      consumed.push()
+      pin.forEach(p => {
+        addPin(p, version, next);
+      })
+    } else {
+      addPin(pin, version, next);
+    }
+    version = next;
+    pinIndex++;
+    if (pinIndex >= PINS.length) {
+      inPeriod = false;
+    }
+  }
+
+  for (let i = 0; i < updates.length; i++) {
+    if (inPeriod) {
+      while (isLower(version, updates[i].date) && inPeriod) {
+        pushPin();
+      }
+    }
+    if (updates[i].pin !== undefined) {
+      switch (updates[i].pin) {
+        case 'start':
+          version = updates[i].date;
+          inPeriod = true;
+          pushPin();
+          break;
+        case 'end':
+          pushPin();
+          inPeriod = false;
+          break;
+      }
+    }
+  }
+}
+
+export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
   const consumed: UpdateTimeline = [];
 
   const events = new Map<Event, Array<{ date: Version; update: CPUpdate; }>>();
@@ -391,7 +577,29 @@ export function consumeUpdates(updates: Update[]): Array<{
     consumed.push(stagePlay);
   }
 
-  
+  consumePins(consumed, updates);
+  consumeNewspapers(consumed, updates);
 
-  return consumed;
+  return consumed.sort((a, b) => {
+    // lower dates come first
+    // but if on the same day, then permanent updates first
+    // if same date, only equal if both are permanent or both are temporary
+    
+    if (a.date === b.date) {
+      if (a.end === undefined) {
+        if (b.end === a.end) {
+          return 0;
+        }
+        return -1;
+      } else if (b.end === undefined) {
+        return 1;
+      }
+    } else if (isLower(a.date, b.date)) {
+      return -1
+    } else {
+      return 1;
+    }
+
+    return 0;
+  });
 }

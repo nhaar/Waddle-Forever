@@ -9,22 +9,16 @@ import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
 import { isGameRoom, isLiteralScoreGame, Room } from './game-logic/rooms';
 import { PUFFLES } from './game-logic/puffle';
-import { findInVersion, findInVersionStrict } from './game-data';
 import { WaddleName, WADDLE_ROOMS } from './game-logic/waddles';
 import { choose, randomInt, Vector } from '../common/utils';
 import { logverbose } from './logger';
 import { CardJitsuProgress } from './game-logic/ninja-progress';
-import { getExtraWaddleRooms } from './timelines/waddle-room';
-import { VERSIONS_TIMELINE } from './routes/version.txt';
-import { GAME_STAMPS_TIMELINE, STAMP_DATES } from './timelines/stamps';
 import { isEngine1, isEngine2, isEngine3, getDate } from './timelines/dates';
-import { CLIENT_ITEMS_TIMELINE } from './timelines/client-items';
-import { CFC_VALUES_TIMELINE, COINS_FOR_CHANGE_TIMELINE } from './timelines/cfc';
 import { MASCOTS } from './game-data/mascots';
 import { Table } from './handlers/play/table';
 import { FindFourTable } from './handlers/play/find-four';
 import { MancalaTable } from './handlers/play/mancala';
-import { ITEM_RELEASES } from './timelines/items';
+import { GameData } from './timelines/game-data';
 
 type ServerType = 'Login' | 'World';
 
@@ -531,7 +525,7 @@ export class Server {
   static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
   static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
 
-  constructor(settings: SettingsManager) {
+  constructor(settings: SettingsManager, private gameData: GameData) {
     this._settingsManager = settings;
     this._rooms = new Map<number, GameRoom>();
     this._igloos = new Map<number, Igloo>();
@@ -547,7 +541,7 @@ export class Server {
   }
 
   private init() {
-    const extraWaddleRooms = getExtraWaddleRooms(this.settings.version) ?? [];
+    const extraWaddleRooms = this.gameData.getExtraWaddleRooms();
     [...WADDLE_ROOMS, ...extraWaddleRooms].forEach((waddle) => {
       const room = this.getRoom(waddle.roomId);
       room.waddles.set(waddle.waddleId, new WaddleRoom(waddle.waddleId, waddle.seats, waddle.game));
@@ -557,8 +551,8 @@ export class Server {
   }
 
   setBuddyProtocol() {
-    if (isEngine1(this._settingsManager.settings.version)) {
-      const chat = findInVersionStrict(this._settingsManager.settings.version, VERSIONS_TIMELINE);
+    if (this.gameData.isPreCpip()) {
+      const chat = this.gameData.getChatVersion();
       this._buddyProtocol = chat >= 506 ? 'b' : 's';
     } else {
       // buddies for post-cpip not yet defined
@@ -598,6 +592,10 @@ export class Server {
 
   get puckPositionParty() {
     return this._puckPositionParty.vector;
+  }
+
+  getData() {
+    return this.gameData;
   }
 
   resetPuckPosition() {
@@ -777,7 +775,7 @@ export class Server {
     // that global_crumbs allow having all the items
 
     if (isLower(this.settings.version, getDate('cpip'))) {
-      const itemSet = findInVersionStrict(this.settings.version, CLIENT_ITEMS_TIMELINE)
+      const itemSet = this.gameData.getClientItems();
       items = items.filter((value) => itemSet.has(value));
     }
 
@@ -1332,27 +1330,23 @@ export class Client {
   getEndgameStampsInformation (): [string, number, number, number] {
     const info: [string, number, number, number] = ['', 0, 0, 0];
 
-    const gameRoom = GAME_STAMPS_TIMELINE.get(this.room.id);
+    const stamps = this.data.getGameStamps(this.room.id);
 
-    if (gameRoom !== undefined) {
-      const stamps = isLower(this.version, getDate('stamps-release')) ? [] : (findInVersion(this.version, gameRoom) ?? []);
+    const gameSessionStamps: number[] = [];
+    this.sessionStamps.forEach((stamp) => {
+      if (stamps.has(stamp)) {
+        gameSessionStamps.push(stamp);
+      }
+    });
+    // string of recently collected stamps
+    info[0] = gameSessionStamps.join('|');
+    // total number of stamps collected in this game
+    info[1] = [...stamps].filter((stamp) => this.penguin.hasStamp(stamp)).length;
+    // total number of stamps the game has
+    info[2] = stamps.size;
 
-      const gameSessionStamps: number[] = [];
-      this.sessionStamps.forEach((stamp) => {
-        if (stamps.includes(stamp)) {
-          gameSessionStamps.push(stamp);
-        }
-      });
-      // string of recently collected stamps
-      info[0] = gameSessionStamps.join('|');
-      // total number of stamps collected in this game
-      info[1] = stamps.filter((stamp) => this.penguin.hasStamp(stamp)).length;
-      // total number of stamps the game has
-      info[2] = stamps.length;
-
-      // TODO check what this is used for
-      info[3] = 0;
-    }
+    // TODO check what this is used for
+    info[3] = 0;
 
     this.sessionStamps = [];
 
@@ -1371,11 +1365,7 @@ export class Client {
    */
   giveStamp(stampId: number, params: { notify?: boolean } = {}): void {
     const notify = params.notify ?? true;
-    const releaseDate = STAMP_DATES[stampId];
-    if (releaseDate === undefined) {
-      throw new Error(`Stamp is never released: ${stampId}`);
-    }
-    if (isGreaterOrEqual(this.version, releaseDate)) {
+    if (this.data.isStampAvailable(stampId)) {
       if (!this.penguin.hasStamp(stampId)) {
         this.penguin.addStamp(stampId);
         this.penguin.stampbook.recent_stamps.push(stampId);
@@ -1738,10 +1728,13 @@ export class Client {
   }
 
   sendCoinsForChange() {
-    if (findInVersionStrict(this.version, COINS_FOR_CHANGE_TIMELINE)) {
+    if (this.data.hasCoinsForChange()) {
       // placeholder donation values
-      const values = findInVersionStrict(this.version, CFC_VALUES_TIMELINE);
-      this.sendXt('gcfct', values.map((amount, i) => `${i}|${amount}`).join(','));
+
+      const values = this.data.getCoinsForChangeDonations();
+      if (values !== null) {
+        this.sendXt('gcfct', values.map((amount, i) => `${i}|${amount}`).join(','));
+      }
     }
   }
 
@@ -1771,6 +1764,10 @@ export class Client {
 
   isAgent(): boolean {
     return this.penguin.hasItem(800);
+  }
+
+  public get data() {
+    return this.server.getData();
   }
 }
 

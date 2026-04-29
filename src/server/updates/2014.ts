@@ -34,5 +34,9 @@ export const UPDATES_2014: Update[] = [
         5121
       ]
     }
+  },
+  {
+    date: '2014-09-18',
+    dateReference: 'mall'
   }
 ]

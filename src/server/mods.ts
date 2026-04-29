@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from '@common/paths';
 import { CustomItem, ITEMS } from './game-logic/items';
-import { iterateEntries } from '@common/utils';
+import { getFilesInDirectory, iterateEntries, EventListener } from '@common/utils';
 import { Router, Request } from "express";
 import { CustomHack, FRAME_HACKS } from './game-data/frame-hacks';
 
@@ -41,7 +41,10 @@ const customHackKeys: KeyTypes<CustomHack> = {
   'secret_frame': 'number'
 };
 
-const modsSettingsPath = path.join(MODS_DIRECTORY, '.active_mods');
+/** Name of file that tracks the active mods */
+const ACTIVE_MODS_FILE = '.active_mods'
+
+const modsSettingsPath = path.join(MODS_DIRECTORY, ACTIVE_MODS_FILE);
 
 if (!fs.existsSync(MODS_DIRECTORY)) {
   fs.mkdirSync(MODS_DIRECTORY);
@@ -50,9 +53,18 @@ if (!fs.existsSync(modsSettingsPath)) {
   fs.writeFileSync(modsSettingsPath, '');
 }
 
-const FORBIDDEN_NAMES = new Set([
-  '.active_mods', // mod tracker for WF
-  '.DS_Store'   // macOS folder file
+// macOS folder file
+const MAC_FOLDER_FILE = '.DS_Store'
+
+const FORBIDDEN_FOLDER_NAMES = new Set([
+  ACTIVE_MODS_FILE,
+  MAC_FOLDER_FILE
+]);
+
+const FORBIDDEN_FILE_NAMES = new Set([
+  MOD_ITEMS_FILE,
+  MOD_HACKS_FILE,
+  MAC_FOLDER_FILE
 ]);
 
 /** Errors raised from incorrect JSON in mods */
@@ -98,10 +110,15 @@ function parseObjectArrayJSON<T extends {}>(file: string, mod: string, name: str
 class Mod {
   private items: CustomItem[];
   private hacks: CustomHack[];
+  // all file routes that this mod serves
+  private files: string[];
   
   constructor(private name: string) {
     this.items = this.getItems();
     this.hacks = this.getHacks();
+    this.files = getFilesInDirectory(path.join(MODS_DIRECTORY, this.name)).filter(file => {
+      return !FORBIDDEN_FILE_NAMES.has(file);
+    });
   }
 
   loadCustomItems() {
@@ -120,6 +137,14 @@ class Mod {
 
   unloadCustomFrameHacks(): void {
     FRAME_HACKS.removeCustom(this.name);
+  }
+
+  public getFiles() {
+    return this.files;
+  }
+
+  public getName() {
+    return this.name;
   }
 
   private getItems(): CustomItem[] {
@@ -148,6 +173,8 @@ export class ModManager {
 
   private _activeMods: Map<string, Mod>;
 
+  private updateListener = new EventListener();
+
   constructor() {
     this._activeMods = new Map<string, Mod>();
     
@@ -156,12 +183,16 @@ export class ModManager {
   }
 
   getMods(): string[] {
-    const mods = fs.readdirSync(MODS_DIRECTORY).filter((name) => !FORBIDDEN_NAMES.has(name));
+    const mods = fs.readdirSync(MODS_DIRECTORY).filter((name) => !FORBIDDEN_FOLDER_NAMES.has(name));
     this.usingMods = mods.length > 0
     return mods;
   }
 
   getActiveMods() {
+    return this._activeMods.values();
+  }
+
+  getActiveModNames() {
     return this._activeMods.keys();
   }
 
@@ -189,8 +220,13 @@ export class ModManager {
     return failedMods;
   }
 
+  addListener(callback: () => void) {
+    this.updateListener.addListener(callback);
+  }
+
   writeActiveMods() {
-    fs.writeFileSync(modsSettingsPath, [...this.getActiveMods()].join('\n'));
+    this.updateListener.fire();
+    fs.writeFileSync(modsSettingsPath, [...this.getActiveModNames()].join('\n'));
   }
 
   /** Attempts to enable a mod. Will raise an error if the mod is incorrect */
@@ -216,25 +252,4 @@ export class ModManager {
   isModActive(name: string): boolean {
     return this._activeMods.has(name);
   }
-}
-
-export function getModRouter(m: ModManager): Router {
-  const router = Router();
-  
-  router.get('/*', (req: Request, res, next) => {
-    if (!m.usingMods) {
-      next();
-      return;
-    }
-    for (const mod of m.getActiveMods()) {
-      const modFilePath = path.join(MODS_DIRECTORY, mod, req.params[0]);
-      if (fs.existsSync(modFilePath)) {
-        res.sendFile(modFilePath);
-        return;
-      }
-    } 
-    next();
-  })
-
-  return router
 }

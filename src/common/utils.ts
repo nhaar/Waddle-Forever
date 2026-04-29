@@ -271,6 +271,34 @@ export class Vector {
   }
 }
 
+/** Helper class for building an event with functions to fire when the event happens */
+export class EventListener {
+  private listeners: Array<() => void> = [];
+
+  public addListener(callback: () => void) {
+    this.listeners.push(callback);
+  }
+
+  public fire(): void {
+    this.listeners.forEach(callback => callback());
+  }
+}
+
+export async function readFile(filePath: string) {
+  return new Promise<Buffer>((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    });
+  });
+}
+
+export function toForwardSlash(s: string): string {
+  return s.replaceAll('\\', '/')
+}
+
 export const monthNames = [
   'January',
   'February',

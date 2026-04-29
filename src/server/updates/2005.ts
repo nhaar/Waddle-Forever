@@ -12,7 +12,8 @@ export const UPDATES_2005: Update[] = [
     fileChanges: {
       'chat291.swf': 'approximation:chat291_no_news.swf', // newspapers-less precpip client
       // placeholder catalogue so that it doesn't softlock
-      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf'
+      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf',
+      'load.swf': 'tool:load.swf'
     },
     rooms: {
       'town': 'approximation:town_release.swf',

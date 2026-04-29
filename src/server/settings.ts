@@ -4,6 +4,7 @@ import { isVersionValid, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
 import { ModManager } from './mods';
+import { EventListener } from '@common/utils';
 
 export type BooleanSettingKey = 
   'fps30' | 
@@ -40,6 +41,8 @@ export class SettingsManager {
 
   /** HTTP port used by the server, undefined if default */
   private _targetPort: number | undefined;
+
+  private updateListener = new EventListener();
 
   set targetPort(port: number | undefined) {
     this._targetPort = port;
@@ -114,6 +117,12 @@ export class SettingsManager {
   updateSettings(partial: PartialSettings): void {
     this.settings = { ...this.settings, ...partial};
     fs.writeFileSync(SETTINGS_PATH, JSON.stringify(this.settings));
+
+    this.updateListener.fire();
+  }
+
+  public addListener(callback: () => void) {
+    this.updateListener.addListener(callback);
   }
 
   get loginPort() {
