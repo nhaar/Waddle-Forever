@@ -547,81 +547,81 @@ export class GameData {
       'issue': (v) => {
         if (this.state.issues.length >= 7) {
           this.state.issues.pop();
-          this.state.issues.splice(0, 0, { ...v, as3: this.state.as3 });
+        }
+        this.state.issues.splice(0, 0, { ...v, as3: this.state.as3 });
 
-          if (v.type === 'as2'
-            // typeof update.info === 'string' || 'file' in update.info
-          ) {
-            const file = v.file;
-            const issue = v.edition;
+        if (v.type === 'as2'
+          // typeof update.info === 'string' || 'file' in update.info
+        ) {
+          const file = v.file;
+          const issue = v.edition;
 
 
-            // pre-cpip, before rewrite
-            this.addRoute(`artwork/news/news${issue}.swf`, file);
-            // pre-cpip, post rewrite
-            const route2007 = getNewspaperName(v.year, v.month, v.day).replace('|', '/') + '.swf';
-            this.addRoute(path.join('artwork/news', route2007), file);
+          // pre-cpip, before rewrite
+          this.addRoute(`artwork/news/news${issue}.swf`, file);
+          // pre-cpip, post rewrite
+          const route2007 = getNewspaperName(v.year, v.month, v.day).replace('|', '/') + '.swf';
+          this.addRoute(path.join('artwork/news', route2007), file);
 
-            // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
-            if (typeof issue === 'number') {
-              this.addRoute(path.join('artwork/archives', `news${issue + 1}.swf`), file);
-            }
-
-            // post-cpip
-            const date = getNewspaperDate(v.year, v.month, v.day);
-            this.addRoute(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
-          } else {
-            const baseNewsPath = 'play/v2/content/local/en/news/';
-            const oldNewsPath = `${baseNewsPath}${getNewspaperDate(v.year, v.month, v.day)}`;
-            const newNewsPath = `${baseNewsPath}papers/${getNewspaperDate(v.year, v.month, v.day)}`;
-            const configXmlPath = 'tool:news_config.xml';
-            this.addRoute(path.join(oldNewsPath, 'config.xml'), configXmlPath);
-            this.addRoute(path.join(newNewsPath, 'config.xml'), configXmlPath);
-            const newspaperComponenets: Array<[string, string]> = [
-              ['front/header.swf', v.headerFront ?? 'archives:News285HeaderFront.swf'],
-              ['front/featureStory.swf', v.featureStory],
-              ['front/supportStory.swf', v.supportStory],
-              ['front/upcomingEvents.swf', v.upcomingEvents],
-              ['front/newsFlash.swf', v.newsFlash],
-              ['front/askAuntArctic.swf', v.askFront],
-              ['front/dividers.swf', v.dividersFront ?? 'approximation:dividers_blank.swf'],
-              ['front/navigation.swf', v.navigationFront ?? 'archives:News268NavigationFront.swf'],
-              ['back/header.swf', v.headerBack ?? 'archives:News285HeaderBack.swf'],
-              ['back/askAuntArctic.swf', v.askBack],
-              ['back/secrets.swf', v.secrets ?? 'archives:News285Secrets.swf'],
-              ['back/submitYourContent.swf', v.submit ?? 'archives:News268SubmitYourContent.swf'],
-              ['back/jokesAndRiddles.swf', v.jokes ?? 'archives:News285JokesAndRiddles.swf'],
-              ['back/dividers.swf', v.dividersBack ?? 'approximation:dividers_blank.swf'],
-              ['back/navigation.swf', v.navigationBack ?? 'archives:News268NavigationBack.swf']
-            ]
-            if (v.answers !== undefined) {
-              newspaperComponenets.push(['overlays/riddlesAnswers.swf', v.answers]);
-            }
-            if (v.extraJokes !== undefined) {
-              newspaperComponenets.push(['overlays/extraJokes.swf', v.extraJokes]);
-            }
-            if (v.secret !== undefined && v.secret !== null) {
-              newspaperComponenets.push(['overlays/secret.swf', v.secret]);
-            }
-            if (v.iglooWinners !== undefined) {
-              newspaperComponenets.push(['overlays/iglooWinners.swf', v.iglooWinners]);
-            }
-            if (v.featureMore !== undefined) {
-              newspaperComponenets.push(['overlays/featureMore.swf', v.featureMore ?? 'archives:News284FeatureMore.swf']);
-            }
-            if (v.supportMore !== undefined) {
-              newspaperComponenets.push(['overlays/supportMore.swf', v.supportMore ?? 'archives:News282SupportMore.swf']);
-            }
-            if (v.extra !== undefined) {
-              newspaperComponenets.push(['overlays/extra.swf', v.extra]);
-            }
-            
-            newspaperComponenets.forEach((pair) => {
-              const [route, file] = pair;
-              this.addRoute(path.join(oldNewsPath, 'content', route), file);
-              this.addRoute(path.join(newNewsPath, 'content', route), file);
-            }) 
+          // 2006 boiler room (likely inaccurate, this artwork/archives was probably not a newspaper but a bundle of papers)
+          if (typeof issue === 'number') {
+            this.addRoute(path.join('artwork/archives', `news${issue + 1}.swf`), file);
           }
+
+          // post-cpip
+          const date = getNewspaperDate(v.year, v.month, v.day);
+          this.addRoute(`play/v2/content/local/en/news/${date}/${date}.swf`, file);
+        } else {
+          const baseNewsPath = 'play/v2/content/local/en/news/';
+          const oldNewsPath = `${baseNewsPath}${getNewspaperDate(v.year, v.month, v.day)}`;
+          const newNewsPath = `${baseNewsPath}papers/${getNewspaperDate(v.year, v.month, v.day)}`;
+          const configXmlPath = 'tool:news_config.xml';
+          this.addRoute(path.join(oldNewsPath, 'config.xml'), configXmlPath);
+          this.addRoute(path.join(newNewsPath, 'config.xml'), configXmlPath);
+          const newspaperComponenets: Array<[string, string]> = [
+            ['front/header.swf', v.headerFront ?? 'archives:News285HeaderFront.swf'],
+            ['front/featureStory.swf', v.featureStory],
+            ['front/supportStory.swf', v.supportStory],
+            ['front/upcomingEvents.swf', v.upcomingEvents],
+            ['front/newsFlash.swf', v.newsFlash],
+            ['front/askAuntArctic.swf', v.askFront],
+            ['front/dividers.swf', v.dividersFront ?? 'approximation:dividers_blank.swf'],
+            ['front/navigation.swf', v.navigationFront ?? 'archives:News268NavigationFront.swf'],
+            ['back/header.swf', v.headerBack ?? 'archives:News285HeaderBack.swf'],
+            ['back/askAuntArctic.swf', v.askBack],
+            ['back/secrets.swf', v.secrets ?? 'archives:News285Secrets.swf'],
+            ['back/submitYourContent.swf', v.submit ?? 'archives:News268SubmitYourContent.swf'],
+            ['back/jokesAndRiddles.swf', v.jokes ?? 'archives:News285JokesAndRiddles.swf'],
+            ['back/dividers.swf', v.dividersBack ?? 'approximation:dividers_blank.swf'],
+            ['back/navigation.swf', v.navigationBack ?? 'archives:News268NavigationBack.swf']
+          ]
+          if (v.answers !== undefined) {
+            newspaperComponenets.push(['overlays/riddlesAnswers.swf', v.answers]);
+          }
+          if (v.extraJokes !== undefined) {
+            newspaperComponenets.push(['overlays/extraJokes.swf', v.extraJokes]);
+          }
+          if (v.secret !== undefined && v.secret !== null) {
+            newspaperComponenets.push(['overlays/secret.swf', v.secret]);
+          }
+          if (v.iglooWinners !== undefined) {
+            newspaperComponenets.push(['overlays/iglooWinners.swf', v.iglooWinners]);
+          }
+          if (v.featureMore !== undefined) {
+            newspaperComponenets.push(['overlays/featureMore.swf', v.featureMore ?? 'archives:News284FeatureMore.swf']);
+          }
+          if (v.supportMore !== undefined) {
+            newspaperComponenets.push(['overlays/supportMore.swf', v.supportMore ?? 'archives:News282SupportMore.swf']);
+          }
+          if (v.extra !== undefined) {
+            newspaperComponenets.push(['overlays/extra.swf', v.extra]);
+          }
+          
+          newspaperComponenets.forEach((pair) => {
+            const [route, file] = pair;
+            this.addRoute(path.join(oldNewsPath, 'content', route), file);
+            this.addRoute(path.join(newNewsPath, 'content', route), file);
+          }) 
         }
       },
       'chatVersion': (v) => {
