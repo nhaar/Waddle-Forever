@@ -4,7 +4,7 @@ import path from "path";
 import { IS_DEV } from "@common/constants";
 import { PACKAGE_INFO } from "./package-info";
 import { PackageName } from "./packages";
-import { DEFAULT_DIRECTORY, getFilesInDirectory, iterateEntries } from "@common/utils";
+import { DEFAULT_DIRECTORY, getFilesInDirectory, iterateEntries, MEDIA_DIRECTORY, readFile } from "@common/utils";
 
 /**
  * File reference is a term used in this code base to refer a string in the format
@@ -2220,7 +2220,8 @@ const SUBDIRECTORES = new Set([
   'slegacy',
   'svanilla',
   'mammoth',
-  'slippers07'
+  'slippers07',
+  'websites'
 ]);
 
 if (IS_DEV) {
@@ -2258,4 +2259,9 @@ export function getMediaFilePath(fileReference: string): string {
   }
 
   return path.join(pkgName, pkgPath);
+}
+
+
+export async function getMediaFile(fileReference: string): Promise<Buffer> {
+  return await readFile(path.join(MEDIA_DIRECTORY, getMediaFilePath(fileReference)));
 }

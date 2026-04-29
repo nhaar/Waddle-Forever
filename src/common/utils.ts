@@ -284,6 +284,17 @@ export class EventListener {
   }
 }
 
+export async function readFile(filePath: string) {
+  return new Promise<Buffer>((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    });
+  });
+}
+
 export const monthNames = [
   'January',
   'February',

@@ -32,8 +32,6 @@ export type ListSong = Song & {
 /** Represents a row of a 2D music list */
 type Row = [ListSong, ListSong];
 
-export type StaticFile = FileRef | ((s: SettingsManager) => FileRef);
-
 /** Represents a 2D music list */
 export type IglooList = [Row, Row, Row, Row, Row, Row, Row];
 
@@ -157,7 +155,7 @@ export type CPUpdate = {
 
   partyComment?: string;
 
-  fileChanges?: Record<string, StaticFile>;
+  fileChanges?: Record<string, FileRef>;
 
   startscreens?: Startscreens;
 
@@ -174,7 +172,7 @@ export type CPUpdate = {
 
   dateReference?: DateReference;
 
-  indexHtml?: string;
+  indexHtml?: FileRef;
   websiteFolder?: string;
 
   battleOp?: PartyOp;

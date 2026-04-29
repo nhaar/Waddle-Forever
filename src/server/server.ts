@@ -17,6 +17,7 @@ import { GameData } from './timelines/game-data';
 import { getGeneratorsMap, postGeneratorsMap } from './file-generators';
 import { getUpdates } from './updates/updates';
 import { ITEMS } from './game-logic/items';
+import { OVERRIDERS } from './file-server/overriders';
 
 type StartServerError = {
   type: 'mods';
@@ -164,7 +165,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
 
   const gameData = new GameData(getUpdates(), ITEMS, settingsManager);
 
-  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager, postGeneratorsMap(), settingsManager.mods);
+  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager, postGeneratorsMap(), settingsManager.mods, OVERRIDERS);
 
   server.use(fileServer.getExpressRouter());
 

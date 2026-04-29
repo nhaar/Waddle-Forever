@@ -5,45 +5,23 @@ import fs from 'fs';
 import { MODS_DIRECTORY } from '@common/paths';
 import { ModManager } from '@server/mods';
 import { FileGenerator } from '@server/file-generators';
-import { MEDIA_DIRECTORY } from '@common/utils';
+import { MEDIA_DIRECTORY, readFile } from '@common/utils';
 import { SettingsManager } from '@server/settings';
-
-function injectRuffleIntoHtml(s: SettingsManager, html: string) {
-  const ruffleConfig = JSON.stringify({
-    socketProxy: [
-      {
-        host: s.targetIP,
-        port: s.loginPort,
-        proxyUrl: `ws://${s.targetIP}:${s.loginPort}`,
-      },
-      {
-        host: s.targetIP,
-        port: s.worldPort,
-        proxyUrl: `ws://${s.targetIP}:${s.worldPort}`,
-      },
-    ]
-  });
-
-  const injectedScript = `
-    <script>
-      window.RufflePlayer = window.RufflePlayer || {};
-      window.RufflePlayer.config = ${ruffleConfig};
-    </script>
-  `;
-
-  return html.replace('</head>', `${injectedScript}</head>`);
-}
+import { FileOverrider, OverriderFunction } from './overriders';
 
 /** Server that serves files to the game webpage and files in the game */
 export class FileServer {
   /** Maps file route -> name of the mod that is using this route */
   private modFiles = new Map<string, string>();
 
-  constructor(private gameData: GameData, private dynamicFiles: Map<string, FileGenerator>, private settings: SettingsManager, private postGenerators: Map<string, FileGenerator>, modManager: ModManager) {
+  private overrider: FileOverrider;
+
+  constructor(private gameData: GameData, private dynamicFiles: Map<string, FileGenerator>, private settings: SettingsManager, private postGenerators: Map<string, FileGenerator>, modManager: ModManager, overrides: Record<string, OverriderFunction>) {
     this.updateModFiles(modManager);
     modManager.addListener(() => {
       this.updateModFiles(modManager);
     });
+    this.overrider = new FileOverrider(gameData, settings, overrides);
   }
 
   private updateModFiles(modManager: ModManager) {
@@ -76,43 +54,15 @@ export class FileServer {
         return generator(this.gameData, this.settings);
       }
     } else {
-      return await this.readFile(filePath);
+      return await readFile(filePath);
     }
+
+    const websiteFile = path.join(MEDIA_DIRECTORY, `default/websites/${this.gameData.getWebsite()}/${route}`);
+    if (fs.existsSync(websiteFile)) {
+      return await readFile(websiteFile);
+    }
+
     return undefined;
-  }
-
-  private async getIndexHtml(): Promise<string> {
-    const name = this.gameData.getIndexHtml();
-    let fileName = '';
-
-    if (this.settings.settings.minified_website && name !== 'modern-as3') {
-      if (this.gameData.getAs3()) {
-        fileName = 'default/websites/minified/minified-classic-as3.html';
-      } else if (this.gameData.isPreCpip()) {
-        fileName = 'default/websites/minified/minified-precpip.html';
-      } else {
-        fileName = 'default/websites/minified/minified-cpip.html';
-      }
-    } else {
-      fileName = `default/websites/${name}.html`;
-    }
-
-    return (await this.getMediaFile(fileName)).toString('utf-8');
-  }
-
-  private async readFile(filePath: string): Promise<Buffer> {
-    return new Promise<Buffer>((resolve, reject) => {
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(data);
-      });
-    });
-  }
-
-  private async getMediaFile(route: string): Promise<Buffer> {
-    return await this.readFile(path.join(MEDIA_DIRECTORY, route));
   }
 
   public getExpressRouter(): Router {
@@ -120,11 +70,22 @@ export class FileServer {
 
     // generic files (swfs, json, etc.)
     router.get('/*', (req: Request, res, next) => {
-      this.getFile(req.params[0]).then((binary) => {
+      const route = req.params[0];
+      this.getFile(route).then((binary) => {
         if (binary === undefined) {
           next();
         } else {
-          res.status(200).send(binary);
+          const split = route.split('.');
+          // if less than 1, then there was no file extension
+          // route with no file extension -> a GET request for an HTML file
+          const type = split.length < 2 ? '.html' : route.split('.').pop();
+          if (type === undefined) {
+            throw new Error('Split somehow returned empty list');
+          }
+          
+          this.overrider.override(route, binary).then((value) => {
+            res.status(200).type(type).send(value);
+          });
         }
       });
     });
@@ -134,23 +95,6 @@ export class FileServer {
         next();
       } else {
         res.send(generator(this.gameData, this.settings));
-      }
-    });
-
-    // html file
-    router.get('/', (_, res) => {
-      this.getIndexHtml().then(file => {
-        res.type('html').send(injectRuffleIntoHtml(this.settings, file));
-      });
-    });
-
-    // website files
-    router.get('/*', (req: Request, res, next) => {
-      const route = path.join(MEDIA_DIRECTORY, `default/websites/${this.gameData.getWebsite()}/${req.params[0]}`);
-      if (fs.existsSync(route)) {
-        res.sendFile(route);
-      } else {
-        next();
       }
     });
 
