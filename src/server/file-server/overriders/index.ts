@@ -1,11 +1,13 @@
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { overrideIndexHtml } from "./index.html";
+import { overrideLoadSwf } from "./load.swf";
 
 export type OverriderFunction = (d: GameData, s: SettingsManager, b: Buffer | string) => Promise<Buffer | string>;
 
 export const OVERRIDERS: Record<string, OverriderFunction> = {
-  '': overrideIndexHtml
+  '': overrideIndexHtml,
+  'load.swf': overrideLoadSwf
 };
 
 export class FileOverrider {
