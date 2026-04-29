@@ -318,7 +318,8 @@ type NewspaperIssue = {
 // todo refactor update timelines later
 // this is CPUpdateE which will become a DataUpdate of some sort
 export type CPUpdateE = CPUpdate & { 
-  pinRoom?: RoomName;
+  pinRoom?: { room: RoomName, frame?: number; };
+  hiddenPin?: string;
   issue?: NewspaperIssue;
 }
 
@@ -427,6 +428,7 @@ function consumePins(consumed: UpdateTimeline, updates: Update[]): void {
   let inPeriod = false;
 
   function addPin(p: Pin, date: Version, end: Version) {
+    const announcement = (!('hidden' in p) || !p.hidden) ? p.name : undefined;
     if ('file' in p) {
       consumed.push({
         date,
@@ -435,7 +437,8 @@ function consumePins(consumed: UpdateTimeline, updates: Update[]): void {
           rooms: {
             [p.room]: p.file
           },
-          'pinRoom': p.room
+          'pinRoom': { room: p.room, frame: p.frame },
+          'hiddenPin': announcement
         }
       });
     } else if ('room' in p) {
@@ -443,7 +446,8 @@ function consumePins(consumed: UpdateTimeline, updates: Update[]): void {
         date,
         end,
         update: {
-          'pinRoom': p.room
+          'pinRoom': p.room === undefined ? undefined : { room: p.room },
+          'hiddenPin': announcement
         }
       })
     }

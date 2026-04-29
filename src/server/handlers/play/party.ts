@@ -1,7 +1,5 @@
 import { Handler } from "..";
 import { Handle } from "../handles";
-import { findInVersionStrict } from "../../game-data";
-import { BAKERY_TIMELINE } from "../../timelines/cfc";
 
 const handler = new Handler();
 
@@ -38,7 +36,7 @@ handler.xt(Handle.GetBakeryState, (client) => {
 });
 
 handler.xt(Handle.SendEmote, (client, emote) => {
-  if (findInVersionStrict(client.version, BAKERY_TIMELINE) === false) {
+  if (!client.data.hasBakery()) {
     return;
   }
   // party3

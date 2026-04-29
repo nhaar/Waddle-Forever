@@ -13,14 +13,17 @@ import { POSTCARD_IDS } from "@server/game-data/postcard";
 import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
 import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
-import { ORIGINAL_STAMPBOOK, Stampbook } from "@server/game-data/stamps";
+import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
 import { FURNITURE } from "@server/game-logic/furniture";
 import { ItemTable } from "@server/game-logic/items";
+import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, WorldStamp } from "@server/updates";
+import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
 import path from "path";
-import { SCAVENGER_ICON_PATH, TICKET_INFO_PATH } from "./crumbs";
+
+const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
+const TICKET_INFO_PATH = 'close_ups/tickets.swf';
 
 export function getNewspaperDate(year: number, month: number, day: number) {
   return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
@@ -89,6 +92,16 @@ type GameState = {
   gameStrings: Map<string, string>;
   iglooMusic: IglooList | null;
   egg: number;
+  activeFeatures: string | null;
+  coinsForChange: boolean;
+  bakery: boolean;
+  cfcValues: [number, number, number] | null;
+  clientItems: Set<number>;
+  partyOp: PartyOp | null;
+  freeBrownPuffle: boolean;
+  gameStamps: Map<StampRoom, Set<number>>;
+  releasedStamps: Set<number>;
+  extraWaddleRooms: WaddleRoomInfo[];
 }
 
 function getFreshState(): GameState {
@@ -130,7 +143,17 @@ function getFreshState(): GameState {
     worldStamps: [],
     gameStrings: new Map<string, string>(),
     iglooMusic: null,
-    egg: 0
+    egg: 0,
+    activeFeatures: null,
+    coinsForChange: false,
+    bakery: false,
+    cfcValues: null,
+    clientItems: new Set<number>(),
+    partyOp: null,
+    freeBrownPuffle: false,
+    gameStamps: new Map<StampRoom, Set<number>>(),
+    releasedStamps: new Set<number>(),
+    extraWaddleRooms: []
   };
 }
 
@@ -222,6 +245,17 @@ export class GameData {
     });
   }
 
+  private addStampCategory(category: StampCategory) {
+    const stampRoom = STAMP_ROOMS[category.group_id];
+    if (stampRoom !== undefined) {
+      this.state.gameStamps.set(stampRoom, new Set(category.stamps.map(s => s.stamp_id)));
+    }
+    
+    category.stamps.forEach(stamp => {
+      this.state.releasedStamps.add(stamp.stamp_id);
+    });
+  }
+
   public addListener(callback: () => void): void {
     this.updateListener.addListener(callback);
   }
@@ -244,6 +278,9 @@ export class GameData {
           case 'stamps-release':
             this.state.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
             this.state.stamps = true;
+            ORIGINAL_STAMPBOOK.forEach(category => {
+              this.addStampCategory(category);
+            });
             break;
           case 'cpip':
             this.state.preCpip = false;
@@ -288,6 +325,8 @@ export class GameData {
         v.forEach(u => {
           if ('category' in u) {
             this.state.stampbook.push(JSON.parse(JSON.stringify(u.category)));
+
+            this.addStampCategory(u.category);
           } else {
             for (let i = 0; i < this.state.stampbook.length; i++) {
               if (this.state.stampbook[i].group_id === u.categoryId) {
@@ -295,6 +334,15 @@ export class GameData {
                 break;
               }
             }
+
+            const stampRoom = STAMP_ROOMS[u.categoryId];
+            const gameStampSet = this.state.gameStamps.get(stampRoom);
+            if (gameStampSet !== undefined) {
+              u.stamps.forEach(stamp => gameStampSet.add(stamp.stamp_id));
+            }
+            u.stamps.forEach(stamp => {
+              this.state.releasedStamps.add(stamp.stamp_id);
+            });
           }
         });
       },
@@ -334,7 +382,10 @@ export class GameData {
         this.state.unlockedDay = v;
       },
       'pinRoom': (v) => {
-        pinRoom = v;
+        pinRoom = v.room;
+        if (v.frame !== undefined) {
+          this.state.roomsFrame.set(v.room, v.frame);
+        }
       },
       'rooms': (v) => {
         iterateEntries(v, (room, value) => {
@@ -635,6 +686,38 @@ export class GameData {
       },
       'gameStrings': (v) => {
         this.state.gameStrings = new Map(Object.entries(v));
+      },
+      'activeFeatures': (v) => {
+        this.state.activeFeatures = v;
+      },
+      'coinsForChange': () => {
+        this.state.coinsForChange = true;
+      },
+      'bakery': () => {
+        this.state.bakery = true;
+      },
+      'cfcValues': (v) => {
+        this.state.cfcValues = v;
+      },
+      'clientFiles': (v) => {
+        v.forEach(id => this.state.clientItems.add(id));
+      },
+      'removeClientFiles': (v) => {
+        v.forEach(id => this.state.clientItems.delete(id));
+      },
+      'battleOp': (v) => {
+        this.state.partyOp = v;
+      },
+      'frames': (v) => {
+        iterateEntries(v, (room, frame) => {
+          this.state.roomsFrame.set(room, frame);
+        });
+      },
+      'freeBrownPuffle': (v) => {
+        this.state.freeBrownPuffle = v;
+      },
+      'newWaddleRooms': (v) => {
+        this.state.extraWaddleRooms = v;
       }
     }
 
@@ -821,5 +904,45 @@ export class GameData {
 
   public getEgg() {
     return this.state.egg;
+  }
+
+  public getActiveFeatures() {
+    return this.state.activeFeatures;
+  }
+
+  public hasCoinsForChange() {
+    return this.state.coinsForChange;
+  }
+
+  public hasBakery() {
+    return this.state.bakery;
+  }
+
+  public getCoinsForChangeDonations() {
+    return this.state.cfcValues;
+  }
+
+  public getClientItems() {
+    return this.state.clientItems;
+  }
+
+  public getPartyOp() {
+    return this.state.partyOp;
+  }
+
+  public isBrownPuffleFree() {
+    return this.state.freeBrownPuffle;
+  }
+
+  public getGameStamps(room: number) {
+    return this.state.gameStamps.get(room) ?? new Set<number>();
+  }
+
+  public isStampAvailable(stamp: number): boolean {
+    return this.state.releasedStamps.has(stamp);
+  }
+
+  public getExtraWaddleRooms() {
+    return this.state.extraWaddleRooms;
   }
 }

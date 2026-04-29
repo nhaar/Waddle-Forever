@@ -2,9 +2,7 @@ import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
 import { isEqual, isLower, isLowerOrEqual, processVersion, Version, addDays } from '../server/routes/versions';
-import { PIN_TIMELINE } from '../server/timelines/pins';
 import { UPDATES } from '../server/updates/updates';
-import { NEWSPAPER_TIMELINE } from '../server/timelines/newspapers';
 import { CatalogItems } from '../server/updates';
 import { getDate } from '@server/timelines/dates';
 import { getPopupCreator } from './popups';
@@ -217,15 +215,11 @@ function getTimeline(): Day[] {
         }
       }
     }
-  });
-
-  NEWSPAPER_TIMELINE.forEach((update, i) => {
-    addEvent(map, update.date, `Issue #${i + 1} of the newspaper releases`, 'news');
-  });
-
-  PIN_TIMELINE.forEach((pin) => {
-    if (!('hidden' in pin && pin.hidden === true)) {
-      addEvent(map, pin.date, `The ${pin.name} is now hidden in the island`, 'pin');
+    if (update.update.issue !== undefined) {
+      addEvent(map, update.date, `Issue #${update.update.issue.edition} of the newspaper releases`, 'news');
+    }
+    if (update.update.hiddenPin !== undefined) {
+      addEvent(map, update.date, `The ${update.update.hiddenPin} is now hidden in the island`, 'pin');
     }
   });
 

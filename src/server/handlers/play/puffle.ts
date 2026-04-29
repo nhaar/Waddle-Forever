@@ -5,8 +5,6 @@ import { Client } from "@server/client";
 import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
-import { BROWN_PUFFLE_TIMELINE } from "@server/timelines/puffles";
-import { findInVersion } from "@server/game-data";
 
 const handler = new Handler()
 
@@ -411,7 +409,7 @@ handler.xt(Handle.AdoptPuffle, (client, puffleType, puffleName) => {
   }
   let cost = 800;
 
-  if (puffleType == 9 && findInVersion(client.version, BROWN_PUFFLE_TIMELINE)) { // free brown puffle
+  if (puffleType == 9 && client.data.isBrownPuffleFree()) { // free brown puffle
     cost = 0;
   }
 
