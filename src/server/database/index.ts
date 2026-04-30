@@ -16,7 +16,7 @@ const versionFile = path.join(DATABASE_DIRECTORY, '.version');
  * 
  * This also allows to edit the database easily and the performance is not an issue
  */
-class JsonDatabase {
+export class JsonDatabase {
   /** Absolute path to the database folder */
   root: string;
 

@@ -867,4 +867,66 @@ export class Penguin {
       db.update<PenguinData>(Databases.Penguins, this.id, this.serialize());
     }
   }
+
+  static create (name: string, color: number = 1, params: DefaultPenguinParams = {}): [PenguinData, number] {
+    const capitalizedName = capitalizeName(name);
+    const defaultPenguin = Penguin.getDefault(0, capitalizedName, params).serialize();
+    return db.add<PenguinData>(Databases.Penguins, {
+      ...defaultPenguin,
+      name: capitalizedName,
+      color,
+      mascot: 0
+    });
+  }
+
+  getEngine1Crumb(roomInfo: {
+    x: number,
+    y: number,
+    frame: number
+  } = { x: 0, y: 0, frame: 0 }) {
+    const { x, y, frame } = roomInfo;
+    return [
+      this.id,
+      this.name,
+      this.color,
+      this.head,
+      this.face,
+      this.neck,
+      this.body,
+      this.hand,
+      this.feet,
+      this.pin,
+      this.background,
+      x, // X
+      y, // y
+      frame, // TODO frame
+      this.isMember ? 1 : 0
+    ].join('|');
+  }
+
+  static getPenguinFromName (name: string, registration: number, member: boolean): Penguin {
+    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
+
+    if (data === undefined) {
+      data = Penguin.create(name, 1, {
+        is_member: member,
+        virtualRegistrationTimestamp: registration
+      });
+    }
+
+    
+    const [penguinData, id] = data;
+    
+    // fixing time traveling backwards
+    if (registration < penguinData.virtualRegistrationTimestamp) {
+      penguinData.virtualRegistrationTimestamp = registration;
+    }
+    return new Penguin(id, penguinData);
+  }
+}
+
+function capitalizeName(name: string): string {
+  return name.split(' ').map((name => {
+    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
+  })).join(' ');
 }

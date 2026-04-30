@@ -1,15 +1,11 @@
 import { XtPacket } from '..';
 import { Client, Server } from '../client';
-import express, { Express } from 'express';
 import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
 import { logdebug } from '../logger';
 
 type XTCallback = (client: Client, ...args: string[]) => boolean
 type ClientCallback = (client: Client) => void
 type XMLCallback = (client: Client, data: string) => void
-
-type PostCallback = (server: Server, body: any) => string
-type GetCallback = (server: Server) => string;
 
 type XtParams = {
   once?: boolean
@@ -109,8 +105,6 @@ export class Handler {
   listeners: Map<string, XTCallback[]>;
   disconnectListeners: ClientCallback[];
   loginListeners: ClientCallback[];
-  phpListeners: Map<string, PostCallback>;
-  getListeners: Map<string, GetCallback>;
   xmlListeners: Map<string, XMLCallback>;
   onBoot: Array<(s: Server) => void>;
   private _commandHandler: ((client: Client, message: string) => void) | undefined;
@@ -119,8 +113,6 @@ export class Handler {
     this.listeners = new Map<string, XTCallback[]>();
     this.disconnectListeners = [];
     this.loginListeners = [];
-    this.phpListeners = new Map<string, PostCallback>();
-    this.getListeners = new Map<string, GetCallback>();
     this.xmlListeners = new Map<string, XMLCallback>();
     this.onBoot = [];
   }
@@ -165,14 +157,6 @@ export class Handler {
   /** Add listener for an XML action */
   xml (action: string, method: XMLCallback): void {
     this.xmlListeners.set(action, method);
-  }
-
-  post (path: string, method: PostCallback): void {
-    this.phpListeners.set(path, method);
-  }
-
-  get(path: string, method: GetCallback): void {
-    this.getListeners.set(path, method);
   }
 
   disconnect (method: ClientCallback): void {
@@ -270,12 +254,6 @@ export class Handler {
     });
     this.disconnectListeners = [...this.disconnectListeners, ...handler.disconnectListeners];
     this.loginListeners = [...this.loginListeners, ...handler.loginListeners];
-    handler.phpListeners.forEach((callback, name) => {
-      this.phpListeners.set(name, callback);
-    })
-    handler.getListeners.forEach((callback, name) => {
-      this.getListeners.set(name, callback);
-    })
     handler.xmlListeners.forEach((callback, action) => {
       this.xmlListeners.set(action, callback);
     });
@@ -284,21 +262,5 @@ export class Handler {
     if (comandsHandler !== undefined) {
       this.addCommandsHandler(comandsHandler);
     }
-  }
-
-  /** Handlers that listen for POST requests in the HTTP server */
-  useEndpoints (gameServer: Server, expressServer: Express) {
-    expressServer.use(express.urlencoded({ extended: true }))
-    // this is currently only required because of .php routes
-    this.phpListeners.forEach((callback, path) => {
-      expressServer.post(path, (req, res) => {
-        res.send(callback(gameServer, req.body))
-      })
-    })
-    this.getListeners.forEach((callback, path) => {
-      expressServer.get(path, (_, res) => {
-        res.send(callback(gameServer))
-      })
-    })
   }
 }

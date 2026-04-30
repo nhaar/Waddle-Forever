@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { SETTINGS_PATH } from '../common/paths';
-import { isVersionValid, Version } from './routes/versions';
+import { isVersionValid, processVersion, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
 import { ModManager } from './mods';
@@ -131,6 +131,19 @@ export class SettingsManager {
 
   get worldPort() {
     return this.targetPort + WORLD_DELTA;
+  }
+
+  getVirtualDate(offset: number): Date {
+    const [year, month, day] = processVersion(this.settings.version);
+    // simulating PST time for the current day
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+
+    // date generates this time thinking in the same timezone as the user
+    // an arbitrary offset may be applied depending on how each client behaves
+    return new Date(year, month - 1, day, hour + offset, minute, second);
   }
 }
 

@@ -19,19 +19,6 @@ function canHandleBuddy(client: Client): boolean {
   return client.isEngine1;
 }
 
-function getPenguinNameById(id: number): string | undefined {
-  return Penguin.getById(id)?.name;
-}
-
-function formatBuddyEntry(id: number, server: Client['server'], includeOnlineFlag: boolean): string {
-  const name = getPenguinNameById(id) ?? server.getPlayerById(id)?.penguin.name ?? 'Unknown';
-  if (!includeOnlineFlag) {
-    return `${id}|${name}`;
-  }
-  const online = server.getPlayerById(id) !== undefined;
-  return online ? `${id}|${name}|1` : `${id}|${name}`;
-}
-
 function sendBuddyOnlineList(client: Client, excludeId?: number): void {
   const onlineIds = client.penguin.getBuddies().filter((id) => {
     if (excludeId !== undefined && id === excludeId) {
@@ -512,7 +499,7 @@ const handleGetBuddies = (client: Client) => {
     return;
   }
   const buddies = client.penguin.getBuddies()
-    .map((id) => formatBuddyEntry(id, client.server, true));
+    .map((id) => client.server.formatBuddyEntry(id, true));
   if (buddies.length === 0) {
     client.sendXtEmptyLast('gb');
     return;
@@ -695,7 +682,7 @@ const getPlayerOldHandler = (client: Client, playerId: number | string) => {
   }
   const penguin = Penguin.getById(targetId);
   if (penguin !== undefined) {
-    client.sendXt('gp', Client.engine1Crumb(penguin), 0);
+    client.sendXt('gp', penguin.getEngine1Crumb(), 0);
     return;
   }
   // fallback: respond with minimal crumb so client doesn't hang
@@ -905,67 +892,6 @@ handler.xt(Handle.UpdateIglooMusic2007, (client, music) => {
   client.penguin.updateIgloo({ music });
   client.update();
 });
-
-// Logging in
-handler.post('/php/login.php', (server, body) => {
-  const { Username } = body;
-
-  if (server.settings.no_create_via_login && !server.penguinExists(Username)) {
-    return 'e=100';
-  }
-
-  const penguin = server.getPenguinFromName(Username);
-
-  const virtualDate = server.getVirtualDate(43);
-  const buddies = penguin.getBuddies();
-  const buddyList = buddies.map((id) => formatBuddyEntry(id, server, true)).join(',');
-
-  const params: Record<string, number | string> = {
-    crumb: Client.engine1Crumb(penguin),
-    k1: 'a',
-    c: penguin.coins,
-    s: penguin.isSafeChat ? 1 : 0,
-    // jd uses non virtual date, there simulating age delta it with real time
-    jd: getDateString(Date.now() - (server.getVirtualDate(0).getTime() - penguin.virtualRegistration)),
-    ed: '10000-1-1', // EXPIRACY DATE TODO what is it for?
-    h: '', // TODO what is?
-    w: '100|0', // TODO what is?
-    m: '', // TODO what is
-    bl: buddyList,
-    nl: '',
-    il: server.getItemsFiltered(penguin.getItems()).join('|'), // item list
-    td: `${virtualDate.getUTCFullYear()}-${String(virtualDate.getUTCMonth()).padStart(2, '0')}-${String(virtualDate.getUTCDate()).padStart(2, '0')}:${virtualDate.getUTCHours()}:${virtualDate.getUTCMinutes()}:${virtualDate.getUTCSeconds()}` // used for the snow forts clock in later years
-  }
-
-  let response = ''
-  for (const key in params) {
-    response += `&${key}=${params[key]}`
-  }
-  return response 
-})
-
-handler.post('/php/online.php', () => {
-  return '0';
-});
-
-// returns a crumb for a given player ID
-handler.post('/php/gp.php', (server, body) => {
-  const rawId = body.PlayerId ?? body.playerId ?? body.id;
-  const penguinId = Number(rawId);
-  if (!Number.isFinite(penguinId)) {
-    return 'e=0&crumb=0|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0';
-  }
-
-  const penguin = Penguin.getById(penguinId);
-  if (penguin !== undefined) {
-    const crumb = Client.engine1Crumb(penguin);
-    return `e=0&crumb=${crumb}`;
-  }
-
-  const crumb = `${penguinId}|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0`;
-  return `e=0&crumb=${crumb}`;
-});
-
 handler.disconnect((client) => {
   if (client.hasPenguin()) {
     if (client.isAgentPending()) {

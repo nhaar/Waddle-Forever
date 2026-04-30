@@ -639,25 +639,13 @@ export class Server {
   untrackPlayer(id: number): void {
     this._playersById.delete(id);
   }
+
+  getVirtualDate(offset: number): Date {
+    return this._settingsManager.getVirtualDate(offset);
+  }
+
   getPenguinFromName (name: string): Penguin {
-    let data = db.get<PenguinData>(Databases.Penguins, 'name', name);
-    const date = this.getVirtualDate(0).getTime();
-
-    if (data === undefined) {
-      data = Client.create(name, 1, {
-        is_member: this.settings.always_member,
-        virtualRegistrationTimestamp: date
-      });
-    }
-
-    
-    const [penguinData, id] = data;
-    
-    // fixing time traveling backwards
-    if (date < penguinData.virtualRegistrationTimestamp) {
-      penguinData.virtualRegistrationTimestamp = date;
-    }
-    return new Penguin(id, penguinData);
+    return Penguin.getPenguinFromName(name, this._settingsManager.getVirtualDate(0).getTime(), this.settings.always_member);
   }
 
   /** Make an igloo open */
@@ -745,19 +733,6 @@ export class Server {
     return this._followers.get(player) ?? [];
   }
 
-  getVirtualDate(offset: number): Date {
-    const [year, month, day] = processVersion(this.settings.version);
-    // simulating PST time for the current day
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const second = now.getSeconds();
-
-    // date generates this time thinking in the same timezone as the user
-    // an arbitrary offset may be applied depending on how each client behaves
-    return new Date(year, month - 1, day, hour + offset, minute, second);
-  }
-
 
   get waddleConstructors() {
     if (this._waddleConstructors === undefined) {
@@ -827,12 +802,15 @@ export class Server {
   removeSpectator(id: number): boolean {
     return this._tableSectators.delete(id);
   }
-}
 
-function capitalizeName(name: string): string {
-  return name.split(' ').map((name => {
-    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
-  })).join(' ');
+  formatBuddyEntry(id: number, includeOnlineFlag: boolean): string {
+    const name = Penguin.getById(id)?.name ?? this.getPlayerById(id)?.penguin.name ?? 'Unknown';
+    if (!includeOnlineFlag) {
+      return `${id}|${name}`;
+    }
+    const online = this.getPlayerById(id) !== undefined;
+    return online ? `${id}|${name}|1` : `${id}|${name}`;
+  }
 }
 
 export interface ClientSocket {
@@ -948,31 +926,6 @@ export class Client {
     await this.send(this.getXtMessage(false, handler, ...args));
   }
 
-  static engine1Crumb (penguin: Penguin, roomInfo: {
-    x: number,
-    y: number,
-    frame: number
-  } = { x: 0, y: 0, frame: 0 }): string {
-    const { x, y, frame } = roomInfo;
-    return [
-      penguin.id,
-      penguin.name,
-      penguin.color,
-      penguin.head,
-      penguin.face,
-      penguin.neck,
-      penguin.body,
-      penguin.hand,
-      penguin.feet,
-      penguin.pin,
-      penguin.background,
-      x, // X
-      y, // y
-      frame, // TODO frame
-      penguin.isMember ? 1 : 0
-    ].join('|')
-  }
-
   get x(): number {
     return this._roomInfo?.x ?? 0;
   }
@@ -995,7 +948,7 @@ export class Client {
 
   get penguinString (): string {
     if (isEngine1(this.version)) {
-      return Client.engine1Crumb(this.penguin, { x: this.x, y: this.y, frame: this.frame });
+      return this.penguin.getEngine1Crumb({ x: this.x, y: this.y, frame: this.frame });
     } else {
       // meant to be approval, but always approved (1), TODO: non approved names in the future
       const approval = isGreaterOrEqual(this.version, getDate('string-verify')) ? [1] : []
@@ -1138,7 +1091,8 @@ export class Client {
   }
 
   setPenguinFromName (name: string): void {
-    this._penguin = this.server.getPenguinFromName(name)
+    this._penguin = this.server.getPenguinFromName(name);
+    this.server.getPenguinFromName(name)
     this.checkSpecialName();
 
     this._server.trackPlayer(this.penguin.id, this);
@@ -1153,17 +1107,6 @@ export class Client {
     this._penguin = new Penguin(id, penguin);
     this.checkSpecialName();
     this._server.trackPlayer(id, this);
-  }
-
-  static create (name: string, color: number = 1, params: DefaultPenguinParams = {}): [PenguinData, number] {
-    const capitalizedName = capitalizeName(name);
-    const defaultPenguin = Penguin.getDefault(0, capitalizedName, params).serialize();
-    return db.add<PenguinData>(Databases.Penguins, {
-      ...defaultPenguin,
-      name: capitalizedName,
-      color,
-      mascot: 0
-    });
   }
 
   canBuy (item: number): boolean {

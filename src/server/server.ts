@@ -1,4 +1,3 @@
-import express, { Express } from 'express';
 import net from 'net';
 import { WebSocketServer } from 'ws'
 
@@ -9,23 +8,16 @@ import loginHandler from './handlers/login'
 import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
 import db from './database';
-import { HTTP_PORT } from '../common/constants';
-import { FileServer } from './file-server';
 import { GameData } from './timelines/game-data';
-import { getGeneratorsMap, postGeneratorsMap } from './file-generators';
-import { getUpdates } from './updates/updates';
-import { ITEMS } from './game-logic/items';
-import { OVERRIDERS } from './file-server/overriders';
+import { HttpServer } from './http';
 
 type StartServerError = {
   type: 'mods';
   message: string;
 };
 
-const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, server: Express, gameData: GameData): Promise<Server> => {  
+const createServer = async (type: string, port: number, handler: Handler, settingsManager: SettingsManager, gameData: GameData): Promise<Server> => {  
   const gameServer = new Server(settingsManager, gameData);
-
-  handler.useEndpoints(gameServer, server);
 
   handler.bootServer(gameServer);
 
@@ -162,28 +154,14 @@ const startServer = async (settingsManager: SettingsManager): Promise<{
 
   db.loadDatabase();
 
-  const server = express();
-
-
-  const gameData = new GameData(getUpdates(), ITEMS, settingsManager);
-
-  const fileServer = new FileServer(gameData, getGeneratorsMap(), settingsManager, postGeneratorsMap(), settingsManager.mods, OVERRIDERS);
-
-  server.use(fileServer.getExpressRouter());
-
+  const gameData = new GameData(settingsManager);
   
   // TODO in the future, "world" and "old" should be merged somewhat
-  await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server, gameData);
-  const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server, gameData);
-  
-  await new Promise<void>((resolve, reject) => {
-    server.listen(HTTP_PORT, () => {
-      console.log(`HTTP server listening on port ${HTTP_PORT}`);
-      resolve();
-    }).on('error', (err) => {
-      reject(err)
-    })
-  })
+  await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, gameData);
+  const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, gameData);
+
+  const httpServer = new HttpServer(gameData, settingsManager, db, world);
+  await httpServer.setupServer();
 
   // mods that fail to initialize are turned off and the user must be warned about
   const failedMods = settingsManager.mods.initializeMods();

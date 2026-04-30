@@ -193,11 +193,6 @@ handler.xt(Handle.PlayerTransformation, (client, id) => {
   client.sendRoomXt('spts', client.penguin.id, id);
 });
 
-handler.get('/flash/date.php', (server) => {
-  const [year, month, day] = processVersion(server.settings.version)
-  return `output=${String(day).padStart(2, '0')}${String(month).padStart(2, '0')}${String(year % 2000).padStart(2, '0')}`;
-});
-
 handler.disconnect((client) => {
   client.disconnect();
 })
