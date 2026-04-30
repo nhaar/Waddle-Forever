@@ -2,7 +2,7 @@ import { Handler } from "..";
 import { Handle } from "../handles";
 import { Client } from "@server/client";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 const teamScore: number[] = [0, 0];
 

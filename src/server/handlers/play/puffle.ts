@@ -6,7 +6,7 @@ import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "../../game-logic/puffle-item";
 import { Handle } from "../handles";
 
-const handler = new Handler()
+const handler = new Handler<Client>()
 
 /** Brush, bath, sleep, basically functionalities disguised as items */
 const BASE_CARE_INVENTORY = [1, 8, 37];

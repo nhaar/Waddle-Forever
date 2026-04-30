@@ -1,9 +1,7 @@
-import net from 'net';
-
-import db, { Databases, Igloo, IglooFurniture, PenguinData } from './database';
+import db, { Databases, Igloo, IglooFurniture, JsonDatabase, PenguinData } from './database';
 import { Settings, SettingsManager } from './settings';
-import { DefaultPenguinParams, Penguin, PenguinEquipmentSlot } from './penguin';
-import { isGreaterOrEqual, isLower, processVersion, Version } from './routes/versions';
+import { Penguin, PenguinEquipmentSlot } from './penguin';
+import { isGreaterOrEqual, isLower, Version } from './routes/versions';
 import { getCost, Item, ITEMS, ItemType } from './game-logic/items';
 import { isFlag } from './game-logic/flags';
 import PuffleLaunchGameSet from './game-logic/pufflelaunch';
@@ -19,6 +17,7 @@ import { Table } from './handlers/play/table';
 import { FindFourTable } from './handlers/play/find-four';
 import { MancalaTable } from './handlers/play/mancala';
 import { GameData } from './timelines/game-data';
+import { ClientSocket, getXtMessage } from './socket-server';
 
 type ServerType = 'Login' | 'World';
 
@@ -813,11 +812,6 @@ export class Server {
   }
 }
 
-export interface ClientSocket {
-  write: (data: string) => Promise<void>;
-  end: (data?: string) => void;
-}
-
 export class Client {
   private _socket: ClientSocket | undefined;
   /** Reference to the server */
@@ -868,7 +862,7 @@ export class Client {
 
   private _pendingAgent: boolean = false;
 
-  constructor (server: Server, socket: ClientSocket | undefined, type: ServerType) {
+  constructor (server: Server, socket: ClientSocket | undefined, type: ServerType, private _db: JsonDatabase | null) {
     this._server = server;
     this._socket = socket;
     this.serverType = type;
@@ -882,6 +876,13 @@ export class Client {
     this.handledXts = new Map<string, boolean>();
 
     this.xtTimestamps = new Map<string, number>();
+  }
+
+  public get db() {
+    if (this._db === null) {
+      throw new Error('no db');
+    }
+    return this._db;
   }
 
   public get version(): Version {
@@ -912,18 +913,14 @@ export class Client {
     return this.socket?.write(message)
   }
 
-  private getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
-    return `%xt%${handler}%-1%` + args.join('%') + (emptyLast ? '' : '%');
-  }
-
   /** Send message but the last XT arg is not empty. Some handlers need this apparently */
   sendXtEmptyLast(handler: string, ...args: Array<number | string>): void {
-    this.send(this.getXtMessage(true, handler, ...args));
+    this.send(getXtMessage(true, handler, ...args));
   }
 
   async sendXt (handler: string, ...args: Array<number | string>): Promise<void> {
     logverbose('\x1b[32mSending XT:\x1b[0m ', handler, args);
-    await this.send(this.getXtMessage(false, handler, ...args));
+    await this.send(getXtMessage(false, handler, ...args));
   }
 
   get x(): number {
@@ -1722,7 +1719,7 @@ class Bot extends Client {
   private _followInfo: FollowInfo | undefined;
 
   constructor(server: Server, name: string) {
-    super(server, undefined, 'World');
+    super(server, undefined, 'World', null);
     this._penguin = Penguin.getDefault(10000 + server.getNewBotId(), name);
   }
 

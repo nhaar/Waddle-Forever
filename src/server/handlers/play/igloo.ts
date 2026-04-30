@@ -6,7 +6,7 @@ import { Handle } from "../handles";
 import { isLower } from "@server/routes/versions";
 import { FURNITURE } from "@server/game-logic/furniture";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // get igloo information
 handler.xt(Handle.GetIgloo, (client, id) => {

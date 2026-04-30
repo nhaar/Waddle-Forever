@@ -1,7 +1,8 @@
+import { Client } from "@server/client";
 import { Handler } from "..";
 import { Handle } from "../handles";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // donate coins for coins for change
 handler.xt(Handle.DonateCoins, (client, choice, donation) => {

@@ -1,4 +1,4 @@
-import { Server } from "@server/client";
+import { Client, Server } from "@server/client";
 import { Handler } from "@server/handlers";
 import { SettingsManager } from "@server/settings";
 import { BrowserWindow, ipcMain } from "electron";
@@ -13,8 +13,8 @@ export type Popups = Map<string, BrowserWindow>;
 export function getPopupCreator(
   name: string,
   eventListeners: string[],
-  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: Server, handler: Handler) => BrowserWindow
-): (mainWin: BrowserWindow, wins: Popups, settings: SettingsManager, gameServer: Server, handler: Handler) => Promise<void> {
+  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: Server, handler: Handler<Client>) => BrowserWindow
+): (mainWin: BrowserWindow, wins: Popups, settings: SettingsManager, gameServer: Server, handler: Handler<Client>) => Promise<void> {
   return (async (mainWin, wins, settings, gameServer, handler) => {
     const prev = wins.get(name);
     if (prev !== undefined) {

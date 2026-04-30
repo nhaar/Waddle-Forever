@@ -18,7 +18,7 @@ import { GlobalSettings } from '@common/utils';
 import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
-import { Server } from '@server/client';
+import { Client, Server } from '@server/client';
 import { Handler } from '@server/handlers';
 
 log.initialize();
@@ -35,7 +35,7 @@ if (process.platform === 'linux') {
 }
 
 let server: Server | null = null;
-let handler: Handler | null = null;
+let handler: Handler<Client> | null = null;
 
 
 loadFlashPlugin(app);

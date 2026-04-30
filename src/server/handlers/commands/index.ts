@@ -8,7 +8,7 @@ import { randomInt, Vector } from "@common/utils";
 import { ArgumentsIndicator, GetArgumentsType } from "../handles";
 import { logdebug } from "@server/logger";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 type CommandCallback = (client: Client, ...args: string[]) => void;
 

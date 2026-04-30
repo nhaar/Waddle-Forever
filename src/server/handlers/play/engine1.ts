@@ -12,7 +12,7 @@ import { getFlooringCost, getIglooCost } from '../../../server/game-logic/iglooI
 import { Table } from './table';
 import { ROOMS } from '../../game-data/rooms';
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // restrict post-cpip clients from using buddy system (not yet implemented)
 function canHandleBuddy(client: Client): boolean {

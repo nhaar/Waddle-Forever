@@ -1,9 +1,10 @@
+import { Client } from '@server/client';
 import { Handler } from '..';
 import { Room } from '../../game-logic/rooms';
 import { Handle } from '../handles';
 import { getClientPuffleIds } from './puffle';
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 handler.xt(Handle.JoinServer, async (client) => {
   if (client.isEngine3) {

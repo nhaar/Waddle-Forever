@@ -3,8 +3,9 @@ import { Handler } from "..";
 import { choose, chooseN } from "@common/utils";
 import { Handle } from "../handles";
 import { CARDS } from "@server/game-logic/cards";
+import { Client } from "@server/client";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // get ninja rank
 handler.xt(Handle.GetNinjaRanks, (client) => {

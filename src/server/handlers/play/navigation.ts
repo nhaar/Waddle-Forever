@@ -3,10 +3,10 @@ import { SledRace } from '../games/sled';
 import { CardJitsu } from '../games/card';
 import { Handle } from '../handles';
 import { CardJitsuFire } from '../games/fire';
-import { processVersion } from '../../routes/versions';
 import { Room } from '@server/game-logic/rooms';
+import { Client, Server } from '@server/client';
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // client requesting to join room
 
@@ -144,13 +144,13 @@ handler.xt(Handle.CloseBook, (client) => {
   client.sendRoomXt('rt', client.penguin.id);
 });
 
-handler.boot(s => {
+export const initWaddleConstructors = (s: Server) => {
   s.waddleConstructors = {
     'card': CardJitsu,
     'sled': SledRace,
     'fire': CardJitsuFire
   };
-});
+}
 
 // join a waddle
 handler.xt(Handle.JoinWaddle, (client, waddle) => {

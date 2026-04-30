@@ -12,10 +12,10 @@ import { SettingsManager } from "@server/settings";
 import { createMultiplayerSettings } from "./multiplayer";
 import { createCommands } from "./commands";
 import { Popups } from "./popups";
-import { Server } from "@server/client";
+import { Client, Server } from "@server/client";
 import { Handler } from "@server/handlers";
 
-const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: Server, handler: Handler): MenuItemConstructorOptions[] => {
+const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: Server, handler: Handler<Client>): MenuItemConstructorOptions[] => {
   const app: MenuItemConstructorOptions = { 
     id: '0', 
     label: 'Waddle Forever', 
@@ -139,7 +139,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     [options, timeline, view];
 };
 
-const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: Server, handler: Handler) => {
+const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: Server, handler: Handler<Client>) => {
   const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings, serverSettings, popups, gameServer, handler);
   buildMenu(menuTemplate);
 };

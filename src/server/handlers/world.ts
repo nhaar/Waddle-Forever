@@ -1,5 +1,5 @@
 import joinHandler from './play/join';
-import loginHandler from './play/login';
+import { worldLoginHandler } from './play/login';
 import navigationHandler from './play/navigation';
 import commandsHandler from './commands';
 import itemHandler from './play/item';
@@ -20,9 +20,10 @@ import puckHandler from './play/puck';
 import engine1 from './play/engine1';
 import create from './play/create';
 import { Handler } from '.';
+import { Client } from '@server/client';
 
-const handler = new Handler();
-handler.use(loginHandler);
+const handler = new Handler<Client>();
+handler.use(worldLoginHandler);
 handler.use(joinHandler);
 handler.use(navigationHandler);
 handler.use(commandsHandler);

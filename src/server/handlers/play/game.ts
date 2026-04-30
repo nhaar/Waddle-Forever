@@ -1,9 +1,10 @@
 import { choose } from "@common/utils";
+import { Client } from "@server/client";
 import { Handler } from "..";
 import { SPY_DRILLS_DATA } from "../../game-logic/spy-drills";
 import { Handle } from "../handles";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // currently only supporting puffle launch. There may be other games that use this
 // get game data

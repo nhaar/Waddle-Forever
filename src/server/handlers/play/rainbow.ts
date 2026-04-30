@@ -1,8 +1,9 @@
+import { Client } from "@server/client";
 import { isRainbowStage } from "@server/database";
 import { Handler } from "..";
 import { Handle } from "../handles";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 /** Status of the item and coin rewards of each task */
 enum ItemStatus {

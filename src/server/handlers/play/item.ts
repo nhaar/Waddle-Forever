@@ -2,8 +2,9 @@ import { ITEMS, ItemType } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
 import { isGameRoom } from "../../game-logic/rooms";
+import { Client } from "@server/client";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // sending inventory to player
 handler.xt(Handle.GetInventory, (client) => {

@@ -4,7 +4,7 @@ import { Client } from "@server/client";
 import { HandleName, HandleArguments, GetArgumentsType, ArgumentsIndicator } from "../handles";
 
 /** XT Handler but for a Waddle Game */
-export class WaddleHandler<GameLogic> extends Handler {
+export class WaddleHandler<GameLogic> extends Handler<Client> {
   private _name: WaddleName;
   
   constructor(name: WaddleName) {

@@ -1,7 +1,8 @@
+import { Client } from "@server/client";
 import { Handler } from "..";
 import { Handle } from "../handles";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // mail system
 handler.xt(Handle.GetMail, (client) => {

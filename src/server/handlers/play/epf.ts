@@ -1,8 +1,9 @@
 import { ITEMS } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
+import { Client } from "@server/client";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // check if is an epf agent
 handler.xt(Handle.GetEpfStatus, (client) => {

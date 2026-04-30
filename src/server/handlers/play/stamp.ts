@@ -1,8 +1,9 @@
 import { ITEMS, ItemType } from "../../game-logic/items";
 import { Handler } from "..";
 import { Handle } from "../handles";
+import { Client } from "@server/client";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
 // getting pin information opening stampbook
 handler.xt(Handle.GetPinInformation, (client, id) => {

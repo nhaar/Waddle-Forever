@@ -1,11 +1,15 @@
 import { XtPacket } from '..';
-import { Client, Server } from '../client';
 import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
 import { logdebug } from '../logger';
+import { ClientSocket } from '@server/socket-server';
 
-type XTCallback = (client: Client, ...args: string[]) => boolean
-type ClientCallback = (client: Client) => void
-type XMLCallback = (client: Client, data: string) => void
+export interface MessageClient {
+  socket: ClientSocket;
+}
+
+type XTCallback<Client extends MessageClient> = (client: Client, ...args: string[]) => boolean
+type ClientCallback<Client extends MessageClient> = (client: Client) => void
+type XMLCallback<Client extends MessageClient> = (client: Client, data: string) => void
 
 type XtParams = {
   once?: boolean
@@ -17,7 +21,7 @@ type XtParams = {
 }
 
 /** Get a function that checks at runtime the types given so it can be used for a client callback */
-export function getHandlerCallback<Arguments extends ArgumentsIndicator>(
+export function getHandlerCallback<Arguments extends ArgumentsIndicator, Client extends MessageClient>(
   argTypes: Arguments,
   method: (client: Client, ...args: GetArgumentsType<Arguments>) => void
 ) {
@@ -69,12 +73,12 @@ export function getHandlerCallback<Arguments extends ArgumentsIndicator>(
   return callback;
 }
 
-function oncePerPacket(packetName: string, originalMethod: (client: Client, ...args: string[]) => boolean) {
+// todo makes these methods
+function oncePerPacket<Client extends MessageClient>(handler: Handler<Client>, packetName: string, originalMethod: (client: Client, ...args: string[]) => boolean) {
   return function (client: Client, ...args: string[]) {
-    const handled = client.handledXts.get(packetName);
-    if (handled !== true) {
+    if (!handler.clientAlreadyHandledMessage(client, packetName)) {
       if (originalMethod(client, ...args)) {
-        client.handledXts.set(packetName, true);
+        handler.setClientHandled(client, packetName);
         return true;
       } else {
         return false;
@@ -86,35 +90,68 @@ function oncePerPacket(packetName: string, originalMethod: (client: Client, ...a
 }
 
 /** Wraps XT callback so that it respects the cooldown */
-function timestampWrapper(packetName: string, cooldown: number, originalMethod: XTCallback) {
+function timestampWrapper<Client extends MessageClient>(handler: Handler<Client>, packetName: string, cooldown: number, originalMethod: XTCallback<Client>) {
   return (client: Client, ...args: string[]): boolean => {
     const now = Date.now()
-    const timestamp = client.xtTimestamps.get(packetName);
     // check if has a record or if we are past the allowed time
-    if (timestamp === undefined || timestamp < now) {
-      client.xtTimestamps.set(packetName, now + cooldown);
-      return originalMethod(client, ...args);
-    } else {
+    if (handler.isMessageOnCooldown(client, packetName, now)) {
       logdebug(`Packet ${packetName} canceled due to spam`);
       return true;
+    } else {
+      handler.setMessageCooldown(client, packetName, now + cooldown);
+      return originalMethod(client, ...args);
     }
   }
 }
 
-export class Handler {
-  listeners: Map<string, XTCallback[]>;
-  disconnectListeners: ClientCallback[];
-  loginListeners: ClientCallback[];
-  xmlListeners: Map<string, XMLCallback>;
-  onBoot: Array<(s: Server) => void>;
+export class Handler<Client extends MessageClient> {
+  listeners: Map<string, XTCallback<Client>[]>;
+  disconnectListeners: ClientCallback<Client>[];
+  loginListeners: ClientCallback<Client>[];
+  xmlListeners: Map<string, XMLCallback<Client>>;
+
+  private handledMessagesMap = new Map<Client, Set<string>>();
+  private handledMessageTimes = new Map<Client, Map<string, number>>();
+
   private _commandHandler: ((client: Client, message: string) => void) | undefined;
 
   constructor () {
-    this.listeners = new Map<string, XTCallback[]>();
+    this.listeners = new Map<string, XTCallback<Client>[]>();
     this.disconnectListeners = [];
     this.loginListeners = [];
-    this.xmlListeners = new Map<string, XMLCallback>();
-    this.onBoot = [];
+    this.xmlListeners = new Map<string, XMLCallback<Client>>();
+  }
+
+  public clientAlreadyHandledMessage(client: Client, message: string): boolean {
+    return this.handledMessagesMap.get(client)?.has(message) === true;
+  }
+
+  public setClientHandled(client: Client, message: string): void {
+    const prev = this.handledMessagesMap.get(client);
+    if (prev === undefined) {
+      this.handledMessagesMap.set(client, new Set(message));
+    } else {
+      prev.add(message);
+    }
+  }
+
+  public isMessageOnCooldown(client: Client, message: string, now: number): boolean {
+    const cooldown = this.handledMessageTimes.get(client)?.get(message);
+
+    if (cooldown === undefined) {
+      return false;
+    }
+
+    return now < cooldown;
+  }
+
+  public setMessageCooldown(client: Client, message: string, time: number): void {
+    const prev = this.handledMessageTimes.get(client);
+    if (prev === undefined) {
+      this.handledMessageTimes.set(client, new Map<string, number>([[message, time]]));
+    } else {
+      prev.set(message, time);
+    }
   }
 
   /**
@@ -137,13 +174,13 @@ export class Handler {
     const argTypes = HANDLE_ARGUMENTS[name];
     const packetName = this.getPacketName(xt.code, xt.extension);
 
-    let callback = getHandlerCallback<HandleArguments[Name]>(argTypes, method)
+    let callback = getHandlerCallback<HandleArguments[Name], Client>(argTypes, method)
 
     if (params?.once === true) {
-      callback = oncePerPacket(packetName, callback);
+      callback = oncePerPacket(this, packetName, callback);
     }
     if (params?.cooldown !== undefined) {
-      callback = timestampWrapper(packetName, params.cooldown, callback);
+      callback = timestampWrapper(this, packetName, params.cooldown, callback);
     }
 
     const callbacks = this.listeners.get(packetName);
@@ -155,27 +192,21 @@ export class Handler {
   }
 
   /** Add listener for an XML action */
-  xml (action: string, method: XMLCallback): void {
+  xml (action: string, method: XMLCallback<Client>): void {
     this.xmlListeners.set(action, method);
   }
 
-  disconnect (method: ClientCallback): void {
+  disconnect (method: ClientCallback<Client>): void {
     this.disconnectListeners.push(method);
   }
 
-  boot(callback: (s: Server) => void) {
-    this.onBoot.push(callback);
-  }
 
-  bootServer(s: Server): void {
-    this.onBoot.forEach((callback) => callback(s));
-  }
 
   private getPacketName (code: string, extension: string): string {
     return `${extension}%${code}`;
   }
 
-  getCallback (packet: XtPacket): (XTCallback[] | undefined) {
+  getCallback (packet: XtPacket): (XTCallback<Client>[] | undefined) {
     return this.listeners.get(this.getPacketName(packet.code, packet.handler));
   }
 
@@ -243,7 +274,7 @@ export class Handler {
     }
   }
 
-  use (handler: Handler): void {
+  use (handler: Handler<Client>): void {
     handler.listeners.forEach((callbacks, name) => {
       const existingCallbacks = this.listeners.get(name);
       if (existingCallbacks === undefined) {
@@ -257,7 +288,6 @@ export class Handler {
     handler.xmlListeners.forEach((callback, action) => {
       this.xmlListeners.set(action, callback);
     });
-    this.onBoot = [...handler.onBoot, ...this.onBoot];
     const comandsHandler = handler.getCommandsHandler();
     if (comandsHandler !== undefined) {
       this.addCommandsHandler(comandsHandler);

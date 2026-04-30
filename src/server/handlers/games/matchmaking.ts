@@ -1,11 +1,11 @@
-import { MatchMaker, WaddleRoom } from "@server/client";
+import { Client, MatchMaker, Server } from "@server/client";
 import { Handler } from "..";
 import { CardJitsu } from "./card";
 import { Handle } from "../handles";
 
-const handler = new Handler();
+const handler = new Handler<Client>();
 
-handler.boot((s) => {
+export const startMatchmakers = (s: Server) => {
   s.setCardMatchmaker(new MatchMaker(2, (players) => {
     const game = new CardJitsu(players);
     game.startMatch();
@@ -13,7 +13,7 @@ handler.boot((s) => {
     const nicknames = players.map(p => p.penguin.name);
     players.forEach(p => p.sendXt('tmm', time, ...nicknames));
   }))
-})
+}
 
 handler.xt(Handle.JoinMatchMaking, (client) => {
   client.server.cardMatchmaking.addPlayer(client);
