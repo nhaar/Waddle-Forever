@@ -2,13 +2,11 @@ import path from 'path'
 
 import { app, BrowserWindow, dialog, shell } from "electron";
 import log from "electron-log";
-import { autoUpdater } from "electron-updater";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
-import createWindow, { loadMain } from "./window";
-import startServer from "@server/server";
+import createWindow from "./window";
 import settingsManager from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
@@ -20,6 +18,11 @@ import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
 import { Client, Server } from '@server/client';
 import { Handler } from '@server/handlers';
+import db from '@server/database';
+import { GameData } from '@server/timelines/game-data';
+import { LoginServer } from '@server/socket-server/login';
+import { World } from '@server/socket-server/world';
+import { HttpServer } from '@server/http';
 
 log.initialize();
 
@@ -128,20 +131,32 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
+  const failedMods = settingsManager.mods.initializeMods();
+  if (failedMods.length > 0) {
+    await dialog.showMessageBox(mainWindow, {
+      buttons: ['OK'],
+      title: 'Error with Mods',
+      message: `The following mods could not be turned on. Please fix them and then try enabling them again:
+
+${failedMods.map(mod => `* ${mod}`).join('\n')}}`
+    });
+  }
+
+  db.loadDatabase();
+  const gameData = new GameData(settingsManager);
+
   try {
-    const result = await startServer(settingsManager);
-    server = result.server;
-    handler = result.handler;
-    for (const err of result.errors) {
-      // warn user if there are any issues with their mods
-      if (err.type === 'mods') {
-        await dialog.showMessageBox(mainWindow, {
-          buttons: ['OK'],
-          title: 'Error with Mods',
-          message: err.message
-        });
-      }
-    }
+    const login = new LoginServer(gameData, settingsManager, db);
+    await login.setupServer();
+
+    const world = new World(settingsManager, gameData, db);
+    await world.setupServer();
+
+    const httpServer = new HttpServer(gameData, settingsManager, db, world.server);
+    await httpServer.setupServer();
+
+    server = world.server;
+    handler = world.getHandler();
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {
