@@ -19,6 +19,7 @@ import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
 import { Server } from '@server/client';
+import { Handler } from '@server/handlers';
 
 log.initialize();
 
@@ -34,6 +35,7 @@ if (process.platform === 'linux') {
 }
 
 let server: Server | null = null;
+let handler: Handler | null = null;
 
 
 loadFlashPlugin(app);
@@ -129,6 +131,7 @@ These are the most important things, but there is a full list of questions in ou
   try {
     const result = await startServer(settingsManager);
     server = result.server;
+    handler = result.handler;
     for (const err of result.errors) {
       // warn user if there are any issues with their mods
       if (err.type === 'mods') {
@@ -157,8 +160,8 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
-  if (server === null) {
-    throw new Error("Server should have been initialized");
+  if (server === null || handler === null) {
+    throw new Error("Server or handler should have been initialized");
   }
 
   mainWindow = await createWindow(store, globalSettings, settingsManager);
@@ -169,7 +172,7 @@ These are the most important things, but there is a full list of questions in ou
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
+  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
@@ -210,9 +213,9 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    if (server === null) {
-      throw new Error("Server must be non null");
+    if (server === null || handler === null) {
+      throw new Error("Server or handler must be non null");
     }
-    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
+    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
   }
 });

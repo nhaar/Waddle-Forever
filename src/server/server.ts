@@ -156,7 +156,8 @@ const createServer = async (type: string, port: number, handler: Handler, settin
 /** Returns a list of relevant errors with the startup */
 const startServer = async (settingsManager: SettingsManager): Promise<{
   errors: StartServerError[];
-  server: Server
+  server: Server;
+  handler: Handler;
 }> => {
   const errors: StartServerError[] = [];
 
@@ -196,7 +197,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<{
     });
   }
   
-  return { errors, server: world };
+  return { errors, server: world, handler: worldHandler };
 };
 
 export default startServer;

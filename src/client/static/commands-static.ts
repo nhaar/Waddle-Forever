@@ -1,5 +1,3 @@
-import { getJson, post } from "./common-static.js";
-
 const refreshButton = document.getElementById('refresh-button')!;
 const playerSelect = document.getElementById('player-select')! as HTMLSelectElement;
 const commandInput = document.getElementById('command-input')! as HTMLInputElement;
@@ -20,7 +18,7 @@ function updatePlayerSelect() {
 }
 
 function runCommand() {
-  post('command', {
+  commandsApi.runCommand({
     id: Number(playerSelect.value),
     command: commandInput.value
   });
