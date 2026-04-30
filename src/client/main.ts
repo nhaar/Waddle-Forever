@@ -18,6 +18,8 @@ import { GlobalSettings } from '@common/utils';
 import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
+import { Server } from '@server/client';
+import { Handler } from '@server/handlers';
 
 log.initialize();
 
@@ -31,6 +33,9 @@ setLanguageInStore(store, 'en')
 if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
 }
+
+let server: Server | null = null;
+let handler: Handler | null = null;
 
 
 loadFlashPlugin(app);
@@ -124,8 +129,10 @@ These are the most important things, but there is a full list of questions in ou
   }
 
   try {
-    const errors = await startServer(settingsManager);
-    for (const err of errors) {
+    const result = await startServer(settingsManager);
+    server = result.server;
+    handler = result.handler;
+    for (const err of result.errors) {
       // warn user if there are any issues with their mods
       if (err.type === 'mods') {
         await dialog.showMessageBox(mainWindow, {
@@ -153,6 +160,10 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
+  if (server === null || handler === null) {
+    throw new Error("Server or handler should have been initialized");
+  }
+
   mainWindow = await createWindow(store, globalSettings, settingsManager);
   // release window since the main window now serves as
   // the window that will remain open
@@ -161,7 +172,7 @@ These are the most important things, but there is a full list of questions in ou
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, globalSettings, settingsManager, popups);
+  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
@@ -202,6 +213,9 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    startMenu(store, mainWindow, globalSettings, settingsManager, popups);
+    if (server === null || handler === null) {
+      throw new Error("Server or handler must be non null");
+    }
+    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
   }
 });

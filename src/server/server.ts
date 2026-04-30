@@ -9,7 +9,6 @@ import loginHandler from './handlers/login'
 import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
 import db from './database';
-import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 import { FileServer } from './file-server';
 import { GameData } from './timelines/game-data';
@@ -154,7 +153,11 @@ const createServer = async (type: string, port: number, handler: Handler, settin
 };
 
 /** Returns a list of relevant errors with the startup */
-const startServer = async (settingsManager: SettingsManager): Promise<StartServerError[]> => {
+const startServer = async (settingsManager: SettingsManager): Promise<{
+  errors: StartServerError[];
+  server: Server;
+  handler: Handler;
+}> => {
   const errors: StartServerError[] = [];
 
   db.loadDatabase();
@@ -173,8 +176,6 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
   await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server, gameData);
   const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server, gameData);
   
-  setApiServer(settingsManager, server, world, worldHandler);
-
   await new Promise<void>((resolve, reject) => {
     server.listen(HTTP_PORT, () => {
       console.log(`HTTP server listening on port ${HTTP_PORT}`);
@@ -193,7 +194,7 @@ const startServer = async (settingsManager: SettingsManager): Promise<StartServe
     });
   }
   
-  return errors;
+  return { errors, server: world, handler: worldHandler };
 };
 
 export default startServer;

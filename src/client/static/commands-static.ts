@@ -1,20 +1,24 @@
-import { getJson, post } from "./common-static.js";
-
 const refreshButton = document.getElementById('refresh-button')!;
 const playerSelect = document.getElementById('player-select')! as HTMLSelectElement;
 const commandInput = document.getElementById('command-input')! as HTMLInputElement;
 const commandButton = document.getElementById('command-button')!;
 
-async function updatePlayerSelect() {
-  const players = await getJson('players') as Array<{ name: string; id: number; }>;
+const commandsApi = (window as any).api;
+
+window.addEventListener('get-players', (e: any) => {
+  const players = e.detail as Array<{ name: string; id: number; }>;
 
   playerSelect.innerHTML = players.map(p => {
     return `<option value="${p.id}">${p.name}</option>`
   }).join('');
+});
+
+function updatePlayerSelect() {
+  commandsApi.fetchPlayers();
 }
 
 function runCommand() {
-  post('command', {
+  commandsApi.runCommand({
     id: Number(playerSelect.value),
     command: commandInput.value
   });

@@ -3,8 +3,11 @@ import path from "path";
 import fs from "fs";
 import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from "@common/paths";
 import { getPopupCreator } from "./popups";
+import { SettingsManager } from "@server/settings";
+import { ModError } from "@server/mods";
+import { Server } from "@server/client";
 
-export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path'], (mainWindow: BrowserWindow) => {
+export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
   const modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
@@ -24,13 +27,46 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
 
   modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
 
-  ipcMain.on('update-mod', () => {
-    mainWindow.webContents.reloadIgnoringCache();
+  ipcMain.on('update-mod', (_, arg) => {
+    const { name, state } = arg;
+
+    let worked = true;
+
+    if (state) {
+      try {
+        settings.mods.setModActive(name);
+      } catch (error) {
+        if (error instanceof ModError) {
+          worked = false;
+          modsWindow.webContents.send('mod-error', { message: error.message, name });
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      settings.mods.setModInactive(name);
+    }
+
+    if (worked) {
+      server.reset();
+      mainWindow.webContents.reloadIgnoringCache();
+    }
   })
 
   ipcMain.on('open-mods-folder', () => {
     shell.openPath(MODS_DIRECTORY);
   });
+
+  const sendMods = () => {
+    const mods = settings.mods.getMods();
+    const modsRelation: Record<string, boolean> = {};
+    for (const mod of mods) {
+      modsRelation[mod] = settings.mods.isModActive(mod);
+    }
+    modsWindow.webContents.send('get-mods', modsRelation);
+  };
+
+  ipcMain.on('get-mods', sendMods);
 
   ipcMain.on('mod-from-path', (event, modName: string, dir: string) => {
     const modDir = path.join(MODS_DIRECTORY, modName);
@@ -44,6 +80,8 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
       event.reply('mod-created', err);
     })
   });
+
+  modsWindow.webContents.on('did-finish-load', sendMods);
 
   return modsWindow;
 });

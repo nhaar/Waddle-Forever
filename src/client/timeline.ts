@@ -6,8 +6,10 @@ import { UPDATES } from '../server/updates/updates';
 import { CatalogItems } from '../server/updates';
 import { getDate } from '@server/timelines/dates';
 import { getPopupCreator } from './popups';
+import { SettingsManager } from '@server/settings';
+import { Server } from '@server/client';
 
-export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow) => {
+export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
   const timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
@@ -20,14 +22,19 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
 
   timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
 
-  ipcMain.on('update-version', () => {
+  ipcMain.on('update-version', (_, arg) => {
+    const { settings: s, reset } = arg;
+    settings.updateSettings(s);
+    if (reset === true) {
+      server.reset();
+    }
     mainWindow.webContents.reloadIgnoringCache();
   });
 
   timelinePicker.webContents.on('did-finish-load', () => {
     timelinePicker?.maximize();
     timelinePicker?.show();
-    timelinePicker?.webContents.send('get-timeline', getConsumedTimeline(getTimeline()));
+    timelinePicker?.webContents.send('get-timeline', { days: getConsumedTimeline(getTimeline()), settings: settings.settings  });
   });
 
   return timelinePicker;

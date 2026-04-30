@@ -1,3 +1,6 @@
+import { Server } from "@server/client";
+import { Handler } from "@server/handlers";
+import { SettingsManager } from "@server/settings";
 import { BrowserWindow, ipcMain } from "electron";
 
 export type Popups = Map<string, BrowserWindow>;
@@ -10,16 +13,16 @@ export type Popups = Map<string, BrowserWindow>;
 export function getPopupCreator(
   name: string,
   eventListeners: string[],
-  windowInitializer: (mainWindow: BrowserWindow) => BrowserWindow
-): (mainWin: BrowserWindow, wins: Popups) => Promise<void> {
-  return (async (mainWin: BrowserWindow, wins: Popups) => {
+  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: Server, handler: Handler) => BrowserWindow
+): (mainWin: BrowserWindow, wins: Popups, settings: SettingsManager, gameServer: Server, handler: Handler) => Promise<void> {
+  return (async (mainWin, wins, settings, gameServer, handler) => {
     const prev = wins.get(name);
     if (prev !== undefined) {
       prev.focus();
       return;
     }
   
-    const popup = windowInitializer(mainWin)
+    const popup = windowInitializer(mainWin, settings, gameServer, handler);
     wins.set(name, popup);
       popup.on('closed', () => {
       for (const event of eventListeners) {

@@ -5,8 +5,10 @@ import fs from 'fs';
 import { downloadMediaFolder } from "./media";
 import { MEDIA_DIRECTORY } from "@common/utils";
 import { getPopupCreator } from "./popups";
+import { SettingsManager } from "@server/settings";
+import { Server } from "@server/client";
 
-export const createSettingsWindow = getPopupCreator('settings', ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'reload-cache'], (mainWindow: BrowserWindow) => {
+export const createSettingsWindow = getPopupCreator('settings', ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'update-settings'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
   const settingsWindow = new BrowserWindow({
     width: 500,
     height: 500,
@@ -50,6 +52,19 @@ export const createSettingsWindow = getPopupCreator('settings', ['download-packa
   ipcMain.on('reload-cache', () => {
     mainWindow.webContents.reloadIgnoringCache();
   })
+
+  ipcMain.on('update-settings', (_, arg) => {
+    const { settings: s, reset } = arg;
+    if (reset === true) {
+      server.reset();
+    }
+    settings.updateSettings(s);
+  });
+
+
+  settingsWindow.webContents.on('did-finish-load', () => {
+    settingsWindow.webContents.send('get-settings', settings.settings);
+  });
 
   return settingsWindow;
 });

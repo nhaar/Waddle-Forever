@@ -1,3 +1,9 @@
-import { HTTP_PORT } from '../../common/constants';
+import { addDispatchEventListeners } from '@common/utils';
+import { ipcRenderer } from 'electron';
 
-(window as any).websiteUrl = `http://localhost:${HTTP_PORT}/`;
+addDispatchEventListeners(['get-players'], ipcRenderer);
+
+(window as any).api = {
+  fetchPlayers: () => ipcRenderer.send('get-players'),
+  runCommand: (obj: any) => ipcRenderer.send('run-command', obj)
+};

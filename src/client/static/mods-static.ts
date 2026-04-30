@@ -1,83 +1,53 @@
-import { getJson, post } from "./common-static.js";
-
 const modsApi = (window as any).api;
 
-async function getMods() {
-  return await getJson('mod/get');
-}
+window.addEventListener('mod-error', (e: any) => {
+  const { message, name } = e.detail;
 
-// attempt to update a mod, returns server response
-async function updateMod(name: string, active: boolean) {
-  return await post('mod/update', { name, active })
-}
-
-// return whether or not the mod was succesfully set to active
-async function setModActive(mod: string): Promise<boolean> {
-  const response = await updateMod(mod, true);
-  if (response.status === 400) {
-    window.alert(`Error with your mod: ${await response.text()}
+  window.alert(`Error with your mod: ${message}
 
 Please fix the error and then attempt to turn the mod on again.`);
-    return false;
-  } else {
-    return true;
+
+  (document.getElementById(name) as HTMLInputElement).checked = false;
+});
+
+window.addEventListener('get-mods', (e: any) => {
+  const mods = e.detail;
+
+  let html = ''
+  for (const mod in mods) {
+    html += `
+    <div>
+      <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
+      <label for="${mod}">${mod}</span>
+    </div>
+    `;
   }
-}
 
-async function setModInactive(mod: string) {
-  await updateMod(mod, false);
-}
+  document.querySelector('.mods')!.innerHTML = html;
 
-function setupPage() {
-  getMods().then((mods) => {
-    let html = ''
-    for (const mod in mods) {
-      html += `
-      <div>
-        <input type="checkbox" id="${mod}" ${mods[mod] ? 'checked="true"' : ''} />
-        <label for="${mod}">${mod}</span>
-      </div>
-      `;
-    }
-  
-    document.querySelector('.mods')!.innerHTML = html;
-
-    const inputs = document.querySelectorAll('input[type="checkbox"]');
-    for (const input of inputs) {
-      if (input instanceof HTMLInputElement) {
-        input.addEventListener('change', (e) => {
-          if (e.target instanceof HTMLInputElement) {
-            // will attempt to see if the mod has problems, if it has it will uncheck and won't update
-            if (e.target.checked) {
-              setModActive(input.id).then(activate => {
-                if (activate) {
-                  modsApi.updateMod();
-                } else {
-                  if (e.target instanceof HTMLInputElement) {
-                    e.target.checked = false;
-                  }
-                }
-              });
-            } else {
-              setModInactive(input.id);
-              modsApi.updateMod();
-            }
+  const inputs = document.querySelectorAll('input[type="checkbox"]');
+  for (const input of inputs) {
+    if (input instanceof HTMLInputElement) {
+      input.addEventListener('change', (e) => {
+        if (e.target instanceof HTMLInputElement) {
+          // will attempt to see if the mod has problems, if it has it will uncheck and won't update
+          if (e.target.checked) {
+            modsApi.updateMod(input.id, true);
+          } else {
+            modsApi.updateMod(input.id, false);
           }
-        })
-      }
+        }
+      })
     }
-  })
-}
-
-// so that it can be called from the preload
-(window as any).setupPage = setupPage;
+  }
+});
 
 document.getElementById('open-mods-folder')?.addEventListener('click', () => {
   modsApi.openModsFolder();
 });
 
 document.getElementById('update-mods')?.addEventListener('click', () => {
-  setupPage();
+  modsApi.getMods();
 });
 
 const createModPrompt = document.getElementById('mods-clipboard-prompt')!;
@@ -146,5 +116,3 @@ createModPathInput.addEventListener('input', () => {
     createModPathInput.value = normalized;
   }
 });
-
-setupPage();
