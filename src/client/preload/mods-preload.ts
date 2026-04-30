@@ -1,8 +1,11 @@
+import { addDispatchEventListeners } from '@common/utils';
 import { ipcRenderer } from 'electron';
 import { HTTP_PORT } from '../../common/constants';
 
+addDispatchEventListeners(['mod-error'], ipcRenderer);
+
 (window as any).api = {
-  updateMod: () => ipcRenderer.send('update-mod'),
+  updateMod: (name: string, state: boolean) => ipcRenderer.send('update-mod', { name, state }),
   openModsFolder: () => ipcRenderer.send('open-mods-folder'),
   makeModFromPath: (modName: string, path: string) => ipcRenderer.send('mod-from-path', modName, path)
 };

@@ -1,7 +1,6 @@
 import express, { Express } from 'express';
 
 import { SettingsManager } from "./settings";
-import { ModError } from './mods';
 import { Server } from './client';
 import { Handler } from './handlers';
 
@@ -15,31 +14,6 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
   const router = express.Router();
 
   router.use(express.json());
-
-  const resetServers = () => {
-    gameServer.reset();
-  }
-
-  router.post('/mod/update', (req, res) => {
-    const { name, active } = req.body;
-    if (active) {
-      // if the mod has issues, it will be raised and the response will warn the user back
-      try {
-        s.mods.setModActive(name);
-      } catch (error) {
-        if (error instanceof ModError) {
-          res.status(400).send(error.message);
-          return;
-        } else {
-          throw error;
-        }
-      }
-    } else {
-      s.mods.setModInactive(name);
-    }
-    res.sendStatus(200);
-    resetServers();
-  });
 
   router.get('/mod/get', (_, res) => {
     const mods = s.mods.getMods();
