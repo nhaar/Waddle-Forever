@@ -15,10 +15,6 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
 
   router.use(express.json());
 
-  router.get('/players', (_, res) => {
-    res.json(gameServer.getAllPlayersInfo());
-  });
-
   router.post('/command', (req, res) => {
     const { id, command } = req.body;
     if (typeof id !== 'number' || typeof command !== 'string') {

@@ -50,7 +50,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Open Commands',
         accelerator: 'CommandOrControl+D',
-        click: () => createCommands(mainWindow)
+        click: () => createCommands(mainWindow, popups, serverSettings, gameServer)
       },
       {
         type: 'separator'
