@@ -1,5 +1,3 @@
-import { getSettings } from "./common-static.js";
-
 const api = (window as any).api;
 
 /** Update the settings object with the partial settings given */
@@ -140,7 +138,8 @@ for (const setting of allSettings) {
   })
 }
 
-getSettings().then((settings) => {
+window.addEventListener('get-settings', (e: any) => {
+  const settings = e.detail;
   for (const setting of allSettings) {
     if (settings[setting.key] === undefined) {
       console.log(`settings-static: Couldn't get setting "${setting.key}"!`)

@@ -20,10 +20,6 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
     gameServer.reset();
   }
 
-  router.get('/get', (_, res) => {
-    res.json(s.settings);
-  });
-
   router.post('/mod/update', (req, res) => {
     const { name, active } = req.body;
     if (active) {

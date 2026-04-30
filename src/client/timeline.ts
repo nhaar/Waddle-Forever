@@ -34,7 +34,7 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
   timelinePicker.webContents.on('did-finish-load', () => {
     timelinePicker?.maximize();
     timelinePicker?.show();
-    timelinePicker?.webContents.send('get-timeline', getConsumedTimeline(getTimeline()));
+    timelinePicker?.webContents.send('get-timeline', { days: getConsumedTimeline(getTimeline()), settings: settings.settings  });
   });
 
   return timelinePicker;

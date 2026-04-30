@@ -61,5 +61,10 @@ export const createSettingsWindow = getPopupCreator('settings', ['download-packa
     settings.updateSettings(s);
   });
 
+
+  settingsWindow.webContents.on('did-finish-load', () => {
+    settingsWindow.webContents.send('get-settings', settings.settings);
+  });
+
   return settingsWindow;
 });

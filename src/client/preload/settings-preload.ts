@@ -5,7 +5,8 @@ import { addDispatchEventListeners } from '../../common/utils';
 addDispatchEventListeners([
   'finish-download',
   'finish-deleting',
-  'download-fail'
+  'download-fail',
+  'get-settings'
 ], ipcRenderer);
 
 (window as any).api = {

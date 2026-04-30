@@ -18,8 +18,3 @@ export async function getJson(path: string) {
   const json = await res.json();
   return json;
 }
-
-/** Get the settings object */
-export async function getSettings() {
-  return await getJson('get');
-}

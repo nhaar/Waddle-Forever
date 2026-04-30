@@ -1,5 +1,3 @@
-import { getSettings } from "./common-static.js";
-
 const timelineApi = (window as any).api;
 
 const MONTHS = [
@@ -56,7 +54,7 @@ function setSelectElements(month: number, year: number) {
   yearElement.value = String(year);
 }
 
-type Event = {
+type DateEvent = {
   text: string;
   image: string
   party?: 'start' | 'end'
@@ -67,7 +65,7 @@ type DateInfo = {
   day: number;
   month: number;
   year: number;
-  events: Event[];
+  events: DateEvent[];
   selected?: boolean;
   inParty: boolean;
 };
@@ -249,7 +247,7 @@ function createCalendar(
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
-      events: [] as Event[],
+      events: [] as DateEvent[],
       inParty: partyCount > 0
     };
     
@@ -555,16 +553,14 @@ async function updateVersion(version: string) {
 }
 
 window.addEventListener('get-timeline', (e: any) => {
-  const days = e.detail as DateInfo[];
-  getSettings().then((settings) => {
-    currentVersion = settings.version;
-    const dateInfo = getDateInfo(currentVersion);
-    setSelectElements(dateInfo.month, dateInfo.year);
-    setSelectedDateText(currentVersion);
-    const year = currentVersion.slice(0, 4);
-    yearElement.value = year;
-    createCalendar(days);
-  });
+  const { days, settings } = e.detail as { days: DateInfo[], settings: any };
+  currentVersion = settings.version;
+  const dateInfo = getDateInfo(currentVersion);
+  setSelectElements(dateInfo.month, dateInfo.year);
+  setSelectedDateText(currentVersion);
+  const year = currentVersion.slice(0, 4);
+  yearElement.value = year;
+  createCalendar(days);
 
   const calendarButton = document.getElementById('calendar-timeline')! as HTMLInputElement;
   const listButton = document.getElementById('list-timeline')! as HTMLInputElement;
