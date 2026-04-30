@@ -13,7 +13,8 @@ addDispatchEventListeners([
   delete: (pack: string) => ipcRenderer.send('delete-package', pack),
   reload: () => ipcRenderer.send('reload-window'),
   clearCache: () => ipcRenderer.send('clear-cache'),
-  reloadCacheless: () => ipcRenderer.send('reload-cache')
+  reloadCacheless: () => ipcRenderer.send('reload-cache'),
+  update: (obj: any) => ipcRenderer.send('update-settings', obj)
 };
 
 (window as any).websiteUrl = `http://localhost:${HTTP_PORT}/`;

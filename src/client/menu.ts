@@ -12,8 +12,9 @@ import { SettingsManager } from "@server/settings";
 import { createMultiplayerSettings } from "./multiplayer";
 import { createCommands } from "./commands";
 import { Popups } from "./popups";
+import { Server } from "@server/client";
 
-const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups): MenuItemConstructorOptions[] => {
+const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: Server): MenuItemConstructorOptions[] => {
   const app: MenuItemConstructorOptions = { 
     id: '0', 
     label: 'Waddle Forever', 
@@ -35,12 +36,12 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Open Settings',
         accelerator: 'CommandOrControl+,',
-        click: () => createSettingsWindow(mainWindow, popups)
+        click: () => createSettingsWindow(mainWindow, popups, serverSettings, gameServer)
       },
       {
         label: 'Open Mods',
         accelerator: 'CommandOrControl+M',
-        click: () => createModsWindow(mainWindow, popups)
+        click: () => createModsWindow(mainWindow, popups, serverSettings, gameServer)
       },
       {
         label: 'Open Multiplayer Settings',
@@ -90,14 +91,14 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   const timeline: MenuItemConstructorOptions = {
     id: '3',
     label: 'Timeline',
-    click: () => createTimelinePicker(mainWindow, popups)
+    click: () => createTimelinePicker(mainWindow, popups, serverSettings, gameServer)
   };
 
   // only adding the submenu if Mac, because empty submenu leads to it not working on other OSes, and it's a necessary Mac feature
   if (process.platform === 'darwin') {
     timeline.submenu = [{ 
       label: 'Timeline Picker', 
-      click: () => createTimelinePicker(mainWindow, popups)
+      click: () => createTimelinePicker(mainWindow, popups, serverSettings, gameServer)
     }];
   }
 
@@ -137,8 +138,8 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     [options, timeline, view];
 };
 
-const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups) => {
-  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings, serverSettings, popups);
+const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: Server) => {
+  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings, serverSettings, popups, gameServer);
   buildMenu(menuTemplate);
 };
 

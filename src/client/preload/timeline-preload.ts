@@ -7,7 +7,7 @@ addDispatchEventListeners([
 ], ipcRenderer);
 
 (window as any).api = {
-  update: () => ipcRenderer.send('update-version')
+  update: (obj: any) => ipcRenderer.send('update-version', obj)
 };
 
 (window as any).websiteUrl = `http://localhost:${HTTP_PORT}/`;

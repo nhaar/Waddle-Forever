@@ -1,4 +1,4 @@
-import { getSettings, post } from "./common-static.js";
+import { getSettings } from "./common-static.js";
 
 const timelineApi = (window as any).api;
 
@@ -550,8 +550,7 @@ function setSelectedDateText(version: string) {
 /** Update the timeline version */
 async function updateVersion(version: string) {
   currentVersion = version;
-  await post('update', { settings: { version }, reset: true });
-  timelineApi.update();
+  timelineApi.update({ settings: { version }, reset: true });
   setSelectedDateText(version);
 }
 
