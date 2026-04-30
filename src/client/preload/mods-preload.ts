@@ -1,6 +1,5 @@
 import { addDispatchEventListeners } from '@common/utils';
 import { ipcRenderer } from 'electron';
-import { HTTP_PORT } from '../../common/constants';
 
 addDispatchEventListeners(['mod-error', 'get-mods'], ipcRenderer);
 
@@ -10,8 +9,6 @@ addDispatchEventListeners(['mod-error', 'get-mods'], ipcRenderer);
   makeModFromPath: (modName: string, path: string) => ipcRenderer.send('mod-from-path', modName, path),
   getMods: () => ipcRenderer.send('get-mods')
 };
-
-(window as any).websiteUrl = `http://localhost:${HTTP_PORT}/`;
 
 ipcRenderer.on('mod-created', (_, error) => {
   if (error !== null) {

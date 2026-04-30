@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron';
-import { HTTP_PORT } from '../../common/constants';
 import { addDispatchEventListeners } from '../../common/utils';
 
 addDispatchEventListeners([
@@ -17,5 +16,3 @@ addDispatchEventListeners([
   reloadCacheless: () => ipcRenderer.send('reload-cache'),
   update: (obj: any) => ipcRenderer.send('update-settings', obj)
 };
-
-(window as any).websiteUrl = `http://localhost:${HTTP_PORT}/`;

@@ -9,7 +9,6 @@ import loginHandler from './handlers/login'
 import { Client, Server, ClientSocket } from './client';
 import { SettingsManager } from './settings';
 import db from './database';
-import { setApiServer } from './settings-api';
 import { HTTP_PORT } from '../common/constants';
 import { FileServer } from './file-server';
 import { GameData } from './timelines/game-data';
@@ -177,8 +176,6 @@ const startServer = async (settingsManager: SettingsManager): Promise<{
   await createServer('Login', LOGIN_PORT, loginHandler, settingsManager, server, gameData);
   const world = await createServer('World', WORLD_PORT, worldHandler, settingsManager, server, gameData);
   
-  setApiServer(settingsManager, server, world, worldHandler);
-
   await new Promise<void>((resolve, reject) => {
     server.listen(HTTP_PORT, () => {
       console.log(`HTTP server listening on port ${HTTP_PORT}`);
