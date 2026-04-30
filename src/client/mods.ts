@@ -7,7 +7,7 @@ import { SettingsManager } from "@server/settings";
 import { ModError } from "@server/mods";
 import { Server } from "@server/client";
 
-export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
+export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
   const modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
@@ -57,6 +57,17 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
     shell.openPath(MODS_DIRECTORY);
   });
 
+  const sendMods = () => {
+    const mods = settings.mods.getMods();
+    const modsRelation: Record<string, boolean> = {};
+    for (const mod of mods) {
+      modsRelation[mod] = settings.mods.isModActive(mod);
+    }
+    modsWindow.webContents.send('get-mods', modsRelation);
+  };
+
+  ipcMain.on('get-mods', sendMods);
+
   ipcMain.on('mod-from-path', (event, modName: string, dir: string) => {
     const modDir = path.join(MODS_DIRECTORY, modName);
     const dirExisted = fs.existsSync(modDir);
@@ -69,6 +80,8 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
       event.reply('mod-created', err);
     })
   });
+
+  modsWindow.webContents.on('did-finish-load', sendMods);
 
   return modsWindow;
 });

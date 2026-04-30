@@ -15,15 +15,6 @@ export const setApiServer = (s: SettingsManager, server: Express, gameServer: Se
 
   router.use(express.json());
 
-  router.get('/mod/get', (_, res) => {
-    const mods = s.mods.getMods();
-    const modsRelation: Record<string, boolean> = {};
-    for (const mod of mods) {
-      modsRelation[mod] = s.mods.isModActive(mod);
-    }
-    res.json(modsRelation);
-  });
-
   router.get('/players', (_, res) => {
     res.json(gameServer.getAllPlayersInfo());
   });
