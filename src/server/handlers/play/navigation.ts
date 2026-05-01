@@ -5,16 +5,17 @@ import { Handle } from '../handles';
 // import { CardJitsuFire } from '../games/fire';
 import { isGameRoom, Room } from '@server/game-logic/rooms';
 import { WorldClient, WorldContext } from '@server/new-client';
+import { PUFFLES } from '@server/game-logic/puffle';
 
 const handler = new Handler<WorldClient, WorldContext, ['world', 'room', 'penguin']>(['world', 'room', 'penguin']);
 
 // client requesting to join room
-
 handler.xt(Handle.JoinRoom, ({ world, room, penguin, client }, id, x, y) => {
   // leaving previous room
   room.removePenguin(penguin);
 
   if (isGameRoom(id)) {
+    world.getGame(id).addPenguin(penguin);
     client.sendXt('jg', id);
   } else {
     const newRoom = world.getRoom(id);
@@ -22,84 +23,40 @@ handler.xt(Handle.JoinRoom, ({ world, room, penguin, client }, id, x, y) => {
     const xx = x ?? 0;
     const yy = y ?? 0;
     newRoom.addPenguin(penguin, xx, yy);
-    // this.room.addPlayer(this);
-    // this._roomInfo = this.room.getPlayer(this);
-
-    // this.updateRoomInfo({ x: xx, y: yy });
-
-    // TODO: what happens if x, y are zero insteadof xx and yy?
-
-    // this.setPosition(xx, yy);
-
-    // this.followers.forEach(bot => {
-    //   bot.joinRoom(room, x, y)
-    //   bot.followPosition(xx, yy);
-    // });
   }
 });
 
 // sending inventory to player
-handler.xt(Handle.GetInventory, ({client}) => {
-  // client.sendInventory();
-  client.sendXt('gi', '1%7063%7064%7066%7067%429%1283%15%8%9114%1380%2083%9167%4727%5158%5156%5157%5159%7116%1430%7117%4644%7118%9147%5160%7119%4645%4664%171%401%102%12%403%420420%421421%420421%8923%95000%9077');
+handler.xt(Handle.GetInventory, ({ penguin }) => {
+  penguin.sendInventory();
 });
 
 handler.xt(Handle.GN, ({client}) => {
   client.sendXt('gn', '');
 });
 
-handler.xt(Handle.GetMail, ({client}) => {
-  
-  client.sendXt(
+handler.xt(Handle.GetMail, ({ penguin }) => {
+  penguin.sendXt(
     'mst',
-    0,
-    20
-    // client.penguin.getUnreadMailTotal(),
-    // client.penguin.getMailTotal()
+    penguin.info.getUnreadMailTotal(),
+    penguin.info.getMailTotal()
   );
 });
 
-handler.xt(Handle.GetBuddiesB, ({client}) => {
+handler.xt(Handle.GetBuddies, ({client}) => {
   client.sendXt('gb');
 });
 
-// const CARD_JITSU_ROOMS = new Set<number>([Room.CardJitsu, Room.CardJitsuFire, Room.CardJitsuWater]);
-
-// // client requesting to leave a minigame
-// handler.xt(Handle.LeaveGame, (client, score) => {
-//   // waddle games individually handle this
-//   // card jitsu sometimes has stamp endscreen
-//   const isCardJitsu = CARD_JITSU_ROOMS.has(client.room.id);
-//   if ((client.isInWaddleGame() && !isCardJitsu) || client.isEngine1) {
-//     return;
-//   }
-
-//   const stampInfo = client.getEndgameStampsInformation();
-
-//   if (!isCardJitsu) {
-//     let coins = client.getCoinsFromScore(score);
-  
-//     // stamps double coins
-//     if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {
-//       coins *= 2;
-//     }
-  
-//     client.penguin.addCoins(coins);
-//   }
-  
-//   client.sendXt('zo', String(client.penguin.coins), ...stampInfo);
-//   void client.update();
-// });
-
-// handler.xt(Handle.JoinIgloo, (client, fakeId) => {
-//   if (!client.isEngine2) {
-//     return;
-//   }
-//   // for some reason the ID given is the player + 1000
-//   // in WF igloo room IDs are playerID + 2000
-//   const iglooId = fakeId + 1000;
-//   client.joinRoom(iglooId);
-// })
+handler.xt(Handle.JoinIgloo, ({ world, penguin }, fakeId) => {
+  if (world.data.isVanillaEngine()) {
+    return;
+  }
+  // for some reason the ID given is the player + 1000
+  // in WF igloo room IDs are playerID + 2000
+  const iglooId = fakeId + 1000;
+  const igloo = world.getRoom(iglooId);
+  igloo.addPenguin(penguin, 0, 0);
+});
 
 // // Joining player igloo
 // handler.xt(Handle.JoinIglooNew, (client, playerId, roomType) => {
@@ -118,44 +75,42 @@ handler.xt(Handle.GetBuddiesB, ({client}) => {
 //   }
 // })
 
-// handler.xt(Handle.SendAction, (client, action) => {
-//   client.sendAction(action);
-// });
+handler.xt(Handle.SendAction, ({ room, penguin }, action) => {
+  room.sendXt('sa', penguin.id, action);
+});
 
-// handler.xt(Handle.SendFrame, (client, frame) => {
-//   client.setFrame(frame);
-// })
+handler.xt(Handle.SendFrame, ({ room, penguin }, frame) => {
+  room.sendXt('sf', penguin.id, frame);
+});
 
-// handler.xt(Handle.SetPosition, (client, ...args) => {
-//   // walking stops your character from whichever animation
-//   client.setPosition(...args);
-//   client.sendRoomXt('sp', client.penguin.id, ...args);
-// })
+handler.xt(Handle.SetPosition, ({ room, penguin }, ...args) => {
+  room.move(penguin, ...args);
+});
 
-// handler.xt(Handle.Snowball, (client, ...args) => {
-//   client.throwSnowball(...args);
-// })
+handler.xt(Handle.Snowball, ({ room, penguin }, ...args) => {
+  room.throwSnowball(penguin, ...args);
+});
 
-// // sending emotes
-// handler.xt(Handle.SendEmote, (client, emote) => {
-//   client.sendEmote(emote);
-// });
+// sending emotes
+handler.xt(Handle.SendEmote, ({ room, penguin }, emote) => {
+  room.sendXt('se', penguin.id, emote);
+});
 
-// handler.xt(Handle.SendJoke, (client, joke) => {
-//   client.sendJoke(joke);
-// });
+handler.xt(Handle.SendJoke, ({ room, penguin }, joke) => {
+  room.sendXt('sj', penguin.id, joke);
+});
 
-// handler.xt(Handle.HandleSendMessage, (client, _, msg) => {
-//   client.sendMessage(msg);
-// });
+handler.xt(Handle.HandleSendMessage, ({ room }, id, msg) => {
+  room.sendXt('sm', id, msg);
+});
 
-// handler.xt(Handle.SendSafeMessage, (client, id) => {
-//   client.sendSafeMessage(id);
-// });
+handler.xt(Handle.SendSafeMessage, ({ room, penguin }, id) => {
+  room.sendXt('ss', penguin.id, id);
+});
 
-// handler.xt(Handle.SendLine, (client, line) => {
-//   client.sendRoomXt('sl', client.penguin.id, line);
-// });
+handler.xt(Handle.SendLine, ({ room, penguin }, line) => {
+  room.sendXt('sl', penguin.id, line);
+});
 
 // // player inventory thing? Not sure why this exists
 // handler.xt(Handle.PBI, (client, id) => {
@@ -245,5 +200,74 @@ handler.xt(Handle.GetBuddiesB, ({client}) => {
 // handler.disconnect((client) => {
 //   client.disconnect();
 // })
+
+// get igloo information
+handler.xt(Handle.GetIgloo, ({ world, client }, id) => {
+  const host = world.getPenguin(id);
+  if (host !== undefined) {
+    const igloo = host.getOwnIglooString();
+    client.sendXt('gm', id, igloo);
+  }
+});
+
+// seemingly the format in which client usually wants the puffle IDs
+export function getClientPuffleIds(puffleId: number) {
+  const parentId = PUFFLES.get(puffleId)?.parentId;
+  if (parentId === undefined) {
+    return [puffleId, ''];
+  } else {
+    return [parentId, puffleId];
+  }
+}
+
+// get puffles in igloo
+handler.xt(Handle.GetIglooPuffles, ({ world, penguin, client }, id, iglooType) => {
+  if (!world.data.isVanillaEngine()) {
+    const puffles = penguin.info.getPuffles().map((puffle) => {
+      return [
+        puffle.id,
+        puffle.name,
+        puffle.type,
+        puffle.clean,
+        puffle.food,
+        puffle.rest,
+        100,
+        100,
+        100,
+        0,
+        0,
+        0,
+        puffle.id === penguin.walkingPuffle ? 1 : 0
+      ].join('|')
+    })
+    if (puffles.length >= 16) {
+      // PUFFLE OWNER
+      penguin.giveStamp(21);
+    }
+  
+    client.sendXt('pg', ...puffles);
+  } else {
+    const isBackyard = iglooType === 'backyard';
+    const puffles = penguin.info.getPuffles().filter((puffle) => {
+      // filtering for backyard or igloo puffles
+      return penguin.info.isInBackyard(puffle.id) === isBackyard;
+    }).map((puffle) => {
+      return [
+        puffle.id,
+        ...getClientPuffleIds(puffle.type),
+        puffle.name,
+        Math.round(Date.now()), // TODO puffle adoption date in puffle
+        puffle.food,
+        100, // TODO puffle play
+        puffle.rest,
+        puffle.clean,
+        0, // TODO puffle hat
+        0, 0, // TODO what are these 0?
+        puffle.id === penguin.walkingPuffle ? 1 : 0
+      ].join('|')
+    })
+    client.sendXt('pg', puffles.length, ...puffles);
+  }
+});
 
 export default handler;
