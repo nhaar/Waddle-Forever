@@ -1,12 +1,12 @@
 import { Room } from '@server/game-logic/rooms';
 import { WorldClient, WorldContext } from '@server/new-client';
-import { Handler } from '..';
+import { Handler, XtHandler } from '..';
 import { Handle } from '../handles';
 import { getClientPuffleIds } from './navigation';
 
-const handler = new Handler<WorldClient, WorldContext, ['penguin', 'world']>(['penguin', 'world']);
+const handler = new XtHandler<WorldClient, WorldContext, ['penguin', 'world']>(['penguin', 'world']);
 
-handler.xt(Handle.JoinServer, async ({ world, penguin, client }) => {
+handler.xt(Handle.JoinServer, async ({ world, penguin }) => {
   if (world.data.isVanillaEngine()) {
     return;
   }
@@ -20,7 +20,7 @@ handler.xt(Handle.JoinServer, async ({ world, penguin, client }) => {
   */
   const moderatorStatus = penguin.info.mascot > 0 ? 3 : 0;
   // initializing penguin data
-  client.sendXt('js', penguin.info.isAgent ? 1 : 0, 0, moderatorStatus, 0);
+  penguin.sendXt('js', penguin.info.isAgent ? 1 : 0, 0, moderatorStatus, 0);
 
   penguin.sendInfo({x:0,y:0,frame:1});
 
@@ -37,7 +37,7 @@ handler.xt(Handle.JoinServer, async ({ world, penguin, client }) => {
   penguin.sendPuffles();
 });
 
-handler.xt(Handle.JoinServerNew, async ({ world, penguin, client }, id) => {
+handler.xt(Handle.JoinServerNew, async ({ world, penguin }, id) => {
   if (!world.data.isVanillaEngine()) {
     return;
   }
@@ -47,9 +47,9 @@ handler.xt(Handle.JoinServerNew, async ({ world, penguin, client }, id) => {
   penguin.unequipPuffle();
   const moderatorStatus = penguin.info.mascot > 0 ? 3 : 0;
   // // initializing penguin data
-  client.sendXt('js', penguin.info.isAgent ? 1 : 0, 0, moderatorStatus, 0);
+  penguin.sendXt('js', penguin.info.isAgent ? 1 : 0, 0, moderatorStatus, 0);
 
-  client.sendXt('activefeatures', world.data.getActiveFeatures() ?? '');
+  penguin.sendXt('activefeatures', world.data.getActiveFeatures() ?? '');
   penguin.sendInfo({ x: 0, y: 0, frame: 1});
   // client.sendPenguinInfo();
 
@@ -60,7 +60,7 @@ handler.xt(Handle.JoinServerNew, async ({ world, penguin, client }, id) => {
 
   // loading puffle inventory
   // this is important for things like identifying which puffles belong to you
-  client.sendXt('pgu', ...penguin.info.getPuffles().map((puffle) => [
+  penguin.sendXt('pgu', ...penguin.info.getPuffles().map((puffle) => [
     puffle.id,
     ...getClientPuffleIds(puffle.type),
     puffle.name,
@@ -74,8 +74,8 @@ handler.xt(Handle.JoinServerNew, async ({ world, penguin, client }, id) => {
   ].join('|')));
 
   // TODO refactor these
-  client.write('%xt%nxquestsettings%-1%{"ver":1,"spawnRoomId":800,"quests":[{"id":1,"name":"shopping","awards":[{"id":24023,"type":"penguinItem","n":1}],"tasks":[{"type":"room","description":"Visit the Clothes Shop","data":130}]},{"id":3,"name":"igloo","awards":[{"id":2166,"type":"furnitureItem","n":1}],"tasks":[{"type":"","description":"Visit your Igloo","data":null}]},{"id":2,"name":"puffle","awards":[{"id":70,"type":"puffleItem","n":1}],"tasks":[{"type":"room","description":"Visit the Pet Shop","data":310}]}]}%')
-  client.write('%xt%nxquestdata%-1%{"quests":[{"id":1,"status":"prize claimed","tasks":[true]},{"id":3,"status":"prize claimed","tasks":[true]},{"id":2,"status":"prize claimed","tasks":[true]}]}%')
+  penguin.getClient().write('%xt%nxquestsettings%-1%{"ver":1,"spawnRoomId":800,"quests":[{"id":1,"name":"shopping","awards":[{"id":24023,"type":"penguinItem","n":1}],"tasks":[{"type":"room","description":"Visit the Clothes Shop","data":130}]},{"id":3,"name":"igloo","awards":[{"id":2166,"type":"furnitureItem","n":1}],"tasks":[{"type":"","description":"Visit your Igloo","data":null}]},{"id":2,"name":"puffle","awards":[{"id":70,"type":"puffleItem","n":1}],"tasks":[{"type":"room","description":"Visit the Pet Shop","data":310}]}]}%')
+  penguin.getClient().write('%xt%nxquestdata%-1%{"quests":[{"id":1,"status":"prize claimed","tasks":[true]},{"id":3,"status":"prize claimed","tasks":[true]},{"id":2,"status":"prize claimed","tasks":[true]}]}%')
 
   // TODO: this would periodically send to each player but right now this isn't fully implemented
   penguin.sendCoinsForChange();
@@ -110,4 +110,4 @@ handler.xt(Handle.CheckNameOld, ({ world, penguin }, name) => {
   penguin.sendXt('checkName', isValid, name);
 });
 
-export default handler;
+export { handler as joinHandler };

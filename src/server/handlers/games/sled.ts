@@ -1,8 +1,8 @@
 import { WorldClient, WorldContext } from "@server/new-client";
-import { Handler } from "..";
+import { Handler, XtHandler } from "..";
 import { Handle } from "../handles";
 
-const handler = new Handler<WorldClient, WorldContext, ['world', 'penguin', 'sled']>(['world', 'penguin', 'sled']);
+const handler = new XtHandler<WorldClient, WorldContext, ['world', 'penguin', 'sled']>(['world', 'penguin', 'sled']);
 
 // Joining room
 handler.xt(Handle.JoinRoom, ({ world, sled, penguin }, id, x, y) => {
@@ -41,4 +41,4 @@ handler.xt(Handle.LeaveWaddleGame, ({ world, penguin }, score) => {
   penguin.info.update();
 });
 
-export default handler;
+export { handler as sledHandler };

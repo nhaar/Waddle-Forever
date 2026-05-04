@@ -11,10 +11,10 @@ import { Room } from "@server/game-logic/rooms";
 import { SPY_DRILLS_DATA } from "@server/game-logic/spy-drills";
 import { STARTER_DECKS } from "@server/game-logic/starter-deck";
 import { CardJitsu, MatchMaker, World, WorldClient, WorldContext } from "@server/new-client";
-import { Handler } from "..";
+import { Handler, XtHandler } from "..";
 import { Handle } from "../handles";
 
-const handler = new Handler<WorldClient, WorldContext, ['penguin', 'world','game']>(['penguin', 'world', 'game']);
+const handler = new XtHandler<WorldClient, WorldContext, ['penguin', 'world','game']>(['penguin', 'world', 'game']);
 
 handler.xt(Handle.JoinRoom, ({ world, game, penguin }, id, x, y ) => {
   game.removePenguin(penguin);
@@ -24,7 +24,7 @@ handler.xt(Handle.JoinRoom, ({ world, game, penguin }, id, x, y ) => {
 // const CARD_JITSU_ROOMS = new Set<number>([Room.CardJitsu, Room.CardJitsuFire, Room.CardJitsuWater]);
 
 // client requesting to leave a minigame
-handler.xt(Handle.LeaveGame, ({ world, game, penguin, client }, score) => {
+handler.xt(Handle.LeaveGame, ({ world, game, penguin }, score) => {
   // waddle games individually handle this
   // card jitsu sometimes has stamp endscreen
   // const isCardJitsu = CARD_JITSU_ROOMS.has(game.getId());
@@ -48,7 +48,7 @@ handler.xt(Handle.LeaveGame, ({ world, game, penguin, client }, score) => {
     penguin.info.addCoins(coins);
   // }
   
-  client.sendXt('zo', String(penguin.info.coins), ...stampInfo);
+  penguin.sendXt('zo', String(penguin.info.coins), ...stampInfo);
   void penguin.info.update();
 });
 
@@ -111,7 +111,7 @@ handler.xt(Handle.SpyDrillsReward, ({ penguin }, medals) => {
 });
 
 // adding cards when receiving a starter deck
-handler.xt(Handle.AddItem, ({ world, penguin, client }, id) => {
+handler.xt(Handle.AddItem, ({ world, penguin }, id) => {
   const deck = STARTER_DECKS[id];
   if (deck !== undefined) {
     const powerCards: number[] = [];
@@ -127,7 +127,7 @@ handler.xt(Handle.AddItem, ({ world, penguin, client }, id) => {
   // updating mission stampbook
   const item = world.data.getItem(id);
   if (item.type === ItemType.Award) {
-    client.sendXt('qpa', penguin.id, id);
+    penguin.sendXt('qpa', penguin.id, id);
   }
 
   penguin.addItem(id);
@@ -144,4 +144,4 @@ handler.xt(Handle.JoinSensei, ({ world, penguin }) => {
   game.startMatch();
 });
 
-export default handler;
+export { handler as gameHandler };

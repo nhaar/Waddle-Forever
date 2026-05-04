@@ -1,10 +1,10 @@
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { Stamp } from "@server/game-logic/stamps";
 import { CardJitsu, NinjaPlayer, Sensei, WorldClient, WorldContext } from "@server/new-client";
-import { Handler } from "..";
+import { Handler, XtHandler } from "..";
 import { Handle } from "../handles";
 
-const handler = new Handler<WorldClient, WorldContext, ['world', 'penguin', 'card']>(['world', 'penguin', 'card']);
+const handler = new XtHandler<WorldClient, WorldContext, ['world', 'penguin', 'card']>(['world', 'penguin', 'card']);
 
 handler.xt(Handle.EnterWaddleGame, ({ card, penguin }) => {
   const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);
@@ -175,4 +175,4 @@ handler.xt(Handle.CardJitsuPick, ({ card, penguin }, action, sessionId) => {
   }
 })
 
-export default handler;
+export { handler as cardHandler };

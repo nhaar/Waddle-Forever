@@ -1,4 +1,4 @@
-import { Handler } from '..';
+import { Handler, XtHandler } from '..';
 // import { SledRace } from '../games/sled';
 // import { CardJitsu } from '../games/card';
 import { Handle } from '../handles';
@@ -16,7 +16,7 @@ import { choose, chooseN, randomInt } from '@common/utils';
 import { PUFFLE_ITEMS } from '@server/game-logic/puffle-item';
 import { CARDS } from '@server/game-logic/cards';
 
-const handler = new Handler<WorldClient, WorldContext, ['world', 'room', 'penguin']>(['world', 'room', 'penguin']);
+const handler = new XtHandler<WorldClient, WorldContext, ['world', 'room', 'penguin']>(['world', 'room', 'penguin']);
 
 // client requesting to join room
 const joinRoom = ({ world, room, penguin }: {
@@ -48,8 +48,8 @@ handler.xt(Handle.GetInventory, ({ penguin }) => {
   penguin.sendInventory();
 });
 
-handler.xt(Handle.GN, ({client}) => {
-  client.sendXt('gn', '');
+handler.xt(Handle.GN, ({penguin}) => {
+  penguin.sendXt('gn', '');
 });
 
 handler.xt(Handle.GetMail, ({ penguin }) => {
@@ -60,22 +60,22 @@ handler.xt(Handle.GetMail, ({ penguin }) => {
   );
 });
 
-handler.xt(Handle.GetBuddies, ({ world, client }) => {
+handler.xt(Handle.GetBuddies, ({ world, penguin }) => {
   if (world.data.isVanillaEngine()) {
     return;
   }
-  client.sendXt('gb', '');
+  penguin.sendXt('gb', '');
 });
 
-handler.xt(Handle.GetBuddies, ({ world, client }) => {
+handler.xt(Handle.GetBuddies, ({ world, penguin }) => {
   // TODO: buddy stuff
   if (!world.data.isVanillaEngine()) {
     return;
   }
-  client.sendXt('gs', 0, 0, 1, 0);
-  client.sendXt('gb', '');
-  client.sendXt('pbr', '');
-  client.sendXt('gc', '');
+  penguin.sendXt('gs', 0, 0, 1, 0);
+  penguin.sendXt('gb', '');
+  penguin.sendXt('pbr', '');
+  penguin.sendXt('gc', '');
 });
 
 handler.xt(Handle.JoinIgloo, ({ world, penguin }, fakeId) => {
@@ -144,12 +144,12 @@ handler.xt(Handle.SendLine, ({ room, penguin }, line) => {
   room.sendXt('sl', penguin.id, line);
 });
 
-handler.xt(Handle.GN, ({ client }) => {
-  client.sendXt('gn', '');
+handler.xt(Handle.GN, ({ penguin }) => {
+  penguin.sendXt('gn', '');
 });
 
-handler.xt(Handle.GLR, ({ client }) => {
-  client.sendXt('glr', '');
+handler.xt(Handle.GLR, ({ penguin }) => {
+  penguin.sendXt('glr', '');
 });
 
 handler.xt(Handle.GetAllMail, ({ penguin }) => {
@@ -195,8 +195,8 @@ handler.xt(Handle.GetIglooInventory, ({ penguin }) => {
 })
 
 // player inventory thing? Not sure why this exists
-handler.xt(Handle.PBI, ({ client }, id) => {
-  client.sendXt('pbi', id);
+handler.xt(Handle.PBI, ({ penguin }, id) => {
+  penguin.sendXt('pbi', id);
 })
 
 // refreshing room (required for bits and bolts, maybe other places)
@@ -210,8 +210,8 @@ handler.xt(Handle.GetTotalCoins, ({ penguin }) => {
 })
 
 // get penguins in the waddles
-handler.xt(Handle.GetWaddle, ({ room, client }, ...waddles) => {
-  client.sendXt('gw', ...room.getWaddleRooms().map((w) => {
+handler.xt(Handle.GetWaddle, ({ room, penguin }, ...waddles) => {
+  penguin.sendXt('gw', ...room.getWaddleRooms().map((w) => {
     return `${w.getId()}|${w.getSeats().map(p => {
       return p?.info.name ?? '';
     }).join(',')}`
@@ -296,11 +296,11 @@ handler.xt(Handle.JoinWaddle, ({ world, room, penguin }, id) => {
 // })
 
 // get igloo information
-handler.xt(Handle.GetIgloo, ({ world, client }, id) => {
+handler.xt(Handle.GetIgloo, ({ world, penguin }, id) => {
   const host = world.getPenguin(id);
   if (host !== undefined) {
     const igloo = host.getOwnIglooString();
-    client.sendXt('gm', id, igloo);
+    penguin.sendXt('gm', id, igloo);
   }
 });
 
@@ -315,7 +315,7 @@ export function getClientPuffleIds(puffleId: number) {
 }
 
 // get puffles in igloo
-handler.xt(Handle.GetIglooPuffles, ({ world, penguin, client }, id, iglooType) => {
+handler.xt(Handle.GetIglooPuffles, ({ world, penguin }, id, iglooType) => {
   if (!world.data.isVanillaEngine()) {
     const puffles = penguin.info.getPuffles().map((puffle) => {
       return [
@@ -339,7 +339,7 @@ handler.xt(Handle.GetIglooPuffles, ({ world, penguin, client }, id, iglooType) =
       penguin.giveStamp(21);
     }
   
-    client.sendXt('pg', ...puffles);
+    penguin.sendXt('pg', ...puffles);
   } else {
     const isBackyard = iglooType === 'backyard';
     const puffles = penguin.info.getPuffles().filter((puffle) => {
@@ -360,7 +360,7 @@ handler.xt(Handle.GetIglooPuffles, ({ world, penguin, client }, id, iglooType) =
         puffle.id === penguin.walkingPuffle ? 1 : 0
       ].join('|')
     })
-    client.sendXt('pg', puffles.length, ...puffles);
+    penguin.sendXt('pg', puffles.length, ...puffles);
   }
 });
 
@@ -2447,4 +2447,4 @@ handler.xt(Handle.BuyPowerCards, ({ penguin }) => {
   penguin.info.update();
 });
 
-export default handler;
+export { handler as roomHandler };

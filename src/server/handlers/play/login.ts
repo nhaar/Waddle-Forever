@@ -1,5 +1,5 @@
 import serverList, { getServerPopulation } from "../../servers";
-import { Handler } from "..";
+import { Handler, XmlHandler } from "..";
 import { logdebug } from "@server/logger";
 import { Settings, SettingsManager } from "@server/settings";
 import { Databases, JsonDatabase, PenguinData } from "@server/database";
@@ -9,8 +9,12 @@ import { ClientSocket, XtSocket } from "@server/socket-server";
 import { GameData } from "@server/timelines/game-data";
 import { LoginContext } from "@server/socket-server/login/login-client";
 
-const worldLoginHandler = new Handler<WorldClient, WorldContext, ['world']>(['world']);
-const loginHandler = new Handler<WorldClient, LoginContext, ['db', 'settings', 'data']>(['db', 'settings', 'data']);
+const worldLoginHandler = new XmlHandler<WorldClient, WorldContext, ['world']>(['world']);
+const loginHandler = new XmlHandler<WorldClient, LoginContext, ['db', 'settings', 'data']>(['db', 'settings', 'data']);
+
+const filePolicy = ({ client }: { client: ClientSocket }) => {
+  client.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
+};
 
 const checkVersion = ({ client }: { client: ClientSocket }) => {
   // version checking
@@ -101,11 +105,15 @@ const login = (ctx: { client: WorldClient, world: World } | {
   }
 }
 
+worldLoginHandler.xml('policy', filePolicy);
+
 worldLoginHandler.xml('verChk', checkVersion);
 
 worldLoginHandler.xml('rndK', getKey);
 
 worldLoginHandler.xml('login', login)
+
+loginHandler.xml('policy', filePolicy);
 
 loginHandler.xml('verChk', checkVersion);
 
