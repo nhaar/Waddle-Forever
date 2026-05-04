@@ -353,23 +353,38 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
   // }
 }
 
-export class XtHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> implements HandlerGenerator<Client, ContextMap> {
+abstract class BaseHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> implements HandlerGenerator<Client, ContextMap> {
   private listeners: ListenerMap<Client, ContextMap> = new Map();
-  private types: ContextTypes;
 
-  constructor(types: ContextTypes) {
-    this.types = types;
-  }
+  constructor(private types: ContextTypes) {}
 
   public getListeners(): ListenerMap<Client, ContextMap> {
     return this.listeners;
   }
 
-  public getMessageType(): string {
+  public abstract getMessageType(): string;
+
+  public abstract messageParser(message: string): { name: string; data: string } | null;
+
+  protected addCallback(name: string, callback: (ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string) => Promise<void>) {
+    let previousCallbacks = this.listeners.get(name);
+    if (previousCallbacks === undefined) {
+      previousCallbacks = [];
+      this.listeners.set(name, previousCallbacks);
+    }
+    previousCallbacks.push({
+      context: this.types,
+      callback: callback
+    });
+  }
+}
+
+export class XtHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<Client, ContextMap, ContextTypes> {
+  public override getMessageType(): string {
     return 'xt';
   }
 
-  public messageParser(message: string) {
+  public override messageParser(message: string) {
     try {
       const packet = new XtPacket(message);
       return {
@@ -474,32 +489,12 @@ getHandlerCallback<Arguments extends ArgumentsIndicator>(
     //   // this.listeners.set(packetName, [callback]);
     // }
     
-    let previousCallbacks = this.listeners.get(packetName);
-    if (previousCallbacks === undefined) {
-      previousCallbacks = [];
-      this.listeners.set(packetName, previousCallbacks);
-    }
-    previousCallbacks.push({
-      context: this.types,
-      callback: callback
-    });
+    this.addCallback(packetName, callback);
   }
 }
 
-export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> implements HandlerGenerator<Client, ContextMap> {
-  private listeners: ListenerMap<Client, ContextMap> = new Map();
-  private types: ContextTypes;
-
-  constructor(types: ContextTypes) {
-    this.types = types;
-    // TODO hasher function
-  }
-
-  public getListeners(): ListenerMap<Client, ContextMap> {
-    return this.listeners;
-  }
-
-  public getMessageType(): string {
+export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<Client, ContextMap, ContextTypes> {
+  public override getMessageType(): string {
     return 'xml';
   }
 
@@ -522,7 +517,7 @@ export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<s
   //       }
   //     }
 
-  public messageParser(message: string) {
+  public override messageParser(message: string) {
     let name = '';
     let data = message;
 
@@ -581,15 +576,7 @@ export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<s
     //   // this.listeners.set(packetName, [callback]);
     // }
     
-    let callbacks = this.listeners.get(name);
-    if (callbacks === undefined) {
-      callbacks = [];
-      this.listeners.set(name, callbacks);
-    }
-    callbacks.push({
-      context: this.types,  
-      callback
-    });
+    this.addCallback(name, callback);
   }
 }
 
