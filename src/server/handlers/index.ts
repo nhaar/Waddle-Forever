@@ -7,10 +7,6 @@ export interface MessageClient {
   socket: ClientSocket;
 }
 
-function hashType(a: string[]): string {
-  return a.sort().join(';');
-}
-
 type GetCtxObj<
   T extends readonly (keyof M)[],
   M extends Record<string, any>
@@ -65,12 +61,21 @@ type XtParams = {
 // }
 
 type ListenerMap<Client extends ClientSocket, ContextMap extends Record<string, any>> = Map<
-      string, // context id
-      Map<
-        string, // message name
-        Array<( ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string ) => Promise<void>> // array of callbacks
-      >
+      string, // message name
+      Array<{
+        // this array will always be sorted
+        context: Array<keyof ContextMap & string>,
+        callback: ( ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string ) => Promise<void>
+      }> // array of callbacks
     >;
+
+// type ListenerMap<Client extends ClientSocket, ContextMap extends Record<string, any>> = Map<
+//       string, // context id
+//       Map<
+//         string, // message name
+//         Array<( ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string ) => Promise<void>> // array of callbacks
+//       >
+//     >;
 
 type MessageParser = (message: string) => { name: string; data: string; } | null;
 
@@ -216,9 +221,12 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
       if (info === null) {
         continue;
       }
-      const hash = hashType(Object.entries(context).filter(([_, value]) => value !== undefined).map(([key]) => key));
-      const callbacks = this.listeners.get(name)?.get(hash)?.get(info.name);
-      callbacks?.forEach(callback => {
+      const contextEntities = new Set(Object.entries(context).filter(([_, value]) => value !== undefined).map(([key]) => key));
+      // const hash = hashType();
+      const callbacks = this.listeners.get(name)?.get(info.name);
+      callbacks?.forEach(callbackInfo => {
+        const { context: ctx, callback } = callbackInfo;
+        ctx.every(entity => contextEntities.has(entity));
         callback({ ...context, client }, info.data);
       });
       return;
@@ -295,22 +303,16 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
       this.listeners.set(type, typeListeners);
     }
 
-    for (const [ctx, messageMap] of generator.getListeners().entries()) {
-      let previousMessageMap = typeListeners.get(ctx);
-      if (previousMessageMap === undefined) {
-        previousMessageMap = new Map();
-        typeListeners.set(ctx, previousMessageMap);
+    for (const [name, callbacks] of generator.getListeners().entries()) {
+      let previousCallbacks = typeListeners.get(name);
+      if (previousCallbacks === undefined) {
+        previousCallbacks = [];
+        typeListeners.set(name, previousCallbacks);
       }
-      for (const [messageName, callbacks] of messageMap.entries()) {
-        let prevCallbacks = previousMessageMap.get(messageName);
-        if (prevCallbacks === undefined) {
-          prevCallbacks = [];
-          previousMessageMap.set(messageName, prevCallbacks);
+      for (const callback of callbacks) {
+          previousCallbacks.push(callback);
         }
-        for (const callback of callbacks) {
-          prevCallbacks.push(callback);
-        }
-      }
+      
     }
   }
 
@@ -354,12 +356,9 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
 export class XtHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> implements HandlerGenerator<Client, ContextMap> {
   private listeners: ListenerMap<Client, ContextMap> = new Map();
   private types: ContextTypes;
-  private hash: string;
 
   constructor(types: ContextTypes) {
     this.types = types;
-    // TODO hasher function
-    this.hash = hashType(this.types);
   }
 
   public getListeners(): ListenerMap<Client, ContextMap> {
@@ -468,31 +467,32 @@ getHandlerCallback<Arguments extends ArgumentsIndicator>(
     //   callback = timestampWrapper(this, packetName, params.cooldown, callback);
     // }
 
-    let ctxCallbacks = this.listeners.get(this.hash);
-    if (ctxCallbacks === undefined) {
-      ctxCallbacks = new Map();
-      this.listeners.set(this.hash, ctxCallbacks);
-      // this.listeners.set(packetName, [callback]);
-    }
+    // let ctxCallbacks = this.listeners.get(this.hash);
+    // if (ctxCallbacks === undefined) {
+    //   ctxCallbacks = new Map();
+    //   this.listeners.set(this.hash, ctxCallbacks);
+    //   // this.listeners.set(packetName, [callback]);
+    // }
     
-    let callbacks = ctxCallbacks.get(packetName);
-    if (callbacks === undefined) {
-      callbacks = [];
-      ctxCallbacks.set(packetName, callbacks);
+    let previousCallbacks = this.listeners.get(packetName);
+    if (previousCallbacks === undefined) {
+      previousCallbacks = [];
+      this.listeners.set(packetName, previousCallbacks);
     }
-    callbacks.push(callback);
+    previousCallbacks.push({
+      context: this.types,
+      callback: callback
+    });
   }
 }
 
 export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> implements HandlerGenerator<Client, ContextMap> {
   private listeners: ListenerMap<Client, ContextMap> = new Map();
   private types: ContextTypes;
-  private hash: string;
 
   constructor(types: ContextTypes) {
     this.types = types;
     // TODO hasher function
-    this.hash = hashType(this.types);
   }
 
   public getListeners(): ListenerMap<Client, ContextMap> {
@@ -574,19 +574,22 @@ export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<s
     //   callback = timestampWrapper(this, packetName, params.cooldown, callback);
     // }
 
-    let ctxCallbacks = this.listeners.get(this.hash);
-    if (ctxCallbacks === undefined) {
-      ctxCallbacks = new Map();
-      this.listeners.set(this.hash, ctxCallbacks);
-      // this.listeners.set(packetName, [callback]);
-    }
+    // let ctxCallbacks = this.listeners.get(this.hash);
+    // if (ctxCallbacks === undefined) {
+    //   ctxCallbacks = new Map();
+    //   this.listeners.set(this.hash, ctxCallbacks);
+    //   // this.listeners.set(packetName, [callback]);
+    // }
     
-    let callbacks = ctxCallbacks.get(name);
+    let callbacks = this.listeners.get(name);
     if (callbacks === undefined) {
       callbacks = [];
-      ctxCallbacks.set(name, callbacks);
+      this.listeners.set(name, callbacks);
     }
-    callbacks.push(callback);
+    callbacks.push({
+      context: this.types,  
+      callback
+    });
   }
 }
 
