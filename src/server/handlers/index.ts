@@ -52,12 +52,12 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
         continue;
       }
       const contextEntities = new Set(Object.entries(context).filter(([_, value]) => value !== undefined).map(([key]) => key));
-      // const hash = hashType();
       const callbacks = this.listeners.get(name)?.get(info.name);
       callbacks?.forEach(callbackInfo => {
         const { context: ctx, callback } = callbackInfo;
-        ctx.every(entity => contextEntities.has(entity));
-        callback.call({ ...context, client }, info.data);
+        if(ctx.every(entity => contextEntities.has(entity))) {
+          callback.call({ ...context, client }, info.data);
+        }
       });
       if (callbacks === undefined || callbacks.length === 0) {
         logdebug(`\x1b[31mUnhandled message (context: ${[...contextEntities.values()].join(':')}):\x1b[0m`, info.name);
