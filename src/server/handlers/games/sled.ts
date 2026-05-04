@@ -1,6 +1,6 @@
 import { WorldClient, WorldContext } from "@server/new-client";
-import { Handler, XtHandler } from "..";
 import { Handle } from "../handles";
+import { XtHandler } from "../xt";
 
 const handler = new XtHandler<WorldClient, WorldContext, ['world', 'penguin', 'sled']>(['world', 'penguin', 'sled']);
 

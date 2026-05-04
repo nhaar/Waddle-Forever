@@ -1,7 +1,7 @@
 import { Room } from '@server/game-logic/rooms';
 import { WorldClient, WorldContext } from '@server/new-client';
-import { Handler, XtHandler } from '..';
 import { Handle } from '../handles';
+import { XtHandler } from '../xt';
 import { getClientPuffleIds } from './navigation';
 
 const handler = new XtHandler<WorldClient, WorldContext, ['penguin', 'world']>(['penguin', 'world']);

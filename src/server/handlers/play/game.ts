@@ -11,8 +11,8 @@ import { Room } from "@server/game-logic/rooms";
 import { SPY_DRILLS_DATA } from "@server/game-logic/spy-drills";
 import { STARTER_DECKS } from "@server/game-logic/starter-deck";
 import { CardJitsu, MatchMaker, World, WorldClient, WorldContext } from "@server/new-client";
-import { Handler, XtHandler } from "..";
 import { Handle } from "../handles";
+import { XtHandler } from "../xt";
 
 const handler = new XtHandler<WorldClient, WorldContext, ['penguin', 'world','game']>(['penguin', 'world', 'game']);
 

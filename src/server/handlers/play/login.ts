@@ -1,5 +1,4 @@
 import serverList, { getServerPopulation } from "../../servers";
-import { Handler, XmlHandler } from "..";
 import { logdebug } from "@server/logger";
 import { Settings, SettingsManager } from "@server/settings";
 import { Databases, JsonDatabase, PenguinData } from "@server/database";
@@ -8,6 +7,7 @@ import { Penguin } from "@server/penguin";
 import { ClientSocket, XtSocket } from "@server/socket-server";
 import { GameData } from "@server/timelines/game-data";
 import { LoginContext } from "@server/socket-server/login/login-client";
+import { XmlHandler } from "../xml";
 
 const worldLoginHandler = new XmlHandler<WorldClient, WorldContext, ['world']>(['world']);
 const loginHandler = new XmlHandler<WorldClient, LoginContext, ['db', 'settings', 'data']>(['db', 'settings', 'data']);
