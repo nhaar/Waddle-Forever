@@ -1,45 +1,44 @@
-import { WaddleName } from "@server/game-logic/waddles";
-import { WaddleGame } from "@server/client";
-import { WaddleHandler } from "./waddle";
+import { WorldClient, WorldContext } from "@server/new-client";
+import { Handler } from "..";
 import { Handle } from "../handles";
 
-export class SledRace extends WaddleGame {
-  public roomId: number = 999;
+const handler = new Handler<WorldClient, WorldContext, ['world', 'penguin', 'sled']>(['world', 'penguin', 'sled']);
 
-  public name: WaddleName = 'sled';
-
-  private _payouts: number[] = [20, 10, 5, 5];
-
-  getPayout(): number {
-    return this._payouts.shift() ?? 0;
-  }
-}
-
-const handler = new WaddleHandler<SledRace>('sled');
-
-handler.waddleXt(Handle.JoinSled, (game, client) => {
-  if (client.isEngine1) {
-    return;
-  }
-  client.sendXt('uz', game.seats, ...game.players.map((p) => {
-    return [p.penguin.name, p.penguin.color, p.penguin.hand, p.penguin.name].join('|');
-  }));
+// Joining room
+handler.xt(Handle.JoinRoom, ({ world, sled, penguin }, id, x, y) => {
+  sled.removePlayer(penguin);
+  world.getRoom(id).addPenguin(penguin, x, y);
 });
 
-handler.waddleXt(Handle.SledRaceAction, (_, client, id, x, y, time) => {
-  if (client.isEngine1) {
-    return;
-  }
-  client.sendWaddleXt('zm', id, x, y, time);
+handler.xt(Handle.JoinRoomOld, ({ world, sled, penguin }, id, x, y) => {
+  sled.removePlayer(penguin);
+  world.getRoom(id).addPenguin(penguin, x, y);
 });
 
-handler.waddleXt(Handle.LeaveWaddleGame, (game, client, score) => {
-  if (client.isEngine1) {
-    return;
+handler.xt(Handle.JoinSled, ({ world, sled, penguin }) => {
+  penguin.sendXt('uz', sled.getPlayerCount(), ...sled.getPlayers().map((p) => {
+    if (world.data.isPreCpip()) {
+      // TODO is this check really necessary?
+      return [p.info.name, p.info.color]
+    } else {
+      return [p.info.name, p.info.color, p.info.hand, p.info.name]
+    }
+  }).map(array => array.join('|')));
+});
+
+handler.xt(Handle.SledRaceAction, ({ sled }, id, x, y, time) => {
+  sled.sendXt('zm', id, x, y, time);
+});
+
+handler.xt(Handle.LeaveWaddleGame, ({ world, penguin }, score) => {
+  const coins = [20, 10, 5, 5][score - 1];
+  penguin.info.addCoins(coins)
+  if (world.data.isPreCpip()) {
+    penguin.sendXt('zo');
+  } else {
+    penguin.sendXt('zo', penguin.info.coins, '', 0, 0, 0);
   }
-  client.penguin.addCoins(game.getPayout())
-  client.sendXt('zo', client.penguin.coins, '', 0, 0, 0);
-  client.update();
+  penguin.info.update();
 });
 
 export default handler;

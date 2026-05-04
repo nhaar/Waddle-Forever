@@ -3,7 +3,7 @@ import settingsManager from './settings';
 import { GameData } from './timelines/game-data';
 import { HttpServer } from './http';
 import { LoginServer } from './socket-server/login';
-import { World } from './socket-server/world';
+import { WorldServer } from './socket-server/world';
 
 // load user data
 const failedMods = settingsManager.mods.initializeMods();
@@ -18,7 +18,7 @@ const gameData = new GameData(settingsManager);
 const login = new LoginServer(gameData, settingsManager, db);
 login.setupServer();
 
-const world = new World(settingsManager, gameData, db);
+const world = new WorldServer(settingsManager, gameData, db);
 world.setupServer();
 
 const httpServer = new HttpServer(gameData, settingsManager, db, world.server);

@@ -1,76 +1,89 @@
 import serverList, { getServerPopulation } from "../../servers";
 import { Handler } from "..";
 import { logdebug } from "@server/logger";
-import { Client } from "@server/client";
-import { LoginClient } from "@server/socket-server/login/login-client";
+import { Settings, SettingsManager } from "@server/settings";
+import { Databases, JsonDatabase, PenguinData } from "@server/database";
+import { World, WorldClient, WorldContext, WorldPenguin } from "@server/new-client";
+import { Penguin } from "@server/penguin";
+import { ClientSocket, XtSocket } from "@server/socket-server";
 import { GameData } from "@server/timelines/game-data";
-import { ClientSocket } from "@server/socket-server";
-import { Settings } from "@server/settings";
-import { JsonDatabase } from "@server/database";
+import { LoginContext } from "@server/socket-server/login/login-client";
 
-interface XmlClient {
-  send: (s: string) => Promise<void>;
-  socket: ClientSocket;
-  data: GameData;
-  settings: Settings;
-  db: JsonDatabase;
-  sendXt: (code: string, ...args: Array<number | string>) => void;
-}
+const worldLoginHandler = new Handler<WorldClient, WorldContext, ['world']>(['world']);
+const loginHandler = new Handler<WorldClient, LoginContext, ['db', 'settings', 'data']>(['db', 'settings', 'data']);
 
-const worldLoginHandler = new Handler<Client>();
-const loginHandler = new Handler<LoginClient>();
-
-const checkVersion = (client: XmlClient) => {
+const checkVersion = ({ client }: { client: ClientSocket }) => {
   // version checking
   // this is irrelevant for us, we just always send an OK response
-  client.send('<msg t="sys"><body action="apiOK" r="0"></body></msg>');
+  client.write('<msg t="sys"><body action="apiOK" r="0"></body></msg>');
 }
 
-const getKey = (client: XmlClient) => {
+const getKey = ({ client }: { client: ClientSocket }) => {
   // random key generation
   // this is used for authentication, so it is not needed for us, we just send any key
-  client.send('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>');
+  client.write('<msg t="sys"><body action="rndK" r="-1"><k>key</k></body></msg>');
 }
 
-const login = (data: string, info : {
-  world: true;
-  client: Client;
-} | {
-  world: false;
-  client: LoginClient;
-}) => {
-  const joinMatch = data.match(/<login z='j'>/);
-  const { client } = info;
-  if (client.data.isPreCpip() && joinMatch) {
+const login = (ctx: { client: WorldClient, world: World } | {
+  client: XtSocket;
+  data: GameData;
+  settings: SettingsManager;
+  db: JsonDatabase;
+}, message: string) => {
+  const joinMatch = message.match(/<login z='j'>/);
+  const { client } = ctx;
+  
+  let data: GameData;
+  let db: JsonDatabase;
+  let settings: SettingsManager;
+
+  if ('world' in ctx) {
+    data = ctx.world.data;
+    db = ctx.world.getDb();
+    settings = ctx.world.getSettings();
+  } else {
+    data = ctx.data;
+    settings = ctx.settings;
+    db = ctx.db;
+  }
+
+  if (data.isPreCpip() && joinMatch) {
     // join.swf sends 'j' as the login
-    client.send('<msg t="sys"><body action="logOK"></body></msg>');
+    client.write('<msg t="sys"><body action="logOK"></body></msg>');
     return;
   }
 
-  const nicknameMatch = data.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
+  const nicknameMatch = message.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
   if (nicknameMatch === null) {
     logdebug('No nickname provided during Login, terminating.');
-    client.socket.end('');
+    client.end('');
   } else {
     let name = nicknameMatch[1];
-    if (client.data.isVanillaEngine() && info.world) {
+    let penguin: Penguin;
+    if (data.isVanillaEngine() && 'world' in ctx) {
       // in Engine 3 client, the world actually receives the ID instead of the name
-      info.client.setPenguinFromId(Number(name));
+        const id = Number(name);
+        const data = db.getById<PenguinData>(Databases.Penguins, id);
+        if (data === undefined) {
+          throw new Error(`Could not find penguin of ID ${id}`);
+        }
+        penguin = new Penguin(id, data);
     } else {
-      if (client.data.isPreCpip()) {
+      if (data.isPreCpip()) {
         // in pre-cpip, underscores represent spaces in names
         name = name.replace(/_/g, ' ');
       }
 
       // todo: error 101 is incorrect password
-      if (client.settings.no_create_via_login && !client.db.penguinExists(name)) {
+      if (settings.settings.no_create_via_login && !db.penguinExists(name)) {
         client.sendXt('e', 100)
         return
       }
 
-      if (info.world) {
-        info.client.setPenguinFromName(name);
-      }
+      penguin = Penguin.getPenguinFromName(name, settings.getVirtualDate(0).getTime(), settings.settings.always_member);
+    }
+    if ('world' in ctx) {
+      ctx.world.addPenguin(new WorldPenguin(ctx.client, penguin, data, settings));
     }
     console.log(`${name} is logging in`);
     /*
@@ -79,9 +92,7 @@ const login = (data: string, info : {
     how will server size be handled after NPCs?
     */
     // information regarding how many populations are in each server
-    // 0 -> penguin id?
-
-    const penguinId = info.world ? info.client.penguin.id : info.client.getPenguinFromName(name);
+    const penguinId = penguin.id;
 
     client.sendXt('l', penguinId, penguinId, '', serverList.map((server) => {
       const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
@@ -94,16 +105,14 @@ worldLoginHandler.xml('verChk', checkVersion);
 
 worldLoginHandler.xml('rndK', getKey);
 
-worldLoginHandler.xml('login', (client, data) => {
-  login(data, { world: true, client });
-})
+worldLoginHandler.xml('login', login)
 
 loginHandler.xml('verChk', checkVersion);
 
 loginHandler.xml('rndK', getKey);
 
-loginHandler.xml('login', (client, data) => {
-  login(data, { world: false, client });
-})
+loginHandler.xml('login', login);
 
-export { worldLoginHandler, loginHandler };
+export { worldLoginHandler, 
+  loginHandler 
+};
