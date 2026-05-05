@@ -10,41 +10,41 @@ type GetCtxObj<
 
 type ValidCtxObj<ContextMap extends Record<string, any>> = Partial<GetCtxObj<readonly (keyof ContextMap)[], ContextMap>>;
 
-export type CallbackSignature<Client extends ClientSocket, ContextMap extends Record<string, any>> = ( ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string ) => Promise<void>;
+export type CallbackSignature<ContextMap extends Record<string, any>> = ( client: ClientSocket, ctx: ValidCtxObj<ContextMap>, data: string ) => Promise<void>;
 
-export interface HandlerCallback<Client extends ClientSocket, ContextMap extends Record<string, any>> {
-  call: CallbackSignature<Client, ContextMap>;
+export interface HandlerCallback<ContextMap extends Record<string, any>> {
+  call: CallbackSignature<ContextMap>;
 }
 
-export type ListenerMap<Client extends ClientSocket, ContextMap extends Record<string, any>> = Map<
+export type ListenerMap<ContextMap extends Record<string, any>> = Map<
   string, // message name
   Array<{
     context: Array<keyof ContextMap & string>,
-    callback: HandlerCallback<Client, ContextMap>
+    callback: HandlerCallback<ContextMap>
   }> // array of callbacks
 >;
 
 type MessageParser = (message: string) => { name: string; data: string; } | null;
 
-export interface HandlerGenerator<Client extends ClientSocket, ContextMap extends Record<string, any>> {
+export interface HandlerGenerator<ContextMap extends Record<string, any>> {
   getMessageType: () => string;
   messageParser: MessageParser;
-  getListeners: () => ListenerMap<Client, ContextMap>;
+  getListeners: () => ListenerMap<ContextMap>;
 };
 
-export class Handler<Client extends ClientSocket, ContextMap extends Record<string, any>> {
+export class Handler<ContextMap extends Record<string, any>> {
   private listeners = new Map<
     string, // message type
-    ListenerMap<Client, ContextMap>
+    ListenerMap<ContextMap>
   >();
 
   // parse a message until it finds a type of message
   private messageParsers = new Map<string, MessageParser>();
 
-  constructor (private getContext: (client: Client) => ValidCtxObj<ContextMap>) {}
+  constructor (private getContext: (client: ClientSocket) => ValidCtxObj<ContextMap>) {}
 
   /** Handles incoming raw data sent from a client */
-  handle (client: Client, data: string) {
+  handle (client: ClientSocket, data: string) {
     const context = this.getContext(client);
     for (const [name, parser] of this.messageParsers.entries()) {
       const info = parser(data);
@@ -56,7 +56,7 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
       callbacks?.forEach(callbackInfo => {
         const { context: ctx, callback } = callbackInfo;
         if(ctx.every(entity => contextEntities.has(entity))) {
-          callback.call({ ...context, client }, info.data);
+          callback.call(client, { ...context }, info.data);
         }
       });
       if (callbacks === undefined || callbacks.length === 0) {
@@ -67,7 +67,7 @@ export class Handler<Client extends ClientSocket, ContextMap extends Record<stri
   }
 
   /** Uses a generator to increment the number of listeners */
-  use(generator: HandlerGenerator<Client, ContextMap>): void {
+  use(generator: HandlerGenerator<ContextMap>): void {
     const type = generator.getMessageType();
     let typeListeners = this.listeners.get(type);
     if (typeListeners === undefined) {

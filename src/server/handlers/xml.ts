@@ -1,7 +1,7 @@
 import { ClientSocket } from "@server/socket-server";
 import { BaseHandler } from "./generator";
 
-export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<Client, ContextMap, ContextTypes> {
+export class XmlHandler<ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<ContextMap, ContextTypes> {
   public override getMessageType(): string {
     return 'xml';
   }
@@ -29,10 +29,10 @@ export class XmlHandler<Client extends ClientSocket, ContextMap extends Record<s
 
   public xml(
     name: string,
-    method: (ctx: GetCtxObj<ContextTypes, ContextMap> & { client: Client }, data: string) => void | Promise<void>
+    method: (ctx: GetCtxObj<ContextTypes, ContextMap>, data: string) => void | Promise<void>
   ) {
-    const callback = async (ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string) => {
-      method(ctx as GetCtxObj<ContextTypes, ContextMap> & { client: Client }, data);
+    const callback = async (ctx: ValidCtxObj<ContextMap>, data: string) => {
+      method(ctx as GetCtxObj<ContextTypes, ContextMap>, data);
     }
     
     this.addCallback(name, callback);

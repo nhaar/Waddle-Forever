@@ -24,7 +24,7 @@ export class XtPacket {
 }
 
 
-export class XtHandler<Client extends ClientSocket, ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<Client, ContextMap, ContextTypes> {
+export class XtHandler<ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<ContextMap, ContextTypes> {
   public override getMessageType(): string {
     return 'xt';
   }
@@ -45,9 +45,9 @@ export class XtHandler<Client extends ClientSocket, ContextMap extends Record<st
 /** Get a function that checks at runtime the types given so it can be used for a client callback */
 getHandlerCallback<Arguments extends ArgumentsIndicator>(
   argTypes: Arguments,
-  method: (ctx: GetCtxObj<ContextTypes, ContextMap> & { client: Client }, ...args: GetArgumentsType<Arguments>) => void
+  method: (ctx: GetCtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<Arguments>) => void
 ) {
-  let callback = (ctx: GetCtxObj<ContextTypes, ContextMap> & { client: Client }, ...args: Array<string>): boolean => {
+  let callback = (ctx: GetCtxObj<ContextTypes, ContextMap>, ...args: Array<string>): boolean => {
     let validArgs: unknown[] = [];
     let valid = true;
 
@@ -105,7 +105,7 @@ getHandlerCallback<Arguments extends ArgumentsIndicator>(
     Name extends HandleName
   >(
     name: Name,
-    method: (ctx: GetCtxObj<ContextTypes, ContextMap> & { client: Client }, ...args: GetArgumentsType<HandleArguments[Name]>) => void | Promise<void>,
+    method: (ctx: GetCtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<HandleArguments[Name]>) => void | Promise<void>,
     params?: CallbackParams
   ) {
     const xt = handlePacketNames.get(name);
@@ -118,8 +118,8 @@ getHandlerCallback<Arguments extends ArgumentsIndicator>(
 
     const xtCallback = this.getHandlerCallback<HandleArguments[Name]>(argTypes, method);
     // TODO async, but no await
-    const callback = async (ctx: ValidCtxObj<ContextMap> & { client: Client }, data: string) => {
-      xtCallback(ctx as GetCtxObj<ContextTypes, ContextMap> & { client: Client }, ...data.split('%'));
+    const callback = async (ctx: ValidCtxObj<ContextMap>, data: string) => {
+      xtCallback(ctx as GetCtxObj<ContextTypes, ContextMap>, ...data.split('%'));
     }
     
     this.addCallback(packetName, callback, params);

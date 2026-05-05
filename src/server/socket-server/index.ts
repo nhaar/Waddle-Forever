@@ -1,9 +1,8 @@
 import net from 'net';
 import { WebSocketServer } from 'ws'
 
-interface MessageHandler<ClientType> {
-  handle: (client: ClientType, message: string) => void;
-  disconnectListeners: Array<(client: ClientType) => void>;
+interface MessageHandler {
+  handle: (client: ClientSocket, message: string) => void;
 }
 
 export function getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
@@ -15,11 +14,17 @@ export interface ClientSocket {
   end: (data?: string) => void;
 }
 
-export abstract class SocketServer<ClientType> {
-  private handler: MessageHandler<ClientType>;
+// export interface XtSocket extends ClientSocket {
+//   sendXt: (message: string, ...args: Array<string | number>) => void;
+// }
+
+export abstract class SocketServer {
+  protected handler: MessageHandler;
+  protected disconnect: ((client: ClientSocket) => void);
 
   constructor(private name: string, private port: number) {
     this.handler = this.createHandler();
+    this.disconnect = () => {};
   }
 
   async setupServer() {
@@ -44,16 +49,12 @@ export abstract class SocketServer<ClientType> {
           end: (d) => ws.close(undefined, d)
         }
 
-        const client = this.makeClient(cs)
-
         ws.on('message', (data) => {
-          this.handler.handle(client, data.toString());
+          this.handler.handle(cs, data.toString());
         });
 
         ws.on('close', () => {
-          for (const method of this.handler.disconnectListeners) {
-            method(client);
-          }
+          this.disconnect(cs);
           console.log('A client has disconnected (WebSocket)');
         });
 
@@ -107,17 +108,13 @@ export abstract class SocketServer<ClientType> {
               }
             }
 
-            const client = this.makeClient(cs)
-
             socket.on('data', (data: Buffer) => {
               const dataStr = data.toString().split('\0')[0];
-              this.handler.handle(client, dataStr);
+              this.handler.handle(cs, dataStr);
             });
 
             socket.on('close', () => {
-              for (const method of this.handler.disconnectListeners) {
-                method(client);
-              }
+              this.disconnect(cs);
               console.log('A client has disconnected');
             });
 
@@ -137,7 +134,5 @@ export abstract class SocketServer<ClientType> {
 
   }
 
-  abstract createHandler(): MessageHandler<ClientType>;
-
-  abstract makeClient(socket: ClientSocket): ClientType;
+  abstract createHandler(): MessageHandler;
 }
