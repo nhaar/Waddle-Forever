@@ -3,25 +3,26 @@ import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 
 function injectRuffleIntoHtml(html: string, ip: string, loginPort: number, worldPort: number) {
-    const ruffleConfig = JSON.stringify({
-    socketProxy: [
-      {
-        host: ip,
-        port: loginPort,
-        proxyUrl: `ws://${ip}:${loginPort}`,
-      },
-      {
-        host: ip,
-        port: worldPort,
-        proxyUrl: `ws://${ip}:${worldPort}`,
-      },
-    ]
-  });
+  const socketProxy = JSON.stringify([
+    {
+      host: ip,
+      port: loginPort,
+      proxyUrl: `ws://${ip}:${loginPort}`,
+    },
+    {
+      host: ip,
+      port: worldPort,
+      proxyUrl: `ws://${ip}:${worldPort}`,
+    },
+  ]);
 
   const injectedScript = `
     <script>
       window.RufflePlayer = window.RufflePlayer || {};
-      window.RufflePlayer.config = ${ruffleConfig};
+      window.RufflePlayer.config = {
+        ...window.RufflePlayer.config,
+        socketProxy: ${socketProxy}
+      };
     </script>
   `;
 
