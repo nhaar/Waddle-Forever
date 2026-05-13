@@ -2,7 +2,8 @@ import { BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { getPopupCreator } from "./popups";
 
-export const createCommands = getPopupCreator('commands', ['get-players', 'run-command'], (mainWindow, settings, server, handler) => {
+export const createCommands = getPopupCreator('commands', ['get-players', 'run-command'], (mainWindow, settings, server
+) => {
   const commandsWindow = new BrowserWindow({
     width: 500,
     height: 300,
@@ -25,9 +26,11 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
   ipcMain.on('run-command', (_, arg) => {
     const { id, command } = arg;
     if (typeof id === 'number' && typeof command === 'string') {
-      const client = server.getPlayerById(id);
-      if (client !== undefined) {
-        handler.runCommand(client, command);
+      const commandMatch = command.match(/(\w+)\s+(.*)/);
+      if (commandMatch !== null) {
+        const name = commandMatch[1];
+        const argString = commandMatch[2];
+        server.runCommand(id, name, argString.split(/\s+/));
       }
     }
   });

@@ -1,7 +1,7 @@
 import { logdebug } from "@server/logger";
-import { ClientSocket } from "@server/socket-server";
+import { CtxObj, ValidCtxObj } from ".";
 import { BaseHandler, CallbackParams } from "./generator";
-import { HANDLE_ARGUMENTS, HandleName, HandleArguments, handlePacketNames, GetArgumentsType, ArgumentsIndicator } from './handles';
+import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "./arg-parser";
 
 export class XtPacket {
   handler: string;
@@ -45,51 +45,13 @@ export class XtHandler<ContextMap extends Record<string, any>, ContextTypes exte
 /** Get a function that checks at runtime the types given so it can be used for a client callback */
 getHandlerCallback<Arguments extends ArgumentsIndicator>(
   argTypes: Arguments,
-  method: (ctx: GetCtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<Arguments>) => void
+  method: (ctx: CtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<Arguments>) => void
 ) {
-  let callback = (ctx: GetCtxObj<ContextTypes, ContextMap>, ...args: Array<string>): boolean => {
-    let validArgs: unknown[] = [];
-    let valid = true;
-
-    const checkString = (type: string | undefined) => {
-      if (type === undefined) {
-        valid = false;
-      } else {
-        validArgs.push(type);
-      }
+  let callback = (ctx: CtxObj<ContextTypes, ContextMap>, ...args: Array<string>): void => {
+    const parsed = parseArgs(args, argTypes);
+    if (parsed !== null) {
+      method(ctx, ...parsed);
     }
-
-    const checkNumber = (type: string | undefined) => {
-      const num = Number(type);
-      if (isNaN(num)) {
-        valid = false;
-      } else {
-        validArgs.push(num);
-      }
-    }
-
-    args.forEach((arg, i) => {
-      if (argTypes === 'string') {
-        checkString(arg);
-      } else if (argTypes === 'number') {
-        checkNumber(arg);
-      } else {
-        switch (argTypes[i]) {
-          case 'number':
-            checkNumber(arg)
-            break;
-          case 'string':
-            checkString(arg)
-            break;
-        }
-      }
-
-    });
-
-    if (valid) {
-      method(ctx, ...validArgs as GetArgumentsType<Arguments>)
-    }
-    return valid;
   }
 
   return callback;
@@ -101,27 +63,49 @@ getHandlerCallback<Arguments extends ArgumentsIndicator>(
    * @param method Listener to be added
    * @param params Params that restrict when this listener will run
    */
-  public xt<
-    Name extends HandleName
-  >(
-    name: Name,
-    method: (ctx: GetCtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<HandleArguments[Name]>) => void | Promise<void>,
+  public xt<const T extends ArgumentsIndicator>(
+    ext: string,
+    code: string,
+    args: T,
+    method: (ctx: CtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<T>) => void | Promise<void>,
     params?: CallbackParams
-  ) {
-    const xt = handlePacketNames.get(name);
-    if (xt === undefined) {
-      throw new Error(`Invalid XT name: ${name}`);
-    }
-    const argTypes = HANDLE_ARGUMENTS[name];
-    // TODO unrepeat code
-    const packetName = `${xt.extension}%${xt.code}`;
+  ): void;
+  public xt<const T extends ArgumentsIndicator>(
+    packets: Array<[string, string]>,
+    args: T,
+    method: (ctx: CtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<T>) => void | Promise<void>,
+    params?: CallbackParams
+  ): void;
 
-    const xtCallback = this.getHandlerCallback<HandleArguments[Name]>(argTypes, method);
+  public xt<const T extends ArgumentsIndicator>(
+    ...argArray: any[]
+  ) {
+    // TODO unrepeat code
+    let packets: Array<[string, string]>;
+    let args: T;
+    let method: (ctx: CtxObj<ContextTypes, ContextMap>, ...args: GetArgumentsType<T>) => void | Promise<void>;
+    let params: CallbackParams | undefined;
+
+    if (typeof argArray[0] === 'string') {
+      packets = [[argArray[0], argArray[1]]];
+      args = argArray[2];
+      method = argArray[3];
+      params = argArray[4];
+    } else {
+      packets = argArray[0];
+      args = argArray[1];
+      method = argArray[2];
+      params = argArray[3];
+    }
+
+    const names = packets.map(([ext, code]) => `${ext}%${code}`);
+
+    const xtCallback = this.getHandlerCallback<T>(args, method);
     // TODO async, but no await
     const callback = async (ctx: ValidCtxObj<ContextMap>, data: string) => {
-      xtCallback(ctx as GetCtxObj<ContextTypes, ContextMap>, ...data.split('%'));
+      xtCallback(ctx as CtxObj<ContextTypes, ContextMap>, ...data.split('%'));
     }
     
-    this.addCallback(packetName, callback, params);
+    names.forEach(name => this.addCallback(name, callback, params));
   }
 }

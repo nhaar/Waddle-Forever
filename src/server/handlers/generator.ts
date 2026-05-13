@@ -1,5 +1,5 @@
 import { ClientSocket } from "@server/socket-server";
-import { CallbackSignature, HandlerCallback, HandlerGenerator, ListenerMap } from ".";
+import { CallbackSignature, HandlerCallback, HandlerGenerator, ListenerMap, ValidCtxObj } from ".";
 
 export type CallbackParams = {
   once?: boolean
