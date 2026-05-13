@@ -1,14 +1,21 @@
 import { logdebug } from '../logger';
 import { ClientSocket } from '@server/socket-server';
 
-type GetCtxObj<
+type CtxObjWithTypes<
   Types extends readonly (keyof ContextMap)[],
   ContextMap extends Record<string, any>
 > = {
   [K in Types[number]]: ContextMap[K];
+} & {
+  [K in Exclude<keyof ContextMap, Types[number]>]?: ContextMap[K] | null;
 };
 
-type ValidCtxObj<ContextMap extends Record<string, any>> = Partial<GetCtxObj<readonly (keyof ContextMap)[], ContextMap>>;
+export type ValidCtxObj<ContextMap extends Record<string, any>> = Partial<ContextMap>;
+
+export type CtxObj<
+  Types extends readonly (keyof ContextMap)[],
+  ContextMap extends Record<string, any>
+> = CtxObjWithTypes<Types, ContextMap> & Partial<ContextMap>;
 
 export type CallbackSignature<ContextMap extends Record<string, any>> = ( client: ClientSocket, ctx: ValidCtxObj<ContextMap>, data: string ) => Promise<void>;
 
@@ -41,7 +48,11 @@ export class Handler<ContextMap extends Record<string, any>> {
   // parse a message until it finds a type of message
   private messageParsers = new Map<string, MessageParser>();
 
-  constructor (private getContext: (client: ClientSocket) => ValidCtxObj<ContextMap>) {}
+  constructor (private getContext: (client: ClientSocket) => ValidCtxObj<ContextMap>, private _disconnect: (ctx: ValidCtxObj<ContextMap>) => void) {}
+
+  disconnect(client: ClientSocket): void {
+    this._disconnect(this.getContext(client));
+  }
 
   /** Handles incoming raw data sent from a client */
   handle (client: ClientSocket, data: string) {

@@ -408,7 +408,6 @@ class DatabaseMigrator {
       // version 0.2.0 didnt have a .version file
       // any version before is not compatible with migration
 
-
     while (curVersion !== this._currentVersion) {
       curVersion = this.migrateVersion(curVersion);
     }
