@@ -1,28 +1,32 @@
-import { JsonDatabase } from "@server/database";
 import { Handler } from "@server/handlers";
-import { loginHandler } from "@server/handlers/play/login";
 import { LOGIN_PORT } from "@server/servers";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { SocketServer } from "..";
-import { PenguinMessenger } from "../world/world-client";
-import { LoginContext } from "./login-client";
+import { PenguinRepository } from "@server/database/database";
+
+export type LoginContext = {
+  // db: JsonDatabase;
+  // settings: SettingsManager;
+  // data: GameData;
+  // messenger: PenguinMessenger;
+}
 
 export class LoginServer extends SocketServer {
-  constructor(private gameData: GameData, private settings: SettingsManager, private db: JsonDatabase) {
+  constructor(private gameData: GameData, private settings: SettingsManager, private db: PenguinRepository) {
     super('login', LOGIN_PORT);
   }
   
   override createHandler() {
     const handler = new Handler<LoginContext>((client) => {
       return { 
-        data: this.gameData,
-        settings: this.settings,
-        db: this.db,
-        messenger: new PenguinMessenger(client)
+        // data: this.gameData,
+        // settings: this.settings,
+        // db: this.db,
+        // messenger: new PenguinMessenger(client)
       };
-    });
-    handler.use(loginHandler);
+    }, () => {});
+    // handler.use(loginHandler);
     return handler;
   }
 }

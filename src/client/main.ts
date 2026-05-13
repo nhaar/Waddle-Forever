@@ -13,16 +13,15 @@ import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
+import { USER_DATA_FOLDER } from '@common/paths';
 import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
-import { Client, Server } from '@server/client';
-import { Handler } from '@server/handlers';
-import db from '@server/database';
 import { GameData } from '@server/timelines/game-data';
+import { WorldServer } from '@server/socket-server/world';
 import { LoginServer } from '@server/socket-server/login';
-import { World } from '@server/socket-server/world';
 import { HttpServer } from '@server/http';
+import { DataFolder } from '@server/database/database';
 
 log.initialize();
 
@@ -37,9 +36,7 @@ if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
 }
 
-let server: Server | null = null;
-let handler: Handler<Client> | null = null;
-
+let server: WorldServer | null = null;
 
 loadFlashPlugin(app);
 
@@ -142,21 +139,20 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
     });
   }
 
-  db.loadDatabase();
+  const data = new DataFolder(USER_DATA_FOLDER);
+  data.init(VERSION);
+
   const gameData = new GameData(settingsManager);
 
   try {
-    const login = new LoginServer(gameData, settingsManager, db);
+    const login = new LoginServer(gameData, settingsManager, data.db);
     await login.setupServer();
 
-    const world = new World(settingsManager, gameData, db);
-    await world.setupServer();
+    server = new WorldServer(settingsManager, gameData, data.db);
+    await server.setupServer();
 
-    const httpServer = new HttpServer(gameData, settingsManager, db, world.server);
+    const httpServer = new HttpServer(gameData, settingsManager, data.db);
     await httpServer.setupServer();
-
-    server = world.server;
-    handler = world.getHandler();
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {
@@ -175,8 +171,8 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
     }
   }
 
-  if (server === null || handler === null) {
-    throw new Error("Server or handler should have been initialized");
+  if (server === null) {
+    throw new Error("Server should have been initialized");
   }
 
   mainWindow = await createWindow(store, globalSettings, settingsManager);
@@ -187,7 +183,7 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
+  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
@@ -228,9 +224,9 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    if (server === null || handler === null) {
+    if (server === null) {
       throw new Error("Server or handler must be non null");
     }
-    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
+    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
   }
 });
