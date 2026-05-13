@@ -97,7 +97,8 @@ export class WorldServer extends SocketServer {
         world: this.worldServer,
         penguin,
         prst: this._persister,
-        msg: this.messenger
+        msg: this.messenger,
+        data: this.gameData
       }
       this._commandsHandler.run(ctx, name, args);
     }

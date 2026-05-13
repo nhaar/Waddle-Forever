@@ -3,8 +3,17 @@ import { PenguinPersister, World } from "./world"
 import { WorldPenguin } from "./world-penguin";
 import { CommandResponse } from "./commands";
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/handlers/arg-parser";
+import { ITEMS } from "@server/game-logic/items";
+import { filterItems } from "@server/handlers/play/join";
+import { GameData } from "@server/timelines/game-data";
 
-export type CommandContext = { world: World; penguin: WorldPenguin; msg: PenguinMessenger; prst: PenguinPersister };
+export type CommandContext = { 
+  world: World;
+  penguin: WorldPenguin;
+  msg: PenguinMessenger;
+  prst: PenguinPersister;
+  data: GameData;
+};
 
 class CommandResponseGenerator {
   private _listeners = new Map<string, Array<[ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => void]>>();
@@ -52,6 +61,16 @@ commands.add('ai', ['number'], ({ msg, penguin, prst }, itemId) => {
   penguin.inventory.add(itemId);
   msg.send(penguin, 'ai', itemId, penguin.currency.coins);
   prst(penguin);
+});
+
+commands.add('ai', ['string'], ({ msg, penguin, prst, data }, action) => {
+  if (action === 'all') {
+    const allItems = ITEMS.rows;
+    allItems.forEach(item => penguin.inventory.add(item.id));
+
+    msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
+    prst(penguin);
+  }
 });
 
 export { commands }

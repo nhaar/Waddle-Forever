@@ -114,9 +114,9 @@ const POST_LISTENERS: Record<string, PostCallback> = {
 
     return 'e=0';
   },
-  // '/php/online.php': () => {
-  //   return '0';
-  // },
+  '/php/online.php': async () => {
+    return '0';
+  },
   // returns a crumb for a given player ID
   '/php/gp.php': async (body, { db }) => {
     const rawId = body.PlayerId ?? body.playerId ?? body.id;
