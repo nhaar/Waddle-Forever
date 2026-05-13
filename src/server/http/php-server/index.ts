@@ -5,122 +5,96 @@ import { Router } from "express";
 import { processVersion } from '@server/routes/versions';
 import { getDateString } from '@common/utils';
 import { PenguinRepository } from '@server/database/database';
-import { createPenguin } from '@server/handlers/play/login';
+import { getDefaultPenguin } from '@server/handlers/play/login';
 import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { getPenguinString } from '@server/handlers/play/join';
 import { GameData } from '@server/timelines/game-data';
 
-type PostCallback = (body: any, settings: SettingsManager, db: PenguinRepository, data: GameData) => Promise<string>;
+type PostCallback = (body: any, ctx: {
+  settings: SettingsManager;
+  db: PenguinRepository;
+  data: GameData;
+  session: SessionManager;
+}) => Promise<string>;
 
 type GetCallback = (settings: SettingsManager, db: PenguinRepository) => string;
 
-interface NewPenguin {
-  username: string,
-  color: number,
-  timeout: NodeJS.Timeout
-}
-
-// todo remove global state
-const sessionMap = new Map<string, NewPenguin>();
-
-function setSessionTimeout(sid: string): NodeJS.Timeout {
-  const session = sessionMap.get(sid)
-  if (session) {
-    clearTimeout(session.timeout)
-  }
-  return setTimeout(() => {
-    sessionMap.delete(sid);
-  }, 5 * 60 * 1000)
-}
-
-function generateSessionId() {
-  // crypto.randomUUID() can't be accessed here, so this will have to do
-  let num: number = 0;
-  const gen = () => Date.now() * Math.random()
-  num = gen();
-  while (sessionMap.has(String(num))) {
-    num = gen();
-  }
-  return String(num);
-}
-
 // todo: better organize listener declarations
 const POST_LISTENERS: Record<string, PostCallback> = {
-  // '/create_account/create_account.php': (body, settings, db) => {
-  //   let res: string = ''
-  //   let sid: string | undefined = body.sid;
+  '/create_account/create_account.php': async (body, { settings, db, session }) => {
+    let res: string = ''
+    let sid: string | undefined = body.sid;
 
-  //   if (sid === undefined) {
-  //     const newSID = generateSessionId();
-  //     sessionMap.set(newSID, { username: '', color: 1, timeout: setSessionTimeout(newSID) });
-  //     res += `sid=${newSID}&`;
-  //     sid = newSID;
-  //   }
+    if (sid === undefined) {
+      const newSID = session.generateSession();
+      res += `sid=${newSID}&`;
+      sid = newSID;
+    }
 
-  //   const session = sessionMap.get(sid);
+    const sessionInfo = session.get(sid);
 
-  //   if (session === undefined) {
-  //     return 'timeout=1&error=Session expired! Please try again';
-  //   }
+    if (sessionInfo === undefined) {
+      return 'timeout=1&error=Session expired! Please try again';
+    }
 
-  //   session.timeout = setSessionTimeout(sid);
-  //   res += `sid=${sid}&`;
+    sessionInfo.timeout = session.setTimeout(sid);
+    res += `sid=${sid}&`;
 
-  //   switch (body.action) {
-  //     case 'validate_agreement':
-  //       if (body.agree_to_rules !== '1' && body.agree_to_terms !== '1') {
-  //         res += 'error=Please agree to the rules and terms'
-  //         break
-  //       }
-  //       if (body.agree_to_rules !== '1') {
-  //         res += 'error=Please agree to the rules'
-  //         break
-  //       }
-  //       if (body.agree_to_terms !== '1') {
-  //         res += 'error=Please agree to the terms'
-  //         break
-  //       }
+    switch (body.action) {
+      case 'validate_agreement':
+        if (body.agree_to_rules !== '1' && body.agree_to_terms !== '1') {
+          res += 'error=Please agree to the rules and terms'
+          break
+        }
+        if (body.agree_to_rules !== '1') {
+          res += 'error=Please agree to the rules'
+          break
+        }
+        if (body.agree_to_terms !== '1') {
+          res += 'error=Please agree to the terms'
+          break
+        }
 
-  //       res += 'success=1';
-  //       break;
+        res += 'success=1';
+        break;
       
-  //     case 'validate_username':
-  //       if (body.username.length < 1 || body.username.length > 12) {
-  //         res += 'error=Please choose a username between 1 and 12 characters.'
-  //         break;
-  //       }
+      case 'validate_username':
+        if (body.username.length < 1 || body.username.length > 12) {
+          res += 'error=Please choose a username between 1 and 12 characters.'
+          break;
+        }
 
-  //       if (db.penguinExists(body.username)) {
-  //         res += 'error=This penguin already exists!'
-  //         break
-  //       }
+        if (await db.exists(body.username)) {
+          res += 'error=This penguin already exists!'
+          break
+        }
 
-  //       session.username = body.username;
-  //       session.color = Number(body.colour);
-  //       res += 'success=1';
-  //       break;
+        sessionInfo.username = body.username;
+        sessionInfo.color = Number(body.colour);
+        res += 'success=1';
+        break;
 
-  //     case 'validate_password_email':
-  //       if (session.username.length < 1) {
-  //         return '';
-  //       }
-  //       createPenguin(session.username, session.color, settings.settings.always_member, settings.getVirtualDate(0).getTime());
-  //       res += 'success=1';
-  //       break;
-  //   }
+      case 'validate_password_email':
+        if (sessionInfo.username.length < 1) {
+          return '';
+        }
+        await db.create(getDefaultPenguin(sessionInfo.username, sessionInfo.color, settings.settings.always_member, settings.getVirtualDate(0).getTime()));
+        res += 'success=1';
+        break;
+    }
 
-  //   return res;
-  // },
-  // '/php/join.php': (body, settings, db) => {
-  //   const name = body.Username;
-  //   if (name.length < 3 || name.length > 12 || db.exists(name)) {
-  //     return 'e=700';
-  //   }
+    return res;
+  },
+  '/php/join.php': async (body, { settings, db }) => {
+    const name = body.Username;
+    if (name.length < 3 || name.length > 12 || (await db.exists(name))) {
+      return 'e=700';
+    }
 
-  //   createPenguin(name, Number(body.Colour), settings.settings.always_member, settings.getVirtualDate(0).getTime());
+    await db.create(getDefaultPenguin(name, Number(body.Colour), settings.settings.always_member, settings.getVirtualDate(0).getTime()));
 
-  //   return 'e=0';
-  // },
+    return 'e=0';
+  },
   // '/php/online.php': () => {
   //   return '0';
   // },
@@ -142,7 +116,7 @@ const POST_LISTENERS: Record<string, PostCallback> = {
   //   return `e=0&crumb=${crumb}`;
   // },
   // Logging in
-  '/php/login.php': async (body, settings, db, data) => {
+  '/php/login.php': async (body, { settings, db, data}) => {
     const { Username } = body;
 
     let penguin = await db.fromName(Username);
@@ -152,7 +126,7 @@ const POST_LISTENERS: Record<string, PostCallback> = {
     }
 
     if (penguin === null) {
-      const json = createPenguin(Username, settings.settings.always_member, settings.getVirtualDate(0).getTime()); 
+      const json = getDefaultPenguin(Username, 1 /* blue as default */, settings.settings.always_member, settings.getVirtualDate(0).getTime()); 
       penguin = [await db.create(json), json];
     }
 
@@ -197,10 +171,50 @@ const GET_LISTENERS: Record<string, GetCallback> = {
   }
 }
 
+interface NewPenguin {
+  username: string,
+  color: number,
+  timeout: NodeJS.Timeout
+}
+
+class SessionManager {
+  private _sessions = new Map<string, NewPenguin>();
+
+  public setTimeout(sid: string): NodeJS.Timeout {
+    const session = this._sessions.get(sid)
+    if (session) {
+      clearTimeout(session.timeout)
+    }
+    return setTimeout(() => {
+      this._sessions.delete(sid);
+    }, 5 * 60 * 1000);
+  }
+
+  public generateSession(): string {
+    // crypto.randomUUID() can't be accessed here, so this will have to do
+    const gen = () => Date.now() * Math.random();
+    let sid: string;
+    
+    do {
+      sid = String(gen());
+    } while(this._sessions.has(sid));
+
+    this._sessions.set(sid, { username: '', color: 1, timeout: this.setTimeout(sid) });
+
+    return sid;
+  }
+
+  public get(sid: string) {
+    return this._sessions.get(sid);
+  }
+}
+
 export class PhpServer {
   private postListeners: Map<string, PostCallback>;
 
   private getListeners: Map<string, GetCallback>;
+
+  private _sessionManager = new SessionManager();
 
   constructor(
     private settings: SettingsManager,
@@ -219,7 +233,12 @@ export class PhpServer {
 
     this.postListeners.forEach((callback, path) => {
       router.post(path, (req, res) => {
-        callback(req.body, this.settings, this.db, this.gameData).then(r => {
+        callback(req.body, {
+          settings: this.settings,
+          db: this.db,
+          data: this.gameData,
+          session: this._sessionManager
+        }).then(r => {
           res.send(r);
         })
       });
