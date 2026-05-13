@@ -1688,6 +1688,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-08-26',
+    dateReference: 'owned-igloos',
     miscComments: ['The owned igloos list is added'],
     roomComment: 'The tree near the mine shack grows longer',
     fileChanges: {
