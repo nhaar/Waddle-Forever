@@ -295,6 +295,17 @@ export async function readFile(filePath: string) {
   });
 }
 
+export async function writeFile(filePath: string, content: string | Uint8Array<ArrayBufferLike>): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    fs.writeFile(filePath, content, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+}
+
 export function toForwardSlash(s: string): string {
   return s.replaceAll('\\', '/')
 }
