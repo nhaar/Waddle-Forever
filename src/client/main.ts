@@ -21,7 +21,7 @@ import { GameData } from '@server/timelines/game-data';
 import { WorldServer } from '@server/socket-server/world';
 import { LoginServer } from '@server/socket-server/login';
 import { HttpServer } from '@server/http';
-import { DataFolder } from '@server/database/database';
+import { DataFolder, PenguinRepository } from '@server/database/database';
 
 log.initialize();
 
@@ -141,17 +141,18 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
 
   const data = new DataFolder(USER_DATA_FOLDER);
   data.init(VERSION);
+  const db = new PenguinRepository(data.getPath());
 
   const gameData = new GameData(settingsManager);
 
   try {
-    const login = new LoginServer(gameData, settingsManager, data.db);
+    const login = new LoginServer(gameData, settingsManager, db);
     await login.setupServer();
 
-    server = new WorldServer(settingsManager, gameData, data.db);
+    server = new WorldServer(settingsManager, gameData, db);
     await server.setupServer();
 
-    const httpServer = new HttpServer(gameData, settingsManager, data.db);
+    const httpServer = new HttpServer(gameData, settingsManager, db);
     await httpServer.setupServer();
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
