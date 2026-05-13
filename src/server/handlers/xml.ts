@@ -1,4 +1,4 @@
-import { ClientSocket } from "@server/socket-server";
+import { CtxObj, ValidCtxObj } from ".";
 import { BaseHandler } from "./generator";
 
 export class XmlHandler<ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<ContextMap, ContextTypes> {
@@ -29,10 +29,10 @@ export class XmlHandler<ContextMap extends Record<string, any>, ContextTypes ext
 
   public xml(
     name: string,
-    method: (ctx: GetCtxObj<ContextTypes, ContextMap>, data: string) => void | Promise<void>
+    method: (ctx: CtxObj<ContextTypes, ContextMap>, data: string) => void | Promise<void>
   ) {
     const callback = async (ctx: ValidCtxObj<ContextMap>, data: string) => {
-      method(ctx as GetCtxObj<ContextTypes, ContextMap>, data);
+      method(ctx as CtxObj<ContextTypes, ContextMap>, data);
     }
     
     this.addCallback(name, callback);
