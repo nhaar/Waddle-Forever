@@ -7,9 +7,9 @@ import { CatalogItems } from '../server/updates';
 import { getDate } from '@server/timelines/dates';
 import { getPopupCreator } from './popups';
 import { SettingsManager } from '@server/settings';
-import { Server } from '@server/client';
+import { WorldServer } from '@server/socket-server/world';
 
-export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
+export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
   const timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",

@@ -107,4 +107,8 @@ export class WorldServer extends SocketServer {
       id: p.id
     }));
   }
+
+  public reset() {
+    this.worldServer = new World(this.gameData);
+  }
 }

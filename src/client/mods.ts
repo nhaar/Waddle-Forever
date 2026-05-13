@@ -5,9 +5,9 @@ import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from "@common/paths";
 import { getPopupCreator } from "./popups";
 import { SettingsManager } from "@server/settings";
 import { ModError } from "@server/mods";
-import { Server } from "@server/client";
+import { WorldServer } from "@server/socket-server/world";
 
-export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
+export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
   const modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
