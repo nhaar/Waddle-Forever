@@ -4,8 +4,10 @@ import { WorldPenguin } from "./world-penguin";
 import { CommandResponse } from "./commands";
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/handlers/arg-parser";
 import { ITEMS } from "@server/game-logic/items";
-import { filterItems } from "@server/handlers/play/join";
+import { filterItems, joinRoom } from "@server/handlers/play/join";
 import { GameData } from "@server/timelines/game-data";
+import { WorldRoom } from "./world-room";
+import { RoomName, ROOMS } from "@server/game-data/rooms";
 
 export type CommandContext = { 
   world: World;
@@ -13,6 +15,7 @@ export type CommandContext = {
   msg: PenguinMessenger;
   prst: PenguinPersister;
   data: GameData;
+  room?: WorldRoom;
 };
 
 class CommandResponseGenerator {
@@ -70,6 +73,17 @@ commands.add('ai', ['string'], ({ msg, penguin, prst, data }, action) => {
 
     msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
     prst(penguin);
+  }
+});
+
+commands.add('jr', ['number'], (ctx, id) => {
+  joinRoom(ctx, id, 0, 0);
+});
+
+commands.add('jr', ['string'], (ctx, name) => {
+  if (name in ROOMS) {
+    const info = ROOMS[name as RoomName];
+    joinRoom(ctx, info.id, 0, 0);
   }
 });
 
