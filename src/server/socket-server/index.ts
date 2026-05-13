@@ -3,11 +3,8 @@ import { WebSocketServer } from 'ws'
 
 interface MessageHandler {
   handle: (client: ClientSocket, message: string) => void;
+  disconnect: (client: ClientSocket) => void;
 }
-
-export function getXtMessage(emptyLast: boolean, handler: string, ...args: Array<number | string>): string {
-    return `%xt%${handler}%-1%` + args.join('%') + (emptyLast ? '' : '%');
-  }
 
 export interface ClientSocket {
   write: (data: string) => Promise<void>;
@@ -20,11 +17,9 @@ export interface ClientSocket {
 
 export abstract class SocketServer {
   protected handler: MessageHandler;
-  protected disconnect: ((client: ClientSocket) => void);
 
   constructor(private name: string, private port: number) {
     this.handler = this.createHandler();
-    this.disconnect = () => {};
   }
 
   async setupServer() {
@@ -54,7 +49,8 @@ export abstract class SocketServer {
         });
 
         ws.on('close', () => {
-          this.disconnect(cs);
+          this.handler.disconnect(cs);
+          cs.end();
           console.log('A client has disconnected (WebSocket)');
         });
 
@@ -114,7 +110,8 @@ export abstract class SocketServer {
             });
 
             socket.on('close', () => {
-              this.disconnect(cs);
+              this.handler.disconnect(cs);
+              cs.end();
               console.log('A client has disconnected');
             });
 
