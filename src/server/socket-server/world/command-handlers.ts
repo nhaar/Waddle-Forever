@@ -4,7 +4,7 @@ import { WorldPenguin } from "./world-penguin";
 import { CommandResponse } from "./commands";
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/handlers/arg-parser";
 import { ITEMS } from "@server/game-logic/items";
-import { filterItems, joinRoom } from "@server/handlers/play/join";
+import { filterItems, joinRoom, sendLPMessage } from "@server/handlers/play/join";
 import { GameData } from "@server/timelines/game-data";
 import { WorldRoom } from "./world-room";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
@@ -40,14 +40,13 @@ class CommandResponseGenerator {
 
     return [...this._listeners.entries()].map(([name, responses]) => {
       const responder: CommandResponse<CommandContext> = {
-          getCallback: (commandArgs: Array<string>): ((ctx: CommandContext, ...args: Array<string | number>) => void) | undefined => {
+          runCallback: (ctx: CommandContext, commandArgs: Array<string>): void => {
             for (const [types, callback] of responses) {
               const parse = parseArgs(commandArgs, types);
               if (parse !== null) {
-                return callback;
+                callback(ctx, ...parse);
               }
             }
-            return undefined;
           }
         }
       return [
@@ -85,6 +84,19 @@ commands.add('jr', ['string'], (ctx, name) => {
     const info = ROOMS[name as RoomName];
     joinRoom(ctx, info.id, 0, 0);
   }
+});
+
+commands.add('ac', ['number'], ({ msg, penguin, prst, data }, coins) => {
+  console.log(typeof coins, 'eis os coins');
+  const total = penguin.currency.add(coins);
+
+  if (data.isPreCpip()) {
+    msg.send(penguin, 'ac', total);
+  } else {
+    sendLPMessage(penguin, data, msg);
+  }
+
+  prst(penguin);
 });
 
 export { commands }

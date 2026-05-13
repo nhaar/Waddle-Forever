@@ -1,5 +1,5 @@
 export interface CommandResponse<Ctx> {
-  getCallback: (args: Array<string>) => ((ctx: Ctx, ...args: Array<string | number>) => void) | undefined;
+  runCallback: (ctx: Ctx, args: Array<string>) => void;
 }
 
 export class CommandsHandler<Ctx> {
@@ -13,10 +13,6 @@ export class CommandsHandler<Ctx> {
   }
 
   public run(ctx: Ctx, name: string, args: Array<string>) {
-    const callback = this._listeners.get(name)?.getCallback(args);
-
-    if (callback !== undefined) {
-      callback(ctx, ...args);
-    }
+    this._listeners.get(name)?.runCallback(ctx, args);
   }
 }
