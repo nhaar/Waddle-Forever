@@ -15,6 +15,7 @@ import { PenguinPersister, World, WorldContext } from "./world";
 import { puffleHandler } from "@server/handlers/play/puffle";
 import { CommandsHandler } from "./commands";
 import { CommandContext, commands } from "./command-handlers";
+import { createHandler } from "@server/handlers/play/create";
 
 export class WorldServer extends SocketServer {
   private worldServer: World;
@@ -73,6 +74,7 @@ export class WorldServer extends SocketServer {
     handler.use(roomHandler);
     handler.use(iglooHandler);
     handler.use(puffleHandler);
+    handler.use(createHandler);
     // handler.use(roomHandler);
     // handler.use(gameHandler);
     // handler.use(sledHandler);

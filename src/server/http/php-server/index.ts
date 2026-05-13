@@ -4,10 +4,9 @@ import { SettingsManager } from "@server/settings";
 import { Router } from "express";
 import { processVersion } from '@server/routes/versions';
 import { getDateString } from '@common/utils';
-import { PenguinRepository } from '@server/database/database';
+import { PenguinJson, PenguinRepository } from '@server/database/database';
 import { getDefaultPenguin } from '@server/handlers/play/login';
-import { WorldPenguin } from '@server/socket-server/world/world-penguin';
-import { getPenguinString } from '@server/handlers/play/join';
+import { filterItems } from '@server/handlers/play/join';
 import { GameData } from '@server/timelines/game-data';
 
 type PostCallback = (body: any, ctx: {
@@ -18,6 +17,26 @@ type PostCallback = (body: any, ctx: {
 }) => Promise<string>;
 
 type GetCallback = (settings: SettingsManager, db: PenguinRepository) => string;
+
+function getOfflinePenguinCrumb(id: number, penguin: PenguinJson): string {
+  return [
+    id,
+    penguin.name,
+    penguin.color,
+    penguin.head,
+    penguin.face,
+    penguin.neck,
+    penguin.body,
+    penguin.hand,
+    penguin.feet,
+    penguin.pin,
+    penguin.background,
+    0, // unecessary data: room state
+    0,
+    0,
+    penguin.is_member ? 1 : 0,
+  ].join('|');
+}
 
 // todo: better organize listener declarations
 const POST_LISTENERS: Record<string, PostCallback> = {
@@ -98,23 +117,22 @@ const POST_LISTENERS: Record<string, PostCallback> = {
   // '/php/online.php': () => {
   //   return '0';
   // },
-  // // returns a crumb for a given player ID
-  // '/php/gp.php': (body) => {
-  //   const rawId = body.PlayerId ?? body.playerId ?? body.id;
-  //   const penguinId = Number(rawId);
-  //   if (!Number.isFinite(penguinId)) {
-  //     return 'e=0&crumb=0|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0';
-  //   }
+  // returns a crumb for a given player ID
+  '/php/gp.php': async (body, { db }) => {
+    const rawId = body.PlayerId ?? body.playerId ?? body.id;
+    const penguinId = Number(rawId);
+    if (!Number.isFinite(penguinId)) {
+      return 'e=0&crumb=0|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0';
+    }
 
-  //   // const penguin = Penguin.getById(penguinId);
-  //   // if (penguin !== undefined) {
-  //   //   const crumb = penguin.getEngine1Crumb();
-  //   //   return `e=0&crumb=${crumb}`;
-  //   // }
+    const penguinData = await db.get(penguinId);
+    if (penguinData !== null) {
+      return `e=0&crumb=${getOfflinePenguinCrumb(penguinId, penguinData)}`;
+    }
 
-  //   const crumb = `${penguinId}|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0`;
-  //   return `e=0&crumb=${crumb}`;
-  // },
+    const crumb = `${penguinId}|Unknown|0|0|0|0|0|0|0|0|0|0|0|0|0`;
+    return `e=0&crumb=${crumb}`;
+  },
   // Logging in
   '/php/login.php': async (body, { settings, db, data}) => {
     const { Username } = body;
@@ -131,27 +149,33 @@ const POST_LISTENERS: Record<string, PostCallback> = {
     }
 
     const virtualDate = settings.getVirtualDate(43);
-    // // const buddies = penguin.getBuddies();
-    const buddyList = ''; // TODO add later
-    // // const buddyList = buddies.map((id) => server.formatBuddyEntry(id, true)).join(',');
-
-
-    const worldPenguin = new WorldPenguin(...penguin, settings);
+    const [id, penguinData] = penguin;
+    
+    // TODO document what the buddy list
+    const buddies = (await Promise.all((penguinData.buddies ?? []).map(id => new Promise<[number, string] | null>((res) => {
+      db.get(id).then(p => {
+        if (p !== null) {
+          res([id, p.name]);
+        } else {
+          res(null);
+        }
+      })
+    })))).filter((p): p is [number, string] => p !== null);
 
     const params: Record<string, number | string> = {
-      crumb: getPenguinString(data, worldPenguin, { x: 0, y: 0, frame: 1 }),
+      crumb: getOfflinePenguinCrumb(id, penguinData),
       k1: 'a',
-      c: worldPenguin.currency.coins,
-      s: worldPenguin.preference.isSafeChat ? 1 : 0,
+      c: penguinData.coins,
+      s: penguinData.safeChat ? 1 : 0,
       // jd uses non virtual date, there simulating age delta it with real time
-      jd: getDateString(Date.now() - (settings.getVirtualDate(0).getTime() - worldPenguin.time.virtualRegistrationTimestamp)),
+      jd: getDateString(Date.now() - (settings.getVirtualDate(0).getTime() - penguinData.virtualRegistrationTimestamp)),
       ed: '10000-1-1', // EXPIRACY DATE TODO what is it for?
       h: '', // TODO what is?
       w: '100|0', // TODO what is?
       m: '', // TODO what is
-      bl: buddyList,
+      bl: buddies.map(([id, name]) => `${id}|${name}`).join(','),
       nl: '',
-      il: '', // TODOserver.getItemsFiltered(penguin.getItems()).join('|'), // item list
+      il: filterItems(data, penguinData.inventory).join('|'), // item list
       td: `${virtualDate.getUTCFullYear()}-${String(virtualDate.getUTCMonth()).padStart(2, '0')}-${String(virtualDate.getUTCDate()).padStart(2, '0')}:${virtualDate.getUTCHours()}:${virtualDate.getUTCMinutes()}:${virtualDate.getUTCSeconds()}` // used for the snow forts clock in later years
     }
 
@@ -162,7 +186,6 @@ const POST_LISTENERS: Record<string, PostCallback> = {
     return response 
   }
 }
-
 
 const GET_LISTENERS: Record<string, GetCallback> = {
   '/flash/date.php': (settings) => {
