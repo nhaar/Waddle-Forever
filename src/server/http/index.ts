@@ -5,16 +5,15 @@ import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { HTTP_PORT } from '@common/constants';
 import { PhpServer } from './php-server';
-import { JsonDatabase } from '@server/database';
-import { Server } from '@server/client';
+import { PenguinRepository } from '@server/database/database';
 
 export class HttpServer {
   private fileServer: FileServer;
   private phpServer: PhpServer;
 
-  constructor(gameData: GameData, settings: SettingsManager, db: JsonDatabase, server: Server) {
+  constructor(gameData: GameData, settings: SettingsManager, db: PenguinRepository) {
     this.fileServer = new FileServer(gameData, settings);
-    this.phpServer = new PhpServer(settings, db, server);
+    this.phpServer = new PhpServer(settings, db, gameData);
   }
 
   public async setupServer() {
