@@ -130,4 +130,19 @@ commands.add('member', [], ({ penguin, prst, msg, data }) => {
   prst(penguin);
 });
 
+function addFurniture({ penguin, prst, msg }: { penguin: WorldPenguin; prst: PenguinPersister, msg: PenguinMessenger; }, id: number, amount: number): void {
+  const ownedAmount = penguin.igloo.getFurnitureAmount(id);
+  const addAmount = Math.max(Math.min(amount, 99 - ownedAmount), 0);
+  penguin.igloo.addFurniture(id, addAmount);
+  for (let i = 0; i < addAmount; i++) {
+    msg.send(penguin, 'af', id, penguin.currency.coins);
+  }
+
+  prst(penguin);
+}
+
+commands.add('af', ['number', 'number'], addFurniture);
+
+commands.add('af', ['number'], (client, id) => addFurniture(client, id, 1));
+
 export { commands }
