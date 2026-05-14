@@ -202,4 +202,9 @@ commands.add('amulet', ['string'], ({ penguin, prst }, element) => {
   prst(penguin);
 });
 
+commands.add('addcard', ['number', 'number'], ({ penguin, prst }, card, amount) => {
+  penguin.ninja.addCard(card, amount);
+  prst(penguin);
+});
+
 export { commands }

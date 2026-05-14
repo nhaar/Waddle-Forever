@@ -553,6 +553,10 @@ class NinjaProfile {
   public setSnowNinja(value: boolean) {
     this._snow = value;
   }
+
+  public addCard(cardId: number, amount = 1): void {
+    this._cards.set(cardId, (this._cards.get(cardId) ?? 0) + amount);
+  }
 }
 
 class BattleOfDoomStatus {
