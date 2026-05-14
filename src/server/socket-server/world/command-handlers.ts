@@ -99,4 +99,13 @@ commands.add('ac', ['number'], ({ msg, penguin, prst, data }, coins) => {
   prst(penguin);
 });
 
+commands.add('rename', 'string', ({ penguin, msg, data, prst }, ...names) => {
+  const name = names.join(' ');
+
+  penguin.changeName(name);
+  // TODO what about pre-cpip?
+  sendLPMessage(penguin, data, msg);
+  prst(penguin);
+});
+
 export { commands }
