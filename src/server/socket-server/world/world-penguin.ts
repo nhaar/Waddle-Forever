@@ -1,480 +1,827 @@
-import { Igloo, IglooFurniture } from "@server/database";
-import { isFlag } from "@server/game-logic/flags";
-import { ItemType } from "@server/game-logic/items";
+import { Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
-import { PUFFLES } from "@server/game-logic/puffle";
-import { Room } from "@server/game-logic/rooms";
-import { Penguin } from "@server/penguin";
+import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { GameData } from "@server/timelines/game-data";
-import { getXtMessage } from "..";
-import { PenguinMessenger } from "./world-client";
+
+export type PenguinEquipped = {
+  color: number
+  head: number
+  face: number
+  neck: number
+  body: number
+  hand: number
+  feet: number
+  pin: number
+  background: number  
+}
 
 export type RoomState = { x: number; y: number; frame: number; };
 
-export class WorldPenguin {
-  private _avatar = 0;
-  private _walkingPuffle: number | null = null;
-  private _sessionStamps: number[] = [];
-  private _sessionStart = Date.now();
-  private agentPending = false;
+function getVirtualDate(date: [number, number, number], offset: number) {
+  // simulating PST time for the current day
+  const now = new Date();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const second = now.getSeconds();
+  const [year, month, day] = date;
 
-  constructor(private client: PenguinMessenger, private penguin: Penguin, private gameData: GameData, private settings: SettingsManager) {
+  // date generates this time thinking in the same timezone as the user
+  // an arbitrary offset may be applied depending on how each client behaves
+  return new Date(year, month - 1, day, hour + offset, minute, second);
+}
 
+class Profile {
+  private _name: string;
+  private _mascot: number;
+
+  constructor(private _id: number, data: PenguinJson) {
+    this._name = data.name;
+    this._mascot = data.mascot;
   }
 
-  public async sendXt(message: string, ...args: Array<string | number>) {
-    
-    await this.client.send(message, ...args);
+  get name() {
+    return this._name;
   }
 
-  public getAge() {
-    // difference converted into days
-    return Math.floor((this.settings.getVirtualDate(0).getTime() - this.penguin.virtualRegistration) / 1000 / 86400);
+  public changeName(name: string) {
+    this._name = name;
   }
 
-  public getString(state: RoomState): string {
-    if (this.gameData.isPreCpip()) {
-      return this.penguin.getEngine1Crumb(state);
-    } else {
-      // meant to be approval, but always approved (1), TODO: non approved names in the future
-      const approval = this.gameData.isNewShell2009() ? [1] : []
+  get mascot() {
+    return this._mascot;
+  }
 
-      return [
-        this.penguin.id,
-        this.penguin.name,
-        ...approval, 
-        this.penguin.color,
-        this.penguin.head,
-        this.penguin.face,
-        this.penguin.neck,
-        this.penguin.body,
-        this.penguin.hand,
-        this.penguin.feet,
-        this.penguin.pin,
-        this.penguin.background,
-        state.x,
-        state.y,
-        state.frame,
-        this.penguin.isMember ? 1 : 0,
-        this.getAge(), // TODO member age
-        this._avatar,
-        0, // TODO figure out what penguin state is
-        0, // TODO figure out what party state is
-        0, // TODO figure out what puffle state is
-        '', // TODO figure out what empty strings are for (and if are necessary)
-        '',
-        '',
-        ''
-      ].join('|');
+  get id() {
+    return this._id;
+  }
+}
+
+class Membership {
+  private _member: boolean;
+
+  constructor(data: PenguinJson) {
+    this._member = data.is_member;
+  }
+
+  public swap() {
+    this._member = !this._member;
+  }
+
+  get isMember() {
+    return this._member;
+  }
+}
+
+class PSA {
+  private _agent: boolean;
+  private _pending = false;
+
+  constructor(data: PenguinJson) {
+    this._agent = data.is_agent;
+  }
+
+  get isAgent() {
+    return this._agent;
+  }
+
+  setAgentPending() {
+    this._pending = true;
+  }
+
+}
+
+class Inventory {
+  private _equipped: PenguinEquipped;
+  private _items: Set<number>;
+
+  constructor(data: PenguinJson) {
+    this._equipped = {
+      color: data.color,
+      head: data.head,
+      face: data.face,
+      neck: data.neck,
+      body: data.body,
+      feet: data.feet,
+      pin: data.pin,
+      background: data.background,
+      hand: data.hand
+    };
+    this._items = new Set(data.inventory);
+  }
+
+  public get color() {
+    return this._equipped.color;
+  }
+
+  public get head() {
+    return this._equipped.head;
+  }
+
+  public get face() {
+    return this._equipped.face;
+  }
+
+  public get neck() {
+    return this._equipped.neck;
+  }
+
+  public get body() {
+    return this._equipped.body;
+  }
+
+  public get feet() {
+    return this._equipped.feet;
+  }
+
+  public get hand() {
+    return this._equipped.hand;
+  }
+
+  public get pin() {
+    return this._equipped.pin;
+  }
+
+  public get background() {
+    return this._equipped.background;
+  }
+
+  public get items() {
+    return [...this._items.values()];
+  }
+
+  public updateWear(items: Partial<PenguinEquipped>) {
+    this._equipped = { ... this._equipped, ...items };
+  }
+
+  public has(id: number): boolean {
+    return this._items.has(id);
+  }
+
+  public add(id: number): void {
+    this._items.add(id);
+  }
+}
+
+class Currency {
+  private _coins: number;
+
+  constructor(data: PenguinJson) {
+    this._coins = data.coins;
+  }
+
+  public get coins() {
+    return this._coins;
+  }
+
+  public discount(coins: number) {
+    this._coins -= coins;
+    return this._coins;
+  }
+
+  public add(coins: number) {
+    this._coins += coins;
+    return this._coins;
+  }
+}
+
+class Meta {
+  private _registrationDate: number;
+
+  constructor(data: PenguinJson) {
+    this._registrationDate = data.registration_date;
+  }
+
+  public get registrationTime() {
+    return this._registrationDate;
+  }
+}
+
+class Time {
+  private _previousPlaytime: number;
+  private _sessionStart: number | null = null;
+  private _virtualRegistrationTimestamp: number;
+
+  constructor(data: PenguinJson, private _virtualDay: [number, number, number]) {
+    this._previousPlaytime = data.minutes_played;
+    this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp
+  }
+
+  public get minutesPlayed() {
+    return this._previousPlaytime + (this._sessionStart === null ? 0 : (Date.now() - this._sessionStart)) / (1000 * 60);
+  }
+
+  public get virtualRegistrationTimestamp() {
+    return this._virtualRegistrationTimestamp;
+  }
+
+  public get age() {
+    // converted into days
+    return Math.floor((getVirtualDate(this._virtualDay, 0).getTime() - this._virtualRegistrationTimestamp) / 1000 / 86400);
+  }
+
+  public getDate() {
+    return getVirtualDate(this._virtualDay, 0).getTime();
+  }
+
+  public setVirtualRegistrationToNow() {
+    this._virtualRegistrationTimestamp = this.getDate();
+  }
+}
+
+class BuddyInventory {
+  private _buddies: Set<number>;
+
+  constructor(data: PenguinJson) {
+    this._buddies = new Set(data.buddies);
+  }
+
+  public get buddies() {
+    return [...this._buddies.values()];
+  }
+}
+
+class Stampbook {
+  private _stamps: Set<number>;
+  private _cover: StampbookCover;
+  
+  constructor(data: PenguinJson) {
+    this._stamps = new Set(data.stamps);
+    this._cover = data.stampbook;
+  }
+
+  public get stamps() {
+    return [...this._stamps.values()];
+  }
+
+  public get cover(): StampbookCover {
+    return JSON.parse(JSON.stringify(this._cover));
+  }
+
+  public add(stamp: number) {
+    this._stamps.add(stamp);
+  }
+}
+
+class PuffleInventory {
+  private _seq: number;
+  private _puffles: Map<number, PlayerPuffle>;
+  private _backyard: Set<number>;
+  private _items: Map<number, number>;
+  private _walking: number | null = null;
+
+  constructor(data: PenguinJson) {
+    this._seq = data.puffleSeq;
+    this._puffles = new Map(data.puffles.map(p => [p.id, p]));
+    this._backyard = new Set(data.backyard);
+    this._items = new Map(Object.entries(data.puffleItems).map(([k, v]) => [Number(k), v]));
+  }
+
+  public get seq() {
+    return this._seq;
+  }
+
+  public get puffles() {
+    return [...this._puffles.values()];
+  }
+
+  public get backyard() {
+    return [...this._backyard.values()];
+  }
+
+  public get items() {
+    return Object.fromEntries(this._items.entries());
+  }
+
+  public get walking() {
+    return this._walking;
+  }
+
+  public unwalk() {
+    this._walking = null;
+  }
+
+  public walk(id: number) {
+    this._walking = id;
+  }
+
+  public isInBackyard(id: number) {
+    return this._backyard.has(id);
+  }
+}
+
+class DigData {
+  private _hasDug: boolean;
+  private _treasureFinds: number[];
+
+  constructor(data: PenguinJson) {
+    this._hasDug = data.hasDug;
+    this._treasureFinds = [...data.treasureFinds];
+  }
+
+  public get hasDug() {
+    return this._hasDug;
+  }
+
+  public get treasureFinds() {
+    return [...this._treasureFinds];
+  }
+}
+
+class RainbowQuest {
+  private _canAdopt: boolean;
+  private _task: number;
+  private _lastTaskCompletionTimestamp: number | null;
+  private _collected: Set<RainbowPuffleStage>;
+
+  constructor(data: PenguinJson) {
+    this._canAdopt = data.rainbow.adoptability;
+    this._task = data.rainbow.currentTask;
+    this._lastTaskCompletionTimestamp = data.rainbow.latestTaskCompletionTime ?? null;
+    this._collected = new Set(data.rainbow.coinsCollected);
+  }
+
+  public get canAdopt() {
+    return this._canAdopt;
+  }
+
+  public get task() {
+    return this._task;
+  }
+
+  public get lastCompletionTime() {
+    return this._lastTaskCompletionTimestamp;
+  }
+
+  public get coinsCollected() {
+    return [...this._collected.values()];
+  }
+}
+
+class IglooInventory {
+  private _selected: number;
+  private _layouts: Map<number, Igloo>;
+  private _seq: number;
+  private _furniture: Map<number, number>;
+  private _types: Set<number>;
+  private _locations: Set<number>;
+  private _floorings: Set<number>;
+
+  constructor(data: PenguinJson) {
+    this._selected = data.igloo;
+    this._layouts = new Map(data.igloos.map(i => [i.id, i]));
+    this._seq = data.iglooSeq;
+    this._furniture = new Map(Object.entries(data.furniture).map(([k ,v]) => [Number(k), v]));
+    this._types = new Set(data.iglooTypes);
+    this._locations = new Set(data.iglooLocations);
+    this._floorings = new Set(data.iglooFloorings);
+  }
+
+  public get selectedIgloo() {
+    return this._selected;
+  }
+
+  public get activeIgloo() {
+    const layout = this._layouts.get(this._selected);
+    if (layout === undefined) {
+      throw new Error('Selected igloo layout doesn\'t exist');
     }
+    return layout;
   }
 
-  public getClient() {
-    return this.client;
+  public get layouts() {
+    return [...this._layouts.values()];
+  }
+
+  public get seq() {
+    return this._seq;
+  }
+
+  public get furniture() {
+    return [...this._furniture.entries()];
+  }
+
+  public getFurnitureAmount(furnitureId: number) {
+    return this._furniture.get(furnitureId) ?? 0;
+  }
+
+  public addFurniture(furnitureId: number, amount: number) {
+    this._furniture.set(furnitureId, this.getFurnitureAmount(furnitureId) + amount);
+  }
+
+  public get types() {
+    return [...this._types.values()];
+  }
+
+  public get locations() {
+    return [...this._locations.values()];
+  }
+
+  public get floorings() {
+    return [...this._floorings.values()];
+  }
+}
+
+class MailInventory {
+  private _seq: number;
+  private _mail: Mail[];
+
+  constructor(data: PenguinJson) {
+    this._seq = data.mailSeq;
+    this._mail = JSON.parse(JSON.stringify(data.mail));
+  }
+
+  public get seq() {
+    return this._seq;
+  }
+
+  public get mail(): Mail[] {
+    return JSON.parse(JSON.stringify(this._mail));
+  }
+
+  public get unread() {
+    return this._mail.filter(m => !m.postcard.read).length;
+  }
+
+  public get total() {
+    return this._mail.length;
+  }
+}
+
+class PuffleLaunchData {
+  private _data: Buffer | null;
+
+  constructor(data: PenguinJson) {
+    this._data = data.puffleLaunchGameData === undefined ? (null) : (Buffer.from(data.puffleLaunchGameData, 'base64'));
+  }
+
+  public get data() {
+    return this._data;
+  }
+
+  public set(data: Buffer) {
+    this._data = data;
+  }
+}
+
+class EpfInventory {
+  private _careerMedals: number;
+  private _medals: number;
+
+  constructor(data: PenguinJson) {
+    this._careerMedals = data.careerMedals;
+    this._medals = data.ownedMedals;
+  }
+
+  public get careerMedals() {
+    return this._careerMedals;
+  }
+
+  public get medals() {
+    return this._medals;
+  }
+}
+
+class GoldPuffleInventory {
+  private _nuggets: number;
+  
+  constructor(data: PenguinJson) {
+    this._nuggets = data.nuggets;
+  }
+
+  public get nuggets() {
+    return this._nuggets;
+  }
+}
+
+class NinjaProfile {
+  private _cards: Map<number, number>;
+  private _cardProgress: CardJitsuProgress;
+  private _cardWins: number;
+  private _fire: boolean;
+  private _water: boolean;
+  private _snow: boolean;
+
+  constructor(data: PenguinJson) {
+    this._cards = new Map(Object.entries(data.cards).map(([k, v]) => [Number(k), v]));
+    this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
+    this._cardWins = data.cardWins;
+    this._fire = data.fireNinja ?? false;
+    this._water = data.waterNinja ?? false;
+    this._snow = data.snowNinja ?? false;
+  }
+
+  public get cards() {
+    return [...this._cards.entries()];
+  }
+
+  public get xp() {
+    return this._cardProgress.xp;
+  }
+
+  public get isNinja() {
+    return this._cardProgress.isNinja;
+  }
+
+  public get senseiAttempts() {
+    return this._cardProgress.senseiAttempts;
+  }
+
+  public get cardWins() {
+    return this._cardWins;
+  }
+
+  public get isFireNinja() {
+    return this._fire;
+  }
+
+  public get isWaterNinja() {
+    return this._water;
+  }
+
+  public get isSnowNinja() {
+    return this._snow;
+  }
+
+  public setFireNinja(value: boolean) {
+    this._fire = value;
+  }
+
+  public setWaterNinja(value: boolean) {
+    this._water = value;
+  }
+
+  public setSnowNinja(value: boolean) {
+    this._snow = value;
+  }
+}
+
+class BattleOfDoomStatus {
+  private _completed: boolean;
+
+  constructor(data: PenguinJson) {
+    this._completed = data.battleOfDoom;
+  }
+
+  public get completed() {
+    return this._completed;
+  }
+}
+
+class Medieval2012Status {
+  private _message: number;
+
+  constructor(data: PenguinJson) {
+    this._message = data.medieval2012Message ?? 0;
+  }
+
+  public get message() {
+    return this._message;
+  }
+}
+
+class UserPreference {
+  private _save: boolean;
+  private _safeChat: boolean;
+
+  constructor(data: PenguinJson) {
+    this._save = !(data.noSave ?? false);
+    this._safeChat = data.safeChat ?? false;
+  }
+
+  public get canSave() {
+    return this._save;
+  }
+
+  public get isSafeChat() {
+    return this._safeChat;
+  }
+
+  public disableSave() {
+    this._save = false;
+  }
+
+  public enableSave() {
+    this._save = true;
+  }
+}
+
+class Avatar {
+  private _id = 0;
+
+  public get id() {
+    return this._id;
+  }
+
+  public transform(id: number) {
+    this._id = id;
+  }
+}
+
+export class WorldPenguin {
+  private _profile: Profile;
+  private _membership: Membership;
+  private _psa: PSA;
+  private _inventory: Inventory;
+  private _currency: Currency;
+  private _meta: Meta;
+  private _time: Time;
+  private _buddies: BuddyInventory;
+  private _stampbook: Stampbook;
+  private _puffles: PuffleInventory;
+  private _dig: DigData;
+  private _rainbow: RainbowQuest;
+  private _igloo: IglooInventory;
+  private _mail: MailInventory;
+  private _puffleLaunch: PuffleLaunchData;
+  private _epf: EpfInventory;
+  private _gold: GoldPuffleInventory;
+  private _ninja: NinjaProfile;
+  private _battleOfDoom: BattleOfDoomStatus;
+  private _medieval2012: Medieval2012Status;
+  private _preference: UserPreference;
+  private _avatar = new Avatar();
+
+  constructor(
+    id: number,
+    json: PenguinJson,
+    settings: SettingsManager
+  ) {
+    this._profile = new Profile(id, json);
+    this._membership = new Membership(json);
+    this._psa = new PSA(json);
+    this._inventory = new Inventory(json);
+    this._currency = new Currency(json);
+    this._meta = new Meta(json);
+    this._time = new Time(json, processVersion(settings.settings.version));
+    this._buddies = new BuddyInventory(json);
+    this._stampbook = new Stampbook(json);
+    this._puffles = new PuffleInventory(json);
+    this._dig = new DigData(json);
+    this._rainbow = new RainbowQuest(json);
+    this._igloo = new IglooInventory(json);
+    this._mail = new MailInventory(json);
+    this._puffleLaunch = new PuffleLaunchData(json);
+    this._epf = new EpfInventory(json);
+    this._gold = new GoldPuffleInventory(json);
+    this._ninja = new NinjaProfile(json);
+    this._battleOfDoom = new BattleOfDoomStatus(json);
+    this._medieval2012 = new Medieval2012Status(json);
+    this._preference = new UserPreference(json);
   }
 
   public get id() {
-    return this.penguin.id;
+    return this._profile.id;
   }
 
-  public sendInfo(state: RoomState) {
-    const virtualDate = this.settings.getVirtualDate(0);
-    
-    this.client.send(
-      'lp',
-      this.getString(state),
-      String(this.penguin.coins),
-      this.penguin.isSafeChat ? 1 : 0, 1440,
-      virtualDate.getTime(),
-      this.getAge(),
-      0,
-      this.penguin.minutesPlayed,
-      -1, 7, 1, 4, 3
-    );
+  public get name() {
+    return this._profile.name;
   }
 
-  public unequipPuffle(): void {
-    if (this.penguin.hand >= 750 && this.penguin.hand <= 759) {
-      this.penguin.hand = 0;
+  public changeName(name: string) {
+    this._profile.changeName(name);
+  }
+
+  public get mascot() {
+    return this._profile.mascot;
+  }
+
+  public get puffle() {
+    return this._puffles;
+  }
+
+  public get inventory() {
+    return this._inventory;
+  }
+
+  public get psa() {
+    return this._psa;
+  }
+
+  public get igloo() {
+    return this._igloo;
+  }
+
+  public get buddy() {
+    return this._buddies;
+  }
+
+  public get mail() {
+    return this._mail;
+  }
+
+  public get currency() {
+    return this._currency;
+  }
+
+  public get stampbook() {
+    return this._stampbook;
+  }
+
+  public get membership() {
+    return this._membership;
+  }
+
+  public get time() {
+    return this._time;
+  }
+
+  public get preference() {
+    return this._preference;
+  }
+
+  public get avatar() {
+    return this._avatar;
+  }
+
+  public get puffleLaunch() {
+    return this._puffleLaunch;
+  }
+
+  public get ninja() {
+    return this._ninja;
+  }
+
+  public getJSON(): PenguinJson {
+    return {
+      name: this._profile.name,
+      mascot: this._profile.mascot,
+
+      is_member: this._membership.isMember,
+
+      is_agent: this._psa.isAgent,
+
+      color: this._inventory.color,
+      head: this._inventory.head,
+      face: this._inventory.face,
+      neck: this._inventory.neck,
+      body: this._inventory.body,
+      hand: this._inventory.hand,
+      feet: this._inventory.feet,
+      pin: this._inventory.pin,
+      background: this._inventory.background,
+      inventory: this._inventory.items,
+
+      coins: this._currency.coins,
+
+      registration_date: this._meta.registrationTime,
+
+      minutes_played: this._time.minutesPlayed,
+      virtualRegistrationTimestamp: this._time.virtualRegistrationTimestamp,
+
+      buddies: this._buddies.buddies,
+
+      stamps: this._stampbook.stamps,
+      stampbook: this._stampbook.cover,
+
+      puffleSeq: this._puffles.seq,
+      puffles: this._puffles.puffles,
+      backyard: this._puffles.backyard,
+      puffleItems: this._puffles.items,
+
+      hasDug: this._dig.hasDug,
+      treasureFinds: this._dig.treasureFinds,
+
+      rainbow: {
+        adoptability: this._rainbow.canAdopt,
+        currentTask: this._rainbow.task,
+        latestTaskCompletionTime: this._rainbow.lastCompletionTime ?? undefined,
+        coinsCollected: this._rainbow.coinsCollected
+      },
+
+      igloo: this._igloo.selectedIgloo,
+      igloos: this._igloo.layouts,
+      iglooSeq: this._igloo.seq,
+      furniture: Object.fromEntries(this._igloo.furniture),
+      iglooTypes: this._igloo.types,
+      iglooLocations: this._igloo.locations,
+      iglooFloorings: this._igloo.floorings,
+
+      mail: this._mail.mail,
+      mailSeq: this._mail.seq,
+
+      puffleLaunchGameData: this._puffleLaunch.data === null ? undefined : this._puffleLaunch.data.toString('base64'),
+
+      careerMedals: this._epf.careerMedals,
+      ownedMedals: this._epf.medals,
+
+      nuggets: this._gold.nuggets,
+
+      cards: Object.fromEntries(this._ninja.cards),
+      cardProgress: this._ninja.xp,
+      isNinja: this._ninja.isNinja,
+      senseiAttempts: this._ninja.senseiAttempts,
+      cardWins: this._ninja.cardWins,
+      fireNinja: this._ninja.isFireNinja,
+      waterNinja: this._ninja.isWaterNinja,
+      snowNinja: this._ninja.isSnowNinja,
+
+      battleOfDoom: this._battleOfDoom.completed,
+
+      medieval2012Message: this._medieval2012.message,
+
+      noSave: !this._preference.canSave,
+      safeChat: this._preference.isSafeChat
     }
-  }
-
-  private getItemsFiltered() {
-    // pre-cpip engines have limited items, after
-    // that global_crumbs allow having all the items
-
-    let items = this.penguin.getItems();
-
-    if (this.gameData.isPreCpip()) {
-      const itemSet = this.gameData.getClientItems();
-      items = items.filter((value) => itemSet.has(value));
-    }
-
-    // if (this.settings.inventory_accuracy) {
-    //   return items.filter(id => {
-    //     const entry = ITEM_RELEASES.get(id);
-    //     if (entry === undefined) {
-    //       return false;
-    //     } else {
-    //       return isGreaterOrEqual(this.settings.version, entry);
-    //     }
-    //   });
-    // }
-    return items;
-  }
-
-  public sendInventory(): void {
-    this.sendXt('gi', this.getItemsFiltered().join('%'));
-  }
-
-  get info() {
-    return this.penguin;
-  }
-
-  static getFurnitureString(furniture: IglooFurniture): string {
-    return furniture.map((furniture) => {
-      return [
-        furniture.id,
-        furniture.x,
-        furniture.y,
-        furniture.rotation,
-        furniture.frame
-      ].join('|')
-    }).join(',');
-  }
-
-  static getModernIglooString(igloo: Igloo, index: number): string {
-    // TODO like stuff
-    const likeCount = 0;
-    const furnitureString = WorldPenguin.getFurnitureString(igloo.furniture);
-    return [
-      igloo.id,
-      index,
-      0, // TODO don't know what this is
-      igloo.locked ? 1 : 0,
-      igloo.music,
-      igloo.flooring,
-      igloo.location,
-      igloo.type,
-      likeCount,
-      furnitureString
-    ].join(':');
-  }
-
-  getIglooString(igloo: Igloo): string {
-    if (!this.gameData.isVanillaEngine()) {
-      const furnitureString = WorldPenguin.getFurnitureString(igloo.furniture);
-      return [
-        igloo.type,
-        igloo.music,
-        igloo.flooring,
-        furnitureString
-      ].join('%');
-    } else {
-      // This is Engine 3
-      return WorldPenguin.getModernIglooString(igloo, 1);
-    }
-  }
-
-  getOwnIglooString (): string {
-    return this.getIglooString(this.penguin.activeIgloo);
-  }
-
-  public get walkingPuffle() {
-    return this._walkingPuffle;
-  }
-
-  giveStamp(stampId: number, params: { notify?: boolean } = {}): void {
-    const notify = params.notify ?? true;
-    if (this.gameData.isStampAvailable(stampId)) {
-      if (!this.penguin.hasStamp(stampId)) {
-        this.penguin.addStamp(stampId);
-        this.penguin.stampbook.recent_stamps.push(stampId);
-        this._sessionStamps.push(stampId);
-      }
-      if (notify) {
-        this.sendXt('aabs', stampId);
-      }
-    }
-  }
-
-  getEndgameStampsInformation(game: number): [string, number, number, number] {
-    const info: [string, number, number, number] = ['', 0, 0, 0];
-
-    const stamps = this.gameData.getGameStamps(game);
-
-    const gameSessionStamps: number[] = [];
-    this._sessionStamps.forEach((stamp) => {
-      if (stamps.has(stamp)) {
-        gameSessionStamps.push(stamp);
-      }
-    });
-    // string of recently collected stamps
-    info[0] = gameSessionStamps.join('|');
-    // total number of stamps collected in this game
-    info[1] = [...stamps].filter((stamp) => this.penguin.hasStamp(stamp)).length;
-    // total number of stamps the game has
-    info[2] = stamps.size;
-
-    // TODO check what this is used for
-    info[3] = 0;
-
-    this._sessionStamps = [];
-
-    return info;
-  }
-
-  public addItem(id: number, params: { free?: boolean, notify?: boolean } = {}): void {
-    this.penguin.addItem(id);
-    let cost: number;
-    if (params.free === true) {
-      cost = 0;
-    } else {
-      const item = this.gameData.getItem(id);
-      cost = item.cost;
-    }
-    const notify = params.notify ?? true;
-    this.penguin.removeCoins(cost);
-    if (notify) {
-      this.sendXt('ai', id, this.penguin.coins);
-    }
-  }
-
-  public addFurniture(furnitureId: number, params: { cost?: number, notify?: boolean } = {}): void {
-    const cost = params.cost ?? 0;
-    const notify = params.notify ?? true;
-    const canAdd = this.penguin.addFurniture(furnitureId, 1);
-    if (!canAdd) {
-      // 99 items limit
-      this.sendError(10006);
-    } else {
-      this.penguin.removeCoins(cost);
-    }
-    if (notify) {
-      this.sendXt('af', furnitureId, this.penguin.coins);
-    }
-  }
-
-  public sendError(err: number): void {
-    this.sendXt('e', err);
-  }
-
-  public async sendStamps() {
-    await this.sendXt('gps', this.penguin.id, this.penguin.getStamps().join('|'));
-  }
-
-  public sendPuffles(): void {
-    const puffles = this.penguin.getPuffles().map((puffle) => {
-      return [puffle.id, puffle.name, puffle.type, puffle.clean, puffle.food, puffle.rest, 100, 100, 100].join('|')
-    })
-    this.sendXt('pgu', ...puffles);
-  }
-
-  public sendCoinsForChange() {
-    if (this.gameData.hasCoinsForChange()) {
-      // placeholder donation values
-
-      const values = this.gameData.getCoinsForChangeDonations();
-      if (values !== null) {
-        this.sendXt('gcfct', values.map((amount, i) => `${i}|${amount}`).join(','));
-      }
-    }
-  }
-
-  public get sessionStart() {
-    return this._sessionStart;
-  }
-
-  public isAgent(): boolean {
-    return this.penguin.hasItem(800);
-  }
-
-  public getBuddyProtocol() {
-    if (this.gameData.isPreCpip()) {
-      const chat = this.gameData.getChatVersion();
-      return chat >= 506 ? 'b' : 's';
-    } else {
-      // buddies for post-cpip not yet defined
-      return undefined;
-    }
-  }
-
-  public sendXtEmptyLast(handler: string, ...args: Array<number | string>): void {
-    
-    this.client.sendLastless(handler, ...args);
-  }
-
-  public sendCoinsOld() {
-    this.sendXt('ac', this.penguin.coins);
-  }
-
-  public setAgentPending() {
-    return this.agentPending = true;
-  }
-
-  public isAgentPending() {
-    return this.agentPending;
-  }
-
-  public getFurnitureString(): string {
-    return this.penguin.getAllFurniture().map((pair) => {
-      return pair.join('|');
-    }).join('%');
-  }
-
-  public addPostcard (postcard: number, info: {
-    senderId?: number
-    senderName?: string
-    details?: string    
-  } = {}): void {
-    const mail = this.penguin.receivePostcard(postcard, info);
-    this.sendXt('mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
-  }
-
-  /** Add a "puffle care item" to the inventory */
-  public buyPuffleItem(itemId: number, cost: number, amount: number) {
-    const owned = this.penguin.addPuffleItem(itemId, amount);
-    this.penguin.removeCoins(cost);
-    this.sendXt('papi', this.penguin.coins, itemId, owned);
-  }
-
-  // gold nugget stuff in a diff class?
-  private _isGoldNuggetState = false;
-
-  activateGoldNuggetState(): void {
-    this._isGoldNuggetState = true;
-  }
-
-  resetGoldNuggetState(): void {
-    this._isGoldNuggetState = false;
-  }
-
-  public isGoldNuggetState() {
-    return this._isGoldNuggetState;
-  }
-
-  // TODO this should be a Penguin method
-  public swapPuffleFromIglooAndBackyard(playerPuffleId: number, goingToBackyard: boolean) {
-    if (goingToBackyard) {
-      this.penguin.addToBackyard(playerPuffleId);
-    } else {
-      this.penguin.removeFromBackyard(playerPuffleId);
-    }
-  }
-
-  public walkPuffle (puffle: number) {
-    this._walkingPuffle = puffle;
-  }
-
-  public unwalkPuffle() {
-    this._walkingPuffle = null;
-  }
-
-  // TODO class to track this?
-
-  private _puffleColorsDug = new Set<number>();
-
-  /** Set a puffle color has having been dug */
-  public addDugPuffleColor(puffleType: number): void {
-    const puffle = PUFFLES.get(puffleType);
-    // filter invalid IDs and only ones we want are 0-11
-    if (puffle !== undefined && puffleType < 12) {
-      this._puffleColorsDug.add(puffleType);
-    }
-  }
-
-  public getTotalColorsDug(): number {
-    return Array.from(this._puffleColorsDug.values()).length;
-  }
-
-  // TODO move probably
-  public getPinString(): string {
-    const pins = this.penguin.getItems().filter((item) => {
-      const id = Number(item)
-      return this.gameData.getItem(id)?.type === ItemType.Pin && !isFlag(id);
-    }).map((pin) => {
-      const item = this.gameData.getItem(Number(pin));
-      if (item === undefined) {
-        throw new Error(`Pin ${pin} in inventory doesn't exist`);
-      }
-      return [item.id, (new Date(`${item.releaseDate}T12:00:00`)).getTime() / 1000, item.isMember ? 1 : 0].join('|');
-    })
-
-    return pins.join('%');
-  }
-
-  // TODO move probably
-  public getStampbookCoverString (): string {
-    const cover = [
-      this.penguin.stampbook.color,
-      this.penguin.stampbook.highlight,
-      this.penguin.stampbook.pattern,
-      this.penguin.stampbook.icon
-    ].map((n) => String(n));
-
-    this.penguin.stampbook.stamps.forEach((info) => {
-      cover.push([
-        0, info.stamp, info.x, info.y, info.rotation, info.depth
-      ].join('|'));
-    });
-
-    return cover.join('%');
-  }
-
-  // move probably
-  public getRecentStampsString (): string {
-    const recentStamps = this.penguin.stampbook.recent_stamps.join('|');
-    this.penguin.stampbook.recent_stamps = [];
-    return recentStamps;
-  }
-
-  /** Send stamp info at the end of a card-jitsu game */
-  // TODO move?
-  public sendCardJitsuStampInfo() {
-    this.sendXt('cjsi', ...this.getEndgameStampsInformation(Room.CardJitsu));
-  }
-
-  public ninjaRankUp(previousRank: number) {
-    for (let i = previousRank + 1; i <= this.penguin.ninjaProgress.rank; i++) {
-      this.penguin.addItem(CardJitsuProgress.ITEM_AWARDS[i - 1]);
-      const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
-      if (postcard !== undefined) {
-        this.addPostcard(postcard);
-      }
-      const stamp = CardJitsuProgress.STAMP_AWARDS[i];
-      if (stamp !== undefined) {
-        this.giveStamp(stamp);
-      }
-    }
-    this.sendXt('cza', this.penguin.ninjaProgress.rank);
-    this.penguin.update();
-
-  }
-
-
-
-  // TODO move probs
-  public gainNinjaProgress(won: boolean): void {
-    this.penguin.addCardJitsuWin();
-
-    if (this.penguin.ninjaProgress.rank < CardJitsuProgress.MAX_RANK) {
-      const exp = won ? 5 : 1;
-      const previousRank = this.penguin.ninjaProgress.rank;
-      this.penguin.ninjaProgress.earnXP(exp);
-  
-      if (this.penguin.ninjaProgress.rank > previousRank) {
-        this.ninjaRankUp(previousRank);
-      }
-    }
-
-    this.penguin.update();
-  }
-
-  public becomeNinja(): void {
-    const previousRank = this.penguin.ninjaProgress.rank;
-    this.penguin.ninjaProgress.becomeNinja();
-    this.ninjaRankUp(previousRank);
   }
 }
 
