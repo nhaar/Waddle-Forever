@@ -557,6 +557,10 @@ class NinjaProfile {
   public addCard(cardId: number, amount = 1): void {
     this._cards.set(cardId, (this._cards.get(cardId) ?? 0) + amount);
   }
+
+  public addMatchProgress(won: boolean) {
+    this._cardProgress.earnXP(won ? 5 : 1);
+  }
 }
 
 class BattleOfDoomStatus {

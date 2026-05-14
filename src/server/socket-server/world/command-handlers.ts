@@ -9,6 +9,7 @@ import { GameData } from "@server/timelines/game-data";
 import { WorldRoom } from "./world-room";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
+import { CARDS } from "@server/game-logic/cards";
 
 export type CommandContext = { 
   world: World;
@@ -199,6 +200,27 @@ commands.add('amulet', ['string'], ({ penguin, prst }, element) => {
       penguin.ninja.setSnowNinja(!penguin.ninja.isSnowNinja);
       break;
   }
+  prst(penguin);
+});
+
+commands.add('cjwin', [], ({ penguin, prst }) => {
+  penguin.ninja.addMatchProgress(true);
+  prst(penguin);
+});
+
+commands.add('cjwin', ['number'], ({ penguin, prst }, amount) => {
+  for (let i = 0; i < amount; i++) {
+    penguin.ninja.addMatchProgress(true);
+  }
+  prst(penguin);
+});
+
+commands.add('powercards', [], ({ penguin, prst }) => {
+  CARDS.rows.forEach(row => {
+    if (row.powerId > 0) {
+      penguin.ninja.addCard(row.id, 1);
+    }
+  });
   prst(penguin);
 });
 
