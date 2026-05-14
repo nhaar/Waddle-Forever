@@ -146,38 +146,34 @@ commands.add('af', ['number', 'number'], addFurniture);
 
 commands.add('af', ['number'], (client, id) => addFurniture(client, id, 1));
 
-function setPuffleLaunchGameData(penguin: WorldPenguin, gameSet: PuffleLaunchGameSet): void {
-  penguin.puffleLaunch.set(gameSet.get());
-}
-
-function setPuffleLaunchGameDataWithTimeAttack(penguin: WorldPenguin, times: number[], turboStatuses: boolean[]) {
-  setPuffleLaunchGameData(penguin, new PuffleLaunchGameSet([
+function getPuffleLaunchDataWithAlLBerries(times: number[], turboStatuses: boolean[]): PuffleLaunchGameSet {
+  return new PuffleLaunchGameSet([
     34, 46, 99, 90, 115, 39,
     84, 42, 120, 123, 183, 54,
     59, 75, 243, 88, 203, 135,
     113, 284, 122, 153, 172, 69,
     44, 48, 103, 97, 86, 144,
     318, 165, 219, 87, 277, 33
-  ], times, turboStatuses));
+  ], times, turboStatuses);
 }
 
 commands.add('plunlocklevels', [], ({ penguin, prst }) => {
-  setPuffleLaunchGameData(penguin, new PuffleLaunchGameSet((new Array<number>(36)).fill(0x1), [], []));
+  penguin.puffleLaunch.set(new PuffleLaunchGameSet((new Array<number>(36)).fill(0x1), [], []).get());
   prst(penguin);
 });
 
 commands.add('plunlocktimeattack', [], ({ penguin, prst }) => {
-  setPuffleLaunchGameDataWithTimeAttack(penguin, [], []);
+  penguin.puffleLaunch.set(getPuffleLaunchDataWithAlLBerries([], []).get());
   prst(penguin);
 });
 
 commands.add('plunlockturbo', [], ({ penguin, prst }) => {
-  setPuffleLaunchGameDataWithTimeAttack(penguin, (new Array<number>(36)).fill(1), []);
+  penguin.puffleLaunch.set(getPuffleLaunchDataWithAlLBerries((new Array<number>(36)).fill(1), []).get());
   prst(penguin);
 });
 
 commands.add('plunlockslowmode', [], ({ penguin, prst }) => {
-  setPuffleLaunchGameDataWithTimeAttack(penguin, (new Array<number>(36)).fill(1), (new Array<boolean>(36)).fill(true));
+  penguin.puffleLaunch.set(getPuffleLaunchDataWithAlLBerries((new Array<number>(36)).fill(1), (new Array<boolean>(36)).fill(true)).get());
   prst(penguin);
 });
 
