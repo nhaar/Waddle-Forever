@@ -181,4 +181,14 @@ commands.add('plunlockslowmode', [], ({ penguin, prst }) => {
   prst(penguin);
 });
 
+commands.add('nosave', [], ({ penguin, prst }) => {
+  penguin.preference.disableSave();
+  prst(penguin, true);
+});
+
+commands.add('enablesave', [], ({ penguin, prst }) => {
+  penguin.preference.enableSave();
+  prst(penguin);
+});
+
 export { commands }
