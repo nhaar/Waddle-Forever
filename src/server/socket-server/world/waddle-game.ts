@@ -23,10 +23,6 @@ export abstract class WaddleGame {
     return [...this.players];
   }
 
-  public sendXt(message: string, ...args: Array<string | number>): void {
-    this.players.forEach(p => p.sendXt(message, ...args));
-  }
-
   getSeatId(penguin: WorldPenguin): number {
     return this.players.indexOf(penguin);
   }
