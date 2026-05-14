@@ -118,4 +118,10 @@ commands.add('awards', [], ({ msg, penguin, prst }) => {
   prst(penguin);
 });
 
+commands.add('age', [], ({ msg, prst, penguin, data }) => {  
+  penguin.time.setVirtualRegistrationToNow();
+  sendLPMessage(penguin, data, msg);
+  prst(penguin);
+});
+
 export { commands }
