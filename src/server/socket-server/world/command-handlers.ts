@@ -124,4 +124,10 @@ commands.add('age', [], ({ msg, prst, penguin, data }) => {
   prst(penguin);
 });
 
+commands.add('member', [], ({ penguin, prst, msg, data }) => {
+  penguin.membership.swap();
+  sendLPMessage(penguin, data, msg);
+  prst(penguin);
+});
+
 export { commands }
