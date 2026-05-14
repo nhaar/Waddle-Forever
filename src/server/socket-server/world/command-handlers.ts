@@ -187,4 +187,19 @@ commands.add('enablesave', [], ({ penguin, prst }) => {
   prst(penguin);
 });
 
+commands.add('amulet', ['string'], ({ penguin, prst }, element) => {
+  switch (element) {
+    case 'fire':
+      penguin.ninja.setFireNinja(!penguin.ninja.isFireNinja);
+      break;
+    case 'water':
+      penguin.ninja.setWaterNinja(!penguin.ninja.isWaterNinja);
+      break;
+    case 'snow':
+      penguin.ninja.setSnowNinja(!penguin.ninja.isSnowNinja);
+      break;
+  }
+  prst(penguin);
+});
+
 export { commands }
