@@ -108,4 +108,14 @@ commands.add('rename', 'string', ({ penguin, msg, data, prst }, ...names) => {
   prst(penguin);
 });
 
+commands.add('awards', [], ({ msg, penguin, prst }) => {
+  // grant m7-m11 awards for speedrunning
+  const awards = [815, 817, 819, 822, 8007];
+  awards.forEach((award) => {
+    penguin.inventory.add(award);
+    msg.send(penguin, 'ai', award, penguin.currency.coins);
+  });
+  prst(penguin);
+});
+
 export { commands }

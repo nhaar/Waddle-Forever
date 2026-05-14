@@ -26,10 +26,10 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
   ipcMain.on('run-command', (_, arg) => {
     const { id, command } = arg;
     if (typeof id === 'number' && typeof command === 'string') {
-      const commandMatch = command.match(/(\w+)\s+(.*)/);
+      const commandMatch = command.match(/(\w+)(.*)/);
       if (commandMatch !== null) {
         const name = commandMatch[1];
-        const argString = commandMatch[2];
+        const argString = commandMatch[2].trim();
         server.runCommand(id, name, argString.split(/\s+/));
       }
     }
