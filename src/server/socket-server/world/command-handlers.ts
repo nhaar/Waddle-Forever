@@ -207,4 +207,9 @@ commands.add('addcard', ['number', 'number'], ({ penguin, prst }, card, amount) 
   prst(penguin);
 });
 
+commands.add('safechat', [], ({ penguin, prst }) => {
+  penguin.preference.setSafeChat(!penguin.preference.isSafeChat);
+  prst(penguin);
+});
+
 export { commands }

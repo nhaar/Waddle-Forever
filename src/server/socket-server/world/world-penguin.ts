@@ -607,6 +607,10 @@ class UserPreference {
   public enableSave() {
     this._save = true;
   }
+
+  public setSafeChat(value: boolean) {
+    this._safeChat = value;
+  }
 }
 
 class Avatar {
