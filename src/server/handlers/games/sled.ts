@@ -1,44 +1,28 @@
-import { WorldClient, WorldContext } from "@server/new-client";
-import { Handle } from "../handles";
+import { WorldContext } from "@server/socket-server/world/world";
 import { XtHandler } from "../xt";
 
-const handler = new XtHandler<WorldClient, WorldContext, ['world', 'penguin', 'sled']>(['world', 'penguin', 'sled']);
+const handler = new XtHandler<WorldContext, ['world', 'penguin', 'sled', 'msg', 'prst', 'data']>(['world', 'penguin', 'sled', 'msg', 'prst', 'data']);
 
-// Joining room
-handler.xt(Handle.JoinRoom, ({ world, sled, penguin }, id, x, y) => {
-  sled.removePlayer(penguin);
-  world.getRoom(id).addPenguin(penguin, x, y);
+handler.xt('z', 'jz', [], ({ sled, penguin, msg }) => {
+  msg.send(penguin, 'uz', sled.getPlayerCount(), ...sled.getPlayers().map((p) => {
+    return [p.name, p.inventory.color, p.inventory.hand, p.name].join('|');
+  }));
 });
 
-handler.xt(Handle.JoinRoomOld, ({ world, sled, penguin }, id, x, y) => {
-  sled.removePlayer(penguin);
-  world.getRoom(id).addPenguin(penguin, x, y);
+handler.xt('z', 'zm', ['number', 'number', 'number', 'number'], ({ sled, msg }, id, x, y, time) => {
+  msg.send(sled.getPlayers(), 'zm', id, x, y, time);
 });
 
-handler.xt(Handle.JoinSled, ({ world, sled, penguin }) => {
-  penguin.sendXt('uz', sled.getPlayerCount(), ...sled.getPlayers().map((p) => {
-    if (world.data.isPreCpip()) {
-      // TODO is this check really necessary?
-      return [p.info.name, p.info.color]
-    } else {
-      return [p.info.name, p.info.color, p.info.hand, p.info.name]
-    }
-  }).map(array => array.join('|')));
-});
+handler.xt('z', 'zo', ['number'], ({ msg, penguin, prst, data }, standing) => {
+  const coins = [20, 10, 5, 5][standing - 1];
 
-handler.xt(Handle.SledRaceAction, ({ sled }, id, x, y, time) => {
-  sled.sendXt('zm', id, x, y, time);
-});
-
-handler.xt(Handle.LeaveWaddleGame, ({ world, penguin }, score) => {
-  const coins = [20, 10, 5, 5][score - 1];
-  penguin.info.addCoins(coins)
-  if (world.data.isPreCpip()) {
-    penguin.sendXt('zo');
+  const total = penguin.currency.add(coins);
+  if (data.isPreCpip()) {
+    msg.send(penguin, 'zo');
   } else {
-    penguin.sendXt('zo', penguin.info.coins, '', 0, 0, 0);
+    msg.send(penguin, 'zo', total, '', 0, 0);
   }
-  penguin.info.update();
+  prst(penguin);
 });
 
 export { handler as sledHandler };
