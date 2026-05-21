@@ -3,9 +3,9 @@ import { XtHandler } from "../xt";
 
 const handler = new XtHandler<WorldContext, ['world', 'penguin', 'sled', 'msg', 'prst', 'data']>(['world', 'penguin', 'sled', 'msg', 'prst', 'data']);
 
-handler.xt('z', 'jz', [], ({ sled, penguin, msg }) => {
+handler.xt('z', 'jz', [], ({ sled, penguin, msg, data }) => {
   msg.send(penguin, 'uz', sled.getPlayerCount(), ...sled.getPlayers().map((p) => {
-    return [p.name, p.inventory.color, p.inventory.hand, p.name].join('|');
+    return (data.isPreCpip() ? [p.name, p.inventory.color] : [p.name, p.inventory.color, p.inventory.hand, p.name]).join('|');
   }));
 });
 
