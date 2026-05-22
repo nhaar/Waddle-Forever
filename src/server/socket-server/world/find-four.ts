@@ -17,25 +17,27 @@ export class FindFourTable extends WorldTable {
     return 2;
   }
 
-  override sendMove(moves: number[]): boolean {
+  override sendMove(moves: number[]): [number[] | null, number[] | null] {
     if (this._board === undefined) {
-      return false;
+      return [null, null];
     }
     const column = moves[0];
     const dropRow = moves[1];
     this._board[column][dropRow] = this.turn + 1;
-    this.sendXt('zm', this.turn, column, dropRow);
+    const args = [this.turn, column, dropRow];
+    // this.sendXt('zm', this.turn, column, dropRow);
     const win = this.findFourWin(column, dropRow);
     if (win !== undefined) {
       this.awardFindFourCoins(win.winner - 1);
-      this.endGame(win.x, win.y, win.direction);
-      return true;
+      this.endGame();
+      return [[win.x, win.y, win.direction], args];
+      // return true;
     } else if (this.isFindFourBoardFull()) {
       this.awardFindFourCoins();
-      this.endGame(-10, -10, 1);
-      return true;
+      this.endGame();
+      return [[-10, -10, 1], args];
     }
-    return false;
+    return [null, args];
   }
 
   isFindFourBoardFull(): boolean {
