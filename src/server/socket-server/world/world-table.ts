@@ -59,6 +59,10 @@ export abstract class WorldTable {
     this.spectators = new Set<WorldPenguin>();
   }
 
+  public getSeats() {
+    return [...this.seats];
+  }
+
   resetRound() {
     this.reset();
     this.seats = [null, null];
@@ -80,37 +84,18 @@ export abstract class WorldTable {
     this.spectators.delete(penguin);
   }
 
-  public addSpectator(penguin: WorldPenguin) {
-    this.spectators.add(penguin);
-  }
-
-  public getNames() {
-    return this.seats.map(p => p?.info.name ?? '');
+  public getNames(): string[] {
+    return this.seats.map(p => p?.name ?? '');
   }
 
   public setJoined(seat: number) {
     this.joined[seat] = true;
   }
 
-  sendSeatRoaster(handler: string, target: WorldPenguin) {
-    this.seats.forEach((seat, index) => {
-      const name = seat?.info.name ?? '';
-      target.sendXt(handler, index, name);
-    });
-  }
-
-  forEach(callback: (player: WorldPenguin) => void) {
-    [...this.seats.filter((value): value is WorldPenguin => {
+  public get penguins(): WorldPenguin[] {
+    return [...this.seats.filter((value): value is WorldPenguin => {
       return value !== null;
-    }), ...this.spectators].forEach(callback);
-  }
-
-  sendXt(handler: string, ...args: Array<number | string>) {
-    this.forEach(client => client.sendXt(handler, ...args));
-  }
-
-  sendUpdate(seatId: number, name: string) {
-    this.sendXt('uz', seatId, name);
+    }), ...this.spectators]
   }
 
   public hasStarted() {
@@ -140,7 +125,7 @@ export abstract class WorldTable {
 
   abstract getMoveLength(): number;
 
-  abstract sendMove(moves: number[]): boolean;
+  abstract sendMove(moves: number[]): [Array<string | number> | null, Array<string | number> | null];
 
   abstract getAutomaticTurnChange(): boolean;
 
@@ -148,13 +133,8 @@ export abstract class WorldTable {
     this.turn = (this.turn + 1) % 2;
   }
 
-  protected endGame(...args: number[]) {
+  protected endGame() {
     this.ended = true;
-    //  idk what this is doing
-    // this.spectators.forEach(spectator => {
-    //   this._server.addSpectator(spectator.penguin.id);
-    // });
-    this.sendXt('zo', ...args);
   }
 
   protected awardCoins(scores: [number, number]) {
@@ -162,8 +142,7 @@ export abstract class WorldTable {
       if (player !== null && (index == 0 || index == 1)) {
         const score = scores[index];
         if (score > 0) {
-          player.info.addCoins(score);
-          player.info.update();
+          player.currency.add(score);
         }
       }
     });
