@@ -238,6 +238,18 @@ class BuddyInventory {
   public get buddies() {
     return [...this._buddies.values()];
   }
+
+  public isBuddy(id: number) {
+    return this._buddies.has(id);
+  }
+
+  public add(id: number) {
+    this._buddies.add(id);
+  }
+
+  public remove(id: number) {
+    return this._buddies.delete(id);
+  }
 }
 
 class Stampbook {

@@ -5,11 +5,13 @@ import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
 import { PenguinMessenger } from '../messenger';
-import { XtHandler } from '../xt';
+import { HandlerFunction, XtHandler } from '../xt';
 import { SledRace } from '@server/socket-server/world/sled';
 import { getClientPuffleIds } from './puffle';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
+
+type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand
@@ -44,12 +46,6 @@ async function formatBuddyEntry(id: number, world: World, db: PenguinRepository,
 
   const online = world.getById(id) !== undefined;
   return online ? `${id}|${name}|1` : `${id}|${name}`;
-}
-
-async function sendGetBuddies(msg: PenguinMessenger, penguin: WorldPenguin, world: World, db: PenguinRepository) {
-  const buddies = penguin.buddy.buddies
-    .map(id => formatBuddyEntry(id, world, db, true));
-  msg.send(penguin, 'gb', ...await Promise.all(buddies));
 }
 
 function sendGetOnlineBuddies(msg: PenguinMessenger, p: WorldPenguin, world: World) {
@@ -129,7 +125,8 @@ export function sendLPMessage(penguin: WorldPenguin, data: GameData, msg: Pengui
   );
 }
 
-handler.xt([['s', 'js'], ['s', 'j#js']], [], async ({ world, penguin, data, msg, db }) => {
+handler.xt([['s', 'js'], ['s', 'j#js']], [], async (ctx) => {
+  const { world, penguin, data, msg } = ctx;
   // penguins don't keep the puffle from previous session
   unequipPuffle(penguin);
   /*
@@ -150,8 +147,8 @@ handler.xt([['s', 'js'], ['s', 'j#js']], [], async ({ world, penguin, data, msg,
 
   if (data.isPreCpip()) {
     if (getBuddyProtocol(data) == 'b') {
-      sendGetBuddies(msg, penguin, world, db);
-      // sendGetOnlineBuddies(msg, penguin, world);
+      sendGetBuddies(ctx);
+      sendBuddyOnlineList(ctx);
     }
 
     sendGetOnlineBuddies(msg, penguin, world);
@@ -311,5 +308,125 @@ handler.xt('s', 'il', [], () => {
   // seemingly useless handler, it just sends the client's inventory to the server
   return;
 });
+
+const sendGetBuddies: JoinHandler<[]> = async ({ msg, penguin, world, db }) => {
+  const buddies = await Promise.all(penguin.buddy.buddies.map(id => {
+    return formatBuddyEntry(id, world, db, true);
+  }));
+  msg.send(penguin, 'gb', ...buddies);
+}
+
+const sendBuddyOnlineList: JoinHandler<[]> = ({ msg, penguin, world }) => {
+  const onlineIds = penguin.buddy.buddies.filter(id => world.getById(id) !== undefined);
+  msg.send(penguin, 'go', ...onlineIds);
+}
+
+const handleBuddyRequest: JoinHandler<[number]> = (ctx, targetId) => {
+  const { msg, penguin, world, data, prst } = ctx;
+  const target = world.getById(targetId);
+  if (target === undefined) {
+    return;
+  }
+
+  if (penguin.buddy.isBuddy(targetId)) {
+    return;
+  }
+
+  const protocol = getBuddyProtocol(data);
+  if (protocol === 'b') {
+    msg.send(target, 'br', penguin.id, penguin.name);
+    // refresh sender list to avoid temporary placeholders client-side
+    sendGetBuddies(ctx);
+  } else {
+    msg.send(target, 'bq', penguin.id, penguin.name);
+  }
+
+  prst(target);
+}
+
+const handleBuddyAccept: JoinHandler<[number]> = async (ctx, requesterId) => {
+  const { world, db, penguin, prst, msg, data } = ctx;
+  const requester = world.getById(requesterId);
+
+  penguin.buddy.add(requesterId);
+
+  if (requester === undefined) {
+    const requesterData = await db.get(requesterId);
+    if (requesterData === null) {
+      return;
+    }
+    // TODO -> refactor offline penguin writing.
+    requesterData.buddies = [...(requesterData?.buddies ?? []), penguin.id];
+    db.write(requesterId, requesterData);
+  } else {
+    requester.buddy.add(penguin.id);
+    msg.send(requester, 'ba', penguin.id, penguin.name);
+    prst(requester);
+  }
+
+  if (getBuddyProtocol(data) === 'b') {
+    sendGetBuddies(ctx);
+    if (requester !== undefined) {
+      sendGetBuddies({ ...ctx, penguin: requester });
+    }
+  }
+
+  prst(penguin);
+}
+
+const handleBuddyDecline: JoinHandler<[number]> = (ctx, requesterId) => {
+  const { msg, world, penguin } = ctx;
+
+  const requester = world.getById(requesterId);
+  if (requester !== undefined) {
+    msg.send(requester, 'bd', penguin.id, penguin.name);
+  }
+}
+
+const handleBuddyRemove: JoinHandler<[number]> = async (ctx, removeId) => {
+  const { penguin, prst, world, data, msg, db } = ctx;
+  
+  const changed = penguin.buddy.remove(removeId);
+
+  const buddy = world.getById(removeId);
+
+  if (buddy === undefined) {
+    const buddyData = await db.get(removeId);
+    if (buddyData !== null) {
+      buddyData.buddies = (buddyData?.buddies ?? []).filter(id => id !== penguin.id);
+      // TODO -> refactor offline penguin update
+      db.write(removeId, buddyData);
+    }
+  } else {
+    buddy.buddy.remove(penguin.id);
+    const protocol = getBuddyProtocol(data);
+    if (protocol === 'b') {
+      msg.send(buddy, 'rb', penguin.id, penguin.name);
+    } else {
+      msg.send(buddy, 'br', penguin.id, penguin.name);
+    }
+    prst(buddy);
+  }
+
+  if (changed) {
+    prst(penguin);
+  }
+}
+
+const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messageId) => {
+  const { msg , world, penguin } = ctx;
+  const target = world.getById(targetId);
+  if (target !== undefined) {
+    msg.send(target, 'bm', penguin.id, penguin.name, messageId);
+  }
+}
+
+handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
+handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
+handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
+handler.xt([['s', 'ba'], ['b', 'ba']], ['number'], handleBuddyAccept);
+handler.xt([['s', 'bd'], ['b', 'bd']], ['number'], handleBuddyDecline);
+handler.xt([['s', 'br'], ['b', 'rb']], ['number'], handleBuddyRemove);
+handler.xt([['s', 'bm'], ['b', 'bm']], ['number', 'number'], handleBuddyMessage);
 
 export { handler as joinHandler };

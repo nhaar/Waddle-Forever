@@ -408,15 +408,6 @@ export const HANDLE_ARGUMENTS = {
 } as const;
 
 const HANDLER_MAPPING: HandlerMapping = {
-  'b': {
-    'gb': Handle.GetBuddiesB,
-    'go': Handle.GetBuddyOnlineB,
-    'br': Handle.BuddyRequestB,
-    'ba': Handle.BuddyAcceptB,
-    'bd': Handle.BuddyDeclineB,
-    'bm': Handle.BuddyMessageB,
-    'rb': Handle.BuddyRemoveB
-  },
   's': {
     'jp': Handle.JoinIglooOld,
     'gt': Handle.GetTableOld,
@@ -465,18 +456,11 @@ const HANDLER_MAPPING: HandlerMapping = {
       'upl': Handle.UpdatePin,
       'upp': Handle.UpdateBackground
     },
-    'gb': Handle.GetBuddies,
-    'go': Handle.GetBuddyOnline,
-    'bq': Handle.BuddyRequest,
     'ba': {
-      '': Handle.BuddyAccept,
       'barsu': Handle.GetBakeryState,
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
     },
-    'bd': Handle.BuddyDecline,
-    'br': Handle.BuddyRemove,
-    'bm': Handle.BuddyMessage,
     'gp': Handle.GetPlayerOld,
     'f': {
       'epfga': Handle.GetEpfStatus,
