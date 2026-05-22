@@ -16,6 +16,8 @@ import { puffleHandler } from "@server/handlers/play/puffle";
 import { CommandsHandler } from "./commands";
 import { CommandContext, commands } from "./command-handlers";
 import { createHandler } from "@server/handlers/play/create";
+import { gameHandler } from "@server/handlers/play/newgame";
+import { sledHandler } from "@server/handlers/games/sled";
 
 export class WorldServer extends SocketServer {
   private worldServer: World;
@@ -34,7 +36,11 @@ export class WorldServer extends SocketServer {
 
     this._commandsHandler = new CommandsHandler(commands.get());
 
-    this._persister = (p) => { this.db.write(p.id, p.getJSON()) };
+    this._persister = (p, force = false) => { 
+      if (p.preference.canSave || force) {
+        this.db.write(p.id, p.getJSON());
+      }
+    };
 
     // this.disconnect = (client) => {
     //   this.worldServer.disconnect(client);
@@ -53,10 +59,7 @@ export class WorldServer extends SocketServer {
   override createHandler() {
     const handler = new Handler<WorldContext>((client) => {
       const penguin = this.messenger.getPenguin(client);
-      let state = {};
-      if (penguin !== undefined) {
-        state = this.worldServer.getContext(penguin);
-      }
+      const state = penguin === undefined ? {} : (this.worldServer.getContext(penguin) ?? {});
       return {
         ...state,
         penguin,
@@ -75,9 +78,10 @@ export class WorldServer extends SocketServer {
     handler.use(iglooHandler);
     handler.use(puffleHandler);
     handler.use(createHandler);
+    handler.use(gameHandler);
     // handler.use(roomHandler);
     // handler.use(gameHandler);
-    // handler.use(sledHandler);
+    handler.use(sledHandler);
     // handler.use(cardHandler);
     return handler;
   }
@@ -98,7 +102,8 @@ export class WorldServer extends SocketServer {
         penguin,
         prst: this._persister,
         msg: this.messenger,
-        data: this.gameData
+        data: this.gameData,
+        room: this.worldServer.getContext(penguin)?.room
       }
       this._commandsHandler.run(ctx, name, args);
     }
