@@ -1,3 +1,5 @@
+import { FindFourTable } from "./find-four";
+import { MancalaTable } from "./mancala";
 import { WaddleRoom } from "./waddle-room";
 import { WorldEntity } from "./world-penguin";
 import { RoomState, WorldPenguin } from "./world-penguin";
@@ -7,6 +9,9 @@ export class WorldRoom extends WorldEntity {
   private penguins = new Map<WorldPenguin, RoomState>();
   private waddles = new Map<number, WaddleRoom>();
   private tables = new Map<number, WorldTable>();
+
+  static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
+  static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
 
   constructor(onAdd: (p: WorldPenguin, e: WorldEntity) => void, onRemove: (p: WorldPenguin) => void, private _id: number) {
     super(onAdd, onRemove);
@@ -59,25 +64,26 @@ export class WorldRoom extends WorldEntity {
   }
 
   public enterWaddleRoom(waddle: WaddleRoom, penguin: WorldPenguin): number {
-    return waddle.addPenguin(penguin)
+    const index = waddle.addPenguin(penguin);
+    if (index === null) {
+      throw new Error("Somehow entered full waddle room");
+    }
+    return index;
   }
 
   public getTable(id: number) {
     let table = this.tables.get(id);
     if (table === undefined) {
-      throw new Error();
-    }
-    // if (table === undefined) {
-    //   if (WorldTable.FIND_FOUR_TABLE_IDS.has(id)) {
-    //     table = new FindFourTable(id);
-    //   } else if (WorldTable.MANCALA_TABLE_IDS.has(id)) {
-    //     table = new MancalaTable(id);
-    //   } else {
-    //     throw new Error('Unknown table id');
-    //   }
+      if (WorldTable.FIND_FOUR_TABLE_IDS.has(id)) {
+        table = new FindFourTable(id);
+      } else if (WorldTable.MANCALA_TABLE_IDS.has(id)) {
+        table = new MancalaTable(id);
+      } else {
+        throw new Error('Unknown table id');
+      }
 
-    //   this.tables.set(id, table);
-    // }
+      this.tables.set(id, table);
+    }
     return table;
   }
 
