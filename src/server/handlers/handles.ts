@@ -418,42 +418,30 @@ const HANDLER_MAPPING: HandlerMapping = {
     'rb': Handle.BuddyRemoveB
   },
   's': {
-    'jr': Handle.JoinRoomOld,
-    'js': Handle.JoinServerOld,
     'jp': Handle.JoinIglooOld,
-    'ac': Handle.GetCoins,
-    'gc': Handle.GetCoins2007,
     'gt': Handle.GetTableOld,
     'jt': Handle.JoinTableOld,
     'lt': Handle.LeaveTableOld,
     'jx': Handle.JoinTemporaryWaddle,
-    'ai': Handle.AddItemOld,
     'af': Handle.AddFurnitureOld,
     'au': Handle.AddIglooOld,
     'up': Handle.UpdatePenguinOld,
     'ur': Handle.UpdateIglooOld,
-    'il': Handle.SendInventory,
     'sp': Handle.SetPositionOld,
     'se': Handle.SendEmoteOld,
     'sb': Handle.SnowballOld,
     'sc': Handle.SendCardOld,
     'at': Handle.OpenBookOld,
     'rt': Handle.CloseBookOld,
-    'gi': Handle.GetInventory2007,
     'gf': Handle.GetFurnitureOld,
     'sf': Handle.SetFrameOld,
     'sj': Handle.SendJokeOld,
     'ss': Handle.SendSafeMessageOld,
     'sa': Handle.SendActionOld,
     'j': {
-      'jr': Handle.JoinRoom,
-      'jp': [Handle.JoinIgloo, Handle.JoinIglooNew],
       'grs': Handle.RoomRefresh,
-      'js': [Handle.JoinServer, Handle.JoinServerNew]
     },
     'i': {
-      'gi': Handle.GetInventory,
-      'ai': Handle.AddItem,
       'qpp': Handle.GetPinInformation,
       'qpa': Handle.GetMissionStamps
     },
@@ -461,20 +449,10 @@ const HANDLER_MAPPING: HandlerMapping = {
       'sm': Handle.HandleSendMessage
     },
     'u': {
-      'sa': Handle.SendAction,
-      'sf': Handle.SendFrame,
-      'sp': Handle.SetPosition,
-      'sb': Handle.Snowball,
-      'se': Handle.SendEmote,
-      'sj': Handle.SendJoke,
-      'ss': Handle.SendSafeMessage,
-      'pbi': Handle.PBI,
-      'glr': Handle.GLR,
       'h': Handle.Heartbeat,
       'sl': Handle.SendLine
     },
     'r': {
-      'gtc': Handle.GetTotalCoins
     },
     's': {
       'upc': Handle.UpdateColor,
@@ -569,12 +547,7 @@ const HANDLER_MAPPING: HandlerMapping = {
       'rpqbc': Handle.RainbowQuestCollectBonus
     },
     'l': {
-      'mst': Handle.GetMail,
-      'mg': Handle.GetAllMail,
       'mc': Handle.SetMailCheck
-    },
-    'n': {
-      'gn': Handle.GN
     },
     'musictrack': {
       'getmymusictracks': Handle.GetMusicTracks
@@ -625,9 +598,6 @@ const HANDLER_MAPPING: HandlerMapping = {
     'lz': [Handle.LeaveWaddleMatch, Handle.LeaveTableGame],
     'epfsf': Handle.EPFStamps,
     'm': Handle.MoveHockeyPuck
-  },
-  'k': {
-    'spy': Handle.BecomeAgent
   },
   'm': {
     'sm': Handle.SendMessageOld,
