@@ -77,13 +77,13 @@ export class MancalaTable extends WorldTable {
     return true;
   }
 
-  override sendMove(moves: number[]): boolean {
+  override sendMove(moves: number[]): [null | [], Array<string | number> | null] {
     const cup = moves[0];
     if (!this.isMancalaCupForPlayer(this.turn, cup)) {
-      return false;
+      return [null, null];
     }
     if (this._board === undefined || this._board[cup] <= 0) {
-      return false;
+      return [null, null];
     }
 
     const { command, nextTurn, gameOver } = this.applyMancalaMove(this._board, this.turn, cup);
@@ -91,14 +91,14 @@ export class MancalaTable extends WorldTable {
     if (command !== '') {
       zmArgs.push(command);
     }
-    this.sendXt('zm', ...zmArgs);
+    // this.sendXt('zm', ...zmArgs);
     this.turn = nextTurn;
     if (gameOver) {
       this.awardMancalaCoins();
       this.endGame();
-      return true;
+      return [[], zmArgs];
     }
-    return false;
+    return [null, zmArgs];
   }
 
   awardMancalaCoins(): void {
