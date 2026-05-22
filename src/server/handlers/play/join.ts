@@ -8,6 +8,7 @@ import { PenguinMessenger } from '../messenger';
 import { HandlerFunction, XtHandler } from '../xt';
 import { SledRace } from '@server/socket-server/world/sled';
 import { getClientPuffleIds } from './puffle';
+import { getFurnitureString, getIglooFromId } from './igloo';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
@@ -261,6 +262,26 @@ handler.xt('s', 'b#gb', [], ({ msg, penguin, data }) => {
     msg.send(penguin, 'pbr', '');
     msg.send(penguin, 'gc', '');
   }
+});
+
+handler.xt('s', 'jp', ['number', 'number'], async (ctx, ownerId, isMember) => {
+  const { world, db, data, msg, penguin } = ctx;
+  const igloo = await getIglooFromId(world, db, ownerId);
+  if (igloo === undefined) {
+    return;
+  }
+
+  const args: Array<string | number> = [ownerId, igloo.type];
+
+  // when igloo music was added, the music parameter is optional
+  if (data.hasIglooMusicReleased()) {
+    args.push(igloo.music);
+  }
+
+  // client misteriously removes the first element of the furniture
+  msg.send(penguin, 'jp', ...args, ',' + getFurnitureString(igloo.furniture));
+  const roomId = 2000 + ownerId;
+  joinRoom(ctx, roomId, 0, 0);
 });
 
 handler.xt('s', 'j#jp', ['number'], ({ msg, penguin, world, data }, fakeId) => {

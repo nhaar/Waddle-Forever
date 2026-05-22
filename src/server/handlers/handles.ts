@@ -409,7 +409,6 @@ export const HANDLE_ARGUMENTS = {
 
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
-    'jp': Handle.JoinIglooOld,
     'gt': Handle.GetTableOld,
     'jt': Handle.JoinTableOld,
     'lt': Handle.LeaveTableOld,
