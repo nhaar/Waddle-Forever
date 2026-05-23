@@ -420,6 +420,19 @@ class IglooInventory {
     this._furniture.set(furnitureId, this.getFurnitureAmount(furnitureId) + amount);
   }
 
+  public addIglooType(iglooType: number) {
+    this._types.add(iglooType);
+  }
+
+  public addFlooring(flooringId: number) {
+    this._floorings.add(flooringId);
+  }
+
+  public updateIgloo(features: Partial<Igloo>): void {
+    const igloo = this.activeIgloo;
+    this._layouts.set(this._selected, { ...igloo, ...features });
+  }
+
   public get types() {
     return [...this._types.values()];
   }

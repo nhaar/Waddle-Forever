@@ -1,8 +1,12 @@
 import { World, WorldContext } from "@server/socket-server/world/world";
-import { XtHandler } from "../xt";
+import { HandlerFunction, XtHandler } from "../xt";
 import { Igloo, IglooFurniture, PenguinJson, PenguinRepository } from "@server/database/database";
+import { FURNITURE } from "@server/game-logic/furniture";
+import { getFlooringCost, getIglooCost } from "@server/game-logic/iglooItems";
+import { getStamp } from "./puffle";
 
-const handler = new XtHandler<WorldContext, ['penguin', 'msg', 'world', 'data', 'db']>(['penguin', 'msg', 'world', 'data', 'db']);
+const handler = new XtHandler<WorldContext, ['penguin', 'msg', 'world', 'data', 'db', 'prst']>(['penguin', 'msg', 'world', 'data', 'db', 'prst']);
+type IglooHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'msg', 'world', 'data', 'db', 'prst'], T>;
 
 export async function getIglooFromId(world: World, db: PenguinRepository, ownerId: number): Promise<Igloo | undefined> {
   return world.getById(ownerId)?.igloo.activeIgloo ??
@@ -90,6 +94,73 @@ handler.xt('s', 'g#gii', [], ({ msg, penguin }) => {
   })
   msg.send(penguin, 'gii', ...information);
 });
+
+const handleAddFurniture: IglooHandler<[number]> = (ctx, furnitureId) => {
+  const { penguin, msg, prst } = ctx;
+  const item = FURNITURE.getStrict(furnitureId);
+  penguin.igloo.addFurniture(furnitureId, 1);
+  msg.send(penguin, 'af', furnitureId, penguin.currency.discount(item.cost));
+  prst(penguin);
+};
+
+const handleAddIgloo: IglooHandler<[number]> = (ctx, iglooId) => {
+  const { penguin, msg, prst } = ctx;
+  const cost = getIglooCost(iglooId);
+  ;
+  penguin.igloo.addIglooType(iglooId);
+  // unknown if music was reset or not in the original
+  penguin.igloo.updateIgloo({ type: iglooId, music: 0, flooring: 0, furniture: [] });
+  msg.send(penguin, 'au', iglooId, penguin.currency.discount(cost));
+  prst(penguin);
+}
+
+const handleAddFlooring: IglooHandler<[number]> = (ctx, flooring) => {
+  const { msg, penguin, prst, data } = ctx;
+  const cost = getFlooringCost(flooring);
+
+  if (data.isVanillaEngine()) {
+    // placeholder for when flooring inventory was added (before it was auto updated)
+    penguin.igloo.addFlooring(flooring);
+  } else {
+    penguin.igloo.updateIgloo({ flooring });
+  }
+
+  msg.send(penguin, 'ag', flooring, penguin.currency.discount(cost));
+  prst(penguin);
+};
+
+export function processFurniture(furnitureItems: string[]): IglooFurniture {
+  return furnitureItems.map((furnitureString) => {
+    const [furniture, x, y, rotation, frame] = furnitureString.split('|').map((str) => Number(str))
+    return {
+      id: furniture,
+      x,
+      y,
+      rotation,
+      frame
+    }
+  })
+}
+
+const addFullHouseStamp: IglooHandler<[]> = (ctx) => {
+  getStamp(ctx.data, ctx.msg, ctx.penguin, 23);
+}
+
+const handleUpdateIgloo: IglooHandler<string[]> = (ctx, ...furnitureItems) => {
+  const { prst, penguin } = ctx;
+  const igloo = processFurniture(furnitureItems);
+  if (igloo.length === 99) {
+    addFullHouseStamp(ctx);
+  }
+
+  penguin.igloo.updateIgloo({ furniture: igloo });
+  prst(penguin);
+}
+
+handler.xt([['s', 'af'], ['r', 'af'], ['s', 'g#af']], ['number'], handleAddFurniture);
+handler.xt([['s', 'au'], ['r', 'au']], ['number'], handleAddIgloo);
+handler.xt([['r', 'ag'], ['s', 'g#ag']], ['number'], handleAddFlooring);
+handler.xt('s', 'g#ur', 'string', handleUpdateIgloo);
 
 export {
   handler as iglooHandler

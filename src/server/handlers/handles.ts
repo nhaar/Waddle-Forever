@@ -409,12 +409,7 @@ export const HANDLE_ARGUMENTS = {
 
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
-    'gt': Handle.GetTableOld,
-    'jt': Handle.JoinTableOld,
-    'lt': Handle.LeaveTableOld,
     'jx': Handle.JoinTemporaryWaddle,
-    'af': Handle.AddFurnitureOld,
-    'au': Handle.AddIglooOld,
     'up': Handle.UpdatePenguinOld,
     'ur': Handle.UpdateIglooOld,
     'sp': Handle.SetPositionOld,
@@ -472,13 +467,9 @@ const HANDLER_MAPPING: HandlerMapping = {
       'epfsp': Handle.SetPartyOp
     },
     'g': {
-      'gm': Handle.GetIgloo,
       'go': Handle.GetIglooTypes,
       'gf': Handle.GetFurniture,
-      'af': Handle.AddFurniture,
-      'ur': Handle.UpdateIgloo,
       'um': Handle.UpdateIglooMusic,
-      'ag': Handle.AddFlooring,
       'au': Handle.AddIgloo,
       'ao': Handle.UpdateIglooType,
       'gili': Handle.GetIglooLikes,
@@ -593,9 +584,6 @@ const HANDLER_MAPPING: HandlerMapping = {
     'gr': Handle.GetOpenIgloosOld,
     'gm': Handle.GetIgloo2007,
     'gf': Handle.GetFurniture2007,
-    'ag': Handle.AddFlooring2007,
-    'au': Handle.AddIgloo2007,
-    'af': Handle.AddFurniture2007,
     'ur': Handle.UpdateIgloo2007,
     'um': Handle.UpdateIglooMusic2007
   },
