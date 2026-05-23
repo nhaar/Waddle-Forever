@@ -12,7 +12,7 @@ import { getFurnitureString, getIglooFromId } from './igloo';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
-type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
+export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand

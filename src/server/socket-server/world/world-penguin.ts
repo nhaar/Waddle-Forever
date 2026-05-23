@@ -474,6 +474,34 @@ class MailInventory {
   public get total() {
     return this._mail.length;
   }
+
+  public receivePostcard(postcard: number, info: {
+    senderId?: number
+    senderName?: string
+    details?: string    
+  }): Mail {
+    this._seq += 1;
+    const uid = this._seq;
+    const senderName = info.senderName ?? 'sys';
+    const senderId = info.senderId ?? 0;
+    const details = info.details ?? '';
+    const timestamp = Date.now();
+    const mail = {
+      sender: {
+        name: senderName,
+        id: senderId
+      },
+      postcard: {
+        postcardId: postcard,
+        uid,
+        details,
+        timestamp,
+        read: false
+      }
+    };
+    this._mail.push(mail);
+    return mail;
+  }
 }
 
 class PuffleLaunchData {
