@@ -10,6 +10,8 @@ import { getClientPuffleIds } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
 import { WorldTable } from '@server/socket-server/world/world-table';
 import { getOfflinePenguinCrumb } from '@server/http/php-server';
+import { ItemType } from '@server/game-logic/items';
+import { isFlag } from '@server/game-logic/flags';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
@@ -128,6 +130,10 @@ export function sendLPMessage(penguin: WorldPenguin, data: GameData, msg: Pengui
   );
 }
 
+const sendStamps: JoinHandler<[]> = async ({ msg, penguin }) => {
+  await msg.send(penguin, 'gps', penguin.id, penguin.stampbook.stamps.join('|'));
+}
+
 handler.xt([['s', 'js'], ['s', 'j#js']], [], async (ctx) => {
   const { world, penguin, data, msg } = ctx;
   // penguins don't keep the puffle from previous session
@@ -168,7 +174,7 @@ handler.xt([['s', 'js'], ['s', 'j#js']], [], async (ctx) => {
     // TODO proper inventory
     // send stamps must be before join room
     // for the 365 days stamp to work
-    await msg.send(penguin, 'gps', penguin.id, penguin.stampbook.stamps.join('|'));
+    await sendStamps(ctx);
 
     const puffles = data.isVanillaEngine() ? penguin.puffle.puffles.map((puffle) => [
     puffle.id,
@@ -540,6 +546,79 @@ handler.xt('s', 'u#h', [], ({ msg, penguin }) => {
   msg.send(penguin, 'h', '');
 });
 
+const handleGetPinInfo: JoinHandler<[number]> = (ctx) => {
+  const { msg, penguin, data } = ctx;
+
+  const pins = penguin.inventory.items.filter((item) => {
+    const id = Number(item)
+    return data.getItem(id)?.type === ItemType.Pin && !isFlag(id);
+  }).map((pin) => {
+    const item = data.getItem(pin);
+    return [item.id, (new Date(`${item.releaseDate}T12:00:00`)).getTime() / 1000, item.isMember ? 1 : 0].join('|');
+  })
+
+  msg.send(penguin, 'qpp', ...pins);
+}
+
+const handleGetMissionStamps: JoinHandler<[]> = (ctx) => {
+  const { msg, penguin, data } = ctx;
+  
+  const awards = penguin.inventory.items.filter(id => {
+    const info = data.getItem(id);
+    return info.type === ItemType.Award;
+  });
+
+  msg.send(penguin, 'qpa', penguin.id, awards.join('|'));
+}
+
+const handleGetStampbookCoverData: JoinHandler<[number]> = (ctx) => {
+  const { msg, penguin } = ctx;
+
+  const stamps = penguin.stampbook.cover.stamps.map(stamp => [
+    0, stamp.stamp, stamp.x, stamp.y, stamp.rotation, stamp.depth
+  ].join('|'));
+
+  msg.send(
+    penguin, 'gsbcd',
+    penguin.stampbook.cover.color,
+    penguin.stampbook.cover.highlight,
+    penguin.stampbook.cover.pattern,
+    penguin.stampbook.cover.icon,
+    ...stamps
+  );
+}
+
+const handleGetRecentStamps: JoinHandler<[]> = ({ msg, penguin, prst }) => {
+  msg.send(penguin, 'gmres', penguin.stampbook.recentStamps.join('|'));
+  penguin.stampbook.clearRecentStamps();
+  prst(penguin);
+}
+
+const handleSetStampbookCoverData: JoinHandler<string[]> = ({ penguin, prst }, color, highlight, pattern, icon, ...stamps) => {
+  penguin.stampbook.setCover(
+    Number(color),
+    Number(highlight),
+    Number(pattern),
+    Number(icon),
+    stamps.map(str => {
+      const [_, id, x, y, rotation, depth] = str.split('|').map(n => Number(n));
+      return {
+        stamp: id,
+        x,
+        y,
+        rotation,
+        depth
+      }
+    })
+  );
+  prst(penguin);
+}
+
+const handleSetStampEarned: JoinHandler<[number]> = ({ penguin, prst }, stampId) => {
+  penguin.stampbook.add(stampId);
+  prst(penguin);
+}
+
 handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
 handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
 handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
@@ -548,6 +627,13 @@ handler.xt([['s', 'bd'], ['b', 'bd']], ['number'], handleBuddyDecline);
 handler.xt([['s', 'br'], ['b', 'rb']], ['number'], handleBuddyRemove);
 handler.xt([['s', 'bm'], ['b', 'bm']], ['number', 'number'], handleBuddyMessage);
 handler.xt([['s', 'gp'], ['p', 'gp']], ['number'], handleGetPlayer);
+handler.xt('s', 'i#qpp', ['number'], handleGetPinInfo);
+handler.xt('s', 'i#qpa', [], handleGetMissionStamps);
+handler.xt('s', 'st#gsbcd', ['number'], handleGetStampbookCoverData);
+handler.xt('s', 'st#gps', [], sendStamps);
+handler.xt('s', 'st#gmres', [], handleGetRecentStamps);
+handler.xt('s', 'st#ssbcd', 'string', handleSetStampbookCoverData);
+handler.xt('s', 'st#sse', ['number'], handleSetStampEarned);
 handler.addDisconnect(handleDisconnect);
 
 export { handler as joinHandler };

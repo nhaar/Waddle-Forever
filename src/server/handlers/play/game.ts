@@ -1,147 +1,45 @@
-// import { choose } from "@common/utils";
-// import { Client } from "@server/client";
-// import { Handler } from "..";
-// import { SPY_DRILLS_DATA } from "../../game-logic/spy-drills";
-// import { Handle } from "../handles";
+import { WorldContext } from "@server/socket-server/world/world";
+import { HandlerFunction, XtHandler } from "../xt";
+import { isLiteralScoreGame } from "@server/game-logic/rooms";
+import { getPenguinString } from "./join";
 
-import { choose } from "@common/utils";
-import { CARDS } from "@server/game-logic/cards";
-import { ItemType } from "@server/game-logic/items";
-import { Room } from "@server/game-logic/rooms";
-import { SPY_DRILLS_DATA } from "@server/game-logic/spy-drills";
-import { STARTER_DECKS } from "@server/game-logic/starter-deck";
-import { CardJitsu, MatchMaker, World, WorldClient, WorldContext } from "@server/new-client";
-import { Handle } from "../handles";
-import { XtHandler } from "../xt";
+const handler = new XtHandler<WorldContext, ['penguin', 'msg', 'game', 'data', 'prst']>(['penguin', 'msg', 'game', 'data', 'prst']);
+type GameHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'msg', 'game', 'data', 'prst'], T>;
 
-const handler = new XtHandler<WorldClient, WorldContext, ['penguin', 'world','game']>(['penguin', 'world', 'game']);
+const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
+  const { game, data, penguin, msg, prst } = ctx;
 
-handler.xt(Handle.JoinRoom, ({ world, game, penguin }, id, x, y ) => {
-  game.removePenguin(penguin);
-  world.getRoom(id).addPenguin(penguin, x, y);
-});
+  const rawCoins = isLiteralScoreGame(game.getId()) ? (
+    Number(score)
+  ) : (
+    Math.floor(Number(score) / 10)
+  );
+  
+  if (data.isPreCpip()) {
+    penguin.currency.add(rawCoins);
+    msg.send(penguin, 'zo');
+  } else {
+    const gameStamps = data.getGameStamps(game.getId());
+    const sessionStamps = penguin.stampbook.sessionStamps.filter(stamp => gameStamps.has(stamp));
+    const collectedCount = [...gameStamps.values()].filter(stamp => penguin.stampbook.has(stamp)).length;
+    const totalCount = gameStamps.size;
+    const coins = ((totalCount > 0 && collectedCount === totalCount) ? 2 : 1) * rawCoins;
 
-// const CARD_JITSU_ROOMS = new Set<number>([Room.CardJitsu, Room.CardJitsuFire, Room.CardJitsuWater]);
+    penguin.stampbook.resetSessionStamps();
 
-// client requesting to leave a minigame
-handler.xt(Handle.LeaveGame, ({ world, game, penguin }, score) => {
-  // waddle games individually handle this
-  // card jitsu sometimes has stamp endscreen
-  // const isCardJitsu = CARD_JITSU_ROOMS.has(game.getId());
-  // if ((client.isInWaddleGame() && !isCardJitsu) || world.data.isPreCpip()) {
-  //   return;
-  // }
-  if (world.data.isPreCpip()) {
-    return;
+    // unknown what last 0 means
+    msg.send(penguin, 'zo', penguin.currency.add(coins), sessionStamps.join('|'), collectedCount, totalCount, 0);
   }
 
-  const stampInfo = penguin.getEndgameStampsInformation(game.getId());
+  prst(penguin);
+}
 
-  // if (!isCardJitsu) {
-    let coins = game.getCoinsFromScore(score);
-  
-    // stamps double coins
-    if (stampInfo[1] > 0 && stampInfo[1] == stampInfo[2]) {
-      coins *= 2;
-    }
-  
-    penguin.info.addCoins(coins);
-  // }
-  
-  penguin.sendXt('zo', String(penguin.info.coins), ...stampInfo);
-  void penguin.info.update();
+handler.xt('s', 'j#grs', [], ({ msg, data, penguin }) => {
+  msg.send(penguin, 'grs', penguin.id, getPenguinString(data, penguin, { x:0,y:0,frame:1 }));
 });
 
-// Paying after minigame
-handler.xt(Handle.LeaveGame, ({ world, game, penguin }, score) => {
-  if (!world.data.isPreCpip()) {
-    return;
-  }
-  // if (client.isInWaddleGame() && client.waddleGame.name === 'sled') {
-  //   return;
-  // }
-  const coins = game.getCoinsFromScore(score);
-  penguin.info.addCoins(coins);
-  
-  penguin.sendXt('zo');
-  penguin.info.update();
-})
+handler.xt('z', 'zo', ['number'], handleLeaveGame);
 
-// currently only supporting puffle launch. There may be other games that use this
-// get game data
-handler.xt(Handle.GetPuffleLaunchData, ({ penguin }) => {
-  penguin.sendXt('ggd', penguin.info.getGameData().toString('utf-8'));
-});
-
-// set/save game data
-handler.xt(Handle.SetPuffleLaunchData, ({ penguin }, data) => {
-  penguin.info.setGameData(Buffer.from(data));
-  penguin.info.update();
-});
-
-// this is seemingly the same endpoint used in dance contest
-// there may be conflict, but this is for spy drills
-handler.xt(Handle.RollSpyDrills, ({ penguin }) => {
-  // The original algorithm is unknown, so we are using experimental data to simulate it
-  const randomOption = choose(SPY_DRILLS_DATA);
-  const [games, medalCount] = randomOption;
-  
-  /*
-  Regarding the generation, it would pick 3 random spy drill games and then assign a medal count to them.
-  We don't know how either of those processes worked exactly
-
-  # Minigame picking
-  At first you would think it is random, but there seems to be a clear relation with how the games are picked.
-  The algorithm seems to have a difficulty preference and it tries to increase the difficulty each time.
-  It is not exactly known what algorithm is used for this, however
-
-  # Medals Calculation
-  The medals number is deterministic, meaning the same minigames always give the same medals.
-  It is likely that it just follows a simple point system, but the points are likely decimal, which make it
-  hard to predict their values since they would get rounded into an integer, and we lose a lot
-  of information because of that
-  */
-
-  penguin.sendXt('zr', games.join(','), medalCount);
-});
-
-// receive medals from spy drills
-handler.xt(Handle.SpyDrillsReward, ({ penguin }, medals) => {
-  penguin.info.addEpfMedals(medals);
-});
-
-// adding cards when receiving a starter deck
-handler.xt(Handle.AddItem, ({ world, penguin }, id) => {
-  const deck = STARTER_DECKS[id];
-  if (deck !== undefined) {
-    const powerCards: number[] = [];
-    const normalCards: number[] = [];
-    deck.forEach(card => {
-      const info = CARDS.getStrict(card);
-      (info.powerId > 0 ? powerCards : normalCards).push(card);
-    });
-    normalCards.forEach(card => penguin.info.addCard(card, 1));
-    penguin.info.addCard(choose(powerCards), 1);
-  }
-
-  // updating mission stampbook
-  const item = world.data.getItem(id);
-  if (item.type === ItemType.Award) {
-    penguin.sendXt('qpa', penguin.id, id);
-  }
-
-  penguin.addItem(id);
-  penguin.info.update();
-});
-
-handler.xt(Handle.JoinMatchMaking, ({ world, penguin }) => {
-  world.cardMatchmaker.addPlayer(penguin);
-  penguin.sendXt('jmm', penguin.info.name);
-});
-
-handler.xt(Handle.JoinSensei, ({ world, penguin }) => {
-  const game = world.getWaddleGame('card', [penguin]) as CardJitsu;
-  game.startMatch();
-});
-
-export { handler as gameHandler };
+export {
+  handler as gameHandler
+};

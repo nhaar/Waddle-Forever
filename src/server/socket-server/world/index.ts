@@ -16,7 +16,7 @@ import { puffleHandler } from "@server/handlers/play/puffle";
 import { CommandsHandler } from "./commands";
 import { CommandContext, commands } from "./command-handlers";
 import { createHandler } from "@server/handlers/play/create";
-import { gameHandler } from "@server/handlers/play/newgame";
+import { gameHandler } from "@server/handlers/play/game";
 import { sledHandler } from "@server/handlers/games/sled";
 import { mailHandler } from "@server/handlers/play/mail";
 
@@ -81,10 +81,7 @@ export class WorldServer extends SocketServer {
     handler.use(createHandler);
     handler.use(gameHandler);
     handler.use(mailHandler);
-    // handler.use(roomHandler);
-    // handler.use(gameHandler);
     handler.use(sledHandler);
-    // handler.use(cardHandler);
     return handler;
   }
 
