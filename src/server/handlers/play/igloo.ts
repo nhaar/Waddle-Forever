@@ -157,10 +157,31 @@ const handleUpdateIgloo: IglooHandler<string[]> = (ctx, ...furnitureItems) => {
   prst(penguin);
 }
 
+const handleUpdateIglooOld: IglooHandler<string[]> = (ctx, type, ...rest) => {
+  const { penguin, prst } = ctx;
+  
+  // music ID is placed at the start, though it may not be present
+  const [furnitureItems, music] = rest[0].includes('|')
+    ? [rest, 0]
+    : [rest.slice(1), Number(rest[0])];
+  
+  const igloo = processFurniture(furnitureItems);
+  penguin.igloo.updateIgloo({ furniture: igloo, type: Number(type), music });
+  prst(penguin);
+}
+
+const handleGetFurniture: IglooHandler<[]> = (ctx) => {
+  const { msg, penguin } = ctx;
+  const furniture = penguin.igloo.getAllFurniture().flatMap(([id, amount]) => new Array(amount).fill(id));
+  msg.send(penguin, 'gf', ...furniture);
+}
+
 handler.xt([['s', 'af'], ['r', 'af'], ['s', 'g#af']], ['number'], handleAddFurniture);
 handler.xt([['s', 'au'], ['r', 'au']], ['number'], handleAddIgloo);
 handler.xt([['r', 'ag'], ['s', 'g#ag']], ['number'], handleAddFlooring);
 handler.xt('s', 'g#ur', 'string', handleUpdateIgloo);
+handler.xt('s', 'gf', [], handleGetFurniture);
+handler.xt('s', 'ur', 'string', handleUpdateIglooOld);
 
 export {
   handler as iglooHandler

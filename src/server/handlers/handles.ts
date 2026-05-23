@@ -410,9 +410,7 @@ export const HANDLE_ARGUMENTS = {
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
     'jx': Handle.JoinTemporaryWaddle,
-    'ur': Handle.UpdateIglooOld,
     'sc': Handle.SendCardOld,
-    'gf': Handle.GetFurnitureOld,
     'j': {
       'grs': Handle.RoomRefresh,
     },

@@ -416,6 +416,10 @@ class IglooInventory {
     return this._furniture.get(furnitureId) ?? 0;
   }
 
+  public getAllFurniture(): Array<[number, number]> {
+    return [...this._furniture.entries()];
+  }
+
   public addFurniture(furnitureId: number, amount: number) {
     this._furniture.set(furnitureId, this.getFurnitureAmount(furnitureId) + amount);
   }
