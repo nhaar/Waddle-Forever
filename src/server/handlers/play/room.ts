@@ -37,7 +37,7 @@ handler.xt([['m', 'sm'], ['s', 'm#sm']], ['string', 'string'], ({ room, msg }, p
   msg.send(room.players, 'sm', penguin, message);
 });
 
-handler.xt([['m', 'ss'], ['s', 'u#ss']], ['string'], ({ room, msg, penguin }, message) => {
+handler.xt([['s', 'ss'], ['m', 'ss'], ['s', 'u#ss']], ['string'], ({ room, msg, penguin }, message) => {
   msg.send(room.players, 'ss', penguin.id, message);
 });
 

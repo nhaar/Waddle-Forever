@@ -410,19 +410,9 @@ export const HANDLE_ARGUMENTS = {
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
     'jx': Handle.JoinTemporaryWaddle,
-    'up': Handle.UpdatePenguinOld,
     'ur': Handle.UpdateIglooOld,
-    'sp': Handle.SetPositionOld,
-    'se': Handle.SendEmoteOld,
-    'sb': Handle.SnowballOld,
     'sc': Handle.SendCardOld,
-    'at': Handle.OpenBookOld,
-    'rt': Handle.CloseBookOld,
     'gf': Handle.GetFurnitureOld,
-    'sf': Handle.SetFrameOld,
-    'sj': Handle.SendJokeOld,
-    'ss': Handle.SendSafeMessageOld,
-    'sa': Handle.SendActionOld,
     'j': {
       'grs': Handle.RoomRefresh,
     },
@@ -430,14 +420,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       'qpp': Handle.GetPinInformation,
       'qpa': Handle.GetMissionStamps
     },
-    'm': {
-      'sm': Handle.HandleSendMessage
-    },
     'u': {
       'h': Handle.Heartbeat,
-      'sl': Handle.SendLine
-    },
-    'r': {
     },
     's': {
       'upc': Handle.UpdateColor,
@@ -501,12 +485,7 @@ const HANDLER_MAPPING: HandlerMapping = {
     'pt': {
       'spts': Handle.PlayerTransformation
     },
-    't': {
-      'at': Handle.OpenBook,
-      'rt': Handle.CloseBook
-    },
     'st': {
-      '': Handle.SendTeleportOld,
       'gsbcd': Handle.GetStampbookCoverData,
       'gps': Handle.GetPlayerStamps,
       'gmres': Handle.GetRecentStamps,
