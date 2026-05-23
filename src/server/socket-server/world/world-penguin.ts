@@ -356,6 +356,39 @@ class PuffleInventory {
   public isInBackyard(id: number) {
     return this._backyard.has(id);
   }
+
+  public addPuffle(name: string, puffleType: number): PlayerPuffle {
+    this._seq += 1;
+    const id = this._seq;
+    const puffle = {
+      id,
+      name,
+      type: puffleType,
+      clean: 100,
+      rest: 100,
+      food: 100
+    }
+    this._puffles.set(id, puffle);
+    return puffle;
+  }
+
+  public toBackyard(id: number): void {
+    this._backyard.add(id);
+  }
+
+  public addItem(itemId: number, amount: number): number {
+    const owned = this._items.get(itemId) ?? 0 + amount;
+    this._items.set(itemId, owned);
+    return owned;
+  }
+
+  public getAllItems(): Array<[number, number]> {
+    return [...this._items.entries()];
+  }
+
+  public getPuffle(id: number) {
+    return this._puffles.get(id);
+  }
 }
 
 class DigData {
@@ -393,12 +426,31 @@ class RainbowQuest {
     return this._canAdopt;
   }
 
+  public setAdoptable() {
+    this._canAdopt = true;
+  }
+
+  public resetQuest() {
+    this._canAdopt = false;
+    this._task = 0;
+    this._collected = new Set();
+  }
+
   public get task() {
     return this._task;
   }
 
   public get lastCompletionTime() {
     return this._lastTaskCompletionTimestamp;
+  }
+
+  public setCompleted(task: number) {
+    this._task = task + 1;
+    this._lastTaskCompletionTimestamp = Date.now() / 1000;
+  }
+
+  public setCollected(task: RainbowPuffleStage) {
+    this._collected.add(task);
   }
 
   public get coinsCollected() {
@@ -577,6 +629,7 @@ class EpfInventory {
 
 class GoldPuffleInventory {
   private _nuggets: number;
+  private _nuggetState: boolean = false;
   
   constructor(data: PenguinJson) {
     this._nuggets = data.nuggets;
@@ -584,6 +637,11 @@ class GoldPuffleInventory {
 
   public get nuggets() {
     return this._nuggets;
+  }
+
+  public reset() {
+    this._nuggets = 0;
+    this._nuggetState = false;
   }
 }
 
@@ -845,6 +903,14 @@ export class WorldPenguin {
 
   public get ninja() {
     return this._ninja;
+  }
+
+  public get rainbow() {
+    return this._rainbow;
+  }
+
+  public get gold() {
+    return this._gold;
   }
 
   public getJSON(): PenguinJson {

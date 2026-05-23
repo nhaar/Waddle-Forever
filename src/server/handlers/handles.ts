@@ -455,28 +455,12 @@ const HANDLER_MAPPING: HandlerMapping = {
       'gii': Handle.GetIglooInventory
     },
     'p': {
-      'pn': [Handle.AdoptPuffle, Handle.AdoptPuffleNew],
-      'pg': Handle.GetIglooPuffles,
-      'pw': Handle.WalkPuffle,
-      'checkpufflename': Handle.CheckPuffleName,
-      'pcn': Handle.CheckPuffleNameAlt,
-      'pgpi': Handle.GetPuffleInventory,
       'puffleswap': Handle.PuffleBackyardSwap,
       'puffledig': Handle.PuffleDigRandom,
       'puffledigoncommand': Handle.PuffleDigOnCommand,
       'pcid': Handle.EatPuffleItem,
       'revealgoldpuffle': Handle.RevealGoldPuffle,
       'rpqtc': Handle.SetRainbowQuestTaskComplete
-    },
-    'pt': {
-      'spts': Handle.PlayerTransformation
-    },
-    'rpq': {
-      'rpqd': Handle.GetRainbowQuestData,
-      'rpqtc': Handle.SetRainbowQuestTaskComplete,
-      'rpqcc': Handle.RainbowQuestCollectCoins,
-      'rpqic': Handle.RainbowQuestItemCollect,
-      'rpqbc': Handle.RainbowQuestCollectBonus
     },
     'l': {
       'mc': Handle.SetMailCheck
