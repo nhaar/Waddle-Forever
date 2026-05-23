@@ -6,13 +6,14 @@ import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
 import { PenguinMessenger } from '../messenger';
 import { HandlerFunction, XtHandler } from '../xt';
-import { SledRace } from '@server/socket-server/world/sled';
 import { getClientPuffleIds } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
+import { WorldTable } from '@server/socket-server/world/world-table';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
 export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
+export type RoomHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room'], T>;
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand
@@ -199,10 +200,16 @@ handler.xt([['s', 'js'], ['s', 'j#js']], [], async (ctx) => {
   enterRoom(data, msg, penguin, town, 0, 0);
 });
 
-export const joinRoom = ({ world, penguin, msg, data, room, sled }: { world: World, penguin: WorldPenguin, msg: PenguinMessenger; data: GameData, room?: WorldRoom; sled?: SledRace }, id: number, x: number, y: number) => {
+export const leaveRoom: RoomHandler<[]> = async (ctx) => {
+  const { room, penguin, msg, data } = ctx;
+  room.removePenguin(penguin);
+  await msg.send(room.players, 'rp', penguin.id, ...room.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
+}
+
+export const joinRoom: JoinHandler<[number, number, number]> = (ctx, id: number, x: number, y: number) => {
+  const { world, penguin, msg, data, room, sled } = ctx;
   if (room !== undefined) {
-    room.removePenguin(penguin);
-    msg.send(room.players, 'rp', penguin.id, ...room.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
+    leaveRoom({ ...ctx, room });
   }
   if (sled !== undefined) {
     sled.removePlayer(penguin);
@@ -442,6 +449,71 @@ const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messag
   }
 }
 
+const handleDisconnect = async (ctx: Partial<WorldContext>) => {
+  if (
+    ctx.penguin !== undefined &&
+    ctx.msg !== undefined &&
+    ctx.prst !== undefined &&
+    ctx.world !== undefined &&
+    ctx.data !== undefined &&
+    ctx.db !== undefined
+  ) {
+    const { penguin, msg, prst, world, room, game, data, db } = ctx;
+    if (penguin.psa.isPending) {
+      penguin.inventory.add(800);
+    }
+
+    (await Promise.all(penguin.buddy.buddies.map(id => world.getById(id)))).filter((p): p is WorldPenguin => p !== undefined)
+      .forEach(p => {
+        sendBuddyOnlineList({
+          penguin: p,
+          world,
+          data,
+          msg,
+          prst,
+          db
+        });
+      });
+
+    penguin.time.incrementSessionTime();
+
+    if (room !== undefined) {
+      const table = room.getPenguinTable(penguin);
+      if (table !== null) {
+        const index = table.getSeatIndex(penguin);
+        if (index !== undefined && index !== WorldTable.TABLE_SPECTATOR_SEAT) {
+          if (table.hasStarted()) {
+            table.resetRound();
+            await msg.send(table.penguins, 'cz', penguin.name);
+          } else {
+            table.removePlayer(penguin);
+            if (table.getCount() === 0) {
+              table.reset();
+            }
+          }
+          await msg.send(room.players, 'ut', table.getId(), table.getCount());
+        }
+      }
+      await leaveRoom({
+        world,
+        room,
+        penguin,
+        data,
+        db,
+        msg,
+        prst
+      })
+    }
+    if (game !== undefined) {
+      game.removePenguin(penguin);
+    }
+
+    world.disconnect(penguin);
+    prst(penguin);
+    msg.unlinkClient(penguin);
+  }
+}
+
 handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
 handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
 handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
@@ -449,5 +521,6 @@ handler.xt([['s', 'ba'], ['b', 'ba']], ['number'], handleBuddyAccept);
 handler.xt([['s', 'bd'], ['b', 'bd']], ['number'], handleBuddyDecline);
 handler.xt([['s', 'br'], ['b', 'rb']], ['number'], handleBuddyRemove);
 handler.xt([['s', 'bm'], ['b', 'bm']], ['number', 'number'], handleBuddyMessage);
+handler.addDisconnect(handleDisconnect);
 
 export { handler as joinHandler };

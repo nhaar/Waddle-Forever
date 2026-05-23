@@ -23,6 +23,14 @@ export class PenguinMessenger {
     this._penguins.set(client, penguin);
   }
 
+  public unlinkClient(penguin: WorldPenguin): void {
+    const client = this._clients.get(penguin);
+    if (client !== undefined) {
+      this._penguins.delete(client);
+    }
+    this._clients.delete(penguin);
+  }
+
   public async write(ps: WorldPenguin | ClientSocket | Array<ClientSocket | WorldPenguin>, message: string): Promise<void> {
     if (!Array.isArray(ps)) {
       ps = [ps];

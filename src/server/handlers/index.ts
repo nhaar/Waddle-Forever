@@ -37,6 +37,7 @@ export interface HandlerGenerator<ContextMap extends Record<string, any>> {
   getMessageType: () => string;
   messageParser: MessageParser;
   getListeners: () => ListenerMap<ContextMap>;
+  disconnect: ((ctx: ValidCtxObj<ContextMap>) => Promise<void>) | null;
 };
 
 export class Handler<ContextMap extends Record<string, any>> {
@@ -48,10 +49,19 @@ export class Handler<ContextMap extends Record<string, any>> {
   // parse a message until it finds a type of message
   private messageParsers = new Map<string, MessageParser>();
 
-  constructor (private getContext: (client: ClientSocket) => ValidCtxObj<ContextMap>, private _disconnect: (ctx: ValidCtxObj<ContextMap>) => void) {}
+  private _disconnect: ((ctx: ValidCtxObj<ContextMap>) => Promise<void>) | null = null;
+
+  constructor (
+    private getContext: (client: ClientSocket) => ValidCtxObj<ContextMap>
+  ) {}
 
   disconnect(client: ClientSocket): void {
-    this._disconnect(this.getContext(client));
+    if (this._disconnect !== null) {
+      const context = this.getContext(client);
+      this._disconnect(context).then(() => client.end());
+    } else {
+      client.end();
+    }
   }
 
   /** Handles incoming raw data sent from a client */
@@ -97,6 +107,14 @@ export class Handler<ContextMap extends Record<string, any>> {
           previousCallbacks.push(callback);
         }
       
+    }
+
+    if (generator.disconnect !== null) {
+      if (this._disconnect === null) {
+        this._disconnect = generator.disconnect;
+      } else {
+        throw new Error('Conflict with disconnect handlers');
+      }
     }
   }
 }

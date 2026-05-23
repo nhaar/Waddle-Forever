@@ -70,6 +70,16 @@ export abstract class BaseHandler<ContextMap extends Record<string, any>, Contex
 
   public abstract messageParser(message: string): { name: string; data: string } | null;
 
+  private _disconnect: ((ctx: Partial<ContextMap>) => Promise<void>) | null = null;
+
+  public get disconnect() {
+    return this._disconnect;
+  }
+
+  public addDisconnect (method: (ctx: Partial<ContextMap>) => Promise<void>) {
+    this._disconnect = method;
+  }
+
   protected addCallback(name: string, callback: (ctx: ValidCtxObj<ContextMap>, data: string) => Promise<void>, params: CallbackParams = {}) {
     const newCallback = new HandlerCallbackManager(callback, params);
 

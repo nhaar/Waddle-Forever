@@ -72,7 +72,7 @@ export class WorldServer extends SocketServer {
         prst: this._persister,
         client
       };
-    }, () => {});
+    });
     handler.use(worldLoginHandler);
     handler.use(joinHandler);
     handler.use(roomHandler);
@@ -105,6 +105,7 @@ export class WorldServer extends SocketServer {
         prst: this._persister,
         msg: this.messenger,
         data: this.gameData,
+        db: this.db,  
         room: this.worldServer.getContext(penguin)?.room
       }
       this._commandsHandler.run(ctx, name, args);

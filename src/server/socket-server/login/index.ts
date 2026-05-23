@@ -26,7 +26,7 @@ export class LoginServer extends SocketServer {
         db: this.db,
         client
       };
-    }, () => {});
+    });
     handler.use(loginHandler);
     return handler;
   }

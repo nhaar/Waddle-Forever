@@ -88,6 +88,10 @@ class PSA {
     this._pending = true;
   }
 
+  public get isPending() {
+    return this._pending;
+  }
+
 }
 
 class Inventory {
@@ -204,6 +208,14 @@ class Time {
   constructor(data: PenguinJson, private _virtualDay: [number, number, number]) {
     this._previousPlaytime = data.minutes_played;
     this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp
+  }
+
+  public incrementSessionTime() {
+    if (this._sessionStart !== null) {
+      const delta = Date.now() - this._sessionStart;
+      const minutesDelta = delta / 1000 / 60;
+      this._previousPlaytime += minutesDelta;
+    }
   }
 
   public get minutesPlayed() {

@@ -81,7 +81,9 @@ export class World {
     return game;
   }
 
-  public disconnect(penguin: WorldPenguin): void {
+  public disconnect(penguin: WorldPenguin) {
+    this.penguins.delete(penguin.id);
+    this.states.delete(penguin);
   }
 
   public init() {

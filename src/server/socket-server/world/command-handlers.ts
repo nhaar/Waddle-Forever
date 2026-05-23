@@ -10,6 +10,7 @@ import { WorldRoom } from "./world-room";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
+import { PenguinRepository } from "@server/database/database";
 
 export type CommandContext = { 
   world: World;
@@ -17,6 +18,7 @@ export type CommandContext = {
   msg: PenguinMessenger;
   prst: PenguinPersister;
   data: GameData;
+  db: PenguinRepository;
   room?: WorldRoom;
 };
 
