@@ -477,21 +477,7 @@ const handleDisconnect = async (ctx: Partial<WorldContext>) => {
 
     if (room !== undefined) {
       const table = room.getPenguinTable(penguin);
-      if (table !== null) {
-        const index = table.getSeatIndex(penguin);
-        if (index !== undefined && index !== WorldTable.TABLE_SPECTATOR_SEAT) {
-          if (table.hasStarted()) {
-            table.resetRound();
-            await msg.send(table.penguins, 'cz', penguin.name);
-          } else {
-            table.removePlayer(penguin);
-            if (table.getCount() === 0) {
-              table.reset();
-            }
-          }
-          await msg.send(room.players, 'ut', table.getId(), table.getCount());
-        }
-      }
+
       await leaveRoom({
         world,
         room,
@@ -500,7 +486,24 @@ const handleDisconnect = async (ctx: Partial<WorldContext>) => {
         db,
         msg,
         prst
-      })
+      });
+
+      if (table !== null) {
+        const index = table.getSeatIndex(penguin);
+        if (index !== undefined && index !== WorldTable.TABLE_SPECTATOR_SEAT) {
+          table.removePlayer(penguin);
+          if (table.hasStarted()) {
+            await msg.send(table.penguins, 'cz', penguin.name);
+            table.resetRound();
+          } else {
+            if (table.getCount() === 0) {
+              table.reset();
+            }
+          }
+          await msg.send(room.players, 'ut', table.getId(), table.getCount());
+        }
+      }
+
     }
     if (game !== undefined) {
       game.removePenguin(penguin);
