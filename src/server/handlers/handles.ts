@@ -414,9 +414,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'qpp': Handle.GetPinInformation,
       'qpa': Handle.GetMissionStamps
     },
-    'u': {
-      'h': Handle.Heartbeat,
-    },
     's': {
       'upc': Handle.UpdateColor,
       'uph': Handle.UpdateHead,

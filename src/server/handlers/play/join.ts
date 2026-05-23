@@ -536,6 +536,10 @@ handler.xt('z', 'ggd', [], ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', penguin.puffleLaunch.data === null ? '' : penguin.puffleLaunch.data.toString('utf-8') );
 }); 
 
+handler.xt('s', 'u#h', [], ({ msg, penguin }) => {
+  msg.send(penguin, 'h', '');
+});
+
 handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
 handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
 handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
