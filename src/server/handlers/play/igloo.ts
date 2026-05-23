@@ -194,15 +194,22 @@ const handleGetOpenIgloos: IglooHandler<[]> = (ctx) => {
   msg.send(penguin, 'gr', ...world.getOpenIglooPlayers().map(p => `${p.id}|${p.name}`));
 }
 
+const handleUpdateMusic: IglooHandler<[number]> = (ctx, music) => {
+  const { penguin, prst } = ctx;
+  penguin.igloo.updateIgloo({ music });
+  prst(penguin);
+}
+
 handler.xt([['s', 'af'], ['r', 'af'], ['s', 'g#af']], ['number'], handleAddFurniture);
 handler.xt([['s', 'au'], ['r', 'au']], ['number'], handleAddIgloo);
 handler.xt([['r', 'ag'], ['s', 'g#ag']], ['number'], handleAddFlooring);
-handler.xt('s', 'g#ur', 'string', handleUpdateIgloo);
-handler.xt('s', 'gf', [], handleGetFurniture);
+handler.xt([['r', 'ur'], ['s', 'g#ur']], 'string', handleUpdateIgloo);
+handler.xt([['s', 'gf'], ['r', 'gf']], [], handleGetFurniture);
 handler.xt('s', 'ur', 'string', handleUpdateIglooOld);
 handler.xt('r', 'or', ['number'], handleOpenIgloo);
 handler.xt('r', 'cr', ['number'], handleCloseIgloo);
 handler.xt('r', 'gr', [], handleGetOpenIgloos);
+handler.xt('r', 'um', ['number'], handleUpdateMusic);
 
 export {
   handler as iglooHandler

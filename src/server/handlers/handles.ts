@@ -547,12 +547,6 @@ const HANDLER_MAPPING: HandlerMapping = {
     'lz': [Handle.LeaveWaddleMatch, Handle.LeaveTableGame],
     'epfsf': Handle.EPFStamps,
     'm': Handle.MoveHockeyPuck
-  },
-  'r': {
-    'gm': Handle.GetIgloo2007,
-    'gf': Handle.GetFurniture2007,
-    'ur': Handle.UpdateIgloo2007,
-    'um': Handle.UpdateIglooMusic2007
   }
 }
 
