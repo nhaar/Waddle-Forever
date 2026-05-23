@@ -259,6 +259,7 @@ class BuddyInventory {
 class Stampbook {
   private _stamps: Set<number>;
   private _cover: StampbookCover;
+  private _sessionStamps = new Set<number>();
   
   constructor(data: PenguinJson) {
     this._stamps = new Set(data.stamps);
@@ -275,6 +276,14 @@ class Stampbook {
 
   public add(stamp: number) {
     this._stamps.add(stamp);
+  }
+
+  public has(stamp: number) {
+    this._stamps.has(stamp);
+  }
+
+  public get sessionStamps() {
+    return [...this._sessionStamps.values()];
   }
 }
 

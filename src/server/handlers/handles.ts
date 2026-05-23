@@ -410,9 +410,6 @@ export const HANDLE_ARGUMENTS = {
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
     'jx': Handle.JoinTemporaryWaddle,
-    'j': {
-      'grs': Handle.RoomRefresh,
-    },
     'i': {
       'qpp': Handle.GetPinInformation,
       'qpa': Handle.GetMissionStamps
@@ -519,7 +516,7 @@ const HANDLER_MAPPING: HandlerMapping = {
     }
   },
   'z': {
-    'zo': [Handle.LeaveGame, Handle.LeaveWaddleGame],
+    'zo': [Handle.LeaveWaddleGame],
     'gw': Handle.GetWaddle,
     'jw': Handle.JoinWaddle,
     'ggd': Handle.GetPuffleLaunchData,

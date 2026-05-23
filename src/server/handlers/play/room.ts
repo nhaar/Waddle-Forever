@@ -45,10 +45,6 @@ handler.xt('s', 'u#sl', ['string'], ({ room, msg, penguin }, line) => {
   msg.send(room.players, 'sl', penguin.id, line);
 });
 
-handler.xt('s', 'j#grs', [], ({ msg, room, data, penguin }) => {
-  msg.send(room.players, 'grs', penguin.id, getPenguinString(data, penguin, room.getState(penguin)));
-});
-
 handler.xt('z', 'gw', 'number', ({ msg, penguin, room }) => {
   msg.send(penguin, 'gw', ...room.getWaddleRooms().map((w) => {
     return `${w.getId()}|${w.getSeats().map(p => {
