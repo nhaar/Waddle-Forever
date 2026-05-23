@@ -3,7 +3,7 @@ import { WebSocketServer } from 'ws'
 
 interface MessageHandler {
   handle: (client: ClientSocket, message: string) => void;
-  disconnect: (client: ClientSocket) => void;
+  disconnect: (client: ClientSocket) => Promise<void>;
 }
 
 export interface ClientSocket {
@@ -49,9 +49,10 @@ export abstract class SocketServer {
         });
 
         ws.on('close', () => {
-          this.handler.disconnect(cs);
-          cs.end();
-          console.log('A client has disconnected (WebSocket)');
+          this.handler.disconnect(cs).then(() => {
+            cs.end()
+            console.log('A client has disconnected (WebSocket)');
+          });
         });
 
         ws.emit('message', req)
@@ -110,9 +111,10 @@ export abstract class SocketServer {
             });
 
             socket.on('close', () => {
-              this.handler.disconnect(cs);
-              cs.end();
-              console.log('A client has disconnected');
+              this.handler.disconnect(cs).then(() => {
+                cs.end();
+                console.log('A client has disconnected');
+              });
             });
 
             // Re-emit the data so the TCP handler gets the first packet too

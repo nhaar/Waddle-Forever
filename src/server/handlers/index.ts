@@ -55,12 +55,10 @@ export class Handler<ContextMap extends Record<string, any>> {
     private getContext: (client: ClientSocket) => ValidCtxObj<ContextMap>
   ) {}
 
-  disconnect(client: ClientSocket): void {
+  async disconnect(client: ClientSocket): Promise<void> {
     if (this._disconnect !== null) {
-      const context = this.getContext(client);
-      this._disconnect(context).then(() => client.end());
-    } else {
-      client.end();
+      const context = this.getContext(client); 
+      await this._disconnect(context);
     }
   }
 

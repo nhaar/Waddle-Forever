@@ -56,4 +56,8 @@ export class PenguinMessenger {
       client.end();
     }
   }
+
+  public getClients(): ClientSocket[] {
+    return [...this._clients.values()];
+  }
 }

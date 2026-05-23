@@ -119,7 +119,8 @@ export class WorldServer extends SocketServer {
     }));
   }
 
-  public reset() {
+  public async reset() {
+    await Promise.all(this.messenger.getClients().map(client => this.handler.disconnect(client)));
     this.messenger.close();
     this.messenger = new PenguinMessenger();
     this.worldServer = new World(this.gameData);
