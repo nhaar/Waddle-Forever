@@ -50,4 +50,10 @@ export class PenguinMessenger {
     logverbose('Sending XML: ', xml);
     await this.write(client, xml);
   }
+
+  public close() {
+    for (const client of this._clients.values()) {
+      client.end();
+    }
+  }
 }

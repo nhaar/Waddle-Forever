@@ -120,6 +120,8 @@ export class WorldServer extends SocketServer {
   }
 
   public reset() {
+    this.messenger.close();
+    this.messenger = new PenguinMessenger();
     this.worldServer = new World(this.gameData);
   }
 }
