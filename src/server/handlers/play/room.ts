@@ -297,6 +297,51 @@ handler.xt('s', 'up', ['number', 'number', 'number', 'number', 'number', 'number
   prst(penguin);
 })
 
+handler.xt('s', 's#upc', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ color: id });
+  msg.send(room.players, 'upc', penguin.id, id);
+});
+
+handler.xt('s', 's#uph', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ head: id });
+  msg.send(room.players, 'uph', penguin.id, id);
+});
+
+handler.xt('s', 's#upf', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ face: id });
+  msg.send(room.players, 'upf', penguin.id, id);
+});
+
+handler.xt('s', 's#upn', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ neck: id });
+  msg.send(room.players, 'upn', penguin.id, id);
+});
+
+handler.xt('s', 's#upb', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ body: id });
+  msg.send(room.players, 'upb', penguin.id, id);
+});
+
+handler.xt('s', 's#upa', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ hand: id });
+  msg.send(room.players, 'upa', penguin.id, id);
+});
+
+handler.xt('s', 's#upe', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ feet: id });
+  msg.send(room.players, 'upe', penguin.id, id);
+});
+
+handler.xt('s', 's#upl', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ pin: id });
+  msg.send(room.players, 'upl', penguin.id, id);
+});
+
+handler.xt('s', 's#upp', ['number'], ({ room, msg, penguin }, id) => {
+  penguin.inventory.updateWear({ background: id });
+  msg.send(room.players, 'upp', penguin.id, id);
+});
+
 export {
   handler as roomHandler
 };

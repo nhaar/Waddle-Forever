@@ -410,17 +410,6 @@ export const HANDLE_ARGUMENTS = {
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
     'jx': Handle.JoinTemporaryWaddle,
-    's': {
-      'upc': Handle.UpdateColor,
-      'uph': Handle.UpdateHead,
-      'upf': Handle.UpdateFace,
-      'upn': Handle.UpdateNeck,
-      'upb': Handle.UpdateBody,
-      'upa': Handle.UpdateHand,
-      'upe': Handle.UpdateFeet,
-      'upl': Handle.UpdatePin,
-      'upp': Handle.UpdateBackground
-    },
     'ba': {
       'barsu': Handle.GetBakeryState,
       'seh': Handle.SendEnterHopper,
