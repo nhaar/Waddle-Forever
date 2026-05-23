@@ -619,6 +619,33 @@ const handleSetStampEarned: JoinHandler<[number]> = ({ penguin, prst }, stampId)
   prst(penguin);
 }
 
+const handleGetEpfStatus: JoinHandler<[]> = ({ penguin, msg }) => {
+  msg.send(penguin, 'epfga', penguin.inventory.has(8009) ? 1 : 0);
+}
+
+const handleGetFieldOps: JoinHandler<[]> = ({ penguin, msg }) => {
+  // sends an integer boolean, FALSE if there is an active field ops
+  // that wasn't done
+  msg.send(penguin, 'epfgf', 0);
+}
+
+const handleGetEpfMedals: JoinHandler<[]> = ({ msg, penguin }) => {
+  console.log('getting this')
+  msg.send(penguin, 'epfgr', penguin.epf.careerMedals, penguin.epf.medals);
+}
+
+const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, prst }, itemId) => {
+  const item = data.getItem(itemId);
+  if (!item.isEPF) {
+    throw new Error(`Item ${itemId} is marked as not being from EPF, but is being bought through it`);
+  }
+
+  penguin.inventory.add(itemId);
+
+  msg.send(penguin, 'epfai', penguin.epf.removeMedals(item.cost));
+  prst(penguin);
+}
+
 handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
 handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
 handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
@@ -634,6 +661,10 @@ handler.xt('s', 'st#gps', [], sendStamps);
 handler.xt('s', 'st#gmres', [], handleGetRecentStamps);
 handler.xt('s', 'st#ssbcd', 'string', handleSetStampbookCoverData);
 handler.xt('s', 'st#sse', ['number'], handleSetStampEarned);
+handler.xt('s', 'f#epfga', [], handleGetEpfStatus);
+handler.xt('s', 'f#epfgf', [], handleGetFieldOps);
+handler.xt('s', 'f#epfgr', [], handleGetEpfMedals);
+handler.xt('s', 'f#epfai', ['number'], handleAddEpfItem)
 handler.addDisconnect(handleDisconnect);
 
 export { handler as joinHandler };

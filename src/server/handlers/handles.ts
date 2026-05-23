@@ -416,10 +416,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'ctc': Handle.GetCookieInventory
     },
     'f': {
-      'epfga': Handle.GetEpfStatus,
-      'epfgf': Handle.GetFieldOps,
-      'epfgr': Handle.GetEpfMedals,
-      'epfai': Handle.AddEpfItem,
       'epfsa': Handle.BecomeEpfAgent,
       'epfgrantreward': Handle.GrantEpfMedals,
       'epfgp': Handle.GetPartyOp,

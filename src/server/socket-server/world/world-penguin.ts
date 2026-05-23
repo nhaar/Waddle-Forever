@@ -625,6 +625,11 @@ class EpfInventory {
   public get medals() {
     return this._medals;
   }
+
+  public removeMedals(medals: number) {
+    this._medals -= medals;
+    return this._medals;
+  }
 }
 
 class GoldPuffleInventory {
@@ -859,6 +864,10 @@ export class WorldPenguin {
 
   public get psa() {
     return this._psa;
+  }
+
+  public get epf() {
+    return this._epf;
   }
 
   public get igloo() {
