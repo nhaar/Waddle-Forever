@@ -202,24 +202,16 @@ class Meta {
 
 class Time {
   private _previousPlaytime: number;
-  private _sessionStart: number | null = null;
+  private _sessionStart: number = Date.now();
   private _virtualRegistrationTimestamp: number;
 
   constructor(data: PenguinJson, private _virtualDay: [number, number, number]) {
     this._previousPlaytime = data.minutes_played;
-    this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp
-  }
-
-  public incrementSessionTime() {
-    if (this._sessionStart !== null) {
-      const delta = Date.now() - this._sessionStart;
-      const minutesDelta = delta / 1000 / 60;
-      this._previousPlaytime += minutesDelta;
-    }
+    this._virtualRegistrationTimestamp = data.virtualRegistrationTimestamp;
   }
 
   public get minutesPlayed() {
-    return this._previousPlaytime + (this._sessionStart === null ? 0 : (Date.now() - this._sessionStart)) / (1000 * 60);
+    return this._previousPlaytime + (Date.now() - this._sessionStart) / (1000 * 60);
   }
 
   public get virtualRegistrationTimestamp() {

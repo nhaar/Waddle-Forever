@@ -475,8 +475,6 @@ const handleDisconnect = async (ctx: Partial<WorldContext>) => {
         });
       });
 
-    penguin.time.incrementSessionTime();
-
     if (room !== undefined) {
       const table = room.getPenguinTable(penguin);
       if (table !== null) {
