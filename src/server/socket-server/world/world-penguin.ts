@@ -274,16 +274,40 @@ class Stampbook {
     return JSON.parse(JSON.stringify(this._cover));
   }
 
+  public setCover(color: number, highlight: number, pattern: number, icon: number, stamps: Array<{
+    stamp: number,
+    x: number,
+    y: number,
+    rotation: number,
+    depth: number
+  }>) {
+    this._cover = { ...this._cover, color, highlight, pattern, icon, stamps };
+  }
+
   public add(stamp: number) {
+    this._cover.recent_stamps.push(stamp);
+    this._sessionStamps.add(stamp);
     this._stamps.add(stamp);
   }
 
   public has(stamp: number) {
-    this._stamps.has(stamp);
+    return this._stamps.has(stamp);
+  }
+
+  public get recentStamps() {
+    return [...this._cover.recent_stamps];
+  }
+
+  public clearRecentStamps() {
+    this._cover.recent_stamps = [];
   }
 
   public get sessionStamps() {
     return [...this._sessionStamps.values()];
+  }
+
+  public resetSessionStamps() {
+    this._sessionStamps = new Set();
   }
 }
 

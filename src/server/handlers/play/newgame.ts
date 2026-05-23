@@ -25,6 +25,8 @@ const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
     const totalCount = gameStamps.size;
     const coins = ((totalCount > 0 && collectedCount === totalCount) ? 2 : 1) * rawCoins;
 
+    penguin.stampbook.resetSessionStamps();
+
     // unknown what last 0 means
     msg.send(penguin, 'zo', penguin.currency.add(coins), sessionStamps.join('|'), collectedCount, totalCount, 0);
   }

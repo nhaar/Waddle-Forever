@@ -410,10 +410,6 @@ export const HANDLE_ARGUMENTS = {
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
     'jx': Handle.JoinTemporaryWaddle,
-    'i': {
-      'qpp': Handle.GetPinInformation,
-      'qpa': Handle.GetMissionStamps
-    },
     's': {
       'upc': Handle.UpdateColor,
       'uph': Handle.UpdateHead,
@@ -474,13 +470,6 @@ const HANDLER_MAPPING: HandlerMapping = {
     },
     'pt': {
       'spts': Handle.PlayerTransformation
-    },
-    'st': {
-      'gsbcd': Handle.GetStampbookCoverData,
-      'gps': Handle.GetPlayerStamps,
-      'gmres': Handle.GetRecentStamps,
-      'ssbcd': Handle.SetStampbookCoverData,
-      'sse': Handle.SetStampEarned
     },
     'rpq': {
       'rpqd': Handle.GetRainbowQuestData,
