@@ -548,15 +548,7 @@ const HANDLER_MAPPING: HandlerMapping = {
     'epfsf': Handle.EPFStamps,
     'm': Handle.MoveHockeyPuck
   },
-  'm': {
-    'sm': Handle.SendMessageOld,
-    'ss': Handle.SendSafeMessageOldAlt,
-    'checkName': Handle.CheckNameOld
-  },
   'r': {
-    'or': Handle.OpenIglooOld,
-    'cr': Handle.CloseIglooOld,
-    'gr': Handle.GetOpenIgloosOld,
     'gm': Handle.GetIgloo2007,
     'gf': Handle.GetFurniture2007,
     'ur': Handle.UpdateIgloo2007,
