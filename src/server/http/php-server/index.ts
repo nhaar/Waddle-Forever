@@ -18,7 +18,7 @@ type PostCallback = (body: any, ctx: {
 
 type GetCallback = (settings: SettingsManager, db: PenguinRepository) => string;
 
-function getOfflinePenguinCrumb(id: number, penguin: PenguinJson): string {
+export function getOfflinePenguinCrumb(id: number, penguin: PenguinJson): string {
   return [
     id,
     penguin.name,

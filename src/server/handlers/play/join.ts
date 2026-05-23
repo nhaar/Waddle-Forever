@@ -9,6 +9,7 @@ import { HandlerFunction, XtHandler } from '../xt';
 import { getClientPuffleIds } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
 import { WorldTable } from '@server/socket-server/world/world-table';
+import { getOfflinePenguinCrumb } from '@server/http/php-server';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
@@ -449,6 +450,22 @@ const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messag
   }
 }
 
+const handleGetPlayer: JoinHandler<[number]> = async (ctx, playerId) => {
+  const { world, msg, penguin, data, db } = ctx
+  const target = world.getById(playerId);
+  if (target === undefined) {
+    const data = await db.get(playerId);
+    if (data !== null) {
+      msg.send(penguin, 'gp', getOfflinePenguinCrumb(playerId, data), 0);
+    }
+  } else {
+    const room = world.getContext(target)?.room;
+    if (room !== undefined) {
+      msg.send(penguin, 'gp', getPenguinString(data, target, room.getState(target)), room.id);
+    }
+  }
+}
+
 const handleDisconnect = async (ctx: Partial<WorldContext>) => {
   if (
     ctx.penguin !== undefined &&
@@ -522,6 +539,7 @@ handler.xt([['s', 'ba'], ['b', 'ba']], ['number'], handleBuddyAccept);
 handler.xt([['s', 'bd'], ['b', 'bd']], ['number'], handleBuddyDecline);
 handler.xt([['s', 'br'], ['b', 'rb']], ['number'], handleBuddyRemove);
 handler.xt([['s', 'bm'], ['b', 'bm']], ['number', 'number'], handleBuddyMessage);
+handler.xt([['s', 'gp'], ['p', 'gp']], ['number'], handleGetPlayer);
 handler.addDisconnect(handleDisconnect);
 
 export { handler as joinHandler };

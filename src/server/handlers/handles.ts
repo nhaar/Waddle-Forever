@@ -436,7 +436,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
     },
-    'gp': Handle.GetPlayerOld,
     'f': {
       'epfga': Handle.GetEpfStatus,
       'epfgf': Handle.GetFieldOps,
@@ -562,9 +561,6 @@ const HANDLER_MAPPING: HandlerMapping = {
     'gf': Handle.GetFurniture2007,
     'ur': Handle.UpdateIgloo2007,
     'um': Handle.UpdateIglooMusic2007
-  },
-  'p': {
-    'gp': Handle.GetPlayerOldAlt
   }
 }
 
