@@ -1,11 +1,11 @@
 import { WorldContext } from "@server/socket-server/world/world";
 import { XtHandler } from "../xt";
-import { getPenguinString } from "./join";
+import { getPenguinString, RoomHandler } from "./join";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
 
-const handler = new XtHandler<WorldContext, ['world', 'penguin', 'room', 'msg', 'data', 'prst']>(['world', 'penguin', 'room', 'msg', 'data', 'prst']);
+const handler = new XtHandler<WorldContext, ['world', 'penguin', 'room', 'msg', 'data', 'prst', 'db']>(['world', 'penguin', 'room', 'msg', 'data', 'prst', 'db']);
 
 handler.xt([['s', 'sp'], ['s', 'u#sp']], ['number', 'number'], ({ penguin, room, msg }, x, y) => {
   room.updatePosition(penguin, x, y);
@@ -341,6 +341,39 @@ handler.xt('s', 's#upp', ['number'], ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ background: id });
   msg.send(room.players, 'upp', penguin.id, id);
 });
+
+const handleGetHockeyGame: RoomHandler<[]> = ({ world, room, penguin, msg }) => {
+  const pos = world.getPuck(room);
+  if (pos !== null) {
+    msg.send(penguin, 'gz', ...pos, ...world.teamScores);
+  }
+}
+
+const handleMoveHockeyPuck: RoomHandler<[number, number, number, number, number]> = ({ world, room, msg }, penguinId, x, y, ...speed) => {
+  if (world.updatePuck(x, y, room)) {
+    msg.send(room.players, 'zm', penguinId, x, y, ...speed);
+  }
+}
+
+const handleMoveHockeyPuckOld: RoomHandler<[number, number]> = ({ world, room, msg }, x, y) => {
+  if (world.updatePuck(x, y, room)) {
+    msg.send(room.players, 'zm', x, y);
+  }
+}
+
+const handleUpdateHockeyGame: RoomHandler<[number]> = ({ msg, room, world }, team) => {
+  if (room.id !== 802) {
+    return;
+  }
+
+  world.updateTeamScore(team);
+  msg.send(room.players, 'uz', ...world.teamScores);
+}
+
+handler.xt('z', 'gz', [], handleGetHockeyGame);
+handler.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck);
+handler.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld);
+handler.xt('z', 'uz', ['number'], handleUpdateHockeyGame);
 
 export {
   handler as roomHandler

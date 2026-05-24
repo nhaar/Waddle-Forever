@@ -33,6 +33,7 @@ export class World {
   // create class responsible for the puck
   private _puckPosition = new Vector(0, 0);
   private _puckPositionParty = new Vector(0, 0);
+  private _teamsScore: [number, number] = [0, 0];
 
   constructor(private gameData: GameData) {
     this.init();
@@ -147,6 +148,36 @@ export class World {
 
   public get players() {
     return [...this.penguins.values()];
+  }
+
+  public get teamScores() {
+    return [...this._teamsScore];
+  }
+
+  public getPuck(room: WorldRoom): [number, number] | null {
+    return {
+      802: this.getPuckPosition(),
+      898: this.getPuckPositionParty()
+    }[room.id] ?? null;
+  }
+
+  public updatePuck(x: number, y: number, room: WorldRoom): boolean {
+    if (room.id === 802) {
+      this._puckPosition = new Vector(x, y);
+      return true;
+    } else if (room.id === 898) {
+      this._puckPositionParty = new Vector(x, y);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public updateTeamScore(team: number): void {
+    this._teamsScore[team]++;
+    if (this._teamsScore[team] >= 10) {
+      this._teamsScore = [0, 0];
+    }
   }
 }
 
