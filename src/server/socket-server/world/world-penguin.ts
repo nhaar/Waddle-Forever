@@ -767,6 +767,10 @@ class NinjaProfile {
     return this._cardProgress.xp;
   }
 
+  public get cardRank() {
+    return this._cardProgress.rank;
+  }
+
   public get isNinja() {
     return this._cardProgress.isNinja;
   }
@@ -809,6 +813,26 @@ class NinjaProfile {
 
   public addMatchProgress(won: boolean) {
     this._cardProgress.earnXP(won ? 5 : 1);
+  }
+
+  getDeck(): number[] {
+    return [...this._cards.entries()].flatMap(([id, amount]) => new Array(amount).fill(id));
+  }
+
+  public addWin() {
+    this._cardWins++;
+  }
+
+  public earnXP(xp: number) {
+    this._cardProgress.earnXP(xp);
+  }
+
+  public becomeNinja() {
+    this._cardProgress.becomeNinja();
+  }
+
+  public addAttempt() {
+    this._cardProgress.addAttempt();
   }
 }
 

@@ -24,6 +24,12 @@ const handleSetMailCheck: JoinHandler<[]> = ({ prst, penguin }) => {
   prst(penguin);
 }
 
+export const sendMail: JoinHandler<[number, { senderId?: number; senderName?: string; details?: string; }]> = ({ prst, msg, penguin }, postcard, info) => {
+  const mail = penguin.mail.receivePostcard(postcard, info);
+  msg.send(penguin, 'mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
+  prst(penguin);
+}
+
 handler.xt('s', 'sc', ['number', 'number', 'number'], handleSendCard);
 handler.xt('s', 'l#mc', [], handleSetMailCheck);
 

@@ -20,6 +20,7 @@ import { gameHandler } from "@server/handlers/play/game";
 import { sledHandler } from "@server/handlers/games/sled";
 import { mailHandler } from "@server/handlers/play/mail";
 import { rainbowHandler } from "@server/handlers/play/rainbow";
+import { cardHandler } from "@server/handlers/play/card";
 
 export class WorldServer extends SocketServer {
   private worldServer: World;
@@ -84,6 +85,7 @@ export class WorldServer extends SocketServer {
     handler.use(mailHandler);
     handler.use(sledHandler);
     handler.use(rainbowHandler);
+    handler.use(cardHandler);
     return handler;
   }
 

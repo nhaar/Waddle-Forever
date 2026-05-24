@@ -12,6 +12,9 @@ import { WorldTable } from '@server/socket-server/world/world-table';
 import { getOfflinePenguinCrumb } from '@server/http/php-server';
 import { ItemType } from '@server/game-logic/items';
 import { isFlag } from '@server/game-logic/flags';
+import { STARTER_DECKS } from '@server/game-logic/starter-deck';
+import { CARDS } from '@server/game-logic/cards';
+import { choose } from '@common/utils';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
@@ -239,7 +242,23 @@ handler.xt([['s', 'gi'], ['s', 'i#gi']], [], ({ penguin, msg, data }) => {
   msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
 });
 
-handler.xt([['s', 'ai'], ['s', 'i#ai']], ['number'], ({ penguin, msg, data, prst }, item) => {
+const addStarterDeck: JoinHandler<[number[]]> = ({ prst, penguin }, cards) => {
+  const cardInfo = cards.map(id => CARDS.getStrict(id));
+  const powerCards = cardInfo.filter(c => c.powerId > 0);
+  const normalCards = cardInfo.filter(c => c.powerId === 0);
+
+  normalCards.forEach(card => penguin.ninja.addCard(card.id, 1));
+  penguin.ninja.addCard(choose(powerCards).id, 1);
+  prst(penguin);
+}
+
+handler.xt([['s', 'ai'], ['s', 'i#ai']], ['number'], (ctx, item) => {
+  const { penguin, msg, data, prst } = ctx;
+  const deck = STARTER_DECKS[item];
+  if (deck !== undefined) {
+    addStarterDeck(ctx, deck);
+  }
+  
   const info = data.getItem(item);
   penguin.inventory.add(item);
   msg.send(penguin, 'ai', item, penguin.currency.discount(info.cost));

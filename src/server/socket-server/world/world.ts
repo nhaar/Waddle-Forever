@@ -13,11 +13,13 @@ import { WaddleRoom } from "./waddle-room";
 import { WorldGame } from "./world-game";
 import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
+import { CardJitsu } from "./card";
 
 type PenguinState = {
   room?: WorldRoom;
   game?: WorldGame;
   sled?: SledRace;
+  card?: CardJitsu;
 };
 
 export class World {
@@ -98,9 +100,9 @@ export class World {
     let game: WaddleGame;
 
     switch (name) {
-    //   case 'card':
-    //     game = new CardJitsu(players, (c, e) => this.addContext(c, 'card', e as CardJitsu), (c) => this.removeContext(c, 'card'));
-    //     break;
+      case 'card':
+        game = new CardJitsu(players, (c, e) => this.addContext(c, 'card', e as CardJitsu), (c) => this.removeContext(c, 'card'));
+        break;
     //   case 'fire':
     //     game = new CardJitsuFire(players, (c, e) => this.addContext(c, 'fire', e as CardJitsuFire), (c) => this.removeContext(c, 'fire'));
     //     break;
@@ -161,7 +163,7 @@ export interface WorldContext {
   'settings': SettingsManager;
   'db': PenguinRepository;
   'prst': PenguinPersister;
-  // 'card': CardJitsu;
   // 'fire': CardJitsuFire;
   'sled': SledRace;
+  'card': CardJitsu;
 }
