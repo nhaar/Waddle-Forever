@@ -7,6 +7,7 @@ import { PUFFLES } from "@server/game-logic/puffle";
 import { JoinHandler } from "./join";
 import { PlayerPuffle } from "@server/database/database";
 import { choose, randomInt } from "@common/utils";
+import { PUFFLE_ITEMS } from "@server/game-logic/puffle-item";
 
 const handler = new XtHandler<WorldContext, ['data', 'penguin', 'msg', 'world', 'prst', 'db']>(['data', 'penguin', 'msg', 'world', 'prst', 'db']);
 
@@ -509,6 +510,42 @@ const puffleDig: JoinHandler<[boolean]> = (ctx, onCommand: boolean) => {
   prst(penguin);
 }
 
+const handleEatPuffleItem: JoinHandler<[number, number]> = (ctx, playerPuffleId, itemId) => {
+  const { penguin, msg, prst } = ctx;
+  const puffleItem = PUFFLE_ITEMS.getStrict(itemId);
+  const puffle = penguin.puffle.getPuffle(playerPuffleId);
+
+  if (puffle === undefined) {
+    throw new Error('No puffle but eating puffle item');
+  }
+
+  // TODO non golden puffle handling
+  // code here only accounts for the gold puffle berry you get
+  msg.send(penguin, 'pcid', penguin.id, [
+    puffle.id,
+    puffle.food,
+    100, // TODO puffle.play
+    puffle.rest,
+    puffle.clean,
+    Number(false) // TODO "celebration" (apparently when puffle is maxed out?)
+  ].join('|'));
+  
+  // starting golden puffle quest
+  const goldBerry = PUFFLE_ITEMS.get(126);
+  if (puffleItem.id === goldBerry?.id) {
+    penguin.currency.discount(goldBerry.cost);
+    penguin.gold.setState();
+    msg.send(penguin, 'oberry', penguin.id, puffle.id);
+    sendGoldNuggets(ctx);
+  }
+  prst(penguin);
+}
+
+const handleRevealGoldPuffle: JoinHandler<[]> = ({ msg, penguin }) => {
+  // TODO multiplayer logic
+  msg.send(penguin, 'revealgoldpuffle', penguin.id);
+}
+
 // get puffles in igloo
 handler.xt('s', 'p#pg', ['number', 'string'], ({ data, penguin, msg }, id, iglooType) => {
   if (!data.isVanillaEngine()) {
@@ -574,6 +611,8 @@ handler.xt('s', 'p#pw', ['number', 'number'], handlePuffleWalk);
 handler.xt('s', 'p#puffleswap', ['number', 'string'], handlePuffleBackyardSwap);
 handler.xt('s', 'p#puffledig', [], (ctx) => puffleDig(ctx, false));
 handler.xt('s', 'p#puffledigoncommand', [], (ctx) => puffleDig(ctx, true));
+handler.xt('s', 'p#pcid', ['number', 'number'], handleEatPuffleItem);
+handler.xt('s', 'p#revealgoldpuffle', [], handleRevealGoldPuffle);
 
 export {
   handler as puffleHandler

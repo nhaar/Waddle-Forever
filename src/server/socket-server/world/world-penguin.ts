@@ -732,6 +732,10 @@ class GoldPuffleInventory {
   public add(nuggets: number) {
     this._nuggets += nuggets;
   }
+
+  public setState() {
+    this._nuggetState = true;
+  }
 }
 
 class NinjaProfile {
