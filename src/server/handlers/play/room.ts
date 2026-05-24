@@ -25,7 +25,13 @@ handler.xt([['s', 'sb'], ['s', 'u#sb']], ['string', 'string'], ({ room, msg, pen
   msg.send(room.players, 'sb', penguin.id, x, y);
 });
 
-handler.xt([['s', 'se'], ['s', 'u#se']], ['string'], ({ room, msg, penguin }, emote) => {
+handler.xt([['s', 'se'], ['s', 'u#se']], ['string'], ({ room, msg, penguin, data, world }, emote) => {
+  if (data.hasBakery() && room === world.bakery.room) {
+    if (Number(emote) === world.bakery.emote) {
+      world.bakery.incrementCheer();
+    }
+  }
+  
   msg.send(room.players, 'se', penguin.id, emote);
 });
 

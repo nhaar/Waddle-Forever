@@ -22,7 +22,7 @@ import { mailHandler } from "@server/handlers/play/mail";
 import { rainbowHandler } from "@server/handlers/play/rainbow";
 import { cardHandler } from "@server/handlers/play/card";
 import { ninjaHandler } from "@server/handlers/play/ninja";
-import { partyHandler } from "@server/handlers/play/party";
+import { addBakeryListener, partyHandler } from "@server/handlers/play/party";
 
 export class WorldServer extends SocketServer {
   private worldServer: World;
@@ -46,6 +46,8 @@ export class WorldServer extends SocketServer {
         this.db.write(p.id, p.getJSON());
       }
     };
+
+    addBakeryListener(this.worldServer, this.messenger);
 
     // this.disconnect = (client) => {
     //   this.worldServer.disconnect(client);

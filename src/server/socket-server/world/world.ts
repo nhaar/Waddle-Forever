@@ -14,6 +14,7 @@ import { WorldGame } from "./world-game";
 import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { CardJitsu } from "./card";
+import { Bakery } from "./bakery";
 
 type PenguinState = {
   room?: WorldRoom;
@@ -29,6 +30,7 @@ export class World {
   private games = new Map<number, WorldGame>();
   private spectators = new Set<WorldPenguin>();
   private igloos = new Set<WorldPenguin>();
+  private _bakery: Bakery;
   
   // create class responsible for the puck
   private _puckPosition = new Vector(0, 0);
@@ -37,6 +39,7 @@ export class World {
 
   constructor(private gameData: GameData) {
     this.init();
+    this._bakery = new Bakery(this.getRoom(853));
   }
 
   public getRoom(id: number): WorldRoom {
@@ -178,6 +181,14 @@ export class World {
     if (this._teamsScore[team] >= 10) {
       this._teamsScore = [0, 0];
     }
+  }
+
+  public addBakeryListener(callback: () => void) {
+    this._bakery.addListener(callback);
+  }
+
+  public get bakery() {
+    return this._bakery;
   }
 }
 

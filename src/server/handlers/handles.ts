@@ -409,12 +409,7 @@ export const HANDLE_ARGUMENTS = {
 
 const HANDLER_MAPPING: HandlerMapping = {
   's': {
-    'jx': Handle.JoinTemporaryWaddle,
-    'ba': {
-      'barsu': Handle.GetBakeryState,
-      'seh': Handle.SendEnterHopper,
-      'ctc': Handle.GetCookieInventory
-    }
+    'jx': Handle.JoinTemporaryWaddle
   },
   'z': {
     'jmm': Handle.JoinMatchMaking,
