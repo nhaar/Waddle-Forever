@@ -646,6 +646,32 @@ const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, prst }, i
   prst(penguin);
 }
 
+const handleBecomeAgent: JoinHandler<[]> = ({ prst, msg, penguin }) => {
+  msg.send(penguin, 'epfsa', 1);
+  prst(penguin);
+}
+
+const handleGrantAwards: JoinHandler<[number]> = ({ prst, penguin }, medals) => {
+  penguin.epf.addMedals(medals);
+  prst(penguin);
+}
+
+const handleGetPartyOp: JoinHandler<[]> = ({ msg, data, penguin }) => {
+  if (data.getPartyOp() === 'battle-of-doom') {
+    msg.send(penguin, 'epfgp', penguin.battleOfDoom.completed ? 1 : 0);
+  }
+}
+
+const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst }, completed) => {
+  if (completed === 1) {
+    if (data.getPartyOp() === 'battle-of-doom') {
+      penguin.battleOfDoom.setComplete();
+    }
+  }
+
+  prst(penguin);
+}
+
 handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
 handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
 handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
@@ -664,7 +690,11 @@ handler.xt('s', 'st#sse', ['number'], handleSetStampEarned);
 handler.xt('s', 'f#epfga', [], handleGetEpfStatus);
 handler.xt('s', 'f#epfgf', [], handleGetFieldOps);
 handler.xt('s', 'f#epfgr', [], handleGetEpfMedals);
-handler.xt('s', 'f#epfai', ['number'], handleAddEpfItem)
+handler.xt('s', 'f#epfai', ['number'], handleAddEpfItem);
+handler.xt('s', 'f#epfsa', [], handleBecomeAgent);
+handler.xt('s', 'f#epfgrantreward', ['number'], handleGrantAwards);
+handler.xt('s', 'f#epfgp', [], handleGetPartyOp);
+handler.xt('s', 'f#epfsp', ['number'], handleSetPartyOp);
 handler.addDisconnect(handleDisconnect);
 
 export { handler as joinHandler };

@@ -630,6 +630,11 @@ class EpfInventory {
     this._medals -= medals;
     return this._medals;
   }
+
+  public addMedals(medals: number) {
+    this._medals += medals;
+    this._careerMedals += medals;
+  }
 }
 
 class GoldPuffleInventory {
@@ -729,6 +734,10 @@ class BattleOfDoomStatus {
 
   public get completed() {
     return this._completed;
+  }
+
+  public setComplete() {
+    this._completed = true;
   }
 }
 
@@ -868,6 +877,10 @@ export class WorldPenguin {
 
   public get epf() {
     return this._epf;
+  }
+
+  public get battleOfDoom() {
+    return this._battleOfDoom;
   }
 
   public get igloo() {

@@ -415,12 +415,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
     },
-    'f': {
-      'epfsa': Handle.BecomeEpfAgent,
-      'epfgrantreward': Handle.GrantEpfMedals,
-      'epfgp': Handle.GetPartyOp,
-      'epfsp': Handle.SetPartyOp
-    },
     'g': {
       'go': Handle.GetIglooTypes,
       'gf': Handle.GetFurniture,
