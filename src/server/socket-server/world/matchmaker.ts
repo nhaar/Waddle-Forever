@@ -8,21 +8,19 @@ type TickCallback = (players: WorldPenguin[], time: number) => void;
  * Handles a room that will be used for making a match  of games that have queueing
  * */
 class MatchmakingRoom {
-  private _matchmaker: MatchMaker;
   private _players: WorldPenguin[];
   private _time = 0;
   private _timer: NodeJS.Timeout;
 
-  constructor(matchmaker: MatchMaker) {
-    this._matchmaker = matchmaker;
+  constructor(private _max: number, private _matchedCallback: MatchedCallback, private _tickCallback: TickCallback) {
     this._players = [];
     this.resetTime();
     this._timer = setInterval(() => {
-      this._matchmaker.onTick(this._players, this._time);
+      this._tickCallback(this._players, this._time);
       this._time--;
       if (this._time < 0) {
         if (this._players.length >= 2) {
-          this._matchmaker.onMatched(this._players);
+          this._matchedCallback(this._players);
           clearInterval(this._timer);
         } else {
           this.resetTime();
@@ -40,7 +38,7 @@ class MatchmakingRoom {
   }
 
   get full() {
-    return this._players.length === this._matchmaker.capacity;
+    return this._players.length === this._max;
   }
 }
 
@@ -50,15 +48,13 @@ export class MatchMaker {
   /** All rooms available */
   private _rooms: MatchmakingRoom[];
   /** Callback to run when a match is found */
-  private _onMatched: MatchedCallback;
+  private _onMatched: MatchedCallback | null = null;
   /** Callback to run each second that ticks while matchmaking */
-  private _onTick: TickCallback;
+  private _onTick: TickCallback | null = null;
 
-  constructor(max: number, onMatched: MatchedCallback, onTick: TickCallback) {
+  constructor(max: number) {
     this._maxPlayers = max;
     this._rooms = [];
-    this._onMatched = onMatched;
-    this._onTick = onTick;
   }
 
   get capacity() {
@@ -67,9 +63,12 @@ export class MatchMaker {
 
   /** Add a player to matchmaking with others in the server */
   addPlayer(player: WorldPenguin) {
+    if (this._onMatched === null || this._onTick === null) {
+      throw new Error('Adding player to matchmaking without listeners');
+    }
     const availableIndex = this._rooms.findIndex(room => !room.full);
     if (availableIndex === -1) {
-      const room = new MatchmakingRoom(this);
+      const room = new MatchmakingRoom(this._maxPlayers, this._onMatched, this._onTick);
       room.addPlayer(player);
       this._rooms.push(room);
     } else {
@@ -78,11 +77,11 @@ export class MatchMaker {
     }
   }
 
-  get onMatched() {
-    return this._onMatched;
+  public addMatchListener(callback: MatchedCallback): void {
+    this._onMatched = callback;
   }
 
-  get onTick() {
-    return this._onTick;
+  public addTickListener(callback: TickCallback): void {
+    this._onTick = callback;
   }
 }

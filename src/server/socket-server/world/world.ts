@@ -15,6 +15,7 @@ import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { CardJitsu } from "./card";
 import { Bakery } from "./bakery";
+import { MatchMaker } from "./matchmaker";
 
 type PenguinState = {
   room?: WorldRoom;
@@ -31,6 +32,7 @@ export class World {
   private spectators = new Set<WorldPenguin>();
   private igloos = new Set<WorldPenguin>();
   private _bakery: Bakery;
+  private _cardMatchmaker = new MatchMaker(2);
   
   // create class responsible for the puck
   private _puckPosition = new Vector(0, 0);
@@ -189,6 +191,10 @@ export class World {
 
   public get bakery() {
     return this._bakery;
+  }
+
+  public get cardMatchmaker() {
+    return this._cardMatchmaker;
   }
 }
 
