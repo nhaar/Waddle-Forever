@@ -771,6 +771,10 @@ class NinjaProfile {
     return this._cardProgress.rank;
   }
 
+  public get cardPercentage() {
+    return this._cardProgress.percentage;
+  }
+
   public get isNinja() {
     return this._cardProgress.isNinja;
   }

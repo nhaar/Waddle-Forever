@@ -415,31 +415,15 @@ const HANDLER_MAPPING: HandlerMapping = {
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
     },
-    'musictrack': {
-      'getmymusictracks': Handle.GetMusicTracks
-    },
     'e': {
       'dc': Handle.DonateCoins
-    },
-    'ni': {
-      'gnr': Handle.GetNinjaRanks,
-      'gnl': Handle.GetNinjaLevel,
-      'gcd': Handle.GetCards,
-      'gfl': Handle.GetFireLevel
     },
     'mdvl': {
       'retrieve': Handle.RetrieveMedieval2012,
       'msgviewed': Handle.Medieval2012ViewedMessage
-    },
-    'cd': {
-      'bpc': Handle.BuyPowerCards
     }
   },
   'z': {
-    'zo': [Handle.LeaveWaddleGame],
-    'lw': Handle.LeaveWaddle,
-    'gz': [Handle.EnterWaddleGame, Handle.GetTableGame],
-    'uz': [Handle.UpdateWaddleGameSeats],
     'jmm': Handle.JoinMatchMaking,
     'jsen': Handle.JoinSensei,
     'epfsf': Handle.EPFStamps

@@ -289,6 +289,11 @@ const handleAddIglooLocation: IglooHandler<[number]> = ({ prst, penguin, msg }, 
   prst(penguin);
 }
 
+const handleGetMusicTracks: IglooHandler<[]> = ({ msg, penguin }) => {
+  const playerTracks: string[] = []; // TODO player tracks
+  msg.send(penguin, 'getmymusictracks', playerTracks.length, playerTracks.join(','));
+}
+
 handler.xt([['s', 'af'], ['r', 'af'], ['s', 'g#af']], ['number'], handleAddFurniture);
 handler.xt([['s', 'au'], ['r', 'au'], ['s', 'g#au']], ['number'], handleAddIgloo);
 handler.xt([['r', 'ag'], ['s', 'g#ag']], ['number'], handleAddFlooring);
@@ -310,6 +315,7 @@ handler.xt('s', 'g#uic', ['number', 'number', 'number', 'number', 'number', 'str
 handler.xt('s', 'g#al', [], handleAddIglooLayout);
 handler.xt('s', 'g#uiss', ['number', 'string'], handleUpdateIglooLayout);
 handler.xt('s', 'g#aloc', ['number'], handleAddIglooLocation);
+handler.xt('s', 'musictrack#getmymusictracks', [], handleGetMusicTracks);
 
 export {
   handler as iglooHandler
