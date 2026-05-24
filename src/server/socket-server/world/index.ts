@@ -1,4 +1,5 @@
-// ZA WAAAARUDO!
+// ZAAAA WAAAARUDO!
+
 import { EffectService } from "@common/utils";
 import { WORLD_PORT } from "@server/servers";
 
@@ -13,22 +14,14 @@ import { PenguinMessenger } from "@server/handlers/messenger";
 import { PenguinPersister, World, WorldContext } from "./world";
 
 import { Handler } from "@server/handlers";
-import { joinHandler } from "@server/handlers/play/join";
-import { iglooHandler } from "@server/handlers/play/igloo";
-import { worldLoginHandler } from "@server/handlers/play/login";
-import { roomHandler } from "@server/handlers/play/room";
-import { createHandler } from "@server/handlers/play/create";
-import { gameHandler } from "@server/handlers/play/game";
-import { sledHandler } from "@server/handlers/games/sled";
-import { mailHandler } from "@server/handlers/play/mail";
-import { rainbowHandler } from "@server/handlers/play/rainbow";
-import { cardHandler } from "@server/handlers/play/card";
-import { addMatchmakerListeners, ninjaHandler } from "@server/handlers/play/ninja";
-import { addBakeryListener, partyHandler } from "@server/handlers/play/party";
-import { puffleHandler } from "@server/handlers/play/puffle";
+import { createWorldHandler } from "./world-handlers";
+
+import { addBakeryListener } from "@server/handlers/play/party";
+import { addMatchmakerListeners } from "@server/handlers/play/ninja";
 
 import { CommandsHandler } from "./commands";
 import { CommandContext, commands } from "./command-handlers";
+
 
 export class WorldServer {
   private _world: World;
@@ -37,46 +30,18 @@ export class WorldServer {
   private _handler: Handler<WorldContext>;
   private _persister: PenguinPersister;
   
-  constructor(private settings: SettingsManager, private gameData: GameData, private db: PenguinRepository) {
-    this._world = new World(gameData);
+  constructor(settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
+    this._world = new World(_gameData);
 
     this._commandsHandler = new CommandsHandler(commands.get());
 
     this._persister = (p, force = false) => { 
       if (p.preference.canSave || force) {
-        this.db.write(p.id, p.getJSON());
+        this._db.write(p.id, p.getJSON());
       }
     };
 
-    const handler = new Handler<WorldContext>((client) => {
-      const penguin = this._msg.getPenguin(client);
-      const state = penguin === undefined ? {} : (this._world.getContext(penguin) ?? {});
-      return {
-        ...state,
-        penguin,
-        world: this._world,
-        data: this.gameData,
-        db: this.db,
-        settings: this.settings,
-        msg: this._msg,
-        prst: this._persister,
-        client
-      };
-    });
-    handler.use(worldLoginHandler);
-    handler.use(joinHandler);
-    handler.use(roomHandler);
-    handler.use(iglooHandler);
-    handler.use(puffleHandler);
-    handler.use(createHandler);
-    handler.use(gameHandler);
-    handler.use(mailHandler);
-    handler.use(sledHandler);
-    handler.use(rainbowHandler);
-    handler.use(cardHandler);
-    handler.use(ninjaHandler);
-    handler.use(partyHandler);
-    this._handler = handler;
+    this._handler = createWorldHandler(settings, _db, _gameData, this._world, this._msg, this._persister);
 
     this.init();
   }
@@ -93,8 +58,8 @@ export class WorldServer {
         penguin,
         prst: this._persister,
         msg: this._msg,
-        data: this.gameData,
-        db: this.db,  
+        data: this._gameData,
+        db: this._db,  
         room: this._world.getContext(penguin)?.room
       }
       this._commandsHandler.run(ctx, name, args);
@@ -117,7 +82,7 @@ export class WorldServer {
     await Promise.all(this._msg.getClients().map(client => this._handler.disconnect(client)));
     this._msg.close();
     this._msg = new PenguinMessenger();
-    this._world = new World(this.gameData);
+    this._world = new World(this._gameData);
     this.init();
   }
 }
