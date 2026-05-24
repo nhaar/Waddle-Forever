@@ -5,7 +5,7 @@ import { PenguinMessenger } from "../messenger";
 import { ClientSocket } from "@server/socket-server";
 import { GameData } from "@server/timelines/game-data";
 import { SettingsManager } from "@server/settings";
-import { PenguinJson, PenguinRepository } from "@server/database/database";
+import { Igloo, PenguinJson, PenguinRepository } from "@server/database/database";
 import { logdebug } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
@@ -15,6 +15,18 @@ function capitalizeName(name: string): string {
   return name.split(' ').map((name => {
     return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
   })).join(' ');
+}
+
+export function getDefaultIgloo(id: number): Igloo {
+  return {
+    id,
+    type: 1,
+    flooring: 0,
+    location: 0,
+    music: 0,
+    furniture: [],
+    locked: true
+  }
 }
 
 export function getDefaultPenguin(name: string, color: number, member: boolean, virtualTimestamp: number): PenguinJson {
@@ -63,15 +75,7 @@ export function getDefaultPenguin(name: string, color: number, member: boolean, 
       coinsCollected: []
     },
     igloo: 1,
-    igloos: [{
-      id: 1,
-      type: 1,
-      flooring: 0,
-      location: 0,
-      music: 0,
-      furniture: [],
-      locked: true
-    }],
+    igloos: [getDefaultIgloo(1)],
     furniture: {},
     iglooFloorings: [],
     iglooTypes: [1],

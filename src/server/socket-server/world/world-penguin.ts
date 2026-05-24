@@ -1,5 +1,6 @@
 import { Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
+import { getDefaultIgloo } from "@server/handlers/play/login";
 import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 
@@ -489,6 +490,29 @@ class IglooInventory {
     return layout;
   }
 
+  public setActiveIgloo(index: number) {
+    this._selected = index;
+  }
+
+  public setLocked(index: number, locked: boolean) {
+    const prev = this._layouts.get(index);
+    if (prev !== undefined && prev.locked !== locked) {
+      this._layouts.set(index, { ...prev, locked });
+    }
+  }
+
+  public addIglooLayout(): [number, Igloo] {
+    this._seq++;
+    const id = this._seq;
+    const igloo = getDefaultIgloo(id);
+    this._layouts.set(id, igloo);
+    return [id, igloo];
+  }
+
+  public addIglooLocation(location: number) {
+    this._locations.add(location);
+  }
+
   public get layouts() {
     return [...this._layouts.values()];
   }
@@ -507,6 +531,10 @@ class IglooInventory {
 
   public getAllFurniture(): Array<[number, number]> {
     return [...this._furniture.entries()];
+  }
+
+  public getAllLayouts(): Array<[number, Igloo]> {
+    return [...this._layouts.entries()];
   }
 
   public addFurniture(furnitureId: number, amount: number) {

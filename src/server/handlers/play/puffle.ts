@@ -210,7 +210,12 @@ handler.xt('s', 'p#pg', ['number', 'string'], ({ data, penguin, msg }, id, igloo
   }
 });
 
-handler.xt('s', 'p#pn', ['number', 'string', 'number'], handleAdoptPuffle);
+handler.xt('s', 'p#pn', ['number', 'string', 'number'], handleAdoptPuffle, {
+  // without cooldown, this can be spammed in the modern client,
+  // allowing a second puffle to be bought
+  // It is unknown if the original had this issue so we are correcting it
+  cooldown: 2000
+});
 handler.xt('s', 'p#pn', ['number', 'string'], (ctx, type, name) => handleAdoptPuffle(ctx, type, name, 0));
 handler.xt('s', 'p#pgpi', [], handleGetPuffleInventory);
 handler.xt('s', 'p#checkpufflename', ['string'], sendModernPuffleCheck);

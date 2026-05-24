@@ -415,24 +415,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
     },
-    'g': {
-      'go': Handle.GetIglooTypes,
-      'gf': Handle.GetFurniture,
-      'um': Handle.UpdateIglooMusic,
-      'au': Handle.AddIgloo,
-      'ao': Handle.UpdateIglooType,
-      'gili': Handle.GetIglooLikes,
-      'ggd': Handle.GetDj3kTracks,
-      'gail': Handle.GetAllIglooLayouts,
-      'uic': Handle.UpdateIglooNew,
-      'al': Handle.AddIglooLayout,
-      'uiss': Handle.UpdateIglooLayout,
-      'aloc': Handle.AddIglooLocation,
-      'or': Handle.OpenIgloo,
-      'cr': Handle.CloseIgloo,
-      'gr': Handle.GetOpenIgloos,
-      'gii': Handle.GetIglooInventory
-    },
     'p': {
       'puffleswap': Handle.PuffleBackyardSwap,
       'puffledig': Handle.PuffleDigRandom,

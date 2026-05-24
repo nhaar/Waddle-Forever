@@ -630,7 +630,6 @@ const handleGetFieldOps: JoinHandler<[]> = ({ penguin, msg }) => {
 }
 
 const handleGetEpfMedals: JoinHandler<[]> = ({ msg, penguin }) => {
-  console.log('getting this')
   msg.send(penguin, 'epfgr', penguin.epf.careerMedals, penguin.epf.medals);
 }
 
