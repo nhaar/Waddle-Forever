@@ -425,8 +425,7 @@ const HANDLER_MAPPING: HandlerMapping = {
   },
   'z': {
     'jmm': Handle.JoinMatchMaking,
-    'jsen': Handle.JoinSensei,
-    'epfsf': Handle.EPFStamps
+    'jsen': Handle.JoinSensei
   }
 }
 

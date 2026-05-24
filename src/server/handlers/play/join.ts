@@ -729,6 +729,18 @@ const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst }, comple
   prst(penguin);
 }
 
+const handleEPFStamp: JoinHandler<[number]> = ({ msg, penguin }, stamp) => {
+  if (!isEPFAgent(penguin)) {
+    msg.send(penguin, 'epfsf', 'naa'); // TODO document
+  }
+
+  if (penguin.stampbook.has(stamp)) {
+    msg.send(penguin, 'epfsf', 'ahm'); // TODO document
+  } else {
+    msg.send(penguin, 'epfsf', 'nem', stamp); // giving the stamp
+  }
+}
+
 handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
 handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
 handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
@@ -752,6 +764,7 @@ handler.xt('s', 'f#epfsa', [], handleBecomeAgent);
 handler.xt('s', 'f#epfgrantreward', ['number'], handleGrantAwards);
 handler.xt('s', 'f#epfgp', [], handleGetPartyOp);
 handler.xt('s', 'f#epfsp', ['number'], handleSetPartyOp);
+handler.xt('z', 'epfsf', ['number'], handleEPFStamp);
 handler.addDisconnect(handleDisconnect);
 
 export { handler as joinHandler };
