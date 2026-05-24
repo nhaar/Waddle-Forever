@@ -237,9 +237,19 @@ const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action, arg) 
   }
 }
 
+const handleQuitGame: CardHandler<[]> = (ctx) => {
+  const { card, msg, penguin } = ctx;
+  exitGame(ctx);
+  const seat = card.getSeatId(penguin);
+
+  msg.send(card.getPlayers(), 'cz', penguin.name);
+  msg.send(card.getPlayers(), 'lz', seat);
+}
+
 handler.xt('z', 'gz', ['number'], handleEnterGame);
 handler.xt('z', 'uz', [], handleUpdateGameSeats);
 handler.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction);
+handler.xt('z', 'lz', [], handleQuitGame);
 
 export {
   handler as cardHandler

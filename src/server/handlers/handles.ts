@@ -448,8 +448,6 @@ const HANDLER_MAPPING: HandlerMapping = {
     'uz': [Handle.UpdateWaddleGameSeats, Handle.UpdateHockeyGame],
     'zm': [
       Handle.SledRaceAction,
-      Handle.CardJitsuDeal,
-      Handle.CardJitsuPick,
       Handle.CardJitsuFireClickSpinner,
       Handle.CardJitsuFireChooseTile,
       Handle.CardJitsuFireChooseCard,
