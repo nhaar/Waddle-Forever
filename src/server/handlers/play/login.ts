@@ -95,7 +95,7 @@ export function getDefaultPenguin(name: string, color: number, member: boolean, 
   }
 }
 
-function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
+export function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
   msg.send(p, 'e', error);
 }
 

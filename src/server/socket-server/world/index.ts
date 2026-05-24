@@ -22,6 +22,7 @@ import { mailHandler } from "@server/handlers/play/mail";
 import { rainbowHandler } from "@server/handlers/play/rainbow";
 import { cardHandler } from "@server/handlers/play/card";
 import { ninjaHandler } from "@server/handlers/play/ninja";
+import { partyHandler } from "@server/handlers/play/party";
 
 export class WorldServer extends SocketServer {
   private worldServer: World;
@@ -88,6 +89,7 @@ export class WorldServer extends SocketServer {
     handler.use(rainbowHandler);
     handler.use(cardHandler);
     handler.use(ninjaHandler);
+    handler.use(partyHandler);
     return handler;
   }
 

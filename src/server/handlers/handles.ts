@@ -414,13 +414,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'barsu': Handle.GetBakeryState,
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
-    },
-    'e': {
-      'dc': Handle.DonateCoins
-    },
-    'mdvl': {
-      'retrieve': Handle.RetrieveMedieval2012,
-      'msgviewed': Handle.Medieval2012ViewedMessage
     }
   },
   'z': {

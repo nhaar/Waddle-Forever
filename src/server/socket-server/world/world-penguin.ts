@@ -866,6 +866,10 @@ class Medieval2012Status {
   public get message() {
     return this._message;
   }
+
+  public setViewed(message: number) {
+    this._message = message + 1;
+  }
 }
 
 class UserPreference {
@@ -996,6 +1000,10 @@ export class WorldPenguin {
 
   public get battleOfDoom() {
     return this._battleOfDoom;
+  }
+
+  public get medieval2012() {
+    return this._medieval2012;
   }
 
   public get igloo() {
