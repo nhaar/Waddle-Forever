@@ -1,11 +1,12 @@
+import { DataFolder, PenguinRepository } from './database/database';
+import { VERSION } from '@common/version';
+import { USER_DATA_FOLDER } from '@common/paths';
 import settingsManager from './settings';
 import { GameData } from './timelines/game-data';
+
 import { HttpServer } from './http';
-import { WorldServer } from './socket-server/world';
-import { DataFolder, PenguinRepository } from './database/database';
-import { USER_DATA_FOLDER } from '@common/paths';
-import { VERSION } from '@common/version';
-import { LoginServer } from './socket-server/login';
+import { setupWorldServer } from './socket-server/world';
+import { setupLoginServer } from './socket-server/login';
 
 // load user data
 const failedMods = settingsManager.mods.initializeMods();
@@ -22,11 +23,9 @@ const gameData = new GameData(settingsManager);
 const db = new PenguinRepository(data.getPath());
 
 // initialize the three services
-const login = new LoginServer(gameData, settingsManager, db);
-login.setupServer();
+setupLoginServer(settingsManager, db, gameData);
 
-const world = new WorldServer(settingsManager, gameData, db);
-world.setupServer();
+setupWorldServer(settingsManager, db, gameData);
 
 const httpServer = new HttpServer(gameData, settingsManager, db);
 

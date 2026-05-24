@@ -18,8 +18,8 @@ import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
 import { GameData } from '@server/timelines/game-data';
-import { WorldServer } from '@server/socket-server/world';
-import { LoginServer } from '@server/socket-server/login';
+import { setupWorldServer, WorldServer } from '@server/socket-server/world';
+import { setupLoginServer } from '@server/socket-server/login';
 import { HttpServer } from '@server/http';
 import { DataFolder, PenguinRepository } from '@server/database/database';
 
@@ -146,11 +146,9 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
   const gameData = new GameData(settingsManager);
 
   try {
-    const login = new LoginServer(gameData, settingsManager, db);
-    await login.setupServer();
+    await setupLoginServer(settingsManager, db, gameData);
 
-    server = new WorldServer(settingsManager, gameData, db);
-    await server.setupServer();
+    server = await setupWorldServer(settingsManager, db, gameData);
 
     const httpServer = new HttpServer(gameData, settingsManager, db);
     await httpServer.setupServer();

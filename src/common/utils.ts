@@ -6,6 +6,9 @@ import { WEBSITE } from './website';
 import { exec } from 'child_process';
 import { IpcRenderer } from 'electron';
 
+/** Side-effect: Bind service to a port */
+export type EffectService<T> = T;
+
 type MultiplayerSettings = { type: 'local'; } | {
   type: 'guest';
   ip: string;

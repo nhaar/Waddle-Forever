@@ -1,26 +1,30 @@
-import { Handler } from "@server/handlers";
+import { EffectService } from "@common/utils";
 import { LOGIN_PORT } from "@server/servers";
+
 import { SettingsManager } from "@server/settings";
-import { GameData } from "@server/timelines/game-data";
-import { SocketServer } from "..";
 import { PenguinRepository } from "@server/database/database";
-import { WorldContext } from "../world/world";
+import { GameData } from "@server/timelines/game-data";
+
+import { setupSocketServer } from "..";
+
 import { PenguinMessenger } from "@server/handlers/messenger";
+
+import { WorldContext } from "../world/world";
+
+import { Handler } from "@server/handlers";
 import { loginHandler } from "@server/handlers/play/login";
 
 export type LoginContext = Pick<WorldContext, 'msg' | 'data' | 'settings' | 'db' |'client'>;
-export class LoginServer extends SocketServer {
-  private _messenger: PenguinMessenger;
-  
+
+class LoginServer {
+  private _msg: PenguinMessenger;
+  private _handler: Handler<LoginContext>;
+
   constructor(private gameData: GameData, private settings: SettingsManager, private db: PenguinRepository) {
-    super('login', LOGIN_PORT);
-    this._messenger = new PenguinMessenger();
-  }
-  
-  override createHandler() {
+    this._msg = new PenguinMessenger();
     const handler = new Handler<LoginContext>((client) => {
       return { 
-        msg: this._messenger,
+        msg: this._msg,
         data: this.gameData,
         settings: this.settings,
         db: this.db,
@@ -28,6 +32,15 @@ export class LoginServer extends SocketServer {
       };
     });
     handler.use(loginHandler);
-    return handler;
+    this._handler = handler;
   }
+  
+  public get handler() {
+    return this._handler;
+  }
+}
+
+export const setupLoginServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<void>> => {
+  const loginServer = new LoginServer(gameData, settings, db);
+  await setupSocketServer('login', LOGIN_PORT, loginServer.handler);
 }
