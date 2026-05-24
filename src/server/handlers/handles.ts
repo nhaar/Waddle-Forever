@@ -437,21 +437,12 @@ const HANDLER_MAPPING: HandlerMapping = {
   },
   'z': {
     'zo': [Handle.LeaveWaddleGame],
-    'gw': Handle.GetWaddle,
-    'jw': Handle.JoinWaddle,
-    'ggd': Handle.GetPuffleLaunchData,
-    'sgd': Handle.SetPuffleLaunchData,
-    'zr': Handle.RollSpyDrills,
-    'zc': Handle.SpyDrillsReward,
     'lw': Handle.LeaveWaddle,
     'gz': [Handle.EnterWaddleGame, Handle.GetTableGame],
     'uz': [Handle.UpdateWaddleGameSeats],
     'jmm': Handle.JoinMatchMaking,
-    'jz': [Handle.JoinSled, Handle.JoinTableGame],
     'jsen': Handle.JoinSensei,
-    'lz': [Handle.LeaveWaddleMatch, Handle.LeaveTableGame],
-    'epfsf': Handle.EPFStamps,
-    'm': Handle.MoveHockeyPuck
+    'epfsf': Handle.EPFStamps
   }
 }
 

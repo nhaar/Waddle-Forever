@@ -15,6 +15,7 @@ import { isFlag } from '@server/game-logic/flags';
 import { STARTER_DECKS } from '@server/game-logic/starter-deck';
 import { CARDS } from '@server/game-logic/cards';
 import { choose } from '@common/utils';
+import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
@@ -559,7 +560,45 @@ const handleDisconnect = async (ctx: Partial<WorldContext>) => {
 
 handler.xt('z', 'ggd', [], ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', penguin.puffleLaunch.data === null ? '' : penguin.puffleLaunch.data.toString('utf-8') );
-}); 
+});
+
+const handleSetPuffleLaunchData: JoinHandler<[string]> = ({ prst, penguin }, data) => {
+  penguin.puffleLaunch.set(Buffer.from(data));
+  prst(penguin);
+}
+
+const handleGetSpyDrillsChallenge: JoinHandler<[]> = ({ msg, penguin }) => {
+  // The original algorithm is unknown, so we are using experimental data to simulate it
+  const randomOption = choose(SPY_DRILLS_DATA);
+  const [games, medalCount] = randomOption;
+  
+  /*
+  Regarding the generation, it would pick 3 random spy drill games and then assign a medal count to them.
+  We don't know how either of those processes worked exactly
+
+  # Minigame picking
+  At first you would think it is random, but there seems to be a clear relation with how the games are picked.
+  The algorithm seems to have a difficulty preference and it tries to increase the difficulty each time.
+  It is not exactly known what algorithm is used for this, however
+
+  # Medals Calculation
+  The medals number is deterministic, meaning the same minigames always give the same medals.
+  It is likely that it just follows a simple point system, but the points are likely decimal, which make it
+  hard to predict their values since they would get rounded into an integer, and we lose a lot
+  of information because of that
+  */
+
+  msg.send(penguin, 'zr', games.join(','), medalCount);
+}
+
+const handleGetSpyDrillsReward: JoinHandler<[number]> = ({ penguin, prst }, medals) => {
+  penguin.epf.addMedals(medals);
+  prst(penguin);
+}
+
+handler.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData);
+handler.xt('z', 'zr', [], handleGetSpyDrillsChallenge);
+handler.xt('z', 'zc', ['number'], handleGetSpyDrillsReward);
 
 handler.xt('s', 'u#h', [], ({ msg, penguin }) => {
   msg.send(penguin, 'h', '');
