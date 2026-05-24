@@ -342,8 +342,19 @@ class PuffleInventory {
     return Object.fromEntries(this._items.entries());
   }
 
+  public getItemAmount(item: number) {
+    return this._items.get(item) ?? 0;
+  }
+
   public get walking() {
     return this._walking;
+  }
+
+  public getWalking() {
+    if (this._walking === null) {
+      return undefined;
+    }
+    return this._puffles.get(this._walking)
   }
 
   public unwalk() {
@@ -377,6 +388,10 @@ class PuffleInventory {
     this._backyard.add(id);
   }
 
+  public fromBackyard(id: number): void {
+    this._backyard.delete(id);
+  }
+
   public addItem(itemId: number, amount: number): number {
     const owned = this._items.get(itemId) ?? 0 + amount;
     this._items.set(itemId, owned);
@@ -395,6 +410,7 @@ class PuffleInventory {
 class DigData {
   private _hasDug: boolean;
   private _treasureFinds: number[];
+  private _colors = new Set<number>();
 
   constructor(data: PenguinJson) {
     this._hasDug = data.hasDug;
@@ -407,6 +423,33 @@ class DigData {
 
   public get treasureFinds() {
     return [...this._treasureFinds];
+  }
+
+  public addColor(color: number) {
+    this._colors.add(color);
+  }
+
+  public get colorsDug() {
+    return this._colors.size;
+  }
+
+  public addFind() {
+    this._treasureFinds.push(Date.now());    
+  }
+
+  public get treasuresInLastDay() {
+    const now = Date.now();
+    const treasures = this._treasureFinds.filter(time => now - time < 24 * 3600 * 1000);
+    this._treasureFinds = treasures;
+    return treasures.length;
+  }
+
+  public clearFinds() {
+    this._treasureFinds = [];
+  }
+
+  public setDug() {
+    this._hasDug = true;
   }
 }
 
@@ -680,6 +723,14 @@ class GoldPuffleInventory {
   public reset() {
     this._nuggets = 0;
     this._nuggetState = false;
+  }
+
+  public get goldNuggetState() {
+    return this._nuggetState;
+  }
+
+  public add(nuggets: number) {
+    this._nuggets += nuggets;
   }
 }
 
@@ -961,6 +1012,10 @@ export class WorldPenguin {
 
   public get gold() {
     return this._gold;
+  }
+
+  public get dig() {
+    return this._dig;
   }
 
   public getJSON(): PenguinJson {

@@ -416,9 +416,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'ctc': Handle.GetCookieInventory
     },
     'p': {
-      'puffleswap': Handle.PuffleBackyardSwap,
-      'puffledig': Handle.PuffleDigRandom,
-      'puffledigoncommand': Handle.PuffleDigOnCommand,
       'pcid': Handle.EatPuffleItem,
       'revealgoldpuffle': Handle.RevealGoldPuffle,
       'rpqtc': Handle.SetRainbowQuestTaskComplete
