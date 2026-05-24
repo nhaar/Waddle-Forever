@@ -415,12 +415,6 @@ const HANDLER_MAPPING: HandlerMapping = {
       'seh': Handle.SendEnterHopper,
       'ctc': Handle.GetCookieInventory
     },
-    'p': {
-      'rpqtc': Handle.SetRainbowQuestTaskComplete
-    },
-    'l': {
-      'mc': Handle.SetMailCheck
-    },
     'musictrack': {
       'getmymusictracks': Handle.GetMusicTracks
     },

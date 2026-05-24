@@ -662,6 +662,10 @@ class MailInventory {
     this._mail.push(mail);
     return mail;
   }
+
+  public setRead() {
+    this._mail = this._mail.map(mail => ({ ...mail, postcard: { ...mail.postcard, read: true }}));
+  }
 }
 
 class PuffleLaunchData {
