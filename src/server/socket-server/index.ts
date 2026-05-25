@@ -3,7 +3,7 @@ import { WebSocketServer } from 'ws'
 
 import { EffectService } from '@common/utils';
 
-interface MessageHandler {
+export interface MessageHandler {
   handle: (client: ClientSocket, message: string) => void;
   disconnect: (client: ClientSocket) => Promise<void>;
 }

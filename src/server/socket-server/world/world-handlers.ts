@@ -1,55 +1,71 @@
-import { SettingsManager } from "@server/settings";
-import { PenguinRepository } from "@server/database/database";
-import { GameData } from "@server/timelines/game-data";
+import { WorldContext } from "./world";
 
-import { PenguinPersister, World, WorldContext } from "./world";
+import { CtxObj } from "@server/handlers";
+import { handleJoinServer } from "@server/handlers/play/join";
+import { XtCallbackInfo, XtHandler } from "./xt-handler";
+import { ArgumentsIndicator, GetArgumentsType } from "@server/handlers/arg-parser";
 
-import { PenguinMessenger } from "@server/handlers/messenger";
+type PreProcessCallbackInfo = [
+  [Array<keyof WorldContext & string>,
+  ((ctx: Partial<WorldContext>) => boolean) | undefined],
+  ArgumentsIndicator,
+  (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>
+];
 
-import { Handler } from "@server/handlers";
-import { joinHandler } from "@server/handlers/play/join";
-import { iglooHandler } from "@server/handlers/play/igloo";
-import { worldLoginHandler } from "@server/handlers/play/login";
-import { roomHandler } from "@server/handlers/play/room";
-import { createHandler } from "@server/handlers/play/create";
-import { gameHandler } from "@server/handlers/play/game";
-import { sledHandler } from "@server/handlers/games/sled";
-import { mailHandler } from "@server/handlers/play/mail";
-import { rainbowHandler } from "@server/handlers/play/rainbow";
-import { cardHandler } from "@server/handlers/play/card";
-import { ninjaHandler } from "@server/handlers/play/ninja";
-import { partyHandler } from "@server/handlers/play/party";
-import { puffleHandler } from "@server/handlers/play/puffle";
+type IntermediateXtCallbackInfo = [string, string, ...PreProcessCallbackInfo];
 
-export const createWorldHandler = (settings: SettingsManager, db: PenguinRepository, gameData: GameData, world: World, msg: PenguinMessenger, prst: PenguinPersister): Handler<WorldContext> => {
-  const handler = new Handler<WorldContext>((client) => {
-    const penguin = msg.getPenguin(client);
-    const state = penguin === undefined ? {} : (world.getContext(penguin) ?? {});
-    return {
-      ...state,
-      penguin,
-      world,
-      data: gameData,
-      db,
-      settings,
-      msg,
-      prst,
-      client
-    };
+class XtGenerator<CT extends Array<keyof WorldContext & string>> {
+  constructor(private _types: CT) {}
+
+  public xt<const T extends ArgumentsIndicator>(
+    extension: string,
+    code: string,
+    signature: T,
+    callback: (ctx: CtxObj<CT, WorldContext>, ...args: GetArgumentsType<T>) => Promise<void> | void,
+    guard?: (ctx: CtxObj<CT, WorldContext>) => boolean
+  ): IntermediateXtCallbackInfo {
+    return [
+      extension, code,
+      [this._types, guard === undefined ? (undefined) : (guard as (ctx: Partial<WorldContext>) => boolean)],
+      signature,
+      callback as (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>
+    ]
+  }
+}
+
+type GroupedCallbacks = Array<[string, PreProcessCallbackInfo[]]>;
+
+const groupCallbacks = (callbacks: IntermediateXtCallbackInfo[]): GroupedCallbacks => {
+  if (callbacks.length === 0) {
+    return [];
+  }
+  const first = callbacks[0];
+  const tail = callbacks.slice(1);
+  const [ext, code] = first;
+  return [
+    [[ext, code].join('%'), [first, ...tail.filter(i => i[0] === ext && i[1] === code)].map(i => [i[2], i[3], i[4]])],
+    ...groupCallbacks(tail)
+  ];
+}
+
+const getFinalCallbacks = (grouped: GroupedCallbacks): Array<[string, XtCallbackInfo[]]> => {
+  return grouped.map(([name, callbacks]) => {
+
+    if (callbacks.length > 1 && callbacks.filter(([[_, guard]]) => guard === undefined).length > 0) {
+      throw new Error(`Multiple functions for ${name}, but some had no guard`);
+    }
+    return [name, callbacks.map(([[types, guard], signature, callback]) =>
+      [[types, guard === undefined ? (() => true) : guard as ((ctx: Partial<WorldContext>) => boolean)], signature, callback as (ctx: Partial<WorldContext>, ...args: Array<string | number>) => Promise<void> | void])];
   });
-  handler.use(worldLoginHandler);
-  handler.use(joinHandler);
-  handler.use(roomHandler);
-  handler.use(iglooHandler);
-  handler.use(puffleHandler);
-  handler.use(createHandler);
-  handler.use(gameHandler);
-  handler.use(mailHandler);
-  handler.use(sledHandler);
-  handler.use(rainbowHandler);
-  handler.use(cardHandler);
-  handler.use(ninjaHandler);
-  handler.use(partyHandler);
+}
 
-  return handler;
+export const createWorldXtHandler = (): XtHandler => {
+  const p = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
+
+  const callbacks: IntermediateXtCallbackInfo[] = [
+    p.xt('s', 'js', ['string', 'string', 'string'], handleJoinServer),
+    p.xt('s', 'j#js', [], handleJoinServer)
+  ];
+  const grouped = groupCallbacks(callbacks);
+  return new XtHandler(new Map(getFinalCallbacks(grouped)), async () => {});
 }

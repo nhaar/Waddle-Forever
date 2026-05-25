@@ -1,15 +1,13 @@
 import { XmlHandler } from "../xml";
 
-import { World, WorldContext } from "@server/socket-server/world/world";
+import { WorldContext } from "@server/socket-server/world/world";
 import { PenguinMessenger } from "../messenger";
 import { ClientSocket } from "@server/socket-server";
-import { GameData } from "@server/timelines/game-data";
-import { SettingsManager } from "@server/settings";
-import { Igloo, PenguinJson, PenguinRepository } from "@server/database/database";
+import { Igloo, PenguinJson } from "@server/database/database";
 import { logdebug } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
-import { LoginContext } from "@server/socket-server/login";
+import { LoginContext } from "@server/socket-server/world/xml-handler";
 
 function capitalizeName(name: string): string {
   return name.split(' ').map((name => {
@@ -102,32 +100,25 @@ export function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket 
 const worldLoginHandler = new XmlHandler<WorldContext, ['world', 'msg', 'data', 'settings', 'db', 'client']>(['world', 'msg', 'data', 'settings', 'db', 'client']);
 const loginHandler = new XmlHandler<LoginContext, ['db', 'settings', 'data', 'msg', 'client']>(['db', 'settings', 'data', 'msg', 'client']);
 
-const filePolicy = ({ client }: { client: ClientSocket }) => {
+type LoginHandler = (ctx: LoginContext, message: string) => void;
+
+export const filePolicy: LoginHandler = ({ client }) => {
   client.end('<cross-domain-policy><allow-access-from domain="*" to-ports="*" /></cross-domain-policy>');
 };
 
-const checkVersion = ({ msg, client }: { msg: PenguinMessenger, client: ClientSocket }) => {
+export const checkVersion: LoginHandler = ({ msg, client }) => {
   // version checking
   // this is irrelevant for us, we just always send an OK response
   msg.sendXml(client, 'apiOK', '', 0);
 }
 
-const getKey = ({ msg, client }: { msg: PenguinMessenger, client: ClientSocket }) => {
+export const getKey: LoginHandler = ({ msg, client }) => {
   // random key generation
   // this is used for authentication, so it is not needed for us, we just send any key
   msg.sendXml(client, 'rndK', '<k>key</k>', -1);
 }
 
-const login = async (ctx: {
-  msg: PenguinMessenger,
-  world?: World,
-  data: GameData,
-  settings: SettingsManager
-  db: PenguinRepository,
-  client: ClientSocket
-}, message: string) => {
-
-  
+export const login: LoginHandler = async (ctx, message: string) => {
   const joinMatch = message.match(/<login z='j'>/);
   const { msg, data, settings, db, client } = ctx;
 

@@ -21,46 +21,25 @@ export type GetArgumentsType<T extends ArgumentsIndicator> = T extends readonly 
 } : T extends 'number' ? number[] : string[];
 
 export const parseArgs = <Arguments extends ArgumentsIndicator>(args: Array<string>, types: Arguments): GetArgumentsType<Arguments> | null => {
-  let validArgs: unknown[] = [];
-  let valid = true;
-
-  const checkString = (type: string | undefined) => {
-    if (type === undefined) {
-      valid = false;
+  if (types === 'string') {
+    return args as GetArgumentsType<Arguments>;
+  }
+  if (types === 'number') {
+    const numbers = args.map(arg => Number(arg));
+    if (numbers.every(n => !Number.isNaN(n))) {
+      return numbers as GetArgumentsType<Arguments>;
     } else {
-      validArgs.push(type);
+      return null;
     }
   }
-
-  const checkNumber = (type: string | undefined) => {
-    const num = Number(type);
-    if (isNaN(num)) {
-      valid = false;
-    } else {
-      validArgs.push(num);
-    }
-  }
-
-  args.forEach((arg, i) => {
-    if (types === 'string') {
-      checkString(arg);
-    } else if (types === 'number') {
-      checkNumber(arg);
-    } else {
-      switch (types[i]) {
-        case 'number':
-          checkNumber(arg)
-          break;
-        case 'string':
-          checkString(arg)
-          break;
-      }
-    }
-  });
-
-  if (valid) {
-    return validArgs as GetArgumentsType<Arguments>;
-  } else {
+  if (args.length !== types.length) {
     return null;
   }
+
+  const converted = args.map((arg, i) => types[i] === 'number' ? Number(arg) : arg);
+  if (converted.every(arg => typeof arg === 'string' || !Number.isNaN(arg))) {
+    return converted as GetArgumentsType<Arguments>;
+  }
+
+  return null;
 }

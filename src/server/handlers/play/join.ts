@@ -138,7 +138,7 @@ const sendStamps: JoinHandler<[]> = async ({ msg, penguin }) => {
   await msg.send(penguin, 'gps', penguin.id, penguin.stampbook.stamps.join('|'));
 }
 
-handler.xt([['s', 'js'], ['s', 'j#js']], [], async (ctx) => {
+export const handleJoinServer: JoinHandler<[]> = async (ctx) => {
   const { world, penguin, data, msg } = ctx;
   // penguins don't keep the puffle from previous session
   unequipPuffle(penguin);
@@ -209,7 +209,9 @@ handler.xt([['s', 'js'], ['s', 'j#js']], [], async (ctx) => {
   // joining spawn room // TODO more spawn rooms in the future?
   const town = world.getRoom(Room.Town);
   enterRoom(data, msg, penguin, town, 0, 0);
-});
+}
+
+handler.xt([['s', 'js'], ['s', 'j#js']], [], handleJoinServer);
 
 export const leaveRoom: RoomHandler<[]> = async (ctx) => {
   const { room, penguin, msg, data } = ctx;

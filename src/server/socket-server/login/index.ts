@@ -5,42 +5,40 @@ import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
 import { GameData } from "@server/timelines/game-data";
 
-import { setupSocketServer } from "..";
+import { ClientSocket, MessageHandler, setupSocketServer } from "..";
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 
 import { WorldContext } from "../world/world";
 
-import { Handler } from "@server/handlers";
-import { loginHandler } from "@server/handlers/play/login";
+import { XmlHandler } from "../world/xml-handler";
+import { createLoginXmlHandler } from "../world/login-handlers";
 
 export type LoginContext = Pick<WorldContext, 'msg' | 'data' | 'settings' | 'db' |'client'>;
 
-class LoginServer {
+class LoginServer implements MessageHandler {
   private _msg: PenguinMessenger;
-  private _handler: Handler<LoginContext>;
+  private _handler: XmlHandler;
 
   constructor(private gameData: GameData, private settings: SettingsManager, private db: PenguinRepository) {
     this._msg = new PenguinMessenger();
-    const handler = new Handler<LoginContext>((client) => {
-      return { 
-        msg: this._msg,
-        data: this.gameData,
-        settings: this.settings,
-        db: this.db,
-        client
-      };
-    });
-    handler.use(loginHandler);
-    this._handler = handler;
+    this._handler = createLoginXmlHandler();
   }
-  
-  public get handler() {
-    return this._handler;
-  }
+
+  public handle(client: ClientSocket, message: string): void {
+    this._handler.handle({ 
+      msg: this._msg,
+      data: this.gameData,
+      settings: this.settings,
+      db: this.db,
+      client
+    }, message); 
+  };
+
+  public async disconnect() {}
 }
 
 export const setupLoginServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<void>> => {
   const loginServer = new LoginServer(gameData, settings, db);
-  await setupSocketServer('login', LOGIN_PORT, loginServer.handler);
+  await setupSocketServer('login', LOGIN_PORT, loginServer);
 }
