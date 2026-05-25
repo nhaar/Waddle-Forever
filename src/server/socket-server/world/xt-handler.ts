@@ -1,5 +1,6 @@
 import { ArgumentsIndicator, parseArgs } from "@server/handlers/arg-parser";
 import { WorldContext } from "./world";
+import { ClientSocket } from "..";
 
 const parseXtMessage = (message: string): [string, string[]] => {
   const values = message.split('%');
@@ -17,15 +18,76 @@ export type XtCallbackInfo = [
   [Array<keyof WorldContext & string>,
   (ctx: Partial<WorldContext>) => boolean],
   ArgumentsIndicator,
-  (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>
+  (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>,
+  XtParams
 ];
 
-type XtCallbacks = XtCallbackInfo[];
+type XtCallbackInfoWrapped = [
+  [Array<keyof WorldContext & string>,
+  (ctx: Partial<WorldContext>) => boolean],
+  ArgumentsIndicator,
+  CallbackManager
+];
+
+export type XtParams = {
+  once?: boolean
+  /**
+   * In miliseconds, how much to wait before accepting the next packet
+   * from the same client
+   */
+  cooldown?: number
+}
+
+class CallbackManager {
+  private _cooldown: number | null = null;
+  private _once: boolean = false;
+  private _handled = new Map<ClientSocket, boolean>();
+  private _timestamps = new Map<ClientSocket, number>();
+
+  constructor(private _callback: (ctx: Partial<WorldContext>, ...args: Array<string | number>) => Promise<void> | void, params?: XtParams) {
+    if (params?.cooldown !== undefined) {
+      this._cooldown = params.cooldown;
+    }
+    if (params?.once !== undefined) {
+      this._once = params.once;
+    }
+  }
+
+  call(client: ClientSocket, ctx: Partial<WorldContext>, ...args: Array<string | number>) {
+    if (this._cooldown !== null) {
+      const last = this._timestamps.get(client);
+
+      if (last !== undefined && last + this._cooldown > Date.now()) {
+        console.log('Rate limited');
+        return;
+      }
+    }
+
+    if (this._once) {
+      if (this._handled.get(client)) {
+        console.log('Already handled');
+        return;
+      }
+    }
+
+    this._callback(ctx, ...args);
+  }
+}
 
 export class XtHandler {
-  constructor(private _callbacks: Map<string, XtCallbacks>, private _disconnect: (ctx: Partial<WorldContext>) => Promise<void>) {}
+  private _callbacks: Map<string, XtCallbackInfoWrapped[]>;
 
-  public handle(context: Partial<WorldContext>, message: string) {
+  constructor(callbacks: Array<[string, XtCallbackInfo[]]>, private _disconnect: (ctx: Partial<WorldContext>) => Promise<void>) {
+    this._callbacks = new Map(
+      callbacks.map(
+        ([key, value]) => [key, value.map(
+          ([pair, args, callback, params]) => [pair, args, new CallbackManager(callback, params)]
+        )]
+      )
+    );
+  }
+
+  public handle(client: ClientSocket, context: Partial<WorldContext>, message: string) {
     const [name, args] = parseXtMessage(message);
     
     console.log('incoming XT:', name, args);
@@ -46,7 +108,7 @@ export class XtHandler {
       if (parsedArgs === null) {
         console.log('Incorrect type signature');
       } else {
-        callback(context, ...parsedArgs);
+        callback.call(client, context, ...parsedArgs);
       }
     }
   }

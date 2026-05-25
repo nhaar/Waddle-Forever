@@ -113,7 +113,7 @@ export class WorldServer implements MessageHandler {
         world: this._world
       }, message);
     } else {
-      this._xtHandler.handle(this.getContext(client), message);
+      this._xtHandler.handle(client, this.getContext(client), message);
     }
   }
 
