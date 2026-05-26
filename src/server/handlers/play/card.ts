@@ -1,5 +1,5 @@
 import { WorldContext } from "@server/socket-server/world/world";
-import { HandlerFunction, XtHandler } from "../xt";
+import { GuardFunction, HandlerFunction } from "../xt";
 import { COLOR_DISCARD_POWER_CARDS, ELEMENT_BLOCK_POWER_CARDS, ELEMENT_DISCARD_POWER_CARDS, NinjaPlayer, ON_PLAYED_POWER_CARDS, SELF_EFFECT_POWER_CARDS, Sensei } from "@server/socket-server/world/card";
 import { getStamp } from "./puffle";
 import { Stamp } from "@server/game-logic/stamps";
@@ -7,18 +7,16 @@ import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { JoinHandler } from "./join";
 import { sendMail } from "./mail";
 
-const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card']>(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card']);
-
 type CardHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card'], T>;
 
-const handleEnterGame: CardHandler<[]> = ({ card, penguin, msg }) => {
+export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => {
   const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);
   // TODO why is seats duplicated?
   msg.send(penguin, 'gz', card.getPlayerCount(), card.getPlayerCount());
   msg.send(penguin, 'jz', seatNumber, penguin.name, penguin.inventory.color, penguin.ninja.cardRank);
 }
 
-const handleUpdateGameSeats: CardHandler<[]> = ({ msg, penguin, card }) => {
+export const handleUpdateCardSeats: CardHandler<[]> = ({ msg, penguin, card }) => {
   const playersInfo = [
     ...(card.sensei ? [[0, 'Sensei', 14, 10]] : []),
     ...card.getPlayers().map((p, i) => [i + (card.sensei ? 1 : 0), p.name, p.inventory.color, p.ninja.cardRank])
@@ -229,7 +227,7 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
   }
 }
 
-const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action, arg) => {
+export const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action, arg) => {
   if (action === 'deal') {
     handleCardJitsuDeal(ctx, arg);
   } else if (action === 'pick') {
@@ -237,7 +235,7 @@ const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action, arg) 
   }
 }
 
-const handleQuitGame: CardHandler<[]> = (ctx) => {
+export const handleQuitCard: CardHandler<[]> = (ctx) => {
   const { card, msg, penguin } = ctx;
   exitGame(ctx);
   const seat = card.getSeatId(penguin);
@@ -246,11 +244,4 @@ const handleQuitGame: CardHandler<[]> = (ctx) => {
   msg.send(card.getPlayers(), 'lz', seat);
 }
 
-handler.xt('z', 'gz', ['number'], handleEnterGame);
-handler.xt('z', 'uz', [], handleUpdateGameSeats);
-handler.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction);
-handler.xt('z', 'lz', [], handleQuitGame);
-
-export {
-  handler as cardHandler
-};
+export const isCardJitsuGuard: GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card']> = ({ card }) => card !== undefined;

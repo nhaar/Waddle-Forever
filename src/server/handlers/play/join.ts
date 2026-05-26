@@ -5,7 +5,7 @@ import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
 import { PenguinMessenger } from '../messenger';
-import { GuardFunction, HandlerFunction, XtHandler } from '../xt';
+import { GuardFunction, HandlerFunction } from '../xt';
 import { getClientPuffleIds } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
 import { WorldTable } from '@server/socket-server/world/world-table';
@@ -17,11 +17,11 @@ import { CARDS } from '@server/game-logic/cards';
 import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 
-const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
 export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
 export type RoomHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room'], T>;
 export type RoomGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']>;
+export type PenguinGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>;
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand
@@ -135,7 +135,7 @@ export function sendLPMessage(penguin: WorldPenguin, data: GameData, msg: Pengui
   );
 }
 
-const sendStamps: JoinHandler<[]> = async ({ msg, penguin }) => {
+export const sendStamps: JoinHandler<[]> = async ({ msg, penguin }) => {
   await msg.send(penguin, 'gps', penguin.id, penguin.stampbook.stamps.join('|'));
 }
 
@@ -212,8 +212,6 @@ export const handleJoinServer: JoinHandler<[]> = async (ctx) => {
   enterRoom(data, msg, penguin, town, 0, 0);
 }
 
-handler.xt([['s', 'j#js']], [], handleJoinServer);
-
 export const leaveRoom: RoomHandler<[]> = async (ctx) => {
   const { room, penguin, msg, data } = ctx;
   room.removePenguin(penguin);
@@ -238,15 +236,9 @@ export const joinRoom: JoinHandler<[number, number, number]> = (ctx, id: number,
   }
 }
 
-handler.xt([['s', 'j#jr']], ['number', 'number', 'number'], (ctx, id, x, y) => {
-  joinRoom(ctx, id, x ,y);
-});
-
 export const handleGetItems: JoinHandler<[]> = ({ penguin, msg, data }) => {
   msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
 }
-
-handler.xt([['s', 'i#gi']], [], handleGetItems);
 
 const addStarterDeck: JoinHandler<[number[]]> = ({ prst, penguin }, cards) => {
   const cardInfo = cards.map(id => CARDS.getStrict(id));
@@ -271,30 +263,11 @@ export const handleAddItem: JoinHandler<[number]> = (ctx, item) => {
   prst(penguin);
 }
 
-handler.xt([['s', 'i#ai']], ['number'], handleAddItem);
-
-handler.xt('s', 'l#mst', [], ({ penguin, msg }) => {
-  msg.send(penguin, 'mst', penguin.mail.unread, penguin.mail.total);
-});
-
-handler.xt('s', 'l#mg', [], ({ penguin, msg }) => {
-  const postcards = penguin.mail.mail.map(m => [
-    m.sender.name,
-    m.sender.id,
-    m.postcard.postcardId,
-    m.postcard.details,
-    m.postcard.timestamp,
-    m.postcard.uid,
-    m.postcard.read ? 1 : 0
-  ].join('|'));
-  msg.send(penguin, 'mg', ...postcards);
-});
-
-handler.xt('s', 'n#gn', [], ({ msg, penguin }) => {
+export const handleGN: JoinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gn', '');
-});
+}
 
-handler.xt('s', 'b#gb', [], ({ msg, penguin, data }) => {
+export const handleGetBuddyNew: JoinHandler<[]> = ({ msg, penguin, data }) => {
   msg.send(penguin, 'gb', '');
 
   // TODO these aren't to do with buddies
@@ -303,7 +276,7 @@ handler.xt('s', 'b#gb', [], ({ msg, penguin, data }) => {
     msg.send(penguin, 'pbr', '');
     msg.send(penguin, 'gc', '');
   }
-});
+}
 
 export const handleJoinPlayerOld: JoinHandler<[number, number]> = async (ctx, ownerId, isMember) => {
   const { world, db, data, msg, penguin } = ctx;
@@ -325,65 +298,69 @@ export const handleJoinPlayerOld: JoinHandler<[number, number]> = async (ctx, ow
   joinRoom(ctx, roomId, 0, 0);
 }
 
-handler.xt('s', 'j#jp', ['number'], ({ msg, penguin, world, data }, fakeId) => {
+export const handleJoinPlayerCpip: JoinHandler<[number]> = ({ msg, penguin, world, data }, fakeId) => {
   // for some reason the ID given is the player + 1000
   // in WF igloo room IDs are playerID + 2000
   const iglooId = fakeId + 1000;
   const igloo = world.getRoom(iglooId);
   enterRoom(data, msg, penguin, igloo, 0, 0);
-});
+}
 
-handler.xt('s', 'j#jp', ['number', 'string'], ({ msg, penguin, data, world }, playerId, roomType) => {
+export const handleJoinPlayerModern: JoinHandler<[number, string]> = ({ msg, penguin, data, world }, playerId, roomType) => {
   // 1000 = backyard
   const roomId = roomType === 'igloo' ? playerId + 2000 : 1000;
   msg.send(penguin, 'jp', roomId, roomId, roomType);
   // TODO: backyard should only be player itself?
   enterRoom(data, msg, penguin, world.getRoom(roomId), 0, 0);
-});
+}
 
-handler.xt('s', 'u#glr', [], ({ msg, penguin }) => {
+export const isPreBackyardGuard: PenguinGuard = (ctx) => !isBackyardGuard(ctx);
+
+export const isBackyardGuard: PenguinGuard = ({ data }) => data.isVanillaEngine();
+
+export const handleGLR: JoinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'glr', '');
-});
+}
 
-handler.xt('s', 'u#pbi', ['string'], ({ msg, penguin }, id) => {
+export const handlePBI: JoinHandler<[string]> = ({ msg, penguin }, id) => {
   msg.send(penguin ,'pbi', id);
-});
+}
 
-handler.xt('s', 'r#gtc', [], ({ penguin, msg }) => {
+export const handleGetTotalCoins: JoinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'gtc', penguin.currency.coins);
-});
+}
 
 export const handleSendCoins: JoinHandler<[]> = ({ penguin, msg }) => {
   // TODO something to do with table spectators
   msg.send(penguin, 'ac', penguin.currency.coins);
 }
 
-handler.xt('s', 'gc', [], ({ penguin, msg }) => {
+export const handleGetCoins: JoinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'gc', penguin.currency.coins);
-});
+}
 
-handler.xt('k', 'spy', [], ({ penguin }) => {
+export const handleSpyRequest: JoinHandler<[]> = ({ penguin }) => {
   penguin.psa.setAgentPending();
-});
+}
 
-handler.xt('s', 'il', [], () => {
+export const handleReceiveInventory: JoinHandler<[]> = () => {
   // seemingly useless handler, it just sends the client's inventory to the server
   return;
-});
+}
 
-const sendGetBuddies: JoinHandler<[]> = async ({ msg, penguin, world, db }) => {
+export const sendGetBuddies: JoinHandler<[]> = async ({ msg, penguin, world, db }) => {
   const buddies = await Promise.all(penguin.buddy.buddies.map(id => {
     return formatBuddyEntry(id, world, db, true);
   }));
   msg.send(penguin, 'gb', ...buddies);
 }
 
-const sendBuddyOnlineList: JoinHandler<[]> = ({ msg, penguin, world }) => {
+export const sendBuddyOnlineList: JoinHandler<[]> = ({ msg, penguin, world }) => {
   const onlineIds = penguin.buddy.buddies.filter(id => world.getById(id) !== undefined);
   msg.send(penguin, 'go', ...onlineIds);
 }
 
-const handleBuddyRequest: JoinHandler<[number]> = (ctx, targetId) => {
+export const handleBuddyRequest: JoinHandler<[number]> = (ctx, targetId) => {
   const { msg, penguin, world, data, prst } = ctx;
   const target = world.getById(targetId);
   if (target === undefined) {
@@ -406,7 +383,7 @@ const handleBuddyRequest: JoinHandler<[number]> = (ctx, targetId) => {
   prst(target);
 }
 
-const handleBuddyAccept: JoinHandler<[number]> = async (ctx, requesterId) => {
+export const handleBuddyAccept: JoinHandler<[number]> = async (ctx, requesterId) => {
   const { world, db, penguin, prst, msg, data } = ctx;
   const requester = world.getById(requesterId);
 
@@ -436,7 +413,7 @@ const handleBuddyAccept: JoinHandler<[number]> = async (ctx, requesterId) => {
   prst(penguin);
 }
 
-const handleBuddyDecline: JoinHandler<[number]> = (ctx, requesterId) => {
+export const handleBuddyDecline: JoinHandler<[number]> = (ctx, requesterId) => {
   const { msg, world, penguin } = ctx;
 
   const requester = world.getById(requesterId);
@@ -445,7 +422,7 @@ const handleBuddyDecline: JoinHandler<[number]> = (ctx, requesterId) => {
   }
 }
 
-const handleBuddyRemove: JoinHandler<[number]> = async (ctx, removeId) => {
+export const handleBuddyRemove: JoinHandler<[number]> = async (ctx, removeId) => {
   const { penguin, prst, world, data, msg, db } = ctx;
   
   const changed = penguin.buddy.remove(removeId);
@@ -475,7 +452,7 @@ const handleBuddyRemove: JoinHandler<[number]> = async (ctx, removeId) => {
   }
 }
 
-const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messageId) => {
+export const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messageId) => {
   const { msg , world, penguin } = ctx;
   const target = world.getById(targetId);
   if (target !== undefined) {
@@ -483,7 +460,7 @@ const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messag
   }
 }
 
-const handleGetPlayer: JoinHandler<[number]> = async (ctx, playerId) => {
+export const handleGetPlayer: JoinHandler<[number]> = async (ctx, playerId) => {
   const { world, msg, penguin, data, db } = ctx
   const target = world.getById(playerId);
   if (target === undefined) {
@@ -499,7 +476,7 @@ const handleGetPlayer: JoinHandler<[number]> = async (ctx, playerId) => {
   }
 }
 
-const handleDisconnect = async (ctx: Partial<WorldContext>) => {
+export const handleDisconnect = async (ctx: Partial<WorldContext>) => {
   if (
     ctx.penguin !== undefined &&
     ctx.msg !== undefined &&
@@ -565,16 +542,16 @@ const handleDisconnect = async (ctx: Partial<WorldContext>) => {
   }
 }
 
-handler.xt('z', 'ggd', [], ({ msg, penguin }) => {
+export const handleGetPuffleLaunchData: JoinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', penguin.puffleLaunch.data === null ? '' : penguin.puffleLaunch.data.toString('utf-8') );
-});
+}
 
-const handleSetPuffleLaunchData: JoinHandler<[string]> = ({ prst, penguin }, data) => {
+export const handleSetPuffleLaunchData: JoinHandler<[string]> = ({ prst, penguin }, data) => {
   penguin.puffleLaunch.set(Buffer.from(data));
   prst(penguin);
 }
 
-const handleGetSpyDrillsChallenge: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetSpyDrillsChallenge: JoinHandler<[]> = ({ msg, penguin }) => {
   // The original algorithm is unknown, so we are using experimental data to simulate it
   const randomOption = choose(SPY_DRILLS_DATA);
   const [games, medalCount] = randomOption;
@@ -598,20 +575,16 @@ const handleGetSpyDrillsChallenge: JoinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'zr', games.join(','), medalCount);
 }
 
-const handleGetSpyDrillsReward: JoinHandler<[number]> = ({ penguin, prst }, medals) => {
+export const handleGetSpyDrillsReward: JoinHandler<[number]> = ({ penguin, prst }, medals) => {
   penguin.epf.addMedals(medals);
   prst(penguin);
 }
 
-handler.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData);
-handler.xt('z', 'zr', [], handleGetSpyDrillsChallenge);
-handler.xt('z', 'zc', ['number'], handleGetSpyDrillsReward);
-
-handler.xt('s', 'u#h', [], ({ msg, penguin }) => {
+export const handleHeartbeat: JoinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'h', '');
-});
+}
 
-const handleGetPinInfo: JoinHandler<[number]> = (ctx) => {
+export const handleGetPinInfo: JoinHandler<[number]> = (ctx) => {
   const { msg, penguin, data } = ctx;
 
   const pins = penguin.inventory.items.filter((item) => {
@@ -625,7 +598,7 @@ const handleGetPinInfo: JoinHandler<[number]> = (ctx) => {
   msg.send(penguin, 'qpp', ...pins);
 }
 
-const handleGetMissionStamps: JoinHandler<[]> = (ctx) => {
+export const handleGetMissionStamps: JoinHandler<[]> = (ctx) => {
   const { msg, penguin, data } = ctx;
   
   const awards = penguin.inventory.items.filter(id => {
@@ -636,7 +609,7 @@ const handleGetMissionStamps: JoinHandler<[]> = (ctx) => {
   msg.send(penguin, 'qpa', penguin.id, awards.join('|'));
 }
 
-const handleGetStampbookCoverData: JoinHandler<[number]> = (ctx) => {
+export const handleGetStampbookCoverData: JoinHandler<[number]> = (ctx) => {
   const { msg, penguin } = ctx;
 
   const stamps = penguin.stampbook.cover.stamps.map(stamp => [
@@ -653,13 +626,13 @@ const handleGetStampbookCoverData: JoinHandler<[number]> = (ctx) => {
   );
 }
 
-const handleGetRecentStamps: JoinHandler<[]> = ({ msg, penguin, prst }) => {
+export const handleGetRecentStamps: JoinHandler<[]> = ({ msg, penguin, prst }) => {
   msg.send(penguin, 'gmres', penguin.stampbook.recentStamps.join('|'));
   penguin.stampbook.clearRecentStamps();
   prst(penguin);
 }
 
-const handleSetStampbookCoverData: JoinHandler<string[]> = ({ penguin, prst }, color, highlight, pattern, icon, ...stamps) => {
+export const handleSetStampbookCoverData: JoinHandler<string[]> = ({ penguin, prst }, color, highlight, pattern, icon, ...stamps) => {
   penguin.stampbook.setCover(
     Number(color),
     Number(highlight),
@@ -679,26 +652,26 @@ const handleSetStampbookCoverData: JoinHandler<string[]> = ({ penguin, prst }, c
   prst(penguin);
 }
 
-const handleSetStampEarned: JoinHandler<[number]> = ({ penguin, prst }, stampId) => {
+export const handleSetStampEarned: JoinHandler<[number]> = ({ penguin, prst }, stampId) => {
   penguin.stampbook.add(stampId);
   prst(penguin);
 }
 
-const handleGetEpfStatus: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetEpfStatus: JoinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'epfga', penguin.inventory.has(8009) ? 1 : 0);
 }
 
-const handleGetFieldOps: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetFieldOps: JoinHandler<[]> = ({ penguin, msg }) => {
   // sends an integer boolean, FALSE if there is an active field ops
   // that wasn't done
   msg.send(penguin, 'epfgf', 0);
 }
 
-const handleGetEpfMedals: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetEpfMedals: JoinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'epfgr', penguin.epf.careerMedals, penguin.epf.medals);
 }
 
-const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, prst }, itemId) => {
+export const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, prst }, itemId) => {
   const item = data.getItem(itemId);
   if (!item.isEPF) {
     throw new Error(`Item ${itemId} is marked as not being from EPF, but is being bought through it`);
@@ -710,23 +683,23 @@ const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, prst }, i
   prst(penguin);
 }
 
-const handleBecomeAgent: JoinHandler<[]> = ({ prst, msg, penguin }) => {
+export const handleBecomeAgent: JoinHandler<[]> = ({ prst, msg, penguin }) => {
   msg.send(penguin, 'epfsa', 1);
   prst(penguin);
 }
 
-const handleGrantAwards: JoinHandler<[number]> = ({ prst, penguin }, medals) => {
+export const handleGrantAwards: JoinHandler<[number]> = ({ prst, penguin }, medals) => {
   penguin.epf.addMedals(medals);
   prst(penguin);
 }
 
-const handleGetPartyOp: JoinHandler<[]> = ({ msg, data, penguin }) => {
+export const handleGetPartyOp: JoinHandler<[]> = ({ msg, data, penguin }) => {
   if (data.getPartyOp() === 'battle-of-doom') {
     msg.send(penguin, 'epfgp', penguin.battleOfDoom.completed ? 1 : 0);
   }
 }
 
-const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst }, completed) => {
+export const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst }, completed) => {
   if (completed === 1) {
     if (data.getPartyOp() === 'battle-of-doom') {
       penguin.battleOfDoom.setComplete();
@@ -736,7 +709,7 @@ const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst }, comple
   prst(penguin);
 }
 
-const handleEPFStamp: JoinHandler<[number]> = ({ msg, penguin }, stamp) => {
+export const handleEPFStamp: JoinHandler<[number]> = ({ msg, penguin }, stamp) => {
   if (!isEPFAgent(penguin)) {
     msg.send(penguin, 'epfsf', 'naa'); // TODO document
   }
@@ -747,31 +720,3 @@ const handleEPFStamp: JoinHandler<[number]> = ({ msg, penguin }, stamp) => {
     msg.send(penguin, 'epfsf', 'nem', stamp); // giving the stamp
   }
 }
-
-handler.xt([['s', 'gb'], ['b', 'gb']], [], sendGetBuddies);
-handler.xt([['s', 'go'], ['b', 'go']], [], sendBuddyOnlineList);
-handler.xt([['s', 'bq'], ['b', 'br']], ['number'], handleBuddyRequest);
-handler.xt([['s', 'ba'], ['b', 'ba']], ['number'], handleBuddyAccept);
-handler.xt([['s', 'bd'], ['b', 'bd']], ['number'], handleBuddyDecline);
-handler.xt([['s', 'br'], ['b', 'rb']], ['number'], handleBuddyRemove);
-handler.xt([['s', 'bm'], ['b', 'bm']], ['number', 'number'], handleBuddyMessage);
-handler.xt([['s', 'gp'], ['p', 'gp']], ['number'], handleGetPlayer);
-handler.xt('s', 'i#qpp', ['number'], handleGetPinInfo);
-handler.xt('s', 'i#qpa', [], handleGetMissionStamps);
-handler.xt('s', 'st#gsbcd', ['number'], handleGetStampbookCoverData);
-handler.xt('s', 'st#gps', [], sendStamps);
-handler.xt('s', 'st#gmres', [], handleGetRecentStamps);
-handler.xt('s', 'st#ssbcd', 'string', handleSetStampbookCoverData);
-handler.xt('s', 'st#sse', ['number'], handleSetStampEarned);
-handler.xt('s', 'f#epfga', [], handleGetEpfStatus);
-handler.xt('s', 'f#epfgf', [], handleGetFieldOps);
-handler.xt('s', 'f#epfgr', [], handleGetEpfMedals);
-handler.xt('s', 'f#epfai', ['number'], handleAddEpfItem);
-handler.xt('s', 'f#epfsa', [], handleBecomeAgent);
-handler.xt('s', 'f#epfgrantreward', ['number'], handleGrantAwards);
-handler.xt('s', 'f#epfgp', [], handleGetPartyOp);
-handler.xt('s', 'f#epfsp', ['number'], handleSetPartyOp);
-handler.xt('z', 'epfsf', ['number'], handleEPFStamp);
-handler.addDisconnect(handleDisconnect);
-
-export { handler as joinHandler };

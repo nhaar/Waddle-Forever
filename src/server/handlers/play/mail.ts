@@ -4,6 +4,23 @@ import { JoinHandler } from "./join";
 
 const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
+export const handleMailTotal: JoinHandler<[]> = ({ penguin, msg }) => {
+  msg.send(penguin, 'mst', penguin.mail.unread, penguin.mail.total);
+}
+
+export const handleGetMail: JoinHandler<[]> = ({ penguin, msg }) => {
+  const postcards = penguin.mail.mail.map(m => [
+    m.sender.name,
+    m.sender.id,
+    m.postcard.postcardId,
+    m.postcard.details,
+    m.postcard.timestamp,
+    m.postcard.uid,
+    m.postcard.read ? 1 : 0
+  ].join('|'));
+  msg.send(penguin, 'mg', ...postcards);
+}
+
 const handleSendCard: JoinHandler<[number, number, number]> = (ctx, recipientId, cardId, cost) => {
   const { msg, prst, penguin, world } = ctx;
   const postcardCost = 10;
