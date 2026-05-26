@@ -211,7 +211,7 @@ export const handleJoinServer: JoinHandler<[]> = async (ctx) => {
   enterRoom(data, msg, penguin, town, 0, 0);
 }
 
-handler.xt([['s', 'js'], ['s', 'j#js']], [], handleJoinServer);
+handler.xt([['s', 'j#js']], [], handleJoinServer);
 
 export const leaveRoom: RoomHandler<[]> = async (ctx) => {
   const { room, penguin, msg, data } = ctx;
@@ -237,13 +237,15 @@ export const joinRoom: JoinHandler<[number, number, number]> = (ctx, id: number,
   }
 }
 
-handler.xt([['s', 'jr'], ['s', 'j#jr']], ['number', 'number', 'number'], (ctx, id, x, y) => {
+handler.xt([['s', 'j#jr']], ['number', 'number', 'number'], (ctx, id, x, y) => {
   joinRoom(ctx, id, x ,y);
 });
 
-handler.xt([['s', 'gi'], ['s', 'i#gi']], [], ({ penguin, msg, data }) => {
+export const handleGetItems: JoinHandler<[]> = ({ penguin, msg, data }) => {
   msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
-});
+}
+
+handler.xt([['s', 'i#gi']], [], handleGetItems);
 
 const addStarterDeck: JoinHandler<[number[]]> = ({ prst, penguin }, cards) => {
   const cardInfo = cards.map(id => CARDS.getStrict(id));
@@ -255,7 +257,7 @@ const addStarterDeck: JoinHandler<[number[]]> = ({ prst, penguin }, cards) => {
   prst(penguin);
 }
 
-handler.xt([['s', 'ai'], ['s', 'i#ai']], ['number'], (ctx, item) => {
+export const handleAddItem: JoinHandler<[number]> = (ctx, item) => {
   const { penguin, msg, data, prst } = ctx;
   const deck = STARTER_DECKS[item];
   if (deck !== undefined) {
@@ -266,7 +268,9 @@ handler.xt([['s', 'ai'], ['s', 'i#ai']], ['number'], (ctx, item) => {
   penguin.inventory.add(item);
   msg.send(penguin, 'ai', item, penguin.currency.discount(info.cost));
   prst(penguin);
-});
+}
+
+handler.xt([['s', 'i#ai']], ['number'], handleAddItem);
 
 handler.xt('s', 'l#mst', [], ({ penguin, msg }) => {
   msg.send(penguin, 'mst', penguin.mail.unread, penguin.mail.total);
@@ -300,7 +304,7 @@ handler.xt('s', 'b#gb', [], ({ msg, penguin, data }) => {
   }
 });
 
-handler.xt('s', 'jp', ['number', 'number'], async (ctx, ownerId, isMember) => {
+export const handleJoinPlayerOld: JoinHandler<[number, number]> = async (ctx, ownerId, isMember) => {
   const { world, db, data, msg, penguin } = ctx;
   const igloo = await getIglooFromId(world, db, ownerId);
   if (igloo === undefined) {
@@ -318,7 +322,7 @@ handler.xt('s', 'jp', ['number', 'number'], async (ctx, ownerId, isMember) => {
   msg.send(penguin, 'jp', ...args, ',' + getFurnitureString(igloo.furniture));
   const roomId = 2000 + ownerId;
   joinRoom(ctx, roomId, 0, 0);
-});
+}
 
 handler.xt('s', 'j#jp', ['number'], ({ msg, penguin, world, data }, fakeId) => {
   // for some reason the ID given is the player + 1000
@@ -348,10 +352,10 @@ handler.xt('s', 'r#gtc', [], ({ penguin, msg }) => {
   msg.send(penguin, 'gtc', penguin.currency.coins);
 });
 
-handler.xt('s', 'ac', [], ({ penguin, msg }) => {
+export const handleSendCoins: JoinHandler<[]> = ({ penguin, msg }) => {
   // TODO something to do with table spectators
   msg.send(penguin, 'ac', penguin.currency.coins);
-});
+}
 
 handler.xt('s', 'gc', [], ({ penguin, msg }) => {
   msg.send(penguin, 'gc', penguin.currency.coins);
