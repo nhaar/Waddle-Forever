@@ -1,12 +1,12 @@
 import { logverbose } from "@server/logger";
-import { ClientSocket } from "@server/socket-server";
+import { ClientSocket } from "@server/socket-server/socket-server";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 
-function getXtMessageLastless(handler: string, ...args: Array<number | string>): string {
+const getXtMessageLastless = (handler: string, ...args: Array<number | string>): string => {
   return `%xt%${handler}%-1%` + args.join('%');
 }
 
-export function getXtMessage(handler: string, ...args: Array<number | string>): string {
+const getXtMessage = (handler: string, ...args: Array<number | string>): string => {
   return getXtMessageLastless(handler, ...args) + '%';
 }
 

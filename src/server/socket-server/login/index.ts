@@ -5,7 +5,7 @@ import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
 import { GameData } from "@server/timelines/game-data";
 
-import { ClientSocket, MessageHandler, setupSocketServer } from "..";
+import { ClientSocket, MessageHandler, setupSocketServer } from "../socket-server";
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 

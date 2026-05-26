@@ -3,7 +3,7 @@ import { World } from "./world"
 import { GameData } from "@server/timelines/game-data"
 import { SettingsManager } from "@server/settings"
 import { PenguinRepository } from "@server/database/database"
-import { ClientSocket } from ".."
+import { ClientSocket } from "../socket-server"
 
 export type LoginContext = {
   msg: PenguinMessenger,

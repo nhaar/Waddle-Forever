@@ -1,5 +1,5 @@
 import { PenguinMessenger } from "../messenger";
-import { ClientSocket } from "@server/socket-server";
+import { ClientSocket } from "@server/socket-server/socket-server";
 import { Igloo, PenguinJson } from "@server/database/database";
 import { logdebug } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";

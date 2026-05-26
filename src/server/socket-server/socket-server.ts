@@ -59,9 +59,9 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
         });
       });
 
-      ws.emit('message', req)
+      ws.emit('message', req);
 
-      ws.on('error', console.error)
+      ws.on('error', console.error);
     });
   
     net.createServer((socket) => {
@@ -112,7 +112,7 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
           // Re-emit the data so the TCP handler gets the first packet too
           socket.emit('data', buffer);
 
-          socket.on('error', console.error)
+          socket.on('error', console.error);
         }
       });
     }).listen(port, () => {
