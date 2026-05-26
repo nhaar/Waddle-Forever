@@ -46,7 +46,10 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
       }
 
       ws.on('message', (data) => {
-        handler.handle(cs, data.toString());
+        const str = data.toString();
+        if (!str.startsWith('GET')) {
+          handler.handle(cs, data.toString());
+        }
       });
 
       ws.on('close', () => {
