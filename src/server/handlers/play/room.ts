@@ -1,11 +1,8 @@
-import { WorldContext } from "@server/socket-server/world/world";
-import { XtHandler } from "../xt";
-import { getPenguinString, RoomGuard, RoomHandler } from "./join";
+import { getPenguinString } from "./join";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
-
-const handler = new XtHandler<WorldContext, ['world', 'penguin', 'room', 'msg', 'data', 'prst', 'db']>(['world', 'penguin', 'room', 'msg', 'data', 'prst', 'db']);
+import { RoomGuard, RoomHandler } from "../handlers";
 
 export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg }, x, y) => {
   room.updatePosition(penguin, x, y);
@@ -378,7 +375,3 @@ export const isTableGuard: RoomGuard = ({ room }) => {
 export const isHockeyGuard: RoomGuard = ({ room }) => {
   return room.id === ROOMS.rink.id || room.id === ROOMS.pitch.id
 }
-
-export {
-  handler as roomHandler
-};

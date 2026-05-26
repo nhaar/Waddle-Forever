@@ -5,7 +5,6 @@ import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
 import { PenguinMessenger } from '../messenger';
-import { GuardFunction, HandlerFunction } from '../xt';
 import { getClientPuffleIds } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
 import { WorldTable } from '@server/socket-server/world/world-table';
@@ -16,12 +15,8 @@ import { STARTER_DECKS } from '@server/game-logic/starter-deck';
 import { CARDS } from '@server/game-logic/cards';
 import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
+import { PenguinHandler, PenguinGuard, RoomHandler } from '../handlers';
 
-
-export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'settings'], T>;
-export type RoomHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room'], T>;
-export type RoomGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']>;
-export type PenguinGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>;
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand
@@ -135,11 +130,11 @@ export function sendLPMessage(penguin: WorldPenguin, data: GameData, msg: Pengui
   );
 }
 
-export const sendStamps: JoinHandler<[]> = async ({ msg, penguin }) => {
+export const sendStamps: PenguinHandler<[]> = async ({ msg, penguin }) => {
   await msg.send(penguin, 'gps', penguin.id, penguin.stampbook.stamps.join('|'));
 }
 
-export const handleJoinServer: JoinHandler<[]> = async (ctx) => {
+export const handleJoinServer: PenguinHandler<[]> = async (ctx) => {
   const { world, penguin, data, msg } = ctx;
   // penguins don't keep the puffle from previous session
   unequipPuffle(penguin);
@@ -218,7 +213,7 @@ export const leaveRoom: RoomHandler<[]> = async (ctx) => {
   await msg.send(room.players, 'rp', penguin.id, ...room.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
 }
 
-export const joinRoom: JoinHandler<[number, number, number]> = (ctx, id: number, x: number, y: number) => {
+export const joinRoom: PenguinHandler<[number, number, number]> = (ctx, id: number, x: number, y: number) => {
   const { world, penguin, msg, data, room, sled } = ctx;
   if (room !== undefined) {
     leaveRoom({ ...ctx, room });
@@ -236,11 +231,11 @@ export const joinRoom: JoinHandler<[number, number, number]> = (ctx, id: number,
   }
 }
 
-export const handleGetItems: JoinHandler<[]> = ({ penguin, msg, data }) => {
+export const handleGetItems: PenguinHandler<[]> = ({ penguin, msg, data }) => {
   msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
 }
 
-const addStarterDeck: JoinHandler<[number[]]> = ({ prst, penguin }, cards) => {
+const addStarterDeck: PenguinHandler<[number[]]> = ({ prst, penguin }, cards) => {
   const cardInfo = cards.map(id => CARDS.getStrict(id));
   const powerCards = cardInfo.filter(c => c.powerId > 0);
   const normalCards = cardInfo.filter(c => c.powerId === 0);
@@ -250,7 +245,7 @@ const addStarterDeck: JoinHandler<[number[]]> = ({ prst, penguin }, cards) => {
   prst(penguin);
 }
 
-export const handleAddItem: JoinHandler<[number]> = (ctx, item) => {
+export const handleAddItem: PenguinHandler<[number]> = (ctx, item) => {
   const { penguin, msg, data, prst } = ctx;
   const deck = STARTER_DECKS[item];
   if (deck !== undefined) {
@@ -263,11 +258,11 @@ export const handleAddItem: JoinHandler<[number]> = (ctx, item) => {
   prst(penguin);
 }
 
-export const handleGN: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGN: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gn', '');
 }
 
-export const handleGetBuddyNew: JoinHandler<[]> = ({ msg, penguin, data }) => {
+export const handleGetBuddyNew: PenguinHandler<[]> = ({ msg, penguin, data }) => {
   msg.send(penguin, 'gb', '');
 
   // TODO these aren't to do with buddies
@@ -278,7 +273,7 @@ export const handleGetBuddyNew: JoinHandler<[]> = ({ msg, penguin, data }) => {
   }
 }
 
-export const handleJoinPlayerOld: JoinHandler<[number, number]> = async (ctx, ownerId, isMember) => {
+export const handleJoinPlayerOld: PenguinHandler<[number, number]> = async (ctx, ownerId, isMember) => {
   const { world, db, data, msg, penguin } = ctx;
   const igloo = await getIglooFromId(world, db, ownerId);
   if (igloo === undefined) {
@@ -298,7 +293,7 @@ export const handleJoinPlayerOld: JoinHandler<[number, number]> = async (ctx, ow
   joinRoom(ctx, roomId, 0, 0);
 }
 
-export const handleJoinPlayerCpip: JoinHandler<[number]> = ({ msg, penguin, world, data }, fakeId) => {
+export const handleJoinPlayerCpip: PenguinHandler<[number]> = ({ msg, penguin, world, data }, fakeId) => {
   // for some reason the ID given is the player + 1000
   // in WF igloo room IDs are playerID + 2000
   const iglooId = fakeId + 1000;
@@ -306,7 +301,7 @@ export const handleJoinPlayerCpip: JoinHandler<[number]> = ({ msg, penguin, worl
   enterRoom(data, msg, penguin, igloo, 0, 0);
 }
 
-export const handleJoinPlayerModern: JoinHandler<[number, string]> = ({ msg, penguin, data, world }, playerId, roomType) => {
+export const handleJoinPlayerModern: PenguinHandler<[number, string]> = ({ msg, penguin, data, world }, playerId, roomType) => {
   // 1000 = backyard
   const roomId = roomType === 'igloo' ? playerId + 2000 : 1000;
   msg.send(penguin, 'jp', roomId, roomId, roomType);
@@ -318,49 +313,49 @@ export const isPreBackyardGuard: PenguinGuard = (ctx) => !isBackyardGuard(ctx);
 
 export const isBackyardGuard: PenguinGuard = ({ data }) => data.isVanillaEngine();
 
-export const handleGLR: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGLR: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'glr', '');
 }
 
-export const handlePBI: JoinHandler<[string]> = ({ msg, penguin }, id) => {
+export const handlePBI: PenguinHandler<[string]> = ({ msg, penguin }, id) => {
   msg.send(penguin ,'pbi', id);
 }
 
-export const handleGetTotalCoins: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetTotalCoins: PenguinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'gtc', penguin.currency.coins);
 }
 
-export const handleSendCoins: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleSendCoins: PenguinHandler<[]> = ({ penguin, msg }) => {
   // TODO something to do with table spectators
   msg.send(penguin, 'ac', penguin.currency.coins);
 }
 
-export const handleGetCoins: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetCoins: PenguinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'gc', penguin.currency.coins);
 }
 
-export const handleSpyRequest: JoinHandler<[]> = ({ penguin }) => {
+export const handleSpyRequest: PenguinHandler<[]> = ({ penguin }) => {
   penguin.psa.setAgentPending();
 }
 
-export const handleReceiveInventory: JoinHandler<[]> = () => {
+export const handleReceiveInventory: PenguinHandler<[]> = () => {
   // seemingly useless handler, it just sends the client's inventory to the server
   return;
 }
 
-export const sendGetBuddies: JoinHandler<[]> = async ({ msg, penguin, world, db }) => {
+export const sendGetBuddies: PenguinHandler<[]> = async ({ msg, penguin, world, db }) => {
   const buddies = await Promise.all(penguin.buddy.buddies.map(id => {
     return formatBuddyEntry(id, world, db, true);
   }));
   msg.send(penguin, 'gb', ...buddies);
 }
 
-export const sendBuddyOnlineList: JoinHandler<[]> = ({ msg, penguin, world }) => {
+export const sendBuddyOnlineList: PenguinHandler<[]> = ({ msg, penguin, world }) => {
   const onlineIds = penguin.buddy.buddies.filter(id => world.getById(id) !== undefined);
   msg.send(penguin, 'go', ...onlineIds);
 }
 
-export const handleBuddyRequest: JoinHandler<[number]> = (ctx, targetId) => {
+export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
   const { msg, penguin, world, data, prst } = ctx;
   const target = world.getById(targetId);
   if (target === undefined) {
@@ -383,7 +378,7 @@ export const handleBuddyRequest: JoinHandler<[number]> = (ctx, targetId) => {
   prst(target);
 }
 
-export const handleBuddyAccept: JoinHandler<[number]> = async (ctx, requesterId) => {
+export const handleBuddyAccept: PenguinHandler<[number]> = async (ctx, requesterId) => {
   const { world, db, penguin, prst, msg, data } = ctx;
   const requester = world.getById(requesterId);
 
@@ -413,7 +408,7 @@ export const handleBuddyAccept: JoinHandler<[number]> = async (ctx, requesterId)
   prst(penguin);
 }
 
-export const handleBuddyDecline: JoinHandler<[number]> = (ctx, requesterId) => {
+export const handleBuddyDecline: PenguinHandler<[number]> = (ctx, requesterId) => {
   const { msg, world, penguin } = ctx;
 
   const requester = world.getById(requesterId);
@@ -422,7 +417,7 @@ export const handleBuddyDecline: JoinHandler<[number]> = (ctx, requesterId) => {
   }
 }
 
-export const handleBuddyRemove: JoinHandler<[number]> = async (ctx, removeId) => {
+export const handleBuddyRemove: PenguinHandler<[number]> = async (ctx, removeId) => {
   const { penguin, prst, world, data, msg, db } = ctx;
   
   const changed = penguin.buddy.remove(removeId);
@@ -452,7 +447,7 @@ export const handleBuddyRemove: JoinHandler<[number]> = async (ctx, removeId) =>
   }
 }
 
-export const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId, messageId) => {
+export const handleBuddyMessage: PenguinHandler<[number, number]> = (ctx, targetId, messageId) => {
   const { msg , world, penguin } = ctx;
   const target = world.getById(targetId);
   if (target !== undefined) {
@@ -460,7 +455,7 @@ export const handleBuddyMessage: JoinHandler<[number, number]> = (ctx, targetId,
   }
 }
 
-export const handleGetPlayer: JoinHandler<[number]> = async (ctx, playerId) => {
+export const handleGetPlayer: PenguinHandler<[number]> = async (ctx, playerId) => {
   const { world, msg, penguin, data, db } = ctx
   const target = world.getById(playerId);
   if (target === undefined) {
@@ -543,16 +538,16 @@ export const handleDisconnect = async (ctx: Partial<WorldContext>) => {
   }
 }
 
-export const handleGetPuffleLaunchData: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetPuffleLaunchData: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', penguin.puffleLaunch.data === null ? '' : penguin.puffleLaunch.data.toString('utf-8') );
 }
 
-export const handleSetPuffleLaunchData: JoinHandler<[string]> = ({ prst, penguin }, data) => {
+export const handleSetPuffleLaunchData: PenguinHandler<[string]> = ({ prst, penguin }, data) => {
   penguin.puffleLaunch.set(Buffer.from(data));
   prst(penguin);
 }
 
-export const handleGetSpyDrillsChallenge: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetSpyDrillsChallenge: PenguinHandler<[]> = ({ msg, penguin }) => {
   // The original algorithm is unknown, so we are using experimental data to simulate it
   const randomOption = choose(SPY_DRILLS_DATA);
   const [games, medalCount] = randomOption;
@@ -576,16 +571,16 @@ export const handleGetSpyDrillsChallenge: JoinHandler<[]> = ({ msg, penguin }) =
   msg.send(penguin, 'zr', games.join(','), medalCount);
 }
 
-export const handleGetSpyDrillsReward: JoinHandler<[number]> = ({ penguin, prst }, medals) => {
+export const handleGetSpyDrillsReward: PenguinHandler<[number]> = ({ penguin, prst }, medals) => {
   penguin.epf.addMedals(medals);
   prst(penguin);
 }
 
-export const handleHeartbeat: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleHeartbeat: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'h', '');
 }
 
-export const handleGetPinInfo: JoinHandler<[number]> = (ctx) => {
+export const handleGetPinInfo: PenguinHandler<[number]> = (ctx) => {
   const { msg, penguin, data } = ctx;
 
   const pins = penguin.inventory.items.filter((item) => {
@@ -599,7 +594,7 @@ export const handleGetPinInfo: JoinHandler<[number]> = (ctx) => {
   msg.send(penguin, 'qpp', ...pins);
 }
 
-export const handleGetMissionStamps: JoinHandler<[]> = (ctx) => {
+export const handleGetMissionStamps: PenguinHandler<[]> = (ctx) => {
   const { msg, penguin, data } = ctx;
   
   const awards = penguin.inventory.items.filter(id => {
@@ -610,7 +605,7 @@ export const handleGetMissionStamps: JoinHandler<[]> = (ctx) => {
   msg.send(penguin, 'qpa', penguin.id, awards.join('|'));
 }
 
-export const handleGetStampbookCoverData: JoinHandler<[number]> = (ctx) => {
+export const handleGetStampbookCoverData: PenguinHandler<[number]> = (ctx) => {
   const { msg, penguin } = ctx;
 
   const stamps = penguin.stampbook.cover.stamps.map(stamp => [
@@ -627,13 +622,13 @@ export const handleGetStampbookCoverData: JoinHandler<[number]> = (ctx) => {
   );
 }
 
-export const handleGetRecentStamps: JoinHandler<[]> = ({ msg, penguin, prst }) => {
+export const handleGetRecentStamps: PenguinHandler<[]> = ({ msg, penguin, prst }) => {
   msg.send(penguin, 'gmres', penguin.stampbook.recentStamps.join('|'));
   penguin.stampbook.clearRecentStamps();
   prst(penguin);
 }
 
-export const handleSetStampbookCoverData: JoinHandler<string[]> = ({ penguin, prst }, color, highlight, pattern, icon, ...stamps) => {
+export const handleSetStampbookCoverData: PenguinHandler<string[]> = ({ penguin, prst }, color, highlight, pattern, icon, ...stamps) => {
   penguin.stampbook.setCover(
     Number(color),
     Number(highlight),
@@ -653,26 +648,26 @@ export const handleSetStampbookCoverData: JoinHandler<string[]> = ({ penguin, pr
   prst(penguin);
 }
 
-export const handleSetStampEarned: JoinHandler<[number]> = ({ penguin, prst }, stampId) => {
+export const handleSetStampEarned: PenguinHandler<[number]> = ({ penguin, prst }, stampId) => {
   penguin.stampbook.add(stampId);
   prst(penguin);
 }
 
-export const handleGetEpfStatus: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetEpfStatus: PenguinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'epfga', penguin.inventory.has(8009) ? 1 : 0);
 }
 
-export const handleGetFieldOps: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetFieldOps: PenguinHandler<[]> = ({ penguin, msg }) => {
   // sends an integer boolean, FALSE if there is an active field ops
   // that wasn't done
   msg.send(penguin, 'epfgf', 0);
 }
 
-export const handleGetEpfMedals: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetEpfMedals: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'epfgr', penguin.epf.careerMedals, penguin.epf.medals);
 }
 
-export const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, prst }, itemId) => {
+export const handleAddEpfItem: PenguinHandler<[number]> = ({ data, penguin, msg, prst }, itemId) => {
   const item = data.getItem(itemId);
   if (!item.isEPF) {
     throw new Error(`Item ${itemId} is marked as not being from EPF, but is being bought through it`);
@@ -684,23 +679,23 @@ export const handleAddEpfItem: JoinHandler<[number]> = ({ data, penguin, msg, pr
   prst(penguin);
 }
 
-export const handleBecomeAgent: JoinHandler<[]> = ({ prst, msg, penguin }) => {
+export const handleBecomeAgent: PenguinHandler<[]> = ({ prst, msg, penguin }) => {
   msg.send(penguin, 'epfsa', 1);
   prst(penguin);
 }
 
-export const handleGrantAwards: JoinHandler<[number]> = ({ prst, penguin }, medals) => {
+export const handleGrantAwards: PenguinHandler<[number]> = ({ prst, penguin }, medals) => {
   penguin.epf.addMedals(medals);
   prst(penguin);
 }
 
-export const handleGetPartyOp: JoinHandler<[]> = ({ msg, data, penguin }) => {
+export const handleGetPartyOp: PenguinHandler<[]> = ({ msg, data, penguin }) => {
   if (data.getPartyOp() === 'battle-of-doom') {
     msg.send(penguin, 'epfgp', penguin.battleOfDoom.completed ? 1 : 0);
   }
 }
 
-export const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst }, completed) => {
+export const handleSetPartyOp: PenguinHandler<[number]> = ({ data, penguin, prst }, completed) => {
   if (completed === 1) {
     if (data.getPartyOp() === 'battle-of-doom') {
       penguin.battleOfDoom.setComplete();
@@ -710,7 +705,7 @@ export const handleSetPartyOp: JoinHandler<[number]> = ({ data, penguin, prst },
   prst(penguin);
 }
 
-export const handleEPFStamp: JoinHandler<[number]> = ({ msg, penguin }, stamp) => {
+export const handleEPFStamp: PenguinHandler<[number]> = ({ msg, penguin }, stamp) => {
   if (!isEPFAgent(penguin)) {
     msg.send(penguin, 'epfsf', 'naa'); // TODO document
   }

@@ -1,13 +1,10 @@
 import { WorldContext } from "@server/socket-server/world/world";
-import { GuardFunction, HandlerFunction } from "../xt";
 import { COLOR_DISCARD_POWER_CARDS, ELEMENT_BLOCK_POWER_CARDS, ELEMENT_DISCARD_POWER_CARDS, NinjaPlayer, ON_PLAYED_POWER_CARDS, SELF_EFFECT_POWER_CARDS, Sensei } from "@server/socket-server/world/card";
 import { getStamp } from "./puffle";
 import { Stamp } from "@server/game-logic/stamps";
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
-import { JoinHandler } from "./join";
 import { sendMail } from "./mail";
-
-type CardHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card', 'settings'], T>;
+import { CardGuard, CardHandler, PenguinHandler } from "../handlers";
 
 export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => {
   const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);
@@ -38,7 +35,7 @@ const handleCardJitsuDeal: CardHandler<[number]> = ({ penguin, card, msg }, amou
   }
 }
 
-const ninjaRankUp: JoinHandler<[number]> = (ctx, previous) => {
+const ninjaRankUp: PenguinHandler<[number]> = (ctx, previous) => {
   const { prst, msg, penguin, data } = ctx;
   for (let i = previous + 1; i <= penguin.ninja.cardRank; i++) {
     penguin.inventory.add(CardJitsuProgress.ITEM_AWARDS[i - 1]);
@@ -55,7 +52,7 @@ const ninjaRankUp: JoinHandler<[number]> = (ctx, previous) => {
   prst(penguin);
 }
 
-const gainProgress: JoinHandler<[boolean]> = (ctx, won) => {
+const gainProgress: PenguinHandler<[boolean]> = (ctx, won) => {
   const { penguin, prst } = ctx;
   penguin.ninja.addWin();
 
@@ -244,4 +241,4 @@ export const handleQuitCard: CardHandler<[]> = (ctx) => {
   msg.send(card.getPlayers(), 'lz', seat);
 }
 
-export const isCardJitsuGuard: GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card']> = ({ card }) => card !== undefined;
+export const isCardJitsuGuard: CardGuard = ({ card }) => card !== undefined;

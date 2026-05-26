@@ -1,10 +1,10 @@
 import { World } from "@server/socket-server/world/world";
-import { JoinHandler } from "./join";
 import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
 import { PenguinMessenger } from "../messenger";
+import { PenguinHandler } from "../handlers";
 
-export const handleGetNinjaRanks: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetNinjaRanks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(
     penguin, 'gnr',
     penguin.id,
@@ -15,12 +15,12 @@ export const handleGetNinjaRanks: JoinHandler<[]> = ({ msg, penguin }) => {
   );
 }
 
-export const handleGetNinjaLevel: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetNinjaLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
   // ranke, percentage, unsure what 10 is
   msg.send(penguin, 'gnl', penguin.ninja.cardRank, penguin.ninja.cardPercentage, 10);
 }
 
-export const handleGetNinjaCards: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetNinjaCards: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gcd', penguin.ninja.cards.map((card) => {
     return card.join(',');
   }).join('|'));
@@ -30,7 +30,7 @@ function getAllPowerCards(): number[] {
   return CARDS.rows.filter((card) => card.powerId > 0).map(card => card.id);
 }
 
-export const handleBuyNinjaCards: JoinHandler<[]> = ({ msg, penguin, prst }) => {
+export const handleBuyNinjaCards: PenguinHandler<[]> = ({ msg, penguin, prst }) => {
   const powerCards = getAllPowerCards();
   const cards = chooseN(powerCards, 3);
   cards.forEach(card => {
@@ -52,12 +52,12 @@ export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
   });
 }
 
-export const handleJoinMatchmaking: JoinHandler<[]> = ({ msg, penguin, world }) => {
+export const handleJoinMatchmaking: PenguinHandler<[]> = ({ msg, penguin, world }) => {
   world.cardMatchmaker.addPlayer(penguin);
   msg.send(penguin, 'jmm', penguin.name);
 }
 
-export const handleJoinSensei: JoinHandler<[]> = ({ world, penguin, msg }) => {
+export const handleJoinSensei: PenguinHandler<[]> = ({ world, penguin, msg }) => {
   const game = world.getWaddleGame('card', [penguin]);
   msg.send(penguin, 'scard', game.roomId, 1000 + penguin.id, 1, 0, [penguin.name, penguin.inventory.color].join('|'));
 }

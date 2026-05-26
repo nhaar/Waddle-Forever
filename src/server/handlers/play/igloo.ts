@@ -1,11 +1,10 @@
-import { World, WorldContext } from "@server/socket-server/world/world";
-import { HandlerFunction } from "../xt";
+import { World } from "@server/socket-server/world/world";
 import { Igloo, IglooFurniture, PenguinJson, PenguinRepository } from "@server/database/database";
 import { FURNITURE } from "@server/game-logic/furniture";
 import { getFlooringCost, getIglooCost } from "@server/game-logic/iglooItems";
 import { getStamp } from "./puffle";
+import { PenguinHandler } from "../handlers";
 
-type IglooHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'msg', 'world', 'data', 'db', 'prst'], T>;
 
 export async function getIglooFromId(world: World, db: PenguinRepository, ownerId: number): Promise<Igloo | undefined> {
   return world.getById(ownerId)?.igloo.activeIgloo ??
@@ -29,7 +28,7 @@ export function getFurnitureString(furniture: IglooFurniture): string {
   }).join(',');
 }
 
-export const getIglooOld: IglooHandler<[number]> = async (ctx, ownerId) => {
+export const getIglooOld: PenguinHandler<[number]> = async (ctx, ownerId) => {
   const { world, db, msg, penguin } = ctx;
   const igloo = await getIglooFromId(world, db, ownerId);
   if (igloo === undefined) {
@@ -55,7 +54,7 @@ function getModernIglooString(igloo: Igloo, index: number): string {
   ].join(':');
 }
 
-export const handleGetIglooCpip: IglooHandler<[number]> = ({ world, penguin, msg, data }, penguinId) => {
+export const handleGetIglooCpip: PenguinHandler<[number]> = ({ world, penguin, msg, data }, penguinId) => {
   const host = world.getById(penguinId);
   if (host !== undefined) {
     // const igloo = host.getOwnIglooString();
@@ -69,7 +68,7 @@ export const handleGetIglooCpip: IglooHandler<[number]> = ({ world, penguin, msg
   }
 }
 
-export const handleGetIglooItems: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetIglooItems: PenguinHandler<[]> = ({ msg, penguin }) => {
   // No idea what these zeros are used for
   const zeros = '0000000000';
   const furnitureInfo = penguin.igloo.furniture.map((pair) => {
@@ -96,7 +95,7 @@ export const handleGetIglooItems: IglooHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gii', ...information);
 }
 
-export const handleAddFurniture: IglooHandler<[number]> = (ctx, furnitureId) => {
+export const handleAddFurniture: PenguinHandler<[number]> = (ctx, furnitureId) => {
   const { penguin, msg, prst } = ctx;
   const item = FURNITURE.getStrict(furnitureId);
   penguin.igloo.addFurniture(furnitureId, 1);
@@ -104,7 +103,7 @@ export const handleAddFurniture: IglooHandler<[number]> = (ctx, furnitureId) => 
   prst(penguin);
 };
 
-export const handleAddIgloo: IglooHandler<[number]> = (ctx, iglooId) => {
+export const handleAddIgloo: PenguinHandler<[number]> = (ctx, iglooId) => {
   const { penguin, msg, prst, data } = ctx;
   const cost = getIglooCost(iglooId);
   
@@ -119,13 +118,13 @@ export const handleAddIgloo: IglooHandler<[number]> = (ctx, iglooId) => {
   prst(penguin);
 }
 
-export const handleUpdateIglooType: IglooHandler<[number]> = ({ prst, penguin }, iglooType) => {
+export const handleUpdateIglooType: PenguinHandler<[number]> = ({ prst, penguin }, iglooType) => {
   // is it not required to remove flooring etc?
   penguin.igloo.updateIgloo({ type: iglooType });
   prst(penguin);
 }
 
-export const handleAddFlooring: IglooHandler<[number]> = (ctx, flooring) => {
+export const handleAddFlooring: PenguinHandler<[number]> = (ctx, flooring) => {
   const { msg, penguin, prst, data } = ctx;
   const cost = getFlooringCost(flooring);
 
@@ -153,11 +152,11 @@ export function processFurniture(furnitureItems: string[]): IglooFurniture {
   })
 }
 
-const addFullHouseStamp: IglooHandler<[]> = (ctx) => {
+const addFullHouseStamp: PenguinHandler<[]> = (ctx) => {
   getStamp(ctx.data, ctx.msg, ctx.penguin, 23);
 }
 
-export const handleUpdateIgloo: IglooHandler<string[]> = (ctx, ...furnitureItems) => {
+export const handleUpdateIgloo: PenguinHandler<string[]> = (ctx, ...furnitureItems) => {
   const { prst, penguin } = ctx;
   const igloo = processFurniture(furnitureItems);
   if (igloo.length === 99) {
@@ -168,7 +167,7 @@ export const handleUpdateIgloo: IglooHandler<string[]> = (ctx, ...furnitureItems
   prst(penguin);
 }
 
-export const handleUpdateIglooNew: IglooHandler<[number, number, number, number, number, string]> = (ctx, layoutId, type, flooring, location, music, furnitureData) => {
+export const handleUpdateIglooNew: PenguinHandler<[number, number, number, number, number, string]> = (ctx, layoutId, type, flooring, location, music, furnitureData) => {
   const { prst, penguin } = ctx;
   penguin.igloo.setActiveIgloo(layoutId);
   const furniture = furnitureData === '' ? [] : processFurniture(furnitureData.split(','));
@@ -180,7 +179,7 @@ export const handleUpdateIglooNew: IglooHandler<[number, number, number, number,
   prst(penguin);
 }
 
-export const handleUpdateIglooOld: IglooHandler<string[]> = (ctx, type, ...rest) => {
+export const handleUpdateIglooOld: PenguinHandler<string[]> = (ctx, type, ...rest) => {
   const { penguin, prst } = ctx;
   
   // music ID is placed at the start, though it may not be present
@@ -193,29 +192,29 @@ export const handleUpdateIglooOld: IglooHandler<string[]> = (ctx, type, ...rest)
   prst(penguin);
 }
 
-export const handleGetFurniture: IglooHandler<[]> = (ctx) => {
+export const handleGetFurniture: PenguinHandler<[]> = (ctx) => {
   const { msg, penguin } = ctx;
   const furniture = penguin.igloo.getAllFurniture().flatMap(([id, amount]) => new Array(amount).fill(id));
   msg.send(penguin, 'gf', ...furniture);
 }
 
-export const handleGetFurnitureNew: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetFurnitureNew: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gf', ...penguin.igloo.getAllFurniture().map(pair => pair.join('|')));
 }
 
-export const handleOpenIgloo: IglooHandler<[number]> = (ctx) => {
+export const handleOpenIgloo: PenguinHandler<[number]> = (ctx) => {
   const { world, penguin } = ctx;
 
   world.openIgloo(penguin);
 }
 
-export const handleCloseIgloo: IglooHandler<[number]> = (ctx) => {
+export const handleCloseIgloo: PenguinHandler<[number]> = (ctx) => {
   const { world, penguin } = ctx;
 
   world.closeIgloo(penguin);
 }
 
-export const handleGetOpenIgloos: IglooHandler<[]> = (ctx) => {
+export const handleGetOpenIgloos: PenguinHandler<[]> = (ctx) => {
   const { msg, penguin, world } = ctx;
 
   // TODO need to figure out how to make this penguin "nickname" properly display
@@ -225,17 +224,17 @@ export const handleGetOpenIgloos: IglooHandler<[]> = (ctx) => {
   msg.send(penguin, 'gr', ...world.getOpenIglooPlayers().map(p => `${p.id}|${p.name}`));
 }
 
-export const handleUpdateMusic: IglooHandler<[number]> = (ctx, music) => {
+export const handleUpdateMusic: PenguinHandler<[number]> = (ctx, music) => {
   const { penguin, prst } = ctx;
   penguin.igloo.updateIgloo({ music });
   prst(penguin);
 }
 
-export const handleGetIglooTypes: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetIglooTypes: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'go', penguin.igloo.types.join('|'));
 }
 
-export const handleGetIglooLikes: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetIglooLikes: PenguinHandler<[]> = ({ msg, penguin }) => {
   const id = 1; // TODO Unsure what this ID is
   const likeCount = 0; // TODO like system
   // TODO unsure what this 200 is
@@ -251,11 +250,11 @@ export const handleGetIglooLikes: IglooHandler<[]> = ({ msg, penguin }) => {
   }));
 }
 
-export const handleGetDj3kTracks: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetDj3kTracks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', '');
 }
 
-export const handleGetAllIglooLayouts: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetAllIglooLayouts: PenguinHandler<[]> = ({ msg, penguin }) => {
   const layouts = penguin.igloo.getAllLayouts().map(([index, layout]) => {
     return getModernIglooString(layout, index);
   });
@@ -263,14 +262,14 @@ export const handleGetAllIglooLayouts: IglooHandler<[]> = ({ msg, penguin }) => 
   msg.send(penguin, 'gail', penguin.id, 0, ...layouts);
 }
 
-export const handleAddIglooLayout: IglooHandler<[]> = ({ msg, penguin, prst }) => {
+export const handleAddIglooLayout: PenguinHandler<[]> = ({ msg, penguin, prst }) => {
   const [id, igloo] = penguin.igloo.addIglooLayout();
   // TODO document better what this slot-index is for in the engine 3 string
   msg.send(penguin, 'al', penguin.id, getModernIglooString(igloo, id));
   prst(penguin);
 }
 
-export const handleUpdateIglooLayout: IglooHandler<[number, string]> = ({ prst, penguin }, layoutId, locks) => {
+export const handleUpdateIglooLayout: PenguinHandler<[number, string]> = ({ prst, penguin }, layoutId, locks) => {
   penguin.igloo.setActiveIgloo(layoutId);
   
   locks.split(',').map(str => str.split('|')).forEach(([i, locked]) => {
@@ -280,14 +279,14 @@ export const handleUpdateIglooLayout: IglooHandler<[number, string]> = ({ prst, 
   prst(penguin);
 }
 
-export const handleAddIglooLocation: IglooHandler<[number]> = ({ prst, penguin, msg }, location) => {
+export const handleAddIglooLocation: PenguinHandler<[number]> = ({ prst, penguin, msg }, location) => {
   penguin.igloo.addIglooLocation(location);
   // TODO cost deducting
   msg.send(penguin, 'aloc', location, penguin.currency.coins);
   prst(penguin);
 }
 
-export const handleGetMusicTracks: IglooHandler<[]> = ({ msg, penguin }) => {
+export const handleGetMusicTracks: PenguinHandler<[]> = ({ msg, penguin }) => {
   const playerTracks: string[] = []; // TODO player tracks
   msg.send(penguin, 'getmymusictracks', playerTracks.length, playerTracks.join(','));
 }

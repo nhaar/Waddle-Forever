@@ -1,5 +1,6 @@
 import { RainbowPuffleStage } from "@server/database/database";
-import { JoinHandler } from "./join";
+import { PenguinHandler } from "../handlers";
+
 
 export function isRainbowStage(str: string): str is RainbowPuffleStage {
   return str === '0' || str === '1' || str === '2' || str === '3' || str === 'bonus';
@@ -55,7 +56,7 @@ function getTaskAvailability(last: number, wait: number): [number, number, numbe
   return [available, Math.floor(secondsRemaining / 60), Math.floor(secondsRemaining / 60 / 60)]
 }
 
-export const handleGetRainbowQuestData: JoinHandler<[]> = ({ settings, penguin, msg }) => {
+export const handleGetRainbowQuestData: PenguinHandler<[]> = ({ settings, penguin, msg }) => {
   // time in minutes between each task
   // TODO this changed with time, by 2014 it was already 20 minutes
   // but at some point in 2013 it was 18 hours
@@ -111,7 +112,7 @@ export const handleGetRainbowQuestData: JoinHandler<[]> = ({ settings, penguin, 
   msg.send(penguin, 'rpqd', JSON.stringify(rainbowQuestStatus));
 }
 
-export const handleSendRainbowTaskComplete: JoinHandler<[number]> = ({ penguin, prst }, task) => {
+export const handleSendRainbowTaskComplete: PenguinHandler<[number]> = ({ penguin, prst }, task) => {
   // completing last quest, can adopt
   if (task === RAINBOW_QUEST_REWARDS.length - 1) {
     penguin.rainbow.setAdoptable();
@@ -121,7 +122,7 @@ export const handleSendRainbowTaskComplete: JoinHandler<[number]> = ({ penguin, 
   prst(penguin);
 }
 
-export const handleSendRainbowQuestCollectCoins: JoinHandler<[string]> = ({ penguin, msg, prst }, task) => {
+export const handleSendRainbowQuestCollectCoins: PenguinHandler<[string]> = ({ penguin, msg, prst }, task) => {
   if (isRainbowStage(task)) {
     penguin.rainbow.setCollected(task);
   }
@@ -129,13 +130,13 @@ export const handleSendRainbowQuestCollectCoins: JoinHandler<[string]> = ({ peng
   prst(penguin);
 }
 
-export const handleSendRainbowQuestItemCollect: JoinHandler<[number]> = ({ penguin, prst, msg }, task) => {
+export const handleSendRainbowQuestItemCollect: PenguinHandler<[number]> = ({ penguin, prst, msg }, task) => {
   penguin.inventory.add(RAINBOW_QUEST_REWARDS[task]);
   msg.send(penguin, 'rpqic', task, ItemStatus.Collected);
   prst(penguin);
 }
 
-export const handleSendRainbowQuestBonusCoins: JoinHandler<[]> = ({ penguin, msg, prst }) => {
+export const handleSendRainbowQuestBonusCoins: PenguinHandler<[]> = ({ penguin, msg, prst }) => {
   // if have item, already completed the quest once
   if (penguin.inventory.has(RAINBOW_BONUS_REWARD)) {
     // TODO get evidence this reward amount is correct

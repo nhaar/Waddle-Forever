@@ -1,9 +1,6 @@
-import { WorldContext } from "@server/socket-server/world/world";
-import { GuardFunction, HandlerFunction } from "../xt";
+import { SledGuard, SledHandler } from "../handlers";
 
-type SledHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'sled', 'settings'], T>;
-
-export const isSledGuard: GuardFunction<WorldContext, ['world', 'penguin', 'sled', 'msg', 'prst', 'data']> = (ctx) => ctx.sled !== undefined;
+export const isSledGuard: SledGuard = (ctx) => ctx.sled !== undefined;
 
 export const handleJoinSled: SledHandler<[]> = ({ sled, penguin, msg, data }) => {
   msg.send(penguin, 'uz', sled.getPlayerCount(), ...sled.getPlayers().map((p) => {

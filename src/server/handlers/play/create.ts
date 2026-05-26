@@ -1,7 +1,4 @@
-import { WorldContext } from "@server/socket-server/world/world";
-import { HandlerFunction } from "../xt";
-
-type CreateHandler<T extends any[]> = HandlerFunction<WorldContext, ['client', 'msg', 'db'], T>;
+import { CreateHandler } from "../handlers";
 
 export const handleCheckName: CreateHandler<[string]> = async ({ client, msg, db }, name) => {
   const isInvalid = !(name.length > 2 && name.length <= 12 && !(await db.exists(name)));

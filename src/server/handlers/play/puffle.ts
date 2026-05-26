@@ -2,10 +2,11 @@ import { PenguinMessenger } from "../messenger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { GameData } from "@server/timelines/game-data";
 import { PUFFLES } from "@server/game-logic/puffle";
-import { JoinHandler, PenguinGuard } from "./join";
 import { PlayerPuffle } from "@server/database/database";
 import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "@server/game-logic/puffle-item";
+import { PenguinHandler, PenguinGuard } from "../handlers";
+
 
 const BASE_CARE_INVENTORY = [1, 8, 37];
 
@@ -163,11 +164,11 @@ function getPuffleString(puffle: PlayerPuffle): string {
   ].join('|')
 }
 
-export const sendModernPuffleCheck: JoinHandler<[string]> = ({ msg, penguin }, name) => {
+export const sendModernPuffleCheck: PenguinHandler<[string]> = ({ msg, penguin }, name) => {
   msg.send(penguin, 'checkpufflename', name, 1);
 }
 
-export const sendPuffleCheck: JoinHandler<[string]> = ({ msg, penguin }, name) => {
+export const sendPuffleCheck: PenguinHandler<[string]> = ({ msg, penguin }, name) => {
   msg.send(penguin, 'pcn', name, 1);
 }
 
@@ -178,12 +179,12 @@ enum PuffleCategory {
   Creature
 };
 
-const sendBuyPuffleItem: JoinHandler<[number, number, number]> = ({ msg, penguin }, itemId, cost, amount) => {
+const sendBuyPuffleItem: PenguinHandler<[number, number, number]> = ({ msg, penguin }, itemId, cost, amount) => {
   const owned = penguin.puffle.addItem(itemId, amount);
   msg.send(penguin, 'papi', penguin.currency.discount(cost * amount), itemId, owned);
 }
 
-export const handleAdoptPuffle: JoinHandler<[number, string, number]> = (ctx, puffleType, puffleName, puffleSubtype) => {
+export const handleAdoptPuffle: PenguinHandler<[number, string, number]> = (ctx, puffleType, puffleName, puffleSubtype) => {
   // without cooldown, this can be spammed in the modern client,
   // allowing a second puffle to be bought
   // It is unknown if the original had this issue so we are correcting it
@@ -251,7 +252,7 @@ export const handleAdoptPuffle: JoinHandler<[number, string, number]> = (ctx, pu
   // TODO 'pgu' is necessary?
 }
 
-export const handleGetPuffleInventory: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetPuffleInventory: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(
     penguin, 'pgpi',
     ...BASE_CARE_INVENTORY.map((item) => `${item}|1`),
@@ -259,7 +260,7 @@ export const handleGetPuffleInventory: JoinHandler<[]> = ({ msg, penguin }) => {
   );
 }
 
-export const handlePuffleWalk: JoinHandler<[number, number]> = ({ msg, prst, penguin, room, data }, penguinPuffleId, walking) => {
+export const handlePuffleWalk: PenguinHandler<[number, number]> = ({ msg, prst, penguin, room, data }, penguinPuffleId, walking) => {
   // TODO add puffle refusing to walk
   // TODO add removing puffle
 
@@ -283,7 +284,7 @@ export const handlePuffleWalk: JoinHandler<[number, number]> = ({ msg, prst, pen
   prst(penguin);
 }
 
-export const handlePuffleBackyardSwap: JoinHandler<[number, string]> = ({ msg, penguin, prst }, playerPuffleId, destination) => {
+export const handlePuffleBackyardSwap: PenguinHandler<[number, string]> = ({ msg, penguin, prst }, playerPuffleId, destination) => {
   if (destination === 'backyard') {
     penguin.puffle.toBackyard(playerPuffleId);
   } else {
@@ -302,7 +303,7 @@ enum TreasureType {
   Gold = 4
 };
 
-const sendPuffleDig: JoinHandler<[TreasureType, number]> = ({ msg, penguin }, treasureType, target) => {
+const sendPuffleDig: PenguinHandler<[TreasureType, number]> = ({ msg, penguin }, treasureType, target) => {
   const [coins, itemId] =
     treasureType === TreasureType.Coins ? [target, 0] :
     treasureType === TreasureType.Gold ? [target, 1] : [0, target];
@@ -311,12 +312,12 @@ const sendPuffleDig: JoinHandler<[TreasureType, number]> = ({ msg, penguin }, tr
   msg.send(penguin, 'puffledig', penguin.id, penguin.puffle.walking ?? 0, treasureType, itemId, coins, penguin.dig.hasDug ? 0 : 1);
 }
 
-const sendGoldNuggets: JoinHandler<[]> = ({ msg, penguin }) => {
+const sendGoldNuggets: PenguinHandler<[]> = ({ msg, penguin }) => {
   // TODO what is the first 1?
   msg.send(penguin, 'currencies', `1|${penguin.gold.nuggets}`);
 }
 
-const puffleDig: JoinHandler<[boolean]> = (ctx, onCommand: boolean) => {
+const puffleDig: PenguinHandler<[boolean]> = (ctx, onCommand: boolean) => {
   const { msg, penguin, data, prst } = ctx;
   // PUFFLE DIG MECHANICS
   // Puffle digging is a completely server-side feature and with a big amount of variables,
@@ -509,7 +510,7 @@ const puffleDig: JoinHandler<[boolean]> = (ctx, onCommand: boolean) => {
   prst(penguin);
 }
 
-export const handleEatPuffleItem: JoinHandler<[number, number]> = (ctx, playerPuffleId, itemId) => {
+export const handleEatPuffleItem: PenguinHandler<[number, number]> = (ctx, playerPuffleId, itemId) => {
   const { penguin, msg, prst } = ctx;
   const puffleItem = PUFFLE_ITEMS.getStrict(itemId);
   const puffle = penguin.puffle.getPuffle(playerPuffleId);
@@ -540,12 +541,12 @@ export const handleEatPuffleItem: JoinHandler<[number, number]> = (ctx, playerPu
   prst(penguin);
 }
 
-export const handleRevealGoldPuffle: JoinHandler<[]> = ({ msg, penguin }) => {
+export const handleRevealGoldPuffle: PenguinHandler<[]> = ({ msg, penguin }) => {
   // TODO multiplayer logic
   msg.send(penguin, 'revealgoldpuffle', penguin.id);
 }
 
-export const handleGetIglooPuffles: JoinHandler<[number, string]> = ({ data, penguin, msg }, id, iglooType) => {
+export const handleGetIglooPuffles: PenguinHandler<[number, string]> = ({ data, penguin, msg }, id, iglooType) => {
   if (!data.isVanillaEngine()) {
     const puffles = penguin.puffle.puffles.map((puffle) => {
       return [
@@ -595,7 +596,7 @@ export const handleGetIglooPuffles: JoinHandler<[number, string]> = ({ data, pen
   }
 }
 
-export const handleAdoptPuffleOld: JoinHandler<[number, string]> = (ctx, type, name) => {
+export const handleAdoptPuffleOld: PenguinHandler<[number, string]> = (ctx, type, name) => {
   handleAdoptPuffle(ctx, type, name, 0);
 }
 
@@ -607,5 +608,5 @@ export const isBeforePuffleCreatureGuard: PenguinGuard = (ctx) => {
   return !isAfterPuffleCreatureGuard(ctx);
 }
 
-export const handlePuffleDigRandom: JoinHandler<[]> = (ctx) => puffleDig(ctx, false);
-export const handlePuffleDigOnCommand: JoinHandler<[]> = (ctx) => puffleDig(ctx, true);
+export const handlePuffleDigRandom: PenguinHandler<[]> = (ctx) => puffleDig(ctx, false);
+export const handlePuffleDigOnCommand: PenguinHandler<[]> = (ctx) => puffleDig(ctx, true);

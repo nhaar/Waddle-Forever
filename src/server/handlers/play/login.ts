@@ -1,4 +1,3 @@
-import { WorldContext } from "@server/socket-server/world/world";
 import { PenguinMessenger } from "../messenger";
 import { ClientSocket } from "@server/socket-server";
 import { Igloo, PenguinJson } from "@server/database/database";
