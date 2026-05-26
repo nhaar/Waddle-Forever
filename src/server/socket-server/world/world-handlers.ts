@@ -7,10 +7,12 @@ import { ArgumentsIndicator, GetArgumentsType } from "@server/handlers/arg-parse
 import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "@server/handlers/play/room";
 import { doubleFilter } from "@common/utils";
 import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleUpdateCardSeats, isCardJitsuGuard } from "@server/handlers/play/card";
-import { handleGetMail, handleMailTotal } from "@server/handlers/play/mail";
+import { handleGetMail, handleMailTotal, handleSendCard, handleSetMailCheck } from "@server/handlers/play/mail";
 import { handleCheckName } from "@server/handlers/play/create";
 import { handleLeaveGame, handleRoomRefresh } from "@server/handlers/play/game";
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "@server/handlers/play/igloo";
+import { handleBuyNinjaCards, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleJoinMatchmaking, handleJoinSensei } from "@server/handlers/play/ninja";
+import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "@server/handlers/play/party";
 
 type PreProcessCallbackInfo = [
   [Array<keyof WorldContext & string>,
@@ -111,6 +113,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'au', ['number'], handleAddIgloo),
     p.xt('s', 'gf', [], handleGetFurniture),
     p.xt('s', 'ur', 'string', handleUpdateIglooOld),
+    p.xt('s', 'sc', ['number', 'number', 'number'], handleSendCard),
 
     p.xt('r', 'gm', ['number'], getIglooOld),
     p.xt('r', 'af', ['number'], handleAddFurniture),
@@ -156,6 +159,8 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('z', 'zr', [], handleGetSpyDrillsChallenge),
     p.xt('z', 'zc', ['number'], handleGetSpyDrillsReward),
     p.xt('z', 'epfsf', ['number'], handleEPFStamp),
+    p.xt('z', 'jmm', [], handleJoinMatchmaking),
+    p.xt('z', 'jsen', [], handleJoinSensei),
     
     p.xt('s', 'j#js', ['string', 'string', 'string'], handleJoinServer),
     p.xt('s', 'j#jr', ['number', 'number', 'number'], joinRoom),
@@ -170,6 +175,7 @@ export const createWorldXtHandler = (): XtHandler => {
     
     p.xt('s', 'l#mst', [], handleMailTotal),
     p.xt('s', 'l#mg', [], handleGetMail),
+    p.xt('s', 'l#mc', [], handleSetMailCheck),
     
     p.xt('s', 'n#gn', [], handleGN),
     
@@ -243,6 +249,21 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'f#epfgrantreward', ['number'], handleGrantAwards),
     p.xt('s', 'f#epfgp', [], handleGetPartyOp),
     p.xt('s', 'f#epfsp', ['number'], handleSetPartyOp),
+
+    p.xt('s', 'ni#gnr', [], handleGetNinjaRanks),
+    p.xt('s', 'ni#gnl', [], handleGetNinjaLevel),
+    p.xt('s', 'ni#gcd', [], handleGetNinjaCards),
+
+    p.xt('s', 'cd#bpc', [], handleBuyNinjaCards),
+
+    p.xt('s', 'e#dc', ['string', 'number'], handleDonateCoins),
+
+    p.xt('s', 'mdvl#retrieve', [], handleRetrieveMedieval2012),
+    p.xt('s', 'mdvl#msgviewed', ['number'], handleViewedMedieval2012),
+
+    p.xt('s', 'ba#barsu', [], handleGetBakeryState),
+    p.xt('s', 'ba#seh', ['string'], handleSendEnterHopper),
+    p.xt('s', 'ba#ctc', [], handleGetCookieInventory),
     
     r.xt('m', 'sm', ['string', 'string'], handleSendMessage),
     r.xt('m', 'ss', ['string'], handleSafeMessage),

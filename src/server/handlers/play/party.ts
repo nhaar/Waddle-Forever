@@ -1,12 +1,9 @@
-import { World, WorldContext } from "@server/socket-server/world/world";
-import { XtHandler } from "../xt";
+import { World } from "@server/socket-server/world/world";
 import { JoinHandler } from "./join";
 import { sendError } from "./login";
 import { PenguinMessenger } from "../messenger";
 
-const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
-
-const handleDonateCoins: JoinHandler<[string, number]> = ({ prst, penguin, msg }, _, donation) => {
+export const handleDonateCoins: JoinHandler<[string, number]> = ({ prst, penguin, msg }, _, donation) => {
   // choice is useless, since we are not trying to rewrite history unfortunately
 
   // client doesn't check if can donate
@@ -20,14 +17,14 @@ const handleDonateCoins: JoinHandler<[string, number]> = ({ prst, penguin, msg }
   prst(penguin);
 }
 
-const handleRetrieveMedieval2012: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleRetrieveMedieval2012: JoinHandler<[]> = ({ penguin, msg }) => {
   const medievalMessage = penguin.medieval2012.message;
   msg.send(penguin, 'sent', JSON.stringify({
     'msgViewedArray': [medievalMessage >= 1 ? 1 : 0, medievalMessage >= 2 ? 1 : 0]
   }));
 }
 
-const handleViewedMedieval2012: JoinHandler<[number]> = ({ penguin, prst }, message) => {
+export const handleViewedMedieval2012: JoinHandler<[number]> = ({ penguin, prst }, message) => {
   penguin.medieval2012.setViewed(message);
   prst(penguin);
 }
@@ -38,11 +35,11 @@ export const addBakeryListener = (world: World, msg: PenguinMessenger) => {
   });
 }
 
-const handleGetBakeryState: JoinHandler<[]> = ({ msg, penguin, world }) => {
+export const handleGetBakeryState: JoinHandler<[]> = ({ msg, penguin, world }) => {
   msg.send(penguin, 'barsu', world.bakery.bakeryState);
 }
 
-const handleSendEnterHopper: JoinHandler<[string]> = ({ world }, type) => {
+export const handleSendEnterHopper: JoinHandler<[string]> = ({ world }, type) => {
   // this is a recreation of this handler, it is unknown if the original handler sent the snowball type or not
   // the type was added to prevent bugs with people spamming snowballs
   // however, the way this was added isn't perfect and it's likely it didn't really check the types, as the shell function
@@ -65,7 +62,7 @@ const handleSendEnterHopper: JoinHandler<[string]> = ({ world }, type) => {
   }
 }
 
-const handleGetCookieInventory: JoinHandler<[]> = ({ penguin, msg }) => {
+export const handleGetCookieInventory: JoinHandler<[]> = ({ penguin, msg }) => {
   // placeholder just so that the animation works
   // cookie stock should theoreticailly increase when the bakery happens and decrease when a transformation happens
   // none of that is implemented however
@@ -74,14 +71,3 @@ const handleGetCookieInventory: JoinHandler<[]> = ({ penguin, msg }) => {
   // current, max
   msg.send(penguin, 'ctc', 500, 1000);
 }
-
-handler.xt('s', 'e#dc', ['string', 'number'], handleDonateCoins);
-handler.xt('s', 'mdvl#retrieve', [], handleRetrieveMedieval2012);
-handler.xt('s', 'mdvl#msgviewed', ['number'], handleViewedMedieval2012);
-handler.xt('s', 'ba#barsu', [], handleGetBakeryState);
-handler.xt('s', 'ba#seh', ['string'], handleSendEnterHopper);
-handler.xt('s', 'ba#ctc', [], handleGetCookieInventory);
-
-export {
-  handler as partyHandler
-};

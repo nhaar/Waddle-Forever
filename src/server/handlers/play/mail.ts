@@ -1,8 +1,4 @@
-import { WorldContext } from "@server/socket-server/world/world";
-import { XtHandler } from "../xt";
 import { JoinHandler } from "./join";
-
-const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
 
 export const handleMailTotal: JoinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'mst', penguin.mail.unread, penguin.mail.total);
@@ -21,7 +17,7 @@ export const handleGetMail: JoinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'mg', ...postcards);
 }
 
-const handleSendCard: JoinHandler<[number, number, number]> = (ctx, recipientId, cardId, cost) => {
+export const handleSendCard: JoinHandler<[number, number, number]> = (ctx, recipientId, cardId, cost) => {
   const { msg, prst, penguin, world } = ctx;
   const postcardCost = 10;
   const recipient = world.getById(recipientId);
@@ -36,7 +32,7 @@ const handleSendCard: JoinHandler<[number, number, number]> = (ctx, recipientId,
   prst(penguin);
 }
 
-const handleSetMailCheck: JoinHandler<[]> = ({ prst, penguin }) => {
+export const handleSetMailCheck: JoinHandler<[]> = ({ prst, penguin }) => {
   penguin.mail.setRead();
   prst(penguin);
 }
@@ -46,10 +42,3 @@ export const sendMail: JoinHandler<[number, { senderId?: number; senderName?: st
   msg.send(penguin, 'mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
   prst(penguin);
 }
-
-handler.xt('s', 'sc', ['number', 'number', 'number'], handleSendCard);
-handler.xt('s', 'l#mc', [], handleSetMailCheck);
-
-export {
-  handler as mailHandler
-};
