@@ -1,5 +1,5 @@
 import { WorldContext } from "@server/socket-server/world/world";
-import { HandlerFunction } from "../xt";
+import { GuardFunction, HandlerFunction } from "../xt";
 import { isLiteralScoreGame } from "@server/game-logic/rooms";
 import { getPenguinString } from "./join";
 
@@ -32,6 +32,8 @@ export const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
 
   prst(penguin);
 }
+
+export const isGameGuard: GuardFunction<WorldContext, ['penguin', 'msg', 'game', 'data', 'prst']> = (ctx) => ctx.game !== undefined;
 
 export const handleRoomRefresh: GameHandler<[]> = ({ msg, data, penguin }) => {
   msg.send(penguin, 'grs', penguin.id, getPenguinString(data, penguin, { x:0,y:0,frame:1 }));

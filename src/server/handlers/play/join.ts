@@ -18,7 +18,7 @@ import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 
 
-export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
+export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'settings'], T>;
 export type RoomHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room'], T>;
 export type RoomGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']>;
 export type PenguinGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db']>;
@@ -483,9 +483,9 @@ export const handleDisconnect = async (ctx: Partial<WorldContext>) => {
     ctx.prst !== undefined &&
     ctx.world !== undefined &&
     ctx.data !== undefined &&
-    ctx.db !== undefined
+    ctx.db !== undefined && ctx.settings !== undefined
   ) {
-    const { penguin, msg, prst, world, room, game, data, db } = ctx;
+    const { penguin, msg, prst, world, room, game, data, db, settings } = ctx;
     if (penguin.psa.isPending) {
       penguin.inventory.add(800);
     }
@@ -498,7 +498,8 @@ export const handleDisconnect = async (ctx: Partial<WorldContext>) => {
           data,
           msg,
           prst,
-          db
+          db,
+          settings
         });
       });
 

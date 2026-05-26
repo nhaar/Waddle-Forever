@@ -7,7 +7,7 @@ import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { JoinHandler } from "./join";
 import { sendMail } from "./mail";
 
-type CardHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card'], T>;
+type CardHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card', 'settings'], T>;
 
 export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => {
   const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);

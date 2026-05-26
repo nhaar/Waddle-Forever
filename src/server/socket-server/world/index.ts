@@ -59,7 +59,8 @@ export class WorldServer implements MessageHandler {
         prst: this._persister,
         msg: this._msg,
         data: this._gameData,
-        db: this._db,  
+        db: this._db,
+        settings: this._settings,
         room: this._world.getContext(penguin)?.room
       }
       this._commandsHandler.run(ctx, name, args);

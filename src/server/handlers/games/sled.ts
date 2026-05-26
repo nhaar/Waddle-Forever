@@ -1,19 +1,21 @@
 import { WorldContext } from "@server/socket-server/world/world";
-import { XtHandler } from "../xt";
+import { GuardFunction, HandlerFunction } from "../xt";
 
-const handler = new XtHandler<WorldContext, ['world', 'penguin', 'sled', 'msg', 'prst', 'data']>(['world', 'penguin', 'sled', 'msg', 'prst', 'data']);
+type SledHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'sled', 'settings'], T>;
 
-handler.xt('z', 'jz', [], ({ sled, penguin, msg, data }) => {
+export const isSledGuard: GuardFunction<WorldContext, ['world', 'penguin', 'sled', 'msg', 'prst', 'data']> = (ctx) => ctx.sled !== undefined;
+
+export const handleJoinSled: SledHandler<[]> = ({ sled, penguin, msg, data }) => {
   msg.send(penguin, 'uz', sled.getPlayerCount(), ...sled.getPlayers().map((p) => {
     return (data.isPreCpip() ? [p.name, p.inventory.color] : [p.name, p.inventory.color, p.inventory.hand, p.name]).join('|');
   }));
-});
+}
 
-handler.xt('z', 'zm', ['number', 'number', 'number', 'number'], ({ sled, msg }, id, x, y, time) => {
+export const handleMoveSled: SledHandler<[number, number, number, number]> = ({ sled, msg }, id, x, y, time) => {
   msg.send(sled.getPlayers(), 'zm', id, x, y, time);
-});
+}
 
-handler.xt('z', 'zo', ['number'], ({ msg, penguin, prst, data }, standing) => {
+export const handleEndSled: SledHandler<[number]> = ({ msg, penguin, prst, data }, standing) => {
   const coins = [20, 10, 5, 5][standing - 1];
 
   const total = penguin.currency.add(coins);
@@ -23,6 +25,4 @@ handler.xt('z', 'zo', ['number'], ({ msg, penguin, prst, data }, standing) => {
     msg.send(penguin, 'zo', total, '', 0, 0);
   }
   prst(penguin);
-});
-
-export { handler as sledHandler };
+}

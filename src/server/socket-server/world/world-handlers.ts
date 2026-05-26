@@ -9,10 +9,13 @@ import { doubleFilter } from "@common/utils";
 import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleUpdateCardSeats, isCardJitsuGuard } from "@server/handlers/play/card";
 import { handleGetMail, handleMailTotal, handleSendCard, handleSetMailCheck } from "@server/handlers/play/mail";
 import { handleCheckName } from "@server/handlers/play/create";
-import { handleLeaveGame, handleRoomRefresh } from "@server/handlers/play/game";
+import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "@server/handlers/play/game";
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "@server/handlers/play/igloo";
 import { handleBuyNinjaCards, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleJoinMatchmaking, handleJoinSensei } from "@server/handlers/play/ninja";
 import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "@server/handlers/play/party";
+import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "@server/handlers/play/puffle";
+import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "@server/handlers/play/rainbow";
+import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "@server/handlers/games/sled";
 
 type PreProcessCallbackInfo = [
   [Array<keyof WorldContext & string>,
@@ -72,11 +75,12 @@ const getFinalCallbacks = (grouped: GroupedCallbacks): Array<[string, XtCallback
 }
 
 export const createWorldXtHandler = (): XtHandler => {
-  const p = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
+  const p = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'settings']);
   const r = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']);
-  const c = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card']);
+  const c = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card', 'settings']);
   const z = new XtGenerator(['client', 'msg', 'db']);
   const g = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'game']);
+  const s = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'sled', 'settings'])
 
   const callbacks: IntermediateXtCallbackInfo[] = [
     p.xt('s', 'js', ['string', 'string', 'string'], handleJoinServer),
@@ -141,7 +145,8 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('z', 'gw', 'string', handleGetWaddle),
     r.xt('z', 'jw', ['number'], handleJoinWaddle),
     r.xt('z', 'lw', [], handleLeaveWaddle),
-    r.xt('z', 'jz', [], handleJoinTableGame),
+    r.xt('z', 'jz', [], handleJoinTableGame, { guard: isTableGuard }),
+    s.xt('z', 'jz', [], handleJoinSled, { guard: isSledGuard }),
     r.xt('z', 'gz', ['string'], handleGetTableGame, { guard: isTableGuard }),
     r.xt('z', 'gz', [], handleGetHockeyGame, { guard: isHockeyGuard }),
     c.xt('z', 'gz', ['number'], handleEnterCardGame, { guard: isCardJitsuGuard }),
@@ -151,11 +156,13 @@ export const createWorldXtHandler = (): XtHandler => {
     c.xt('z', 'lz', [], handleQuitCard, { guard: isCardJitsuGuard }),
     r.xt('z', 'zm', 'number', handleSendTableMove, { guard: isTableGuard }),
     r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
+    s.xt('z', 'zm', ['number', 'number', 'number', 'number'], handleMoveSled, { guard: isSledGuard }),
     c.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction, { guard: isCardJitsuGuard }),
     r.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck, { guard: isHockeyGuard }),
     p.xt('z', 'ggd', [], handleGetPuffleLaunchData),
     p.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData),
-    g.xt('z', 'zo', ['number'], handleLeaveGame),
+    g.xt('z', 'zo', ['number'], handleLeaveGame, { guard: isGameGuard }),
+    s.xt('z', 'zo', ['number'], handleEndSled, { guard: isSledGuard }),
     p.xt('z', 'zr', [], handleGetSpyDrillsChallenge),
     p.xt('z', 'zc', ['number'], handleGetSpyDrillsReward),
     p.xt('z', 'epfsf', ['number'], handleEPFStamp),
@@ -208,6 +215,19 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 's#upl', ['number'], handleUpdatePin),
     r.xt('s', 's#upp', ['number'], handleUpdateBackground),
 
+    p.xt('s', 'p#pg', ['number', 'string'], handleGetIglooPuffles),
+    p.xt('s', 'p#pn', ['number', 'string'], handleAdoptPuffleOld, { guard: isBeforePuffleCreatureGuard }),
+    p.xt('s', 'p#pn', ['number', 'string', 'number'], handleAdoptPuffle, { guard: isAfterPuffleCreatureGuard, xt: { cooldown: 2000 }}),
+    p.xt('s', 'p#pgpi', [], handleGetPuffleInventory),
+    p.xt('s', 'p#checkpufflename', ['string'], sendModernPuffleCheck),
+    p.xt('s', 'p#pcn', ['string'], sendPuffleCheck),
+    p.xt('s', 'p#pw', ['number', 'number'], handlePuffleWalk),
+    p.xt('s', 'p#puffleswap', ['number', 'string'], handlePuffleBackyardSwap),
+    p.xt('s', 'p#puffledig', [], handlePuffleDigRandom),
+    p.xt('s', 'p#puffledigoncommand', [], handlePuffleDigOnCommand),
+    p.xt('s', 'p#pcid', ['number', 'number'], handleEatPuffleItem),
+    p.xt('s', 'p#revealgoldpuffle', [], handleRevealGoldPuffle),
+
     p.xt('s', 'g#gm', ['number'], handleGetIglooCpip),
     p.xt('s', 'g#gii', [], handleGetIglooItems),
     p.xt('s', 'g#af', ['number'], handleAddFurniture),
@@ -255,6 +275,12 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'ni#gcd', [], handleGetNinjaCards),
 
     p.xt('s', 'cd#bpc', [], handleBuyNinjaCards),
+
+    p.xt('s', 'rpq#rpqd', [], handleGetRainbowQuestData),
+    p.xt('s', 'rpq#rpqtc', ['number'], handleSendRainbowTaskComplete),
+    p.xt('s', 'rpq#rpqcc', ['string'], handleSendRainbowQuestCollectCoins),
+    p.xt('s', 'rpq#rpqic', ['number'], handleSendRainbowQuestItemCollect),
+    p.xt('s', 'rpq#rpqbc', [], handleSendRainbowQuestBonusCoins),
 
     p.xt('s', 'e#dc', ['string', 'number'], handleDonateCoins),
 

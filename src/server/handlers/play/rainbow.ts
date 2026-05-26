@@ -1,12 +1,9 @@
-import { WorldContext } from "@server/socket-server/world/world";
-import { XtHandler } from "../xt";
 import { RainbowPuffleStage } from "@server/database/database";
+import { JoinHandler } from "./join";
 
 export function isRainbowStage(str: string): str is RainbowPuffleStage {
   return str === '0' || str === '1' || str === '2' || str === '3' || str === 'bonus';
 }
-
-const handler = new XtHandler<WorldContext, ['settings', 'penguin', 'msg', 'prst']>(['settings', 'penguin', 'msg', 'prst']);
 
 /** Status of the item and coin rewards of each task */
 enum ItemStatus {
@@ -58,8 +55,7 @@ function getTaskAvailability(last: number, wait: number): [number, number, numbe
   return [available, Math.floor(secondsRemaining / 60), Math.floor(secondsRemaining / 60 / 60)]
 }
 
-// sending the rainbow puffle quest data
-handler.xt('s', 'rpq#rpqd', [], ({ settings, penguin, msg }) => {
+export const handleGetRainbowQuestData: JoinHandler<[]> = ({ settings, penguin, msg }) => {
   // time in minutes between each task
   // TODO this changed with time, by 2014 it was already 20 minutes
   // but at some point in 2013 it was 18 hours
@@ -113,10 +109,9 @@ handler.xt('s', 'rpq#rpqd', [], ({ settings, penguin, msg }) => {
   }
 
   msg.send(penguin, 'rpqd', JSON.stringify(rainbowQuestStatus));
-})
+}
 
-// rainbow puffle quest task complete
-handler.xt('s', 'rpq#rpqtc', ['number'], ({ penguin, prst }, task) => {
+export const handleSendRainbowTaskComplete: JoinHandler<[number]> = ({ penguin, prst }, task) => {
   // completing last quest, can adopt
   if (task === RAINBOW_QUEST_REWARDS.length - 1) {
     penguin.rainbow.setAdoptable();
@@ -124,26 +119,23 @@ handler.xt('s', 'rpq#rpqtc', ['number'], ({ penguin, prst }, task) => {
 
   penguin.rainbow.setCompleted(task);
   prst(penguin);
-})
+}
 
-// rainbow puffle quest collect coins
-handler.xt('s', 'rpq#rpqcc', ['string'], ({ penguin, msg, prst }, task) => {
+export const handleSendRainbowQuestCollectCoins: JoinHandler<[string]> = ({ penguin, msg, prst }, task) => {
   if (isRainbowStage(task)) {
     penguin.rainbow.setCollected(task);
   }
   msg.send(penguin, 'rpqcc', task, ItemStatus.Collected, penguin.currency.add(150));
   prst(penguin);
-});
+}
 
-// rainbow puffle quest item collect
-handler.xt('s', 'rpq#rpqic', ['number'], ({ penguin, prst, msg }, task) => {
+export const handleSendRainbowQuestItemCollect: JoinHandler<[number]> = ({ penguin, prst, msg }, task) => {
   penguin.inventory.add(RAINBOW_QUEST_REWARDS[task]);
   msg.send(penguin, 'rpqic', task, ItemStatus.Collected);
   prst(penguin);
-});
+}
 
-// rainbow puffle quest bonus collect
-handler.xt('s', 'rpq#rpqbc', [], ({ penguin, msg,prst }) => {
+export const handleSendRainbowQuestBonusCoins: JoinHandler<[]> = ({ penguin, msg, prst }) => {
   // if have item, already completed the quest once
   if (penguin.inventory.has(RAINBOW_BONUS_REWARD)) {
     // TODO get evidence this reward amount is correct
@@ -155,8 +147,4 @@ handler.xt('s', 'rpq#rpqbc', [], ({ penguin, msg,prst }) => {
   }
   penguin.rainbow.setCollected('bonus');
   prst(penguin);
-});
-
-export {
-  handler as rainbowHandler
-};
+}
