@@ -99,7 +99,7 @@ export class XtHandler {
         return contextTypes.every(prop => context[prop] !== undefined) && guard(context);
       });
       if (callbackInfo === undefined) {
-        console.log('Unhandled XT for given context: ', context);
+        console.log('Unhandled XT for given context: ', Object.keys(context).join(';'));
         return;
       }
 

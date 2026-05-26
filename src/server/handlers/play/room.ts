@@ -1,6 +1,6 @@
 import { WorldContext } from "@server/socket-server/world/world";
 import { XtHandler } from "../xt";
-import { getPenguinString, RoomHandler } from "./join";
+import { getPenguinString, RoomGuard, RoomHandler } from "./join";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
@@ -35,37 +35,21 @@ export const handleSendEmote: RoomHandler<[string]> = ({ room, msg, penguin, dat
   msg.send(room.players, 'se', penguin.id, emote);
 }
 
-handler.xt([['s', 'u#sp']], ['number', 'number'], handleSetPosition);
-
-handler.xt([['s', 'u#sf']], ['number'], handleSetFrame);
-
-handler.xt([['s', 'u#sa']], ['string'], handleSetAction);
-
-handler.xt([['s', 'u#sb']], ['string', 'string'], handleSetSnowball);
-
-handler.xt([['s', 'u#se']], ['string'], handleSendEmote);
-
 export const handleSendJoke: RoomHandler<[string]> = ({ room, msg, penguin }, joke) => {
   msg.send(room.players, 'sj', penguin.id, joke);
 }
-
-handler.xt([['s', 'u#sj']], ['string'], handleSendJoke);
 
 export const handleSendMessage: RoomHandler<[string, string]> = ({ room, msg }, penguin, message) => {
   msg.send(room.players, 'sm', penguin, message);
 }
 
-handler.xt([['s', 'm#sm']], ['string', 'string'], handleSendMessage);
-
 export const handleSafeMessage: RoomHandler<[string]> = ({ room, msg, penguin }, message) => {
   msg.send(room.players, 'ss', penguin.id, message);
 }
 
-handler.xt([['s', 'u#ss']], ['string'], handleSafeMessage);
-
-handler.xt('s', 'u#sl', ['string'], ({ room, msg, penguin }, line) => {
+export const handleSendLine: RoomHandler<[string]> = ({ room, msg, penguin }, line) => {
   msg.send(room.players, 'sl', penguin.id, line);
-});
+}
 
 export const handleGetWaddle: RoomHandler<[]> = ({ msg, penguin, room }) => {
   msg.send(penguin, 'gw', ...room.getWaddleRooms().map((w) => {
@@ -108,9 +92,9 @@ export const handleLeaveWaddle: RoomHandler<[]> = ({ penguin, msg, room }) => {
 }
 
 //TODO persistence for new players joining (was that actually a thing?)
-handler.xt('s', 't#at', ['string'], ({ msg, penguin, room }, toy) => {
+export const handleAddToy: RoomHandler<[string]> = ({ msg, penguin, room }, toy) => {
   msg.send(room.players, 'at', penguin.id, toy);
-});
+}
 
 export const handleAddToyOld: RoomHandler<[string, string]> = ({ msg, penguin, room }, toy, frame) => {
   msg.send(room.players, 'at', penguin.id, toy, frame);
@@ -120,12 +104,10 @@ export const handleCloseToy: RoomHandler<[]> = ({ msg, room, penguin }) => {
   msg.send(room.players, 'rt', penguin.id);
 }
 
-handler.xt([['s', 't#rt']], [], handleCloseToy)
-
-handler.xt('s', 'pt#spts', ['number'], ({ msg, room, penguin }, avatarId) => {
+export const handlePlayerTransform: RoomHandler<[number]> = ({ msg, room, penguin }, avatarId) => {
   penguin.avatar.transform(avatarId);
   msg.send(room.players, 'spts', penguin.id, avatarId);
-});
+}
 
 export const sendTeleportOld: RoomHandler<[number, number, number]> = ({ msg, penguin, room }, x, y, frame) => {
   room.updatePosition(penguin, x, y);
@@ -179,12 +161,9 @@ function isTableId(tableId: number) {
   return WorldTable.FIND_FOUR_TABLE_IDS.has(tableId) || WorldTable.MANCALA_TABLE_IDS.has(tableId);
 }
 
-export const handleGetTableGame: RoomHandler<[number]> = ({ msg, room, penguin }, tableId) => {
-  if (room.id === ROOMS['rink'].id) {
-    return;
-  }
+export const handleGetTableGame: RoomHandler<[string]> = ({ msg, room, penguin }, tableId) => {
   // resolve table id from context so spectators can re-open correctly
-  let resolvedTableId = tableId;
+  let resolvedTableId = Number(tableId);
   if (!isTableId(resolvedTableId)) {
     const existingTable = room.getPenguinTable(penguin);
     if (existingTable !== null) {
@@ -319,71 +298,71 @@ export const handleUpdatePenguinOld: RoomHandler<[number, number, number, number
   prst(penguin);
 }
 
-handler.xt('s', 's#upc', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateColor: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ color: id });
   msg.send(room.players, 'upc', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#uph', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateHead: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ head: id });
   msg.send(room.players, 'uph', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upf', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateFace: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ face: id });
   msg.send(room.players, 'upf', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upn', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateNeck: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ neck: id });
   msg.send(room.players, 'upn', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upb', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateBody: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ body: id });
   msg.send(room.players, 'upb', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upa', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateHand: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ hand: id });
   msg.send(room.players, 'upa', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upe', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateFeet: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ feet: id });
   msg.send(room.players, 'upe', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upl', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdatePin: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ pin: id });
   msg.send(room.players, 'upl', penguin.id, id);
-});
+}
 
-handler.xt('s', 's#upp', ['number'], ({ room, msg, penguin }, id) => {
+export const handleUpdateBackground: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
   penguin.inventory.updateWear({ background: id });
   msg.send(room.players, 'upp', penguin.id, id);
-});
+}
 
-const handleGetHockeyGame: RoomHandler<[]> = ({ world, room, penguin, msg }) => {
+export const handleGetHockeyGame: RoomHandler<[]> = ({ world, room, penguin, msg }) => {
   const pos = world.getPuck(room);
   if (pos !== null) {
     msg.send(penguin, 'gz', ...pos, ...world.teamScores);
   }
 }
 
-const handleMoveHockeyPuck: RoomHandler<[number, number, number, number, number]> = ({ world, room, msg }, penguinId, x, y, ...speed) => {
+export const handleMoveHockeyPuck: RoomHandler<[number, number, number, number, number]> = ({ world, room, msg }, penguinId, x, y, ...speed) => {
   if (world.updatePuck(x, y, room)) {
     msg.send(room.players, 'zm', penguinId, x, y, ...speed);
   }
 }
 
-const handleMoveHockeyPuckOld: RoomHandler<[number, number]> = ({ world, room, msg }, x, y) => {
+export const handleMoveHockeyPuckOld: RoomHandler<[number, number]> = ({ world, room, msg }, x, y) => {
   if (world.updatePuck(x, y, room)) {
     msg.send(room.players, 'zm', x, y);
   }
 }
 
-const handleUpdateHockeyGame: RoomHandler<[number]> = ({ msg, room, world }, team) => {
+export const handleUpdateHockeyGame: RoomHandler<[number]> = ({ msg, room, world }, team) => {
   if (room.id !== 802) {
     return;
   }
@@ -392,10 +371,13 @@ const handleUpdateHockeyGame: RoomHandler<[number]> = ({ msg, room, world }, tea
   msg.send(room.players, 'uz', ...world.teamScores);
 }
 
-handler.xt('z', 'gz', [], handleGetHockeyGame);
-handler.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck);
-handler.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld);
-handler.xt('z', 'uz', ['number'], handleUpdateHockeyGame);
+export const isTableGuard: RoomGuard = ({ room }) => {
+  return room.hasTable();
+}
+
+export const isHockeyGuard: RoomGuard = ({ room }) => {
+  return room.id === ROOMS.rink.id || room.id === ROOMS.pitch.id
+}
 
 export {
   handler as roomHandler

@@ -24,6 +24,7 @@ export class XtPacket {
 }
 
 export type HandlerFunction<ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[], Args extends any[]> = (ctx: CtxObj<ContextTypes, ContextMap>, ...args: Args) => void | Promise<void>;
+export type GuardFunction<ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> = (ctx: CtxObj<ContextTypes, ContextMap>) => boolean;
 
 export class XtHandler<ContextMap extends Record<string, any>, ContextTypes extends (keyof ContextMap & string)[]> extends BaseHandler<ContextMap, ContextTypes> {
   public override getMessageType(): string {

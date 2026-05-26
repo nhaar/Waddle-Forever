@@ -313,6 +313,13 @@ export function toForwardSlash(s: string): string {
   return s.replaceAll('\\', '/')
 }
 
+export const doubleFilter = <T>(predicate: (e: T) => boolean, arr: T[]): [T[], T[]] => {
+  const include: T[] = [];
+  const exclude: T[] = [];
+  arr.forEach(e => predicate(e) ? include.push(e) : exclude.push(e));
+  return [include, exclude];
+}
+
 export const monthNames = [
   'January',
   'February',

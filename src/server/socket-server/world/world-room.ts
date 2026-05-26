@@ -116,4 +116,8 @@ export class WorldRoom extends WorldEntity {
   public updateFrame(penguin: WorldPenguin, frame: number): void {
     this.penguins.set(penguin, { ...this.getState(penguin), frame });
   }
+
+  public hasTable(): boolean {
+    return this.tables.size > 0;
+  }
 }

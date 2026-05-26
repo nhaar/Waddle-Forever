@@ -5,7 +5,7 @@ import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
 import { PenguinMessenger } from '../messenger';
-import { HandlerFunction, XtHandler } from '../xt';
+import { GuardFunction, HandlerFunction, XtHandler } from '../xt';
 import { getClientPuffleIds } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
 import { WorldTable } from '@server/socket-server/world/world-table';
@@ -21,6 +21,7 @@ const handler = new XtHandler<WorldContext, ['penguin', 'world', 'data', 'msg', 
 
 export type JoinHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db'], T>;
 export type RoomHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room'], T>;
+export type RoomGuard = GuardFunction<WorldContext, ['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']>;
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand

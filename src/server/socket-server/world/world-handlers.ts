@@ -4,7 +4,8 @@ import { CtxObj } from "@server/handlers";
 import { handleAddItem, handleGetItems, handleJoinPlayerOld, handleJoinServer, handleSendCoins, joinRoom } from "@server/handlers/play/join";
 import { XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
 import { ArgumentsIndicator, GetArgumentsType } from "@server/handlers/arg-parser";
-import { handleAddToyOld, handleCloseToy, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdatePenguinOld, sendTeleportOld } from "@server/handlers/play/room";
+import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "@server/handlers/play/room";
+import { doubleFilter } from "@common/utils";
 
 type PreProcessCallbackInfo = [
   [Array<keyof WorldContext & string>,
@@ -45,9 +46,10 @@ const groupCallbacks = (callbacks: IntermediateXtCallbackInfo[]): GroupedCallbac
   const first = callbacks[0];
   const tail = callbacks.slice(1);
   const [ext, code] = first;
+  const [others, rest] = doubleFilter(i => i[0] === ext && i[1] === code, tail);
   return [
-    [[ext, code].join('%'), [first, ...tail.filter(i => i[0] === ext && i[1] === code)].map(i => [i[2], i[3], i[4], i[5]])],
-    ...groupCallbacks(tail)
+    [[ext, code].join('%'), [first, ...others].map(i => [i[2], i[3], i[4], i[5]])],
+    ...groupCallbacks(rest)
   ];
 }
 
@@ -92,12 +94,38 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('z', 'gw', 'string', handleGetWaddle),
     r.xt('z', 'jw', ['number'], handleJoinWaddle),
     r.xt('z', 'lw', [], handleLeaveWaddle),
-    r.xt('z', 'gz', ['number'], handleGetTableGame),
+    r.xt('z', 'gz', ['string'], handleGetTableGame, { guard: isTableGuard }),
     r.xt('z', 'jz', [], handleJoinTableGame),
     r.xt('z', 'lz', [], handleLeaveTableGame),
-    r.xt('z', 'zm', 'number', handleSendTableMove),
+    r.xt('z', 'zm', 'number', handleSendTableMove, { guard: isTableGuard }),
 
-    p.xt('s', 'j#js', [], handleJoinServer)
+    r.xt('z', 'gz', [], handleGetHockeyGame, { guard: isHockeyGuard }),
+    r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
+    r.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck, { guard: isHockeyGuard }),
+    r.xt('z', 'uz', ['number'], handleUpdateHockeyGame, { guard: isHockeyGuard }),
+
+    p.xt('s', 'j#js', [], handleJoinServer),
+    r.xt('s', 'u#sp', ['number', 'number'], handleSetPosition),
+    r.xt('s', 'u#sf', ['number'], handleSetFrame),
+    r.xt('s', 'u#sa', ['string'], handleSetAction),
+    r.xt('s', 'u#sb', ['string', 'string'], handleSetSnowball),
+    r.xt('s', 'u#se', ['string'], handleSendEmote),
+    r.xt('s', 'u#sj', ['string'], handleSendJoke),
+    r.xt('s', 'm#sm', ['string', 'string'], handleSendMessage),
+    r.xt('s', 'u#ss', ['string'], handleSafeMessage),
+    r.xt('s', 'u#sl', ['string'], handleSendLine),
+    r.xt('s', 't#at', ['string'], handleAddToy),
+    r.xt('s', 't#rt', [], handleCloseToy),
+    r.xt('s', 's#upc', ['number'], handleUpdateColor),
+    r.xt('s', 's#uph', ['number'], handleUpdateHead),
+    r.xt('s', 's#upn', ['number'], handleUpdateNeck),
+    r.xt('s', 's#upf', ['number'], handleUpdateFace),
+    r.xt('s', 's#upb', ['number'], handleUpdateBody),
+    r.xt('s', 's#upa', ['number'], handleUpdateHand),
+    r.xt('s', 's#upe', ['number'], handleUpdateFeet),
+    r.xt('s', 's#upl', ['number'], handleUpdatePin),
+    r.xt('s', 's#upp', ['number'], handleUpdateBackground),
+    r.xt('s', 'pt#spts', ['number'], handlePlayerTransform)
   ];
   const grouped = groupCallbacks(callbacks);
   return new XtHandler(getFinalCallbacks(grouped), async () => {});
