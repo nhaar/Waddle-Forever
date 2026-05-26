@@ -1,4 +1,3 @@
-import { WorldContext } from "@server/socket-server/world/world";
 import { COLOR_DISCARD_POWER_CARDS, ELEMENT_BLOCK_POWER_CARDS, ELEMENT_DISCARD_POWER_CARDS, NinjaPlayer, ON_PLAYED_POWER_CARDS, SELF_EFFECT_POWER_CARDS, Sensei } from "@server/socket-server/world/card";
 import { getStamp } from "./puffle";
 import { Stamp } from "@server/game-logic/stamps";

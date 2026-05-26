@@ -1,6 +1,5 @@
 import { WorldContext } from "./world";
 
-import { CtxObj } from "@server/handlers";
 import { handleAddEpfItem, handleAddItem, handleBecomeAgent, handleBuddyAccept, handleBuddyDecline, handleBuddyMessage, handleBuddyRemove, handleBuddyRequest, handleDisconnect, handleEPFStamp, handleGetBuddyNew, handleGetCoins, handleGetEpfMedals, handleGetEpfStatus, handleGetFieldOps, handleGetItems, handleGetMissionStamps, handleGetPartyOp, handleGetPinInfo, handleGetPlayer, handleGetPuffleLaunchData, handleGetRecentStamps, handleGetSpyDrillsChallenge, handleGetSpyDrillsReward, handleGetStampbookCoverData, handleGetTotalCoins, handleGLR, handleGN, handleGrantAwards, handleHeartbeat, handleJoinPlayerCpip, handleJoinPlayerModern, handleJoinPlayerOld, handleJoinServer, handlePBI, handleReceiveInventory, handleSendCoins, handleSetPartyOp, handleSetPuffleLaunchData, handleSetStampbookCoverData, handleSetStampEarned, handleSpyRequest, isBackyardGuard, isPreBackyardGuard, joinRoom, sendBuddyOnlineList, sendGetBuddies, sendStamps } from "@server/handlers/play/join";
 import { XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
 import { ArgumentsIndicator, GetArgumentsType } from "@server/handlers/arg-parser";
@@ -16,6 +15,7 @@ import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, hand
 import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "@server/handlers/play/puffle";
 import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "@server/handlers/play/rainbow";
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "@server/handlers/games/sled";
+import { GuardFunction, HandlerFunction } from "@server/handlers/handlers";
 
 type PreProcessCallbackInfo = [
   [Array<keyof WorldContext & string>,
@@ -34,8 +34,8 @@ class XtGenerator<CT extends Array<keyof WorldContext & string>> {
     extension: string,
     code: string,
     signature: T,
-    callback: (ctx: CtxObj<CT, WorldContext>, ...args: GetArgumentsType<T>) => Promise<void> | void,
-    params?: { guard?: (ctx: CtxObj<CT, WorldContext>) => boolean, xt?: XtParams }
+    callback: HandlerFunction<CT, GetArgumentsType<T>>,
+    params?: { guard?: GuardFunction<CT>, xt?: XtParams }
   ): IntermediateXtCallbackInfo {
     return [
       extension, code,
