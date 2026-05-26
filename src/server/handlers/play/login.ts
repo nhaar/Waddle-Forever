@@ -1,5 +1,3 @@
-import { XmlHandler } from "../xml";
-
 import { WorldContext } from "@server/socket-server/world/world";
 import { PenguinMessenger } from "../messenger";
 import { ClientSocket } from "@server/socket-server";
@@ -97,9 +95,6 @@ export function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket 
   msg.send(p, 'e', error);
 }
 
-const worldLoginHandler = new XmlHandler<WorldContext, ['world', 'msg', 'data', 'settings', 'db', 'client']>(['world', 'msg', 'data', 'settings', 'db', 'client']);
-const loginHandler = new XmlHandler<LoginContext, ['db', 'settings', 'data', 'msg', 'client']>(['db', 'settings', 'data', 'msg', 'client']);
-
 type LoginHandler = (ctx: LoginContext, message: string) => void;
 
 export const filePolicy: LoginHandler = ({ client }) => {
@@ -188,24 +183,3 @@ export const login: LoginHandler = async (ctx, message: string) => {
     }).join('|'));
   }
 }
-
-worldLoginHandler.xml('policy', filePolicy);
-
-worldLoginHandler.xml('verChk', checkVersion);
-
-worldLoginHandler.xml('rndK', getKey);
-
-worldLoginHandler.xml('login', login)
-
-loginHandler.xml('policy', filePolicy);
-
-loginHandler.xml('verChk', checkVersion);
-
-loginHandler.xml('rndK', getKey);
-
-loginHandler.xml('login', login);
-
-export { 
-  worldLoginHandler, 
-  loginHandler 
-};
