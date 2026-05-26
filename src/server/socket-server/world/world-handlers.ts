@@ -8,6 +8,8 @@ import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, han
 import { doubleFilter } from "@common/utils";
 import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleUpdateCardSeats, isCardJitsuGuard } from "@server/handlers/play/card";
 import { handleGetMail, handleMailTotal } from "@server/handlers/play/mail";
+import { handleCheckName } from "@server/handlers/play/create";
+import { handleLeaveGame, handleRoomRefresh } from "@server/handlers/play/game";
 
 type PreProcessCallbackInfo = [
   [Array<keyof WorldContext & string>,
@@ -70,6 +72,8 @@ export const createWorldXtHandler = (): XtHandler => {
   const p = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db']);
   const r = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']);
   const c = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card']);
+  const z = new XtGenerator(['client', 'msg', 'db']);
+  const g = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'game']);
 
   const callbacks: IntermediateXtCallbackInfo[] = [
     p.xt('s', 'js', ['string', 'string', 'string'], handleJoinServer),
@@ -137,10 +141,12 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('z', 'ggd', [], handleGetPuffleLaunchData),
     p.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData),
     p.xt('z', 'zr', [], handleGetSpyDrillsChallenge),
+    g.xt('z', 'zo', ['number'], handleLeaveGame),
     p.xt('z', 'zc', ['number'], handleGetSpyDrillsReward),
 
     p.xt('s', 'j#js', ['string', 'string', 'string'], handleJoinServer),
     p.xt('s', 'j#jr', ['number', 'number', 'number'], joinRoom),
+    g.xt('s', 'j#grs', [], handleRoomRefresh),
     p.xt('s', 'i#gi', [], handleGetItems),
     p.xt('s', 'i#ai', ['number'], handleAddItem),
     p.xt('s', 'l#mst', [], handleMailTotal),
@@ -192,7 +198,8 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'f#epfsp', ['number'], handleSetPartyOp),
     p.xt('z', 'epfsf', ['number'], handleEPFStamp),
 
-    p.xt('s', 'u#h', [], handleHeartbeat)
+    p.xt('s', 'u#h', [], handleHeartbeat),
+    z.xt('m', 'checkName', ['string'], handleCheckName)
   ];
   const grouped = groupCallbacks(callbacks);
   return new XtHandler(getFinalCallbacks(grouped), handleDisconnect);

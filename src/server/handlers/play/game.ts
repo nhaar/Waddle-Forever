@@ -1,12 +1,11 @@
 import { WorldContext } from "@server/socket-server/world/world";
-import { HandlerFunction, XtHandler } from "../xt";
+import { HandlerFunction } from "../xt";
 import { isLiteralScoreGame } from "@server/game-logic/rooms";
 import { getPenguinString } from "./join";
 
-const handler = new XtHandler<WorldContext, ['penguin', 'msg', 'game', 'data', 'prst']>(['penguin', 'msg', 'game', 'data', 'prst']);
 type GameHandler<T extends any[]> = HandlerFunction<WorldContext, ['penguin', 'msg', 'game', 'data', 'prst'], T>;
 
-const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
+export const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
   const { game, data, penguin, msg, prst } = ctx;
 
   const rawCoins = isLiteralScoreGame(game.getId()) ? (
@@ -34,12 +33,6 @@ const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
   prst(penguin);
 }
 
-handler.xt('s', 'j#grs', [], ({ msg, data, penguin }) => {
+export const handleRoomRefresh: GameHandler<[]> = ({ msg, data, penguin }) => {
   msg.send(penguin, 'grs', penguin.id, getPenguinString(data, penguin, { x:0,y:0,frame:1 }));
-});
-
-handler.xt('z', 'zo', ['number'], handleLeaveGame);
-
-export {
-  handler as gameHandler
-};
+}
