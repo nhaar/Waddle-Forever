@@ -10,6 +10,7 @@ import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleUpdat
 import { handleGetMail, handleMailTotal } from "@server/handlers/play/mail";
 import { handleCheckName } from "@server/handlers/play/create";
 import { handleLeaveGame, handleRoomRefresh } from "@server/handlers/play/game";
+import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "@server/handlers/play/igloo";
 
 type PreProcessCallbackInfo = [
   [Array<keyof WorldContext & string>,
@@ -83,7 +84,6 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'jp', ['number', 'number'], handleJoinPlayerOld),
     p.xt('s', 'ac', [], handleSendCoins),
     p.xt('s', 'gc', [], handleGetCoins),
-    p.xt('k', 'spy', [], handleSpyRequest),
     p.xt('s', 'il', [], handleReceiveInventory),
     r.xt('s', 'sp', ['number', 'number'], handleSetPosition),
     r.xt('s', 'sf', ['number'], handleSetFrame),
@@ -91,9 +91,7 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 'sb', ['string', 'string'], handleSetSnowball),
     r.xt('s', 'se', ['string'], handleSendEmote),
     r.xt('s', 'sj', ['string'], handleSendJoke),
-    r.xt('m', 'sm', ['string', 'string'], handleSendMessage),
     r.xt('s', 'ss', ['string'], handleSafeMessage),
-    r.xt('m', 'ss', ['string'], handleSafeMessage),
     r.xt('s', 'at', ['string', 'string'], handleAddToyOld),
     r.xt('s', 'rt', [], handleCloseToy),
     r.xt('s', 'st', ['number', 'number', 'number'],  sendTeleportOld),
@@ -101,7 +99,6 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 'gt', 'number', handleGetTables),
     r.xt('s', 'jt', ['number'], handleJoinTable),
     r.xt('s', 'lt', [], handleLeaveTable),
-
     p.xt('s', 'gb', [], sendGetBuddies),
     p.xt('s', 'go', [], sendBuddyOnlineList),
     p.xt('s', 'bq', ['number'], handleBuddyRequest),
@@ -110,7 +107,24 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'br', ['number'], handleBuddyRemove),
     p.xt('s', 'bm', ['number', 'number'], handleBuddyMessage),
     p.xt('s', 'gp', ['number'], handleGetPlayer),
+    p.xt('s', 'af', ['number'], handleAddFurniture),
+    p.xt('s', 'au', ['number'], handleAddIgloo),
+    p.xt('s', 'gf', [], handleGetFurniture),
+    p.xt('s', 'ur', 'string', handleUpdateIglooOld),
 
+    p.xt('r', 'gm', ['number'], getIglooOld),
+    p.xt('r', 'af', ['number'], handleAddFurniture),
+    p.xt('r', 'au', ['number'], handleAddIgloo),
+    p.xt('r', 'ag', ['number'], handleAddFlooring),
+    p.xt('r', 'ur', 'string', handleUpdateIgloo),
+    p.xt('r', 'gf', [], handleGetFurniture),
+    p.xt('r', 'or', ['number'], handleOpenIgloo),
+    p.xt('r', 'cr', ['number'], handleCloseIgloo),
+    p.xt('r', 'gr', [], handleGetOpenIgloos),
+    p.xt('r', 'um', ['number'], handleUpdateMusic),
+
+    p.xt('k', 'spy', [], handleSpyRequest),
+    
     p.xt('b', 'gb', [], sendGetBuddies),
     p.xt('b', 'go', [], sendBuddyOnlineList),
     p.xt('b', 'br', ['number'], handleBuddyRequest),
@@ -118,52 +132,66 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('b', 'bd', ['number'], handleBuddyDecline),
     p.xt('b', 'rb', ['number'], handleBuddyRemove),
     p.xt('b', 'bm', ['number', 'number'], handleBuddyMessage),
+    
     p.xt('p', 'gp', ['number'], handleGetPlayer),
-
+    
     r.xt('z', 'gw', 'string', handleGetWaddle),
     r.xt('z', 'jw', ['number'], handleJoinWaddle),
     r.xt('z', 'lw', [], handleLeaveWaddle),
-    r.xt('z', 'gz', ['string'], handleGetTableGame, { guard: isTableGuard }),
     r.xt('z', 'jz', [], handleJoinTableGame),
-    r.xt('z', 'lz', [], handleLeaveTableGame, { guard: isTableGuard }),
-    r.xt('z', 'zm', 'number', handleSendTableMove, { guard: isTableGuard }),
-
+    r.xt('z', 'gz', ['string'], handleGetTableGame, { guard: isTableGuard }),
     r.xt('z', 'gz', [], handleGetHockeyGame, { guard: isHockeyGuard }),
-    r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
-    r.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck, { guard: isHockeyGuard }),
-    r.xt('z', 'uz', ['number'], handleUpdateHockeyGame, { guard: isHockeyGuard }),
-
     c.xt('z', 'gz', ['number'], handleEnterCardGame, { guard: isCardJitsuGuard }),
+    r.xt('z', 'uz', ['number'], handleUpdateHockeyGame, { guard: isHockeyGuard }),
     c.xt('z', 'uz', [], handleUpdateCardSeats, { guard: isCardJitsuGuard }),
-    c.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction, { guard: isCardJitsuGuard }),
+    r.xt('z', 'lz', [], handleLeaveTableGame, { guard: isTableGuard }),
     c.xt('z', 'lz', [], handleQuitCard, { guard: isCardJitsuGuard }),
-
+    r.xt('z', 'zm', 'number', handleSendTableMove, { guard: isTableGuard }),
+    r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
+    c.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction, { guard: isCardJitsuGuard }),
+    r.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck, { guard: isHockeyGuard }),
     p.xt('z', 'ggd', [], handleGetPuffleLaunchData),
     p.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData),
-    p.xt('z', 'zr', [], handleGetSpyDrillsChallenge),
     g.xt('z', 'zo', ['number'], handleLeaveGame),
+    p.xt('z', 'zr', [], handleGetSpyDrillsChallenge),
     p.xt('z', 'zc', ['number'], handleGetSpyDrillsReward),
-
+    p.xt('z', 'epfsf', ['number'], handleEPFStamp),
+    
     p.xt('s', 'j#js', ['string', 'string', 'string'], handleJoinServer),
     p.xt('s', 'j#jr', ['number', 'number', 'number'], joinRoom),
     g.xt('s', 'j#grs', [], handleRoomRefresh),
+    p.xt('s', 'j#jp', ['number'], handleJoinPlayerCpip, { guard: isPreBackyardGuard }),
+    p.xt('s', 'j#jp', ['number', 'string'], handleJoinPlayerModern, { guard: isBackyardGuard }),
+    
     p.xt('s', 'i#gi', [], handleGetItems),
     p.xt('s', 'i#ai', ['number'], handleAddItem),
+    p.xt('s', 'i#qpp', ['number'], handleGetPinInfo),
+    p.xt('s', 'i#qpa', [], handleGetMissionStamps),
+    
     p.xt('s', 'l#mst', [], handleMailTotal),
     p.xt('s', 'l#mg', [], handleGetMail),
+    
     p.xt('s', 'n#gn', [], handleGN),
+    
     p.xt('s', 'b#gb', [], handleGetBuddyNew),
+    
     r.xt('s', 'u#sp', ['number', 'number'], handleSetPosition),
     r.xt('s', 'u#sf', ['number'], handleSetFrame),
     r.xt('s', 'u#sa', ['string'], handleSetAction),
     r.xt('s', 'u#sb', ['string', 'string'], handleSetSnowball),
     r.xt('s', 'u#se', ['string'], handleSendEmote),
     r.xt('s', 'u#sj', ['string'], handleSendJoke),
-    r.xt('s', 'm#sm', ['string', 'string'], handleSendMessage),
     r.xt('s', 'u#ss', ['string'], handleSafeMessage),
     r.xt('s', 'u#sl', ['string'], handleSendLine),
+    p.xt('s', 'u#glr', [], handleGLR),
+    p.xt('s', 'u#pbi', ['string'], handlePBI),
+    p.xt('s', 'u#h', [], handleHeartbeat),
+    
+    r.xt('s', 'm#sm', ['string', 'string'], handleSendMessage),
+    
     r.xt('s', 't#at', ['string'], handleAddToy),
     r.xt('s', 't#rt', [], handleCloseToy),
+    
     r.xt('s', 's#upc', ['number'], handleUpdateColor),
     r.xt('s', 's#uph', ['number'], handleUpdateHead),
     r.xt('s', 's#upn', ['number'], handleUpdateNeck),
@@ -173,21 +201,40 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 's#upe', ['number'], handleUpdateFeet),
     r.xt('s', 's#upl', ['number'], handleUpdatePin),
     r.xt('s', 's#upp', ['number'], handleUpdateBackground),
-    r.xt('s', 'pt#spts', ['number'], handlePlayerTransform),
-    p.xt('s', 'j#jp', ['number'], handleJoinPlayerCpip, { guard: isPreBackyardGuard }),
-    p.xt('s', 'j#jp', ['number', 'string'], handleJoinPlayerModern, { guard: isBackyardGuard }),
-    p.xt('s', 'u#glr', [], handleGLR),
-    p.xt('s', 'u#pbi', ['string'], handlePBI),
-    p.xt('s', 'r#gtc', [], handleGetTotalCoins),
 
-    p.xt('s', 'i#qpp', ['number'], handleGetPinInfo),
-    p.xt('s', 'i#qpa', [], handleGetMissionStamps),
+    p.xt('s', 'g#gm', ['number'], handleGetIglooCpip),
+    p.xt('s', 'g#gii', [], handleGetIglooItems),
+    p.xt('s', 'g#af', ['number'], handleAddFurniture),
+    p.xt('s', 'g#au', ['number'], handleAddIgloo),
+    p.xt('s', 'g#ag', ['number'], handleAddFlooring),
+    p.xt('s', 'g#ur', 'string', handleUpdateIgloo),
+    p.xt('s', 'g#ao', ['number'], handleUpdateIglooType),
+    p.xt('s', 'g#gf', [], handleGetFurnitureNew),
+    p.xt('s', 'g#go', [], handleGetIglooTypes),
+    p.xt('s', 'g#or', ['number', 'string'], handleOpenIgloo),
+    p.xt('s', 'g#cr', ['number'], handleCloseIgloo),
+    p.xt('s', 'g#gr', [], handleGetOpenIgloos),
+    p.xt('s', 'g#um', ['number'], handleUpdateMusic),
+    p.xt('s', 'g#gili', [], handleGetIglooLikes),
+    p.xt('s', 'g#ggd', [], handleGetDj3kTracks),
+    p.xt('s', 'g#gail', [], handleGetAllIglooLayouts),
+    p.xt('s', 'g#uic', ['number', 'number', 'number', 'number', 'number', 'string'], handleUpdateIglooNew),
+    p.xt('s', 'g#al', [], handleAddIglooLayout),
+    p.xt('s', 'g#uiss', ['number', 'string'], handleUpdateIglooLayout),
+    p.xt('s', 'g#aloc', ['number'], handleAddIglooLocation),
+
+    p.xt('s', 'musictrack#getmymusictracks', [], handleGetMusicTracks),
+
+    r.xt('s', 'pt#spts', ['number'], handlePlayerTransform),
+    
+    p.xt('s', 'r#gtc', [], handleGetTotalCoins),
+    
     p.xt('s', 'st#gsbcd', ['number'], handleGetStampbookCoverData),
     p.xt('s', 'st#gps', [], sendStamps),
     p.xt('s', 'st#gmres', [], handleGetRecentStamps),
     p.xt('s', 'st#ssbcd', 'string', handleSetStampbookCoverData),
     p.xt('s', 'st#sse', ['number'], handleSetStampEarned),
-
+    
     p.xt('s', 'f#epfga', [], handleGetEpfStatus),
     p.xt('s', 'f#epfgf', [], handleGetFieldOps),
     p.xt('s', 'f#epfgr', [], handleGetEpfMedals),
@@ -196,9 +243,9 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'f#epfgrantreward', ['number'], handleGrantAwards),
     p.xt('s', 'f#epfgp', [], handleGetPartyOp),
     p.xt('s', 'f#epfsp', ['number'], handleSetPartyOp),
-    p.xt('z', 'epfsf', ['number'], handleEPFStamp),
-
-    p.xt('s', 'u#h', [], handleHeartbeat),
+    
+    r.xt('m', 'sm', ['string', 'string'], handleSendMessage),
+    r.xt('m', 'ss', ['string'], handleSafeMessage),
     z.xt('m', 'checkName', ['string'], handleCheckName)
   ];
   const grouped = groupCallbacks(callbacks);
