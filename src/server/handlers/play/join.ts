@@ -1,6 +1,6 @@
 import { PenguinRepository } from '@server/database/database';
 import { isGameRoom, Room } from '@server/game-logic/rooms';
-import { WorldContext, World } from '@server/socket-server/world/world';
+import { World } from '@server/socket-server/world/world';
 import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
@@ -15,7 +15,7 @@ import { STARTER_DECKS } from '@server/game-logic/starter-deck';
 import { CARDS } from '@server/game-logic/cards';
 import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
-import { PenguinHandler, PenguinGuard, RoomHandler } from '../handlers';
+import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from '../handlers';
 
 
 function unequipPuffle(p: WorldPenguin): void {

@@ -11,7 +11,7 @@ import { ClientSocket, MessageHandler, setupSocketServer } from "../socket-serve
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 
-import { PenguinPersister, World, WorldContext } from "./world";
+import { World } from "./world";
 
 
 import { addBakeryListener } from "@server/handlers/play/party";
@@ -23,6 +23,7 @@ import { XtHandler } from "./xt-handler";
 import { XmlHandler } from "./xml-handler";
 import { createWorldXtHandler } from "./world-handlers";
 import { createLoginXmlHandler } from "./login-handlers";
+import { PenguinPersister, WorldContext } from "@server/handlers/handlers";
 
 
 export class WorldServer implements MessageHandler {

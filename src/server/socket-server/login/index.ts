@@ -9,10 +9,9 @@ import { ClientSocket, MessageHandler, setupSocketServer } from "../socket-serve
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 
-import { WorldContext } from "../world/world";
-
 import { XmlHandler } from "../world/xml-handler";
 import { createLoginXmlHandler } from "../world/login-handlers";
+import { WorldContext } from "@server/handlers/handlers";
 
 export type LoginContext = Pick<WorldContext, 'msg' | 'data' | 'settings' | 'db' |'client'>;
 

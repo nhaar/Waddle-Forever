@@ -19,7 +19,7 @@ import { MatchMaker } from "./matchmaker";
 
 export class World {
   private penguins = new Map<number, WorldPenguin>();
-  private states = new Map<WorldPenguin, EventuallyCommonlyDefined>
+  private states = new Map<WorldPenguin, PenguinEnvironment>
   private rooms = new Map<number, WorldRoom>();
   private games = new Map<number, WorldGame>();
   private spectators = new Set<WorldPenguin>();
@@ -58,11 +58,11 @@ export class World {
     return p.room as WorldRoom;
   }
 
-  public getContext(p: WorldPenguin): EventuallyCommonlyDefined | undefined {
+  public getContext(p: WorldPenguin): PenguinEnvironment | undefined {
     return this.states.get(p);
   }
 
-  public enterState(p: WorldPenguin, s: EventuallyCommonlyDefined) {
+  public enterState(p: WorldPenguin, s: PenguinEnvironment) {
     this.states.set(p, s);
   }
 
@@ -190,34 +190,4 @@ export class World {
   }
 }
 
-export type PenguinPersister = (p: WorldPenguin, force?: boolean) => void;
-
-type Ctx<G, AS, ES, EC> = G & AS & ({} | (ES & ({} | EC)));
-
-export type WorldContext = Ctx<GloballyDefined, AlwaysSingularlyDefined, EventuallySingularlyDefined, EventuallyCommonlyDefined>;
-
-export type BaseContext = GloballyDefined & AlwaysSingularlyDefined & ({} | EventuallySingularlyDefined);
-export type PenguinContext = BaseContext & EventuallySingularlyDefined & (EventuallyCommonlyDefined | {});
-export type RoomContext = PenguinContext & { room: WorldRoom };
-export type GameContext = PenguinContext & { game: WorldGame };
-export type CardContext = PenguinContext & { card: CardJitsu };
-export type SledContext = PenguinContext & { sled: SledRace };
-
-type GloballyDefined = {
-  world: World;
-  msg: PenguinMessenger;
-  data: GameData;
-  settings: SettingsManager;
-  db: PenguinRepository;
-  prst: PenguinPersister;
-}
-
-type AlwaysSingularlyDefined = {
-  client: ClientSocket;
-}
-
-type EventuallySingularlyDefined = {
-  penguin: WorldPenguin;
-}
-
-type EventuallyCommonlyDefined = { room: WorldRoom; } | { game: WorldGame; } | { card: CardJitsu; } | { sled: SledRace; };
+export type PenguinEnvironment = { room: WorldRoom; } | { game: WorldGame; } | { card: CardJitsu; } | { sled: SledRace; };
