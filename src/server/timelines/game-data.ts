@@ -9,7 +9,6 @@ import { FileRef, getMediaFilePath } from "@server/game-data/files";
 import { FURNITURE_ICONS, FURNITURE_SPRITES } from "@server/game-data/furniture";
 import { GameName } from "@server/game-data/games";
 import { MUSIC_IDS } from "@server/game-data/music";
-import { POSTCARD_IDS } from "@server/game-data/postcard";
 import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
 import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
@@ -222,8 +221,6 @@ export class GameData {
   private addDefaultInfo() {
     ['play/v2/content/global', ''].forEach((parentDir) => this.addIdMap(parentDir, 'music', MUSIC_IDS));
 
-    this.addIdMap('play/v2/content/local/en', 'postcards', POSTCARD_IDS);
-  
     const clothingDir = 'play/v2/content/global/clothing';
     const preCpipClothingDir = 'artwork';
 
