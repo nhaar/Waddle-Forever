@@ -271,6 +271,7 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
         // end args is pre-cpip thing
         // post-cpip: regular player coins
         if (data.isPreCpip()) {
+          table.blockSpectators();
           msg.send(table.penguins, 'zo', ...endArgs);
         } else {
           table.penguins.forEach(p => msg.send(p, 'zo', p.currency.coins));

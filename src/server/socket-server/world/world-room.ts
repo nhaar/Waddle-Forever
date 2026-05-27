@@ -115,4 +115,8 @@ export class WorldRoom {
   public hasTable(): boolean {
     return this.tables.size > 0;
   }
+
+  public getTables(): WorldTable[] {
+    return [...this.tables.values()];
+  }
 }

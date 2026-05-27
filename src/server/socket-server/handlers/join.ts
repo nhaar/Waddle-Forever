@@ -324,8 +324,14 @@ export const handleGetTotalCoins: PenguinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'gtc', penguin.currency.coins);
 }
 
-export const handleSendCoins: PenguinHandler<[]> = ({ penguin, msg }) => {
-  // TODO something to do with table spectators
+export const handleSendCoins: PenguinHandler<[]> = (ctx) => {
+  const { penguin, msg } = ctx;
+  if ('room' in ctx) {
+    if (ctx.room.getTables().some(t => t.unblockPayout(penguin))) {
+      // don't send if payout is blocked from being a spectator
+      return;
+    }
+  }
   msg.send(penguin, 'ac', penguin.currency.coins);
 }
 

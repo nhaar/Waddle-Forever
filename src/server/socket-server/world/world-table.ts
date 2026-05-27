@@ -4,6 +4,7 @@ export abstract class WorldTable {
   private seats: Array<WorldPenguin | null> = [null, null];
   private joined: Array<boolean> = [false, false];
   private spectators = new Set<WorldPenguin>();
+  private _blockPayout = new Set<WorldPenguin>();
   static TABLE_SPECTATOR_SEAT = 99;
   private started = false;
   private ended = false;
@@ -81,7 +82,15 @@ export abstract class WorldTable {
   }
 
   public removeSpectator(penguin: WorldPenguin) {
-    this.spectators.delete(penguin);
+    return this.spectators.delete(penguin);
+  }
+
+  public unblockPayout(penguin: WorldPenguin): boolean {
+    return this._blockPayout.delete(penguin);
+  }
+
+  public blockSpectators(): void {
+    this.spectators.forEach(s => this._blockPayout.add(s));
   }
 
   public getNames(): string[] {
