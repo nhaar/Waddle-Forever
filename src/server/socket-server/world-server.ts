@@ -16,19 +16,17 @@ import { World } from "./world/world";
 import { addBakeryListener } from "@server/handlers/play/party";
 import { addMatchmakerListeners } from "@server/handlers/play/ninja";
 
-import { CommandsHandler } from "../commands/commands";
-import { CommandContext, commands } from "../commands/command-handlers";
 import { XtHandler } from "./world/xt-handler";
 import { XmlHandler } from "./world/xml-handler";
 import { createWorldXtHandler } from "./world/world-handlers";
 import { createLoginXmlHandler } from "./world/login-handlers";
 import { PenguinPersister, WorldContext } from "@server/handlers/handlers";
-
+import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
   private _msg = new PenguinMessenger();
-  private _commandsHandler: CommandsHandler<CommandContext>;
+  private _commandsHandler: CommandsHandler;
   private _xtHandler: XtHandler;
   private _xmlHandler: XmlHandler;
   private _persister: PenguinPersister;
@@ -36,7 +34,7 @@ export class WorldServer implements MessageHandler {
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
     this._world = new World(_gameData);
 
-    this._commandsHandler = new CommandsHandler(commands.get());
+    this._commandsHandler = getCommandsHandler();
 
     this._persister = (p, force = false) => { 
       if (p.preference.canSave || force) {
@@ -54,7 +52,7 @@ export class WorldServer implements MessageHandler {
     const penguin = this._world.getById(penguinId);
     if (penguin !== undefined) {
       const client = this._msg.getClient(penguin);
-      const ctx: CommandContext = {
+      this._commandsHandler.run({
         world: this._world,
         penguin,
         prst: this._persister,
@@ -64,8 +62,7 @@ export class WorldServer implements MessageHandler {
         settings: this._settings,
         client,
         room: this._world.getPenguinRoom(penguin)
-      }
-      this._commandsHandler.run(ctx, name, args);
+      }, name, args);
     }
   }
 
