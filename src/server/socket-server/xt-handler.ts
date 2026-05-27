@@ -14,7 +14,7 @@ const parseXtMessage = (message: string): [string, string[]] => {
   return [name, args];
 }
 
-export type CtxGuard<Ctx extends WorldContext> = [(ctx: WorldContext) => ctx is Ctx,
+type CtxGuard<Ctx extends WorldContext> = [(ctx: WorldContext) => ctx is Ctx,
   (ctx: Ctx) => boolean];
 
 export type XtCallbackInfo<Ctx extends WorldContext> = [
