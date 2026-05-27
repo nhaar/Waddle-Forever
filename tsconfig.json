@@ -25,5 +25,8 @@
     "src/client/static/**/*",
     "/dist/**/*",
     "/compiled/**/*"
-  ]
+  ],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }
