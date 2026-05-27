@@ -53,6 +53,7 @@ export class WorldServer implements MessageHandler {
   public runCommand(penguinId: number, name: string, args: string[]) {
     const penguin = this._world.getById(penguinId);
     if (penguin !== undefined) {
+      const client = this._msg.getClient(penguin);
       const ctx: CommandContext = {
         world: this._world,
         penguin,
@@ -61,7 +62,8 @@ export class WorldServer implements MessageHandler {
         data: this._gameData,
         db: this._db,
         settings: this._settings,
-        room: this._world.getContext(penguin)?.room
+        client,
+        room: this._world.getPenguinRoom(penguin)
       }
       this._commandsHandler.run(ctx, name, args);
     }

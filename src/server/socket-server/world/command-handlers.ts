@@ -1,28 +1,15 @@
 import { PenguinMessenger } from "@server/handlers/messenger";
-import { PenguinPersister, World } from "./world"
+import { PenguinContext, PenguinPersister, RoomContext, World } from "./world"
 import { WorldPenguin } from "./world-penguin";
 import { CommandResponse } from "./commands";
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/handlers/arg-parser";
 import { ITEMS } from "@server/game-logic/items";
 import { filterItems, joinRoom, sendLPMessage } from "@server/handlers/play/join";
-import { GameData } from "@server/timelines/game-data";
-import { WorldRoom } from "./world-room";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
-import { PenguinRepository } from "@server/database/database";
-import { SettingsManager } from "@server/settings";
 
-export type CommandContext = { 
-  world: World;
-  penguin: WorldPenguin;
-  msg: PenguinMessenger;
-  prst: PenguinPersister;
-  data: GameData;
-  db: PenguinRepository;
-  settings: SettingsManager;
-  room?: WorldRoom;
-};
+export type CommandContext = PenguinContext | RoomContext;
 
 class CommandResponseGenerator {
   private _listeners = new Map<string, Array<[ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => void]>>();

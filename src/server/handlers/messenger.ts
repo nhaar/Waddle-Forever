@@ -60,4 +60,12 @@ export class PenguinMessenger {
   public getClients(): ClientSocket[] {
     return [...this._clients.values()];
   }
+
+  public getClient(p: WorldPenguin): ClientSocket {
+    const cs = this._clients.get(p);
+    if (cs === undefined) {
+      throw new Error('No client socket bound to penguin');
+    }
+    return cs;
+  }
 }
