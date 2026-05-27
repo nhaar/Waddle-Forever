@@ -37,7 +37,7 @@ const isNewBuddyProtocol = (data: GameData): boolean => {
   return !data.isPreCpip() || data.getChatVersion() >= 506;
 }
 
-async function formatBuddyEntry(id: number, world: World, db: PenguinRepository, includeOnlineFlag: boolean) {
+export async function formatBuddyEntry(id: number, world: World, db: PenguinRepository, includeOnlineFlag: boolean) {
   const name = world.getById(id)?.name ?? (await db.get(id))?.name ?? 'Unknown';
 
   if (!includeOnlineFlag) {
@@ -264,10 +264,6 @@ export const handleAddItem: PenguinHandler<[number]> = (ctx, item) => {
   penguin.inventory.add(item);
   msg.send(penguin, 'ai', item, penguin.currency.discount(info.cost));
   prst(penguin);
-}
-
-export const handleGN: PenguinHandler<[]> = ({ msg, penguin }) => {
-  msg.send(penguin, 'gn', '');
 }
 
 export const handleJoinPlayerOld: PenguinHandler<[number, number]> = async (ctx, ownerId, isMember) => {

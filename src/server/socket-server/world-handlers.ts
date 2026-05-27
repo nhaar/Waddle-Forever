@@ -1,4 +1,4 @@
-import { handleAddEpfItem, handleAddItem, handleBecomeAgent, handleBuddyAccept, handleBuddyDecline, handleBuddyMessage, handleBuddyRemove, handleBuddyRequest, handleDisconnect, handleEPFStamp, handleFindBuddy, handleGetCoins, handleGetEpfMedals, handleGetEpfStatus, handleGetFieldOps, handleGetItems, handleGetMissionStamps, handleGetPartyOp, handleGetPinInfo, handleGetPlayer, handleGetPuffleLaunchData, handleGetRecentStamps, handleGetSpyDrillsChallenge, handleGetSpyDrillsReward, handleGetStampbookCoverData, handleGetTotalCoins, handleGLR, handleGN, handleGrantAwards, handleHeartbeat, handleJoinPlayerCpip, handleJoinPlayerModern, handleJoinPlayerOld, handleJoinServer, handlePBI, handleReceiveInventory, handleSendCoins, handleSetPartyOp, handleSetPuffleLaunchData, handleSetStampbookCoverData, handleSetStampEarned, handleSpyRequest, isBackyardGuard, isPreBackyardGuard, joinRoom, sendBuddyOnlineList, sendGetBuddies, sendStamps } from "./handlers/join";
+import { handleAddEpfItem, handleAddItem, handleBecomeAgent, handleBuddyAccept, handleBuddyDecline, handleBuddyMessage, handleBuddyRemove, handleBuddyRequest, handleDisconnect, handleEPFStamp, handleFindBuddy, handleGetCoins, handleGetEpfMedals, handleGetEpfStatus, handleGetFieldOps, handleGetItems, handleGetMissionStamps, handleGetPartyOp, handleGetPinInfo, handleGetPlayer, handleGetPuffleLaunchData, handleGetRecentStamps, handleGetSpyDrillsChallenge, handleGetSpyDrillsReward, handleGetStampbookCoverData, handleGetTotalCoins, handleGLR, handleGrantAwards, handleHeartbeat, handleJoinPlayerCpip, handleJoinPlayerModern, handleJoinPlayerOld, handleJoinServer, handlePBI, handleReceiveInventory, handleSendCoins, handleSetPartyOp, handleSetPuffleLaunchData, handleSetStampbookCoverData, handleSetStampEarned, handleSpyRequest, isBackyardGuard, isPreBackyardGuard, joinRoom, sendBuddyOnlineList, sendGetBuddies, sendStamps } from "./handlers/join";
 import { XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
 import { ArgumentsIndicator, GetArgumentsType } from "@server/socket-server/arg-parser";
 import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "./handlers/room";
@@ -14,6 +14,7 @@ import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGet
 import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "./handlers/rainbow";
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "./handlers/sled";
 import { BaseContext, GuardFunction, HandlerFunction, WorldContext } from "@server/socket-server/handlers/handlers";
+import { handleAddIgnore, handleGetIgnoreList, handleRemoveIgnore } from "./handlers/buddy";
 
 type PreProcessCallbackInfo<Ctx extends WorldContext> = [
   [(ctx: WorldContext) => ctx is Ctx,
@@ -81,7 +82,7 @@ export const createWorldXtHandler = (): XtHandler => {
   const s = new XtGenerator((ctx) => 'sled' in ctx);
 
   const callbacks: IntermediateXtCallbackInfo<any>[] = [
-    p.xt('s', 'js', ['string', 'string', 'string'], handleJoinServer),
+    p.xt('s', 'js', 'string', handleJoinServer),
     p.xt('s', 'jr', ['number', 'number', 'number'], joinRoom),
     p.xt('s', 'gi', [], handleGetItems),
     p.xt('s', 'ai', ['number'], handleAddItem),
@@ -111,6 +112,8 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'br', ['number'], handleBuddyRemove),
     p.xt('s', 'bm', ['number', 'number'], handleBuddyMessage),
     p.xt('s', 'gp', ['number'], handleGetPlayer),
+    p.xt('s', 'an', ['number'], handleAddIgnore),
+    p.xt('s', 'rn', ['number'], handleRemoveIgnore),
     p.xt('s', 'af', ['number'], handleAddFurniture),
     p.xt('s', 'au', ['number'], handleAddIgloo),
     p.xt('s', 'gf', [], handleGetFurniture),
@@ -137,6 +140,10 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('b', 'bd', ['number'], handleBuddyDecline),
     p.xt('b', 'rb', ['number'], handleBuddyRemove),
     p.xt('b', 'bm', ['number', 'number'], handleBuddyMessage),
+
+    p.xt('n', 'gn', [], handleGetIgnoreList),
+    p.xt('n', 'an', ['number'], handleAddIgnore),
+    p.xt('n', 'rn', ['number'], handleRemoveIgnore),
     
     p.xt('p', 'gp', ['number'], handleGetPlayer),
     
@@ -181,8 +188,6 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'l#mst', [], handleMailTotal),
     p.xt('s', 'l#mg', [], handleGetMail),
     p.xt('s', 'l#mc', [], handleSetMailCheck),
-    
-    p.xt('s', 'n#gn', [], handleGN),
     
     r.xt('s', 'u#sp', ['number', 'number'], handleSetPosition),
     r.xt('s', 'u#sf', ['number'], handleSetFrame),
@@ -252,6 +257,10 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'b#ba', ['number'], handleBuddyAccept),
     p.xt('s', 'b#bf', ['number'], handleFindBuddy),
     p.xt('s', 'b#rb', ['number'], handleBuddyRemove),
+
+    p.xt('s', 'n#gn', [], handleGetIgnoreList),
+    p.xt('s', 'n#an', ['number'], handleAddIgnore),
+    p.xt('s', 'n#rn', ['number'], handleRemoveIgnore),
 
     r.xt('s', 'a#gt', 'number', handleGetTables),
     r.xt('s', 'a#jt', ['number'], handleJoinTable),

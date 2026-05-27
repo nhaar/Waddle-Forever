@@ -151,8 +151,16 @@ const POST_LISTENERS: Record<string, PostCallback> = {
     const virtualDate = settings.getVirtualDate(43);
     const [id, penguinData] = penguin;
     
-    // TODO document what the buddy list
     const buddies = (await Promise.all((penguinData.buddies ?? []).map(id => new Promise<[number, string] | null>((res) => {
+      db.get(id).then(p => {
+        if (p !== null) {
+          res([id, p.name]);
+        } else {
+          res(null);
+        }
+      })
+    })))).filter((p): p is [number, string] => p !== null);
+    const ignored = (await Promise.all((penguinData.ignored ?? []).map(id => new Promise<[number, string] | null>((res) => {
       db.get(id).then(p => {
         if (p !== null) {
           res([id, p.name]);
@@ -174,7 +182,7 @@ const POST_LISTENERS: Record<string, PostCallback> = {
       w: '100|0', // TODO what is?
       m: '', // TODO what is
       bl: buddies.map(([id, name]) => `${id}|${name}`).join(','),
-      nl: '',
+      nl: ignored.map(([id, name]) => `${id}|${name}`).join(','),
       il: filterItems(data, penguinData.inventory).join('|'), // item list
       td: `${virtualDate.getUTCFullYear()}-${String(virtualDate.getUTCMonth()).padStart(2, '0')}-${String(virtualDate.getUTCDate()).padStart(2, '0')}:${virtualDate.getUTCHours()}:${virtualDate.getUTCMinutes()}:${virtualDate.getUTCSeconds()}` // used for the snow forts clock in later years
     }

@@ -95,6 +95,7 @@ export interface PenguinJson {
   
 // BUDDIES
   buddies?: number[],
+  ignored?: number[],
 
 // STAMPBOOK
   stamps: number[],

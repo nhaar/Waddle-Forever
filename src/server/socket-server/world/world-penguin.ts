@@ -234,9 +234,11 @@ class Time {
 
 class BuddyInventory {
   private _buddies: Set<number>;
+  private _ignored: Set<number>;
 
   constructor(data: PenguinJson) {
     this._buddies = new Set(data.buddies);
+    this._ignored = new Set(data.ignored);
   }
 
   public get buddies() {
@@ -253,6 +255,18 @@ class BuddyInventory {
 
   public remove(id: number) {
     return this._buddies.delete(id);
+  }
+
+  public ignore(id: number) {
+    this._ignored.add(id);
+  }
+
+  public unignore(id: number) {
+    this._ignored.delete(id);
+  }
+
+  public get ignored(): number[] {
+    return [...this._ignored.values()];
   }
 }
 
@@ -1089,6 +1103,7 @@ export class WorldPenguin {
       virtualRegistrationTimestamp: this._time.virtualRegistrationTimestamp,
 
       buddies: this._buddies.buddies,
+      ignored: this._buddies.ignored,
 
       stamps: this._stampbook.stamps,
       stampbook: this._stampbook.cover,
