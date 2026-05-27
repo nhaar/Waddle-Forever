@@ -1,6 +1,7 @@
 import { ArgumentsIndicator, parseArgs } from "@server/socket-server/arg-parser";
 import { ClientSocket } from "./socket-server";
 import { WorldContext } from "@server/socket-server/handlers/handlers";
+import { getBlueString, getRedString, logverbose } from "@server/logger";
 
 const parseXtMessage = (message: string): [string, string[]] => {
   const values = message.split('%');
@@ -91,24 +92,26 @@ export class XtHandler {
   public handle(client: ClientSocket, context: WorldContext, message: string) {
     const [name, args] = parseXtMessage(message);
     
-    console.log('incoming XT:', name, args);
+    logverbose(getBlueString('incoming XT: '), name, args);
 
     const callbacks = this._callbacks.get(name);
 
     if (callbacks !== undefined) {
       const callbackInfo = callbacks.find(([[contextTester, guard]]) => contextTester(context) ? guard(context) : false);
       if (callbackInfo === undefined) {
-        console.log('Unhandled XT for given context: ', Object.keys(context).join(';'));
+        logverbose(getRedString('unhandled XT for given context: ' + Object.keys(context).join(';')));
         return;
       }
 
       const [_, signature, callback] = callbackInfo;
       const parsedArgs = parseArgs(args, signature);
       if (parsedArgs === null) {
-        console.log('Incorrect type signature');
+        logverbose(getRedString('incorrect type signature: ' + name));
       } else {
         callback.call(client, context, ...parsedArgs);
       }
+    } else {
+      logverbose(getRedString('unhandled XT: ' + name));
     }
   }
 

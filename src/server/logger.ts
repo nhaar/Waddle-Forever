@@ -2,6 +2,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { IS_DEV } from "@common/constants";
 
+export const getRedString = (str: string): string => `${'\x1b[31m'}${str}${'\x1b[0m'}`;
+export const getGreenString = (str: string): string => `${'\x1b[32m'}${str}${'\x1b[0m'}`;
+export const getYellowString = (str: string): string => `${'\x1b[33m'}${str}${'\x1b[0m'}`;
+export const getBlueString = (str: string): string => `${'\x1b[34m'}${str}${'\x1b[0m'}`;
+
 /**
  * Used to log things in debugging
  */

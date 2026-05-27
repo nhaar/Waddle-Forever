@@ -7,6 +7,7 @@ import { FileGenerator, getGeneratorsMap, postGeneratorsMap } from '@server/file
 import { MEDIA_DIRECTORY, readFile, toForwardSlash } from '@common/utils';
 import { SettingsManager } from '@server/settings';
 import { FileOverrider, OVERRIDERS } from './overriders';
+import { getYellowString, logverbose } from '@server/logger';
 
 /** Server that serves files to the game webpage and files in the game */
 export class FileServer {
@@ -45,6 +46,7 @@ export class FileServer {
     let filePath;
     const modName = this.modFiles.get(route);
     if (modName !== undefined) {
+      logverbose(getYellowString(`requesting ${route}, sending MODDED file`));
       filePath = path.join(MODS_DIRECTORY, modName, route);
     } else {
       filePath = this.gameData.lookupFile(route);
@@ -52,6 +54,7 @@ export class FileServer {
         if (typeof filePath !== 'string') {
           filePath = filePath(this.settings);
         }
+        logverbose(`req ${route} -> send ${filePath}`);
         filePath = path.join(MEDIA_DIRECTORY, filePath);
       }
     }

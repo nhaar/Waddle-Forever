@@ -1,4 +1,4 @@
-import { logverbose } from "@server/logger";
+import { getGreenString, getYellowString, logverbose } from "@server/logger";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 
@@ -40,14 +40,14 @@ export class PenguinMessenger {
   }
 
   public async send(penguins: WorldPenguin | ClientSocket | Array<ClientSocket | WorldPenguin>, message: string, ...args: Array<string | number>): Promise<void> {
-    logverbose('Sending XT: ', message, args);
+    logverbose(getGreenString('sending XT: '), message, args);
     await this.write(penguins, getXtMessage(message, ...args));
   }
 
   public async sendXml(client: ClientSocket, action: string, body: string, room?: number) {
     const roomString = room === undefined ? '' : ` r="${room}"`;
     const xml = `<msg t="sys"><body action="${action}"${roomString}>${body}</body></msg>`;
-    logverbose('Sending XML: ', xml);
+    logverbose(getYellowString('Sending XML: '), xml);
     await this.write(client, xml);
   }
 
