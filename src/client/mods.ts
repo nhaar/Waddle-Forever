@@ -5,7 +5,7 @@ import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from "@common/paths";
 import { getPopupCreator } from "./popups";
 import { SettingsManager } from "@server/settings";
 import { ModError } from "@server/mods";
-import { WorldServer } from "@server/socket-server/world";
+import { WorldServer } from "@server/socket-server/world-server";
 
 export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
   const modsWindow = new BrowserWindow({

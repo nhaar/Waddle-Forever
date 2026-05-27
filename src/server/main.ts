@@ -5,8 +5,8 @@ import settingsManager from './settings';
 import { GameData } from './timelines/game-data';
 
 import { HttpServer } from './http';
-import { setupWorldServer } from './socket-server/world';
-import { setupLoginServer } from './socket-server/login';
+import { setupWorldServer } from './socket-server/world-server';
+import { setupLoginServer } from './socket-server/login-server';
 
 // load user data
 const failedMods = settingsManager.mods.initializeMods();

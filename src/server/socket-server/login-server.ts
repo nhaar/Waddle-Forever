@@ -5,15 +5,12 @@ import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
 import { GameData } from "@server/timelines/game-data";
 
-import { ClientSocket, MessageHandler, setupSocketServer } from "../socket-server";
+import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 
-import { XmlHandler } from "../world/xml-handler";
-import { createLoginXmlHandler } from "../world/login-handlers";
-import { WorldContext } from "@server/handlers/handlers";
-
-export type LoginContext = Pick<WorldContext, 'msg' | 'data' | 'settings' | 'db' |'client'>;
+import { XmlHandler } from "./world/xml-handler";
+import { createLoginXmlHandler } from "./world/login-handlers";
 
 class LoginServer implements MessageHandler {
   private _msg: PenguinMessenger;

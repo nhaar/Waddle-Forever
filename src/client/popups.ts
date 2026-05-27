@@ -1,5 +1,5 @@
 import { SettingsManager } from "@server/settings";
-import { WorldServer } from "@server/socket-server/world";
+import { WorldServer } from "@server/socket-server/world-server";
 import { BrowserWindow, ipcMain } from "electron";
 
 export type Popups = Map<string, BrowserWindow>;

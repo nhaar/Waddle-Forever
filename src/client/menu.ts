@@ -12,7 +12,7 @@ import { SettingsManager } from "@server/settings";
 import { createMultiplayerSettings } from "./multiplayer";
 import { createCommands } from "./commands";
 import { Popups } from "./popups";
-import { WorldServer } from "@server/socket-server/world";
+import { WorldServer } from "@server/socket-server/world-server";
 
 const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: WorldServer): MenuItemConstructorOptions[] => {
   const app: MenuItemConstructorOptions = { 

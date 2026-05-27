@@ -7,22 +7,22 @@ import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
 import { GameData } from "@server/timelines/game-data";
 
-import { ClientSocket, MessageHandler, setupSocketServer } from "../socket-server";
+import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 
-import { World } from "./world";
+import { World } from "./world/world";
 
 
 import { addBakeryListener } from "@server/handlers/play/party";
 import { addMatchmakerListeners } from "@server/handlers/play/ninja";
 
-import { CommandsHandler } from "./commands";
-import { CommandContext, commands } from "./command-handlers";
-import { XtHandler } from "./xt-handler";
-import { XmlHandler } from "./xml-handler";
-import { createWorldXtHandler } from "./world-handlers";
-import { createLoginXmlHandler } from "./login-handlers";
+import { CommandsHandler } from "./world/commands";
+import { CommandContext, commands } from "./world/command-handlers";
+import { XtHandler } from "./world/xt-handler";
+import { XmlHandler } from "./world/xml-handler";
+import { createWorldXtHandler } from "./world/world-handlers";
+import { createLoginXmlHandler } from "./world/login-handlers";
 import { PenguinPersister, WorldContext } from "@server/handlers/handlers";
 
 

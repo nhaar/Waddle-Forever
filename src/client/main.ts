@@ -18,8 +18,8 @@ import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
 import { GameData } from '@server/timelines/game-data';
-import { setupWorldServer, WorldServer } from '@server/socket-server/world';
-import { setupLoginServer } from '@server/socket-server/login';
+import { setupWorldServer, WorldServer } from '@server/socket-server/world-server';
+import { setupLoginServer } from '@server/socket-server/login-server';
 import { HttpServer } from '@server/http';
 import { DataFolder, PenguinRepository } from '@server/database/database';
 
