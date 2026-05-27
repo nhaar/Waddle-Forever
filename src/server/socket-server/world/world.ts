@@ -98,12 +98,14 @@ export class World {
     switch (name) {
       case 'card':
         game = new CardJitsu(players);
+        players.forEach(p => this.enterState(p, { card: game as CardJitsu }));
         break;
     //   case 'fire':
     //     game = new CardJitsuFire(players, (c, e) => this.addContext(c, 'fire', e as CardJitsuFire), (c) => this.removeContext(c, 'fire'));
     //     break;
       case 'sled':
         game = new SledRace(players);
+        players.forEach(p => this.enterState(p, { sled: game as SledRace }));
         break;
       default:
         throw new Error('No waddle game constructor set');
