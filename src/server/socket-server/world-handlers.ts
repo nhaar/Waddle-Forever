@@ -251,6 +251,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'b#br', ['number'], handleBuddyRequest),
     p.xt('s', 'b#ba', ['number'], handleBuddyAccept),
     p.xt('s', 'b#bf', ['number'], handleFindBuddy),
+    p.xt('s', 'b#rb', ['number'], handleBuddyRemove),
 
     r.xt('s', 'a#gt', 'number', handleGetTables),
     r.xt('s', 'a#jt', ['number'], handleJoinTable),
