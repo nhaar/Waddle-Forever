@@ -1,7 +1,7 @@
-import { WorldContext } from "./world";
+import { BaseContext, WorldContext } from "./world";
 
 import { handleAddEpfItem, handleAddItem, handleBecomeAgent, handleBuddyAccept, handleBuddyDecline, handleBuddyMessage, handleBuddyRemove, handleBuddyRequest, handleDisconnect, handleEPFStamp, handleGetBuddyNew, handleGetCoins, handleGetEpfMedals, handleGetEpfStatus, handleGetFieldOps, handleGetItems, handleGetMissionStamps, handleGetPartyOp, handleGetPinInfo, handleGetPlayer, handleGetPuffleLaunchData, handleGetRecentStamps, handleGetSpyDrillsChallenge, handleGetSpyDrillsReward, handleGetStampbookCoverData, handleGetTotalCoins, handleGLR, handleGN, handleGrantAwards, handleHeartbeat, handleJoinPlayerCpip, handleJoinPlayerModern, handleJoinPlayerOld, handleJoinServer, handlePBI, handleReceiveInventory, handleSendCoins, handleSetPartyOp, handleSetPuffleLaunchData, handleSetStampbookCoverData, handleSetStampEarned, handleSpyRequest, isBackyardGuard, isPreBackyardGuard, joinRoom, sendBuddyOnlineList, sendGetBuddies, sendStamps } from "@server/handlers/play/join";
-import { XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
+import { CtxGuard, XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
 import { ArgumentsIndicator, GetArgumentsType } from "@server/handlers/arg-parser";
 import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "@server/handlers/play/room";
 import { doubleFilter } from "@common/utils";
@@ -17,29 +17,29 @@ import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSend
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "@server/handlers/games/sled";
 import { GuardFunction, HandlerFunction } from "@server/handlers/handlers";
 
-type PreProcessCallbackInfo = [
-  [Array<keyof WorldContext & string>,
-  ((ctx: Partial<WorldContext>) => boolean) | undefined],
+type PreProcessCallbackInfo<Ctx extends WorldContext> = [
+  [(ctx: WorldContext) => ctx is Ctx,
+  ((ctx: Ctx) => boolean) | undefined],
   ArgumentsIndicator,
-  (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>,
+  (ctx: Ctx, ...args: Array<string | number>) => void | Promise<void>,
   params: XtParams
 ];
 
-type IntermediateXtCallbackInfo = [string, string, ...PreProcessCallbackInfo];
+type IntermediateXtCallbackInfo<Ctx extends WorldContext> = [string, string, ...PreProcessCallbackInfo<Ctx>];
 
-class XtGenerator<CT extends Array<keyof WorldContext & string>> {
-  constructor(private _types: CT) {}
+class XtGenerator<Ctx extends WorldContext> {
+  constructor(private _tester: (ctx: WorldContext) => ctx is Ctx) {}
 
   public xt<const T extends ArgumentsIndicator>(
     extension: string,
     code: string,
     signature: T,
-    callback: HandlerFunction<CT, GetArgumentsType<T>>,
-    params?: { guard?: GuardFunction<CT>, xt?: XtParams }
-  ): IntermediateXtCallbackInfo {
+    callback: HandlerFunction<Ctx, GetArgumentsType<T>>,
+    params?: { guard?: GuardFunction<Ctx>, xt?: XtParams }
+  ): IntermediateXtCallbackInfo<Ctx> {
     return [
       extension, code,
-      [this._types, params?.guard === undefined ? (undefined) : (params.guard as (ctx: Partial<WorldContext>) => boolean)],
+      [this._tester, params?.guard === undefined ? (undefined) : params.guard],
       signature,
       callback as (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>,
       params?.xt ?? {}
@@ -47,9 +47,9 @@ class XtGenerator<CT extends Array<keyof WorldContext & string>> {
   }
 }
 
-type GroupedCallbacks = Array<[string, PreProcessCallbackInfo[]]>;
+type GroupedCallbacks = Array<[string, PreProcessCallbackInfo<any>[]]>;
 
-const groupCallbacks = (callbacks: IntermediateXtCallbackInfo[]): GroupedCallbacks => {
+const groupCallbacks = (callbacks: IntermediateXtCallbackInfo<any>[]): GroupedCallbacks => {
   if (callbacks.length === 0) {
     return [];
   }
@@ -63,7 +63,7 @@ const groupCallbacks = (callbacks: IntermediateXtCallbackInfo[]): GroupedCallbac
   ];
 }
 
-const getFinalCallbacks = (grouped: GroupedCallbacks): Array<[string, XtCallbackInfo[]]> => {
+const getFinalCallbacks = (grouped: GroupedCallbacks): Array<[string, XtCallbackInfo<any>[]]> => {
   return grouped.map(([name, callbacks]) => {
 
     if (callbacks.length > 1 && callbacks.filter(([[_, guard]]) => guard === undefined).length > 0) {
@@ -75,14 +75,14 @@ const getFinalCallbacks = (grouped: GroupedCallbacks): Array<[string, XtCallback
 }
 
 export const createWorldXtHandler = (): XtHandler => {
-  const p = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'settings']);
-  const r = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'room']);
-  const c = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'card', 'settings']);
-  const z = new XtGenerator(['client', 'msg', 'db']);
-  const g = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'game']);
-  const s = new XtGenerator(['penguin', 'world', 'data', 'msg', 'prst', 'db', 'sled', 'settings'])
+  const p = new XtGenerator((ctx) => 'penguin' in ctx);
+  const r = new XtGenerator((ctx) => 'room' in ctx);
+  const c = new XtGenerator((ctx) => 'card' in ctx);
+  const z = new XtGenerator((_): _ is BaseContext => true);
+  const g = new XtGenerator((ctx) => 'game' in ctx);
+  const s = new XtGenerator((ctx) => 'sled' in ctx);
 
-  const callbacks: IntermediateXtCallbackInfo[] = [
+  const callbacks: IntermediateXtCallbackInfo<any>[] = [
     p.xt('s', 'js', ['string', 'string', 'string'], handleJoinServer),
     p.xt('s', 'jr', ['number', 'number', 'number'], joinRoom),
     p.xt('s', 'gi', [], handleGetItems),

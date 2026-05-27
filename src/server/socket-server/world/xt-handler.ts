@@ -14,19 +14,20 @@ const parseXtMessage = (message: string): [string, string[]] => {
   return [name, args];
 }
 
-export type XtCallbackInfo = [
-  [Array<keyof WorldContext & string>,
-  (ctx: Partial<WorldContext>) => boolean],
+export type CtxGuard<Ctx extends WorldContext> = [(ctx: WorldContext) => ctx is Ctx,
+  (ctx: Ctx) => boolean];
+
+export type XtCallbackInfo<Ctx extends WorldContext> = [
+  CtxGuard<Ctx>,
   ArgumentsIndicator,
-  (ctx: Partial<WorldContext>, ...args: Array<string | number>) => void | Promise<void>,
+  (ctx: Ctx, ...args: Array<string | number>) => void | Promise<void>,
   XtParams
 ];
 
-type XtCallbackInfoWrapped = [
-  [Array<keyof WorldContext & string>,
-  (ctx: Partial<WorldContext>) => boolean],
+type XtCallbackInfoWrapped<Ctx extends WorldContext> = [
+  CtxGuard<Ctx>,
   ArgumentsIndicator,
-  CallbackManager
+  CallbackManager<Ctx>
 ];
 
 export type XtParams = {
@@ -38,13 +39,13 @@ export type XtParams = {
   cooldown?: number
 }
 
-class CallbackManager {
+class CallbackManager<Ctx extends WorldContext> {
   private _cooldown: number | null = null;
   private _once: boolean = false;
   private _handled = new Map<ClientSocket, boolean>();
   private _timestamps = new Map<ClientSocket, number>();
 
-  constructor(private _callback: (ctx: Partial<WorldContext>, ...args: Array<string | number>) => Promise<void> | void, params?: XtParams) {
+  constructor(private _callback: (ctx: Ctx, ...args: Array<string | number>) => Promise<void> | void, params?: XtParams) {
     if (params?.cooldown !== undefined) {
       this._cooldown = params.cooldown;
     }
@@ -53,7 +54,7 @@ class CallbackManager {
     }
   }
 
-  call(client: ClientSocket, ctx: Partial<WorldContext>, ...args: Array<string | number>) {
+  call(client: ClientSocket, ctx: Ctx, ...args: Array<string | number>) {
     if (this._cooldown !== null) {
       const last = this._timestamps.get(client);
 
@@ -75,9 +76,9 @@ class CallbackManager {
 }
 
 export class XtHandler {
-  private _callbacks: Map<string, XtCallbackInfoWrapped[]>;
+  private _callbacks: Map<string, XtCallbackInfoWrapped<any>[]>;
 
-  constructor(callbacks: Array<[string, XtCallbackInfo[]]>, private _disconnect: (ctx: Partial<WorldContext>) => Promise<void>) {
+  constructor(callbacks: Array<[string, XtCallbackInfo<any>[]]>, private _disconnect: (ctx: WorldContext) => Promise<void>) {
     this._callbacks = new Map(
       callbacks.map(
         ([key, value]) => [key, value.map(
@@ -87,7 +88,7 @@ export class XtHandler {
     );
   }
 
-  public handle(client: ClientSocket, context: Partial<WorldContext>, message: string) {
+  public handle(client: ClientSocket, context: WorldContext, message: string) {
     const [name, args] = parseXtMessage(message);
     
     console.log('incoming XT:', name, args);
@@ -95,9 +96,7 @@ export class XtHandler {
     const callbacks = this._callbacks.get(name);
 
     if (callbacks !== undefined) {
-      const callbackInfo = callbacks.find(([[contextTypes, guard]]) => {
-        return contextTypes.every(prop => context[prop] !== undefined) && guard(context);
-      });
+      const callbackInfo = callbacks.find(([[contextTester, guard]]) => contextTester(context) ? guard(context) : false);
       if (callbackInfo === undefined) {
         console.log('Unhandled XT for given context: ', Object.keys(context).join(';'));
         return;
@@ -113,7 +112,7 @@ export class XtHandler {
     }
   }
 
-  public async disconnect(context: Partial<WorldContext>) {
+  public async disconnect(context: WorldContext) {
     await this._disconnect(context);
   }
 }

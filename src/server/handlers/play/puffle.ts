@@ -260,9 +260,10 @@ export const handleGetPuffleInventory: PenguinHandler<[]> = ({ msg, penguin }) =
   );
 }
 
-export const handlePuffleWalk: PenguinHandler<[number, number]> = ({ msg, prst, penguin, room, data }, penguinPuffleId, walking) => {
+export const handlePuffleWalk: PenguinHandler<[number, number]> = (ctx, penguinPuffleId, walking) => {
   // TODO add puffle refusing to walk
   // TODO add removing puffle
+  const { msg, prst, penguin, data } = ctx
 
   if (walking === 1) {
     penguin.puffle.walk(penguinPuffleId);
@@ -270,7 +271,7 @@ export const handlePuffleWalk: PenguinHandler<[number, number]> = ({ msg, prst, 
     penguin.puffle.unwalk();
   }
 
-  const penguins = room?.players ?? [penguin];
+  const penguins = 'room' in ctx ? ctx.room.players : [penguin];
 
   if (data.isVanillaEngine()) {
     const playerPuffle = penguin.puffle.getPuffle(penguinPuffleId);

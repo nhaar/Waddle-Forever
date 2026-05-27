@@ -87,19 +87,21 @@ export class WorldServer implements MessageHandler {
     this.init();
   }
 
-  private getContext(client: ClientSocket): Partial<WorldContext> {
+  private getContext(client: ClientSocket): WorldContext {
     const penguin = this._msg.getPenguin(client);
-    const state = penguin === undefined ? {} : (this._world.getContext(penguin) ?? {});
     return {
-      ...state,
-      penguin,
       world: this._world,
-      data: this._gameData,
-      db: this._db,
-      settings: this._settings,
       msg: this._msg,
+      data: this._gameData,
+      settings: this._settings,
+      db: this._db,
       prst: this._persister,
-      client
+
+      client,
+
+      ...(penguin === undefined ? {} : {
+        penguin, ...this._world.getContext(penguin)
+      })
     };
   }
 

@@ -91,10 +91,12 @@ export function getPenguinString(data: GameData, p: WorldPenguin, state: { x: nu
   ].join('|');
 }
 
-function enterRoom(data: GameData, msg: PenguinMessenger, p: WorldPenguin, r: WorldRoom, x: number, y: number) {
-  r.addPenguin(p, x, y);
-  msg.send(p, 'jr', r.id, ...r.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
-  msg.send(r.players, 'ap', getPenguinString(data, p, { x, y, frame: 1 }));
+const enterRoom: PenguinHandler<[WorldRoom, number, number]> = (ctx, r, x, y) => {
+  const { penguin, msg, data, world } = ctx;
+  r.addPenguin(penguin, x, y);
+  world.enterState(penguin, { room: r });
+  msg.send(penguin, 'jr', r.id, ...r.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
+  msg.send(r.players, 'ap', getPenguinString(data, penguin, { x, y, frame: 1 }));
 }
 
 export function filterItems(data: GameData, items: number[]): number[] {
@@ -203,8 +205,7 @@ export const handleJoinServer: PenguinHandler<[]> = async (ctx) => {
   }
 
   // joining spawn room // TODO more spawn rooms in the future?
-  const town = world.getRoom(Room.Town);
-  enterRoom(data, msg, penguin, town, 0, 0);
+  enterRoom(ctx, world.getRoom(Room.Town), 0, 0);
 }
 
 export const leaveRoom: RoomHandler<[]> = async (ctx) => {
@@ -214,20 +215,22 @@ export const leaveRoom: RoomHandler<[]> = async (ctx) => {
 }
 
 export const joinRoom: PenguinHandler<[number, number, number]> = (ctx, id: number, x: number, y: number) => {
-  const { world, penguin, msg, data, room, sled } = ctx;
-  if (room !== undefined) {
-    leaveRoom({ ...ctx, room });
+  const { world, penguin, msg, data } = ctx;
+  if ('room' in ctx) {
+    leaveRoom(ctx);
   }
-  if (sled !== undefined) {
-    sled.removePlayer(penguin);
+  if ('sled' in ctx) {
+    ctx.sled.removePlayer(penguin);
   }
 
   if (isGameRoom(id)) {
-    world.getGame(id).addPenguin(penguin);
+    const game = world.getGame(id);
+    world.enterState(penguin, { game });
     msg.send(penguin, 'jg', id);
   } else {
     const newRoom = world.getRoom(id);
-    enterRoom(data, msg, penguin, newRoom, x, y);
+    world.enterState(penguin, { room: newRoom });
+    enterRoom(ctx, newRoom, x, y);
   }
 }
 
@@ -293,20 +296,22 @@ export const handleJoinPlayerOld: PenguinHandler<[number, number]> = async (ctx,
   joinRoom(ctx, roomId, 0, 0);
 }
 
-export const handleJoinPlayerCpip: PenguinHandler<[number]> = ({ msg, penguin, world, data }, fakeId) => {
+export const handleJoinPlayerCpip: PenguinHandler<[number]> = (ctx, fakeId) => {
+  const { world } = ctx;
   // for some reason the ID given is the player + 1000
   // in WF igloo room IDs are playerID + 2000
   const iglooId = fakeId + 1000;
   const igloo = world.getRoom(iglooId);
-  enterRoom(data, msg, penguin, igloo, 0, 0);
+  enterRoom(ctx, igloo, 0, 0);
 }
 
-export const handleJoinPlayerModern: PenguinHandler<[number, string]> = ({ msg, penguin, data, world }, playerId, roomType) => {
+export const handleJoinPlayerModern: PenguinHandler<[number, string]> = (ctx, playerId, roomType) => {
+  const { msg, penguin, data, world } = ctx;
   // 1000 = backyard
   const roomId = roomType === 'igloo' ? playerId + 2000 : 1000;
   msg.send(penguin, 'jp', roomId, roomId, roomType);
   // TODO: backyard should only be player itself?
-  enterRoom(data, msg, penguin, world.getRoom(roomId), 0, 0);
+  enterRoom(ctx, world.getRoom(roomId), 0, 0);
 }
 
 export const isPreBackyardGuard: PenguinGuard = (ctx) => !isBackyardGuard(ctx);
@@ -464,52 +469,29 @@ export const handleGetPlayer: PenguinHandler<[number]> = async (ctx, playerId) =
       msg.send(penguin, 'gp', getOfflinePenguinCrumb(playerId, data), 0);
     }
   } else {
-    const room = world.getContext(target)?.room;
+    const room = world.getPenguinRoom(target);
     if (room !== undefined) {
       msg.send(penguin, 'gp', getPenguinString(data, target, room.getState(target)), room.id);
     }
   }
 }
 
-export const handleDisconnect = async (ctx: Partial<WorldContext>) => {
-  if (
-    ctx.penguin !== undefined &&
-    ctx.msg !== undefined &&
-    ctx.prst !== undefined &&
-    ctx.world !== undefined &&
-    ctx.data !== undefined &&
-    ctx.db !== undefined && ctx.settings !== undefined
-  ) {
-    const { penguin, msg, prst, world, room, game, data, db, settings } = ctx;
+export const handleDisconnect = async (ctx: WorldContext) => {
+  if ('penguin' in ctx) {
+    const { penguin, msg, prst, world } = ctx;
     if (penguin.psa.isPending) {
       penguin.inventory.add(800);
     }
 
     (await Promise.all(penguin.buddy.buddies.map(id => world.getById(id)))).filter((p): p is WorldPenguin => p !== undefined)
       .forEach(p => {
-        sendBuddyOnlineList({
-          penguin: p,
-          world,
-          data,
-          msg,
-          prst,
-          db,
-          settings
-        });
+        sendBuddyOnlineList({ ...ctx, penguin: p });
       });
 
-    if (room !== undefined) {
-      const table = room.getPenguinTable(penguin);
+    if ('room' in ctx) {
+      const table = ctx.room.getPenguinTable(penguin);
 
-      await leaveRoom({
-        world,
-        room,
-        penguin,
-        data,
-        db,
-        msg,
-        prst
-      });
+      await leaveRoom(ctx);
 
       if (table !== null) {
         const index = table.getSeatIndex(penguin);
@@ -523,13 +505,10 @@ export const handleDisconnect = async (ctx: Partial<WorldContext>) => {
               table.reset();
             }
           }
-          await msg.send(room.players, 'ut', table.getId(), table.getCount());
+          await msg.send(ctx.room.players, 'ut', table.getId(), table.getCount());
         }
       }
 
-    }
-    if (game !== undefined) {
-      game.removePenguin(penguin);
     }
 
     world.disconnect(penguin);

@@ -381,8 +381,8 @@ export class CardJitsu extends WaddleGame {
 
   private _opponents = new Map<Ninja, Ninja>();
 
-  constructor(players: WorldPenguin[], onAdd: ContextAdder<WaddleGame>, onRemove: ContextRemover) {    
-    super(players, onAdd, onRemove);
+  constructor(players: WorldPenguin[]) {    
+    super(players);
 
     this._sensei = players.length === 1;
 

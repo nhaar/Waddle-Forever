@@ -1,11 +1,10 @@
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { WaddleRoom } from "./waddle-room";
-import { WorldEntity } from "./world-penguin";
 import { RoomState, WorldPenguin } from "./world-penguin";
 import { WorldTable } from "./world-table";
 
-export class WorldRoom extends WorldEntity {
+export class WorldRoom {
   private penguins = new Map<WorldPenguin, RoomState>();
   private waddles = new Map<number, WaddleRoom>();
   private tables = new Map<number, WorldTable>();
@@ -13,9 +12,7 @@ export class WorldRoom extends WorldEntity {
   static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
   static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
 
-  constructor(onAdd: (p: WorldPenguin, e: WorldEntity) => void, onRemove: (p: WorldPenguin) => void, private _id: number) {
-    super(onAdd, onRemove);
-  }
+  constructor(private _id: number) {}
 
   public getPlayers(): string[] {
     return [];
@@ -35,7 +32,6 @@ export class WorldRoom extends WorldEntity {
 
   public addPenguin(penguin: WorldPenguin, x: number, y: number): void {
     this.penguins.set(penguin, { x, y, frame : 1});
-    this.addClient(penguin);
   }
 
   public getState(penguin: WorldPenguin) {
@@ -47,7 +43,6 @@ export class WorldRoom extends WorldEntity {
   }
 
   public removePenguin(penguin: WorldPenguin): void {
-    this.removeClient(penguin);
     this.penguins.delete(penguin);
   }
 

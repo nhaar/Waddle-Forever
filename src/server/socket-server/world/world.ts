@@ -17,16 +17,9 @@ import { CardJitsu } from "./card";
 import { Bakery } from "./bakery";
 import { MatchMaker } from "./matchmaker";
 
-type PenguinState = {
-  room?: WorldRoom;
-  game?: WorldGame;
-  sled?: SledRace;
-  card?: CardJitsu;
-};
-
 export class World {
   private penguins = new Map<number, WorldPenguin>();
-  private states = new Map<WorldPenguin, PenguinState>
+  private states = new Map<WorldPenguin, EventuallyCommonlyDefined>
   private rooms = new Map<number, WorldRoom>();
   private games = new Map<number, WorldGame>();
   private spectators = new Set<WorldPenguin>();
@@ -47,7 +40,7 @@ export class World {
   public getRoom(id: number): WorldRoom {
     let room = this.rooms.get(id);
     if (room === undefined) {
-      room = new WorldRoom((c, e) => this.addContext(c, 'room', e as WorldRoom), (c) => this.removeContext(c, 'room'), id);
+      room = new WorldRoom(id);
       this.rooms.set(id, room);
     }
     return room;
@@ -55,25 +48,22 @@ export class World {
 
   public addPenguin(penguin: WorldPenguin): void {
     this.penguins.set(penguin.id, penguin);
-    this.states.set(penguin, {});
   }
 
-  public getContext(p: WorldPenguin): PenguinState | undefined {
+  public getPenguinRoom(p: WorldPenguin): WorldRoom | undefined {
+    const state = this.states.get(p);
+    if (state === undefined || !('room' in p)) {
+      return undefined;
+    }
+    return p.room as WorldRoom;
+  }
+
+  public getContext(p: WorldPenguin): EventuallyCommonlyDefined | undefined {
     return this.states.get(p);
   }
 
-  private addContext<T extends keyof PenguinState>(penguin: WorldPenguin, name: T, entity: PenguinState[T]): void {
-    const ctx = this.getContext(penguin);
-    if (ctx !== undefined) {
-      ctx[name] = entity;
-    }
-  }
-
-  private removeContext<T extends keyof PenguinState>(penguin: WorldPenguin, name: T): void {
-    const ctx = this.getContext(penguin);
-    if (ctx !== undefined) {
-      ctx[name] = undefined;
-    }
+  public enterState(p: WorldPenguin, s: EventuallyCommonlyDefined) {
+    this.states.set(p, s);
   }
 
   public getPenguin(id: number): WorldPenguin | undefined {
@@ -83,7 +73,7 @@ export class World {
   public getGame(id: number): WorldGame {
     let game = this.games.get(id);
     if (game === undefined) {
-      game = new WorldGame((c, e) => this.addContext(c, 'game', e), (c) => this.removeContext(c, 'game'), id);
+      game = new WorldGame(id);
       this.games.set(id, game);
     }
     return game;
@@ -107,13 +97,13 @@ export class World {
 
     switch (name) {
       case 'card':
-        game = new CardJitsu(players, (c, e) => this.addContext(c, 'card', e as CardJitsu), (c) => this.removeContext(c, 'card'));
+        game = new CardJitsu(players);
         break;
     //   case 'fire':
     //     game = new CardJitsuFire(players, (c, e) => this.addContext(c, 'fire', e as CardJitsuFire), (c) => this.removeContext(c, 'fire'));
     //     break;
       case 'sled':
-        game = new SledRace(players, (c, e) => this.addContext(c, 'sled', e as SledRace), (c) => this.removeContext(c, 'sled'));
+        game = new SledRace(players);
         break;
       default:
         throw new Error('No waddle game constructor set');
@@ -200,18 +190,32 @@ export class World {
 
 export type PenguinPersister = (p: WorldPenguin, force?: boolean) => void;
 
-export interface WorldContext {
-  'world': World;
-  'penguin': WorldPenguin;
-  'msg': PenguinMessenger;
-  'room': WorldRoom;
-  'game': WorldGame;
-  'data': GameData;
-  'client': ClientSocket;
-  'settings': SettingsManager;
-  'db': PenguinRepository;
-  'prst': PenguinPersister;
-  // 'fire': CardJitsuFire;
-  'sled': SledRace;
-  'card': CardJitsu;
+type Ctx<G, AS, ES, EC> = G & AS & ({} | (ES & ({} | EC)));
+
+export type WorldContext = Ctx<GloballyDefined, AlwaysSingularlyDefined, EventuallySingularlyDefined, EventuallyCommonlyDefined>;
+
+export type BaseContext = GloballyDefined & AlwaysSingularlyDefined & ({} | EventuallySingularlyDefined);
+export type PenguinContext = BaseContext & EventuallySingularlyDefined & (EventuallyCommonlyDefined | {});
+export type RoomContext = PenguinContext & { room: WorldRoom };
+export type GameContext = PenguinContext & { game: WorldGame };
+export type CardContext = PenguinContext & { card: CardJitsu };
+export type SledContext = PenguinContext & { sled: SledRace };
+
+type GloballyDefined = {
+  world: World;
+  msg: PenguinMessenger;
+  data: GameData;
+  settings: SettingsManager;
+  db: PenguinRepository;
+  prst: PenguinPersister;
 }
+
+type AlwaysSingularlyDefined = {
+  client: ClientSocket;
+}
+
+type EventuallySingularlyDefined = {
+  penguin: WorldPenguin;
+}
+
+type EventuallyCommonlyDefined = { room: WorldRoom; } | { game: WorldGame; } | { card: CardJitsu; } | { sled: SledRace; };

@@ -31,7 +31,7 @@ export class PenguinMessenger {
     this._clients.delete(penguin);
   }
 
-  public async write(ps: WorldPenguin | ClientSocket | Array<ClientSocket | WorldPenguin>, message: string): Promise<void> {
+  private async write(ps: WorldPenguin | ClientSocket | Array<ClientSocket | WorldPenguin>, message: string): Promise<void> {
     if (!Array.isArray(ps)) {
       ps = [ps];
     }
