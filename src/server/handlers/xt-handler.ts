@@ -1,5 +1,5 @@
 import { ArgumentsIndicator, parseArgs } from "@server/handlers/arg-parser";
-import { ClientSocket } from "../socket-server";
+import { ClientSocket } from "../socket-server/socket-server";
 import { WorldContext } from "@server/handlers/handlers";
 
 const parseXtMessage = (message: string): [string, string[]] => {

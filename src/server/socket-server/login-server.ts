@@ -9,8 +9,8 @@ import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server
 
 import { PenguinMessenger } from "@server/handlers/messenger";
 
-import { XmlHandler } from "./world/xml-handler";
-import { createLoginXmlHandler } from "./world/login-handlers";
+import { XmlHandler } from "../handlers/xml-handler";
+import { createLoginXmlHandler } from "../handlers/login-handlers";
 
 class LoginServer implements MessageHandler {
   private _msg: PenguinMessenger;

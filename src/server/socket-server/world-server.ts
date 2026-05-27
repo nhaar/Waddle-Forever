@@ -16,10 +16,10 @@ import { World } from "./world/world";
 import { addBakeryListener } from "@server/handlers/play/party";
 import { addMatchmakerListeners } from "@server/handlers/play/ninja";
 
-import { XtHandler } from "./world/xt-handler";
-import { XmlHandler } from "./world/xml-handler";
-import { createWorldXtHandler } from "./world/world-handlers";
-import { createLoginXmlHandler } from "./world/login-handlers";
+import { XtHandler } from "../handlers/xt-handler";
+import { XmlHandler } from "../handlers/xml-handler";
+import { createWorldXtHandler } from "../handlers/world-handlers";
+import { createLoginXmlHandler } from "../handlers/login-handlers";
 import { PenguinPersister, WorldContext } from "@server/handlers/handlers";
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 

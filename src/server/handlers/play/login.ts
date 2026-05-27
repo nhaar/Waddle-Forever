@@ -4,7 +4,7 @@ import { Igloo, PenguinJson } from "@server/database/database";
 import { logdebug } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
-import { LoginContext } from "@server/socket-server/world/xml-handler";
+import { LoginContext } from "@server/handlers/xml-handler";
 
 function capitalizeName(name: string): string {
   return name.split(' ').map((name => {

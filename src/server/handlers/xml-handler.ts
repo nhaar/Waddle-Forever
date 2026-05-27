@@ -1,9 +1,9 @@
 import { PenguinMessenger } from "@server/handlers/messenger"
-import { World } from "./world"
+import { World } from "../socket-server/world/world"
 import { GameData } from "@server/timelines/game-data"
 import { SettingsManager } from "@server/settings"
 import { PenguinRepository } from "@server/database/database"
-import { ClientSocket } from "../socket-server"
+import { ClientSocket } from "../socket-server/socket-server"
 
 export type LoginContext = {
   msg: PenguinMessenger,
