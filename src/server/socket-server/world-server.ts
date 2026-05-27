@@ -13,12 +13,11 @@ import { PenguinMessenger } from "@server/handlers/messenger";
 
 import { World } from "./world/world";
 
-
 import { addBakeryListener } from "@server/handlers/play/party";
 import { addMatchmakerListeners } from "@server/handlers/play/ninja";
 
-import { CommandsHandler } from "./world/commands";
-import { CommandContext, commands } from "./world/command-handlers";
+import { CommandsHandler } from "../commands/commands";
+import { CommandContext, commands } from "../commands/command-handlers";
 import { XtHandler } from "./world/xt-handler";
 import { XmlHandler } from "./world/xml-handler";
 import { createWorldXtHandler } from "./world/world-handlers";
@@ -77,7 +76,7 @@ export class WorldServer implements MessageHandler {
     }));
   }
 
-  public init() {
+  private init() {
     addBakeryListener(this._world, this._msg);
     addMatchmakerListeners(this._world, this._msg);
   }

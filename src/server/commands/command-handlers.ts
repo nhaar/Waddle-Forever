@@ -1,5 +1,5 @@
 import { PenguinMessenger } from "@server/handlers/messenger";
-import { WorldPenguin } from "./world-penguin";
+import { WorldPenguin } from "../socket-server/world/world-penguin";
 import { CommandResponse } from "./commands";
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/handlers/arg-parser";
 import { ITEMS } from "@server/game-logic/items";
