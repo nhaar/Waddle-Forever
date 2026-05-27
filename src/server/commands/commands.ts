@@ -1,10 +1,10 @@
-import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/handlers/arg-parser";
+import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/socket-server/arg-parser";
 import { ITEMS } from "@server/game-logic/items";
-import { filterItems, joinRoom, sendLPMessage } from "@server/handlers/play/join";
+import { filterItems, joinRoom, sendLPMessage } from "@server/socket-server/handlers/join";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
-import { PenguinContext, RoomContext } from "@server/handlers/handlers";
+import { PenguinContext, RoomContext } from "@server/socket-server/handlers/handlers";
 
 type CommandContext = PenguinContext | RoomContext;
 type CommandHandler<T extends Array<string | number>> = (ctx: CommandContext, ...args: T) => void;

@@ -1,27 +1,15 @@
-import { PenguinMessenger } from "../messenger";
+import { PenguinMessenger } from "../../socket-server/messenger";
 import { ClientSocket } from "@server/socket-server/socket-server";
-import { Igloo, PenguinJson } from "@server/database/database";
+import { getDefaultIgloo, PenguinJson } from "@server/database/database";
 import { logdebug } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
-import { LoginContext } from "@server/handlers/xml-handler";
+import { LoginContext } from "@server/socket-server/xml-handler";
 
 function capitalizeName(name: string): string {
   return name.split(' ').map((name => {
     return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
   })).join(' ');
-}
-
-export function getDefaultIgloo(id: number): Igloo {
-  return {
-    id,
-    type: 1,
-    flooring: 0,
-    location: 0,
-    music: 0,
-    furniture: [],
-    locked: true
-  }
 }
 
 export function getDefaultPenguin(name: string, color: number, member: boolean, virtualTimestamp: number): PenguinJson {

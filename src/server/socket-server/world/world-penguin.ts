@@ -1,6 +1,5 @@
-import { Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
+import { getDefaultIgloo, Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
-import { getDefaultIgloo } from "@server/handlers/play/login";
 import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 

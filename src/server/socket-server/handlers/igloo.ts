@@ -3,7 +3,7 @@ import { Igloo, IglooFurniture, PenguinJson, PenguinRepository } from "@server/d
 import { FURNITURE } from "@server/game-logic/furniture";
 import { getFlooringCost, getIglooCost } from "@server/game-logic/iglooItems";
 import { getStamp } from "./puffle";
-import { PenguinHandler } from "../handlers";
+import { PenguinHandler } from "./handlers";
 
 
 export async function getIglooFromId(world: World, db: PenguinRepository, ownerId: number): Promise<Igloo | undefined> {

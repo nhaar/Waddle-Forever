@@ -1,4 +1,4 @@
-import { CreateHandler } from "../handlers";
+import { CreateHandler } from "./handlers";
 
 export const handleCheckName: CreateHandler<[string]> = async ({ client, msg, db }, name) => {
   const isInvalid = !(name.length > 2 && name.length <= 12 && !(await db.exists(name)));

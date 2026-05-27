@@ -1,4 +1,4 @@
-import { SledGuard, SledHandler } from "../handlers";
+import { SledGuard, SledHandler } from "./handlers";
 
 export const isSledGuard: SledGuard = (ctx) => ctx.sled !== undefined;
 

@@ -1,11 +1,11 @@
-import { PenguinMessenger } from "../messenger";
+import { PenguinMessenger } from "../../socket-server/messenger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { GameData } from "@server/timelines/game-data";
 import { PUFFLES } from "@server/game-logic/puffle";
 import { PlayerPuffle } from "@server/database/database";
 import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "@server/game-logic/puffle-item";
-import { PenguinHandler, PenguinGuard } from "../handlers";
+import { PenguinHandler, PenguinGuard } from "./handlers";
 
 
 const BASE_CARE_INVENTORY = [1, 8, 37];

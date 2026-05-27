@@ -2,7 +2,7 @@ import { getPenguinString } from "./join";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
-import { RoomGuard, RoomHandler } from "../handlers";
+import { RoomGuard, RoomHandler } from "./handlers";
 
 export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg }, x, y) => {
   room.updatePosition(penguin, x, y);

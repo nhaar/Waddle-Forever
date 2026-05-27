@@ -512,3 +512,15 @@ class SeqFile {
     return this._seq;
   }
 }
+
+export const getDefaultIgloo = (id: number): Igloo => {
+  return {
+    id,
+    type: 1,
+    flooring: 0,
+    location: 0,
+    music: 0,
+    furniture: [],
+    locked: true
+  }
+}

@@ -9,18 +9,18 @@ import { GameData } from "@server/timelines/game-data";
 
 import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
-import { PenguinMessenger } from "@server/handlers/messenger";
+import { PenguinMessenger } from "@server/socket-server/messenger";
 
 import { World } from "./world/world";
 
-import { addBakeryListener } from "@server/handlers/play/party";
-import { addMatchmakerListeners } from "@server/handlers/play/ninja";
+import { addBakeryListener } from "./handlers/party";
+import { addMatchmakerListeners } from "./handlers/ninja";
 
-import { XtHandler } from "../handlers/xt-handler";
-import { XmlHandler } from "../handlers/xml-handler";
-import { createWorldXtHandler } from "../handlers/world-handlers";
-import { createLoginXmlHandler } from "../handlers/login-handlers";
-import { PenguinPersister, WorldContext } from "@server/handlers/handlers";
+import { XtHandler } from "./xt-handler";
+import { XmlHandler } from "./xml-handler";
+import { createWorldXtHandler } from "./world-handlers";
+import { createLoginXmlHandler } from "./login-handlers";
+import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/handlers";
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 
 export class WorldServer implements MessageHandler {

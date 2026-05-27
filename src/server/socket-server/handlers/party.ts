@@ -1,8 +1,8 @@
 import { World } from "@server/socket-server/world/world";
 
 import { sendError } from "./login";
-import { PenguinMessenger } from "../messenger";
-import { PenguinHandler } from "../handlers";
+import { PenguinMessenger } from "../../socket-server/messenger";
+import { PenguinHandler } from "./handlers";
 
 export const handleDonateCoins: PenguinHandler<[string, number]> = ({ prst, penguin, msg }, _, donation) => {
   // choice is useless, since we are not trying to rewrite history unfortunately

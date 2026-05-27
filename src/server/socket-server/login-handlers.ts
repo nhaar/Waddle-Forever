@@ -1,4 +1,4 @@
-import { checkVersion, filePolicy, getKey, login } from "@server/handlers/play/login";
+import { checkVersion, filePolicy, getKey, login } from "./handlers/login";
 import { XmlHandler } from "./xml-handler";
 
 export const createLoginXmlHandler = (): XmlHandler => {

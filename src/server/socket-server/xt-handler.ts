@@ -1,6 +1,6 @@
-import { ArgumentsIndicator, parseArgs } from "@server/handlers/arg-parser";
-import { ClientSocket } from "../socket-server/socket-server";
-import { WorldContext } from "@server/handlers/handlers";
+import { ArgumentsIndicator, parseArgs } from "@server/socket-server/arg-parser";
+import { ClientSocket } from "./socket-server";
+import { WorldContext } from "@server/socket-server/handlers/handlers";
 
 const parseXtMessage = (message: string): [string, string[]] => {
   const values = message.split('%');

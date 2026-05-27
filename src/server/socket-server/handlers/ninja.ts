@@ -1,8 +1,8 @@
 import { World } from "@server/socket-server/world/world";
 import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
-import { PenguinMessenger } from "../messenger";
-import { PenguinHandler } from "../handlers";
+import { PenguinMessenger } from "../../socket-server/messenger";
+import { PenguinHandler } from "./handlers";
 
 export const handleGetNinjaRanks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(

@@ -7,10 +7,10 @@ import { GameData } from "@server/timelines/game-data";
 
 import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
-import { PenguinMessenger } from "@server/handlers/messenger";
+import { PenguinMessenger } from "@server/socket-server/messenger";
 
-import { XmlHandler } from "../handlers/xml-handler";
-import { createLoginXmlHandler } from "../handlers/login-handlers";
+import { XmlHandler } from "./xml-handler";
+import { createLoginXmlHandler } from "./login-handlers";
 
 class LoginServer implements MessageHandler {
   private _msg: PenguinMessenger;

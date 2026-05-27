@@ -1,5 +1,5 @@
 import { RainbowPuffleStage } from "@server/database/database";
-import { PenguinHandler } from "../handlers";
+import { PenguinHandler } from "./handlers";
 
 
 export function isRainbowStage(str: string): str is RainbowPuffleStage {

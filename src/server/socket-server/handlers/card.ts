@@ -3,7 +3,7 @@ import { getStamp } from "./puffle";
 import { Stamp } from "@server/game-logic/stamps";
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { sendMail } from "./mail";
-import { CardGuard, CardHandler, PenguinHandler } from "../handlers";
+import { CardGuard, CardHandler, PenguinHandler } from "./handlers";
 
 export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => {
   const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);

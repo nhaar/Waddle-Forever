@@ -1,4 +1,4 @@
-import { PenguinHandler } from "../handlers";
+import { PenguinHandler } from "./handlers";
 
 export const handleMailTotal: PenguinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'mst', penguin.mail.unread, penguin.mail.total);

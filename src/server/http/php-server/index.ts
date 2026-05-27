@@ -5,8 +5,8 @@ import { Router } from "express";
 import { processVersion } from '@server/routes/versions';
 import { getDateString } from '@common/utils';
 import { PenguinJson, PenguinRepository } from '@server/database/database';
-import { getDefaultPenguin } from '@server/handlers/play/login';
-import { filterItems } from '@server/handlers/play/join';
+import { getDefaultPenguin } from '@server/socket-server/handlers/login';
+import { filterItems } from '@server/socket-server/handlers/join';
 import { GameData } from '@server/timelines/game-data';
 
 type PostCallback = (body: any, ctx: {
