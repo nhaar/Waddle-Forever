@@ -547,6 +547,10 @@ export const handleRevealGoldPuffle: PenguinHandler<[]> = ({ msg, penguin }) => 
   msg.send(penguin, 'revealgoldpuffle', penguin.id);
 }
 
+export const handleGetIglooPufflesOld: PenguinHandler<[number]> = (ctx, id) => {
+  handleGetIglooPuffles(ctx, id, '');
+}
+
 export const handleGetIglooPuffles: PenguinHandler<[number, string]> = ({ data, penguin, msg }, id, iglooType) => {
   if (!data.isVanillaEngine()) {
     const puffles = penguin.puffle.puffles.map((puffle) => {

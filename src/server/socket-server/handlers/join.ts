@@ -33,13 +33,8 @@ function isPSAAgent(p: WorldPenguin): boolean {
   return p.inventory.has(800);
 }
 
-export function getBuddyProtocol(data: GameData) {
-  if (data.isPreCpip()) {
-    const chat = data.getChatVersion();
-    return chat >= 506 ? 'b' : 's';
-  } else {
-    return undefined;
-  }
+const isNewBuddyProtocol = (data: GameData): boolean => {
+  return !data.isPreCpip() || data.getChatVersion() >= 506;
 }
 
 async function formatBuddyEntry(id: number, world: World, db: PenguinRepository, includeOnlineFlag: boolean) {
@@ -56,6 +51,14 @@ async function formatBuddyEntry(id: number, world: World, db: PenguinRepository,
 function sendGetOnlineBuddies(msg: PenguinMessenger, p: WorldPenguin, world: World) {
   const onlineIds = p.buddy.buddies.filter(id => world.getById(id) !== undefined).map(i => String(i));
   msg.send(p, 'go', ...onlineIds);
+}
+
+const getOnlineBuddies = (world: World, penguin: WorldPenguin): WorldPenguin[] => {
+  return penguin.buddy.buddies.map(i => world.getById(i)).filter((i: WorldPenguin | undefined): i is WorldPenguin => i !== undefined);
+}
+
+const handleSendBuddyOnline: PenguinHandler<[]> = ({ world, msg, penguin }) => {
+  msg.send(getOnlineBuddies(world, penguin), 'bon', penguin.id);
 }
 
 export function getPenguinString(data: GameData, p: WorldPenguin, state: { x: number; y: number; frame: number; }): string {
@@ -156,17 +159,19 @@ export const handleJoinServer: PenguinHandler<[]> = async (ctx) => {
     ...(data.isPreCpip() ? [] : [penguin.mascot > 0 ? 3 : 0])
   );
 
+  if (isNewBuddyProtocol(data)) {
+    sendGetBuddies(ctx);
+    sendBuddyOnlineList(ctx);
+  }
+
+  sendGetOnlineBuddies(msg, penguin, world);
   if (data.isPreCpip()) {
-    if (getBuddyProtocol(data) == 'b') {
-      sendGetBuddies(ctx);
-      sendBuddyOnlineList(ctx);
-    }
+    getOnlineBuddies(world, penguin).forEach(buddy => sendGetOnlineBuddies(msg, buddy, world));
+  } else {
+    handleSendBuddyOnline(ctx);
+  }
 
-    sendGetOnlineBuddies(msg, penguin, world);
-    const onlineBuddies = penguin.buddy.buddies.map(i => world.getById(i)).filter((i: WorldPenguin | undefined): i is WorldPenguin => i !== undefined);
-    onlineBuddies.forEach(buddy => sendGetOnlineBuddies(msg, buddy, world));
-
-  } else if (data.isVanillaEngine()) {
+  if (data.isVanillaEngine()) {
     msg.send(penguin, 'activefeatures', data.getActiveFeatures() ?? '');
   }
 
@@ -265,17 +270,6 @@ export const handleGN: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gn', '');
 }
 
-export const handleGetBuddyNew: PenguinHandler<[]> = ({ msg, penguin, data }) => {
-  msg.send(penguin, 'gb', '');
-
-  // TODO these aren't to do with buddies
-  if (data.isVanillaEngine()) {
-    msg.send(penguin, 'gs', 0, 0, 1, 0);
-    msg.send(penguin, 'pbr', '');
-    msg.send(penguin, 'gc', '');
-  }
-}
-
 export const handleJoinPlayerOld: PenguinHandler<[number, number]> = async (ctx, ownerId, isMember) => {
   const { world, db, data, msg, penguin } = ctx;
   const igloo = await getIglooFromId(world, db, ownerId);
@@ -371,8 +365,7 @@ export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
     return;
   }
 
-  const protocol = getBuddyProtocol(data);
-  if (protocol === 'b') {
+  if (isNewBuddyProtocol(data)) {
     msg.send(target, 'br', penguin.id, penguin.name);
     // refresh sender list to avoid temporary placeholders client-side
     sendGetBuddies(ctx);
@@ -403,7 +396,7 @@ export const handleBuddyAccept: PenguinHandler<[number]> = async (ctx, requester
     prst(requester);
   }
 
-  if (getBuddyProtocol(data) === 'b') {
+  if (isNewBuddyProtocol(data)) {
     sendGetBuddies(ctx);
     if (requester !== undefined) {
       sendGetBuddies({ ...ctx, penguin: requester });
@@ -438,8 +431,7 @@ export const handleBuddyRemove: PenguinHandler<[number]> = async (ctx, removeId)
     }
   } else {
     buddy.buddy.remove(penguin.id);
-    const protocol = getBuddyProtocol(data);
-    if (protocol === 'b') {
+    if (isNewBuddyProtocol(data)) {
       msg.send(buddy, 'rb', penguin.id, penguin.name);
     } else {
       msg.send(buddy, 'br', penguin.id, penguin.name);
@@ -472,6 +464,16 @@ export const handleGetPlayer: PenguinHandler<[number]> = async (ctx, playerId) =
     const room = world.getPenguinRoom(target);
     if (room !== undefined) {
       msg.send(penguin, 'gp', getPenguinString(data, target, room.getState(target)), room.id);
+    }
+  }
+}
+
+export const handleFindBuddy: PenguinHandler<[number]> = ({ msg, penguin, world }, buddyId) => {
+  const buddy = world.getById(buddyId);
+  if (buddy !== undefined) {
+    const room = world.getPenguinRoom(buddy);
+    if (room !== undefined) {
+      msg.send(penguin, 'bf', room.id);
     }
   }
 }

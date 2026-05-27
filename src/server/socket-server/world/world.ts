@@ -48,10 +48,10 @@ export class World {
 
   public getPenguinRoom(p: WorldPenguin): WorldRoom | undefined {
     const state = this.states.get(p);
-    if (state === undefined || !('room' in p)) {
+    if (state === undefined || !('room' in state)) {
       return undefined;
     }
-    return p.room as WorldRoom;
+    return state.room;
   }
 
   public getContext(p: WorldPenguin): PenguinEnvironment | undefined {

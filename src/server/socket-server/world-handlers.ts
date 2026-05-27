@@ -1,4 +1,4 @@
-import { handleAddEpfItem, handleAddItem, handleBecomeAgent, handleBuddyAccept, handleBuddyDecline, handleBuddyMessage, handleBuddyRemove, handleBuddyRequest, handleDisconnect, handleEPFStamp, handleGetBuddyNew, handleGetCoins, handleGetEpfMedals, handleGetEpfStatus, handleGetFieldOps, handleGetItems, handleGetMissionStamps, handleGetPartyOp, handleGetPinInfo, handleGetPlayer, handleGetPuffleLaunchData, handleGetRecentStamps, handleGetSpyDrillsChallenge, handleGetSpyDrillsReward, handleGetStampbookCoverData, handleGetTotalCoins, handleGLR, handleGN, handleGrantAwards, handleHeartbeat, handleJoinPlayerCpip, handleJoinPlayerModern, handleJoinPlayerOld, handleJoinServer, handlePBI, handleReceiveInventory, handleSendCoins, handleSetPartyOp, handleSetPuffleLaunchData, handleSetStampbookCoverData, handleSetStampEarned, handleSpyRequest, isBackyardGuard, isPreBackyardGuard, joinRoom, sendBuddyOnlineList, sendGetBuddies, sendStamps } from "./handlers/join";
+import { handleAddEpfItem, handleAddItem, handleBecomeAgent, handleBuddyAccept, handleBuddyDecline, handleBuddyMessage, handleBuddyRemove, handleBuddyRequest, handleDisconnect, handleEPFStamp, handleFindBuddy, handleGetCoins, handleGetEpfMedals, handleGetEpfStatus, handleGetFieldOps, handleGetItems, handleGetMissionStamps, handleGetPartyOp, handleGetPinInfo, handleGetPlayer, handleGetPuffleLaunchData, handleGetRecentStamps, handleGetSpyDrillsChallenge, handleGetSpyDrillsReward, handleGetStampbookCoverData, handleGetTotalCoins, handleGLR, handleGN, handleGrantAwards, handleHeartbeat, handleJoinPlayerCpip, handleJoinPlayerModern, handleJoinPlayerOld, handleJoinServer, handlePBI, handleReceiveInventory, handleSendCoins, handleSetPartyOp, handleSetPuffleLaunchData, handleSetStampbookCoverData, handleSetStampEarned, handleSpyRequest, isBackyardGuard, isPreBackyardGuard, joinRoom, sendBuddyOnlineList, sendGetBuddies, sendStamps } from "./handlers/join";
 import { XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
 import { ArgumentsIndicator, GetArgumentsType } from "@server/socket-server/arg-parser";
 import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "./handlers/room";
@@ -10,7 +10,7 @@ import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
 import { handleBuyNinjaCards, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleJoinMatchmaking, handleJoinSensei } from "./handlers/ninja";
 import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "./handlers/party";
-import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "./handlers/puffle";
+import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetIglooPufflesOld, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "./handlers/puffle";
 import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "./handlers/rainbow";
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "./handlers/sled";
 import { BaseContext, GuardFunction, HandlerFunction, WorldContext } from "@server/socket-server/handlers/handlers";
@@ -184,8 +184,6 @@ export const createWorldXtHandler = (): XtHandler => {
     
     p.xt('s', 'n#gn', [], handleGN),
     
-    p.xt('s', 'b#gb', [], handleGetBuddyNew),
-    
     r.xt('s', 'u#sp', ['number', 'number'], handleSetPosition),
     r.xt('s', 'u#sf', ['number'], handleSetFrame),
     r.xt('s', 'u#sa', ['string'], handleSetAction),
@@ -197,6 +195,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'u#glr', [], handleGLR),
     p.xt('s', 'u#pbi', ['string'], handlePBI),
     p.xt('s', 'u#h', [], handleHeartbeat),
+    p.xt('s', 'u#gp', ['number'], handleGetPlayer),
     
     r.xt('s', 'm#sm', ['string', 'string'], handleSendMessage),
     
@@ -212,8 +211,9 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 's#upe', ['number'], handleUpdateFeet),
     r.xt('s', 's#upl', ['number'], handleUpdatePin),
     r.xt('s', 's#upp', ['number'], handleUpdateBackground),
-
-    p.xt('s', 'p#pg', ['number', 'string'], handleGetIglooPuffles),
+    
+    p.xt('s', 'p#pg', ['number'], handleGetIglooPufflesOld, { guard: isPreBackyardGuard }),
+    p.xt('s', 'p#pg', ['number', 'string'], handleGetIglooPuffles, { guard: isBackyardGuard }),
     p.xt('s', 'p#pn', ['number', 'string'], handleAdoptPuffleOld, { guard: isBeforePuffleCreatureGuard }),
     p.xt('s', 'p#pn', ['number', 'string', 'number'], handleAdoptPuffle, { guard: isAfterPuffleCreatureGuard, xt: { cooldown: 2000 }}),
     p.xt('s', 'p#pgpi', [], handleGetPuffleInventory),
@@ -246,7 +246,12 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'g#al', [], handleAddIglooLayout),
     p.xt('s', 'g#uiss', ['number', 'string'], handleUpdateIglooLayout),
     p.xt('s', 'g#aloc', ['number'], handleAddIglooLocation),
-
+    
+    p.xt('s', 'b#gb', [], sendGetBuddies),
+    p.xt('s', 'b#br', ['number'], handleBuddyRequest),
+    p.xt('s', 'b#ba', ['number'], handleBuddyAccept),
+    p.xt('s', 'b#bf', ['number'], handleFindBuddy),
+    
     p.xt('s', 'musictrack#getmymusictracks', [], handleGetMusicTracks),
 
     r.xt('s', 'pt#spts', ['number'], handlePlayerTransform),
