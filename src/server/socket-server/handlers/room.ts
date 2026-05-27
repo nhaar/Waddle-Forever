@@ -236,7 +236,7 @@ export const handleLeaveTableGame: RoomHandler<[]> = ({ msg, room, penguin }) =>
   }
 }
 
-export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin }, ...moves) => {
+export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin, data }, ...moves) => {
   // dispatch board moves for find four or mancala
   const table = room.getPenguinTable(penguin);
   if (table !== null) {
@@ -268,8 +268,13 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin 
         msg.send(table.penguins, 'zm', ...args);
       }
       if (endArgs !== null) {
-        // todo 'zo' with args?
-        msg.send(table.penguins, 'zo', ...endArgs);
+        // end args is pre-cpip thing
+        // post-cpip: regular player coins
+        if (data.isPreCpip()) {
+          msg.send(table.penguins, 'zo', ...endArgs);
+        } else {
+          table.penguins.forEach(p => msg.send(p, 'zo', p.currency.coins));
+        }
         msg.send(room.players, 'ut', table.getId(), table.getCount());
         table.resetRound();
       }

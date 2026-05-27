@@ -375,5 +375,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/rooms/lake.swf': 'recreation:lake_no_ladder.swf',
   'play/v2/games/fish/bootstrap.swf': 'archives:GamesIceFishingBootstrap-2011.swf',
   'play/v2/games/fish/IceFishing.swf': 'archives:GamesIceFishingMain-2011.swf',
+  'play/v2/games/four/FindFour.swf': 'archives:FindFour.swf',
   'play/v2/content/global/binoculars/empty.swf': 'archives:BinocularsNormal.swf',
 };

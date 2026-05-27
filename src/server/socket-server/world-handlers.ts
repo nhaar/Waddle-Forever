@@ -145,7 +145,7 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('z', 'lw', [], handleLeaveWaddle),
     r.xt('z', 'jz', [], handleJoinTableGame, { guard: isTableGuard }),
     s.xt('z', 'jz', [], handleJoinSled, { guard: isSledGuard }),
-    r.xt('z', 'gz', ['string'], handleGetTableGame, { guard: isTableGuard }),
+    r.xt('z', 'gz', 'string', handleGetTableGame, { guard: isTableGuard }),
     r.xt('z', 'gz', [], handleGetHockeyGame, { guard: isHockeyGuard }),
     c.xt('z', 'gz', ['number'], handleEnterCardGame, { guard: isCardJitsuGuard }),
     r.xt('z', 'uz', ['number'], handleUpdateHockeyGame, { guard: isHockeyGuard }),
@@ -251,6 +251,10 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'b#br', ['number'], handleBuddyRequest),
     p.xt('s', 'b#ba', ['number'], handleBuddyAccept),
     p.xt('s', 'b#bf', ['number'], handleFindBuddy),
+
+    r.xt('s', 'a#gt', 'number', handleGetTables),
+    r.xt('s', 'a#jt', ['number'], handleJoinTable),
+    r.xt('s', 'a#lt', [], handleLeaveTable),
     
     p.xt('s', 'musictrack#getmymusictracks', [], handleGetMusicTracks),
 
