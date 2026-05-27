@@ -2,24 +2,26 @@ import path from 'path'
 
 import { app, BrowserWindow, dialog, shell } from "electron";
 import log from "electron-log";
-import { autoUpdater } from "electron-updater";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
-import createWindow, { loadMain } from "./window";
-import startServer from "@server/server";
+import createWindow from "./window";
 import settingsManager from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
+import { USER_DATA_FOLDER } from '@common/paths';
 import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
-import { Server } from '@server/client';
-import { Handler } from '@server/handlers';
+import { GameData } from '@server/timelines/game-data';
+import { setupWorldServer, WorldServer } from '@server/socket-server/world-server';
+import { setupLoginServer } from '@server/socket-server/login-server';
+import { HttpServer } from '@server/http';
+import { DataFolder, PenguinRepository } from '@server/database/database';
 
 log.initialize();
 
@@ -34,9 +36,7 @@ if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
 }
 
-let server: Server | null = null;
-let handler: Handler | null = null;
-
+let server: WorldServer | null = null;
 
 loadFlashPlugin(app);
 
@@ -128,20 +128,30 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
+  const failedMods = settingsManager.mods.initializeMods();
+  if (failedMods.length > 0) {
+    await dialog.showMessageBox(mainWindow, {
+      buttons: ['OK'],
+      title: 'Error with Mods',
+      message: `The following mods could not be turned on. Please fix them and then try enabling them again:
+
+${failedMods.map(mod => `* ${mod}`).join('\n')}}`
+    });
+  }
+
+  const data = new DataFolder(USER_DATA_FOLDER);
+  data.init(VERSION);
+  const db = new PenguinRepository(data.getPath());
+
+  const gameData = new GameData(settingsManager);
+
   try {
-    const result = await startServer(settingsManager);
-    server = result.server;
-    handler = result.handler;
-    for (const err of result.errors) {
-      // warn user if there are any issues with their mods
-      if (err.type === 'mods') {
-        await dialog.showMessageBox(mainWindow, {
-          buttons: ['OK'],
-          title: 'Error with Mods',
-          message: err.message
-        });
-      }
-    }
+    await setupLoginServer(settingsManager, db, gameData);
+
+    server = await setupWorldServer(settingsManager, db, gameData);
+
+    const httpServer = new HttpServer(gameData, settingsManager, db);
+    await httpServer.setupServer();
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {
@@ -160,8 +170,8 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
-  if (server === null || handler === null) {
-    throw new Error("Server or handler should have been initialized");
+  if (server === null) {
+    throw new Error("Server should have been initialized");
   }
 
   mainWindow = await createWindow(store, globalSettings, settingsManager);
@@ -172,7 +182,7 @@ These are the most important things, but there is a full list of questions in ou
   // Some users was reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
-  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
+  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
 
   if (!electronIsDev) {
     startDiscordRPC(store, mainWindow);
@@ -213,9 +223,9 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    if (server === null || handler === null) {
+    if (server === null) {
       throw new Error("Server or handler must be non null");
     }
-    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server, handler);
+    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
   }
 });

@@ -3,11 +3,10 @@ import { GameData } from '@server/timelines/game-data';
 import path from 'path';
 import fs from 'fs';
 import { MODS_DIRECTORY } from '@common/paths';
-import { ModManager } from '@server/mods';
-import { FileGenerator } from '@server/file-generators';
+import { FileGenerator, getGeneratorsMap, postGeneratorsMap } from '@server/file-generators';
 import { MEDIA_DIRECTORY, readFile, toForwardSlash } from '@common/utils';
 import { SettingsManager } from '@server/settings';
-import { FileOverrider, OverriderFunction } from './overriders';
+import { FileOverrider, OVERRIDERS } from './overriders';
 
 /** Server that serves files to the game webpage and files in the game */
 export class FileServer {
@@ -16,17 +15,26 @@ export class FileServer {
 
   private overrider: FileOverrider;
 
-  constructor(private gameData: GameData, private dynamicFiles: Map<string, FileGenerator>, private settings: SettingsManager, private postGenerators: Map<string, FileGenerator>, modManager: ModManager, overrides: Record<string, OverriderFunction>) {
-    this.updateModFiles(modManager);
-    modManager.addListener(() => {
-      this.updateModFiles(modManager);
+  private dynamicFiles: Map<string, FileGenerator>
+
+  private postGenerators: Map<string, FileGenerator>
+
+  constructor(private gameData: GameData, private settings: SettingsManager) {
+    this.dynamicFiles = getGeneratorsMap();
+    this.postGenerators = postGeneratorsMap();
+
+    this.updateModFiles();
+    settings.mods.addListener(() => {
+      this.updateModFiles();
     });
-    this.overrider = new FileOverrider(gameData, settings, overrides);
+
+    // todo remove global state
+    this.overrider = new FileOverrider(gameData, settings, OVERRIDERS);
   }
 
-  private updateModFiles(modManager: ModManager) {
+  private updateModFiles() {
     this.modFiles = new Map<string, string>();
-    for (const mod of modManager.getActiveMods()) {
+    for (const mod of this.settings.mods.getActiveMods()) {
       mod.getFiles().forEach(file => {
         this.modFiles.set(toForwardSlash(file), mod.getName());
       })        

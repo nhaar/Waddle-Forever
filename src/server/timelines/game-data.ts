@@ -15,11 +15,12 @@ import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
 import { FURNITURE } from "@server/game-logic/furniture";
-import { ItemTable } from "@server/game-logic/items";
+import { ITEMS, ItemTable } from "@server/game-logic/items";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
+import { getUpdates } from "@server/updates/updates";
 import path from "path";
 
 const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
@@ -102,6 +103,8 @@ type GameState = {
   gameStamps: Map<StampRoom, Set<number>>;
   releasedStamps: Set<number>;
   extraWaddleRooms: WaddleRoomInfo[];
+  iglooMusicReleased: boolean;
+  ownedIgloos: boolean;
 }
 
 function getFreshState(): GameState {
@@ -153,7 +156,9 @@ function getFreshState(): GameState {
     freeBrownPuffle: false,
     gameStamps: new Map<StampRoom, Set<number>>(),
     releasedStamps: new Set<number>(),
-    extraWaddleRooms: []
+    extraWaddleRooms: [],
+    iglooMusicReleased: false,
+    ownedIgloos: false
   };
 }
 
@@ -165,7 +170,14 @@ export class GameData {
 
   private date: string;
 
-  constructor(private updates: GameUpdate[], private items: ItemTable, settings: SettingsManager) {
+  private updates: GameUpdate[]
+
+  private items: ItemTable;
+
+  constructor(settings: SettingsManager) {
+    this.updates = getUpdates();
+    // todo: remove global state
+    this.items = ITEMS;
     this.date = settings.settings.version;
     this.update(settings.settings.version);
     settings.addListener(() => {
@@ -311,6 +323,12 @@ export class GameData {
             break;
           case 'as3-startscreen':
             this.state.as3Startscreen = true;
+            break;
+          case 'igloo-music':
+            this.state.iglooMusicReleased = true;
+            break;
+          case 'owned-igloos':
+            this.state.ownedIgloos = true;
             break;
           default:
             break;
@@ -944,5 +962,17 @@ export class GameData {
 
   public getExtraWaddleRooms() {
     return this.state.extraWaddleRooms;
+  }
+
+  public getItem(id: number) {
+    return this.items.getStrict(id);
+  }
+
+  public hasIglooMusicReleased() {
+    return this.state.iglooMusicReleased;
+  }
+
+  public isAfterOwnedIgloos() {
+    return this.state.ownedIgloos;
   }
 }

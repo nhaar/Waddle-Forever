@@ -6,9 +6,9 @@ import { downloadMediaFolder } from "./media";
 import { MEDIA_DIRECTORY } from "@common/utils";
 import { getPopupCreator } from "./popups";
 import { SettingsManager } from "@server/settings";
-import { Server } from "@server/client";
+import { WorldServer } from "@server/socket-server/world-server";
 
-export const createSettingsWindow = getPopupCreator('settings', ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'update-settings'], (mainWindow: BrowserWindow, settings: SettingsManager, server: Server) => {
+export const createSettingsWindow = getPopupCreator('settings', ['download-package', 'delete-package', 'reload-window', 'clear-cache', 'update-settings'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
   const settingsWindow = new BrowserWindow({
     width: 500,
     height: 500,

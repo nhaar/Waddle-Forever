@@ -283,7 +283,8 @@ export type DateReference = 'cpip' |
   'pet-furniture-rename1' |
   'pet-furniture-rename2' |
   'furniture-catalog-name' |
-  'mall';
+  'mall' |
+  'owned-igloos';
 
 export type Update = {
   date: Version;
