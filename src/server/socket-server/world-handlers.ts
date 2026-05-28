@@ -183,7 +183,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'i#gi', [], handleGetItems),
     p.xt('s', 'i#ai', ['number'], handleAddItem),
     p.xt('s', 'i#qpp', ['number'], handleGetPinInfo),
-    p.xt('s', 'i#qpa', [], handleGetMissionStamps),
+    p.xt('s', 'i#qpa', ['number'], handleGetMissionStamps),
     
     p.xt('s', 'l#mst', [], handleMailTotal),
     p.xt('s', 'l#mg', [], handleGetMail),
