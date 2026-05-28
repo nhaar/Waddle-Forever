@@ -32,7 +32,7 @@ function injectRuffleIntoHtml(html: string, ip: string, loginPort: number, world
 export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buffer | string): Promise<Buffer | string> {
   let newFileRef: string | null = null;
 
-  if (s.settings.minified_website) {
+  if (s.settings.minified_website && !d.isVanillaEngine()) {
     if (d.getAs3()) {
       newFileRef = 'websites:minified/minified-classic-as3.html';
     } else if (d.isPreCpip()) {
