@@ -190,7 +190,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'l#mc', [], handleSetMailCheck),
     p.xt('s', 'l#ms', ['number', 'number'], handleSendMail),
     p.xt('s', 'l#mdp', ['number'], handleDeleteMailFromPenguin),
-    p.xt('s', 'm#md', ['number'], handleDeletePostcard),
+    p.xt('s', 'l#md', ['number'], handleDeletePostcard),
     
     r.xt('s', 'u#sp', ['number', 'number'], handleSetPosition),
     r.xt('s', 'u#sf', ['number'], handleSetFrame),
