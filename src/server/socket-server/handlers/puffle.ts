@@ -6,6 +6,7 @@ import { PlayerPuffle } from "@server/database/database";
 import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "@server/game-logic/puffle-item";
 import { PenguinHandler, PenguinGuard } from "./handlers";
+import { handleReceiveMail } from "./mail";
 
 
 const BASE_CARE_INVENTORY = [1, 8, 37];
@@ -236,7 +237,7 @@ export const handleAdoptPuffle: PenguinHandler<[number, string, number]> = (ctx,
     msg.send(penguin, 'pn', coins, getPuffleString(puffle));
   }
 
-  penguin.mail.receivePostcard(111, { details: puffleName });
+  handleReceiveMail(ctx, 111, { details: puffleName });
 
   // TODO: this has two assumptions about how backyard reallocation worked. If possible it would be nice to verify them
   // assumption 1: if you have 10 puffles and adopt one, a backyward slot is immediately freed

@@ -4,7 +4,7 @@ import { ArgumentsIndicator, GetArgumentsType } from "@server/socket-server/arg-
 import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "./handlers/room";
 import { doubleFilter } from "@common/utils";
 import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleUpdateCardSeats, isCardJitsuGuard } from "./handlers/card";
-import { handleGetMail, handleMailTotal, handleSendCard, handleSetMailCheck } from "./handlers/mail";
+import { handleGetMail, handleMailTotal, handleSendCard, handleSendMail, handleSetMailCheck } from "./handlers/mail";
 import { handleCheckName } from "./handlers/create";
 import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game";
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
@@ -188,6 +188,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'l#mst', [], handleMailTotal),
     p.xt('s', 'l#mg', [], handleGetMail),
     p.xt('s', 'l#mc', [], handleSetMailCheck),
+    p.xt('s', 'l#ms', ['number', 'number'], handleSendMail),
     
     r.xt('s', 'u#sp', ['number', 'number'], handleSetPosition),
     r.xt('s', 'u#sf', ['number'], handleSetFrame),

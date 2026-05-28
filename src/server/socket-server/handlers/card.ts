@@ -2,7 +2,7 @@ import { COLOR_DISCARD_POWER_CARDS, ELEMENT_BLOCK_POWER_CARDS, ELEMENT_DISCARD_P
 import { getStamp } from "./puffle";
 import { Stamp } from "@server/game-logic/stamps";
 import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
-import { sendMail } from "./mail";
+import { handleReceiveMail } from "./mail";
 import { CardGuard, CardHandler, PenguinHandler } from "./handlers";
 
 export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => {
@@ -40,7 +40,7 @@ const ninjaRankUp: PenguinHandler<[number]> = (ctx, previous) => {
     penguin.inventory.add(CardJitsuProgress.ITEM_AWARDS[i - 1]);
     const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
     if (postcard !== undefined) {
-      sendMail(ctx, postcard, {});
+      handleReceiveMail(ctx, postcard, {});
     }
     const stamp = CardJitsuProgress.STAMP_AWARDS[i];
     if (stamp !== undefined) {

@@ -32,13 +32,46 @@ export const handleSendCard: PenguinHandler<[number, number, number]> = (ctx, re
   prst(penguin);
 }
 
-export const handleSetMailCheck: PenguinHandler<[]> = ({ prst, penguin }) => {
+export const handleSetMailCheck: PenguinHandler<[]> = (ctx) => {
+  const { prst, penguin } = ctx;
+
   penguin.mail.setRead();
   prst(penguin);
 }
 
-export const sendMail: PenguinHandler<[number, { senderId?: number; senderName?: string; details?: string; }]> = ({ prst, msg, penguin }, postcard, info) => {
+export const handleReceiveMail: PenguinHandler<[number, { senderId?: number; senderName?: string; details?: string; }]> = ({ prst, msg, penguin, data }, postcard, info) => {
   const mail = penguin.mail.receivePostcard(postcard, info);
-  msg.send(penguin, 'mr', mail.sender.name, mail.sender.id, postcard, mail.postcard.details, mail.postcard.timestamp, mail.postcard.uid);
+
+  msg.send(
+    penguin, 'mr',
+    mail.sender.name,
+    mail.sender.id,
+    postcard,
+    mail.postcard.details,
+    ...data.isNewShell2009() ? [mail.postcard.timestamp] : [], // timestamp wasn't given before this shell
+    mail.postcard.uid);
   prst(penguin);
+}
+
+export const handleSendMail: PenguinHandler<[number, number]> = (ctx, receiverId, postcardId) => {
+  const { msg, penguin, world } = ctx;
+  const postcardCost = 10;
+  const inboxFull = 0;
+  const successful = 1;
+  const notEnoughCoins = 2;
+
+  if (penguin.currency.coins < postcardCost) {
+    msg.send(penguin, 'ms', penguin.currency.coins, notEnoughCoins);
+  } else {
+    // TODO -> offline mail
+    const receiver = world.getById(receiverId);
+    if (receiver !== undefined) {
+      if (receiver.mail.total >= 50) {
+        msg.send(penguin, 'ms', penguin.currency.coins, inboxFull);
+      } else {
+        handleReceiveMail({ ...ctx, penguin: receiver }, postcardId, { senderId: penguin.id, senderName: penguin.name });
+        msg.send(penguin, 'ms', penguin.currency.discount(postcardCost), successful);
+      }
+    }
+  }
 }
