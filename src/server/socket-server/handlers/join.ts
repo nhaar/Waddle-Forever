@@ -413,32 +413,27 @@ export const handleBuddyDecline: PenguinHandler<[number]> = (ctx, requesterId) =
 }
 
 export const handleBuddyRemove: PenguinHandler<[number]> = async (ctx, removeId) => {
-  const { penguin, prst, world, data, msg, db } = ctx;
+  const { penguin, prst, world, data, msg, off } = ctx;
   
-  const changed = penguin.buddy.remove(removeId);
+  penguin.buddy.remove(removeId);
 
-  const buddy = world.getById(removeId);
+  const buddy = world.getById(removeId) ?? await off.getPenguin(removeId);
 
   if (buddy === undefined) {
-    const buddyData = await db.get(removeId);
-    if (buddyData !== null) {
-      buddyData.buddies = (buddyData?.buddies ?? []).filter(id => id !== penguin.id);
-      // TODO -> refactor offline penguin update
-      db.write(removeId, buddyData);
-    }
-  } else {
-    buddy.buddy.remove(penguin.id);
+    return;
+  }
+
+  buddy.buddy.remove(penguin.id);
+  if (buddy instanceof WorldPenguin) {
     if (isNewBuddyProtocol(data)) {
       msg.send(buddy, 'rb', penguin.id, penguin.name);
     } else {
       msg.send(buddy, 'br', penguin.id, penguin.name);
     }
-    prst(buddy);
   }
 
-  if (changed) {
-    prst(penguin);
-  }
+  prst(penguin);
+  prst(buddy);
 }
 
 export const handleBuddyMessage: PenguinHandler<[number, number]> = (ctx, targetId, messageId) => {
