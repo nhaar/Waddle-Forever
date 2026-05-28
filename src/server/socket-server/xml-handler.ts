@@ -5,15 +5,15 @@ import { SettingsManager } from "@server/settings"
 import { PenguinRepository } from "@server/database/database"
 import { ClientSocket } from "./socket-server"
 import { getYellowString, logverbose } from "@server/logger"
+import { OfflineWorld } from "./offline-world"
 
 export type LoginContext = {
   msg: PenguinMessenger,
-  world?: World,
   data: GameData,
   settings: SettingsManager,
   db: PenguinRepository,
-  client: ClientSocket
-}
+  client: ClientSocket,
+} & ({} | { world: World; off: OfflineWorld; });
 
 const parseXmlMessage = (message: string): [string, string] => {
   if (message === '<policy-file-request/>') {

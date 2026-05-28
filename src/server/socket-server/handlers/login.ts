@@ -2,7 +2,7 @@ import { PenguinMessenger } from "../../socket-server/messenger";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { getDefaultIgloo, PenguinJson } from "@server/database/database";
 import { logdebug } from "@server/logger";
-import { WorldPenguin } from "@server/socket-server/world/world-penguin";
+import { OfflinePenguin, WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
 import { LoginContext } from "@server/socket-server/xml-handler";
 
@@ -101,9 +101,9 @@ export const getKey: LoginHandler = ({ msg, client }) => {
 }
 
 export const login: LoginHandler = async (ctx, message: string) => {
-  const joinMatch = message.match(/<login z='j'>/);
   const { msg, data, settings, db, client } = ctx;
 
+  const joinMatch = message.match(/<login z='j'>/);
   if (data.isPreCpip() && joinMatch) {
     // join.swf sends 'j' as the login
     msg.sendXml(client, 'logOK', '');
@@ -113,51 +113,43 @@ export const login: LoginHandler = async (ctx, message: string) => {
   const nicknameMatch = message.match(/<nick><!\[CDATA\[(.*)\]\]><\/nick>/);
   if (nicknameMatch === null) {
     logdebug('No nickname provided during Login, terminating.');
-    // terminating: TODO collect the client sockets
   } else {
-    let name = nicknameMatch[1];
-    let penguin: PenguinJson;
-    let id: number;
-    if (data.isVanillaEngine() && 'world' in ctx) {
-      // in Engine 3 client, the world actually receives the ID instead of the name
-      id = Number(name);
-      const data = await db.get(id);
-      // const data = db.getById<PenguinData>(Databases.Penguins, id);
-      if (data === undefined) {
-        throw new Error(`Could not find penguin of ID ${id}`);
-      }
-      const penguinData = await db.get(id);
-      if (penguinData === null) {
-        return;
-      } 
-      penguin = penguinData;
-    } else {
-      if (data.isPreCpip()) {
-        // in pre-cpip, underscores represent spaces in names
-        name = name.replace(/_/g, ' ');
-      }
+    const nickname = data.isPreCpip() ? nicknameMatch[1].replace(/_/g, ' ') : nicknameMatch[1];
+    // in the LOGIN world of modern clients, nickname -> ID
+    // everywhere else, nickname -> name
 
-      // todo: error 101 is incorrect password
-      if (settings.settings.no_create_via_login && !(await db.exists(name))) {
-        sendError(msg, client, 100);
-        return
-      }
+    // account creation only happens when given name, not when given ID
+    const modernLogin = ('world' in ctx && data.isVanillaEngine());
+    if (!modernLogin) {
+      if (!await db.exists(nickname)) {
+        // todo: error 101 is incorrect password
+        if (settings.settings.no_create_via_login) {
+          sendError(msg, client, 100);
+          return
+        }
 
-      let info = await db.fromName(name);
-      if (info === null) {
-        // 1 = blue
-        const json = getDefaultPenguin(name, 1 /* blue */, settings.settings.always_member, settings.getVirtualDate(0).getTime());
-        info = [await db.create(json), json];
+        const json = getDefaultPenguin(nickname, 1 /* blue */, settings.settings.always_member, settings.getVirtualDate(0).getTime());
+        await db.create(json);
       }
-      id = info[0];
-      penguin = info[1];
     }
-    if (ctx.world !== undefined) {
-      const p = new WorldPenguin(id, penguin, settings);
+
+    const idTest = modernLogin ? Number(nickname) : await db.fromName(nickname);
+    if (idTest === null) {
+      throw new Error(`Could not find penguin with name: ${nickname}`);
+    }
+    const id = typeof idTest === 'number' ? idTest : idTest[0];
+
+    if ('world' in ctx) {
+      const offline = await ctx.off.getPenguin(id);
+      if (offline === undefined) {
+        throw new Error('Couldn\'t find penguin');
+      }
+      const p = new WorldPenguin(id, offline.getJSON(), settings);
+      ctx.off.removePenguin(offline.id);
       ctx.world.addPenguin(p);
       msg.linkClient(client, p);
     }
-    console.log(`${name} is logging in`);
+    console.log(`${nickname} is logging in`);
     /*
     TODO
     buddies

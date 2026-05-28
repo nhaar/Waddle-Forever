@@ -379,28 +379,23 @@ export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
 }
 
 export const handleBuddyAccept: PenguinHandler<[number]> = async (ctx, requesterId) => {
-  const { world, db, penguin, prst, msg, data } = ctx;
-  const requester = world.getById(requesterId);
+  const { world, penguin, prst, msg, data, off } = ctx;
+  const requester = world.getById(requesterId) ?? await off.getPenguin(requesterId);
 
   penguin.buddy.add(requesterId);
 
   if (requester === undefined) {
-    const requesterData = await db.get(requesterId);
-    if (requesterData === null) {
-      return;
-    }
-    // TODO -> refactor offline penguin writing.
-    requesterData.buddies = [...(requesterData?.buddies ?? []), penguin.id];
-    db.write(requesterId, requesterData);
-  } else {
-    requester.buddy.add(penguin.id);
-    msg.send(requester, 'ba', penguin.id, penguin.name);
-    prst(requester);
+    return;
   }
+  requester.buddy.add(penguin.id);
+  if (requester instanceof WorldPenguin) {
+    msg.send(requester, 'ba', penguin.id, penguin.name);
+  }
+  prst(requester);
 
   if (isNewBuddyProtocol(data)) {
     sendGetBuddies(ctx);
-    if (requester !== undefined) {
+    if (requester instanceof WorldPenguin) {
       sendGetBuddies({ ...ctx, penguin: requester });
     }
   }

@@ -931,7 +931,15 @@ class Avatar {
   }
 }
 
-export class WorldPenguin {
+/** Interface for actions that can be done in an offline and online penguin */
+export interface UserPenguin {
+  buddy: BuddyInventory;
+  getJSON: () => PenguinJson;
+  canSave: boolean;
+  id: number;
+}
+
+export class WorldPenguin implements UserPenguin {
   private _profile: Profile;
   private _membership: Membership;
   private _psa: PSA;
@@ -1161,6 +1169,44 @@ export class WorldPenguin {
       noSave: !this._preference.canSave,
       safeChat: this._preference.isSafeChat
     }
+  }
+
+  public get canSave() {
+    return this._preference.canSave;
+  }
+}
+
+export class OfflinePenguin implements UserPenguin {
+  private _mail: MailInventory;
+  private _buddy: BuddyInventory;
+  
+  constructor(private _id: number, private _data: PenguinJson) {
+    this._mail = new MailInventory(_data);
+    this._buddy = new BuddyInventory(_data);
+  }
+
+  public get mail() {
+    return this._mail;
+  }
+
+  public get buddy() {
+    return this._buddy;
+  }
+
+  public getJSON(): PenguinJson {
+    return {
+      ...this._data,
+
+      buddies: this._buddy.buddies
+    }
+  }
+
+  public get canSave() {
+    return true;
+  }
+
+  public get id() {
+    return this._id;
   }
 }
 

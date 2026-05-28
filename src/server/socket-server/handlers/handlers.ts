@@ -2,15 +2,16 @@ import { CardJitsu } from "@server/socket-server/world/card";
 import { SledRace } from "@server/socket-server/world/sled";
 import { PenguinEnvironment, World } from "@server/socket-server/world/world";
 import { WorldGame } from "@server/socket-server/world/world-game";
-import { WorldPenguin } from "@server/socket-server/world/world-penguin";
+import { UserPenguin, WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldRoom } from "@server/socket-server/world/world-room";
 import { PenguinMessenger } from "../messenger";
 import { GameData } from "@server/timelines/game-data";
 import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
 import { ClientSocket } from "@server/socket-server/socket-server";
+import { OfflineWorld } from "../offline-world";
 
-export type PenguinPersister = (p: WorldPenguin, force?: boolean) => void;
+export type PenguinPersister = (p: UserPenguin, force?: boolean) => void;
 
 type Ctx<Global, AlwaysSingular, EventuallySingular, EventuallyCommon> = Global & AlwaysSingular & ({} | (EventuallySingular & ({} | EventuallyCommon)));
 
@@ -30,6 +31,7 @@ type GlobalContext = {
   settings: SettingsManager;
   db: PenguinRepository;
   prst: PenguinPersister;
+  off: OfflineWorld;
 }
 
 type AlwaysSingularContext = {

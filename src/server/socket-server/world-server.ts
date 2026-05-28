@@ -22,22 +22,25 @@ import { createWorldXtHandler } from "./world-handlers";
 import { createLoginXmlHandler } from "./login-handlers";
 import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/handlers";
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
+import { OfflineWorld } from "./offline-world";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
   private _msg = new PenguinMessenger();
+  private _off: OfflineWorld;
   private _commandsHandler: CommandsHandler;
   private _xtHandler: XtHandler;
   private _xmlHandler: XmlHandler;
   private _persister: PenguinPersister;
   
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
+    this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
 
     this._commandsHandler = getCommandsHandler();
 
     this._persister = (p, force = false) => { 
-      if (p.preference.canSave || force) {
+      if (p.canSave || force) {
         this._db.write(p.id, p.getJSON());
       }
     };
@@ -60,6 +63,7 @@ export class WorldServer implements MessageHandler {
         data: this._gameData,
         db: this._db,
         settings: this._settings,
+        off: this._off,
         client,
         room: this._world.getPenguinRoom(penguin)
       }, name, args);
@@ -95,6 +99,7 @@ export class WorldServer implements MessageHandler {
       settings: this._settings,
       db: this._db,
       prst: this._persister,
+      off: this._off,
 
       client,
 
@@ -111,6 +116,7 @@ export class WorldServer implements MessageHandler {
         data: this._gameData,
         settings: this._settings,
         db: this._db,
+        off: this._off,
         client,
         world: this._world
       }, message);
