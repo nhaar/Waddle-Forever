@@ -75,3 +75,14 @@ export const handleSendMail: PenguinHandler<[number, number]> = (ctx, receiverId
     }
   }
 }
+
+export const handleDeleteMailFromPenguin: PenguinHandler<[number]> = ({ penguin, msg, prst }, penguinId) => {
+  penguin.mail.deleteMail(m => m.sender.id === penguinId);
+  msg.send(penguin, 'mdp', penguin.mail.total);
+  prst(penguin);
+}
+
+export const handleDeletePostcard: PenguinHandler<[number]> = ({ penguin, prst }, postcardUid) => {
+  penguin.mail.deleteMail(m => m.postcard.uid === postcardUid);
+  prst(penguin);
+}

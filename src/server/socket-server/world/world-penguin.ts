@@ -679,6 +679,10 @@ class MailInventory {
   public setRead() {
     this._mail = this._mail.map(mail => ({ ...mail, postcard: { ...mail.postcard, read: true }}));
   }
+
+  public deleteMail(predicate: (m: Mail) => boolean): void {
+    this._mail = this._mail.filter(m => !predicate(m));
+  }
 }
 
 class PuffleLaunchData {
