@@ -809,7 +809,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'catalogues/party.swf': {
-            'en': 'archives:BoxCatalog.swf'
+            'en': ['archives:BoxCatalog.swf', 'party_catalogue']
           },
           'membership/party3.swf': {
             'en': ['archives:AprilFoolMembership.swf', 'oops_party3_room']
