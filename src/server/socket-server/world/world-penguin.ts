@@ -1197,7 +1197,10 @@ export class OfflinePenguin implements UserPenguin {
     return {
       ...this._data,
 
-      buddies: this._buddy.buddies
+      buddies: this._buddy.buddies,
+
+      mail: this._mail.mail,
+      mailSeq: this._mail.seq
     }
   }
 

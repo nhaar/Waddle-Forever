@@ -237,7 +237,7 @@ export const handleAdoptPuffle: PenguinHandler<[number, string, number]> = (ctx,
     msg.send(penguin, 'pn', coins, getPuffleString(puffle));
   }
 
-  handleReceiveMail(ctx, 111, { details: puffleName });
+  handleReceiveMail(ctx, penguin.mail.receivePostcard(111, { details: puffleName }));
 
   // TODO: this has two assumptions about how backyard reallocation worked. If possible it would be nice to verify them
   // assumption 1: if you have 10 puffles and adopt one, a backyward slot is immediately freed

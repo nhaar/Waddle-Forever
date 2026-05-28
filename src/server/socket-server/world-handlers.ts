@@ -186,7 +186,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'i#qpa', ['number'], handleGetMissionStamps),
     
     p.xt('s', 'l#mst', [], handleMailTotal),
-    p.xt('s', 'l#mg', [], handleGetMail),
+    p.xt('s', 'l#mg', ['number'], handleGetMail),
     p.xt('s', 'l#mc', [], handleSetMailCheck),
     p.xt('s', 'l#ms', ['number', 'number'], handleSendMail),
     p.xt('s', 'l#mdp', ['number'], handleDeleteMailFromPenguin),

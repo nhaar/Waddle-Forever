@@ -40,7 +40,7 @@ const ninjaRankUp: PenguinHandler<[number]> = (ctx, previous) => {
     penguin.inventory.add(CardJitsuProgress.ITEM_AWARDS[i - 1]);
     const postcard = CardJitsuProgress.POSTCARD_AWARDS[i];
     if (postcard !== undefined) {
-      handleReceiveMail(ctx, postcard, {});
+      handleReceiveMail(ctx, penguin.mail.receivePostcard(postcard, {}));
     }
     const stamp = CardJitsuProgress.STAMP_AWARDS[i];
     if (stamp !== undefined) {
