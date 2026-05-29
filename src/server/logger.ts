@@ -16,6 +16,10 @@ export function logdebug(...args: unknown[]) {
   }
 }
 
+export const logdebugerr = (msg: string): void => {
+  logdebug(getRedString(msg));
+}
+
 export function logverbose(...args: unknown[]) {
   if (process.env.VERBOSE === 'true') {
     console.log(...args);

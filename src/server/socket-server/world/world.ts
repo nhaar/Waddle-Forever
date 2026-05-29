@@ -12,6 +12,7 @@ import { WorldRoom } from "./world-room";
 import { CardJitsu } from "./card";
 import { Bakery } from "./bakery";
 import { MatchMaker } from "./matchmaker";
+import { FireGame } from "./fire";
 
 export class World {
   private penguins = new Map<number, WorldPenguin>();
@@ -96,9 +97,10 @@ export class World {
         game = new CardJitsu(players);
         players.forEach(p => this.enterState(p, { card: game as CardJitsu }));
         break;
-    //   case 'fire':
-    //     game = new CardJitsuFire(players, (c, e) => this.addContext(c, 'fire', e as CardJitsuFire), (c) => this.removeContext(c, 'fire'));
-    //     break;
+      case 'fire':
+        game = new FireGame(players);
+        players.forEach(p => this.enterState(p, { fire: game as FireGame }));
+        break;
       case 'sled':
         game = new SledRace(players);
         players.forEach(p => this.enterState(p, { sled: game as SledRace }));
@@ -186,4 +188,8 @@ export class World {
   }
 }
 
-export type PenguinEnvironment = { room: WorldRoom; } | { game: WorldGame; } | { card: CardJitsu; } | { sled: SledRace; };
+export type PenguinEnvironment = { room: WorldRoom; } |
+  { game: WorldGame; } |
+  { card: CardJitsu; } |
+  { sled: SledRace; } |
+  { fire: FireGame };
