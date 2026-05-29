@@ -125,7 +125,7 @@ function getFreshState(): GameState {
     stamps: false,
     stageScript: [],
     localPaths: new Map<string, string>(),
-    compositePaths: false,
+    compositePaths: true,
     newShell2009: false,
     roomMusic: new Map<RoomName, number>(),
     roomMember: new Map<RoomName, boolean>(),
