@@ -72,7 +72,10 @@ class FireRound {
   }
 
   public setCard(seatIndex: number, card: number): void {
-    this._roundCards[this._battleIndexes[seatIndex]] = card;
+    const index = this._battleIndexes.find(i => i === seatIndex);
+    if (index !== undefined) {
+      this._roundCards[index] = card;
+    }
   }
 
   public get cards() {

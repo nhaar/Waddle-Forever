@@ -39,8 +39,13 @@ const handleStartBattle: FireHandler<[BattleType, number[]]> = async ({ fire, ms
   await msg.send(fire.getPlayers(), 'zm', 'sb', battle, players.join(','), trump);
 }
 
-const handleChooseOpponent: FireHandler<[number[]]> = async ({ msg, fire }, pool) => {
-  msg.send(fire.getPlayers(), 'zm', 'co', '' /* unused */, pool.join(','));
+const handleSendChooseOpponent: FireHandler<[number[]]> = async ({ msg, fire }, pool) => {
+  await msg.send(fire.getPlayers(), 'zm', 'co', '' /* unused */, pool.join(','));
+}
+
+const handleChooseOpponent: FireHandler<[number]> = async (ctx, opponent) => {
+  const { fire, penguin } = ctx;
+  await handleStartBattle(ctx, 'b', [fire.getSeatId(penguin), opponent]);
 }
 
 const handleClickBoard: FireHandler<[number]> = async (ctx, tile) => {
@@ -62,14 +67,14 @@ const handleClickBoard: FireHandler<[number]> = async (ctx, tile) => {
     if (playersInTile.length === 1) {
       await handleStartBattle(ctx, 'b', playersInTile);
     } else {
-      await handleChooseOpponent(ctx, playersInTile);
+      await handleSendChooseOpponent(ctx, playersInTile);
     }
   } else {
     const type = BOARD[tile];
 
     if (type === 'b') {
       if (fire.getPlayers().length > 2) {
-        await handleChooseOpponent(ctx, getAllPlayers(fire.getPlayers()));
+        await handleSendChooseOpponent(ctx, getAllPlayers(fire.getPlayers()));
       } else {
         await handleStartBattle(ctx, type, getAllPlayers(fire.getPlayers()));
       }
@@ -167,6 +172,9 @@ export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {
       break;
     case 'cc':
       handleClickCard(ctx, Number(rest[0]));
+      break;
+    case 'co':
+      handleChooseOpponent(ctx, Number(rest[0]));
       break;
     default:
       logdebugerr('unknown cjfire action: ' + action);
