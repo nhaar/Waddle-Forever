@@ -162,6 +162,25 @@ const handleClickCard: FireHandler<[number]> = async (ctx, cardIndex) => {
   }
 }
 
+const handleReady: FireHandler<[]> = async (ctx) => {
+  const { msg, penguin, fire } = ctx;
+  fire.setReady(fire.getSeatId(penguin));
+
+  if (fire.everyoneReady()) {
+    fire.nextPlayer();
+    fire.newSpin();
+
+    await Promise.all(fire.getPlayers().map(p => {
+      msg.send(
+        p, 'zm', 'nt',
+        fire.activePlayer,
+        fire.spin.join(','),
+        fire.getHand(fire.getSeatId(p)).join(',')
+      )
+    }));
+  }
+}
+
 export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {
   switch (action) {
     case 'is':
@@ -175,6 +194,9 @@ export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {
       break;
     case 'co':
       handleChooseOpponent(ctx, Number(rest[0]));
+      break;
+    case 'ir':
+      handleReady(ctx);
       break;
     default:
       logdebugerr('unknown cjfire action: ' + action);

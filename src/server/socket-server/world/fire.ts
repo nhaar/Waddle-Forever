@@ -97,6 +97,8 @@ export class FireGame extends WaddleGame {
   private _hands: Array<Hand>;
   private _energies: number[];
   private _round: FireRound;
+  private _ready: boolean[];
+  private _activePlayer: number = 0;
   
   public roomId = 997;
 
@@ -104,6 +106,7 @@ export class FireGame extends WaddleGame {
     super(players);
 
     this._positions = [12, 4, 0, 8].slice(0, players.length);
+    this._ready = new Array(players.length).fill(false);
     this._energies = new Array(players.length).fill(STARTER_ENERGY);
     this._hands = players.map(p => {
       const hand = new Hand(p.ninja.getDeck());
@@ -113,7 +116,7 @@ export class FireGame extends WaddleGame {
       return hand;
     })
 
-    this.newSpin(this._positions[0]);
+    this.newSpin();
     this._round = new FireRound('b', []);
   }
 
@@ -121,9 +124,14 @@ export class FireGame extends WaddleGame {
     return [...this._spin];
   }
 
-  public newSpin(base: number): void {
+  public newSpin(): void {
+    const tile = this._positions[this._activePlayer];
     const spin = getRandomSpin();
-    this._spin = [spin, getClockwise(base, spin), getCounterClockwise(base, spin)];
+    this._spin = [spin, getClockwise(tile, spin), getCounterClockwise(tile, spin)];
+  }
+
+  public nextPlayer(): void {
+    this._activePlayer = (this._activePlayer + 1) % this.players.length;
   }
 
   public get positions(): number[] {
@@ -160,6 +168,22 @@ export class FireGame extends WaddleGame {
 
   public removeEnergy(seatId: number) {
     this._energies[seatId]--;
+  }
+
+  public setReady(seatId: number) {
+    this._ready[seatId] = true;
+  }
+
+  public everyoneReady(): boolean {
+    const ready = this._ready.every(r => r);
+    if (ready) {
+      this._ready = new Array(this._ready.length).fill(false);
+    }
+    return ready;
+  }
+
+  public get activePlayer(): number {
+    return this._activePlayer;
   }
 }
 
