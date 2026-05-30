@@ -65,7 +65,7 @@ const handleClickBoard: FireHandler<[number]> = async (ctx, tile) => {
 
   if (playersInTile.length > 0) {
     if (playersInTile.length === 1) {
-      await handleStartBattle(ctx, 'b', playersInTile);
+      await handleStartBattle(ctx, 'b', [fire.getSeatId(penguin), ...playersInTile]);
     } else {
       await handleSendChooseOpponent(ctx, playersInTile);
     }
