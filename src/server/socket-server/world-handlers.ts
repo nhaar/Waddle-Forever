@@ -166,7 +166,7 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
     s.xt('z', 'zm', ['number', 'number', 'number', 'number'], handleMoveSled, { guard: isSledGuard }),
     c.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction, { guard: isCardJitsuGuard }),
-    f.xt('z', 'zm', ['string', 'number', 'number'], handleFireMove, { guard: isFireGuard }),
+    f.xt('z', 'zm', 'string', handleFireMove, { guard: isFireGuard }),
     r.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck, { guard: isHockeyGuard }),
     p.xt('z', 'ggd', [], handleGetPuffleLaunchData),
     p.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData),

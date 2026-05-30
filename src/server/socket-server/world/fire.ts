@@ -5,6 +5,13 @@ import { WorldPenguin } from "./world-penguin";
 export const STARTER_ENERGY = 6;
 const BOARD_TILE_COUNT = 16;
 
+export const BOARD = [
+  'b', 's', 'w', 'f',
+  'c', 's', 'f', 'w',
+  'b', 's', 'w', 'f',
+  'c', 'w', 's', 'f'
+] as const;
+
 export const getRandomSpin = (): number => randomInt(1, 6);
 export const getClockwise = (base: number, spin: number): number => modulo(base - spin, BOARD_TILE_COUNT);
 export const getCounterClockwise = (base: number, spin: number): number => modulo(base + spin, BOARD_TILE_COUNT);
@@ -37,4 +44,10 @@ export class FireGame extends WaddleGame {
   public get positions(): number[] {
     return [...this._positions];
   }
+
+  public updatePosition(index: number, tile: number) {
+    this._positions[index] = tile;
+  }
 }
+
+export const getAllPlayers = (players: WorldPenguin[]): number[] => players.map((_, i) => i);
