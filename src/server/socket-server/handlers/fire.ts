@@ -181,6 +181,11 @@ const handleReady: FireHandler<[]> = async (ctx) => {
   }
 }
 
+const handleChooseTrump: FireHandler<[BattleType]> = (ctx, trump) => {
+  const { fire } = ctx;
+  handleStartBattle(ctx, trump, getAllPlayers(fire.getPlayers()));
+}
+
 export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {
   switch (action) {
     case 'is':
@@ -197,6 +202,9 @@ export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {
       break;
     case 'ir':
       handleReady(ctx);
+      break;
+    case 'ct':
+      handleChooseTrump(ctx, rest[0] as BattleType);
       break;
     default:
       logdebugerr('unknown cjfire action: ' + action);
