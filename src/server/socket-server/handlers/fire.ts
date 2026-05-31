@@ -122,14 +122,18 @@ const handleClickBoard: FireHandler<[number, boolean]> = async (ctx, tile, auto)
 
 const handleClickBoardPlayer: FireHandler<[number]> = async (ctx, tile) => await handleClickBoard(ctx, tile, false);
 
+const handleClickBoardRandom: FireHandler<[]> = async (ctx) => {
+  const { fire } = ctx;
+  await handleClickBoard(ctx, fire.spin[randomInt(1, 2)], true);
+}
+
 const handleBoardTimeout: FireHandler<[]> = async (ctx) => {
   const { msg, fire } = ctx;
   const ninja = fire.activePlayer;
 
   await msg.send(ninja.penguin, 'zm', 'tb');
 
-  const tile = fire.spin[randomInt(1, 2)];
-  await handleClickBoard(ctx, tile, true);
+  await handleClickBoardRandom(ctx);
 }
 
 const getCardJitsuResults = (cardId1: number, cardId2: number): [number[], CardElement] => {
@@ -277,11 +281,18 @@ export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
 
   // TODO -> auto playing
   if (fire.isPlaying(ninja)) {
-    fire.playerEntersPodium(ninja);
-    await msg.send(fire.players, 'zm', 'cz', ninja.seat);
-
-    if (fire.activePlayers.length === 1) {
-      await msg.send(fire.activePlayers[0].penguin, 'cz');
+    if (fire.activePlayers.length === 2) {
+      await msg.send(fire.activePlayers.filter(n => n !== ninja)[0].penguin, 'cz');
+    
+      fire.clearBoardTimeout();
+    } else {
+      await handleSendCardJitsuStampInfo(ctx);
+      fire.removePlayer(penguin);
+      if (fire.activePlayer === ninja && fire.isChoosing()) {
+        await handleClickBoardRandom(ctx);
+        await msg.send(fire.players, 'zm', 'cz', ninja.seat);
+        fire.playerEntersPodium(ninja);
+      }
     }
   }
 

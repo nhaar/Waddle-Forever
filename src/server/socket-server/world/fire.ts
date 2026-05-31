@@ -271,12 +271,20 @@ export class FireGame extends WaddleGame {
   }
 
   public setBoardTimeout(callback: () => void) {
-    this._boardTimeout = setTimeout(callback, 23000);
+    this._boardTimeout = setTimeout(() => {
+      callback();
+      this._boardTimeout = null;
+    }, 23000);
   }
 
   public clearBoardTimeout(): void {
     if (this._boardTimeout !== null) {
       clearTimeout(this._boardTimeout);
+      this._boardTimeout = null;
     }
+  }
+
+  public isChoosing(): boolean {
+    return this._boardTimeout !== null;
   }
 }
