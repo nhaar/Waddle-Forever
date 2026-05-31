@@ -132,6 +132,7 @@ export class FireNinja {
 class BattleNinja {
   private _chosenIndex: number | null = null;
   private _ninja: FireNinja;
+  private _cardTimeout: NodeJS.Timeout | null = null;
 
   public constructor(ninja: FireNinja) {
     this._ninja = ninja;
@@ -147,6 +148,20 @@ class BattleNinja {
 
   public get ninja(): FireNinja {
     return this._ninja;
+  }
+
+  public setCardTimeout(callback: () => void): void {
+    this._cardTimeout = setTimeout(() => {
+      callback();
+      this._cardTimeout = null;
+    }, 23000);
+  }
+
+  public clearTimeout(): void {
+    if (this._cardTimeout !== null) {
+      clearTimeout(this._cardTimeout)
+      this._cardTimeout = null;
+    }
   }
 }
 

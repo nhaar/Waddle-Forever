@@ -45,10 +45,20 @@ const handleClickSpinner: FireHandler<[number]> = ({ msg, fire }, tablet) => {
 
 const getBattleInfo = (battleType: BattleType): [string, string] => battleType === 'b' ? ['be', ''] : ['bt', battleType];
 
-const handleStartBattle: FireHandler<[BattleType, FireNinja[]]> = async ({ fire, msg }, type, players) => {
+const handleStartBattle: FireHandler<[BattleType, FireNinja[]]> = async (ctx, type, players) => {
+  const { fire, msg } = ctx;
   const [battle, trump] = getBattleInfo(type);
   fire.clearBoardTimeout();
   fire.createRound(players, type);
+
+  fire.round.players.forEach(b => {
+    b.setCardTimeout(() => {
+      if (b.chosen === null) {
+        handleClickCardRandom({ ...ctx, penguin: b.ninja.penguin });
+      }
+    });
+  })
+
   await msg.send(fire.players, 'zm', 'sb', battle, players.map(p => p.seat).join(','), trump);
 }
 
@@ -133,7 +143,7 @@ const handleBoardTimeout: FireHandler<[]> = async (ctx) => {
 
   await msg.send(ninja.penguin, 'zm', 'tb');
 
-  await handleClickBoardRandom(ctx);
+  await handleClickBoardRandom({ ...ctx, penguin: ninja.penguin });
 }
 
 const getCardJitsuResults = (cardId1: number, cardId2: number): [number[], CardElement] => {
@@ -221,6 +231,10 @@ const handleResolveBattle: FireHandler<[number[]]> = async ({ msg, fire }, cardI
   }))
 }
 
+const handleClickCardRandom: FireHandler<[]> = async (ctx) => {
+  await handleClickCard(ctx, randomInt(0, 4));
+}
+
 const handleClickCard: FireHandler<[number]> = async (ctx, cardIndex) => {
   const { msg, fire, penguin } = ctx;
   const battleNinja = fire.round.fromPenguin(penguin);
@@ -228,6 +242,7 @@ const handleClickCard: FireHandler<[number]> = async (ctx, cardIndex) => {
     return;
   }
 
+  battleNinja.clearTimeout();
   battleNinja.setCard(cardIndex);
 
   await msg.send(fire.players.filter(p => p !== penguin), 'zm', 'ic', battleNinja.ninja.seat);
