@@ -68,15 +68,17 @@ const gainProgress: PenguinHandler<[boolean]> = (ctx, won) => {
   prst(penguin);
 }
 
-const exitGame: CardHandler<[]> = async ({ penguin, data, msg, card, prst }) => {
-  // for when the player got stamps in older versions
-  for (let i = 0; i <= penguin.ninja.cardRank; i++) {
-    const stamp = CardJitsuProgress.STAMP_AWARDS[i];
-    if (stamp !== undefined) {
-      getStamp(data, msg, penguin, stamp);
-    }
+export const handleSendCardJitsuStampInfo: PenguinHandler<[]> = async (ctx) => {
+  const { data, penguin, msg, prst } = ctx;
+  
+  const game = 'card' in ctx ? ctx.card :
+    'fire' in ctx ? ctx.fire : undefined;
+  const roomId = game?.roomId;
+  if (roomId === undefined) {
+    return;
   }
-  const gameStamps = data.getGameStamps(card.roomId);
+
+  const gameStamps = data.getGameStamps(roomId);
   const sessionStamps = penguin.stampbook.sessionStamps.filter(stamp => gameStamps.has(stamp));
   const collectedCount = [...gameStamps.values()].filter(stamp => penguin.stampbook.has(stamp)).length;
   const totalCount = gameStamps.size;
@@ -84,7 +86,18 @@ const exitGame: CardHandler<[]> = async ({ penguin, data, msg, card, prst }) => 
   penguin.stampbook.resetSessionStamps();
   await msg.send(penguin, 'cjsi', sessionStamps.join('|'), collectedCount, totalCount, 0);
   prst(penguin);
-  // client.leaveWaddleRoom();
+}
+
+const exitGame: CardHandler<[]> = async (ctx) => {
+  const { penguin, data, msg } = ctx;
+  // for when the player got stamps in older versions
+  for (let i = 0; i <= penguin.ninja.cardRank; i++) {
+    const stamp = CardJitsuProgress.STAMP_AWARDS[i];
+    if (stamp !== undefined) {
+      getStamp(data, msg, penguin, stamp);
+    }
+  }
+  handleSendCardJitsuStampInfo(ctx);
 }
 
 const setWinner: CardHandler<number[]> = async (ctx, winner, ...cards: number[]) => {
