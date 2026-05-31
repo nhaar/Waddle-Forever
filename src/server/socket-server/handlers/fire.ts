@@ -3,6 +3,7 @@ import { BattleType, BOARD, FireNinja } from "../world/fire";
 import { FireGuard, FireHandler } from "./handlers";
 import { getWinner } from "../world/card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
+import { handleSendCardJitsuStampInfo } from "./card";
 
 export const isFireGuard: FireGuard = () => true;
 
@@ -230,6 +231,26 @@ const handleReady: FireHandler<[]> = async (ctx) => {
 const handleChooseTrump: FireHandler<[BattleType]> = (ctx, trump) => {
   const { fire } = ctx;
   handleStartBattle(ctx, trump, fire.activePlayers);
+}
+
+export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
+  const { msg, fire, penguin } = ctx;
+  const ninja = fire.fromPenguin(penguin);
+  if (ninja === undefined) {
+    return;
+  }
+
+  // TODO -> auto playing
+  if (fire.isPlaying(ninja)) {
+    fire.playerEntersPodium(ninja);
+    await msg.send(fire.players, 'zm', 'cz', ninja.seat);
+
+    if (fire.activePlayers.length === 1) {
+      await msg.send(fire.activePlayers[0].penguin, 'cz');
+    }
+  }
+
+  await handleSendCardJitsuStampInfo(ctx);
 }
 
 export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {

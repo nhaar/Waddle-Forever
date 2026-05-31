@@ -263,4 +263,8 @@ export class FireGame extends WaddleGame {
   public fromSeat(seat: number): FireNinja {
     return this._seats[seat];
   }
+
+  public isPlaying(ninja: FireNinja): boolean {
+    return this._standing.get(ninja) === undefined;
+  }
 }

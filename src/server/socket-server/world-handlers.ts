@@ -15,7 +15,7 @@ import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSend
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "./handlers/sled";
 import { BaseContext, GuardFunction, HandlerFunction, WorldContext } from "@server/socket-server/handlers/handlers";
 import { handleAddIgnore, handleGetIgnoreList, handleRemoveIgnore } from "./handlers/buddy";
-import { handleEnterFireGame, handleFireMove, isFireGuard } from "./handlers/fire";
+import { handleEnterFireGame, handleFireMove, handleLeaveFire, isFireGuard } from "./handlers/fire";
 
 type PreProcessCallbackInfo<Ctx extends WorldContext> = [
   [(ctx: WorldContext) => ctx is Ctx,
@@ -162,7 +162,7 @@ export const createWorldXtHandler = (): XtHandler => {
     c.xt('z', 'uz', [], handleUpdateCardSeats, { guard: isCardJitsuGuard }),
     r.xt('z', 'lz', [], handleLeaveTableGame, { guard: isTableGuard }),
     c.xt('z', 'lz', [], handleQuitCard, { guard: isCardJitsuGuard }),
-    f.xt('z', 'lz', [], handleSendCardJitsuStampInfo, { guard: isFireGuard }),
+    f.xt('z', 'lz', [], handleLeaveFire, { guard: isFireGuard }),
     r.xt('z', 'zm', 'number', handleSendTableMove, { guard: isTableGuard }),
     r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
     s.xt('z', 'zm', ['number', 'number', 'number', 'number'], handleMoveSled, { guard: isSledGuard }),
