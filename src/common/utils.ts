@@ -173,6 +173,8 @@ export function choose<T>(array: T[]): T {
   return array[randomInt(0, array.length - 1)];
 }
 
+export const modulo = (a: number, b: number): number => a - Math.floor(a / b) * b;
+
 export function chooseN<T>(array: T[], n: number): T[] {
   const chosen: T[] = [];
   for (let i = 0; i < n; i++) {

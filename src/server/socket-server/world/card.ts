@@ -302,7 +302,7 @@ export const ELEMENT_BLOCK_POWER_CARDS: Record<number, CardElement | undefined> 
 
 export const SELF_EFFECT_POWER_CARDS = new Set([2]);
 
-function getWinner(firstElement: CardElement, secondElement: CardElement, firstValue: number, secondValue: number): -1 | 0 | 1 {
+export function getWinner(firstElement: CardElement, secondElement: CardElement, firstValue: number, secondValue: number): -1 | 0 | 1 {
   if (firstElement === secondElement) {
     if (firstValue === secondValue) {
       return -1;

@@ -3,7 +3,7 @@ import { XtCallbackInfo, XtHandler, XtParams } from "./xt-handler";
 import { ArgumentsIndicator, GetArgumentsType } from "@server/socket-server/arg-parser";
 import { handleAddToy, handleAddToyOld, handleCloseToy, handleGetHockeyGame, handleGetTableGame, handleGetTables, handleGetWaddle, handleJoinTable, handleJoinTableGame, handleJoinWaddle, handleLeaveTable, handleLeaveTableGame, handleLeaveWaddle, handleMoveHockeyPuck, handleMoveHockeyPuckOld, handlePlayerTransform, handleSafeMessage, handleSendEmote, handleSendJoke, handleSendLine, handleSendMessage, handleSendTableMove, handleSetAction, handleSetFrame, handleSetPosition, handleSetSnowball, handleUpdateBackground, handleUpdateBody, handleUpdateColor, handleUpdateFace, handleUpdateFeet, handleUpdateHand, handleUpdateHead, handleUpdateHockeyGame, handleUpdateNeck, handleUpdatePenguinOld, handleUpdatePin, isHockeyGuard, isTableGuard, sendTeleportOld } from "./handlers/room";
 import { doubleFilter } from "@common/utils";
-import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleUpdateCardSeats, isCardJitsuGuard } from "./handlers/card";
+import { handleCardJitsuAction, handleEnterCardGame, handleQuitCard, handleSendCardJitsuStampInfo, handleUpdateCardSeats, isCardJitsuGuard } from "./handlers/card";
 import { handleDeleteMailFromPenguin, handleDeletePostcard, handleGetMail, handleMailTotal, handleSendCard, handleSendMail, handleSetMailCheck } from "./handlers/mail";
 import { handleCheckName } from "./handlers/create";
 import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game";
@@ -15,6 +15,7 @@ import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSend
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "./handlers/sled";
 import { BaseContext, GuardFunction, HandlerFunction, WorldContext } from "@server/socket-server/handlers/handlers";
 import { handleAddIgnore, handleGetIgnoreList, handleRemoveIgnore } from "./handlers/buddy";
+import { handleEnterFireGame, handleFireMove, handleLeaveFire, isFireGuard } from "./handlers/fire";
 
 type PreProcessCallbackInfo<Ctx extends WorldContext> = [
   [(ctx: WorldContext) => ctx is Ctx,
@@ -80,6 +81,7 @@ export const createWorldXtHandler = (): XtHandler => {
   const z = new XtGenerator((_): _ is BaseContext => true);
   const g = new XtGenerator((ctx) => 'game' in ctx);
   const s = new XtGenerator((ctx) => 'sled' in ctx);
+  const f = new XtGenerator(ctx => 'fire' in ctx);
 
   const callbacks: IntermediateXtCallbackInfo<any>[] = [
     p.xt('s', 'js', 'string', handleJoinServer),
@@ -155,14 +157,17 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('z', 'gz', 'string', handleGetTableGame, { guard: isTableGuard }),
     r.xt('z', 'gz', [], handleGetHockeyGame, { guard: isHockeyGuard }),
     c.xt('z', 'gz', ['number'], handleEnterCardGame, { guard: isCardJitsuGuard }),
+    f.xt('z', 'gz', ['number'], handleEnterFireGame, { guard: isFireGuard }),
     r.xt('z', 'uz', ['number'], handleUpdateHockeyGame, { guard: isHockeyGuard }),
     c.xt('z', 'uz', [], handleUpdateCardSeats, { guard: isCardJitsuGuard }),
     r.xt('z', 'lz', [], handleLeaveTableGame, { guard: isTableGuard }),
     c.xt('z', 'lz', [], handleQuitCard, { guard: isCardJitsuGuard }),
+    f.xt('z', 'lz', [], handleLeaveFire, { guard: isFireGuard }),
     r.xt('z', 'zm', 'number', handleSendTableMove, { guard: isTableGuard }),
     r.xt('z', 'zm', ['number', 'number'], handleMoveHockeyPuckOld, { guard: isHockeyGuard }),
     s.xt('z', 'zm', ['number', 'number', 'number', 'number'], handleMoveSled, { guard: isSledGuard }),
     c.xt('z', 'zm', ['string', 'number'], handleCardJitsuAction, { guard: isCardJitsuGuard }),
+    f.xt('z', 'zm', 'string', handleFireMove, { guard: isFireGuard }),
     r.xt('z', 'm', ['number', 'number', 'number', 'number', 'number'], handleMoveHockeyPuck, { guard: isHockeyGuard }),
     p.xt('z', 'ggd', [], handleGetPuffleLaunchData),
     p.xt('z', 'sgd', ['string'], handleSetPuffleLaunchData),
@@ -290,7 +295,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'f#epfgp', [], handleGetPartyOp),
     p.xt('s', 'f#epfsp', ['number'], handleSetPartyOp),
 
-    p.xt('s', 'ni#gnr', [], handleGetNinjaRanks),
+    p.xt('s', 'ni#gnr', ['number'], handleGetNinjaRanks),
     p.xt('s', 'ni#gnl', [], handleGetNinjaLevel),
     p.xt('s', 'ni#gcd', [], handleGetNinjaCards),
 

@@ -15,7 +15,7 @@ export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => 
 export const handleUpdateCardSeats: CardHandler<[]> = ({ msg, penguin, card }) => {
   const playersInfo = [
     ...(card.sensei ? [[0, 'Sensei', 14, 10]] : []),
-    ...card.getPlayers().map((p, i) => [i + (card.sensei ? 1 : 0), p.name, p.inventory.color, p.ninja.cardRank])
+    ...card.players.map((p, i) => [i + (card.sensei ? 1 : 0), p.name, p.inventory.color, p.ninja.cardRank])
   ];
   msg.send(penguin, 'uz', ...playersInfo.map(info => info.join('|')));
   msg.send(penguin, 'sz');
@@ -25,12 +25,12 @@ const handleCardJitsuDeal: CardHandler<[number]> = ({ penguin, card, msg }, amou
   const ninja = card.getNinja(penguin);
 
   const cards = card.deal(ninja, amount);
-  msg.send(card.getPlayers(), 'zm', 'deal', ninja.seat, ...cards);
+  msg.send(card.players, 'zm', 'deal', ninja.seat, ...cards);
 
   if (card.sensei) {
     const sensei = card.getOpponent(ninja);
     const cards = card.deal(sensei, amount);
-    msg.send(card.getPlayers(), 'zm', 'deal', sensei.seat, ...cards);
+    msg.send(card.players, 'zm', 'deal', sensei.seat, ...cards);
   }
 }
 
@@ -68,15 +68,17 @@ const gainProgress: PenguinHandler<[boolean]> = (ctx, won) => {
   prst(penguin);
 }
 
-const exitGame: CardHandler<[]> = async ({ penguin, data, msg, card, prst }) => {
-  // for when the player got stamps in older versions
-  for (let i = 0; i <= penguin.ninja.cardRank; i++) {
-    const stamp = CardJitsuProgress.STAMP_AWARDS[i];
-    if (stamp !== undefined) {
-      getStamp(data, msg, penguin, stamp);
-    }
+export const handleSendCardJitsuStampInfo: PenguinHandler<[]> = async (ctx) => {
+  const { data, penguin, msg, prst } = ctx;
+  
+  const game = 'card' in ctx ? ctx.card :
+    'fire' in ctx ? ctx.fire : undefined;
+  const roomId = game?.roomId;
+  if (roomId === undefined) {
+    return;
   }
-  const gameStamps = data.getGameStamps(card.roomId);
+
+  const gameStamps = data.getGameStamps(roomId);
   const sessionStamps = penguin.stampbook.sessionStamps.filter(stamp => gameStamps.has(stamp));
   const collectedCount = [...gameStamps.values()].filter(stamp => penguin.stampbook.has(stamp)).length;
   const totalCount = gameStamps.size;
@@ -84,15 +86,26 @@ const exitGame: CardHandler<[]> = async ({ penguin, data, msg, card, prst }) => 
   penguin.stampbook.resetSessionStamps();
   await msg.send(penguin, 'cjsi', sessionStamps.join('|'), collectedCount, totalCount, 0);
   prst(penguin);
-  // client.leaveWaddleRoom();
+}
+
+const exitGame: CardHandler<[]> = async (ctx) => {
+  const { penguin, data, msg } = ctx;
+  // for when the player got stamps in older versions
+  for (let i = 0; i <= penguin.ninja.cardRank; i++) {
+    const stamp = CardJitsuProgress.STAMP_AWARDS[i];
+    if (stamp !== undefined) {
+      getStamp(data, msg, penguin, stamp);
+    }
+  }
+  handleSendCardJitsuStampInfo(ctx);
 }
 
 const setWinner: CardHandler<number[]> = async (ctx, winner, ...cards: number[]) => {
   const { card, msg } = ctx;
   // players are removed so that they don't get the "player quit" popup even though the game ended normally
   
-  await Promise.all(card.getPlayers().map(p => exitGame({ ...ctx, penguin: p })));
-  msg.send(card.getPlayers(), 'czo', 0, winner, ...cards);
+  await Promise.all(card.players.map(p => exitGame({ ...ctx, penguin: p })));
+  msg.send(card.players, 'czo', 0, winner, ...cards);
 }
 
 const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
@@ -101,11 +114,11 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
   const otherNinja = card.getOpponent(ninja);
 
   ninja.choose(sessionId);
-  msg.send(card.getPlayers(), 'zm', 'pick', ninja.seat, sessionId);
+  msg.send(card.players, 'zm', 'pick', ninja.seat, sessionId);
   
   if (otherNinja instanceof Sensei) {
     otherNinja.pickCard();
-    msg.send(card.getPlayers(), 'zm', 'pick', otherNinja.seat, otherNinja.chosen);
+    msg.send(card.players, 'zm', 'pick', otherNinja.seat, otherNinja.chosen);
   }
 
   if (otherNinja.hasChosen()) {
@@ -119,7 +132,7 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
       const otherN = card.getOpponent(n);
       const chosenCard = card.getCard(n.chosen);
       if (chosenCard.id === 256) {
-        card.getPlayers().forEach(p => getStamp(data, msg, penguin, Stamp.SenseiCard));
+        card.players.forEach(p => getStamp(data, msg, p, Stamp.SenseiCard));
       }
       if (n.seat !== winner) {
         n.removeFlawless();
@@ -161,14 +174,14 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
         }
 
         const [sender, recipient] =  SELF_EFFECT_POWER_CARDS.has(chosenCard.powerId) ? [n.seat, n.seat] : [n.seat, otherN.seat];
-        msg.send(card.getPlayers(), 'zm', 'power', sender, recipient, chosenCard.powerId, ...cardsToDiscard);
+        msg.send(card.players, 'zm', 'power', sender, recipient, chosenCard.powerId, ...cardsToDiscard);
       }
       n.unchoose();
     });
     otherNinja.unchoose();
     ninja.unchoose();
 
-    msg.send(card.getPlayers(), 'zm', 'judge', winner);
+    msg.send(card.players, 'zm', 'judge', winner);
 
     if (winningHand !== undefined) {
       const winnerNinja = card.getNinjaBySeatIndex(winner);
@@ -236,8 +249,8 @@ export const handleQuitCard: CardHandler<[]> = (ctx) => {
   exitGame(ctx);
   const seat = card.getSeatId(penguin);
 
-  msg.send(card.getPlayers(), 'cz', penguin.name);
-  msg.send(card.getPlayers(), 'lz', seat);
+  msg.send(card.players, 'cz', penguin.name);
+  msg.send(card.players, 'lz', seat);
 }
 
 export const isCardJitsuGuard: CardGuard = ({ card }) => card !== undefined;
