@@ -186,6 +186,8 @@ export class FireGame extends WaddleGame {
   private _playing: FireNinja[];
   private _standing = new Map<FireNinja, number>();
   private _penguins: Map<WorldPenguin, FireNinja>;
+
+  private _boardTimeout: NodeJS.Timeout | null = null;
   
   public roomId = 997;
 
@@ -266,5 +268,15 @@ export class FireGame extends WaddleGame {
 
   public isPlaying(ninja: FireNinja): boolean {
     return this._standing.get(ninja) === undefined;
+  }
+
+  public setBoardTimeout(callback: () => void) {
+    this._boardTimeout = setTimeout(callback, 23000);
+  }
+
+  public clearBoardTimeout(): void {
+    if (this._boardTimeout !== null) {
+      clearTimeout(this._boardTimeout);
+    }
   }
 }

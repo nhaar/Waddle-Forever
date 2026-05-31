@@ -4,14 +4,18 @@ import { FireGuard, FireHandler } from "./handlers";
 import { getWinner } from "../world/card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
 import { handleSendCardJitsuStampInfo } from "./card";
+import { choose, randomInt } from "@common/utils";
 
 export const isFireGuard: FireGuard = () => true;
 
-export const handleEnterFireGame: FireHandler<[]> = async ({ fire, penguin, msg }) => {
+export const handleEnterFireGame: FireHandler<[]> = async (ctx) => {
+  const { fire, penguin, msg } = ctx;
   const ninja = fire.fromPenguin(penguin);
   if (ninja === undefined) {
     return;
   }
+
+  ninja.setReady();
 
   await msg.send(penguin, 'jz', ninja.seat);
   
@@ -29,6 +33,10 @@ export const handleEnterFireGame: FireHandler<[]> = async ({ fire, penguin, msg 
     players.map(p => p.ninja.cardRank).join(','),
     '' // unused
   );
+
+  if (fire.everyoneReady()) {
+    fire.setBoardTimeout(() => handleBoardTimeout(ctx));
+  }
 }
 
 const handleClickSpinner: FireHandler<[number]> = ({ msg, fire }, tablet) => {
@@ -39,6 +47,7 @@ const getBattleInfo = (battleType: BattleType): [string, string] => battleType =
 
 const handleStartBattle: FireHandler<[BattleType, FireNinja[]]> = async ({ fire, msg }, type, players) => {
   const [battle, trump] = getBattleInfo(type);
+  fire.clearBoardTimeout();
   fire.createRound(players, type);
   await msg.send(fire.players, 'zm', 'sb', battle, players.map(p => p.seat).join(','), trump);
 }
@@ -56,7 +65,7 @@ const handleChooseOpponent: FireHandler<[number]> = async (ctx, opponent) => {
   await handleStartBattle(ctx, 'b', [ninja, fire.fromSeat(opponent)]);
 }
 
-const handleClickBoard: FireHandler<[number]> = async (ctx, tile) => {
+const handleClickBoard: FireHandler<[number, boolean]> = async (ctx, tile, auto) => {
   const { msg, fire, penguin } = ctx;
   const ninja = fire.fromPenguin(penguin);
   if (ninja === undefined) {
@@ -73,30 +82,54 @@ const handleClickBoard: FireHandler<[number]> = async (ctx, tile) => {
     fire.players, 'zm', 'ub',
     fire.getSeatId(penguin),
     fire.positions.join(','),
-    0 // unknown, more testing needed
+    auto ? randomInt(1, 6) : 0 // the tablet being clicked, though this is seemingly only needed in auto play in the first turn
   );
 
   if (playersInTile.length > 0) {
     if (playersInTile.length === 1) {
       await handleStartBattle(ctx, 'b', [ninja, ...playersInTile]);
     } else {
-      await handleSendChooseOpponent(ctx, playersInTile);
+      if (auto) {
+        await handleStartBattle(ctx, 'b', [ninja, choose(playersInTile)]);
+      } else {
+        await handleSendChooseOpponent(ctx, playersInTile);
+      }
     }
   } else {
     const type = BOARD[tile];
 
     if (type === 'b') {
       if (fire.players.length > 2) {
-        await handleSendChooseOpponent(ctx, fire.activePlayers);
+        if (auto) {
+          await handleStartBattle(ctx, 'b', [ninja, choose(fire.activePlayers.filter(n => n !== ninja))]);
+        } else {
+          await handleSendChooseOpponent(ctx, fire.activePlayers);
+        }
       } else {
         await handleStartBattle(ctx, type, fire.activePlayers);
       }
     } else if (type === 'c') {
-      await msg.send(fire.players, 'zm', 'ct');
+      if (auto) {
+        await handleChooseTrump(ctx, choose(['f', 'w', 's']));
+      } else {
+        await msg.send(fire.players, 'zm', 'ct');
+      }
     } else {
       await handleStartBattle(ctx, type, fire.activePlayers);
     }
   }
+}
+
+const handleClickBoardPlayer: FireHandler<[number]> = async (ctx, tile) => await handleClickBoard(ctx, tile, false);
+
+const handleBoardTimeout: FireHandler<[]> = async (ctx) => {
+  const { msg, fire } = ctx;
+  const ninja = fire.activePlayer;
+
+  await msg.send(ninja.penguin, 'zm', 'tb');
+
+  const tile = fire.spin[randomInt(1, 2)];
+  await handleClickBoard(ctx, tile, true);
 }
 
 const getCardJitsuResults = (cardId1: number, cardId2: number): [number[], CardElement] => {
@@ -225,6 +258,8 @@ const handleReady: FireHandler<[]> = async (ctx) => {
         ninja.hand.join(',')
       )
     }));
+
+    fire.setBoardTimeout(() => handleBoardTimeout(ctx));
   }
 }
 
@@ -259,7 +294,7 @@ export const handleFireMove: FireHandler<string[]> = (ctx, action, ...rest) => {
       handleClickSpinner(ctx, Number(rest[1]));
       break;
     case 'cb':
-      handleClickBoard(ctx, Number(rest[0]));
+      handleClickBoardPlayer(ctx, Number(rest[0]));
       break;
     case 'cc':
       handleClickCard(ctx, Number(rest[0]));
