@@ -4,7 +4,7 @@ import { FireGuard, FireHandler } from "./handlers";
 import { getWinner } from "../world/card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
 import { handleSendCardJitsuStampInfo } from "./card";
-import { choose, randomInt } from "@common/utils";
+import { choose, doubleFilter, randomInt } from "@common/utils";
 
 export const isFireGuard: FireGuard = () => true;
 
@@ -247,6 +247,19 @@ const handleClickCard: FireHandler<[number]> = async (ctx, cardIndex) => {
 
   await msg.send(fire.players.filter(p => p !== penguin), 'zm', 'ic', battleNinja.ninja.seat);
 
+  const [pendingPeople, nonPendingPeople] = doubleFilter((n => n.isPending()), fire.round.players);
+
+  if (nonPendingPeople.filter(b => b.chosen === null).length === 0) {
+    await Promise.all(pendingPeople.map(pending => {
+      return (async () => {
+        if (pending.chosen === null) {
+          await handleClickCardRandom({ ...ctx, penguin: pending.ninja.penguin });
+        }
+        await pending.callPending();
+      })()
+    }));
+  }
+
   const cards = fire.round.cards;
   if (cards.every((card): card is number => card !== null)) {
     await handleResolveBattle(ctx, cards);
@@ -301,12 +314,21 @@ export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
     
       fire.clearBoardTimeout();
     } else {
+      const leaveMatch = async () => {
+        await msg.send(fire.players, 'zm', 'cz', ninja.seat);
+        fire.playerEntersPodium(ninja);
+      }
+
       await handleSendCardJitsuStampInfo(ctx);
       fire.removePlayer(penguin);
       if (fire.activePlayer === ninja && fire.isChoosing()) {
         await handleClickBoardRandom(ctx);
-        await msg.send(fire.players, 'zm', 'cz', ninja.seat);
-        fire.playerEntersPodium(ninja);
+        const battleNinja = fire.round.fromPenguin(penguin);
+        if (battleNinja !== undefined) {
+          battleNinja.setPending(leaveMatch);
+        }
+      } else if (fire.activePlayer !== ninja) {
+        leaveMatch();
       }
     }
   }

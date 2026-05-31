@@ -133,6 +133,7 @@ class BattleNinja {
   private _chosenIndex: number | null = null;
   private _ninja: FireNinja;
   private _cardTimeout: NodeJS.Timeout | null = null;
+  private _pendingCallback: (() => Promise<void>) | null = null;
 
   public constructor(ninja: FireNinja) {
     this._ninja = ninja;
@@ -161,6 +162,23 @@ class BattleNinja {
     if (this._cardTimeout !== null) {
       clearTimeout(this._cardTimeout)
       this._cardTimeout = null;
+    }
+  }
+
+  public setPending(callback: () => Promise<void>): void {
+    this._pendingCallback = async () => {
+      await callback();
+      this._pendingCallback = null;
+    };
+  }
+
+  public isPending(): boolean {
+    return this._pendingCallback !== null;
+  }
+
+  public async callPending(): Promise<void> {
+    if (this._pendingCallback !== null) {
+      await this._pendingCallback();
     }
   }
 }
