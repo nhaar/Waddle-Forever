@@ -3,6 +3,7 @@ import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
 import { PenguinMessenger } from "../../socket-server/messenger";
 import { PenguinHandler } from "./handlers";
+import { WorldGame } from "../world/world-game";
 
 export const handleGetNinjaRanks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(
@@ -68,4 +69,12 @@ export const handleGetFireLevel: PenguinHandler<[]> = ({ penguin, msg }) => {
 
 export const handleGetWaterLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gwl', 0, 0);
+}
+
+const MATCHMAKING_ROOMS = new Set<number>([951]);
+
+export const isMatchmakingRoom = (game: WorldGame): boolean => MATCHMAKING_ROOMS.has(game.getId());
+
+export const handleLeaveMatchmake: PenguinHandler<[]> = ({ world, penguin }) => {
+  world.cardMatchmaker.removePlayer(penguin);
 }

@@ -37,6 +37,18 @@ class MatchmakingRoom {
     this._players.push(player);
   }
 
+  public removePlayer(player: WorldPenguin): void {
+    this._players = this._players.filter(p => p !== player);
+  }
+
+  public clearTimer(): void {
+    clearTimeout(this._timer);
+  }
+
+  public isEmpty(): boolean {
+    return this._players.length === 0;
+  }
+
   get full() {
     return this._players.length === this._max;
   }
@@ -75,6 +87,16 @@ export class MatchMaker {
       const firstOnQueue = this._rooms[availableIndex];
       firstOnQueue.addPlayer(player);
     }
+  }
+
+  public removePlayer(player: WorldPenguin): void {
+    this._rooms.forEach(room => {
+      room.removePlayer(player);
+      if (room.isEmpty()) {
+        room.clearTimer();
+      }
+    });
+    this._rooms = this._rooms.filter(r => !r.isEmpty());
   }
 
   public addMatchListener(callback: MatchedCallback): void {

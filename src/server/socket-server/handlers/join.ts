@@ -17,6 +17,7 @@ import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from './handlers';
 import { handleLeaveFire } from './fire';
+import { isMatchmakingRoom } from './ninja';
 
 
 function unequipPuffle(p: WorldPenguin): void {
@@ -224,8 +225,11 @@ export const joinRoom: PenguinHandler<[number, number, number]> = (ctx, id: numb
   const { world, penguin, msg, data } = ctx;
   if ('room' in ctx) {
     leaveRoom(ctx);
-  }
-  if ('sled' in ctx) {
+  } else if ('game' in ctx) {
+    if (isMatchmakingRoom(ctx.game)) {
+      world.cardMatchmaker.removePlayer(penguin);
+    }
+  } else if ('sled' in ctx) {
     ctx.sled.removePlayer(penguin);
   }
 
