@@ -9,7 +9,7 @@ export const handleGetNinjaRanks: PenguinHandler<[]> = ({ msg, penguin }) => {
     penguin, 'gnr',
     penguin.id,
     penguin.ninja.cardRank,
-    penguin.ninja.isFireNinja ? 5 : 0,
+    penguin.ninja.fireProgress.getRank(),
     penguin.ninja.isWaterNinja ? 5 : 0,
     penguin.ninja.isSnowNinja ? 13 : 0
   );
@@ -60,4 +60,12 @@ export const handleJoinMatchmaking: PenguinHandler<[]> = ({ msg, penguin, world 
 export const handleJoinSensei: PenguinHandler<[]> = ({ world, penguin, msg }) => {
   const game = world.getWaddleGame('card', [penguin]);
   msg.send(penguin, 'scard', game.roomId, 1000 + penguin.id, 1, 0, [penguin.name, penguin.inventory.color].join('|'));
+}
+
+export const handleGetFireLevel: PenguinHandler<[]> = ({ penguin, msg }) => {
+  msg.send(penguin, 'gfl', penguin.ninja.fireProgress.getRank(), penguin.ninja.fireProgress.getPercentage());
+}
+
+export const handleGetWaterLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
+  msg.send(penguin, 'gwl', 0, 0);
 }

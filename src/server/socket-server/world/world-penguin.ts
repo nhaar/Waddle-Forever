@@ -1,5 +1,5 @@
 import { getDefaultIgloo, Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
-import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
+import { CardJitsuFireProgress, CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 
@@ -763,15 +763,16 @@ class NinjaProfile {
   private _cards: Map<number, number>;
   private _cardProgress: CardJitsuProgress;
   private _cardWins: number;
-  private _fire: boolean;
+  
+  private _fireProgress: CardJitsuFireProgress;
   private _water: boolean;
   private _snow: boolean;
 
   constructor(data: PenguinJson) {
     this._cards = new Map(Object.entries(data.cards).map(([k, v]) => [Number(k), v]));
     this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
+    this._fireProgress = new CardJitsuFireProgress(data.fireXP ?? 0, data.fireNinja ?? false);
     this._cardWins = data.cardWins;
-    this._fire = data.fireNinja ?? false;
     this._water = data.waterNinja ?? false;
     this._snow = data.snowNinja ?? false;
   }
@@ -804,20 +805,12 @@ class NinjaProfile {
     return this._cardWins;
   }
 
-  public get isFireNinja() {
-    return this._fire;
-  }
-
   public get isWaterNinja() {
     return this._water;
   }
 
   public get isSnowNinja() {
     return this._snow;
-  }
-
-  public setFireNinja(value: boolean) {
-    this._fire = value;
   }
 
   public setWaterNinja(value: boolean) {
@@ -854,6 +847,10 @@ class NinjaProfile {
 
   public addAttempt() {
     this._cardProgress.addAttempt();
+  }
+
+  public get fireProgress() {
+    return this._fireProgress;
   }
 }
 
@@ -1158,7 +1155,10 @@ export class WorldPenguin implements UserPenguin {
       isNinja: this._ninja.isNinja,
       senseiAttempts: this._ninja.senseiAttempts,
       cardWins: this._ninja.cardWins,
-      fireNinja: this._ninja.isFireNinja,
+
+      fireXP: this._ninja.fireProgress.xp,
+      fireNinja: this._ninja.fireProgress.isFireNinja,
+
       waterNinja: this._ninja.isWaterNinja,
       snowNinja: this._ninja.isSnowNinja,
 

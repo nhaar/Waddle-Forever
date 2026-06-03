@@ -158,9 +158,6 @@ const handleEnableSave: CommandHandler<[]> = ({ penguin, prst }) => {
 
 const handleAmulet: CommandHandler<[string]> = ({ penguin, prst }, element) => {
   switch (element) {
-    case 'fire':
-      penguin.ninja.setFireNinja(!penguin.ninja.isFireNinja);
-      break;
     case 'water':
       penguin.ninja.setWaterNinja(!penguin.ninja.isWaterNinja);
       break;

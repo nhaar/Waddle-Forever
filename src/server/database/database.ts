@@ -152,8 +152,11 @@ export interface PenguinJson {
   isNinja: boolean;
   senseiAttempts: number;
   cardWins: number;
-  /** Temporary data for cheaters who want the amulet to be completed */
+
+  fireXP?: number;
   fireNinja?: boolean;
+
+  /** Temporary data for cheaters who want the amulet to be completed */
   waterNinja?: boolean;
   snowNinja?: boolean;
   

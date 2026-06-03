@@ -5,6 +5,7 @@ import { getWinner } from "../world/card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
 import { handleSendCardJitsuStampInfo } from "./card";
 import { choose, doubleFilter, randomInt } from "@common/utils";
+import { getFireReward } from "@server/game-logic/ninja-progress";
 
 export const isFireGuard: FireGuard = () => true;
 
@@ -172,14 +173,30 @@ const getTrumpResults = (cardIds: number[], element: CardElement): [number[], Ca
   }), element];
 }
 
-const handleResolveBattle: FireHandler<[number[]]> = async ({ msg, fire }, cardIndexes) => {
+const handleFireNinjaRankup: FireHandler<[() => void]> = async ({ msg, penguin, prst }, expUpdater) => {
+  const oldRank = penguin.ninja.fireProgress.getRank();
+  expUpdater();
+  const newRank = penguin.ninja.fireProgress.getRank();
+  if (newRank > oldRank) {
+    const reward = getFireReward(newRank);
+    if (reward !== undefined) {
+      penguin.inventory.add(reward);
+    }
+    await msg.send(penguin, 'zm', 'nr', 0, newRank);
+  }
+  
+  prst(penguin);
+}
+
+const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) => {
+  const { msg, fire } = ctx;
   const battleIds = fire.round.players.map(b => b.ninja.seat);
   const cardIds = fire.round.players.map((b, i) => b.ninja.hand[cardIndexes[i]]);
   
   // results: 1 = losing, 2 = in a tie, 3 = winning, 4 = winning in card jitsu
   const [results, element] = fire.round.type === 'b'
     ? getCardJitsuResults(cardIds[0], cardIds[1])
-    : getTrumpResults(battleIds, cardIds, fire.round.type);
+    : getTrumpResults(cardIds, fire.round.type);
   
   results.forEach((result, i) => {
     const ninja = fire.round.players[i].ninja;
@@ -229,6 +246,9 @@ const handleResolveBattle: FireHandler<[number[]]> = async ({ msg, fire }, cardI
       if (!noEnergy) {
         fire.playerEntersPodium(b.ninja);
       }
+      handleFireNinjaRankup({ ...ctx, penguin }, () => {
+        penguin.ninja.fireProgress.advanceFromPodium(fire.getPosition(b.ninja), fire.matchPlayerCount);
+      });
       return msg.send(penguin, 'zm', 'zo', fire.standings.join(','));
     }
   }))
@@ -305,7 +325,7 @@ const handleChooseTrump: FireHandler<[BattleType]> = (ctx, trump) => {
 }
 
 export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
-  const { msg, fire, penguin } = ctx;
+  const { msg, fire, penguin, prst } = ctx;
   const ninja = fire.fromPenguin(penguin);
   if (ninja === undefined) {
     return;
@@ -313,7 +333,12 @@ export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
 
   if (fire.isPlaying(ninja)) {
     if (fire.activePlayers.length === 2) {
-      await msg.send(fire.activePlayers.filter(n => n !== ninja)[0].penguin, 'cz');
+      const lastPlayer = fire.activePlayers.filter(n => n !== ninja)[0].penguin;
+      await handleFireNinjaRankup({ ...ctx, penguin: lastPlayer }, () => {
+        lastPlayer.ninja.fireProgress.advanceFromOthersQuit();
+      });
+      await msg.send(lastPlayer, 'cz');
+      prst(lastPlayer);
     
       fire.clearBoardTimeout();
     } else {

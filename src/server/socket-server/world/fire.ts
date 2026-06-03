@@ -291,6 +291,14 @@ export class FireGame extends WaddleGame {
     this._standing.set(ninja, this._seats.length - this._standing.size);
   }
 
+  public getPosition(n: FireNinja): number {
+    return this._standing.get(n) ?? 1;
+  }
+
+  public get matchPlayerCount(): number {
+    return this._seats.length;
+  }
+
   public fromPenguin(p: WorldPenguin): FireNinja | undefined {
     return this._penguins.get(p);
   }
