@@ -156,7 +156,7 @@ const getCardJitsuResults = (cardId1: number, cardId2: number): [number[], CardE
   return [results, element];
 }
 
-const getTrumpResults = (ids: number[], cardIds: number[], element: CardElement): [number[], CardElement] => {
+const getTrumpResults = (cardIds: number[], element: CardElement): [number[], CardElement] => {
   const cardValues = cardIds.map(id => {
     const card = CARDS.getStrict(id);
     return card.element === element ? card.value : null;
@@ -166,8 +166,8 @@ const getTrumpResults = (ids: number[], cardIds: number[], element: CardElement)
   const highest = validValues.length === 0 ? null : Math.max(...validValues);
   const isTie = validValues.filter(v => v === highest).length > 1;
   
-  return [ids.map((_, i) => {
-    const winner = cardValues[i] !== null && cardValues[i] === highest;
+  return [cardValues.map(value => {
+    const winner = value !== null && value === highest;
     return winner ? (isTie ? 2 : 3) : 1;
   }), element];
 }
@@ -226,6 +226,9 @@ const handleResolveBattle: FireHandler<[number[]]> = async ({ msg, fire }, cardI
       fire.removePlayer(penguin);
     }
     if (noEnergy || finished) {
+      if (!noEnergy) {
+        fire.playerEntersPodium(b.ninja);
+      }
       return msg.send(penguin, 'zm', 'zo', fire.standings.join(','));
     }
   }))
@@ -269,7 +272,8 @@ const handleClickCard: FireHandler<[number]> = async (ctx, cardIndex) => {
 const handleReady: FireHandler<[]> = async (ctx) => {
   const { msg, penguin, fire } = ctx;
   const ninja = fire.fromPenguin(penguin);
-  if (ninja === undefined) {
+  if (ninja === undefined || !fire.isPlaying(ninja)) {
+    // 'ir' is still sent even after the end of the game
     return;
   }
   ninja.setReady();
@@ -307,7 +311,6 @@ export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
     return;
   }
 
-  // TODO -> auto playing
   if (fire.isPlaying(ninja)) {
     if (fire.activePlayers.length === 2) {
       await msg.send(fire.activePlayers.filter(n => n !== ninja)[0].penguin, 'cz');
