@@ -176,8 +176,8 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('z', 'zr', [], handleGetSpyDrillsChallenge),
     p.xt('z', 'zc', ['number'], handleGetSpyDrillsReward),
     p.xt('z', 'epfsf', ['number'], handleEPFStamp),
-    p.xt('z', 'jmm', [], handleJoinMatchmaking),
-    p.xt('z', 'lmm', [], handleLeaveMatchmake),
+    g.xt('z', 'jmm', [], handleJoinMatchmaking),
+    g.xt('z', 'lmm', [], handleLeaveMatchmake),
     p.xt('z', 'jsen', [], handleJoinSensei),
     
     p.xt('s', 'j#js', ['string', 'string', 'string'], handleJoinServer),

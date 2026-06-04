@@ -2,8 +2,8 @@ import { World } from "@server/socket-server/world/world";
 import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
 import { PenguinMessenger } from "../../socket-server/messenger";
-import { PenguinHandler } from "./handlers";
-import { WorldGame } from "../world/world-game";
+import { GameHandler, PenguinHandler } from "./handlers";
+import { MATCHMAKERS } from "@server/game-data/games";
 
 export const handleGetNinjaRanks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(
@@ -43,19 +43,26 @@ export const handleBuyNinjaCards: PenguinHandler<[]> = ({ msg, penguin, prst }) 
 }
 
 export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
-  world.cardMatchmaker.addMatchListener((players) => {
-    const game = world.getWaddleGame('card', players);
-    const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
-    msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
-  });
-  world.cardMatchmaker.addTickListener((players, time) => {
-    msg.send(players, 'tmm', time, ...players.map(p => p.name));
+  MATCHMAKERS.forEach(({ name, id }) => {
+    if (name === 'card') {
+      const mm = world.getGame(id).matchMaker;
+      mm?.addMatchListener((players) => {
+        const game = world.getWaddleGame('card', players);
+        const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
+        msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
+      });
+      mm?.addTickListener((players, time) => {
+        msg.send(players, 'tmm', time, ...players.map(p => p.name));
+      });
+    }
   });
 }
 
-export const handleJoinMatchmaking: PenguinHandler<[]> = ({ msg, penguin, world }) => {
-  world.cardMatchmaker.addPlayer(penguin);
-  msg.send(penguin, 'jmm', penguin.name);
+export const handleJoinMatchmaking: GameHandler<[]> = ({ msg, penguin, game }) => {
+  if (game.matchMaker !== null) {
+    game.matchMaker.addPlayer(penguin);
+    msg.send(penguin, 'jmm', penguin.name);
+  }
 }
 
 export const handleJoinSensei: PenguinHandler<[]> = ({ world, penguin, msg }) => {
@@ -71,10 +78,6 @@ export const handleGetWaterLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gwl', 0, 0);
 }
 
-const MATCHMAKING_ROOMS = new Set<number>([951]);
-
-export const isMatchmakingRoom = (game: WorldGame): boolean => MATCHMAKING_ROOMS.has(game.getId());
-
-export const handleLeaveMatchmake: PenguinHandler<[]> = ({ world, penguin }) => {
-  world.cardMatchmaker.removePlayer(penguin);
+export const handleLeaveMatchmake: GameHandler<[]> = ({ game, penguin }) => {
+  game.matchMaker?.removePlayer(penguin);
 }

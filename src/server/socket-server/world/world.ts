@@ -13,6 +13,7 @@ import { CardJitsu } from "./card";
 import { Bakery } from "./bakery";
 import { MatchMaker } from "./matchmaker";
 import { FireGame } from "./fire";
+import { MATCHMAKERS } from "@server/game-data/games";
 
 export class World {
   private penguins = new Map<number, WorldPenguin>();
@@ -22,7 +23,6 @@ export class World {
   private spectators = new Set<WorldPenguin>();
   private igloos = new Set<WorldPenguin>();
   private _bakery: Bakery;
-  private _cardMatchmaker = new MatchMaker(2);
   
   // create class responsible for the puck
   private _puckPosition = new Vector(0, 0);
@@ -32,6 +32,10 @@ export class World {
   constructor(private gameData: GameData) {
     this.init();
     this._bakery = new Bakery(this.getRoom(853));
+
+    MATCHMAKERS.forEach(({ id, count }) => {
+      this.games.set(id, new WorldGame(id, new MatchMaker(count)));
+    });
   }
 
   public getRoom(id: number): WorldRoom {
@@ -181,10 +185,6 @@ export class World {
 
   public get bakery() {
     return this._bakery;
-  }
-
-  public get cardMatchmaker() {
-    return this._cardMatchmaker;
   }
 }
 
