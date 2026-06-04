@@ -81,3 +81,8 @@ export const handleGetWaterLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
 export const handleLeaveMatchmake: GameHandler<[]> = ({ game, penguin }) => {
   game.matchMaker?.removePlayer(penguin);
 }
+
+export const handleJoinFromMatchmake: PenguinHandler<[number]> = (ctx, id) => {
+  const { msg, penguin } = ctx;
+  msg.send(penguin, 'jx', id);
+}
