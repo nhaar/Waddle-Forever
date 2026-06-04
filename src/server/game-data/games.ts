@@ -13,7 +13,7 @@ export const GAMES: Record<GameName, number> = {
 }
 
 export const MATCHMAKERS: Array<{
-  name: 'card';
+  name: 'card' | 'fire';
   count: number;
   id: number;
 }> = [
@@ -21,6 +21,11 @@ export const MATCHMAKERS: Array<{
     name: 'card',
     count: 2,
     id: 951
+  },
+  {
+    name: 'fire',
+    count: 4,
+    id: 953
   }
 ];
 

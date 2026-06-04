@@ -44,16 +44,31 @@ export const handleBuyNinjaCards: PenguinHandler<[]> = ({ msg, penguin, prst }) 
 
 export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
   MATCHMAKERS.forEach(({ name, id }) => {
-    if (name === 'card') {
-      const mm = world.getGame(id).matchMaker;
-      mm?.addMatchListener((players) => {
-        const game = world.getWaddleGame('card', players);
-        const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
-        msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
-      });
-      mm?.addTickListener((players, time) => {
-        msg.send(players, 'tmm', time, ...players.map(p => p.name));
-      });
+    const mm = world.getGame(id).matchMaker;
+    if (mm === null) {
+      return;
+    }
+    switch (name) {
+      case 'card':
+        mm.addMatchListener((players) => {
+          const game = world.getWaddleGame('card', players);
+          const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
+          msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
+        });
+        mm.addTickListener((players, time) => {
+          msg.send(players, 'tmm', time, ...players.map(p => p.name));
+        });
+        break;
+      case 'fire':
+        mm.addMatchListener((players) => {
+          const game = world.getWaddleGame('fire', players);
+          const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
+          msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
+        });
+        mm.addTickListener((players, time) => {
+          msg.send(players, 'tmm', players.length, time, ...players.map(p => [p.name, p.inventory.color].join('|')));
+        });
+        break;
     }
   });
 }
