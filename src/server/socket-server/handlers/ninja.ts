@@ -80,9 +80,20 @@ export const handleJoinMatchmaking: GameHandler<[]> = ({ msg, penguin, game }) =
   }
 }
 
-export const handleJoinSensei: PenguinHandler<[]> = ({ world, penguin, msg }) => {
-  const game = world.getWaddleGame('card', [penguin]);
-  msg.send(penguin, 'scard', game.roomId, 1000 + penguin.id, 1, 0, [penguin.name, penguin.inventory.color].join('|'));
+export const handleJoinSensei: GameHandler<[]> = ({ world, penguin, msg, game }) => {
+  const room = MATCHMAKERS.find(m => m.id === game.getId());
+  if (room !== undefined) {
+    switch (room.name) {
+      case 'card':
+        const cardGame = world.getWaddleGame('card', [penguin]);
+        msg.send(penguin, 'scard', cardGame.roomId, 1000 + penguin.id, 1, 0, [penguin.name, penguin.inventory.color].join('|'));
+        break;
+      case 'fire':
+        const fireGame = world.getWaddleGame('fire', [penguin]);
+        msg.send(penguin, 'scard', fireGame.roomId, 1000 + penguin.id, 1, 0, [penguin.name, penguin.inventory.color].join('|'));
+        break;
+    }
+  }
 }
 
 export const handleGetFireLevel: PenguinHandler<[]> = ({ penguin, msg }) => {

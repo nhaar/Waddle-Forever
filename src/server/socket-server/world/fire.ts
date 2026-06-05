@@ -1,6 +1,7 @@
 import { modulo, randomInt } from "@common/utils";
 import { WaddleGame } from "./waddle-game";
 import { WorldPenguin } from "./world-penguin";
+import { MIN_SENSEI_RANK } from "@server/game-logic/ninja-progress";
 
 export const STARTER_ENERGY = 6;
 const BOARD_TILE_COUNT = 16;
@@ -62,30 +63,14 @@ class Hand {
   }
 }
 
-export class FireNinja {
+export abstract class FireNinja {
   private _tile: number;
   private _energy = STARTER_ENERGY;
-  private _hand: Hand;
-  private _ready = false;
-  private _penguin: WorldPenguin;
   private _seatId: number;
 
-  public constructor(tile: number, p: WorldPenguin, seat: number) {
+  protected constructor(tile: number, seat: number) {
     this._tile = tile;
-    this._hand = new Hand(p.ninja.getDeck());
-    for (let i = 0; i < 5; i++) {
-      this._hand.draw();
-    }
-    this._penguin = p;
     this._seatId = seat;
-  }
-
-  public get penguin(): WorldPenguin {
-    return this._penguin;
-  }
-
-  public get seat(): number {
-    return this._seatId;
   }
 
   public get tile(): number {
@@ -94,14 +79,6 @@ export class FireNinja {
 
   public updateTile(tile: number): void {
     this._tile = tile;
-  }
-
-  public get hand(): number[] {
-    return this._hand.cards;
-  }
-
-  public drawCard(index: number): void {
-    this._hand.draw(index);
   }
 
   public get energy(): number {
@@ -114,6 +91,37 @@ export class FireNinja {
 
   public removeEnergy(): void {
     this._energy--;
+  }
+
+  public get seat(): number {
+    return this._seatId;
+  }
+}
+
+export class FirePlayer extends FireNinja {
+  private _hand: Hand;
+  private _ready = false;
+  private _penguin: WorldPenguin;
+
+  public constructor(tile: number, p: WorldPenguin, seat: number) {
+    super(tile, seat);
+    this._hand = new Hand(p.ninja.getDeck());
+    for (let i = 0; i < 5; i++) {
+      this._hand.draw();
+    }
+    this._penguin = p;
+  }
+
+  public get penguin(): WorldPenguin {
+    return this._penguin;
+  }
+
+  public get hand(): number[] {
+    return this._hand.cards;
+  }
+
+  public drawCard(index: number): void {
+    this._hand.draw(index);
   }
 
   public get ready(): boolean {
@@ -129,13 +137,26 @@ export class FireNinja {
   }
 }
 
-class BattleNinja {
+export class FireSensei extends FireNinja {
+  private _beatable: boolean;
+
+  public constructor(tile: number, beatable: boolean, seat: number) {
+    super(tile, seat);
+    this._beatable = beatable;
+  }
+
+  public get beatable(): boolean {
+    return this._beatable;
+  }
+}
+
+export class BattlePlayer {
   private _chosenIndex: number | null = null;
-  private _ninja: FireNinja;
+  private _ninja: FirePlayer;
   private _cardTimeout: NodeJS.Timeout | null = null;
   private _pendingCallback: (() => Promise<void>) | null = null;
 
-  public constructor(ninja: FireNinja) {
+  public constructor(ninja: FirePlayer) {
     this._ninja = ninja;
   }
 
@@ -147,7 +168,7 @@ class BattleNinja {
     return this._chosenIndex;
   }
 
-  public get ninja(): FireNinja {
+  public get ninja(): FirePlayer {
     return this._ninja;
   }
 
@@ -184,17 +205,19 @@ class BattleNinja {
 }
 
 class FireRound {
-  private _seats: BattleNinja[];
-  private _players: Map<WorldPenguin, BattleNinja>;
+  private _seats: BattlePlayer[];
+  private _ninjas: FireNinja[];
+  private _players: Map<WorldPenguin, BattlePlayer>;
   private _battleType: BattleType;
   
   constructor(type: BattleType, players: FireNinja[]) {
-    this._players = new Map(players.map(n => [n.penguin, new BattleNinja(n)]));
+    this._ninjas = [...players];
+    this._players = new Map(players.filter(n => n instanceof FirePlayer).map(n => [n.penguin, new BattlePlayer(n)]));
     this._seats = [...this._players.values()];
     this._battleType = type;
   }
 
-  public fromPenguin(p: WorldPenguin): BattleNinja | undefined {
+  public fromPenguin(p: WorldPenguin): BattlePlayer | undefined {
     return this._players.get(p);
   }
 
@@ -204,6 +227,10 @@ class FireRound {
 
   public get players() {
     return [...this._seats];
+  }
+
+  public get ninjas() {
+    return [...this._ninjas];
   }
 
   public get type() {
@@ -218,7 +245,8 @@ export class FireGame extends WaddleGame {
   private _activePlayer: FireNinja;
   private _playing: FireNinja[];
   private _standing = new Map<FireNinja, number>();
-  private _penguins: Map<WorldPenguin, FireNinja>;
+  private _penguins: Map<WorldPenguin, FirePlayer>;
+  private _sensei: FireSensei | null = null;
 
   private _boardTimeout: NodeJS.Timeout | null = null;
   
@@ -227,8 +255,19 @@ export class FireGame extends WaddleGame {
   public constructor(players: WorldPenguin[]) {
     super(players);
 
-    this._seats = players.map((p, i) => new FireNinja(START_POSITIONS[i], p, i));
-    this._penguins = new Map(this._seats.map(n => [n.penguin, n]));
+    const isSensei = players.length === 1;
+
+    this._seats = [...players, ...(isSensei ? [null] : [])].map((p, i) => {
+      const tile = START_POSITIONS[i];
+      if (p === null) {
+        const sensei = new FireSensei(tile, players[0].ninja.fireProgress.getRank() >= MIN_SENSEI_RANK, i);
+        this._sensei = sensei;
+        return sensei;
+      } else {
+        return new FirePlayer(START_POSITIONS[i], p, i);
+      }
+    });
+    this._penguins = new Map(this._seats.filter((n): n is FirePlayer => n instanceof FirePlayer).map(n => [n.penguin, n]));
     this._playing = [...this._seats];
     this._activePlayer = this._playing[0];
     this.newSpin();
@@ -267,9 +306,13 @@ export class FireGame extends WaddleGame {
   }
 
   public everyoneReady(): boolean {
-    const ready = this._playing.every(n => n.ready);
+    const ready = this._playing.every(n => !(n instanceof FirePlayer) || n.ready);
     if (ready) {
-      this._playing.forEach(n => n.unready());
+      this._playing.forEach(n => {
+        if (n instanceof FirePlayer) {
+          n.unready();
+        }
+      });
     }
     return ready;
   }
@@ -291,7 +334,7 @@ export class FireGame extends WaddleGame {
     this._standing.set(ninja, this._seats.length - this._standing.size);
   }
 
-  public getPosition(n: FireNinja): number {
+  public getPosition(n: FirePlayer): number {
     return this._standing.get(n) ?? 1;
   }
 
@@ -299,7 +342,7 @@ export class FireGame extends WaddleGame {
     return this._seats.length;
   }
 
-  public fromPenguin(p: WorldPenguin): FireNinja | undefined {
+  public fromPenguin(p: WorldPenguin): FirePlayer | undefined {
     return this._penguins.get(p);
   }
 
@@ -307,7 +350,7 @@ export class FireGame extends WaddleGame {
     return this._seats[seat];
   }
 
-  public isPlaying(ninja: FireNinja): boolean {
+  public isPlaying(ninja: FirePlayer): boolean {
     return this._standing.get(ninja) === undefined;
   }
 
@@ -327,5 +370,13 @@ export class FireGame extends WaddleGame {
 
   public isChoosing(): boolean {
     return this._boardTimeout !== null;
+  }
+
+  public get ninjas(): FireNinja[] {
+    return [...this._seats];
+  }
+
+  public get sensei(): FireSensei | null {
+    return this._sensei;
   }
 }

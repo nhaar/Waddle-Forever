@@ -271,7 +271,7 @@ const REPLACEMENT_POWER_CARDS: Record<number, [CardElement, CardElement] | undef
   18: ['f', 's']
 };
 
-const RULES: Record<CardElement, CardElement> = {
+export const RULES: Record<CardElement, CardElement> = {
   'f': 's',
   'w': 'f',
   's': 'w'

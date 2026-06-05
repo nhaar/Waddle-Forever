@@ -178,7 +178,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('z', 'epfsf', ['number'], handleEPFStamp),
     g.xt('z', 'jmm', [], handleJoinMatchmaking),
     g.xt('z', 'lmm', [], handleLeaveMatchmake),
-    p.xt('z', 'jsen', [], handleJoinSensei),
+    g.xt('z', 'jsen', [], handleJoinSensei),
     
     p.xt('s', 'j#js', ['string', 'string', 'string'], handleJoinServer),
     p.xt('s', 'j#jr', ['number', 'number', 'number'], joinRoom),

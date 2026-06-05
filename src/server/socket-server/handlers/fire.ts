@@ -1,7 +1,7 @@
 import { logdebugerr } from "@server/logger";
-import { BattleType, BOARD, FireNinja } from "../world/fire";
+import { BattleType, BOARD, FireNinja, FirePlayer, FireSensei } from "../world/fire";
 import { FireGuard, FireHandler } from "./handlers";
-import { getWinner } from "../world/card";
+import { getWinner, RULES } from "../world/card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
 import { handleSendCardJitsuStampInfo } from "./card";
 import { choose, doubleFilter, randomInt } from "@common/utils";
@@ -20,18 +20,16 @@ export const handleEnterFireGame: FireHandler<[]> = async (ctx) => {
 
   await msg.send(penguin, 'jz', ninja.seat);
   
-  const players = fire.players;
-
   await msg.send(
     penguin, 'sz',
     fire.activePlayer.seat, // this is seemingly always 0, which is odd
-    players.map(p => p.name).join(','),
-    players.map(p => p.inventory.color).join(','),
+    fire.ninjas.map(n => n instanceof FirePlayer ? n.penguin.name : 'Sensei').join(','),
+    fire.ninjas.map(n => n instanceof FirePlayer ? n.penguin.inventory.color : -1).join(','),
     fire.energies.join(','),
     fire.positions.join(','),
     ninja.hand.join(','),
     fire.spin.join(','),
-    players.map(p => p.ninja.cardRank).join(','),
+    fire.ninjas.filter(n => n instanceof FirePlayer).map(n => n.penguin.ninja.cardRank).join(','),
     '' // unused
   );
 
@@ -76,12 +74,20 @@ const handleChooseOpponent: FireHandler<[number]> = async (ctx, opponent) => {
   await handleStartBattle(ctx, 'b', [ninja, fire.fromSeat(opponent)]);
 }
 
-const handleClickBoard: FireHandler<[number, boolean]> = async (ctx, tile, auto) => {
+enum ClickBoardFlag {
+  Manual,
+  Auto,
+  Sensei
+};
+
+const handleClickBoard: FireHandler<[number, ClickBoardFlag]> = async (ctx, tile, flag) => {
   const { msg, fire, penguin } = ctx;
-  const ninja = fire.fromPenguin(penguin);
-  if (ninja === undefined) {
+  const ninja = flag === ClickBoardFlag.Sensei ? fire.sensei : fire.fromPenguin(penguin);
+  if (ninja === undefined || ninja === null) {
     return;
   }
+
+  const auto = flag !== ClickBoardFlag.Manual;
 
   const playersInTile = fire.activePlayers
     .map(n => n.tile === tile ? n : null)
@@ -91,7 +97,7 @@ const handleClickBoard: FireHandler<[number, boolean]> = async (ctx, tile, auto)
   
   await msg.send(
     fire.players, 'zm', 'ub',
-    fire.getSeatId(penguin),
+    ninja.seat,
     fire.positions.join(','),
     auto ? randomInt(1, 6) : 0 // the tablet being clicked, though this is seemingly only needed in auto play in the first turn
   );
@@ -131,20 +137,22 @@ const handleClickBoard: FireHandler<[number, boolean]> = async (ctx, tile, auto)
   }
 }
 
-const handleClickBoardPlayer: FireHandler<[number]> = async (ctx, tile) => await handleClickBoard(ctx, tile, false);
+const handleClickBoardPlayer: FireHandler<[number]> = async (ctx, tile) => await handleClickBoard(ctx, tile, ClickBoardFlag.Manual);
 
-const handleClickBoardRandom: FireHandler<[]> = async (ctx) => {
+const handleClickBoardRandom: FireHandler<[boolean]> = async (ctx, sensei) => {
   const { fire } = ctx;
-  await handleClickBoard(ctx, fire.spin[randomInt(1, 2)], true);
+  await handleClickBoard(ctx, fire.spin[randomInt(1, 2)], sensei ? ClickBoardFlag.Sensei : ClickBoardFlag.Auto);
 }
 
 const handleBoardTimeout: FireHandler<[]> = async (ctx) => {
   const { msg, fire } = ctx;
   const ninja = fire.activePlayer;
 
-  await msg.send(ninja.penguin, 'zm', 'tb');
-
-  await handleClickBoardRandom({ ...ctx, penguin: ninja.penguin });
+  if (ninja instanceof FirePlayer) {
+    await msg.send(ninja.penguin, 'zm', 'tb');
+  
+    await handleClickBoardRandom({ ...ctx, penguin: ninja.penguin }, false);
+  }
 }
 
 const getCardJitsuResults = (cardId1: number, cardId2: number): [number[], CardElement] => {
@@ -188,10 +196,28 @@ const handleFireNinjaRankup: FireHandler<[() => void]> = async ({ msg, penguin, 
   prst(penguin);
 }
 
+const getSenseiMatchCards = (playerCard: number, beatable: boolean, type: BattleType): [number, number] => {
+  if (beatable) {
+    const pool = CARDS.rows.filter(c => type === 'b' ? true : c.element === type);
+    return [playerCard, choose(pool).id];
+  } else {
+    const cardInfo = CARDS.getStrict(playerCard);
+    const pool = CARDS.rows.filter(c => type === 'b' ? (RULES[c.element] === cardInfo.element || (c.element === cardInfo.element && c.value > cardInfo.value))
+      : (c.element === type && c.value >= cardInfo.value));
+    return [playerCard, choose(pool).id];
+  }
+}
+
 const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) => {
-  const { msg, fire } = ctx;
-  const battleIds = fire.round.players.map(b => b.ninja.seat);
-  const cardIds = fire.round.players.map((b, i) => b.ninja.hand[cardIndexes[i]]);
+  const { msg, fire, penguin } = ctx;
+  const ninja = fire.fromPenguin(penguin);
+  if (ninja === undefined) {
+    return;
+  }
+
+  const cardIds = fire.sensei === null ? fire.round.players.map((b, i) => {
+      return b.ninja.hand[cardIndexes[i]];
+  }) : getSenseiMatchCards(ninja.hand[cardIndexes[0]], fire.sensei.beatable, fire.round.type);
   
   // results: 1 = losing, 2 = in a tie, 3 = winning, 4 = winning in card jitsu
   const [results, element] = fire.round.type === 'b'
@@ -199,7 +225,7 @@ const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) =>
     : getTrumpResults(cardIds, fire.round.type);
   
   results.forEach((result, i) => {
-    const ninja = fire.round.players[i].ninja;
+    const ninja = fire.round.ninjas[i];
     if (result === 4) {
       ninja.addEnergy();
     } else if (result === 1) {
@@ -213,9 +239,11 @@ const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) =>
     fire.round.players[i].ninja.drawCard(cardIndex);
   });
 
-  const energies = fire.round.players.map(b => b.ninja.energy);
+  const energies = fire.round.ninjas.map(n => n.energy);
 
   const [battleType] = getBattleInfo(fire.round.type);
+
+  const battleIds = fire.round.ninjas.map(n => n.seat);
 
   await Promise.all(fire.players.map(p => {
     const ninja = fire.fromPenguin(p);
@@ -315,7 +343,11 @@ const handleReady: FireHandler<[]> = async (ctx) => {
       )
     }));
 
-    fire.setBoardTimeout(() => handleBoardTimeout(ctx));
+    if (fire.activePlayer instanceof FireSensei) {
+      await handleClickBoardRandom(ctx, true);
+    } else {
+      fire.setBoardTimeout(() => handleBoardTimeout(ctx));
+    }
   }
 }
 
@@ -333,12 +365,15 @@ export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
 
   if (fire.isPlaying(ninja)) {
     if (fire.activePlayers.length === 2) {
-      const lastPlayer = fire.activePlayers.filter(n => n !== ninja)[0].penguin;
-      await handleFireNinjaRankup({ ...ctx, penguin: lastPlayer }, () => {
-        lastPlayer.ninja.fireProgress.advanceFromOthersQuit();
-      });
-      await msg.send(lastPlayer, 'cz');
-      prst(lastPlayer);
+      const lastNinja = fire.activePlayers.filter(n => n !== ninja)[0];
+      if (lastNinja instanceof FirePlayer) {
+        const lastPlayer = lastNinja.penguin;
+        await handleFireNinjaRankup({ ...ctx, penguin: lastPlayer }, () => {
+          lastPlayer.ninja.fireProgress.advanceFromOthersQuit();
+        });
+        await msg.send(lastPlayer, 'cz');
+        prst(lastPlayer);
+      }
     
       fire.clearBoardTimeout();
     } else {
@@ -350,7 +385,7 @@ export const handleLeaveFire: FireHandler<[]> = async (ctx) => {
       await handleSendCardJitsuStampInfo(ctx);
       fire.removePlayer(penguin);
       if (fire.activePlayer === ninja && fire.isChoosing()) {
-        await handleClickBoardRandom(ctx);
+        await handleClickBoardRandom(ctx, false);
         const battleNinja = fire.round.fromPenguin(penguin);
         if (battleNinja !== undefined) {
           battleNinja.setPending(leaveMatch);
