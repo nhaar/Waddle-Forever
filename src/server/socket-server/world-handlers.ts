@@ -282,7 +282,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'r#gtc', [], handleGetTotalCoins),
     
     p.xt('s', 'st#gsbcd', ['number'], handleGetStampbookCoverData),
-    p.xt('s', 'st#gps', [], sendStamps),
+    p.xt('s', 'st#gps', ['number'], sendStamps),
     p.xt('s', 'st#gmres', [], handleGetRecentStamps),
     p.xt('s', 'st#ssbcd', 'string', handleSetStampbookCoverData),
     p.xt('s', 'st#sse', ['number'], handleSetStampEarned),

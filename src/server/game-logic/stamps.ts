@@ -135,5 +135,22 @@ export enum Stamp {
   MatchMaster = 240,
   NinjaMaster = 236,
   SenseiCard = 246,
-  FullDojo = 248
+  FullDojo = 248,
+
+  /** win 10 matches */
+  WarmUp = 252,
+  /** win 1 energy */
+  ScoreFire = 254,
+  /** fire coat */
+  FireMidWay = 256,
+  /** without losing energy */
+  StrongDefence = 260,
+  /** fire helmet */
+  FireSuit = 262,
+  /** beat sensei */
+  FireNinja = 264,
+  /** 3 energy points */
+  MaxEnergy = 266,
+  /** 50 matches */
+  FireExpert
 }

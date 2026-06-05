@@ -104,6 +104,14 @@ export const getFireReward = (rank: number): number | undefined => {
   return [6025, 4120, 2013, 1086, 3032][rank - 1];
 }
 
+export const getFireStampReward = (rank: number): number | undefined => {
+  return {
+    2: Stamp.FireMidWay,
+    4: Stamp.FireSuit,
+    5: Stamp.FireNinja
+  }[rank];
+}
+
 export const MIN_SENSEI_RANK = FIRE_RANK_THRESHOLD.length;
 
 // EXP manager using the modern system

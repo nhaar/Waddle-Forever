@@ -299,7 +299,9 @@ class Stampbook {
   }
 
   public add(stamp: number) {
-    this._cover.recent_stamps.push(stamp);
+    if (!this._cover.recent_stamps.includes(stamp)) {
+      this._cover.recent_stamps.push(stamp);
+    }
     this._sessionStamps.add(stamp);
     this._stamps.add(stamp);
   }
@@ -765,6 +767,7 @@ class NinjaProfile {
   private _cardWins: number;
   
   private _fireProgress: CardJitsuFireProgress;
+  private _fireWins: number;
   private _water: boolean;
   private _snow: boolean;
 
@@ -775,6 +778,7 @@ class NinjaProfile {
     this._cardWins = data.cardWins;
     this._water = data.waterNinja ?? false;
     this._snow = data.snowNinja ?? false;
+    this._fireWins = data.fireWins ?? 0;
   }
 
   public get cards() {
@@ -851,6 +855,14 @@ class NinjaProfile {
 
   public get fireProgress() {
     return this._fireProgress;
+  }
+
+  public get fireWins() {
+    return this._fireWins;
+  }
+
+  public addFireWin() {
+    this._fireWins++;
   }
 }
 
@@ -1158,6 +1170,7 @@ export class WorldPenguin implements UserPenguin {
 
       fireXP: this._ninja.fireProgress.xp,
       fireNinja: this._ninja.fireProgress.isFireNinja,
+      fireWins: this._ninja.fireWins,
 
       waterNinja: this._ninja.isWaterNinja,
       snowNinja: this._ninja.isSnowNinja,

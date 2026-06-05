@@ -5,7 +5,10 @@ import { getWinner, RULES } from "../world/card";
 import { CardElement, CARDS } from "@server/game-logic/cards";
 import { handleSendCardJitsuStampInfo } from "./card";
 import { choose, doubleFilter, randomInt } from "@common/utils";
-import { getFireReward } from "@server/game-logic/ninja-progress";
+import { getFireReward, getFireStampReward } from "@server/game-logic/ninja-progress";
+import { GameData } from "@server/timelines/game-data";
+import { Stamp } from "@server/game-logic/stamps";
+import { getStamp } from "./puffle";
 
 export const isFireGuard: FireGuard = () => true;
 
@@ -36,6 +39,10 @@ export const handleEnterFireGame: FireHandler<[]> = async (ctx) => {
   if (fire.everyoneReady()) {
     fire.setBoardTimeout(() => handleBoardTimeout(ctx));
   }
+}
+
+const fireStamps = (data: GameData): boolean => {
+  return data.isStampAvailable(Stamp.WarmUp);
 }
 
 const handleClickSpinner: FireHandler<[number]> = ({ msg, fire }, tablet) => {
@@ -181,10 +188,20 @@ const getTrumpResults = (cardIds: number[], element: CardElement): [number[], Ca
   }), element];
 }
 
-const handleFireNinjaRankup: FireHandler<[() => void]> = async ({ msg, penguin, prst }, expUpdater) => {
+const handleFireNinjaRankup: FireHandler<[() => void]> = async ({ msg, penguin, prst, data }, expUpdater) => {
   const oldRank = penguin.ninja.fireProgress.getRank();
   expUpdater();
+
   const newRank = penguin.ninja.fireProgress.getRank();
+
+  // from start to account for old penguins
+  for (let i = 0; i <= newRank; i++) {
+    const stamp = getFireStampReward(i);
+    if (stamp !== undefined) {
+      getStamp(data, msg, penguin, stamp);
+    }
+  }
+
   if (newRank > oldRank) {
     const reward = getFireReward(newRank);
     if (reward !== undefined) {
@@ -209,7 +226,7 @@ const getSenseiMatchCards = (playerCard: number, beatable: boolean, type: Battle
 }
 
 const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) => {
-  const { msg, fire, penguin } = ctx;
+  const { msg, fire, penguin, data } = ctx;
   const ninja = fire.fromPenguin(penguin);
   if (ninja === undefined) {
     return;
@@ -228,6 +245,14 @@ const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) =>
     const ninja = fire.round.ninjas[i];
     if (result === 4) {
       ninja.addEnergy();
+      if (ninja instanceof FirePlayer) {
+        if (ninja.energyGains >= 1) {
+          getStamp(data, msg, ninja.penguin, Stamp.ScoreFire);
+          if (ninja.energyGains >= 3) {
+            getStamp(data, msg, ninja.penguin, Stamp.MaxEnergy);
+          }
+        }
+      }
     } else if (result === 1) {
       ninja.removeEnergy();
       if (ninja.energy <= 0) {
@@ -273,6 +298,18 @@ const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) =>
     if (noEnergy || finished) {
       if (!noEnergy) {
         fire.playerEntersPodium(b.ninja);
+        if (fireStamps(data)) {
+          penguin.ninja.addFireWin();
+          if (penguin.ninja.fireWins >= 10) {
+            getStamp(data, msg, penguin, Stamp.WarmUp);
+            if (penguin.ninja.fireWins >= 50) {
+              getStamp(data, msg, penguin, Stamp.FireExpert);
+            }
+          }
+          if (!b.ninja.lostEnergy) {
+            getStamp(data, msg, penguin, Stamp.StrongDefence)
+          }
+        }
       }
       handleFireNinjaRankup({ ...ctx, penguin }, () => {
         if (fire.sensei !== null && !noEnergy) {

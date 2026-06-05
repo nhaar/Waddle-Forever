@@ -155,6 +155,7 @@ export interface PenguinJson {
 
   fireXP?: number;
   fireNinja?: boolean;
+  fireWins?: number;
 
   /** Temporary data for cheaters who want the amulet to be completed */
   waterNinja?: boolean;

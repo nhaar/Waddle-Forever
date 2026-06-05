@@ -67,6 +67,8 @@ export abstract class FireNinja {
   private _tile: number;
   private _energy = STARTER_ENERGY;
   private _seatId: number;
+  private _energyGains = 0;
+  private _lostEnergy = false;
 
   protected constructor(tile: number, seat: number) {
     this._tile = tile;
@@ -85,12 +87,22 @@ export abstract class FireNinja {
     return this._energy;
   }
 
+  public get energyGains(): number {
+    return this._energyGains;
+  }
+
+  public get lostEnergy() {
+    return this._lostEnergy;
+  }
+
   public addEnergy(): void {
     this._energy++;
+    this._energyGains++;
   }
 
   public removeEnergy(): void {
     this._energy--;
+    this._lostEnergy = true;
   }
 
   public get seat(): number {
