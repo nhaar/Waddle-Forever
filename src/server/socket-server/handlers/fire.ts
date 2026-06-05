@@ -275,7 +275,11 @@ const handleResolveBattle: FireHandler<[number[]]> = async (ctx, cardIndexes) =>
         fire.playerEntersPodium(b.ninja);
       }
       handleFireNinjaRankup({ ...ctx, penguin }, () => {
-        penguin.ninja.fireProgress.advanceFromPodium(fire.getPosition(b.ninja), fire.matchPlayerCount);
+        if (fire.sensei !== null && !noEnergy) {
+          penguin.ninja.fireProgress.setNinja();
+        } else {
+          penguin.ninja.fireProgress.advanceFromPodium(fire.getPosition(b.ninja), fire.matchPlayerCount);
+        }
       });
       return msg.send(penguin, 'zm', 'zo', fire.standings.join(','));
     }
