@@ -5,11 +5,11 @@ import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { handleReceiveMail } from "./mail";
 import { CardGuard, CardHandler, PenguinHandler } from "./handlers";
 
-export const handleEnterCardGame: CardHandler<[]> = ({ card, penguin, msg }) => {
+export const handleEnterCardGame: CardHandler<[]> = async ({ card, penguin, msg }) => {
   const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);
   // TODO why is seats duplicated?
-  msg.send(penguin, 'gz', card.getPlayerCount(), card.getPlayerCount());
-  msg.send(penguin, 'jz', seatNumber, penguin.name, penguin.inventory.color, penguin.ninja.cardRank);
+  await msg.send(penguin, 'gz', card.getPlayerCount(), card.getPlayerCount());
+  await msg.send(penguin, 'jz', seatNumber, penguin.name, penguin.inventory.color, penguin.ninja.cardRank);
 }
 
 export const handleUpdateCardSeats: CardHandler<[]> = ({ msg, penguin, card }) => {
@@ -252,6 +252,10 @@ export const handleQuitCard: CardHandler<[]> = (ctx) => {
 
   msg.send(card.players, 'cz', penguin.name);
   msg.send(card.players, 'lz', seat);
+}
+
+export const handleAbortCard: CardHandler<[]> = ({ msg, penguin }) => {
+  msg.send(penguin, 'zo', penguin.currency.coins, '', 0, 0, 0);
 }
 
 export const isCardJitsuGuard: CardGuard = ({ card }) => card !== undefined;

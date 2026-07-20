@@ -336,43 +336,6 @@ export class CardJitsu extends WaddleGame {
   /** If in Sensei fight */
   private _sensei: boolean;
 
-  // static DEAL_ACTION = 'deal';
-
-  // static PICK_ACTION = 'pick';
-
-  // static RULES: Record<CardElement, CardElement> = {
-  //   'f': 's',
-  //   'w': 'f',
-  //   's': 'w'
-  // };
-
-  // static ON_PLAYED_POWER_CARDS = new Set([1, 16, 17, 18]);
-  // static SELF_EFFECT_POWER_CARDS = new Set([2]);
-  // static ELEMENT_BLOCK_POWER_CARDS: Record<number, CardElement | undefined> = {
-  //   13: 's',
-  //   14: 'f',
-  //   15: 'w'
-  // };
-
-  // static REPLACEMENT_POWER_CARDS: Record<number, [CardElement, CardElement] | undefined> = {
-  //   16: ['w', 'f'],
-  //   17: ['s', 'w'],
-  //   18: ['f', 's']
-  // };
-  // static COLOR_DISCARD_POWER_CARDS: Record<number, CardColor | undefined> = {
-  //   7: 'r',
-  //   8: 'b',
-  //   9: 'g',
-  //   10: 'y',
-  //   11: 'o',
-  //   12: 'p'
-  // };
-  // static ELEMENT_DISCARD_POWER_CARDS: Record<number, CardElement | undefined> = {
-  //   4: 's',
-  //   5: 'w',
-  //   6: 'f'
-  // };
-
   /** Whether or not lowest value wins this round */
   private _swapValue: boolean = false;
 

@@ -299,11 +299,13 @@ class Stampbook {
   }
 
   public add(stamp: number) {
-    if (!this._cover.recent_stamps.includes(stamp)) {
-      this._cover.recent_stamps.push(stamp);
+    if (!this.has(stamp)) {
+      if (!this._cover.recent_stamps.includes(stamp)) {
+        this._cover.recent_stamps.push(stamp);
+      }
+      this._sessionStamps.add(stamp);
+      this._stamps.add(stamp);
     }
-    this._sessionStamps.add(stamp);
-    this._stamps.add(stamp);
   }
 
   public has(stamp: number) {
@@ -323,6 +325,7 @@ class Stampbook {
   }
 
   public resetSessionStamps() {
+    console.log('resetting...');
     this._sessionStamps = new Set();
   }
 }
