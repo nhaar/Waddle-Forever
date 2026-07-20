@@ -1142,5 +1142,6 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/fish/IceFishing.swf': 'slegacy:media/play/v2/games/fish/IceFishing.swf',
   'play/v2/content/global/telescope/telescope.swf': 'archives:TelescopeEmpty2010.swf',
   'play/en/web_service/game_configs/cards.json': 'archives:ENWeb_serviceGame_configsCards.json',
-  'play/v2/client/ninja_progress.swf': 'archives:ClientNinja_progress.swf'
+  'play/v2/client/ninja_progress.swf': 'archives:ClientNinja_progress.swf',
+  'play/v2/client/catalog_viewer.swf': 'svanilla:media/play/v2/client/catalog_viewer.swf'
 }
