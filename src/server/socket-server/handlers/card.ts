@@ -225,15 +225,14 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
       }
 
       setWinner(ctx, winningHand.seat, ...winningHand.cards);
-    } else {
-      // forced losing is achieved by sending no cards
-      ninjas.forEach(n => {
-        if (card.playerCanPlay(n)) {
-          setWinner(ctx, card.getOpponent(n).seat);
-        }
-      });
     }
   }
+}
+
+const handleCardJitsuDeath: CardHandler<[]> = (ctx) => {
+  const { card, penguin } = ctx;
+  const ninja = card.getNinja(penguin);
+  setWinner(ctx, card.getOpponent(ninja).seat);
 }
 
 export const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action, arg) => {
@@ -241,6 +240,8 @@ export const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action
     handleCardJitsuDeal(ctx, arg);
   } else if (action === 'pick') {
     handleCardJitsuPick(ctx, arg);
+  } else if (action === 'death') {
+    handleCardJitsuDeath(ctx);
   }
 }
 

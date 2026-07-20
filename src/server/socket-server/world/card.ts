@@ -69,7 +69,7 @@ abstract class Ninja {
 
   choose(id: number): void {
     this._chosen = id;
-    this._cardsOnHand = this._cardsOnHand.filter(id => id !== id);
+    this._cardsOnHand = this._cardsOnHand.filter(i => i !== id);
   }
 
   unchoose(): void {
@@ -578,7 +578,7 @@ export class CardJitsu extends WaddleGame {
   playerCanPlay(ninja: Ninja): boolean {
     // the only condition for not being able to play is an element being blocked
     const blockedElement = ninja.blockedElement;
-    if (blockedElement) {
+    if (blockedElement === undefined) {
       return true;
     }
 
@@ -586,25 +586,4 @@ export class CardJitsu extends WaddleGame {
 
     return cards.some(c => this.getCard(c)?.element !== blockedElement);
   }
-
-  // removePlayer(penguin: WorldPenguin) {
-  //   // for when the player got stamps in older versions
-  //   for (let i = 0; i <= penguin.info.ninjaProgress.rank; i++) {
-  //     const stamp = CardJitsuProgress.STAMP_AWARDS[i];
-  //     if (stamp !== undefined) {
-  //       penguin.giveStamp(stamp);
-  //     }
-  //   }
-
-  //   penguin.sendCardJitsuStampInfo();
-  //   // client.leaveWaddleRoom();
-  // }
-
-  // setWinner(winnerSeat: number, ...winningCards: number[]) {
-  //   // players are removed so that they don't get the "player quit" popup even though the game ended normally
-  //   this.players.forEach(p => {
-  //     this.removePlayer(p)
-  //   });
-  //   this.sendXt('czo', 0, winnerSeat, ...winningCards);
-  // }
 }
