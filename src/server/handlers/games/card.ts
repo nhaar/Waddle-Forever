@@ -75,7 +75,7 @@ abstract class Ninja {
 
   choose(id: number): void {
     this._chosen = id;
-    this._cardsOnHand = this._cardsOnHand.filter(id => id !== id);
+    this._cardsOnHand = this._cardsOnHand.filter(cardId => cardId !== id);
     this._game.sendXt('zm', CardJitsu.PICK_ACTION, this.seat, id);
   }
 
