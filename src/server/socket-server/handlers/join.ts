@@ -13,11 +13,16 @@ import { ItemType } from '@server/game-logic/items';
 import { isFlag } from '@server/game-logic/flags';
 import { STARTER_DECKS } from '@server/game-logic/starter-deck';
 import { CARDS } from '@server/game-logic/cards';
+import { isGreaterOrEqual } from '@server/routes/versions';
 import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from './handlers';
 import { handleLeaveFire } from './fire';
 
+const DOJO_COURTYARD_ROOM_ID = 321;
+const DOJO_COURTYARD_SOLO_ROOM_ID = 324;
+const STARTER_DECK_ITEM_ID = 821;
+const DOJO_COURTYARD_ONBOARDING_DATE = '2011-12-08';
 
 function unequipPuffle(p: WorldPenguin): void {
   const hand = p.inventory.hand
@@ -222,6 +227,11 @@ export const leaveRoom: RoomHandler<[]> = async (ctx) => {
 
 export const joinRoom: PenguinHandler<[number, number, number]> = (ctx, id: number, x: number, y: number) => {
   const { world, penguin, msg, data } = ctx;
+  const needsDojoOnboarding = id === DOJO_COURTYARD_ROOM_ID
+    && isGreaterOrEqual(data.getDate(), DOJO_COURTYARD_ONBOARDING_DATE)
+    && !penguin.inventory.has(STARTER_DECK_ITEM_ID);
+  const targetId = needsDojoOnboarding ? DOJO_COURTYARD_SOLO_ROOM_ID : id;
+
   if ('room' in ctx) {
     leaveRoom(ctx);
   } else if ('game' in ctx) {
@@ -230,12 +240,12 @@ export const joinRoom: PenguinHandler<[number, number, number]> = (ctx, id: numb
     ctx.sled.removePlayer(penguin);
   }
 
-  if (isGameRoom(id)) {
-    const game = world.getGame(id);
+  if (isGameRoom(targetId)) {
+    const game = world.getGame(targetId);
     world.enterState(penguin, { game });
-    msg.send(penguin, 'jg', id);
+    msg.send(penguin, 'jg', targetId);
   } else {
-    const newRoom = world.getRoom(id);
+    const newRoom = world.getRoom(targetId);
     world.enterState(penguin, { room: newRoom });
     enterRoom(ctx, newRoom, x, y);
   }
