@@ -97,9 +97,16 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
             }
           }
 
-          socket.on('data', (data: Buffer) => {
-            const dataStr = data.toString().split('\0')[0];
-            handler.handle(cs, dataStr);
+          let bufferedData = '';
+          socket.on('data', (data: string | Buffer) => {
+            const packets = (bufferedData + data.toString()).split('\0');
+            bufferedData = packets.pop() ?? '';
+
+            for (const packet of packets) {
+              if (packet.length > 0) {
+                handler.handle(cs, packet);
+              }
+            }
           });
 
           socket.on('close', () => {
