@@ -30,6 +30,10 @@ handler.xt(Handle.GetFireLevel, (client) => {
   client.sendXt('gfl', 0, 0, 5);
 });
 
+handler.xt(Handle.GetWaterLevel, (client) => {
+  client.sendXt('gwl', 0, 0);
+});
+
 // get cards
 handler.xt(Handle.GetCards, (client) => {
   client.sendXt('gcd', client.penguin.getCards().map((card) => {

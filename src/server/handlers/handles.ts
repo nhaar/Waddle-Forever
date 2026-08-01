@@ -176,6 +176,7 @@ export enum Handle {
   JoinTemporaryWaddle,
   LeaveWaddleMatch,
   GetFireLevel,
+  GetWaterLevel,
   CardJitsuFireClickSpinner,
   CardJitsuFireChooseTile,
   CardJitsuFireChooseCard,
@@ -372,6 +373,7 @@ export const HANDLE_ARGUMENTS = {
   [Handle.JoinTemporaryWaddle]: ['number', 'number', 'number'],
   [Handle.LeaveWaddleMatch]: [],
   [Handle.GetFireLevel]: [],
+  [Handle.GetWaterLevel]: [],
   [Handle.CardJitsuFireClickSpinner]: ['string', 'number', 'number'],
   [Handle.CardJitsuFireChooseTile]: ['string', 'number'],
   [Handle.CardJitsuFireChooseCard]: ['string', 'number'],
@@ -590,7 +592,8 @@ const HANDLER_MAPPING: HandlerMapping = {
       'gnr': Handle.GetNinjaRanks,
       'gnl': Handle.GetNinjaLevel,
       'gcd': Handle.GetCards,
-      'gfl': Handle.GetFireLevel
+      'gfl': Handle.GetFireLevel,
+      'gwl': Handle.GetWaterLevel
     },
     'mdvl': {
       'retrieve': Handle.RetrieveMedieval2012,
