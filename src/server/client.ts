@@ -561,8 +561,7 @@ export class Server {
       const chat = findInVersionStrict(this._settingsManager.settings.version, VERSIONS_TIMELINE);
       this._buddyProtocol = chat >= 506 ? 'b' : 's';
     } else {
-      // buddies for post-cpip not yet defined
-      this._buddyProtocol = undefined;
+      this._buddyProtocol = 'b';
     }
   }
 

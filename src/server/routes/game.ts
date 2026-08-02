@@ -137,6 +137,9 @@ export function createHttpServer(settingsManager: SettingsManager): HttpServer {
 
   // important redirects
   server.redirectDirs(
+    ['js', 'default/websites/modern/js'],
+    ['css', 'default/websites/modern/css'],
+    ['content', 'default/websites/modern/content'],
     ['play/v2/content/global/clothing', 'clothing'], // clothing is its own package due to its high size
     ['play/v2/content/global/music', 'default/music'], // (engine 2) non fundamental music that may potentially become a package,
     ['music', 'default/static/engine2/play/v2/content/global/music'], // sharing the engine 1 and engine 2 music,

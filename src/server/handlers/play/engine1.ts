@@ -14,9 +14,9 @@ import { ROOMS } from '../../game-data/rooms';
 
 const handler = new Handler();
 
-// restrict post-cpip clients from using buddy system (not yet implemented)
+// Buddy packets are shared by every engine after login initializes a penguin.
 function canHandleBuddy(client: Client): boolean {
-  return client.isEngine1;
+  return client.hasPenguin();
 }
 
 function getPenguinNameById(id: number): string | undefined {
@@ -514,7 +514,11 @@ const handleGetBuddies = (client: Client) => {
   const buddies = client.penguin.getBuddies()
     .map((id) => formatBuddyEntry(id, client.server, true));
   if (buddies.length === 0) {
-    client.sendXtEmptyLast('gb');
+    if (client.isEngine1) {
+      client.sendXtEmptyLast('gb');
+    } else {
+      client.sendXt('gb', '');
+    }
     return;
   }
   client.sendXt('gb', ...buddies);
@@ -660,24 +664,31 @@ const handleBuddyMessage = (client: Client, targetId: number, messageId: number)
 
 handler.xt(Handle.GetBuddies, handleGetBuddies);
 handler.xt(Handle.GetBuddiesB, handleGetBuddies);
+handler.xt(Handle.GetBuddiesBNested, handleGetBuddies);
 
 handler.xt(Handle.GetBuddyOnline, handleGetBuddyOnlineList);
 handler.xt(Handle.GetBuddyOnlineB, handleGetBuddyOnlineList);
+handler.xt(Handle.GetBuddyOnlineBNested, handleGetBuddyOnlineList);
 
 handler.xt(Handle.BuddyRequest, handleBuddyRequest);
 handler.xt(Handle.BuddyRequestB, handleBuddyRequest);
+handler.xt(Handle.BuddyRequestBNested, handleBuddyRequest);
 
 handler.xt(Handle.BuddyAccept, handleBuddyAccept);
 handler.xt(Handle.BuddyAcceptB, handleBuddyAccept);
+handler.xt(Handle.BuddyAcceptBNested, handleBuddyAccept);
 
 handler.xt(Handle.BuddyDecline, handleBuddyDecline);
 handler.xt(Handle.BuddyDeclineB, handleBuddyDecline);
+handler.xt(Handle.BuddyDeclineBNested, handleBuddyDecline);
 
 handler.xt(Handle.BuddyRemove, handleBuddyRemove);
 handler.xt(Handle.BuddyRemoveB, handleBuddyRemove);
+handler.xt(Handle.BuddyRemoveBNested, handleBuddyRemove);
 
 handler.xt(Handle.BuddyMessage, handleBuddyMessage);
 handler.xt(Handle.BuddyMessageB, handleBuddyMessage);
+handler.xt(Handle.BuddyMessageBNested, handleBuddyMessage);
 
 const getPlayerOldHandler = (client: Client, playerId: number | string) => {
   if (!client.isEngine1) {
