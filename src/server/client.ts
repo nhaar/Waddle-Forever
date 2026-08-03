@@ -930,8 +930,9 @@ export class Client {
   async send (message: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this._socket?.write(message + '\0', (err) => {
-        if (err !== undefined) {
+        if (err != null) {
           reject(err);
+          return;
         }
         resolve();
       });
