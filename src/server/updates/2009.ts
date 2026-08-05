@@ -1250,10 +1250,10 @@ export const UPDATES_2009: Update[] = [
           coffee: 'archives:RoomsCoffee-MusicJam2010Pre.swf',
           cove: 'archives:RoomsCove-MusicJam2010Pre.swf',
           dock: 'archives:RoomsDock-MusicJam2010Pre.swf',
-          forest: 'archives:RoomsForest-MusicJam2010Pre.swf',
-          berg: 'archives:RoomsBerg-MusicJam2010Pre.swf',
+          forest: 'archives:RoomsForest-MusicJam2009Const.swf',
+          berg: 'archives:RoomsBerg-MusicJam2009Const.swf',
           light: 'archives:RoomsLight-MusicJam2010Pre.swf',
-          village: 'archives:RoomsVillage-MusicJam2010Pre.swf',
+          village: 'archives:RoomsVillage-MusicJam2009Const.swf',
           forts: 'archives:RoomsForts-MusicJam2010Pre.swf',
           rink: 'archives:RoomsRink-MusicJam2009Const.swf'
         }
