@@ -16,7 +16,7 @@ import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } 
 import { FURNITURE } from "@server/game-logic/furniture";
 import { ITEMS, ItemTable } from "@server/game-logic/items";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
-import { isGreater, Version } from "@server/routes/versions";
+import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
 import { getUpdates } from "@server/updates/updates";
@@ -742,7 +742,7 @@ export class GameData {
         break;
       }
       // don't include temporary events that finished already
-      if (update.end !== undefined && isGreater(date, update.end)) {
+      if (update.end !== undefined && isGreaterOrEqual(date, update.end)) {
         continue;
       }
 
