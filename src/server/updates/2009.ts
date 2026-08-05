@@ -1412,11 +1412,8 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
-    date: '2009-08-20',
-    end: ['party']
-  },
-  {
     date: '2009-08-21',
+    end: ['party'],
     stagePlay: {
       name: 'Underwater Adventure',
       costumeTrunk: 'archives:May2011UnderwaterAdventureCostume.swf',
