@@ -36,6 +36,14 @@ export const UPDATES_2012: Update[] = [
     dateReference: 'furniture-catalog-name'
   },
   {
+    date: '2012-01-21',
+    constructionComment: 'The Underwater Expedition construction advances'
+  },
+  {
+    date: '2012-01-24',
+    constructionComment: 'The Underwater Expedition construction advances'
+  },
+  {
     date: '2012-01-26',
     temp: {
       party: {
