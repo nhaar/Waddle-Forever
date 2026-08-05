@@ -232,7 +232,16 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
 const handleCardJitsuDeath: CardHandler<[]> = (ctx) => {
   const { card, penguin } = ctx;
   const ninja = card.getNinja(penguin);
-  setWinner(ctx, card.getOpponent(ninja).seat);
+  const opponent = card.getOpponent(ninja);
+
+  if (opponent instanceof NinjaPlayer) {
+    gainProgress({ ...ctx, penguin: opponent.player }, true);
+  }
+  if (ninja instanceof NinjaPlayer) {
+    gainProgress({ ...ctx, penguin: ninja.player }, false);
+  }
+
+  setWinner(ctx, opponent.seat);
 }
 
 export const handleCardJitsuAction: CardHandler<[string, number]> = (ctx, action, arg) => {
