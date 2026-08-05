@@ -1407,8 +1407,11 @@ export const UPDATES_2009: Update[] = [
           town: 277,
           party: 278,
           party2: 278
+        },
+        memberRooms: {
+          party: true
         }
-      }
+      },
     }
   },
   {
