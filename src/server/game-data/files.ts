@@ -156,10 +156,6 @@ would need to investigated`
       comment: 'Domain check removed'
     },
     {
-      file: 'GamesDancingDance.swf',
-      comment: 'Domain check removed'
-    },
-    {
       file: 'GamesJetPackAdventureMain.swf',
       comment: 'Domain check removed'
     },
