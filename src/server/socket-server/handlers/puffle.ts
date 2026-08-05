@@ -261,6 +261,20 @@ export const handleGetPuffleInventory: PenguinHandler<[]> = ({ msg, penguin }) =
   );
 }
 
+export function getPuffleWalkArguments(data: GameData, penguin: WorldPenguin, penguinPuffleId: number, walking: number): Array<string | number> | undefined {
+  if (data.isVanillaEngine()) {
+    const playerPuffle = penguin.puffle.getPuffle(penguinPuffleId);
+    if (playerPuffle === undefined) {
+      return undefined;
+    }
+
+    // TODO hat (last one)
+    return [penguin.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0];
+  }
+
+  return [penguin.id, `${penguinPuffleId}||||||||||||${walking}`];
+}
+
 export const handlePuffleWalk: PenguinHandler<[number, number]> = (ctx, penguinPuffleId, walking) => {
   // TODO add puffle refusing to walk
   // TODO add removing puffle
@@ -274,14 +288,9 @@ export const handlePuffleWalk: PenguinHandler<[number, number]> = (ctx, penguinP
 
   const penguins = 'room' in ctx ? ctx.room.players : [penguin];
 
-  if (data.isVanillaEngine()) {
-    const playerPuffle = penguin.puffle.getPuffle(penguinPuffleId);
-    if (playerPuffle !== undefined) {
-      // TODO hat (last one)
-      msg.send(penguin, 'pw', penguin.id, playerPuffle.id, ...getClientPuffleIds(playerPuffle.type), walking, 0);
-    }
-  } else {
-    msg.send(penguins, 'pw', penguin.id, `${penguinPuffleId}||||||||||||${walking}`);
+  const args = getPuffleWalkArguments(data, penguin, penguinPuffleId, walking);
+  if (args !== undefined) {
+    msg.send(penguins, 'pw', ...args);
   }
   prst(penguin);
 }
@@ -305,13 +314,14 @@ enum TreasureType {
   Gold = 4
 };
 
-const sendPuffleDig: PenguinHandler<[TreasureType, number]> = ({ msg, penguin }, treasureType, target) => {
+const sendPuffleDig: PenguinHandler<[TreasureType, number]> = (ctx, treasureType, target) => {
+  const { msg, penguin } = ctx;
   const [coins, itemId] =
     treasureType === TreasureType.Coins ? [target, 0] :
     treasureType === TreasureType.Gold ? [target, 1] : [0, target];
 
-  // TODO multiplayer logic so it sneds to everyone in room
-  msg.send(penguin, 'puffledig', penguin.id, penguin.puffle.walking ?? 0, treasureType, itemId, coins, penguin.dig.hasDug ? 0 : 1);
+  const penguins = 'room' in ctx ? ctx.room.players : [penguin];
+  msg.send(penguins, 'puffledig', penguin.id, penguin.puffle.walking ?? 0, treasureType, itemId, coins, penguin.dig.hasDug ? 0 : 1);
 }
 
 const sendGoldNuggets: PenguinHandler<[]> = ({ msg, penguin }) => {
@@ -614,5 +624,5 @@ export const isBeforePuffleCreatureGuard: PenguinGuard = (ctx) => {
   return !isAfterPuffleCreatureGuard(ctx);
 }
 
-export const handlePuffleDigRandom: PenguinHandler<[]> = (ctx) => puffleDig(ctx, false);
+export const handlePuffleDigRandom: PenguinHandler<[number]> = (ctx) => puffleDig(ctx, false);
 export const handlePuffleDigOnCommand: PenguinHandler<[]> = (ctx) => puffleDig(ctx, true);
