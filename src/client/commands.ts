@@ -30,7 +30,7 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
       if (commandMatch !== null) {
         const name = commandMatch[1];
         const argString = commandMatch[2].trim();
-        server.runCommand(id, name, argString.split(/\s+/));
+        server.runCommand(id, name, argString == '' ? [] : argString.split(/\s+/));
       }
     }
   });
