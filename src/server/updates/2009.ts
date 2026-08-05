@@ -1538,6 +1538,9 @@ export const UPDATES_2009: Update[] = [
         fairCpip: {
           iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
           infoFile: 'archives:Tickets-TheFair2009.swf'
+        },
+        memberRooms: {
+          party2: true
         }
       }
     }
