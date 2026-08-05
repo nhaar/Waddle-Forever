@@ -68,7 +68,10 @@ export const handleGetIglooCpip: PenguinHandler<[number]> = ({ world, penguin, m
   }
 }
 
-export const handleGetIglooItems: PenguinHandler<[]> = ({ msg, penguin }) => {
+// The AS2 client attaches its response signal after sending the request.
+const deferToClientListener = () => new Promise<void>(resolve => setImmediate(resolve));
+
+export const handleGetIglooItems: PenguinHandler<string[]> = async ({ msg, penguin }) => {
   // No idea what these zeros are used for
   const zeros = '0000000000';
   const furnitureInfo = penguin.igloo.furniture.map((pair) => {
@@ -92,7 +95,8 @@ export const handleGetIglooItems: PenguinHandler<[]> = ({ msg, penguin }) => {
   ].map((infoArray) => {
     return infoArray.join(',');
   })
-  msg.send(penguin, 'gii', ...information);
+  await deferToClientListener();
+  await msg.send(penguin, 'gii', ...information);
 }
 
 export const handleAddFurniture: PenguinHandler<[number]> = (ctx, furnitureId) => {
@@ -254,12 +258,13 @@ export const handleGetDj3kTracks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', '');
 }
 
-export const handleGetAllIglooLayouts: PenguinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetAllIglooLayouts: PenguinHandler<string[]> = async ({ msg, penguin }) => {
   const layouts = penguin.igloo.getAllLayouts().map(([index, layout]) => {
     return getModernIglooString(layout, index);
   });
   // TODO unsure what the 0 is
-  msg.send(penguin, 'gail', penguin.id, 0, ...layouts);
+  await deferToClientListener();
+  await msg.send(penguin, 'gail', penguin.id, 0, ...layouts);
 }
 
 export const handleAddIglooLayout: PenguinHandler<[]> = ({ msg, penguin, prst }) => {

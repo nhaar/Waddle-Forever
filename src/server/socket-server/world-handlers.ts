@@ -242,7 +242,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'p#revealgoldpuffle', [], handleRevealGoldPuffle),
 
     p.xt('s', 'g#gm', ['number'], handleGetIglooCpip),
-    p.xt('s', 'g#gii', [], handleGetIglooItems),
+    p.xt('s', 'g#gii', 'string', handleGetIglooItems),
     p.xt('s', 'g#af', ['number'], handleAddFurniture),
     p.xt('s', 'g#au', ['number'], handleAddIgloo),
     p.xt('s', 'g#ag', ['number'], handleAddFlooring),
@@ -256,7 +256,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'g#um', ['number'], handleUpdateMusic),
     p.xt('s', 'g#gili', [], handleGetIglooLikes),
     p.xt('s', 'g#ggd', [], handleGetDj3kTracks),
-    p.xt('s', 'g#gail', [], handleGetAllIglooLayouts),
+    p.xt('s', 'g#gail', 'string', handleGetAllIglooLayouts),
     p.xt('s', 'g#uic', ['number', 'number', 'number', 'number', 'number', 'string'], handleUpdateIglooNew),
     p.xt('s', 'g#al', [], handleAddIglooLayout),
     p.xt('s', 'g#uiss', ['number', 'string'], handleUpdateIglooLayout),
