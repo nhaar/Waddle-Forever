@@ -92,7 +92,9 @@ export class XtHandler {
   public handle(client: ClientSocket, context: WorldContext, message: string) {
     const [name, args] = parseXtMessage(message);
     
-    logverbose(getBlueString('incoming XT: '), name, args);
+    if ('penguin' in context) {
+      logverbose(getBlueString(`incoming XT [${context.penguin.name}]: `), name, args);
+    }
 
     const callbacks = this._callbacks.get(name);
 
