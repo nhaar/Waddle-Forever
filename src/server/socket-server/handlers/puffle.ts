@@ -165,6 +165,10 @@ function getPuffleString(puffle: PlayerPuffle): string {
   ].join('|')
 }
 
+export const handleGetMyPufflesOld: PenguinHandler<[]> = ({ msg, penguin }) => {
+  msg.send(penguin, 'pgu', ...penguin.puffle.puffles.map(getPuffleString));
+}
+
 export const sendModernPuffleCheck: PenguinHandler<[string]> = ({ msg, penguin }, name) => {
   msg.send(penguin, 'checkpufflename', name, 1);
 }
@@ -548,7 +552,7 @@ export const handleRevealGoldPuffle: PenguinHandler<[]> = ({ msg, penguin }) => 
   msg.send(penguin, 'revealgoldpuffle', penguin.id);
 }
 
-export const handleGetIglooPufflesOld: PenguinHandler<[number]> = (ctx, id) => {
+export const handleGetIglooPufflesOld: PenguinHandler<number[]> = (ctx, id = 0) => {
   handleGetIglooPuffles(ctx, id, '');
 }
 
@@ -565,7 +569,7 @@ export const handleGetIglooPuffles: PenguinHandler<[number, string]> = ({ data, 
         100,
         100,
         100,
-        0,
+        Math.round((puffle.clean + puffle.food + puffle.rest) / 3),
         0,
         0,
         puffle.id === penguin.puffle.walking ? 1 : 0

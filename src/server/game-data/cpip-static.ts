@@ -488,7 +488,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/postcards/108.swf': 'archives:ENPostcards108.swf',
   'play/v2/content/local/en/postcards/109.swf': 'archives:ENPostcards109.swf',
   'play/v2/content/local/en/postcards/110.swf': 'archives:ENPostcards110.swf',
-  'play/v2/content/local/en/postcards/111.swf': 'archives:ENPostcards111.swf',
+  'play/v2/content/local/en/postcards/111.swf': 'archives:Enm111.swf',
   'play/v2/content/local/en/postcards/112.swf': 'archives:ENPostcards112.swf',
   'play/v2/content/local/en/postcards/120.swf': 'archives:ENPostcards120.swf',
   'play/v2/content/local/en/postcards/121.swf': 'archives:ENPostcards121.swf',

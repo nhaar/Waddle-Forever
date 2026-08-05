@@ -10,7 +10,7 @@ import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
 import { handleBuyNinjaCards, handleGetFireLevel, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleGetWaterLevel, handleJoinFromMatchmake, handleJoinMatchmaking, handleJoinSensei, handleLeaveMatchmake } from "./handlers/ninja";
 import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "./handlers/party";
-import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetIglooPufflesOld, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "./handlers/puffle";
+import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetIglooPufflesOld, handleGetMyPufflesOld, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "./handlers/puffle";
 import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "./handlers/rainbow";
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "./handlers/sled";
 import { BaseContext, GuardFunction, HandlerFunction, WorldContext } from "@server/socket-server/handlers/handlers";
@@ -227,8 +227,9 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 's#upl', ['number'], handleUpdatePin),
     r.xt('s', 's#upp', ['number'], handleUpdateBackground),
     
-    p.xt('s', 'p#pg', ['number'], handleGetIglooPufflesOld, { guard: isPreBackyardGuard }),
+    p.xt('s', 'p#pg', 'number', handleGetIglooPufflesOld, { guard: isPreBackyardGuard }),
     p.xt('s', 'p#pg', ['number', 'string'], handleGetIglooPuffles, { guard: isBackyardGuard }),
+    p.xt('s', 'p#pgu', [], handleGetMyPufflesOld, { guard: isBeforePuffleCreatureGuard }),
     p.xt('s', 'p#pn', ['number', 'string'], handleAdoptPuffleOld, { guard: isBeforePuffleCreatureGuard }),
     p.xt('s', 'p#pn', ['number', 'string', 'number'], handleAdoptPuffle, { guard: isAfterPuffleCreatureGuard, xt: { cooldown: 2000 }}),
     p.xt('s', 'p#pgpi', [], handleGetPuffleInventory),

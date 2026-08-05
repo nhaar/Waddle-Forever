@@ -943,6 +943,198 @@ const getPostcardCrumbs = (): PCodeRep => {
   ].flat();
 }
 
+function getJanuary2009PuffleCompatibility(): number[] {
+  const countFunctionBody = [
+    ...createBytecode([
+      [Action.Push, 0],
+      [Action.Push, "this"],
+      Action.GetVariable,
+      [Action.Push, "getMyPuffleArray"],
+      Action.CallMethod,
+      [Action.Push, "length"],
+      Action.GetMember
+    ]),
+    0x3e // ActionReturn
+  ];
+
+  const addPuffleAlias = (alias: string, legacyName: string): number[] => {
+    const getterBody = [
+      ...createBytecode([
+        [Action.Push, "this"],
+        Action.GetVariable,
+        [Action.Push, legacyName],
+        Action.GetMember
+      ]),
+      0x3e // ActionReturn
+    ];
+
+    return [
+      0x96, 0x01, 0x00, 0x02, // ActionPush null setter
+      0x9b, 0x05, 0x00, // ActionDefineFunction and header length
+      0x00, // anonymous function name
+      0x00, 0x00, // parameter count
+      getterBody.length & 0xff, getterBody.length >> 8,
+      ...getterBody,
+      ...createBytecode([
+        [Action.Push, alias, 3],
+        [Action.Push, "com"],
+        Action.GetVariable,
+        [Action.Push, "clubpenguin"],
+        Action.GetMember,
+        [Action.Push, "shell"],
+        Action.GetMember,
+        [Action.Push, "Puffle"],
+        Action.GetMember,
+        [Action.Push, "prototype"],
+        Action.GetMember,
+        [Action.Push, "addProperty"],
+        Action.CallMethod,
+        Action.Pop
+      ])
+    ];
+  };
+
+  const addPufflesToRoomCall = createBytecode([
+    [Action.Push, 0],
+    [Action.Push, 0],
+    [Action.Push, "_global"],
+    Action.GetVariable,
+    [Action.Push, "getCurrentShell"],
+    Action.CallMethod,
+    [Action.Push, "addPufflesToRoom"],
+    Action.CallMethod,
+    Action.Pop
+  ]);
+
+  const repairPuffleManagerEngine = createBytecode([
+    [Action.Push, 0],
+    [Action.Push, "_global"],
+    Action.GetVariable,
+    [Action.Push, "getCurrentShell"],
+    Action.CallMethod,
+    [Action.Push, "ENGINE"],
+    Action.GetMember,
+    [Action.Push, "puffleManager"],
+    Action.GetMember,
+    [Action.Push, "_engine"],
+    [Action.Push, 0],
+    [Action.Push, "_global"],
+    Action.GetVariable,
+    [Action.Push, "getCurrentShell"],
+    Action.CallMethod,
+    [Action.Push, "ENGINE"],
+    Action.GetMember,
+    Action.SetMember
+  ]);
+
+  const updateListenersFunctionBody = [
+    ...createBytecode([
+      [Action.Push, "result"],
+      [Action.Push, "obj"],
+      Action.GetVariable,
+      [Action.Push, "type"],
+      Action.GetVariable,
+      [Action.Push, 2],
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "_waddleOriginalUpdateListeners"],
+      Action.CallMethod,
+      Action.DefineLocal,
+      [Action.Push, "type"],
+      Action.GetVariable,
+      [Action.Push, "iglooInitComplete"],
+      0x49 as Action, // ActionEquals2
+      0x12 as Action // ActionNot
+    ]),
+    0x9d, 0x02, 0x00, // ActionIf and branch length
+    (repairPuffleManagerEngine.length + addPufflesToRoomCall.length) & 0xff,
+    (repairPuffleManagerEngine.length + addPufflesToRoomCall.length) >> 8,
+    ...repairPuffleManagerEngine,
+    ...addPufflesToRoomCall,
+    ...createBytecode([
+      [Action.Push, "result"],
+      Action.GetVariable
+    ]),
+    0x3e // ActionReturn
+  ];
+
+  return [
+    ...createBytecode([
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "getMyPuffleCount"]
+    ]),
+    0x9b, 0x05, 0x00, // ActionDefineFunction and header length
+    0x00, // anonymous function name
+    0x00, 0x00, // parameter count
+    countFunctionBody.length & 0xff, countFunctionBody.length >> 8,
+    ...countFunctionBody,
+    Action.SetMember,
+    ...createBytecode([
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "getMyPuffleById"],
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "getPuffleObjectById"],
+      Action.GetMember,
+      Action.SetMember
+    ]),
+    ...addPuffleAlias("id", "puffle_id"),
+    ...addPuffleAlias("typeID", "type_id"),
+    ...addPuffleAlias("isWalking", "is_walking"),
+    ...createBytecode([
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "IGLOO_INIT_COMPLETE", "iglooInitComplete"],
+      Action.SetMember,
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "_waddleOriginalUpdateListeners"],
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "updateListeners"],
+      Action.GetMember,
+      Action.SetMember,
+      [Action.Push, 0],
+      [Action.Push, "_global"],
+      Action.GetVariable,
+      [Action.Push, "getCurrentShell"],
+      Action.CallMethod,
+      [Action.Push, "updateListeners"]
+    ]),
+    0x9b, 0x0e, 0x00, // ActionDefineFunction and header length
+    0x00, // anonymous function name
+    0x02, 0x00, // parameter count
+    0x74, 0x79, 0x70, 0x65, 0x00, // type
+    0x6f, 0x62, 0x6a, 0x00, // obj
+    updateListenersFunctionBody.length & 0xff, updateListenersFunctionBody.length >> 8,
+    ...updateListenersFunctionBody,
+    Action.SetMember
+  ];
+}
+
 export function getLocalCrumbsSwf(d: GameData): Buffer {
   // hardcoded hex dump of the function's bytecode
   const treverseMessages = [
@@ -1971,7 +2163,13 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
     ...getHuntCrumbs(d.getHunt())
   ];
 
-  const bytecode = [...treverseMessages, ...createBytecode(code)];
+  const shellFile = d.lookupFile('play/v2/shell/shell.swf');
+  const puffleCompatibility = typeof shellFile === 'string'
+    && shellFile.endsWith('ClientShell_January_2009.swf')
+    ? getJanuary2009PuffleCompatibility()
+    : [];
+
+  const bytecode = [...treverseMessages, ...puffleCompatibility, ...createBytecode(code)];
 
   return Buffer.from(emitCrumbSwf(new Uint8Array(bytecode)));
 }
