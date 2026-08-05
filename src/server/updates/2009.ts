@@ -1471,7 +1471,13 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-08-28',
-    sportCatalog: 'archives:SportAug09.swf'
+    sportCatalog: 'archives:SportAug09.swf',
+    miscComments: ['The startscreens are updated'],
+    temp: {
+      party: {
+        startscreens: ['archives:LoginThe_fair2009.swf']
+      }
+    }
   },
   {
     date: '2009-09-04',
