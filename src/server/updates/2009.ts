@@ -1295,7 +1295,8 @@ export const UPDATES_2009: Update[] = [
           village: 'archives:RoomsVillage-MusicJam2009.swf',
           forts: 'archives:RoomsForts-MusicJam2009.swf',
           rink: 'archives:RoomsRink-MusicJam2009.swf',
-          town: 'archives:RoomsTown-MusicJam2009.swf'
+          town: 'archives:RoomsTown-MusicJam2009.swf',
+          mine: 'archives:RoomsMine-MusicJam2008.swf'
         },
         music: {
           dance: 242,
@@ -1306,7 +1307,8 @@ export const UPDATES_2009: Update[] = [
           plaza: 271,
           town: 271,
           party3: 271,
-          coffee: 0
+          coffee: 0,
+          mine: 247
         },
         localChanges: {
           'catalogues/merch.swf': {
