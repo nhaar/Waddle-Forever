@@ -404,7 +404,7 @@ function createCalendar(
 
     scrollTimeout = setTimeout(() => {      
       const months = document.querySelectorAll('.month-name');
-      for (const month of months) {
+      for (const month of Array.from(months)) {
         if (month instanceof HTMLElement) {
           // first month that the user can read, could be adjusted slightly
           if (month.getBoundingClientRect().top > 0) {
