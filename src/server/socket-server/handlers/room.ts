@@ -4,9 +4,15 @@ import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
 import { RoomGuard, RoomHandler } from "./handlers";
 
-export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg }, x, y) => {
+export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg, data }, x, y) => {
+  const state = room.getState(penguin);
+  const isInitialPosition = state.x === 0 && state.y === 0;
   room.updatePosition(penguin, x, y);
-  msg.send(room.players, 'sp', penguin.id, x, y);
+  if (isInitialPosition) {
+    msg.send(room.players, 'ap', getPenguinString(data, penguin, { ...state, x, y }));
+  } else {
+    msg.send(room.players, 'sp', penguin.id, x, y);
+  }
 }
 
 export const handleSetFrame: RoomHandler<[number]> = ({ penguin, room, msg }, frame) => {
