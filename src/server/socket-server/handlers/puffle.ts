@@ -5,7 +5,7 @@ import { PUFFLES } from "@server/game-logic/puffle";
 import { PlayerPuffle } from "@server/database/database";
 import { choose, randomInt } from "@common/utils";
 import { PUFFLE_ITEMS } from "@server/game-logic/puffle-item";
-import { PenguinHandler, PenguinGuard } from "./handlers";
+import { PenguinHandler, PenguinGuard, RoomHandler } from "./handlers";
 import { handleReceiveMail } from "./mail";
 
 
@@ -314,14 +314,13 @@ enum TreasureType {
   Gold = 4
 };
 
-const sendPuffleDig: PenguinHandler<[TreasureType, number]> = (ctx, treasureType, target) => {
-  const { msg, penguin } = ctx;
+const sendPuffleDig: RoomHandler<[TreasureType, number]> = (ctx, treasureType, target) => {
+  const { msg, penguin, room } = ctx;
   const [coins, itemId] =
     treasureType === TreasureType.Coins ? [target, 0] :
     treasureType === TreasureType.Gold ? [target, 1] : [0, target];
 
-  const penguins = 'room' in ctx ? ctx.room.players : [penguin];
-  msg.send(penguins, 'puffledig', penguin.id, penguin.puffle.walking ?? 0, treasureType, itemId, coins, penguin.dig.hasDug ? 0 : 1);
+  msg.send(room.players, 'puffledig', penguin.id, penguin.puffle.walking ?? 0, treasureType, itemId, coins, penguin.dig.hasDug ? 0 : 1);
 }
 
 const sendGoldNuggets: PenguinHandler<[]> = ({ msg, penguin }) => {
@@ -329,7 +328,7 @@ const sendGoldNuggets: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'currencies', `1|${penguin.gold.nuggets}`);
 }
 
-const puffleDig: PenguinHandler<[boolean]> = (ctx, onCommand: boolean) => {
+const puffleDig: RoomHandler<[boolean]> = (ctx, onCommand: boolean) => {
   const { msg, penguin, data, prst } = ctx;
   // PUFFLE DIG MECHANICS
   // Puffle digging is a completely server-side feature and with a big amount of variables,
@@ -624,5 +623,5 @@ export const isBeforePuffleCreatureGuard: PenguinGuard = (ctx) => {
   return !isAfterPuffleCreatureGuard(ctx);
 }
 
-export const handlePuffleDigRandom: PenguinHandler<[number]> = (ctx) => puffleDig(ctx, false);
-export const handlePuffleDigOnCommand: PenguinHandler<[]> = (ctx) => puffleDig(ctx, true);
+export const handlePuffleDigRandom: RoomHandler<[]> = (ctx) => puffleDig(ctx, false);
+export const handlePuffleDigOnCommand: RoomHandler<[]> = (ctx) => puffleDig(ctx, true);
