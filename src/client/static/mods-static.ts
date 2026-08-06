@@ -26,7 +26,7 @@ window.addEventListener('get-mods', (e: any) => {
   document.querySelector('.mods')!.innerHTML = html;
 
   const inputs = document.querySelectorAll('input[type="checkbox"]');
-  for (const input of inputs) {
+  for (const input of Array.from(inputs)) {
     if (input instanceof HTMLInputElement) {
       input.addEventListener('change', (e) => {
         if (e.target instanceof HTMLInputElement) {
