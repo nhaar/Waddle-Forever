@@ -11,6 +11,7 @@ export interface MessageHandler {
 export interface ClientSocket {
   write: (data: string) => Promise<void>;
   end: (data?: string) => void;
+  buffer: string;
 }
 
 const parseHeaders = (data: string): Record<string, string> => {
@@ -42,7 +43,8 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
           })
         },
 
-        end: (d) => ws.close(undefined, d)
+        end: (d) => ws.close(undefined, d),
+        buffer: ''
       }
 
       ws.on('message', (data) => {
@@ -94,13 +96,13 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
               } else {
                 socket.end(d);
               }
-            }
+            },
+            buffer: ''
           }
 
-          let bufferedData = '';
           socket.on('data', (data: string | Buffer) => {
-            const packets = (bufferedData + data.toString()).split('\0');
-            bufferedData = packets.pop() ?? '';
+            const packets = (cs.buffer + data.toString()).split('\0');
+            cs.buffer = packets.pop() ?? '';
 
             for (const packet of packets) {
               if (packet.length > 0) {
