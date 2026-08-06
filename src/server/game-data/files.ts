@@ -160,6 +160,11 @@ would need to investigated`
       comment: 'Domain check removed'
     },
     {
+      file: 'GamesAquaGrabberSubgame.swf',
+      comment: 'Refreshes the title screen reference after leaving a level so another level can load',
+      base: 'slegacy:media/play/v2/games/sub/subgame.swf'
+    },
+    {
       file: 'GamesThiniceThinIce.swf',
       comment: 'Domain check removed'
     },
