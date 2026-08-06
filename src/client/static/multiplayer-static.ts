@@ -14,6 +14,11 @@ function getPort(port: string): number | undefined {
 
 window.addEventListener('get-info', (e: any) => {
   const detail = e.detail;
+  const guestSettings = detail.type === 'guest' ? detail : detail.lastGuest;
+  if (guestSettings !== undefined) {
+    ipInput.value = guestSettings.ip;
+    portInput.value = guestSettings.port ?? '';
+  }
   switch (detail.type) {
     case 'local':
       localButton.checked = true;
@@ -27,8 +32,6 @@ window.addEventListener('get-info', (e: any) => {
     case 'guest':
       guestButton.checked = true;
       info.style.visibility = 'visible';
-      ipInput.value = detail.ip;
-      portInput.value = detail.port;
       break;
   }
 });

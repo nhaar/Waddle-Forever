@@ -3,6 +3,7 @@ import path from "path";
 import { SettingsManager } from "@server/settings";
 import { GlobalSettings, makeUrl } from "@common/utils";
 import { HTTP_PORT } from "@common/constants";
+import { Store } from "./store";
 
 let multiplayerWindow: BrowserWindow | null;
 
@@ -15,7 +16,7 @@ export function getSiteUrl(settings: GlobalSettings, serverSettings: SettingsMan
 }
 
 /** Creates the window which allows changing which IP the client connects to */
-export function createMultiplayerSettings(globalSettings: GlobalSettings, serverSettings: SettingsManager, mainWindow: BrowserWindow) {
+export function createMultiplayerSettings(store: Store, globalSettings: GlobalSettings, serverSettings: SettingsManager, mainWindow: BrowserWindow) {
   if (multiplayerWindow) {
     multiplayerWindow.focus();
     return;
@@ -41,7 +42,10 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
       multiplayerSettings.ip = serverSettings.targetIP;
       multiplayerSettings.port = serverSettings.targetPort;
     }
-    multiplayerWindow?.webContents.send('get-info', multiplayerSettings);
+    multiplayerWindow?.webContents.send('get-info', {
+      ...multiplayerSettings,
+      lastGuest: store.public.get('lastMultiplayerGuest')
+    });
   });
 
   multiplayerWindow.on('closed', () => {
@@ -54,6 +58,7 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
     globalSettings.multiplayer = { ip, port, type };
     switch (type) {
       case 'guest':
+        store.public.set('lastMultiplayerGuest', { ip, port });
         globalSettings.multiplayer = { ip, port, type};
         break;
       case 'local':

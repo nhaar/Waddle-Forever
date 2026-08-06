@@ -3,4 +3,8 @@ export type PublicSchema = {
   enableDiscordRPC: boolean;
   enableDiscordRPCTracker: boolean;
   lastLanguage: string;
+  lastMultiplayerGuest?: {
+    ip: string;
+    port?: number;
+  };
 }

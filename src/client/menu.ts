@@ -45,7 +45,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       },
       {
         label: 'Open Multiplayer Settings',
-        click: () => createMultiplayerSettings(globalSettings,serverSettings, mainWindow)
+        click: () => createMultiplayerSettings(store, globalSettings,serverSettings, mainWindow)
       },
       {
         label: 'Open Commands',
