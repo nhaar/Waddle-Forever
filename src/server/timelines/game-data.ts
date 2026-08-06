@@ -104,6 +104,7 @@ type GameState = {
   extraWaddleRooms: WaddleRoomInfo[];
   iglooMusicReleased: boolean;
   ownedIgloos: boolean;
+  puffleHandItems: boolean;
 }
 
 function getFreshState(): GameState {
@@ -157,7 +158,8 @@ function getFreshState(): GameState {
     releasedStamps: new Set<number>(),
     extraWaddleRooms: [],
     iglooMusicReleased: false,
-    ownedIgloos: false
+    ownedIgloos: false,
+    puffleHandItems: true
   };
 }
 
@@ -298,6 +300,8 @@ export class GameData {
             break;
           case 'vanilla-engine':
             this.state.vanillaEngine = true;
+            // intersection until the 2012 PR is added
+            this.state.puffleHandItems = false;
             this.addRouteMap(AS3_STATIC_FILES);
             break;
           case 'as3':
@@ -971,5 +975,9 @@ export class GameData {
 
   public isAfterOwnedIgloos() {
     return this.state.ownedIgloos;
+  }
+
+  public puffleHandItems() {
+    return this.state.puffleHandItems;
   }
 }

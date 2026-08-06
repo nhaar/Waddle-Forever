@@ -103,20 +103,24 @@ const enterRoom: PenguinHandler<[WorldRoom, number, number]> = (ctx, r, x, y) =>
   msg.send(penguin, 'jr', r.id, ...r.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
   msg.send(r.players, 'ap', getPenguinString(data, penguin, { x, y, frame: 1 }));
 
-  const replayWalkingPuffle = (player: WorldPenguin, recipients: WorldPenguin | WorldPenguin[]) => {
-    const walkingPuffleId = player.puffle.walking;
-    if (walkingPuffleId === null) {
-      return;
-    }
 
-    const args = getPuffleWalkArguments(data, player, walkingPuffleId, 1);
-    if (args !== undefined) {
-      msg.send(recipients, 'pw', ...args);
-    }
-  };
-
-  previousPlayers.forEach((player) => replayWalkingPuffle(player, penguin));
-  replayWalkingPuffle(penguin, previousPlayers);
+  // modern versions don't have the puffle information on penguin so the packet is resent
+  if (!data.puffleHandItems()) {
+    const replayWalkingPuffle = (player: WorldPenguin, recipients: WorldPenguin | WorldPenguin[]) => {
+      const walkingPuffleId = player.puffle.walking;
+      if (walkingPuffleId === null) {
+        return;
+      }
+  
+      const args = getPuffleWalkArguments(data, player, walkingPuffleId, 1);
+      if (args !== undefined) {
+        msg.send(recipients, 'pw', ...args);
+      }
+    };
+  
+    previousPlayers.forEach((player) => replayWalkingPuffle(player, penguin));
+    replayWalkingPuffle(penguin, previousPlayers);
+  }
 }
 
 export function filterItems(data: GameData, items: number[]): number[] {
