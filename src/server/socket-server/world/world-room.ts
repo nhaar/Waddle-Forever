@@ -1,5 +1,6 @@
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
+import { TreasureHuntTable } from "./treasure-hunt";
 import { WaddleRoom } from "./waddle-room";
 import { RoomState, WorldPenguin } from "./world-penguin";
 import { WorldTable } from "./world-table";
@@ -73,6 +74,8 @@ export class WorldRoom {
         table = new FindFourTable(id);
       } else if (WorldTable.MANCALA_TABLE_IDS.has(id)) {
         table = new MancalaTable(id);
+      } else if (WorldTable.TREASURE_HUNT_TABLE_IDS.has(id)) {
+        table = new TreasureHuntTable(id);
       } else {
         throw new Error('Unknown table id');
       }

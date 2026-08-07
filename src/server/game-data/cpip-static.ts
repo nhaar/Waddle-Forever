@@ -204,6 +204,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/catalogues/lodge.swf': 'slegacy:media/play/v2/content/local/en/catalogues/lodge.swf',
   'play/v2/content/local/en/catalogues/mtn.swf': 'slegacy:media/play/v2/content/local/en/catalogues/mtn.swf',
   'play/v2/content/local/en/close_ups/clock_tower.swf': 'slegacy:media/play/v2/content/local/en/close_ups/clock_tower.swf',
+  'play/v2/content/local/en/close_ups/corkboard.swf': 'slegacy:media/play/v2/content/local/en/close_ups/corkboard.swf',
   'play/v2/content/local/en/close_ups/field_ops.swf': 'slegacy:media/play/v2/content/local/en/close_ups/field_ops.swf',
   'play/v2/content/local/en/close_ups/fireItems.swf': 'archives:PlayV2ContentEnClose_upsFireItems-pre2011.swf',
   'play/v2/content/local/en/close_ups/ninjabelts.swf': 'archives:PlayV2ContentEnClose_upsNinjabelts-pre2011.swf',
@@ -220,6 +221,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/local/en/instructions/card_jitsu_fire.swf': 'archives:ENInstructionsCardJitsuFire-pre2011.swf',
   'play/v2/content/local/en/instructions/card_jitsu_water.swf': 'archives:ENInstructionsCardJitsuWater-pre2011.swf',
   'play/v2/content/local/en/instructions/mancala.swf': 'slegacy:media/play/v2/content/local/en/instructions/mancala.swf',
+  'play/v2/content/local/en/instructions/treasurehunt.swf': 'slegacy:media/play/v2/content/local/en/instructions/treasurehunt.swf',
   'play/v2/content/local/en/prompts/tutorial_prompts.swf': 'slegacy:media/play/v2/content/local/en/prompts/tutorial_prompts.swf',
   'play/v2/content/local/es/catalogues/adopt.swf': 'slegacy:media/play/v2/content/local/es/catalogues/adopt.swf',
   'play/v2/content/local/fr/catalogues/cove.swf': 'slegacy:media/play/v2/content/local/fr/catalogues/cove.swf',
@@ -377,6 +379,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/games/fish/IceFishing.swf': 'archives:GamesIceFishingMain-2011.swf',
   'play/v2/games/four/FindFour.swf': 'archives:FindFour.swf',
   'play/v2/games/mancala/Mancala.swf': 'archives:Mancala.swf',
+  'play/v2/games/treasurehunt/TreasureHunt.swf': 'slegacy:media/play/v2/games/treasurehunt/TreasureHunt.swf',
   'play/v2/content/global/binoculars/empty.swf': 'archives:BinocularsNormal.swf',
 
   'play/v2/content/local/en/postcards/1.swf': 'archives:ENPostcards1.swf',

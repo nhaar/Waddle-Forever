@@ -1,6 +1,7 @@
 import { getPenguinString } from "./join";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
+import { TreasureHuntTable } from "@server/socket-server/world/treasure-hunt";
 import { ROOMS } from "@server/game-data/rooms";
 import { RoomGuard, RoomHandler } from "./handlers";
 
@@ -114,7 +115,9 @@ export const sendTeleportOld: RoomHandler<[number, number, number]> = ({ msg, pe
 }
 
 function isTableId(tableId: number) {
-  return WorldTable.FIND_FOUR_TABLE_IDS.has(tableId) || WorldTable.MANCALA_TABLE_IDS.has(tableId);
+  return WorldTable.FIND_FOUR_TABLE_IDS.has(tableId)
+    || WorldTable.MANCALA_TABLE_IDS.has(tableId)
+    || WorldTable.TREASURE_HUNT_TABLE_IDS.has(tableId);
 }
 
 export const handleGetTables: RoomHandler<number[]> = ({ msg, penguin, room }, ...tableIds) => {
@@ -176,6 +179,16 @@ export const handleGetTableGame: RoomHandler<[string]> = ({ msg, room, penguin }
 
   const table = room.getTable(resolvedTableId);
 
+  if (table instanceof TreasureHuntTable) {
+    if (table.penguins.length === 2) {
+      msg.send(penguin, 'gz', table.getNames()[0], '');
+    } else {
+      const spectatorFlag = table.penguins.length > 2 ? [1] : [];
+      msg.send(penguin, 'gz', ...table.getNames(), table.serializeBoard(), ...spectatorFlag);
+    }
+    return;
+  }
+
   const boardState = table.serializeBoard();
 
   msg.send(penguin, 'gz', ...table.getNames(), boardState);
@@ -193,7 +206,21 @@ export const handleJoinTableGame: RoomHandler<[]> = ({ msg, room, penguin }) => 
       seatId = table.assignSeatIndex(penguin);
     }
 
+    if (seatId === WorldTable.TABLE_SPECTATOR_SEAT) {
+      return;
+    }
+
     table.setJoined(seatId);
+
+    if (table instanceof TreasureHuntTable) {
+      msg.send(penguin, 'jz', seatId);
+      msg.send(table.penguins, 'uz', seatId, penguin.name);
+      if (!table.hasStarted() && table.hasEveryoneJoined()) {
+        table.setStarted();
+        msg.send(table.penguins, 'sz', ...table.getNames(), table.serializeBoard());
+      }
+      return;
+    }
 
     msg.send(penguin, 'jz', seatId);
     table.getSeats().forEach((seat, index) => {
@@ -287,6 +314,30 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
       }
     }
   }  
+}
+
+export const handleSendTreasureHuntMove: RoomHandler<[string, string, number]> = ({ msg, room, penguin }, movie, direction, spade) => {
+  const table = room.getPenguinTable(penguin);
+  if (!(table instanceof TreasureHuntTable) || !table.hasStarted() || table.hasEnded()) {
+    return;
+  }
+
+  const seat = table.getSeatIndex(penguin);
+  if (seat === undefined || seat === WorldTable.TABLE_SPECTATOR_SEAT || !table.hasJoined(seat) || table.getTurn() !== seat) {
+    return;
+  }
+  if (!table.makeMove(movie, direction, spade)) {
+    return;
+  }
+
+  msg.send(table.penguins, 'zm', movie, direction, spade);
+  if (table.hasEnded()) {
+    const tableId = table.getId();
+    table.resetRound();
+    msg.send(room.players, 'ut', tableId, 0);
+  } else {
+    table.changeTurn();
+  }
 }
 
 export const handleUpdatePenguinOld: RoomHandler<[number, number, number, number, number, number, number, number, number]> = ({ penguin, room, msg, data, prst }, color, head, face, neck, body, hand, feet, pin, background) => {
