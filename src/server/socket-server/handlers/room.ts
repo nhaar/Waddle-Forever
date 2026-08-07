@@ -113,14 +113,23 @@ export const sendTeleportOld: RoomHandler<[number, number, number]> = ({ msg, pe
   msg.send(room.players, 'st', x, y, frame);
 }
 
+function isTableId(tableId: number) {
+  return WorldTable.FIND_FOUR_TABLE_IDS.has(tableId) || WorldTable.MANCALA_TABLE_IDS.has(tableId);
+}
+
 export const handleGetTables: RoomHandler<number[]> = ({ msg, penguin, room }, ...tableIds) => {
   // return table occupancy counts for the requested table ids
   msg.send(penguin, 'gt', ...tableIds.map(id => {
-    return `${id}|${room.getTable(id).getCount()}`;
+    const count = isTableId(id) ? room.getTable(id).getCount() : 0;
+    return `${id}|${count}`;
   }));
 }
 
 export const handleJoinTable: RoomHandler<[number]> =({ msg, penguin, room }, tableId) => {
+  if (!isTableId(tableId)) {
+    return;
+  }
+
   const table = room.getTable(tableId);
 
   const before = table.getCount();
@@ -154,18 +163,15 @@ export const handleLeaveTable: RoomHandler<[]> = ({ msg, room, penguin }) => {
   }
 }
 
-function isTableId(tableId: number) {
-  return WorldTable.FIND_FOUR_TABLE_IDS.has(tableId) || WorldTable.MANCALA_TABLE_IDS.has(tableId);
-}
-
 export const handleGetTableGame: RoomHandler<[string]> = ({ msg, room, penguin }, tableId) => {
   // resolve table id from context so spectators can re-open correctly
   let resolvedTableId = Number(tableId);
   if (!isTableId(resolvedTableId)) {
     const existingTable = room.getPenguinTable(penguin);
-    if (existingTable !== null) {
-      resolvedTableId = existingTable.getId();
+    if (existingTable === null) {
+      return;
     }
+    resolvedTableId = existingTable.getId();
   }
 
   const table = room.getTable(resolvedTableId);
