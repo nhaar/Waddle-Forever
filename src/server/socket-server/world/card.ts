@@ -10,17 +10,17 @@ import { WorldPenguin } from "./world-penguin";
 
 export class Hand {
   private _canDrawCards: number[];
-  private _discardedCards: number[];
+  private _cantDrawCards: number[];
   
   constructor(cards: number[]) {
     this._canDrawCards = [...cards];
-    this._discardedCards = [];
+    this._cantDrawCards = [];
   }
 
   draw(): number {
     if (this._canDrawCards.length === 0) {
-      this._canDrawCards = this._discardedCards;
-      this._discardedCards = [];
+      this._canDrawCards = this._cantDrawCards;
+      this._cantDrawCards = [];
     }
     if (this._canDrawCards.length === 0) {
       throw new Error('Cannot draw a card while every card is held');
@@ -30,7 +30,7 @@ export class Hand {
   }
 
   discard(card: number): void {
-    this._discardedCards.push(card);
+    this._cantDrawCards.push(card);
   }
 }
 
