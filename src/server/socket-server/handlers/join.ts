@@ -530,7 +530,11 @@ export const handleDisconnect = async (ctx: WorldContext) => {
     }
 
     world.disconnect(penguin);
-    prst(penguin);
+    try {
+      await prst(penguin);
+    } catch (error) {
+      console.error(`Failed to save penguin ${penguin.id} during disconnect`, error);
+    }
     msg.unlinkClient(penguin);
   }
 }
