@@ -1,4 +1,5 @@
 const refreshButton = document.getElementById('refresh-button')!;
+const commandsListButton = document.getElementById('commandslist-button')!;
 const playerSelect = document.getElementById('player-select')! as HTMLSelectElement;
 const commandInput = document.getElementById('command-input')! as HTMLInputElement;
 const commandButton = document.getElementById('command-button')!;
@@ -27,6 +28,8 @@ function runCommand() {
 refreshButton.addEventListener('click', updatePlayerSelect);
 
 commandButton.addEventListener('click', runCommand);
+
+commandsListButton.addEventListener('click', () => commandsApi.openCommandsList());
 
 window.addEventListener('load', () => {
   commandInput.focus();

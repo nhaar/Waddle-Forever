@@ -1,6 +1,8 @@
 import { BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { getPopupCreator } from "./popups";
+import { createCommandsList } from "./commandslist";
+import { popups } from "./main";
 
 export const createCommands = getPopupCreator('commands', ['get-players', 'run-command'], (mainWindow, settings, server
 ) => {
@@ -33,6 +35,10 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
         server.runCommand(id, name, argString == '' ? [] : argString.split(/\s+/));
       }
     }
+  });
+
+  ipcMain.on('open-commands-list', () => {
+    createCommandsList(mainWindow, popups, settings, server)
   });
 
   return commandsWindow;

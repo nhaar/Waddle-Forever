@@ -10,7 +10,21 @@ type CommandContext = PenguinContext | RoomContext;
 type CommandHandler<T extends Array<string | number>> = (ctx: CommandContext, ...args: T) => void;
 
 type CommandResponse = (ctx: CommandContext, args: Array<string>) => void;
-type CommandsGenerator = Array<[string, Array<[ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => void]>]>;
+type CommandsGenerator = Array<[
+  string,
+  Array<[ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => void]>,
+  CommandDisplayInfo
+]>;
+
+interface CommandDisplayInfo {
+  argNames: Array<string>
+  description: string
+  examples: Array<string>
+}
+
+interface CommandDisplayInfoFull extends CommandDisplayInfo {
+  name: string
+}
 
 const getCommands = (generators: CommandsGenerator): Array<[string, CommandResponse]> => {
   return generators.map(([name, responses]) => {
@@ -221,28 +235,189 @@ const c = <const T extends ArgumentsIndicator>(args: T, callback: (ctx: CommandC
   return [args, callback as (ctx: CommandContext, ...args: Array<string | number>) => void];
 }
 
-export const getCommandsHandler = (): CommandsHandler => {
-  const generators: CommandsGenerator = [
-    ['ai', [c(['number'], handleAddItem), c(['string'], handleAddAllItems)]],
-    ['jr', [c(['number'], handleJoinRoomId), c(['string'], handleJoinRoomName)]],
-    ['ac', [c(['number'], handleAddCoins)]],
-    ['rename', [c('string', handleRename)]],
-    ['awards', [c([], handleAwards)]],
-    ['age', [c([], handleAge)]],
-    ['member', [c([], handleMember)]],
-    ['af', [c(['number', 'number'], handleAddFurniture), c(['number'], handleAddOneFurniture)]],
-    ['plunlocklevels', [c([], handleUnlockPlLevels)]],
-    ['plunlocktimeattack', [c([], handleUnlockTimeAttack)]],
-    ['plunlockturbo', [c([], handleUnlockTurbo)]],
-    ['plunlockslowmode', [c([], handleUnlockSlowMove)]],
-    ['nosave', [c([], handleNoSave)]],
-    ['enablesave', [c([], handleEnableSave)]],
-    ['amulet', [c(['string'], handleAmulet)]],
-    ['cjwin', [c([], handleCjOneWin), c(['number'], handleCjWins)]],
-    ['powercards', [c([], handlePowercards)]],
-    ['addcard', [c(['number', 'number'], handleAddCard)]],
-    ['safechat', [c([], handleSafechat)]]
-  ];
+const generators: CommandsGenerator = [
+  [
+    'ai',
+    [c(['number'], handleAddItem), c(['string'], handleAddAllItems)],
+    {
+      argNames: ['id'],
+      description: "Add a clothing item to your penguin. You can also do 'ai all' to add all clothing items in the game.",
+      examples: ['ai 102', 'ai all']
+    }
+  ],
+  [
+    'jr',
+    [c(['number'], handleJoinRoomId), c(['string'], handleJoinRoomName)],
+    {
+      argNames: ['id/name'],
+      description: "Join a room by its ID or name.",
+      examples: ['jr 400', 'jr plaza']
+    }
+  ],
+  [
+    'ac',
+    [c(['number'], handleAddCoins)],
+    {
+      argNames: ['amount'],
+      description: "Add a given amount of coins to your penguin. You can also give a negative number to subtract coins.",
+      examples: ['ac 1024', 'ac -329']
+    }
+  ],
+  [
+    'rename',
+    [c('string', handleRename)],
+    {
+      argNames: ['name'],
+      description: "Rename your penguin to something else.",
+      examples: ['rename UnfunnyPenguin67']
+    }
+  ],
+  [
+    'awards',
+    [c([], handleAwards)],
+    {
+      argNames: [],
+      description: "For speedrunning purposes, adds the medals from PSA missions 7 through 11 to your penguin.",
+      examples: []
+    }
+  ],
+  [
+    'age',
+    [c([], handleAge)],
+    {
+      argNames: [],
+      description: `Make your penguin's \"birthday\" be on the day you are currently in on the timeline.
 
+      For example, if you run this command on January 15, 2009, and then jump to February 20, 2009, then your penguin will be 36 days old.
+      `,
+      examples: []
+    }
+  ],
+  [
+    'member',
+    [c([], handleMember)],
+    {
+      argNames: [],
+      description: "Swap the membership status of your penguin. If your penguin is currently a member, then it will turn into a non-member, and vice-versa.",
+      examples: []
+    }
+  ],
+  [
+    'af',
+    [c(['number', 'number'], handleAddFurniture), c(['number'], handleAddOneFurniture)],
+    {
+      argNames: ['id', 'quantity'],
+      description: "Adds the given quantity (or just 1 if not provided) of the furniture item with the given ID to your penguin.",
+      examples: ['af 33', 'af 2320 50']
+    }
+  ],
+  [
+    'plunlocklevels',
+    [c([], handleUnlockPlLevels)],
+    {
+      argNames: [],
+      description: "Unlocks all levels in Puffle Launch.",
+      examples: []
+    }
+  ],
+  [
+    'plunlocktimeattack',
+    [c([], handleUnlockTimeAttack)],
+    {
+      argNames: [],
+      description: "Unlocks time attack mode in Puffle Launch.",
+      examples: []
+    }
+  ],
+  [
+    'plunlockturbo',
+    [c([], handleUnlockTurbo)],
+    {
+      argNames: [],
+      description: "Unlocks turbo mode in Puffle Launch.",
+      examples: []
+    }
+  ],
+  [
+    'plunlockslowmode',
+    [c([], handleUnlockSlowMove)],
+    {
+      argNames: [],
+      description: "Unlocks slow mode in Puffle Launch.",
+      examples: []
+    }
+  ],
+  [
+    'nosave',
+    [c([], handleNoSave)],
+    {
+      argNames: [],
+      description: "When used, the penguin's current state will be saved, and any changes made to the penguin afterward will not be saved, meaning relogging will go back to the initial state.",
+      examples: []
+    }
+  ],
+  [
+    'enablesave',
+    [c([], handleEnableSave)],
+    {
+      argNames: [],
+      description: "Undoes the effect of the nosave command.",
+      examples: []
+    }
+  ],
+  [
+    'amulet',
+    [c(['string'], handleAmulet)],
+    {
+      argNames: ['element'],
+      description: "Add the gem of the given element to your Card-Jitsu amulet, which can be fire, water, or snow.",
+      examples: ['element fire', 'element water', 'element snow']
+    }
+  ],
+  [
+    'cjwin',
+    [c([], handleCjOneWin), c(['number'], handleCjWins)],
+    {
+      argNames: ['wins'],
+      description: "Adds a given number of wins (or just 1 if not provided) to your Card-Jitsu progress.",
+      examples: ['cjwin', 'cjwin 20']
+    }
+  ],
+  [
+    'powercards',
+    [c([], handlePowercards)],
+    {
+      argNames: [],
+      description: "Adds 1 of each of all the Card-Jitsu powercards to your penguin.",
+      examples: []
+    }
+  ],
+  [
+    'addcard',
+    [c(['number', 'number'], handleAddCard)],
+    {
+      argNames: ['id', 'amount'],
+      description: "Adds the given amount (or just 1 if not provided) of Card-Jitsu cards with the given card ID.",
+      examples: ['addcard 76', 'addcard 345 10']
+    }
+  ],
+  [
+    'safechat',
+    [c([], handleSafechat)],
+    {
+      argNames: [],
+      description: "Toggles safe-chat mode for your penguin.",
+      examples: []
+    }
+  ]
+];
+
+export function getCommandsList(): Array<CommandDisplayInfoFull> {
+  return generators.map(([name, _, displayInfo]) => {
+    return { name, ...displayInfo }
+  });
+}
+
+export const getCommandsHandler = (): CommandsHandler => {
   return new CommandsHandler(getCommands(generators));
 }

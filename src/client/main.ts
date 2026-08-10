@@ -49,7 +49,7 @@ let globalSettings : GlobalSettings = {
   multiplayer: { type: 'local' }
 };
 
-const popups: Popups = new Map<string, BrowserWindow>();
+export const popups: Popups = new Map<string, BrowserWindow>();
 
 app.on('ready', async () => {
   // setup window is necessary so that in case we need to

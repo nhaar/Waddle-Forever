@@ -2,11 +2,27 @@
 <html>
   <head>
     <link href="base.css" rel="stylesheet" type="text/css" media="screen"/>
+    <style>
+      .top-buttons {
+        display: flex;
+        gap: 5px;
+      }
+
+      .top-buttons button {
+        flex: 1;
+        width: 100%;
+      }
+    </style>
   </head>
   <body>
-    <button id="refresh-button" title="Refresh the player list">
-      Refresh Players
-    </button>
+    <div class="top-buttons">
+        <button id="refresh-button" title="Refresh the player list">
+          Refresh Player List
+        </button>
+        <button id="commandslist-button" title="See the list of available commands">
+          List of Commands
+        </button>
+    </div>
     <div>Select the player the command will affect (shows all online players):</div>
     <select id="player-select" class="select">
     </select>
