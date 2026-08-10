@@ -104,6 +104,8 @@ type GameState = {
   extraWaddleRooms: WaddleRoomInfo[];
   iglooMusicReleased: boolean;
   ownedIgloos: boolean;
+  /* Signals that the SP packet is sent to set the default position upon entering a room (used in more modern versions) */
+  isSpOnJr: boolean;
 }
 
 function getFreshState(): GameState {
@@ -157,7 +159,8 @@ function getFreshState(): GameState {
     releasedStamps: new Set<number>(),
     extraWaddleRooms: [],
     iglooMusicReleased: false,
-    ownedIgloos: false
+    ownedIgloos: false,
+    isSpOnJr: false
   };
 }
 
@@ -298,6 +301,7 @@ export class GameData {
             break;
           case 'vanilla-engine':
             this.state.vanillaEngine = true;
+            this.state.isSpOnJr = true;
             this.addRouteMap(AS3_STATIC_FILES);
             break;
           case 'as3':
@@ -971,5 +975,9 @@ export class GameData {
 
   public isAfterOwnedIgloos() {
     return this.state.ownedIgloos;
+  }
+
+  public isSpOnJr() {
+    return this.state.isSpOnJr;
   }
 }

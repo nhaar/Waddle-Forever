@@ -8,7 +8,7 @@ export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room
   const state = room.getState(penguin);
   const isInitialPosition = state.x === 0 && state.y === 0;
   room.updatePosition(penguin, x, y);
-  if (isInitialPosition) {
+  if (data.isSpOnJr() && isInitialPosition) {
     msg.send(room.players, 'ap', getPenguinString(data, penguin, { ...state, x, y }));
   } else {
     msg.send(room.players, 'sp', penguin.id, x, y);
