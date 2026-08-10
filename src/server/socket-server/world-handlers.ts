@@ -236,8 +236,8 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'p#pcn', ['string'], sendPuffleCheck),
     p.xt('s', 'p#pw', ['number', 'number'], handlePuffleWalk),
     p.xt('s', 'p#puffleswap', ['number', 'string'], handlePuffleBackyardSwap),
-    p.xt('s', 'p#puffledig', [], handlePuffleDigRandom),
-    p.xt('s', 'p#puffledigoncommand', [], handlePuffleDigOnCommand),
+    r.xt('s', 'p#puffledig', ['number'], handlePuffleDigRandom),
+    r.xt('s', 'p#puffledigoncommand', [], handlePuffleDigOnCommand),
     p.xt('s', 'p#pcid', ['number', 'number'], handleEatPuffleItem),
     p.xt('s', 'p#revealgoldpuffle', [], handleRevealGoldPuffle),
 
