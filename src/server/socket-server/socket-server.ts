@@ -35,8 +35,9 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
         write: async (message: string) => {
           return new Promise<void>((resolve, reject) => {
             ws.send(Buffer.from(message + '\0', 'utf8'), { binary: true }, (err) => {
-              if (err !== undefined) {
+              if (err) {
                 reject(err);
+                return;
               }
               resolve();
             });
@@ -61,8 +62,6 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
         });
       });
 
-      ws.emit('message', req);
-
       ws.on('error', console.error);
     });
   
@@ -71,9 +70,24 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
         const dataStr = buffer.toString()
 
         if (dataStr.startsWith('GET')) {
-          // This is a websocket connection
-          wsServer.handleUpgrade({ headers: parseHeaders(dataStr), method: 'GET' } as any, socket, buffer, (ws) => {
-            wsServer.emit('connection', ws, dataStr);
+          const headerEnd = dataStr.indexOf('\r\n\r\n');
+          if (headerEnd === -1) {
+            socket.destroy();
+            return;
+          }
+
+          const requestText = dataStr.slice(0, headerEnd + 4);
+          const head = Buffer.from(dataStr.slice(headerEnd + 4), 'binary');
+
+          // This is a websocket connection.
+          // Only the bytes after the HTTP upgrade headers belong in the ws "head" buffer.
+          wsServer.handleUpgrade({
+            headers: parseHeaders(requestText),
+            method: 'GET',
+            socket,
+            url: '/',
+          } as any, socket, head, (ws) => {
+            wsServer.emit('connection', ws, { headers: parseHeaders(requestText), method: 'GET' });
           });
         } else {
           socket.setEncoding('utf8')
