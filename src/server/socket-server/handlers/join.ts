@@ -101,8 +101,9 @@ const enterRoom: PenguinHandler<[WorldRoom, number, number]> = (ctx, r, x, y) =>
   r.addPenguin(penguin, x, y);
   world.enterState(penguin, { room: r });
   msg.send(penguin, 'jr', r.id, ...r.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
-  msg.send(r.players, 'ap', getPenguinString(data, penguin, { x, y, frame: 1 }));
-
+  if (!data.isSpOnJr() || x !== 0 || y !== 0) {
+    msg.send(r.players, 'ap', getPenguinString(data, penguin, { x, y, frame: 1 }));
+  }
 
   // modern versions don't have the puffle information on penguin so the packet is resent
   if (!data.puffleHandItems()) {

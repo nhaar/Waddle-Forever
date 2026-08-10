@@ -104,6 +104,8 @@ type GameState = {
   extraWaddleRooms: WaddleRoomInfo[];
   iglooMusicReleased: boolean;
   ownedIgloos: boolean;
+  /* Signals that the SP packet is sent to set the default position upon entering a room (used in more modern versions) */
+  isSpOnJr: boolean;
   puffleHandItems: boolean;
 }
 
@@ -159,6 +161,7 @@ function getFreshState(): GameState {
     extraWaddleRooms: [],
     iglooMusicReleased: false,
     ownedIgloos: false,
+    isSpOnJr: false,
     puffleHandItems: true
   };
 }
@@ -300,6 +303,7 @@ export class GameData {
             break;
           case 'vanilla-engine':
             this.state.vanillaEngine = true;
+            this.state.isSpOnJr = true;
             // intersection until the 2012 PR is added
             this.state.puffleHandItems = false;
             this.addRouteMap(AS3_STATIC_FILES);
@@ -975,6 +979,10 @@ export class GameData {
 
   public isAfterOwnedIgloos() {
     return this.state.ownedIgloos;
+  }
+
+  public isSpOnJr() {
+    return this.state.isSpOnJr;
   }
 
   public puffleHandItems() {
