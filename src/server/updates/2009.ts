@@ -537,6 +537,9 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-06',
     end: ['event'],
     miscComments: ['White Puffles are available to adopt'],
+    fileChanges: {
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-March2009.swf'
+    },
     rooms: {
       pet: 'archives:RoomsPet_4.swf'
     },
@@ -707,7 +710,8 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-24',
     miscComments: ['The membership badge now features levels'],
     fileChanges: {
-      'play/v2/interface/interface.swf': 'archives:ClientInterface-April2009.swf'
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-April2009.swf',
+      'play/v2/engine/engine.swf': 'recreation:engine_apr2009.swf'
     }
   },
   {
@@ -1219,7 +1223,8 @@ export const UPDATES_2009: Update[] = [
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
       'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf',
-      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf'
+      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf',
+      'play/v2/client/engine.swf': 'archives:ClientEngine2009-06-15.swf'
     },
     indexHtml: 'classic-cpip-2',
     iglooList: [

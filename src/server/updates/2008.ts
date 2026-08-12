@@ -1034,7 +1034,6 @@ export const UPDATES_2008: Update[] = [
       'play/v2/shell/shell.swf': 'archives:ClientShell_January_2009.swf',
       'play/v2/airtower/airtower.swf': 'recreation:airtower_cpip.swf',
       'play/v2/gridview/gridview.swf': 'slegacy:media/play/v2/client/gridview.swf',
-      'play/v2/client/engine.swf': 'archives:ClientEngine2009-06-15.swf',
       'play/v2/engine/engine.swf': 'recreation:engine_cpip.swf',
       'play/v2/interface/interface.swf': 'recreation:interfaces/2008_july.swf',
       'play/v2/client/login.swf': 'archives:ClientLoginJun2009.swf',
