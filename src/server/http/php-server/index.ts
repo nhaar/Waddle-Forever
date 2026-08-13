@@ -4,8 +4,7 @@ import { SettingsManager } from "@server/settings";
 import { Router } from "express";
 import { processVersion } from '@server/routes/versions';
 import { getDateString } from '@common/utils';
-import { PenguinJson, PenguinRepository } from '@server/database/database';
-import { getDefaultPenguin } from '@server/socket-server/handlers/login';
+import { getDefaultPenguin, PenguinJson, PenguinRepository } from '@server/database/database';
 import { filterItems } from '@server/socket-server/handlers/join';
 import { GameData } from '@server/timelines/game-data';
 

@@ -1,6 +1,7 @@
 import path from "path";
 import fs from 'fs';
 import { readFile, writeFile } from "@common/utils";
+import { MASCOTS } from "@server/game-data/mascots";
 
 export type StampbookCover = {
   color: number,
@@ -171,6 +172,78 @@ export interface PenguinJson {
 // USER PREFERENCE
   noSave?: boolean;
   safeChat?: boolean;
+}
+
+function capitalizeName(name: string): string {
+  return name.split(' ').map((name => {
+    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
+  })).join(' ');
+}
+
+export function getDefaultPenguin(name: string, color: number, member: boolean, virtualTimestamp: number): PenguinJson {
+  return {
+    name: capitalizeName(name),
+    mascot: 0,
+
+    is_member: member,
+    is_agent: false,
+
+    color: color,
+    head: 0,
+    face: 0,
+    neck: 0,
+    body: 0,
+    hand: 0,
+    feet: 0,
+    background: 0,
+    pin: 0,
+    inventory: [color],
+
+    coins: 500,
+    registration_date: Date.now(),
+
+    minutes_played: 0,
+    virtualRegistrationTimestamp: virtualTimestamp,
+
+    stamps: [],
+    stampbook: {
+      color: 1,
+      highlight: 1,
+      pattern: 0,
+      icon: 1,
+      stamps: [],
+      recent_stamps: []
+    },
+    puffleSeq: 0,
+    puffles: [],
+    backyard: [],
+    puffleItems: {},
+    hasDug: false,
+    treasureFinds: [],
+    rainbow: {
+      adoptability: false,
+      currentTask: 0,
+      coinsCollected: []
+    },
+    igloo: 1,
+    igloos: [getDefaultIgloo(1)],
+    furniture: {},
+    iglooFloorings: [],
+    iglooTypes: [1],
+    iglooLocations: [1],
+    iglooSeq: 1,
+    mail: [],
+    mailSeq: 0,
+    ownedMedals: 0,
+    careerMedals: 0,
+    nuggets: 0,
+    cards: {},
+    cardProgress: 0,
+    isNinja: false,
+    senseiAttempts: 0,
+    cardWins: 0,
+    battleOfDoom: false
+  }
 }
 
 export class DataFolder {
@@ -432,6 +505,30 @@ export class PenguinRepository {
     }
 
     this._seq = new SeqFile(this._path, 100);
+    this.createMascots().catch(e => {
+      throw e;
+    });
+  }
+
+  private async createMascots() {
+    await Promise.all(MASCOTS.map(mascot => {
+      return (async () => {
+        if (await this.get(mascot.id) === null) {
+          const penguin: PenguinJson = {
+            ...getDefaultPenguin(mascot.name, 1, true, new Date(2005, 9, 24).getTime()),
+            inventory: [...mascot.starterItems]
+          };
+          await new Promise<void>((resolve, reject) => {
+            fs.writeFile(this.getFolderPath(mascot.id), JSON.stringify(penguin), (err) => {
+              if (err) {
+                reject();
+              }
+              resolve();
+            });
+          });
+        }
+      })();
+    }));
   }
 
   private getFolderPath(id: number): string {

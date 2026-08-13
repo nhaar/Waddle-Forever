@@ -1,82 +1,12 @@
 import { PenguinMessenger } from "../../socket-server/messenger";
 import { ClientSocket } from "@server/socket-server/socket-server";
-import { getDefaultIgloo, PenguinJson } from "@server/database/database";
+import { getDefaultPenguin } from "@server/database/database";
 import { logdebug } from "@server/logger";
-import { OfflinePenguin, WorldPenguin } from "@server/socket-server/world/world-penguin";
+import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
 import { LoginContext } from "@server/socket-server/xml-handler";
 
-function capitalizeName(name: string): string {
-  return name.split(' ').map((name => {
-    return name.slice(0, 1).toUpperCase() + name.slice(1).toLowerCase();
-  })).join(' ');
-}
 
-export function getDefaultPenguin(name: string, color: number, member: boolean, virtualTimestamp: number): PenguinJson {
-  return {
-    name: capitalizeName(name),
-    mascot: 0,
-
-    is_member: member,
-    is_agent: false,
-
-    color: color,
-    head: 0,
-    face: 0,
-    neck: 0,
-    body: 0,
-    hand: 0,
-    feet: 0,
-    background: 0,
-    pin: 0,
-    inventory: [color],
-
-    coins: 500,
-    registration_date: Date.now(),
-
-    minutes_played: 0,
-    virtualRegistrationTimestamp: virtualTimestamp,
-
-    stamps: [],
-    stampbook: {
-      color: 1,
-      highlight: 1,
-      pattern: 0,
-      icon: 1,
-      stamps: [],
-      recent_stamps: []
-    },
-    puffleSeq: 0,
-    puffles: [],
-    backyard: [],
-    puffleItems: {},
-    hasDug: false,
-    treasureFinds: [],
-    rainbow: {
-      adoptability: false,
-      currentTask: 0,
-      coinsCollected: []
-    },
-    igloo: 1,
-    igloos: [getDefaultIgloo(1)],
-    furniture: {},
-    iglooFloorings: [],
-    iglooTypes: [1],
-    iglooLocations: [1],
-    iglooSeq: 1,
-    mail: [],
-    mailSeq: 0,
-    ownedMedals: 0,
-    careerMedals: 0,
-    nuggets: 0,
-    cards: {},
-    cardProgress: 0,
-    isNinja: false,
-    senseiAttempts: 0,
-    cardWins: 0,
-    battleOfDoom: false
-  }
-}
 
 export function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
   msg.send(p, 'e', error);
