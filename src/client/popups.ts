@@ -4,7 +4,8 @@ import { BrowserWindow, ipcMain } from "electron";
 
 export type Popups = Map<string, BrowserWindow>;
 
-/** Create a popup window which can only have on instance at once
+/** Create a popup window which can only have one instance at once
+ * 
  * Name is just an unique identifier of this window, the value itself doesn't matter
  * eventListeners are the list of events that have to be cleaned in ipcMain after the windows closes
  * The initializer is a function that creates the window and returns it
@@ -12,7 +13,7 @@ export type Popups = Map<string, BrowserWindow>;
 export function getPopupCreator(
   name: string,
   eventListeners: string[],
-  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: WorldServer
+  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: WorldServer, wins: Popups
   ) => BrowserWindow
 ): (mainWin: BrowserWindow, wins: Popups, settings: SettingsManager, gameServer: WorldServer
 ) => Promise<void> {
@@ -23,7 +24,7 @@ export function getPopupCreator(
       return;
     }
   
-    const popup = windowInitializer(mainWin, settings, gameServer);
+    const popup = windowInitializer(mainWin, settings, gameServer, wins);
     wins.set(name, popup);
       popup.on('closed', () => {
       for (const event of eventListeners) {
