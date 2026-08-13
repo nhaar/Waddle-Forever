@@ -39,7 +39,7 @@ class Profile {
   constructor(private _id: number, data: PenguinJson) {
     this._name = data.name;
     this._mascot = data.mascot;
-    this._displayName = MASCOTS.find(m => this._id === m.id).display ?? this._name;
+    this._displayName = MASCOTS.find(m => this._id === m.id)?.display ?? this._name;
   }
 
   get name() {
