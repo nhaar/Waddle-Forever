@@ -8,8 +8,8 @@
     "esModuleInterop": true,
     "strict": true,
     "sourceMap": true,
-    "rootDir": "src/client/static",
-    "outDir": "compiled/client/static",
+    "rootDir": "src/client",
+    "outDir": "compiled/client",
     "paths": {
       "@client/*": ["./src/client/*"],
       "@common/*": ["./src/common/*"],
@@ -20,7 +20,7 @@
     }
   },
   "include": [
-    "src/client/static/**/*"
+    "src/client/views/**/*-static.ts",
   ],
   "exclude": [
     "/dist/**/*",

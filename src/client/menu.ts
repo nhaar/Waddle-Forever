@@ -4,13 +4,13 @@ import openDevTools from "./dev-tools";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
-import { createSettingsWindow } from "./settings";
+import { createSettingsWindow } from "./views/settings/settings";
 import { GlobalSettings } from "@common/utils";
-import { createTimelinePicker } from "./timeline";
-import { createModsWindow } from "./mods";
+import { createTimelinePicker } from "./views/timeline/timeline";
+import { createModsWindow } from "./views/mods/mods";
 import { SettingsManager } from "@server/settings";
-import { createMultiplayerSettings } from "./multiplayer";
-import { createCommands } from "./commands";
+import { createMultiplayerSettings } from "./views/multiplayer/multiplayer";
+import { createCommands } from "./views/commands/commands";
 import { Popups } from "./popups";
 import { WorldServer } from "@server/socket-server/world-server";
 

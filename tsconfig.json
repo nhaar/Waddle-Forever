@@ -21,7 +21,7 @@
     "src/**/*"
   ],
   "exclude": [
-    "src/client/static/**/*",
+    "src/client/views/**/*-static.ts",
     "/dist/**/*",
     "/compiled/**/*"
   ],

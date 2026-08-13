@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from "electron";
 import path from "path";
-import { getPopupCreator } from "./popups";
-import { createCommandsList } from "./commandslist";
+import { getPopupCreator } from "@client/popups";
+import { createCommandsList } from "../commandslist/commandslist";
 
 export const createCommands = getPopupCreator('commands', ['get-players', 'run-command'], (mainWindow, settings, server, wins
 ) => {
@@ -10,7 +10,7 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
     height: 300,
     title: "Commands",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/commands-preload.js')
+      preload: path.join(__dirname, 'commands-preload.js')
     },
     resizable: false,
     parent: mainWindow
@@ -18,7 +18,7 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
 
   commandsWindow.setMenu(null);
 
-  commandsWindow.loadFile(path.join(__dirname, 'views/commands.html'));
+  commandsWindow.loadFile(path.join(__dirname, 'commands.html'));
 
   ipcMain.on('get-players', () => {
     commandsWindow.webContents.send('get-players', server.getAllPlayersInfo());

@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain, shell } from "electron";
 import path from "path";
 import fs from "fs";
 import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from "@common/paths";
-import { getPopupCreator } from "./popups";
+import { getPopupCreator } from "@client/popups";
 import { SettingsManager } from "@server/settings";
 import { ModError } from "@server/mods";
 import { WorldServer } from "@server/socket-server/world-server";
@@ -13,7 +13,7 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
     height: 500,
     title: "Mods",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/mods-preload.js'),
+      preload: path.join(__dirname, 'mods-preload.js'),
     },
     resizable: false
   });
@@ -25,7 +25,7 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
     shell.openExternal(url);
   })
 
-  modsWindow.loadFile(path.join(__dirname, 'views/mods.html'));
+  modsWindow.loadFile(path.join(__dirname, 'mods.html'));
 
   ipcMain.on('update-mod', (_, arg) => {
     const { name, state } = arg;

@@ -14,7 +14,7 @@ function createProgressBarWindow(prompt: string) {
       }
   });
 
-  progressBarWindow.loadFile(path.join(__dirname, 'views/progress.html'));
+  progressBarWindow.loadFile(path.join(__dirname, 'progress.html'));
   
   progressBarWindow.on('ready-to-show', () => {
     progressBarWindow.webContents.send('prompt-name', prompt)
