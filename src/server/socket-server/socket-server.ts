@@ -86,7 +86,7 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
             method: 'GET',
             socket,
             url: '/',
-          } as any, socket, head, (ws) => {
+          }, socket, head, (ws) => {
             wsServer.emit('connection', ws, { headers: parseHeaders(requestText), method: 'GET' });
           });
         } else {
