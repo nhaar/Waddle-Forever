@@ -1,11 +1,11 @@
 import path from 'path'
 
 import { BrowserWindow, ipcMain } from "electron";
-import { isEqual, isLower, isLowerOrEqual, processVersion, Version, addDays } from '../server/routes/versions';
-import { UPDATES } from '../server/updates/updates';
-import { CatalogItems } from '../server/updates';
+import { isEqual, isLower, isLowerOrEqual, processVersion, Version, addDays } from '@server/routes/versions';
+import { UPDATES } from '@server/updates/updates';
+import { CatalogItems } from '@server/updates';
 import { getDate } from '@server/timelines/dates';
-import { getPopupCreator } from './popups';
+import { getPopupCreator } from '@client/popups';
 import { SettingsManager } from '@server/settings';
 import { WorldServer } from '@server/socket-server/world-server';
 
@@ -14,13 +14,13 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
     show: false,
     title: "Timeline",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/timeline-preload.js'),
+      preload: path.join(__dirname, 'timeline-preload.js'),
     }
   });
 
   timelinePicker.setMenu(null);
 
-  timelinePicker.loadFile(path.join(__dirname, 'views/timeline.html'));
+  timelinePicker.loadFile(path.join(__dirname, 'timeline.html'));
 
   ipcMain.on('update-version', (_, arg) => {
     const { settings: s, reset } = arg;

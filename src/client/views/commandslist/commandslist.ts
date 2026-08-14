@@ -1,6 +1,6 @@
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow } from "electron";
 import path from "path";
-import { getPopupCreator } from "./popups";
+import { getPopupCreator } from "@client/popups";
 import { getCommandsList } from "@server/commands/commands";
 
 export const createCommandsList = getPopupCreator('commandslist', ['get-commands'], (mainWindow, settings, server
@@ -10,7 +10,7 @@ export const createCommandsList = getPopupCreator('commandslist', ['get-commands
     height: 600,
     title: "List of Commands",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/commandslist-preload.js')
+      preload: path.join(__dirname, 'commandslist-preload.js')
     },
     resizable: false,
     parent: mainWindow
@@ -18,7 +18,7 @@ export const createCommandsList = getPopupCreator('commandslist', ['get-commands
 
   commandsWindow.setMenu(null);
 
-  commandsWindow.loadFile(path.join(__dirname, 'views/commandslist.html'));
+  commandsWindow.loadFile(path.join(__dirname, 'commandslist.html'));
 
   commandsWindow.webContents.on('did-finish-load', () => {
     commandsWindow.webContents.send('get-commands', getCommandsList());

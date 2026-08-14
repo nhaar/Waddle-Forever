@@ -3,7 +3,7 @@ import http from 'http';
 import https from 'https';
 
 import { logError, parseURL } from '@common/utils';
-import { showProgress } from './progress';
+import { showProgress } from './views/progress/progress';
 
 async function downloadFile(
   url: string,

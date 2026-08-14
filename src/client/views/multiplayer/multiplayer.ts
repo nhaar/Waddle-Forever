@@ -25,7 +25,7 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
     width: 425,
     title: "Multiplayer Settings",
     webPreferences: {
-      preload: path.join(__dirname, 'preload/multiplayer-preload.js')
+      preload: path.join(__dirname, 'multiplayer-preload.js')
     },
     resizable: false,
     parent: mainWindow
@@ -33,7 +33,7 @@ export function createMultiplayerSettings(globalSettings: GlobalSettings, server
 
   multiplayerWindow.setMenu(null);
 
-  multiplayerWindow.loadFile(path.join(__dirname, 'views/multiplayer.html'));
+  multiplayerWindow.loadFile(path.join(__dirname, 'multiplayer.html'));
 
   multiplayerWindow.webContents.on('did-finish-load', () => {
     const multiplayerSettings: { type: string; ip?: string; port?: number } = globalSettings.multiplayer;
