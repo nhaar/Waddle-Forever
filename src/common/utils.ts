@@ -151,7 +151,7 @@ export async function runCommand(command: string): Promise<void> {
 
 /** Function for logging more silent errors in production */
 export const logError = (message: string, error: any): void => {
-  const logDir = path.join(process.cwd(), 'logs');
+  const logDir = process.platform == 'darwin' ? path.join(__dirname, '..', '..', 'logs') : path.join(process.cwd(), 'logs');
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
   }

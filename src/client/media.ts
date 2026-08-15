@@ -23,6 +23,20 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
     return;
   }
 
+  // remove any existing .zip files that may be leftover if a download was cancelled
+  try {
+    // media folder should exist by this point
+    for (const file of fs.readdirSync(MEDIA_DIRECTORY).filter(f => f.endsWith('.zip'))) {
+      try {
+        fs.unlinkSync(path.join(MEDIA_DIRECTORY, file));
+      } catch (err) {
+        logError('Failed to unlink existing zip file', err);
+      }
+    }
+  } catch (err) {
+    logError('Error reading media directory for zip files', err);
+  }
+
   // use date to avoid collision (unlink only deletes after the app is closed)
   const zipName = String(Date.now()) + '.zip';
   const zipDir = path.join(MEDIA_DIRECTORY, zipName);
