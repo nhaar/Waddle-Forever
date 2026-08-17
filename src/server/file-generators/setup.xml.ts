@@ -37,8 +37,9 @@ function patchFrame(rooms: OldRoom[], frames: Map<RoomName, number>) {
 }
 
 export function getSetupXml(d: GameData, s: SettingsManager) {
-  const news = d.getIssue();
-  // const news = findInVersion(version, newspaperTimeline);
+  // workaround: before there were any newspapers we use this endpoint for accessing the beta newspaper
+  // it is unknown if the beta newspaper was accessed via a setup.xml, or if it was hardcoded into the chat.swf from the time
+  const news = d.getIssue() ?? 'beta';
 
   const rooms: OldRoom[] = Object.entries(ROOMS).filter((pair) => {
     return pair[1].preCpipName !== null;

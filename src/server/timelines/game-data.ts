@@ -885,7 +885,10 @@ export class GameData {
     return this.state.vr;
   }
 
-  public getIssue() {
+  public getIssue(): string | number | undefined {
+    if (this.state.issues.length === 0) {
+      return undefined;
+    }
     return this.state.issues[0].edition;
   }
 
