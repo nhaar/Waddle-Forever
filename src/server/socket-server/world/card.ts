@@ -18,14 +18,19 @@ export class Hand {
   }
 
   draw(): number {
-    const index = randomInt(0, this._canDrawCards.length - 1);
-    const card = this._canDrawCards.splice(index, 1)[0];
-    this._cantDrawCards.push(card);
     if (this._canDrawCards.length === 0) {
       this._canDrawCards = this._cantDrawCards;
       this._cantDrawCards = [];
     }
-    return card;
+    if (this._canDrawCards.length === 0) {
+      throw new Error('Cannot draw a card while every card is held');
+    }
+    const index = randomInt(0, this._canDrawCards.length - 1);
+    return this._canDrawCards.splice(index, 1)[0];
+  }
+
+  discard(card: number): void {
+    this._cantDrawCards.push(card);
   }
 }
 
@@ -168,6 +173,16 @@ export class NinjaPlayer extends Ninja {
     const cardId = this._hand.draw();
     this._sessionToCard.set(id, cardId);
     return cardId;
+  }
+
+  choose(id: number): void {
+    const cardId = this._sessionToCard.get(id);
+    if (cardId === undefined) {
+      throw new Error('Couldn\'t find card');
+    }
+    this._sessionToCard.delete(id);
+    this._hand.discard(cardId);
+    super.choose(id);
   }
 
   public getCardInfo(sessionId: number): Card {
