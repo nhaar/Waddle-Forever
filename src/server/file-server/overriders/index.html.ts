@@ -37,6 +37,8 @@ export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buff
       newFileRef = 'websites:minified/minified-classic-as3.html';
     } else if (d.isPreCpip()) {
       newFileRef = 'websites:minified/minified-precpip.html';
+    } else if (d.useCompositePaths()) {
+      newFileRef = 'websites:minified/minified-early-cpip.html'
     } else {
       newFileRef = 'websites:minified/minified-cpip.html'
     }
