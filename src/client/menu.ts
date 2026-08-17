@@ -1,6 +1,4 @@
 import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
-import clearCache from "./cache";
-import openDevTools from "./dev-tools";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
@@ -58,11 +56,11 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
       {
         label: 'Open Dev Tools',
         accelerator: 'CommandOrControl+Shift+I',
-        click: () => openDevTools(mainWindow)
+        click: () => mainWindow.webContents.openDevTools()
       },
       {
         label: 'Clear Cache',
-        click: () => clearCache(mainWindow)
+        click: () => mainWindow.webContents.session.clearCache()
       },
       {
         label: 'Reload',
