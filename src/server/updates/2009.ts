@@ -1704,12 +1704,6 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-21',
-    iglooList: [
-      { display: 'Campfire Song', id: 220, pos: [2, 1] },
-      { display: 'Extra Anchovies', id: 270, pos: [7, 1] },
-      { display: 'All the Fun of The Fair', id: 221, pos: [2, 2] },
-      { display: 'Spicy Salsa', id: 229, pos: [6, 2] }
-    ],
     temp: {
       party2: {
         update: 'The volcano becomes active',
@@ -1721,6 +1715,12 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-25',
+    iglooList: [
+      { display: 'Campfire Song', id: 220, pos: [2, 1] },
+      { display: 'Extra Anchovies', id: 270, pos: [7, 1] },
+      { display: 'All the Fun of The Fair', id: 221, pos: [2, 2] },
+      { display: 'Spicy Salsa', id: 229, pos: [6, 2] }
+    ],
     temp: {
       party2: {
         rooms: {
