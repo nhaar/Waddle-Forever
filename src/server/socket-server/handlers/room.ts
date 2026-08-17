@@ -387,3 +387,7 @@ export const isTableGuard: RoomGuard = ({ room }) => {
 export const isHockeyGuard: RoomGuard = ({ room }) => {
   return room.id === ROOMS.rink.id || room.id === ROOMS.pitch.id
 }
+
+export const handleTeleport: RoomHandler<[number, number]> = ({ msg, room, penguin }, x, y) => {
+  msg.send(room.players, 'tp', penguin.id, x, y);
+}
