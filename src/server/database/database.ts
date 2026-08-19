@@ -464,24 +464,10 @@ export class PenguinRepository {
 
   public write(id: number, data: PenguinJson): Promise<void> {
     const filePath = this.getFolderPath(id);
-    const temporaryPath = path.join(this._path, `.${id}.tmp`);
     const content = JSON.stringify(data);
     const previous = this._writes.get(id) ?? Promise.resolve();
     const queued = previous.catch(() => undefined).then(async () => {
-      await writeFile(temporaryPath, content);
-      for (let attempt = 0; ; attempt++) {
-        try {
-          await fs.promises.rename(temporaryPath, filePath);
-          break;
-        } catch (error) {
-          const code = (error as NodeJS.ErrnoException).code;
-          const retryable = process.platform === 'win32' && (code === 'EPERM' || code === 'EACCES' || code === 'EBUSY');
-          if (!retryable || attempt === 4) {
-            throw error;
-          }
-          await new Promise(resolve => setTimeout(resolve, 10));
-        }
-      }
+      await writeFile(filePath, content);
     });
 
     this._writes.set(id, queued);
