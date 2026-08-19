@@ -12,7 +12,7 @@ import { ClientSocket } from "@server/socket-server/socket-server";
 import { OfflineWorld } from "../offline-world";
 import { FireGame } from "../world/fire";
 
-export type PenguinPersister = (p: UserPenguin, force?: boolean) => Promise<void>;
+export type PenguinPersister = (p: UserPenguin, force?: boolean) => void;
 
 type Ctx<Global, AlwaysSingular, EventuallySingular, EventuallyCommon> = Global & AlwaysSingular & ({} | (EventuallySingular & ({} | EventuallyCommon)));
 

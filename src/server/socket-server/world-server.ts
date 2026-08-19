@@ -41,9 +41,8 @@ export class WorldServer implements MessageHandler {
 
     this._persister = (p, force = false) => { 
       if (p.canSave || force) {
-        return this._db.write(p.id, p.getJSON());
+        this._db.write(p.id, p.getJSON());
       }
-      return Promise.resolve();
     };
 
     this._xtHandler = createWorldXtHandler();
