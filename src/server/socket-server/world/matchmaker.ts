@@ -80,7 +80,10 @@ export class MatchMaker {
     }
     const availableIndex = this._rooms.findIndex(room => !room.full);
     if (availableIndex === -1) {
-      const room = new MatchmakingRoom(this._maxPlayers, this._onMatched, this._onTick);
+      const room = new MatchmakingRoom(this._maxPlayers, players => {
+        this._rooms = this._rooms.filter(candidate => candidate !== room);
+        this._onMatched?.(players);
+      }, this._onTick);
       room.addPlayer(player);
       this._rooms.push(room);
     } else {
