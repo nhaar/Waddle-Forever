@@ -496,6 +496,7 @@ class DatabaseMigrator {
 export class PenguinRepository {
   private _path: string;
   private _seq: SeqFile;
+  private _writes = new Map<number, Promise<void>>();
   
   constructor(userFolder: string) {
     this._path = path.join(userFolder, 'penguins');
@@ -558,8 +559,26 @@ export class PenguinRepository {
     return id;
   }
 
-  public async write(id: number, data: PenguinJson): Promise<void> {
-    await writeFile(this.getFolderPath(id), JSON.stringify(data));
+  public write(id: number, data: PenguinJson): Promise<void> {
+    const filePath = this.getFolderPath(id);
+    const content = JSON.stringify(data);
+    const previous = this._writes.get(id) ?? Promise.resolve();
+    const temporaryPath = path.join(this._path, `.${id}.tmp`);
+    const queued = previous.catch(() => undefined).then(async () => {
+      await writeFile(temporaryPath, content);
+      await fs.promises.rename(temporaryPath, filePath);
+    });
+
+    this._writes.set(id, queued);
+
+    const cleanUp = () => {
+      if (this._writes.get(id) === queued) {
+        this._writes.delete(id);
+      }
+    };
+    queued.then(cleanUp, cleanUp);
+
+    return queued;
   }
 
   public async fromName(name: string): Promise<[number, PenguinJson] | null> {
