@@ -466,8 +466,10 @@ export class PenguinRepository {
     const filePath = this.getFolderPath(id);
     const content = JSON.stringify(data);
     const previous = this._writes.get(id) ?? Promise.resolve();
+    const temporaryPath = path.join(this._path, `.${id}.tmp`);
     const queued = previous.catch(() => undefined).then(async () => {
-      await writeFile(filePath, content);
+      await writeFile(temporaryPath, content);
+      await fs.promises.rename(temporaryPath, filePath);
     });
 
     this._writes.set(id, queued);
