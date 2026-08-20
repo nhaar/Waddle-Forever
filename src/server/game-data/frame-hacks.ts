@@ -16,89 +16,10 @@ export type CustomHack = FrameHack & {
   frame: number;
 };
 
-/** Singleton class that handles all frame hacks in memory */
-class FrameHacks {
-  // copy of all the unmodified frame hacks
-  private vanillaFrames: Map<number, FrameHack[]>;
+type FrameMap = Map<number, FrameHack[]>;
 
-  // keeps track of all frame hacks that have been added by the user with an identifier
-  private customFrames: Map<string, Map<number, FrameHack[]>>;
-  
-  // cache of the combination of all the unmodified and user defined frame hacks
-  private frames: Map<number, FrameHack[]>;
-  
-  constructor(frames: Record<string, FrameHack[]>) {
-    this.vanillaFrames = new Map<number, FrameHack[]>();
-    this.frames = new Map<number, FrameHack[]>();
-    this.customFrames = new Map<string, Map<number, FrameHack[]>>();
-    iterateEntries(frames, (key, value) => {
-      this.frames.set(Number(key), value);
-    });
-  }
-
-  /** Updates cached frame hacks with new custom information */
-  private mergeFrames(): void {
-    this.frames = new Map<number, FrameHack[]>();
-    this.vanillaFrames.forEach((hacks, frame) => {
-      // each frame hack object is stil a reference, but we wont't be modifying that, so it's fine
-      this.frames.set(frame, [...hacks]);
-    });
-    this.customFrames.forEach((frameHacks) => {
-      frameHacks.forEach((hacks, frame) => {
-        const prev = this.frames.get(frame);
-        if (prev === undefined) {
-          this.frames.set(frame, [...hacks]);
-        } else {
-          hacks.forEach(hack => prev.push(hack));
-        }
-      });
-    });
-  }
-
-  public addCustom(name: string, hacks: CustomHack[]) {
-    const customFrames = new Map<number, FrameHack[]>();
-    hacks.forEach(hack => {
-      const prev = customFrames.get(hack.frame);
-      if (prev === undefined) {
-        customFrames.set(hack.frame, [hack]);
-      } else {
-        prev.push(hack);
-      }
-    });
-    this.customFrames.set(name, customFrames);
-    this.mergeFrames();
-  }
-
-  public removeCustom(name: string) {
-    this.customFrames.delete(name);
-    this.mergeFrames();
-  }
-
-  public getJSON(): string {
-    const json: Record<string, FrameHack[]> = {};
-    this.frames.forEach((value, key) => {
-      json[String(key)] = value;
-    });
-    this.customFrames.forEach((frames) => {
-      frames.forEach((value, key) => {
-        const prev = this.frames.get(key);
-        if (prev === undefined) {
-          json[String(key)] = value;
-        } else {
-          this.frames.set(key, [...prev, ...value]);
-        }
-      });
-    });
-
-    return JSON.stringify(json);
-  }
-
-  public getEntries() {
-    return this.frames.entries();
-  }
-}
-
-export const FRAME_HACKS = new FrameHacks({
+// all the unmodified frame hacks
+const vanillaFrames: Record<string, FrameHack[]> = {
   "0": [
     {
       "head": 0,
@@ -6272,4 +6193,86 @@ export const FRAME_HACKS = new FrameHacks({
       "secret_frame": 129
     }
   ]
-});
+}
+
+/** Singleton class that handles all frame hacks in memory */
+class FrameHacks {
+  // keeps track of all frame hacks that have been added by the user with an identifier
+  private customFrames: Map<string, FrameMap>;
+  
+  // cache of the combination of all the unmodified and user defined frame hacks
+  private frames: FrameMap;
+  
+  constructor() {
+    this.customFrames = new Map();
+    this.resetFramesMap();
+  }
+
+  /** Resets `frames` to an empty map and copies all of the vanilla frame hacks to it */
+  private resetFramesMap() {
+    this.frames = new Map();
+    iterateEntries(vanillaFrames, (frame, hacks) => {
+      // each frame hack object is stil a reference, but we wont't be modifying that, so it's fine
+      this.frames.set(Number(frame), [...hacks]);
+    });
+  }
+
+  /** Updates cached frame hacks with new custom information */
+  private mergeFrames(): void {
+    this.resetFramesMap();
+    this.customFrames.forEach((frameHacks) => {
+      frameHacks.forEach((hacks, frame) => {
+        const prev = this.frames.get(frame);
+        if (prev === undefined) {
+          this.frames.set(frame, [...hacks]);
+        } else {
+          hacks.forEach(hack => prev.push(hack));
+        }
+      });
+    });
+  }
+
+  public addCustom(name: string, hacks: CustomHack[]) {
+    const customFrames = new Map();
+    hacks.forEach(hack => {
+      const prev = customFrames.get(hack.frame);
+      if (prev === undefined) {
+        customFrames.set(hack.frame, [hack]);
+      } else {
+        prev.push(hack);
+      }
+    });
+    this.customFrames.set(name, customFrames);
+    this.mergeFrames();
+  }
+
+  public removeCustom(name: string) {
+    this.customFrames.delete(name);
+    this.mergeFrames();
+  }
+
+  public getJSON(): string {
+    const json: Record<string, FrameHack[]> = {};
+    this.frames.forEach((value, key) => {
+      json[String(key)] = value;
+    });
+    this.customFrames.forEach((frames) => {
+      frames.forEach((value, key) => {
+        const prev = this.frames.get(key);
+        if (prev === undefined) {
+          json[String(key)] = value;
+        } else {
+          this.frames.set(key, [...prev, ...value]);
+        }
+      });
+    });
+
+    return JSON.stringify(json);
+  }
+
+  public getEntries() {
+    return this.frames.entries();
+  }
+}
+
+export const FRAME_HACKS = new FrameHacks();
