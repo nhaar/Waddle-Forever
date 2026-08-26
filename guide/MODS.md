@@ -126,3 +126,68 @@ Through `head`, `face`, `neck`, `body`, `hand` and `feet`, you must make it expl
 After you've saved the file, restart the mod, and make sure to use the combination you've defined. You should now be able to use a special dance with the item.
 
 ![Custom Animation Example](./example-animation.gif)
+
+# How to change the music of rooms
+
+You can modify the music ID that plays in each room. This can be achieved by adding a `music.json` file containing all the rooms you want to change. The file has to be in the following syntax:
+
+```json
+{
+  "town": 0,
+  "dance": 0
+}
+```
+
+You can add as many rooms as you want, and add whatever music ID you wish. Pay attention that you must use the specific room names for each room, which are given below:
+
+| Room                      | Required Name                     |
+| ------------------------- | --------------------------------- |
+| Town                      | town                              |
+| Coffee Shop               | coffee                            |
+| Dance Club                | dance                             |
+| Dance Lounge              | lounge                            |
+| Gift Shop                 | shop                              |
+| Snow Forts                | forts                             |
+| Ice Rink / Stadium        | rink                              |
+| Plaza                     | plaza                             |
+| Pet Shop                  | pet                               |
+| Stage                     | stage                             |
+| Mall                      | mall                              |
+| Pizza Parlor              | pizza                             |
+| Underground Pool          | cave                              |
+| Boiler Room               | boiler                            |
+| Beach                     | beach                             |
+| Lighthouse                | light                             |
+| Beacon                    | beacon                            |
+| Dock                      | dock                              |
+| Ski Village               | village                           |
+| Ski Hill                  | mtn                               |
+| Attic                     | attic                             |
+| Sport Shop                | sport                             |
+| Everyday Phoning Facility | agentlobbysolo<br>agentlobbymulti |
+| PSA HQ                    | agent                             |
+| EPF Command Room          | agentcom                          |
+| VR Room                   | agentvr                           |
+| Forest                    | forest                            |
+| Mine Shack                | shack                             |
+| Recycling Plant           | eco                               |
+| Mine                      | mine                              |
+| Cave Mine / Gold Mine     | cavemine                          |
+| Hidden Lake               | lake                              |
+| Underwater                | underwater                        |
+| Cove                      | cove                              |
+| Iceberg                   | berg                              |
+| Dojo Courtyard            | dojoext                           |
+| Dojo                      | dojo                              |
+| Ninja Hideout             | dojohide                          |
+| Fire Dojo                 | dojofire                          |
+| Water Dojo                | dojowater                         |
+| Snow Dojo                 | dojosnow                          |
+| Box Dimension             | boxdimension                      |
+| Migrator                  | ship                              |
+| Ship Nest                 | shipnest                          |
+| Ship Hold                 | shiphold                          |
+| Captain's Quarters        | shipquarters                      |
+| Party                     | party                             |
+| Party 1...Party99         | "party1" ... "party99"            |
+| Pitch (Sport Party 2008)  | pitch                             |
