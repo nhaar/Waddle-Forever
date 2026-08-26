@@ -166,6 +166,7 @@ function getFreshState(): GameState {
   };
 }
 
+
 /** Manages all the data related to the game at a particular point in time */
 export class GameData {
   private state = getFreshState();
@@ -849,8 +850,8 @@ export class GameData {
     return this.state.newShell2009;
   }
 
-  public getRoomsMusic() {
-    return this.state.roomMusic;
+  public getRoomsMusic(overrides: Map<RoomName, number>) {
+    return new Map([...this.state.roomMusic, ...overrides]);
   }
 
   public getRoomsMember() {
