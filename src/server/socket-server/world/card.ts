@@ -274,12 +274,6 @@ export class Sensei extends Ninja {
   }
 }
 
-function getNinjasWithSensei(player: WorldPenguin): [Ninja, Ninja] {
-  const ninja = new NinjaPlayer(player, 1);
-  const sensei = new Sensei(player.ninja.senseiAttempts < 5, ninja);
-  return [ninja, sensei];
-}
-
 const REPLACEMENT_POWER_CARDS: Record<number, [CardElement, CardElement] | undefined> = {
   16: ['w', 'f'],
   17: ['s', 'w'],
@@ -364,11 +358,18 @@ export class CardJitsu extends WaddleGame {
 
     this._sensei = players.length === 1;
 
-    const ninjas: [Ninja, Ninja] = this._sensei
-      ? getNinjasWithSensei(players[0])
-      : [new NinjaPlayer(players[0], 0), new NinjaPlayer(players[1], 1)];
+    let ninjas: [Ninja, Ninja];
 
-    players.forEach((p, i) => this._ninjas.set(p, ninjas[i] as NinjaPlayer));
+    if (this._sensei) {
+      const player = players[0];
+      const ninja = new NinjaPlayer(player, 1);
+      const sensei = new Sensei(player.ninja.senseiAttempts < 5, ninja);
+      ninjas = [sensei, ninja];
+      this._ninjas.set(player, ninja);
+    } else {
+      ninjas = [new NinjaPlayer(players[0], 0), new NinjaPlayer(players[1], 1)];
+      players.forEach((p, i) => this._ninjas.set(p, ninjas[i] as NinjaPlayer));
+    }
 
     this._opponents.set(ninjas[0], ninjas[1]);
     this._opponents.set(ninjas[1], ninjas[0]);
