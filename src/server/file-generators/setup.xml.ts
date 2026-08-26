@@ -52,7 +52,7 @@ export function getSetupXml(d: GameData, s: SettingsManager) {
     }
   });
 
-  patchMusic(rooms, d.getRoomsMusic());
+  patchMusic(rooms, d.getRoomsMusic(s.mods.getMusic()));
   patchFrame(rooms, d.getRoomsFrame());
 
   const chat = d.getChatVersion();

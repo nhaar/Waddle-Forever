@@ -465,7 +465,7 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
     [Action.Push, "room_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,
-    ...getRoomCrumbs(d.getRoomsMusic(), d.getRoomsMember()),
+    ...getRoomCrumbs(d.getRoomsMusic(s.mods.getMusic()), d.getRoomsMember()),
     [Action.Push, "puffle_crumbs", 0, "Object"],
     Action.NewObject,
     Action.DefineLocal,

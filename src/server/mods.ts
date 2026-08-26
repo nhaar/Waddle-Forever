@@ -1,10 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE } from '@common/paths';
+import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE, MOD_MUSIC_FILE } from '@common/paths';
 import { CustomItem, ITEMS } from './game-logic/items';
 import { getFilesInDirectory, iterateEntries, EventListener } from '@common/utils';
 import { Router, Request } from "express";
 import { CustomHack, FRAME_HACKS } from './game-data/frame-hacks';
+import { RoomName, ROOMS } from './game-data/rooms';
 
 // type declarations that are used to validate the properties of the JSON parsed objects from mods
 
@@ -70,20 +71,41 @@ const FORBIDDEN_FILE_NAMES = new Set([
 /** Errors raised from incorrect JSON in mods */
 export class ModError extends Error {}
 
-/** Helper function that parses a JSON file for an array of objects */
-function parseObjectArrayJSON<T extends {}>(file: string, mod: string, name: string, keyTypes: KeyTypes<T>): T[] {
+function getModFile(file: string, mod: string): ({
+  type: 'exists', content: any
+} | {
+  type: 'none'
+} | {
+  type: 'parseerror'
+}) {
   const filePath = path.join(MODS_DIRECTORY, mod, file);
   if (fs.existsSync(filePath)) {
-    let objs;
     try {
-      objs = JSON.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }));
+      return {
+        type: 'exists',
+        content: JSON.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }))
+      }
     } catch (error) {
-      // if syntax error, there was an error parsing, objs will be undefined
-      // which is fine
       if (!(error instanceof SyntaxError)) {
         throw error;
       }
+      return {
+        type: 'parseerror'
+      };
     }
+
+  }
+  return {
+    type: 'none'
+  };
+}
+
+/** Helper function that parses a JSON file for an array of objects */
+function parseObjectArrayJSON<T extends {}>(file: string, mod: string, name: string, keyTypes: KeyTypes<T>): T[] {
+  const modContent = getModFile(file, mod);
+
+  if (modContent.type !== 'none') {
+    const objs = modContent.type === 'exists' ? modContent.content : undefined;
 
     if (!Array.isArray(objs)) {
       throw new ModError(`Your mod contains invalid JSON in the ${name} file, there should be an array (square brackets) with items inside.`);
@@ -110,12 +132,14 @@ function parseObjectArrayJSON<T extends {}>(file: string, mod: string, name: str
 class Mod {
   private items: CustomItem[];
   private hacks: CustomHack[];
+  private music: Map<RoomName, number>;
   // all file routes that this mod serves
   private files: string[];
   
   constructor(private name: string) {
     this.items = this.getItems();
     this.hacks = this.getHacks();
+    this.music = this.getMusic();
     this.files = getFilesInDirectory(path.join(MODS_DIRECTORY, this.name)).filter(file => {
       return !FORBIDDEN_FILE_NAMES.has(file);
     });
@@ -163,6 +187,40 @@ class Mod {
 
   private getHacks(): CustomHack[] {
     return parseObjectArrayJSON<CustomHack>(MOD_HACKS_FILE, this.name, 'frames', customHackKeys);
+  }
+
+  private getMusic(): Map<RoomName, number> {
+    const fileContent = getModFile(MOD_MUSIC_FILE, this.name);
+    if (fileContent.type === 'none') {
+      return new Map();
+    }
+
+    if (fileContent.type === 'parseerror') {
+      throw new ModError('Your mod contains an error in the music file. Please review the syntax of your JSON file');
+    }
+
+    const content = fileContent.content;
+    const map = new Map<RoomName, number>();
+    
+    if (Array.isArray(content)) {
+      throw new ModError('Your mod contains incorrect JSON for the music file. It contains an array (square brackets) when it should include an object (curly brackets). Please review the syntax of the file');
+    }
+
+    for (const key of Object.keys(content)) {
+      if (!(key in ROOMS)) {
+        throw new ModError(`Unknown room name in music file: ${key}. Check the list of valid room names if you are unsure`);
+      }
+      if (typeof content[key] !== 'number') {
+        throw new ModError(`Non number music found for room ${key} in the music file. Please change it to be the ID of a music file`);
+      }
+      map.set(key as RoomName, content[key]);
+    }
+
+    return map;
+  }
+
+  public getRoomsMusic(): Map<RoomName, number> {
+    return this.music;
   }
 }
 
@@ -251,5 +309,9 @@ export class ModManager {
 
   isModActive(name: string): boolean {
     return this._activeMods.has(name);
+  }
+
+  public getMusic(): Map<RoomName, number> {
+    return [...this._activeMods.values()].map(m => m.getRoomsMusic()).reduce((previous, current) => new Map([...previous, ...current]), new Map<RoomName, number>());
   }
 }

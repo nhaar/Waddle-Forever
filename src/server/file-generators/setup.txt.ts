@@ -4,7 +4,7 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
 export function getSetupTxt(d: GameData, s: SettingsManager): string {
-  const roomMusic = d.getRoomsMusic();
+  const roomMusic = d.getRoomsMusic(s.mods.getMusic());
   const frames = d.getRoomsFrame();
 
 
