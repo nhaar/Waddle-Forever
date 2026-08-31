@@ -1,5 +1,5 @@
 import path from 'path'
-import { BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 
 function createProgressBarWindow(prompt: string) {
   const progressBarWindow = new BrowserWindow({
@@ -9,10 +9,32 @@ function createProgressBarWindow(prompt: string) {
       alwaysOnTop: false,
       resizable: false,
       webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false,
+        nodeIntegration: true,
+        contextIsolation: false,
       }
   });
+
+  progressBarWindow.on('close', async (e) => {
+    // This is needed because the progress updater will break
+    // when the window is closed. it's better to quit the whole app
+    // in this case, but not before asking the user if they're sure.
+
+    e.preventDefault();
+
+    const result = await dialog.showMessageBox(progressBarWindow, {
+      buttons: ['Yes', 'No'],
+      title: 'Close Waddle Forever?',
+      message: 'Are you sure you want to close this window? If you do, Waddle Forever will close and the media download will be cancelled.',
+      defaultId: 1,
+      cancelId: 1
+    });
+
+    if (result.response === 0) {
+      progressBarWindow.destroy();
+      app.quit();
+      process.exit(0);
+    }
+  })
 
   progressBarWindow.loadFile(path.join(__dirname, 'progress.html'));
   
@@ -24,7 +46,7 @@ function createProgressBarWindow(prompt: string) {
 }
 
 function setProgress(value: number, window: BrowserWindow) {
-  if (window) {
+  if (window && !window.isDestroyed()) {
     window.webContents.send('update-progress', value);
   }
 }
@@ -41,6 +63,7 @@ export async function showProgress(message: string, task: (progress: ProgressCal
       setProgress(progress, progressWin)
     }
   }, () => {
-    progressWin.close()
+    // destroy, not close, otherwise we'll trigger the popup in the 'close' event
+    progressWin.destroy()
   })
 }

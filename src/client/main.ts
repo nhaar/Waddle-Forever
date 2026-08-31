@@ -48,39 +48,29 @@ let globalSettings : GlobalSettings = {
 const popups: Popups = new Map<string, BrowserWindow>();
 
 app.on('ready', async () => {
-  // setup window is necessary so that in case we need to
-  // download media, closing the windows won't abort and close the program
-  const setupWindow = new BrowserWindow({
-    width: 200,
-    height: 100,
-    frame: false,
-    resizable: false
-  });
-  await setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
-
-  let mediaSuccess;
   try {
     // this will throw an error if installing for all users and not running as
     // an administrator
-    mediaSuccess = await startMedia();
+    await startMedia();
   } catch (error) {
     if (error instanceof AdminError) {
-      await dialog.showMessageBox(setupWindow, {
+      await dialog.showMessageBox(mainWindow, {
         buttons: ['Ok'],
         title: 'Permission Error',
         message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
       });
       app.quit();
-
+      return;
     } else {
       const message = error instanceof Error ? `${error.name}:${error.message}\n${error.stack}` : 'Unknown';
-      await dialog.showMessageBox(setupWindow, {
+      await dialog.showMessageBox(mainWindow, {
         buttons: ['Ok'],
         title: 'Download Error',
         message: `It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.\n\nShow this to the admins:\n${message}`
       })
   
       app.quit();
+      return;
     }
   }
   
@@ -96,9 +86,7 @@ app.on('ready', async () => {
     if (result.response === 0) {
       await downloadMediaFolder('clothing', () => {
         settingsManager.updateSettings({ clothing: true });
-      }, () => {
-        mediaSuccess = false;
-      })
+      }, () => {})
     }
     settingsManager.updateSettings({ answered_packages: VERSION });
   }
@@ -160,11 +148,8 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
   }
 
   mainWindow = await createWindow(store, globalSettings, settingsManager);
-  // release window since the main window now serves as
-  // the window that will remain open
-  setupWindow.close();
 
-  // Some users was reporting problems with cache.
+  // Some users were reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
 
   startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
