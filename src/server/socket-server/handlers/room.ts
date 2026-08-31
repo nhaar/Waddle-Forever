@@ -307,49 +307,58 @@ export const handleUpdatePenguinOld: RoomHandler<[number, number, number, number
   prst(penguin);
 }
 
-export const handleUpdateColor: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateColor: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ color: id });
   msg.send(room.players, 'upc', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateHead: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateHead: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ head: id });
   msg.send(room.players, 'uph', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateFace: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateFace: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ face: id });
   msg.send(room.players, 'upf', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateNeck: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateNeck: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ neck: id });
   msg.send(room.players, 'upn', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateBody: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateBody: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ body: id });
   msg.send(room.players, 'upb', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateHand: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateHand: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ hand: id });
   msg.send(room.players, 'upa', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateFeet: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateFeet: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ feet: id });
   msg.send(room.players, 'upe', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdatePin: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdatePin: RoomHandler<[number]> = ({ room, msg, penguin, prst }, id) => {
   penguin.inventory.updateWear({ pin: id });
   msg.send(room.players, 'upl', penguin.id, id);
+  prst(penguin);
 }
 
-export const handleUpdateBackground: RoomHandler<[number]> = ({ room, msg, penguin }, id) => {
+export const handleUpdateBackground: RoomHandler<[number]> = ({ room, msg, penguin, prst  }, id) => {
   penguin.inventory.updateWear({ background: id });
   msg.send(room.players, 'upp', penguin.id, id);
+  prst(penguin);
 }
 
 export const handleGetHockeyGame: RoomHandler<[]> = ({ world, room, penguin, msg }) => {
