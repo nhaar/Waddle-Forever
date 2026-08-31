@@ -13,15 +13,11 @@ import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
-import { USER_DATA_FOLDER } from '@common/paths';
 import { VERSION } from '@common/version';
 import { Popups } from './popups';
 import { WEBSITE } from '@common/website';
-import { GameData } from '@server/timelines/game-data';
-import { setupWorldServer, WorldServer } from '@server/socket-server/world-server';
-import { setupLoginServer } from '@server/socket-server/login-server';
-import { HttpServer } from '@server/http';
-import { DataFolder, PenguinRepository } from '@server/database/database';
+import { WorldServer } from '@server/socket-server/world-server';
+import { startMods, startServices } from '@server/boot';
 
 log.initialize();
 
@@ -128,7 +124,7 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
-  const failedMods = settingsManager.mods.initializeMods();
+  const failedMods = startMods();
   if (failedMods.length > 0) {
     await dialog.showMessageBox(mainWindow, {
       buttons: ['OK'],
@@ -139,19 +135,8 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
     });
   }
 
-  const data = new DataFolder(USER_DATA_FOLDER);
-  data.init(VERSION);
-  const db = new PenguinRepository(data.getPath());
-
-  const gameData = new GameData(settingsManager);
-
   try {
-    await setupLoginServer(settingsManager, db, gameData);
-
-    server = await setupWorldServer(settingsManager, db, gameData);
-
-    const httpServer = new HttpServer(gameData, settingsManager, db);
-    await httpServer.setupServer();
+    server = await startServices();
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const result = await dialog.showMessageBox(mainWindow, {
