@@ -1,5 +1,6 @@
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
+import { TreasureHuntTable } from "./treasure-hunt";
 import { WaddleRoom } from "./waddle-room";
 import { RoomState, WorldPenguin } from "./world-penguin";
 import { WorldTable } from "./world-table";
@@ -8,9 +9,6 @@ export class WorldRoom {
   private penguins = new Map<WorldPenguin, RoomState>();
   private waddles = new Map<number, WaddleRoom>();
   private tables = new Map<number, WorldTable>();
-
-  static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
-  static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
 
   constructor(private _id: number) {}
 
@@ -73,6 +71,8 @@ export class WorldRoom {
         table = new FindFourTable(id);
       } else if (WorldTable.MANCALA_TABLE_IDS.has(id)) {
         table = new MancalaTable(id);
+      } else if (WorldTable.TREASURE_HUNT_TABLE_IDS.has(id)) {
+        table = new TreasureHuntTable(id);
       } else {
         throw new Error('Unknown table id');
       }

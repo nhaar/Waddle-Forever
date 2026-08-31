@@ -16,6 +16,7 @@ export abstract class WorldTable {
 
   static MANCALA_TABLE_IDS = new Set([100, 101, 102, 103, 104]);
   static FIND_FOUR_TABLE_IDS = new Set([200, 201, 202, 203, 204, 205, 206, 207]);
+  static TREASURE_HUNT_TABLE_IDS = new Set([300, 301, 302, 303, 304, 305, 306, 307]);
 
   public getCount() {
     return this.seats.filter(p => p !== null).length;
