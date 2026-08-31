@@ -637,7 +637,11 @@ export const UPDATES_2009: Update[] = [
           stage: 40
         },
         globalChanges: {
-          'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
+          'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf',
+          'content/shorts/squidzoid.swf': 'archives:ContentShortssquidzoid.swf',
+          'content/shorts/fairyFables.swf': 'archives:ContentShortsfairyFables.swf',
+          'content/shorts/goldenPuffle.swf': 'archives:ContentShortsgoldenPuffle.swf',
+          'content/shorts/ruby.swf': 'archives:ContentShortsruby.swf'
         },
         playScript: [
           { note: "HOST" },
