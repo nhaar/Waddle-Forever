@@ -68,7 +68,7 @@ export const MASCOTS: Mascot[] = [
   },
   {
     id: 15,
-    name: "Dot",
+    name: "Dott",
     display: "Dot",
     starterItems: [17, 21032, 24315],
   },
@@ -80,7 +80,7 @@ export const MASCOTS: Mascot[] = [
   },
   {
     id: 28,
-    name: "Puffle H",
+    name: "Paige",
     display: "PH",
     starterItems: [9, 1384, 4555, 1736, 1947, 1974],
   },
@@ -116,7 +116,7 @@ export const MASCOTS: Mascot[] = [
   },
   {
     id: 35,
-    name: "Sam",
+    name: "Sasquatch",
     display: "Sam",
     starterItems: [1917],
   },
