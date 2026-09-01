@@ -52,6 +52,12 @@ app.setAboutPanelOptions({
 });
 
 app.once('ready', async () => {
+  if (process.platform === 'darwin') {
+    // display this first, so that during the media download, other options
+    // that don't make sense can't be accessed (dev tools, fullscreen, etc)
+    Menu.setApplicationMenu(Menu.buildFromTemplate([{ id: '0', role: 'appMenu' }]));
+  }
+
   try {
     // this will throw an error if installing for all users and not running as
     // an administrator
