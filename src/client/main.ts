@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, shell } from "electron";
+import { app, BrowserWindow, dialog, Menu, shell } from "electron";
 import log from "electron-log";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
@@ -11,7 +11,7 @@ import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
-import { VERSION, WEBSITE } from '@common/constants';
+import { NAME, VERSION, WEBSITE } from '@common/constants';
 import { Popups } from './popups';
 import { WorldServer } from '@server/socket-server/world-server';
 import { startMods, startServices } from '@server/boot';
@@ -24,6 +24,7 @@ const store = createStore();
 
 setLanguageInStore(store, 'en')
 
+app.setName(NAME);
 
 if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
@@ -45,7 +46,7 @@ let globalSettings: GlobalSettings = {
 const popups: Popups = new Map<string, BrowserWindow>();
 
 app.setAboutPanelOptions({
-  applicationName: 'Waddle Forever',
+  applicationName: NAME,
   applicationVersion: VERSION,
   website: WEBSITE,
 });
