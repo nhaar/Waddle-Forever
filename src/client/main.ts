@@ -6,7 +6,7 @@ import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
-import createWindow from "./window";
+import { createWindow } from "./window";
 import settingsManager from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
