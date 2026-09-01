@@ -13,9 +13,8 @@ import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { AdminError, downloadMediaFolder, startMedia } from "./media";
 import { GlobalSettings } from '@common/utils';
-import { VERSION } from '@common/version';
+import { VERSION, WEBSITE } from '@common/constants';
 import { Popups } from './popups';
-import { WEBSITE } from '@common/website';
 import { WorldServer } from '@server/socket-server/world-server';
 import { startMods, startServices } from '@server/boot';
 

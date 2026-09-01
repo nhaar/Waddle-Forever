@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { BrowserWindow, dialog, shell } from 'electron';
 import { postJSON } from "@common/utils";
-import { VERSION } from '@common/version';
+import { VERSION } from '@common/constants';
 import { SettingsManager } from '@server/settings';
 
 const UPDATE_PATH = path.join(process.cwd(), 'tempupdate');
