@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
+import { BrowserWindow, Menu, MenuItemConstructorOptions } from "electron";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
@@ -12,19 +12,17 @@ import { createCommands } from "./views/commands/commands";
 import { Popups } from "./popups";
 import { WorldServer } from "@server/socket-server/world-server";
 
-const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: WorldServer): MenuItemConstructorOptions[] => {
+const startMenu = (
+  store: Store,
+  mainWindow: BrowserWindow,
+  globalSettings: GlobalSettings,
+  serverSettings: SettingsManager,
+  popups: Popups,
+  gameServer: WorldServer
+) => {
   const app: MenuItemConstructorOptions = { 
     id: '0', 
-    label: 'Waddle Forever', 
-    submenu: [
-      {
-        label: 'Quit Waddle Forever', 
-        role: 'quit'
-      }, 
-      {
-        role: 'close'
-      }
-    ]
+    role: 'appMenu'
   };
   
   const options: MenuItemConstructorOptions = {
@@ -103,16 +101,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   // on Mac, stuff like copying/pasting does not work without this
   const edit: MenuItemConstructorOptions = {
     id: '4',
-    label: 'Edit',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-      { role: 'selectAll' }
-    ]
+    role: 'editMenu'
   }
 
   const view: MenuItemConstructorOptions = {
@@ -131,19 +120,11 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     ]
   }
 
-  return process.platform === 'darwin' ? 
+  const menuTemplate = process.platform === 'darwin' ? 
     [app, options, timeline, edit, view] : 
     [options, timeline, view];
-};
 
-const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: WorldServer) => {
-  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings, serverSettings, popups, gameServer)
-  buildMenu(menuTemplate);
-};
-
-const buildMenu = (menuTemplate: MenuItemConstructorOptions[] | MenuItem[]) => {
   const menu = Menu.buildFromTemplate(menuTemplate);
-
   Menu.setApplicationMenu(menu);
 };
 
