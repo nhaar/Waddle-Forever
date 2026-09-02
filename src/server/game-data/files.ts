@@ -156,6 +156,11 @@ would need to investigated`
       comment: 'Domain check removed'
     },
     {
+      file: 'GamesDancingDanceDomainFix.swf',
+      comment: 'Domain check removed',
+      base: 'slegacy:media/play/v2/games/dancing/dance.swf'
+    },
+    {
       file: 'GamesJetPackAdventureMain.swf',
       comment: 'Domain check removed'
     },
