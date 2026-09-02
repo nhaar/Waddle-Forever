@@ -72,7 +72,7 @@ export abstract class WorldTable {
   }
 
   public hasPlayer(penguin: WorldPenguin) {
-    return this.getSeatIndex(penguin) !== -1;
+    return this.getSeatIndex(penguin) !== undefined;
   }
 
   public removePlayer(penguin: WorldPenguin) {
