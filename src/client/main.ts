@@ -48,13 +48,22 @@ let globalSettings : GlobalSettings = {
 const popups: Popups = new Map<string, BrowserWindow>();
 
 app.on('ready', async () => {
+  // a window needs to exist at least for windows, during the download process
+  const setupWindow = new BrowserWindow({
+    width: 200,
+    height: 100,
+    frame: false,
+    resizable: false
+  });
+  await setupWindow.loadFile(path.join(__dirname, 'views/setup.html'));
+
   try {
     // this will throw an error if installing for all users and not running as
     // an administrator
     await startMedia();
   } catch (error) {
     if (error instanceof AdminError) {
-      await dialog.showMessageBox(mainWindow, {
+      await dialog.showMessageBox(setupWindow, {
         buttons: ['Ok'],
         title: 'Permission Error',
         message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
@@ -63,7 +72,7 @@ app.on('ready', async () => {
       return;
     } else {
       const message = error instanceof Error ? `${error.name}:${error.message}\n${error.stack}` : 'Unknown';
-      await dialog.showMessageBox(mainWindow, {
+      await dialog.showMessageBox(setupWindow, {
         buttons: ['Ok'],
         title: 'Download Error',
         message: `It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.\n\nShow this to the admins:\n${message}`
@@ -148,6 +157,7 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
   }
 
   mainWindow = await createWindow(store, globalSettings, settingsManager);
+  setupWindow.close();
 
   // Some users were reporting problems with cache.
   await mainWindow.webContents.session.clearHostResolverCache();
