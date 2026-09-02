@@ -652,7 +652,7 @@ export const handleSetStampEarned: PenguinHandler<[number]> = ({ penguin, prst }
 }
 
 export const handleGetEpfStatus: PenguinHandler<[]> = ({ penguin, msg }) => {
-  msg.send(penguin, 'epfga', penguin.inventory.has(8009) ? 1 : 0);
+  msg.send(penguin, 'epfga', penguin.psa.isAgent ? 1 : 0);
 }
 
 export const handleGetFieldOps: PenguinHandler<[]> = ({ penguin, msg }) => {
@@ -679,6 +679,7 @@ export const handleAddEpfItem: PenguinHandler<[number]> = ({ data, penguin, msg,
 
 export const handleBecomeAgent: PenguinHandler<[]> = ({ prst, msg, penguin }) => {
   msg.send(penguin, 'epfsa', 1);
+  penguin.psa.setAgent();
   prst(penguin);
 }
 
