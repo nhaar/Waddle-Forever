@@ -2,7 +2,7 @@ import http from 'http';
 import https from 'https';
 import path from 'path';
 import fs from 'fs';
-import { WEBSITE } from './website';
+import { WEBSITE } from './constants';
 import { exec } from 'child_process';
 import { IpcRenderer } from 'electron';
 

@@ -3,7 +3,7 @@ import fs from 'fs'
 
 import electronIsDev from "electron-is-dev";
 
-import { VERSION } from '@common/version';
+import { VERSION } from '@common/constants';
 import settingsManager from '@server/settings';
 import { download } from './download';
 import { unzip } from './unzip';
