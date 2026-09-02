@@ -195,6 +195,7 @@ const POST_LISTENERS: Record<string, PostCallback> = {
 }
 
 const GET_LISTENERS: Record<string, GetCallback> = {
+  '/services': () => '{}',
   '/flash/date.php': (settings) => {
     const [year, month, day] = processVersion(settings.settings.version)
     return `output=${String(day).padStart(2, '0')}${String(month).padStart(2, '0')}${String(year % 2000).padStart(2, '0')}`;
