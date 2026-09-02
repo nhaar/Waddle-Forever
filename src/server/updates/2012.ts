@@ -32,7 +32,16 @@ export const UPDATES_2012: Update[] = [
       lake: 'archives:RoomsLake-Early2012.swf',
       underwater: 'archives:RoomsUnderwater-11Feb2014.swf'
     },
-    furnitureCatalog: 'archives:JanFeb2012Furniture.swf'
+    furnitureCatalog: 'archives:JanFeb2012Furniture.swf',
+    dateReference: 'furniture-catalog-name'
+  },
+  {
+    date: '2012-01-21',
+    constructionComment: 'The Underwater Expedition construction advances'
+  },
+  {
+    date: '2012-01-24',
+    constructionComment: 'The Underwater Expedition construction advances'
   },
   {
     date: '2012-01-26',
@@ -274,6 +283,7 @@ export const UPDATES_2012: Update[] = [
   },
   {
     date: '2012-03-15',
+    petFurniture: 'archives:ENCataloguesPetsMar2012.swf',
     temp: {
       party: {
         partyName: 'Puffle Party',
@@ -566,9 +576,6 @@ export const UPDATES_2012: Update[] = [
     temp: {
       party: {
         partyName: 'Medieval Party',
-        specialRoute: {
-          'play/v2/content/global/rooms/party24.swf': ['archives:RoomsParty24-11Feb2014.swf', 'medieval_sound_fix']
-        },
         rooms: {
           'attic': 'archives:MedievalParty2012attic.swf',
           'beach': 'archives:MedievalParty2012beach.swf',

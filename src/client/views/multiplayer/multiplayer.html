@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="../base.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="multiplayer.css" rel="stylesheet" type="text/css" media="screen"/>
+  </head>
+  <body>
+
+    <div class="radio-container">
+      <div>
+        Choose:
+      </div>
+      <div class="radio-option">
+        <label for="local">
+          <input type="radio" id="local" name="type" />
+          Local (Singleplayer Only)
+        </label>
+      </div>
+
+      <div class="radio-option">
+        <label for="guest">
+          <input type="radio" id="guest" name="type" />
+          Guest (Join Another Server)
+        </label>
+      </div>
+
+      <div class="radio-option">
+        <label for="host">
+          <input type="radio" id="host" name="type" />
+          Host (Invite Other People)
+        </label>
+      </div>
+    </div>
+    <div id="info-input" style="visibility: hidden;">
+      <label for="ip-input">IP:</label>
+      <input placeholder="IP" type="text" id="ip-input" />
+      <label for="port-input">Port (LEAVE BLANK unless rerouting the port):</label>
+      <input placeholder="Port" id="port-input" type="number" />
+      <button id="send">Update</button>
+    </div>
+    <script src="multiplayer-static.js" type="module"></script>
+  </body>
+</html>

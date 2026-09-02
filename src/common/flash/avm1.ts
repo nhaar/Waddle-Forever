@@ -65,6 +65,57 @@ export function createJsonDeclaration(obj: any): PCodeRep {
 
 export type PCodeRep = Array<[Action, ...Array<string | number | boolean>] | Action>;
 
+/** Equiv to `var name = new Object();` */
+export const createEmptyObjectVar = (name: string): PCodeRep => {
+  return [
+    [Action.Push, name],
+    [Action.Push, 0],
+    [Action.Push, "Object"],
+    Action.NewObject,
+    Action.DefineLocal
+  ];
+}
+
+/** Add var of a name to the AVM1 stack */
+export const addVarToStack = (name: string): PCodeRep => {
+  return [
+    [Action.Push, name],
+    Action.GetVariable
+  ];
+}
+
+/**
+ * Equiv to a member assingment `name.member = something` or `name[1] = something`
+ * v: PCode that pushes a vairable to stack
+ * member: Name of member that will be set (eg a property of object or index of array)
+ * value: PCode that pushes the value to the stack, which will be assigned to member
+ * */
+export const setMember = (v: PCodeRep, member: number | string, value: PCodeRep): PCodeRep => {
+  return [
+    ...v,
+    [Action.Push, member],
+    ...value,
+    Action.SetMember
+  ];
+}
+
+/**
+ * Pushes a simple object as a value to the AVM1 stack
+*/
+export const addObjectToStack = (obj: Record<string, string | number | boolean>): PCodeRep => {
+  const entries = Object.entries(obj);
+  const keys: PCodeRep = entries.flatMap(([key, value]) => [
+    [Action.Push, key],
+    [Action.Push, value]
+  ]);
+
+  return [
+    ...keys,
+    [Action.Push, entries.length],
+    Action.InitObject
+  ];
+}
+
 export function createBytecode(code: PCodeRep): Uint8Array {
   const numbers: number[] = [];
 
@@ -104,7 +155,7 @@ export function createBytecode(code: PCodeRep): Uint8Array {
           });
           break;
         default:
-          throw new Error('Unimplemented bytecode with arguments');
+          throw new Error(`Unimplemented bytecode with arguments: ${action}`);
       }
     }
   })

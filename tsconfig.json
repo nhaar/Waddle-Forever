@@ -4,17 +4,16 @@
     "target": "ES2021",
     "module": "commonjs",
     "esModuleInterop": true,
-    "noImplicitAny": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
+    "rootDir": "src",
     "outDir": "compiled",
-    "baseUrl": ".",
     "paths": {
-      "@client/*": ["src/client/*"],
-      "@common/*": ["src/common/*"],
-      "@server/*": ["src/server/*"],
+      "@client/*": ["./src/client/*"],
+      "@common/*": ["./src/common/*"],
+      "@server/*": ["./src/server/*"],
       "*": [
-        "node_modules/*"
+        "./node_modules/*"
       ]
     }
   },
@@ -22,8 +21,11 @@
     "src/**/*"
   ],
   "exclude": [
-    "src/client/static/**/*",
+    "src/client/views/**/*-static.ts",
     "/dist/**/*",
     "/compiled/**/*"
-  ]
+  ],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }

@@ -1,12 +1,11 @@
 {
   "name": "waddle-forever",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "description": "Singleplayer Experience for Club Penguin",
   "main": "./compiled/client/main.js",
   "scripts": {
-    "clean": "rimraf compiled/",
-    "clean-client": "rimraf compiled/client/",
-    "copy-files": "copyfiles -u 1 assets/**/* assets/* assets/flash/PepperFlashPlayer.plugin/Contents/* assets/flash/PepperFlashPlayer.plugin/Contents/_CodeSignature/* assets/flash/PepperFlashPlayer.plugin/Contents/MacOs/* compiled/assets/ && copyfiles -u 3 src/client/views/**/* compiled/client/views/",
+    "clean": "node scripts/remove-compiled.mjs",
+    "copy-files": "copyfiles -u 1 assets/**/* assets/* assets/flash/PepperFlashPlayer.plugin/Contents/* assets/flash/PepperFlashPlayer.plugin/Contents/_CodeSignature/* assets/flash/PepperFlashPlayer.plugin/Contents/MacOs/* compiled/assets/ && copyfiles -u 3 -e \"src/client/views/**/*.ts\" \"src/client/views/**/*\" compiled/client/views/",
     "build-browser": "tsc --project tsconfig.esm.json",
     "build-tsc": "yarn clean && tsc && tsc-alias && yarn build-browser && yarn copy-files",
     "start": "yarn build-tsc && cross-env NODE_ENV=dev electron ./compiled/client/main.js",
@@ -15,15 +14,15 @@
     "build-client-win": "yarn build-packages && yarn build-tsc && electron-builder build --win --publish never",
     "build-mac": "yarn build-packages && yarn build-tsc && electron-builder build --mac --publish never",
     "build-linux": "yarn build-packages && yarn build-tsc && electron-builder build --linux --x64 --publish never",
-    "dev": "cross-env NODE_ENV=dev nodemon src/server/main.ts",
+    "dev": "cross-env NODE_ENV=dev tsx watch src/server/main.ts",
     "build-server-win-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer.exe -t node20-win-x64&&node scripts/rename-win.js",
     "build-server-linux-x64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer -t node20-linux-x64&&node scripts/rename-linux.js",
     "build-server-win-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64.exe -t node20-win-arm64",
     "build-server-linux-arm64": "tsc&&yarn clean-client&&pkg compiled/server/main.js -o dist/WaddleForeverServer-arm64 -t node20-linux-arm64",
-    "build-media": "cross-env PRODUCTION_BUILD=PRODUCTION ts-node scripts/zip-media",
+    "build-media": "cross-env PRODUCTION_BUILD=PRODUCTION tsx scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
-    "build-packages": "ts-node scripts/build-packages.ts",
-    "debug-versions": "ts-node scripts/dump-versions.ts"
+    "build-packages": "tsx scripts/build-packages.ts",
+    "debug-versions": "tsx scripts/dump-versions.ts"
   },
   "author": "CPS",
   "license": "MIT",
@@ -88,6 +87,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^18.13.0",
     "@types/unzipper": "^0.10.10",
+    "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "@yao-pkg/pkg": "^5.15.0",
@@ -98,10 +98,10 @@
     "electron-builder": "23.0.2",
     "eslint": "^8.34.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "rimraf": "^4.1.2",
-    "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
-    "typescript": "^4.9.5"
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "cross-fetch": "^3.1.5",
@@ -114,6 +114,7 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^5.3.0",
     "express": "^4.21.0",
-    "unzipper": "^0.12.3"
+    "unzipper": "^0.12.3",
+    "ws": "^8.19.0"
   }
 }

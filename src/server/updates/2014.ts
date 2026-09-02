@@ -2,6 +2,10 @@ import { Update } from ".";
 
 export const UPDATES_2014: Update[] = [
   {
+    date: '2014-04-17',
+    petFurniture: 'archives:ENCataloguesPetsApr2014.swf'
+  },
+  {
     date: '2014-05-14',
     rooms: {
       lake: 'archives:RoomsLake-May2014.swf',
@@ -30,5 +34,9 @@ export const UPDATES_2014: Update[] = [
         5121
       ]
     }
+  },
+  {
+    date: '2014-09-18',
+    dateReference: 'mall'
   }
 ]

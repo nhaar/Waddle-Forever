@@ -4,7 +4,7 @@ import { Store } from "./store";
 import { checkUpdates } from "./update";
 import { GlobalSettings } from '../common/utils';
 import { SettingsManager } from '../server/settings';
-import { getSiteUrl } from './multiplayer';
+import { getSiteUrl } from './views/multiplayer/multiplayer';
 
 function getIP(clientSettings: GlobalSettings, serverSettings: SettingsManager) {
   if (clientSettings.multiplayer.type === 'guest') {

@@ -6,6 +6,9 @@ import { WEBSITE } from './website';
 import { exec } from 'child_process';
 import { IpcRenderer } from 'electron';
 
+/** Side-effect: Bind service to a port */
+export type EffectService<T> = T;
+
 type MultiplayerSettings = { type: 'local'; } | {
   type: 'guest';
   ip: string;
@@ -148,7 +151,7 @@ export async function runCommand(command: string): Promise<void> {
 
 /** Function for logging more silent errors in production */
 export const logError = (message: string, error: any): void => {
-  const logDir = path.join(process.cwd(), 'logs');
+  const logDir = process.platform == 'darwin' ? path.join(__dirname, '..', '..', 'logs') : path.join(process.cwd(), 'logs');
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
   }
@@ -169,6 +172,8 @@ export function randomInt(min: number, max: number) {
 export function choose<T>(array: T[]): T {
   return array[randomInt(0, array.length - 1)];
 }
+
+export const modulo = (a: number, b: number): number => a - Math.floor(a / b) * b;
 
 export function chooseN<T>(array: T[], n: number): T[] {
   const chosen: T[] = [];
@@ -269,6 +274,52 @@ export class Vector {
 
     return vector;
   }
+}
+
+/** Helper class for building an event with functions to fire when the event happens */
+export class EventListener {
+  private listeners: Array<() => void> = [];
+
+  public addListener(callback: () => void) {
+    this.listeners.push(callback);
+  }
+
+  public fire(): void {
+    this.listeners.forEach(callback => callback());
+  }
+}
+
+export async function readFile(filePath: string) {
+  return new Promise<Buffer>((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    });
+  });
+}
+
+export async function writeFile(filePath: string, content: string | Uint8Array<ArrayBufferLike>): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    fs.writeFile(filePath, content, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+}
+
+export function toForwardSlash(s: string): string {
+  return s.replaceAll('\\', '/')
+}
+
+export const doubleFilter = <T>(predicate: (e: T) => boolean, arr: T[]): [T[], T[]] => {
+  const include: T[] = [];
+  const exclude: T[] = [];
+  arr.forEach(e => predicate(e) ? include.push(e) : exclude.push(e));
+  return [include, exclude];
 }
 
 export const monthNames = [

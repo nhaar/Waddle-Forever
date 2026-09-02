@@ -32,7 +32,7 @@ type RowFromKeys<T extends BaseRow, K extends (keyof T)[]> = {
  * in the constructor argument.
  */
 export class StaticDataTable<T extends BaseRow, K extends (keyof T)[]> {
-  private map: Map<number, T>;
+  protected map: Map<number, T>;
 
   /**
    * @param keys This should be the exact same as the second type argument
@@ -67,5 +67,10 @@ export class StaticDataTable<T extends BaseRow, K extends (keyof T)[]> {
 
   get rows(): T[] {
     return Array.from(this.map.values());
+  }
+
+  /** If id exists in the table */
+  public has(id: number): boolean {
+    return this.map.has(id);
   }
 }

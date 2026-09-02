@@ -12,4 +12,21 @@ export const GAMES: Record<GameName, number> = {
   thinice: 909
 }
 
+export const MATCHMAKERS: Array<{
+  name: 'card' | 'fire';
+  count: number;
+  id: number;
+}> = [
+  {
+    name: 'card',
+    count: 2,
+    id: 951
+  },
+  {
+    name: 'fire',
+    count: 4,
+    id: 953
+  }
+];
+
 // games with embed in as3: cart, roundup

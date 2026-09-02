@@ -1,6 +1,6 @@
 import fs from 'fs'
 import unzipper from 'unzipper';
-import { showProgress, ProgressCallback } from './progress';
+import { showProgress, ProgressCallback } from './views/progress/progress';
 
 function unzipFile(zipDir: string, outDir: string, progress: ProgressCallback, end: () => void, onError: (err: unknown) => void) {
   // removes the zipped file

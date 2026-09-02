@@ -12,7 +12,8 @@ export const UPDATES_2005: Update[] = [
     fileChanges: {
       'chat291.swf': 'approximation:chat291_no_news.swf', // newspapers-less precpip client
       // placeholder catalogue so that it doesn't softlock
-      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf'
+      'artwork/catalogue/clothing.swf': 'recreation:style_september_05.swf',
+      'load.swf': 'tool:load.swf'
     },
     rooms: {
       'town': 'approximation:town_release.swf',
@@ -29,6 +30,7 @@ export const UPDATES_2005: Update[] = [
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
     clothingCatalog: {
+      file: 'archives:Catalog1_06.swf',
       newItems: [
         1,
         2,
@@ -214,11 +216,6 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-09-21',
-    clothingCatalog: {
-      file: 'recreation:style_september_05.swf',
-      newItems: [],
-      removedItems: []
-    },
     furnitureCatalog: 'recreation:furniture_sep05.swf',
     temp: {
       party: {

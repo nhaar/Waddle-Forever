@@ -102,7 +102,8 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-19',
     miscComments: ['Members can now see a special badge on their own player card'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge.swf'
+      'play/v2/interface/interface.swf': 'recreation:interfaces/membership_badge.swf',
+      'play/v2/login/login.swf': 'approximation:login_no_101_days_of_fun.swf'
     }
   },
   {
@@ -155,7 +156,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-01-29',
     miscComments: ['The membership badge can now be seen in other player cards'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'recreation:interfaces/membership_badge_2.swf'
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-February2009.swf'
     },
     roomComment: 'The sign in the Attic is updated',
     temp: {
@@ -471,7 +472,8 @@ export const UPDATES_2009: Update[] = [
     rooms: {
       stage: 'archives:Stage2011Aug17.swf',
       plaza: 'recreation:plaza_team_blue_play.swf'
-    }
+    },
+    dateReference: 'pet-furniture-rename1'
   },
   {
     date: '2009-02-20',
@@ -535,14 +537,13 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-06',
     end: ['event'],
     miscComments: ['White Puffles are available to adopt'],
+    fileChanges: {
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-March2009.swf'
+    },
     rooms: {
       pet: 'archives:RoomsPet_4.swf'
     },
-    localChanges: {
-      'catalogues/adopt.swf': {
-        'en': 'archives:Mar2009Adopt.swf'
-      }
-    },
+    puffleCatalog: 'archives:Mar2009Adopt.swf',
     clothingCatalog: 'archives:Mar2009.swf',
     temp: {
       const: {
@@ -636,7 +637,11 @@ export const UPDATES_2009: Update[] = [
           stage: 40
         },
         globalChanges: {
-          'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf'
+          'content/shorts/penguinsTime.swf': 'archives:ContentShortspenguinsTime.swf',
+          'content/shorts/squidzoid.swf': 'archives:ContentShortssquidzoid.swf',
+          'content/shorts/fairyFables.swf': 'archives:ContentShortsfairyFables.swf',
+          'content/shorts/goldenPuffle.swf': 'archives:ContentShortsgoldenPuffle.swf',
+          'content/shorts/ruby.swf': 'archives:ContentShortsruby.swf'
         },
         playScript: [
           { note: "HOST" },
@@ -709,7 +714,8 @@ export const UPDATES_2009: Update[] = [
     date: '2009-03-24',
     miscComments: ['The membership badge now features levels'],
     fileChanges: {
-      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf'
+      'play/v2/interface/interface.swf': 'archives:ClientInterface-April2009.swf',
+      'play/v2/engine/engine.swf': 'recreation:engine_apr2009.swf'
     }
   },
   {
@@ -811,7 +817,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'catalogues/party.swf': {
-            'en': 'archives:BoxCatalog.swf'
+            'en': ['archives:BoxCatalog.swf', 'party_catalogue']
           },
           'membership/party3.swf': {
             'en': ['archives:AprilFoolMembership.swf', 'oops_party3_room']
@@ -1215,12 +1221,16 @@ export const UPDATES_2009: Update[] = [
     date: '2009-06-26',
     // temporary, as this is the earliest it can work at the moment
     dayOfFun: 'start',
+
+    // day in which composite paths are no longer used
+    dateReference: 'composite-paths',
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
-      'play/v2/client/login.swf': 'fix:ClientLoginJun2009.swf',
-      'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf'
-
+      'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf',
+      'play/v2/client/interface.swf': 'archives:ClientInterface-June2009.swf',
+      'play/v2/client/engine.swf': 'archives:ClientEngine2009-06-15.swf'
     },
+    indexHtml: 'classic-cpip-2',
     iglooList: [
       { display: 'Viking Opera', id: 41, pos: [1, 1] },
       { display: 'Mountain Dojo', id: 21, pos: [2, 1] },
@@ -1249,10 +1259,10 @@ export const UPDATES_2009: Update[] = [
           coffee: 'archives:RoomsCoffee-MusicJam2010Pre.swf',
           cove: 'archives:RoomsCove-MusicJam2010Pre.swf',
           dock: 'archives:RoomsDock-MusicJam2010Pre.swf',
-          forest: 'archives:RoomsForest-MusicJam2010Pre.swf',
-          berg: 'archives:RoomsBerg-MusicJam2010Pre.swf',
+          forest: 'archives:RoomsForest-MusicJam2009Const.swf',
+          berg: 'archives:RoomsBerg-MusicJam2009Const.swf',
           light: 'archives:RoomsLight-MusicJam2010Pre.swf',
-          village: 'archives:RoomsVillage-MusicJam2010Pre.swf',
+          village: 'archives:RoomsVillage-MusicJam2009Const.swf',
           forts: 'archives:RoomsForts-MusicJam2010Pre.swf',
           rink: 'archives:RoomsRink-MusicJam2009Const.swf'
         }
@@ -1294,7 +1304,8 @@ export const UPDATES_2009: Update[] = [
           village: 'archives:RoomsVillage-MusicJam2009.swf',
           forts: 'archives:RoomsForts-MusicJam2009.swf',
           rink: 'archives:RoomsRink-MusicJam2009.swf',
-          town: 'archives:RoomsTown-MusicJam2009.swf'
+          town: 'archives:RoomsTown-MusicJam2009.swf',
+          mine: 'archives:RoomsMine-MusicJam2008.swf'
         },
         music: {
           dance: 242,
@@ -1305,7 +1316,8 @@ export const UPDATES_2009: Update[] = [
           plaza: 271,
           town: 271,
           party3: 271,
-          coffee: 0
+          coffee: 0,
+          mine: 247
         },
         localChanges: {
           'catalogues/merch.swf': {
@@ -1406,16 +1418,16 @@ export const UPDATES_2009: Update[] = [
           town: 277,
           party: 278,
           party2: 278
+        },
+        memberRooms: {
+          party: true
         }
-      }
+      },
     }
   },
   {
-    date: '2009-08-20',
-    end: ['party']
-  },
-  {
     date: '2009-08-21',
+    end: ['party'],
     stagePlay: {
       name: 'Underwater Adventure',
       costumeTrunk: 'archives:May2011UnderwaterAdventureCostume.swf',
@@ -1473,7 +1485,13 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-08-28',
-    sportCatalog: 'archives:SportAug09.swf'
+    sportCatalog: 'archives:SportAug09.swf',
+    miscComments: ['The startscreens are updated'],
+    temp: {
+      party: {
+        startscreens: ['archives:LoginThe_fair2009.swf']
+      }
+    }
   },
   {
     date: '2009-09-04',
@@ -1537,6 +1555,9 @@ export const UPDATES_2009: Update[] = [
         fairCpip: {
           iconFileId: 'archives:Ticket_icon-TheFair2009.swf',
           infoFile: 'archives:Tickets-TheFair2009.swf'
+        },
+        memberRooms: {
+          party2: true
         }
       }
     }
@@ -1687,12 +1708,6 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-21',
-    iglooList: [
-      { display: 'Campfire Song', id: 220, pos: [2, 1] },
-      { display: 'Extra Anchovies', id: 270, pos: [7, 1] },
-      { display: 'All the Fun of The Fair', id: 221, pos: [2, 2] },
-      { display: 'Spicy Salsa', id: 229, pos: [6, 2] }
-    ],
     temp: {
       party2: {
         update: 'The volcano becomes active',
@@ -1704,6 +1719,12 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-09-25',
+    iglooList: [
+      { display: 'Campfire Song', id: 220, pos: [2, 1] },
+      { display: 'Extra Anchovies', id: 270, pos: [7, 1] },
+      { display: 'All the Fun of The Fair', id: 221, pos: [2, 2] },
+      { display: 'Spicy Salsa', id: 229, pos: [6, 2] }
+    ],
     temp: {
       party2: {
         rooms: {
@@ -2137,14 +2158,14 @@ export const UPDATES_2009: Update[] = [
           rink: 'archives:RoomsRink-WinterParty.swf',
           party: 'archives:RoomsParty-WinterParty.swf',
           party2: 'archives:RoomsParty2-WinterParty.swf',
-          party3: 'fix:RoomsParty3-WinterParty.swf',
-          party4: 'fix:RoomsParty4-WinterParty.swf',
-          party5: 'fix:RoomsParty5-WinterParty.swf',
-          party6: 'fix:RoomsParty6-WinterParty.swf',
+          party3: 'archives:RoomsParty3-WinterParty.swf',
+          party4: 'archives:RoomsParty4-WinterParty.swf',
+          party5: 'archives:RoomsParty5-WinterParty.swf',
+          party6: 'archives:RoomsParty6-WinterParty.swf',
           party7: 'archives:RoomsParty7-WinterParty.swf',
           party8: 'archives:RoomsParty8-WinterParty.swf',
           party9: 'archives:RoomsParty9-WinterParty.swf',
-          party10: 'fix:RoomsParty10-WinterParty.swf',
+          party10: 'archives:RoomsParty10-WinterParty.swf',
           party11: 'archives:RoomsParty11-WinterParty.swf'
         },
         music: {
@@ -2165,7 +2186,7 @@ export const UPDATES_2009: Update[] = [
         },
         localChanges: {
           'close_ups/maze_map.swf': {
-            'en': 'archives:ENClose_upsMaze_map-WinterParty.swf'
+            'en': ['archives:ENClose_upsMaze_map-WinterParty.swf', 'maze_map']
           }
         }
       }

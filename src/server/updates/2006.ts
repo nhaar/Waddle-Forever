@@ -23,10 +23,10 @@ export const UPDATES_2006: Update[] = [
       party: {
         partyName: 'Winter Luau',
         rooms: {
-          dance: 'recreation:winter_luau/dance.swf',
-          dock: 'recreation:winter_luau/dock.swf',
-          forts: 'recreation:winter_luau/forts.swf',
-          town: 'recreation:winter_luau/town.swf'
+          dance: 'fix:ArtworkRoomsDance2_luau.swf',
+          dock: 'fix:ArtworkRoomsDock3_luau.swf',
+          forts: 'fix:ArtworkRoomsForts3_luau.swf',
+          town: 'fix:ArtworkRoomsTown4_luau.swf'
         },
         music: {
           dock: 11,
@@ -59,7 +59,8 @@ export const UPDATES_2006: Update[] = [
         partyName: "Valentine's Day Celebration",
         rooms: {
           'dance': 'archives:ArtworkRooms0214Dance.swf',
-          'lounge': 'archives:ArtworkRooms0214Lounge.swf'
+          'lounge': 'archives:ArtworkRooms0214Lounge.swf',
+          coffee: 'recreation:coffee_valentine.swf'
         }
       }
     }
@@ -216,6 +217,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-14',
+    // Placeholder, as the April edition of Love Your Pet is lost
+    petFurniture: 'archives:Pets_0605.swf',
     iglooCatalog: 'archives:April2006Igloo.swf',
     temp: {
       party: {
@@ -349,6 +352,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-05-26',
+    petFurniture: 'archives:Pets_0605.swf',
     temp: {
       party: {
         partyName: 'Underground Opening Party',
@@ -466,6 +470,10 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-06-23',
+    petFurniture: 'archives:Pets_0606.swf',
+  },
+  {
     date: '2006-06-25',
     end: ['party']
   },
@@ -533,6 +541,10 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-07-23',
     end: ['party']
+  },
+  {
+    date: '2006-07-26',
+    petFurniture: 'archives:Pets_0607.swf',
   },
   {
     date: '2006-08-04',
@@ -1310,6 +1322,8 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-10-05',
+    // Placeholder date based on fla's last modified date
+    petFurniture: 'archives:Pets_0610.swf',
     constructionComment: 'A construction begins at the Plaza',
     end: ['town-launchpad'],
     temp: {
@@ -1463,6 +1477,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-12-08',
     iglooList: true,
     iglooVersion: 44,
+    puffleCatalog: 'archives:Pets_0703.swf',
     roomComment: 'Red Puffles are now in the Pet Shop',
     rooms: {
       pet: 'archives:ArtworkRoomsPet43.swf'

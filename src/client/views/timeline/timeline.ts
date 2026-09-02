@@ -1,0 +1,256 @@
+import path from 'path'
+
+import { BrowserWindow, ipcMain } from "electron";
+import { isEqual, isLower, isLowerOrEqual, processVersion, Version, addDays } from '@server/routes/versions';
+import { UPDATES } from '@server/updates/updates';
+import { CatalogItems } from '@server/updates';
+import { getDate } from '@server/timelines/dates';
+import { getPopupCreator } from '@client/popups';
+import { SettingsManager } from '@server/settings';
+import { WorldServer } from '@server/socket-server/world-server';
+
+export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
+  const timelinePicker = new BrowserWindow({
+    show: false,
+    title: "Timeline",
+    webPreferences: {
+      preload: path.join(__dirname, 'timeline-preload.js'),
+    }
+  });
+
+  timelinePicker.setMenu(null);
+
+  timelinePicker.loadFile(path.join(__dirname, 'timeline.html'));
+
+  ipcMain.on('update-version', (_, arg) => {
+    const { settings: s, reset } = arg;
+    settings.updateSettings(s);
+    if (reset === true) {
+      server.reset();
+    }
+    mainWindow.webContents.reloadIgnoringCache();
+  });
+
+  timelinePicker.webContents.on('did-finish-load', () => {
+    timelinePicker?.maximize();
+    timelinePicker?.show();
+    timelinePicker?.webContents.send('get-timeline', { days: getConsumedTimeline(getTimeline()), settings: settings.settings  });
+  });
+
+  return timelinePicker;
+});
+
+
+// this type is duplicated in the timeline-static file, it should be the same type
+/** Representation of a day in the Club Penguin timeline */
+type Day = {
+  date: Version
+  events: Event[]
+}
+
+/** Obtain an array of days in chronological order from a map */
+function getDaysFromMap(map: Map<Version, Day>) {
+  const days: Day[] = [];
+  map.forEach((version) => days.push(version));
+  // sorting chronologically
+  return days.sort((a, b) => {
+    const aVersion = a.date;
+    const bVersion = b.date;
+    if (isLower(aVersion, bVersion)) {
+      return -1;
+    } else if (isEqual(aVersion, bVersion)) {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
+}
+
+/** Add new events to a day inside a day map */
+function addEvent(map: Map<Version, Day>, date: string, text: string, image: string, party?: 'start' | 'end'): void {
+  const day = map.get(date);
+  const event = { text, image, party };
+  if (day === undefined) {
+    map.set(date, { date, events: [event] });
+  } else {
+    map.set(date, { date, events: [ ...day.events, event ] });
+  }
+}
+
+function isCatalogAvailable(input: string | CatalogItems | undefined): boolean {
+  if (typeof input === 'string') {
+    return true;
+  } else {
+    if (input?.file === undefined || input.announce === false) {
+      return false
+    } else {
+      return true;
+    }
+  }
+}
+
+function getTimeline(): Day[] {
+  let map = new Map<string, Day>();
+  const premieres = new Set<string>();
+
+
+  let daysOfFunStartDate = '';
+
+  UPDATES.forEach(update => {
+    if (update.update.gameRelease !== undefined) {
+
+      addEvent(map, update.date, `${update.update.gameRelease} releases`, 'game');
+    }
+    if (isCatalogAvailable(update.update.clothingCatalog)) {
+      addEvent(map, update.date, 'A new edition of Penguin Style is available', 'clothing');
+    }
+    if (update.update.iglooCatalog !== undefined) {
+      const iglooCatalogName = isLower(update.date, getDate('igloo-catalog-name'))
+        ? 'Igloo Upgrades'
+        : 'Igloo Catalog';
+      addEvent(map, update.date, `A new edition of ${iglooCatalogName} is available`, 'igloo');
+    }
+    if (update.update.puffleCatalog !== undefined) {
+      const puffleCatalogName = isLower(update.date, getDate('adopt-catalog-name'))
+        ? 'Adopting And Caring For Your Puffle'
+        : 'Adopt A Puffle';
+      addEvent(map, update.date, `A new edition of ${puffleCatalogName} is available`, 'adopt');
+    }
+    if (update.update.hairCatalog !== undefined) {
+      addEvent(map, update.date, 'A new edition of Big Wigs is available', 'bigwigs');
+    }
+    if (update.update.petFurniture !== undefined) {
+      const petCatalogName = isLower(update.date, getDate('adopt-catalog-name'))
+        ? 'Love Your Pet'
+        : isLower(update.date, getDate('pet-furniture-rename1'))
+          ? 'Love Your Pet: Pet Furniture'
+          : isLower(update.date, getDate('pet-furniture-rename2'))
+            ? 'Pet Furniture: Love Your Pet'
+            : 'Puffle Catalog';
+      addEvent(map, update.date, `A new edition of ${petCatalogName} is available`, 'petfurniture');
+    }
+    if (isCatalogAvailable(update.update.martialArtworks)) {
+      addEvent(map, update.date, 'A new edition of Martial Artworks is available', 'martialartworks');
+    }
+    if (update.update.furnitureCatalog !== undefined) {
+      const furnitureCatalogName = isLower(update.date, getDate('furniture-catalog-name'))
+        ? 'Better Igloos'
+        : 'Furniture Catalog';
+      addEvent(map, update.date, `A new edition of ${furnitureCatalogName} is available`, 'furniture');
+    }
+    if (update.update.postcardCatalog !== undefined) {
+      addEvent(map, update.date, 'A new postcard catalog is available', 'postcard');
+    }
+    if (update.update.newspaper === 'fan') {
+      addEvent(map, update.date, 'Fan issue of the newspaper released', 'news');
+    }
+    if (update.update.miscComments !== undefined) {
+      update.update.miscComments.forEach(comment => {
+        addEvent(map, update.date, comment, 'other');
+      }) 
+    }
+    if (
+      update.update.iglooList !== undefined) {
+        if (typeof update.update.iglooList !== 'string') {
+          if (
+            update.update.iglooList === true || !('hidden' in update.update.iglooList && update.update.iglooList.hidden === true)
+          )
+          addEvent(map, update.date, 'New music is available for igloos', 'music');
+        } else {
+          addEvent(map, update.date, update.update.iglooList, 'music');
+        }
+    }
+    if (update.update.migrator !== false && update.update.migrator !== undefined) {
+      addEvent(map, update.date, 'The migrator visits the island', 'migrator');
+    }
+    if (update.end !== undefined) {
+      const icon = ('partyIcon' in update.update && update.update.partyIcon !== undefined) ? update.update.partyIcon : 'party';
+      if ('partyName' in update.update) {
+        addEvent(map, update.date, `The ${update.update.partyName} starts`, icon, update.update.decorated === false ? undefined : 'start');
+        addEvent(map, update.end, `The ${update.update.partyName} ends`, 'party', update.update.decorated === false ? undefined :'end');
+      } else if ('partyStart' in update.update) {
+        addEvent(map, update.date, update.update.partyStart, icon, update.update.decorated === false ? undefined :'start');
+        addEvent(map, update.end, update.update.partyEnd, 'party', update.update.decorated === false ? undefined :'end');
+      } else if ('update' in update.update) {
+        addEvent(map, update.date, update.update.update, 'party');
+      }
+    }
+    if (update.update.roomComment !== undefined) {
+      if (typeof update.update.roomComment === 'string') {
+        addEvent(map, update.date, update.update.roomComment, 'room');
+      } else {
+        update.update.roomComment.forEach(comment => {
+          addEvent(map, update.date, comment, 'room');
+        })
+      }
+    }
+    if (update.update.constructionComment !== undefined) {
+      addEvent(map, update.date, update.update.constructionComment, 'const');
+    }
+    if (update.update.partyComment !== undefined) {
+      addEvent(map, update.date, update.update.partyComment, 'party');
+    }
+
+    if (update.update.stagePlay !== undefined) {
+      // pre-emptively adding premieres that aren't archived
+      if (update.update.stagePlay.notPremiere) {
+        premieres.add(update.update.stagePlay.name);
+      }
+      if (update.update.stagePlay.hide !== true) {
+        const stagePlay = premieres.has(update.update.stagePlay.name)
+          ? `${update.update.stagePlay.name} returns to The Stage`
+          : `${update.update.stagePlay.name} premieres at the Stage`;
+        addEvent(map, update.date, stagePlay, 'stage');
+      }
+      premieres.add(update.update.stagePlay.name);
+    }
+    if (update.update.stampUpdates !== undefined) {
+      addEvent(map, update.date, 'New stamps are available', 'other');
+    }
+    if (update.update.dayOfFun !== undefined) {
+      if (update.update.dayOfFun === 'start') {
+        daysOfFunStartDate = update.date;
+      } else {
+        let currentDate = daysOfFunStartDate;
+        let daysElapsed = 0;
+        // temporary as earliest available is 23.
+        const daysOfFunStart = 23;
+        while (isLowerOrEqual(currentDate, update.date)) {
+          addEvent(map, currentDate, `101 Days of Fun activity #${daysElapsed + daysOfFunStart} starts`, 'daysoffun');
+          currentDate = addDays(currentDate, 1);
+          daysElapsed++;
+        }
+      }
+    }
+    if (update.update.issue !== undefined) {
+      addEvent(map, update.date, `Issue #${update.update.issue.edition} of the newspaper releases`, 'news');
+    }
+    if (update.update.hiddenPin !== undefined) {
+      addEvent(map, update.date, `The ${update.update.hiddenPin} is now hidden in the island`, 'pin');
+    }
+  });
+
+  return getDaysFromMap(map);
+}
+
+type Event = { text: string; image: string; party?: 'start' | 'end'; };
+
+function getConsumedTimeline(days: Day[]): Array<{
+  year: number;
+  day: number;
+  month: number;
+  events: Array<Event>;
+  party?: 'start' | 'end';
+}> {
+  return days.map((day) => {
+
+    const [year, month, monthDay] = processVersion(day.date);
+
+    return {
+      year,
+      month,
+      day: monthDay,
+      events: day.events
+    }
+  });
+}

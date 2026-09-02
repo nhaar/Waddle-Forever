@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="settings.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../base.css" rel="stylesheet" type="text/css" media="screen"/>
+  </head>
+  <body>
+    <!--<h2>Settings</h2>-->
+    <div style="margin: 10px 10px -10px 10px;">
+      When a setting is changed, the game will automatically clear cache or reload the game if needed.
+    </div>
+
+    <div class="settings-parent">
+      <h3>Additional Packages</h3>
+      <label title="Download or remove the clothing package.">
+        Clothing Package
+        <div>
+          <input type="checkbox" id="js-clothing-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <hr>
+
+      <h3>Speedrun Related</h3>
+      <label title="Play in 30 FPS (Doesn't work past November 19, 2010).">
+        30 FPS
+        <div>
+          <input type="checkbox" id="js-fps-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <label title="Display an in-game timer when playing Thin Ice.">
+        Thin Ice IGT
+        <div>
+          <input type="checkbox" id="js-thin-ice-igt-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <label title="Implements a level selector on the title screen of Jet Pack Adventure.">
+        Jet Pack Adventure Level Selector
+        <div>
+          <input type="checkbox" id="js-jpa-level-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <hr>
+
+      <h3>Quality of Life</h3>
+      <label title="Swaps the positions of the up and down arrows in Dance Contest.">
+        Swap Dance Contest Arrow Keys
+        <div>
+          <input type="checkbox" id="js-dance-arrow-input">
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Disables the wait time in-between tasks for the rainbow puffle quest.">
+        Remove Puffle Quest Waiting
+        <div>
+          <input type="checkbox" id="rainbow-input">
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Removes the 10 minute idle disconnect timer (Only works after July 15, 2008).">
+        Remove Idle Disconnect
+        <div>
+          <input type="checkbox" id="removeidle-input">
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Fixes the extremely loud sound bug in the Medieval Party 2012.">
+        Medieval Party 2012 Sound Fix
+        <div>
+          <input type="checkbox" id="medieval-sound-fix-input">
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <hr>
+
+      <h3>Extra</h3>
+      <!-- <label title="This will make items that were released at later dates disappear in versions earlier than its release (This behavior happens naturally before July 2008 due to technical limitations)">
+        Inventory is always accurate to version
+        <div>
+          <input type="checkbox" id="inventory-input" />
+          <span class="box"></span>
+        </div>
+      </label> -->
+
+      <label title="Play in a minimal page where only the game itself is displayed.">
+        Simpler Website
+        <div>
+          <input type="checkbox" id="js-website-input" />
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <label title="When enabled, all newly created penguins will have membership.">
+        New Accounts Are Always a Member
+        <div>
+          <input type="checkbox" id="js-member-input" />
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Enables the newer, unused version of the 'My Puffle' Paint By Letters book (has newer puffle colors).">
+        2013 My Puffle
+        <div>
+          <input type="checkbox" id="js-my-puffle-input" />
+          <span class="box"></span>
+        </div>
+      </label>
+
+      <hr>
+
+      <h3>Account Security</h3>
+      <label title="When enabled, accounts cannot be created via logging in with a non-existent account">
+        Disable Account Creation via Login
+        <div>
+          <input type="checkbox" id="createvialogin-input" />
+          <span class="box"></span>
+        </div>
+      </label>
+    </div>
+    <script>var exports = {};</script>
+    <script src="settings-static.js" type="module"></script>
+  </body>
+</html>

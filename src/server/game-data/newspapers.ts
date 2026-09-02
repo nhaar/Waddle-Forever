@@ -9,8 +9,7 @@ export type BoilerRoomPaper = {
   title: string;
 }
 
-export type As3Newspaper = {
-  title: string;
+export type As3NewspaperFiles = {
   askFront: string;
   dividersFront: string | null;
   featureStory: string;
@@ -34,6 +33,10 @@ export type As3Newspaper = {
   iglooWinners?: string;
   extra?: string;
 }
+
+export type As3Newspaper = {
+  title: string;
+} & As3NewspaperFiles;
 
 export const PRE_BOILER_ROOM_PAPERS: PreBoilerRoomPaper[] = [
   'archives:News1.swf',
@@ -1737,7 +1740,7 @@ export const AS3_PAPERS: As3Newspaper[] = [
     navigationBack: 'archives:News298NavigationBack.swf',
     navigationFront: 'archives:News298NavigationFront.swf',
     dividersBack: null,
-    dividersFront: null,
+    dividersFront: 'archives:News298Dividers.swf',
     secrets: 'archives:News298Secrets.swf',
     submit: 'archives:News298SubmitYourContent.swf',
   },

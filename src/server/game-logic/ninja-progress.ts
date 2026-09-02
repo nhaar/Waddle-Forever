@@ -91,3 +91,85 @@ export class CardJitsuProgress {
     return this._ninja;
   }
 }
+
+// threshold for rank of index + 1
+const FIRE_RANK_THRESHOLD = [
+  25,
+  50,
+  100,
+  150
+];
+
+export const getFireReward = (rank: number): number | undefined => {
+  return [6025, 4120, 2013, 1086, 3032][rank - 1];
+}
+
+export const getFireStampReward = (rank: number): number | undefined => {
+  return {
+    2: Stamp.FireMidWay,
+    4: Stamp.FireSuit,
+    5: Stamp.FireNinja
+  }[rank];
+}
+
+export const MIN_SENSEI_RANK = FIRE_RANK_THRESHOLD.length;
+
+// EXP manager using the modern system
+export class CardJitsuFireProgress {
+  private _xp: number;
+  private _ninja: boolean;
+
+  constructor(xp: number, ninja: boolean) {
+    this._xp = xp;
+    this._ninja = ninja;
+  }
+
+  public advanceFromPodium(position: number, playerCount: number): void {
+    if (position < 1 || position > playerCount || playerCount < 2 || playerCount > 4) {
+      return;
+    }
+    this._xp += [
+      [9, 3],
+      [12, 6, 3],
+      [15, 9, 6, 3]
+    ][playerCount - 2][position - 1];
+  }
+
+  public advanceFromOthersQuit(): void {
+    this._xp += 2;
+  }
+
+  public setNinja() {
+    this._ninja = true;
+  }
+
+  public getPercentage(): number {
+    const rank = this.getRank();
+    if (rank >= FIRE_RANK_THRESHOLD.length) {
+      return 0;
+    } else {
+      const prevRankThreshold = FIRE_RANK_THRESHOLD[rank - 1] ?? 0;
+      const nextTrankThreshold = FIRE_RANK_THRESHOLD[rank];
+
+      return Math.floor(
+        (this._xp - prevRankThreshold) / (nextTrankThreshold - prevRankThreshold) * 100
+      );
+    }
+  }
+
+  public getRank(): number {
+    const unbeatenThreshold = FIRE_RANK_THRESHOLD.map((t, i) => [t, i]).find(([t]) => this._xp < t);
+
+    return unbeatenThreshold === undefined
+      ? FIRE_RANK_THRESHOLD.length + (this._ninja ? 1 : 0)
+      : unbeatenThreshold[1];
+  }
+
+  public get xp(): number {
+    return this._xp;
+  }
+
+  public get isFireNinja(): boolean {
+    return this._ninja;
+  }
+}

@@ -1,4 +1,10 @@
-import startServer from './server';
-import settingsManager from './settings';
+import { startMods, startServices } from './boot';
 
-startServer(settingsManager);
+// load user data
+const failedMods = startMods();
+if (failedMods.length > 0) {
+  console.log('Error turning on the following mods:');
+  failedMods.forEach(mod => console.log(`- ${mod}`));
+}
+
+startServices();

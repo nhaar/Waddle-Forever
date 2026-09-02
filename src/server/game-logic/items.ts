@@ -1,4 +1,5 @@
 import { StaticDataTable } from "@common/static-table";
+import { START_DATE } from "@server/timelines/dates";
 import { Version } from "../routes/versions";
 
 export enum ItemType {
@@ -48,12 +49,22 @@ export type Item = {
   isGameAchievable: boolean;
 }
 
+export type CustomItem = {
+  id: number;
+  name: string;
+  type: ItemType;
+  layer: number;
+  cost: number;
+  isMember: boolean;
+  isBack: boolean;
+};
+
 export function getCost(item: Item, date: Version): number {
   // todo implement with versions timeline
   return item.cost;
 }
 
-export const ITEMS = new StaticDataTable<Item, [
+export class ItemTable extends StaticDataTable<Item, [
   'id',
   'name',
   'isMember',
@@ -76,7 +87,40 @@ export const ITEMS = new StaticDataTable<Item, [
   'isMedal',
   'noPurchasePopup',
   'isGameAchievable'
-]>([
+]> {
+  public addCustomItem(info: CustomItem) {
+    this.map.set(info.id, {
+      id: info.id,
+      name: info.name,
+      isMember: info.isMember,
+      type: info.type,
+      cost: info.cost,
+      isEPF: false,
+      isTour: false,
+      isTreasure: false,
+      releaseDate: START_DATE,
+      label: null,
+      layer: info.layer,
+      hasTranslations: false,
+      hasBack: info.isBack,
+      makeAgent: false,
+      isGift: false,
+      exclusive: 0,
+      isBait: false,
+      customDepth: null,
+      isBack: info.isBack,
+      isMedal: false,
+      noPurchasePopup: false,
+      isGameAchievable: false
+    });
+  }
+
+  public removeCustomItem(id: number) {
+    this.map.delete(id);
+  }
+}
+
+export const ITEMS = new ItemTable([
   'id',
   'name',
   'isMember',
@@ -131,6 +175,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [112, 'Funny-Face Glasses', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [113, 'Black Glasses', true, 3, 225, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [114, 'Brown Glasses', true, 3, 225, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
+  [115, 'Gary\'s Glasses (Old)', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, true, null, false, false, false, false],
   [116, 'Snowflake Mask', true, 3, 200, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [117, 'Diva Sunglasses', true, 3, 225, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [118, 'White Diva Sunglasses', true, 3, 225, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -413,6 +458,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [439, 'Park Ranger Hat', true, 2, 210, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [440, 'Sailor\'s Cap', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [441, 'Admirals Hat', true, 2, 400, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
+  [442, 'Rockhopper\'s Hat', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [443, 'Wizard Hat', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [444, '1st Year Party Hat', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [445, 'Green Toque', true, 2, 120, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -932,6 +978,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1065, 'Dazzling Blue Top Hat', true, 2, 475, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1066, 'The Tousled', true, 2, 450, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1067, 'The Vibrant', true, 2, 500, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
+  [1068, 'Sensei\'s Hat', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1069, 'Green Headphones', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1072, 'Girl\'s Pilot Cap', true, 2, 330, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1073, 'Pilot Cap', true, 2, 310, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1043,6 +1090,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1195, 'The Chic', true, 2, 400, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1196, 'Bucket Hat', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1199, 'The Cosmic', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
+  [1200, 'Sensei\'s Hat (Water Version)', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1201, 'Comm Helmet', true, 2, 15, true, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1202, 'Elf Pigtails', true, 2, 400, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1203, 'Blue Goggles', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1091,6 +1139,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1252, 'Village Jester Hat', true, 2, 250, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1253, 'White Knight Helmet', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1256, 'Outback Exploring Hat', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
+  [1257, 'Rookie\'s Hat', true, 2, 9999, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1258, 'The Daydream', true, 2, 300, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1259, 'The Sunny Side', true, 2, 300, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1260, 'The Shore Thing', true, 2, 250, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1103,6 +1152,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1267, 'The Hairspray', true, 2, 300, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1268, 'The Fiesta', true, 2, 200, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1269, 'The Cabana', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
+  [1271, 'Helmet of Shadows', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, true, false],
   [1272, 'Sunset Crown', true, 2, 250, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1273, 'Petey K Toque and Hair', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1274, 'Stompin\' Bob Fowhawk Hair', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
@@ -1265,6 +1315,8 @@ export const ITEMS = new StaticDataTable<Item, [
   [1452, 'The Pineapple Crown', true, 2, 300, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1453, 'The Midnight', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1454, 'The Blast', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
+  [1458, 'Rocky\'s Hair', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
+  [1459, 'CeCe\'s Hair', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1476, 'Rockhopper\'s Hat Aug 2012', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1478, 'The Delight', true, 2, 450, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1480, 'The Mischief Maker', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1430,6 +1482,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1650, 'Imperial Officer Hat', true, 2, 100, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1652, 'Emperor Palpatine Mask', true, 2, 100, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1653, 'The Fusion', true, 2, 400, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 2, false, null, false, false, false, false],
+  [1654, 'Darth Herbert\'s Costume', true, 2, 9999, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1655, 'The Electric Tunage', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1656, 'The Flipster', true, 2, 250, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1657, 'The Side Sweep', true, 2, 350, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1662,6 +1715,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1919, 'G Billy\'s Playercard 2014', true, 2, 9999, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1920, 'Stompin\' Bob Playercard 2014', true, 2, 9999, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1921, 'Pete K\'s Playercard 2014', true, 2, 9999, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
+  [1923, 'Gariwald Outfit', true, 2, 9999, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [1924, 'Gary\'s Glasses', true, 3, 9999, false, false, false, '2017-03-30', 'Gary\'s Glasses (evergreen)', 5000, false, false, false, false, 0, true, null, false, false, false, false],
   [1925, 'The Shadow Tail', true, 2, 250, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1926, 'The Surf Star', true, 2, 250, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1737,6 +1791,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [1997, 'The Spring Bun', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1998, 'The Frozen Flowers', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, false, null, false, false, false, false],
   [1999, 'Remove Head Item', true, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
+  [2000, 'Petey K\'s Glasses', true, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, true, null, false, false, false, false],
   [2001, 'Green Giant Sunglasses', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2002, 'Yellow Giant Sunglasses', true, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2003, 'Black Scuba Mask', true, 3, 200, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1748,6 +1803,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [2012, 'Curly Mustache', false, 3, 50, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2013, 'Lava Mask', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, true, false],
   [2014, 'Humbug Spectacles', true, 3, 250, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
+  [2015, 'Sensei\'s Hat (Fire Version)', false, 2, 0, false, false, false, '2017-03-30', null, 6000, false, false, false, false, 0, true, null, false, false, false, false],
   [2016, 'Funny Pig Snout', true, 3, 250, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2017, 'Guardian Dog Muzzle', true, 3, 250, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2018, 'Green Face Paint', true, 3, 15, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -1764,6 +1820,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [2030, 'Rookies Sunglasses', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, true, null, false, false, false, false],
   [2031, 'Petey K Shades', true, 3, 65, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2032, 'Pink Diva Shades', true, 3, 125, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
+  [2033, 'Midnight Mask', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, true, false],
   [2034, 'Petey K Shades', true, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, true, null, false, false, false, false],
   [2035, 'Castaway Face Paint', true, 3, 50, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
   [2036, 'Sleet Stopper', true, 3, 150, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -2019,6 +2076,8 @@ export const ITEMS = new StaticDataTable<Item, [
   [3126, 'Toothy Necklace', true, 4, 150, false, false, false, '2017-03-30', null, 8000, false, false, false, false, 0, false, null, false, false, false, false],
   [3127, 'Kukui Nut Necklace', true, 4, 150, false, false, false, '2017-03-30', null, 8000, false, false, false, false, 0, false, null, false, false, false, false],
   [3128, 'Clam Shell Collar', true, 4, 200, false, false, false, '2017-03-30', null, 4000, false, false, false, false, 0, false, null, false, false, false, false],
+  [3130, 'Rocky\'s Necklace', true, 4, 0, false, false, false, '2017-03-30', null, 4000, false, false, false, false, 0, true, null, false, false, false, false],
+  [3131, 'CeCe\'s Necklace', true, 4, 0, false, false, false, '2017-03-30', null, 4000, false, false, false, false, 0, true, null, false, false, false, false],
   [3133, 'Green Butterfly Wings', true, 4, 200, false, false, false, '2017-03-30', null, 4000, false, true, false, false, 0, false, null, true, false, false, false],
   [3135, 'Brown Bat Wings', true, 4, 400, false, false, false, '2017-03-30', null, 4000, false, true, false, false, 0, false, null, true, false, false, false],
   [3136, 'Sea Foam Pearls', true, 4, 150, false, false, false, '2017-03-30', null, 4000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -2271,6 +2330,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [4145, 'Reindeer Costume', true, 5, 550, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4146, 'Humbug Coat', true, 5, 600, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4147, 'Tree Costume', true, 5, 600, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
+  [4148, 'Sensei\'s Fire Suit', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
   [4149, 'Cozy Winter Coat', true, 5, 600, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4154, 'Beta Hat T-Shirt', false, 5, 0, false, false, true, '2017-03-30', null, 3000, false, false, false, false, 1, false, null, false, false, false, false],
   [4155, 'Blue-Sky Dress', false, 5, 0, false, false, true, '2017-03-30', null, 3000, false, false, false, false, 1, false, null, false, false, false, false],
@@ -2383,6 +2443,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [4276, 'Blue Striped Raincoat', true, 5, 300, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4277, 'Pink Striped Raincoat', true, 5, 300, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4280, 'Pink Cosmic Dress', true, 5, 400, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
+  [4281, 'Sensei\'s Water Suit', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
   [4282, 'Comm Gear', true, 5, 20, true, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
   [4283, 'Blue Snow Jacket', true, 5, 500, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4284, 'Pink Sled Coat', true, 5, 500, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -2471,6 +2532,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [4375, 'Music Swirl Tee', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4376, 'Summer Suit', true, 5, 450, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4377, 'Tropical Ruffle Dress', true, 5, 425, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
+  [4380, 'Nightfall Coat', false, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, true, false],
   [4381, 'Petey K Black Vest and Jeans', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
   [4382, 'Franky Jacket and Jeans', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
   [4383, 'Stompin\' Bob Black T-Shirt and Jeans', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
@@ -2717,6 +2779,9 @@ export const ITEMS = new StaticDataTable<Item, [
   [4686, 'Volcano Costume', true, 5, 700, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4688, 'Shake It Up Outfit', true, 5, 500, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4689, 'Make Your Mark Outfit', true, 5, 500, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
+  [4690, 'Rocky Outfit', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
+  [4691, 'CeCe Outfit', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
+  [4712, 'Rockhopper\'s Belt', false, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, true, null, false, false, false, false],
   [4715, 'Purple Wheeler', true, 5, 450, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4716, 'Violet Striped Shirt', true, 5, 150, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4717, 'Mischief Maker Costume', true, 5, 0, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -2746,6 +2811,7 @@ export const ITEMS = new StaticDataTable<Item, [
   [4747, 'Rappelling Gear', true, 5, 550, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4749, 'Capture Equipment', true, 5, 350, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4751, 'Scrubs', true, 5, 300, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
+  [4752, 'Herberts Eyebrows', false, 3, 0, false, false, false, '2017-03-30', null, 5000, false, false, false, false, 0, true, null, false, false, false, false],
   [4753, 'Striking Red Jacket', true, 5, 400, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4754, 'Baby Blue Shoulder Shirt', true, 5, 400, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
   [4755, 'Black Zip Hoodie', true, 5, 400, false, false, false, '2017-03-30', null, 3000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -3115,6 +3181,8 @@ export const ITEMS = new StaticDataTable<Item, [
   [5164, 'Purple MP3000', true, 6, 400, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, false, null, false, false, false, false],
   [5166, 'Grape Spear', true, 6, 150, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, false, null, false, false, false, false],
   [5167, 'Kiwi Purse', true, 6, 150, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, false, null, false, false, false, false],
+  [5168, 'Rocky\'s Bracelet', true, 6, 0, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, true, null, false, false, false, false],
+  [5169, 'CeCe\'s Bracelet', true, 6, 0, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, true, null, false, false, false, false],
   [5176, 'Lime Laptop', true, 6, 1800, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, false, null, false, false, false, false],
   [5177, 'Grey Shovel', true, 6, 200, false, false, false, '2017-03-30', null, 8000, false, false, false, false, 0, false, null, false, false, false, false],
   [5179, 'Antique Mirror', true, 6, 100, false, false, false, '2017-03-30', null, 7000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -3471,6 +3539,8 @@ export const ITEMS = new StaticDataTable<Item, [
   [6074, 'Orange High Tops', true, 7, 250, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
   [6075, 'Blue High Tops', true, 7, 250, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
   [6076, 'Red High Tops', true, 7, 250, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
+  [6077, 'Shade Sandals', false, 7, 0, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, true, false],
+  [6078, 'Petey K Shoes', true, 7, 0, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, true, null, false, false, false, false],
   [6079, 'Franky Purple Kicks', true, 7, 0, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, true, null, false, false, false, false],
   [6080, 'G Billy Cowboy Boots', true, 7, 0, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, true, null, false, false, false, false],
   [6081, 'Peak Boots', true, 7, 250, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
@@ -3515,6 +3585,8 @@ export const ITEMS = new StaticDataTable<Item, [
   [6123, 'Golden Shiny Shoes', true, 7, 200, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
   [6124, 'Purple Sneakers', true, 7, 250, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
   [6126, 'Cream Sandals', true, 7, 150, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
+  [6127, 'Rocky\'s Shoes', true, 7, 0, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, true, null, false, false, false, false],
+  [6128, 'CeCe\'s Shoes', true, 7, 0, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, true, null, false, false, false, false],
   [6134, 'Squeak-Proof Shoes', true, 7, 150, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
   [6135, 'Jade Stilettos', true, 7, 275, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],
   [6136, 'Sturdy Green Boots', true, 7, 250, false, false, false, '2017-03-30', null, 2000, false, false, false, false, 0, false, null, false, false, false, false],

@@ -1,10 +1,10 @@
 import fs from 'fs';
-import path from 'path';
-import { Router, Request } from "express";
-import { MODS_DIRECTORY, SETTINGS_PATH } from '../common/paths';
-import { isVersionValid, Version } from './routes/versions';
+import { SETTINGS_PATH } from '../common/paths';
+import { isVersionValid, processVersion, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
+import { ModManager } from './mods';
+import { EventListener } from '@common/utils';
 
 export type BooleanSettingKey = 
   'fps30' | 
@@ -19,7 +19,8 @@ export type BooleanSettingKey =
   'no_rainbow_quest_wait' |
   'medieval_sound_fix' |
   'inventory_accuracy' |
-  'no_create_via_login';
+  'no_create_via_login' |
+  'faq_warning';
 
 export type Settings = {
   version: Version
@@ -30,62 +31,18 @@ export type Settings = {
 
 type PartialSettings = Partial<Settings>
 
-const modsSettingsPath = path.join(MODS_DIRECTORY, '.active_mods');
-
-if (!fs.existsSync(MODS_DIRECTORY)) {
-  fs.mkdirSync(MODS_DIRECTORY);
-}
-if (!fs.existsSync(modsSettingsPath)) {
-  fs.writeFileSync(modsSettingsPath, '');
-}
-
-function getActiveMods(): string[] {
-  return fs.readFileSync(modsSettingsPath, { encoding: 'utf-8'} ).split('\n').map((value) => value.trim()).filter((value) => value !== '')
-}
-
-const FORBIDDEN_NAMES = new Set([
-  '.active_mods', // mod tracker for WF
-  '.DS_Store'   // macOS folder file
-]);
-
-function getMods(): string[] {
-  return fs.readdirSync(MODS_DIRECTORY).filter((name) => !FORBIDDEN_NAMES.has(name));
-}
-
-export function getModRouter(s: SettingsManager): Router {
-  const router = Router();
-  
-  router.get('/*', (req: Request, res, next) => {
-    if (!s.usingMods) {
-      next();
-      return;
-    }
-    for (const mod of s.activeMods) {
-      const modFilePath = path.join(MODS_DIRECTORY, mod, req.params[0]);
-      if (fs.existsSync(modFilePath)) {
-        res.sendFile(modFilePath);
-        return;
-      }
-    } 
-    next();
-  })
-
-  return router
-}
-
-
 export class SettingsManager {
   settings: Settings;
 
-  usingMods = false;
-
-  activeMods: string[] = [];
+  public mods: ModManager;
 
   /** IP used by the server */
   targetIP: string;
 
   /** HTTP port used by the server, undefined if default */
   private _targetPort: number | undefined;
+
+  private updateListener = new EventListener();
 
   set targetPort(port: number | undefined) {
     this._targetPort = port;
@@ -102,8 +59,7 @@ export class SettingsManager {
       settingsJson = JSON.parse(fs.readFileSync(SETTINGS_PATH, { encoding: 'utf-8' }));
     }
 
-    this.activeMods = getActiveMods();
-    this.getMods();
+    this.mods = new ModManager();
 
     this.settings = {
       fps30: this.readBoolean(settingsJson, 'fps30', false),
@@ -121,7 +77,8 @@ export class SettingsManager {
       answered_packages: this.readString(settingsJson, 'answered_packages'),
       ignored_version: this.readString(settingsJson, 'ignored_version'),
       medieval_sound_fix: this.readBoolean(settingsJson, 'medieval_sound_fix', true),
-      inventory_accuracy: this.readBoolean(settingsJson, 'inventory_accuracy', true)
+      inventory_accuracy: this.readBoolean(settingsJson, 'inventory_accuracy', true),
+      faq_warning: this.readBoolean(settingsJson, 'faq_warning', false)
     };
 
     this.updateSettings({});
@@ -160,22 +117,12 @@ export class SettingsManager {
   updateSettings(partial: PartialSettings): void {
     this.settings = { ...this.settings, ...partial};
     fs.writeFileSync(SETTINGS_PATH, JSON.stringify(this.settings));
+
+    this.updateListener.fire();
   }
 
-  setModActive(name: string): void {
-    this.activeMods.push(name);
-    fs.writeFileSync(modsSettingsPath, this.activeMods.join('\n'));
-  }
-
-  setModInactive(name: string): void {
-    this.activeMods = this.activeMods.filter((mod) => mod !== name);
-    fs.writeFileSync(modsSettingsPath, this.activeMods.join('\n'));
- }
-
-  getMods(): string[] {
-    const mods = getMods();
-    this.usingMods = mods.length > 0
-    return mods;
+  public addListener(callback: () => void) {
+    this.updateListener.addListener(callback);
   }
 
   get loginPort() {
@@ -184,6 +131,19 @@ export class SettingsManager {
 
   get worldPort() {
     return this.targetPort + WORLD_DELTA;
+  }
+
+  getVirtualDate(offset: number): Date {
+    const [year, month, day] = processVersion(this.settings.version);
+    // simulating PST time for the current day
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+
+    // date generates this time thinking in the same timezone as the user
+    // an arbitrary offset may be applied depending on how each client behaves
+    return new Date(year, month - 1, day, hour + offset, minute, second);
   }
 }
 
