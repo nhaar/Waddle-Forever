@@ -1586,7 +1586,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'agent1.swf',
-      comment: 'Made by Randomno'
+      comment: 'Made by Randomno. In order for it to be compatible with how archives:EditEdit8.swf reads the player\'s age, the age calculation code was slightly changed'
     },
     {
       file: 'chat339_instrument_hunt.swf',
