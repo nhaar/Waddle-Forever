@@ -14,7 +14,7 @@ import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
 import { FURNITURE } from "@server/game-logic/furniture";
-import { ITEMS, ItemTable } from "@server/game-logic/items";
+import { Item, ITEMS, ItemTable } from "@server/game-logic/items";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
@@ -973,8 +973,8 @@ export class GameData {
     return this.state.extraWaddleRooms;
   }
 
-  public getItem(id: number) {
-    return this.items.getStrict(id);
+  public getItem(id: number): Item | undefined {
+    return this.items.get(id);
   }
 
   public hasIglooMusicReleased() {
