@@ -133,7 +133,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('r', 'gr', [], handleGetOpenIgloos),
     p.xt('r', 'um', ['number'], handleUpdateMusic),
 
-    p.xt('k', 'spy', [], handleSpyRequest),
+    p.xt('k', 'spy', ['number'], handleSpyRequest),
     
     p.xt('b', 'gb', [], sendGetBuddies),
     p.xt('b', 'go', [], sendBuddyOnlineList),
