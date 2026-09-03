@@ -2,7 +2,7 @@ import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { overrideBootsSwf } from "./30fps";
 import { overrideIndexHtml } from "./index.html";
-import { overrideLoadSwf } from "./load.swf";
+import { overrideLoadSwf, overrideNewLoadSwf } from "./load.swf";
 import { overrideDanceContest, overrideJPALevelSelector, overrideThinIce } from "./mods";
 import { overrideMyPuffle } from "./mypuffle";
 import { overrideMedievalSound } from "./sound-fix";
@@ -12,6 +12,8 @@ export type OverriderFunction = (d: GameData, s: SettingsManager, b: Buffer | st
 export const OVERRIDERS: Record<string, OverriderFunction> = {
   '': overrideIndexHtml,
   'load.swf': overrideLoadSwf,
+  'play/v2/client/load.swf': overrideNewLoadSwf,
+  'play/v2/load.swf': overrideNewLoadSwf,
   'boots.swf': overrideBootsSwf,
   'play/v2/games/book1/bootstrap.swf': overrideMyPuffle,
   'play/v2/games/dancing/dance.swf': overrideDanceContest,

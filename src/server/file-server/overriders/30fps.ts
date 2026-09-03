@@ -1,10 +1,14 @@
-import { getMediaFile } from "@server/game-data/files";
+import { changeFrameRate } from "@common/flash/manipulate";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 
 export async function overrideBootsSwf(d: GameData, s: SettingsManager, b: Buffer | string): Promise<Buffer | string> {
+  if (typeof b === 'string') {
+    b = Buffer.from(b);
+  }
+  
   if (s.settings.fps30) {
-    return await getMediaFile('tool:boots30.swf');
+    b = changeFrameRate(b, 30);
   }
 
   return b;

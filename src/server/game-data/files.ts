@@ -2050,10 +2050,6 @@ Unknown if its teleporting to village functions would be accurate`
 Originally from solero legacy-media, modified to work in the flat domain any port model of WF`
     },
     {
-      file: 'boots30.swf',
-      comment: 'Copy of boots.swf but in 30 FPS'
-    },
-    {
       file: 'dynamic_igloo_music.swf',
       comment: 'File that loads the igloo music from a XML file. Originally by Ben, refined by Randomno to include bold names and remove pagination'
     },

@@ -1,3 +1,5 @@
+import zlib from 'zlib';
+
 /**
  * Warning for header: some information isn't obtained because it's hardcoded in emitter.ts
  * This is only meant for SWFs that we've had to use this on.
@@ -28,8 +30,17 @@ export function fromLE(...bytes: number[]) {
   return value;
 }
 
+function decompress(data: Uint8Array): Uint8Array {
+  // starts with 'C' -> ZLIB compressed after first 8 bytes
+  if (data[0] === 0x43) {
+    return new Uint8Array([...data.slice(0, 8), ...zlib.unzipSync(data.slice(8))]);
+  }
+
+  return data;
+}
+
 export function parseSwf(data: Uint8Array): SwfContent {
-  const dataArray = [...data];
+  const dataArray = [...decompress(data)];
   dataArray.splice(0, 3);
   const version = dataArray.splice(0, 5)[0];
 

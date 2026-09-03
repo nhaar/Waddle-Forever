@@ -58,3 +58,8 @@ export function replaceConstants(binary: Buffer, constantValues: Record<string, 
 
   return Buffer.from(emitSwf(swf));
 }
+
+export function changeFrameRate(binary: Buffer, framerate: number): Buffer {
+  const parsed = parseSwf(new Uint8Array(binary));
+  return Buffer.from(emitSwf({ ...parsed, header: { ...parsed.header, framerate } }));
+}
