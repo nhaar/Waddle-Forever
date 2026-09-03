@@ -152,10 +152,6 @@ ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
     }
   }
 
-  if (server === null) {
-    throw new Error("Server should have been initialized");
-  }
-
   mainWindow = await createWindow(store, globalSettings, settingsManager);
   setupWindow.close();
 
@@ -203,9 +199,6 @@ app.on('activate', async () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = await createWindow(store, globalSettings, settingsManager);
-    if (server === null) {
-      throw new Error("Server or handler must be non null");
-    }
     startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
   }
 });
