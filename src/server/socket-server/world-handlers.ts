@@ -215,8 +215,8 @@ export const createWorldXtHandler = (): XtHandler => {
     
     r.xt('s', 'm#sm', ['string', 'string'], handleSendMessage),
     
-    r.xt('s', 't#at', ['string'], handleAddToy),
-    r.xt('s', 't#rt', [], handleCloseToy),
+    r.xt('s', 't#at', ['string', 'string'], handleAddToy),
+    r.xt('s', 't#rt', ['string', 'string'], handleCloseToy),
     
     r.xt('s', 's#upc', ['number'], handleUpdateColor),
     r.xt('s', 's#uph', ['number'], handleUpdateHead),
@@ -257,7 +257,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'g#um', ['number'], handleUpdateMusic),
     p.xt('s', 'g#gili', [], handleGetIglooLikes),
     p.xt('s', 'g#ggd', [], handleGetDj3kTracks),
-    p.xt('s', 'g#gail', [], handleGetAllIglooLayouts),
+    p.xt('s', 'g#gail', ['number'], handleGetAllIglooLayouts),
     p.xt('s', 'g#uic', ['number', 'number', 'number', 'number', 'number', 'string'], handleUpdateIglooNew),
     p.xt('s', 'g#al', [], handleAddIglooLayout),
     p.xt('s', 'g#uiss', ['number', 'string'], handleUpdateIglooLayout),
