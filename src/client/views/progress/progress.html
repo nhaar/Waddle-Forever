@@ -14,19 +14,22 @@
     </div>
     <div>
       <span id="prompt"></span>
-      <span id="progress-number">0%</span>
+      <span id="progress-number"></span>
     </div>
     <script>
         const { ipcRenderer } = require('electron');
 
-        ipcRenderer.on('update-progress', (event, value) => {
+        function updateProgress(value) {
           const percentage = value * 100;  
-          document.getElementById('progress-bar').style.width = `${value * 100}%`;
+          document.getElementById('progress-bar').style.width = `${percentage}%`;
           document.getElementById('progress-number').textContent = `${Math.round(percentage)}%`;
-        });
+        }
+
+        ipcRenderer.on('update-progress', (event, value) => updateProgress(value));
 
         ipcRenderer.on('prompt-name', (event, value) => {
-          document.getElementById('prompt').textContent = value
+          document.getElementById('prompt').textContent = value;
+          updateProgress(0);
         })
     </script>
 </body>

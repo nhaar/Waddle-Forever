@@ -1,8 +1,8 @@
-import { BrowserWindow, ipcMain, dialog } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import electronIsDev from "electron-is-dev";
 import path from "path";
 import fs from 'fs';
-import { downloadMediaFolder } from "@client/media";
+import { downloadMediaFolder, destroyProgressWindow } from "@client/media";
 import { MEDIA_DIRECTORY } from "@common/utils";
 import { getPopupCreator } from "@client/popups";
 import { SettingsManager } from "@server/settings";
@@ -26,8 +26,10 @@ export const createSettingsWindow = getPopupCreator('settings', ['download-packa
   ipcMain.on('download-package', (e, arg) => {
     (async () => {
       downloadMediaFolder(arg, () => {
+        destroyProgressWindow()
         settingsWindow?.webContents.send('finish-download', arg)
       }, () => {
+        destroyProgressWindow()
         settingsWindow?.webContents.send('download-fail')
       })
     })()
