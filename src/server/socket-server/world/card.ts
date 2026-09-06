@@ -269,7 +269,7 @@ export class Sensei extends Ninja {
       cardId = choose(CARDS.rows).id;
     }
 
-    this._sessionToElement.set(cardId, CARDS.getStrict(cardId).element);
+    this._sessionToElement.set(id, CARDS.getStrict(cardId).element);
     return cardId;
   }
 }
