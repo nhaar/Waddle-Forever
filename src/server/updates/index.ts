@@ -584,7 +584,9 @@ export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
   return consumed.sort((a, b) => {
     // lower dates come first
     // but if on the same day, then permanent updates first
-    // if same date, only equal if both are permanent or both are temporary
+    // if both are temporary on the same day, the one with the longer window comes first
+    // (this is currently happening because of pins, ideally the pin system will be reworked)
+    // if both are permanent on same day, this is equal (shouldnt ever happen)
     
     if (a.date === b.date) {
       if (a.end === undefined) {
@@ -594,6 +596,10 @@ export function consumeUpdates(updates: Update[]): Array<GameUpdate> {
         return -1;
       } else if (b.end === undefined) {
         return 1;
+      } else if (isLower(a.end, b.date)) {
+        return 1;
+      } else if (isLower(b.date, a.end)) {
+        return -1;
       }
     } else if (isLower(a.date, b.date)) {
       return -1
