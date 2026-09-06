@@ -527,6 +527,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'system.txt',
       comment: 'removed all versions'
+    },
+    {
+      file: 'christmas_05/village.swf',
+      comment: 'Made by indiana, used as basis the fixed version CP05Village.swf but added the door to the lodge'
     }
   ],
   [RECREATION]: [

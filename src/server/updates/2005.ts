@@ -384,7 +384,7 @@ export const UPDATES_2005: Update[] = [
           'rink': 'fix:CP05Rink.swf',
           'shop': 'fix:CP05Shop.swf',
           'town': 'fix:CP05Town.swf',
-          'village': 'fix:CP05Village.swf'
+          'village': 'approximation:christmas_05/village.swf'
         },
         music: {
           'town': 200,
