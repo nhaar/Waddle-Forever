@@ -1043,9 +1043,8 @@ export const UPDATES_2008: Update[] = [
       'play/v2/music/music.swf': 'archives:PlayV2MusicMusic2009-04-02.swf',
       'play/v2/client/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
       'play/v2/igloo/igloo.swf': 'archives:ClientIgloo2009-04-02.swf',
-      'play/v2/content/global/binoculars/empty.swf': 'slegacy:media/play/v2/content/global/binoculars/empty.swf',
-      // TODO igloo background wasn't used until late 2009?
       'play/v2/content/global/telescope/empty.swf': 'archives:TelescopeEmpty2010.swf',
+      // TODO igloo background wasn't used until late 2009?
       'play/v2/content/global/igloo/assets/igloo_background.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_background.swf',
       // this puffle roundup is a placeholder, TODO needs to be updated
       'play/v2/games/roundup/PuffleRoundup.swf': 'fix:PuffleRoundupWhitePuffle.swf'
