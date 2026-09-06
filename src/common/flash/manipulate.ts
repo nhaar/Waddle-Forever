@@ -61,6 +61,6 @@ export function replaceConstants(binary: Buffer, constantValues: Record<string, 
 
 export function changeFrameRate(binary: Buffer, framerate: number): Buffer {
   const [signature, data] = decompress(new Uint8Array(binary));
-  data[getFrameRateOffset(getSwfRectSizeBytes(data)[1])] = framerate;
+  data[getFrameRateOffset(getSwfRectSizeBytes(data))] = framerate;
   return Buffer.from(compress(signature, data));
 }
