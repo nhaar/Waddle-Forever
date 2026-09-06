@@ -2045,6 +2045,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'thinice_igt24.swf',
       comment: 'Copy of the IGT mod but for 24 fps'
+    },
+    {
+      file: 'RollerscapeCP_30.swf',
+      comment: 'Vanilla media RollerscapeCP_CP.swf, but com.clubpenguin.games.collisioncourse.Main.endGame() is modified to request 30 FPS instead of 24.'
     }
   ],
   [TOOL]: [
