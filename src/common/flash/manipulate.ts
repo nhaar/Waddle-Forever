@@ -1,5 +1,4 @@
-import zlib from 'zlib';
-import { fromLE, parseSwf } from './parser';
+import { compress, decompress, fromLE, getFrameRateOffset, getSwfRectSizeBytes, parseSwf } from './parser';
 import { emitSwf, TagType } from './emitter';
 import { to2BytesLittleEndian } from './bytes';
 import { Action } from './avm1';
@@ -61,18 +60,7 @@ export function replaceConstants(binary: Buffer, constantValues: Record<string, 
 }
 
 export function changeFrameRate(binary: Buffer, framerate: number): Buffer {
-  const signature = binary.toString('ascii', 0, 3);
-  const data = signature === 'CWS'
-    ? new Uint8Array([...binary.subarray(0, 8), ...zlib.inflateSync(new Uint8Array(binary.subarray(8)))])
-    : new Uint8Array(binary);
-
-  const rectByteSize = Math.ceil((((data[8] >> 3) * 4) + 5) / 8);
-  const frameRateOffset = 8 + rectByteSize + 1;
-  data[frameRateOffset] = framerate;
-
-  if (signature === 'CWS') {
-    return Buffer.from([...data.subarray(0, 8), ...zlib.deflateSync(new Uint8Array(data.subarray(8)))]);
-  }
-
-  return Buffer.from(data);
+  const [signature, data] = decompress(new Uint8Array(binary));
+  data[getFrameRateOffset(getSwfRectSizeBytes(data)[1])] = framerate;
+  return Buffer.from(compress(signature, data));
 }
