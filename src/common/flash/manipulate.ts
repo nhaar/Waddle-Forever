@@ -1,4 +1,4 @@
-import { fromLE, parseSwf } from './parser';
+import { compress, decompress, fromLE, getFrameRateOffset, getSwfRectSizeBytes, parseSwf } from './parser';
 import { emitSwf, TagType } from './emitter';
 import { to2BytesLittleEndian } from './bytes';
 import { Action } from './avm1';
@@ -60,6 +60,7 @@ export function replaceConstants(binary: Buffer, constantValues: Record<string, 
 }
 
 export function changeFrameRate(binary: Buffer, framerate: number): Buffer {
-  const parsed = parseSwf(new Uint8Array(binary));
-  return Buffer.from(emitSwf({ ...parsed, header: { ...parsed.header, framerate } }));
+  const [signature, data] = decompress(new Uint8Array(binary));
+  data[getFrameRateOffset(getSwfRectSizeBytes(data))] = framerate;
+  return Buffer.from(compress(signature, data));
 }
