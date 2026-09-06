@@ -2045,10 +2045,6 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'thinice_igt24.swf',
       comment: 'Copy of the IGT mod but for 24 fps'
-    },
-    {
-      file: 'RollerscapeCP_30.swf',
-      comment: 'Vanilla media RollerscapeCP_CP.swf, but com.clubpenguin.games.collisioncourse.Main.endGame() is modified to request 30 FPS instead of 24.'
     }
   ],
   [TOOL]: [
@@ -2080,6 +2076,10 @@ Originally from solero legacy-media, modified to work in the flat domain any por
     {
       file: 'load.swf',
       comment: 'From mammoth. Used dynamic constant replacement. Overrides the XMLSocket.connect function to always connect to IP:WORLD PORT (because of the hardcoded values in join.swf); Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url (also for join.swf); Overrides String.split to make it think the URL is play.clubpenguin.com (Can be used to bypass domain checks and reduce the amount of modified SWFs).'
+    },
+    {
+      file: 'rollerscapecp_30.swf',
+      comment: 'Vanilla media RollerscapeCP_CP.swf, but com.clubpenguin.games.collisioncourse.Main.endGame() is modified to request 30 FPS instead of 24.'
     }
   ],
   [UNKNOWN]: [
