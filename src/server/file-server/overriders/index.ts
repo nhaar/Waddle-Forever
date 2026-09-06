@@ -22,31 +22,35 @@ export const OVERRIDERS: Record<string, OverriderFunction> = {
   'play/v2/content/global/rooms/party24.swf': overrideMedievalSound
 };
 
-const REGEX_OVERRIDERS: Array<[RegExp, OverriderFunction]> = [
+export const REGEX_OVERRIDERS: Array<[RegExp, OverriderFunction]> = [
   [/^chat\d+\.swf$/, makeSwf30Fps]
 ];
 
 export class FileOverrider {
-  private overriders: Map<string | RegExp, OverriderFunction>;
+  private overriders: Map<string, OverriderFunction>;
+  private regexOverriders: Array<[RegExp, OverriderFunction]>
   
-  constructor(public gameData: GameData, public settings: SettingsManager, overriders: Record<string, OverriderFunction>) {
+  constructor(
+    public gameData: GameData,
+    public settings: SettingsManager,
+    overriders: Record<string, OverriderFunction>,
+    regexOverriders: Array<[RegExp, OverriderFunction]>
+  ) {
     this.overriders = new Map(Object.entries(overriders));
-
-    for (const [regex, overrider] of REGEX_OVERRIDERS) {
-      this.overriders.set(regex, overrider);
-    }
+    this.regexOverriders = [...regexOverriders];
   }
 
   async override(route: string, binary: Buffer | string): Promise<Buffer | string> {
-    let func: OverriderFunction | undefined;
-    for (const [key, overrider] of this.overriders) {
-      if (key instanceof RegExp && key.test(route)) {
-        func = overrider;
-        break;
+    let func: OverriderFunction | undefined = this.overriders.get(route);
+    if (func === undefined) {
+      for (const [key, overrider] of this.regexOverriders) {
+        if (key.test(route)) {
+          func = overrider;
+          break;
+        }
       }
     }
 
-    func ??= this.overriders.get(route);
     if (func === undefined) {
       return binary;
     } else {
