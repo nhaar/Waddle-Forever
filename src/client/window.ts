@@ -6,6 +6,12 @@ import { GlobalSettings } from '../common/utils';
 import { SettingsManager } from '../server/settings';
 import { getSiteUrl } from './views/multiplayer/multiplayer';
 
+const faviconPaths = {
+  win32: "../assets/favicon.ico",
+  darwin: "../assets/icon.png",
+  linux: "../assets/icon.png"
+}
+
 function getIP(clientSettings: GlobalSettings, serverSettings: SettingsManager) {
   if (clientSettings.multiplayer.type === 'guest') {
     return clientSettings.multiplayer.ip;
@@ -25,23 +31,7 @@ export const loadMain = (window: BrowserWindow, settings: GlobalSettings, server
   window.loadURL(getSiteUrl(settings, serverSettings));    
 }
 
-interface FiveIconByPlatforms {
-  [key: string]: () => void;
-}
-
-const createWindow = async (store: Store, clientSettings: GlobalSettings, serverSettings: SettingsManager) => {
-  const setFaviconByPlatform: FiveIconByPlatforms = {
-    win32: () => {
-      mainWindow.setIcon(path.join(__dirname, "../assets/favicon.ico"));
-    },
-    darwin: () => {
-      mainWindow.setIcon(path.join(__dirname, "../assets/icon.png"));
-    },
-    linux: () => {
-      mainWindow.setIcon(path.join(__dirname, "../assets/icon.png"));
-    },
-  };
-
+export const createWindow = async (store: Store, clientSettings: GlobalSettings, serverSettings: SettingsManager) => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
@@ -50,8 +40,8 @@ const createWindow = async (store: Store, clientSettings: GlobalSettings, server
       plugins: true,
     },
   });
-  
-  setFaviconByPlatform[process.platform]();
+
+  mainWindow.setIcon(path.join(__dirname, faviconPaths[process.platform]));
   
   mainWindow.setMenu(null);
   mainWindow.maximize();
@@ -69,5 +59,3 @@ const createWindow = async (store: Store, clientSettings: GlobalSettings, server
 
   return mainWindow;
 };
-
-export default createWindow;

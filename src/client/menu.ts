@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions } from "electron";
+import { BrowserWindow, Menu, MenuItemConstructorOptions } from "electron";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
@@ -12,43 +12,43 @@ import { createCommands } from "./views/commands/commands";
 import { Popups } from "./popups";
 import { WorldServer } from "@server/socket-server/world-server";
 
-const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: WorldServer): MenuItemConstructorOptions[] => {
+const startMenu = (
+  store: Store,
+  mainWindow: BrowserWindow,
+  globalSettings: GlobalSettings,
+  serverSettings: SettingsManager,
+  popups: Popups,
+  gameServer: WorldServer
+) => {
   const app: MenuItemConstructorOptions = { 
     id: '0', 
-    label: 'Waddle Forever', 
-    submenu: [
-      {
-        label: 'Quit Waddle Forever', 
-        role: 'quit'
-      }, 
-      {
-        role: 'close'
-      }
-    ]
+    role: 'appMenu'
   };
   
   const options: MenuItemConstructorOptions = {
     id: '1',
     label: 'Options',
     submenu: [
-      {
-        label: 'Open Settings',
-        accelerator: 'CommandOrControl+,',
-        click: () => createSettingsWindow(mainWindow, popups, serverSettings, gameServer)
-      },
-      {
-        label: 'Open Mods',
-        accelerator: 'CommandOrControl+M',
-        click: () => createModsWindow(mainWindow, popups, serverSettings, gameServer)
-      },
+      ...(gameServer === null ? [] : [
+        {
+          label: 'Open Settings',
+          accelerator: 'CommandOrControl+,',
+          click: () => createSettingsWindow(mainWindow, popups, serverSettings, gameServer)
+        },
+        {
+          label: 'Open Mods',
+          accelerator: 'CommandOrControl+M',
+          click: () => createModsWindow(mainWindow, popups, serverSettings, gameServer)
+        },
+        {
+          label: 'Open Commands',
+          accelerator: 'CommandOrControl+D',
+          click: () => createCommands(mainWindow, popups, serverSettings, gameServer)
+        }
+      ]),
       {
         label: 'Open Multiplayer Settings',
         click: () => createMultiplayerSettings(globalSettings,serverSettings, mainWindow)
-      },
-      {
-        label: 'Open Commands',
-        accelerator: 'CommandOrControl+D',
-        click: () => createCommands(mainWindow, popups, serverSettings, gameServer)
       },
       {
         type: 'separator'
@@ -86,14 +86,14 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     ]
   };
 
-  const timeline: MenuItemConstructorOptions = {
+  const timeline: MenuItemConstructorOptions | null = gameServer === null ? null : {
     id: '3',
     label: 'Timeline',
     click: () => createTimelinePicker(mainWindow, popups, serverSettings, gameServer)
   };
 
   // only adding the submenu if Mac, because empty submenu leads to it not working on other OSes, and it's a necessary Mac feature
-  if (process.platform === 'darwin') {
+  if (timeline !== null && process.platform === 'darwin') {
     timeline.submenu = [{ 
       label: 'Timeline Picker', 
       click: () => createTimelinePicker(mainWindow, popups, serverSettings, gameServer)
@@ -103,16 +103,7 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
   // on Mac, stuff like copying/pasting does not work without this
   const edit: MenuItemConstructorOptions = {
     id: '4',
-    label: 'Edit',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-      { role: 'selectAll' }
-    ]
+    role: 'editMenu'
   }
 
   const view: MenuItemConstructorOptions = {
@@ -131,19 +122,11 @@ const createMenuTemplate = (store: Store, mainWindow: BrowserWindow, globalSetti
     ]
   }
 
-  return process.platform === 'darwin' ? 
-    [app, options, timeline, edit, view] : 
-    [options, timeline, view];
-};
+  const menuTemplate = process.platform === 'darwin' ? 
+    [app, options, ...(timeline === null ? [] : [timeline]), edit, view] : 
+    [options, ...(timeline === null ? [] : [timeline]), view];
 
-const startMenu = (store: Store, mainWindow: BrowserWindow, globalSettings: GlobalSettings, serverSettings: SettingsManager, popups: Popups, gameServer: WorldServer) => {
-  const menuTemplate = createMenuTemplate(store, mainWindow, globalSettings, serverSettings, popups, gameServer)
-  buildMenu(menuTemplate);
-};
-
-const buildMenu = (menuTemplate: MenuItemConstructorOptions[] | MenuItem[]) => {
   const menu = Menu.buildFromTemplate(menuTemplate);
-
   Menu.setApplicationMenu(menu);
 };
 

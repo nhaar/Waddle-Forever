@@ -377,21 +377,21 @@ function createCalendar(
   </div>
 </div>
   `;
-  const scrollToMonth = (year: number, month: number) => {
+  const scrollToMonth = (year: number, month: number, smooth: boolean) => {
     const selected = document.querySelector(`.${getMonthClassName(month, year)}`);
     if (selected !== null) {
       const y = selected.getBoundingClientRect().top - 250 + window.scrollY;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      window.scrollTo({ top: y, behavior: smooth ? "smooth" : undefined });
     }
   };
   
   // jumping to the right elementt
   if (scroll === CalendarScrollAction.ScrollToSelectedDay) {
     const currentDay = getDateInfo(currentVersion);
-    scrollToMonth(currentDay.year, currentDay.month);
+    scrollToMonth(currentDay.year, currentDay.month, false);
   } else if (scroll == CalendarScrollAction.ScrollToMonth) {
     const monthIndex = MONTHS.indexOf(monthElement.value);
-    scrollToMonth(Number(yearElement.value), monthIndex + 1);
+    scrollToMonth(Number(yearElement.value), monthIndex + 1, true);
   }
 
   // scroll timeout is used to interrupt the function
@@ -521,7 +521,7 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
     } else if (selected !== undefined) {
       // need to add some amount so that it doesn't get hidden at the top
       const y = selected.getBoundingClientRect().top - 150 + window.scrollY;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      window.scrollTo({ top: y });
     }
   }
 
