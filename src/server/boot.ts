@@ -1,5 +1,5 @@
 import { DataFolder, PenguinRepository } from './database/database';
-import { VERSION } from '@common/version';
+import { VERSION } from '@common/constants';
 import { USER_DATA_FOLDER } from '@common/paths';
 import settingsManager from './settings';
 import { GameData } from './timelines/game-data';

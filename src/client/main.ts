@@ -1,18 +1,18 @@
-import { app, BrowserWindow, dialog, shell } from "electron";
+import { app, BrowserWindow, dialog, Menu, shell } from "electron";
 import log from "electron-log";
 import { startDiscordRPC } from "./discord";
 import loadFlashPlugin from "./flash-loader";
 import startMenu from "./menu";
 import createStore from "./store";
-import createWindow from "./window";
+import { createWindow } from "./window";
 import settingsManager from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
 import { AdminError, startMedia, progressWindow, destroyProgressWindow } from "./media";
 import { GlobalSettings } from '@common/utils';
+import { NAME, VERSION, WEBSITE } from '@common/constants';
 import { Popups } from './popups';
-import { WEBSITE } from '@common/website';
 import { WorldServer } from '@server/socket-server/world-server';
 import { startMods, startServices } from '@server/boot';
 
@@ -24,6 +24,7 @@ const store = createStore();
 
 setLanguageInStore(store, 'en')
 
+app.setName(NAME);
 
 if (process.platform === 'linux') {
   app.commandLine.appendSwitch('no-sandbox');
@@ -38,13 +39,25 @@ loadFlashPlugin(app);
 let mainWindow: BrowserWindow;
 
 /** An object to keep global variables in memory across windows */
-let globalSettings : GlobalSettings = {
+let globalSettings: GlobalSettings = {
   multiplayer: { type: 'local' }
 };
 
 const popups: Popups = new Map<string, BrowserWindow>();
 
+app.setAboutPanelOptions({
+  applicationName: NAME,
+  applicationVersion: VERSION,
+  website: WEBSITE,
+});
+
 app.once('ready', async () => {
+  if (process.platform === 'darwin') {
+    // display this first, so that during the media download, other options
+    // that don't make sense can't be accessed (dev tools, fullscreen, etc)
+    Menu.setApplicationMenu(Menu.buildFromTemplate([{ id: '0', role: 'appMenu' }]));
+  }
+
   try {
     // this will throw an error if installing for all users and not running as
     // an administrator

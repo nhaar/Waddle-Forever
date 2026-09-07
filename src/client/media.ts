@@ -7,7 +7,7 @@ import unzipper from 'unzipper';
 import electronIsDev from "electron-is-dev";
 import { BrowserWindow, dialog } from "electron";
 
-import { VERSION } from '@common/version';
+import { VERSION } from '@common/constants';
 import settingsManager from '@server/settings';
 import { logError, MEDIA_DIRECTORY, parseURL, postJSON } from '@common/utils';
 import { showProgress, createProgressBarWindow, setPrompt } from './views/progress/progress';
