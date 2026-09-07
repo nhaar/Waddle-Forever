@@ -29,3 +29,11 @@ export async function overrideThinIce(d: GameData, s: SettingsManager, b: Buffer
 
   return b;
 }
+
+export async function overrideRollerscape(d: GameData, s: SettingsManager, b: Buffer | string): Promise<Buffer | string> {
+  if (s.settings.fps30) {
+    return getMediaFile('tool:rollerscapecp_30.swf');
+  }
+
+  return b;
+} 

@@ -14,7 +14,7 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v3
       with:
-        node-version: 'latest'
+        node-version: '22'
 
     - name: Restore dependencies
       run: yarn install
@@ -40,7 +40,7 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v3
       with:
-        node-version: 'latest'
+        node-version: '22'
 
     - name: Restore dependencies
       run: npm_config_arch=x64 npm_config_platform=darwin yarn install
@@ -66,8 +66,7 @@ jobs:
     - name: Install Node.js, NPM and Yarn
       uses: actions/setup-node@v3
       with:
-        node-version: 'latest'
-        architecture: 'x86'
+        node-version: '22'
 
     - name: Restore dependencies
       run: yarn install

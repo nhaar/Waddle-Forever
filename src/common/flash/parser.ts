@@ -1,3 +1,5 @@
+import zlib from 'zlib';
+
 /**
  * Warning for header: some information isn't obtained because it's hardcoded in emitter.ts
  * This is only meant for SWFs that we've had to use this on.
@@ -28,23 +30,43 @@ export function fromLE(...bytes: number[]) {
   return value;
 }
 
+export function decompress(data: Uint8Array): [string, Uint8Array] {
+  const signature = String.fromCharCode(...data.slice(0, 3));
+
+  if (signature === 'CWS') {
+    return [signature, new Uint8Array([...data.slice(0, 8), ...zlib.inflateSync(data.slice(8))])];
+  }
+  return [signature, data];
+}
+
+export function compress(signature: string, data: Uint8Array): Uint8Array {
+  if (signature === 'CWS') {
+    return new Uint8Array([...data.slice(0, 8), ...zlib.deflateSync(data.slice(8))]);
+  }
+  return data;
+}
+
+export function getSwfRectSizeBytes(data: Uint8Array): number {
+  const byte = data[8];
+  const rectSize = byte >> 3;
+  return Math.ceil((rectSize * 4 + 5) / 8);
+}
+
+export function getFrameRateOffset(rectSize: number): number {
+  return 9 + rectSize;
+}
+
 export function parseSwf(data: Uint8Array): SwfContent {
-  const dataArray = [...data];
-  dataArray.splice(0, 3);
-  const version = dataArray.splice(0, 5)[0];
+  data = decompress(data)[1];
+  const version = data[3];
 
-  const sizeFirstByte = dataArray.splice(0, 1)[0];
-  const rectNumberSize = sizeFirstByte >> 3;
-  const rectByteSize = Math.ceil((rectNumberSize * 4 + 5) / 8);
-  const rectOtherBytes = dataArray.splice(0, rectByteSize - 1);
+  const rectByteSize = getSwfRectSizeBytes(data);
 
-  // unused byte
-  dataArray.splice(0, 1);
-  const frameRate = dataArray.splice(0, 1)[0];
-  const frameCount = fromLE(...dataArray.splice(0, 2));
+  const frameRate = data[getFrameRateOffset(rectByteSize)];
+  const frameCount = fromLE(...data.slice(10 + rectByteSize, 12 + rectByteSize));
 
   const header: SwfHeader = {
-    rect: new Uint8Array([sizeFirstByte, ...rectOtherBytes]),
+    rect: data.slice(8, 8 + rectByteSize),
     frameCount,
     version,
     framerate: frameRate
@@ -52,18 +74,22 @@ export function parseSwf(data: Uint8Array): SwfContent {
 
   const tags: SwfTag[] = [];
 
-  while (dataArray.length > 0) {
-    const tagBytes = dataArray.splice(0, 2);
+  let i = 12 + rectByteSize;
+  while (i < data.length) {
+    const tagBytes = data.slice(i, i + 2);
     const tagType = (tagBytes[1] << 2) + (tagBytes[0] >> 6);
     let tagLength = tagBytes[0] & 0x3F;
+    let tagOffset = i + 2;
     if (tagLength === 0x3F) {
-      tagLength = fromLE(...dataArray.splice(0, 4));
+      tagLength = fromLE(...data.slice(i + 2, i + 6));
+      tagOffset += 4;
     }
-    const tagContent = dataArray.splice(0, tagLength);
+    const tagContent = data.slice(tagOffset, tagOffset + tagLength);
     tags.push({
       type: tagType,
       content: new Uint8Array(tagContent)
     });
+    i = tagOffset + tagLength;
   }
 
   return {

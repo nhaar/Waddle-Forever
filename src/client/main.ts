@@ -9,7 +9,7 @@ import settingsManager from "@server/settings";
 import { showWarning } from "./warning";
 import { setLanguageInStore } from "./discord/localization/localization";
 import electronIsDev from "electron-is-dev";
-import { AdminError, downloadMediaFolder, startMedia } from "./media";
+import { AdminError, startMedia, progressWindow, destroyProgressWindow } from "./media";
 import { GlobalSettings } from '@common/utils';
 import { NAME, VERSION, WEBSITE } from '@common/constants';
 import { Popups } from './popups';
@@ -63,42 +63,89 @@ app.once('ready', async () => {
     // an administrator
     await startMedia();
   } catch (error) {
+    const win = await progressWindow();
     if (error instanceof AdminError) {
-      await showWarning(
-        mainWindow,
-        'Permission Error',
-        'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
-      );
-
+      await dialog.showMessageBox(win, {
+        buttons: ['Ok'],
+        title: 'Permission Error',
+        message: 'Waddle Forever could not initiate the files. Please run Waddle Forever as an administrator to fix this issue.'
+      });
     } else {
       const message = error instanceof Error ? `${error.name}:${error.message}\n${error.stack}` : 'Unknown';
-      await showWarning(
-        mainWindow,
-        'Download Error',
-        `It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.\n\nShow this to the admins:\n${message}`
-      );
+      await dialog.showMessageBox(win, {
+        buttons: ['Ok'],
+        title: 'Download Error',
+        message: `It was not possible to finish the installation.\nPlease check your internet connection, and if the problem persists contact the Waddle Forever admins.\n\nShow this to the admins:\n${message}`
+      })
     }
-
+    win.destroy();
     app.quit();
     return;
   }
-  
-  // only check if the clothing settings is false, otherwise it would have been downloaded already
-  if (!settingsManager.settings.clothing && settingsManager.settings.answered_packages !== VERSION) {
-    const result = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Download Clothing (~600 MB)', 'No Thanks'],
-      title: 'Download package?',
-      message: 'Would you like to download the clothing package? It includes all non essential clothing items from Club Penguin. If you say no, you can always download it later.',
-      defaultId: 0,
-      cancelId: 1
-    });
-    if (result.response === 0) {
-      await downloadMediaFolder('clothing', () => {
-        settingsManager.updateSettings({ clothing: true });
-      }, () => {})
+
+  const failedMods = startMods();
+
+  try {
+    server = await startServices();
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('EADDRINUSE')) {
+      const win = await progressWindow();
+      const result = await dialog.showMessageBox(win, {
+        type: 'question',
+        buttons: ['Boot Serverless', 'Check out error'],
+        title: 'Server Error',
+        message: `Another process is already using the designated ports.
+        
+If you want, you can boot Waddle Forever without its server, but this is only useful if you have another Waddle Forever client running already, otherwise you may have to close the other process using the ports.
+
+Select 'Boot Serverless' to ignore this error, or check out the error to see the details (this option will terminate the program).`,
+        defaultId: 1,
+        cancelId: 0
+        
+      });
+      
+      if (result.response === 1) {
+        await showWarning(win, 'Error', error.message + '\n' + error.stack);
+
+        win.destroy();
+        app.quit();
+        return;
+      }
+    } else {
+      throw error;
     }
-    settingsManager.updateSettings({ answered_packages: VERSION });
   }
+
+  mainWindow = await createWindow(store, globalSettings, settingsManager);
+
+  // this needs done *after* mainWindow gets created, otherwise the app quits on Windows
+  destroyProgressWindow();
+
+  // Some users were reporting problems with cache.
+  await mainWindow.webContents.session.clearHostResolverCache();
+
+  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
+
+  // set this here, to ensure the server has been started by now
+  // so that there won't be problems if this gets triggered before the server is started
+  app.on('activate', async () => {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) {
+      mainWindow = await createWindow(store, globalSettings, settingsManager);
+      startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
+    }
+  });
+
+  if (!electronIsDev) {
+    startDiscordRPC(store, mainWindow);
+  }
+
+  mainWindow.on('closed', () => {
+    popups.forEach(win => win.close());
+  });
+
+  // Show error popups, now that the main window exists
 
   if (!settingsManager.settings.faq_warning) {
     const result = await dialog.showMessageBox(mainWindow, {
@@ -121,7 +168,6 @@ These are the most important things, but there is a full list of questions in ou
     }
   }
 
-  const failedMods = startMods();
   if (failedMods.length > 0) {
     await dialog.showMessageBox(mainWindow, {
       buttons: ['OK'],
@@ -131,45 +177,6 @@ These are the most important things, but there is a full list of questions in ou
 ${failedMods.map(mod => `* ${mod}`).join('\n')}}`
     });
   }
-
-  try {
-    server = await startServices();
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('EADDRINUSE')) {
-      const result = await dialog.showMessageBox(mainWindow, {
-        buttons: ['Boot Serverless', 'Check out error'],
-        title: 'Server Error',
-        message: `Another process is already using the designated ports. If you want, you can boot Waddle Forever without its server, but this is only useful if you have another Waddle Forever client running already, otherwise you may have to close the other process using the ports (check error).`,
-        defaultId: 1,
-        cancelId: 0
-      });
-      
-      if (result.response === 1) {
-        await showWarning(mainWindow, 'Error', error.message + '\n' + error.stack);
-      }
-    } else {
-      throw error;
-    }
-  }
-
-  if (server === null) {
-    throw new Error("Server should have been initialized");
-  }
-
-  mainWindow = await createWindow(store, globalSettings, settingsManager);
-
-  // Some users were reporting problems with cache.
-  await mainWindow.webContents.session.clearHostResolverCache();
-
-  startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
-
-  if (!electronIsDev) {
-    startDiscordRPC(store, mainWindow);
-  }
-
-  mainWindow.on('closed', () => {
-    popups.forEach(win => win.close());
-  });
 });
 
 
@@ -192,17 +199,5 @@ app.on('window-all-closed', async () => {
 
       process.exit(0);
     }    
-  }
-});
-
-app.on('activate', async () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    mainWindow = await createWindow(store, globalSettings, settingsManager);
-    if (server === null) {
-      throw new Error("Server or handler must be non null");
-    }
-    startMenu(store, mainWindow, globalSettings, settingsManager, popups, server);
   }
 });

@@ -527,6 +527,10 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'system.txt',
       comment: 'removed all versions'
+    },
+    {
+      file: 'christmas_05/village.swf',
+      comment: 'Made by indiana, used as basis the fixed version CP05Village.swf but added the door to the lodge'
     }
   ],
   [RECREATION]: [
@@ -1586,7 +1590,7 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'agent1.swf',
-      comment: 'Made by Randomno'
+      comment: 'Made by Randomno. In order for it to be compatible with how archives:EditEdit8.swf reads the player\'s age, the age calculation code was slightly changed'
     },
     {
       file: 'chat339_instrument_hunt.swf',
@@ -2050,10 +2054,6 @@ Unknown if its teleporting to village functions would be accurate`
 Originally from solero legacy-media, modified to work in the flat domain any port model of WF`
     },
     {
-      file: 'boots30.swf',
-      comment: 'Copy of boots.swf but in 30 FPS'
-    },
-    {
       file: 'dynamic_igloo_music.swf',
       comment: 'File that loads the igloo music from a XML file. Originally by Ben, refined by Randomno to include bold names and remove pagination'
     },
@@ -2078,8 +2078,8 @@ Originally from solero legacy-media, modified to work in the flat domain any por
       comment: 'From mammoth. Used dynamic constant replacement. Overrides the XMLSocket.connect function to always connect to IP:WORLD PORT (because of the hardcoded values in join.swf); Overrides the LoadVars.sendAndLoad function to omit "support.clubpenguin.com" from the url (also for join.swf); Overrides String.split to make it think the URL is play.clubpenguin.com (Can be used to bypass domain checks and reduce the amount of modified SWFs).'
     },
     {
-      file: 'load30.swf',
-      comment: 'Copy of tool:load.swf, but in 30 FPS, and the code for loading the chat swf slightly altered to accommodate for it'
+      file: 'rollerscapecp_30.swf',
+      comment: 'Vanilla media RollerscapeCP_CP.swf, but com.clubpenguin.games.collisioncourse.Main.endGame() is modified to request 30 FPS instead of 24.'
     }
   ],
   [UNKNOWN]: [

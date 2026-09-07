@@ -227,9 +227,10 @@ export class Sensei extends Ninja {
       }
       this.choose(cardToTuse);
     } else {
-      // no criteria
+      // choosing a card at random
+      // this would raise an error if all cards on hand are of a blocked element
       const canPlayCards = this._cardsOnHand.filter(id => {
-        if (this._blockedElement) {
+        if (this._blockedElement === undefined) {
           return true;
         }
         return this._sessionToElement.get(id) !== this._blockedElement;
@@ -266,10 +267,19 @@ export class Sensei extends Ninja {
       this._cardsToUse.set(cardToCounterId, id);
       cardId = unbeatableCard;
     } else {
-      cardId = choose(CARDS.rows).id;
+      const elements = this._cardsOnHand.map(id => this._sessionToElement.get(id)).filter(e => e !== undefined);
+      // must have at least two different elements
+      // to prevent death by block element
+      // (unknown if this mechanism existed in the original, but this will greatly simplify this)
+      if (elements.length === 1) {
+        const elementComplement = CARDS.rows.filter(c => c.element !== elements[0]);
+        cardId = choose(elementComplement).id;
+      } else {
+        cardId = choose(CARDS.rows).id;
+      }
     }
 
-    this._sessionToElement.set(cardId, CARDS.getStrict(cardId).element);
+    this._sessionToElement.set(id, CARDS.getStrict(cardId).element);
     return cardId;
   }
 }

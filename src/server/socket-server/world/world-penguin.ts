@@ -80,15 +80,19 @@ class Membership {
 }
 
 class PSA {
-  private _agent: boolean;
+  private _isAgent: boolean;
   private _pending = false;
 
   constructor(data: PenguinJson) {
-    this._agent = data.is_agent;
+    this._isAgent = data.is_agent;
   }
 
-  get isAgent() {
-    return this._agent;
+  public get isAgent() {
+    return this._isAgent;
+  }
+
+  public setAgent() {
+    this._isAgent = true;
   }
 
   setAgentPending() {

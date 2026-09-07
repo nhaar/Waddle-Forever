@@ -476,6 +476,8 @@ class DatabaseMigrator {
         return '1.4.4';
       case '1.4.4':
         return '1.4.5';
+      case '1.4.5':
+        return '1.5.0';
       default:
         throw new Error('Invalid database version: ' + version);
     }

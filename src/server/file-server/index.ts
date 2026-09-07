@@ -6,7 +6,7 @@ import { MODS_DIRECTORY } from '@common/paths';
 import { FileGenerator, getGeneratorsMap, postGeneratorsMap } from '@server/file-generators';
 import { MEDIA_DIRECTORY, readFile, toForwardSlash } from '@common/utils';
 import { SettingsManager } from '@server/settings';
-import { FileOverrider, OVERRIDERS } from './overriders';
+import { FileOverrider, OVERRIDERS, REGEX_OVERRIDERS } from './overriders';
 import { getYellowString, logverbose } from '@server/logger';
 
 /** Server that serves files to the game webpage and files in the game */
@@ -29,8 +29,7 @@ export class FileServer {
       this.updateModFiles();
     });
 
-    // todo remove global state
-    this.overrider = new FileOverrider(gameData, settings, OVERRIDERS);
+    this.overrider = new FileOverrider(gameData, settings, OVERRIDERS, REGEX_OVERRIDERS);
   }
 
   private updateModFiles() {

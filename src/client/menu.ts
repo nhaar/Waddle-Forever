@@ -29,24 +29,26 @@ const startMenu = (
     id: '1',
     label: 'Options',
     submenu: [
-      {
-        label: 'Open Settings',
-        accelerator: 'CommandOrControl+,',
-        click: () => createSettingsWindow(mainWindow, popups, serverSettings, gameServer)
-      },
-      {
-        label: 'Open Mods',
-        accelerator: 'CommandOrControl+M',
-        click: () => createModsWindow(mainWindow, popups, serverSettings, gameServer)
-      },
+      ...(gameServer === null ? [] : [
+        {
+          label: 'Open Settings',
+          accelerator: 'CommandOrControl+,',
+          click: () => createSettingsWindow(mainWindow, popups, serverSettings, gameServer)
+        },
+        {
+          label: 'Open Mods',
+          accelerator: 'CommandOrControl+M',
+          click: () => createModsWindow(mainWindow, popups, serverSettings, gameServer)
+        },
+        {
+          label: 'Open Commands',
+          accelerator: 'CommandOrControl+D',
+          click: () => createCommands(mainWindow, popups, serverSettings, gameServer)
+        }
+      ]),
       {
         label: 'Open Multiplayer Settings',
         click: () => createMultiplayerSettings(globalSettings,serverSettings, mainWindow)
-      },
-      {
-        label: 'Open Commands',
-        accelerator: 'CommandOrControl+D',
-        click: () => createCommands(mainWindow, popups, serverSettings, gameServer)
       },
       {
         type: 'separator'
@@ -84,14 +86,14 @@ const startMenu = (
     ]
   };
 
-  const timeline: MenuItemConstructorOptions = {
+  const timeline: MenuItemConstructorOptions | null = gameServer === null ? null : {
     id: '3',
     label: 'Timeline',
     click: () => createTimelinePicker(mainWindow, popups, serverSettings, gameServer)
   };
 
   // only adding the submenu if Mac, because empty submenu leads to it not working on other OSes, and it's a necessary Mac feature
-  if (process.platform === 'darwin') {
+  if (timeline !== null && process.platform === 'darwin') {
     timeline.submenu = [{ 
       label: 'Timeline Picker', 
       click: () => createTimelinePicker(mainWindow, popups, serverSettings, gameServer)
@@ -121,8 +123,8 @@ const startMenu = (
   }
 
   const menuTemplate = process.platform === 'darwin' ? 
-    [app, options, timeline, edit, view] : 
-    [options, timeline, view];
+    [app, options, ...(timeline === null ? [] : [timeline]), edit, view] : 
+    [options, ...(timeline === null ? [] : [timeline]), view];
 
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);

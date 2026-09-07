@@ -284,8 +284,10 @@ export const handleAddItem: PenguinHandler<[number]> = (ctx, item) => {
   }
   
   const info = data.getItem(item);
-  penguin.inventory.add(item);
-  msg.send(penguin, 'ai', item, penguin.currency.discount(info.cost));
+  if (info !== null) {
+    penguin.inventory.add(item);
+    msg.send(penguin, 'ai', item, penguin.currency.discount(info.cost));
+  }
   prst(penguin);
 }
 
@@ -597,7 +599,7 @@ export const handleGetMissionStamps: PenguinHandler<[]> = (ctx) => {
   
   const awards = penguin.inventory.items.filter(id => {
     const info = data.getItem(id);
-    return info.type === ItemType.Award;
+    return info?.type === ItemType.Award;
   });
 
   msg.send(penguin, 'qpa', penguin.id, awards.join('|'));
@@ -652,7 +654,7 @@ export const handleSetStampEarned: PenguinHandler<[number]> = ({ penguin, prst }
 }
 
 export const handleGetEpfStatus: PenguinHandler<[]> = ({ penguin, msg }) => {
-  msg.send(penguin, 'epfga', penguin.inventory.has(8009) ? 1 : 0);
+  msg.send(penguin, 'epfga', penguin.psa.isAgent ? 1 : 0);
 }
 
 export const handleGetFieldOps: PenguinHandler<[]> = ({ penguin, msg }) => {
@@ -667,7 +669,7 @@ export const handleGetEpfMedals: PenguinHandler<[]> = ({ msg, penguin }) => {
 
 export const handleAddEpfItem: PenguinHandler<[number]> = ({ data, penguin, msg, prst }, itemId) => {
   const item = data.getItem(itemId);
-  if (!item.isEPF) {
+  if (item === null || !item.isEPF) {
     throw new Error(`Item ${itemId} is marked as not being from EPF, but is being bought through it`);
   }
 
@@ -679,6 +681,7 @@ export const handleAddEpfItem: PenguinHandler<[number]> = ({ data, penguin, msg,
 
 export const handleBecomeAgent: PenguinHandler<[]> = ({ prst, msg, penguin }) => {
   msg.send(penguin, 'epfsa', 1);
+  penguin.psa.setAgent();
   prst(penguin);
 }
 
