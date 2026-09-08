@@ -23,6 +23,7 @@ import { createLoginXmlHandler } from "./login-handlers";
 import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/handlers";
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 import { OfflineWorld } from "./offline-world";
+import { BotManager } from "./world/bots";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
@@ -78,11 +79,13 @@ export class WorldServer implements MessageHandler {
   }
 
   private init() {
+    this._world.setBots(new BotManager(this._world, this._msg, this._gameData, this._settings));
     addBakeryListener(this._world, this._msg);
     addMatchmakerListeners(this._world, this._msg);
   }
 
   public async reset() {
+    this._world.bots?.shutdown();
     await Promise.all(this._msg.getClients().map(client => this.disconnect(client)));
     this._msg.close();
     this._msg = new PenguinMessenger();

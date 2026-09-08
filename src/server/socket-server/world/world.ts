@@ -14,6 +14,7 @@ import { Bakery } from "./bakery";
 import { MatchMaker } from "./matchmaker";
 import { FireGame } from "./fire";
 import { MATCHMAKERS } from "@server/game-data/games";
+import type { BotManager } from "./bots";
 
 export class World {
   private penguins = new Map<number, WorldPenguin>();
@@ -23,6 +24,7 @@ export class World {
   private spectators = new Set<WorldPenguin>();
   private igloos = new Set<WorldPenguin>();
   private _bakery: Bakery;
+  private _bots: BotManager | null = null;
   
   // create class responsible for the puck
   private _puckPosition = new Vector(0, 0);
@@ -36,6 +38,14 @@ export class World {
     MATCHMAKERS.forEach(({ id, count }) => {
       this.games.set(id, new WorldGame(id, new MatchMaker(count)));
     });
+  }
+
+  public setBots(bots: BotManager): void {
+    this._bots = bots;
+  }
+
+  public get bots(): BotManager | null {
+    return this._bots;
   }
 
   public getRoom(id: number): WorldRoom {

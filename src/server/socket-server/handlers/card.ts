@@ -27,10 +27,10 @@ const handleCardJitsuDeal: CardHandler<[number]> = ({ penguin, card, msg }, amou
   const cards = card.deal(ninja, amount);
   msg.send(card.players, 'zm', 'deal', ninja.seat, ...cards);
 
-  if (card.sensei) {
-    const sensei = card.getOpponent(ninja);
-    const cards = card.deal(sensei, amount);
-    msg.send(card.players, 'zm', 'deal', sensei.seat, ...cards);
+  const opponent = card.getOpponent(ninja);
+  if (opponent instanceof Sensei) {
+    const cards = card.deal(opponent, amount);
+    msg.send(card.players, 'zm', 'deal', opponent.seat, ...cards);
   }
 }
 
@@ -216,7 +216,7 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
       if (loserNinja instanceof NinjaPlayer) {
         gainProgress({ ...ctx, penguin: loserNinja.player }, false);
         // losing to Sensei as a black belt
-        if (winnerNinja instanceof Sensei) {
+        if (card.sensei && winnerNinja instanceof Sensei) {
           if (loserNinja.player.ninja.cardRank >= CardJitsuProgress.MAX_RANK) {
             loserNinja.player.ninja.addAttempt();
             prst(loserNinja.player);

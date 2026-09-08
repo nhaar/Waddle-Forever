@@ -235,7 +235,37 @@ const c = <const T extends ArgumentsIndicator>(args: T, callback: (ctx: CommandC
   return [args, callback as (ctx: CommandContext, ...args: Array<string | number>) => void];
 }
 
+const handleBots: CommandHandler<[number]> = ({ world }, amount) => {
+  world.bots?.setPopulation(amount);
+}
+
+const handleBotsHere: CommandHandler<[string]> = (ctx, action) => {
+  const bots = ctx.world.bots;
+  if (bots === undefined || bots === null) {
+    return;
+  }
+  if (action === 'here' && 'room' in ctx) {
+    // drop five bots into the room you are standing in
+    bots.addAt(ctx.room.id, 5);
+  } else if (action === 'off') {
+    bots.setPopulation(0);
+  } else if (action === 'games') {
+    bots.configure({ playGames: true });
+  } else if (action === 'nogames') {
+    bots.configure({ playGames: false });
+  }
+}
+
 const generators: CommandsGenerator = [
+  [
+    'bots',
+    [c(['number'], handleBots), c(['string'], handleBotsHere)],
+    {
+      argNames: ['amount/here/off/games/nogames'],
+      description: "Populate the island with computer controlled penguins. 'bots 12' keeps 12 of them wandering around, 'bots here' drops 5 in your current room, 'bots off' removes them all. They will also sit down for sled races, Card-Jitsu, Find Four and Mancala; 'bots nogames' stops that and 'bots games' turns it back on.",
+      examples: ['bots 12', 'bots here', 'bots off', 'bots nogames']
+    }
+  ],
   [
     'ai',
     [c(['number'], handleAddItem), c(['string'], handleAddAllItems)],

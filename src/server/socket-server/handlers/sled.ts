@@ -8,11 +8,13 @@ export const handleJoinSled: SledHandler<[]> = ({ sled, penguin, msg, data }) =>
   }));
 }
 
-export const handleMoveSled: SledHandler<[number, number, number, number]> = ({ sled, msg }, id, x, y, time) => {
+export const handleMoveSled: SledHandler<[number, number, number, number]> = ({ sled, msg, world }, id, x, y, time) => {
   msg.send(sled.players, 'zm', id, x, y, time);
+  world.bots?.onSledMove(sled, x, y, time);
 }
 
-export const handleEndSled: SledHandler<[number]> = ({ msg, penguin, prst, data }, standing) => {
+export const handleEndSled: SledHandler<[number]> = ({ msg, penguin, prst, data, world, sled }, standing) => {
+  world.bots?.onSledEnd(sled);
   const coins = [20, 10, 5, 5][standing - 1];
 
   const total = penguin.currency.add(coins);
