@@ -530,6 +530,14 @@ export const handleDisconnect = async (ctx: WorldContext) => {
 
     } else if ('fire' in ctx) {
       await handleLeaveFire(ctx);
+    } else if ('game' in ctx) {
+      // joinRoom does this when leaving a game room, but disconnecting did
+      // not, leaving a ghost that could start a match against nobody
+      ctx.game.matchMaker?.removePlayer(penguin);
+    } else if ('sled' in ctx) {
+      ctx.sled.removePlayer(penguin);
+    } else if ('card' in ctx) {
+      ctx.card.removePlayer(penguin);
     }
 
     world.disconnect(penguin);

@@ -104,8 +104,13 @@ const setWinner: CardHandler<number[]> = async (ctx, winner, ...cards: number[])
   const { card, msg } = ctx;
   // players are removed so that they don't get the "player quit" popup even though the game ended normally
   
-  await Promise.all(card.players.map(p => exitGame({ ...ctx, penguin: p })));
-  msg.send(card.players, 'czo', 0, winner, ...cards);
+  const finalists = card.players;
+  await Promise.all(finalists.map(p => exitGame({ ...ctx, penguin: p })));
+  msg.send(finalists, 'czo', 0, winner, ...cards);
+  // the comment above only held if the players were actually removed; without
+  // this, whoever closes the results screen first sends 'lz' and the other
+  // player gets a "your opponent left" popup after a normal finish
+  finalists.forEach(p => card.removePlayer(p));
 }
 
 const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {

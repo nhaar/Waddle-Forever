@@ -72,6 +72,11 @@ class CallbackManager<Ctx extends WorldContext> {
       }
     }
 
+    // record the call before running it, otherwise cooldown and once never
+    // take effect and the handler can be spammed
+    this._timestamps.set(client, Date.now());
+    this._handled.set(client, true);
+
     this._callback(ctx, ...args);
   }
 }
@@ -110,7 +115,13 @@ export class XtHandler {
       if (parsedArgs === null) {
         logverbose(getRedString('incorrect type signature: ' + name));
       } else {
-        callback.call(client, context, ...parsedArgs);
+        // a throw inside a handler used to escape the socket data event and
+        // terminate the server for every connected player
+        try {
+          callback.call(client, context, ...parsedArgs);
+        } catch (e) {
+          console.error(`Error handling XT ${name}:`, e);
+        }
       }
     } else {
       logverbose(getRedString('unhandled XT: ' + name));

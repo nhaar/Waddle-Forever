@@ -83,6 +83,10 @@ export class World {
   public disconnect(penguin: WorldPenguin) {
     this.penguins.delete(penguin.id);
     this.states.delete(penguin);
+    // otherwise the penguin is listed as having an open igloo forever, and
+    // logging back in adds a second entry
+    this.igloos.delete(penguin);
+    this.spectators.delete(penguin);
   }
 
   public init() {

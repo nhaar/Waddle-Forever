@@ -72,7 +72,10 @@ export abstract class WorldTable {
   }
 
   public hasPlayer(penguin: WorldPenguin) {
-    return this.getSeatIndex(penguin) !== -1;
+    // getSeatIndex returns undefined when the penguin isn't at this table;
+    // it never returns -1, so comparing against -1 matched every penguin and
+    // made getPenguinTable resolve to whichever table was created first.
+    return this.getSeatIndex(penguin) !== undefined;
   }
 
   public removePlayer(penguin: WorldPenguin) {
