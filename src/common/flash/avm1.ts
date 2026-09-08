@@ -1,4 +1,4 @@
-import { iterateEntries } from "../utils";
+import { iterateEntries, tryToNumber } from "../utils";
 import { to2BytesLittleEndian, to4BytesLittleEndian } from "./bytes";
 
 export enum Action {
@@ -17,8 +17,22 @@ export enum Action {
   ConstantPool = 0x88
 }
 
+const IS_PCODE = '##PCODE##';
+
+/**
+ * For use with `applyJsonToObject` or `defineLocalJson`. When you need to add PCode as a JSON value,
+ * wrap the PCode in this, to tell the parser that it is in fact PCode and not a normal array.
+ */
+export function jsonPCode(v: PCodeRep) {
+  return [IS_PCODE, v]
+}
+
 function addElement(code: PCodeRep, element: any): void {
   if (Array.isArray(element)) {
+    if (element[0] === IS_PCODE) {
+      code.push(...element[1]);
+      return;
+    }
     addArray(code, element);
   } else if (typeof element === 'object') {
     addObject(code, element);
@@ -26,6 +40,7 @@ function addElement(code: PCodeRep, element: any): void {
     if (!['string', 'number', 'boolean'].includes(typeof element)) {
       throw new Error('Invalid type for element');
     }
+
     code.push([Action.Push, element]);
   }
 }
@@ -54,23 +69,54 @@ function addObject<T extends {}>(code: PCodeRep, obj: T): void {
 export function createJsonDeclaration(obj: any): PCodeRep {
   const code: PCodeRep = [];
 
-  if (Array.isArray(obj)) {
-    addArray(code, obj);
-  } else {
-    addObject(code, obj);
-  }
+  addElement(code, obj);
+
+  return code;
+}
+
+/** Same as `defineLocal`, but `obj` is put through `createJsonDeclaration`.
+ * To use PCode as a value in the obj, wrap it in `jsonPCode()`. */
+export function defineLocalJson(name: string, obj: any): PCodeRep {
+  return defineLocal(name, createJsonDeclaration(obj));
+}
+
+/**
+ * Will apply the given JSON record to the variable of 'name'.
+ * For example, if `{ foo: "bar", hello: "world" }` is given for 'obj', then the resulting ActionScript will be:
+ * ```
+ * name.foo = "bar";
+ * name.hello = "world";
+ * ```
+ * 
+ * To use PCode as a value, wrap it in `jsonPCode()`. For example, if `{ foo: jsonPCode(getMemberChain("shell", "test")) }` is given, then:
+ * ```
+ * name.foo = shell.test;
+ * ```
+ */
+export function applyJsonToObject(name: string, obj: Record<string | number, Array<any> | string | number | boolean | Record<string | number, string | number | boolean>>): PCodeRep {
+  const code: PCodeRep = [];
+
+  iterateEntries(obj, (key, value) => {
+    code.push(
+      [Action.Push, name],
+      Action.GetVariable,
+      [Action.Push, tryToNumber(key)],
+      ...createJsonDeclaration(value),
+      Action.SetMember
+    )
+  });
 
   return code;
 }
 
 export type PCodeRep = Array<[Action, ...Array<string | number | boolean>] | Action>;
 
-/** Equiv to `var name = new Object();` */
-export const createEmptyObjectVar = (name: string): PCodeRep => {
+/** Equiv to `var name = new Object();`, or whatever `cls` is instead of "Object". */
+export const createEmptyObjectVar = (name: string, cls: string = "Object"): PCodeRep => {
   return [
     [Action.Push, name],
     [Action.Push, 0],
-    [Action.Push, "Object"],
+    [Action.Push, cls],
     Action.NewObject,
     Action.DefineLocal
   ];
@@ -85,11 +131,28 @@ export const addVarToStack = (name: string): PCodeRep => {
 }
 
 /**
+ * Similar to `addVarToStack`, but gets a whole chain of variables/members.
+ * e.g. `getMemberChain("foo", "bar")` returns `foo.bar` in ActionScript
+ */
+export const getMemberChain = (...names: Array<string | number>): PCodeRep => {
+  const code: PCodeRep = [];
+
+  names.forEach((name, i) => {
+    code.push(
+      [Action.Push, name],
+      i > 0 ? Action.GetMember : Action.GetVariable
+    )
+  });
+
+  return code;
+}
+
+/**
  * Equiv to a member assingment `name.member = something` or `name[1] = something`
- * v: PCode that pushes a vairable to stack
- * member: Name of member that will be set (eg a property of object or index of array)
- * value: PCode that pushes the value to the stack, which will be assigned to member
- * */
+ * @param v - PCode that pushes a vairable to stack
+ * @param member - Name of member that will be set (eg a property of object or index of array)
+ * @param value - PCode that pushes the value to the stack, which will be assigned to member
+ */
 export const setMember = (v: PCodeRep, member: number | string, value: PCodeRep): PCodeRep => {
   return [
     ...v,
@@ -99,21 +162,49 @@ export const setMember = (v: PCodeRep, member: number | string, value: PCodeRep)
   ];
 }
 
-/**
- * Pushes a simple object as a value to the AVM1 stack
-*/
-export const addObjectToStack = (obj: Record<string, string | number | boolean>): PCodeRep => {
-  const entries = Object.entries(obj);
-  const keys: PCodeRep = entries.flatMap(([key, value]) => [
-    [Action.Push, key],
-    [Action.Push, value]
-  ]);
-
+/** Equivalent of `var name = ...` */
+export function defineLocal(name: string, v: PCodeRep): PCodeRep {
   return [
-    ...keys,
-    [Action.Push, entries.length],
-    Action.InitObject
+    [Action.Push, name],
+    ...v,
+    Action.DefineLocal
   ];
+}
+
+/**
+ * Call a method or function.
+ * @param v - PCode representation of what value to call the method on. Make this null to invoke `CallFunction` instead of `CallMethod`.
+ * @param name - The name of the method
+ * @param pop - Whether to append `Action.Pop` at the end of the returned PCode.
+ * Make this true when calling a method on its own, and false when used with `DefineLocal`.
+ * @param args - The args to give to the method
+ * @returns The PCode
+ */
+export const callMethod = (v: PCodeRep | null, name: string, pop: boolean = true, ...args: Array<PCodeRep>): PCodeRep => {
+  const code: PCodeRep = [
+    ...[...args].reverse().flat() as PCodeRep,
+    [Action.Push, args.length]
+  ];
+
+  if (v === null) {
+    code.push(
+      [Action.Push, name],
+      Action.CallFunction
+    )
+  } else {
+    if (v.length === 0) {
+      throw new Error("PCode length is 0! You probably want to set it to null instead.")
+    }
+    code.push(
+      ...v,
+      [Action.Push, name],
+      Action.CallMethod
+    )
+  }
+
+  if (pop) code.push(Action.Pop);
+
+  return code;
 }
 
 export function createBytecode(code: PCodeRep): Uint8Array {
