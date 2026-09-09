@@ -20,11 +20,7 @@ export async function overrideJPALevelSelector(d: GameData, s: SettingsManager, 
 
 export async function overrideThinIce(d: GameData, s: SettingsManager, b: Buffer | string): Promise<Buffer | string> {
   if (s.settings.thin_ice_igt) {
-    if (s.settings.fps30) {
-      return getMediaFile('mod:thinice_igt30.swf');
-    } else {
-      return getMediaFile('mod:thinice_igt24.swf');
-    }
+    return getMediaFile('mod:thinice_igt.swf');
   }
 
   return b;

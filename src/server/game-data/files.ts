@@ -2039,12 +2039,8 @@ Unknown if its teleporting to village functions would be accurate`
       comment: 'Mod by Randomno. Used CPSC\s JPA most likely'
     },
     {
-      file: 'thinice_igt30.swf',
-      comment: 'Mod for Thin Ice that adds IGT. Originally by sharlot, ported by nhaar'
-    },
-    {
-      file: 'thinice_igt24.swf',
-      comment: 'Copy of the IGT mod but for 24 fps'
+      file: 'thinice_igt.swf',
+      comment: 'Mod for Thin Ice that adds IGT. Originally by sharlot, ported by nhaar, and edited to support variable frame rates'
     }
   ],
   [TOOL]: [
