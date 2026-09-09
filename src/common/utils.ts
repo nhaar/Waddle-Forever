@@ -315,6 +315,15 @@ export function toForwardSlash(s: string): string {
   return s.replaceAll('\\', '/')
 }
 
+/**
+ * If a string does not equate to NaN when turned into a number,
+ * then it returs the number, otherwise returns the original string.
+*/
+export function tryToNumber(s: string) {
+  const num = Number(s);
+  return isNaN(num) ? s : num
+}
+
 export const doubleFilter = <T>(predicate: (e: T) => boolean, arr: T[]): [T[], T[]] => {
   const include: T[] = [];
   const exclude: T[] = [];
