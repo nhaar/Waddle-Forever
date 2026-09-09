@@ -63,6 +63,7 @@ class CallbackManager<Ctx extends WorldContext> {
         console.log('Rate limited');
         return;
       }
+      this._timestamps.set(client, Date.now());
     }
 
     if (this._once) {
@@ -70,12 +71,9 @@ class CallbackManager<Ctx extends WorldContext> {
         console.log('Already handled');
         return;
       }
+      this._handled.set(client, true);
     }
 
-    // record the call before running it, otherwise cooldown and once never
-    // take effect and the handler can be spammed
-    this._timestamps.set(client, Date.now());
-    this._handled.set(client, true);
 
     this._callback(ctx, ...args);
   }
