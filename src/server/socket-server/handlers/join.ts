@@ -17,6 +17,7 @@ import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from './handlers';
 import { handleLeaveFire } from './fire';
+import { handleLeaveWaddle } from './room'
 
 
 function unequipPuffle(p: WorldPenguin): void {
@@ -237,6 +238,7 @@ export const handleJoinServer: PenguinHandler<[]> = async (ctx) => {
 
 export const leaveRoom: RoomHandler<[]> = async (ctx) => {
   const { room, penguin, msg, data } = ctx;
+  handleLeaveWaddle(ctx);
   room.removePenguin(penguin);
   await msg.send(room.players, 'rp', penguin.id, ...room.playerStates.map(([p, s]) => getPenguinString(data, p, s)));
 }
