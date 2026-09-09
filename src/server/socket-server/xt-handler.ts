@@ -113,8 +113,7 @@ export class XtHandler {
       if (parsedArgs === null) {
         logverbose(getRedString('incorrect type signature: ' + name));
       } else {
-        // a throw inside a handler used to escape the socket data event and
-        // terminate the server for every connected player
+        // prevent server crash from a handler gone wrong
         try {
           callback.call(client, context, ...parsedArgs);
         } catch (e) {
