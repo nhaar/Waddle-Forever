@@ -422,7 +422,7 @@ class PuffleInventory {
   }
 
   public addItem(itemId: number, amount: number): number {
-    const owned = this._items.get(itemId) ?? 0 + amount;
+    const owned = (this._items.get(itemId) ?? 0) + amount;
     this._items.set(itemId, owned);
     return owned;
   }

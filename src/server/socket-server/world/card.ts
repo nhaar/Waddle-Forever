@@ -7,6 +7,7 @@ import { WaddleGame } from "./waddle-game";
 import { WaddleRoom } from "./waddle-room";
 import { ContextAdder, ContextRemover } from "./world-penguin";
 import { WorldPenguin } from "./world-penguin";
+import { DEFAULT_DECK } from "@server/game-logic/starter-deck";
 
 export class Hand {
   private _canDrawCards: number[];
@@ -161,7 +162,9 @@ export class NinjaPlayer extends Ninja {
   constructor(player: WorldPenguin, seat: number) {
     super(seat);
 
-    this._hand = new Hand(player.ninja.getDeck());
+    const deck = player.ninja.getDeck();
+    // use fallback for it to not crash
+    this._hand = new Hand(deck.length > 0 ? deck : [...DEFAULT_DECK]);
     this._player = player;
   }
 

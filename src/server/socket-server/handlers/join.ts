@@ -17,6 +17,7 @@ import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from './handlers';
 import { handleLeaveFire } from './fire';
+import { handleQuitCard } from './card';
 
 
 function unequipPuffle(p: WorldPenguin): void {
@@ -530,6 +531,12 @@ export const handleDisconnect = async (ctx: WorldContext) => {
 
     } else if ('fire' in ctx) {
       await handleLeaveFire(ctx);
+    } else if ('game' in ctx) {
+      ctx.game.matchMaker?.removePlayer(penguin);
+    } else if ('sled' in ctx) {
+      ctx.sled.removePlayer(penguin);
+    } else if ('card' in ctx) {
+      handleQuitCard(ctx);
     }
 
     world.disconnect(penguin);
