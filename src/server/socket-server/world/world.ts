@@ -83,6 +83,8 @@ export class World {
   public disconnect(penguin: WorldPenguin) {
     this.penguins.delete(penguin.id);
     this.states.delete(penguin);
+    this.igloos.delete(penguin);
+    this.spectators.delete(penguin);
   }
 
   public init() {
