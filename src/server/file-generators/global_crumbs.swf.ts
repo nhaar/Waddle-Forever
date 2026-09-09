@@ -41,7 +41,7 @@ function getServerCrumbs(ip: string, loginPort: number, worldPort: number, moder
 
   code.push(
     ...applyJsonToObject("servers", Object.fromEntries(serverList.map(server => {
-      return [server.id, { ip, is_safe: false, port: worldPort, is_dumb: 67 }]
+      return [server.id, { ip, is_safe: false, port: worldPort }]
     })))
   )
 
@@ -281,7 +281,6 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
     ...defineLocalJson("PAPERDOLLDEPTH_HAND_LAYER", 7000),
     ...defineLocalJson("PAPERDOLLDEPTH_BETWEEN_HAND_AND_HEAD", 6500),
     ...defineLocalJson("PAPERDOLLDEPTH_HEAD_LAYER", 6000),
-    ...defineLocalJson("PAPERDOLLDEPTH_TOP_LAYER", 7500),
     ...defineLocalJson("PAPERDOLLDEPTH_BETWEEN_HEAD_AND_FACE", 5500),
     ...defineLocalJson("PAPERDOLLDEPTH_FACE_LAYER", 5000),
     ...defineLocalJson("PAPERDOLLDEPTH_BETWEEN_FACE_AND_NECK", 4500),
