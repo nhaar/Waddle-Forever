@@ -1,6 +1,16 @@
 import { iterateEntries, tryToNumber } from "../utils";
 import { to2BytesLittleEndian, to4BytesLittleEndian } from "./bytes";
 
+type JsonProp = string | number | boolean | JsonLikeObj | PCodeWrap;
+
+interface JsonLikeObj {
+  [x: string | number]: JsonProp[] | JsonProp;
+};
+
+type PCodeTag = '##PCODE##';
+type PCodeWrap = [PCodeTag, PCodeRep];
+type PCodeElement = PCodeElement[] | JsonProp;
+
 export enum Action {
   Push = 0x96,
   GetVariable = 0x1C,
@@ -17,19 +27,23 @@ export enum Action {
   ConstantPool = 0x88
 }
 
-const IS_PCODE = '##PCODE##';
+const IS_PCODE: PCodeTag = '##PCODE##';
+
+function isPCodeWrap(v: unknown[]): v is PCodeWrap {
+  return v.length === 2 && v[0] === IS_PCODE;
+}
 
 /**
  * For use with `applyJsonToObject` or `defineLocalJson`. When you need to add PCode as a JSON value,
  * wrap the PCode in this, to tell the parser that it is in fact PCode and not a normal array.
  */
-export function jsonPCode(v: PCodeRep) {
+export function jsonPCode(v: PCodeRep): PCodeWrap {
   return [IS_PCODE, v]
 }
 
-function addElement(code: PCodeRep, element: any): void {
+function addElement(code: PCodeRep, element: PCodeElement): void {
   if (Array.isArray(element)) {
-    if (element[0] === IS_PCODE) {
+    if (isPCodeWrap(element)) {
       code.push(...element[1]);
       return;
     }
@@ -37,15 +51,11 @@ function addElement(code: PCodeRep, element: any): void {
   } else if (typeof element === 'object') {
     addObject(code, element);
   } else {
-    if (!['string', 'number', 'boolean'].includes(typeof element)) {
-      throw new Error('Invalid type for element');
-    }
-
     code.push([Action.Push, element]);
   }
 }
 
-function addArray(code: PCodeRep, array: any[]): void {
+function addArray(code: PCodeRep, array: PCodeElement[]): void {
   [...array].reverse().forEach(element => {
     addElement(code, element);
   });
@@ -66,7 +76,7 @@ function addObject<T extends {}>(code: PCodeRep, obj: T): void {
   );
 }
 
-export function createJsonDeclaration(obj: any): PCodeRep {
+export function createJsonDeclaration(obj: PCodeElement): PCodeRep {
   const code: PCodeRep = [];
 
   addElement(code, obj);
@@ -76,7 +86,7 @@ export function createJsonDeclaration(obj: any): PCodeRep {
 
 /** Same as `defineLocal`, but `obj` is put through `createJsonDeclaration`.
  * To use PCode as a value in the obj, wrap it in `jsonPCode()`. */
-export function defineLocalJson(name: string, obj: any): PCodeRep {
+export function defineLocalJson(name: string, obj: PCodeElement): PCodeRep {
   return defineLocal(name, createJsonDeclaration(obj));
 }
 
@@ -93,7 +103,7 @@ export function defineLocalJson(name: string, obj: any): PCodeRep {
  * name.foo = shell.test;
  * ```
  */
-export function applyJsonToObject(name: string, obj: Record<string | number, Array<any> | string | number | boolean | Record<string | number, string | number | boolean>>): PCodeRep {
+export function applyJsonToObject(name: string, obj: JsonLikeObj): PCodeRep {
   const code: PCodeRep = [];
 
   iterateEntries(obj, (key, value) => {
