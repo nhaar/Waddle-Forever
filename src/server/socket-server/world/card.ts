@@ -7,6 +7,7 @@ import { WaddleGame } from "./waddle-game";
 import { WaddleRoom } from "./waddle-room";
 import { ContextAdder, ContextRemover } from "./world-penguin";
 import { WorldPenguin } from "./world-penguin";
+import { DEFAULT_DECK } from "@server/game-logic/starter-deck";
 
 export class Hand {
   private _canDrawCards: number[];
@@ -151,9 +152,6 @@ abstract class Ninja {
   }
 }
 
-/** Fallback deck for a penguin that owns no cards, mirroring the basic starter deck */
-const DEFAULT_DECK = [1, 6, 9, 14, 17, 20, 22, 23, 26, 73, 89, 81];
-
 export class NinjaPlayer extends Ninja {
   private _player: WorldPenguin;
 
@@ -164,9 +162,8 @@ export class NinjaPlayer extends Ninja {
   constructor(player: WorldPenguin, seat: number) {
     super(seat);
 
-    // a penguin that never bought a deck has no cards at all, which used to
-    // throw out of Hand.draw the first time cards were dealt
     const deck = player.ninja.getDeck();
+    // use fallback for it to not crash
     this._hand = new Hand(deck.length > 0 ? deck : [...DEFAULT_DECK]);
     this._player = player;
   }
