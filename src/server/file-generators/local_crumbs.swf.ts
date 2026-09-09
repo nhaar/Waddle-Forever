@@ -1,5 +1,5 @@
 import { iterateEntries } from "@common/utils";
-import { Action, addVarToStack, createBytecode, createEmptyObjectVar, createJsonDeclaration, applyJsonToObject, PCodeRep, callMethod, defineLocal, defineLocalJson, jsonPCode } from "@common/flash/avm1";
+import { Action, addVarToStack, createBytecode, createEmptyObjectVar, createJsonDeclaration, applyJsonToObject, PCodeRep, callMethod, defineLocal, defineLocalJson, wrapPCode } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { LOCAL_PATHS, makeLocalPathsComposite } from "../game-data/local-paths";
 import { SAFE_MESSAGES } from "../game-data/safe-messages";
@@ -197,14 +197,14 @@ const getPostcardCrumbs = (): PCodeRep => {
     }),
     createEmptyObjectVar('pc_crumbs'),
     applyJsonToObject('pc_crumbs', {
-      'EPF': jsonPCode(addVarToStack('category_01')),
-      'Featured Postcards': jsonPCode(addVarToStack('category_02')),
-      'Friendship': jsonPCode(addVarToStack('category_03')),
-      'Puffles': jsonPCode(addVarToStack('category_04')),
-      'Party': jsonPCode(addVarToStack('category_05')),
-      'Games': jsonPCode(addVarToStack('category_06')),
-      'Rooms': jsonPCode(addVarToStack('category_07')),
-      'From us': jsonPCode(addVarToStack('category_08')),
+      'EPF': wrapPCode(addVarToStack('category_01')),
+      'Featured Postcards': wrapPCode(addVarToStack('category_02')),
+      'Friendship': wrapPCode(addVarToStack('category_03')),
+      'Puffles': wrapPCode(addVarToStack('category_04')),
+      'Party': wrapPCode(addVarToStack('category_05')),
+      'Games': wrapPCode(addVarToStack('category_06')),
+      'Rooms': wrapPCode(addVarToStack('category_07')),
+      'From us': wrapPCode(addVarToStack('category_08')),
     })
   ].flat();
 }

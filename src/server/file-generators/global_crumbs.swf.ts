@@ -1,5 +1,5 @@
 import { iterateEntries } from "@common/utils";
-import { Action, addVarToStack, applyJsonToObject, callMethod, createBytecode, createEmptyObjectVar, createJsonDeclaration, defineLocal, defineLocalJson, getMemberChain, jsonPCode, PCodeRep } from "@common/flash/avm1";
+import { Action, addVarToStack, applyJsonToObject, callMethod, createBytecode, createEmptyObjectVar, createJsonDeclaration, defineLocal, defineLocalJson, getMemberChain, wrapPCode, PCodeRep } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
@@ -110,8 +110,8 @@ function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
     }
 
     const data: any = {
-      type: jsonPCode(addVarToStack(typeVar)),
-      sort: jsonPCode(addVarToStack(sortVar)),
+      type: wrapPCode(addVarToStack(typeVar)),
+      sort: wrapPCode(addVarToStack(sortVar)),
       cost: prices.get(row.id) ?? row.cost
     };
 
@@ -120,7 +120,7 @@ function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
       if (interactiveVar === undefined) {
         throw new Error('Invalid interactive type');
       }
-      data.interactive = jsonPCode(addVarToStack(interactiveVar));
+      data.interactive = wrapPCode(addVarToStack(interactiveVar));
     }
 
     return [row.id, data]
@@ -149,7 +149,7 @@ function getPaperCrumbs(prices: Map<number, number>): PCodeRep {
 
   return applyJsonToObject("paper_crumbs", Object.fromEntries(ITEMS.rows.map(item => {
     const data: any = {
-      type: jsonPCode(addVarToStack(types[item.type])),
+      type: wrapPCode(addVarToStack(types[item.type])),
       cost: prices.get(item.id) ?? item.cost,
       is_member: item.isMember
     };
@@ -163,7 +163,7 @@ function getPaperCrumbs(prices: Map<number, number>): PCodeRep {
     if (item.customDepth !== null) data.customDepth = item.customDepth;
 
     const exclusive = exclusiveTypes[item.exclusive];
-    if (exclusive !== null) data.exclusive = jsonPCode(getMemberChain('shell', exclusive));
+    if (exclusive !== null) data.exclusive = wrapPCode(getMemberChain('shell', exclusive));
 
     return [item.id, data]
   })));
@@ -344,15 +344,15 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
     
     ...createEmptyObjectVar("mascot_crumbs"),
     ...applyJsonToObject("mascot_crumbs", {
-      1: jsonPCode(addVarToStack("rockhopper")),
-      2: jsonPCode(addVarToStack("auntArctic")),
-      3: jsonPCode(addVarToStack("cadence")),
-      4: jsonPCode(addVarToStack("gary")),
-      5: jsonPCode(addVarToStack("franky")),
-      6: jsonPCode(addVarToStack("peteyK")),
-      7: jsonPCode(addVarToStack("gBilly")),
-      8: jsonPCode(addVarToStack("stompinBob")),
-      9: jsonPCode(addVarToStack("sensei"))
+      1: wrapPCode(addVarToStack("rockhopper")),
+      2: wrapPCode(addVarToStack("auntArctic")),
+      3: wrapPCode(addVarToStack("cadence")),
+      4: wrapPCode(addVarToStack("gary")),
+      5: wrapPCode(addVarToStack("franky")),
+      6: wrapPCode(addVarToStack("peteyK")),
+      7: wrapPCode(addVarToStack("gBilly")),
+      8: wrapPCode(addVarToStack("stompinBob")),
+      9: wrapPCode(addVarToStack("sensei"))
     }),
 
     ...getServerCrumbs(s.targetIP, s.loginPort, s.worldPort, d.isVanillaEngine()),

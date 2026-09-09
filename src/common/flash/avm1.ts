@@ -4,11 +4,12 @@ import { to2BytesLittleEndian, to4BytesLittleEndian } from "./bytes";
 type JsonProp = string | number | boolean | JsonLikeObj | PCodeWrap;
 
 interface JsonLikeObj {
-  [x: string | number]: JsonProp[] | JsonProp;
+  [x: string | number]: PCodeElement;
 };
 
 type PCodeTag = '##PCODE##';
 type PCodeWrap = [PCodeTag, PCodeRep];
+/** A legal unit of a value in a JSON Object inside ActionScript represented as PCode or a primitive type */
 type PCodeElement = PCodeElement[] | JsonProp;
 
 export enum Action {
@@ -34,10 +35,9 @@ function isPCodeWrap(v: unknown[]): v is PCodeWrap {
 }
 
 /**
- * For use with `applyJsonToObject` or `defineLocalJson`. When you need to add PCode as a JSON value,
- * wrap the PCode in this, to tell the parser that it is in fact PCode and not a normal array.
+ * Wrap PCode to differentiate PCodeRep from normal arrays in objects
  */
-export function jsonPCode(v: PCodeRep): PCodeWrap {
+export function wrapPCode(v: PCodeRep): PCodeWrap {
   return [IS_PCODE, v]
 }
 
@@ -84,8 +84,7 @@ export function createJsonDeclaration(obj: PCodeElement): PCodeRep {
   return code;
 }
 
-/** Same as `defineLocal`, but `obj` is put through `createJsonDeclaration`.
- * To use PCode as a value in the obj, wrap it in `jsonPCode()`. */
+/** Same as `defineLocal`, but `obj` is put through `createJsonDeclaration`. To use PCode as a value in the obj, use wrapPCode */
 export function defineLocalJson(name: string, obj: PCodeElement): PCodeRep {
   return defineLocal(name, createJsonDeclaration(obj));
 }
@@ -98,7 +97,7 @@ export function defineLocalJson(name: string, obj: PCodeElement): PCodeRep {
  * name.hello = "world";
  * ```
  * 
- * To use PCode as a value, wrap it in `jsonPCode()`. For example, if `{ foo: jsonPCode(getMemberChain("shell", "test")) }` is given, then:
+ * To use PCode as a value, wrap it in `wrapPCode()`. For example, if `{ foo: wrapPCode(getMemberChain("shell", "test")) }` is given, then:
  * ```
  * name.foo = shell.test;
  * ```
