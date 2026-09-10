@@ -983,6 +983,14 @@ export const UPDATES_2010: Update[] = [
           'party': 267,
           'party2': 289
         },
+        localChanges: {
+          'close_ups/poster.swf': {
+            'en': [ 'archives:IslandAdventureParty2011Party_poster.swf', 'party_poster' ]
+          },
+          'close_ups/christmasposter.swf': {
+            'en': [ 'archives:IslandAdventureParty2011Party_poster2.swf', 'party_poster2' ]
+          },
+        },
         startscreens: ['archives:StartscreenIsland_adventure-IslandAdventureParty2010.swf', 'archives:StartscreenIsland_adventure_2-IslandAdventureParty2010.swf']
       }
     }
