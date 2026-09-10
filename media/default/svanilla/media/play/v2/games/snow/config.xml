@@ -1,0 +1,15 @@
+<content>
+	<gameID>9988776655</gameID>
+	<gameLinkage></gameLinkage>
+	<gameClass>com.clubpenguin.games.snow.SnowLauncher</gameClass>
+
+	<gameLocale>
+		en
+	</gameLocale>
+
+	<gameConfig>
+		SnowConfig.xml
+	</gameConfig>
+	
+	<!-- A Comment in the xml -->
+</content>
