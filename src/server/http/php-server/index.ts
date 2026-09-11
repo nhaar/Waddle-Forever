@@ -8,14 +8,19 @@ import { getDefaultPenguin, PenguinJson, PenguinRepository } from '@server/datab
 import { filterItems } from '@server/socket-server/handlers/join';
 import { GameData } from '@server/timelines/game-data';
 
-type PostCallback = (body: any, ctx: {
+interface Ctx {
   settings: SettingsManager;
   db: PenguinRepository;
   data: GameData;
-  session: SessionManager;
-}) => Promise<string>;
+  sessions: {
+    join: JoinSessionManager
+    snow: SnowSessionManager
+  };
+}
 
-type GetCallback = (settings: SettingsManager, db: PenguinRepository) => string;
+type PostCallback = (body: any, ctx: Ctx) => Promise<string | Record<string, any>>;
+
+type GetCallback = (body: any, ctx: Ctx) => string;
 
 export function getOfflinePenguinCrumb(id: number, penguin: PenguinJson): string {
   return [
@@ -39,7 +44,7 @@ export function getOfflinePenguinCrumb(id: number, penguin: PenguinJson): string
 
 // todo: better organize listener declarations
 const POST_LISTENERS: Record<string, PostCallback> = {
-  '/create_account/create_account.php': async (body, { settings, db, session }) => {
+  '/create_account/create_account.php': async (body, { settings, db, sessions: { join: session } }) => {
     let res: string = ''
     let sid: string | undefined = body.sid;
 
@@ -191,24 +196,82 @@ const POST_LISTENERS: Record<string, PostCallback> = {
       response += `&${key}=${params[key]}`
     }
     return response 
+  },
+
+  // CJ Snow session generator
+  '/en/web-service/snfgenerator/session': async (body, { db, sessions: { snow: sessions } }) => {
+    const id = Number(body.pid);
+    const token = body.token;
+
+    if (isNaN(id) || !token) {
+      return { hasError: true, error: 'Invalid parameters', data: '' };
+    }
+
+    const penguin = await db.get(id);
+
+    if (!penguin) {
+      return { hasError: true, error: 'User not found', data: '' };
+    }
+
+    const sid = sessions.generateSession();
+
+    sessions.get(sid).id = id;
+
+    return { hasError: false, error: '', data: sid };
   }
 }
 
 const GET_LISTENERS: Record<string, GetCallback> = {
-  '/flash/date.php': (settings) => {
+  '/flash/date.php': (_, { settings }) => {
     const [year, month, day] = processVersion(settings.settings.version)
     return `output=${String(day).padStart(2, '0')}${String(month).padStart(2, '0')}${String(year % 2000).padStart(2, '0')}`;
+  },
+
+  // CJ Snow endpoint for getting server info
+  '/api/v0.2/xxx/game/get/world-name-service/start_world_request': (query, { settings, sessions: { snow: sessions } }) => {
+    const { name, token, product_name, owner } = query;
+
+    if (!name || !token || !product_name || !owner) {
+      return '[S_ERROR]|3518|Cannot Start World|Missing parameters';
+    }
+
+    if (product_name != 'cjsnow' || !name.startsWith('cjsnow')) {
+      return '[S_ERROR]|3514|Cannot Start World|World type not supported';
+    }
+
+    const pid = Number(owner);
+
+    if (isNaN(pid) || !token) {
+      return '[S_ERROR]|3518|Cannot Start World|Invalid parameters';
+    }
+
+    const session = sessions.get(token);
+
+    if (!session || session.id !== pid) {
+      return '[S_ERROR]|3525|Cannot Start World|Invalid token';
+    }
+
+    return `[S_WORLDLIST]|${token}|${name}|${settings.targetIP}|${settings.snowPort}||crowdcontrol|${name}|CPNext_dev_branch|example`;
   }
 }
 
-interface NewPenguin {
-  username: string,
-  color: number,
+interface Session {
   timeout: NodeJS.Timeout
 }
 
-class SessionManager {
-  private _sessions = new Map<string, NewPenguin>();
+interface NewPenguin extends Session {
+  username: string,
+  color: number,
+}
+
+interface SnowSession extends Session {
+  id: number
+}
+
+class SessionManager<T extends Session> {
+  protected _sessions = new Map<string, T>();
+
+  constructor(private createEntry: (timeout: NodeJS.Timeout) => T) {}
 
   public setTimeout(sid: string): NodeJS.Timeout {
     const session = this._sessions.get(sid)
@@ -229,7 +292,8 @@ class SessionManager {
       sid = String(gen());
     } while(this._sessions.has(sid));
 
-    this._sessions.set(sid, { username: '', color: 1, timeout: this.setTimeout(sid) });
+    const timeout = this.setTimeout(sid);
+    this._sessions.set(sid, this.createEntry(timeout));
 
     return sid;
   }
@@ -239,12 +303,25 @@ class SessionManager {
   }
 }
 
+class JoinSessionManager extends SessionManager<NewPenguin> {
+  constructor() {
+    super(timeout => ({ username: '', color: 1, timeout }));
+  }
+}
+
+class SnowSessionManager extends SessionManager<SnowSession> {
+  constructor() {
+    super(timeout => ({ timeout, id: -1 }));
+  }
+}
+
 export class PhpServer {
   private postListeners: Map<string, PostCallback>;
 
   private getListeners: Map<string, GetCallback>;
 
-  private _sessionManager = new SessionManager();
+  private _joinSessionManager = new JoinSessionManager();
+  private _snowSessionManager = new SnowSessionManager();
 
   constructor(
     private settings: SettingsManager,
@@ -261,21 +338,23 @@ export class PhpServer {
     router.use(express.urlencoded({ extended: true }))
     router.use(express.json());
 
+    const ctx = {
+      settings: this.settings,
+      db: this.db,
+      data: this.gameData,
+      sessions: { join: this._joinSessionManager, snow: this._snowSessionManager }
+    };
+
     this.postListeners.forEach((callback, path) => {
       router.post(path, (req, res) => {
-        callback(req.body, {
-          settings: this.settings,
-          db: this.db,
-          data: this.gameData,
-          session: this._sessionManager
-        }).then(r => {
+        callback(req.body, ctx).then(r => {
           res.send(r);
         })
       });
     });
     this.getListeners.forEach((callback, path) => {
-      router.get(path, (_, res) => {
-        res.send(callback(this.settings, this.db))
+      router.get(path, (req, res) => {
+        res.send(callback(req.query, ctx))
       });
     });
 

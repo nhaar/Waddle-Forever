@@ -2,6 +2,10 @@ import { getMediaFile } from "@server/game-data/files";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 
+function socketInfo(host: string, port: number) {
+  return { host, port, proxyUrl: `ws://${host}:${port}` }
+}
+
 export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buffer | string): Promise<Buffer | string> {
   let newFileRef: string | null = null;
 
@@ -26,20 +30,13 @@ export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buff
   }
 
   // For modern-as3.html, inject the correct url for media
-  b = b.replaceAll('##MEDIA_URL##', `http://${s.targetIP}:${s.targetPort}/`);
+  b = b.replaceAll('##MEDIA_URL##', `http://${s.targetIP}:${s.targetPort}`);
 
   // Ruffle socket proxy
   const socketProxy = JSON.stringify([
-    {
-      host: s.targetIP,
-      port: s.loginPort,
-      proxyUrl: `ws://${s.targetIP}:${s.loginPort}`,
-    },
-    {
-      host: s.targetIP,
-      port: s.worldPort,
-      proxyUrl: `ws://${s.targetIP}:${s.worldPort}`,
-    },
+    socketInfo(s.targetIP, s.loginPort),
+    socketInfo(s.targetIP, s.worldPort),
+    socketInfo(s.targetIP, s.snowPort)
   ]);
 
   const injectedScript = `
