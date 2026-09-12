@@ -173,6 +173,7 @@ export class BotManager {
   public setOff() {
     this._on = false;
     this._settings.population = 0;
+    this.stop();
   }
 
   public setBusy(penguin: WorldPenguin, busy: boolean): void {
@@ -210,18 +211,14 @@ export class BotManager {
 
   public configure(partial: Partial<BotSettings>): void {
     this._settings = { ...this._settings, ...partial };
-    this.syncPopulation();
-    if (this._settings.population > 0) {
-      this.start();
-    } else {
-      this.stop();
-    }
   }
 
   public setPopulation(n: number): void {
     this._settings.population = Math.max(0, Math.min(n, 60));
     if (n > 0) {
       this._on = true;
+      this.start();
+      this.syncPopulation();
     }
   }
 
