@@ -26,9 +26,8 @@
 //     own turns on a timer using the same table.sendMove() the handler calls.
 
 import { GameData } from '@server/timelines/game-data';
-import { PenguinMessenger } from '../messenger';
 import { isBot } from './bot-id';
-import type { BotManager } from './bots';
+import type { BotManager, SendFunction } from './bots';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { SledRace } from './sled';
@@ -167,12 +166,9 @@ export class BotGames {
   constructor(
     private _world: World,
     private _manager: BotManager,
-    private joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
+    private joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void,
+    private send: SendFunction
   ) {}
-
-  private get msg(): PenguinMessenger {
-    return this._manager.msg;
-  }
 
   private get data(): GameData {
     return this._manager.data;
@@ -438,7 +434,7 @@ export class BotGames {
     }
 
     for (const racer of state.racers) {
-      this.msg.send(
+      this.send(
         sled.players,
         'zm',
         racer.seat,
@@ -532,14 +528,14 @@ export class BotGames {
     }
     this._manager.setBusy(bot, true);
 
-    this.msg.send(room.players, 'ut', table.getId(), table.getCount());
+    this.send(room.players, 'ut', table.getId(), table.getCount());
 
     table.setJoined(seat);
-    this.msg.send(table.penguins, 'uz', seat, bot.name);
+    this.send(table.penguins, 'uz', seat, bot.name);
 
     if (!table.hasStarted() && table.hasEveryoneJoined()) {
       table.setStarted();
-      this.msg.send(table.penguins, 'sz', table.getTurn());
+      this.send(table.penguins, 'sz', table.getTurn());
     }
 
     this._tables.push({
@@ -563,7 +559,7 @@ export class BotGames {
 
       if (!stillSeated || !opponent) {
         table.removePlayer(penguin);
-        this.msg.send(room.players, 'ut', table.getId(), table.getCount());
+        this.send(room.players, 'ut', table.getId(), table.getCount());
         this._manager.setBusy(penguin, false);
         return false;
       }
@@ -602,16 +598,16 @@ export class BotGames {
       table.changeTurn();
     }
     if (args !== null) {
-      this.msg.send(table.penguins, 'zm', ...args);
+      this.send(table.penguins, 'zm', ...args);
     }
     if (endArgs !== null) {
       if (this.data.isPreCpip()) {
         table.blockSpectators();
-        this.msg.send(table.penguins, 'zo', ...endArgs);
+        this.send(table.penguins, 'zo', ...endArgs);
       } else {
-        table.penguins.forEach(p => this.msg.send(p, 'zo', p.currency.coins));
+        table.penguins.forEach(p => this.send(p, 'zo', p.currency.coins));
       }
-      this.msg.send(room.players, 'ut', table.getId(), table.getCount());
+      this.send(room.players, 'ut', table.getId(), table.getCount());
       table.resetRound();
       this._manager.setBusy(penguin, false);
     }

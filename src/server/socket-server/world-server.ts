@@ -40,7 +40,8 @@ export class WorldServer implements MessageHandler {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
     this._botManager = new BotManager(
-      this._world, this._msg, this._gameData, this._settings,
+      this._world,
+      (p, msg, ...args) => this._msg.send(p, msg, ...args), this._gameData, this._settings,
       (r, w, p) => joinWaddle({ msg: this._msg, world: this._world, data: this._gameData }, r, w, p)
     );
 

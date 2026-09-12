@@ -9,7 +9,6 @@ import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { getPenguinString } from '../handlers/join';
-import { PenguinMessenger } from '../messenger';
 import { BOT_ID_BASE, isBot } from './bot-id';
 import { BotGames } from './bot-games';
 import { SledRace } from './sled';
@@ -145,6 +144,8 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
   openIgloos: 3
 };
 
+export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
+
 export class BotManager {
   private _bots = new Map<number, BotState>();
   private _nextId = BOT_ID_BASE;
@@ -158,16 +159,12 @@ export class BotManager {
 
   constructor(
     private _world: World,
-    private _msg: PenguinMessenger,
+    private send: SendFunction,
     private _data: GameData,
     private _appSettings: SettingsManager,
     joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
   ) {
-    this._games = new BotGames(this._world, this, joinWaddle);
-  }
-
-  public get msg(): PenguinMessenger {
-    return this._msg;
+    this._games = new BotGames(this._world, this, joinWaddle, send);
   }
 
   public get data(): GameData {
@@ -343,7 +340,7 @@ export class BotManager {
     const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
     room.addPenguin(penguin, x, y);
     this._world.enterState(penguin, { room });
-    this._msg.send(
+    this.send(
       room.players,
       'ap',
       getPenguinString(this._data, penguin, { x, y, frame: 1 })
@@ -352,7 +349,7 @@ export class BotManager {
 
   private leave(penguin: WorldPenguin, room: WorldRoom): void {
     room.removePenguin(penguin);
-    this._msg.send(
+    this.send(
       room.players,
       'rp',
       penguin.id,
@@ -534,24 +531,24 @@ export class BotManager {
     }
 
     if (roll < 0.10 + this._settings.chatChance) {
-      this._msg.send(room.players, 'sm', penguin.id, choose(CHAT_LINES));
+      this.send(room.players, 'sm', penguin.id, choose(CHAT_LINES));
       return;
     }
 
     if (roll < 0.28) {
       const frame = choose(IDLE_FRAMES);
       room.updateFrame(penguin, frame);
-      this._msg.send(room.players, 'sf', penguin.id, frame);
+      this.send(room.players, 'sf', penguin.id, frame);
       return;
     }
 
     if (roll < 0.36) {
-      this._msg.send(room.players, 'se', penguin.id, choose(EMOTES));
+      this.send(room.players, 'se', penguin.id, choose(EMOTES));
       return;
     }
 
     if (roll < 0.40) {
-      this._msg.send(
+      this.send(
         room.players,
         'sb',
         penguin.id,
@@ -565,6 +562,6 @@ export class BotManager {
     const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
     const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
     room.updatePosition(penguin, x, y);
-    this._msg.send(room.players, 'sp', penguin.id, x, y);
+    this.send(room.players, 'sp', penguin.id, x, y);
   }
 }
