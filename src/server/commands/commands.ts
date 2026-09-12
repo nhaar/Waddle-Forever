@@ -244,7 +244,7 @@ const handleBotsAction: CommandHandler<[string]> = (ctx, action) => {
   if (action === 'here' && 'room' in ctx) {
     bot.addAt(ctx.room.id, 5);
   } else if (action === 'off') {
-    bot.setPopulation(0);
+    bot.setOff();
   } else if (action === 'games') {
     bot.configure({ playGames: true });
   } else if (action === 'nogames') {

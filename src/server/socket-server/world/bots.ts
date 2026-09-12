@@ -144,6 +144,8 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
   openIgloos: 3
 };
 
+const MAX_SIZE = 60;
+
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 
 export class BotManager {
@@ -156,6 +158,7 @@ export class BotManager {
   private _busy = new Set<WorldPenguin>();
   /** Bots currently at home with an open igloo, and when they will head back out */
   private _homes = new Map<WorldPenguin, number>();
+  private _on = false;
 
   constructor(
     private _world: World,
@@ -165,6 +168,11 @@ export class BotManager {
     joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
   ) {
     this._games = new BotGames(this._world, this, this._data, joinWaddle, send);
+  }
+
+  public setOff() {
+    this._on = false;
+    this._settings.population = 0;
   }
 
   public setBusy(penguin: WorldPenguin, busy: boolean): void {
@@ -177,11 +185,10 @@ export class BotManager {
 
   /** Spawns a bot straight into one room and returns it */
   public spawnInto(roomId: number): WorldPenguin | undefined {
-    // with bots turned off, nothing should ever appear on its own
-    if (this._settings.population === 0 || this._bots.size >= 60) {
+    if (!this._on || this._bots.size > MAX_SIZE) {
       return undefined;
     }
-    this._settings.population = Math.max(this._settings.population, this._bots.size + 1);
+    this._settings.population += 1;
     return this.spawn(roomId);
   }
 
@@ -212,7 +219,10 @@ export class BotManager {
   }
 
   public setPopulation(n: number): void {
-    this.configure({ population: Math.max(0, Math.min(n, 60)) });
+    this._settings.population = Math.max(0, Math.min(n, 60));
+    if (n > 0) {
+      this._on = true;
+    }
   }
 
   /** Spawns `count` extra bots directly into one room and keeps them around */
