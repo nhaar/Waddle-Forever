@@ -5,6 +5,7 @@ import { ROOMS } from "@server/game-data/rooms";
 import { RoomContext, RoomGuard, RoomHandler } from "./handlers";
 import { WorldRoom } from "@server/socket-server/world/world-room";
 import { WaddleRoom } from "@server/socket-server/world/waddle-room";
+import { GameData } from "@server/timelines/game-data";
 
 export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg, data }, x, y) => {
   const state = room.getState(penguin);
@@ -256,6 +257,35 @@ export const handleLeaveTableGame: RoomHandler<[]> = ({ msg, room, penguin }) =>
   }
 }
 
+export const sendTableMove = (data: GameData, table: WorldTable, room: WorldRoom, moves: number[]) => {
+  const [endArgs, args] = table.sendMove(moves);
+  const msgs: Array<[WorldPenguin | WorldPenguin[], string, Array<string | number>]> = [];
+      
+  // Ignore non-table zm packets (e.g. sled racing uses 4 args).
+  if (table.getAutomaticTurnChange()) {
+    table.changeTurn();
+  }
+  if (args !== null) {
+    msgs.push([table.penguins, 'zm', args]);
+  }
+  if (endArgs !== null) {
+    // end args is pre-cpip thing
+    // post-cpip: regular player coins
+    if (data.isPreCpip()) {
+      table.blockSpectators();
+      msgs.push([table.penguins, 'zo', endArgs]);
+    } else {
+      table.penguins.forEach(p => 
+        msgs.push([p, 'zo', [p.currency.coins]])
+      );
+    }
+    msgs.push([room.players, 'ut', [table.getId(), table.getCount()]]);
+    table.resetRound();
+  }
+
+  return msgs;
+}
+
 export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin, data }, ...moves) => {
   // dispatch board moves for find four or mancala
   const table = room.getPenguinTable(penguin);
@@ -277,29 +307,8 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
 
     // table game specific logic
     if (moves.length === table.getMoveLength()) {
-      // let bots read the board before the move lands
-      // TODO
-      const [endArgs, args] = table.sendMove(moves);
-      
-      // Ignore non-table zm packets (e.g. sled racing uses 4 args).
-      if (table.getAutomaticTurnChange()) {
-        table.changeTurn();
-      }
-      if (args !== null) {
-        msg.send(table.penguins, 'zm', ...args);
-      }
-      if (endArgs !== null) {
-        // end args is pre-cpip thing
-        // post-cpip: regular player coins
-        if (data.isPreCpip()) {
-          table.blockSpectators();
-          msg.send(table.penguins, 'zo', ...endArgs);
-        } else {
-          table.penguins.forEach(p => msg.send(p, 'zo', p.currency.coins));
-        }
-        msg.send(room.players, 'ut', table.getId(), table.getCount());
-        table.resetRound();
-      }
+      const msgs = sendTableMove(data, table, room, moves);
+      msgs.forEach(([p, m, a]) => msg.send(p, m, ...a));
     }
   }  
 }

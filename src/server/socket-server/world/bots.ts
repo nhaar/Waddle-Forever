@@ -9,13 +9,14 @@ import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { BOT_ID_BASE, isBot } from './bot-id';
-import { SledRace } from './sled';
 import { PenguinEnvironment, World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
-import { WorldTable } from './world-table';
 import { choose, randomInt } from '@common/utils';
-import { Bot, SendFunction, WALK_AREA } from './bot';
+import { Bot, WALK_AREA } from './bot';
+import { FindFourTable } from './find-four';
+import { MancalaTable } from './mancala';
+import { PenguinMessenger } from '../messenger';
 
 export { BOT_ID_BASE, isBot };
 
@@ -172,7 +173,7 @@ export class BotManager {
 
   constructor(
     private _world: World,
-    private send: SendFunction,
+    private _msg: PenguinMessenger,
     private _data: GameData,
     private _appSettings: SettingsManager
   ) {
@@ -186,12 +187,12 @@ export class BotManager {
   }
 
   /** Spawns a bot straight into one room and returns it */
-  public spawnInto(roomId: number): void {
+  public spawnInto(roomId: number): Bot {
     if (!this._on || this._bots.size > MAX_SIZE) {
       return undefined;
     }
     this._settings.population += 1;
-    this.spawn(roomId);
+    return this.spawn(roomId);
   }
 
   public configure(partial: Partial<BotSettings>): void {
@@ -272,17 +273,19 @@ export class BotManager {
     return generateRandomPenguin(this._appSettings.getVirtualDate(0).getTime());
   }
 
-  public spawn(roomId?: number): void {
+  public spawn(roomId?: number): Bot {
     const id = this._nextId++;
     const penguin = new WorldPenguin(id, this.makeJson(), this._appSettings);
     this._world.addPenguin(penguin);
-    const bot = new Bot(penguin, this._data, this._world, this.send, Date.now() + this.delay())
+    const bot = new Bot(penguin, this._data, this._world, (p, m, ...a) => this._msg.send(p, m, ...a), Date.now() + this.delay())
+    this._msg.linkClient(bot, bot.penguin);
     this._bots.set(id, bot);
-
+    this._msg
     this.decorateIgloo(penguin);
 
     const room = this._world.getRoom(roomId ?? this.chooseRoom());
     bot.enter(room);
+    return bot;
   }
 
   public despawn(id: number): void {
@@ -324,9 +327,70 @@ export class BotManager {
     return randomInt(this._settings.minDelay, this._settings.maxDelay);
   }
 
+  /** A bot standing in this room that isn't already sitting somewhere */
+  private getFreeBotIn(room: WorldRoom): Bot | undefined {
+    const seated = new Set<WorldPenguin>();
+    room.getWaddleRooms().forEach((w) => {
+      w.getSeats().forEach((p) => {
+        if (p !== null) {
+          seated.add(p);
+        }
+      });
+    });
+    room.getTables().forEach((t) => {
+      t.getSeats().forEach((p) => {
+        if (p !== null) {
+          seated.add(p);
+        }
+      });
+    });
+
+    const p = room.players.find(p => isBot(p) && !seated.has(p));
+    if (p === undefined) {
+      return undefined;
+    }
+    return this._bots.get(p.id);
+  }
+
+  private tickTables(room: WorldRoom): void {
+    for (const table of room.getTables()) {
+      if (table.hasStarted() || table.hasEnded()) {
+        continue;
+      }
+      const seats = table.getSeats();
+      const occupants = seats.filter((p): p is WorldPenguin => p !== null);
+      const human = occupants.some(p => !isBot(p));
+      const hasBot = occupants.some(p => isBot(p));
+
+      if (!human || hasBot || occupants.length !== 1) {
+        continue;
+      }
+      // treasure hunt is co-op and needs mining logic bots don't have
+      if (!(table instanceof FindFourTable) && !(table instanceof MancalaTable)) {
+        continue;
+      }
+
+      const bot = this.getFreeBotIn(room) ?? this.spawnInto(room.id);
+      if (bot === undefined) {
+        continue;
+      }
+      bot.sitAtTable(room, table);
+    }
+  }
+
+  private tickGames(): void {
+    const rooms = this.humanRooms();
+
+    rooms.forEach((room) => {
+      // this.tickWaddles(room);
+      this.tickTables(room);
+    });
+  }
+
   private tick(): void {
     const now = Date.now();
     this.syncPopulation();
+    this.tickGames();
     this.tickIgloos();
 
     for (const bot of this._bots.values()) {
@@ -441,24 +505,24 @@ export class BotManager {
     }
 
     if (roll < 0.10 + this._settings.chatChance) {
-      this.send(room.players, 'sm', bot.penguin.id, choose(CHAT_LINES));
+      this._msg.send(room.players, 'sm', bot.penguin.id, choose(CHAT_LINES));
       return;
     }
 
     if (roll < 0.28) {
       const frame = choose(IDLE_FRAMES);
       room.updateFrame(bot.penguin, frame);
-      this.send(room.players, 'sf', bot.penguin.id, frame);
+      this._msg.send(room.players, 'sf', bot.penguin.id, frame);
       return;
     }
 
     if (roll < 0.36) {
-      this.send(room.players, 'se', bot.penguin.id, choose(EMOTES));
+      this._msg.send(room.players, 'se', bot.penguin.id, choose(EMOTES));
       return;
     }
 
     if (roll < 0.40) {
-      this.send(
+      this._msg.send(
         room.players,
         'sb',
         bot.penguin.id,
@@ -472,6 +536,6 @@ export class BotManager {
     const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
     const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
     room.updatePosition(bot.penguin, x, y);
-    this.send(room.players, 'sp', bot.penguin.id, x, y);
+    this._msg.send(room.players, 'sp', bot.penguin.id, x, y);
   }
 }
