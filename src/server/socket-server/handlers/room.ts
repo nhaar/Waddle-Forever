@@ -2,7 +2,9 @@ import { getPenguinString } from "./join";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
-import { RoomGuard, RoomHandler } from "./handlers";
+import { RoomContext, RoomGuard, RoomHandler } from "./handlers";
+import { WorldRoom } from "@server/socket-server/world/world-room";
+import { WaddleRoom } from "@server/socket-server/world/waddle-room";
 
 export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg, data }, x, y) => {
   const state = room.getState(penguin);
@@ -62,26 +64,39 @@ export const handleGetWaddle: RoomHandler<[]> = ({ msg, penguin, room }) => {
   }))
 }
 
-export const handleJoinWaddle: RoomHandler<[number]> = ({ msg, penguin, room, world, data }, waddleId) => {
-  const waddle = room.getWaddleRoom(waddleId);
-  if (waddle !== undefined) {
-    const seat = room.enterWaddleRoom(waddle, penguin);
-    msg.send(penguin, 'jw', seat);
-    msg.send(room.players, 'uw', waddleId, seat, penguin.name, penguin.id);
-    if (waddle.isFull()) {
-      const players = waddle.getSeats().filter((p): p is WorldPenguin => p !== null);
-      players.forEach(p => {
-        room.removePenguin(p);
-      });
-      const game = world.getWaddleGame(waddle.getGame(), players);
-      waddle.reset();
-      msg.send(players, 'jg', game.roomId);
+/**
+ * Seats a penguin in a waddle and starts the game once it is full.
+ * Split out of the handler so bots can sit down through the same path.
+ */
+export const joinWaddle = (
+  { msg, world, data }: Pick<RoomContext, 'msg' | 'world' | 'data'>,
+  room: WorldRoom,
+  waddle: WaddleRoom,
+  penguin: WorldPenguin
+): void => {
+  const seat = room.enterWaddleRoom(waddle, penguin);
+  msg.send(penguin, 'jw', seat);
+  msg.send(room.players, 'uw', waddle.getId(), seat, penguin.name, penguin.id);
+  if (waddle.isFull()) {
+    const players = waddle.getSeats().filter((p): p is WorldPenguin => p !== null);
+    players.forEach(p => {
+      room.removePenguin(p);
+    });
+    const game = world.getWaddleGame(waddle.getGame(), players);
+    waddle.reset();
+    msg.send(players, 'jg', game.roomId);
 
-      // 2006 sled race notification for starting the game
-      if (waddle.getGame() === 'sled' && data.isPreCpip()) {
-        msg.send(players, 'sw', waddle.getId(), room.id, players.length);
-      }
+    // 2006 sled race notification for starting the game
+    if (waddle.getGame() === 'sled' && data.isPreCpip()) {
+      msg.send(players, 'sw', waddle.getId(), room.id, players.length);
     }
+  }
+}
+
+export const handleJoinWaddle: RoomHandler<[number]> = (ctx, waddleId) => {
+  const waddle = ctx.room.getWaddleRoom(waddleId);
+  if (waddle !== undefined) {
+    joinWaddle(ctx, ctx.room, waddle, ctx.penguin);
   }
 }
 
@@ -242,7 +257,7 @@ export const handleLeaveTableGame: RoomHandler<[]> = ({ msg, room, penguin }) =>
   }
 }
 
-export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin, data }, ...moves) => {
+export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin, data, bot }, ...moves) => {
   // dispatch board moves for find four or mancala
   const table = room.getPenguinTable(penguin);
   if (table !== null) {
@@ -263,6 +278,8 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
 
     // table game specific logic
     if (moves.length === table.getMoveLength()) {
+      // let bots read the board before the move lands
+      bot.onTableMove(table, moves);
       // TODO
       const [endArgs, args] = table.sendMove(moves);
       

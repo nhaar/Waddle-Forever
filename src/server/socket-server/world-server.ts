@@ -23,6 +23,7 @@ import { createLoginXmlHandler } from "./login-handlers";
 import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/handlers";
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 import { OfflineWorld } from "./offline-world";
+import { BotManager } from "./world/bots";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
@@ -32,10 +33,12 @@ export class WorldServer implements MessageHandler {
   private _xtHandler: XtHandler;
   private _xmlHandler: XmlHandler;
   private _persister: PenguinPersister;
+  private _botManager: BotManager;
   
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
+    this._botManager = new BotManager(this._world, this._msg, this._gameData, this._settings);
 
     this._commandsHandler = getCommandsHandler();
 
@@ -65,7 +68,8 @@ export class WorldServer implements MessageHandler {
         settings: this._settings,
         off: this._off,
         client,
-        room: this._world.getPenguinRoom(penguin)
+        room: this._world.getPenguinRoom(penguin),
+        bot: this._botManager
       }, name, args);
     }
   }
@@ -83,6 +87,7 @@ export class WorldServer implements MessageHandler {
   }
 
   public async reset() {
+    this._botManager.shutdown();
     await Promise.all(this._msg.getClients().map(client => this.disconnect(client)));
     this._msg.close();
     this._msg = new PenguinMessenger();
@@ -100,6 +105,7 @@ export class WorldServer implements MessageHandler {
       db: this._db,
       prst: this._persister,
       off: this._off,
+      bot: this._botManager,
 
       client,
 
