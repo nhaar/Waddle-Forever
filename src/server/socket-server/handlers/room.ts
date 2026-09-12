@@ -256,7 +256,7 @@ export const handleLeaveTableGame: RoomHandler<[]> = ({ msg, room, penguin }) =>
   }
 }
 
-export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin, data, bot }, ...moves) => {
+export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin, data }, ...moves) => {
   // dispatch board moves for find four or mancala
   const table = room.getPenguinTable(penguin);
   if (table !== null) {
@@ -278,7 +278,6 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
     // table game specific logic
     if (moves.length === table.getMoveLength()) {
       // let bots read the board before the move lands
-      bot.onTableMove(table, moves);
       // TODO
       const [endArgs, args] = table.sendMove(moves);
       

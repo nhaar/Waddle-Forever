@@ -207,8 +207,8 @@ export class Sensei extends Ninja {
   
   private _pupil: NinjaPlayer;
 
-  constructor(unbeatable: boolean, opponent: NinjaPlayer, seat: number = 0) {
-    super(seat);
+  constructor(unbeatable: boolean, opponent: NinjaPlayer) {
+    super(0);
     this._unbeatable = unbeatable;
     this._pupil = opponent;
   }
@@ -282,23 +282,6 @@ export class Sensei extends Ninja {
 
     this._sessionToElement.set(id, CARDS.getStrict(cardId).element);
     return cardId;
-  }
-}
-
-/**
- * A computer controlled opponent in a normal two player match.
- *
- * It reuses Sensei's beatable behaviour (draw sensible cards, play a random
- * legal one) but belongs to a bot penguin, so the seat shows that penguin's
- * name, colour and belt instead of Sensei's.
- */
-export class NinjaBot extends Sensei {
-  constructor(private _bot: WorldPenguin, seat: number, opponent: NinjaPlayer) {
-    super(false, opponent, seat);
-  }
-
-  public get penguin(): WorldPenguin {
-    return this._bot;
   }
 }
 
@@ -394,14 +377,6 @@ export class CardJitsu extends WaddleGame {
       const sensei = new Sensei(player.ninja.senseiAttempts < 5, ninja);
       ninjas = [sensei, ninja];
       this._ninjas.set(player, ninja);
-    } else if (players.some(isBot)) {
-      // one human against a computer player
-      const botIndex = players.findIndex(isBot);
-      const humanIndex = botIndex === 0 ? 1 : 0;
-      const human = new NinjaPlayer(players[humanIndex], humanIndex);
-      const bot = new NinjaBot(players[botIndex], botIndex, human);
-      ninjas = botIndex === 0 ? [bot, human] : [human, bot];
-      this._ninjas.set(players[humanIndex], human);
     } else {
       ninjas = [new NinjaPlayer(players[0], 0), new NinjaPlayer(players[1], 1)];
       players.forEach((p, i) => this._ninjas.set(p, ninjas[i] as NinjaPlayer));

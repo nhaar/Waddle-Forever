@@ -8,16 +8,14 @@ import { getDefaultPenguin, PenguinJson } from '@server/database/database';
 import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
-import { getPenguinString } from '../handlers/join';
 import { BOT_ID_BASE, isBot } from './bot-id';
-import { BotGames } from './bot-games';
 import { SledRace } from './sled';
 import { PenguinEnvironment, World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { WorldTable } from './world-table';
-import { WaddleRoom } from './waddle-room';
 import { choose, randomInt } from '@common/utils';
+import { Bot, SendFunction, WALK_AREA } from './bot';
 
 export { BOT_ID_BASE, isBot };
 
@@ -32,14 +30,6 @@ const BOT_ROOMS: RoomName[] = [
   'mine', 'cave', 'cove', 'dojo', 'lodge', 'attic', 'sport'
 ];
 
-// TODO -> Complete tracking of all walkable boxes
-//         (If possible with a FFDEC script)
-/**
- * Rough walkable box of a Club Penguin room. The resolution is 760x480, and most
- * floors sit in the lower half of it. Bots that pick a spot outside the walkable
- * area of a specific room just stand there, which is harmless.
- */
-const WALK_AREA = { minX: 120, maxX: 640, minY: 300, maxY: 440 };
 
 /** Frames sent through `sf`. 25 is wave, 26 is dance, 17-24 are the sit directions. */
 const IDLE_FRAMES = [25, 26, 17, 18, 19, 20, 21, 22, 23, 24];
@@ -146,7 +136,6 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
 
 const MAX_SIZE = 60;
 
-export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 
 function generateRandomPenguin(time: number): PenguinJson {
   const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
@@ -172,64 +161,37 @@ function generateRandomPenguin(time: number): PenguinJson {
 }
 
 export class BotManager {
-  private _bots = new Map<number, BotState>();
+  private _bots = new Map<number, Bot>();
   private _nextId = BOT_ID_BASE;
   private _timer: NodeJS.Timeout | null = null;
   private _settings: BotSettings = { ...DEFAULT_BOT_SETTINGS };
-  private _games: BotGames;
   /** Bots sitting in a waddle or at a table, which must stop waddling about */
-  private _busy = new Set<WorldPenguin>();
   /** Bots currently at home with an open igloo, and when they will head back out */
-  private _homes = new Map<WorldPenguin, number>();
+  private _homes = new Map<Bot, number>();
   private _on = false;
 
   constructor(
     private _world: World,
     private send: SendFunction,
     private _data: GameData,
-    private _appSettings: SettingsManager,
-    joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
+    private _appSettings: SettingsManager
   ) {
-    this._games = new BotGames(this._world, this, this._data, joinWaddle, send);
   }
 
   public setOff() {
     this._on = false;
     this._settings.population = 0;
+    this.syncPopulation();
     this.stop();
   }
 
-  public setBusy(penguin: WorldPenguin, busy: boolean): void {
-    if (busy) {
-      this._busy.add(penguin);
-    } else {
-      this._busy.delete(penguin);
-    }
-  }
-
   /** Spawns a bot straight into one room and returns it */
-  public spawnInto(roomId: number): WorldPenguin | undefined {
+  public spawnInto(roomId: number): void {
     if (!this._on || this._bots.size > MAX_SIZE) {
       return undefined;
     }
     this._settings.population += 1;
-    return this.spawn(roomId);
-  }
-
-  // --- hooks called from the game handlers ---------------------------------
-
-  public onSledMove(sled: SledRace, x: number, y: number, time: number): void {
-    if (this._settings.playGames) {
-      this._games.onSledMove(sled, x, y, time);
-    }
-  }
-
-  public onSledEnd(sled: SledRace): void {
-    this._games.endSled(sled);
-  }
-
-  public onTableMove(table: WorldTable, moves: number[]): void {
-    this._games.onTableMove(table, moves);
+    this.spawn(roomId);
   }
 
   public configure(partial: Partial<BotSettings>): void {
@@ -282,9 +244,7 @@ export class BotManager {
   public shutdown(): void {
     this.stop();
     [...this._bots.keys()].forEach(id => this.despawn(id));
-    this._busy.clear();
     this._homes.clear();
-    this._games.reset();
   }
 
   // -------------------------------------------------------------------------
@@ -297,7 +257,7 @@ export class BotManager {
     }
     while (this._bots.size > this._settings.population) {
       const idle = [...this._bots.entries()].find(
-        ([, b]) => !this._busy.has(b.penguin) && !this._homes.has(b.penguin)
+        ([, b]) => !b.busy && !this._homes.has(b)
       );
       const id = idle?.[0] ?? [...this._bots.keys()][0];
       if (id === undefined) {
@@ -312,17 +272,17 @@ export class BotManager {
     return generateRandomPenguin(this._appSettings.getVirtualDate(0).getTime());
   }
 
-  public spawn(roomId?: number): WorldPenguin | undefined {
+  public spawn(roomId?: number): void {
     const id = this._nextId++;
     const penguin = new WorldPenguin(id, this.makeJson(), this._appSettings);
     this._world.addPenguin(penguin);
-    this._bots.set(id, { penguin, nextActionAt: Date.now() + this.delay() });
+    const bot = new Bot(penguin, this._data, this._world, this.send, Date.now() + this.delay())
+    this._bots.set(id, bot);
 
     this.decorateIgloo(penguin);
 
     const room = this._world.getRoom(roomId ?? this.chooseRoom());
-    this.enter(penguin, room);
-    return penguin;
+    bot.enter(room);
   }
 
   public despawn(id: number): void {
@@ -332,39 +292,12 @@ export class BotManager {
     }
     const room = this._world.getPenguinRoom(bot.penguin);
     if (room !== undefined) {
-      this.leave(bot.penguin, room);
+      bot.leave(room);
     }
     this._world.closeIgloo(bot.penguin);
     this._world.disconnect(bot.penguin);
-    this._busy.delete(bot.penguin);
-    this._homes.delete(bot.penguin);
+    this._homes.delete(bot);
     this._bots.delete(id);
-  }
-
-  // -------------------------------------------------------------------------
-  // room movement
-  // -------------------------------------------------------------------------
-
-  private enter(penguin: WorldPenguin, room: WorldRoom): void {
-    const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
-    const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
-    room.addPenguin(penguin, x, y);
-    this._world.enterState(penguin, { room });
-    this.send(
-      room.players,
-      'ap',
-      getPenguinString(this._data, penguin, { x, y, frame: 1 })
-    );
-  }
-
-  private leave(penguin: WorldPenguin, room: WorldRoom): void {
-    room.removePenguin(penguin);
-    this.send(
-      room.players,
-      'rp',
-      penguin.id,
-      ...room.playerStates.map(([p, s]) => getPenguinString(this._data, p, s))
-    );
   }
 
   /** Rooms that a real, human player is currently standing in */
@@ -394,51 +327,19 @@ export class BotManager {
   private tick(): void {
     const now = Date.now();
     this.syncPopulation();
-    this.tickReturns();
     this.tickIgloos();
 
-    if (this._settings.playGames) {
-      try {
-        this._games.tick();
-      } catch (e) {
-        console.error('bot game tick failed', e);
-      }
-    }
-
     for (const bot of this._bots.values()) {
-      if (now < bot.nextActionAt || this._busy.has(bot.penguin)) {
+      if (now < bot.nextActionAt || bot.busy) {
         continue;
       }
       bot.nextActionAt = now + this.delay();
       try {
-        this.act(bot.penguin);
+        this.act(bot);
       } catch (e) {
         // a misbehaving bot should never take the world server down
         console.error('bot action failed', e);
       }
-    }
-  }
-
-  /**
-   * A bot that went into a minigame stays there until the game ends, and the
-   * game never tells it so. Once no human shares the bot's environment any
-   * more, the match is over and the bot goes back to waddling around.
-   */
-  private tickReturns(): void {
-    const humanStates = this._world.players
-      .filter(p => !isBot(p))
-      .map(p => this._world.getContext(p))
-      .filter((c): c is PenguinEnvironment => c !== undefined);
-
-    for (const bot of this._bots.values()) {
-      const state = this._world.getContext(bot.penguin);
-      if (state !== undefined && 'room' in state) {
-        continue;
-      }
-      if (state !== undefined && humanStates.some(h => sharesEnvironment(h, state))) {
-        continue;
-      }
-      this.sendToIsland(bot.penguin);
     }
   }
 
@@ -488,8 +389,7 @@ export class BotManager {
     }
 
     const candidate = [...this._bots.values()]
-      .map(b => b.penguin)
-      .find(p => !this._busy.has(p) && !this._homes.has(p));
+      .find(b => !b.busy && !this._homes.has(b));
 
     if (candidate !== undefined) {
       this.openIglooFor(candidate);
@@ -497,36 +397,36 @@ export class BotManager {
   }
 
   /** Opens a bot's igloo and puts the bot inside it, so visitors find someone home */
-  public openIglooFor(penguin: WorldPenguin): void {
-    const room = this._world.getRoom(IGLOO_ROOM_BASE + penguin.id);
-    const previous = this._world.getPenguinRoom(penguin);
+  public openIglooFor(bot: Bot): void {
+    const room = this._world.getRoom(IGLOO_ROOM_BASE + bot.penguin.id);
+    const previous = this._world.getPenguinRoom(bot.penguin);
     if (previous !== undefined) {
-      this.leave(penguin, previous);
+      bot.leave(previous);
     }
-    this._world.openIgloo(penguin);
-    this.enter(penguin, room);
-    this._homes.set(penguin, Date.now() + randomInt(180_000, 480_000));
+    this._world.openIgloo(bot.penguin);
+    bot.enter(room);
+    this._homes.set(bot, Date.now() + randomInt(180_000, 480_000));
   }
 
   /** Closes the igloo and sends the bot back out onto the island */
-  public closeIglooFor(penguin: WorldPenguin): void {
-    this._world.closeIgloo(penguin);
-    this._homes.delete(penguin);
-    const previous = this._world.getPenguinRoom(penguin);
+  public closeIglooFor(bot: Bot): void {
+    this._world.closeIgloo(bot.penguin);
+    this._homes.delete(bot);
+    const previous = this._world.getPenguinRoom(bot.penguin);
     if (previous !== undefined) {
-      this.leave(penguin, previous);
+      bot.leave(previous);
     }
-    this.enter(penguin, this._world.getRoom(this.chooseRoom()));
+    bot.enter(this._world.getRoom(this.chooseRoom()));
   }
 
   /** Puts a bot back on the island after a game */
-  public sendToIsland(penguin: WorldPenguin): void {
-    this.setBusy(penguin, false);
-    this.enter(penguin, this._world.getRoom(this.chooseRoom()));
+  public sendToIsland(bot: Bot): void {
+    bot.busy = false;
+    bot.enter(this._world.getRoom(this.chooseRoom()));
   }
 
-  private act(penguin: WorldPenguin): void {
-    const room = this._world.getPenguinRoom(penguin);
+  private act(bot: Bot): void {
+    const room = this._world.getPenguinRoom(bot.penguin);
     if (room === undefined) {
       return;
     }
@@ -534,26 +434,26 @@ export class BotManager {
     const roll = Math.random();
 
     // a bot hosting an open igloo stays in it, but still chats and dances
-    if (roll < 0.10 && !this._homes.has(penguin)) {
-      this.leave(penguin, room);
-      this.enter(penguin, this._world.getRoom(this.chooseRoom()));
+    if (roll < 0.10 && !this._homes.has(bot)) {
+      bot.leave(room);
+      bot.enter(this._world.getRoom(this.chooseRoom()));
       return;
     }
 
     if (roll < 0.10 + this._settings.chatChance) {
-      this.send(room.players, 'sm', penguin.id, choose(CHAT_LINES));
+      this.send(room.players, 'sm', bot.penguin.id, choose(CHAT_LINES));
       return;
     }
 
     if (roll < 0.28) {
       const frame = choose(IDLE_FRAMES);
-      room.updateFrame(penguin, frame);
-      this.send(room.players, 'sf', penguin.id, frame);
+      room.updateFrame(bot.penguin, frame);
+      this.send(room.players, 'sf', bot.penguin.id, frame);
       return;
     }
 
     if (roll < 0.36) {
-      this.send(room.players, 'se', penguin.id, choose(EMOTES));
+      this.send(room.players, 'se', bot.penguin.id, choose(EMOTES));
       return;
     }
 
@@ -561,7 +461,7 @@ export class BotManager {
       this.send(
         room.players,
         'sb',
-        penguin.id,
+        bot.penguin.id,
         randomInt(WALK_AREA.minX, WALK_AREA.maxX),
         randomInt(WALK_AREA.minY, WALK_AREA.maxY)
       );
@@ -571,7 +471,7 @@ export class BotManager {
     // default: waddle somewhere else in the room
     const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
     const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
-    room.updatePosition(penguin, x, y);
-    this.send(room.players, 'sp', penguin.id, x, y);
+    room.updatePosition(bot.penguin, x, y);
+    this.send(room.players, 'sp', bot.penguin.id, x, y);
   }
 }
