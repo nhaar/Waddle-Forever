@@ -165,13 +165,10 @@ export class BotGames {
   private _findFourFillsDown = true;
 
   constructor(
+    private _world: World,
     private _manager: BotManager,
     private joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
   ) {}
-
-  private get world(): World {
-    return this._manager.world;
-  }
 
   private get msg(): PenguinMessenger {
     return this._manager.msg;
@@ -182,13 +179,13 @@ export class BotGames {
   }
 
   private humans(): WorldPenguin[] {
-    return this.world.players.filter(p => !isBot(p));
+    return this._world.players.filter(p => !isBot(p));
   }
 
   public tick(): void {
     const rooms = new Set<WorldRoom>();
     this.humans().forEach((human) => {
-      const room = this.world.getPenguinRoom(human);
+      const room = this._world.getPenguinRoom(human);
       if (room !== undefined) {
         rooms.add(room);
       }

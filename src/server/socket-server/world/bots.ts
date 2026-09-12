@@ -119,7 +119,7 @@ type BotState = {
   nextActionAt: number;
 };
 
-export type BotSettings = {
+type BotSettings = {
   /** How many bots exist on the island at once */
   population: number;
   /** Chance (0-1) that a wandering bot picks the room you are standing in */
@@ -129,13 +129,13 @@ export type BotSettings = {
   /** Milliseconds between the fastest and slowest bot action */
   minDelay: number;
   maxDelay: number;
-  /** Whether bots sit down in waddles and play sled racing, Card-Jitsu and table games */
+  /** Whether bots sit down in waddles and play them */
   playGames: boolean;
   /** How many bots keep an open igloo at any one time */
   openIgloos: number;
 };
 
-export const DEFAULT_BOT_SETTINGS: BotSettings = {
+const DEFAULT_BOT_SETTINGS: BotSettings = {
   population: 0,
   followChance: 0.5,
   chatChance: 0.08,
@@ -163,11 +163,7 @@ export class BotManager {
     private _appSettings: SettingsManager,
     joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
   ) {
-    this._games = new BotGames(this, joinWaddle);
-  }
-
-  public get world(): World {
-    return this._world;
+    this._games = new BotGames(this._world, this, joinWaddle);
   }
 
   public get msg(): PenguinMessenger {
