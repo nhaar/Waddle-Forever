@@ -213,25 +213,31 @@ export class BotManager {
     this._settings = { ...this._settings, ...partial };
   }
 
+  private setOn() {
+    if (this._settings.population > 0) {
+      this._on = true;
+      this.start();
+    }
+  }
+
   public setPopulation(n: number): void {
     this._settings.population = Math.max(0, Math.min(n, 60));
     if (n > 0) {
-      this._on = true;
-      this.start();
+      this.setOn();
       this.syncPopulation();
     }
   }
 
   /** Spawns `count` extra bots directly into one room and keeps them around */
   public addAt(roomId: number, count: number): void {
-    this._settings.population = Math.min(this._settings.population + count, 60);
+    this._settings.population = Math.min(this._settings.population + count, MAX_SIZE);
     for (let i = 0; i < count; i++) {
       if (this._bots.size >= this._settings.population) {
         break;
       }
       this.spawn(roomId);
     }
-    this.start();
+    this.setOn();
   }
 
   public start(): void {
