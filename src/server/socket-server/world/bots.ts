@@ -148,6 +148,29 @@ const MAX_SIZE = 60;
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 
+function generateRandomPenguin(time: number): PenguinJson {
+  const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
+  const color = choose(COLORS);
+  const base = getDefaultPenguin(
+    name,
+    color,
+    true,
+    time
+  );
+
+  return {
+    ...base,
+    head: choose(HEADS),
+    face: choose(FACES),
+    neck: choose(NECKS),
+    body: choose(BODIES),
+    hand: choose(HANDS),
+    feet: choose(FEET),
+    // never let a bot be written to the penguin database
+    noSave: true
+  };
+}
+
 export class BotManager {
   private _bots = new Map<number, BotState>();
   private _nextId = BOT_ID_BASE;
@@ -285,26 +308,8 @@ export class BotManager {
   }
 
   private makeJson(): PenguinJson {
-    const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
-    const color = choose(COLORS);
-    const base = getDefaultPenguin(
-      name,
-      color,
-      true,
-      this._appSettings.getVirtualDate(0).getTime()
-    );
-
-    return {
-      ...base,
-      head: choose(HEADS),
-      face: choose(FACES),
-      neck: choose(NECKS),
-      body: choose(BODIES),
-      hand: choose(HANDS),
-      feet: choose(FEET),
-      // never let a bot be written to the penguin database
-      noSave: true
-    };
+    // TODO refactor this later once virtual date is refactored
+    return generateRandomPenguin(this._appSettings.getVirtualDate(0).getTime());
   }
 
   public spawn(roomId?: number): WorldPenguin | undefined {
@@ -433,7 +438,7 @@ export class BotManager {
       if (state !== undefined && humanStates.some(h => sharesEnvironment(h, state))) {
         continue;
       }
-      this.sendHome(bot.penguin);
+      this.sendToIsland(bot.penguin);
     }
   }
 
@@ -515,7 +520,7 @@ export class BotManager {
   }
 
   /** Puts a bot back on the island after a game */
-  public sendHome(penguin: WorldPenguin): void {
+  public sendToIsland(penguin: WorldPenguin): void {
     this.setBusy(penguin, false);
     this.enter(penguin, this._world.getRoom(this.chooseRoom()));
   }
