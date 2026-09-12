@@ -166,13 +166,10 @@ export class BotGames {
   constructor(
     private _world: World,
     private _manager: BotManager,
+    private _data: GameData,
     private joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void,
     private send: SendFunction
   ) {}
-
-  private get data(): GameData {
-    return this._manager.data;
-  }
 
   private humans(): WorldPenguin[] {
     return this._world.players.filter(p => !isBot(p));
@@ -601,7 +598,7 @@ export class BotGames {
       this.send(table.penguins, 'zm', ...args);
     }
     if (endArgs !== null) {
-      if (this.data.isPreCpip()) {
+      if (this._data.isPreCpip()) {
         table.blockSpectators();
         this.send(table.penguins, 'zo', ...endArgs);
       } else {

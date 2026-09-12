@@ -164,15 +164,7 @@ export class BotManager {
     private _appSettings: SettingsManager,
     joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
   ) {
-    this._games = new BotGames(this._world, this, joinWaddle, send);
-  }
-
-  public get data(): GameData {
-    return this._data;
-  }
-
-  public get population(): number {
-    return this._bots.size;
+    this._games = new BotGames(this._world, this, this._data, joinWaddle, send);
   }
 
   public setBusy(penguin: WorldPenguin, busy: boolean): void {
