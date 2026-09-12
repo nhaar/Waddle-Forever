@@ -14,7 +14,6 @@ import { Bakery } from "./bakery";
 import { MatchMaker } from "./matchmaker";
 import { FireGame } from "./fire";
 import { MATCHMAKERS } from "@server/game-data/games";
-import type { BotManager } from "./bots";
 
 export class World {
   private penguins = new Map<number, WorldPenguin>();
