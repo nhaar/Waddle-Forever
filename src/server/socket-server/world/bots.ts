@@ -7,7 +7,7 @@
 // room roster, in `jr`/`ap` packets and in player cards.
 
 import { getDefaultPenguin, PenguinJson } from '@server/database/database';
-import { ROOMS, RoomName } from '@server/game-data/rooms';
+import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { getPenguinString } from '../handlers/join';
@@ -72,8 +72,6 @@ const BODIES = [0, 0, 0, 201, 210, 215, 222, 230];
 const HANDS = [0, 0, 0, 0, 301, 303];
 const FEET = [0, 0, 0, 0, 0, 0, 501, 503];
 
-/** Igloo rooms live at 2000 + the owner's penguin id, on every client version */
-const IGLOO_ROOM_BASE = 2000;
 
 /** Classic furniture sets, so an igloo looks decorated on any timeline date */
 const FURNITURE_SETS = [

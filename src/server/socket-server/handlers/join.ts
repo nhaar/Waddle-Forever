@@ -17,6 +17,7 @@ import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from './handlers';
 import { handleLeaveFire } from './fire';
+import { IGLOO_ROOM_BASE } from '@server/game-data/rooms';
 
 
 function unequipPuffle(p: WorldPenguin): void {
@@ -314,8 +315,7 @@ export const handleJoinPlayerOld: PenguinHandler<[number, number]> = async (ctx,
 export const handleJoinPlayerCpip: PenguinHandler<[number]> = (ctx, fakeId) => {
   const { world } = ctx;
   // for some reason the ID given is the player + 1000
-  // in WF igloo room IDs are playerID + 2000
-  const iglooId = fakeId + 1000;
+  const iglooId = fakeId - 1000 + IGLOO_ROOM_BASE;
   const igloo = world.getRoom(iglooId);
   enterRoom(ctx, igloo, 0, 0);
 }
@@ -323,7 +323,7 @@ export const handleJoinPlayerCpip: PenguinHandler<[number]> = (ctx, fakeId) => {
 export const handleJoinPlayerModern: PenguinHandler<[number, string]> = (ctx, playerId, roomType) => {
   const { msg, penguin, data, world } = ctx;
   // 1000 = backyard
-  const roomId = roomType === 'igloo' ? playerId + 2000 : 1000;
+  const roomId = roomType === 'igloo' ? playerId + IGLOO_ROOM_BASE : 1000;
   msg.send(penguin, 'jp', roomId, roomId, roomType);
   // TODO: backyard should only be player itself?
   enterRoom(ctx, world.getRoom(roomId), 0, 0);

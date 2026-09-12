@@ -4,6 +4,9 @@ type Room = {
   preCpipName: string| null;
 };
 
+/** Igloo rooms live at 2000 + the owner's penguin id, on every client version (in Waddle Forever specifically) */
+export const IGLOO_ROOM_BASE = 2000;
+
 export type RoomName = 'town' |
   'coffee' |
   'book' |
