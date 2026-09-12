@@ -60,12 +60,13 @@ const NAME_PARTS_B = [
   'Puff', 'Slider', 'Nugget', 'Pop', 'Hopper', 'Dude', 'Star', 'Fish'
 ];
 
-/** Colors 1-15 are the classic penguin colors */
-const COLORS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
-/** Safe, very old clothing ids so bots look dressed on any timeline date */
+// TODO -> Items must be properly tracked
+//      -> Entire module to generate outfits on date will be added later
+// temporary item arrays just to have some clothing
+const COLORS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const HEADS = [0, 0, 0, 401, 403, 413, 419, 428];
-const FACES = [0, 0, 0, 0, 130, 131];
+const FACES = [0, 0, 0, 0, 131];
 const NECKS = [0, 0, 0, 0, 104, 108];
 const BODIES = [0, 0, 0, 201, 210, 215, 222, 230];
 const HANDS = [0, 0, 0, 0, 301, 303];
