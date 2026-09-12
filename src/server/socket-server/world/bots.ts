@@ -1,10 +1,8 @@
-// Fake computer-controlled penguins ("bots") that wander the island so rooms
-// don't feel empty in singleplayer.
-//
-// A bot is a normal WorldPenguin that simply has no client socket attached to
-// it. PenguinMessenger.write() looks the socket up with an optional chain, so
-// sending to a bot is a silent no-op, while the bot still shows up in every
-// room roster, in `jr`/`ap` packets and in player cards.
+/**
+ * Handles NPCs (bots)
+ * 
+ * Internally, a bot is a socketless WorldPenguin, and its messages are handled here
+ */
 
 import { getDefaultPenguin, PenguinJson } from '@server/database/database';
 import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
@@ -23,6 +21,10 @@ import { WaddleRoom } from './waddle-room';
 
 export { BOT_ID_BASE, isBot };
 
+
+// TODO -> Visitable rooms tracked by timeline
+//      -> Room popularity
+//      -> Member only rooms
 /** Rooms bots are allowed to hang around in */
 const BOT_ROOMS: RoomName[] = [
   'town', 'coffee', 'book', 'dance', 'lounge', 'shop', 'dock', 'village',
@@ -30,8 +32,10 @@ const BOT_ROOMS: RoomName[] = [
   'mine', 'cave', 'cove', 'dojo', 'lodge', 'attic', 'sport'
 ];
 
+// TODO -> Complete tracking of all walkable boxes
+//         (If possible with a FFDEC script)
 /**
- * Rough walkable box of a Club Penguin room. The stage is 760x480, and most
+ * Rough walkable box of a Club Penguin room. The resolution is 760x480, and most
  * floors sit in the lower half of it. Bots that pick a spot outside the walkable
  * area of a specific room just stand there, which is harmless.
  */
@@ -43,6 +47,9 @@ const IDLE_FRAMES = [25, 26, 17, 18, 19, 20, 21, 22, 23, 24];
 /** Emote ids sent through `se` */
 const EMOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
+
+// TODO -> Add safe chat lines
+//         Richer library of lines
 const CHAT_LINES = [
   'hi', 'hello!', 'sup', 'wanna be buddies?', 'brb', 'cool igloo',
   'lets go sledding', 'anyone wanna play find four?', 'nice hat',
@@ -50,11 +57,14 @@ const CHAT_LINES = [
   'where is everyone', 'first!', 'im a member', 'add me'
 ];
 
+
+// TODO -> Easter Egg names
+//         Game Day NPCs
+//         Richer library of name parts
 const NAME_PARTS_A = [
   'Cool', 'Snow', 'Ice', 'Fluffy', 'Turbo', 'Frosty', 'Mega', 'Blue',
   'Puffle', 'Wacky', 'Sunny', 'Rocket', 'Jolly', 'Waddle', 'Chill', 'Zippy'
 ];
-
 const NAME_PARTS_B = [
   'Penguin', 'Flipper', 'Waddler', 'Bean', 'Beak', 'Berg', 'Wing', 'Paws',
   'Puff', 'Slider', 'Nugget', 'Pop', 'Hopper', 'Dude', 'Star', 'Fish'
@@ -73,15 +83,20 @@ const HANDS = [0, 0, 0, 0, 301, 303];
 const FEET = [0, 0, 0, 0, 0, 0, 501, 503];
 
 
-/** Classic furniture sets, so an igloo looks decorated on any timeline date */
+// TODO -> Similar to item trackign system, a furniture and igloo type/music tracking system
+// temporary set of furniture
 const FURNITURE_SETS = [
   [1, 2, 3, 4, 5, 6],       // pink
   [10, 11, 12, 13, 14],     // log
   [21, 22, 23, 24, 25, 26], // blue
   [31, 32, 33]              // coffee
 ];
+const IGLOO_TYPES = [1, 2, 3];
+const IGLOO_MUSIC = [0, 1, 2, 5, 20];
 
-/** Spots to place furniture in, roughly around the walls of a basic igloo */
+// TODO -> Documenting spawnable areas for each igloo
+//      -> Igloo presets ? (Would involve creating a large database of igloos)
+// places to spawn furniture
 const FURNITURE_SPOTS: Array<[number, number]> = [
   [180, 260], [300, 240], [420, 240], [540, 260],
   [200, 360], [330, 380], [460, 380], [580, 360],
