@@ -19,6 +19,7 @@ import { PenguinEnvironment, World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { WorldTable } from './world-table';
+import { WaddleRoom } from './waddle-room';
 
 export { BOT_ID_BASE, isBot };
 
@@ -151,9 +152,10 @@ export class BotManager {
     private _world: World,
     private _msg: PenguinMessenger,
     private _data: GameData,
-    private _appSettings: SettingsManager
+    private _appSettings: SettingsManager,
+    joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
   ) {
-    this._games = new BotGames(this);
+    this._games = new BotGames(this, joinWaddle);
   }
 
   public get world(): World {

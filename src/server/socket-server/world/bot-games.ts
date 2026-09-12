@@ -26,7 +26,6 @@
 //     own turns on a timer using the same table.sendMove() the handler calls.
 
 import { GameData } from '@server/timelines/game-data';
-import { joinWaddle } from '../handlers/room';
 import { PenguinMessenger } from '../messenger';
 import { isBot } from './bot-id';
 import type { BotManager } from './bots';
@@ -37,6 +36,7 @@ import { World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { WorldTable } from './world-table';
+import { WaddleRoom } from './waddle-room';
 
 const randInt = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -164,7 +164,10 @@ export class BotGames {
   /** Which way a Find Four column fills up. Learned from the human's own moves. */
   private _findFourFillsDown = true;
 
-  constructor(private _manager: BotManager) {}
+  constructor(
+    private _manager: BotManager,
+    private joinWaddle: (r: WorldRoom, w: WaddleRoom, p: WorldPenguin) => void
+  ) {}
 
   private get world(): World {
     return this._manager.world;
@@ -245,7 +248,7 @@ export class BotGames {
 
       this._waddleLastSeat.set(id, now);
       this._manager.setBusy(bot, true);
-      joinWaddle({ msg: this.msg, world: this.world, data: this.data }, room, waddle, bot);
+      this.joinWaddle(room, waddle, bot);
 
       // starting the game empties the waddle
       if (waddle.isFull()) {

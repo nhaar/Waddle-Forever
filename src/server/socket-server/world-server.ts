@@ -24,6 +24,7 @@ import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/h
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 import { OfflineWorld } from "./offline-world";
 import { BotManager } from "./world/bots";
+import { joinWaddle } from "./handlers/room";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
@@ -38,7 +39,10 @@ export class WorldServer implements MessageHandler {
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
-    this._botManager = new BotManager(this._world, this._msg, this._gameData, this._settings);
+    this._botManager = new BotManager(
+      this._world, this._msg, this._gameData, this._settings,
+      (r, w, p) => joinWaddle({ msg: this._msg, world: this._world, data: this._gameData }, r, w, p)
+    );
 
     this._commandsHandler = getCommandsHandler();
 

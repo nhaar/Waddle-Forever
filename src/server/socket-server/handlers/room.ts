@@ -66,7 +66,6 @@ export const handleGetWaddle: RoomHandler<[]> = ({ msg, penguin, room }) => {
 
 /**
  * Seats a penguin in a waddle and starts the game once it is full.
- * Split out of the handler so bots can sit down through the same path.
  */
 export const joinWaddle = (
   { msg, world, data }: Pick<RoomContext, 'msg' | 'world' | 'data'>,
