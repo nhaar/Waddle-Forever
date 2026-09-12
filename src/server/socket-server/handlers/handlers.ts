@@ -11,6 +11,7 @@ import { PenguinRepository } from "@server/database/database";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { OfflineWorld } from "../offline-world";
 import { FireGame } from "../world/fire";
+import { BotManager } from "../world/bots";
 
 export type PenguinPersister = (p: UserPenguin, force?: boolean) => void;
 
@@ -34,6 +35,7 @@ type GlobalContext = {
   db: PenguinRepository;
   prst: PenguinPersister;
   off: OfflineWorld;
+  bot: BotManager;
 }
 
 type AlwaysSingularContext = {

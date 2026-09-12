@@ -235,24 +235,21 @@ const c = <const T extends ArgumentsIndicator>(args: T, callback: (ctx: CommandC
   return [args, callback as (ctx: CommandContext, ...args: Array<string | number>) => void];
 }
 
-const handleBots: CommandHandler<[number]> = ({ world }, amount) => {
-  world.bots?.setPopulation(amount);
+const handleBots: CommandHandler<[number]> = ({ bot }, amount) => {
+  bot.setPopulation(amount);
 }
 
 const handleBotsHere: CommandHandler<[string]> = (ctx, action) => {
-  const bots = ctx.world.bots;
-  if (bots === undefined || bots === null) {
-    return;
-  }
+  const { bot } = ctx;
   if (action === 'here' && 'room' in ctx) {
     // drop five bots into the room you are standing in
-    bots.addAt(ctx.room.id, 5);
+    bot.addAt(ctx.room.id, 5);
   } else if (action === 'off') {
-    bots.setPopulation(0);
+    bot.setPopulation(0);
   } else if (action === 'games') {
-    bots.configure({ playGames: true });
+    bot.configure({ playGames: true });
   } else if (action === 'nogames') {
-    bots.configure({ playGames: false });
+    bot.configure({ playGames: false });
   }
 }
 
