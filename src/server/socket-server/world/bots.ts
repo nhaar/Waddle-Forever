@@ -18,6 +18,7 @@ import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { WorldTable } from './world-table';
 import { WaddleRoom } from './waddle-room';
+import { choose, randomInt } from '@common/utils';
 
 export { BOT_ID_BASE, isBot };
 
@@ -102,13 +103,6 @@ const FURNITURE_SPOTS: Array<[number, number]> = [
   [200, 360], [330, 380], [460, 380], [580, 360],
   [260, 300], [500, 300]
 ];
-
-const IGLOO_TYPES = [1, 2, 3];
-const IGLOO_MUSIC = [0, 1, 2, 5, 20];
-
-const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const randInt = (min: number, max: number): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
 
 /** True when two penguin environments are the same room, game or match */
 const sharesEnvironment = (a: PenguinEnvironment, b: PenguinEnvironment): boolean => {
@@ -293,8 +287,8 @@ export class BotManager {
   }
 
   private makeJson(): PenguinJson {
-    const name = `${pick(NAME_PARTS_A)}${pick(NAME_PARTS_B)}${randInt(1, 999)}`;
-    const color = pick(COLORS);
+    const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
+    const color = choose(COLORS);
     const base = getDefaultPenguin(
       name,
       color,
@@ -304,12 +298,12 @@ export class BotManager {
 
     return {
       ...base,
-      head: pick(HEADS),
-      face: pick(FACES),
-      neck: pick(NECKS),
-      body: pick(BODIES),
-      hand: pick(HANDS),
-      feet: pick(FEET),
+      head: choose(HEADS),
+      face: choose(FACES),
+      neck: choose(NECKS),
+      body: choose(BODIES),
+      hand: choose(HANDS),
+      feet: choose(FEET),
       // never let a bot be written to the penguin database
       noSave: true
     };
@@ -349,8 +343,8 @@ export class BotManager {
   // -------------------------------------------------------------------------
 
   private enter(penguin: WorldPenguin, room: WorldRoom): void {
-    const x = randInt(WALK_AREA.minX, WALK_AREA.maxX);
-    const y = randInt(WALK_AREA.minY, WALK_AREA.maxY);
+    const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
+    const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
     room.addPenguin(penguin, x, y);
     this._world.enterState(penguin, { room });
     this._msg.send(
@@ -381,9 +375,9 @@ export class BotManager {
   private chooseRoom(): number {
     const humans = this.humanRooms();
     if (humans.length > 0 && Math.random() < this._settings.followChance) {
-      return pick(humans).id;
+      return choose(humans).id;
     }
-    return ROOMS[pick(BOT_ROOMS)].id;
+    return ROOMS[choose(BOT_ROOMS)].id;
   }
 
   // -------------------------------------------------------------------------
@@ -391,7 +385,7 @@ export class BotManager {
   // -------------------------------------------------------------------------
 
   private delay(): number {
-    return randInt(this._settings.minDelay, this._settings.maxDelay);
+    return randomInt(this._settings.minDelay, this._settings.maxDelay);
   }
 
   private tick(): void {
@@ -447,20 +441,20 @@ export class BotManager {
 
   /** Gives a bot a decorated igloo of its own. Called once, when it spawns. */
   private decorateIgloo(penguin: WorldPenguin): void {
-    const set = pick(FURNITURE_SETS);
+    const set = choose(FURNITURE_SETS);
     const spots = [...FURNITURE_SPOTS].sort(() => Math.random() - 0.5)
-      .slice(0, randInt(3, Math.min(7, FURNITURE_SPOTS.length)));
+      .slice(0, randomInt(3, Math.min(7, FURNITURE_SPOTS.length)));
 
     const furniture = spots.map(([x, y]) => {
-      const id = pick(set);
+      const id = choose(set);
       penguin.igloo.addFurniture(id, 1);
-      return { id, x, y, rotation: randInt(1, 4), frame: 1 };
+      return { id, x, y, rotation: randomInt(1, 4), frame: 1 };
     });
 
     try {
       penguin.igloo.updateIgloo({
-        type: pick(IGLOO_TYPES),
-        music: pick(IGLOO_MUSIC),
+        type: choose(IGLOO_TYPES),
+        music: choose(IGLOO_MUSIC),
         flooring: 0,
         location: 1,
         locked: false,
@@ -508,7 +502,7 @@ export class BotManager {
     }
     this._world.openIgloo(penguin);
     this.enter(penguin, room);
-    this._homes.set(penguin, Date.now() + randInt(180_000, 480_000));
+    this._homes.set(penguin, Date.now() + randomInt(180_000, 480_000));
   }
 
   /** Closes the igloo and sends the bot back out onto the island */
@@ -544,19 +538,19 @@ export class BotManager {
     }
 
     if (roll < 0.10 + this._settings.chatChance) {
-      this._msg.send(room.players, 'sm', penguin.id, pick(CHAT_LINES));
+      this._msg.send(room.players, 'sm', penguin.id, choose(CHAT_LINES));
       return;
     }
 
     if (roll < 0.28) {
-      const frame = pick(IDLE_FRAMES);
+      const frame = choose(IDLE_FRAMES);
       room.updateFrame(penguin, frame);
       this._msg.send(room.players, 'sf', penguin.id, frame);
       return;
     }
 
     if (roll < 0.36) {
-      this._msg.send(room.players, 'se', penguin.id, pick(EMOTES));
+      this._msg.send(room.players, 'se', penguin.id, choose(EMOTES));
       return;
     }
 
@@ -565,15 +559,15 @@ export class BotManager {
         room.players,
         'sb',
         penguin.id,
-        randInt(WALK_AREA.minX, WALK_AREA.maxX),
-        randInt(WALK_AREA.minY, WALK_AREA.maxY)
+        randomInt(WALK_AREA.minX, WALK_AREA.maxX),
+        randomInt(WALK_AREA.minY, WALK_AREA.maxY)
       );
       return;
     }
 
     // default: waddle somewhere else in the room
-    const x = randInt(WALK_AREA.minX, WALK_AREA.maxX);
-    const y = randInt(WALK_AREA.minY, WALK_AREA.maxY);
+    const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
+    const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
     room.updatePosition(penguin, x, y);
     this._msg.send(room.players, 'sp', penguin.id, x, y);
   }
