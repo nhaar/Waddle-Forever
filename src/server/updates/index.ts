@@ -113,8 +113,8 @@ export type CPUpdate = {
   /** If the base SWF for a room that has a pin is updated with the pin in it */
   pinRoomUpdate?: FileRef;
 
-  /** If a new catalog was released this day: its file */
-  clothingCatalog?: FileRef | CatalogItems;
+  /** Information on a clothing catalog that was released this day */
+  clothingCatalog?: CatalogItems;
   /** If a new catalog was released this day: its file */
   furnitureCatalog?: FileRef;
   /** If a new catalog was released this day: its file */

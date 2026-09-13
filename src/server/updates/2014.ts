@@ -942,6 +942,12 @@ export const UPDATES_2014: Update[] = [
     }
   },
   {
+    date: '2014-09-18',
+    flags: {
+      mall: true
+    }
+  },
+  {
     date: '2014-10-02',
     clothingCatalog: {
       newItems: [
@@ -1231,12 +1237,6 @@ export const UPDATES_2014: Update[] = [
         24210,
         24211
       ]
-    }
-  },
-  {
-    date: '2014-09-18',
-    flags: {
-      mall: true
     }
   }
 ]
