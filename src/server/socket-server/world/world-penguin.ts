@@ -4,17 +4,21 @@ import { CardJitsuFireProgress, CardJitsuProgress } from "@server/game-logic/nin
 import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 
-export type PenguinEquipped = {
-  color: number
-  head: number
-  face: number
-  neck: number
-  body: number
-  hand: number
-  feet: number
-  pin: number
-  background: number  
-}
+export const equipProp = [
+  'color',
+  'head',
+  'face',
+  'neck',
+  'body',
+  'hand',
+  'feet',
+  'pin',
+  'background'
+] as const;
+
+export type EquipProp = typeof equipProp[number];
+
+export type PenguinEquipped = Record<EquipProp, number>;
 
 export type RoomState = { x: number; y: number; frame: number; };
 

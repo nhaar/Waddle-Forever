@@ -93,6 +93,7 @@ type GameState = {
   releasedStamps: Set<number>;
   extraWaddleRooms: WaddleRoomInfo[];
   flags: Record<GameFlag, boolean>;
+  available: Set<number>;
 }
 
 function getFreshState(): GameState {
@@ -150,7 +151,8 @@ function getFreshState(): GameState {
     freeBrownPuffle: false,
     gameStamps: new Map<StampRoom, Set<number>>(),
     releasedStamps: new Set<number>(),
-    extraWaddleRooms: []
+    extraWaddleRooms: [],
+    available: new Set()
   };
 }
 
@@ -384,6 +386,8 @@ export class GameData {
       },
       'clothingCatalog': (v) => {
         this.addCatalog(v, this.state.flags.preCpip ? ['artwork/catalogue/clothing.swf', 'artwork/catalogue/clothing_.swf'] : ['play/v2/content/local/en/catalogues/clothing.swf'])
+        v.newItems.forEach(i => this.state.available.add(i));
+        v.removedItems.forEach(i => this.state.available.delete(i));
       },
       'postcardCatalog': (v) => {
         this.addRoute('artwork/catalogue/cards.swf', v);
@@ -943,5 +947,9 @@ export class GameData {
 
   public puffleHandItems() {
     return this.state.flags.puffleHandItems;
+  }
+
+  public getAvailableItems() {
+    return new Set(this.state.available);
   }
 }

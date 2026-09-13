@@ -1,7 +1,5 @@
 /**
  * Handles NPCs (bots)
- * 
- * Internally, a bot is a socketless WorldPenguin, and its messages are handled here
  */
 
 import { getDefaultPenguin, PenguinJson } from '@server/database/database';
@@ -9,7 +7,7 @@ import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { World } from './world';
-import { WorldPenguin } from './world-penguin';
+import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { choose, randomInt } from '@common/utils';
 import { Bot, WALK_AREA, WriteFunction } from './bot';
@@ -17,6 +15,10 @@ import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
+import { getItemsInRange, getItemTypeFromEquipProp } from '@server/timelines/items';
+import { addDays, getDaysDelta, versionToEpoch } from '@server/routes/versions';
+import { ITEMS } from '@server/game-logic/items';
+import { START_DATE } from '@server/timelines/dates';
 
 const BOT_ID_BASE = 9_000_000;
 
@@ -129,25 +131,55 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
 
 const MAX_SIZE = 60;
 
+const CHANCE_NO_ITEM = 0.3;
+const CHANCE_AVAILABLE_ITEM = 0.2;
 
-function generateRandomPenguin(time: number): PenguinJson {
+function generateRandomOutfit(
+  data: GameData,
+  age: number
+): PenguinEquipped {
+  const available = [...data.getAvailableItems().values()];
+  const possibleInventory = [...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()];
+
+  const items: Array<[EquipProp, number]> = [];
+
+  equipProp.forEach(prop => {
+    const roll = Math.random();
+    let item: number;
+    if (roll < CHANCE_NO_ITEM) {
+      item = 0;
+    } else {
+      const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : possibleInventory)
+        .filter(i => {
+          const info = ITEMS.get(i);
+          return info !== undefined && info.type === getItemTypeFromEquipProp(prop)
+        });
+      item = choose(itemPool);
+    }
+
+    items.push([prop, item]);
+  });
+
+  return Object.fromEntries(items) as PenguinEquipped;
+}
+
+function generateRandomPenguin(data: GameData): PenguinJson {
   const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
   const color = choose(COLORS);
+  // TODO -> more realistic distribution
+  const age = randomInt(0, getDaysDelta(START_DATE, data.getDate()));
   const base = getDefaultPenguin(
     name,
     color,
     true,
-    time
+    versionToEpoch(data.getDate())
   );
+
+  const outfit = generateRandomOutfit(data, age);
 
   return {
     ...base,
-    head: choose(HEADS),
-    face: choose(FACES),
-    neck: choose(NECKS),
-    body: choose(BODIES),
-    hand: choose(HANDS),
-    feet: choose(FEET),
+    ...outfit,
     // never let a bot be written to the penguin database
     noSave: true
   };
@@ -265,7 +297,7 @@ export class BotManager {
 
   private makeJson(): PenguinJson {
     // TODO refactor this later once virtual date is refactored
-    return generateRandomPenguin(this._appSettings.getVirtualDate(0).getTime());
+    return generateRandomPenguin(this._data);
   }
 
   public spawn(roomId?: number): Bot {

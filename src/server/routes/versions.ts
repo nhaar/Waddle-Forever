@@ -121,3 +121,14 @@ export function inInterval(version: Version, start: Version, end: Version, param
   }
   return false
 }
+export function versionToEpoch(version: Version): number {
+  const [year, month, number] = processVersion(version);
+  return (new Date(year, month - 1, number)).getTime();
+}
+
+export function getDaysDelta(start: Version, end: Version): number {
+  const date1 = versionToEpoch(start);
+  const date2 = versionToEpoch(end);
+
+  return Math.round((date2 - date1) / 1000 / 60 / 60 / 24);
+}
