@@ -18,7 +18,9 @@ export const UPDATES_2014: Update[] = [
   },
   {
     date: '2014-06-01',
-    dateReference: 'vr-room'
+    flags: {
+      vr: false
+    }
   },
   {
     date: '2014-07-17',
@@ -37,6 +39,8 @@ export const UPDATES_2014: Update[] = [
   },
   {
     date: '2014-09-18',
-    dateReference: 'mall'
+    flags: {
+      mall: true
+    }
   }
 ]

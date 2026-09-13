@@ -86,6 +86,26 @@ export type CatalogItems = {
   announce?: false;
 }
 
+const flags = [
+  'preCpip',
+  'as3',
+  'vanillaEngine',
+  'stamps',
+  'compositePaths',
+  'newShell2009',
+  'school',
+  'mall',
+  'vr',
+  'as3Startscreen',
+  'iglooMusicReleased',
+  'ownedIgloos',
+  /* Signals that the SP packet is sent to set the default position upon entering a room (used in more modern versions) */
+  'isSpOnJr',
+  'puffleHandItems'
+] as const;
+
+export type GameFlag = typeof flags[number];
+
 export type CPUpdate = {
   map?: FileRef;
   /** Pin period indicator */
@@ -167,6 +187,7 @@ export type CPUpdate = {
   freeBrownPuffle?: boolean;
 
   dateReference?: DateReference;
+  flags?: Partial<Record<GameFlag, boolean>>;
 
   indexHtml?: FileRef;
   websiteFolder?: string;
@@ -267,24 +288,15 @@ export type Event = 'party' |
   'box-plants' |
   'rockhopper-plants';
 
-export type DateReference = 'cpip' |
-  'as3' |
-  'vanilla-engine' |
-  'as3-startscreen' |
-  'igloo-music' |
-  'stamps-release' |
-  'placeholder-2016' |
-  'vr-room' |
-  'old-rink' |
-  'string-verify' |
-  'composite-paths' |
-  'igloo-catalog-name' |
-  'adopt-catalog-name' |
-  'pet-furniture-rename1' |
-  'pet-furniture-rename2' |
-  'furniture-catalog-name' |
-  'mall' |
-  'owned-igloos';
+export const dateRefs = [
+  'igloo-catalog-name',
+  'adopt-catalog-name',
+  'pet-furniture-rename1',
+  'pet-furniture-rename2',
+  'furniture-catalog-name'
+] as const;
+
+export type DateReference = typeof dateRefs[number];
 
 export type Update = {
   date: Version;

@@ -1223,7 +1223,9 @@ export const UPDATES_2009: Update[] = [
     dayOfFun: 'start',
 
     // day in which composite paths are no longer used
-    dateReference: 'composite-paths',
+    flags: {
+      compositePaths: false
+    },
     fileChanges: {
       'play/v2/client/load.swf': 'fix:ClientLoad2009-06-26.swf',
       'play/v2/client/shell.swf': 'archives:ClientShell_June_2009.swf',
@@ -1355,7 +1357,9 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-08-05',
     // in this shell, the penguin string changes
-    dateReference: 'string-verify',
+    flags: {
+      newShell2009: true
+    },
     fileChanges: {
       'play/v2/client/shell.swf': 'archives:ClientShell2009-08-05.swf'
     }

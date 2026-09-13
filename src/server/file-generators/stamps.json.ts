@@ -24,7 +24,7 @@ function getOriginalStampbookJson(stampbook: Stampbook): string {
 export function getStampsJson(d: GameData) : string {
   const stampbook = d.getStampbook();
 
-  if (isLower(d.getDate(), getDate('vanilla-engine'))) {
+  if (!d.isVanillaEngine()) {
     return getOriginalStampbookJson(stampbook);
   }
   return JSON.stringify(stampbook)

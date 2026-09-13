@@ -18,7 +18,7 @@ import { Item, ITEMS, ItemTable } from "@server/game-logic/items";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
+import { CatalogItems, CPUpdateE, CrumbIndicator, GameFlag, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
 import { getUpdates } from "@server/updates/updates";
 import path from "path";
 
@@ -62,32 +62,22 @@ type GameState = {
   migrator: boolean;
   mapNote: boolean;
   unlockedDay: number | null;
-  preCpip: boolean;
-  vanillaEngine: boolean;
   indexHtml: string;
-  as3: boolean;
   website: string;
   scavenger: boolean;
-  stamps: boolean;
   stageScript: StageScript;
   localPaths: Map<string, string>;
-  compositePaths: boolean;
-  newShell2009: boolean;
   roomMusic: Map<RoomName, number>;
   roomMember: Map<RoomName, boolean>;
   gameMusic: Map<GameName, number>;
   furniturePrices: Map<number, number>;
   itemPrices: Map<number, number>;
   globalPaths: Map<string, string>;
-  school: boolean;
-  mall: boolean;
-  vr: boolean;
   issues: Array<{ year: number; month: number; day: number; edition: number | string; as3: boolean; title: string; }>;
   roomsFrame: Map<RoomName, number>;
   chatVersion: number;
   iglooVersion: number;
   startscreens: string[];
-  as3Startscreen: boolean;
   worldStamps: WorldStamp[];
   gameStrings: Map<string, string>;
   iglooMusic: IglooList | null;
@@ -102,11 +92,7 @@ type GameState = {
   gameStamps: Map<StampRoom, Set<number>>;
   releasedStamps: Set<number>;
   extraWaddleRooms: WaddleRoomInfo[];
-  iglooMusicReleased: boolean;
-  ownedIgloos: boolean;
-  /* Signals that the SP packet is sent to set the default position upon entering a room (used in more modern versions) */
-  isSpOnJr: boolean;
-  puffleHandItems: boolean;
+  flags: Record<GameFlag, boolean>;
 }
 
 function getFreshState(): GameState {
@@ -119,32 +105,38 @@ function getFreshState(): GameState {
     migrator: false,
     mapNote: false,
     unlockedDay: null,
-    preCpip: true,
-    vanillaEngine: false,
+    flags: {
+      'preCpip': true,
+      'as3': false,
+      vanillaEngine: false,
+      stamps: false,
+      compositePaths: true,
+      newShell2009: false,
+      school: false,
+      mall: false,
+      vr: true,
+      as3Startscreen: false,
+      iglooMusicReleased: false,
+      ownedIgloos: false,
+      isSpOnJr: false,
+      puffleHandItems: true
+    },
     indexHtml: '',
-    as3: false,
     website: '',
     scavenger: false,
-    stamps: false,
     stageScript: [],
     localPaths: new Map<string, string>(),
-    compositePaths: true,
-    newShell2009: false,
     roomMusic: new Map<RoomName, number>(),
     roomMember: new Map<RoomName, boolean>(),
     gameMusic: new Map<GameName, number>(),
     furniturePrices: new Map<number, number>(),
     itemPrices: new Map<number, number>(),
     globalPaths: new Map<string, string>(),
-    school: false,
-    mall: false,
-    vr: true,
     issues: [],
     roomsFrame: new Map<RoomName, number>(),
     chatVersion: 0,
     iglooVersion: 0,
     startscreens: [],
-    as3Startscreen: false,
     worldStamps: [],
     gameStrings: new Map<string, string>(),
     iglooMusic: null,
@@ -158,11 +150,7 @@ function getFreshState(): GameState {
     freeBrownPuffle: false,
     gameStamps: new Map<StampRoom, Set<number>>(),
     releasedStamps: new Set<number>(),
-    extraWaddleRooms: [],
-    iglooMusicReleased: false,
-    ownedIgloos: false,
-    isSpOnJr: false,
-    puffleHandItems: true
+    extraWaddleRooms: []
   };
 }
 
@@ -191,7 +179,7 @@ export class GameData {
   }
 
   private addRoom(room: RoomName, file: FileRef) {
-    const roomRoute = (this.state.preCpip ? 'artwork/rooms/' : 'play/v2/content/global/rooms/') + room + '.swf';
+    const roomRoute = (this.state.flags.preCpip ? 'artwork/rooms/' : 'play/v2/content/global/rooms/') + room + '.swf';
     this.addRoute(roomRoute, file);
   }
 
@@ -288,57 +276,22 @@ export class GameData {
     const actions: {
       [K in keyof CPUpdateE]: (v: Exclude<CPUpdateE[K], undefined>) => void
     } = {
-     'dateReference': (v) => {
-        switch (v) {
-          case 'stamps-release':
+      'flags': (v) => {
+        iterateEntries(v, (flag, value) => {
+          this.state.flags[flag] = value;
+          if (flag === 'preCpip' && !value) {
+            console.log('yes this happens');
+            this.addRouteMap(CPIP_STATIC_FILES);
+            this.addRouteMap(CPIP_AS3_STATIC_FILES);
+          } else if (flag === 'stamps' && value) {
             this.state.stampbook = JSON.parse(JSON.stringify(ORIGINAL_STAMPBOOK));
-            this.state.stamps = true;
             ORIGINAL_STAMPBOOK.forEach(category => {
               this.addStampCategory(category);
             });
-            break;
-          case 'cpip':
-            this.state.preCpip = false;
-            this.addRouteMap(CPIP_STATIC_FILES);
-            this.addRouteMap(CPIP_AS3_STATIC_FILES);
-            break;
-          case 'vanilla-engine':
-            this.state.vanillaEngine = true;
-            this.state.isSpOnJr = true;
-            // intersection until the 2012 PR is added
-            this.state.puffleHandItems = false;
+          } else if (flag === 'vanillaEngine' && value) {
             this.addRouteMap(AS3_STATIC_FILES);
-            break;
-          case 'as3':
-            this.state.as3 = true;
-            break;
-          case 'composite-paths':
-            this.state.compositePaths = false;
-            break;
-          case 'string-verify':
-            this.state.newShell2009 = true;
-            break;
-          case 'placeholder-2016':
-            this.state.school = true;
-            break;
-          case 'mall':
-            this.state.mall = true;
-            break;
-          case 'vr-room':
-            this.state.vr = false;
-            break;
-          case 'as3-startscreen':
-            this.state.as3Startscreen = true;
-            break;
-          case 'igloo-music':
-            this.state.iglooMusicReleased = true;
-            break;
-          case 'owned-igloos':
-            this.state.ownedIgloos = true;
-            break;
-          default:
-            break;
-        }
+          }
+        });
       },
       'fileChanges': (v) => {
         iterateEntries(v, (route, fileRef) => {
@@ -377,7 +330,7 @@ export class GameData {
         this.state.globalPaths.set('scavenger_hunt_icon', SCAVENGER_ICON_PATH);
       },
       'fairCpip': (v) => {
-        if (!this.state.vanillaEngine) {
+        if (!this.state.flags.vanillaEngine) {
           this.addRoute('play/v2/client/fair.swf', 'tool:fair_icon_adder.swf');
         }
         this.state.fair = true;
@@ -422,7 +375,7 @@ export class GameData {
         }
       },
       'map': (v) => {
-        if (this.state.preCpip) {
+        if (this.state.flags.preCpip) {
           this.addRoute('artwork/maps/island5.swf', v);
           this.addRoute('artwork/maps/16_forest.swf', v);
         } else {
@@ -430,7 +383,7 @@ export class GameData {
         }
       },
       'clothingCatalog': (v) => {
-        this.addCatalog(v, this.state.preCpip ? ['artwork/catalogue/clothing.swf', 'artwork/catalogue/clothing_.swf'] : ['play/v2/content/local/en/catalogues/clothing.swf'])
+        this.addCatalog(v, this.state.flags.preCpip ? ['artwork/catalogue/clothing.swf', 'artwork/catalogue/clothing_.swf'] : ['play/v2/content/local/en/catalogues/clothing.swf'])
       },
       'postcardCatalog': (v) => {
         this.addRoute('artwork/catalogue/cards.swf', v);
@@ -440,14 +393,14 @@ export class GameData {
         this.addRoute('play/v2/content/local/en/catalogues/hair.swf', v);
       },
       'petFurniture': (v) => {
-        if (this.state.preCpip) {
+        if (this.state.flags.preCpip) {
           this.addRoute('artwork/catalogue/pets_.swf', v);
         } else {
           this.addRoute('play/v2/content/local/en/catalogues/pets.swf', v);
         }
       },
       'puffleCatalog': (v) => {
-        if (this.state.preCpip) {
+        if (this.state.flags.preCpip) {
           this.addRoute('artwork/catalogue/adopt_.swf', v);
           this.addRoute('artwork/catalogue/puffle_.swf', v);
         } else {
@@ -458,7 +411,7 @@ export class GameData {
         this.addCatalog(v, ['play/v2/content/local/en/catalogues/ninja.swf']);
       },
       'furnitureCatalog': (v) => {
-        if (this.state.preCpip) {
+        if (this.state.flags.preCpip) {
           this.addRoute('artwork/catalogue/furniture.swf', v);
           this.addRoute('artwork/catalogue/furniture_.swf', v);
         } else {
@@ -466,7 +419,7 @@ export class GameData {
         }
       },
       'iglooCatalog': (v) => {
-        if (this.state.preCpip) {
+        if (this.state.flags.preCpip) {
           this.addRoute('artwork/catalogue/igloo_.swf', v);
           this.addRoute('play/v2/content/local/en/catalogues/igloo.swf', v);
         }
@@ -623,10 +576,9 @@ export class GameData {
         if (this.state.issues.length >= 7) {
           this.state.issues.pop();
         }
-        this.state.issues.splice(0, 0, { ...v, as3: this.state.as3 });
+        this.state.issues.splice(0, 0, { ...v, as3: this.state.flags.as3 });
 
         if (v.type === 'as2'
-          // typeof update.info === 'string' || 'file' in update.info
         ) {
           const file = v.file;
           const issue = v.edition;
@@ -811,11 +763,11 @@ export class GameData {
   }
 
   public getAs3() {
-    return this.state.as3;
+    return this.state.flags.as3;
   }
 
   public isPreCpip() {
-    return this.state.preCpip;
+    return this.state.flags.preCpip;
   }
 
   public getWebsite() {
@@ -827,11 +779,11 @@ export class GameData {
   }
 
   public isVanillaEngine() {
-    return this.state.vanillaEngine;
+    return this.state.flags.vanillaEngine;
   }
 
   public stampsReleased() {
-    return this.state.stamps;
+    return this.state.flags.stamps;
   }
 
   public getStageScript() {
@@ -843,11 +795,11 @@ export class GameData {
   }
 
   public useCompositePaths() {
-    return this.state.compositePaths;
+    return this.state.flags.compositePaths;
   }
 
   public isNewShell2009() {
-    return this.state.newShell2009;
+    return this.state.flags.newShell2009;
   }
 
   public getRoomsMusic(overrides: Map<RoomName, number>) {
@@ -875,15 +827,15 @@ export class GameData {
   }
 
   public hasSchool() {
-    return this.state.school;
+    return this.state.flags.school;
   }
 
   public hasMall() {
-    return this.state.mall;
+    return this.state.flags.mall;
   }
 
   public hasVRRoom() {
-    return this.state.vr;
+    return this.state.flags.vr;
   }
 
   public getIssue(): string | number | undefined {
@@ -914,7 +866,7 @@ export class GameData {
   }
 
   public afterAs3Startscreen() {
-    return this.state.as3Startscreen;
+    return this.state.flags.as3Startscreen;
   }
 
   public getWorldStamps() {
@@ -978,18 +930,18 @@ export class GameData {
   }
 
   public hasIglooMusicReleased() {
-    return this.state.iglooMusicReleased;
+    return this.state.flags.iglooMusicReleased;
   }
 
   public isAfterOwnedIgloos() {
-    return this.state.ownedIgloos;
+    return this.state.flags.ownedIgloos;
   }
 
   public isSpOnJr() {
-    return this.state.isSpOnJr;
+    return this.state.flags.isSpOnJr;
   }
 
   public puffleHandItems() {
-    return this.state.puffleHandItems;
+    return this.state.flags.puffleHandItems;
   }
 }

@@ -1158,7 +1158,9 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-07-26',
     miscComments: ['Stamps are released'],
-    dateReference: 'stamps-release',
+    flags: {
+      stamps: true
+    },
     fileChanges: {
       'play/v2/client/interface.swf': 'recreation:interfaces/2010_july.swf'
     },
@@ -1696,7 +1698,9 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-08-26',
-    dateReference: 'owned-igloos',
+    flags: {
+      ownedIgloos: true
+    },
     miscComments: ['The owned igloos list is added'],
     roomComment: 'The tree near the mine shack grows longer',
     fileChanges: {
@@ -3249,7 +3253,9 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-11-19',
     miscComments: ['The password warning is updated'],
-    dateReference: 'as3',
+    flags: {
+      as3: true
+    },
     indexHtml: 'classic-as3',
     fileChanges: {
       'play/v2/client/login.swf': 'slegacy:media/play/v2/client/login.swf',

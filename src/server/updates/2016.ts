@@ -4,7 +4,9 @@ export const UPDATES_2016: Update[] = [
   {
     // placeholder 2017 version
     date: '2016-01-01',
-    dateReference: 'placeholder-2016',
+    flags: {
+      school: true
+    },
     websiteFolder: 'modern',
     indexHtml: 'modern-as3',
     rooms: {

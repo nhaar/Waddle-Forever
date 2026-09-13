@@ -198,7 +198,6 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-04-01',
-    dateReference: 'old-rink',
     rooms: {
       // unknown date, you can now walk to the audience in the rink
       // only evidence is after april fools party
@@ -347,7 +346,9 @@ export const UPDATES_2006: Update[] = [
     date: '2006-05-19',
     iglooVersion: 20,
     furnitureCatalog: 'archives:Furniture_0605.swf',
-    dateReference: 'igloo-music',
+    flags: {
+      iglooMusicReleased: true
+    },
     iglooList: 'Penguins can now add music to their igloo'
   },
   {

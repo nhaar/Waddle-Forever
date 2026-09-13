@@ -1,30 +1,11 @@
 import { iterateEntries } from "@common/utils";
 import { isGreaterOrEqual, isLower, Version } from "../routes/versions";
-import { DateReference } from "../updates";
+import { DateReference, dateRefs } from "../updates";
 import { UPDATES } from "../updates/updates";
 
 export const START_DATE = UPDATES[0].date;
 
-const dateRefRecord: Record<DateReference, Version | undefined> = {
-  'as3': undefined,
-  'as3-startscreen': undefined,
-  'cpip': undefined,
-  'igloo-music': undefined,
-  'stamps-release': undefined,
-  'vanilla-engine': undefined,
-  'placeholder-2016': undefined,
-  'vr-room': undefined,
-  'old-rink': undefined,
-  'string-verify': undefined,
-  'composite-paths': undefined,
-  'igloo-catalog-name': undefined,
-  'adopt-catalog-name': undefined,
-  'pet-furniture-rename1': undefined,
-  'pet-furniture-rename2': undefined,
-  'furniture-catalog-name': undefined,
-  'mall': undefined,
-  'owned-igloos': undefined
-};
+const dateRefRecord = Object.fromEntries(dateRefs.map(r => [r, undefined])) as Record<DateReference, Version | undefined>;
 
 const dateRefMap = new Map<DateReference, Version>();
 
@@ -49,27 +30,3 @@ iterateEntries(dateRefRecord, (key, value) => {
   }
   dateRefMap.set(key, value);
 });
-
-export function isEngine1(version: Version): boolean {
-  return isLower(version, getDate('cpip'))
-}
-
-export function isEngine2(version: Version): boolean {
-  return isGreaterOrEqual(version, getDate('cpip')) && isLower(version, getDate('vanilla-engine'));
-}
-
-export function isEngine3(version: Version): boolean {
-  return isGreaterOrEqual(version, getDate('vanilla-engine'));
-}
-
-export function isAS3(version: Version): boolean {
-  return isGreaterOrEqual(version, getDate('as3'));
-}
-
-export function isPreCpip(version: Version): boolean {
-  return isLower(version, getDate('cpip'));
-}
-
-export function isPostCpip(version: Version): boolean {
-  return isGreaterOrEqual(version, getDate('cpip'));
-}
