@@ -17,6 +17,7 @@ import { Bot, WALK_AREA } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
+import { joinWaddle } from '../handlers/room';
 
 export { BOT_ID_BASE, isBot };
 
@@ -94,20 +95,10 @@ const FURNITURE_SPOTS: Array<[number, number]> = [
   [260, 300], [500, 300]
 ];
 
-/** True when two penguin environments are the same room, game or match */
-const sharesEnvironment = (a: PenguinEnvironment, b: PenguinEnvironment): boolean => {
-  if ('room' in a && 'room' in b) return a.room === b.room;
-  if ('game' in a && 'game' in b) return a.game === b.game;
-  if ('card' in a && 'card' in b) return a.card === b.card;
-  if ('sled' in a && 'sled' in b) return a.sled === b.sled;
-  if ('fire' in a && 'fire' in b) return a.fire === b.fire;
-  return false;
-};
-
-type BotState = {
-  penguin: WorldPenguin;
-  nextActionAt: number;
-};
+/** How long a human sits alone in a waddle before bots start joining, in ms */
+const WADDLE_JOIN_DELAY = 4000;
+/** Gap between two bots taking waddle seats, in ms */
+const WADDLE_SEAT_GAP = 2500;
 
 type BotSettings = {
   /** How many bots exist on the island at once */
@@ -170,6 +161,8 @@ export class BotManager {
   /** Bots currently at home with an open igloo, and when they will head back out */
   private _homes = new Map<Bot, number>();
   private _on = false;
+  private _waddleSeen = new Map<number, number>();
+  private _waddleLastSeat = new Map<number, number>();
 
   constructor(
     private _world: World,
@@ -352,6 +345,51 @@ export class BotManager {
     return this._bots.get(p.id);
   }
 
+  private tickWaddles(room: WorldRoom): void {
+    const now = Date.now();
+
+    for (const waddle of room.getWaddleRooms()) {
+      const seats = waddle.getSeats();
+      const occupants = seats.filter((p): p is WorldPenguin => p !== null);
+      const waitingHuman = occupants.some(p => !isBot(p));
+      const id = waddle.getId();
+
+      if (!waitingHuman || waddle.isFull()) {
+        this._waddleSeen.delete(id);
+        this._waddleLastSeat.delete(id);
+        continue;
+      }
+
+      const since = this._waddleSeen.get(id);
+      if (since === undefined) {
+        this._waddleSeen.set(id, now);
+        continue;
+      }
+      if (now - since < WADDLE_JOIN_DELAY) {
+        continue;
+      }
+      const last = this._waddleLastSeat.get(id) ?? 0;
+      if (now - last < WADDLE_SEAT_GAP) {
+        continue;
+      }
+
+      const bot = this.getFreeBotIn(room) ?? this.spawnInto(room.id);
+      if (bot === undefined) {
+        continue;
+      }
+
+      this._waddleLastSeat.set(id, now);
+      bot.busy = true;
+      joinWaddle({ msg: this._msg, world: this._world, data: this._data }, room, waddle, bot.penguin);
+
+      // starting the game empties the waddle
+      if (waddle.isFull()) {
+        this._waddleSeen.delete(id);
+        this._waddleLastSeat.delete(id);
+      }
+    }
+  }
+
   private tickTables(room: WorldRoom): void {
     for (const table of room.getTables()) {
       if (table.hasStarted() || table.hasEnded()) {
@@ -382,7 +420,7 @@ export class BotManager {
     const rooms = this.humanRooms();
 
     rooms.forEach((room) => {
-      // this.tickWaddles(room);
+      this.tickWaddles(room);
       this.tickTables(room);
     });
   }

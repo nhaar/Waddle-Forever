@@ -107,8 +107,6 @@ export class WorldServer implements MessageHandler {
       db: this._db,
       prst: this._persister,
       off: this._off,
-      bot: this._botManager,
-
       client,
 
       ...(penguin === undefined ? {} : {

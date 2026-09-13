@@ -5,8 +5,11 @@ import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
 import { PenguinContext, RoomContext } from "@server/socket-server/handlers/handlers";
+import { BotManager } from "@server/socket-server/world/bots";
 
-type CommandContext = PenguinContext | RoomContext;
+type CommandContext = (PenguinContext | RoomContext) & {
+  bot: BotManager
+};
 type CommandHandler<T extends Array<string | number>> = (ctx: CommandContext, ...args: T) => void;
 
 type CommandResponse = (ctx: CommandContext, args: Array<string>) => void;
