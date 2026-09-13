@@ -25,32 +25,6 @@ const BOT_ID_BASE = 9_000_000;
 const isBot = (p: WorldPenguin): boolean => p.id >= BOT_ID_BASE;
 
 
-// TODO -> Visitable rooms tracked by timeline
-//      -> Room popularity
-//      -> Member only rooms
-/** Rooms bots are allowed to hang around in */
-const BOT_ROOMS: RoomName[] = [
-  'town', 'coffee', 'book', 'dance', 'lounge', 'shop', 'dock', 'village',
-  'rink', 'forts', 'plaza', 'pet', 'pizza', 'mtn', 'beach', 'berg', 'light',
-  'mine', 'cave', 'cove', 'dojo', 'lodge', 'attic', 'sport'
-];
-
-
-/** Frames sent through `sf`. 25 is wave, 26 is dance, 17-24 are the sit directions. */
-const IDLE_FRAMES = [25, 26, 17, 18, 19, 20, 21, 22, 23, 24];
-
-/** Emote ids sent through `se` */
-const EMOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-
-// TODO -> Add safe chat lines
-//         Richer library of lines
-const CHAT_LINES = [
-  'hi', 'hello!', 'sup', 'wanna be buddies?', 'brb', 'cool igloo',
-  'lets go sledding', 'anyone wanna play find four?', 'nice hat',
-  'im so bored', 'party at my igloo', 'waddle on', 'lol', 'thanks!',
-  'where is everyone', 'first!', 'im a member', 'add me'
-];
 
 
 // TODO -> Easter Egg names
@@ -307,7 +281,7 @@ export class BotManager {
     this._msg
     this.decorateIgloo(penguin);
 
-    bot.enter(roomId ?? this.chooseRoom());
+    bot.enter(roomId ?? bot.chooseRoom());
     return bot;
   }
 
@@ -330,14 +304,6 @@ export class BotManager {
       .filter(p => !isBot(p))
       .map(p => this._world.getPenguinRoom(p))
       .filter((r): r is WorldRoom => r !== undefined);
-  }
-
-  private chooseRoom(): number {
-    const humans = this.humanRooms();
-    if (humans.length > 0 && Math.random() < this._settings.followChance) {
-      return choose(humans).id;
-    }
-    return ROOMS[choose(BOT_ROOMS)].id;
   }
 
   // -------------------------------------------------------------------------
@@ -472,7 +438,7 @@ export class BotManager {
       }
       bot.nextActionAt = now + this.delay();
       try {
-        this.act(bot);
+        bot.act();
       } catch (e) {
         // a misbehaving bot should never take the world server down
         console.error('bot action failed', e);
@@ -545,50 +511,12 @@ export class BotManager {
   public closeIglooFor(bot: Bot): void {
     this._world.closeIgloo(bot.penguin);
     this._homes.delete(bot);
-    bot.enter(this.chooseRoom());
+    bot.enter(bot.chooseRoom());
   }
 
   /** Puts a bot back on the island after a game */
   public sendToIsland(bot: Bot): void {
     bot.busy = false;
-    bot.enter(this.chooseRoom());
-  }
-
-  private act(bot: Bot): void {
-    const room = this._world.getPenguinRoom(bot.penguin);
-    if (room === undefined) {
-      return;
-    }
-
-    const roll = Math.random();
-
-    // a bot hosting an open igloo stays in it, but still chats and dances
-    if (roll < 0.10 && !this._homes.has(bot)) {
-      bot.enter(this.chooseRoom());
-      return;
-    }
-
-    if (roll < 0.10 + this._settings.chatChance) {
-      bot.sendMessage(choose(CHAT_LINES));
-      return;
-    }
-
-    if (roll < 0.28) {
-      bot.doFrame(choose(IDLE_FRAMES));
-      return;
-    }
-
-    if (roll < 0.36) {
-      bot.doEmote(choose(EMOTES));
-      return;
-    }
-
-    if (roll < 0.40) {
-      bot.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
-      return;
-    }
-
-    // default: waddle somewhere else in the room
-    bot.walkTo(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
+    bot.enter(bot.chooseRoom());
   }
 }

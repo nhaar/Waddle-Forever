@@ -8,6 +8,7 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
+import { RoomName, ROOMS } from "@server/game-data/rooms";
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
@@ -21,9 +22,35 @@ export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<s
  */
 export const WALK_AREA = { minX: 120, maxX: 640, minY: 300, maxY: 440 };
 
+// TODO -> Visitable rooms tracked by timeline
+//      -> Room popularity
+//      -> Member only rooms
+/** Rooms bots are allowed to hang around in */
+const BOT_ROOMS: RoomName[] = [
+  'town', 'coffee', 'book', 'dance', 'lounge', 'shop', 'dock', 'village',
+  'rink', 'forts', 'plaza', 'pet', 'pizza', 'mtn', 'beach', 'berg', 'light',
+  'mine', 'cave', 'cove', 'dojo', 'lodge', 'attic', 'sport'
+];
+
 /** How long a bot "thinks" before playing a table move, in ms */
 const TABLE_THINK_MIN = 1800;
 const TABLE_THINK_MAX = 4200;
+
+/** Emote ids sent through `se` */
+const EMOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+
+// TODO -> Add safe chat lines
+//         Richer library of lines
+const CHAT_LINES = [
+  'hi', 'hello!', 'sup', 'wanna be buddies?', 'brb', 'cool igloo',
+  'lets go sledding', 'anyone wanna play find four?', 'nice hat',
+  'im so bored', 'party at my igloo', 'waddle on', 'lol', 'thanks!',
+  'where is everyone', 'first!', 'im a member', 'add me'
+];
+
+const BOREDOM_TIME = 120;
+const MOVEMENT_TIME = 60;
 
 export class Bot implements ClientSocket {
   public busy = false;
@@ -44,6 +71,8 @@ export class Bot implements ClientSocket {
   private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
   private returnToIsland: () => void;  
 
+  private _movementTime: number = 0;
+  private _roomChangeTime: number = 0;
 
   constructor(
     private _penguin: WorldPenguin,
@@ -338,6 +367,48 @@ export class Bot implements ClientSocket {
 
   public walkTo(x: number, y: number) {
     this._simulate('s', this._data.isPreCpip() ? 'sp' : 'u#sp', x, y);
+  }
+
+  public chooseRoom(): number {
+    return ROOMS[choose(BOT_ROOMS)].id;
+  }
+
+  public act(): void {
+    const room = this._world.getPenguinRoom(this.penguin);
+    if (room === undefined) {
+      return;
+    }
+
+    const now = Date.now();
+
+    if (this._roomChangeTime < now) {
+      // bots leave faster if the room is emptier
+      if (room.players.length / 30 < Math.random()) {
+        this.enter(this.chooseRoom());
+      }
+      this._roomChangeTime = now + (BOREDOM_TIME * 1000) * (Math.random() / 2 + 0.5);
+    } else if (this._movementTime < now) {
+      this.walkTo(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
+      this._movementTime = now + (MOVEMENT_TIME * 1000) * (Math.random() / 2 + 0.5);
+    } else {
+      const action = randomInt(1, 4);
+      if (action === 1) {
+        this.sendMessage(choose(CHAT_LINES));
+      } else if (action === 2) {
+        this.doEmote(choose(EMOTES));
+      } else if (action === 3) {
+        this.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
+      } else if (action === 4) {
+        const animation = randomInt(1, 3);
+        if (animation === 1) {
+          this.doFrame(26);
+        } else if (animation === 2) {
+          this.doFrame(25);
+        } else if (animation === 3) {
+          this.doFrame(choose([17, 18, 19, 20, 21, 22, 23, 24]));
+        }
+      }
+    }
   }
 
   public end() {};
