@@ -133,10 +133,12 @@ const MAX_SIZE = 60;
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
+const MEMBER_CHANCE = 0.6;
 
 function generateRandomOutfit(
   data: GameData,
-  age: number
+  age: number,
+  member: boolean
 ): PenguinEquipped {
   const available = [...data.getAvailableItems().values()];
   const possibleInventory = [...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()];
@@ -152,9 +154,9 @@ function generateRandomOutfit(
       const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : possibleInventory)
         .filter(i => {
           const info = ITEMS.get(i);
-          return info !== undefined && info.type === getItemTypeFromEquipProp(prop)
+          return info !== undefined && (member || !info.isMember) && info.type === getItemTypeFromEquipProp(prop)
         });
-      item = choose(itemPool);
+      item = itemPool.length === 0 ? 0 : choose(itemPool);
     }
 
     items.push([prop, item]);
@@ -168,14 +170,15 @@ function generateRandomPenguin(data: GameData): PenguinJson {
   const color = choose(COLORS);
   // TODO -> more realistic distribution
   const age = randomInt(0, getDaysDelta(START_DATE, data.getDate()));
+  const isMember = Math.random() <= MEMBER_CHANCE;
   const base = getDefaultPenguin(
     name,
     color,
-    true,
+    isMember,
     versionToEpoch(data.getDate())
   );
 
-  const outfit = generateRandomOutfit(data, age);
+  const outfit = generateRandomOutfit(data, age, isMember);
 
   return {
     ...base,
