@@ -1,12 +1,7 @@
 import { choose, iterateEntries, randomInt } from "@common/utils";
 import { Card, CardColor, CardElement, CARDS } from "@server/game-logic/cards";
-import { CardJitsuProgress } from "@server/game-logic/ninja-progress";
 import { Room } from "@server/game-logic/rooms";
-import { WaddleName } from "@server/game-logic/waddles";
-import { isBot } from "./bot-id";
 import { WaddleGame } from "./waddle-game";
-import { WaddleRoom } from "./waddle-room";
-import { ContextAdder, ContextRemover } from "./world-penguin";
 import { WorldPenguin } from "./world-penguin";
 import { DEFAULT_DECK } from "@server/game-logic/starter-deck";
 

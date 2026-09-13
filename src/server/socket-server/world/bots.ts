@@ -8,7 +8,6 @@ import { getDefaultPenguin, PenguinJson } from '@server/database/database';
 import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
-import { BOT_ID_BASE, isBot } from './bot-id';
 import { World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
@@ -19,7 +18,9 @@ import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
 
-export { BOT_ID_BASE, isBot };
+const BOT_ID_BASE = 9_000_000;
+
+const isBot = (p: WorldPenguin): boolean => p.id >= BOT_ID_BASE;
 
 
 // TODO -> Visitable rooms tracked by timeline
