@@ -442,7 +442,9 @@ export class BotManager {
   private tick(): void {
     const now = Date.now();
     this.syncPopulation();
-    this.tickGames();
+    if (this._settings.playGames) {
+      this.tickGames();
+    }
     this.tickIgloos();
 
     for (const bot of this._bots.values()) {
