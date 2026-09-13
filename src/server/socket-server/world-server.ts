@@ -63,7 +63,8 @@ export class WorldServer implements MessageHandler {
           this.getContext(b),
           convertXtMessage(e, c, ...a)
         );
-      }
+      },
+      (b) => this.disconnect(b)
     );
   }
 

@@ -9,7 +9,7 @@ import { GameData } from '@server/timelines/game-data';
 import { World } from './world';
 import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
-import { choose, randomInt } from '@common/utils';
+import { choose, clamp, randomInt } from '@common/utils';
 import { Bot, WALK_AREA, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
@@ -116,7 +116,7 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
   openIgloos: 3
 };
 
-const MAX_SIZE = 60;
+const MAX_SIZE = 500;
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -191,7 +191,8 @@ export class BotManager {
     private _msg: PenguinMessenger,
     private _data: GameData,
     private _appSettings: SettingsManager,
-    private _writeFn: WriteFunction
+    private _writeFn: WriteFunction,
+    private disconnect: (b: Bot) => void
   ) {
   }
 
@@ -223,7 +224,7 @@ export class BotManager {
   }
 
   public setPopulation(n: number): void {
-    this._settings.population = Math.max(0, Math.min(n, 60));
+    this._settings.population = clamp(n, 0, MAX_SIZE);
     if (n > 0) {
       this.setOn();
       this.syncPopulation();
@@ -307,8 +308,7 @@ export class BotManager {
     this._msg
     this.decorateIgloo(penguin);
 
-    const room = this._world.getRoom(roomId ?? this.chooseRoom());
-    bot.enter(room);
+    bot.enter(roomId ?? this.chooseRoom());
     return bot;
   }
 
@@ -317,10 +317,8 @@ export class BotManager {
     if (bot === undefined) {
       return;
     }
-    const room = this._world.getPenguinRoom(bot.penguin);
-    if (room !== undefined) {
-      bot.leave(room);
-    }
+
+    this.disconnect(bot);
     this._world.closeIgloo(bot.penguin);
     this._world.disconnect(bot.penguin);
     this._homes.delete(bot);
@@ -539,12 +537,8 @@ export class BotManager {
   /** Opens a bot's igloo and puts the bot inside it, so visitors find someone home */
   public openIglooFor(bot: Bot): void {
     const room = this._world.getRoom(IGLOO_ROOM_BASE + bot.penguin.id);
-    const previous = this._world.getPenguinRoom(bot.penguin);
-    if (previous !== undefined) {
-      bot.leave(previous);
-    }
     this._world.openIgloo(bot.penguin);
-    bot.enter(room);
+    bot.enter(room.id);
     this._homes.set(bot, Date.now() + randomInt(180_000, 480_000));
   }
 
@@ -552,17 +546,13 @@ export class BotManager {
   public closeIglooFor(bot: Bot): void {
     this._world.closeIgloo(bot.penguin);
     this._homes.delete(bot);
-    const previous = this._world.getPenguinRoom(bot.penguin);
-    if (previous !== undefined) {
-      bot.leave(previous);
-    }
-    bot.enter(this._world.getRoom(this.chooseRoom()));
+    bot.enter(this.chooseRoom());
   }
 
   /** Puts a bot back on the island after a game */
   public sendToIsland(bot: Bot): void {
     bot.busy = false;
-    bot.enter(this._world.getRoom(this.chooseRoom()));
+    bot.enter(this.chooseRoom());
   }
 
   private act(bot: Bot): void {
@@ -575,43 +565,31 @@ export class BotManager {
 
     // a bot hosting an open igloo stays in it, but still chats and dances
     if (roll < 0.10 && !this._homes.has(bot)) {
-      bot.leave(room);
-      bot.enter(this._world.getRoom(this.chooseRoom()));
+      bot.enter(this.chooseRoom());
       return;
     }
 
     if (roll < 0.10 + this._settings.chatChance) {
-      this._msg.send(room.players, 'sm', bot.penguin.id, choose(CHAT_LINES));
+      bot.sendMessage(choose(CHAT_LINES));
       return;
     }
 
     if (roll < 0.28) {
-      const frame = choose(IDLE_FRAMES);
-      room.updateFrame(bot.penguin, frame);
-      this._msg.send(room.players, 'sf', bot.penguin.id, frame);
+      bot.doFrame(choose(IDLE_FRAMES));
       return;
     }
 
     if (roll < 0.36) {
-      this._msg.send(room.players, 'se', bot.penguin.id, choose(EMOTES));
+      bot.doEmote(choose(EMOTES));
       return;
     }
 
     if (roll < 0.40) {
-      this._msg.send(
-        room.players,
-        'sb',
-        bot.penguin.id,
-        randomInt(WALK_AREA.minX, WALK_AREA.maxX),
-        randomInt(WALK_AREA.minY, WALK_AREA.maxY)
-      );
+      bot.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
       return;
     }
 
     // default: waddle somewhere else in the room
-    const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
-    const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
-    room.updatePosition(bot.penguin, x, y);
-    this._msg.send(room.players, 'sp', bot.penguin.id, x, y);
+    bot.walkTo(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
   }
 }

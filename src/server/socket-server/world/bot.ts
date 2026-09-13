@@ -64,25 +64,10 @@ export class Bot implements ClientSocket {
     return this._penguin;
   }
 
-  public enter(room: WorldRoom): void {
-    const x = randomInt(WALK_AREA.minX, WALK_AREA.maxX);
-    const y = randomInt(WALK_AREA.minY, WALK_AREA.maxY);
-    room.addPenguin(this._penguin, x, y);
-    this._world.enterState(this._penguin, { room });
-    this.send(
-      room.players,
-      'ap',
-      getPenguinString(this._data, this._penguin, { x, y, frame: 1 })
-    );
-  }
-
-  public leave(room: WorldRoom): void {
-    room.removePenguin(this._penguin);
-    this.send(
-      room.players,
-      'rp',
-      this._penguin.id,
-      ...room.playerStates.map(([p, s]) => getPenguinString(this._data, p, s))
+  public enter(id: number): void {
+    this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', id,
+      randomInt(WALK_AREA.minX, WALK_AREA.maxX),
+      randomInt(WALK_AREA.minY, WALK_AREA.maxY)
     );
   }
 
@@ -331,6 +316,42 @@ export class Bot implements ClientSocket {
       msgs.forEach(([p, m, a]) => this.send(p, m, ...a));
       this._tableInfo.timeout = this.tableMove();
     }, randomInt(TABLE_THINK_MIN, TABLE_THINK_MAX));
+  }
+
+  public throwSnowball(x: number, y: number) {
+    if (this._data.isPreCpip()) {
+      this._simulate('s', 'sb', x, y);
+    } else {
+      this._simulate('s', 'u#sb', x, y);
+    }
+  }
+
+  public doEmote(emote: number) {
+    if (this._data.isPreCpip()) {
+      this._simulate('s', 'se', emote);
+    } else {
+      this._simulate('s', 'u#se', emote);
+    }
+  }
+
+  public doFrame(frame: number) {
+    if (this._data.isPreCpip()) {
+      this._simulate('s', 'sf', frame);
+    } else {
+      this._simulate('s', 'u#sf', frame);
+    }
+  }
+
+  public sendMessage(message: string) {
+    if (this._data.isPreCpip()) {
+      this._simulate('m', 'sm', this._penguin.id, message);
+    } else {
+      this._simulate('s', 'm#sm', this._penguin.id, message);
+    }
+  }
+
+  public walkTo(x: number, y: number) {
+    this._simulate('s', this._data.isPreCpip() ? 'sp' : 'u#sp', x, y);
   }
 
   public end() {};
