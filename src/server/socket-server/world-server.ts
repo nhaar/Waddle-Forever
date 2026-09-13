@@ -16,7 +16,7 @@ import { World } from "./world/world";
 import { addBakeryListener } from "./handlers/party";
 import { addMatchmakerListeners } from "./handlers/ninja";
 
-import { XtHandler } from "./xt-handler";
+import { convertXtMessage, XtHandler } from "./xt-handler";
 import { XmlHandler } from "./xml-handler";
 import { createWorldXtHandler } from "./world-handlers";
 import { createLoginXmlHandler } from "./login-handlers";
@@ -39,7 +39,14 @@ export class WorldServer implements MessageHandler {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
     this._botManager = new BotManager(
-      this._world, this._msg, this._gameData, this._settings
+      this._world, this._msg, this._gameData, this._settings,
+      (b, e, c, ...a) => {
+        this._xtHandler.handle(
+          b,
+          this.getContext(b),
+          convertXtMessage(e, c, ...a)
+        );
+      }
     );
 
     this._commandsHandler = getCommandsHandler();

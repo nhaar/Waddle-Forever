@@ -168,6 +168,23 @@ export function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+export function clamp(value: number, min: number, max: number) {
+  return Math.max(Math.min(value, max), min);
+}
+
+export function randomLogNormal(mu: number, sigma: number) {
+  // this is called "Box-muller" transformation
+  const u1 = Math.random();
+  const u2 = Math.random();
+  const standardNormal = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+
+  
+  const normalValue = standardNormal * sigma + mu;
+  const logNormalValue = Math.exp(normalValue);
+
+  return logNormalValue;
+}
+
 /** Gets random element from an array */
 export function choose<T>(array: T[]): T {
   return array[randomInt(0, array.length - 1)];

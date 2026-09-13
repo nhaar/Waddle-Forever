@@ -6,6 +6,7 @@ import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
 import { PenguinContext, RoomContext } from "@server/socket-server/handlers/handlers";
 import { BotManager } from "@server/socket-server/world/bots";
+import { clamp } from "@common/utils";
 
 type CommandContext = (PenguinContext | RoomContext) & {
   bot: BotManager
@@ -121,7 +122,7 @@ const handleMember: CommandHandler<[]> = ({ penguin, prst, msg, data }) => {
 
 const handleAddFurniture: CommandHandler<[number, number]> = ({ penguin, prst, msg }, id: number, amount: number): void => {
   const ownedAmount = penguin.igloo.getFurnitureAmount(id);
-  const addAmount = Math.max(Math.min(amount, 99 - ownedAmount), 0);
+  const addAmount = clamp(amount, 0, 99 - ownedAmount);
   penguin.igloo.addFurniture(id, addAmount);
   for (let i = 0; i < addAmount; i++) {
     msg.send(penguin, 'af', id, penguin.currency.coins);

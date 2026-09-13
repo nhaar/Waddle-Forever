@@ -9,11 +9,11 @@ import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { BOT_ID_BASE, isBot } from './bot-id';
-import { PenguinEnvironment, World } from './world';
+import { World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { choose, randomInt } from '@common/utils';
-import { Bot, WALK_AREA } from './bot';
+import { Bot, WALK_AREA, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
@@ -168,7 +168,8 @@ export class BotManager {
     private _world: World,
     private _msg: PenguinMessenger,
     private _data: GameData,
-    private _appSettings: SettingsManager
+    private _appSettings: SettingsManager,
+    private _writeFn: WriteFunction
   ) {
   }
 
@@ -270,7 +271,15 @@ export class BotManager {
     const id = this._nextId++;
     const penguin = new WorldPenguin(id, this.makeJson(), this._appSettings);
     this._world.addPenguin(penguin);
-    const bot = new Bot(penguin, this._data, this._world, (p, m, ...a) => this._msg.send(p, m, ...a), Date.now() + this.delay())
+    const bot = new Bot(
+      penguin,
+      this._data,
+      this._world,
+      (p, m, ...a) => this._msg.send(p, m, ...a),
+      Date.now() + this.delay(),
+      this._writeFn,
+      (b: Bot) => this.sendToIsland(b)
+    )
     this._msg.linkClient(bot, bot.penguin);
     this._bots.set(id, bot);
     this._msg
@@ -381,6 +390,11 @@ export class BotManager {
       this._waddleLastSeat.set(id, now);
       bot.busy = true;
       joinWaddle({ msg: this._msg, world: this._world, data: this._data }, room, waddle, bot.penguin);
+
+      const ctx = this._world.getContext(bot.penguin);
+      if ('card' in ctx) {
+        bot.joinCard(ctx.card);
+      }
 
       // starting the game empties the waddle
       if (waddle.isFull()) {

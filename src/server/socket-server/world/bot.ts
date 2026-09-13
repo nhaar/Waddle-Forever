@@ -1,4 +1,4 @@
-import { choose, randomInt } from "@common/utils";
+import { choose, clamp, randomInt, randomLogNormal } from "@common/utils";
 import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { getPenguinString } from "../handlers/join";
@@ -9,8 +9,10 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { sendTableMove } from "../handlers/room";
+import { CardJitsu, NinjaPlayer } from "./card";
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
+export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
 
 // TODO -> Complete tracking of all walkable boxes
 //         (If possible with a FFDEC script)
@@ -34,14 +36,28 @@ export class Bot implements ClientSocket {
     timeout: NodeJS.Timeout
    } | null = null;
   
+  private _cardInfo : {
+    seat: number,
+    card: CardJitsu,
+    ninja: NinjaPlayer,
+    chooseCard: NodeJS.Timeout | null
+  } | null = null;
+
+  private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
+  private returnToIsland: () => void;  
+
+
   constructor(
     private _penguin: WorldPenguin,
     private _data: GameData,
     private _world: World,
     private send: SendFunction,
-    public nextActionAt: number
+    public nextActionAt: number,
+    writeFn: WriteFunction,
+    returnFn: (b: Bot) => void
   ) {
-
+    this._simulate = (e, c, ...a) => writeFn(this, e, c, ...a);
+    this.returnToIsland = () => returnFn(this);
   }
 
   public get penguin() {
@@ -80,6 +96,41 @@ export class Bot implements ClientSocket {
   
 
   private handle(name: string, args: string[]): void {
+    if (this._cardInfo !== null) {
+      if (name === 'zm') {
+        if (args[0] === 'deal' && args[1] != String(this._cardInfo.seat)) {
+          // remove deal and seat to find number of cards
+          const amount = args.length - 2;
+          this._simulate('z', 'zm', 'deal', amount);
+          this._cardInfo.chooseCard = setTimeout(() => {
+            const selectableCards = this._cardInfo.ninja.cards
+              .map((sessionId) => [this._cardInfo.card.getCard(sessionId).element, sessionId])
+              .filter(([element,]) => element !== this._cardInfo.ninja.blockedElement)
+              .map(([,id]) => id);
+            
+            if (selectableCards.length === 0) {
+              this._simulate('z', 'zm', 'death');
+            } else {
+              this._simulate('z', 'zm', 'pick', choose(selectableCards));
+            }
+            
+          }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
+        }
+      } else if (name === 'czo' || name === 'cz') {
+        // packets that terminate the match
+        this._cardInfo = null;
+        this.returnToIsland();
+      }
+    }
+  }
+
+  public joinCard(card: CardJitsu): void {
+    this._cardInfo = {
+      card,
+      ninja: card.getNinja(this._penguin),
+      seat: card.getSeatId(this._penguin),
+      chooseCard: null
+    };
   }
 
   public sitAtTable(room: WorldRoom, table: WorldTable): void {

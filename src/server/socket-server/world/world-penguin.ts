@@ -336,7 +336,6 @@ class Stampbook {
   }
 
   public resetSessionStamps() {
-    console.log('resetting...');
     this._sessionStamps = new Set();
   }
 }
