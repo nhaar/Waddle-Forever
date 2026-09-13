@@ -16,13 +16,14 @@ import { World } from "./world/world";
 import { addBakeryListener } from "./handlers/party";
 import { addMatchmakerListeners } from "./handlers/ninja";
 
-import { XtHandler } from "./xt-handler";
+import { convertXtMessage, XtHandler } from "./xt-handler";
 import { XmlHandler } from "./xml-handler";
 import { createWorldXtHandler } from "./world-handlers";
 import { createLoginXmlHandler } from "./login-handlers";
 import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/handlers";
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 import { OfflineWorld } from "./offline-world";
+import { BotManager } from "./world/bots";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
@@ -32,10 +33,12 @@ export class WorldServer implements MessageHandler {
   private _xtHandler: XtHandler;
   private _xmlHandler: XmlHandler;
   private _persister: PenguinPersister;
+  private _botManager: BotManager;
   
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
+    this._botManager = this.getBotManager();
 
     this._commandsHandler = getCommandsHandler();
 
@@ -49,6 +52,19 @@ export class WorldServer implements MessageHandler {
     this._xmlHandler = createLoginXmlHandler();
 
     this.init();
+  }
+
+  private getBotManager(): BotManager {
+    return new BotManager(
+      this._world, this._msg, this._gameData, this._settings,
+      (b, e, c, ...a) => {
+        this._xtHandler.handle(
+          b,
+          this.getContext(b),
+          convertXtMessage(e, c, ...a)
+        );
+      }
+    );
   }
 
   public runCommand(penguinId: number, name: string, args: string[]) {
@@ -65,7 +81,8 @@ export class WorldServer implements MessageHandler {
         settings: this._settings,
         off: this._off,
         client,
-        room: this._world.getPenguinRoom(penguin)
+        room: this._world.getPenguinRoom(penguin),
+        bot: this._botManager
       }, name, args);
     }
   }
@@ -85,9 +102,11 @@ export class WorldServer implements MessageHandler {
   public async reset() {
     await Promise.all(this._msg.getClients().map(client => this.disconnect(client)));
     this._msg.close();
+    this._botManager.shutdown();
     this._msg = new PenguinMessenger();
     this._world = new World(this._gameData);
     this.init();
+    this._botManager = this.getBotManager();
   }
 
   private getContext(client: ClientSocket): WorldContext {
@@ -100,7 +119,6 @@ export class WorldServer implements MessageHandler {
       db: this._db,
       prst: this._persister,
       off: this._off,
-
       client,
 
       ...(penguin === undefined ? {} : {

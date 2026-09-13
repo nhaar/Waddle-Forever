@@ -15,6 +15,10 @@ const parseXtMessage = (message: string): [string, string[]] => {
   return [name, args];
 }
 
+export const convertXtMessage = (ext: string, code: string, ...args: Array<string | number>): string => {
+  return ['', 'xt', ext, code, '-1', ...args.map(a => String(a)), ''].join('%');
+}
+
 type CtxGuard<Ctx extends WorldContext> = [(ctx: WorldContext) => ctx is Ctx,
   (ctx: Ctx) => boolean];
 

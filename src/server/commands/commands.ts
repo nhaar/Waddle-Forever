@@ -5,8 +5,12 @@ import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
 import { PenguinContext, RoomContext } from "@server/socket-server/handlers/handlers";
+import { BotManager } from "@server/socket-server/world/bots";
+import { clamp } from "@common/utils";
 
-type CommandContext = PenguinContext | RoomContext;
+type CommandContext = (PenguinContext | RoomContext) & {
+  bot: BotManager
+};
 type CommandHandler<T extends Array<string | number>> = (ctx: CommandContext, ...args: T) => void;
 
 type CommandResponse = (ctx: CommandContext, args: Array<string>) => void;
@@ -118,7 +122,7 @@ const handleMember: CommandHandler<[]> = ({ penguin, prst, msg, data }) => {
 
 const handleAddFurniture: CommandHandler<[number, number]> = ({ penguin, prst, msg }, id: number, amount: number): void => {
   const ownedAmount = penguin.igloo.getFurnitureAmount(id);
-  const addAmount = Math.max(Math.min(amount, 99 - ownedAmount), 0);
+  const addAmount = clamp(amount, 0, 99 - ownedAmount);
   penguin.igloo.addFurniture(id, addAmount);
   for (let i = 0; i < addAmount; i++) {
     msg.send(penguin, 'af', id, penguin.currency.coins);
@@ -235,7 +239,33 @@ const c = <const T extends ArgumentsIndicator>(args: T, callback: (ctx: CommandC
   return [args, callback as (ctx: CommandContext, ...args: Array<string | number>) => void];
 }
 
+const handleBots: CommandHandler<[number]> = ({ bot }, amount) => {
+  bot.setPopulation(amount);
+}
+
+const handleBotsAction: CommandHandler<[string]> = (ctx, action) => {
+  const { bot } = ctx;
+  if (action === 'here' && 'room' in ctx) {
+    bot.addAt(ctx.room.id, 5);
+  } else if (action === 'off') {
+    bot.setOff();
+  } else if (action === 'games') {
+    bot.configure({ playGames: true });
+  } else if (action === 'nogames') {
+    bot.configure({ playGames: false });
+  }
+}
+
 const generators: CommandsGenerator = [
+  [
+    'bots',
+    [c(['number'], handleBots), c(['string'], handleBotsAction)],
+    {
+      argNames: ['amount/here/off/games/nogames'],
+      description: "Populate the island with computer controlled penguins. 'bots [amount]' keeps [amount] of them wandering around, 'bots here' drops 5 in your current room, 'bots off' removes them all. They will also sit down for sled races, Card-Jitsu, Find Four and Mancala; 'bots nogames' stops that and 'bots games' turns it back on.",
+      examples: ['bots 12', 'bots here', 'bots off', 'bots nogames']
+    }
+  ],
   [
     'ai',
     [c(['number'], handleAddItem), c(['string'], handleAddAllItems)],
