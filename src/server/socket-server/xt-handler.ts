@@ -67,6 +67,7 @@ class CallbackManager<Ctx extends WorldContext> {
         console.log('Rate limited');
         return;
       }
+      this._timestamps.set(client, Date.now());
     }
 
     if (this._once) {
@@ -74,7 +75,9 @@ class CallbackManager<Ctx extends WorldContext> {
         console.log('Already handled');
         return;
       }
+      this._handled.set(client, true);
     }
+
 
     this._callback(ctx, ...args);
   }
@@ -114,7 +117,12 @@ export class XtHandler {
       if (parsedArgs === null) {
         logverbose(getRedString('incorrect type signature: ' + name));
       } else {
-        callback.call(client, context, ...parsedArgs);
+        // prevent server crash from a handler gone wrong
+        try {
+          callback.call(client, context, ...parsedArgs);
+        } catch (e) {
+          console.error(`Error handling XT ${name}:`, e);
+        }
       }
     } else {
       logverbose(getRedString('unhandled XT: ' + name));

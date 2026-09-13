@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import { IS_DEV } from "@common/constants";
 
 export const getRedString = (str: string): string => `${'\x1b[31m'}${str}${'\x1b[0m'}`;
@@ -21,7 +19,7 @@ export const logdebugerr = (msg: string): void => {
 }
 
 export function logverbose(...args: unknown[]) {
-  if (process.env.VERBOSE === 'true') {
+  if (IS_DEV) {
     console.log(...args);
   }
 }
