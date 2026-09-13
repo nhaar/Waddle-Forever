@@ -39,8 +39,7 @@ export class WorldServer implements MessageHandler {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
     this._botManager = new BotManager(
-      this._world,
-      (p, msg, ...args) => this._msg.send(p, msg, ...args), this._gameData, this._settings
+      this._world, this._msg, this._gameData, this._settings
     );
 
     this._commandsHandler = getCommandsHandler();
