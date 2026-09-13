@@ -1,14 +1,12 @@
 import { choose, clamp, randomInt, randomLogNormal } from "@common/utils";
 import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
-import { getPenguinString } from "../handlers/join";
 import { GameData } from "@server/timelines/game-data";
 import { World } from "./world";
 import { ClientSocket } from "../socket-server";
 import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
-import { sendTableMove } from "../handlers/room";
 import { CardJitsu, NinjaPlayer } from "./card";
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
@@ -51,7 +49,6 @@ export class Bot implements ClientSocket {
     private _penguin: WorldPenguin,
     private _data: GameData,
     private _world: World,
-    private send: SendFunction,
     public nextActionAt: number,
     writeFn: WriteFunction,
     returnFn: (b: Bot) => void
@@ -106,6 +103,18 @@ export class Bot implements ClientSocket {
         this._cardInfo = null;
         this.returnToIsland();
       }
+    } else {
+      if (name === 'jt') {
+        const room = this._world.getPenguinRoom(this._penguin);  
+        this._tableInfo = {
+          table: room.getTable(Number(args[0])),
+          seat: Number(args[1]) - 1,
+          room: room,
+          timeout: this.tableMove()
+        }
+        this._simulate('z', 'gz');
+        this._simulate('z', 'jz');
+      }
     }
   }
 
@@ -118,29 +127,9 @@ export class Bot implements ClientSocket {
     };
   }
 
-  public sitAtTable(room: WorldRoom, table: WorldTable): void {
-    const seat = table.assignSeatIndex(this._penguin);
-    if (seat === WorldTable.TABLE_SPECTATOR_SEAT) {
-      return;
-    }
+  public sitAtTable(tableId: number): void {
+    this._simulate('s', this._data.isPreCpip() ? 'jt' : 'a#jt', tableId);
     this.busy = true;
-
-    this.send(room.players, 'ut', table.getId(), table.getCount());
-
-    table.setJoined(seat);
-    this.send(table.penguins, 'uz', seat, this._penguin.name);
-
-    if (!table.hasStarted() && table.hasEveryoneJoined()) {
-      table.setStarted();
-      this.send(table.penguins, 'sz', table.getTurn());
-    }
-
-    this._tableInfo = {
-      table,
-      seat,
-      room,
-      timeout: this.tableMove()
-    }
   }
 
   private parseFindFour(table: FindFourTable): number[][] {
@@ -292,8 +281,6 @@ export class Bot implements ClientSocket {
       const opponent = table.getSeats().some(p => p !== null);
 
       if (!stillSeated || !opponent) {
-        table.removePlayer(this._penguin);
-        this.send(room.players, 'ut', table.getId(), table.getCount());
         this.busy = false;
         this._tableInfo = null;
         return;
@@ -312,8 +299,7 @@ export class Bot implements ClientSocket {
       if (moves === null) {
         return;
       }
-      const msgs = sendTableMove(this._data, table, room, moves);
-      msgs.forEach(([p, m, a]) => this.send(p, m, ...a));
+      this._simulate('z', 'zm', ...moves);
       this._tableInfo.timeout = this.tableMove();
     }, randomInt(TABLE_THINK_MIN, TABLE_THINK_MAX));
   }

@@ -298,7 +298,6 @@ export class BotManager {
       penguin,
       this._data,
       this._world,
-      (p, m, ...a) => this._msg.send(p, m, ...a),
       Date.now() + this.delay(),
       this._writeFn,
       (b: Bot) => this.sendToIsland(b)
@@ -446,7 +445,7 @@ export class BotManager {
       if (bot === undefined) {
         continue;
       }
-      bot.sitAtTable(room, table);
+      bot.sitAtTable(table.getId());
     }
   }
 
