@@ -60,6 +60,7 @@ type BotAttributes = {
   emoteFan: number;
   walkFan: number;
   iglooFan: number;
+  secretsFan: number;
 }
 
 type BotAttribute = keyof BotAttributes;
@@ -68,7 +69,8 @@ enum OverWorldBehaviorCategory {
   Anim,
   Room,
   Balloon,
-  Pos
+  Pos,
+  Wear
 }
 
 enum OverWorldBehavior {
@@ -80,7 +82,10 @@ enum OverWorldBehavior {
   RandomEmote,
   RandomWalk,
   LeaveRoom,
-  HostIgloo
+  HostIgloo,
+
+  JoinDanceFloor,
+  MatchDanceColor
 }
 
 export class Bot implements ClientSocket {
@@ -106,7 +111,8 @@ export class Bot implements ClientSocket {
     [OverWorldBehaviorCategory.Anim]: 0,
     [OverWorldBehaviorCategory.Balloon]: 0,
     [OverWorldBehaviorCategory.Pos]: 0,
-    [OverWorldBehaviorCategory.Room]: 0
+    [OverWorldBehaviorCategory.Room]: 0,
+    [OverWorldBehaviorCategory.Wear]: 0
   }
 
   private _cooldowns: Record<OverWorldBehavior, number> = {
@@ -118,7 +124,9 @@ export class Bot implements ClientSocket {
     [OverWorldBehavior.RandomWalk]: 0,
     [OverWorldBehavior.RandomEmote]: 0,
     [OverWorldBehavior.LeaveRoom]: 0,
-    [OverWorldBehavior.HostIgloo]: 0
+    [OverWorldBehavior.HostIgloo]: 0,
+    [OverWorldBehavior.JoinDanceFloor]: 0,
+    [OverWorldBehavior.MatchDanceColor]: 0
   }
 
   constructor(
@@ -429,13 +437,30 @@ export class Bot implements ClientSocket {
     }
   }
 
+  public doDance(): void {
+    this.doFrame(26);
+  }
+
+  public joinDanceFloor(): void {
+    const y = randomInt(267,413);
+    const minX = (149-205) / (413-267) * (y - 267) + 205;
+    const maxX = (489-442) / (413-267) * (y - 267) + 489;
+    this.walkTo(randomInt(minX, maxX), y);
+    // TODO system to calculate time of walk
+    setTimeout(() => {
+      this.doDance();
+    }, 4000);
+  }
+
+  public wearColor(color: number): void {
+    this._simulate('s', 's#upc', color);
+  }
+
   public act(): void {
     const room = this._world.getPenguinRoom(this.penguin);
     if (room === undefined) {
       return;
     }
-
-    const now = Date.now();
 
     const locks: Record<OverWorldBehavior, OverWorldBehaviorCategory[]> = {
       [OverWorldBehavior.RandomDance]: [OverWorldBehaviorCategory.Anim, OverWorldBehaviorCategory.Pos, OverWorldBehaviorCategory.Room],
@@ -446,7 +471,9 @@ export class Bot implements ClientSocket {
       [OverWorldBehavior.RandomEmote]: [OverWorldBehaviorCategory.Balloon],
       [OverWorldBehavior.RandomWalk]: [],
       [OverWorldBehavior.LeaveRoom]: [],
-      [OverWorldBehavior.HostIgloo]: [OverWorldBehaviorCategory.Room]
+      [OverWorldBehavior.HostIgloo]: [OverWorldBehaviorCategory.Room],
+      [OverWorldBehavior.JoinDanceFloor]: [OverWorldBehaviorCategory.Room, OverWorldBehaviorCategory.Anim, OverWorldBehaviorCategory.Pos],
+      [OverWorldBehavior.MatchDanceColor]: [OverWorldBehaviorCategory.Wear, OverWorldBehaviorCategory.Room, OverWorldBehaviorCategory.Anim, OverWorldBehaviorCategory.Pos]
     }
 
     const needs: Record<OverWorldBehavior, OverWorldBehaviorCategory> = {
@@ -458,14 +485,62 @@ export class Bot implements ClientSocket {
       [OverWorldBehavior.RandomMessage]: OverWorldBehaviorCategory.Balloon,
       [OverWorldBehavior.RandomEmote]: OverWorldBehaviorCategory.Balloon,
       [OverWorldBehavior.LeaveRoom]: OverWorldBehaviorCategory.Room,
-      [OverWorldBehavior.HostIgloo]: OverWorldBehaviorCategory.Room
+      [OverWorldBehavior.HostIgloo]: OverWorldBehaviorCategory.Room,
+      [OverWorldBehavior.JoinDanceFloor]: OverWorldBehaviorCategory.Anim,
+      [OverWorldBehavior.MatchDanceColor]: OverWorldBehaviorCategory.Wear
+    }
+
+    const setLength = (cats: OverWorldBehaviorCategory[], cooldown: number) => {
+      cats.forEach(cat => this._locks[cat] = now + cooldown * 1000);
+    }
+    const setCooldown = (cat: OverWorldBehavior, cooldown: number) => {
+      this._cooldowns[cat] = now + cooldown * 1000;
+    }
+
+    const now = Date.now();
+
+    if (room.id === ROOMS.dance.id) {
+      if (this._cooldowns[OverWorldBehavior.JoinDanceFloor] < now) {
+        let len: number = 0;
+        if (Math.random() * this._attributes.danceFan > 0.3) {
+          this.joinDanceFloor();
+          len = Math.random() * (this._attributes.danceFan + 1) * 180;
+          const cooldown = len + Math.random() * (1 - this._attributes.danceFan) * 30;
+          setLength(locks[OverWorldBehavior.JoinDanceFloor], len);
+          setCooldown(OverWorldBehavior.JoinDanceFloor, cooldown);
+
+          if (Math.random() * this._attributes.secretsFan > 0.2) {
+            const colors = new Map<number, number>();
+            room.players.forEach((p) => {
+              colors.set(p.inventory.color, (colors.get(p.inventory.color) ?? 0) + 1);
+            });
+            const entries = [...colors.entries()];
+            let mostPopular = entries[0][0];
+            let mostAmount = entries[0][1];
+            for (const [id, amount] of entries.slice(1)) {
+              if (amount > mostAmount) {
+                mostAmount = amount;
+                mostPopular = id;
+              }
+            }
+            setTimeout(() => {
+              this.wearColor(mostPopular);
+            }, 4000 + Math.random() * 2000);
+
+          }
+          return;
+        } else {
+          const cooldown = Math.random() * (1 - this._attributes.danceFan) * 240;
+          setCooldown(OverWorldBehavior.JoinDanceFloor, cooldown);
+        }
+      }
     }
 
     const attrsNCallback: Partial<Record<OverWorldBehavior, [BotAttribute, () => [number | null, number]]>> = {
       [OverWorldBehavior.RandomDance]: [
         'danceFan',
         () => {
-          this.doFrame(26);
+          this.doDance;
           const len = Math.random() * (this._attributes.danceFan + 1) * 20;
           const cooldown = len + Math.random() * (1 - this._attributes.danceFan) * 30;
           return [len, cooldown];
@@ -540,12 +615,6 @@ export class Bot implements ClientSocket {
       return this._attributes[attrsNCallback[b][0]] - this._attributes[attrsNCallback[a][0]];
     });
 
-    const setLength = (cats: OverWorldBehaviorCategory[], cooldown: number) => {
-      cats.forEach(cat => this._locks[cat] = now + cooldown * 1000);
-    }
-    const setCooldown = (cat: OverWorldBehavior, cooldown: number) => {
-      this._cooldowns[cat] = now + cooldown * 1000;
-    }
 
     if (this._cooldowns[OverWorldBehavior.HostIgloo] < now) {
       if (Math.random() * this._attributes.iglooFan > 0.9) {

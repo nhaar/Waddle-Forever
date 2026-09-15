@@ -101,14 +101,14 @@ function generateRandomOutfit(
   member: boolean
 ): PenguinEquipped {
   const available = [...data.getAvailableItems().values()];
-  const possibleInventory = [...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()];
+  const possibleInventory = [...new Set([...available, ...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()])];
 
   const items: Array<[EquipProp, number]> = [];
 
   equipProp.forEach(prop => {
     const roll = Math.random();
     let item: number;
-    if (roll < CHANCE_NO_ITEM) {
+    if (prop !== 'color' && roll < CHANCE_NO_ITEM) {
       item = 0;
     } else {
       const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : possibleInventory)
@@ -116,7 +116,7 @@ function generateRandomOutfit(
           const info = ITEMS.get(i);
           return info !== undefined && (member || !info.isMember) && info.type === getItemTypeFromEquipProp(prop)
         });
-      item = itemPool.length === 0 ? 0 : choose(itemPool);
+        item = itemPool.length === 0 ? 0 : choose(itemPool);
     }
 
     items.push([prop, item]);
@@ -282,7 +282,8 @@ export class BotManager {
         walkFan: Math.random(),
         emptyRoomTolerance: Math.random(),
         roomDistraction: Math.random(),
-        iglooFan: Math.random()
+        iglooFan: Math.random(),
+        secretsFan: Math.random()
       }
     )
     this._msg.linkClient(bot, bot.penguin);
