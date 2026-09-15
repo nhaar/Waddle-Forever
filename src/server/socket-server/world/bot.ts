@@ -663,6 +663,7 @@ BEHAVIORS.forEach((behavior, i) => {
 });
 
 export class Bot implements ClientSocket {
+  public closed: boolean;
   private _brain: BotBrain | null = null;
   public get busy () {
     return this._brain !== null;

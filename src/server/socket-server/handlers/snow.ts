@@ -1,14 +1,227 @@
 import { PenguinMessenger } from "../messenger";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { getDefaultPenguin } from "@server/database/database";
-import { logdebug } from "@server/logger";
+import { getYellowString, logdebug, logverbose } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
-import serverList, { getServerPopulation } from "@server/servers";
-import { LoginContext } from "@server/socket-server/xml-handler";
+import { SnowContext } from "@server/socket-server/snow-data-handler";
+import { AlignMode, EventType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
+import { LocalGameObject } from "../world/snow/snow-game-objects";
 
 
-type LoginHandler = (ctx: LoginContext, message: string) => void;
+export type SnowHandler = (ctx: SnowContext, ...args: Array<string>) => Promise<void>;
+export type SnowFrameworkHandler = (ctx: SnowContext, args: Record<string, any>) => Promise<void>;
 
-export const login: LoginHandler = async (ctx, message: string) => {
-  const { msg, data, settings, db, client } = ctx;
+export const handleVersion: SnowHandler = async ({ msg, client }) => {
+  // copied from snowflake config.py, is this meaningful at all?
+  await msg.sendSnowData(client, 'S_VERSION', 'FY15-20150206 (4954)r');
+}
+
+export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => {
+  const params = new URLSearchParams(query);
+
+  const battleMode = params.get('battleMode');
+  const baseAssetUrl = params.get('base_asset_url');
+  // it puts "quotes" around the name for some reason
+  const place = ctx.world.places[JSON.parse(placeName)];
+
+  if (battleMode === null || baseAssetUrl === null || place === undefined) {
+    await ctx.penguin.sendLoginError(ctx);
+    ctx.client.end();
+    return;
+  }
+
+  ctx.penguin.battleMode = Number(battleMode);
+  ctx.penguin.baseUrl = baseAssetUrl;
+  ctx.penguin.place = place;
+}
+
+export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
+  const id = Number(pid);
+
+  const { msg, client, penguin, world } = ctx;
+
+  const failLogin = async (msg: string) => {
+    logdebug(getYellowString(`Snow login failed: ${msg}`));
+    await penguin.sendLoginError(ctx);
+    client.end();
+  }
+
+  await penguin.sendLoginMessage(ctx, "Got /login command");
+
+  if (penguin.loggedIn) {
+    failLogin("Already logged in!");
+    return;
+  }
+
+  if (serverType.toUpperCase() !== ServerType[world.serverType]) {
+    failLogin("Invalid server type given");
+    return;
+  }
+
+  const pjson = await ctx.db.get(id);
+
+  if (pjson === null) {
+    failLogin("Penguin not found");
+    return;
+  }
+  
+  // this is where we should handle closing multiple connections if this penguin is already logged in,
+  // but there isn't even handling for that in the normal world, so uhhhhh
+
+  // TODO: validate token (not super necessary but whatever)
+
+  // TODO: block joining tusk battle if user is not a snow ninja
+
+  console.log(`${pjson.name} is logging into CJ Snow`);
+
+  const p = new WorldPenguin(id, pjson, ctx.settings);
+  ctx.off.removePenguin(id);
+  penguin.penguin = p;
+  penguin.pid = p.id;
+  world.addPenguin(ctx.penguin);
+
+  penguin.loggedIn = true;
+  await penguin.sendLoginMessage(ctx, 'Finalizing login');
+  await penguin.sendLoginReply(ctx);
+  
+  // TODO: this shouldnt be sending an empty string... is somewhere else incorrect?
+  await msg.sendSnowData(client, 'W_BASEASSETURL', '');
+  await msg.sendSnowData(client, 'S_WORLDTYPE', world.serverType, world.buildType);
+  await msg.sendSnowData(client, 'S_WORLD', world.worldId, world.worldName, `0:${penguin.place.id}`, 0, 'none', 0, world.worldOwner, world.worldName, 0, world.stylesheetId, 0);
+
+  await penguin.switchPlace(ctx, penguin.place);
+}
+
+export const handleReady: SnowHandler = async (ctx) => {
+  const { msg, client, penguin } = ctx;
+
+  if (!penguin.windowManager.loaded) {
+    await penguin.windowManager.load(ctx);
+  }
+
+  const place = penguin.place;
+
+  await msg.sendSnowData(client, 'UI_ALIGN', ctx.world.worldId, 0, 0, AlignMode.CENTER, ScaleMode.NONE);
+  await msg.sendSnowData(client, 'UI_BGCOLOR', 34, 164, 243);
+  await penguin.setPlace(ctx, place.name, 1, 0);
+  
+  await msg.sendSnowData(client, 'P_MAPBLOCK', MapblockType.TILEMAP, 1, 1, place.mapBlocks.tileMap);
+  await msg.sendSnowData(client, 'P_MAPBLOCK', MapblockType.HEIGHTMAP, 1, 1, place.mapBlocks.heightMap);
+
+  await msg.sendSnowData(client, 'P_VIEW', place.camera.viewMode);
+  await msg.sendSnowData(client, 'P_TILESIZE', place.camera.tileSize);
+  await msg.sendSnowData(client, 'P_LOCKVIEW', Number(place.camera.lockView));
+  await msg.sendSnowData(client, 'P_LOCKSCROLL', Number(place.camera.lockScroll));
+  await msg.sendSnowData(client, 'P_LOCKOBJECTS', Number(place.objectLock));
+
+  await msg.sendSnowData(client, 'P_HEIGHTMAPDIVISIONS', place.camera.heightMapDivisions);
+  await msg.sendSnowData(client, 'P_HEIGHTMAPSCALE', place.camera.heightMapScale);
+  await msg.sendSnowData(client, 'P_DRAG', Number(place.draggable));
+  await msg.sendSnowData(client, 'P_ELEVSCALE', place.camera.elevationScale);
+  await msg.sendSnowData(client, 'P_RELIEF', Number(place.camera.terrainLighting));
+  // do these need repeated?
+  await msg.sendSnowData(client, 'P_HEIGHTMAPDIVISIONS', place.camera.heightMapDivisions);
+  await msg.sendSnowData(client, 'P_HEIGHTMAPSCALE', place.camera.heightMapScale);
+
+  const c3d = place.camera3d;
+  await msg.sendSnowData(client, 'P_CAMERA3D',
+    c3d.near, c3d.far,
+    ...c3d.position, ...c3d.angle,
+    c3d.cameraView, c3d.left,
+    c3d.right, c3d.top,
+    c3d.top, c3d.bottom,
+    c3d.aspect, c3d.vFov,
+    c3d.focalLength, 0, c3d.cameraWidth,
+    c3d.cameraHeight
+  );
+
+  const cam = place.camera;
+  await msg.sendSnowData(client, 'P_CAMLIMITS',
+    cam.marginTopLeftX, cam.marginTopLeftY,
+    cam.marginBottomRightX, cam.marginBottomRightY
+  );
+
+  await msg.sendSnowData(client, 'P_RENDERFLAGS', Number(place.render.occludeTiles), place.render.alphaCutoff);
+  await msg.sendSnowData(client, 'P_LOCKRENDERSIZE', 0, c3d.cameraWidth, c3d.cameraHeight);
+
+  const s = place.physics;
+  await msg.sendSnowData(client, 'P_PHYSICS', ...[
+    s.gravity, s.collision, s.friction,
+    s.tileFriction, s.safetyNet, s.netHeight,
+    s.netFriction, s.netBounce
+  ].map(Number));
+
+  await msg.sendSnowData(client, 'P_ASSETSCOMPLETE');
+}
+
+export const handlePlaceReady: SnowHandler = async (ctx) => {
+  const { msg, client, penguin } = ctx;
+
+  await msg.sendSnowData(client, 'P_CAMERA', ...penguin.place.camera.position, 0, 1);
+  await msg.sendSnowData(client, 'P_ZOOM', penguin.place.camera.zoom.toFixed(1));
+  await msg.sendSnowData(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
+  await msg.sendSnowData(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
+
+  const player = new LocalGameObject(penguin, 'Player', 5, 2.5);
+  await player.placeObject(ctx);
+  await msg.sendSnowData(client, 'O_PLAYER', player.id);
+}
+
+export const handleIntroAnimDone: SnowHandler = async () => {
+  // no-op
+}
+
+export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async ({ penguin }) => {
+  if (penguin.inGame) {
+    penguin.isReady = true;
+  }
+}
+
+export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => {
+  const { penguin, world } = ctx;
+
+  penguin.windowManager.ready = true;
+
+  const loadingScreen = penguin.getWindow(
+    ctx,
+    'cjsnow_loadingscreenassets.swf',
+    `${penguin.assetBaseUrl}/cjsnow_loadingscreenassets.swf`
+  );
+
+  const wm = penguin.getWindow(ctx, 'windowmanager.swf');
+  await wm.sendAction(ctx, 'setWorldId', { worldId: world.worldId });
+  await wm.sendAction(ctx, 'setBaseAssetUrl', { baseAssetUrl: penguin.baseUrl });
+  await wm.sendAction(ctx, 'setFontPath', { defaultFontPath: `${penguin.baseUrl}/fonts/` });
+
+  await wm.sendAction(ctx, 'skinRoomToRoom', {
+    url: loadingScreen.url,
+    className: '',
+    variant: penguin.battleMode
+  }, EventType.PLAY_ACTION);
+
+  const errorHandler = penguin.getWindow(ctx, 'cardjitsu_snowerrorhandler.swf');
+  errorHandler.layer = 'bottomLayer';
+  await errorHandler.load(ctx, null, { xPercent: 0, yPercent: 0, loadDescription: '' });
+
+  // TODO: get powercards count
+
+  // TODO: this can be one of two: 'cardjitsu_snowplayerselect.swf' or 'cardjitsu_snowplayerselectbeta.swf'
+  const playerSelect = penguin.getWindow(ctx, 'cardjitsu_snowplayerselect.swf');
+  await playerSelect.load(ctx, {
+    game: penguin.battleMode === 0 ? 'snow' : 'snowtusk',
+    name: penguin.penguin.name,
+    powerCardsFire: 0,
+    powerCardsWater: 0,
+    powerCardsSnow: 0,
+    playerSnowRank: 0, // todo
+  }, {
+    loadDescription: '', xPercent: 0, yPercent: 0
+  });
+}
+
+export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
+  const { client, penguin } = ctx;
+  console.log(`${penguin.penguin?.name} is leaving CJ Snow`);
+  await penguin.sendToRoom(ctx);
+  client.closed = true;
 }

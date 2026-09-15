@@ -354,6 +354,15 @@ export function tryToNumber(s: string) {
   return isNaN(num) ? s : num
 }
 
+// https://stackoverflow.com/questions/23164474/how-unique-and-random-are-javascript-generated-uuids
+// we need this since the 'crypto' module isn't available for some reason
+export function randomUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+
 export const doubleFilter = <T>(predicate: (e: T) => boolean, arr: T[]): [T[], T[]] => {
   const include: T[] = [];
   const exclude: T[] = [];

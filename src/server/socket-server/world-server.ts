@@ -153,6 +153,8 @@ export class WorldServer implements MessageHandler {
     await this._xtHandler.disconnect(context);
   }
 
+  public async connect() {}
+
   public get mods() {
     return this._mods;
   }
