@@ -3,14 +3,13 @@
  */
 
 import { getDefaultPenguin, PenguinJson } from '@server/database/database';
-import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { World } from './world';
 import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { choose, clamp, randomInt } from '@common/utils';
-import { Bot, WALK_AREA, WriteFunction } from './bot';
+import { Bot, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
@@ -155,7 +154,6 @@ export class BotManager {
   private _settings: BotSettings = { ...DEFAULT_BOT_SETTINGS };
   /** Bots sitting in a waddle or at a table, which must stop waddling about */
   /** Bots currently at home with an open igloo, and when they will head back out */
-  private _homes = new Map<Bot, number>();
   private _on = false;
   private _waddleSeen = new Map<number, number>();
   private _waddleLastSeat = new Map<number, number>();
@@ -236,7 +234,6 @@ export class BotManager {
   public shutdown(): void {
     this.stop();
     [...this._bots.keys()].forEach(id => this.despawn(id));
-    this._homes.clear();
   }
 
   // -------------------------------------------------------------------------
@@ -249,7 +246,7 @@ export class BotManager {
     }
     while (this._bots.size > this._settings.population) {
       const idle = [...this._bots.entries()].find(
-        ([, b]) => !b.busy && !this._homes.has(b)
+        ([, b]) => !b.busy
       );
       const id = idle?.[0] ?? [...this._bots.keys()][0];
       if (id === undefined) {
@@ -274,7 +271,19 @@ export class BotManager {
       this._world,
       Date.now() + this.delay(),
       this._writeFn,
-      (b: Bot) => this.sendToIsland(b)
+      (b: Bot) => this.sendToIsland(b),
+      {
+        danceFan: Math.random(),
+        snowballFan: Math.random(),
+        waveFan: Math.random(),
+        sitFan: Math.random(),
+        chatFan: Math.random(),
+        emoteFan: Math.random(),
+        walkFan: Math.random(),
+        emptyRoomTolerance: Math.random(),
+        roomDistraction: Math.random(),
+        iglooFan: Math.random()
+      }
     )
     this._msg.linkClient(bot, bot.penguin);
     this._bots.set(id, bot);
@@ -294,7 +303,6 @@ export class BotManager {
     this.disconnect(bot);
     this._world.closeIgloo(bot.penguin);
     this._world.disconnect(bot.penguin);
-    this._homes.delete(bot);
     this._bots.delete(id);
   }
 
@@ -430,7 +438,6 @@ export class BotManager {
     if (this._settings.playGames) {
       this.tickGames();
     }
-    this.tickIgloos();
 
     for (const bot of this._bots.values()) {
       if (now < bot.nextActionAt || bot.busy) {
@@ -471,47 +478,6 @@ export class BotManager {
       // a bot without a valid layout simply doesn't get an igloo
       console.error('could not decorate bot igloo', e);
     }
-  }
-
-  /** Keeps a few igloos open, and sends hosts back out when they've had enough */
-  private tickIgloos(): void {
-    const now = Date.now();
-
-    for (const [penguin, until] of [...this._homes.entries()]) {
-      if (now >= until) {
-        this.closeIglooFor(penguin);
-      }
-    }
-
-    if (this._homes.size >= Math.min(this._settings.openIgloos, this._bots.size)) {
-      return;
-    }
-    // one at a time, and not every tick, so igloos open and close gradually
-    if (Math.random() > 0.04) {
-      return;
-    }
-
-    const candidate = [...this._bots.values()]
-      .find(b => !b.busy && !this._homes.has(b));
-
-    if (candidate !== undefined) {
-      this.openIglooFor(candidate);
-    }
-  }
-
-  /** Opens a bot's igloo and puts the bot inside it, so visitors find someone home */
-  public openIglooFor(bot: Bot): void {
-    const room = this._world.getRoom(IGLOO_ROOM_BASE + bot.penguin.id);
-    this._world.openIgloo(bot.penguin);
-    bot.enter(room.id);
-    this._homes.set(bot, Date.now() + randomInt(180_000, 480_000));
-  }
-
-  /** Closes the igloo and sends the bot back out onto the island */
-  public closeIglooFor(bot: Bot): void {
-    this._world.closeIgloo(bot.penguin);
-    this._homes.delete(bot);
-    bot.enter(bot.chooseRoom());
   }
 
   /** Puts a bot back on the island after a game */

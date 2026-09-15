@@ -282,7 +282,6 @@ export class GameData {
         iterateEntries(v, (flag, value) => {
           this.state.flags[flag] = value;
           if (flag === 'preCpip' && !value) {
-            console.log('yes this happens');
             this.addRouteMap(CPIP_STATIC_FILES);
             this.addRouteMap(CPIP_AS3_STATIC_FILES);
           } else if (flag === 'stamps' && value) {

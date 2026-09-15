@@ -1,4 +1,4 @@
-import { choose, clamp, randomInt, randomLogNormal } from "@common/utils";
+import { choose, clamp, iterateEntries, randomInt, randomLogNormal } from "@common/utils";
 import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { GameData } from "@server/timelines/game-data";
@@ -8,7 +8,7 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
-import { RoomName, ROOMS } from "@server/game-data/rooms";
+import { IGLOO_ROOM_BASE, RoomName, ROOMS } from "@server/game-data/rooms";
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
@@ -49,8 +49,39 @@ const CHAT_LINES = [
   'where is everyone', 'first!', 'im a member', 'add me'
 ];
 
-const BOREDOM_TIME = 120;
-const MOVEMENT_TIME = 60;
+type BotAttributes = {
+  emptyRoomTolerance: number;
+  roomDistraction: number;
+  snowballFan: number;
+  waveFan: number;
+  sitFan: number;
+  danceFan: number;
+  chatFan: number;
+  emoteFan: number;
+  walkFan: number;
+  iglooFan: number;
+}
+
+type BotAttribute = keyof BotAttributes;
+
+enum OverWorldBehaviorCategory {
+  Anim,
+  Room,
+  Balloon,
+  Pos
+}
+
+enum OverWorldBehavior {
+  RandomDance,
+  RandomSnowball,
+  RandomWave,
+  RandomSit,
+  RandomMessage,
+  RandomEmote,
+  RandomWalk,
+  LeaveRoom,
+  HostIgloo
+}
 
 export class Bot implements ClientSocket {
   public busy = false;
@@ -71,8 +102,24 @@ export class Bot implements ClientSocket {
   private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
   private returnToIsland: () => void;  
 
-  private _movementTime: number = 0;
-  private _roomChangeTime: number = 0;
+  private _locks: Record<OverWorldBehaviorCategory, number> = {
+    [OverWorldBehaviorCategory.Anim]: 0,
+    [OverWorldBehaviorCategory.Balloon]: 0,
+    [OverWorldBehaviorCategory.Pos]: 0,
+    [OverWorldBehaviorCategory.Room]: 0
+  }
+
+  private _cooldowns: Record<OverWorldBehavior, number> = {
+    [OverWorldBehavior.RandomDance]: 0,
+    [OverWorldBehavior.RandomSnowball]: 0,
+    [OverWorldBehavior.RandomWave]: 0,
+    [OverWorldBehavior.RandomSit]: 0,
+    [OverWorldBehavior.RandomMessage]: 0,
+    [OverWorldBehavior.RandomWalk]: 0,
+    [OverWorldBehavior.RandomEmote]: 0,
+    [OverWorldBehavior.LeaveRoom]: 0,
+    [OverWorldBehavior.HostIgloo]: 0
+  }
 
   constructor(
     private _penguin: WorldPenguin,
@@ -80,7 +127,8 @@ export class Bot implements ClientSocket {
     private _world: World,
     public nextActionAt: number,
     writeFn: WriteFunction,
-    returnFn: (b: Bot) => void
+    returnFn: (b: Bot) => void,
+    private _attributes: BotAttributes
   ) {
     this._simulate = (e, c, ...a) => writeFn(this, e, c, ...a);
     this.returnToIsland = () => returnFn(this);
@@ -373,6 +421,14 @@ export class Bot implements ClientSocket {
     return ROOMS[choose(BOT_ROOMS)].id;
   }
 
+  public openIgloo(): void {
+    if (this._data.isPreCpip()) {
+      this._simulate('r', 'or', this.penguin.id);
+    } else {
+      this._simulate('s', 'g#or', this.penguin.id, this.penguin.name);
+    }
+  }
+
   public act(): void {
     const room = this._world.getPenguinRoom(this.penguin);
     if (room === undefined) {
@@ -381,32 +437,145 @@ export class Bot implements ClientSocket {
 
     const now = Date.now();
 
-    if (this._roomChangeTime < now) {
-      // bots leave faster if the room is emptier
-      if (room.players.length / 30 < Math.random()) {
+    const locks: Record<OverWorldBehavior, OverWorldBehaviorCategory[]> = {
+      [OverWorldBehavior.RandomDance]: [OverWorldBehaviorCategory.Anim, OverWorldBehaviorCategory.Pos, OverWorldBehaviorCategory.Room],
+      [OverWorldBehavior.RandomSnowball]: [],
+      [OverWorldBehavior.RandomWave]: [],
+      [OverWorldBehavior.RandomSit]: [OverWorldBehaviorCategory.Anim, OverWorldBehaviorCategory.Pos, OverWorldBehaviorCategory.Room],
+      [OverWorldBehavior.RandomMessage]: [OverWorldBehaviorCategory.Balloon],
+      [OverWorldBehavior.RandomEmote]: [OverWorldBehaviorCategory.Balloon],
+      [OverWorldBehavior.RandomWalk]: [],
+      [OverWorldBehavior.LeaveRoom]: [],
+      [OverWorldBehavior.HostIgloo]: [OverWorldBehaviorCategory.Room]
+    }
+
+    const needs: Record<OverWorldBehavior, OverWorldBehaviorCategory> = {
+      [OverWorldBehavior.RandomDance]: OverWorldBehaviorCategory.Anim,
+      [OverWorldBehavior.RandomSnowball]: OverWorldBehaviorCategory.Anim,
+      [OverWorldBehavior.RandomWave]: OverWorldBehaviorCategory.Anim,
+      [OverWorldBehavior.RandomSit]: OverWorldBehaviorCategory.Anim,
+      [OverWorldBehavior.RandomWalk]: OverWorldBehaviorCategory.Pos,
+      [OverWorldBehavior.RandomMessage]: OverWorldBehaviorCategory.Balloon,
+      [OverWorldBehavior.RandomEmote]: OverWorldBehaviorCategory.Balloon,
+      [OverWorldBehavior.LeaveRoom]: OverWorldBehaviorCategory.Room,
+      [OverWorldBehavior.HostIgloo]: OverWorldBehaviorCategory.Room
+    }
+
+    const attrsNCallback: Partial<Record<OverWorldBehavior, [BotAttribute, () => [number | null, number]]>> = {
+      [OverWorldBehavior.RandomDance]: [
+        'danceFan',
+        () => {
+          this.doFrame(26);
+          const len = Math.random() * (this._attributes.danceFan + 1) * 20;
+          const cooldown = len + Math.random() * (1 - this._attributes.danceFan) * 30;
+          return [len, cooldown];
+        }
+      ],
+      [OverWorldBehavior.RandomSnowball]: [
+        'snowballFan',
+        () => {
+          this.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
+          const cooldown = Math.random() * (1 - this._attributes.danceFan) * 30;
+          return [null, cooldown];
+        }
+      ],
+      [OverWorldBehavior.RandomWave]: [
+        'waveFan',
+        () => {
+          this.doFrame(25);
+          const cooldown = Math.random() * (1 - this._attributes.waveFan) * 30;
+          return [null, cooldown];
+        }
+      ],
+      [OverWorldBehavior.RandomSit]: [
+        'sitFan',
+        () => {
+          this.doFrame(choose([17, 18, 19, 20, 21, 22, 23, 24]));
+          const len = Math.random() * (this._attributes.sitFan + 1) * 20;
+          const cooldown = len + Math.random() * (1 - this._attributes.sitFan) * 30;
+          return [len, cooldown];
+        }
+      ],
+      [OverWorldBehavior.RandomMessage]: [
+        'chatFan',
+        () => {
+          this.sendMessage(choose(CHAT_LINES));
+          const cooldown = Math.random() * (1 - this._attributes.chatFan) * 30;
+          return [null, cooldown];
+        }
+      ],
+      [OverWorldBehavior.RandomWalk]: [
+        'walkFan',
+        () => {
+          this.walkTo(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
+          const cooldown = Math.random() * (1 - this._attributes.walkFan) * 30;
+          return [null, cooldown];
+        }
+      ],
+      [OverWorldBehavior.RandomEmote]: [
+        'emoteFan',
+        () => {
+          this.doEmote(choose(EMOTES));
+          const cooldown = Math.random() * (1 - this._attributes.emoteFan) * 30;
+          return [null, cooldown];
+        }
+      ]
+    }
+
+    const possible: OverWorldBehavior[] = [];
+    const locked: Set<OverWorldBehaviorCategory> = new Set();
+    iterateEntries(this._locks, (cat, time) => {
+      if (time > now) {
+        locked.add(Number(cat));
+      }
+    });
+
+    for (const behavior of Object.keys(locks)) {
+      if (!locked.has(needs[behavior]) && behavior in attrsNCallback) {
+        possible.push(Number(behavior));
+      }
+    }
+
+    possible.sort((a, b) => {
+      return this._attributes[attrsNCallback[b][0]] - this._attributes[attrsNCallback[a][0]];
+    });
+
+    const setLength = (cats: OverWorldBehaviorCategory[], cooldown: number) => {
+      cats.forEach(cat => this._locks[cat] = now + cooldown * 1000);
+    }
+    const setCooldown = (cat: OverWorldBehavior, cooldown: number) => {
+      this._cooldowns[cat] = now + cooldown * 1000;
+    }
+
+    if (this._cooldowns[OverWorldBehavior.HostIgloo] < now) {
+      if (Math.random() * this._attributes.iglooFan > 0.9) {
+        this.enter(IGLOO_ROOM_BASE + this.penguin.id);
+        this.openIgloo();
+      }
+      const len = Math.random() * (this._attributes.danceFan) * 900;
+      setLength(locks[OverWorldBehavior.HostIgloo], len);
+      setCooldown(OverWorldBehavior.HostIgloo, len + Math.random() * (1 - this._attributes.roomDistraction) * 300);
+      return;
+    }
+
+    if (this._cooldowns[OverWorldBehavior.LeaveRoom] < now) {
+      const roll = Math.random() * this._attributes.emptyRoomTolerance + (1 - this._attributes.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30);
+      if (roll < 0.5) {
         this.enter(this.chooseRoom());
       }
-      this._roomChangeTime = now + (BOREDOM_TIME * 1000) * (Math.random() / 2 + 0.5);
-    } else if (this._movementTime < now) {
-      this.walkTo(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
-      this._movementTime = now + (MOVEMENT_TIME * 1000) * (Math.random() / 2 + 0.5);
-    } else {
-      const action = randomInt(1, 4);
-      if (action === 1) {
-        this.sendMessage(choose(CHAT_LINES));
-      } else if (action === 2) {
-        this.doEmote(choose(EMOTES));
-      } else if (action === 3) {
-        this.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
-      } else if (action === 4) {
-        const animation = randomInt(1, 3);
-        if (animation === 1) {
-          this.doFrame(26);
-        } else if (animation === 2) {
-          this.doFrame(25);
-        } else if (animation === 3) {
-          this.doFrame(choose([17, 18, 19, 20, 21, 22, 23, 24]));
+      setCooldown(OverWorldBehavior.LeaveRoom,  Math.random() * (1 - this._attributes.roomDistraction) * 300);
+      return;
+    }
+
+    for (const behavior of possible) {
+      if (this._cooldowns[behavior] < now && this._attributes[attrsNCallback[behavior][0]] > Math.random()) {
+        const callback = attrsNCallback[behavior][1];
+        const [length, cooldown] = callback();
+        if (length !== null) {
+          setLength(locks[behavior], length);
         }
+        setCooldown(behavior, cooldown);
+        return;
       }
     }
   }

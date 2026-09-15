@@ -320,7 +320,7 @@ export const handleJoinPlayerCpip: PenguinHandler<[number]> = (ctx, fakeId) => {
   // for some reason the ID given is the player + 1000
   const iglooId = fakeId - 1000 + IGLOO_ROOM_BASE;
   const igloo = world.getRoom(iglooId);
-  enterRoom(ctx, igloo, 0, 0);
+  joinRoom(ctx, igloo.id, 0, 0);
 }
 
 export const handleJoinPlayerModern: PenguinHandler<[number, string]> = (ctx, playerId, roomType) => {
@@ -329,7 +329,7 @@ export const handleJoinPlayerModern: PenguinHandler<[number, string]> = (ctx, pl
   const roomId = roomType === 'igloo' ? playerId + IGLOO_ROOM_BASE : 1000;
   msg.send(penguin, 'jp', roomId, roomId, roomType);
   // TODO: backyard should only be player itself?
-  enterRoom(ctx, world.getRoom(roomId), 0, 0);
+  joinRoom(ctx, roomId, 0, 0);
 }
 
 export const isPreBackyardGuard: PenguinGuard = (ctx) => !isBackyardGuard(ctx);
