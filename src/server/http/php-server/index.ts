@@ -3,7 +3,7 @@ import express from 'express';
 import { SettingsManager } from "@server/settings";
 import { Router } from "express";
 import { processVersion } from '@server/routes/versions';
-import { getDateString } from '@common/utils';
+import { getDateString, randomUUID } from '@common/utils';
 import { getDefaultPenguin, PenguinJson, PenguinRepository } from '@server/database/database';
 import { filterItems } from '@server/socket-server/handlers/join';
 import { GameData } from '@server/timelines/game-data';
@@ -284,13 +284,7 @@ class SessionManager<T extends Session> {
   }
 
   public generateSession(): string {
-    // crypto.randomUUID() can't be accessed here, so this will have to do
-    const gen = () => Date.now() * Math.random();
-    let sid: string;
-    
-    do {
-      sid = String(gen());
-    } while(this._sessions.has(sid));
+    const sid = randomUUID();
 
     const timeout = this.setTimeout(sid);
     this._sessions.set(sid, this.createEntry(timeout));

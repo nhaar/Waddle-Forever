@@ -31,6 +31,7 @@ class LoginServer implements MessageHandler {
     }, message); 
   };
 
+  public async connect() {}
   public async disconnect() {}
 }
 
