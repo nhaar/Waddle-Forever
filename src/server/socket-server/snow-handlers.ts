@@ -1,5 +1,5 @@
 import { filePolicy } from "./handlers/login";
-import { frameworkQuit, frameworkRoomToRoomComplete, frameworkWindowManagerReady, handleIntroAnimDone, handleLogin, handlePlaceContext, handlePlaceReady, handleReady, handleVersion } from "./handlers/snow";
+import { frameworkQuit, frameworkRoomToRoomComplete, frameworkWindowManagerReady, frameworkWindowReady, handleIntroAnimDone, handleLogin, handlePayloadBILogAction, handlePlaceContext, handlePlaceReady, handleReady, handleVersion } from "./handlers/snow";
 import { SnowDataHandler } from "./snow-data-handler";
 import { XmlHandler } from "./xml-handler";
 
@@ -23,6 +23,8 @@ export const createSnowDataHandler = (): SnowDataHandler => {
     new Map([
       ['roomToRoomComplete', frameworkRoomToRoomComplete],
       ['windowManagerReady', frameworkWindowManagerReady],
+      ['windowReady', frameworkWindowReady],
+      ['payloadBILogAction', handlePayloadBILogAction],
       ['quit', frameworkQuit],
       ['quitFromPayout', frameworkQuit]
     ])
