@@ -1,5 +1,5 @@
 import { filePolicy } from "./handlers/login";
-import { frameworkQuit, frameworkRoomToRoomComplete, frameworkWindowManagerReady, frameworkWindowReady, handleIntroAnimDone, handleLogin, handlePayloadBILogAction, handlePlaceContext, handlePlaceReady, handleReady, handleVersion } from "./handlers/snow";
+import { frameworkQuit, frameworkRoomToRoomComplete, frameworkScreenSize, frameworkWindowManagerReady, frameworkWindowReady, handleIntroAnimDone, handleLogin, frameworkPayloadBILogAction, handlePlaceContext, handlePlaceReady, handleReady, handleVersion, frameworkElementSelected, frameworkMMCancel } from "./handlers/snow";
 import { SnowDataHandler } from "./snow-data-handler";
 import { XmlHandler } from "./xml-handler";
 
@@ -19,12 +19,15 @@ export const createSnowDataHandler = (): SnowDataHandler => {
       ['/place_ready', handlePlaceReady],
       ['/intro_anim_done', handleIntroAnimDone]
     ]),
-    // /framework commands - action name is based off of 'triggerName' in json
+    // '/framework' commands - action name is based off of 'triggerName' in json
     new Map([
       ['roomToRoomComplete', frameworkRoomToRoomComplete],
       ['windowManagerReady', frameworkWindowManagerReady],
       ['windowReady', frameworkWindowReady],
-      ['payloadBILogAction', handlePayloadBILogAction],
+      ['screenSize', frameworkScreenSize],
+      ['payloadBILogAction', frameworkPayloadBILogAction],
+      ['mmElementSelected', frameworkElementSelected],
+      ['mmCancel', frameworkMMCancel],
       ['quit', frameworkQuit],
       ['quitFromPayout', frameworkQuit]
     ])

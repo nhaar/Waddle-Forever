@@ -16,6 +16,7 @@ import { SnowPlayer, SnowWorld } from "./world/snow/snow";
 import { PenguinPersister } from "./handlers/handlers";
 import { OfflineWorld } from "./offline-world";
 import { setAssets } from "./world/snow/snow-assets";
+import { setupMatchMaker } from "./handlers/snow";
 
 class SnowServer implements MessageHandler {
   private _msg: PenguinMessenger<SnowPlayer>;
@@ -37,6 +38,8 @@ class SnowServer implements MessageHandler {
         this.db.write(p.id, p.getJSON());
       }
     };
+
+    setupMatchMaker(this._world, this._msg);
   }
 
   private getContext(client: ClientSocket): SnowContext {

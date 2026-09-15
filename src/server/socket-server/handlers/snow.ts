@@ -7,6 +7,8 @@ import { SnowContext } from "@server/socket-server/snow-data-handler";
 import { AlignMode, EventType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
 import { LocalGameObject } from "../world/snow/snow-game-objects";
 import { CARDS } from "@server/game-logic/cards";
+import { MatchMaker } from "../world/matchmaker";
+import { SnowPlayer, SnowWorld } from "../world/snow/snow";
 
 
 export type SnowHandler = (ctx: SnowContext, ...args: Array<string>) => Promise<void>;
@@ -228,7 +230,11 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   });
 }
 
-export const handlePayloadBILogAction: SnowFrameworkHandler = async () => {
+export const frameworkScreenSize: SnowFrameworkHandler = async (ctx, { smallViewEnabled }) => {
+  ctx.penguin.screenSize = smallViewEnabled;
+}
+
+export const frameworkPayloadBILogAction: SnowFrameworkHandler = async () => {
   // no-op
 }
 
@@ -241,9 +247,55 @@ export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUr
   }
 }
 
+export const frameworkElementSelected: SnowFrameworkHandler = async (ctx, { element, tipMode }) => {
+  ctx.penguin.element = (element as string).toLowerCase();
+  ctx.penguin.tipMode = tipMode;
+
+  if (!['fire', 'water', 'snow'].includes(ctx.penguin.element)) {
+    logverbose(getYellowString('Invalid element: ' + ctx.penguin.element));
+    ctx.client.end();
+    return;
+  }
+
+  ctx.world.matchMaker.addPlayer(ctx.penguin);
+}
+
+export const frameworkMMCancel: SnowFrameworkHandler = async (ctx) => {
+  ctx.world.matchMaker.removePlayer(ctx.penguin);
+}
+
+export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<SnowPlayer>) => {
+  /* TODO: its probably better that the snow matchmaker gets its own class,
+  since there's a few other things we should do (prioritize by rank,
+  fill in with bot players, etc) */
+
+  world.matchMaker.setAvailableRoomPredicate((room, player: SnowPlayer) => {
+    return !room.full && room.allPlayersMeetCondition((p: SnowPlayer) => {
+      return p.element !== player.element;
+    })
+  });
+  world.matchMaker.setMatchListener((players: SnowPlayer[]) => {
+    const fireNinja = players.find(p => p.element === 'fire') ?? null;
+    const waterNinja = players.find(p => p.element === 'water') ?? null;
+    const snowNinja = players.find(p => p.element === 'snow') ?? null;
+
+    for (const penguin of [fireNinja, snowNinja, waterNinja].filter(Boolean)) {
+      const ctx = { penguin, msg, world } as SnowContext;
+      const select = penguin.getWindow(ctx, 'cardjitsu_snowplayerselect.swf');
+      select.sendPayload(ctx, 'matchFound', {
+        1: fireNinja ? fireNinja.penguin.name : null,
+        2: waterNinja ? waterNinja.penguin.name : null,
+        4: snowNinja ? snowNinja.penguin.name : null
+      })
+      world.matchMaker.removePlayer(penguin);
+    }
+  });
+  world.matchMaker.setTickListener(() => {});
+}
+
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
   const { client, penguin } = ctx;
-  console.log(`${penguin.penguin?.name} is leaving CJ Snow`);
+  console.log(`${penguin.penguin.name} is leaving CJ Snow`);
   await penguin.sendToRoom(ctx);
   client.closed = true;
 }

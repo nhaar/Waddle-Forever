@@ -7,6 +7,7 @@ import { PenguinMessenger } from "../../messenger";
 import { SnowContext } from "../../snow-data-handler";
 import { BuildType, EventType, MessageType, ServerType, ViewMode, WindowAction } from "./snow-constants";
 import { GameObject } from "./snow-game-objects";
+import { MatchMaker } from "../matchmaker";
 
 export interface Asset {
   index: number;
@@ -28,6 +29,8 @@ export class SnowPlayer {
 
   loggedIn: boolean = false;
   isReady: boolean = false;
+  element: string = '';
+  tipMode: boolean = false;
 
   windowManager: WindowManager = new WindowManager();
   localObjects: ObjectCollection = new Set();
@@ -232,7 +235,7 @@ class SWFWindow {
   }
 
   public async send(ctx: SnowContext, content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
-    await ctx.msg.sendSnowData(ctx.client, 'UI_CLIENTEVENT', ctx.world.worldId, msgType, JSON.stringify(content));
+    await ctx.msg.sendSnowData(ctx.penguin, 'UI_CLIENTEVENT', ctx.world.worldId, msgType, JSON.stringify(content));
   }
 
   public async load(ctx: SnowContext, initPayload: Record<string, any> | null = null, kwargs: Record<string, any> = {}) {
@@ -320,7 +323,7 @@ class WindowManager {
 
   public async load(ctx: SnowContext) {
     await ctx.msg.sendSnowData(
-      ctx.client,
+      ctx.penguin,
       'UI_CROSSWORLDSWFREF',
       ctx.world.worldId, // element id
       0, // parent id
@@ -356,9 +359,10 @@ export class SnowWorld {
   soundAssets: AssetCollection = new Set();
   assets: AssetCollection = new Set();
 
-  constructor() {
-    this.init();
+  // MAKE THIS 3 LATER
+  matchMaker: MatchMaker = new MatchMaker(1);
 
+  constructor() {
     this.registerPlace(new SnowLobby());
     this.registerPlace(new SnowBattle());
     this.registerPlace(new TuskBattle());
@@ -380,15 +384,12 @@ export class SnowWorld {
     this.penguins.delete(penguin.id);
   }
 
-  public init() {
-
-  }
-
   public getById(id: number) {
     return this.penguins.get(id);
   }
 
   public get players() {
     return [...this.penguins.values()];
+  }
   }
 }
