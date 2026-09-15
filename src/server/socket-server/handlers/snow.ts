@@ -6,6 +6,7 @@ import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { SnowContext } from "@server/socket-server/snow-data-handler";
 import { AlignMode, EventType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
 import { LocalGameObject } from "../world/snow/snow-game-objects";
+import { CARDS } from "@server/game-logic/cards";
 
 
 export type SnowHandler = (ctx: SnowContext, ...args: Array<string>) => Promise<void>;
@@ -203,20 +204,41 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   errorHandler.layer = 'bottomLayer';
   await errorHandler.load(ctx, null, { xPercent: 0, yPercent: 0, loadDescription: '' });
 
-  // TODO: get powercards count
+  const cardCounts = {
+    'f': 0,
+    'w': 0,
+    's': 0
+  };
+  penguin.penguin.ninja.getDeck().forEach(id => {
+    const card = CARDS.get(id);
+    if (card.powerId > 0) cardCounts[card.element]++;
+  });
 
   // TODO: this can be one of two: 'cardjitsu_snowplayerselect.swf' or 'cardjitsu_snowplayerselectbeta.swf'
   const playerSelect = penguin.getWindow(ctx, 'cardjitsu_snowplayerselect.swf');
   await playerSelect.load(ctx, {
     game: penguin.battleMode === 0 ? 'snow' : 'snowtusk',
     name: penguin.penguin.name,
-    powerCardsFire: 0,
-    powerCardsWater: 0,
-    powerCardsSnow: 0,
-    playerSnowRank: 0, // todo
+    powerCardsFire: cardCounts.f,
+    powerCardsWater: cardCounts.w,
+    powerCardsSnow: cardCounts.s,
+    playerSnowRank: 0, // TODO
   }, {
     loadDescription: '', xPercent: 0, yPercent: 0
   });
+}
+
+export const handlePayloadBILogAction: SnowFrameworkHandler = async () => {
+  // no-op
+}
+
+export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
+  const name = (windowUrl as string).split('/').pop();
+  const win = ctx.penguin.getWindow(ctx, name);
+  win.loaded = true;
+  if (win.onLoad !== null) {
+    win.onLoad(ctx);
+  }
 }
 
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
