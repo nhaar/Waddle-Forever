@@ -283,7 +283,8 @@ export class BotManager {
         emptyRoomTolerance: Math.random(),
         roomDistraction: Math.random(),
         iglooFan: Math.random(),
-        secretsFan: Math.random()
+        secretsFan: Math.random(),
+        followability: Math.random()
       }
     )
     this._msg.linkClient(bot, bot.penguin);

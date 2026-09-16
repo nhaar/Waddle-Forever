@@ -476,3 +476,15 @@ export const ROOMS: Record<RoomName, Room> = {
     preCpipName: null
   }
 };
+
+const naturalNames = new Map<string, number>();
+
+Object.values(ROOMS).forEach(r => {
+  if (r.name !== '') {
+    naturalNames.set(r.name.toLowerCase(), r.id);
+  }
+});
+
+export function getRoomFromName(name: string): number | undefined {
+  return naturalNames.get(name.toLowerCase());
+}

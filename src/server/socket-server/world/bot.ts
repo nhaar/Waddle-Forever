@@ -8,7 +8,7 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
-import { IGLOO_ROOM_BASE, RoomName, ROOMS } from "@server/game-data/rooms";
+import { getRoomFromName, IGLOO_ROOM_BASE, RoomName, ROOMS } from "@server/game-data/rooms";
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
@@ -61,6 +61,7 @@ type BotAttributes = {
   walkFan: number;
   iglooFan: number;
   secretsFan: number;
+  followability: number;
 }
 
 enum OverWorldBehavior {
@@ -166,6 +167,28 @@ export class Bot implements ClientSocket {
 
     this.handle(name, args);
   }
+
+  private reactToMessage(message: string) {
+    message = message.toLowerCase();
+
+    // attempt to match a two or one word name, for the room
+    const commandMatch = message.match(/^come to (\w+)( \w+)?$/i);
+    if (commandMatch !== null) {
+      const doubleName = commandMatch[1] + commandMatch[2];
+      const singleName = commandMatch[1];
+      const room = getRoomFromName(doubleName) ?? getRoomFromName(singleName);
+      if (room !== undefined && this._attributes.roomDistraction * this._attributes.followability > Math.pow(Math.random(), 2)) {
+        setTimeout(() => {
+          this.stopAllActions();
+          this.enter(room);
+        }, (2 * Math.random() + 2) * 1000);
+      }
+    }
+  }
+
+  private stopAllActions() {
+    this._lenghts = { ...allBehaviors };
+  }
   
 
   private handle(name: string, args: string[]): void {
@@ -205,6 +228,8 @@ export class Bot implements ClientSocket {
         }
         this._simulate('z', 'gz');
         this._simulate('z', 'jz');
+      } else if (name === 'sm') {
+        this.reactToMessage(args[1]);
       }
     }
   }
@@ -648,13 +673,6 @@ export class Bot implements ClientSocket {
       }
     }
 
-    const setLength = (cat: OverWorldBehavior, cooldown: number) => {
-      this._lenghts[cat] = now + cooldown * 1000
-    }
-    const setCooldown = (cat: OverWorldBehavior, cooldown: number) => {
-      this._cooldowns[cat] = now + cooldown * 1000;
-    }
-
     const allowed = new Set<OverWorldBehavior>();
     iterateEntries(this._lenghts, (behavior, time) => {
       if (time > now) {
@@ -674,8 +692,8 @@ export class Bot implements ClientSocket {
         const len = options.getLength();
         const cooldown = options.getCooldown();
         options.callback();
-        setLength(actionEnum, len);
-        setCooldown(actionEnum, len + cooldown);
+        this._lenghts[actionEnum] = now + len * 1000;
+        this._cooldowns[actionEnum] = now + (len + cooldown) * 1000;
         break;
       }
     }
