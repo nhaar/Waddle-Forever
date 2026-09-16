@@ -259,6 +259,10 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
   });
 }
 
+export function shuffleArray<T>(arr: T[]) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
 /** 2-Dimensional vector */
 export class Vector {
   private _vector: [number, number];
