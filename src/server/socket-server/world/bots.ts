@@ -284,7 +284,9 @@ export class BotManager {
         roomDistraction: Math.random(),
         iglooFan: Math.random(),
         secretsFan: Math.random(),
-        followability: Math.random()
+        followability: Math.random(),
+        mythsFan: Math.random(),
+        stampsFan: Math.random()
       }
     )
     this._msg.linkClient(bot, bot.penguin);

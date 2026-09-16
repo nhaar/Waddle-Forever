@@ -1,5 +1,5 @@
 import { choose, clamp, iterateEntries, randomInt, randomLogNormal, shuffleArray } from "@common/utils";
-import { WorldPenguin } from "./world-penguin";
+import { EquipProp, WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { GameData } from "@server/timelines/game-data";
 import { World } from "./world";
@@ -62,6 +62,8 @@ type BotAttributes = {
   iglooFan: number;
   secretsFan: number;
   followability: number;
+  mythsFan: number;
+  stampsFan: number;
 }
 
 enum OverWorldBehavior {
@@ -75,7 +77,8 @@ enum OverWorldBehavior {
   LeaveRoom,
   HostIgloo,
   JoinDanceFloor,
-  MatchDanceColor
+  MatchDanceColor,
+  TipTheBerg
 }
 
 /** Bot actions that can be done at the same time */
@@ -104,7 +107,8 @@ const allBehaviors: Record<OverWorldBehavior, 0> = {
   [OverWorldBehavior.LeaveRoom]: 0,
   [OverWorldBehavior.HostIgloo]: 0,
   [OverWorldBehavior.JoinDanceFloor]: 0,
-  [OverWorldBehavior.MatchDanceColor]: 0
+  [OverWorldBehavior.MatchDanceColor]: 0,
+  [OverWorldBehavior.TipTheBerg]: 0
 }
 
 // generate a more optimized mapping of all the allowed behaviors
@@ -452,8 +456,15 @@ export class Bot implements ClientSocket {
     }
   }
 
-  public walkTo(x: number, y: number) {
+  /** Returns time in seconds to walk that distance */
+  public walkTo(x: number, y: number): number {
+    const state = this._world.getPenguinRoom(this._penguin).getState(this._penguin);
+    const distance = Math.sqrt(Math.pow(x - state.x, 2) + Math.pow(y - state.y, 2));
     this._simulate('s', this._data.isPreCpip() ? 'sp' : 'u#sp', x, y);
+
+    // 4.8 pixels per frame at 24 fps
+    // exgtra time of lenience
+    return distance / 4.8 / 24 + 1;
   }
 
   public chooseRoom(): number {
@@ -476,15 +487,25 @@ export class Bot implements ClientSocket {
     const y = randomInt(267,413);
     const minX = (149-205) / (413-267) * (y - 267) + 205;
     const maxX = (489-442) / (413-267) * (y - 267) + 489;
-    this.walkTo(randomInt(minX, maxX), y);
-    // TODO system to calculate time of walk
     setTimeout(() => {
       this.doDance();
-    }, 4000);
+    }, this.walkTo(randomInt(minX, maxX), y) * 1000);
   }
 
-  public wearColor(color: number): void {
-    this._simulate('s', 's#upc', color);
+  public wearItem(type: EquipProp, id: number): void {
+    const code = {
+      'color': 'c',
+      'head': 'h',
+      'neck': 'n',
+      'hand': 'a',
+      'body': 'b',
+      'feet': 'e',
+      'face': 'f'
+    }[type];
+    this._penguin.inventory.updateWear({ [type]: id });
+    if (code !== undefined) {
+      this._simulate('s', `s#up${code}`, id);
+    }
   }
 
   public act(): void {
@@ -664,11 +685,33 @@ export class Bot implements ClientSocket {
             }
           }
           setTimeout(() => {
-            this.wearColor(mostPopular);
+            this.wearItem('color', mostPopular);
           }, 4000 + Math.random() * 2000);
         },
         getSuccess: () => {
           return this._lenghts[OverWorldBehavior.JoinDanceFloor] > now && Math.random() * this._attributes.danceFan > 0.3;
+        }
+      },
+      [OverWorldBehavior.TipTheBerg]: {
+        getCooldown: () => {
+          return (1 - Math.max(this._attributes.mythsFan, this._attributes.stampsFan)) * Math.random() * 120;
+        },
+        getLength: () => {
+          return Math.pow(Math.max(this._attributes.mythsFan, this._attributes.stampsFan), 2) * Math.random() * 600;
+        },
+        callback: () => {
+          this.wearItem('head', 429);
+          this.wearItem('face', 0);
+          this.wearItem('neck', 0);
+          this.wearItem('body', 0);
+          this.wearItem('hand', 0);
+          this.wearItem('feet', 0);
+          setTimeout(() => {
+            this.doDance();
+          }, this.walkTo(randomInt(80, 120), randomInt(150, 350)) * 1000);
+        },
+        getSuccess: () => {
+          return room.id === ROOMS.berg.id && Math.max(this._attributes.mythsFan, this._attributes.stampsFan) > Math.random();
         }
       }
     }
