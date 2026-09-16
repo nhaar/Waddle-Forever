@@ -64,6 +64,7 @@ type BotAttributes = {
   followability: number;
   mythsFan: number;
   stampsFan: number;
+  musicFan: number;
 }
 
 enum OverWorldBehavior {
@@ -78,7 +79,8 @@ enum OverWorldBehavior {
   HostIgloo,
   JoinDanceFloor,
   MatchDanceColor,
-  TipTheBerg
+  TipTheBerg,
+  FormBand
 }
 
 /** Bot actions that can be done at the same time */
@@ -108,7 +110,8 @@ const allBehaviors: Record<OverWorldBehavior, 0> = {
   [OverWorldBehavior.HostIgloo]: 0,
   [OverWorldBehavior.JoinDanceFloor]: 0,
   [OverWorldBehavior.MatchDanceColor]: 0,
-  [OverWorldBehavior.TipTheBerg]: 0
+  [OverWorldBehavior.TipTheBerg]: 0,
+  [OverWorldBehavior.FormBand]: 0
 }
 
 // generate a more optimized mapping of all the allowed behaviors
@@ -492,6 +495,53 @@ export class Bot implements ClientSocket {
     }, this.walkTo(randomInt(minX, maxX), y) * 1000);
   }
 
+  public joinBand(): void {
+    const items: Array<[EquipProp, number]> = [
+      ['hand', 233],
+      ['hand', 234],
+      ['hand', 729],
+      ['body', 293],
+      ['hand', 5014],
+      ['hand', 340]
+    ];
+
+    const taken = items.map(() => false);
+
+    const room = this._world.getPenguinRoom(this._penguin);
+    room.players.forEach(p => {
+      let i = 0;
+      for (const [prop, id] of items) {
+        if (p.inventory[prop] === id) {
+          taken[i] = true;
+          break;
+        }
+        i++;
+      }
+    });
+
+    const notYetTaken = taken.map((v, i): [number, boolean] => [i, v]).filter(([,v]) => !v);
+    const roleIndex = notYetTaken.length === 0 ? randomInt(0, items.length - 1) : choose(notYetTaken)[0];
+    const coords: Array<[number, number]> = [
+      [117, 337],
+      [139, 302],
+      [43, 308],
+      [44, 351],
+      [176, 268],
+      [87, 225]
+    ];
+
+    this.wearItem('body', 0);
+    this.wearItem('hand', 0);
+    this.wearItem('face', 0);
+    this.wearItem('feet', 0);
+    this.wearItem('head', 0);
+    this.wearItem('neck', 0);
+    this.wearItem(...items[roleIndex]);
+    setTimeout(() => {
+      this.doDance();
+    }, this.walkTo(...coords[roleIndex]) * 1000);
+  }
+
   public wearItem(type: EquipProp, id: number): void {
     const code = {
       'color': 'c',
@@ -712,6 +762,20 @@ export class Bot implements ClientSocket {
         },
         getSuccess: () => {
           return room.id === ROOMS.berg.id && Math.max(this._attributes.mythsFan, this._attributes.stampsFan) > Math.random();
+        }
+      },
+      [OverWorldBehavior.FormBand]: {
+        getCooldown: () => {
+          return (1 - Math.max(this._attributes.musicFan, this._attributes.stampsFan)) * Math.random() * 120;
+        },
+        getLength: () => {
+          return Math.pow(Math.max(this._attributes.musicFan, this._attributes.stampsFan), 2) * Math.random() * 600;
+        },
+        callback: () => {
+          this.joinBand();
+        },
+        getSuccess: () => {
+          return room.id === ROOMS.light.id && Math.max(this._attributes.musicFan, this._attributes.stampsFan) > Math.random();
         }
       }
     }
