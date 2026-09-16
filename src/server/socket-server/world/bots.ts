@@ -6,15 +6,15 @@ import { getDefaultPenguin, PenguinJson } from '@server/database/database';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { World } from './world';
-import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from './world-penguin';
+import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { choose, clamp, randomInt } from '@common/utils';
-import { Bot, WriteFunction } from './bot';
+import { Bot, generateRandomOutfit, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
-import { getItemsInRange, getItemTypeFromEquipProp } from '@server/timelines/items';
+import { getItemsInRange } from '@server/timelines/items';
 import { addDays, getDaysDelta, versionToEpoch } from '@server/routes/versions';
 import { ITEMS } from '@server/game-logic/items';
 import { START_DATE } from '@server/timelines/dates';
@@ -91,38 +91,17 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
 
 const MAX_SIZE = 500;
 
-const CHANCE_NO_ITEM = 0.3;
-const CHANCE_AVAILABLE_ITEM = 0.2;
 const MEMBER_CHANCE = 0.6;
 
-function generateRandomOutfit(
-  data: GameData,
-  age: number,
-  member: boolean
-): PenguinEquipped {
+// for simplicity the member items won't be added (but this could be changed if there was a reason for it)
+function generateRandomInventory(data: GameData, age: number, member: boolean) {
   const available = [...data.getAvailableItems().values()];
-  const possibleInventory = [...new Set([...available, ...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()])];
-
-  const items: Array<[EquipProp, number]> = [];
-
-  equipProp.forEach(prop => {
-    const roll = Math.random();
-    let item: number;
-    if (prop !== 'color' && roll < CHANCE_NO_ITEM) {
-      item = 0;
-    } else {
-      const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : possibleInventory)
-        .filter(i => {
-          const info = ITEMS.get(i);
-          return info !== undefined && (member || !info.isMember) && info.type === getItemTypeFromEquipProp(prop)
-        });
-        item = itemPool.length === 0 ? 0 : choose(itemPool);
-    }
-
-    items.push([prop, item]);
+  const possibleInventory = [...new Set([...available, ...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()])].filter(i => {
+    const info = ITEMS.get(i);
+    return info !== undefined && (member || !info.isMember);
   });
 
-  return Object.fromEntries(items) as PenguinEquipped;
+  return possibleInventory.filter(() => Math.random() > 0.5);
 }
 
 function generateRandomPenguin(data: GameData): PenguinJson {
@@ -137,11 +116,13 @@ function generateRandomPenguin(data: GameData): PenguinJson {
     versionToEpoch(data.getDate())
   );
 
-  const outfit = generateRandomOutfit(data, age, isMember);
+  const inventory = generateRandomInventory(data, age, isMember);
+  const outfit = generateRandomOutfit(data, inventory);
 
   return {
     ...base,
     ...outfit,
+    inventory,
     // never let a bot be written to the penguin database
     noSave: true
   };

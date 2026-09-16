@@ -1,5 +1,5 @@
 import { choose, clamp, iterateEntries, randomInt, randomLogNormal, shuffleArray } from "@common/utils";
-import { EquipProp, WorldPenguin } from "./world-penguin";
+import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { GameData } from "@server/timelines/game-data";
 import { World } from "./world";
@@ -9,6 +9,38 @@ import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
 import { getRoomFromName, IGLOO_ROOM_BASE, RoomName, ROOMS } from "@server/game-data/rooms";
+import { ITEMS } from "@server/game-logic/items";
+import { getItemTypeFromEquipProp } from "@server/timelines/items";
+
+const CHANCE_NO_ITEM = 0.3;
+const CHANCE_AVAILABLE_ITEM = 0.2;
+
+export function generateRandomOutfit(
+  data: GameData,
+  inventory: number[]
+): PenguinEquipped {
+  const available = [...data.getAvailableItems().values()];
+  const items: Array<[EquipProp, number]> = [];
+
+  equipProp.forEach(prop => {
+    const roll = Math.random();
+    let item: number;
+    if (prop !== 'color' && roll < CHANCE_NO_ITEM) {
+      item = 0;
+    } else {
+      const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : inventory)
+        .filter(i => {
+          const info = ITEMS.get(i);
+          return info !== undefined && info.type === getItemTypeFromEquipProp(prop)
+        });
+        item = itemPool.length === 0 ? 0 : choose(itemPool);
+    }
+
+    items.push([prop, item]);
+  });
+
+  return Object.fromEntries(items) as PenguinEquipped;
+}
 
 export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
@@ -542,6 +574,13 @@ export class Bot implements ClientSocket {
     }, this.walkTo(...coords[roleIndex]) * 1000);
   }
 
+  private wearOutfit(): void {
+    const outfit = generateRandomOutfit(this._data, [...this._penguin.inventory.items]);
+    equipProp.forEach(prop => {
+      this.wearItem(prop, outfit[prop]);
+    })
+  }
+
   public wearItem(type: EquipProp, id: number): void {
     const code = {
       'color': 'c',
@@ -569,7 +608,8 @@ export class Bot implements ClientSocket {
     const actions: Record<OverWorldBehavior, {
       getLength: () => number;
       getCooldown: () => number;
-      callback: () => void,
+      callback: () => void;
+      onEnd?: () => void;
       getSuccess: () => boolean;
     }> = {
       [OverWorldBehavior.RandomDance]: {
@@ -760,6 +800,9 @@ export class Bot implements ClientSocket {
             this.doDance();
           }, this.walkTo(randomInt(80, 120), randomInt(150, 350)) * 1000);
         },
+        onEnd: () => {
+          this.wearOutfit();
+        },
         getSuccess: () => {
           return room.id === ROOMS.berg.id && Math.max(this._attributes.mythsFan, this._attributes.stampsFan) > Math.random();
         }
@@ -774,6 +817,9 @@ export class Bot implements ClientSocket {
         callback: () => {
           this.joinBand();
         },
+        onEnd: () => {
+          this.wearOutfit();
+        },
         getSuccess: () => {
           return room.id === ROOMS.light.id && Math.max(this._attributes.musicFan, this._attributes.stampsFan) > Math.random();
         }
@@ -781,17 +827,21 @@ export class Bot implements ClientSocket {
     }
 
     const allowed = new Set<OverWorldBehavior>();
+    let ongoing = false;
     iterateEntries(this._lenghts, (behavior, time) => {
       if (time > now) {
+        ongoing = true;
         allowedMapping[Number(behavior) as OverWorldBehavior].forEach(b => {
           allowed.add(b);
         });
       }
     });
 
+    const takeAllowedIntoAccount = ongoing;
+
     for (const action of shuffleArray(Object.keys(actions))) {
       const actionEnum = Number(action) as OverWorldBehavior;
-      if (allowed.size > 0 && !allowed.has(actionEnum)) {
+      if (takeAllowedIntoAccount && !allowed.has(actionEnum)) {
         continue;
       }
       const options = actions[actionEnum];
@@ -799,6 +849,12 @@ export class Bot implements ClientSocket {
         const len = options.getLength();
         const cooldown = options.getCooldown();
         options.callback();
+        if (options.onEnd !== undefined) {
+          setTimeout(() => {
+            console.log('Running!');
+            options.onEnd();
+          }, len * 1000);
+        }
         this._lenghts[actionEnum] = now + len * 1000;
         this._cooldowns[actionEnum] = now + (len + cooldown) * 1000;
         break;
