@@ -942,12 +942,18 @@ export class Bot implements ClientSocket {
       return;
     }
 
-    const now = Date.now();
+    const ctx: BotContext = {
+      bot: this,
+      room: this._world.getPenguinRoom(this._penguin),
+      rng: this._rng,
+      now: Date.now(),
+      attrs: this._attributes
+    }
 
     const allowed = new Set<BehaviorId>();
     let ongoing = false;
     iterateEntries(this._lenghts, (behavior, time) => {
-      if (time > now) {
+      if (time > ctx.now) {
         ongoing = true;
         allowedMapping[Number(behavior) as BehaviorId].forEach(b => {
           allowed.add(b);
@@ -957,16 +963,15 @@ export class Bot implements ClientSocket {
 
     const takeAllowedIntoAccount = ongoing;
 
-    const ctx: BotContext = {
-      bot: this,
-      room: this._world.getPenguinRoom(this._penguin),
-      rng: this._rng,
-      now: Date.now(),
-      attrs: this._attributes
-    }
+
 
     for (const action of shuffleArray(BEHAVIORS)) {
+      // whether the variable uses a locked action
       if (takeAllowedIntoAccount && !allowed.has(action.id)) {
+        continue;
+      }
+
+      if (this.isOnCooldown(action.id, ctx.now)) {
         continue;
       }
 
@@ -979,8 +984,8 @@ export class Bot implements ClientSocket {
             action.end(ctx);
           }, len);
         }
-        this._lenghts[action.id] = now + len * 1000;
-        this._cooldowns[action.id] = now + (len + cooldown) * 1000;
+        this._lenghts[action.id] = ctx.now + len * 1000;
+        this._cooldowns[action.id] = ctx.now + (len + cooldown) * 1000;
         break;
       }
     }
@@ -988,6 +993,10 @@ export class Bot implements ClientSocket {
 
   public isDoingAction(id: BehaviorId, now: number): boolean {
     return this._lenghts[id] > now;
+  }
+
+  public isOnCooldown(id: BehaviorId, now: number): boolean {
+    return this._cooldowns[id] > now;
   }
 
   public end() {};
