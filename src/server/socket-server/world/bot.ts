@@ -54,16 +54,6 @@ type SendFunction = (ext: string, code: string, ...args: Array<string | number>)
  */
 export const WALK_AREA = { minX: 120, maxX: 640, minY: 300, maxY: 440 };
 
-// TODO -> Visitable rooms tracked by timeline
-//      -> Room popularity
-//      -> Member only rooms
-/** Rooms bots are allowed to hang around in */
-const BOT_ROOMS: RoomName[] = [
-  'town', 'coffee', 'book', 'dance', 'lounge', 'shop', 'dock', 'village',
-  'rink', 'forts', 'plaza', 'pet', 'pizza', 'mtn', 'beach', 'berg', 'light',
-  'mine', 'cave', 'cove', 'dojo', 'lodge', 'attic', 'sport'
-];
-
 /** How long a bot "thinks" before playing a table move, in s */
 const TABLE_THINK_MIN = 1.8;
 const TABLE_THINK_MAX = 4.2;
@@ -846,7 +836,7 @@ export class Bot implements ClientSocket {
   }
 
   public chooseRoom(): number {
-    return ROOMS[choose(BOT_ROOMS)].id;
+    return ROOMS[choose(this._data.getAvailableRooms())].id;
   }
 
   public openIgloo(): void {

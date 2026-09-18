@@ -95,6 +95,7 @@ type GameState = {
   flags: Record<GameFlag, boolean>;
   available: Set<number>;
   itemMemberStatus: Map<number, boolean>;
+  availableRooms: Set<RoomName>;
 }
 
 function getFreshState(): GameState {
@@ -121,7 +122,10 @@ function getFreshState(): GameState {
       iglooMusicReleased: false,
       ownedIgloos: false,
       isSpOnJr: false,
-      puffleHandItems: true
+      puffleHandItems: true,
+      nestAvailable: false,
+      holdAvailable: false,
+      quartersAvailable: false
     },
     indexHtml: '',
     website: '',
@@ -154,7 +158,8 @@ function getFreshState(): GameState {
     releasedStamps: new Set<number>(),
     extraWaddleRooms: [],
     available: new Set(),
-    itemMemberStatus: new Map()
+    itemMemberStatus: new Map(),
+    availableRooms: new Set()
   };
 }
 
@@ -350,6 +355,16 @@ export class GameData {
         if (typeof v === 'string') {
           this.addRoute('play/v2/content/local/en/catalogues/pirate.swf', v);
         }
+        if (this.state.flags.holdAvailable) {
+          this.state.availableRooms.add('shiphold');
+        }
+        if (this.state.flags.nestAvailable) {
+          this.state.availableRooms.add('shipnest');
+        }
+        if (this.state.flags.quartersAvailable) {
+          this.state.availableRooms.add('shipquarters');
+        }
+        this.state.availableRooms.add('ship');
       },
       'mapNote': (v) => {
         this.state.mapNote = true;
@@ -366,6 +381,9 @@ export class GameData {
       },
       'rooms': (v) => {
         iterateEntries(v, (room, value) => {
+          if (room.startsWith('party') || room === 'pitch') {
+            this.state.availableRooms.add(room);
+          }
           this.addRoom(room, value);
         });
       },
@@ -701,6 +719,9 @@ export class GameData {
         iterateEntries(v, (item, value) => {
           this.state.itemMemberStatus.set(Number(item), value);
         })
+      },
+      'availableRooms': (v) => {
+        v.forEach(r => this.state.availableRooms.add(r));
       }
     }
 
@@ -972,5 +993,9 @@ export class GameData {
 
   public getAvailableItems() {
     return new Set(this.state.available);
+  }
+
+  public getAvailableRooms() {
+    return [...this.state.availableRooms.values()];
   }
 }

@@ -164,7 +164,7 @@ export const UPDATES_2010: Update[] = [
           }
         }
       }
-    }
+    },
   },
   {
     date: '2010-01-29',
@@ -652,6 +652,7 @@ export const UPDATES_2010: Update[] = [
     rooms: {
       mine: 'archives:RoomsMine_2.swf'
     },
+    availableRooms: ['lake', 'underwater'],
     migrator: false
   },
   {
@@ -949,6 +950,7 @@ export const UPDATES_2010: Update[] = [
     rooms: {
       forest: 'archives:RoomsForest_2.swf'
     },
+    availableRooms: ['eco'],
     music: {
       eco: 285
     }
@@ -1207,6 +1209,7 @@ export const UPDATES_2010: Update[] = [
       village: 'archives:RoomsVillage_2.swf',
       agentcom: 'archives:RoomsAgentcom-May2010.swf'
     },
+    availableRooms: ['agentlobbymulti', 'agentlobbysolo'],
     music: {
       agentcom: 23
     }
@@ -1309,7 +1312,8 @@ export const UPDATES_2010: Update[] = [
       stage: 'recreation:stage_ruby_2010_june.swf',
 
       agentcom: 'recreation:agentcom_nofieldops2.swf'
-    }
+    },
+    availableRooms: ['agentvr']
   },
   {
     date: '2010-06-15',
@@ -4017,7 +4021,8 @@ export const UPDATES_2010: Update[] = [
           }
         ]
       }
-    ]
+    ],
+    availableRooms: ['dojowater']
   },
   {
     date: '2010-11-19',

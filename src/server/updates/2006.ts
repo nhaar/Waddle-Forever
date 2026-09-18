@@ -132,7 +132,8 @@ export const UPDATES_2006: Update[] = [
     rooms: {
       pizza: 'archives:ArtworkRoomsPizza12.swf',
       plaza: 'archives:ArtworkRoomsPlaza10.swf'
-    }
+    },
+    availableRooms: ['pizza', 'plaza']
   },
   {
     date: '2006-02-28',
@@ -199,7 +200,8 @@ export const UPDATES_2006: Update[] = [
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza12.swf',
       pet: 'mammoth:artwork/rooms/pet11.swf'
-    }
+    },
+    availableRooms: ['pet']
   },
   {
     date: '2006-03-20',
@@ -221,6 +223,7 @@ export const UPDATES_2006: Update[] = [
       agent: 'archives:ArtworkRoomsAgent11.swf',
       berg: 'mammoth:artwork/rooms/berg10.swf'
     },
+    availableRooms: ['berg'],
     music: {
       agent: 7
     },
@@ -409,7 +412,8 @@ export const UPDATES_2006: Update[] = [
     roomComment: 'Find Four tables are added to the Ski Lodge',
     rooms: {
       lodge: 'archives:ArtworkRoomsLodge14.swf'
-    }
+    },
+    availableRooms: ['attic']
   },
   {
     date: '2006-05-05',
@@ -487,7 +491,8 @@ export const UPDATES_2006: Update[] = [
       // 2006 client boiler, the party vesion isn't archived
       boiler: 'archives:ArtworkRoomsBoiler11.swf',
       mine: 'archives:ArtworkRoomsMine13.swf'
-    }
+    },
+    availableRooms: ['cave', 'cavemine', 'boiler', 'mine']
   },
   {
     date: '2006-05-29',
@@ -496,6 +501,7 @@ export const UPDATES_2006: Update[] = [
       cave: 'archives:ArtworkRoomsCave13.swf',
       shack: 'archives:ArtworkRoomsShack10.swf'
     },
+    availableRooms: ['shack'],
     map: 'approximation:map_shack.swf'
   },
   {
@@ -580,6 +586,7 @@ export const UPDATES_2006: Update[] = [
 
       beach: 'archives:ArtworkRoomsBeach12.swf'
     },
+    availableRooms: ['beach'],
     // beach opens
     map: 'archives:ArtworkMapsIsland10.swf'
   },
@@ -1521,7 +1528,8 @@ export const UPDATES_2006: Update[] = [
       pet: 'archives:ArtworkRoomsPet40.swf',
       dojo: 'archives:ArtworkRoomsDojo41.swf',
       shack: 'archives:ArtworkRoomsShack40.swf'
-    }
+    },
+    availableRooms: ['light', 'beacon']
   },
   {
     date: '2006-09-24',

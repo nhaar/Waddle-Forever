@@ -408,6 +408,9 @@ export const UPDATES_2007: Update[] = [
   {
     date: '2007-04-27',
     migrator: true,
+    flags: {
+      holdAvailable: true
+    },
     temp: {
       party: {
         partyName: 'Pirate Party',
@@ -510,7 +513,8 @@ export const UPDATES_2007: Update[] = [
     rooms: {
       plaza: 'archives:ArtworkRoomsPlaza45.swf',
       forest: 'archives:RoomsForest-CoveOpeningPartyPre_1.swf'
-    }
+    },
+    availableRooms: ['forest']
   },
   {
     date: '2007-05-25',
@@ -533,6 +537,7 @@ export const UPDATES_2007: Update[] = [
       village: 'recreation:village_precpip_tour.swf',
       cove: 'recreation:cove_hut_const.swf'
     },
+    availableRooms: ['cove'],
     map: 'archives:ArtworkMaps15.swf',
     end: ['party']
   },
@@ -1286,6 +1291,7 @@ export const UPDATES_2007: Update[] = [
       // because of chat 604, sport shop with snow and sports
       shop: 'archives:ArtworkRoomsShop46.swf'
     },
+    availableRooms: ['stage'],
     map: 'archives:Map2007Plaza.swf'
   },
   {

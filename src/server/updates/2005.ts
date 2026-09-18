@@ -29,6 +29,18 @@ export const UPDATES_2005: Update[] = [
       'agent': 'archives:ArtworkRoomsAgent10.swf', // placeholder, not accessable
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
+    availableRooms: [
+      'coffee',
+      'book',
+      'dance',
+      'lounge',
+      'shop',
+      'dock',
+      'village',
+      'rink',
+      'dojo',
+      'town'
+    ],
     clothingCatalog: {
       file: 'archives:Catalog1_06.swf',
       newItems: [
@@ -204,6 +216,7 @@ export const UPDATES_2005: Update[] = [
       town: 'archives:ArtworkRoomsTown10.swf',
       rink: 'archives:ArtworkRoomsRink10.swf'
     },
+    availableRooms: ['forts'],
     map: 'archives:ArtworkMapsIsland3.swf'
   },
   {
@@ -234,6 +247,10 @@ export const UPDATES_2005: Update[] = [
     end: ['party'],
     websiteFolder: '2005-10-26',
     indexHtml: '2005-10-26'
+  },
+  {
+    date: '2005-10-04',
+    availableRooms: ['agent']
   },
   {
     date: '2005-10-20',
@@ -351,7 +368,8 @@ export const UPDATES_2005: Update[] = [
     rooms: {
       sport: 'mammoth:artwork/rooms/sport11.swf',
       village: 'approximation:village_sport.swf'
-    }
+    },
+    availableRooms: ['sport']
   },
   {
     date: '2005-11-08',
@@ -385,7 +403,8 @@ export const UPDATES_2005: Update[] = [
     rooms: {
       village: 'approximation:village_no_lodge.swf',
       mtn: 'fix:Mtn1.swf'
-    }
+    },
+    availableRooms: ['mtn']
   },
   {
     date: '2005-11-21',
@@ -443,6 +462,7 @@ export const UPDATES_2005: Update[] = [
       village: 'archives:ArtworkRoomsVillage11.swf',
       lodge: 'archives:ArtworkRoomsLodge10.swf'
     },
+    availableRooms: ['lodge'],
     temp: {
     party: {
         partyName: 'Christmas Party',

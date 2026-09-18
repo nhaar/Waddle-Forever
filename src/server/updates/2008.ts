@@ -878,7 +878,11 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-04-28',
-    end: ['party']
+    end: ['party'],
+    flags: {
+      quartersAvailable: true,
+      nestAvailable: true
+    }
   },
   {
     date: '2008-05-02',
@@ -2586,7 +2590,8 @@ export const UPDATES_2008: Update[] = [
           dojoext: 'archives:DojoExtConstruction2008.swf'
         }
       }
-    }
+    },
+    availableRooms: ['dojoext']
   },
   {
     date: '2008-11-05',
@@ -2702,6 +2707,7 @@ export const UPDATES_2008: Update[] = [
       dojohide: 'recreation:dojohide_2008.swf',
       dojoext: 'recreation:dojoext.swf'
     },
+    availableRooms: ['dojohide'],
     music: {
       dojoext: 0
     },
@@ -2785,7 +2791,8 @@ export const UPDATES_2008: Update[] = [
     rooms: {
       agent: 'archives:RoomsAgent.swf',
       agentcom: 'archives:RoomsAgentcomFormer.swf'
-    }
+    },
+    availableRooms: ['agentcom']
   },
   {
     date: '2008-11-28',

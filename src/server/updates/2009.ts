@@ -1060,7 +1060,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-04-06',
-    end: ['party3']
+    end: ['party3'],
+    availableRooms: ['boxdimension']
   },
   {
     date: '2009-04-10',
@@ -2727,6 +2728,7 @@ export const UPDATES_2009: Update[] = [
 
       dojofire: 'slegacy:media/play/v2/content/global/rooms/dojofire.swf'
     },
+    availableRooms: ['dojofire'],
     end: ['fire-construction']
   },
   {

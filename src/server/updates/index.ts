@@ -101,7 +101,10 @@ const flags = [
   'ownedIgloos',
   /* Signals that the SP packet is sent to set the default position upon entering a room (used in more modern versions) */
   'isSpOnJr',
-  'puffleHandItems'
+  'puffleHandItems',
+  'nestAvailable',
+  'holdAvailable',
+  'quartersAvailable'
 ] as const;
 
 export type GameFlag = typeof flags[number];
@@ -139,6 +142,9 @@ export type CPUpdate = {
   gameRelease?: string;
   /** File of all room changes */
   rooms?: RoomChanges;
+
+  /** List of all rooms that opened in this day */
+  availableRooms?: RoomName[];
 
   /** All room music IDs */
   music?: Partial<Record<RoomName, number>>;
