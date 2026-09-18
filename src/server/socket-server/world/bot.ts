@@ -1,4 +1,4 @@
-import { choose, clamp, iterateEntries, randomInt, randomLogNormal, shuffleArray } from "@common/utils";
+import { choose, clamp, isDisjoint, iterateEntries, randomInt, randomLogNormal, shuffleArray } from "@common/utils";
 import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
 import { GameData } from "@server/timelines/game-data";
@@ -99,7 +99,7 @@ type BotAttributes = {
   musicFan: number;
 }
 
-enum OverWorldBehavior {
+enum BehaviorId {
   RandomDance,
   RandomSnowball,
   RandomWave,
@@ -115,42 +115,301 @@ enum OverWorldBehavior {
   FormBand
 }
 
-/** Bot actions that can be done at the same time */
-const allowedPairs: Array<[OverWorldBehavior, OverWorldBehavior]> = [
-  [OverWorldBehavior.RandomDance, OverWorldBehavior.RandomMessage],
-  [OverWorldBehavior.RandomMessage, OverWorldBehavior.RandomSit],
-  [OverWorldBehavior.RandomDance, OverWorldBehavior.RandomEmote],
-  [OverWorldBehavior.RandomEmote, OverWorldBehavior.RandomSnowball],
-  [OverWorldBehavior.RandomEmote, OverWorldBehavior.RandomWave],
-  [OverWorldBehavior.RandomEmote, OverWorldBehavior.RandomSit],
-  [OverWorldBehavior.RandomWalk, OverWorldBehavior.RandomEmote],
-  [OverWorldBehavior.JoinDanceFloor, OverWorldBehavior.MatchDanceColor]
-]
-
-
-
 // this variable is usede to access all behaviors at compile time
-const allBehaviors: Record<OverWorldBehavior, 0> = {
-  [OverWorldBehavior.RandomDance]: 0,
-  [OverWorldBehavior.RandomSnowball]: 0,
-  [OverWorldBehavior.RandomWave]: 0,
-  [OverWorldBehavior.RandomSit]: 0,
-  [OverWorldBehavior.RandomMessage]: 0,
-  [OverWorldBehavior.RandomWalk]: 0,
-  [OverWorldBehavior.RandomEmote]: 0,
-  [OverWorldBehavior.LeaveRoom]: 0,
-  [OverWorldBehavior.HostIgloo]: 0,
-  [OverWorldBehavior.JoinDanceFloor]: 0,
-  [OverWorldBehavior.MatchDanceColor]: 0,
-  [OverWorldBehavior.TipTheBerg]: 0,
-  [OverWorldBehavior.FormBand]: 0
+const allBehaviors: Record<BehaviorId, 0> = {
+  [BehaviorId.RandomDance]: 0,
+  [BehaviorId.RandomSnowball]: 0,
+  [BehaviorId.RandomWave]: 0,
+  [BehaviorId.RandomSit]: 0,
+  [BehaviorId.RandomMessage]: 0,
+  [BehaviorId.RandomWalk]: 0,
+  [BehaviorId.RandomEmote]: 0,
+  [BehaviorId.LeaveRoom]: 0,
+  [BehaviorId.HostIgloo]: 0,
+  [BehaviorId.JoinDanceFloor]: 0,
+  [BehaviorId.MatchDanceColor]: 0,
+  [BehaviorId.TipTheBerg]: 0,
+  [BehaviorId.FormBand]: 0
 }
 
+interface Behavior {
+  readonly id: BehaviorId;
+  readonly uses: readonly Resource[];
+  success(ctx: BotContext): boolean;
+  duration(ctx: BotContext): number;
+  cooldown(ctx: BotContext): number;
+  start(ctx: BotContext): void;
+  end?(ctx: BotContext): void;
+}
+
+interface BotContext {
+  bot: Bot;
+  room: WorldRoom;
+  now: number;
+  attrs: BotAttributes;
+  rng: Rng;
+}
+
+interface Rng {
+  random(): number;
+  int(a: number, b: number): number;
+  choose<T>(xs: T[]): T;
+  logNormal(mu: number, sigma: number): number;
+}
+
+type Resource = 'locomotion' | 'pose' | 'voice' | 'appearance' | 'room';
+
+const BEHAVIORS: Behavior[] = [
+  {
+    id: BehaviorId.RandomDance,
+    uses: ['pose'],
+    duration({ rng, attrs }) {
+      return rng.random() * (attrs.danceFan + 1) * 20;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.danceFan) * 30;
+    },
+    success({ rng, attrs }) {
+      return attrs.danceFan > rng.random();
+    },
+    start({ bot }) {
+      bot.doDance();
+    }
+  },
+  {
+    id: BehaviorId.RandomSnowball,
+    uses: ['pose'],
+    duration() {
+      return 0;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.danceFan) * 30;
+    },
+    success({ rng, attrs }) {
+      return attrs.snowballFan > rng.random();
+    },
+    start({ bot }) {
+      bot.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
+    },
+  },
+  {
+    id: BehaviorId.RandomSit,
+    uses: ['pose'],
+    duration({ rng, attrs }) {
+      return rng.random() * (attrs.sitFan + 1) * 20;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.sitFan) * 30;
+    },
+    success({ rng, attrs }) {
+      return attrs.sitFan > rng.random();
+    },
+    start({ bot }) {
+      bot.doFrame(choose([17, 18, 19, 20, 21, 22, 23, 24]));
+    },
+  },
+  {
+    id: BehaviorId.RandomWalk,
+    uses: ['locomotion'],
+    duration() {
+      return 0
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.walkFan) * 30;
+    },
+    success({ attrs }) {
+      return attrs.walkFan > Math.random();
+    },
+    start({ bot, rng }) {
+      bot.walkTo(rng.int(WALK_AREA.minX, WALK_AREA.maxX), rng.int(WALK_AREA.minY, WALK_AREA.maxY));
+    }
+  },
+  {
+    id: BehaviorId.RandomMessage,
+    uses: ['voice'],
+    duration() {
+      return 5;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.chatFan) * 30;
+    },
+    success({ rng, attrs }) {
+      return attrs.chatFan > rng.random();
+    },
+    start({ bot, rng }) {
+      bot.sendMessage(rng.choose(CHAT_LINES));
+    }
+  },
+  {
+    id: BehaviorId.RandomEmote,
+    uses: ['voice'],
+    duration() {
+      return 5;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.emoteFan) * 30;
+    },
+    success({ rng, attrs }) {
+      return attrs.emoteFan > rng.random();
+    },
+    start({ bot, rng }) {
+      bot.doEmote(rng.choose(EMOTES));
+    }
+  },
+  {
+    id: BehaviorId.RandomWave,
+    uses: ['pose'],
+    duration() {
+      return 0;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.waveFan) * 30;
+    },
+    success({ rng, attrs }) {
+      return attrs.waveFan > rng.random();
+    },
+    start({ bot }) {
+      bot.doFrame(25);
+    },
+  },
+  {
+    id: BehaviorId.LeaveRoom,
+    uses: ['room'],
+    duration() {
+      return 0;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.roomDistraction) * 300;
+    },
+    success({ rng, attrs, room }) {
+      return (rng.random() * attrs.emptyRoomTolerance + (1 - attrs.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30)) < 0.5;
+    },
+    start({ bot }) {
+      bot.enter(bot.chooseRoom());
+    }
+  },
+  {
+    id: BehaviorId.HostIgloo,
+    uses: ['room'],
+    duration({ rng, attrs }) {
+      return rng.random() * (attrs.danceFan) * 900;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.roomDistraction) * 300;
+    },
+    success({ rng, attrs }) {
+      return rng.random() * attrs.iglooFan > 0.9;
+    },
+    start({ bot }) {
+      bot.enter(IGLOO_ROOM_BASE + bot.penguin.id);
+      bot.openIgloo();
+    },
+  },
+  {
+    id: BehaviorId.JoinDanceFloor,
+    uses: ['locomotion', 'pose', 'room'],
+    duration({ rng, attrs }) {
+      return rng.random() * (attrs.danceFan + 1) * 180;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.danceFan) * 30;
+    },
+    success({ room, rng, attrs }) {
+      return room.id === ROOMS.dance.id && (rng.random() * attrs.danceFan > 0.3); 
+    },
+    start({ bot }) {
+      bot.joinDanceFloor();
+    },
+  },
+  {
+    id: BehaviorId.MatchDanceColor,
+    uses: ['appearance'],
+    duration() {
+      return 0;
+    },
+    cooldown({ rng, attrs }) {
+      return rng.random() * (1 - attrs.secretsFan) * 30;
+    },
+    success({ bot, rng, attrs, now }) {
+      return bot.isDoingAction(BehaviorId.JoinDanceFloor, now) && rng.random() * attrs.danceFan > 0.3;
+    },
+    start({ room, bot }) {
+      const colors = new Map<number, number>();
+      room.players.forEach((p) => {
+        colors.set(p.inventory.color, (colors.get(p.inventory.color) ?? 0) + 1);
+      });
+      const entries = [...colors.entries()];
+      let mostPopular = entries[0][0];
+      let mostAmount = entries[0][1];
+      for (const [id, amount] of entries.slice(1)) {
+        if (amount > mostAmount) {
+          mostAmount = amount;
+          mostPopular = id;
+        }
+      }
+      setTimeout(() => {
+        bot.wearItem('color', mostPopular);
+      }, 4000 + Math.random() * 2000);
+    }
+  },
+  {
+    id: BehaviorId.TipTheBerg,
+    uses: ['locomotion', 'pose', 'appearance', 'room'],
+    duration({ rng, attrs }) {
+      return Math.pow(Math.max(attrs.mythsFan, attrs.stampsFan), 2) * rng.random() * 600;
+    },
+    cooldown({ rng, attrs }) {
+      return (1 - Math.max(attrs.mythsFan, attrs.stampsFan)) * rng.random() * 120;
+    },
+    success({ room, attrs, rng }) {
+      return room.id === ROOMS.berg.id && Math.max(attrs.mythsFan, attrs.stampsFan) > rng.random();
+    },
+    start({ bot, rng }) {
+      bot.wearItem('head', 429);
+      bot.wearItem('face', 0);
+      bot.wearItem('neck', 0);
+      bot.wearItem('body', 0);
+      bot.wearItem('hand', 0);
+      bot.wearItem('feet', 0);
+      setTimeout(() => {
+        bot.doDance();
+      }, bot.walkTo(rng.int(80, 120), rng.int(150, 350)) * 1000);
+    },
+    end({ bot }) {
+      bot.wearOutfit();
+    },
+  },
+  {
+    id: BehaviorId.FormBand,
+    uses: ['locomotion', 'appearance', 'pose', 'room'],
+    duration({ rng, attrs }) {
+      return Math.pow(Math.max(attrs.musicFan, attrs.stampsFan), 2) * rng.random() * 600;
+    },
+    cooldown({ rng, attrs }) {
+      return (1 - Math.max(attrs.musicFan, attrs.stampsFan)) * rng.random() * 120;
+    },
+    success({ attrs, rng, room }) {
+      return room.id === ROOMS.light.id && Math.max(attrs.musicFan, attrs.stampsFan) > rng.random();
+    },
+    start({ bot }) {
+      bot.joinBand();
+    },
+    end({ bot }) {
+      bot.wearOutfit();
+    }
+  }
+];
+
 // generate a more optimized mapping of all the allowed behaviors
-const allowedMapping: Record<OverWorldBehavior, OverWorldBehavior[]> = Object.fromEntries(Object.keys(allBehaviors).map(v => [Number(v), []])) as Record<OverWorldBehavior, OverWorldBehavior[]>;
-allowedPairs.forEach(([x1, x2]) => {
-  allowedMapping[x1].push(x2);
-  allowedMapping[x2].push(x1);
+const allowedMapping: Record<BehaviorId, BehaviorId[]> = Object.fromEntries(Object.keys(allBehaviors).map(v => [Number(v), []])) as Record<BehaviorId, BehaviorId[]>;
+BEHAVIORS.forEach((behavior, i) => {
+  for (let j = i + 1; j < BEHAVIORS.length; j++) {
+    const other = BEHAVIORS[j];
+    if (isDisjoint(behavior.uses, other.uses)) {
+      allowedMapping[behavior.id].push(other.id);
+      allowedMapping[other.id].push(behavior.id);
+    }  
+  }
 });
 
 export class Bot implements ClientSocket {
@@ -171,8 +430,8 @@ export class Bot implements ClientSocket {
 
   private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
 
-  private _lenghts: Record<OverWorldBehavior, number> = { ...allBehaviors };
-  private _cooldowns: Record<OverWorldBehavior, number> = { ...allBehaviors };
+  private _lenghts: Record<BehaviorId, number> = { ...allBehaviors };
+  private _cooldowns: Record<BehaviorId, number> = { ...allBehaviors };
 
   constructor(
     private _penguin: WorldPenguin,
@@ -578,7 +837,7 @@ export class Bot implements ClientSocket {
     }, this.walkTo(...coords[roleIndex]) * 1000);
   }
 
-  private wearOutfit(): void {
+  public wearOutfit(): void {
     const outfit = generateRandomOutfit(this._data, [...this._penguin.inventory.items]);
     equipProp.forEach(prop => {
       this.wearItem(prop, outfit[prop]);
@@ -609,233 +868,12 @@ export class Bot implements ClientSocket {
 
     const now = Date.now();
 
-    const actions: Record<OverWorldBehavior, {
-      getLength: () => number;
-      getCooldown: () => number;
-      callback: () => void;
-      onEnd?: () => void;
-      getSuccess: () => boolean;
-    }> = {
-      [OverWorldBehavior.RandomDance]: {
-        getLength: () => {
-          return Math.random() * (this._attributes.danceFan + 1) * 20;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.danceFan) * 30;
-        },
-        callback: () => {
-          this.doDance();
-        },
-        getSuccess: () => {
-          return this._attributes.danceFan > Math.random();
-        },
-      },
-      [OverWorldBehavior.RandomSnowball]: {
-        getLength: () => {
-          return 0;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.danceFan) * 30;
-        },
-        callback: () => {
-          this.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
-        },
-        getSuccess: () => {
-          return this._attributes.snowballFan > Math.random();
-        },
-      },
-      [OverWorldBehavior.RandomSit]: {
-        getLength: () => {
-          return Math.random() * (this._attributes.sitFan + 1) * 20;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.sitFan) * 30;
-        },
-        callback: () => {
-          this.doFrame(choose([17, 18, 19, 20, 21, 22, 23, 24]));
-        },
-        getSuccess: () => {
-          return this._attributes.sitFan > Math.random();
-        }
-      },
-      [OverWorldBehavior.RandomWalk]: {
-        getLength: () => {
-          return 0;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.walkFan) * 30;
-        },
-        callback: () => {
-          this.walkTo(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
-        },
-        getSuccess: () => {
-          return this._attributes.walkFan > Math.random()
-        }
-      },
-      [OverWorldBehavior.RandomMessage]: {
-        getLength: () => {
-          return 5;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.chatFan) * 30;
-        },
-        callback: () => {
-          this.sendMessage(choose(CHAT_LINES));
-        },
-        getSuccess: () => {
-          return this._attributes.chatFan > Math.random();
-        }
-      },
-      [OverWorldBehavior.RandomEmote]: {
-        getLength: () => {
-          return 5;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.emoteFan) * 30;
-        },
-        callback: () => {
-          this.doEmote(choose(EMOTES));
-        },
-        getSuccess: () => {
-          return this._attributes.emoteFan > Math.random();
-        }
-      },
-      [OverWorldBehavior.RandomWave]: {
-        getLength: () => {
-          return 0;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.waveFan) * 30;
-        },
-        callback: () => {
-          this.doFrame(25);
-        },
-        getSuccess: () => {
-          return this._attributes.waveFan > Math.random();
-        },
-      },
-      [OverWorldBehavior.LeaveRoom]: {
-        getLength: () => {
-          return 0;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.roomDistraction) * 300;
-        },
-        callback: () => {
-          this.enter(this.chooseRoom());
-        },
-        getSuccess: () => {
-          return (Math.random() * this._attributes.emptyRoomTolerance + (1 - this._attributes.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30)) < 0.5;
-        }
-      },
-      [OverWorldBehavior.HostIgloo]: {
-        getLength: () => {
-          return Math.random() * (this._attributes.danceFan) * 900;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.roomDistraction) * 300;
-        },
-        callback: () => {
-          this.enter(IGLOO_ROOM_BASE + this.penguin.id);
-          this.openIgloo();
-        },
-        getSuccess: () => {
-          return Math.random() * this._attributes.iglooFan > 0.9;
-        }
-      },
-      [OverWorldBehavior.JoinDanceFloor]: {
-        getLength: () => {
-          return Math.random() * (this._attributes.danceFan + 1) * 180;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.danceFan) * 30;
-        },
-        callback: () => {
-          this.joinDanceFloor();
-        },
-        getSuccess: () => {
-          return room.id === ROOMS.dance.id && (Math.random() * this._attributes.danceFan > 0.3); 
-        }
-      },
-      [OverWorldBehavior.MatchDanceColor]: {
-        getLength: () => {
-          return 0;
-        },
-        getCooldown: () => {
-          return Math.random() * (1 - this._attributes.secretsFan) * 30;
-        },
-        callback: () => {
-          const colors = new Map<number, number>();
-          room.players.forEach((p) => {
-            colors.set(p.inventory.color, (colors.get(p.inventory.color) ?? 0) + 1);
-          });
-          const entries = [...colors.entries()];
-          let mostPopular = entries[0][0];
-          let mostAmount = entries[0][1];
-          for (const [id, amount] of entries.slice(1)) {
-            if (amount > mostAmount) {
-              mostAmount = amount;
-              mostPopular = id;
-            }
-          }
-          setTimeout(() => {
-            this.wearItem('color', mostPopular);
-          }, 4000 + Math.random() * 2000);
-        },
-        getSuccess: () => {
-          return this._lenghts[OverWorldBehavior.JoinDanceFloor] > now && Math.random() * this._attributes.danceFan > 0.3;
-        }
-      },
-      [OverWorldBehavior.TipTheBerg]: {
-        getCooldown: () => {
-          return (1 - Math.max(this._attributes.mythsFan, this._attributes.stampsFan)) * Math.random() * 120;
-        },
-        getLength: () => {
-          return Math.pow(Math.max(this._attributes.mythsFan, this._attributes.stampsFan), 2) * Math.random() * 600;
-        },
-        callback: () => {
-          this.wearItem('head', 429);
-          this.wearItem('face', 0);
-          this.wearItem('neck', 0);
-          this.wearItem('body', 0);
-          this.wearItem('hand', 0);
-          this.wearItem('feet', 0);
-          setTimeout(() => {
-            this.doDance();
-          }, this.walkTo(randomInt(80, 120), randomInt(150, 350)) * 1000);
-        },
-        onEnd: () => {
-          this.wearOutfit();
-        },
-        getSuccess: () => {
-          return room.id === ROOMS.berg.id && Math.max(this._attributes.mythsFan, this._attributes.stampsFan) > Math.random();
-        }
-      },
-      [OverWorldBehavior.FormBand]: {
-        getCooldown: () => {
-          return (1 - Math.max(this._attributes.musicFan, this._attributes.stampsFan)) * Math.random() * 120;
-        },
-        getLength: () => {
-          return Math.pow(Math.max(this._attributes.musicFan, this._attributes.stampsFan), 2) * Math.random() * 600;
-        },
-        callback: () => {
-          this.joinBand();
-        },
-        onEnd: () => {
-          this.wearOutfit();
-        },
-        getSuccess: () => {
-          return room.id === ROOMS.light.id && Math.max(this._attributes.musicFan, this._attributes.stampsFan) > Math.random();
-        }
-      }
-    }
-
-    const allowed = new Set<OverWorldBehavior>();
+    const allowed = new Set<BehaviorId>();
     let ongoing = false;
     iterateEntries(this._lenghts, (behavior, time) => {
       if (time > now) {
         ongoing = true;
-        allowedMapping[Number(behavior) as OverWorldBehavior].forEach(b => {
+        allowedMapping[Number(behavior) as BehaviorId].forEach(b => {
           allowed.add(b);
         });
       }
@@ -843,27 +881,50 @@ export class Bot implements ClientSocket {
 
     const takeAllowedIntoAccount = ongoing;
 
-    for (const action of shuffleArray(Object.keys(actions))) {
-      const actionEnum = Number(action) as OverWorldBehavior;
-      if (takeAllowedIntoAccount && !allowed.has(actionEnum)) {
+    const ctx: BotContext = {
+      bot: this,
+      room: this._world.getPenguinRoom(this._penguin),
+      rng: {
+        random() {
+          return Math.random()
+        },
+        choose(xs) {
+          return choose(xs);
+        },
+        int(a, b) {
+          return randomInt(a, b);
+        },
+        logNormal(mu, sigma) {
+          return randomLogNormal(mu, sigma);
+        }
+      },
+      now: Date.now(),
+      attrs: this._attributes
+    }
+
+    for (const action of shuffleArray(BEHAVIORS)) {
+      if (takeAllowedIntoAccount && !allowed.has(action.id)) {
         continue;
       }
-      const options = actions[actionEnum];
-      if (options.getSuccess()) {
-        const len = options.getLength();
-        const cooldown = options.getCooldown();
-        options.callback();
-        if (options.onEnd !== undefined) {
+
+      if (action.success(ctx)) {
+        const len = action.duration(ctx);
+        const cooldown = action.cooldown(ctx);
+        action.start(ctx);
+        if (action.end !== undefined) {
           setTimeout(() => {
-            console.log('Running!');
-            options.onEnd();
+            action.end(ctx);
           }, len * 1000);
         }
-        this._lenghts[actionEnum] = now + len * 1000;
-        this._cooldowns[actionEnum] = now + (len + cooldown) * 1000;
+        this._lenghts[action.id] = now + len * 1000;
+        this._cooldowns[action.id] = now + (len + cooldown) * 1000;
         break;
       }
     }
+  }
+
+  public isDoingAction(id: BehaviorId, now: number): boolean {
+    return this._lenghts[id] > now;
   }
 
   public end() {};
