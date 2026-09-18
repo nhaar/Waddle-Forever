@@ -412,6 +412,9 @@ export const UPDATES_2015: Update[] = [
         24255,
         24256
       ]
+    },
+    memberItems: {
+      1596: true
     }
   },
   {
@@ -628,6 +631,12 @@ export const UPDATES_2015: Update[] = [
     }
   },
   {
+    date: '2015-05-27',
+    memberItems: {
+      5079: false
+    }
+  },
+  {
     date: '2015-06-04',
     clothingCatalog: {
       newItems: [
@@ -746,6 +755,15 @@ export const UPDATES_2015: Update[] = [
         24270,
         24271
       ]
+    }
+  },
+  {
+    date: '2015-06-24',
+    memberItems: {
+      667: false,
+      4221: false,
+      1247: false,
+      4355: false
     }
   },
   {
@@ -1446,6 +1464,12 @@ export const UPDATES_2015: Update[] = [
         24303,
         24304
       ]
+    },
+    memberItems: {
+      5001: false,
+      5042: false,
+      1634: false,
+      1837: false
     }
   },
   {
@@ -1652,6 +1676,21 @@ export const UPDATES_2015: Update[] = [
         24215,
         24224
       ]
+    },
+    memberItems: {
+      5031: false
+    }
+  },
+  {
+    date: '2015-10-03',
+    memberItems: {
+      5429: false
+    }
+  },
+  {
+    date: '2015-10-07',
+    memberItems: {
+      5009: false
     }
   },
   {
@@ -1739,6 +1778,10 @@ export const UPDATES_2015: Update[] = [
         9092,
         9305
       ]
+    },
+    memberItems: {
+      2012: false,
+      2176: false
     }
   },
   {
@@ -1864,6 +1907,12 @@ export const UPDATES_2015: Update[] = [
         24326,
         34206
       ]
+    }
+  },
+  {
+    date: '2015-12-17',
+    memberItems: {
+      5195: false
     }
   }
 ];

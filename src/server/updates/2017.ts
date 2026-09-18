@@ -170,6 +170,9 @@ export const UPDATES_2017: Update[] = [
         24236,
         24237
       ]
+    },
+    memberItems: {
+      2176: true
     }
   }
 ];

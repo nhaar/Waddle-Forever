@@ -714,6 +714,9 @@ export const UPDATES_2007: Update[] = [
         938,
         943
       ]
+    },
+    memberItems: {
+      429: false
     }
   },
   {

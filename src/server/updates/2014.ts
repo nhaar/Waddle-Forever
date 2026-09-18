@@ -673,6 +673,9 @@ export const UPDATES_2014: Update[] = [
         24062,
         24092
       ]
+    },
+    memberItems: {
+      676: false
     }
   },
   {
@@ -757,6 +760,9 @@ export const UPDATES_2014: Update[] = [
         24091,
         24143
       ]
+    },
+    memberItems: {
+      5229: true
     }
   },
   {

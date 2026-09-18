@@ -1226,6 +1226,11 @@ export const UPDATES_2012: Update[] = [
     rooms: {
       plaza: 'archives:RoomsPlaza-Play10.swf',
       stage: 'archives:Stage14Sept2011.swf'
+    },
+    memberItems: {
+      1146: false,
+      4219: false,
+      5058: false
     }
   },
   {
@@ -1429,6 +1434,10 @@ export const UPDATES_2012: Update[] = [
           'play/v2/content/global/content/party.swf': 'unknown:marvel/party.swf'
         }
       }
+    },
+    memberItems: {
+      106: false,
+      420: false
     }
   },
   {
@@ -1682,6 +1691,9 @@ export const UPDATES_2012: Update[] = [
     rooms: {
       plaza: 'archives:RoomsPlaza_2-Play11.swf',
       stage: 'archives:RoomsStage-August2012.swf'
+    },
+    memberItems: {
+      5060: false
     }
   },
   {
@@ -2461,6 +2473,13 @@ export const UPDATES_2012: Update[] = [
     stagePlay: {
       name: 'Ruby and the Ruby',
       costumeTrunk: 'archives:November2012Costume.swf'
+    },
+    memberItems: {
+      203: false,
+      210: false,
+      653: false,
+      713: false,
+      717: false
     }
   },
   {
@@ -3032,6 +3051,13 @@ export const UPDATES_2012: Update[] = [
         bakery: true,
         migrator: 'archives:ENCataloguesPirate-Dec2012.swf'
       }
+    },
+    memberItems: {
+      284: false,
+      447: false,
+      4289: false,
+      4290: false,
+      4291: false
     }
   },
   {

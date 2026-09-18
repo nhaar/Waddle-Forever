@@ -19,7 +19,8 @@ export function generateRandomOutfit(
   data: GameData,
   inventory: number[]
 ): PenguinEquipped {
-  const available = [...data.getAvailableItems().values()];
+  const allAvailable = data.getAvailableItems();
+  const available = inventory.filter(i => allAvailable.has(i));
   const items: Array<[EquipProp, number]> = [];
 
   equipProp.forEach(prop => {

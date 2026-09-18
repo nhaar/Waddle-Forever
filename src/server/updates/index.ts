@@ -223,6 +223,7 @@ export type CPUpdate = {
   } | IglooList | ListSongPatch[];
 
   prices?: Partial<Record<number, number>>;
+  memberItems?: Partial<Record<number, boolean>>;
   furniturePrices?: Partial<Record<number, number>>;
   mapNote?: string;
   newWaddleRooms?: WaddleRoomInfo[];

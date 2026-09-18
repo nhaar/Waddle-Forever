@@ -5,7 +5,7 @@ import { RoomName, ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
 import { PUFFLE_DATA } from "../game-logic/puffle";
 import { FURNITURE } from "../game-logic/furniture";
-import { ExclusiveType, ITEMS, ItemType } from "../game-logic/items";
+import { ExclusiveType, ItemType } from "../game-logic/items";
 import { FRAME_HACKS } from "../game-data/frame-hacks";
 import { GLOBAL_PATHS, makeGlobalPathsComposite } from "../game-data/global-paths";
 import serverList from "../servers";
@@ -127,7 +127,9 @@ function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
   })));
 }
 
-function getPaperCrumbs(prices: Map<number, number>): PCodeRep {
+function getPaperCrumbs(
+  data: GameData
+): PCodeRep {
   const types = {
     [ItemType.Color]: 'COLOUR',
     [ItemType.Head]: 'HEAD',
@@ -147,10 +149,10 @@ function getPaperCrumbs(prices: Map<number, number>): PCodeRep {
     [ExclusiveType.Not]: null
   };
 
-  return applyJsonToObject("paper_crumbs", Object.fromEntries(ITEMS.rows.map(item => {
+  return applyJsonToObject("paper_crumbs", Object.fromEntries(data.getItems().map(item => {
     const data: any = {
       type: wrapPCode(addVarToStack(types[item.type])),
-      cost: prices.get(item.id) ?? item.cost,
+      cost: item.cost,
       is_member: item.isMember
     };
 
@@ -293,7 +295,7 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
     ...defineLocalJson("PAPERDOLLDEPTH_BACK_LAYER", 1000),
     ...defineLocalJson("PAPERDOLLDEPTH_BOTTOM_LAYER", 500),
 
-    ...getPaperCrumbs(d.getItemPrices()),
+    ...getPaperCrumbs(d),
 
     ...createEmptyObjectVar("player_colours"),
     ...applyJsonToObject("player_colours", {
