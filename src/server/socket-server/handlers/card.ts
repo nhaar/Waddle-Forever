@@ -51,18 +51,21 @@ const ninjaRankUp: PenguinHandler<[number]> = (ctx, previous) => {
   prst(penguin);
 }
 
-const gainProgress: PenguinHandler<[boolean]> = (ctx, won) => {
+const gainProgress: PenguinHandler<['lost' | 'won' | 'won-sensei']> = (ctx, status) => {
   const { penguin, prst } = ctx;
   penguin.ninja.addWin();
+  const previousRank = penguin.ninja.cardRank;
 
-  if (penguin.ninja.cardRank < CardJitsuProgress.MAX_RANK) {
-    const exp = won ? 5 : 1;
-    const previousRank = penguin.ninja.cardRank;
+  if (penguin.ninja.cardRank < CardJitsuProgress.HIGHEST_BELT_RANK) {
+    const exp = status === 'won' ? 5 : 1;
     penguin.ninja.earnXP(exp);
 
-    if (penguin.ninja.cardRank > previousRank) {
-      ninjaRankUp(ctx, previousRank);
-    }
+  } else if (!penguin.ninja.isNinja && status === 'won-sensei') {
+    penguin.ninja.becomeNinja();
+  }
+
+  if (penguin.ninja.cardRank > previousRank) {
+    ninjaRankUp(ctx, previousRank);
   }
 
   prst(penguin);
@@ -202,22 +205,17 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
           getStamp(data, msg, winnerNinja.player, Stamp.FullDojo);
         }
 
-        gainProgress({ ...ctx, penguin: winnerNinja.player }, true);
+        gainProgress({ ...ctx, penguin: winnerNinja.player }, loserNinja instanceof Sensei ? 'won-sensei' : 'won');
 
         if (winnerNinja.player.ninja.cardWins >= 25) {
           getStamp(data, msg, winnerNinja.player, Stamp.MatchMaster);
         }
-
-        // beating Sensei without Ninja Mask
-        if (card.sensei && !penguin.ninja.isNinja) {
-          penguin.ninja.becomeNinja();
-        }
       }
       if (loserNinja instanceof NinjaPlayer) {
-        gainProgress({ ...ctx, penguin: loserNinja.player }, false);
+        gainProgress({ ...ctx, penguin: loserNinja.player }, 'lost');
         // losing to Sensei as a black belt
         if (winnerNinja instanceof Sensei) {
-          if (loserNinja.player.ninja.cardRank >= CardJitsuProgress.MAX_RANK) {
+          if (loserNinja.player.ninja.cardRank >= CardJitsuProgress.HIGHEST_BELT_RANK) {
             loserNinja.player.ninja.addAttempt();
             prst(loserNinja.player);
           }
@@ -235,10 +233,10 @@ const handleCardJitsuDeath: CardHandler<[]> = (ctx) => {
   const opponent = card.getOpponent(ninja);
 
   if (opponent instanceof NinjaPlayer) {
-    gainProgress({ ...ctx, penguin: opponent.player }, true);
+    gainProgress({ ...ctx, penguin: opponent.player }, 'won');
   }
   if (ninja instanceof NinjaPlayer) {
-    gainProgress({ ...ctx, penguin: ninja.player }, false);
+    gainProgress({ ...ctx, penguin: ninja.player }, 'lost');
   }
 
   setWinner(ctx, opponent.seat);

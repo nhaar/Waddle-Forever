@@ -24,7 +24,7 @@ export class CardJitsuProgress {
   };
 
   /** Max rank XP-wise, ie ninja is a rank above this */
-  static MAX_RANK: number = 9;
+  static HIGHEST_BELT_RANK: number = 9;
 
   constructor(xp: number, attempts: number, ninja: boolean) {
     this._xp = xp;
@@ -35,7 +35,7 @@ export class CardJitsuProgress {
 
   private calculateRank(): number {
     if (this._ninja) {
-      return CardJitsuProgress.MAX_RANK + 1;
+      return CardJitsuProgress.HIGHEST_BELT_RANK + 1;
     }
 
     // can be optimized, but unecessary
@@ -65,7 +65,7 @@ export class CardJitsuProgress {
   }
 
   get percentage(): number {
-    if (this._rank >= CardJitsuProgress.MAX_RANK) {
+    if (this._rank >= CardJitsuProgress.HIGHEST_BELT_RANK) {
       return 0;
     }
 
