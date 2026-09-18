@@ -157,6 +157,9 @@ interface Rng {
   logNormal(mu: number, sigma: number): number;
 }
 
+const eagerness = (attr: number, max: number) => (1 - attr) * max;
+const stamina = (attr: number, max: number) => (attr + 1) * max;
+
 type Resource = 'locomotion' | 'pose' | 'voice' | 'appearance' | 'room';
 
 const BEHAVIORS: Behavior[] = [
@@ -164,10 +167,10 @@ const BEHAVIORS: Behavior[] = [
     id: BehaviorId.RandomDance,
     uses: ['pose'],
     duration({ rng, attrs }) {
-      return rng.random() * (attrs.danceFan + 1) * 20;
+      return stamina(attrs.danceFan, rng.random() * 20);
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.danceFan) * 30;
+      return eagerness(attrs.danceFan, rng.random() * 30);
     },
     success({ rng, attrs }) {
       return attrs.danceFan > rng.random();
@@ -183,7 +186,7 @@ const BEHAVIORS: Behavior[] = [
       return 0;
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.danceFan) * 30;
+      return eagerness(attrs.snowballFan, rng.random() * 30);
     },
     success({ rng, attrs }) {
       return attrs.snowballFan > rng.random();
@@ -196,10 +199,10 @@ const BEHAVIORS: Behavior[] = [
     id: BehaviorId.RandomSit,
     uses: ['pose'],
     duration({ rng, attrs }) {
-      return rng.random() * (attrs.sitFan + 1) * 20;
+      return stamina(attrs.sitFan, rng.random() * 20);
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.sitFan) * 30;
+      return eagerness(attrs.sitFan, rng.random() * 30);
     },
     success({ rng, attrs }) {
       return attrs.sitFan > rng.random();
@@ -215,7 +218,7 @@ const BEHAVIORS: Behavior[] = [
       return 0
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.walkFan) * 30;
+      return eagerness(attrs.walkFan, rng.random() * 30);
     },
     success({ attrs }) {
       return attrs.walkFan > Math.random();
@@ -231,7 +234,7 @@ const BEHAVIORS: Behavior[] = [
       return 5;
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.chatFan) * 30;
+      return eagerness(attrs.chatFan, rng.random() * 30);
     },
     success({ rng, attrs }) {
       return attrs.chatFan > rng.random();
@@ -247,7 +250,7 @@ const BEHAVIORS: Behavior[] = [
       return 5;
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.emoteFan) * 30;
+      return eagerness(attrs.emoteFan, rng.random() * 30);
     },
     success({ rng, attrs }) {
       return attrs.emoteFan > rng.random();
@@ -263,7 +266,7 @@ const BEHAVIORS: Behavior[] = [
       return 0;
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.waveFan) * 30;
+      return eagerness(attrs.waveFan, rng.random() * 30);
     },
     success({ rng, attrs }) {
       return attrs.waveFan > rng.random();
@@ -279,7 +282,7 @@ const BEHAVIORS: Behavior[] = [
       return 0;
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.roomDistraction) * 300;
+      return eagerness(attrs.roomDistraction, rng.random() * 300);
     },
     success({ rng, attrs, room }) {
       return (rng.random() * attrs.emptyRoomTolerance + (1 - attrs.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30)) < 0.5;
@@ -292,10 +295,10 @@ const BEHAVIORS: Behavior[] = [
     id: BehaviorId.HostIgloo,
     uses: ['room'],
     duration({ rng, attrs }) {
-      return rng.random() * (attrs.danceFan) * 900;
+      return stamina(attrs.iglooFan, rng.random() * 900);
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.roomDistraction) * 300;
+      return eagerness(attrs.roomDistraction, rng.random() * 300);
     },
     success({ rng, attrs }) {
       return rng.random() * attrs.iglooFan > 0.9;
@@ -309,10 +312,10 @@ const BEHAVIORS: Behavior[] = [
     id: BehaviorId.JoinDanceFloor,
     uses: ['locomotion', 'pose', 'room'],
     duration({ rng, attrs }) {
-      return rng.random() * (attrs.danceFan + 1) * 180;
+      return stamina(attrs.danceFan, rng.random() * 180);
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.danceFan) * 30;
+      return eagerness(attrs.danceFan, rng.random() * 30);
     },
     success({ room, rng, attrs }) {
       return room.id === ROOMS.dance.id && (rng.random() * attrs.danceFan > 0.3); 
@@ -328,7 +331,7 @@ const BEHAVIORS: Behavior[] = [
       return 0;
     },
     cooldown({ rng, attrs }) {
-      return rng.random() * (1 - attrs.secretsFan) * 30;
+      return eagerness(attrs.secretsFan, rng.random() * 30);
     },
     success({ bot, rng, attrs, now }) {
       return bot.isDoingAction(BehaviorId.JoinDanceFloor, now) && rng.random() * attrs.danceFan > 0.3;
@@ -356,10 +359,10 @@ const BEHAVIORS: Behavior[] = [
     id: BehaviorId.TipTheBerg,
     uses: ['locomotion', 'pose', 'appearance', 'room'],
     duration({ rng, attrs }) {
-      return Math.pow(Math.max(attrs.mythsFan, attrs.stampsFan), 2) * rng.random() * 600;
+      return stamina(Math.pow(Math.max(attrs.mythsFan, attrs.stampsFan), 2), rng.random() * 600);
     },
     cooldown({ rng, attrs }) {
-      return (1 - Math.max(attrs.mythsFan, attrs.stampsFan)) * rng.random() * 120;
+      return eagerness(Math.max(attrs.mythsFan, attrs.stampsFan), rng.random() * 120);
     },
     success({ room, attrs, rng }) {
       return room.id === ROOMS.berg.id && Math.max(attrs.mythsFan, attrs.stampsFan) > rng.random();
@@ -383,10 +386,10 @@ const BEHAVIORS: Behavior[] = [
     id: BehaviorId.FormBand,
     uses: ['locomotion', 'appearance', 'pose', 'room'],
     duration({ rng, attrs }) {
-      return Math.pow(Math.max(attrs.musicFan, attrs.stampsFan), 2) * rng.random() * 600;
+      return stamina(Math.pow(Math.max(attrs.musicFan, attrs.stampsFan), 2), rng.random() * 600);
     },
     cooldown({ rng, attrs }) {
-      return (1 - Math.max(attrs.musicFan, attrs.stampsFan)) * rng.random() * 120;
+      return eagerness(Math.max(attrs.musicFan, attrs.stampsFan), rng.random() * 120);
     },
     success({ attrs, rng, room }) {
       return room.id === ROOMS.light.id && Math.max(attrs.musicFan, attrs.stampsFan) > rng.random();
