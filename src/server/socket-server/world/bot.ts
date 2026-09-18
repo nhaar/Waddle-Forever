@@ -469,6 +469,11 @@ export class Bot implements ClientSocket {
     return t;
   }
 
+  private clearAllTimers() {
+    this._timers.forEach(clearTimeout);
+    this._timers.clear();
+  }
+
   public async write(message: string): Promise<void> {
     const split = message.split('%');
     const name = split[2];
@@ -498,6 +503,7 @@ export class Bot implements ClientSocket {
 
   private stopAllActions() {
     this._lenghts = { ...allBehaviors };
+    this.clearAllTimers();
   }
 
   private exitGameMode() {
