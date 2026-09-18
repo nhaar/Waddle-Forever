@@ -170,7 +170,6 @@ export class Bot implements ClientSocket {
   } | null = null;
 
   private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
-  private returnToIsland: () => void;  
 
   private _lenghts: Record<OverWorldBehavior, number> = { ...allBehaviors };
   private _cooldowns: Record<OverWorldBehavior, number> = { ...allBehaviors };
@@ -181,11 +180,9 @@ export class Bot implements ClientSocket {
     private _world: World,
     public nextActionAt: number,
     writeFn: WriteFunction,
-    returnFn: (b: Bot) => void,
     private _attributes: BotAttributes
   ) {
     this._simulate = (e, c, ...a) => writeFn(this, e, c, ...a);
-    this.returnToIsland = () => returnFn(this);
   }
 
   public get penguin() {
@@ -228,6 +225,11 @@ export class Bot implements ClientSocket {
   private stopAllActions() {
     this._lenghts = { ...allBehaviors };
   }
+
+  private exitGameMode() {
+    this.busy = false;
+    this.enter(this.chooseRoom());
+  }
   
 
   private handle(name: string, args: string[]): void {
@@ -254,7 +256,7 @@ export class Bot implements ClientSocket {
       } else if (name === 'czo' || name === 'cz') {
         // packets that terminate the match
         this._cardInfo = null;
-        this.returnToIsland();
+        this.exitGameMode();
       }
     } else {
       if (name === 'jt') {
@@ -438,11 +440,13 @@ export class Bot implements ClientSocket {
       if (!stillSeated || !opponent) {
         this.busy = false;
         this._tableInfo = null;
+        this.exitGameMode();
         return;
       }
 
       if (table.hasEnded()) {
         this._tableInfo = null;
+        this.exitGameMode();
         return;
       }
       if (!table.hasStarted() || table.getTurn() !== seat) {

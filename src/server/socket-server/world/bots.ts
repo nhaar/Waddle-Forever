@@ -252,7 +252,6 @@ export class BotManager {
       this._world,
       Date.now() + this.delay(),
       this._writeFn,
-      (b: Bot) => this.sendToIsland(b),
       {
         danceFan: Math.random(),
         snowballFan: Math.random(),
@@ -464,11 +463,5 @@ export class BotManager {
       // a bot without a valid layout simply doesn't get an igloo
       console.error('could not decorate bot igloo', e);
     }
-  }
-
-  /** Puts a bot back on the island after a game */
-  public sendToIsland(bot: Bot): void {
-    bot.busy = false;
-    bot.enter(bot.chooseRoom());
   }
 }
