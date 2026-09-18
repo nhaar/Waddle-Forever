@@ -64,9 +64,9 @@ const BOT_ROOMS: RoomName[] = [
   'mine', 'cave', 'cove', 'dojo', 'lodge', 'attic', 'sport'
 ];
 
-/** How long a bot "thinks" before playing a table move, in ms */
-const TABLE_THINK_MIN = 1800;
-const TABLE_THINK_MAX = 4200;
+/** How long a bot "thinks" before playing a table move, in s */
+const TABLE_THINK_MIN = 1.8;
+const TABLE_THINK_MAX = 4.2;
 
 /** Emote ids sent through `se` */
 const EMOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -350,9 +350,9 @@ const BEHAVIORS: Behavior[] = [
           mostPopular = id;
         }
       }
-      setTimeout(() => {
+      bot.schedule(() => {
         bot.wearItem('color', mostPopular);
-      }, 4000 + Math.random() * 2000);
+      }, 4 + Math.random() * 2);
     }
   },
   {
@@ -374,9 +374,9 @@ const BEHAVIORS: Behavior[] = [
       bot.wearItem('body', 0);
       bot.wearItem('hand', 0);
       bot.wearItem('feet', 0);
-      setTimeout(() => {
+      bot.schedule(() => {
         bot.doDance();
-      }, bot.walkTo(rng.int(80, 120), rng.int(150, 350)) * 1000);
+      }, bot.walkTo(rng.int(80, 120), rng.int(150, 350)));
     },
     end({ bot }) {
       bot.wearOutfit();
@@ -430,6 +430,7 @@ export class Bot implements ClientSocket {
     ninja: NinjaPlayer,
     chooseCard: NodeJS.Timeout | null
   } | null = null;
+  private _timers = new Set<NodeJS.Timeout>();
 
   private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
 
@@ -458,6 +459,16 @@ export class Bot implements ClientSocket {
     );
   }
 
+  public schedule(fn: () => void, seconds: number): NodeJS.Timeout {
+    const t = setTimeout(() => {
+      this._timers.delete(t);
+      fn();
+    }, seconds * 1000);
+
+    this._timers.add(t);
+    return t;
+  }
+
   public async write(message: string): Promise<void> {
     const split = message.split('%');
     const name = split[2];
@@ -476,10 +487,11 @@ export class Bot implements ClientSocket {
       const singleName = commandMatch[1];
       const room = getRoomFromName(doubleName) ?? getRoomFromName(singleName);
       if (room !== undefined && this._attributes.roomDistraction * this._attributes.followability > Math.pow(Math.random(), 2)) {
-        setTimeout(() => {
+
+        this.schedule(() => {
           this.stopAllActions();
           this.enter(room);
-        }, (2 * Math.random() + 2) * 1000);
+        }, 2 * (Math.random() + 1));
       }
     }
   }
@@ -501,7 +513,7 @@ export class Bot implements ClientSocket {
           // remove deal and seat to find number of cards
           const amount = args.length - 2;
           this._simulate('z', 'zm', 'deal', amount);
-          this._cardInfo.chooseCard = setTimeout(() => {
+          this._cardInfo.chooseCard = this.schedule(() => {
             const selectableCards = this._cardInfo.ninja.cards
               .map((sessionId) => [this._cardInfo.card.getCard(sessionId).element, sessionId])
               .filter(([element,]) => element !== this._cardInfo.ninja.blockedElement)
@@ -513,7 +525,7 @@ export class Bot implements ClientSocket {
               this._simulate('z', 'zm', 'pick', choose(selectableCards));
             }
             
-          }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
+          }, clamp(randomLogNormal(1.2, 0.8), 1, 20));
         }
       } else if (name === 'czo' || name === 'cz') {
         // packets that terminate the match
@@ -690,7 +702,7 @@ export class Bot implements ClientSocket {
   }
 
   public tableMove(): NodeJS.Timeout {
-    return setTimeout(() => {
+    return this.schedule(() => {
       if (this._tableInfo === null) {
         return;
       }
@@ -788,9 +800,9 @@ export class Bot implements ClientSocket {
     const y = randomInt(267,413);
     const minX = (149-205) / (413-267) * (y - 267) + 205;
     const maxX = (489-442) / (413-267) * (y - 267) + 489;
-    setTimeout(() => {
+    this.schedule(() => {
       this.doDance();
-    }, this.walkTo(randomInt(minX, maxX), y) * 1000);
+    }, this.walkTo(randomInt(minX, maxX), y));
   }
 
   public joinBand(deltaX: number, deltaY: number): void {
@@ -831,9 +843,9 @@ export class Bot implements ClientSocket {
     this.wearItem('head', 0);
     this.wearItem('neck', 0);
     this.wearItem(role[0], role[1]);
-    setTimeout(() => {
+    this.schedule(() => {
       this.doDance();
-    }, this.walkTo(x, y) * 1000);
+    }, this.walkTo(x, y));
   }
 
   public wearOutfit(): void {
@@ -911,9 +923,9 @@ export class Bot implements ClientSocket {
         const cooldown = action.cooldown(ctx);
         action.start(ctx);
         if (action.end !== undefined) {
-          setTimeout(() => {
+          this.schedule(() => {
             action.end(ctx);
-          }, len * 1000);
+          }, len);
         }
         this._lenghts[action.id] = now + len * 1000;
         this._cooldowns[action.id] = now + (len + cooldown) * 1000;
