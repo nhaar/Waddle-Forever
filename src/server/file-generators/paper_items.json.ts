@@ -29,7 +29,7 @@ export function getPaperItemsJson(d: GameData): string {
   const items: PaperItem[] = d.getItems().map(i => {
     return ({
     paper_item_id: i.id,
-    cost: costs.get(i.id) ?? i.cost,
+    cost: i.cost,
     label: i.label ?? i.name,
     layer: i.layer,
     is_epf: i.isEPF ? "1" : undefined,

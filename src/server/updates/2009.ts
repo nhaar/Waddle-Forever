@@ -1815,6 +1815,9 @@ export const UPDATES_2009: Update[] = [
         3019
       ]
     },
+    memberItems: {
+      5042: false
+    },
     temp: {
       const: {
         rooms: {

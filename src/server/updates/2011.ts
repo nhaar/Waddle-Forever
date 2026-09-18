@@ -3009,7 +3009,10 @@ export const UPDATES_2011: Update[] = [
           }
         ]
       }
-    ]
+    ],
+    memberItems: {
+      244: false
+    }
   },
   {
     date: '2011-10-23',
@@ -3434,7 +3437,17 @@ export const UPDATES_2011: Update[] = [
             seats: 2,
             game: 'card'
           }
-        ]
+        ],
+        memberItems: {
+          1086: false,
+          2013: false,
+          4120: false,
+          6025: false,
+          1087: false,
+          2025: false,
+          4121: false,
+          6026: false
+        }
       }
     },
     localChanges: {
@@ -3456,6 +3469,9 @@ export const UPDATES_2011: Update[] = [
       'close_ups/waterItems.swf': {
         en: 'slegacy:media/play/v2/content/local/en/close_ups/waterItems.swf'
       }
+    },
+    memberItems: {
+      3032: false
     }
   },
   {

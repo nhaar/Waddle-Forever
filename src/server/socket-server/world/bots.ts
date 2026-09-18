@@ -97,7 +97,7 @@ const MEMBER_CHANCE = 0.6;
 function generateRandomInventory(data: GameData, age: number, member: boolean) {
   const available = [...data.getAvailableItems().values()];
   const possibleInventory = [...new Set([...available, ...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()])].filter(i => {
-    const info = ITEMS.get(i);
+    const info = data.getItem(i);
     return info !== undefined && (member || !info.isMember);
   });
 

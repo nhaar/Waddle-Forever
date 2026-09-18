@@ -1166,6 +1166,10 @@ export const UPDATES_2016: Update[] = [
         24400,
         24401
       ]
+    },
+    memberItems: {
+      4917: true,
+      6191: true
     }
   },
   {

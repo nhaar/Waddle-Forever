@@ -312,6 +312,20 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-11-01',
+    memberItems: {
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false,
+      6: false,
+      7: false,
+      8: false,
+      9: false,
+      10: false,
+      11: false,
+      12: false
+    },
     clothingCatalog: {
       file: 'archives:Clothing_0511.swf',
       newItems: [

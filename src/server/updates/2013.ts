@@ -552,6 +552,10 @@ export const UPDATES_2013: Update[] = [
         9191,
         9192
       ]
+    },
+    memberItems: {
+      344: false,
+      9053: false
     }
   },
   {
@@ -753,7 +757,17 @@ export const UPDATES_2013: Update[] = [
           }
         ]
       }
-    ]
+    ],
+    memberItems: {
+      1086: false,
+      2013: false,
+      4120: false,
+      6025: false,
+      1087: false,
+      2025: false,
+      4121: false,
+      6026: false
+    }
   },
 
   {
@@ -967,7 +981,6 @@ export const UPDATES_2013: Update[] = [
       'play/v2/content/global/clothing/icons/906.swf': 'slegacy:media/play/v2/content/global/clothing/icons/906.swf'
     }
   },
-
   {
     date: '2013-08-08',
     clothingCatalog: {

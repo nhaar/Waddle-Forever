@@ -94,6 +94,7 @@ type GameState = {
   extraWaddleRooms: WaddleRoomInfo[];
   flags: Record<GameFlag, boolean>;
   available: Set<number>;
+  itemMemberStatus: Map<number, boolean>;
 }
 
 function getFreshState(): GameState {
@@ -152,7 +153,8 @@ function getFreshState(): GameState {
     gameStamps: new Map<StampRoom, Set<number>>(),
     releasedStamps: new Set<number>(),
     extraWaddleRooms: [],
-    available: new Set()
+    available: new Set(),
+    itemMemberStatus: new Map()
   };
 }
 
@@ -697,6 +699,11 @@ export class GameData {
       },
       'newWaddleRooms': (v) => {
         this.state.extraWaddleRooms = v;
+      },
+      'memberItems': (v) => {
+        iterateEntries(v, (item, value) => {
+          this.state.itemMemberStatus.set(Number(item), value);
+        })
       }
     }
 
@@ -733,8 +740,17 @@ export class GameData {
     return this.state.stampbook;
   }
 
+  private updateRawItem(item: Item): Item {
+    const isMember = this.state.itemMemberStatus.get(item.id);
+    return {
+      ...item,
+      isMember: isMember === undefined ? item.isMember : isMember,
+      cost: this.state.itemPrices.get(item.id) ?? item.cost
+    };
+  }
+
   public getItems() {
-    return this.items.rows;
+    return this.items.rows.map(item => this.updateRawItem(item));
   }
 
   public getHunt() {
@@ -929,7 +945,8 @@ export class GameData {
   }
 
   public getItem(id: number): Item | undefined {
-    return this.items.get(id);
+    const item = this.items.get(id);
+    return item === undefined ? undefined : this.updateRawItem(item);
   }
 
   public hasIglooMusicReleased() {
