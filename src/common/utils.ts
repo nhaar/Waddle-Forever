@@ -259,6 +259,23 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
   });
 }
 
+export function shuffleArray<T>(arr: T[]) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+export function isDisjoint<T>(arr1: readonly T[], arr2: readonly T[]): boolean {
+  const set1 = new Set(arr1);
+  const set2 = new Set(arr2);
+  const intersection = new Set();
+  set1.forEach(value => {
+    if (set2.has(value)) {
+      intersection.add(value);
+    }
+  });
+
+  return intersection.size === 0;
+}
+
 /** 2-Dimensional vector */
 export class Vector {
   private _vector: [number, number];

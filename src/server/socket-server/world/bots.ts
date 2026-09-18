@@ -3,19 +3,18 @@
  */
 
 import { getDefaultPenguin, PenguinJson } from '@server/database/database';
-import { IGLOO_ROOM_BASE, ROOMS, RoomName } from '@server/game-data/rooms';
 import { SettingsManager } from '@server/settings';
 import { GameData } from '@server/timelines/game-data';
 import { World } from './world';
-import { equipProp, EquipProp, PenguinEquipped, WorldPenguin } from './world-penguin';
+import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { choose, clamp, randomInt } from '@common/utils';
-import { Bot, WALK_AREA, WriteFunction } from './bot';
+import { Bot, generateRandomOutfit, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
-import { getItemsInRange, getItemTypeFromEquipProp } from '@server/timelines/items';
+import { getItemsInRange } from '@server/timelines/items';
 import { addDays, getDaysDelta, versionToEpoch } from '@server/routes/versions';
 import { ITEMS } from '@server/game-logic/items';
 import { START_DATE } from '@server/timelines/dates';
@@ -92,38 +91,17 @@ const DEFAULT_BOT_SETTINGS: BotSettings = {
 
 const MAX_SIZE = 500;
 
-const CHANCE_NO_ITEM = 0.3;
-const CHANCE_AVAILABLE_ITEM = 0.2;
 const MEMBER_CHANCE = 0.6;
 
-function generateRandomOutfit(
-  data: GameData,
-  age: number,
-  member: boolean
-): PenguinEquipped {
+// for simplicity the member items won't be added (but this could be changed if there was a reason for it)
+function generateRandomInventory(data: GameData, age: number, member: boolean) {
   const available = [...data.getAvailableItems().values()];
-  const possibleInventory = [...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()];
-
-  const items: Array<[EquipProp, number]> = [];
-
-  equipProp.forEach(prop => {
-    const roll = Math.random();
-    let item: number;
-    if (roll < CHANCE_NO_ITEM) {
-      item = 0;
-    } else {
-      const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : possibleInventory)
-        .filter(i => {
-          const info = ITEMS.get(i);
-          return info !== undefined && (member || !info.isMember) && info.type === getItemTypeFromEquipProp(prop)
-        });
-      item = itemPool.length === 0 ? 0 : choose(itemPool);
-    }
-
-    items.push([prop, item]);
+  const possibleInventory = [...new Set([...available, ...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()])].filter(i => {
+    const info = ITEMS.get(i);
+    return info !== undefined && (member || !info.isMember);
   });
 
-  return Object.fromEntries(items) as PenguinEquipped;
+  return possibleInventory.filter(() => Math.random() > 0.5);
 }
 
 function generateRandomPenguin(data: GameData): PenguinJson {
@@ -138,11 +116,13 @@ function generateRandomPenguin(data: GameData): PenguinJson {
     versionToEpoch(data.getDate())
   );
 
-  const outfit = generateRandomOutfit(data, age, isMember);
+  const inventory = generateRandomInventory(data, age, isMember);
+  const outfit = generateRandomOutfit(data, inventory);
 
   return {
     ...base,
     ...outfit,
+    inventory,
     // never let a bot be written to the penguin database
     noSave: true
   };
@@ -155,7 +135,6 @@ export class BotManager {
   private _settings: BotSettings = { ...DEFAULT_BOT_SETTINGS };
   /** Bots sitting in a waddle or at a table, which must stop waddling about */
   /** Bots currently at home with an open igloo, and when they will head back out */
-  private _homes = new Map<Bot, number>();
   private _on = false;
   private _waddleSeen = new Map<number, number>();
   private _waddleLastSeat = new Map<number, number>();
@@ -236,7 +215,6 @@ export class BotManager {
   public shutdown(): void {
     this.stop();
     [...this._bots.keys()].forEach(id => this.despawn(id));
-    this._homes.clear();
   }
 
   // -------------------------------------------------------------------------
@@ -249,7 +227,7 @@ export class BotManager {
     }
     while (this._bots.size > this._settings.population) {
       const idle = [...this._bots.entries()].find(
-        ([, b]) => !b.busy && !this._homes.has(b)
+        ([, b]) => !b.busy
       );
       const id = idle?.[0] ?? [...this._bots.keys()][0];
       if (id === undefined) {
@@ -274,7 +252,23 @@ export class BotManager {
       this._world,
       Date.now() + this.delay(),
       this._writeFn,
-      (b: Bot) => this.sendToIsland(b)
+      {
+        danceFan: Math.random(),
+        snowballFan: Math.random(),
+        waveFan: Math.random(),
+        sitFan: Math.random(),
+        chatFan: Math.random(),
+        emoteFan: Math.random(),
+        walkFan: Math.random(),
+        emptyRoomTolerance: Math.random(),
+        roomDistraction: Math.random(),
+        iglooFan: Math.random(),
+        secretsFan: Math.random(),
+        followability: Math.random(),
+        mythsFan: Math.random(),
+        stampsFan: Math.random(),
+        musicFan: Math.random()
+      }
     )
     this._msg.linkClient(bot, bot.penguin);
     this._bots.set(id, bot);
@@ -294,7 +288,6 @@ export class BotManager {
     this.disconnect(bot);
     this._world.closeIgloo(bot.penguin);
     this._world.disconnect(bot.penguin);
-    this._homes.delete(bot);
     this._bots.delete(id);
   }
 
@@ -373,7 +366,6 @@ export class BotManager {
       }
 
       this._waddleLastSeat.set(id, now);
-      bot.busy = true;
       joinWaddle({ msg: this._msg, world: this._world, data: this._data }, room, waddle, bot.penguin);
 
       const ctx = this._world.getContext(bot.penguin);
@@ -430,7 +422,6 @@ export class BotManager {
     if (this._settings.playGames) {
       this.tickGames();
     }
-    this.tickIgloos();
 
     for (const bot of this._bots.values()) {
       if (now < bot.nextActionAt || bot.busy) {
@@ -471,52 +462,5 @@ export class BotManager {
       // a bot without a valid layout simply doesn't get an igloo
       console.error('could not decorate bot igloo', e);
     }
-  }
-
-  /** Keeps a few igloos open, and sends hosts back out when they've had enough */
-  private tickIgloos(): void {
-    const now = Date.now();
-
-    for (const [penguin, until] of [...this._homes.entries()]) {
-      if (now >= until) {
-        this.closeIglooFor(penguin);
-      }
-    }
-
-    if (this._homes.size >= Math.min(this._settings.openIgloos, this._bots.size)) {
-      return;
-    }
-    // one at a time, and not every tick, so igloos open and close gradually
-    if (Math.random() > 0.04) {
-      return;
-    }
-
-    const candidate = [...this._bots.values()]
-      .find(b => !b.busy && !this._homes.has(b));
-
-    if (candidate !== undefined) {
-      this.openIglooFor(candidate);
-    }
-  }
-
-  /** Opens a bot's igloo and puts the bot inside it, so visitors find someone home */
-  public openIglooFor(bot: Bot): void {
-    const room = this._world.getRoom(IGLOO_ROOM_BASE + bot.penguin.id);
-    this._world.openIgloo(bot.penguin);
-    bot.enter(room.id);
-    this._homes.set(bot, Date.now() + randomInt(180_000, 480_000));
-  }
-
-  /** Closes the igloo and sends the bot back out onto the island */
-  public closeIglooFor(bot: Bot): void {
-    this._world.closeIgloo(bot.penguin);
-    this._homes.delete(bot);
-    bot.enter(bot.chooseRoom());
-  }
-
-  /** Puts a bot back on the island after a game */
-  public sendToIsland(bot: Bot): void {
-    bot.busy = false;
-    bot.enter(bot.chooseRoom());
   }
 }
