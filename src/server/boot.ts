@@ -8,18 +8,16 @@ import { HttpServer } from './http';
 import { setupWorldServer } from './socket-server/world-server';
 import { setupLoginServer } from './socket-server/login-server';
 
-
-/** Initialize the mods. Returns a list of any that failed to start. */
-export function startMods(): string[] {
-  return settingsManager.mods.initializeMods();
-}
-
-/** Initialize the db, game data, and the 3 services (http, login, world). Returns the world server. */
+/** Initialize the db, game data, and the 3 services (http, login, world). Returns the world server and list of failed mods. */
 export async function startServices() {
   const data = new DataFolder(USER_DATA_FOLDER);
   data.init(VERSION);
 
-  const gameData = new GameData(settingsManager);
+  const gameData = new GameData(settingsManager.settings.version);
+
+  settingsManager.addListener(() => {
+    gameData.update(settingsManager.settings.version);
+  })
 
   const db = new PenguinRepository(data.getPath());
 
@@ -27,7 +25,12 @@ export async function startServices() {
 
   const world = await setupWorldServer(settingsManager, db, gameData);
 
-  await (new HttpServer(gameData, settingsManager, db)).setupServer();
+  await (new HttpServer(gameData, settingsManager, db, world.mods)).setupServer();
 
-  return world;
+  const failedMods = world.mods.initializeMods();
+
+  return {
+    world,
+    failedMods
+  };
 }

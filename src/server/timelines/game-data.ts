@@ -14,10 +14,10 @@ import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
 import { FURNITURE } from "@server/game-logic/furniture";
-import { Item, ITEMS, ItemTable } from "@server/game-logic/items";
+import { CustomItem, getItemsTable, Item, ItemTable } from "@server/game-logic/items";
+import { ITEMS_DATA } from "@server/game-logic/items-data";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
-import { SettingsManager } from "@server/settings";
 import { CatalogItems, CPUpdateE, CrumbIndicator, GameFlag, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
 import { getUpdates } from "@server/updates/updates";
 import path from "path";
@@ -54,7 +54,7 @@ function applyPatch(list: IglooList, songs: ListSongPatch[]): void {
 
 type GameState = {
   /** map of route -> path of file in media folder, meant for static files */
-  files: Map<string, string | ((s: SettingsManager) => string)>;
+  files: Map<string, string>;
   stampbook: Stampbook;
   hunt: HuntCrumbs | null;
   fair: boolean;
@@ -171,15 +171,12 @@ export class GameData {
 
   private items: ItemTable;
 
-  constructor(settings: SettingsManager) {
+  constructor(date: Version) {
     this.updates = getUpdates();
     // todo: remove global state
-    this.items = ITEMS;
-    this.date = settings.settings.version;
-    this.update(settings.settings.version);
-    settings.addListener(() => {
-      this.update(settings.settings.version);
-    });
+    this.items = getItemsTable(ITEMS_DATA);
+    this.date = date;
+    this.update(date);
   }
 
   private addRoom(room: RoomName, file: FileRef) {
@@ -728,7 +725,7 @@ export class GameData {
     }
   }
 
-  public lookupFile(route: string): string | ((s: SettingsManager) => string) | undefined {
+  public lookupFile(route: string): string | undefined {
     return this.state.files.get(route);
   }
 
@@ -747,6 +744,14 @@ export class GameData {
       isMember: isMember === undefined ? item.isMember : isMember,
       cost: this.state.itemPrices.get(item.id) ?? item.cost
     };
+  }
+
+  public addCustomItem(item: CustomItem) {
+    this.items.addCustomItem(item);
+  }
+
+  public removeCustomItem(id: number) {
+    this.items.removeCustomItem(id);
   }
 
   public getItems() {

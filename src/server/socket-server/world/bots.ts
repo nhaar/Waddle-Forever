@@ -16,7 +16,6 @@ import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
 import { getItemsInRange } from '@server/timelines/items';
 import { addDays, getDaysDelta, versionToEpoch } from '@server/routes/versions';
-import { ITEMS } from '@server/game-logic/items';
 import { START_DATE } from '@server/timelines/dates';
 
 const BOT_ID_BASE = 9_000_000;

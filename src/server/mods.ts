@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import { MODS_DIRECTORY, MOD_HACKS_FILE, MOD_ITEMS_FILE, MOD_MUSIC_FILE } from '@common/paths';
-import { CustomItem, ITEMS } from './game-logic/items';
+import { CustomItem } from './game-logic/items';
 import { getFilesInDirectory, iterateEntries, EventListener } from '@common/utils';
-import { Router, Request } from "express";
 import { CustomHack, FRAME_HACKS } from './game-data/frame-hacks';
 import { RoomName, ROOMS } from './game-data/rooms';
+import { GameData } from './timelines/game-data';
 
 // type declarations that are used to validate the properties of the JSON parsed objects from mods
 
@@ -136,7 +136,7 @@ class Mod {
   // all file routes that this mod serves
   private files: string[];
   
-  constructor(private name: string) {
+  constructor(private name: string, private data: GameData) {
     this.items = this.getItems();
     this.hacks = this.getHacks();
     this.music = this.getMusic();
@@ -146,12 +146,12 @@ class Mod {
   }
 
   loadCustomItems() {
-    this.items.forEach(item => ITEMS.addCustomItem(item));
+    this.items.forEach(item => this.data.addCustomItem(item));
   }
 
   unloadCustomItems() {
     this.items.forEach(item => {
-      ITEMS.removeCustomItem(item.id);
+      this.data.removeCustomItem(item.id);
     });
   }
 
@@ -176,7 +176,7 @@ class Mod {
     
     // mods can't override items that already exist
     const conflicts = items.filter(obj => {
-      return ITEMS.has(obj.id);
+      return this.data.getItem(obj.id) !== undefined;
     });
     if (conflicts.length > 0) {
       throw new ModError(`There was a conflict of item IDs, either with another mod, or with an item from the original game. Conflicting item IDs: ${conflicts.map(item => item.id).join(', ')}`);
@@ -233,7 +233,7 @@ export class ModManager {
 
   private updateListener = new EventListener();
 
-  constructor() {
+  constructor(private data: GameData) {
     this._activeMods = new Map<string, Mod>();
     
     // initializing usingMods cache
@@ -261,7 +261,7 @@ export class ModManager {
     const failedMods: string[] = [];
     for (const modName of activeMods) {
       try {
-        const mod = new Mod(modName);
+        const mod = new Mod(modName, this.data);
 
         mod.loadCustomItems();
         mod.loadCustomFrameHacks();
@@ -289,7 +289,7 @@ export class ModManager {
 
   /** Attempts to enable a mod. Will raise an error if the mod is incorrect */
   setModActive(name: string): void {
-    const mod = new Mod(name);
+    const mod = new Mod(name, this.data);
     mod.loadCustomItems();
     mod.loadCustomFrameHacks();
 

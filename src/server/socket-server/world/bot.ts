@@ -9,7 +9,6 @@ import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
 import { getRoomFromName, IGLOO_ROOM_BASE, RoomName, ROOMS } from "@server/game-data/rooms";
-import { ITEMS } from "@server/game-logic/items";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
 
 const CHANCE_NO_ITEM = 0.3;
@@ -31,7 +30,7 @@ export function generateRandomOutfit(
     } else {
       const itemPool = ((roll < CHANCE_NO_ITEM + CHANCE_AVAILABLE_ITEM) ? available : inventory)
         .filter(i => {
-          const info = ITEMS.get(i);
+          const info = data.getItem(i);
           return info !== undefined && info.type === getItemTypeFromEquipProp(prop)
         });
         item = itemPool.length === 0 ? 0 : choose(itemPool);

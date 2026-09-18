@@ -8,6 +8,7 @@ import { MEDIA_DIRECTORY, readFile, toForwardSlash } from '@common/utils';
 import { SettingsManager } from '@server/settings';
 import { FileOverrider, OVERRIDERS, REGEX_OVERRIDERS } from './overriders';
 import { getYellowString, logverbose } from '@server/logger';
+import { ModManager } from '@server/mods';
 
 /** Server that serves files to the game webpage and files in the game */
 export class FileServer {
@@ -20,12 +21,11 @@ export class FileServer {
 
   private postGenerators: Map<string, FileGenerator>
 
-  constructor(private gameData: GameData, private settings: SettingsManager) {
+  constructor(private gameData: GameData, private settings: SettingsManager, private mods: ModManager) {
     this.dynamicFiles = getGeneratorsMap();
     this.postGenerators = postGeneratorsMap();
 
-    this.updateModFiles();
-    settings.mods.addListener(() => {
+    this.mods.addListener(() => {
       this.updateModFiles();
     });
 
@@ -34,7 +34,7 @@ export class FileServer {
 
   private updateModFiles() {
     this.modFiles = new Map<string, string>();
-    for (const mod of this.settings.mods.getActiveMods()) {
+    for (const mod of this.mods.getActiveMods()) {
       mod.getFiles().forEach(file => {
         this.modFiles.set(toForwardSlash(file), mod.getName());
       })        
@@ -61,7 +61,7 @@ export class FileServer {
     if (filePath === undefined) {
       const generator = this.dynamicFiles.get(route);
       if (generator !== undefined) {
-        return generator(this.gameData, this.settings);
+        return generator(this.gameData, this.settings, this.mods);
       }
     } else {
       return await readFile(filePath);
@@ -104,7 +104,7 @@ export class FileServer {
       if (generator === undefined) {
         next();
       } else {
-        res.send(generator(this.gameData, this.settings));
+        res.send(generator(this.gameData, this.settings, this.mods));
       }
     });
 

@@ -13,6 +13,7 @@ import { GAME_CRUMBS } from "../game-data/game-crumbs";
 import { GameName } from "@server/game-data/games";
 import { GameData } from "@server/timelines/game-data";
 import { SettingsManager } from "@server/settings";
+import { ModManager } from "@server/mods";
 
 
 function getIglooCrumbs(): PCodeRep {
@@ -228,7 +229,7 @@ function getScavengerHunt(reward: number, member: boolean) {
   ];
 }
 
-export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
+export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager, m: ModManager): Buffer {
   const migrator = d.getMigrator();
   const hunt = d.getHunt();
 
@@ -249,7 +250,7 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager): Buffer {
     ...getFloorCrumbs(),
     
     ...createEmptyObjectVar("room_crumbs"),
-    ...getRoomCrumbs(d.getRoomsMusic(s.mods.getMusic()), d.getRoomsMember()),
+    ...getRoomCrumbs(d.getRoomsMusic(m.getMusic()), d.getRoomsMember()),
 
     ...createEmptyObjectVar("puffle_crumbs"),
     ...getPuffleCrumbs(),

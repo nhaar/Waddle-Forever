@@ -1,11 +1,11 @@
 import { iterateEntries } from "@common/utils";
 import { GameData } from "@server/timelines/game-data";
 import { ROOMS } from "../game-data/rooms";
-import { getDate } from "../timelines/dates";
 import { SettingsManager } from "@server/settings";
+import { ModManager } from "@server/mods";
 
-export function getRoomsJson(d: GameData, s: SettingsManager): string {
-  const music = d.getRoomsMusic(s.mods.getMusic());
+export function getRoomsJson(d: GameData, s: SettingsManager, m: ModManager): string {
+  const music = d.getRoomsMusic(m.getMusic());
   const member = d.getRoomsMember();
 
   const json: Record<string, {

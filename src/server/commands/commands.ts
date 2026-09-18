@@ -1,5 +1,4 @@
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/socket-server/arg-parser";
-import { ITEMS } from "@server/game-logic/items";
 import { filterItems, joinRoom, sendLPMessage } from "@server/socket-server/handlers/join";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
@@ -57,7 +56,7 @@ const handleAddItem: CommandHandler<[number]> = ({ msg, penguin, prst }, itemId)
 
 const handleAddAllItems: CommandHandler<[string]> = ({ msg, penguin, prst, data }, action) => {
   if (action === 'all') {
-    const allItems = ITEMS.rows;
+    const allItems = data.getItems();
     allItems.forEach(item => penguin.inventory.add(item.id));
 
     msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));

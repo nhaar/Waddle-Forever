@@ -24,8 +24,9 @@ import { getStampsJson } from "./stamps.json";
 import { getStartscreenXML } from "./startscreen.xml";
 import { getVersionTxt } from "./version.txt";
 import { getWorldAchievementsXml } from "./worldachievements.xml";
+import { ModManager } from "@server/mods";
 
-export type FileGenerator = (d: GameData, s: SettingsManager) => Buffer | string;
+export type FileGenerator = (d: GameData, s: SettingsManager, m: ModManager) => Buffer | string;
 
 const GET_GENERATORS: Record<string, FileGenerator> = {
   'en/web_service/stamps.json': getStampsJson,

@@ -1,10 +1,11 @@
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
+import { ModManager } from "@server/mods";
 
 /** Handles setup.txt, from the Pre-CPIP rewrite */
-export function getSetupTxt(d: GameData, s: SettingsManager): string {
-  const roomMusic = d.getRoomsMusic(s.mods.getMusic());
+export function getSetupTxt(d: GameData, s: SettingsManager, m: ModManager): string {
+  const roomMusic = d.getRoomsMusic(m.getMusic());
   const frames = d.getRoomsFrame();
 
 

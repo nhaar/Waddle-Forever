@@ -1,6 +1,7 @@
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { RoomName, ROOMS } from "../game-data/rooms";
+import { ModManager } from "@server/mods";
 
 type OldRoom = {
   roomName: RoomName
@@ -36,7 +37,7 @@ function patchFrame(rooms: OldRoom[], frames: Map<RoomName, number>) {
   }
 }
 
-export function getSetupXml(d: GameData, s: SettingsManager) {
+export function getSetupXml(d: GameData, s: SettingsManager, m: ModManager) {
   // workaround: before there were any newspapers we use this endpoint for accessing the beta newspaper
   // it is unknown if the beta newspaper was accessed via a setup.xml, or if it was hardcoded into the chat.swf from the time
   const news = d.getIssue() ?? 'beta';
@@ -52,7 +53,7 @@ export function getSetupXml(d: GameData, s: SettingsManager) {
     }
   });
 
-  patchMusic(rooms, d.getRoomsMusic(s.mods.getMusic()));
+  patchMusic(rooms, d.getRoomsMusic(m.getMusic()));
   patchFrame(rooms, d.getRoomsFrame());
 
   const chat = d.getChatVersion();

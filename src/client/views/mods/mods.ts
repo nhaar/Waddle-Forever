@@ -34,7 +34,7 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
 
     if (state) {
       try {
-        settings.mods.setModActive(name);
+        server.mods.setModActive(name);
       } catch (error) {
         if (error instanceof ModError) {
           worked = false;
@@ -44,7 +44,7 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
         }
       }
     } else {
-      settings.mods.setModInactive(name);
+      server.mods.setModInactive(name);
     }
 
     if (worked) {
@@ -58,10 +58,10 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
   });
 
   const sendMods = () => {
-    const mods = settings.mods.getMods();
+    const mods = server.mods.getMods();
     const modsRelation: Record<string, boolean> = {};
     for (const mod of mods) {
-      modsRelation[mod] = settings.mods.isModActive(mod);
+      modsRelation[mod] = server.mods.isModActive(mod);
     }
     modsWindow.webContents.send('get-mods', modsRelation);
   };

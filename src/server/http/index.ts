@@ -6,13 +6,14 @@ import { GameData } from "@server/timelines/game-data";
 import { HTTP_PORT } from '@common/constants';
 import { PhpServer } from './php-server';
 import { PenguinRepository } from '@server/database/database';
+import { ModManager } from '@server/mods';
 
 export class HttpServer {
   private fileServer: FileServer;
   private phpServer: PhpServer;
 
-  constructor(gameData: GameData, settings: SettingsManager, db: PenguinRepository) {
-    this.fileServer = new FileServer(gameData, settings);
+  constructor(gameData: GameData, settings: SettingsManager, db: PenguinRepository, mods: ModManager) {
+    this.fileServer = new FileServer(gameData, settings, mods);
     this.phpServer = new PhpServer(settings, db, gameData);
   }
 

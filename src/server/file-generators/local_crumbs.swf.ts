@@ -9,7 +9,6 @@ import { LANG } from "../game-data/lang";
 import { ERROR_LANG } from "../game-data/error-lang";
 import { FURNITURE } from "../game-logic/furniture";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
-import { ITEMS } from "../game-logic/items";
 import serverList from "../servers";
 import { GameData } from "@server/timelines/game-data";
 import { StageScript } from "@server/game-data/stage-plays";
@@ -145,8 +144,8 @@ function getFloorCrumbs() {
   })));
 }
 
-function getPaperCrumbs() {
-  return applyJsonToObject("paper_crumbs", Object.fromEntries(ITEMS.rows.map(row => {
+function getPaperCrumbs(d: GameData) {
+  return applyJsonToObject("paper_crumbs", Object.fromEntries(d.getItems().map(row => {
     return [row.id, { name: row.name }]
   })));
 }
@@ -356,7 +355,7 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
     ...getFloorCrumbs(),
 
     ...createEmptyObjectVar("paper_crumbs"),
-    ...getPaperCrumbs(),
+    ...getPaperCrumbs(d),
 
     ...createEmptyObjectVar("igloo_crumbs"),
     ...getIglooCrumbs(),

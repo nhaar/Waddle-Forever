@@ -14,7 +14,7 @@ import { GlobalSettings } from '@common/utils';
 import { NAME, VERSION, WEBSITE } from '@common/constants';
 import { Popups } from './popups';
 import { WorldServer } from '@server/socket-server/world-server';
-import { startMods, startServices } from '@server/boot';
+import { startServices } from '@server/boot';
 
 log.initialize();
 
@@ -83,10 +83,12 @@ app.once('ready', async () => {
     return;
   }
 
-  const failedMods = startMods();
+  let failedMods: string[] = [];
 
   try {
-    server = await startServices();
+    const result = await startServices();
+    failedMods = result.failedMods;
+    server = result.world;
   } catch (error) {
     if (error instanceof Error && error.message.includes('EADDRINUSE')) {
       const win = await progressWindow();
@@ -174,7 +176,7 @@ These are the most important things, but there is a full list of questions in ou
       title: 'Error with Mods',
       message: `The following mods could not be turned on. Please fix them and then try enabling them again:
 
-${failedMods.map(mod => `* ${mod}`).join('\n')}}`
+${failedMods.map(mod => `* ${mod}`).join('\n')}`
     });
   }
 });

@@ -3,7 +3,6 @@ import { SETTINGS_PATH } from '../common/paths';
 import { isVersionValid, processVersion, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
-import { ModManager } from './mods';
 import { EventListener } from '@common/utils';
 
 export type BooleanSettingKey = 
@@ -34,8 +33,6 @@ type PartialSettings = Partial<Settings>
 export class SettingsManager {
   settings: Settings;
 
-  public mods: ModManager;
-
   /** IP used by the server */
   targetIP: string;
 
@@ -58,8 +55,6 @@ export class SettingsManager {
     if (fs.existsSync(SETTINGS_PATH)) {
       settingsJson = JSON.parse(fs.readFileSync(SETTINGS_PATH, { encoding: 'utf-8' }));
     }
-
-    this.mods = new ModManager();
 
     this.settings = {
       fps30: this.readBoolean(settingsJson, 'fps30', false),

@@ -24,6 +24,7 @@ import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/h
 import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
 import { OfflineWorld } from "./offline-world";
 import { BotManager } from "./world/bots";
+import { ModManager } from "@server/mods";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
@@ -34,11 +35,14 @@ export class WorldServer implements MessageHandler {
   private _xmlHandler: XmlHandler;
   private _persister: PenguinPersister;
   private _botManager: BotManager;
+  private _mods: ModManager;
   
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
     this._off = new OfflineWorld(_db);
     this._world = new World(_gameData);
     this._botManager = this.getBotManager();
+
+    this._mods = new ModManager(this._gameData);
 
     this._commandsHandler = getCommandsHandler();
 
@@ -147,6 +151,10 @@ export class WorldServer implements MessageHandler {
   public async disconnect(client: ClientSocket): Promise<void> {
     const context = this.getContext(client);
     await this._xtHandler.disconnect(context);
+  }
+
+  public get mods() {
+    return this._mods;
   }
 }
 
