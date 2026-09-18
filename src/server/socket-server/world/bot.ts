@@ -42,8 +42,8 @@ export function generateRandomOutfit(
   return Object.fromEntries(items) as PenguinEquipped;
 }
 
-export type SendFunction = (p: WorldPenguin[] | WorldPenguin, msg: string, ...args: Array<string | number>) => void;
 export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
+type SendFunction = (ext: string, code: string, ...args: Array<string | number>) => void;
 
 // TODO -> Complete tracking of all walkable boxes
 //         (If possible with a FFDEC script)
@@ -80,6 +80,250 @@ const CHAT_LINES = [
   'im so bored', 'party at my igloo', 'waddle on', 'lol', 'thanks!',
   'where is everyone', 'first!', 'im a member', 'add me'
 ];
+
+interface BotBrain {
+  handle(name: string, args: string[]): void;
+  dispose(): void;
+}
+
+class TableBrain implements BotBrain {
+  private _timeout: NodeJS.Timeout;
+
+  constructor(
+    private _table: WorldTable,
+    private _seat: number,
+    private _room: WorldRoom,
+    private _penguin: WorldPenguin,
+    private _send: SendFunction,
+    private _onEnd: () => void,
+    private _rng: Rng
+  ) {
+    this._timeout = this.tableMove();
+  }
+
+  handle(name: string, args: string[]): void {
+    
+  }
+
+  dispose(): void {
+    clearTimeout(this._timeout);
+    this._onEnd();
+  }
+
+  public tableMove(): NodeJS.Timeout {
+    return setTimeout(() => {
+      // human walked off, or the round was reset out from under us
+      const stillSeated = this._table.getSeatIndex(this._penguin) === this._seat;
+      const opponent = this._table.getSeats().some(p => p !== null);
+
+      if (!stillSeated || !opponent) {
+        this.dispose();
+        return;
+      }
+
+      if (this._table.hasEnded()) {
+        this.dispose();
+        return;
+      }
+      if (!this._table.hasStarted() || this._table.getTurn() !== this._seat) {
+        this._timeout = this.tableMove();
+        return;
+      }
+
+      const moves = this.chooseTableMove();
+      if (moves === null) {
+        return;
+      }
+      this._send('z', 'zm', ...moves);
+      this._timeout = this.tableMove();
+    }, this._rng.int(TABLE_THINK_MIN, TABLE_THINK_MAX) * 1000);
+  }
+
+  private chooseTableMove(): number[] | null {
+    if (this._table instanceof FindFourTable) {
+      return this.chooseFindFourMove(this._table);
+    }
+    if (this._table instanceof MancalaTable) {
+      return this.chooseMancalaMove(this._table);
+    }
+    return null;
+  }
+
+  private chooseFindFourMove(table: FindFourTable): number[] | null {
+    const board = this.parseFindFour(table);
+    const me = this._seat + 1;
+    const them = this._seat === 0 ? 2 : 1;
+
+    const options: Array<{ column: number; row: number }> = [];
+    for (let x = 0; x < FindFourTable.FIND_FOUR_WIDTH; x++) {
+      const row = this.dropRow(board[x] ?? []);
+      if (row !== null) {
+        options.push({ column: x, row });
+      }
+    }
+    if (options.length === 0) {
+      return null;
+    }
+
+    // win if possible
+    for (const { column, row } of options) {
+      if (this.isFindFourWin(board, column, row, me)) {
+        return [column, row];
+      }
+    }
+    // otherwise block
+    for (const { column, row } of options) {
+      if (this.isFindFourWin(board, column, row, them)) {
+        return [column, row];
+      }
+    }
+    // otherwise favour the middle, but not every single time
+    if (Math.random() < 0.75) {
+      const centre = (FindFourTable.FIND_FOUR_WIDTH - 1) / 2;
+      const sorted = [...options].sort(
+        (a, b) => Math.abs(a.column - centre) - Math.abs(b.column - centre)
+      );
+      const best = sorted.slice(0, 3);
+      const choice = choose(best);
+      return [choice.column, choice.row];
+    }
+
+    const choice = choose(options);
+    return [choice.column, choice.row];
+  }
+
+  private chooseMancalaMove(table: MancalaTable): number[] | null {
+    const board = table.serializeBoard().split(',').map(Number);
+    if (board.length !== 14) {
+      return null;
+    }
+
+    const legal: number[] = [];
+    for (let cup = 0; cup < 14; cup++) {
+      if (table.isMancalaCupForPlayer(this._seat, cup) && (board[cup] ?? 0) > 0) {
+        legal.push(cup);
+      }
+    }
+    if (legal.length === 0) {
+      return null;
+    }
+
+    let free: number | null = null;
+    let capture: number | null = null;
+
+    for (const cup of legal) {
+      // applyMancalaMove works on the array it is handed, so a copy simulates
+      const result = table.applyMancalaMove([...board], this._seat, cup);
+      if (result.command === 'f' && free === null) {
+        free = cup;
+      }
+      if (result.command === 'c' && capture === null) {
+        capture = cup;
+      }
+    }
+
+    if (free !== null && Math.random() < 0.85) {
+      return [free];
+    }
+    if (capture !== null && Math.random() < 0.75) {
+      return [capture];
+    }
+    return [choose(legal)];
+  }
+
+  private parseFindFour(table: FindFourTable): number[][] {
+    const values = table.serializeBoard().split(',').map(Number);
+    const board: number[][] = [];
+    for (let x = 0; x < FindFourTable.FIND_FOUR_WIDTH; x++) {
+      const column: number[] = [];
+      for (let y = 0; y < FindFourTable.FIND_FOUR_HEIGHT; y++) {
+        column.push(values[x * FindFourTable.FIND_FOUR_HEIGHT + y] ?? 0);
+      }
+      board.push(column);
+    }
+    return board;
+  }
+
+  private dropRow(column: number[]): number | null {
+    const height = FindFourTable.FIND_FOUR_HEIGHT;
+    for (let y = height - 1; y >= 0; y--) {
+      if (column[y] === 0) {
+        return y;
+      }
+    }
+    return null;
+  }
+
+  private isFindFourWin(board: number[][], x: number, y: number, value: number): boolean {
+    const width = FindFourTable.FIND_FOUR_WIDTH;
+    const height = FindFourTable.FIND_FOUR_HEIGHT;
+    const dirs = [[1, 0], [0, 1], [1, 1], [1, -1]];
+
+    return dirs.some(([dx, dy]) => {
+      let count = 1;
+      for (const sign of [1, -1]) {
+        let cx = x + dx * sign;
+        let cy = y + dy * sign;
+        while (
+          cx >= 0 && cx < width && cy >= 0 && cy < height &&
+          board[cx]?.[cy] === value
+        ) {
+          count++;
+          cx += dx * sign;
+          cy += dy * sign;
+        }
+      }
+      return count >= 4;
+    });
+  }
+}
+
+class CardJitsuBrain implements BotBrain {
+  private _timeout: NodeJS.Timeout | null = null;
+
+  constructor(
+    private _game: CardJitsu,
+    private _ninja: NinjaPlayer,
+    private _seat: number,
+    private _send: SendFunction,
+    private _onEnd: () => void
+  ) {
+
+  }
+
+  handle(name: string, args: string[]): void {
+    if (name === 'zm') {
+      if (args[0] === 'deal' && args[1] != String(this._seat)) {
+        // remove deal and seat to find number of cards
+        const amount = args.length - 2;
+        this._send('z', 'zm', 'deal', amount);
+        this._timeout = setTimeout(() => {
+          const selectableCards = this._ninja.cards
+            .map((sessionId) => [this._game.getCard(sessionId).element, sessionId])
+            .filter(([element,]) => element !== this._ninja.blockedElement)
+            .map(([,id]) => id);
+          
+          if (selectableCards.length === 0) {
+            this._send('z', 'zm', 'death');
+          } else {
+            this._send('z', 'zm', 'pick', choose(selectableCards));
+          }
+          
+        }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
+      }
+    } else if (name === 'czo' || name === 'cz') {
+      // packets that terminate the match
+      this.dispose();
+    }
+  }
+
+  dispose(): void {
+    if (this._timeout !== null) {
+      clearTimeout(this._timeout);
+    }
+    this._onEnd();
+  }
+}
 
 type BotAttributes = {
   emptyRoomTolerance: number;
@@ -416,26 +660,30 @@ BEHAVIORS.forEach((behavior, i) => {
 });
 
 export class Bot implements ClientSocket {
-  public busy = false;
-  private _tableInfo: {
-    table: WorldTable,
-    room: WorldRoom,
-    seat: number,
-    timeout: NodeJS.Timeout
-   } | null = null;
-  
-  private _cardInfo : {
-    seat: number,
-    card: CardJitsu,
-    ninja: NinjaPlayer,
-    chooseCard: NodeJS.Timeout | null
-  } | null = null;
+  private _brain: BotBrain | null = null;
+  public get busy () {
+    return this._brain !== null;
+  }
   private _timers = new Set<NodeJS.Timeout>();
 
   private _simulate: (ext: string, code: string, ...args: Array<string | number>) => void;
 
   private _lenghts: Record<BehaviorId, number> = { ...allBehaviors };
   private _cooldowns: Record<BehaviorId, number> = { ...allBehaviors };
+  private _rng: Rng = {
+    random() {
+      return Math.random()
+    },
+    choose(xs) {
+      return choose(xs);
+    },
+    int(a, b) {
+      return randomInt(a, b);
+    },
+    logNormal(mu, sigma) {
+      return randomLogNormal(mu, sigma);
+    }
+  }
 
   constructor(
     private _penguin: WorldPenguin,
@@ -507,240 +755,51 @@ export class Bot implements ClientSocket {
   }
 
   private exitGameMode() {
-    this.busy = false;
     this.enter(this.chooseRoom());
+  }
+
+  private handleOverworld(message: string, args: string[]): void {
+    if (message === 'jt') {
+      const room = this._world.getPenguinRoom(this._penguin);
+      this._brain = new TableBrain(
+        room.getTable(Number(args[0])),
+        Number(args[1]) - 1,
+        room,
+        this._penguin,
+        this._simulate,
+        () => {
+          this.exitGameMode();
+          this._brain = null;
+        },
+        this._rng
+      );
+      this._simulate('z', 'gz');
+      this._simulate('z', 'jz');
+    } else if (message === 'sm') {
+      this.reactToMessage(args[1]);
+    }
   }
   
 
   private handle(name: string, args: string[]): void {
-    if (this._cardInfo !== null) {
-      if (name === 'zm') {
-        if (args[0] === 'deal' && args[1] != String(this._cardInfo.seat)) {
-          // remove deal and seat to find number of cards
-          const amount = args.length - 2;
-          this._simulate('z', 'zm', 'deal', amount);
-          this._cardInfo.chooseCard = this.schedule(() => {
-            const selectableCards = this._cardInfo.ninja.cards
-              .map((sessionId) => [this._cardInfo.card.getCard(sessionId).element, sessionId])
-              .filter(([element,]) => element !== this._cardInfo.ninja.blockedElement)
-              .map(([,id]) => id);
-            
-            if (selectableCards.length === 0) {
-              this._simulate('z', 'zm', 'death');
-            } else {
-              this._simulate('z', 'zm', 'pick', choose(selectableCards));
-            }
-            
-          }, clamp(randomLogNormal(1.2, 0.8), 1, 20));
-        }
-      } else if (name === 'czo' || name === 'cz') {
-        // packets that terminate the match
-        this._cardInfo = null;
-        this.exitGameMode();
-      }
-    } else {
-      if (name === 'jt') {
-        const room = this._world.getPenguinRoom(this._penguin);  
-        this._tableInfo = {
-          table: room.getTable(Number(args[0])),
-          seat: Number(args[1]) - 1,
-          room: room,
-          timeout: this.tableMove()
-        }
-        this._simulate('z', 'gz');
-        this._simulate('z', 'jz');
-      } else if (name === 'sm') {
-        this.reactToMessage(args[1]);
-      }
-    }
+    this._brain?.handle(name, args) ?? this.handleOverworld(name, args);
   }
 
   public joinCard(card: CardJitsu): void {
-    this._cardInfo = {
+    this._brain = new CardJitsuBrain(
       card,
-      ninja: card.getNinja(this._penguin),
-      seat: card.getSeatId(this._penguin),
-      chooseCard: null
-    };
+      card.getNinja(this._penguin),
+      card.getSeatId(this._penguin),
+      this._simulate,
+      () => {
+        this._brain = null;
+        this.exitGameMode();
+      }
+    );
   }
 
   public sitAtTable(tableId: number): void {
     this._simulate('s', this._data.isPreCpip() ? 'jt' : 'a#jt', tableId);
-    this.busy = true;
-  }
-
-  private parseFindFour(table: FindFourTable): number[][] {
-    const values = table.serializeBoard().split(',').map(Number);
-    const board: number[][] = [];
-    for (let x = 0; x < FindFourTable.FIND_FOUR_WIDTH; x++) {
-      const column: number[] = [];
-      for (let y = 0; y < FindFourTable.FIND_FOUR_HEIGHT; y++) {
-        column.push(values[x * FindFourTable.FIND_FOUR_HEIGHT + y] ?? 0);
-      }
-      board.push(column);
-    }
-    return board;
-  }
-
-  private dropRow(column: number[]): number | null {
-    const height = FindFourTable.FIND_FOUR_HEIGHT;
-    for (let y = height - 1; y >= 0; y--) {
-      if (column[y] === 0) {
-        return y;
-      }
-    }
-    return null;
-  }
-
-  private isFindFourWin(board: number[][], x: number, y: number, value: number): boolean {
-    const width = FindFourTable.FIND_FOUR_WIDTH;
-    const height = FindFourTable.FIND_FOUR_HEIGHT;
-    const dirs = [[1, 0], [0, 1], [1, 1], [1, -1]];
-
-    return dirs.some(([dx, dy]) => {
-      let count = 1;
-      for (const sign of [1, -1]) {
-        let cx = x + dx * sign;
-        let cy = y + dy * sign;
-        while (
-          cx >= 0 && cx < width && cy >= 0 && cy < height &&
-          board[cx]?.[cy] === value
-        ) {
-          count++;
-          cx += dx * sign;
-          cy += dy * sign;
-        }
-      }
-      return count >= 4;
-    });
-  }
-
-  private chooseFindFourMove(table: FindFourTable, seat: number): number[] | null {
-    const board = this.parseFindFour(table);
-    const me = seat + 1;
-    const them = seat === 0 ? 2 : 1;
-
-    const options: Array<{ column: number; row: number }> = [];
-    for (let x = 0; x < FindFourTable.FIND_FOUR_WIDTH; x++) {
-      const row = this.dropRow(board[x] ?? []);
-      if (row !== null) {
-        options.push({ column: x, row });
-      }
-    }
-    if (options.length === 0) {
-      return null;
-    }
-
-    // win if possible
-    for (const { column, row } of options) {
-      if (this.isFindFourWin(board, column, row, me)) {
-        return [column, row];
-      }
-    }
-    // otherwise block
-    for (const { column, row } of options) {
-      if (this.isFindFourWin(board, column, row, them)) {
-        return [column, row];
-      }
-    }
-    // otherwise favour the middle, but not every single time
-    if (Math.random() < 0.75) {
-      const centre = (FindFourTable.FIND_FOUR_WIDTH - 1) / 2;
-      const sorted = [...options].sort(
-        (a, b) => Math.abs(a.column - centre) - Math.abs(b.column - centre)
-      );
-      const best = sorted.slice(0, 3);
-      const choice = choose(best);
-      return [choice.column, choice.row];
-    }
-
-    const choice = choose(options);
-    return [choice.column, choice.row];
-  }
-
-  private chooseMancalaMove(table: MancalaTable, seat: number): number[] | null {
-    const board = table.serializeBoard().split(',').map(Number);
-    if (board.length !== 14) {
-      return null;
-    }
-
-    const legal: number[] = [];
-    for (let cup = 0; cup < 14; cup++) {
-      if (table.isMancalaCupForPlayer(seat, cup) && (board[cup] ?? 0) > 0) {
-        legal.push(cup);
-      }
-    }
-    if (legal.length === 0) {
-      return null;
-    }
-
-    let free: number | null = null;
-    let capture: number | null = null;
-
-    for (const cup of legal) {
-      // applyMancalaMove works on the array it is handed, so a copy simulates
-      const result = table.applyMancalaMove([...board], seat, cup);
-      if (result.command === 'f' && free === null) {
-        free = cup;
-      }
-      if (result.command === 'c' && capture === null) {
-        capture = cup;
-      }
-    }
-
-    if (free !== null && Math.random() < 0.85) {
-      return [free];
-    }
-    if (capture !== null && Math.random() < 0.75) {
-      return [capture];
-    }
-    return [choose(legal)];
-  }
-
-  private chooseTableMove(table: WorldTable, seat: number): number[] | null {
-    if (table instanceof FindFourTable) {
-      return this.chooseFindFourMove(table, seat);
-    }
-    if (table instanceof MancalaTable) {
-      return this.chooseMancalaMove(table, seat);
-    }
-    return null;
-  }
-
-  public tableMove(): NodeJS.Timeout {
-    return this.schedule(() => {
-      if (this._tableInfo === null) {
-        return;
-      }
-      const { table, seat, room } = this._tableInfo;
-      // human walked off, or the round was reset out from under us
-      const stillSeated = table.getSeatIndex(this._penguin) === seat;
-      const opponent = table.getSeats().some(p => p !== null);
-
-      if (!stillSeated || !opponent) {
-        this.busy = false;
-        this._tableInfo = null;
-        this.exitGameMode();
-        return;
-      }
-
-      if (table.hasEnded()) {
-        this._tableInfo = null;
-        this.exitGameMode();
-        return;
-      }
-      if (!table.hasStarted() || table.getTurn() !== seat) {
-        this._tableInfo.timeout = this.tableMove();
-        return;
-      }
-
-      const moves = this.chooseTableMove(table, seat);
-      if (moves === null) {
-        return;
-      }
-      this._simulate('z', 'zm', ...moves);
-      this._tableInfo.timeout = this.tableMove();
-    }, randomInt(TABLE_THINK_MIN, TABLE_THINK_MAX));
   }
 
   public throwSnowball(x: number, y: number) {
@@ -901,20 +960,7 @@ export class Bot implements ClientSocket {
     const ctx: BotContext = {
       bot: this,
       room: this._world.getPenguinRoom(this._penguin),
-      rng: {
-        random() {
-          return Math.random()
-        },
-        choose(xs) {
-          return choose(xs);
-        },
-        int(a, b) {
-          return randomInt(a, b);
-        },
-        logNormal(mu, sigma) {
-          return randomLogNormal(mu, sigma);
-        }
-      },
+      rng: this._rng,
       now: Date.now(),
       attrs: this._attributes
     }

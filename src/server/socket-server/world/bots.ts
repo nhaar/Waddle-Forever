@@ -366,7 +366,6 @@ export class BotManager {
       }
 
       this._waddleLastSeat.set(id, now);
-      bot.busy = true;
       joinWaddle({ msg: this._msg, world: this._world, data: this._data }, room, waddle, bot.penguin);
 
       const ctx = this._world.getContext(bot.penguin);
