@@ -836,7 +836,10 @@ export class Bot implements ClientSocket {
   }
 
   public chooseRoom(): number {
-    return ROOMS[choose(this._data.getAvailableRooms())].id;
+    const canGo = this._data.getAvailableRooms().filter(r => {
+      return this._penguin.membership.isMember || !this._data.isRoomMember(r);
+    });
+    return ROOMS[choose(canGo)].id;
   }
 
   public openIgloo(): void {

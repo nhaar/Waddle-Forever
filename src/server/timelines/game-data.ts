@@ -855,6 +855,10 @@ export class GameData {
     return this.state.roomMember;
   }
 
+  public isRoomMember(room: RoomName): boolean {
+    return this.state.roomMember.get(room) === true;
+  }
+
   public getGamesMusic() {
     return this.state.gameMusic;
   }
