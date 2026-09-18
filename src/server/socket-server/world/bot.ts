@@ -394,8 +394,8 @@ const BEHAVIORS: Behavior[] = [
     success({ attrs, rng, room }) {
       return room.id === ROOMS.light.id && Math.max(attrs.musicFan, attrs.stampsFan) > rng.random();
     },
-    start({ bot }) {
-      bot.joinBand();
+    start({ bot, rng }) {
+      bot.joinBand(rng.random(), rng.random());
     },
     end({ bot }) {
       bot.wearOutfit();
@@ -793,22 +793,22 @@ export class Bot implements ClientSocket {
     }, this.walkTo(randomInt(minX, maxX), y) * 1000);
   }
 
-  public joinBand(): void {
-    const items: Array<[EquipProp, number]> = [
-      ['hand', 233],
-      ['hand', 234],
-      ['hand', 729],
-      ['body', 293],
-      ['hand', 5014],
-      ['hand', 340]
+  public joinBand(deltaX: number, deltaY: number): void {
+    const BAND_ROLES: Array<[EquipProp, number, [number, number]]> = [
+      ['hand', 233, [117, 337]],
+      ['hand', 234, [139, 302]],
+      ['hand', 729, [43, 308]],
+      ['body', 293, [44, 351]],
+      ['hand', 5014, [176, 268]],
+      ['hand', 340, [87, 225]]
     ];
 
-    const taken = items.map(() => false);
+    const taken = BAND_ROLES.map(() => false);
 
     const room = this._world.getPenguinRoom(this._penguin);
     room.players.forEach(p => {
       let i = 0;
-      for (const [prop, id] of items) {
+      for (const [prop, id] of BAND_ROLES) {
         if (p.inventory[prop] === id) {
           taken[i] = true;
           break;
@@ -818,15 +818,11 @@ export class Bot implements ClientSocket {
     });
 
     const notYetTaken = taken.map((v, i): [number, boolean] => [i, v]).filter(([,v]) => !v);
-    const roleIndex = notYetTaken.length === 0 ? randomInt(0, items.length - 1) : choose(notYetTaken)[0];
-    const coords: Array<[number, number]> = [
-      [117, 337],
-      [139, 302],
-      [43, 308],
-      [44, 351],
-      [176, 268],
-      [87, 225]
-    ];
+    const roleIndex = notYetTaken.length === 0 ? randomInt(0, BAND_ROLES.length - 1) : choose(notYetTaken)[0];
+
+    const role = BAND_ROLES[roleIndex];
+    const x = Math.round(role[2][0] + (deltaX - 0.5) * 30);
+    const y = Math.round(role[2][1] + (deltaY - 0.5) * 30);
 
     this.wearItem('body', 0);
     this.wearItem('hand', 0);
@@ -834,10 +830,10 @@ export class Bot implements ClientSocket {
     this.wearItem('feet', 0);
     this.wearItem('head', 0);
     this.wearItem('neck', 0);
-    this.wearItem(...items[roleIndex]);
+    this.wearItem(role[0], role[1]);
     setTimeout(() => {
       this.doDance();
-    }, this.walkTo(...coords[roleIndex]) * 1000);
+    }, this.walkTo(x, y) * 1000);
   }
 
   public wearOutfit(): void {
