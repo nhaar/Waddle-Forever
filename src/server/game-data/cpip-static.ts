@@ -241,7 +241,7 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/igloo/assets/igloo_storage.swf': 'slegacy:media/play/v2/content/global/igloo/assets/igloo_storage.swf',
   'boots.swf': 'tool:boots.swf',
   'play/v2/games/book1/bootstrap.swf': 'unknown:my_puffle.swf',
-  'play/v2/games/dancing/dance.swf': 'slegacy:media/play/v2/games/dancing/dance.swf',
+  'play/v2/games/dancing/dance.swf': 'fix:GamesDancingDanceDomainFix.swf',
   'play/v2/games/jetpack/JetpackAdventures.swf': 'fix:GamesJetPackAdventureMain.swf',
   'play/v2/games/thinice/ThinIce.swf': 'fix:GamesThiniceThinIce.swf',
   'play/v2/games/mine/CartSurfer.swf': 'slegacy:media/play/v2/games/mine/CartSurfer.swf',
