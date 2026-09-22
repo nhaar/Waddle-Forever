@@ -4,11 +4,10 @@ import { getDefaultPenguin } from "@server/database/database";
 import { getYellowString, logdebug, logverbose } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { SnowContext } from "@server/socket-server/snow-data-handler";
-import { AlignMode, EventType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
+import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
 import { LocalGameObject } from "../world/snow/snow-game-objects";
 import { CARDS } from "@server/game-logic/cards";
-import { MatchMaker } from "../world/matchmaker";
-import { SnowPlayer, SnowWorld } from "../world/snow/snow";
+import { SnowGame, SnowPlayer, SnowWorld } from "../world/snow/snow";
 
 
 export type SnowHandler = (ctx: SnowContext, ...args: Array<string>) => Promise<void>;
@@ -174,9 +173,62 @@ export const handleIntroAnimDone: SnowHandler = async () => {
   // no-op
 }
 
-export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async ({ penguin }) => {
-  if (penguin.inGame) {
+// Sent when clicking a game object
+export const handleUse: SnowHandler = async (ctx, objectId) => {
+  if (ctx.game === null) return;
+
+  const obj = ctx.game.objects.getById(Number(objectId));
+
+  if (obj === null) {
+    // Try and find the obj in the client local objects
+    const lobj = ctx.penguin.localObjects.getById(Number(objectId));
+
+    if (lobj !== null && lobj.onClick !== null) {
+      lobj.onClick(ctx, lobj);
+    }
+
+    return;
+  }
+
+  if (obj.onClick === null) {
+    // TODO: place powercard;
+    return;
+  }
+
+  obj.onClick(ctx, obj);
+}
+
+export const handleActionDone: SnowHandler = async ({ game }, objectId, handleId) => {
+  if (game !== null) {
+    game.callbacks.actionDone(Number(handleId), Number(objectId));
+  }
+}
+
+export const frameworkRoomToRoomMinTime: SnowFrameworkHandler = async (ctx) => {
+  if (ctx.game === null) {
+    return;
+  }
+
+  await ctx.msg.sendSnowData(
+    ctx.client,
+    'W_INPUT',
+    '/use', // input id
+    '4375706:1', // script id
+    InputTarget.GOB,
+    InputType.MOUSE_CLICK,
+    InputModifier.NONE,
+    '/use' // command
+  );
+
+  ctx.game.somePlayerReady(ctx);
+}
+
+export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async (ctx) => {
+  const { penguin, game } = ctx;
+
+  if (game !== null && !penguin.isReady) {
     penguin.isReady = true;
+    game.playersReady(ctx);
   }
 }
 
@@ -247,6 +299,16 @@ export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUr
   }
 }
 
+export const frameworkWindowClosed: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
+  const name = (windowUrl as string).split('/').pop();
+  const win = ctx.penguin.getWindow(ctx, name);
+  win.loaded = false;
+  if (win.onClose !== null) {
+    win.onClose(ctx);
+  }
+  ctx.penguin.windowManager.delete(name);
+}
+
 export const frameworkElementSelected: SnowFrameworkHandler = async (ctx, { element, tipMode }) => {
   ctx.penguin.element = (element as string).toLowerCase();
   ctx.penguin.tipMode = tipMode;
@@ -289,6 +351,8 @@ export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<Sn
       })
       world.matchMaker.removePlayer(penguin);
     }
+
+    world.createGame({ msg, world } as SnowContext, fireNinja, waterNinja, snowNinja);
   });
   world.matchMaker.setTickListener(() => {});
 }

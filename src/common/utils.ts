@@ -136,6 +136,10 @@ export function getDateString(timestamp: number): string {
   return `${year}-${month}-${day}`
 }
 
+export function capitalize(val: string) {
+  return val.charAt(0).toUpperCase() + val.slice(1);
+}
+
 /** Runs a command in the current shell, asynchronously. */
 export async function runCommand(command: string): Promise<void> {
   await new Promise<void>((resolve, reject) => {
@@ -204,6 +208,17 @@ export function chooseN<T>(array: T[], n: number): T[] {
   }
 
   return chosen;
+}
+
+export function shuffle<T>(array: T[]) {
+  let currentIndex = array.length;
+
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
 }
 
 export function isPositiveInteger(n: number): boolean {
