@@ -44,6 +44,7 @@ class SnowServer implements MessageHandler {
 
   private getContext(client: ClientSocket): SnowContext {
     const penguin = this._msg.getPenguin(client);
+    const game = this._world.games.find(game => game.players.includes(penguin)) ?? null;
     return {
       world: this._world,
       msg: this._msg,
@@ -54,7 +55,7 @@ class SnowServer implements MessageHandler {
       off: this._off,
       client,
       penguin,
-      game: null // TODO actual game
+      game
     };
   }
 
@@ -76,7 +77,14 @@ class SnowServer implements MessageHandler {
     msg.linkClient(client, p);
   }
 
-  public async disconnect() {}
+  public async disconnect(cs: ClientSocket) {
+    const { penguin, game } = this.getContext(cs);
+    penguin.disconnected = true;
+    this._world.disconnect(penguin);
+    if (game !== null) {
+      // TODO
+    }
+  }
 }
 
 export const setupSnowServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<void>> => {

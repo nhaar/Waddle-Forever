@@ -57,7 +57,7 @@ export class PenguinMessenger<Penguin extends object = WorldPenguin> {
     await this.write(client, xml);
   }
 
-  public async sendSnowData(client: ClientSocket | Penguin, message: string, ...args: Array<string | number>): Promise<void> {
+  public async sendSnowData(client: ClientSocket | Penguin | Penguin[], message: string, ...args: Array<string | number>): Promise<void> {
     logverbose(getGreenString('sending snow data: '), message, args);
     const msg = `[${message}]|${args.join('|')}|`
     await this.write(client, msg, '\r\n');

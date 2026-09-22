@@ -7,7 +7,7 @@ import { ClientSocket } from "./socket-server"
 import { getRedString, getBlueString, getYellowString, logverbose } from "@server/logger"
 import { OfflineWorld } from "./offline-world"
 import { SnowFrameworkHandler, SnowHandler } from "./handlers/snow"
-import { SnowWorld } from "./world/snow/snow"
+import { SnowGame, SnowWorld } from "./world/snow/snow"
 import { SnowPlayer } from "./world/snow/snow"
 import { PenguinPersister } from "./handlers/handlers"
 
@@ -21,7 +21,7 @@ export type SnowContext = {
   off: OfflineWorld
   prst: PenguinPersister
   penguin: SnowPlayer,
-  game: null
+  game: SnowGame | null
 };
 
 export class SnowDataHandler {
@@ -60,6 +60,7 @@ export class SnowDataHandler {
         const callback = this._frameworkCallbacks.get(json.triggerName);
 
         if (callback !== undefined) {
+          logverbose(getBlueString('Processing snow /framework command:'), json.triggerName);
           await callback(ctx, json);
         } else {
           logverbose(getRedString('unhandled snow /framework command: ' + json.triggerName));
