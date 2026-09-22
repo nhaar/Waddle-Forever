@@ -26,6 +26,8 @@ export class CardJitsuProgress {
   /** Max rank XP-wise, ie ninja is a rank above this */
   static HIGHEST_BELT_RANK: number = 9;
 
+  static HIGHEST_RANK: number = this.HIGHEST_BELT_RANK + 1;
+
   constructor(xp: number, attempts: number, ninja: boolean) {
     this._xp = xp;
     this._ninja = ninja;

@@ -132,12 +132,19 @@ function addTestingItems(inventory: Set<number>, today: Version, startDate: Vers
   });
 }
 
+function addNinjaItems(inventory: Set<number>, rank: number): void {
+  for (let i = 0; i < rank; i++) {
+    inventory.add(CardJitsuProgress.ITEM_AWARDS[i]);
+  }  
+}
+
 // for simplicity the member items won't be added (but this could be changed if there was a reason for it)
 function generateRandomInventory(
   data: GameData,
   age: number,
   starterColor: number,
   member: boolean,
+  ninjaRank: number,
   attrs: BotAttributes
 ) {
 
@@ -147,8 +154,23 @@ function generateRandomInventory(
 
   addClothingItems(inventory, data, startDate, member, attrs.collectorMania);
   addTestingItems(inventory, data.getDate(), startDate, attrs.tester);
+  addNinjaItems(inventory, ninjaRank);
 
   return [...inventory];
+}
+
+function generateNinjaStats(age: number, ninjaAttr: number): CardJitsuProgress {
+  // function setup such that
+  // attr = 0 -> never finish
+  // attr = 1 -> takes one day
+  // attr = 0.5 -> takes a month (average)
+  // multiply by two to make it the average value multiplied by random
+  const ageToFinish = ((60 * Math.log(ninjaAttr)) / Math.log(0.5) + 1) * Math.random() * 2;
+
+  const progress = clamp(ageToFinish / age, 0 , 1);
+  const rank = Math.floor((CardJitsuProgress.HIGHEST_RANK + 1) * progress);
+
+  return new CardJitsuProgress(CardJitsuProgress.getThresholdForRank(rank), 0, rank === CardJitsuProgress.HIGHEST_RANK);
 }
 
 function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJson {
@@ -163,12 +185,14 @@ function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJso
     isMember,
     versionToEpoch(data.getDate())
   );
+  const ninja = generateNinjaStats(age, attrs.ninjaFan);
 
   const inventory = generateRandomInventory(
     data,
     age,
     starterColor,
     isMember,
+    ninja.rank,
     attrs
   );
   const outfit = generateRandomOutfit(data, inventory);
@@ -293,24 +317,25 @@ export class BotManager {
 
   private makeJson(): [BotAttributes, PenguinJson] {
     const attrs: BotAttributes = {
-        danceFan: Math.random(),
-        snowballFan: Math.random(),
-        waveFan: Math.random(),
-        sitFan: Math.random(),
-        chatFan: Math.random(),
-        emoteFan: Math.random(),
-        walkFan: Math.random(),
-        emptyRoomTolerance: Math.random(),
-        roomDistraction: Math.random(),
-        iglooFan: Math.random(),
-        secretsFan: Math.random(),
-        followability: Math.random(),
-        mythsFan: Math.random(),
-        stampsFan: Math.random(),
-        musicFan: Math.random(),
-        collectorMania: Math.random(),
-        tester: Math.random()
-      };
+      danceFan: Math.random(),
+      snowballFan: Math.random(),
+      waveFan: Math.random(),
+      sitFan: Math.random(),
+      chatFan: Math.random(),
+      emoteFan: Math.random(),
+      walkFan: Math.random(),
+      emptyRoomTolerance: Math.random(),
+      roomDistraction: Math.random(),
+      iglooFan: Math.random(),
+      secretsFan: Math.random(),
+      followability: Math.random(),
+      mythsFan: Math.random(),
+      stampsFan: Math.random(),
+      musicFan: Math.random(),
+      collectorMania: Math.random(),
+      tester: Math.random(),
+      ninjaFan: Math.random()
+    };
     return [attrs,
       generateRandomPenguin(this._data, attrs)];
   }
