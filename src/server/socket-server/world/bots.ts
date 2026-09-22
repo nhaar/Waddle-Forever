@@ -15,9 +15,10 @@ import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
 import { getAddedCatalogIndex, getIncludedCatalogIndex } from '@server/timelines/items';
-import { addDays, getDaysDelta, versionToEpoch } from '@server/routes/versions';
+import { addDays, getDaysDelta, isGreaterOrEqual, isLowerOrEqual, Version, versionToEpoch } from '@server/routes/versions';
 import { START_DATE } from '@server/timelines/dates';
 import { CardJitsuProgress } from '@server/game-logic/ninja-progress';
+import { getTestingItems } from '@server/game-logic/items-testing';
 
 const BOT_ID_BASE = 9_000_000;
 
@@ -93,17 +94,9 @@ const MAX_SIZE = 500;
 
 const MEMBER_CHANCE = 0.6;
 
-// for simplicity the member items won't be added (but this could be changed if there was a reason for it)
-function generateRandomInventory(
-  data: GameData,
-  age: number,
-  starterColor: number,
-  member: boolean,
-  attrs: BotAttributes
-) {
+function addClothingItems(inventory: Set<number>, data: GameData, startDate: Version, member: boolean, buyChance: number): void {
   const addedIndex = getAddedCatalogIndex();
   const includedIndex = getIncludedCatalogIndex();
-  const startDate = addDays(data.getDate(), -age);
 
   const startIndex = findFirstIndexEqualOrGreater(startDate, addedIndex, ({ end}, date) => {
     return date < end
@@ -112,26 +105,50 @@ function generateRandomInventory(
     return date < end;
   })
 
-  const inventory = new Set<number>([starterColor]);
-
-  const buyChance = attrs.collectorMania;
-
-  // add all items in first catalog, then only add new items for next catalogs
-  includedIndex[startIndex].items.forEach(i => {
-    if (Math.random() < buyChance) {
-      inventory.add(i);
+  const buyItem = (item: number) => {
+    if ((member || data.getItem(item)?.isMember === false) && Math.random() < buyChance) {
+      inventory.add(item);
     }
-  });
-
-  for (let i = startIndex + 1; i <= endIndex; i++) {
-    addedIndex[i].newItems.forEach(i => {
-      if (Math.random() < buyChance) {
-        inventory.add(i);
-      }
-    });
   }
 
-  return [...inventory].filter(i => member || data.getItem(i)?.isMember === false)
+  // add all items in first catalog, then only add new items for next catalogs
+  includedIndex[startIndex].items.forEach(buyItem);
+
+  for (let i = startIndex + 1; i <= endIndex; i++) {
+    addedIndex[i].newItems.forEach(buyItem);
+  }
+}
+
+function addTestingItems(inventory: Set<number>, today: Version, startDate: Version, getChance: number) {
+  const testingItems = getTestingItems();
+  testingItems.forEach(({ date, items }) => {
+    if (isGreaterOrEqual(today, date) && isLowerOrEqual(startDate, date)) {
+      items.forEach(item => {
+        if (Math.random() < getChance) {
+          inventory.add(item);
+        }
+      })
+    }
+  });
+}
+
+// for simplicity the member items won't be added (but this could be changed if there was a reason for it)
+function generateRandomInventory(
+  data: GameData,
+  age: number,
+  starterColor: number,
+  member: boolean,
+  attrs: BotAttributes
+) {
+
+  const startDate = addDays(data.getDate(), -age);
+
+  const inventory = new Set<number>([starterColor]);
+
+  addClothingItems(inventory, data, startDate, member, attrs.collectorMania);
+  addTestingItems(inventory, data.getDate(), startDate, attrs.tester);
+
+  return [...inventory];
 }
 
 function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJson {
@@ -291,7 +308,8 @@ export class BotManager {
         mythsFan: Math.random(),
         stampsFan: Math.random(),
         musicFan: Math.random(),
-        collectorMania: Math.random()
+        collectorMania: Math.random(),
+        tester: Math.random()
       };
     return [attrs,
       generateRandomPenguin(this._data, attrs)];

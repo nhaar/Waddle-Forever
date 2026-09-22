@@ -412,7 +412,8 @@ export const UPDATES_2013: Update[] = [
         9179,
         9180
       ]
-    }
+    },
+    testingItems: [1600]
   },
   {
     date: '2013-05-09',

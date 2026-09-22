@@ -1010,6 +1010,10 @@ export const UPDATES_2008: Update[] = [
     end: ['party']
   },
   {
+    date: '2008-05-30',
+    testingItems: [674]
+  },
+  {
     date: '2008-06-06',
     clothingCatalog: {
       file: 'archives:Jun2008.swf',

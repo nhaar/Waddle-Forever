@@ -332,6 +332,7 @@ export type BotAttributes = {
   stampsFan: number;
   musicFan: number;
   collectorMania: number;
+  tester: number;
 }
 
 enum BehaviorId {

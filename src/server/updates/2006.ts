@@ -37,6 +37,14 @@ export const UPDATES_2006: Update[] = [
     furnitureCatalog: 'archives:Furniture_0601.swf',
   },
   {
+    date: '2006-01-16',
+    testingItems: [216]
+  },
+  {
+    date: '2006-01-23',
+    testingItems: [109]
+  },
+  {
     date: '2006-01-27',
     temp: {
       party: {

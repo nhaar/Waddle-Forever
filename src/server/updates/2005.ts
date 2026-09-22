@@ -240,7 +240,8 @@ export const UPDATES_2005: Update[] = [
           town: 2
         }
       }
-    } 
+    },
+    testingItems: [413]
   },
   {
     date: '2005-09-22',
@@ -446,7 +447,17 @@ export const UPDATES_2005: Update[] = [
   },
   {
     date: '2005-12-05',
-    end: ['party']
+    end: ['party'],
+    testingItems: [
+      402,
+      418
+    ]
+  },
+  {
+    date: '2005-12-08',
+    testingItems: [
+      107
+    ]
   },
   {
     date: '2005-12-14',

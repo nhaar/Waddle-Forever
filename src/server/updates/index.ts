@@ -134,6 +134,8 @@ export type CPUpdate = {
   eliteGearItems?: number[];
   gameUpgrades?: { newItems: number[]; removed: number[] };
 
+  testingItems?: number[];
+
   stampUpdates?: StampUpdates
 
   worldStamps?: WorldStamp[]
