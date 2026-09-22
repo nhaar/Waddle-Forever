@@ -33,7 +33,7 @@ export function generateRandomOutfit(
           const info = data.getItem(i);
           return info !== undefined && info.type === getItemTypeFromEquipProp(prop)
         });
-        item = itemPool.length === 0 ? 0 : choose(itemPool);
+      item = itemPool.length === 0 ? 0 : choose(itemPool);
     }
 
     items.push([prop, item]);
@@ -315,7 +315,7 @@ class CardJitsuBrain implements BotBrain {
   }
 }
 
-type BotAttributes = {
+export type BotAttributes = {
   emptyRoomTolerance: number;
   roomDistraction: number;
   snowballFan: number;
@@ -331,6 +331,7 @@ type BotAttributes = {
   mythsFan: number;
   stampsFan: number;
   musicFan: number;
+  collectorMania: number;
 }
 
 enum BehaviorId {

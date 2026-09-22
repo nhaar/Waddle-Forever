@@ -8,15 +8,16 @@ import { GameData } from '@server/timelines/game-data';
 import { World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
-import { choose, clamp, randomInt } from '@common/utils';
-import { Bot, generateRandomOutfit, WriteFunction } from './bot';
+import { choose, clamp, findFirstIndexEqualOrGreater, randomInt } from '@common/utils';
+import { Bot, BotAttributes, generateRandomOutfit, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
-import { getItemsInRange } from '@server/timelines/items';
+import { getAddedCatalogIndex, getIncludedCatalogIndex } from '@server/timelines/items';
 import { addDays, getDaysDelta, versionToEpoch } from '@server/routes/versions';
 import { START_DATE } from '@server/timelines/dates';
+import { CardJitsuProgress } from '@server/game-logic/ninja-progress';
 
 const BOT_ID_BASE = 9_000_000;
 
@@ -93,20 +94,51 @@ const MAX_SIZE = 500;
 const MEMBER_CHANCE = 0.6;
 
 // for simplicity the member items won't be added (but this could be changed if there was a reason for it)
-function generateRandomInventory(data: GameData, age: number, member: boolean) {
-  const available = [...data.getAvailableItems().values()];
-  const possibleInventory = [...new Set([...available, ...getItemsInRange(addDays(data.getDate(), -age), data.getDate()).values()])].filter(i => {
-    const info = data.getItem(i);
-    return info !== undefined && (member || !info.isMember);
+function generateRandomInventory(
+  data: GameData,
+  age: number,
+  starterColor: number,
+  member: boolean,
+  attrs: BotAttributes
+) {
+  const addedIndex = getAddedCatalogIndex();
+  const includedIndex = getIncludedCatalogIndex();
+  const startDate = addDays(data.getDate(), -age);
+
+  const startIndex = findFirstIndexEqualOrGreater(startDate, addedIndex, ({ end}, date) => {
+    return date < end
+  });
+  const endIndex = findFirstIndexEqualOrGreater(data.getDate(), addedIndex, ({ end }, date) => {
+    return date < end;
+  })
+
+  const inventory = new Set<number>([starterColor]);
+
+  const buyChance = attrs.collectorMania;
+
+  // add all items in first catalog, then only add new items for next catalogs
+  includedIndex[startIndex].items.forEach(i => {
+    if (Math.random() < buyChance) {
+      inventory.add(i);
+    }
   });
 
-  return possibleInventory.filter(() => Math.random() > 0.5);
+  for (let i = startIndex + 1; i <= endIndex; i++) {
+    addedIndex[i].newItems.forEach(i => {
+      if (Math.random() < buyChance) {
+        inventory.add(i);
+      }
+    });
+  }
+
+  return [...inventory].filter(i => member || data.getItem(i)?.isMember === false)
 }
 
-function generateRandomPenguin(data: GameData): PenguinJson {
+function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJson {
   const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
   // TODO -> more realistic distribution
   const age = randomInt(0, getDaysDelta(START_DATE, data.getDate()));
+  const starterColor = choose(data.getStarterColors());
   const isMember = Math.random() <= MEMBER_CHANCE;
   const base = getDefaultPenguin(
     name,
@@ -115,7 +147,13 @@ function generateRandomPenguin(data: GameData): PenguinJson {
     versionToEpoch(data.getDate())
   );
 
-  const inventory = generateRandomInventory(data, age, isMember);
+  const inventory = generateRandomInventory(
+    data,
+    age,
+    starterColor,
+    isMember,
+    attrs
+  );
   const outfit = generateRandomOutfit(data, inventory);
 
   return {
@@ -236,22 +274,8 @@ export class BotManager {
     }
   }
 
-  private makeJson(): PenguinJson {
-    // TODO refactor this later once virtual date is refactored
-    return generateRandomPenguin(this._data);
-  }
-
-  public spawn(roomId?: number): Bot {
-    const id = this._nextId++;
-    const penguin = new WorldPenguin(id, this.makeJson(), this._appSettings);
-    this._world.addPenguin(penguin);
-    const bot = new Bot(
-      penguin,
-      this._data,
-      this._world,
-      Date.now() + this.delay(),
-      this._writeFn,
-      {
+  private makeJson(): [BotAttributes, PenguinJson] {
+    const attrs: BotAttributes = {
         danceFan: Math.random(),
         snowballFan: Math.random(),
         waveFan: Math.random(),
@@ -266,8 +290,25 @@ export class BotManager {
         followability: Math.random(),
         mythsFan: Math.random(),
         stampsFan: Math.random(),
-        musicFan: Math.random()
-      }
+        musicFan: Math.random(),
+        collectorMania: Math.random()
+      };
+    return [attrs,
+      generateRandomPenguin(this._data, attrs)];
+  }
+
+  public spawn(roomId?: number): Bot {
+    const id = this._nextId++;
+    const [attrs, json] = this.makeJson();
+    const penguin = new WorldPenguin(id, json, this._appSettings);
+    this._world.addPenguin(penguin);
+    const bot = new Bot(
+      penguin,
+      this._data,
+      this._world,
+      Date.now() + this.delay(),
+      this._writeFn,
+      attrs
     )
     this._msg.linkClient(bot, bot.penguin);
     this._bots.set(id, bot);

@@ -14,7 +14,7 @@ import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
 import { FURNITURE } from "@server/game-logic/furniture";
-import { CustomItem, getItemsTable, Item, ItemTable } from "@server/game-logic/items";
+import { CustomItem, getItemsTable, Item, ItemTable, ItemType } from "@server/game-logic/items";
 import { ITEMS_DATA } from "@server/game-logic/items-data";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
@@ -96,6 +96,7 @@ type GameState = {
   available: Set<number>;
   itemMemberStatus: Map<number, boolean>;
   availableRooms: Set<RoomName>;
+  starterColors: Set<number>;
 }
 
 function getFreshState(): GameState {
@@ -159,7 +160,8 @@ function getFreshState(): GameState {
     extraWaddleRooms: [],
     available: new Set(),
     itemMemberStatus: new Map(),
-    availableRooms: new Set()
+    availableRooms: new Set(),
+    starterColors: new Set()
   };
 }
 
@@ -402,7 +404,12 @@ export class GameData {
       },
       'clothingCatalog': (v) => {
         this.addCatalog(v, this.state.flags.preCpip ? ['artwork/catalogue/clothing.swf', 'artwork/catalogue/clothing_.swf'] : ['play/v2/content/local/en/catalogues/clothing.swf'])
-        v.newItems.forEach(i => this.state.available.add(i));
+        v.newItems.forEach(i => {
+          if (this.getItem(i)?.type === ItemType.Color) {
+            this.state.starterColors.add(i);
+          }
+          this.state.available.add(i)
+        });
         v.removedItems.forEach(i => this.state.available.delete(i));
       },
       'postcardCatalog': (v) => {
@@ -1001,5 +1008,9 @@ export class GameData {
 
   public getAvailableRooms() {
     return [...this.state.availableRooms.values()];
+  }
+
+  public getStarterColors() {
+    return [...this.state.starterColors.values()];
   }
 }
