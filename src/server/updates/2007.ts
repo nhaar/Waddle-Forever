@@ -285,6 +285,10 @@ export const UPDATES_2007: Update[] = [
     }
   },
   {
+    date: '2007-03-09',
+    exploreItems: [339]
+  },
+  {
     date: '2007-03-16',
     iglooList: true,
     iglooVersion: 53,
