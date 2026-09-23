@@ -1,6 +1,7 @@
 import { SnowContext } from "@server/socket-server/snow-data-handler";
 import { MirrorMode, OriginMode } from "./snow-constants";
 import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld } from "./snow";
+import { choose } from "@common/utils";
 
 interface SpriteSettings {
   scaleX?: number
@@ -164,7 +165,7 @@ export class GameObject {
     );
   }
 
-  public async placeSprite(ctx: SnowContext, name: string, target: SnowPlayer | null = null) {
+  public async placeSprite(ctx: SnowContext, name: string = this.name, target: SnowPlayer | null = null) {
     await ctx.msg.sendSnowData(
       target ?? this.clients,
       'O_SPRITE',
@@ -419,7 +420,7 @@ export class AttackTile extends Effect {
   async play(ctx: SnowContext, autoRemove: boolean = false) {
     if (this.game.grid.isValid(this.x, this.y)) {
       await this.placeObject(ctx);
-      this.placeSprite(ctx, this.name);
+      this.placeSprite(ctx);
 
       if (autoRemove) setTimeout(() => this.removeObject(ctx), 200);
     }
@@ -434,7 +435,7 @@ export class HealTile extends Effect {
   async play(ctx: SnowContext, autoRemove: boolean = false) {
     if (this.game.grid.isValid(this.x, this.y)) {
       await this.placeObject(ctx);
-      this.placeSprite(ctx, this.name);
+      this.placeSprite(ctx);
 
       if (autoRemove) setTimeout(() => this.removeObject(ctx), 200);
     }
@@ -448,7 +449,7 @@ export class HealParticles extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     await this.animateSprite(ctx, 0, 10, { duration: this.duration * 1000 });
     setTimeout(() => this.removeObject(ctx), this.duration * 1000);
   }
@@ -480,7 +481,7 @@ export class DamageNumbers extends Effect {
     const range = this.frames[damage];
     if (!range) return;
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     await this.animateSprite(ctx, ...range, { duration: this.duration * 1000 });
     setTimeout(() => this.removeObject(ctx), this.duration * 1000);
   }
@@ -504,7 +505,7 @@ export class HealNumbers extends Effect {
     const range = this.frames[hp];
     if (!range) return;
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     await this.animateSprite(ctx, ...range, { duration: this.duration * 1000 });
     setTimeout(() => this.removeObject(ctx), this.duration * 1000);
   }
@@ -517,7 +518,7 @@ export class Explosion extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     await this.animateSprite(ctx, 0, 4, { duration: this.duration * 260 });
     setTimeout(() => this.removeObject(ctx), this.duration * 1000);
   }
@@ -627,7 +628,7 @@ export class SlyProjectile extends Effect {
       this.yOffset = 0.8;
     }
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
   
     this.xOffset = 0.5;
     this.yOffset = 1;
@@ -642,7 +643,7 @@ export class ScrapImpact extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     setTimeout(() => this.removeObject(ctx), this.duration * 1000);
   }
 }
@@ -654,7 +655,7 @@ export class ScrapImpactLittle extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
   }
 }
 
@@ -748,7 +749,7 @@ export class TankSwipe extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     await this.animateSprite(ctx, 0, 6, { duration: 400 });
   }
 }
@@ -760,7 +761,7 @@ export class WaterPowerBeam extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
   }
 }
 
@@ -772,7 +773,7 @@ export class FirePowerBeam extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
   }
 }
 
@@ -784,7 +785,7 @@ export class SnowPowerBeam extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
   }
 }
 
@@ -842,7 +843,7 @@ export class Flame extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
   }
 }
 
@@ -889,7 +890,7 @@ export class MemberReviveBeam extends Effect {
 
   async play(ctx: SnowContext) {
     await this.placeObject(ctx);
-    await this.placeSprite(ctx, this.name);
+    await this.placeSprite(ctx);
     await this.animateSprite(ctx, 0, 29, { duration: 1200 });
   }
 }
@@ -957,6 +958,23 @@ export abstract class Ninja extends GameObject {
     return (this.selectedObject instanceof Ninja) && this.selectedObject.hp <= 0;
   }
 
+  public async removeObject(ctx: SnowContext) {
+    this.healthBar.removeObject(ctx);
+    this.ghost.removeObject(ctx);
+    await super.removeObject(ctx);
+  }
+
+  public async moveObject(ctx: SnowContext, x: number, y: number, duration: number = this.moveDuration) {
+    this.healthBar.moveObject(ctx, x, y, duration);
+    super.moveObject(ctx, x, y, duration);
+
+    this.ghost.x = x;
+    this.ghost.y = y;
+
+    if (this.shield !== null) this.shield.moveObject(ctx, x, y, duration);
+    if (this.rage !== null) this.rage.moveObject(ctx, x, y, duration);
+  }
+
   public moveNinja(ctx: SnowContext, x: number, y: number) {
     if (this.hp <= 0 || ctx.penguin.disconnected) {
       return;
@@ -983,7 +1001,7 @@ export abstract class Ninja extends GameObject {
 
   public placeHealthbar(ctx: SnowContext) {
     this.healthBar.placeObject(ctx);
-    this.healthBar.placeSprite(ctx, this.healthBar.name);
+    this.healthBar.placeSprite(ctx);
     this.resetHealthbar(ctx);
   }
 
@@ -1049,7 +1067,9 @@ export abstract class Ninja extends GameObject {
       this.koSound(ctx);
     }
 
-    // TODO: reset targets if we are any ninja's selected object
+    this.game.ninjas.forEach(n => {
+      if (n.selectedObject === this) n.targets.length = 0;
+    });
   }
 
   public get placedGhost() {
@@ -1096,7 +1116,7 @@ export abstract class Ninja extends GameObject {
 
     this.game.grid.move(this.ghost, x, y);
     await this.ghost.placeObject(ctx);
-    await this.ghost.placeSprite(ctx, this.ghost.name);
+    await this.ghost.placeSprite(ctx);
     await this.ghost.playSound(ctx, sfxName('uiselecttile'));
     this.showTargets(ctx);
   }
@@ -1189,14 +1209,14 @@ export abstract class Ninja extends GameObject {
 
       if (distance <= this.range) attackable.push(tile);
 
-      // TODO if (target.tileRange <= 0) continue;
+      if (target.tileRange <= 0) continue;
 
-      /*const surrounding = this.game.grid.surroundingTiles(tile.x, tile.y, target.tileRange);
+      const surrounding = this.game.grid.surroundingTiles(tile.x, tile.y, target.tileRange);
 
       for (const sTile of surrounding) {
         const distance = this.game.grid.distance([sTile.x, sTile.y], [tx, ty]);
         if (distance <= this.range) attackable.push(tile);
-      }*/
+      }
     }
     
     return attackable;
@@ -1542,6 +1562,596 @@ export class SnowNinja extends Ninja {
 //
 
 export abstract class Enemy extends GameObject {
+  hp: number;
+  healthBar: GameObject;
+  flame: Flame | null = null;
+  stunned: boolean = false;
+
+  constructor(
+    game: SnowGame,
+    name: string,
+    public maxHp: number,
+    public range: number,
+    public attack: number,
+    public move: number,
+    public moveDuration: number,
+    public tileRange: number = 0
+  ) {
+    super(game, name, -1, -1, true, 0.5, 1);
+
+    this.hp = maxHp;
+
+    this.healthBar = new GameObject(
+      game,
+      'reghealthbar_animation',
+      this.x, this.y,
+      false,
+      0.5, 1.005
+    );
+  }
+
+  async removeObject(ctx: SnowContext) {
+    await this.healthBar.removeObject(ctx);
+    await super.removeObject(ctx);
+    if (this.flame !== null) await this.flame.removeObject(ctx);
+  }
+
+  async moveObject(ctx: SnowContext, x: number, y: number) {
+    await this.healthBar.moveObject(ctx, x, y, this.moveDuration);
+    await super.moveObject(ctx, x, y, this.moveDuration);
+    if (this.flame !== null) await this.flame.moveObject(ctx, x, y, this.moveDuration);
+  }
+
+  public placeHealthbar(ctx: SnowContext) {
+    this.healthBar.x = this.x;
+    this.healthBar.y = this.y;
+    this.healthBar.placeObject(ctx);
+    this.healthBar.placeSprite(ctx);
+    this.resetHealthbar(ctx);
+  }
+
+  public animateHealthbar(ctx: SnowContext, _startHp: number, _endHp: number, duration = 500) {
+    const backwards = _endHp > _startHp;
+
+    const startHp = backwards ? _endHp : _startHp;
+    const endHp = backwards ? _startHp : _endHp;
+
+    const start = 60 - Math.floor((startHp / this.maxHp) * 60) - 1;
+    const end = 60 - Math.floor((endHp / this.maxHp) * 60) - 1;
+
+    this.healthBar.animateSprite(ctx, start, end, { backwards, duration });
+  }
+
+  public resetHealthbar(ctx: SnowContext) {
+    this.healthBar.animateSprite(ctx);
+  }
+
+  public async setHealth(ctx: SnowContext, hp: number, wait: boolean = true) {
+    hp = Math.max(0, Math.min(hp, this.maxHp));
+
+    this.animateHealthbar(ctx, this.hp, hp);
+
+    new AttackTile(this.game, this.x, this.y).play(ctx, true);
+    new DamageNumbers(this.game, this.x, this.y).play(ctx, this.hp - hp);
+
+    this.hp = hp;
+    
+    if (this.hp <= 0) {
+      this.koAnimation(ctx);
+
+      if (this.game.round >= 3) {
+        this.game.coins += 60;
+        this.game.exp += 75;
+      }
+
+      if (!wait) {
+        setTimeout(() => this.removeObject(ctx), 2500);
+      } else {
+        await this.game.callbacks.waitForAnims();
+        this.removeObject(ctx);
+      }
+    } else {
+      this.hitAnimation(ctx);
+    }
+  }
+
+  public abstract attackTarget(ctx: SnowContext, target: Ninja): Promise<void>;
+
+  flameDamage(ctx: SnowContext) {
+    if (this.hp > 0) {
+      this.setHealth(ctx, this.hp - 3);
+    }
+  }
+
+  updateFlame(ctx: SnowContext) {
+    if (this.flame === null) return;
+
+    this.flameDamage(ctx);
+
+    if (this.flame.roundsLeft > 0) {
+      this.flame.roundsLeft--;
+      return;
+    }
+
+    this.flame.removeObject(ctx);
+    this.flame = null;
+
+    setTimeout(() => this.idleAnimation(ctx, true), 800);
+  }
+
+  protected attackableTiles(tx: number, ty: number, range = this.range) {
+    const attackable: GameObject[] = [];
+
+    for (const tile of this.game.grid.tiles) {
+      const target = this.game.grid.get(tile.x, tile.y);
+
+      if (!(target instanceof Ninja)) continue;
+
+      if (target.hp <= 0) continue;
+
+      const distance = this.game.grid.distanceWithObstacles([tx, ty], [tile.x, tile.y]);
+
+      if (distance <= range) attackable.push(tile);
+    }
+    
+    return attackable;
+  }
+
+  public movableTiles() {
+    return this.game.grid.tiles.filter(tile => {
+      if (!this.game.grid.canMove(tile.x, tile.y)) return false;
+
+      const distance = this.game.grid.distanceWithObstacles([this.x, this.y], [tile.x, tile.y]);
+      return distance <= this.move;
+    });
+  }
+
+  /** Find the next move and attack */
+  public nextTarget(): [GameObject, GameObject] {
+    const availableMoves = [...this.movableTiles(), this.game.grid.getTile(this.x, this.y)];
+
+    if (availableMoves.length === 0) return [null, null];
+
+    // Map of what tiles can be attacked when moving to a specific tile
+    const moves = new Map<GameObject, GameObject[]>();
+
+    for (const move of availableMoves) {
+      const attackable = this.attackableTiles(move.x, move.y);
+      if (attackable.length > 0) {
+        moves.set(move, attackable);
+      }
+    }
+
+    if (moves.size === 0) {
+      // no targets in range, move to closest possible tile
+      return [this.closestMove(), null];
+    }
+
+    for (const [move, targets] of moves) {
+      targets.sort((a, b) =>
+        this.simulateDamage(move.x, move.y, b) -
+        this.simulateDamage(move.x, move.y, a)
+      );
+    }
+
+    const sortedMoves = moves.entries().toArray().sort((a, b) =>
+      this.simulateDamage(b[0].x, b[0].y, b[1][0]) -
+      this.simulateDamage(a[0].x, a[0].y, a[1][0])
+    );
+
+    const highest = this.simulateDamage(sortedMoves[0][0].x, sortedMoves[0][0].y, sortedMoves[0][1][0]);
+
+    const [move, targets] = choose(sortedMoves.filter(([move, targets]) => {
+      return this.simulateDamage(move.x, move.y, targets[0]) === highest
+    }));
+
+    return [move, targets[0]];
+  }
+
+  /** Get the closest tile to a ninja, that the enemy can move to */
+  private closestMove() {
+    /* note in snowflake:
+    This method can sometimes lead to the enemy being stuck
+    if the target is behind an obstacle. We should probably
+    implement a pathfinding algorithm to fix this.
+    */
+
+    const tiles = this.movableTiles();
+
+    if (tiles.length === 0) return null;
+
+    const selectedTiles = this.game.ninjas
+      .filter(ninja => ninja.hp > 0)
+      .map(ninja => 
+          tiles.reduce((closest, tile) => 
+              (Math.abs(tile.x - ninja.x) + Math.abs(tile.y - ninja.y)) < 
+              (Math.abs(closest.x - ninja.x) + Math.abs(closest.y - ninja.y)) 
+              ? tile 
+              : closest
+          )
+      );
+    
+    if (selectedTiles.length === 0) {
+      return null;
+    }
+
+    return selectedTiles.reduce((closest, tile) => 
+        (Math.abs(tile.x - this.x) + Math.abs(tile.y - this.y)) < 
+        (Math.abs(closest.x - this.x) + Math.abs(closest.y - this.y)) 
+        ? tile 
+        : closest
+    );
+  }
+
+  protected simulateDamage(xPos: number, y: number, target: GameObject) {
+    return this.attack;
+  }
+
+  public abstract idleAnimation(ctx: SnowContext, reset?: boolean): Promise<void>;
+  public abstract moveAnimation(ctx: SnowContext): Promise<void>;
+  public abstract koAnimation(ctx: SnowContext): Promise<void>;
+  public abstract attackAnimation(ctx: SnowContext, x: number, y: number): Promise<void>;
+  public abstract dazeAnimation(ctx: SnowContext, reset: boolean): Promise<void>;
+  public abstract hitAnimation(ctx: SnowContext): Promise<void>;
+
+  async spawnAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'snowman_spawn_anim', { reset: true });
+    this.playSound(ctx, sfxName('snowmenappear'));
+  }
+
+  async koSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('snowmandeathexplode'));
+  }
+  public abstract moveSound(ctx: SnowContext): Promise<void>;
+  public abstract attackSound(ctx: SnowContext): Promise<void>;
+  public abstract hitSound(ctx: SnowContext): Promise<void>;
+  public abstract impactSound(ctx: SnowContext): Promise<void>;
+
+}
+
+export class Sly extends Enemy {
+
+  constructor(game: SnowGame) {
+    super(game, 'Sly', 30, 3, 3, 3, 1200);
+  }
+
+  async attackTarget(ctx: SnowContext, target: Ninja) {
+    if (target.hp <= 0) return;
+
+    // fixes mirror mode, according to snowflake. check if this also applies to us
+    await sleep(250);
+
+    const distance = this.game.grid.distance([this.x, this.y], [target.x, target.y]);
+
+    // Additional 1 damage per tile away
+    const damage = this.attack + distance - 1;
+
+    this.attackAnimation(ctx, target.x, target.y);
+    target.setHealth(ctx, target.hp - damage);
+  }
+
+  async idleAnimation(ctx: SnowContext, reset: boolean = false) {
+    await this.animateObject(ctx, 'sly_idle_anim', { playStyle: 'loop', register: false, reset });
+  }
+
+  async moveAnimation(ctx: SnowContext) {
+    this.animateObject(ctx, 'sly_move_anim', { playStyle: 'loop', reset: true });
+    await this.idleAnimation(ctx);
+  }
+
+  async attackAnimation(ctx: SnowContext, x: number, y: number) {
+    if (this.x < x) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+
+    await sleep(250);
+    await this.animateObject(ctx, 'sly_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
+    this.idleAnimation(ctx);
+    this.attackSound(ctx);
+
+    await sleep(1450);
+    const projectile = new SlyProjectile(this.game, this.x, this.y);
+    projectile.play(ctx, x, y);
+
+    await sleep(500);
+    this.impactSound(ctx);
+    await projectile.removeObject(ctx);
+
+    await new Explosion(this.game, x, y).play(ctx);
+  }
+
+  async koAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'sly_ko_anim', { reset: true });
+    await this.animateObject(ctx, 'blank_png');
+    await this.koSound(ctx);
+  }
+
+  async hitAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'sly_hit_anim', { reset: true });
+    await this.hitSound(ctx);
+
+    if (this.stunned) {
+      this.dazeAnimation(ctx, false)
+    } else {
+      this.idleAnimation(ctx);
+    }
+  }
+
+  async dazeAnimation(ctx: SnowContext, reset: boolean = true) {
+    await this.animateObject(ctx, 'sly_daze_anim', { playStyle: 'loop', reset });
+  }
+
+  async moveSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('footstepsly_loop'));
+  }
+
+  async hitSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('snowmanslyhit'));
+  }
+
+  async attackSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('attacksly'));
+  }
+
+  async impactSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('impactsly'));
+  }
+
+}
+
+export class Scrap extends Enemy {
+
+  constructor(game: SnowGame) {
+    super(game, 'Scrap', 45, 2, 8, 2, 1200);
+  }
+
+  protected simulateDamage(xPos: number, yPos: number, target: GameObject) {
+    const surrounding = this.attackableTiles(target.x, target.y, 1).filter(t => t !== target);
+
+    return this.attack + (this.attack / 2) * surrounding.length;
+  }
+
+  async attackTarget(ctx: SnowContext, target: Ninja) {
+    if (target.hp <= 0) return;
+
+    // fixes mirror mode, according to snowflake. check if this also applies to us
+    await sleep(250);
+
+    this.attackAnimation(ctx, target.x, target.y);
+    target.setHealth(ctx, target.hp - this.attack);
+
+    ScrapProjectileImpact.play(ctx, target.x, target.y);
+
+    const surrounding = this.game.grid.surroundingObjects(target.x, target.y)
+      .filter(obj => (obj instanceof Ninja) && obj.hp > 0);
+
+    if (surrounding.length > 0) this.impactSound(ctx);
+
+    for (const obj of surrounding) {
+      const ninja = obj as Ninja;
+
+      ninja.setHealth(ctx, ninja.hp - (this.attack / 2));
+
+      new Explosion(this.game, obj.x, obj.y).play(ctx);
+    }
+
+    ScrapImpactSurroundings.play(ctx, target.x, target.y);
+  }
+
+  async idleAnimation(ctx: SnowContext, reset: boolean = false) {
+    await this.animateObject(ctx, 'scrap_idle_anim', { playStyle: 'loop', register: false, reset });
+  }
+
+  async moveAnimation(ctx: SnowContext) {
+    this.animateObject(ctx, 'scrap_move_anim', { playStyle: 'loop', reset: true });
+    await this.idleAnimation(ctx);
+    await this.moveSound(ctx);
+  }
+
+  async attackAnimation(ctx: SnowContext, x: number, y: number) {
+    if (this.x < x) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+
+    await this.animateObject(ctx, 'scrap_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
+    this.idleAnimation(ctx);
+
+    await sleep(700);
+    this.attackSound(ctx);
+
+    const distance = this.game.grid.distance([this.x, this.y], [x, y]);
+    const impactTime = 0.9 + (distance * 0.1);
+
+    await sleep(impactTime);
+    this.impactSound(ctx);
+
+    await new ScrapImpact(this.game, x, y).play(ctx);
+  }
+
+  async koAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'scrap_ko_anim', { reset: true });
+    await this.animateObject(ctx, 'blank_png');
+    await this.koSound(ctx);
+  }
+
+  async hitAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'scrap_hit_anim', { reset: true });
+    await this.hitSound(ctx);
+
+    if (this.stunned) {
+      this.dazeAnimation(ctx, false)
+    } else {
+      this.idleAnimation(ctx);
+    }
+  }
+
+  async dazeAnimation(ctx: SnowContext, reset: boolean = true) {
+    await this.animateObject(ctx, 'scrap_dazed_anim', { playStyle: 'loop', reset });
+  }
+
+  async moveSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('footstepscrap_loop'));
+  }
+
+  async hitSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('snowmanscraphit'));
+  }
+
+  async attackSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('attackscrap'));
+  }
+
+  async impactSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('impactscrap'));
+  }
+
+}
+
+export class Tank extends Enemy {
+
+  constructor(game: SnowGame) {
+    super(game, 'Tank', 60, 1, 10, 1, 1100);
+  }
+
+  protected simulateDamage(xPos: number, yPos: number, target: GameObject) {
+    // Horizontal swipe
+    if (xPos === target.x) {
+      let total = this.attack;
+
+      const left = this.game.grid.get(xPos - 1, yPos);
+      const right = this.game.grid.get(xPos + 1, yPos);
+
+      if (left !== null && left instanceof Ninja) {
+        total += this.attack / 2;
+      }
+      if (right !== null && right instanceof Ninja) {
+        total += this.attack / 2;
+      }
+
+      return total;
+    }
+    // Vertical swipe
+    else if (yPos === target.y) {
+      let total = this.attack;
+
+      const above = this.game.grid.get(xPos, yPos - 1);
+      const below = this.game.grid.get(xPos, yPos + 1);
+
+      if (above !== null && above instanceof Ninja) {
+        total += this.attack / 2;
+      }
+      if (below !== null && below instanceof Ninja) {
+        total += this.attack / 2;
+      }
+
+      return total;
+    }
+
+    throw new Error('Impossible scenario with Tank attack');
+  }
+
+  async attackTarget(ctx: SnowContext, target: Ninja) {
+    if (target.hp <= 0) return;
+
+    // fixes mirror mode, according to snowflake. check if this also applies to us
+    await sleep(250);
+
+    this.attackAnimation(ctx, target.x, target.y);
+    target.setHealth(ctx, target.hp - this.attack);
+
+    const effects: Effect[] = [];
+
+    if (this.x === target.x) {
+      const left = this.game.grid.get(target.x - 1, target.y);
+      const right = this.game.grid.get(target.x + 1, target.y);
+
+      if (left !== null && left instanceof Ninja) {
+        left.setHealth(ctx, left.hp - (this.attack / 2));
+      }
+      if (right !== null && right instanceof Ninja) {
+        right.setHealth(ctx, right.hp - (this.attack / 2));
+      }
+
+      effects.push(
+        new TankSwipe(this.game, target.x, target.y, 'horiz'),
+        new AttackTile(this.game, target.x - 1, target.y),
+        new AttackTile(this.game, target.x, target.y),
+        new AttackTile(this.game, target.x + 1, target.y),
+      )
+    } else if (this.y === target.y) {
+      const above = this.game.grid.get(target.x, target.y - 1);
+      const below = this.game.grid.get(target.x, target.y + 1);
+
+      if (above !== null && above instanceof Ninja) {
+        above.setHealth(ctx, above.hp - (this.attack / 2));
+      }
+      if (below !== null && below instanceof Ninja) {
+        below.setHealth(ctx, below.hp - (this.attack / 2));
+      }
+
+      effects.push(
+        new TankSwipe(this.game, target.x, target.y, 'vert'),
+        new AttackTile(this.game, target.x, target.y - 1),
+        new AttackTile(this.game, target.x, target.y),
+        new AttackTile(this.game, target.x, target.y + 1),
+      )
+    }
+
+    effects.forEach(e => e.play(ctx));
+
+    await sleep(250);
+
+    effects.forEach(e => e.removeObject(ctx));
+  }
+
+  async idleAnimation(ctx: SnowContext, reset: boolean = false) {
+    await this.animateObject(ctx, 'tank_idle_anim', { playStyle: 'loop', register: false, reset });
+  }
+
+  async moveAnimation(ctx: SnowContext) {
+    this.animateObject(ctx, 'tank_move_anim', { playStyle: 'loop', reset: true });
+    await this.idleAnimation(ctx);
+    await this.moveSound(ctx);
+  }
+
+  async attackAnimation(ctx: SnowContext, x: number, y: number) {
+    if (this.x < x) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+
+    await this.animateObject(ctx, 'tank_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
+    this.idleAnimation(ctx);
+    await sleep(150);
+  }
+
+  async koAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'tank_ko_anim', { reset: true });
+    await this.animateObject(ctx, 'blank_png');
+    await this.koSound(ctx);
+  }
+
+  async hitAnimation(ctx: SnowContext) {
+    await this.animateObject(ctx, 'tank_hit_anim', { reset: true });
+    await this.hitSound(ctx);
+
+    if (this.stunned) {
+      this.dazeAnimation(ctx, false)
+    } else {
+      this.idleAnimation(ctx);
+    }
+  }
+
+  async dazeAnimation(ctx: SnowContext, reset: boolean = true) {
+    await this.animateObject(ctx, 'tank_daze_anim', { playStyle: 'loop', reset });
+  }
+
+  async moveSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('footsteptank'));
+  }
+
+  async hitSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('snowmantankhit'));
+  }
+
+  async attackSound(ctx: SnowContext) {
+    await this.playSound(ctx, sfxName('attacktank'));
+  }
+
+  async impactSound() {}
 
 }
 

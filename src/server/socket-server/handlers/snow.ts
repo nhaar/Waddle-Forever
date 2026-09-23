@@ -160,7 +160,7 @@ export const handlePlaceReady: SnowHandler = async (ctx) => {
   const { msg, client, penguin } = ctx;
 
   await msg.sendSnowData(client, 'P_CAMERA', ...penguin.place.camera.position, 0, 1);
-  await msg.sendSnowData(client, 'P_ZOOM', penguin.place.camera.zoom.toFixed(1));
+  await msg.sendSnowData(client, 'P_ZOOM', penguin.place.camera.zoom);
   await msg.sendSnowData(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
   await msg.sendSnowData(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
 
@@ -238,12 +238,12 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   penguin.windowManager.ready = true;
 
   const loadingScreen = penguin.getWindow(
-    ctx,
+    ctx.game,
     'cjsnow_loadingscreenassets.swf',
     `${penguin.assetBaseUrl}/cjsnow_loadingscreenassets.swf`
   );
 
-  const wm = penguin.getWindow(ctx, 'windowmanager.swf');
+  const wm = penguin.getWindow(ctx.game, 'windowmanager.swf');
   await wm.sendAction(ctx, 'setWorldId', { worldId: world.worldId });
   await wm.sendAction(ctx, 'setBaseAssetUrl', { baseAssetUrl: penguin.baseUrl });
   await wm.sendAction(ctx, 'setFontPath', { defaultFontPath: `${penguin.baseUrl}/fonts/` });
@@ -254,7 +254,7 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
     variant: penguin.battleMode
   }, EventType.PLAY_ACTION);
 
-  const errorHandler = penguin.getWindow(ctx, 'cardjitsu_snowerrorhandler.swf');
+  const errorHandler = penguin.getWindow(ctx.game, 'cardjitsu_snowerrorhandler.swf');
   errorHandler.layer = 'bottomLayer';
   await errorHandler.load(ctx, null, { xPercent: 0, yPercent: 0, loadDescription: '' });
 
@@ -269,7 +269,7 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   });
 
   // TODO: this can be one of two: 'cardjitsu_snowplayerselect.swf' or 'cardjitsu_snowplayerselectbeta.swf'
-  const playerSelect = penguin.getWindow(ctx, 'cardjitsu_snowplayerselect.swf');
+  const playerSelect = penguin.getWindow(ctx.game, 'cardjitsu_snowplayerselect.swf');
   await playerSelect.load(ctx, {
     game: penguin.battleMode === 0 ? 'snow' : 'snowtusk',
     name: penguin.penguin.name,
@@ -292,8 +292,8 @@ export const frameworkPayloadBILogAction: SnowFrameworkHandler = async () => {
 
 export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
   const name = (windowUrl as string).split('/').pop();
-  const win = ctx.penguin.getWindow(ctx, name);
-  win.loaded = true;
+  const win = ctx.penguin.getWindow(ctx.game, name);
+  win.setLoaded(true, ctx.game);
   if (win.onLoad !== null) {
     win.onLoad(ctx);
   }
@@ -301,8 +301,8 @@ export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUr
 
 export const frameworkWindowClosed: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
   const name = (windowUrl as string).split('/').pop();
-  const win = ctx.penguin.getWindow(ctx, name);
-  win.loaded = false;
+  const win = ctx.penguin.getWindow(ctx.game, name);
+  win.setLoaded(false, ctx.game);
   if (win.onClose !== null) {
     win.onClose(ctx);
   }
@@ -343,7 +343,7 @@ export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<Sn
 
     for (const penguin of [fireNinja, snowNinja, waterNinja].filter(Boolean)) {
       const ctx = { penguin, msg, world } as SnowContext;
-      const select = penguin.getWindow(ctx, 'cardjitsu_snowplayerselect.swf');
+      const select = penguin.getWindow(ctx.game, 'cardjitsu_snowplayerselect.swf');
       select.sendPayload(ctx, 'matchFound', {
         1: fireNinja ? fireNinja.penguin.name : null,
         2: waterNinja ? waterNinja.penguin.name : null,
