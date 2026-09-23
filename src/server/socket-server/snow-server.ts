@@ -11,7 +11,7 @@ import { PenguinMessenger } from "@server/socket-server/messenger";
 
 import { XmlHandler } from "./xml-handler";
 import { createSnowXmlHandler, createSnowDataHandler } from "./snow-handlers";
-import { SnowContext, SnowDataHandler } from "./snow-data-handler";
+import { SnowContext, SnowDataHandler, SnowPenguinContext } from "./snow-data-handler";
 import { SnowPlayer, SnowWorld } from "./world/snow/snow";
 import { PenguinPersister } from "./handlers/handlers";
 import { OfflineWorld } from "./offline-world";
@@ -32,6 +32,7 @@ class SnowServer implements MessageHandler {
     this._xmlHandler = createSnowXmlHandler();
     this._off = new OfflineWorld(db);
     this._world = new SnowWorld();
+    this._world.init(this.getContext());
 
     this._persister = (p, force = false) => { 
       if (p.canSave || force) {
@@ -39,12 +40,10 @@ class SnowServer implements MessageHandler {
       }
     };
 
-    setupMatchMaker(this._world, this._msg);
+    setupMatchMaker(this._world);
   }
 
-  private getContext(client: ClientSocket): SnowContext {
-    const penguin = this._msg.getPenguin(client);
-    const game = this._world.games.find(game => game.players.includes(penguin)) ?? null;
+  private getContext(): SnowContext {
     return {
       world: this._world,
       msg: this._msg,
@@ -52,7 +51,15 @@ class SnowServer implements MessageHandler {
       settings: this.settings,
       db: this.db,
       prst: this._persister,
-      off: this._off,
+      off: this._off
+    };
+  }
+
+  private getPenguinCtx(client: ClientSocket): SnowPenguinContext {
+    const penguin = this._msg.getPenguin(client);
+    const game = this._world.games.find(game => game.players.includes(penguin)) ?? null;
+    return {
+      ...this.getContext(),
       client,
       penguin,
       game
@@ -65,20 +72,20 @@ class SnowServer implements MessageHandler {
 
   public async handle(client: ClientSocket, message: string) {
     if (message.startsWith('<')) {
-      this._xmlHandler.handle({ client } as SnowContext, message);
+      this._xmlHandler.handle({ client } as SnowPenguinContext, message);
     } else {
-      await this._handler.handle(this.getContext(client), message)
+      await this._handler.handle(this.getPenguinCtx(client), message)
     }
   };
 
   public async connect(cs: ClientSocket) {
-    const { msg, client } = this.getContext(cs);
-    const p = new SnowPlayer();
+    const { msg, client } = this.getPenguinCtx(cs);
+    const p = new SnowPlayer(this.getContext());
     msg.linkClient(client, p);
   }
 
   public async disconnect(cs: ClientSocket) {
-    const { penguin, game } = this.getContext(cs);
+    const { penguin, game } = this.getPenguinCtx(cs);
     penguin.disconnected = true;
     this._world.disconnect(penguin);
     if (game !== null) {

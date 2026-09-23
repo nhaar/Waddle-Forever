@@ -1,4 +1,4 @@
-import { SnowContext } from "@server/socket-server/snow-data-handler";
+import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
 import { MirrorMode, OriginMode } from "./snow-constants";
 import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld } from "./snow";
 import { choose } from "@common/utils";
@@ -10,7 +10,7 @@ interface SpriteSettings {
   mirrorMode?: MirrorMode
 }
 
-type ObjectOnClick = (ctx: SnowContext, object: GameObject) => void;
+type ObjectOnClick = (ctx: SnowPenguinContext, object: GameObject) => void;
 
 type PlayStyle = 'play_once' | 'loop' | 'ping_pong';
 
@@ -66,6 +66,10 @@ export class GameObject {
     }
   }
 
+  protected get ctx() {
+    return this.game.ctx;
+  }
+
   /** Get the client(s) from the `target` to send stuff to  */
   protected get clients(): Array<SnowPlayer> {
     return (this.target instanceof SnowPlayer)
@@ -89,8 +93,8 @@ export class GameObject {
     return this._yScale;
   }
 
-  public async placeObject(ctx: SnowContext) {
-    await ctx.msg.sendSnowData(
+  public async placeObject() {
+    await this.ctx.msg.sendSnowData(
       this.clients,
       'O_HERE',
       this.id,
@@ -106,7 +110,7 @@ export class GameObject {
     );
   }
 
-  public async moveObject(ctx: SnowContext, x: number, y: number, duration: number = 600) {
+  public async moveObject(x: number, y: number, duration: number = 600) {
     this.x = x;
     this.y = y;
 
@@ -114,7 +118,7 @@ export class GameObject {
       this.game.grid.move(this, x, y);
     }
 
-    await ctx.msg.sendSnowData(
+    await this.ctx.msg.sendSnowData(
       this.clients,
       'O_SLIDE',
       this.id,
@@ -126,7 +130,6 @@ export class GameObject {
   }
 
   public async animateObject(
-    ctx: SnowContext,
     name: string,
     settings: Partial<AnimObjectSettings> = {}
   ) {
@@ -140,7 +143,7 @@ export class GameObject {
       ...settings
     }
 
-    const asset = ctx.world.assets.getByName(name);
+    const asset = this.ctx.world.assets.getByName(name);
     let handleId = -1;
 
     if (settings.reset) {
@@ -151,7 +154,7 @@ export class GameObject {
       handleId = this.game.callbacks.registerAction(name, ActionType.Animation, this.id, settings.callback);
     }
 
-    await ctx.msg.sendSnowData(
+    await this.ctx.msg.sendSnowData(
       this.clients,
       'O_ANIM',
       this.id,
@@ -165,26 +168,25 @@ export class GameObject {
     );
   }
 
-  public async placeSprite(ctx: SnowContext, name: string = this.name, target: SnowPlayer | null = null) {
-    await ctx.msg.sendSnowData(
+  public async placeSprite(name: string = this.name, target: SnowPlayer | null = null) {
+    await this.ctx.msg.sendSnowData(
       target ?? this.clients,
       'O_SPRITE',
       this.id,
-      `0:${ctx.world.assets.getByName(name).index}`,
+      `0:${this.ctx.world.assets.getByName(name).index}`,
       0, ''
     );
   }
 
-  public async loadSprite(ctx: SnowContext, name: string) {
-    await ctx.msg.sendSnowData(
+  public async loadSprite(name: string) {
+    await this.ctx.msg.sendSnowData(
       this.clients,
       'S_LOADSPRITE',
-      `0:${ctx.world.assets.getByName(name).index}`
+      `0:${this.ctx.world.assets.getByName(name).index}`
     );
   }
 
   public async animateSprite(
-    ctx: SnowContext,
     start: number = 0,
     end: number = 0,
     settings: Partial<AnimSpriteSettings> = {}
@@ -196,7 +198,7 @@ export class GameObject {
       ...settings
     }
 
-    await ctx.msg.sendSnowData(
+    await this.ctx.msg.sendSnowData(
       this.clients,
       'O_SPRITEANIM',
       this.id,
@@ -209,13 +211,13 @@ export class GameObject {
   }
 
   /** Use this to adjust the x/y scale or origin/mirror mode of this game object. */
-  public async spriteSettings(ctx: SnowContext, s: SpriteSettings) {
+  public async spriteSettings(s: SpriteSettings) {
     const scaleX = s.scaleX ?? this._xScale;
     const scaleY = s.scaleY ?? this._yScale;
     const originMode = s.originMode ?? this._originMode;
     const mirrorMode = s.mirrorMode ?? this._mirrorMode;
 
-    await ctx.msg.sendSnowData(
+    await this.ctx.msg.sendSnowData(
       this.clients,
       'O_SPRITESETTINGS',
       this.id,
@@ -231,25 +233,25 @@ export class GameObject {
     this._mirrorMode = mirrorMode;
   }
 
-  public async resetSpriteSettings(ctx: SnowContext) {
+  public async resetSpriteSettings() {
     if (this.mirrorMode !== MirrorMode.NONE
       || this.originMode !== OriginMode.NONE
       || this.xScale !== 1
       || this.yScale !== 1
     ) {
-      await this.spriteSettings(ctx, { scaleX: 1, scaleY: 1, originMode: OriginMode.NONE, mirrorMode: MirrorMode.NONE });
+      await this.spriteSettings({ scaleX: 1, scaleY: 1, originMode: OriginMode.NONE, mirrorMode: MirrorMode.NONE });
     }
   }
 
-  public async removeObject(ctx: SnowContext) {
-    await ctx.msg.sendSnowData(this.clients, 'O_GONE', this.id);
+  public async removeObject() {
+    await this.ctx.msg.sendSnowData(this.clients, 'O_GONE', this.id);
     this.game.grid.remove(this);
     this.game.objects.delete(this);
     this.removePendingActions();
   }
 
-  public async hide(ctx: SnowContext, player: SnowPlayer | null = null) {
-    await this.placeSprite(ctx, 'blank_png', player);
+  public async hide(player: SnowPlayer | null = null) {
+    await this.placeSprite('blank_png', player);
     this.removePendingActions();
   }
 
@@ -258,7 +260,6 @@ export class GameObject {
   }
 
   public async playSound(
-    ctx: SnowContext,
     name: string,
     target: SnowPlayer = null,
     looping: boolean = false,
@@ -267,7 +268,7 @@ export class GameObject {
     callback: ActionCallback = null
   ): Promise<Sound> {
     const sound = Sound.fromName(
-      ctx.world,
+      this.ctx.world,
       name,
       looping,
       volume,
@@ -275,7 +276,7 @@ export class GameObject {
       this.id,
       this.id
     );
-    await sound.play(ctx, target ?? this.game, this.id, callback);
+    await sound.play(this.ctx, target ?? this.game, this.id, callback);
     return sound;
   }
 
@@ -285,6 +286,7 @@ export class LocalGameObject extends GameObject {
 
   constructor(
     public client: SnowPlayer,
+    private _ctxOrGame: SnowContext | SnowGame,
     name: string,
     x: number = 0,
     y: number = 0,
@@ -295,15 +297,20 @@ export class LocalGameObject extends GameObject {
     _xScale: number = 1,
     _yScale: number = 1
   ) {
-    super(client.game, name, x, y, false, xOffset, yOffset, _originMode, _mirrorMode, _xScale, _yScale);
+    super((_ctxOrGame instanceof SnowGame) ? _ctxOrGame : null, name, x, y, false, xOffset, yOffset, _originMode, _mirrorMode, _xScale, _yScale);
 
     this.target = client;
 
     this.client.localObjects.add(this);
   }
 
-  public async removeObject(ctx: SnowContext) {
-    await ctx.msg.sendSnowData(this.clients, 'O_GONE', this.id);
+  // this is pretty jank but oh well
+  protected get ctx() {
+    return (this._ctxOrGame instanceof SnowGame) ? this._ctxOrGame.ctx : this._ctxOrGame;
+  }
+
+  public async removeObject() {
+    await this.ctx.msg.sendSnowData(this.clients, 'O_GONE', this.id);
     this.client.localObjects.delete(this);
     this.removePendingActions();
   }
@@ -327,7 +334,7 @@ class Target extends LocalGameObject {
   public selected: boolean = false;
 
   constructor(private ninja: Ninja, x: number = -1, y: number = -1) {
-    super(ninja.player, 'Target', x, y, 0.5, 1.05);
+    super(ninja.player, ninja.game, 'Target', x, y, 0.5, 1.05);
     this.onClick = this._onClick;
   }
 
@@ -335,55 +342,55 @@ class Target extends LocalGameObject {
     return this.game.grid.get(this.x, this.y);
   }
 
-  public showAttack(ctx: SnowContext) {
+  public showAttack() {
     if (this.selected) return;
 
     this.type = 'attack';
-    this.placeObject(ctx);
-    this.animateObject(ctx, this.anims.attackIntro, { reset: true });
-    this.animateObject(ctx, this.anims.attackIdle, { playStyle: 'loop' });
-    this.playSound(ctx, sfxName('uitargetred'), this.client);
+    this.placeObject();
+    this.animateObject(this.anims.attackIntro, { reset: true });
+    this.animateObject(this.anims.attackIdle, { playStyle: 'loop' });
+    this.playSound(sfxName('uitargetred'), this.client);
     // TODO: send tip
   }
 
-  public showHeal(ctx: SnowContext) {
+  public showHeal() {
     if (this.selected) return;
 
     this.type = 'heal';
-    this.placeObject(ctx);
-    this.animateObject(ctx, this.anims.healIntro, { reset: true });
-    this.animateObject(ctx, this.anims.healIdle, { playStyle: 'loop' });
-    this.playSound(ctx, sfxName('uitargetred'), this.client);
+    this.placeObject();
+    this.animateObject(this.anims.healIntro, { reset: true });
+    this.animateObject(this.anims.healIdle, { playStyle: 'loop' });
+    this.playSound(sfxName('uitargetred'), this.client);
     // TODO: send tip
   }
 
-  private select(ctx: SnowContext) {
+  private select() {
     if (this.selected) {
-      this.deselect(ctx);
+      this.deselect();
       return;
     }
 
-    if (this.ninja.selectedTarget) this.ninja.selectedTarget.deselect(ctx);
+    if (this.ninja.selectedTarget) this.ninja.selectedTarget.deselect();
 
     this.selected = true;
-    this.animateObject(ctx, this.type === 'attack' ? this.anims.attackSelectedIntro : this.anims.healSelectedIntro, { reset: true });
-    this.animateObject(ctx, this.type === 'attack' ? this.anims.attackSelectedIdle : this.anims.healSelectedIdle, { playStyle: 'loop' });
-    this.playSound(ctx, sfxName(this.type === 'attack' ? 'uitargetselect' : 'uiselecttile'), this.client);
+    this.animateObject(this.type === 'attack' ? this.anims.attackSelectedIntro : this.anims.healSelectedIntro, { reset: true });
+    this.animateObject(this.type === 'attack' ? this.anims.attackSelectedIdle : this.anims.healSelectedIdle, { playStyle: 'loop' });
+    this.playSound(sfxName(this.type === 'attack' ? 'uitargetselect' : 'uiselecttile'), this.client);
     // TODO: hide tip
   }
 
-  private deselect(ctx: SnowContext) {
+  private deselect() {
     this.selected = false;
-    this.animateObject(ctx, this.type === 'attack' ? this.anims.attackIntro : this.anims.healIntro, { reset: true });
-    this.animateObject(ctx, this.type === 'attack' ? this.anims.attackIdle : this.anims.healIdle, { playStyle: 'loop' });
+    this.animateObject(this.type === 'attack' ? this.anims.attackIntro : this.anims.healIntro, { reset: true });
+    this.animateObject(this.type === 'attack' ? this.anims.attackIdle : this.anims.healIdle, { playStyle: 'loop' });
   }
 
-  private _onClick(ctx: SnowContext) {
+  private _onClick(ctx: SnowPenguinContext) {
     if (ctx.penguin.isReady) return;
 
     // TODO: return if game timer not running
 
-    this.select(ctx);
+    this.select();
   }
 
 }
@@ -408,7 +415,7 @@ abstract class Effect extends GameObject {
     super(game, name, x, y, false, xOffset, yOffset, originMode, mirrorMode);
   }
 
-  public abstract play(ctx: SnowContext, ...args: unknown[]): void;
+  public abstract play(...args: unknown[]): void;
 }
 
 
@@ -417,12 +424,12 @@ export class AttackTile extends Effect {
     super(game, 'ui_tile_attack', x, y, 0.5, 0.9998);
   }
 
-  async play(ctx: SnowContext, autoRemove: boolean = false) {
+  async play(autoRemove: boolean = false) {
     if (this.game.grid.isValid(this.x, this.y)) {
-      await this.placeObject(ctx);
-      this.placeSprite(ctx);
+      await this.placeObject();
+      this.placeObject();
 
-      if (autoRemove) setTimeout(() => this.removeObject(ctx), 200);
+      if (autoRemove) setTimeout(() => this.removeObject(), 200);
     }
   }
 }
@@ -432,12 +439,12 @@ export class HealTile extends Effect {
     super(game, 'ui_tile_heal', x, y, 0.5, 0.9998);
   }
 
-  async play(ctx: SnowContext, autoRemove: boolean = false) {
+  async play(autoRemove: boolean = false) {
     if (this.game.grid.isValid(this.x, this.y)) {
-      await this.placeObject(ctx);
-      this.placeSprite(ctx);
+      await this.placeObject();
+      this.placeObject();
 
-      if (autoRemove) setTimeout(() => this.removeObject(ctx), 200);
+      if (autoRemove) setTimeout(() => this.removeObject(), 200);
     }
   }
 }
@@ -447,11 +454,11 @@ export class HealParticles extends Effect {
     super(game, 'ui_healfx_anim', x, y, 0.50005, 1.0005, 0.737);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    await this.animateSprite(ctx, 0, 10, { duration: this.duration * 1000 });
-    setTimeout(() => this.removeObject(ctx), this.duration * 1000);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
+    await this.animateSprite(0, 10, { duration: this.duration * 1000 });
+    setTimeout(() => this.removeObject(), this.duration * 1000);
   }
 }
 
@@ -477,13 +484,13 @@ export class DamageNumbers extends Effect {
     24: [65, 69]
   }
 
-  async play(ctx: SnowContext, damage: number = 0) {
+  async play(damage: number = 0) {
     const range = this.frames[damage];
     if (!range) return;
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    await this.animateSprite(ctx, ...range, { duration: this.duration * 1000 });
-    setTimeout(() => this.removeObject(ctx), this.duration * 1000);
+    await this.placeObject();
+    await this.placeObject();
+    await this.animateSprite(...range, { duration: this.duration * 1000 });
+    setTimeout(() => this.removeObject(), this.duration * 1000);
   }
 }
 
@@ -501,13 +508,13 @@ export class HealNumbers extends Effect {
     12: [25, 29]
   }
 
-  async play(ctx: SnowContext, hp: number = 0) {
+  async play(hp: number = 0) {
     const range = this.frames[hp];
     if (!range) return;
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    await this.animateSprite(ctx, ...range, { duration: this.duration * 1000 });
-    setTimeout(() => this.removeObject(ctx), this.duration * 1000);
+    await this.placeObject();
+    await this.placeObject();
+    await this.animateSprite(...range, { duration: this.duration * 1000 });
+    setTimeout(() => this.removeObject(), this.duration * 1000);
   }
 }
 
@@ -516,11 +523,11 @@ export class Explosion extends Effect {
     super(game, 'effect_explosion_anim', x, y, 0.50005, 1.0005, 0.4);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    await this.animateSprite(ctx, 0, 4, { duration: this.duration * 260 });
-    setTimeout(() => this.removeObject(ctx), this.duration * 1000);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
+    await this.animateSprite(0, 4, { duration: this.duration * 260 });
+    setTimeout(() => this.removeObject(), this.duration * 1000);
   }
 }
 
@@ -529,16 +536,16 @@ export class SnowProjectile extends Effect {
     super(game, 'snow_projectile', x, y, 0.5, 1, 0.2);
   }
 
-  async play(ctx: SnowContext, tx: number = 0, ty: number = 0) {
+  async play(tx: number = 0, ty: number = 0) {
     this.setOffset(tx, ty);
-    await this.placeObject(ctx);
+    await this.placeObject();
 
-    await this.setMirrorMode(ctx, tx, ty);
-    await this.placeSprite(ctx, this.getAnimName(tx, ty));
-    await this.moveObject(ctx, tx, ty, this.duration * 1000);
+    await this.setMirrorMode(tx, ty);
+    await this.placeSprite(this.getAnimName(tx, ty));
+    await this.moveObject(tx, ty, this.duration * 1000);
   }
 
-  private async setMirrorMode(ctx: SnowContext, tx: number, ty: number) {
+  private async setMirrorMode(tx: number, ty: number) {
     const xDiff = tx - this.x;
     const yDiff = ty - this.y;
     
@@ -553,7 +560,7 @@ export class SnowProjectile extends Effect {
     }
 
     if (mirrorMode !== null) {
-      this.spriteSettings(ctx, { mirrorMode });
+      this.spriteSettings({ mirrorMode });
     }
   }
 
@@ -586,12 +593,12 @@ export class FireProjectile extends Effect {
     super(game, 'fire_projectile', x, y, 0.5, 1);
   }
 
-  async play(ctx: SnowContext, tx: number = 0, ty: number = 0) {
+  async play(tx: number = 0, ty: number = 0) {
     if ((tx - this.x) < 0) this.xOffset = -1;
-    await this.placeObject(ctx);
-    if ((tx - this.x) < 0) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+    await this.placeObject();
+    if ((tx - this.x) < 0) await this.spriteSettings({ mirrorMode: MirrorMode.X });
 
-    await this.placeSprite(ctx, this.getAnimName(tx, ty));
+    await this.placeSprite(this.getAnimName(tx, ty));
   }
 
   private getAnimName(tx: number, ty: number) {
@@ -622,17 +629,17 @@ export class SlyProjectile extends Effect {
     super(game, 'sly_projectile_anim', x, y, 0.5, 1, 0.5);
   }
 
-  async play(ctx: SnowContext, tx: number, ty: number) {
+  async play(tx: number, ty: number) {
     if (this.x > tx) {
       this.xOffset = 1;
       this.yOffset = 0.8;
     }
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
+    await this.placeObject();
+    await this.placeObject();
   
     this.xOffset = 0.5;
     this.yOffset = 1;
-    await this.moveObject(ctx, tx, ty, this.duration * 1000);
+    await this.moveObject(tx, ty, this.duration * 1000);
   }
 }
 
@@ -641,10 +648,10 @@ export class ScrapImpact extends Effect {
     super(game, 'scrap_attackeffect_anim', x, y, 0.5, 1, 0.4);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    setTimeout(() => this.removeObject(ctx), this.duration * 1000);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
+    setTimeout(() => this.removeObject(), this.duration * 1000);
   }
 }
 
@@ -653,14 +660,14 @@ export class ScrapImpactLittle extends Effect {
     super(game, 'scrap_attacklittleeffect_anim', x, y, 0.5, 1, 0.4);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
   }
 }
 
 export class ScrapImpactSurroundings {
-  static async play(ctx: SnowContext, centerX: number, centerY: number) {
+  static async play(game: SnowGame, centerX: number, centerY: number) {
     const effects: (AttackTile | ScrapImpactLittle)[] = [];
 
     for (let xo = -1; xo < 2; xo++) {
@@ -668,19 +675,19 @@ export class ScrapImpactSurroundings {
         const x = centerX + xo;
         const y = centerY + yo;
 
-        if (!ctx.game.grid.isValid(x, y)) continue;
+        if (!game.grid.isValid(x, y)) continue;
 
-        const tile = new AttackTile(ctx.game, x, y);
-        const impact = new ScrapImpactLittle(ctx.game, x, y);
-        tile.play(ctx);
-        impact.play(ctx);
+        const tile = new AttackTile(game, x, y);
+        const impact = new ScrapImpactLittle(game, x, y);
+        tile.play();
+        impact.play();
         effects.push(tile, impact);
       }
     }
 
     await sleep(350);
 
-    effects.forEach(e => e.removeObject(ctx));
+    effects.forEach(e => e.removeObject());
   }
 }
 
@@ -689,56 +696,56 @@ class ScrapProjectile extends Effect {
     super(game, 'scrap_projectile', x, y, 0.25, 1.5);
   }
 
-  async play(ctx: SnowContext, tx: number, ty: number, anim: string) {
+  async play(tx: number, ty: number, anim: string) {
     if (tx < 0 || ty > 8 || ty < 0 || ty > 4) return;
 
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx, `scrap_projectile${anim}_anim`);
-    await this.moveObject(ctx, tx, ty);
+    await this.placeObject();
+    await this.placeSprite(`scrap_projectile${anim}_anim`);
+    await this.moveObject(tx, ty);
   }
 
-  async playEast(ctx: SnowContext, tx: number, ty: number) {
-    await this.play(ctx, tx, ty, 'east');
+  async playEast(tx: number, ty: number) {
+    await this.play(tx, ty, 'east');
   }
 
-  async playNorth(ctx: SnowContext, tx: number, ty: number) {
-    await this.play(ctx, tx, ty, 'north');
+  async playNorth(tx: number, ty: number) {
+    await this.play(tx, ty, 'north');
   }
 
-  async playNortheast(ctx: SnowContext, tx: number, ty: number) {
-    await this.play(ctx, tx, ty, 'northeast');
+  async playNortheast(tx: number, ty: number) {
+    await this.play(tx, ty, 'northeast');
   }
 }
 
 export class ScrapProjectileImpact {
-  static async play(ctx: SnowContext, x: number, y: number) {
-    const p1 = new ScrapProjectile(ctx.game, x, y);
-    p1.playEast(ctx, x + 1, y);
+  static async play(game: SnowGame, x: number, y: number) {
+    const p1 = new ScrapProjectile(game, x, y);
+    p1.playEast(x + 1, y);
 
-    const p2 = new ScrapProjectile(ctx.game, x, y);
-    p2.playEast(ctx, x - 1, y);
+    const p2 = new ScrapProjectile(game, x, y);
+    p2.playEast(x - 1, y);
 
-    const p3 = new ScrapProjectile(ctx.game, x, y);
-    p3.playNorth(ctx, x, y - 0.8);
+    const p3 = new ScrapProjectile(game, x, y);
+    p3.playNorth(x, y - 0.8);
 
-    const p4 = new ScrapProjectile(ctx.game, x, y);
-    p4.playNorth(ctx, x, y + 0.8);
+    const p4 = new ScrapProjectile(game, x, y);
+    p4.playNorth(x, y + 0.8);
 
-    const p5 = new ScrapProjectile(ctx.game, x, y);
-    p5.playNortheast(ctx, x + 1, y - 0.8);
+    const p5 = new ScrapProjectile(game, x, y);
+    p5.playNortheast(x + 1, y - 0.8);
 
-    const p6 = new ScrapProjectile(ctx.game, x, y);
-    p6.playNortheast(ctx, x - 1, y - 0.8);
+    const p6 = new ScrapProjectile(game, x, y);
+    p6.playNortheast(x - 1, y - 0.8);
 
-    const p7 = new ScrapProjectile(ctx.game, x, y);
-    p5.playNortheast(ctx, x + 1, y + 0.8);
+    const p7 = new ScrapProjectile(game, x, y);
+    p5.playNortheast(x + 1, y + 0.8);
 
-    const p8 = new ScrapProjectile(ctx.game, x, y);
-    p6.playNortheast(ctx, x - 1, y + 0.8);
+    const p8 = new ScrapProjectile(game, x, y);
+    p6.playNortheast(x - 1, y + 0.8);
 
     await sleep(400);
 
-    [p1, p2, p3, p4, p5, p6, p7, p8].forEach(e => e.removeObject(ctx));
+    [p1, p2, p3, p4, p5, p6, p7, p8].forEach(e => e.removeObject());
   }
 }
 
@@ -747,10 +754,10 @@ export class TankSwipe extends Effect {
     super(game, `tank_swipe_${dir}_anim`, x, y, 0.5005, 1.005);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    await this.animateSprite(ctx, 0, 6, { duration: 400 });
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
+    await this.animateSprite(0, 6, { duration: 400 });
   }
 }
 
@@ -759,9 +766,9 @@ export class WaterPowerBeam extends Effect {
     super(game, 'waterninja_powercard_water_loop_anim', x, y, 0.5, 1);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
   }
 }
 
@@ -771,9 +778,9 @@ export class FirePowerBeam extends Effect {
     super(game, 'fireninja_powersky_anim', x, y, 0.5, 1, 1.35);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
   }
 }
 
@@ -783,9 +790,9 @@ export class SnowPowerBeam extends Effect {
     super(game, 'snowninja_beam_anim', x, y, 0.5, 1.55);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
   }
 }
 
@@ -795,14 +802,14 @@ export class SnowIgloo extends Effect {
     super(game, 'snowninja_igloodrop', x, y, 0.5, 2, 2, OriginMode.BOTTOM_MIDDLE);
   }
 
-  async play(ctx: SnowContext, playSound: boolean = true) {
-    await this.placeObject(ctx);
-    await this.animateObject(ctx, 'snowninja_igloodrop_anim1', { reset: true });
-    await this.animateObject(ctx, 'snowninja_igloodrop_anim2');
-    await this.animateObject(ctx, 'blank_png', { playStyle: 'loop' });
+  async play(playSound: boolean = true) {
+    await this.placeObject();
+    await this.animateObject('snowninja_igloodrop_anim1', { reset: true });
+    await this.animateObject('snowninja_igloodrop_anim2');
+    await this.animateObject('blank_png', { playStyle: 'loop' });
 
     if (playSound) {
-      setTimeout(() => this.playSound(ctx, sfxName('impactpowercardsnow')), 1200);
+      setTimeout(() => this.playSound(sfxName('impactpowercardsnow')), 1200);
     }
   }
 }
@@ -813,11 +820,11 @@ export class WaterFishDrop extends Effect {
     super(game, 'waterninja_powercard_fishdrop_anim', x, y, 0.5, 2.4, 1.7, OriginMode.BOTTOM_MIDDLE);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.animateObject(ctx, this.name);
-    await this.animateSprite(ctx, 0, 26, { duration: this.duration * 1000 });
-    await this.animateObject(ctx, 'blank_png');
+  async play() {
+    await this.placeObject();
+    await this.animateObject(this.name);
+    await this.animateSprite(0, 26, { duration: this.duration * 1000 });
+    await this.animateObject('blank_png');
   }
 }
 
@@ -826,11 +833,11 @@ export class FirePowerBottle extends Effect {
     super(game, 'fireninja_powerbottle_anim', x, y, 0.5, 2, 1.06, OriginMode.BOTTOM_MIDDLE);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.animateObject(ctx, this.name);
-    await this.animateSprite(ctx, 0, 16, { duration: this.duration * 1000 });
-    await this.animateObject(ctx, 'blank_png');
+  async play() {
+    await this.placeObject();
+    await this.animateObject(this.name);
+    await this.animateSprite(0, 16, { duration: this.duration * 1000 });
+    await this.animateObject('blank_png');
   }
 }
 
@@ -841,9 +848,9 @@ export class Flame extends Effect {
     super(game, 'effect_resisualfiredamage_anim', x, y, 0.5, 1.0025);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
   }
 }
 
@@ -852,16 +859,16 @@ export class Shield extends Effect {
     super(game, 'effect_shield', x, y, 0.5, 1.0015);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx, 'effect_shield_loop');
+  async play() {
+    await this.placeObject();
+    await this.placeSprite('effect_shield_loop');
   }
 
-  async pop(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx, 'effect_shieldpop_anim');
-    await this.animateSprite(ctx, 0, 3, { duration: 200 });
-    setTimeout(() => this.removeObject(ctx), 200);
+  async pop() {
+    await this.placeObject();
+    await this.placeSprite('effect_shieldpop_anim');
+    await this.animateSprite(0, 3, { duration: 200 });
+    setTimeout(() => this.removeObject(), 200);
   }
 }
 
@@ -870,16 +877,16 @@ export class Rage extends Effect {
     super(game, 'effect_rage', x, y, 0.5, 1.0025);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx, 'effect_rageloop_anim');
+  async play() {
+    await this.placeObject();
+    await this.placeSprite('effect_rageloop_anim');
   }
 
-  async use(ctx: SnowContext, x: number, y: number) {
-    await this.moveObject(ctx, x, y);
-    await this.placeSprite(ctx, 'effect_shieldpop_anim');
-    await this.animateSprite(ctx, 0, 11, { duration: 750 });
-    setTimeout(() => this.removeObject(ctx), 700);
+  async use(x: number, y: number) {
+    await this.moveObject(x, y);
+    await this.placeSprite('effect_shieldpop_anim');
+    await this.animateSprite(0, 11, { duration: 750 });
+    setTimeout(() => this.removeObject(), 700);
   }
 }
 
@@ -888,10 +895,10 @@ export class MemberReviveBeam extends Effect {
     super(game, 'effect_revivebeam_anim', x, y, 0.5, 1, 0, OriginMode.BOTTOM_MIDDLE);
   }
 
-  async play(ctx: SnowContext) {
-    await this.placeObject(ctx);
-    await this.placeSprite(ctx);
-    await this.animateSprite(ctx, 0, 29, { duration: 1200 });
+  async play() {
+    await this.placeObject();
+    await this.placeObject();
+    await this.animateSprite(0, 29, { duration: 1200 });
   }
 }
 
@@ -958,25 +965,25 @@ export abstract class Ninja extends GameObject {
     return (this.selectedObject instanceof Ninja) && this.selectedObject.hp <= 0;
   }
 
-  public async removeObject(ctx: SnowContext) {
-    this.healthBar.removeObject(ctx);
-    this.ghost.removeObject(ctx);
-    await super.removeObject(ctx);
+  public async removeObject() {
+    this.healthBar.removeObject();
+    this.ghost.removeObject();
+    await super.removeObject();
   }
 
-  public async moveObject(ctx: SnowContext, x: number, y: number, duration: number = this.moveDuration) {
-    this.healthBar.moveObject(ctx, x, y, duration);
-    super.moveObject(ctx, x, y, duration);
+  public async moveObject(x: number, y: number, duration: number = this.moveDuration) {
+    this.healthBar.moveObject(x, y, duration);
+    super.moveObject(x, y, duration);
 
     this.ghost.x = x;
     this.ghost.y = y;
 
-    if (this.shield !== null) this.shield.moveObject(ctx, x, y, duration);
-    if (this.rage !== null) this.rage.moveObject(ctx, x, y, duration);
+    if (this.shield !== null) this.shield.moveObject(x, y, duration);
+    if (this.rage !== null) this.rage.moveObject(x, y, duration);
   }
 
   public moveNinja(ctx: SnowContext, x: number, y: number) {
-    if (this.hp <= 0 || ctx.penguin.disconnected) {
+    if (this.hp <= 0 || this.player.disconnected) {
       return;
     }
     
@@ -990,22 +997,22 @@ export abstract class Ninja extends GameObject {
 
     for (const ninja of this.game.ninjas) {
       if (ninja.selectedObject === this) {
-        ninja.selectedTarget.moveObject(ctx, x, y);
+        ninja.selectedTarget.moveObject(x, y);
       }
     }
 
-    this.moveAnimation(ctx);
-    this.moveObject(ctx, x, y);
-    this.moveSound(ctx);
+    this.moveAnimation();
+    this.moveObject(x, y);
+    this.moveSound();
   }
 
-  public placeHealthbar(ctx: SnowContext) {
-    this.healthBar.placeObject(ctx);
-    this.healthBar.placeSprite(ctx);
-    this.resetHealthbar(ctx);
+  public placeHealthbar() {
+    this.healthBar.placeObject();
+    this.healthBar.placeSprite();
+    this.resetHealthbar();
   }
 
-  public animateHealthbar(ctx: SnowContext, _startHp: number, _endHp: number, duration = 500) {
+  public animateHealthbar(_startHp: number, _endHp: number, duration = 500) {
     const backwards = _endHp > _startHp;
 
     const startHp = backwards ? _endHp : _startHp;
@@ -1014,16 +1021,16 @@ export abstract class Ninja extends GameObject {
     const start = 60 - Math.floor((startHp / this.maxHp) * 60) - 1;
     const end = 60 - Math.floor((endHp / this.maxHp) * 60) - 1;
 
-    this.healthBar.animateSprite(ctx, start, end, { backwards, duration });
+    this.healthBar.animateSprite(start, end, { backwards, duration });
   }
 
-  public resetHealthbar(ctx: SnowContext) {
-    this.healthBar.animateSprite(ctx);
+  public resetHealthbar() {
+    this.healthBar.animateSprite();
   }
 
-  public setHealth(ctx: SnowContext, hp: number, showEffects: boolean = true) {
+  public setHealth(hp: number, showEffects: boolean = true) {
     if (hp < this.hp && this.shield !== null) {
-      this.shield.pop(ctx);
+      this.shield.pop();
       this.shield = null;
     }
 
@@ -1031,22 +1038,22 @@ export abstract class Ninja extends GameObject {
 
     hp = Math.max(0, Math.min(hp, this.maxHp));
 
-    this.animateHealthbar(ctx, this.hp, hp);
+    this.animateHealthbar(this.hp, hp);
 
     if (hp >= this.hp) {
-      new HealNumbers(this.game, this.x, this.y).play(ctx, hp - this.hp);
-      this.reviveAnimation(ctx);
+      new HealNumbers(this.game, this.x, this.y).play(hp - this.hp);
+      this.reviveAnimation();
       this.hp = hp;
       return;
     }
 
     if (showEffects) {
-      new AttackTile(this.game, this.x, this.y).play(ctx, true);
-      new DamageNumbers(this.game, this.x, this.y).play(ctx, this.hp - hp);
+      new AttackTile(this.game, this.x, this.y).play(true);
+      new DamageNumbers(this.game, this.x, this.y).play(this.hp - hp);
     }
 
     if (hp > 0) {
-      this.hitAnimation(ctx);
+      this.hitAnimation();
       // TODO: this.player.updateCards()
       this.hp = hp;
       return;
@@ -1057,14 +1064,14 @@ export abstract class Ninja extends GameObject {
     // Ninja has become KO'd
     this.hp = hp;
     this.targets = [];
-    this.koAnimation(ctx);
+    this.koAnimation();
 
-    this.rage?.removeObject(ctx);
+    this.rage?.removeObject();
 
     if (!this.player.disconnected) {
       this.player.wasKO = true;
       // TODO: update cards
-      this.koSound(ctx);
+      this.koSound();
     }
 
     this.game.ninjas.forEach(n => {
@@ -1076,7 +1083,7 @@ export abstract class Ninja extends GameObject {
     return this.ghost.x !== 1 && this.ghost.y !== 1;
   }
 
-  private onGhostClick(ctx: SnowContext, object: GameObject) {
+  private onGhostClick(ctx: SnowPenguinContext, object: GameObject) {
     if (ctx.penguin.isReady) {
       return;
     }
@@ -1090,23 +1097,23 @@ export abstract class Ninja extends GameObject {
 
     // TODO: if selected member card, return
 
-    this.hideGhost(ctx);
-    this.showTargets(ctx);
+    this.hideGhost();
+    this.showTargets();
   }
 
-  public async placeGhost(ctx: SnowContext, x: number, y: number) {
+  public async placeGhost(ctx: SnowPenguinContext, x: number, y: number) {
     if (ctx.penguin.isReady) {
       return; // TODO: also return if game timer is not running
     }
 
     if (this.hp <= 0) {
-      this.hideGhost(ctx);
+      this.hideGhost();
       return;
     }
 
     if (this.ghost.x === x && this.ghost.y === y) {
-      this.hideGhost(ctx);
-      this.showTargets(ctx);
+      this.hideGhost();
+      this.showTargets();
       return;
     }
 
@@ -1115,15 +1122,15 @@ export abstract class Ninja extends GameObject {
     }
 
     this.game.grid.move(this.ghost, x, y);
-    await this.ghost.placeObject(ctx);
-    await this.ghost.placeSprite(ctx);
-    await this.ghost.playSound(ctx, sfxName('uiselecttile'));
-    this.showTargets(ctx);
+    await this.ghost.placeObject();
+    await this.ghost.placeSprite();
+    await this.ghost.playSound(sfxName('uiselecttile'));
+    this.showTargets();
   }
 
-  public async hideGhost(ctx: SnowContext, reset: boolean = true) {
+  public async hideGhost(reset: boolean = true) {
     this.game.grid.remove(this.ghost);
-    this.ghost.hide(ctx);
+    this.ghost.hide();
 
     if (reset) {
       this.ghost.x = -1;
@@ -1131,8 +1138,8 @@ export abstract class Ninja extends GameObject {
     }
   }
 
-  public async showTargets(ctx: SnowContext) {
-    this.removeTargets(ctx);
+  public async showTargets() {
+    this.removeTargets();
 
     const healable = this.healableTiles(
       this.placedGhost ? this.ghost.x : this.x,
@@ -1142,7 +1149,7 @@ export abstract class Ninja extends GameObject {
     for (const tile of healable) {
       const t = new Target(this, tile.x, tile.y);
       this.targets.push(t);
-      t.showHeal(ctx);
+      t.showHeal();
     }
 
     const attackable = this.attackableTiles(
@@ -1154,16 +1161,16 @@ export abstract class Ninja extends GameObject {
       // TODO: handle tusk
       const t = new Target(this, tile.x, tile.y);
       this.targets.push(t);
-      t.showAttack(ctx);
+      t.showAttack();
     }
   }
 
-  public hideTargets(ctx: SnowContext) {
-    this.targets.forEach(t => t.hide(ctx));
+  public hideTargets() {
+    this.targets.forEach(t => t.hide());
   }
 
-  public removeTargets(ctx: SnowContext) {
-    this.targets.forEach(t => t.removeObject(ctx));
+  public removeTargets() {
+    this.targets.forEach(t => t.removeObject());
     this.targets.length = 0;
   }
 
@@ -1241,27 +1248,27 @@ export abstract class Ninja extends GameObject {
     return this.ghostTilesInRange().filter(t => this.game.grid.canMove(t.x, t.y));
   }
 
-  public abstract idleAnimation(ctx: SnowContext): Promise<void>;
-  public abstract moveAnimation(ctx: SnowContext): Promise<void>;
-  public abstract koAnimation(ctx: SnowContext): Promise<void>;
-  public abstract attackAnimation(ctx: SnowContext, ...rest: unknown[]): Promise<void>;
-  public abstract winAnimation(ctx: SnowContext): Promise<void>;
-  public abstract hitAnimation(ctx: SnowContext): Promise<void>;
-  public abstract healAnimation(ctx: SnowContext): Promise<void>;
-  public abstract reviveAnimation(ctx: SnowContext): Promise<void>;
-  public abstract reviveOtherAnimation(ctx: SnowContext): Promise<void>;
-  public abstract reviveOtherAnimationLoop(ctx: SnowContext): Promise<void>;
-  public abstract reviveMemberCardAnimation(ctx: SnowContext): Promise<void>;
-  public abstract powerAnimation(ctx: SnowContext): Promise<void>;
+  public abstract idleAnimation(): Promise<void>;
+  public abstract moveAnimation(): Promise<void>;
+  public abstract koAnimation(): Promise<void>;
+  public abstract attackAnimation(...rest: unknown[]): Promise<void>;
+  public abstract winAnimation(): Promise<void>;
+  public abstract hitAnimation(): Promise<void>;
+  public abstract healAnimation(): Promise<void>;
+  public abstract reviveAnimation(): Promise<void>;
+  public abstract reviveOtherAnimation(): Promise<void>;
+  public abstract reviveOtherAnimationLoop(): Promise<void>;
+  public abstract reviveMemberCardAnimation(): Promise<void>;
+  public abstract powerAnimation(): Promise<void>;
 
-  public async koSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('penguinground'));
+  public async koSound() {
+    await this.playSound(sfxName('penguinground'));
   }
-  public async moveSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('footsteppenguin'));
+  public async moveSound() {
+    await this.playSound(sfxName('footsteppenguin'));
   }
-  public abstract attackSound(ctx: SnowContext): Promise<void>;
-  public abstract powercardSound(ctx: SnowContext): Promise<void>;
+  public abstract attackSound(): Promise<void>;
+  public abstract powercardSound(): Promise<void>;
 }
 
 export class FireNinja extends Ninja {
@@ -1270,96 +1277,96 @@ export class FireNinja extends Ninja {
     super(game, 'Fire', player, x, y, 30, 2, 8, 2);
   }
 
-  async idleAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_idle_anim', { playStyle: 'loop', register: false });
+  async idleAnimation() {
+    await this.animateObject('fireninja_idle_anim', { playStyle: 'loop', register: false });
   }
 
-  async moveAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_move_anim', { reset: true });
-    await this.idleAnimation(ctx);
+  async moveAnimation() {
+    await this.animateObject('fireninja_move_anim', { reset: true });
+    await this.idleAnimation();
   }
 
-  async koAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_kostart_anim', { reset: true });
-    await this.animateObject(ctx, 'fireninja_koloop_anim', { playStyle: 'loop' });
+  async koAnimation() {
+    await this.animateObject('fireninja_kostart_anim', { reset: true });
+    await this.animateObject('fireninja_koloop_anim', { playStyle: 'loop' });
   }
 
-  async hitAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_hit_anim', { reset: true });
+  async hitAnimation() {
+    await this.animateObject('fireninja_hit_anim', { reset: true });
 
     if (this.isReviving) {
-      await this.reviveOtherAnimationLoop(ctx);
+      await this.reviveOtherAnimationLoop();
     } else {
-      await this.idleAnimation(ctx);
+      await this.idleAnimation();
     }
   }
 
-  async attackAnimation(ctx: SnowContext, x: number, y: number) {
-    if (this.x > x) this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+  async attackAnimation(x: number, y: number) {
+    if (this.x > x) this.spriteSettings({ mirrorMode: MirrorMode.X });
 
-    this.attackSound(ctx);
-    await this.animateObject(ctx, 'fireninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
-    this.idleAnimation(ctx);
+    this.attackSound();
+    await this.animateObject('fireninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    this.idleAnimation();
 
     await sleep(1450);
-    await this.projectileAnimation(ctx, x, y);
+    await this.projectileAnimation(x, y);
   }
 
-  private async projectileAnimation(ctx: SnowContext, x: number, y: number) {
+  private async projectileAnimation(x: number, y: number) {
     const pro = new FireProjectile(this.game, this.x, this.y);
-    await pro.play(ctx, x, y);
-    setTimeout(() => pro.removeObject(ctx), 250);
+    await pro.play(x, y);
+    setTimeout(() => pro.removeObject(), 250);
   }
 
-  async winAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_celebratestart_anim', { reset: true });
-    await this.animateObject(ctx, 'fireninja_celebrateloop_anim', { playStyle: 'loop' });
+  async winAnimation() {
+    await this.animateObject('fireninja_celebratestart_anim', { reset: true });
+    await this.animateObject('fireninja_celebrateloop_anim', { playStyle: 'loop' });
   }
 
-  async reviveAnimation(ctx: SnowContext) {
-    this.animateObject(ctx, 'fireninja_revived_anim', { reset: true });
-    new HealParticles(this.game, this.x, this.y).play(ctx);
+  async reviveAnimation() {
+    this.animateObject('fireninja_revived_anim', { reset: true });
+    new HealParticles(this.game, this.x, this.y).play();
 
     if (this.isReviving) {
-      await this.reviveOtherAnimationLoop(ctx);
+      await this.reviveOtherAnimationLoop();
     } else {
-      await this.idleAnimation(ctx);
+      await this.idleAnimation();
     }
   }
 
-  async reviveOtherAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_reviveother_anim', { reset: true });
-    await this.reviveOtherAnimationLoop(ctx);
+  async reviveOtherAnimation() {
+    await this.animateObject('fireninja_reviveother_anim', { reset: true });
+    await this.reviveOtherAnimationLoop();
   }
 
-  async reviveOtherAnimationLoop(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_reviveotherloop_anim', { playStyle: 'loop' });
+  async reviveOtherAnimationLoop() {
+    await this.animateObject('fireninja_reviveotherloop_anim', { playStyle: 'loop' });
   }
 
-  async reviveMemberCardAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_member_revive', { reset: true });
-    await this.idleAnimation(ctx);
+  async reviveMemberCardAnimation() {
+    await this.animateObject('fireninja_member_revive', { reset: true });
+    await this.idleAnimation();
   }
 
-  async powerAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'fireninja_power_anim', { reset: true });
-    await this.idleAnimation(ctx);
-    await this.powercardSound(ctx);
+  async powerAnimation() {
+    await this.animateObject('fireninja_power_anim', { reset: true });
+    await this.idleAnimation();
+    await this.powercardSound();
     await sleep(1000);
   }
 
   async healAnimation() {}
 
-  async moveSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('footsteppenguinfire'));
+  async moveSound() {
+    await this.playSound(sfxName('footsteppenguinfire'));
   }
 
-  async attackSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attackfire'));
+  async attackSound() {
+    await this.playSound(sfxName('attackfire'));
   }
 
-  async powercardSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attackpowercardfire'));
+  async powercardSound() {
+    await this.playSound(sfxName('attackpowercardfire'));
   }
 
 }
@@ -1370,84 +1377,84 @@ export class WaterNinja extends Ninja {
     super(game, 'Water', player, x, y, 40, 1, 10, 2);
   }
 
-  async idleAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_idle_anim', { playStyle: 'loop', register: false });
+  async idleAnimation() {
+    await this.animateObject('waterninja_idle_anim', { playStyle: 'loop', register: false });
   }
 
-  async moveAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_move_anim', { reset: true });
-    await this.idleAnimation(ctx);
+  async moveAnimation() {
+    await this.animateObject('waterninja_move_anim', { reset: true });
+    await this.idleAnimation();
   }
 
-  async koAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_kostart_anim', { reset: true });
-    await this.animateObject(ctx, 'waterninja_koloop_anim', { playStyle: 'loop' });
+  async koAnimation() {
+    await this.animateObject('waterninja_kostart_anim', { reset: true });
+    await this.animateObject('waterninja_koloop_anim', { playStyle: 'loop' });
   }
 
-  async hitAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_hit_anim', { reset: true });
+  async hitAnimation() {
+    await this.animateObject('waterninja_hit_anim', { reset: true });
 
     if (this.isReviving) {
-      await this.reviveOtherAnimationLoop(ctx);
+      await this.reviveOtherAnimationLoop();
     } else {
-      await this.idleAnimation(ctx);
+      await this.idleAnimation();
     }
   }
 
-  async attackAnimation(ctx: SnowContext, x: number, y: number) {
-    if (this.x > x) this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+  async attackAnimation(x: number, y: number) {
+    if (this.x > x) this.spriteSettings({ mirrorMode: MirrorMode.X });
 
-    await this.animateObject(ctx, 'waterninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
-    this.idleAnimation(ctx);
+    await this.animateObject('waterninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    this.idleAnimation();
 
     await sleep(450);
-    this.attackSound(ctx);
+    this.attackSound();
   }
 
-  async winAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_celebrate_anim', { playStyle: 'ping_pong', reset: true });
+  async winAnimation() {
+    await this.animateObject('waterninja_celebrate_anim', { playStyle: 'ping_pong', reset: true });
   }
 
-  async reviveAnimation(ctx: SnowContext) {
-    this.animateObject(ctx, 'waterninja_revived_anim', { reset: true });
-    new HealParticles(this.game, this.x, this.y).play(ctx);
+  async reviveAnimation() {
+    this.animateObject('waterninja_revived_anim', { reset: true });
+    new HealParticles(this.game, this.x, this.y).play();
 
     if (this.isReviving) {
-      await this.reviveOtherAnimationLoop(ctx);
+      await this.reviveOtherAnimationLoop();
     } else {
-      await this.idleAnimation(ctx);
+      await this.idleAnimation();
     }
   }
 
-  async reviveOtherAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_revive_other_intro_anim', { reset: true });
-    await this.reviveOtherAnimationLoop(ctx);
+  async reviveOtherAnimation() {
+    await this.animateObject('waterninja_revive_other_intro_anim', { reset: true });
+    await this.reviveOtherAnimationLoop();
   }
 
-  async reviveOtherAnimationLoop(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_revive_other_loop_anim', { playStyle: 'loop' });
+  async reviveOtherAnimationLoop() {
+    await this.animateObject('waterninja_revive_other_loop_anim', { playStyle: 'loop' });
   }
 
-  async reviveMemberCardAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_member_revive', { reset: true });
-    await this.idleAnimation(ctx);
+  async reviveMemberCardAnimation() {
+    await this.animateObject('waterninja_member_revive', { reset: true });
+    await this.idleAnimation();
   }
 
-  async powerAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'waterninja_powercard_summon_anim', { reset: true });
-    await this.idleAnimation(ctx);
-    await this.powercardSound(ctx);
+  async powerAnimation() {
+    await this.animateObject('waterninja_powercard_summon_anim', { reset: true });
+    await this.idleAnimation();
+    await this.powercardSound();
     await sleep(650);
   }
 
   async healAnimation() {}
 
-  async attackSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attackwater'));
+  async attackSound() {
+    await this.playSound(sfxName('attackwater'));
   }
 
-  async powercardSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attackpowercardwater'));
+  async powercardSound() {
+    await this.playSound(sfxName('attackpowercardwater'));
   }
 
 }
@@ -1458,101 +1465,101 @@ export class SnowNinja extends Ninja {
     super(game, 'Snow', player, x, y, 25, 3, 6, 3);
   }
 
-  async idleAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_idle_anim', { playStyle: 'loop', register: false });
+  async idleAnimation() {
+    await this.animateObject('snowninja_idle_anim', { playStyle: 'loop', register: false });
   }
 
-  async moveAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_move_anim', { reset: true });
-    await this.idleAnimation(ctx);
+  async moveAnimation() {
+    await this.animateObject('snowninja_move_anim', { reset: true });
+    await this.idleAnimation();
   }
 
-  async koAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_kostart_anim', { reset: true });
-    await this.animateObject(ctx, 'snowninja_koloop_anim', { playStyle: 'loop' });
+  async koAnimation() {
+    await this.animateObject('snowninja_kostart_anim', { reset: true });
+    await this.animateObject('snowninja_koloop_anim', { playStyle: 'loop' });
   }
 
-  async hitAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_hit_anim', { reset: true });
+  async hitAnimation() {
+    await this.animateObject('snowninja_hit_anim', { reset: true });
 
     if (this.isReviving) {
-      await this.reviveOtherAnimationLoop(ctx);
+      await this.reviveOtherAnimationLoop();
     } else {
-      await this.idleAnimation(ctx);
+      await this.idleAnimation();
     }
   }
 
-  async attackAnimation(ctx: SnowContext, x: number, y: number) {
-    if (this.x > x) this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+  async attackAnimation(x: number, y: number) {
+    if (this.x > x) this.spriteSettings({ mirrorMode: MirrorMode.X });
 
-    this.attackSound(ctx);
-    await this.animateObject(ctx, 'snowninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
-    this.idleAnimation(ctx);
+    this.attackSound();
+    await this.animateObject('snowninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    this.idleAnimation();
 
     await sleep(300);
-    await this.projectileAnimation(ctx, x, y);
+    await this.projectileAnimation(x, y);
   }
 
-  private async projectileAnimation(ctx: SnowContext, x: number, y: number) {
+  private async projectileAnimation(x: number, y: number) {
     // this is jank according to snowflake, and yeah it kinda is
     let pro = new SnowProjectile(this.game, this.x, this.y);
-    await pro.play(ctx, x, y);
+    await pro.play(x, y);
     await sleep(200);
-    pro.removeObject(ctx);
+    pro.removeObject();
 
     pro = new SnowProjectile(this.game, this.x, this.y);
-    await pro.play(ctx, x, y);
+    await pro.play(x, y);
     await sleep(200);
-    setTimeout(() => pro.removeObject(ctx), 200);
+    setTimeout(() => pro.removeObject(), 200);
   }
 
-  async winAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_celebrate_anim', { playStyle: 'ping_pong', reset: true });
+  async winAnimation() {
+    await this.animateObject('snowninja_celebrate_anim', { playStyle: 'ping_pong', reset: true });
   }
 
-  async reviveAnimation(ctx: SnowContext) {
-    this.animateObject(ctx, 'snowninja_revived_anim', { reset: true });
-    new HealParticles(this.game, this.x, this.y).play(ctx);
+  async reviveAnimation() {
+    this.animateObject('snowninja_revived_anim', { reset: true });
+    new HealParticles(this.game, this.x, this.y).play();
 
     if (this.isReviving) {
-      await this.reviveOtherAnimationLoop(ctx);
+      await this.reviveOtherAnimationLoop();
     } else {
-      await this.idleAnimation(ctx);
+      await this.idleAnimation();
     }
   }
 
-  async reviveOtherAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_reviveothersintro_anim', { reset: true });
-    await this.reviveOtherAnimationLoop(ctx);
+  async reviveOtherAnimation() {
+    await this.animateObject('snowninja_reviveothersintro_anim', { reset: true });
+    await this.reviveOtherAnimationLoop();
   }
 
-  async reviveOtherAnimationLoop(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_reviveothersloop_anim', { playStyle: 'loop' });
+  async reviveOtherAnimationLoop() {
+    await this.animateObject('snowninja_reviveothersloop_anim', { playStyle: 'loop' });
   }
 
-  async reviveMemberCardAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_member_revive', { reset: true });
-    await this.idleAnimation(ctx);
+  async reviveMemberCardAnimation() {
+    await this.animateObject('snowninja_member_revive', { reset: true });
+    await this.idleAnimation();
   }
 
-  async powerAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_powercard_anim', { reset: true });
-    await this.idleAnimation(ctx);
-    await this.powercardSound(ctx);
+  async powerAnimation() {
+    await this.animateObject('snowninja_powercard_anim', { reset: true });
+    await this.idleAnimation();
+    await this.powercardSound();
     await sleep(450);
   }
 
-  async healAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowninja_heal_anim', { reset: true });
-    await this.idleAnimation(ctx);
+  async healAnimation() {
+    await this.animateObject('snowninja_heal_anim', { reset: true });
+    await this.idleAnimation();
   }
 
-  async attackSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attacksnow'));
+  async attackSound() {
+    await this.playSound(sfxName('attacksnow'));
   }
 
-  async powercardSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attackpowercardsnow'));
+  async powercardSound() {
+    await this.playSound(sfxName('attackpowercardsnow'));
   }
 
 }
@@ -1590,27 +1597,27 @@ export abstract class Enemy extends GameObject {
     );
   }
 
-  async removeObject(ctx: SnowContext) {
-    await this.healthBar.removeObject(ctx);
-    await super.removeObject(ctx);
-    if (this.flame !== null) await this.flame.removeObject(ctx);
+  async removeObject() {
+    await this.healthBar.removeObject();
+    await super.removeObject();
+    if (this.flame !== null) await this.flame.removeObject();
   }
 
-  async moveObject(ctx: SnowContext, x: number, y: number) {
-    await this.healthBar.moveObject(ctx, x, y, this.moveDuration);
-    await super.moveObject(ctx, x, y, this.moveDuration);
-    if (this.flame !== null) await this.flame.moveObject(ctx, x, y, this.moveDuration);
+  async moveObject(x: number, y: number) {
+    await this.healthBar.moveObject(x, y, this.moveDuration);
+    await super.moveObject(x, y, this.moveDuration);
+    if (this.flame !== null) await this.flame.moveObject(x, y, this.moveDuration);
   }
 
-  public placeHealthbar(ctx: SnowContext) {
+  public placeHealthbar() {
     this.healthBar.x = this.x;
     this.healthBar.y = this.y;
-    this.healthBar.placeObject(ctx);
-    this.healthBar.placeSprite(ctx);
-    this.resetHealthbar(ctx);
+    this.healthBar.placeObject();
+    this.healthBar.placeSprite();
+    this.resetHealthbar();
   }
 
-  public animateHealthbar(ctx: SnowContext, _startHp: number, _endHp: number, duration = 500) {
+  public animateHealthbar(_startHp: number, _endHp: number, duration = 500) {
     const backwards = _endHp > _startHp;
 
     const startHp = backwards ? _endHp : _startHp;
@@ -1619,25 +1626,25 @@ export abstract class Enemy extends GameObject {
     const start = 60 - Math.floor((startHp / this.maxHp) * 60) - 1;
     const end = 60 - Math.floor((endHp / this.maxHp) * 60) - 1;
 
-    this.healthBar.animateSprite(ctx, start, end, { backwards, duration });
+    this.healthBar.animateSprite(start, end, { backwards, duration });
   }
 
-  public resetHealthbar(ctx: SnowContext) {
-    this.healthBar.animateSprite(ctx);
+  public resetHealthbar() {
+    this.healthBar.animateSprite();
   }
 
-  public async setHealth(ctx: SnowContext, hp: number, wait: boolean = true) {
+  public async setHealth(hp: number, wait: boolean = true) {
     hp = Math.max(0, Math.min(hp, this.maxHp));
 
-    this.animateHealthbar(ctx, this.hp, hp);
+    this.animateHealthbar(this.hp, hp);
 
-    new AttackTile(this.game, this.x, this.y).play(ctx, true);
-    new DamageNumbers(this.game, this.x, this.y).play(ctx, this.hp - hp);
+    new AttackTile(this.game, this.x, this.y).play(true);
+    new DamageNumbers(this.game, this.x, this.y).play(this.hp - hp);
 
     this.hp = hp;
     
     if (this.hp <= 0) {
-      this.koAnimation(ctx);
+      this.koAnimation();
 
       if (this.game.round >= 3) {
         this.game.coins += 60;
@@ -1645,38 +1652,38 @@ export abstract class Enemy extends GameObject {
       }
 
       if (!wait) {
-        setTimeout(() => this.removeObject(ctx), 2500);
+        setTimeout(() => this.removeObject(), 2500);
       } else {
         await this.game.callbacks.waitForAnims();
-        this.removeObject(ctx);
+        this.removeObject();
       }
     } else {
-      this.hitAnimation(ctx);
+      this.hitAnimation();
     }
   }
 
-  public abstract attackTarget(ctx: SnowContext, target: Ninja): Promise<void>;
+  public abstract attackTarget(target: Ninja): Promise<void>;
 
-  flameDamage(ctx: SnowContext) {
+  flameDamage() {
     if (this.hp > 0) {
-      this.setHealth(ctx, this.hp - 3);
+      this.setHealth(this.hp - 3);
     }
   }
 
-  updateFlame(ctx: SnowContext) {
+  updateFlame() {
     if (this.flame === null) return;
 
-    this.flameDamage(ctx);
+    this.flameDamage();
 
     if (this.flame.roundsLeft > 0) {
       this.flame.roundsLeft--;
       return;
     }
 
-    this.flame.removeObject(ctx);
+    this.flame.removeObject();
     this.flame = null;
 
-    setTimeout(() => this.idleAnimation(ctx, true), 800);
+    setTimeout(() => this.idleAnimation(true), 800);
   }
 
   protected attackableTiles(tx: number, ty: number, range = this.range) {
@@ -1787,25 +1794,25 @@ export abstract class Enemy extends GameObject {
     return this.attack;
   }
 
-  public abstract idleAnimation(ctx: SnowContext, reset?: boolean): Promise<void>;
-  public abstract moveAnimation(ctx: SnowContext): Promise<void>;
-  public abstract koAnimation(ctx: SnowContext): Promise<void>;
-  public abstract attackAnimation(ctx: SnowContext, x: number, y: number): Promise<void>;
-  public abstract dazeAnimation(ctx: SnowContext, reset: boolean): Promise<void>;
-  public abstract hitAnimation(ctx: SnowContext): Promise<void>;
+  public abstract idleAnimation(reset?: boolean): Promise<void>;
+  public abstract moveAnimation(): Promise<void>;
+  public abstract koAnimation(): Promise<void>;
+  public abstract attackAnimation(x: number, y: number): Promise<void>;
+  public abstract dazeAnimation(reset: boolean): Promise<void>;
+  public abstract hitAnimation(): Promise<void>;
 
-  async spawnAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'snowman_spawn_anim', { reset: true });
-    this.playSound(ctx, sfxName('snowmenappear'));
+  async spawnAnimation() {
+    await this.animateObject('snowman_spawn_anim', { reset: true });
+    this.playSound(sfxName('snowmenappear'));
   }
 
-  async koSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('snowmandeathexplode'));
+  async koSound() {
+    await this.playSound(sfxName('snowmandeathexplode'));
   }
-  public abstract moveSound(ctx: SnowContext): Promise<void>;
-  public abstract attackSound(ctx: SnowContext): Promise<void>;
-  public abstract hitSound(ctx: SnowContext): Promise<void>;
-  public abstract impactSound(ctx: SnowContext): Promise<void>;
+  public abstract moveSound(): Promise<void>;
+  public abstract attackSound(): Promise<void>;
+  public abstract hitSound(): Promise<void>;
+  public abstract impactSound(): Promise<void>;
 
 }
 
@@ -1815,7 +1822,7 @@ export class Sly extends Enemy {
     super(game, 'Sly', 30, 3, 3, 3, 1200);
   }
 
-  async attackTarget(ctx: SnowContext, target: Ninja) {
+  async attackTarget(target: Ninja) {
     if (target.hp <= 0) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
@@ -1826,73 +1833,73 @@ export class Sly extends Enemy {
     // Additional 1 damage per tile away
     const damage = this.attack + distance - 1;
 
-    this.attackAnimation(ctx, target.x, target.y);
-    target.setHealth(ctx, target.hp - damage);
+    this.attackAnimation(target.x, target.y);
+    target.setHealth(target.hp - damage);
   }
 
-  async idleAnimation(ctx: SnowContext, reset: boolean = false) {
-    await this.animateObject(ctx, 'sly_idle_anim', { playStyle: 'loop', register: false, reset });
+  async idleAnimation(reset: boolean = false) {
+    await this.animateObject('sly_idle_anim', { playStyle: 'loop', register: false, reset });
   }
 
-  async moveAnimation(ctx: SnowContext) {
-    this.animateObject(ctx, 'sly_move_anim', { playStyle: 'loop', reset: true });
-    await this.idleAnimation(ctx);
+  async moveAnimation() {
+    this.animateObject('sly_move_anim', { playStyle: 'loop', reset: true });
+    await this.idleAnimation();
   }
 
-  async attackAnimation(ctx: SnowContext, x: number, y: number) {
-    if (this.x < x) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+  async attackAnimation(x: number, y: number) {
+    if (this.x < x) await this.spriteSettings({ mirrorMode: MirrorMode.X });
 
     await sleep(250);
-    await this.animateObject(ctx, 'sly_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
-    this.idleAnimation(ctx);
-    this.attackSound(ctx);
+    await this.animateObject('sly_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    this.idleAnimation();
+    this.attackSound();
 
     await sleep(1450);
     const projectile = new SlyProjectile(this.game, this.x, this.y);
-    projectile.play(ctx, x, y);
+    projectile.play(x, y);
 
     await sleep(500);
-    this.impactSound(ctx);
-    await projectile.removeObject(ctx);
+    this.impactSound();
+    await projectile.removeObject();
 
-    await new Explosion(this.game, x, y).play(ctx);
+    await new Explosion(this.game, x, y).play();
   }
 
-  async koAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'sly_ko_anim', { reset: true });
-    await this.animateObject(ctx, 'blank_png');
-    await this.koSound(ctx);
+  async koAnimation() {
+    await this.animateObject('sly_ko_anim', { reset: true });
+    await this.animateObject('blank_png');
+    await this.koSound();
   }
 
-  async hitAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'sly_hit_anim', { reset: true });
-    await this.hitSound(ctx);
+  async hitAnimation() {
+    await this.animateObject('sly_hit_anim', { reset: true });
+    await this.hitSound();
 
     if (this.stunned) {
-      this.dazeAnimation(ctx, false)
+      this.dazeAnimation(false)
     } else {
-      this.idleAnimation(ctx);
+      this.idleAnimation();
     }
   }
 
-  async dazeAnimation(ctx: SnowContext, reset: boolean = true) {
-    await this.animateObject(ctx, 'sly_daze_anim', { playStyle: 'loop', reset });
+  async dazeAnimation(reset: boolean = true) {
+    await this.animateObject('sly_daze_anim', { playStyle: 'loop', reset });
   }
 
-  async moveSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('footstepsly_loop'));
+  async moveSound() {
+    await this.playSound(sfxName('footstepsly_loop'));
   }
 
-  async hitSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('snowmanslyhit'));
+  async hitSound() {
+    await this.playSound(sfxName('snowmanslyhit'));
   }
 
-  async attackSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attacksly'));
+  async attackSound() {
+    await this.playSound(sfxName('attacksly'));
   }
 
-  async impactSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('impactsly'));
+  async impactSound() {
+    await this.playSound(sfxName('impactsly'));
   }
 
 }
@@ -1909,96 +1916,96 @@ export class Scrap extends Enemy {
     return this.attack + (this.attack / 2) * surrounding.length;
   }
 
-  async attackTarget(ctx: SnowContext, target: Ninja) {
+  async attackTarget(target: Ninja) {
     if (target.hp <= 0) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
     await sleep(250);
 
-    this.attackAnimation(ctx, target.x, target.y);
-    target.setHealth(ctx, target.hp - this.attack);
+    this.attackAnimation(target.x, target.y);
+    target.setHealth(target.hp - this.attack);
 
-    ScrapProjectileImpact.play(ctx, target.x, target.y);
+    ScrapProjectileImpact.play(this.game, target.x, target.y);
 
     const surrounding = this.game.grid.surroundingObjects(target.x, target.y)
       .filter(obj => (obj instanceof Ninja) && obj.hp > 0);
 
-    if (surrounding.length > 0) this.impactSound(ctx);
+    if (surrounding.length > 0) this.impactSound();
 
     for (const obj of surrounding) {
       const ninja = obj as Ninja;
 
-      ninja.setHealth(ctx, ninja.hp - (this.attack / 2));
+      ninja.setHealth(ninja.hp - (this.attack / 2));
 
-      new Explosion(this.game, obj.x, obj.y).play(ctx);
+      new Explosion(this.game, obj.x, obj.y).play();
     }
 
-    ScrapImpactSurroundings.play(ctx, target.x, target.y);
+    ScrapImpactSurroundings.play(this.game, target.x, target.y);
   }
 
-  async idleAnimation(ctx: SnowContext, reset: boolean = false) {
-    await this.animateObject(ctx, 'scrap_idle_anim', { playStyle: 'loop', register: false, reset });
+  async idleAnimation(reset: boolean = false) {
+    await this.animateObject('scrap_idle_anim', { playStyle: 'loop', register: false, reset });
   }
 
-  async moveAnimation(ctx: SnowContext) {
-    this.animateObject(ctx, 'scrap_move_anim', { playStyle: 'loop', reset: true });
-    await this.idleAnimation(ctx);
-    await this.moveSound(ctx);
+  async moveAnimation() {
+    this.animateObject('scrap_move_anim', { playStyle: 'loop', reset: true });
+    await this.idleAnimation();
+    await this.moveSound();
   }
 
-  async attackAnimation(ctx: SnowContext, x: number, y: number) {
-    if (this.x < x) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+  async attackAnimation(x: number, y: number) {
+    if (this.x < x) await this.spriteSettings({ mirrorMode: MirrorMode.X });
 
-    await this.animateObject(ctx, 'scrap_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
-    this.idleAnimation(ctx);
+    await this.animateObject('scrap_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    this.idleAnimation();
 
     await sleep(700);
-    this.attackSound(ctx);
+    this.attackSound();
 
     const distance = this.game.grid.distance([this.x, this.y], [x, y]);
     const impactTime = 0.9 + (distance * 0.1);
 
     await sleep(impactTime);
-    this.impactSound(ctx);
+    this.impactSound();
 
-    await new ScrapImpact(this.game, x, y).play(ctx);
+    await new ScrapImpact(this.game, x, y).play();
   }
 
-  async koAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'scrap_ko_anim', { reset: true });
-    await this.animateObject(ctx, 'blank_png');
-    await this.koSound(ctx);
+  async koAnimation() {
+    await this.animateObject('scrap_ko_anim', { reset: true });
+    await this.animateObject('blank_png');
+    await this.koSound();
   }
 
-  async hitAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'scrap_hit_anim', { reset: true });
-    await this.hitSound(ctx);
+  async hitAnimation() {
+    await this.animateObject('scrap_hit_anim', { reset: true });
+    await this.hitSound();
 
     if (this.stunned) {
-      this.dazeAnimation(ctx, false)
+      this.dazeAnimation(false)
     } else {
-      this.idleAnimation(ctx);
+      this.idleAnimation();
     }
   }
 
-  async dazeAnimation(ctx: SnowContext, reset: boolean = true) {
-    await this.animateObject(ctx, 'scrap_dazed_anim', { playStyle: 'loop', reset });
+  async dazeAnimation(reset: boolean = true) {
+    await this.animateObject('scrap_dazed_anim', { playStyle: 'loop', reset });
   }
 
-  async moveSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('footstepscrap_loop'));
+  async moveSound() {
+    await this.playSound(sfxName('footstepscrap_loop'));
   }
 
-  async hitSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('snowmanscraphit'));
+  async hitSound() {
+    await this.playSound(sfxName('snowmanscraphit'));
   }
 
-  async attackSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attackscrap'));
+  async attackSound() {
+    await this.playSound(sfxName('attackscrap'));
   }
 
-  async impactSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('impactscrap'));
+  async impactSound() {
+    await this.playSound(sfxName('impactscrap'));
   }
 
 }
@@ -2046,14 +2053,14 @@ export class Tank extends Enemy {
     throw new Error('Impossible scenario with Tank attack');
   }
 
-  async attackTarget(ctx: SnowContext, target: Ninja) {
+  async attackTarget(target: Ninja) {
     if (target.hp <= 0) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
     await sleep(250);
 
-    this.attackAnimation(ctx, target.x, target.y);
-    target.setHealth(ctx, target.hp - this.attack);
+    this.attackAnimation(target.x, target.y);
+    target.setHealth(target.hp - this.attack);
 
     const effects: Effect[] = [];
 
@@ -2062,10 +2069,10 @@ export class Tank extends Enemy {
       const right = this.game.grid.get(target.x + 1, target.y);
 
       if (left !== null && left instanceof Ninja) {
-        left.setHealth(ctx, left.hp - (this.attack / 2));
+        left.setHealth(left.hp - (this.attack / 2));
       }
       if (right !== null && right instanceof Ninja) {
-        right.setHealth(ctx, right.hp - (this.attack / 2));
+        right.setHealth(right.hp - (this.attack / 2));
       }
 
       effects.push(
@@ -2079,10 +2086,10 @@ export class Tank extends Enemy {
       const below = this.game.grid.get(target.x, target.y + 1);
 
       if (above !== null && above instanceof Ninja) {
-        above.setHealth(ctx, above.hp - (this.attack / 2));
+        above.setHealth(above.hp - (this.attack / 2));
       }
       if (below !== null && below instanceof Ninja) {
-        below.setHealth(ctx, below.hp - (this.attack / 2));
+        below.setHealth(below.hp - (this.attack / 2));
       }
 
       effects.push(
@@ -2093,62 +2100,62 @@ export class Tank extends Enemy {
       )
     }
 
-    effects.forEach(e => e.play(ctx));
+    effects.forEach(e => e.play());
 
     await sleep(250);
 
-    effects.forEach(e => e.removeObject(ctx));
+    effects.forEach(e => e.removeObject());
   }
 
-  async idleAnimation(ctx: SnowContext, reset: boolean = false) {
-    await this.animateObject(ctx, 'tank_idle_anim', { playStyle: 'loop', register: false, reset });
+  async idleAnimation(reset: boolean = false) {
+    await this.animateObject('tank_idle_anim', { playStyle: 'loop', register: false, reset });
   }
 
-  async moveAnimation(ctx: SnowContext) {
-    this.animateObject(ctx, 'tank_move_anim', { playStyle: 'loop', reset: true });
-    await this.idleAnimation(ctx);
-    await this.moveSound(ctx);
+  async moveAnimation() {
+    this.animateObject('tank_move_anim', { playStyle: 'loop', reset: true });
+    await this.idleAnimation();
+    await this.moveSound();
   }
 
-  async attackAnimation(ctx: SnowContext, x: number, y: number) {
-    if (this.x < x) await this.spriteSettings(ctx, { mirrorMode: MirrorMode.X });
+  async attackAnimation(x: number, y: number) {
+    if (this.x < x) await this.spriteSettings({ mirrorMode: MirrorMode.X });
 
-    await this.animateObject(ctx, 'tank_attack_anim', { reset: true, callback: () => this.resetSpriteSettings(ctx) });
-    this.idleAnimation(ctx);
+    await this.animateObject('tank_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    this.idleAnimation();
     await sleep(150);
   }
 
-  async koAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'tank_ko_anim', { reset: true });
-    await this.animateObject(ctx, 'blank_png');
-    await this.koSound(ctx);
+  async koAnimation() {
+    await this.animateObject('tank_ko_anim', { reset: true });
+    await this.animateObject('blank_png');
+    await this.koSound();
   }
 
-  async hitAnimation(ctx: SnowContext) {
-    await this.animateObject(ctx, 'tank_hit_anim', { reset: true });
-    await this.hitSound(ctx);
+  async hitAnimation() {
+    await this.animateObject('tank_hit_anim', { reset: true });
+    await this.hitSound();
 
     if (this.stunned) {
-      this.dazeAnimation(ctx, false)
+      this.dazeAnimation(false)
     } else {
-      this.idleAnimation(ctx);
+      this.idleAnimation();
     }
   }
 
-  async dazeAnimation(ctx: SnowContext, reset: boolean = true) {
-    await this.animateObject(ctx, 'tank_daze_anim', { playStyle: 'loop', reset });
+  async dazeAnimation(reset: boolean = true) {
+    await this.animateObject('tank_daze_anim', { playStyle: 'loop', reset });
   }
 
-  async moveSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('footsteptank'));
+  async moveSound() {
+    await this.playSound(sfxName('footsteptank'));
   }
 
-  async hitSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('snowmantankhit'));
+  async hitSound() {
+    await this.playSound(sfxName('snowmantankhit'));
   }
 
-  async attackSound(ctx: SnowContext) {
-    await this.playSound(ctx, sfxName('attacktank'));
+  async attackSound() {
+    await this.playSound(sfxName('attacktank'));
   }
 
   async impactSound() {}

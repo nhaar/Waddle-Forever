@@ -1,14 +1,11 @@
-import { GameData } from "@server/timelines/game-data";
-import { WorldGame } from "../world-game";
 import { WorldPenguin } from "../world-penguin";
-import { MATCHMAKERS } from "@server/game-data/games";
 import { ClientSocket } from "../../socket-server";
 import { PenguinMessenger } from "../../messenger";
-import { SnowContext } from "../../snow-data-handler";
+import { SnowContext, SnowPenguinContext } from "../../snow-data-handler";
 import { BuildType, EventType, MessageType, ServerType, ViewMode, WindowAction } from "./snow-constants";
 import { Enemy, FireNinja, GameObject, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
-import { capitalize, choose, chooseN, EventListener, randomInt, shuffle } from "@common/utils";
+import { capitalize, choose, EventListener, randomInt, shuffle } from "@common/utils";
 
 export interface Asset {
   index: number;
@@ -61,7 +58,7 @@ class ObjectCollection extends Set<GameObject> {
 
 export class SnowPlayer {
   penguin: WorldPenguin | null = null;
-  ninja: Ninja | null = null; // TODO: can this be accessed in ctx instead?
+  ninja: Ninja | null = null;
   pid: number = -1;
   loggedIn: boolean = false;
   isReady: boolean = false;
@@ -72,24 +69,15 @@ export class SnowPlayer {
   screenSize: string = '';
   baseUrl: string = '';
   place: Place | null = null;
-  game: null = null; // TODO: see if this can be gotten in ctx, rn it's too early to say if it can
 
   element: string = '';
   tipMode: boolean = false;
 
-  windowManager: WindowManager = new WindowManager();
+  windowManager: WindowManager;
   localObjects: ObjectCollection = new ObjectCollection();
 
-  public get assetBaseUrl() {
-    return this.baseUrl + 'minigames/cjsnow/en_US/deploy/swf/ui/assets';
-  }
-
-  public get windowBaseUrl() {
-    return this.baseUrl + 'minigames/cjsnow/en_US/deploy/swf/ui/windows';
-  }
-
-  public get windowManagerLocation() {
-    return this.baseUrl + 'minigames/cjsnow/en_US/deploy/swf/windowManager/windowmanager.swf';
+  constructor(private ctx: SnowContext) {
+    this.windowManager = new WindowManager(this, ctx);
   }
 
   public get inGame() {
@@ -109,33 +97,33 @@ export class SnowPlayer {
     await msg.sendSnowData(this, 'S_LOGIN', this.penguin.id);
   }
 
-  public async setPlace({ msg, world }: SnowContext, name: string, objectId: number = 0, instanceId: number = 0) {
-    this.place = world.places[name];
-    await msg.sendSnowData(this, 'W_PLACE', this.place.id, objectId, instanceId);
+  public async setPlace(name: string, objectId: number = 0, instanceId: number = 0) {
+    this.place = this.ctx.world.places[name];
+    await this.ctx.msg.sendSnowData(this, 'W_PLACE', this.place.id, objectId, instanceId);
   }
   
-  public async switchPlace(ctx: SnowContext, place: Place) {
-    await this.setPlace(ctx, place.name);
+  public async switchPlace(place: Place) {
+    await this.setPlace(place.name);
     
     // TODO use Promise.all() instead
     for (const { index } of place.assets.values()) {
-      await ctx.msg.sendSnowData(ctx.penguin, 'S_LOADSPRITE', `0:${index}`);
+      await this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`);
     }
     for (const { index } of place.soundAssets.values()) {
-      await ctx.msg.sendSnowData(ctx.penguin, 'S_LOADSPRITE', `0:${index}`);
+      await this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`);
     }
 
-    await ctx.msg.sendSnowData(ctx.penguin, 'W_ASSETSCOMPLETE', this.pid);
+    await this.ctx.msg.sendSnowData(this, 'W_ASSETSCOMPLETE', this.pid);
   }
 
-  public getWindow(game: SnowGame, name: string | null = null, url: string | null = null) {
-    return this.windowManager.getWindow(game, this, name, url);
+  public getWindow(name: string | null = null, url: string | null = null) {
+    return this.windowManager.getWindow(name, url);
   }
 
-  public async sendToRoom(ctx: SnowContext) {
-    const win = this.getWindow(ctx.game, 'cardjitsu_snowexternalinterfaceconnector.swf');
+  public async sendToRoom() {
+    const win = this.getWindow('cardjitsu_snowexternalinterfaceconnector.swf');
     win.layer = 'toolLayer';
-    await win.load(ctx, null, { type: EventType.IMMEDIATE });
+    await win.load(null, { type: EventType.IMMEDIATE });
   }
 }
 
@@ -255,12 +243,12 @@ class TuskBattle extends SnowLobby {
 class SWFWindow {
 
   private _loaded: boolean = false;
-  onLoad: ((ctx: SnowContext) => void) | null = null;
-  onClose: ((ctx: SnowContext) => void) | null = null;
+  onLoad: ((ctx: SnowPenguinContext) => void) | null = null;
+  onClose: ((ctx: SnowPenguinContext) => void) | null = null;
 
   constructor(
-    game: SnowGame,
-    player: SnowPlayer,
+    private ctx: SnowContext,
+    private _player: SnowPlayer,
     public url: string | null = null,
     private name: string | null = null,
     public layer: string = 'topLayer'
@@ -270,14 +258,12 @@ class SWFWindow {
         this.name = this.url.split('/').pop();
       }
     } else if (this.url === null) {
-      this.url = `${player.windowBaseUrl}/${this.name}`;
+      this.url = `${ctx.world.locations.windowBase}/${this.name}`;
     }
 
     if (this.url === null && this.name === null) {
       throw new Error('You must provide either a url or a name for the window.');
     }
-
-    this.setLoaded(false, game);
   }
 
   public get loaded() {
@@ -289,16 +275,16 @@ class SWFWindow {
     if (game !== null) game.windowEvents.fire(this.name, v);
   }
 
-  public async send(ctx: SnowContext, content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
-    await ctx.msg.sendSnowData(ctx.penguin, 'UI_CLIENTEVENT', ctx.world.worldId, msgType, JSON.stringify(content));
+  public async send(content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
+    await this.ctx.msg.sendSnowData(this._player, 'UI_CLIENTEVENT', this.ctx.world.worldId, msgType, JSON.stringify(content));
   }
 
-  public async load(ctx: SnowContext, initPayload: Record<string, any> | null = null, args: Record<string, any> = {}) {
+  public async load(initPayload: Record<string, any> | null = null, args: Record<string, any> = {}) {
     // TODO apply window manager offset, which is optional, dunno what its for
     /*args.xPercent = (args.xPercent ?? 0) - 0.5;
     args.yPercent = (args.yPercent ?? 0) - 0.5;*/
 
-    await this.send(ctx, {
+    await this.send({
       windowUrl: this.url,
       layerName: this.layer,
       assetPath: '', // this is a TODO in snowflake
@@ -309,8 +295,8 @@ class SWFWindow {
     });
   }
 
-  public async close(ctx: SnowContext, args: Record<string, any> = {}) {
-    await this.send(ctx, {
+  public async close(args: Record<string, any> = {}) {
+    await this.send({
       targetWindow: this.url,
       action: WindowAction.CLOSE_WINDOW,
       type: EventType.PLAY_ACTION,
@@ -319,13 +305,12 @@ class SWFWindow {
   }
 
   public async sendPayload(
-    ctx: SnowContext,
     triggerName: string,
     payload: Record<string, any> = {},
     args: Record<string, any> = {},
     type: EventType = EventType.IMMEDIATE
   ) {
-    await this.send(ctx, {
+    await this.send({
       jsonPayload: payload,
       targetWindow: this.url,
       triggerName,
@@ -336,12 +321,11 @@ class SWFWindow {
   }
 
   public async sendAction(
-    ctx: SnowContext,
     action: string,
     args: Record<string, any> = {},
     type: EventType = EventType.IMMEDIATE
   ) {
-    await this.send(ctx, {
+    await this.send({
       action,
       type,
       ...args
@@ -356,7 +340,9 @@ class WindowManager {
   loaded: boolean = false;
   ready: boolean = false;
 
-  public getWindow(game: SnowGame, player: SnowPlayer, name: string | null = null, url: string | null = null): SWFWindow {
+  constructor(private _player: SnowPlayer, private ctx: SnowContext) {}
+
+  public getWindow(name: string | null = null, url: string | null = null): SWFWindow {
     if (name === null && url === null) {
       throw new Error('getWindow must have either a name or a url provided');
     }
@@ -372,16 +358,16 @@ class WindowManager {
       }
     }
 
-    this._map[name] = new SWFWindow(game, player, url, name);
+    this._map[name] = new SWFWindow(this.ctx, this._player, url, name);
 
     return this._map[name];
   }
 
-  public async load(ctx: SnowContext) {
-    await ctx.msg.sendSnowData(
-      ctx.penguin,
+  public async load() {
+    await this.ctx.msg.sendSnowData(
+      this._player,
       'UI_CROSSWORLDSWFREF',
-      ctx.world.worldId, // element id
+      this.ctx.world.worldId, // element id
       0, // parent id
       'WindowManagerSwf', // element name
       0, // swf x
@@ -389,13 +375,13 @@ class WindowManager {
       0, // swf width
       0, // swf height
       0, // unknown
-      ctx.penguin.windowManagerLocation,
+      this.ctx.world.locations.windowManager,
       '/framework' // command prefix
     );
 
     this.loaded = true;
 
-    this._map['windowmanager.swf'] = new SWFWindow(ctx.game, ctx.penguin, ctx.penguin.windowManagerLocation, 'windowmanager.swf');
+    this._map['windowmanager.swf'] = new SWFWindow(this.ctx, this._player, this.ctx.world.locations.windowManager, 'windowmanager.swf');
   }
 
   public delete(name: string) {
@@ -418,24 +404,25 @@ class Grid {
     return this.game.rocks.map(r => [r.x, r.y]);
   }
 
-  public initTiles(ctx: SnowContext) {
+  public initTiles() {
     const frame = new GameObject(this.game, 'ui_tile_frame');
-    frame.placeObject(ctx);
+    frame.placeObject();
 
     for (let x = 0; x < this.maxX; x++) {
       for (let y = 0; y < this.maxY; y++) {
         const tile = new GameObject(this.game, `${x}-${y}`, x, y, false, 0.5, 0.9998);
         tile.onClick = this.onTileClick;
         this.tiles.push(tile);
-        tile.placeObject(ctx);
+        tile.placeObject();
       }
     }
   }
 
-  private onTileClick({ penguin }: SnowContext, object: GameObject) {
+  private onTileClick(ctx: SnowPenguinContext, object: GameObject) {
     // TODO: if penguin selected card, place powercard
 
-    const ninja = this.game.objects.getByName(capitalize(penguin.element)) as Ninja;
+    const ninja = this.game.objects.getByName(capitalize(ctx.penguin.element)) as Ninja;
+    ninja.placeGhost(ctx, object.x, object.y);
     
     // TODO: hide tip
   }
@@ -721,12 +708,11 @@ export class SnowGame {
   public grid = new Grid(9, 5, this);
 
   constructor(
+    public ctx: SnowContext,
     private fire: SnowPlayer | null,
     private water: SnowPlayer | null,
     private snow: SnowPlayer | null
-  ) {
-
-  }
+  ) {}
 
   public get players() {
     return [this.fire, this.water, this.snow].filter(Boolean);
@@ -748,51 +734,47 @@ export class SnowGame {
     ];
   }
 
-  public async start(ctx: SnowContext) {
+  public async start() {
     this.players.forEach(player => {
       // TODO: set member card, set power cards
     });
 
     await sleep(3000);
 
-    const battlePlace = ctx.world.places['snow_battle'];
+    const battlePlace = this.ctx.world.places['snow_battle'];
 
     for (const player of this.players) {
-      const pctx = { ...ctx, penguin: player };
-      await player.getWindow(this, 'cardjitsu_snowplayerselect.swf').close(pctx);
-      await player.switchPlace(pctx, battlePlace);
+      await player.getWindow('cardjitsu_snowplayerselect.swf').close();
+      await player.switchPlace(battlePlace);
     }
   }
 
-  public async somePlayerReady(ctx: SnowContext) {
-    console.log('somePlayerReady called');
+  public async somePlayerReady() {
     if (this._somePlayerReady) return;
     this._somePlayerReady = true;
     await sleep(1000);
-    this.playersReady(ctx);
+    this.playersReady();
   }
 
-  public async playersReady(ctx: SnowContext) {
-    console.log('playersReady called', this._somePlayerReady, this.players.some(p => !p.isReady));
+  public async playersReady() {
     if (this.started || !this._somePlayerReady || this.players.some(p => !p.isReady)) {
       return;
     }
 
     this.started = true;
 
-    Sound.fromName(ctx.world, 'mus_mg_201303_cjsnow_gamewindamb', true).play(ctx, this);
+    Sound.fromName(this.ctx.world, 'mus_mg_201303_cjsnow_gamewindamb', true).play(this.ctx, this);
 
-    await this.initObjects(ctx);
-    await this.showEnvironment(ctx);
-    await this.spawnNinjas(ctx);
+    await this.initObjects();
+    await this.showEnvironment();
+    await this.spawnNinjas();
 
     for (const player of this.players) {
-      const pctx = { ...ctx, penguin: player }
-      await player.getWindow(this, 'cardjitsu_snowplayerselect.swf').sendAction(pctx, 'closeCjsnowRoomToRoom');
+      await player.getWindow('cardjitsu_snowplayerselect.swf').sendAction('closeCjsnowRoomToRoom');
 
-      const btn = player.getWindow(this, 'cardjitsu_snowclose.swf');
+      const btn = player.getWindow('cardjitsu_snowclose.swf');
       btn.layer = 'bottomLayer';
-      await btn.load(ctx, null, {
+      await btn.load(null, {
         loadDescription: '',
         assetPath: '',
         xPercent: 1,
@@ -804,19 +786,21 @@ export class SnowGame {
 
     this.gameStart = Date.now();
 
-    await this.displayRoundTitle(ctx);
+    await this.displayRoundTitle();
 
     await sleep(1600);
 
-    await this.spawnEnemies(ctx);
+    await this.spawnEnemies();
     await this.waitForWindow('cardjitsu_snowrounds.swf', false);
+
+    await this.showUI();
   }
 
   private async waitForWindow(name: string, loaded: boolean): Promise<void> {
     return new Promise((resolve) => {
       for (const penguin of this.players) {
         // Check if window is already loaded or not loaded
-        if (penguin.getWindow(this, name).loaded === loaded) {
+        if (penguin.getWindow(name).loaded === loaded) {
           resolve();
           return;
         }
@@ -826,14 +810,14 @@ export class SnowGame {
     });
   }
 
-  private async initObjects(ctx: SnowContext) {
-    this.grid.initTiles(ctx);
-    await this.createEnvironment(ctx);
-    await this.createEnemies(ctx);
-    await this.createNinjas(ctx);
+  private async initObjects() {
+    this.grid.initTiles();
+    await this.createEnvironment();
+    await this.createEnemies();
+    await this.createNinjas();
   }
 
-  private async createEnvironment(ctx: SnowContext) {
+  private async createEnvironment() {
     // TODO: if we ever do a settings option for beta, this.map is always 1
     this.backgrounds = {
       1: [new GameObject(this, 'env_mountaintop_bg', 4.5, -1.1)],
@@ -847,7 +831,7 @@ export class SnowGame {
       ],
     }[this.map];
 
-    this.backgrounds.forEach(b => b.placeObject(ctx));
+    this.backgrounds.forEach(b => b.placeObject());
 
     const rockName = this.map === 3 ? 'crag_rock' : 'rock_mountaintop';
 
@@ -855,10 +839,10 @@ export class SnowGame {
       return new GameObject(this, rockName, x, y, true, 0.5, 1);
     });
 
-    await Promise.all(this.rocks.map(r => r.placeObject(ctx)));
+    await Promise.all(this.rocks.map(r => r.placeObject()));
   }
 
-  private async createEnemies(ctx: SnowContext) {
+  private async createEnemies() {
     if (this.round > 3) return;
 
     const maxEnemies = [
@@ -886,7 +870,7 @@ export class SnowGame {
     }
   }
 
-  private async createNinjas(ctx: SnowContext) {
+  private async createNinjas() {
     const spawnPositions = [
       {'x': 0, 'y': 0},
       {'x': 0, 'y': 2},
@@ -906,44 +890,60 @@ export class SnowGame {
 
       const pos = spawnPositions[index];
       const ninja = new cls(this, player, pos.x, pos.y) as Ninja;
-      ninja.placeObject(ctx);
+      ninja.placeObject();
       player.ninja = ninja;
     })
   }
 
-  private async showEnvironment(ctx: SnowContext) {
+  private async showEnvironment() {
     for (const { id, name } of [...this.backgrounds, ...this.rocks]) {
       const obj = this.objects.getById(id);
-      await obj.placeSprite(ctx, name);
+      await obj.placeSprite(name);
     }
   }
 
-  private async spawnNinjas(ctx: SnowContext) {
+  private async spawnNinjas() {
     for (const ninja of this.ninjas) {
-      await ninja.placeObject(ctx);
-      await ninja.idleAnimation(ctx);
-      ninja.placeHealthbar(ctx);
+      await ninja.placeObject();
+      await ninja.idleAnimation();
+      ninja.placeHealthbar();
     }
   }
 
-  private async spawnEnemies(ctx: SnowContext) {
+  private async spawnEnemies() {
     for (const enemy of this.enemies) {
       const [x, y] = this.grid.enemySpawnLocation();
       this.grid.add(enemy, x, y);
-      enemy.placeObject(ctx);
-      await enemy.spawnAnimation(ctx);
-      await enemy.idleAnimation(ctx);
-      enemy.placeHealthbar(ctx);
+      enemy.placeObject();
+      await enemy.spawnAnimation();
+      await enemy.idleAnimation();
+      enemy.placeHealthbar();
     }
   }
 
-  private async displayRoundTitle(ctx: SnowContext) {
+  private async showUI() {
+    for (const player of this.players) {
+      const ui = player.getWindow('cardjitsu_snowui.swf');
+      ui.layer = 'bottomLayer';
+      ui.load({
+        cardsAssetPath: this.ctx.world.locations.cards,
+        element: player.element,
+        isMember: player.penguin.membership.isMember
+      }, {
+        loadDescription: '',
+        assetPath: '',
+        xPercent: 0.5,
+        yPercent: 1
+      });
+    }
+  }
+
+  private async displayRoundTitle() {
     const roundTime = (this.gameStart + 300000) - Date.now();
 
-    for (const penguin of this .players) {
-      const pctx = { ...ctx, penguin };
-      const title = penguin.getWindow(this, 'cardjitsu_snowrounds.swf');
-      title.load(pctx, {
+    for (const penguin of this.players) {
+      const title = penguin.getWindow('cardjitsu_snowrounds.swf');
+      title.load({
         bonusCriteria: this.bonusCriteria,
         remainingTime: Math.max(0, roundTime),
         roundNumber: this.round
@@ -964,6 +964,7 @@ export class SnowGame {
 // might make it easier to have things like the messenger more accessible
 export class SnowWorld {
   private penguins = new Map<number, SnowPlayer>();
+  private ctx: SnowContext = null;
 
   worldId: number = 101;
   worldName: string = 'cjsnow_0';
@@ -982,10 +983,35 @@ export class SnowWorld {
 
   games: SnowGame[] = [];
 
+  locations: {
+    base: string,
+    cards: string,
+    windowManager: string,
+    windowBase: string,
+    assetBase: string
+  };
+
   constructor() {
     this.registerPlace(new SnowLobby());
     this.registerPlace(new SnowBattle());
     this.registerPlace(new TuskBattle());
+  }
+
+  public init(ctx: SnowContext) {
+    if (this.ctx !== null) {
+      throw new Error('World context is already set!');
+    }
+
+    this.ctx = ctx;
+
+    const base = `http://${ctx.settings.targetIP}:${ctx.settings.targetPort}`;
+    this.locations = {
+      base: `${base}/game/mpassets/`,
+      cards: `${base}/game/mpassets/minigames/cjsnow/en_US/deploy/`,
+      windowManager: `${base}/game/mpassets/minigames/cjsnow/en_US/deploy/swf/windowManager/windowmanager.swf`,
+      windowBase: `${base}/game/mpassets/minigames/cjsnow/en_US/deploy/swf/ui/windows`,
+      assetBase: `${base}/game/mpassets/minigames/cjsnow/en_US/deploy/swf/ui/assets`
+    }
   }
 
   private registerPlace(place: Place) {
@@ -1012,9 +1038,9 @@ export class SnowWorld {
     return [...this.penguins.values()];
   }
 
-  public createGame(ctx: SnowContext, fire: SnowPlayer | null, water: SnowPlayer | null, snow: SnowPlayer | null) {
-    const game = new SnowGame(fire, water, snow);
+  public createGame(fire: SnowPlayer | null, water: SnowPlayer | null, snow: SnowPlayer | null) {
+    const game = new SnowGame(this.ctx, fire, water, snow);
     this.games.push(game);
-    game.start({ ...ctx, game });
+    game.start();
   }
 }
