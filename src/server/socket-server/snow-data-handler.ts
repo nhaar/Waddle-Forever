@@ -11,18 +11,30 @@ import { SnowGame, SnowWorld } from "./world/snow/snow"
 import { SnowPlayer } from "./world/snow/snow"
 import { PenguinPersister } from "./handlers/handlers"
 
-export type SnowContext = {
+/**
+ * A global context for classes that do not pertain
+ * to a specific client.
+ */
+export interface SnowContext {
   msg: PenguinMessenger<SnowPlayer>,
   data: GameData,
   settings: SettingsManager,
   db: PenguinRepository,
-  client: ClientSocket,
   world: SnowWorld,
   off: OfflineWorld
   prst: PenguinPersister
+}
+
+/**
+ * Context for a specific client. Extends SnowContext,
+ * and also includes the client socket, the player object,
+ * and their game (if it exists yet).
+ */
+export interface SnowPenguinContext extends SnowContext {
+  client: ClientSocket,
   penguin: SnowPlayer,
   game: SnowGame | null
-};
+}
 
 export class SnowDataHandler {
   constructor(
@@ -30,7 +42,7 @@ export class SnowDataHandler {
     private _frameworkCallbacks: Map<string, SnowFrameworkHandler>
   ) {}
 
-  public async handle(ctx: SnowContext, message: string) {
+  public async handle(ctx: SnowPenguinContext, message: string) {
     if (ctx.penguin === undefined) {
       // a SnowPlayer object should get created and linked on connection (see snow-server.ts)
       throw new Error('Snow player should exist!');

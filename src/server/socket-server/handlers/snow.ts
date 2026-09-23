@@ -3,15 +3,15 @@ import { ClientSocket } from "@server/socket-server/socket-server";
 import { getDefaultPenguin } from "@server/database/database";
 import { getYellowString, logdebug, logverbose } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
-import { SnowContext } from "@server/socket-server/snow-data-handler";
+import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
 import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
 import { LocalGameObject } from "../world/snow/snow-game-objects";
 import { CARDS } from "@server/game-logic/cards";
 import { SnowGame, SnowPlayer, SnowWorld } from "../world/snow/snow";
 
 
-export type SnowHandler = (ctx: SnowContext, ...args: Array<string>) => Promise<void>;
-export type SnowFrameworkHandler = (ctx: SnowContext, args: Record<string, any>) => Promise<void>;
+export type SnowHandler = (ctx: SnowPenguinContext, ...args: Array<string>) => Promise<void>;
+export type SnowFrameworkHandler = (ctx: SnowPenguinContext, args: Record<string, any>) => Promise<void>;
 
 export const handleVersion: SnowHandler = async ({ msg, client }) => {
   // copied from snowflake config.py, is this meaningful at all?
@@ -33,7 +33,7 @@ export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => 
   }
 
   ctx.penguin.battleMode = Number(battleMode);
-  ctx.penguin.baseUrl = baseAssetUrl;
+  ctx.penguin.baseUrl = ctx.world.locations.base;
   ctx.penguin.place = place;
 }
 
@@ -91,21 +91,21 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
   await msg.sendSnowData(client, 'S_WORLDTYPE', world.serverType, world.buildType);
   await msg.sendSnowData(client, 'S_WORLD', world.worldId, world.worldName, `0:${penguin.place.id}`, 0, 'none', 0, world.worldOwner, world.worldName, 0, world.stylesheetId, 0);
 
-  await penguin.switchPlace(ctx, penguin.place);
+  await penguin.switchPlace(penguin.place);
 }
 
 export const handleReady: SnowHandler = async (ctx) => {
   const { msg, client, penguin } = ctx;
 
   if (!penguin.windowManager.loaded) {
-    await penguin.windowManager.load(ctx);
+    await penguin.windowManager.load();
   }
 
   const place = penguin.place;
 
   await msg.sendSnowData(client, 'UI_ALIGN', ctx.world.worldId, 0, 0, AlignMode.CENTER, ScaleMode.NONE);
   await msg.sendSnowData(client, 'UI_BGCOLOR', 34, 164, 243);
-  await penguin.setPlace(ctx, place.name, 1, 0);
+  await penguin.setPlace(place.name, 1, 0);
   
   await msg.sendSnowData(client, 'P_MAPBLOCK', MapblockType.TILEMAP, 1, 1, place.mapBlocks.tileMap);
   await msg.sendSnowData(client, 'P_MAPBLOCK', MapblockType.HEIGHTMAP, 1, 1, place.mapBlocks.heightMap);
@@ -164,8 +164,8 @@ export const handlePlaceReady: SnowHandler = async (ctx) => {
   await msg.sendSnowData(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
   await msg.sendSnowData(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
 
-  const player = new LocalGameObject(penguin, 'Player', 5, 2.5);
-  await player.placeObject(ctx);
+  const player = new LocalGameObject(penguin, ctx, 'Player', 5, 2.5);
+  await player.placeObject();
   await msg.sendSnowData(client, 'O_PLAYER', player.id);
 }
 
@@ -220,7 +220,7 @@ export const frameworkRoomToRoomMinTime: SnowFrameworkHandler = async (ctx) => {
     '/use' // command
   );
 
-  ctx.game.somePlayerReady(ctx);
+  ctx.game.somePlayerReady();
 }
 
 export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async (ctx) => {
@@ -228,7 +228,7 @@ export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async (ctx) => 
 
   if (game !== null && !penguin.isReady) {
     penguin.isReady = true;
-    game.playersReady(ctx);
+    game.playersReady();
   }
 }
 
@@ -238,25 +238,24 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   penguin.windowManager.ready = true;
 
   const loadingScreen = penguin.getWindow(
-    ctx.game,
     'cjsnow_loadingscreenassets.swf',
-    `${penguin.assetBaseUrl}/cjsnow_loadingscreenassets.swf`
+    `${world.locations.assetBase}/cjsnow_loadingscreenassets.swf`
   );
 
-  const wm = penguin.getWindow(ctx.game, 'windowmanager.swf');
-  await wm.sendAction(ctx, 'setWorldId', { worldId: world.worldId });
-  await wm.sendAction(ctx, 'setBaseAssetUrl', { baseAssetUrl: penguin.baseUrl });
-  await wm.sendAction(ctx, 'setFontPath', { defaultFontPath: `${penguin.baseUrl}/fonts/` });
+  const wm = penguin.getWindow('windowmanager.swf');
+  await wm.sendAction('setWorldId', { worldId: world.worldId });
+  await wm.sendAction('setBaseAssetUrl', { baseAssetUrl: world.locations.base });
+  await wm.sendAction('setFontPath', { defaultFontPath: `${world.locations.base}/fonts/` });
 
-  await wm.sendAction(ctx, 'skinRoomToRoom', {
+  await wm.sendAction('skinRoomToRoom', {
     url: loadingScreen.url,
     className: '',
     variant: penguin.battleMode
   }, EventType.PLAY_ACTION);
 
-  const errorHandler = penguin.getWindow(ctx.game, 'cardjitsu_snowerrorhandler.swf');
+  const errorHandler = penguin.getWindow('cardjitsu_snowerrorhandler.swf');
   errorHandler.layer = 'bottomLayer';
-  await errorHandler.load(ctx, null, { xPercent: 0, yPercent: 0, loadDescription: '' });
+  await errorHandler.load(null, { xPercent: 0, yPercent: 0, loadDescription: '' });
 
   const cardCounts = {
     'f': 0,
@@ -269,8 +268,8 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   });
 
   // TODO: this can be one of two: 'cardjitsu_snowplayerselect.swf' or 'cardjitsu_snowplayerselectbeta.swf'
-  const playerSelect = penguin.getWindow(ctx.game, 'cardjitsu_snowplayerselect.swf');
-  await playerSelect.load(ctx, {
+  const playerSelect = penguin.getWindow('cardjitsu_snowplayerselect.swf');
+  await playerSelect.load({
     game: penguin.battleMode === 0 ? 'snow' : 'snowtusk',
     name: penguin.penguin.name,
     powerCardsFire: cardCounts.f,
@@ -292,7 +291,7 @@ export const frameworkPayloadBILogAction: SnowFrameworkHandler = async () => {
 
 export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
   const name = (windowUrl as string).split('/').pop();
-  const win = ctx.penguin.getWindow(ctx.game, name);
+  const win = ctx.penguin.getWindow(name);
   win.setLoaded(true, ctx.game);
   if (win.onLoad !== null) {
     win.onLoad(ctx);
@@ -301,7 +300,7 @@ export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUr
 
 export const frameworkWindowClosed: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
   const name = (windowUrl as string).split('/').pop();
-  const win = ctx.penguin.getWindow(ctx.game, name);
+  const win = ctx.penguin.getWindow(name);
   win.setLoaded(false, ctx.game);
   if (win.onClose !== null) {
     win.onClose(ctx);
@@ -326,7 +325,7 @@ export const frameworkMMCancel: SnowFrameworkHandler = async (ctx) => {
   ctx.world.matchMaker.removePlayer(ctx.penguin);
 }
 
-export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<SnowPlayer>) => {
+export const setupMatchMaker = async (world: SnowWorld) => {
   /* TODO: its probably better that the snow matchmaker gets its own class,
   since there's a few other things we should do (prioritize by rank,
   fill in with bot players, etc) */
@@ -342,9 +341,8 @@ export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<Sn
     const snowNinja = players.find(p => p.element === 'snow') ?? null;
 
     for (const penguin of [fireNinja, snowNinja, waterNinja].filter(Boolean)) {
-      const ctx = { penguin, msg, world } as SnowContext;
-      const select = penguin.getWindow(ctx.game, 'cardjitsu_snowplayerselect.swf');
-      select.sendPayload(ctx, 'matchFound', {
+      const select = penguin.getWindow(null, 'cardjitsu_snowplayerselect.swf');
+      select.sendPayload('matchFound', {
         1: fireNinja ? fireNinja.penguin.name : null,
         2: waterNinja ? waterNinja.penguin.name : null,
         4: snowNinja ? snowNinja.penguin.name : null
@@ -352,7 +350,7 @@ export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<Sn
       world.matchMaker.removePlayer(penguin);
     }
 
-    world.createGame({ msg, world } as SnowContext, fireNinja, waterNinja, snowNinja);
+    world.createGame(fireNinja, waterNinja, snowNinja);
   });
   world.matchMaker.setTickListener(() => {});
 }
@@ -360,6 +358,6 @@ export const setupMatchMaker = async (world: SnowWorld, msg: PenguinMessenger<Sn
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
   const { client, penguin } = ctx;
   console.log(`${penguin.penguin.name} is leaving CJ Snow`);
-  await penguin.sendToRoom(ctx);
+  await penguin.sendToRoom();
   client.closed = true;
 }
