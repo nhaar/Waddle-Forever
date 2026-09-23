@@ -50,19 +50,30 @@ const CATALOG_INCLUDED_ITEMS_INDEX: OldCatalogIndex = [];
 
 function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex): void {
   const included = new Set<number>();
-  let previousEnd: Version | null = null;
-  const catalogIndexes: number[] = [];
+  let previousClothing: Version | null = null;
+  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' }> = [];
+
+  let previousSportDate: Version | null = null;
 
   for (let i = UPDATES.length - 1; i >= 0; i--) {
     const { date, update} = UPDATES[i];
     if (update.clothingCatalog !== undefined) {
-      catalogIndexes.push(i);
+      catalogIndexes.push({ index: i, type: 'clothing' });
       newIndex.push({
         start: date,
-        end: previousEnd,
+        end: previousClothing,
         newItems: [...update.clothingCatalog.newItems]
       });
-      previousEnd = date;
+      previousClothing = date;
+    }
+    if (update.sportCatalog !== undefined) {
+      catalogIndexes.push({ index: i, type: 'sport' });
+      newIndex.push({
+        start: date,
+        end: previousSportDate,
+        newItems: [...update.sportCatalog.items]
+      });
+      previousSportDate = date;
     }
   }
 
@@ -71,17 +82,30 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
   catalogIndexes.reverse();
 
   for (let i = 0; i < catalogIndexes.length; i++) {
-    const clothingCatalog = UPDATES[catalogIndexes[i]].update.clothingCatalog;
-    if (clothingCatalog !== undefined) {
-      clothingCatalog.newItems.forEach(item => included.add(item));
-      clothingCatalog.removedItems.forEach(item => included.delete(item));
-      oldIndex.push({
-        start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-        end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-        items: [...included.values()]
-      });
+    const info = catalogIndexes[i];
+    if (info.type === 'clothing') {
+      const clothingCatalog = UPDATES[info.index].update.clothingCatalog;
+      if (clothingCatalog !== undefined) {
+        clothingCatalog.newItems.forEach(item => included.add(item));
+        clothingCatalog.removedItems.forEach(item => included.delete(item));
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...included.values()]
+        });
+      }
+    } else if (info.type === 'sport') {
+      const items = UPDATES[info.index].update.sportCatalog?.items;
+      if (items !== undefined) {
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...items]
+        })
+      }
     }
   }
+
 }
 
 export function getAddedCatalogIndex(): NewCatalogIndex {
