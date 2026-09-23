@@ -86,11 +86,6 @@ export type CatalogItems = {
   announce?: false;
 }
 
-export type UniqueCatalogItems = {
-  file?: FileRef;
-  items: number[];
-};
-
 const flags = [
   'preCpip',
   'as3',
@@ -130,7 +125,7 @@ export type CPUpdate = {
   iglooCatalog?: FileRef;
   /** If a new catalog was released this day: its file */
   postcardCatalog?: FileRef;
-  sportCatalog?: UniqueCatalogItems;
+  sportCatalog?: FileRef | CatalogItems;
   hairCatalog?: FileRef;
   petFurniture?: FileRef;
   puffleCatalog?: FileRef;
@@ -141,6 +136,7 @@ export type CPUpdate = {
   gameUpgrades?: { newItems: number[]; removed: number[] };
 
   testingItems?: number[];
+  exploreItems?: number[];
 
   stampUpdates?: StampUpdates
 
