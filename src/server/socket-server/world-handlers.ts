@@ -88,7 +88,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'jr', ['number', 'number', 'number'], joinRoom),
     p.xt('s', 'gi', [], handleGetItems),
     p.xt('s', 'ai', ['number'], handleAddItem),
-    p.xt('s', 'jp', ['number', 'number'], handleJoinPlayerOld),
+    p.xt('s', 'jp', 'number', handleJoinPlayerOld),
     p.xt('s', 'ac', [], handleSendCoins),
     p.xt('s', 'gc', [], handleGetCoins),
     p.xt('s', 'il', [], handleReceiveInventory),
