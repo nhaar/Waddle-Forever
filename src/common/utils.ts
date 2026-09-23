@@ -329,6 +329,10 @@ export class EventListener {
     this.listeners.push(callback);
   }
 
+  public removeListener(callback: () => void) {
+    this.listeners = this.listeners.filter(c => c !== callback);
+  }
+
   public fire(): void {
     this.listeners.forEach(callback => callback());
   }

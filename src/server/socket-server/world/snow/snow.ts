@@ -6,9 +6,9 @@ import { ClientSocket } from "../../socket-server";
 import { PenguinMessenger } from "../../messenger";
 import { SnowContext } from "../../snow-data-handler";
 import { BuildType, EventType, MessageType, ServerType, ViewMode, WindowAction } from "./snow-constants";
-import { FireNinja, GameObject, Ninja, SnowNinja, Sound, WaterNinja } from "./snow-game-objects";
+import { Enemy, FireNinja, GameObject, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
-import { capitalize, choose, randomInt, shuffle } from "@common/utils";
+import { capitalize, choose, chooseN, EventListener, randomInt, shuffle } from "@common/utils";
 
 export interface Asset {
   index: number;
@@ -44,6 +44,10 @@ class ObjectCollection extends Set<GameObject> {
 
   getByName(name: string): GameObject | null {
     return Array.from(this).find(a => a.name === name) ?? null;
+  }
+
+  getAllByName(name: string): GameObject[] {
+    return Array.from(this).filter(a => a.name === name);
   }
 
   private getId(): number {
@@ -124,12 +128,12 @@ export class SnowPlayer {
     await ctx.msg.sendSnowData(ctx.penguin, 'W_ASSETSCOMPLETE', this.pid);
   }
 
-  public getWindow(ctx: SnowContext, name: string | null = null, url: string | null = null) {
-    return this.windowManager.getWindow(ctx, name, url);
+  public getWindow(game: SnowGame, name: string | null = null, url: string | null = null) {
+    return this.windowManager.getWindow(game, this, name, url);
   }
 
   public async sendToRoom(ctx: SnowContext) {
-    const win = this.getWindow(ctx, 'cardjitsu_snowexternalinterfaceconnector.swf');
+    const win = this.getWindow(ctx.game, 'cardjitsu_snowexternalinterfaceconnector.swf');
     win.layer = 'toolLayer';
     await win.load(ctx, null, { type: EventType.IMMEDIATE });
   }
@@ -226,7 +230,7 @@ class SnowCamera extends Camera {
   position: [number, number, number] = [4.5, 2.5, 0];
   lockZoom = true;
   lockView = true;
-  zoom = 1.0;
+  zoom = 1;
   tileSize = 100;
   elevationScale = 0.031250;
 }
@@ -238,24 +242,25 @@ class SnowLobby extends Place {
   camera = new SnowCamera();
 }
 
-class SnowBattle extends Place {
+class SnowBattle extends SnowLobby {
   id = 10001;
   name = "snow_battle";
 }
 
-class TuskBattle extends Place {
+class TuskBattle extends SnowLobby {
   id = 10004;
   name = "tusk_battle";
 }
 
 class SWFWindow {
 
-  loaded: Boolean = false;
+  private _loaded: boolean = false;
   onLoad: ((ctx: SnowContext) => void) | null = null;
   onClose: ((ctx: SnowContext) => void) | null = null;
 
   constructor(
-    ctx: SnowContext,
+    game: SnowGame,
+    player: SnowPlayer,
     public url: string | null = null,
     private name: string | null = null,
     public layer: string = 'topLayer'
@@ -265,14 +270,23 @@ class SWFWindow {
         this.name = this.url.split('/').pop();
       }
     } else if (this.url === null) {
-      this.url = `${ctx.penguin.windowBaseUrl}/${this.name}`;
+      this.url = `${player.windowBaseUrl}/${this.name}`;
     }
 
     if (this.url === null && this.name === null) {
       throw new Error('You must provide either a url or a name for the window.');
     }
 
-    this.loaded = false
+    this.setLoaded(false, game);
+  }
+
+  public get loaded() {
+    return this._loaded;
+  }
+
+  public setLoaded(v: boolean, game: SnowGame) {
+    this._loaded = v;
+    if (game !== null) game.windowEvents.fire(this.name, v);
   }
 
   public async send(ctx: SnowContext, content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
@@ -295,12 +309,12 @@ class SWFWindow {
     });
   }
 
-  public async close(ctx: SnowContext, kwargs: Record<string, any> = {}) {
+  public async close(ctx: SnowContext, args: Record<string, any> = {}) {
     await this.send(ctx, {
       targetWindow: this.url,
       action: WindowAction.CLOSE_WINDOW,
       type: EventType.PLAY_ACTION,
-      ...kwargs
+      ...args
     });
   }
 
@@ -342,7 +356,7 @@ class WindowManager {
   loaded: boolean = false;
   ready: boolean = false;
 
-  public getWindow(ctx: SnowContext, name: string | null = null, url: string | null = null): SWFWindow {
+  public getWindow(game: SnowGame, player: SnowPlayer, name: string | null = null, url: string | null = null): SWFWindow {
     if (name === null && url === null) {
       throw new Error('getWindow must have either a name or a url provided');
     }
@@ -358,7 +372,7 @@ class WindowManager {
       }
     }
 
-    this._map[name] = new SWFWindow(ctx, url, name);
+    this._map[name] = new SWFWindow(game, player, url, name);
 
     return this._map[name];
   }
@@ -381,7 +395,7 @@ class WindowManager {
 
     this.loaded = true;
 
-    this._map['windowmanager.swf'] = new SWFWindow(ctx, ctx.penguin.windowManagerLocation, 'windowmanager.swf');
+    this._map['windowmanager.swf'] = new SWFWindow(ctx.game, ctx.penguin, ctx.penguin.windowManagerLocation, 'windowmanager.swf');
   }
 
   public delete(name: string) {
@@ -398,6 +412,10 @@ class Grid {
     this._array = Array.from({ length: maxX }, () =>
       Array<GameObject | null>(maxY).fill(null)
     );
+  }
+
+  private get obstacles() {
+    return this.game.rocks.map(r => [r.x, r.y]);
   }
 
   public initTiles(ctx: SnowContext) {
@@ -486,6 +504,36 @@ class Grid {
     return Math.abs(start[0] - target[0]) + Math.abs(start[1] - target[1]);
   }
 
+  /** Get manhattan distance between two tiles, accounting for obstacles */
+  public distanceWithObstacles(start: [number, number], target: [number, number]) {
+    if (
+      this.obstacles.some(([x, y]) => target[0] === x && target[1] === y)
+      || this.obstacles.some(([x, y]) => this.isObstacleBetween(start, target, [x, y]))
+    ) {
+      return Infinity;
+    }
+
+    return this.distance(start, target);
+  }
+
+  /** Check if an obstacle lies on the line segment between start and target */
+  private isObstacleBetween(start: [number, number], target: [number, number], obstacle: [number, number]) {
+    const [x1, y1] = start;
+    const [x2, y2] = target;
+    const [x3, y3] = obstacle;
+
+    if ((x2 - x1) * (y3 - y1) === (x3 - x1) * (y2 - y1)) {
+      if (
+        Math.min(x1, x2) <= x3 && x3 <= Math.max(x1, x2) &&
+        Math.min(y1, y2) <= y3 && y3 <= Math.max(y1, y2)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   /** Get the surrounding tiles to the given x, y */
   public surroundingTiles(cx: number, cy: number, distance: number = 1) {
     const tiles: GameObject[] = [];
@@ -498,6 +546,26 @@ class Grid {
       }
     }
     return tiles;
+  }
+
+  public surroundingObjects(x: number, y: number, distance: number = 1) {
+    return this.surroundingTiles(x, y, distance)
+      .map(tile => this.get(tile.x, tile.y))
+      .filter(Boolean);
+  }
+
+  /** Get a valid spawn x/y for a new enemy */
+  public enemySpawnLocation(): [number, number] {
+    for (let i = 0; i < 100; i++) {
+      const x = randomInt(7, 8);
+      const y = randomInt(0, 4);
+
+      if (this.canMove(x, y)) {
+        return [x, y];
+      }
+    }
+
+    return [8, 4];
   }
 }
 
@@ -519,9 +587,32 @@ interface Action {
 class CallbackHandler {
 
   private _tick: number = 0;
+  private _events: EventListener = new EventListener();
   private pendingActions: Record<number, Set<Action>> = {};
 
   constructor(private game: SnowGame) {}
+
+  public get actions() {
+    return Object.values(this.pendingActions).map(a => Array.from(a.values())).flat()
+  }
+
+  public get pendingAnimations() {
+    return this.actions.filter(a => a.type === ActionType.Animation);
+  }
+
+  public async waitForAnims(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.pendingAnimations.length === 0) {
+        resolve();
+        return;
+      }
+      const callback = () => {
+        this._events.removeListener(callback);
+        resolve();
+      }
+      this._events.addListener(callback);
+    });
+  }
 
   public registerAction(name: string, type: ActionType, objectId: number, callback: ActionCallback) {
     if (!(objectId in this.pendingActions)) {
@@ -548,6 +639,10 @@ class CallbackHandler {
       if (action.callback !== null) action.callback(obj);
 
       this.pendingActions[objectId].delete(action);
+
+      if (this.pendingAnimations.length === 0) {
+        this._events.fire();
+      }
     }
 
     if (this.pendingActions[objectId].size === 0) {
@@ -571,6 +666,38 @@ class CallbackHandler {
 
 }
 
+class WindowEventListener {
+  private listeners: Array<{
+    name: string
+    loaded: boolean
+    callback: () => void
+    once: boolean
+  }> = [];
+
+  public addListener(name: string, loaded: boolean, callback: () => void) {
+    this.listeners.push({ name, loaded, callback, once: false });
+  }
+
+  public once(name: string, loaded: boolean, callback: () => void) {
+    this.listeners.push({ name, loaded, callback, once: true });
+  }
+
+  public fire(n: string, l: boolean): void {
+    this.listeners.forEach(({ name, loaded, callback, once }) => {
+      if (name === n && loaded === l) {
+        callback();
+        if (once) {
+          this.listeners = this.listeners.filter(({ callback: c }) => c !== callback);
+        }
+      }
+    });
+  }
+
+  public removeListeners(): void {
+    this.listeners.length = 0;
+  }
+}
+
 export class SnowGame {
   private id: number = -1;
   private started: boolean = false;
@@ -581,14 +708,15 @@ export class SnowGame {
 
   private map: number = randomInt(1, 3);
   private totalCombos: number = 0;
-  private round: number = 0;
-  private coins: number = 0;
-  private exp: number = 0;
+  public round: number = 0;
+  public coins: number = 0;
+  public exp: number = 0;
 
   public callbacks: CallbackHandler = new CallbackHandler(this);
   public objects: ObjectCollection = new ObjectCollection(1000);
+  public windowEvents: WindowEventListener = new WindowEventListener();
   private backgrounds: GameObject[];
-  private rocks: GameObject[];
+  public rocks: GameObject[];
 
   public grid = new Grid(9, 5, this);
 
@@ -612,6 +740,14 @@ export class SnowGame {
     ].filter(Boolean);
   }
 
+  public get enemies(): Enemy[] {
+    return [
+      ...this.objects.getAllByName('Sly') as Enemy[],
+      ...this.objects.getAllByName('Scrap') as Enemy[],
+      ...this.objects.getAllByName('Tank') as Enemy[],
+    ];
+  }
+
   public async start(ctx: SnowContext) {
     this.players.forEach(player => {
       // TODO: set member card, set power cards
@@ -623,7 +759,7 @@ export class SnowGame {
 
     for (const player of this.players) {
       const pctx = { ...ctx, penguin: player };
-      await player.getWindow(pctx, 'cardjitsu_snowplayerselect.swf').close(pctx);
+      await player.getWindow(this, 'cardjitsu_snowplayerselect.swf').close(pctx);
       await player.switchPlace(pctx, battlePlace);
     }
   }
@@ -651,11 +787,10 @@ export class SnowGame {
     await this.spawnNinjas(ctx);
 
     for (const player of this.players) {
-      const pctx = { ...ctx, penguin: player };
-      
-      await player.getWindow(pctx, 'cardjitsu_snowplayerselect.swf').sendAction(pctx, 'closeCjsnowRoomToRoom');
+      const pctx = { ...ctx, penguin: player }
+      await player.getWindow(this, 'cardjitsu_snowplayerselect.swf').sendAction(pctx, 'closeCjsnowRoomToRoom');
 
-      const btn = player.getWindow(pctx, 'cardjitsu_snowclose.swf');
+      const btn = player.getWindow(this, 'cardjitsu_snowclose.swf');
       btn.layer = 'bottomLayer';
       await btn.load(ctx, null, {
         loadDescription: '',
@@ -664,6 +799,31 @@ export class SnowGame {
         yPercent: 0
       });
     }
+
+    await sleep(1000);
+
+    this.gameStart = Date.now();
+
+    await this.displayRoundTitle(ctx);
+
+    await sleep(1600);
+
+    await this.spawnEnemies(ctx);
+    await this.waitForWindow('cardjitsu_snowrounds.swf', false);
+  }
+
+  private async waitForWindow(name: string, loaded: boolean): Promise<void> {
+    return new Promise((resolve) => {
+      for (const penguin of this.players) {
+        // Check if window is already loaded or not loaded
+        if (penguin.getWindow(this, name).loaded === loaded) {
+          resolve();
+          return;
+        }
+      }
+
+      this.windowEvents.once(name, loaded, resolve);
+    });
   }
 
   private async initObjects(ctx: SnowContext) {
@@ -699,7 +859,31 @@ export class SnowGame {
   }
 
   private async createEnemies(ctx: SnowContext) {
-    // TODO
+    if (this.round > 3) return;
+
+    const maxEnemies = [
+      [1, 3],
+      [1, 3],
+      [1, 3],
+      [4, 4] // always 4 enemies for bonus round
+    ][this.round];
+
+    const amountEnemies = randomInt(maxEnemies[0], maxEnemies[1]);
+    const enemyClasses = [Sly, Scrap, Tank];
+
+    for (let i = 0; i < amountEnemies; i++) {
+      while (true) {
+        const enemyClass = choose(enemyClasses);
+
+        const existing = this.enemies.filter(e => e instanceof enemyClass);
+
+        // Can't have more than 3 enemies of the same type
+        if (existing.length < 3) {
+          new enemyClass(this);
+          break;
+        }
+      }
+    }
   }
 
   private async createNinjas(ctx: SnowContext) {
@@ -740,6 +924,38 @@ export class SnowGame {
       await ninja.idleAnimation(ctx);
       ninja.placeHealthbar(ctx);
     }
+  }
+
+  private async spawnEnemies(ctx: SnowContext) {
+    for (const enemy of this.enemies) {
+      const [x, y] = this.grid.enemySpawnLocation();
+      this.grid.add(enemy, x, y);
+      enemy.placeObject(ctx);
+      await enemy.spawnAnimation(ctx);
+      await enemy.idleAnimation(ctx);
+      enemy.placeHealthbar(ctx);
+    }
+  }
+
+  private async displayRoundTitle(ctx: SnowContext) {
+    const roundTime = (this.gameStart + 300000) - Date.now();
+
+    for (const penguin of this .players) {
+      const pctx = { ...ctx, penguin };
+      const title = penguin.getWindow(this, 'cardjitsu_snowrounds.swf');
+      title.load(pctx, {
+        bonusCriteria: this.bonusCriteria,
+        remainingTime: Math.max(0, roundTime),
+        roundNumber: this.round
+      }, {
+        loadDescription: '',
+        assetPath: '',
+        xPercent: 0.15,
+        yPercent: 0.15
+      });
+    }
+
+    await this.waitForWindow('cardjitsu_snowrounds.swf', true);
   }
 
 }
@@ -799,6 +1015,6 @@ export class SnowWorld {
   public createGame(ctx: SnowContext, fire: SnowPlayer | null, water: SnowPlayer | null, snow: SnowPlayer | null) {
     const game = new SnowGame(fire, water, snow);
     this.games.push(game);
-    game.start(ctx);
+    game.start({ ...ctx, game });
   }
 }

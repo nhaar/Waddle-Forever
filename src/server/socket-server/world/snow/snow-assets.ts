@@ -51,7 +51,8 @@ async function sortSprites(): Promise<Asset[]> {
     .map(l => {
       const split = l.split('|');
       const index = Number(split[1].split('0:')[1]);
-      const name = split[l.startsWith('[W_SOUND]') ? 2 : 8];
+      const name = split[l.startsWith('[W_SOUND]') ? 2 : 8]
+        .split('_flaxp0000')[0]; // dunno what this is, some names have it
 
       return { index, name };
     });
