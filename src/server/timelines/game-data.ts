@@ -18,7 +18,7 @@ import { CustomItem, getItemsTable, Item, ItemTable, ItemType } from "@server/ga
 import { ITEMS_DATA } from "@server/game-logic/items-data";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameFlag, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
+import { CPUpdateE, CrumbIndicator, GameFlag, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
 import { getUpdates } from "@server/updates/updates";
 import path from "path";
 
@@ -196,7 +196,7 @@ export class GameData {
     this.state.files.set(toForwardSlash(route), getMediaFilePath(file));
   }
 
-  private addCatalog(input: FileRef | CatalogItems, paths: string[]) {
+  private addCatalog(input: FileRef | { file?: string; }, paths: string[]) {
     const file = typeof input === 'string' ? input : input.file;
     if (file !== undefined) {
       paths.forEach(p => this.addRoute(p, file));

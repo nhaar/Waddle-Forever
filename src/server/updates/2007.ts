@@ -851,24 +851,20 @@ export const UPDATES_2007: Update[] = [
     },
     sportCatalog: {
       file: 'archives:Sport_0709.swf',
-      newItems: [
-        349,
-        461,
+       items: [
         220,
-        406,
-        405,
         254,
         255,
+        349,
+        405,
+        406,
+        461,
         701,
         702,
         703,
-        711,
-        712,
-        919,
         921,
         965
-      ],
-      removedItems: []
+      ]
     }
   },
   {
@@ -1168,7 +1164,32 @@ export const UPDATES_2007: Update[] = [
         955
       ]
     },
-    sportCatalog: 'archives:Sport_0711.swf'
+    sportCatalog: {
+      file: 'archives:Sport_0711.swf',
+      items: [
+        220,
+        254,
+        255,
+        349,
+        405,
+        406,
+        461,
+        701,
+        702,
+        703,
+        711,
+        712,
+        919,
+        965,
+        453,
+        462,
+        463,
+        720,
+        721,
+        722,
+        974
+      ]
+    }
   },
   {
     date: '2007-11-08',
