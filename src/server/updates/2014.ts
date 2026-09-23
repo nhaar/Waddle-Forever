@@ -180,7 +180,8 @@ export const UPDATES_2014: Update[] = [
         24006,
         24034
       ]
-    }
+    },
+    exploreItems: [24042]
   },
   {
     date: '2014-03-06',
