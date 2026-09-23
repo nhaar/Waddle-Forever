@@ -1878,6 +1878,7 @@ export const UPDATES_2015: Update[] = [
         4482
       ]
     },
+    exploreItems: [21052],
     memberItems: {
       2012: false,
       2176: false
