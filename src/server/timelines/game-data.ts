@@ -126,7 +126,8 @@ function getFreshState(): GameState {
       puffleHandItems: true,
       nestAvailable: false,
       holdAvailable: false,
-      quartersAvailable: false
+      quartersAvailable: false,
+      memberElementalGames: true
     },
     indexHtml: '',
     website: '',
@@ -1012,5 +1013,9 @@ export class GameData {
 
   public getStarterColors() {
     return [...this.state.starterColors.values()];
+  }
+
+  public isElementalMember() {
+    return this.state.flags.memberElementalGames;
   }
 }

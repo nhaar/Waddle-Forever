@@ -115,6 +115,7 @@ export const getFireStampReward = (rank: number): number | undefined => {
 }
 
 export const MIN_SENSEI_RANK = FIRE_RANK_THRESHOLD.length;
+export const MAX_FIRE_RANK = MIN_SENSEI_RANK + 1;
 
 // EXP manager using the modern system
 export class CardJitsuFireProgress {
@@ -160,10 +161,13 @@ export class CardJitsuFireProgress {
   }
 
   public getRank(): number {
+    if (this._ninja) {
+      return MAX_FIRE_RANK;
+    }
     const unbeatenThreshold = FIRE_RANK_THRESHOLD.map((t, i) => [t, i]).find(([t]) => this._xp < t);
 
     return unbeatenThreshold === undefined
-      ? FIRE_RANK_THRESHOLD.length + (this._ninja ? 1 : 0)
+      ? FIRE_RANK_THRESHOLD.length
       : unbeatenThreshold[1];
   }
 

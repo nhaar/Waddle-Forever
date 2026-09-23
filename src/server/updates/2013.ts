@@ -565,6 +565,10 @@ export const UPDATES_2013: Update[] = [
   },
   {
     date: '2013-05-23',
+    dateReference: 'snow-release',
+    flags: {
+      memberElementalGames: false
+    },
     stampUpdates: [
       {
         category:   {

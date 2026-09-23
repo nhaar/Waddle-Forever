@@ -16,9 +16,11 @@ import { PenguinMessenger } from '../messenger';
 import { joinWaddle } from '../handlers/room';
 import { getAddedCatalogIndex, getIncludedCatalogIndex } from '@server/timelines/items';
 import { addDays, getDaysDelta, isGreaterOrEqual, isLowerOrEqual, Version, versionToEpoch } from '@server/routes/versions';
-import { START_DATE } from '@server/timelines/dates';
-import { CardJitsuProgress } from '@server/game-logic/ninja-progress';
+import { getDate, START_DATE } from '@server/timelines/dates';
+import { CardJitsuProgress, getFireReward, MAX_FIRE_RANK } from '@server/game-logic/ninja-progress';
 import { getTestingItems } from '@server/game-logic/items-testing';
+import { DateReference } from '@server/updates';
+import { AMULET_ID, MAX_SNOW_RANK, MAX_WATER_RANK, SNOW_AWARDS, WATER_AWARDS } from '@server/game-data/ninja';
 
 const BOT_ID_BASE = 9_000_000;
 
@@ -138,45 +140,107 @@ function addNinjaItems(inventory: Set<number>, rank: number): void {
   }  
 }
 
+function addElementalItems(inventory: Set<number>, data: GameData, member: boolean, fire: number, water: number, snow: number): void {
+  if (!member && data.isElementalMember()) {
+    return;
+  }
+
+  if (fire > 0) {
+    inventory.add(AMULET_ID);
+  }
+
+  for (let i = 1; i <= Math.min(fire, MAX_FIRE_RANK - 1); i++) {
+    inventory.add(getFireReward(i));
+  }
+  for (let i = 0; i < Math.min(water, MAX_WATER_RANK - 1); i++) {
+    inventory.add(WATER_AWARDS[i]);
+  }
+
+
+  for (let i = 0; i < snow; i++) {
+    const item = SNOW_AWARDS[i];
+    if (member || data.getItem(item)?.isMember === false) {
+      inventory.add(item);
+    }
+  }
+}
+
 // for simplicity the member items won't be added (but this could be changed if there was a reason for it)
 function generateRandomInventory(
   data: GameData,
-  age: number,
+  startDate: Version,
   starterColor: number,
   member: boolean,
   ninjaRank: number,
+  fireRank: number,
+  waterRank: number,
+  snowRank: number,
   attrs: BotAttributes
 ) {
-
-  const startDate = addDays(data.getDate(), -age);
 
   const inventory = new Set<number>([starterColor]);
 
   addClothingItems(inventory, data, startDate, member, attrs.collectorMania);
   addTestingItems(inventory, data.getDate(), startDate, attrs.tester);
   addNinjaItems(inventory, ninjaRank);
+  addElementalItems(inventory, data, member, fireRank, waterRank, snowRank);
 
   return [...inventory];
 }
 
-function generateNinjaStats(age: number, ninjaAttr: number): CardJitsuProgress {
-  // function setup such that
-  // attr = 0 -> never finish
-  // attr = 1 -> takes one day
-  // attr = 0.5 -> takes a month (average)
-  // multiply by two to make it the average value multiplied by random
-  const ageToFinish = ((60 * Math.log(ninjaAttr)) / Math.log(0.5) + 1) * Math.random() * 2;
+function generateNinjaStats(
+  today: Version,
+  startDate: Version,
+  ninjaAttr: number
+): [number, number, number, number] {
+  // simplified model of: first fire, then water, then snow
+  // TODO expand this model later
+  const data: Array<[DateReference, number]> = [
+    ['card-jitsu-release', CardJitsuProgress.HIGHEST_RANK],
+    ['fire-release', MAX_FIRE_RANK],
+    ['water-release', MAX_WATER_RANK],
+    ['snow-release', MAX_SNOW_RANK]
+  ]
 
-  const progress = clamp(ageToFinish / age, 0 , 1);
-  const rank = Math.floor((CardJitsuProgress.HIGHEST_RANK + 1) * progress);
+  let dateToStart = startDate;
+  const ranks: [number, number, number, number] = [0, 0, 0, 0];
+  let ageToFinish: number | undefined = undefined;
 
-  return new CardJitsuProgress(CardJitsuProgress.getThresholdForRank(rank), 0, rank === CardJitsuProgress.HIGHEST_RANK);
+  let i = 0;
+  for (const [ref, max] of data) {
+    const release = getDate(ref);
+    const playStart = isGreaterOrEqual(release, dateToStart) ? release : dateToStart;
+    const delta = getDaysDelta(playStart, today);
+    if (delta < 0) {
+      return ranks;
+    }
+    if (ageToFinish === undefined) {
+      // function setup such that
+      // attr = 0 -> never finish
+      // attr = 1 -> takes one day
+      // attr = 0.5 -> takes a month (average)
+      // multiply by two to make it the average value multiplied by random
+      ageToFinish = ((15 * Math.log(ninjaAttr)) / (-0.69314718056) + 1) * Math.random() * 2;
+    }
+
+    const progress = clamp(delta / ageToFinish, 0, 1);
+    const rank = Math.floor(max * progress);
+    
+    ranks[i] = rank;
+    if (rank < max) {
+      return ranks;
+    } else {
+      dateToStart = addDays(playStart, ageToFinish);
+    }
+    i++;
+  }
 }
 
 function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJson {
   const name = `${choose(NAME_PARTS_A)}${choose(NAME_PARTS_B)}${randomInt(1, 999)}`;
   // TODO -> more realistic distribution
   const age = randomInt(0, getDaysDelta(START_DATE, data.getDate()));
+  const startDate = addDays(data.getDate(), -age);
   const starterColor = choose(data.getStarterColors());
   const isMember = Math.random() <= MEMBER_CHANCE;
   const base = getDefaultPenguin(
@@ -185,14 +249,17 @@ function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJso
     isMember,
     versionToEpoch(data.getDate())
   );
-  const ninja = generateNinjaStats(age, attrs.ninjaFan);
+  const [ninjaRank, fireRank, waterRank, snowRank] = generateNinjaStats(data.getDate(), startDate, attrs.ninjaFan);
 
   const inventory = generateRandomInventory(
     data,
-    age,
+    startDate,
     starterColor,
     isMember,
-    ninja.rank,
+    ninjaRank,
+    fireRank,
+    snowRank,
+    waterRank,
     attrs
   );
   const outfit = generateRandomOutfit(data, inventory);
@@ -201,6 +268,9 @@ function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJso
     ...base,
     ...outfit,
     inventory,
+    fireNinja: fireRank === MAX_FIRE_RANK,
+    waterNinja: waterRank === MAX_WATER_RANK,
+    snowNinja: snowRank === MAX_SNOW_RANK,
     // never let a bot be written to the penguin database
     noSave: true
   };

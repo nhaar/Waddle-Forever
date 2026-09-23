@@ -104,7 +104,8 @@ const flags = [
   'puffleHandItems',
   'nestAvailable',
   'holdAvailable',
-  'quartersAvailable'
+  'quartersAvailable',
+  'memberElementalGames'
 ] as const;
 
 export type GameFlag = typeof flags[number];
@@ -302,7 +303,11 @@ export const dateRefs = [
   'adopt-catalog-name',
   'pet-furniture-rename1',
   'pet-furniture-rename2',
-  'furniture-catalog-name'
+  'furniture-catalog-name',
+  'card-jitsu-release',
+  'fire-release',
+  'water-release',
+  'snow-release'
 ] as const;
 
 export type DateReference = typeof dateRefs[number];

@@ -4058,6 +4058,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-11-24',
+    dateReference: 'water-release',
     end: ['party'],
     temp: {
       party2: {

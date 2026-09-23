@@ -3379,6 +3379,9 @@ export const UPDATES_2011: Update[] = [
     temp: {
       party: {
         partyName: 'Card-Jitsu Party',
+        flags: {
+          memberElementalGames: false
+        },
         startscreens: [ 'archives:CardJitsuPartyPreStartBillboards.swf', 'archives:BillboardsCard-jitsu-party.swf' ],
         mapNote: 'archives:Card-JitsuPartyParty_map_note.swf',
         rooms: {

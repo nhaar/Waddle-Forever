@@ -5,15 +5,18 @@ import { PenguinMessenger } from "../../socket-server/messenger";
 import { GameHandler, PenguinHandler } from "./handlers";
 import { MATCHMAKERS } from "@server/game-data/games";
 
-export const handleGetNinjaRanks: PenguinHandler<[]> = ({ msg, penguin }) => {
-  msg.send(
-    penguin, 'gnr',
-    penguin.id,
-    penguin.ninja.cardRank,
-    penguin.ninja.fireProgress.getRank(),
-    penguin.ninja.isWaterNinja ? 5 : 0,
-    penguin.ninja.isSnowNinja ? 13 : 0
-  );
+export const handleGetNinjaRanks: PenguinHandler<[number]> = ({ msg, penguin, world }, id) => {
+  const target = world.getPenguin(id);
+  if (target !== undefined) {
+    msg.send(
+      penguin, 'gnr',
+      id,
+      target.ninja.cardRank,
+      target.ninja.fireProgress.getRank(),
+      target.ninja.isWaterNinja ? 5 : 0,
+      target.ninja.isSnowNinja ? 13 : 0
+    );
+  }
 }
 
 export const handleGetNinjaLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
