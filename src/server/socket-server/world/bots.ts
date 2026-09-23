@@ -19,6 +19,7 @@ import { addDays, getDaysDelta, isGreaterOrEqual, isLowerOrEqual, Version, versi
 import { getDate, START_DATE } from '@server/timelines/dates';
 import { CardJitsuProgress, getFireReward, MAX_FIRE_RANK } from '@server/game-logic/ninja-progress';
 import { getTestingItems } from '@server/game-logic/items-testing';
+import { getExploreItems } from '@server/game-logic/items-explore';
 import { DateReference } from '@server/updates';
 import { AMULET_ID, MAX_SNOW_RANK, MAX_WATER_RANK, SNOW_AWARDS, WATER_AWARDS } from '@server/game-data/ninja';
 
@@ -134,6 +135,19 @@ function addTestingItems(inventory: Set<number>, today: Version, startDate: Vers
   });
 }
 
+function addExploreItems(inventory: Set<number>, today: Version, getChance: number) {
+  const exploreItems = getExploreItems();
+  exploreItems.forEach(({ date, items }) => {
+    if (isGreaterOrEqual(today, date)) {
+      items.forEach(item => {
+        if (Math.random() < getChance) {
+          inventory.add(item);
+        }
+      })
+    }
+  });
+}
+
 function addNinjaItems(inventory: Set<number>, rank: number): void {
   for (let i = 0; i < rank; i++) {
     inventory.add(CardJitsuProgress.ITEM_AWARDS[i]);
@@ -182,6 +196,7 @@ function generateRandomInventory(
 
   addClothingItems(inventory, data, startDate, member, attrs.collectorMania);
   addTestingItems(inventory, data.getDate(), startDate, attrs.tester);
+  addExploreItems(inventory, data.getDate(), attrs.exploreFan);
   addNinjaItems(inventory, ninjaRank);
   addElementalItems(inventory, data, member, fireRank, waterRank, snowRank);
 
@@ -404,7 +419,8 @@ export class BotManager {
       musicFan: Math.random(),
       collectorMania: Math.random(),
       tester: Math.random(),
-      ninjaFan: Math.random()
+      ninjaFan: Math.random(),
+      exploreFan: Math.random()
     };
     return [attrs,
       generateRandomPenguin(this._data, attrs)];
