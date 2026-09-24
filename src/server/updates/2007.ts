@@ -317,6 +317,7 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-03-26',
+    missionItems: [805, 806],
     miscComments: ['The third secret agent mission is released'],
     fileChanges: {
       'artwork/tools/missions.swf': 'recreation:forms_missions/m3.swf'
@@ -808,6 +809,7 @@ export const UPDATES_2007: Update[] = [
   },
   {
     date: '2007-08-07',
+    missionItems: [808, 809],
     miscComments: ['The fourth secret agent mission is released'],
     fileChanges: {
       'artwork/tools/missions.swf': 'archives:ArtworkToolsMissions4.swf'
@@ -1194,6 +1196,10 @@ export const UPDATES_2007: Update[] = [
         974
       ]
     }
+  },
+  {
+    date: '2007-11-05',
+    missionItems: [810, 811]
   },
   {
     date: '2007-11-08',
