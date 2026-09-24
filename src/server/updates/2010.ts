@@ -1179,6 +1179,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-05-17',
+    missionItems: [2020, 8007, 8008],
     miscComments: ['Mission 11: The Veggie Villain is added'],
     localChanges: {
       'forms/missions.swf': {

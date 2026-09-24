@@ -11,6 +11,7 @@ import { getDate, START_DATE } from "@server/timelines/dates";
 import { getDefaultPenguin, PenguinJson } from "@server/database/database";
 import { getExploreItems } from "@server/game-logic/items-explore";
 import { getNintendoItems, IBITZ_ITEMS } from "@server/game-logic/items-transfer";
+import { getMissionItems } from "@server/game-logic/items-mission";
 
 // TODO -> Easter Egg names
 //         Game Day NPCs
@@ -108,6 +109,20 @@ function addIbitzItems(inventory: Set<number>, today: Version, useChance: number
   });
 }
 
+function addMissionItems(inventory: Set<number>, startDate: Version, today: Version, getChance: number) {
+  const missionItems = getMissionItems();
+  missionItems.forEach(({ date, items }) => {
+    if (isGreaterOrEqual(today, date) && (isLower(startDate, getDate('missions-unavailable')) || isGreaterOrEqual(today, getDate('missions-return')))) {
+      items.forEach(item => {
+        if (Math.random() < getChance) {
+          inventory.add(item);
+        }
+      })
+    }
+  });
+}
+
+
 function addNinjaItems(inventory: Set<number>, rank: number): void {
   for (let i = 0; i < rank; i++) {
     inventory.add(CardJitsuProgress.ITEM_AWARDS[i]);
@@ -162,6 +177,7 @@ function generateRandomInventory(
   addExploreItems(inventory, today, attrs.exploreFan);
   addNintendoItems(inventory, startDate, today, attrs.transferFan, attrs.collectorMania);
   addIbitzItems(inventory, today, attrs.transferFan, attrs.collectorMania);
+  addMissionItems(inventory, startDate, today, attrs.missionFan);
 
   return [...inventory];
 }
@@ -275,7 +291,8 @@ export function generateRandomBot(data: GameData): [BotAttributes, PenguinJson] 
     tester: Math.random(),
     ninjaFan: Math.random(),
     exploreFan: Math.random(),
-    transferFan: Math.random()
+    transferFan: Math.random(),
+    missionFan: Math.random()
   };
   return [attrs,
     generateRandomPenguin(data, attrs)];

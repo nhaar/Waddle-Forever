@@ -143,6 +143,7 @@ export type CPUpdate = {
   testingItems?: number[];
   exploreItems?: number[];
   nintendoItems?: number[];
+  missionItems?: number[];
 
   stampUpdates?: StampUpdates
 
@@ -315,6 +316,8 @@ export const dateRefs = [
   'fire-release',
   'water-release',
   'snow-release',
+  'missions-unavailable',
+  'missions-return',
   'nintendo-shutdown',
   'ibitz-release'
 ] as const;
