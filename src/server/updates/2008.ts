@@ -2917,7 +2917,8 @@ export const UPDATES_2008: Update[] = [
       agent: 'archives:RoomsAgent.swf',
       agentcom: 'archives:RoomsAgentcomFormer.swf'
     },
-    availableRooms: ['agentcom']
+    availableRooms: ['agentcom'],
+    nintendoItems: [8000, 8001, 8002, 8003, 8004]
   },
   {
     date: '2008-11-28',
