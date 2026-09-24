@@ -72,7 +72,11 @@ const CHAT_LINES = [
   'hi everyone', 'whats up', 'wanna dance', 'lets dance', 'nice outfit',
   'cool penguin', 'im hungry', 'wanna be friends', 'you are cool', 'peace',
   'lets play', 'yay', 'grrrr', 'hello world', 'now check this out',
-  'check the newspaper', 'cant wait for the next party'
+  'check the newspaper', 'cant wait for the next party',
+  'everyone smile!', 'hey', 'yo', 'i saw a secret agent once',
+  'spy phone? what is that?', 'lets play hockey later',
+  'the catalog has a secret item', 'penguin chat', 'you guys are silly',
+  'now thats what im talking about!', 'snails used to live on our island'
 ];
 
 interface BotBrain {
