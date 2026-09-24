@@ -2,7 +2,7 @@ import { choose, clamp, findFirstIndexEqualOrGreater, randomInt } from "@common/
 import { AMULET_ID, MAX_SNOW_RANK, MAX_WATER_RANK, SNOW_AWARDS, WATER_AWARDS } from "@server/game-data/ninja";
 import { getTestingItems } from "@server/game-logic/items-testing";
 import { CardJitsuProgress, getFireReward, MAX_FIRE_RANK } from "@server/game-logic/ninja-progress";
-import { addDays, getDaysDelta, isGreaterOrEqual, isLowerOrEqual, Version, versionToEpoch } from "@server/routes/versions";
+import { addDays, getDaysDelta, isGreaterOrEqual, isLower, isLowerOrEqual, Version, versionToEpoch } from "@server/routes/versions";
 import { GameData } from "@server/timelines/game-data";
 import { getAddedCatalogIndex, getIncludedCatalogIndex } from "@server/timelines/items";
 import { BotAttributes, generateRandomOutfit } from "./bot";
@@ -10,6 +10,7 @@ import { DateReference } from "@server/updates";
 import { getDate, START_DATE } from "@server/timelines/dates";
 import { getDefaultPenguin, PenguinJson } from "@server/database/database";
 import { getExploreItems } from "@server/game-logic/items-explore";
+import { getNintendoItems, IBITZ_ITEMS } from "@server/game-logic/items-transfer";
 
 // TODO -> Easter Egg names
 //         Game Day NPCs
@@ -76,6 +77,37 @@ function addExploreItems(inventory: Set<number>, today: Version, getChance: numb
   });
 }
 
+function addNintendoItems(
+  inventory: Set<number>,
+  startDate: Version,
+  today: Version, playChance: number, buyChance: number) {
+  if (isGreaterOrEqual(startDate, getDate('nintendo-shutdown')) || Math.random() < playChance) {
+    return;
+  }
+
+  const nintendoItems = getNintendoItems();
+  nintendoItems.forEach(({ date, items }) => {
+    if (isGreaterOrEqual(today, date)) {
+      items.forEach(i => {
+        if (Math.random() < buyChance) {
+          inventory.add(i);
+        }
+      });
+    }
+  })
+}
+
+function addIbitzItems(inventory: Set<number>, today: Version, useChance: number, buyChance: number) {
+  if (isLower(today, getDate('ibitz-release')) || Math.random() < useChance) {
+    return;
+  }
+  IBITZ_ITEMS.forEach(i => {
+    if (Math.random() < buyChance) {
+      inventory.add(i);
+    }
+  });
+}
+
 function addNinjaItems(inventory: Set<number>, rank: number): void {
   for (let i = 0; i < rank; i++) {
     inventory.add(CardJitsuProgress.ITEM_AWARDS[i]);
@@ -122,11 +154,14 @@ function generateRandomInventory(
 
   const inventory = new Set<number>([starterColor]);
 
+  const today = data.getDate();
   addClothingItems(inventory, data, startDate, member, attrs.collectorMania);
-  addTestingItems(inventory, data.getDate(), startDate, attrs.tester);
+  addTestingItems(inventory, today, startDate, attrs.tester);
   addNinjaItems(inventory, ninjaRank);
   addElementalItems(inventory, data, member, fireRank, waterRank, snowRank);
-  addExploreItems(inventory, data.getDate(), attrs.exploreFan);
+  addExploreItems(inventory, today, attrs.exploreFan);
+  addNintendoItems(inventory, startDate, today, attrs.transferFan, attrs.collectorMania);
+  addIbitzItems(inventory, today, attrs.transferFan, attrs.collectorMania);
 
   return [...inventory];
 }
@@ -239,7 +274,8 @@ export function generateRandomBot(data: GameData): [BotAttributes, PenguinJson] 
     collectorMania: Math.random(),
     tester: Math.random(),
     ninjaFan: Math.random(),
-    exploreFan: Math.random()
+    exploreFan: Math.random(),
+    transferFan: Math.random()
   };
   return [attrs,
     generateRandomPenguin(data, attrs)];

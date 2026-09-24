@@ -142,6 +142,7 @@ export type CPUpdate = {
 
   testingItems?: number[];
   exploreItems?: number[];
+  nintendoItems?: number[];
 
   stampUpdates?: StampUpdates
 
@@ -313,7 +314,9 @@ export const dateRefs = [
   'card-jitsu-release',
   'fire-release',
   'water-release',
-  'snow-release'
+  'snow-release',
+  'nintendo-shutdown',
+  'ibitz-release'
 ] as const;
 
 export type DateReference = typeof dateRefs[number];
