@@ -619,6 +619,10 @@ export const UPDATES_2006: Update[] = [
     end: ['party']
   },
   {
+    date: '2006-06-30',
+    missionItems: [801, 802]
+  },
+  {
     date: '2006-07-07',
     clothingCatalog: {
       file: 'archives:Clothing_0607.swf',
@@ -1767,6 +1771,7 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-11-27',
+    missionItems: [803, 804],
     end: ['party'],
     miscComments: ['The second secret agent mission is released'],
     fileChanges: {
