@@ -68,7 +68,11 @@ const CHAT_LINES = [
   'hi', 'hello!', 'sup', 'wanna be buddies?', 'brb', 'cool igloo',
   'lets go sledding', 'anyone wanna play find four?', 'nice hat',
   'im so bored', 'party at my igloo', 'waddle on', 'lol', 'thanks!',
-  'where is everyone', 'first!', 'im a member', 'add me'
+  'where is everyone', 'first!', 'im a member', 'add me',
+  'hi everyone', 'whats up', 'wanna dance', 'lets dance', 'nice outfit',
+  'cool penguin', 'im hungry', 'wanna be friends', 'you are cool', 'peace',
+  'lets play', 'yay', 'grrrr', 'hello world', 'now check this out',
+  'check the newspaper', 'cant wait for the next party'
 ];
 
 interface BotBrain {
@@ -334,6 +338,7 @@ export type BotAttributes = {
   collectorMania: number;
   tester: number;
   ninjaFan: number;
+  exploreFan: number;
 }
 
 enum BehaviorId {

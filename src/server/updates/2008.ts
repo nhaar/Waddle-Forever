@@ -932,6 +932,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-04-28',
+    exploreItems: [609],
     end: ['party'],
     flags: {
       quartersAvailable: true,
