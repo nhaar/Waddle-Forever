@@ -9,6 +9,7 @@ import { BotAttributes, generateRandomOutfit } from "./bot";
 import { DateReference } from "@server/updates";
 import { getDate, START_DATE } from "@server/timelines/dates";
 import { getDefaultPenguin, PenguinJson } from "@server/database/database";
+import { getExploreItems } from "@server/game-logic/items-explore";
 
 // TODO -> Easter Egg names
 //         Game Day NPCs
@@ -53,6 +54,19 @@ function addTestingItems(inventory: Set<number>, today: Version, startDate: Vers
   const testingItems = getTestingItems();
   testingItems.forEach(({ date, items }) => {
     if (isGreaterOrEqual(today, date) && isLowerOrEqual(startDate, date)) {
+      items.forEach(item => {
+        if (Math.random() < getChance) {
+          inventory.add(item);
+        }
+      })
+    }
+  });
+}
+
+function addExploreItems(inventory: Set<number>, today: Version, getChance: number) {
+  const exploreItems = getExploreItems();
+  exploreItems.forEach(({ date, items }) => {
+    if (isGreaterOrEqual(today, date)) {
       items.forEach(item => {
         if (Math.random() < getChance) {
           inventory.add(item);
@@ -112,6 +126,7 @@ function generateRandomInventory(
   addTestingItems(inventory, data.getDate(), startDate, attrs.tester);
   addNinjaItems(inventory, ninjaRank);
   addElementalItems(inventory, data, member, fireRank, waterRank, snowRank);
+  addExploreItems(inventory, data.getDate(), attrs.exploreFan);
 
   return [...inventory];
 }
@@ -223,7 +238,8 @@ export function generateRandomBot(data: GameData): [BotAttributes, PenguinJson] 
     musicFan: Math.random(),
     collectorMania: Math.random(),
     tester: Math.random(),
-    ninjaFan: Math.random()
+    ninjaFan: Math.random(),
+    exploreFan: Math.random()
   };
   return [attrs,
     generateRandomPenguin(data, attrs)];
