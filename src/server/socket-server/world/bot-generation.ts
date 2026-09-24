@@ -112,7 +112,7 @@ function addIbitzItems(inventory: Set<number>, today: Version, useChance: number
 function addMissionItems(inventory: Set<number>, startDate: Version, today: Version, getChance: number) {
   const missionItems = getMissionItems();
   missionItems.forEach(({ date, items }) => {
-    if (isLower(startDate, getDate('missions-unavailable')) || isGreaterOrEqual(today, getDate('missions-return'))) {  {
+    if (isLower(startDate, getDate('missions-unavailable')) || isGreaterOrEqual(today, getDate('missions-return'))) {
       items.forEach(item => {
         if (Math.random() < getChance) {
           inventory.add(item);
