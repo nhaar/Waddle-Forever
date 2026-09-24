@@ -141,6 +141,7 @@ export type CPUpdate = {
   gameUpgrades?: { newItems: number[]; removed: number[] };
 
   testingItems?: number[];
+  exploreItems?: number[];
 
   stampUpdates?: StampUpdates
 

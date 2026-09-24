@@ -674,6 +674,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-03-15',
+    exploreItems: [429, 7016],
     rooms: {
       mine: 'archives:RoomsMine_2.swf'
     },
