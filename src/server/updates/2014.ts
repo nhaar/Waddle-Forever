@@ -521,6 +521,10 @@ export const UPDATES_2014: Update[] = [
     }
   },
   {
+    date: '2014-05-20',
+    dateReference: 'nintendo-shutdown',
+  },
+  {
     date: '2014-06-01',
     flags: {
       vr: false

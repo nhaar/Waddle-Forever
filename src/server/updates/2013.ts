@@ -1369,6 +1369,10 @@ export const UPDATES_2013: Update[] = [
     }
   },
   {
+    date: '2013-11-22',
+    dateReference: 'ibitz-release',
+  },
+  {
     date: '2013-12-05',
     clothingCatalog: {
       newItems: [

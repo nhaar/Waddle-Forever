@@ -1202,6 +1202,15 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-05-25',
+    nintendoItems: [
+      10429,
+      10136,
+      10316,
+      14138,
+      10347,
+      15032,
+      15045,
+    ],
     temp: {
       party: {
         update: 'Sports Shop closed for reconstruction',
@@ -3178,6 +3187,28 @@ export const UPDATES_2010: Update[] = [
       plaza: 'archives:RoomsPlaza-Play10.swf',
       stage: 'archives:RoomsStage-June2009.swf'
     }
+  },
+  {
+    date: '2010-09-17',
+    nintendoItems: [
+      10436,
+      10460,
+      11075,
+      11172,
+      10133,
+      10134,
+      12018,
+      12019,
+      13002,
+      13003,
+      10278,
+      14143,
+      14204,
+      14205,
+      16036,
+      16037,
+      16038
+    ]
   },
   {
     date: '2010-09-24',
