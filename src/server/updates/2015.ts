@@ -759,6 +759,7 @@ export const UPDATES_2015: Update[] = [
   },
   {
     date: '2015-06-24',
+    dateReference: 'missions-return',
     memberItems: {
       667: false,
       4221: false,
