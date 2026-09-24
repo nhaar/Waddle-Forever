@@ -76,7 +76,11 @@ const CHAT_LINES = [
   'everyone smile!', 'hey', 'yo', 'i saw a secret agent once',
   'spy phone? what is that?', 'lets play hockey later',
   'the catalog has a secret item', 'penguin chat', 'you guys are silly',
-  'now thats what im talking about!', 'snails used to live on our island'
+  'now thats what im talking about!', 'snails used to live on our island',
+  'i need coins', 'i want coffee', 'im saving up for cool items',
+  'im saving up for expensive furniture', 'ur so random lol',
+  'im looking for cool penguins to hang with', 'good game',
+  'best day ever!', 'lets roleplay!', 'has anyone seen my friend?'
 ];
 
 interface BotBrain {
@@ -344,6 +348,7 @@ export type BotAttributes = {
   ninjaFan: number;
   exploreFan: number;
   transferFan: number;
+  missionFan: number;
 }
 
 enum BehaviorId {
