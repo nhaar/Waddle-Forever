@@ -779,7 +779,7 @@ class GoldPuffleInventory {
 }
 
 class NinjaProfile {
-  private _cards: Map<number, number>;
+  private _cards: Map<number, [number, number]>;
   private _cardProgress: CardJitsuProgress;
   private _cardWins: number;
   
@@ -842,8 +842,11 @@ class NinjaProfile {
     this._snow = value;
   }
 
-  public addCard(cardId: number, amount = 1): void {
-    this._cards.set(cardId, (this._cards.get(cardId) ?? 0) + amount);
+  public addCard(cardId: number, amount = 1, memberAmount = 0): void {
+    const amounts = this._cards.get(cardId);
+    const currentAmount = amounts ? amounts[0] : 0;
+    const currentMemberAmount = amounts ? amounts[1] : 0;
+    this._cards.set(cardId, [currentAmount + amount, currentMemberAmount + memberAmount]);
   }
 
   public addMatchProgress(won: boolean) {
@@ -851,7 +854,7 @@ class NinjaProfile {
   }
 
   getDeck(): number[] {
-    return [...this._cards.entries()].flatMap(([id, amount]) => new Array(amount).fill(id));
+    return [...this._cards.entries()].flatMap(([id, [amount, memberAmount]]) => new Array(amount + memberAmount).fill(id));
   }
 
   public addWin() {
