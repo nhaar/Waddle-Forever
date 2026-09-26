@@ -4,7 +4,7 @@ import { getDefaultPenguin } from "@server/database/database";
 import { getYellowString, logdebug, logverbose } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
-import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, TipPhase, ViewMode } from "../world/snow/snow-constants";
+import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, TipPhase, ViewMode, Windows } from "../world/snow/snow-constants";
 import { CARDS } from "@server/game-logic/cards";
 import { sleep, SnowGame, SnowPlayer, SnowWorld } from "../world/snow/snow";
 import { GameObject, sfxName } from "../world/snow/snow-game-objects";
@@ -253,7 +253,7 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
     variant: penguin.battleMode
   }, EventType.PLAY_ACTION);
 
-  const errorHandler = penguin.getWindow('cardjitsu_snowerrorhandler.swf');
+  const errorHandler = penguin.getWindow(Windows.ERRORS);
   errorHandler.layer = 'bottomLayer';
   await errorHandler.load(null, { xPercent: 0, yPercent: 0, loadDescription: '' });
 
@@ -439,7 +439,7 @@ export const frameworkCardConsumed: SnowFrameworkHandler = async ({ penguin }) =
   penguin.selectedCard = null;
 
   if (!penguin.hasPowerCards) {
-    const ui = penguin.getWindow('cardjitsu_snowui.swf');
+    const ui = penguin.getWindow(Windows.UI);
     ui.sendPayload('updateStamina', { cardData: null, cycle: false, stamina: 0 });
     ui.sendPayload('noCards');
   }
@@ -454,7 +454,7 @@ export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ penguin, g
   await confirm.placeSprite();
   confirm.playSound('SFX_MG_2013_CJSnow_UIPlayerReady_VBR8');
 
-  penguin.getWindow('cardjitsu_snowui.swf').sendPayload('disableCards');
+  penguin.getWindow(Windows.UI).sendPayload('disableCards');
 
   game.grid.hideTiles(penguin);
 

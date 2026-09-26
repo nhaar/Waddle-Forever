@@ -1,5 +1,5 @@
 import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
-import { MirrorMode, OriginMode, TipPhase } from "./snow-constants";
+import { MirrorMode, OriginMode, TipPhase, Windows } from "./snow-constants";
 import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld } from "./snow";
 import { choose } from "@common/utils";
 import { Card, CardColor, CardElement } from "@server/game-logic/cards";
@@ -2390,7 +2390,7 @@ export class CardObject implements Card {
       }
 
       await player
-        .getWindow('cardjitsu_snowui.swf')
+        .getWindow(Windows.UI)
         .sendPayload(payload, data);
     }
   }
@@ -2525,7 +2525,7 @@ export class MemberCard extends GameObject {
 
     for (const player of this.game.players) {
       await player
-        .getWindow('cardjitsu_snowui.swf')
+        .getWindow(Windows.UI)
         .sendPayload(this.player === player ? 'consumeMemberCard' : 'showCaseMemberCard');
     }
 

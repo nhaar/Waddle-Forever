@@ -1,6 +1,6 @@
 import { WorldPenguin } from "../world-penguin";
 import { SnowContext, SnowPenguinContext } from "../../snow-data-handler";
-import { BuildType, EventType, ExpRequirements, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction } from "./snow-constants";
+import { BuildType, EventType, ExpRequirements, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction, Windows } from "./snow-constants";
 import { CardObject, Enemy, FireNinja, GameObject, MemberCard, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
 import { choose, EventListener, randomInt, shuffle } from "@common/utils";
@@ -649,7 +649,7 @@ class Timer {
 
   private async load() {
     for (const player of this.game.players) {
-      const timer = player.getWindow('cardjitsu_snowtimer.swf');
+      const timer = player.getWindow(Windows.TIMER);
       timer.layer = 'bottomLayer';
       timer.load({ element: player.element }, {
         loadDescription: '', assetPath: '',
@@ -657,20 +657,20 @@ class Timer {
       });
     }
 
-    await this.game.waitForWindow('cardjitsu_snowtimer.swf', true);
+    await this.game.waitForWindow(Windows.TIMER, true);
   }
 
   private async update() {
     for (const player of this.game.players) {
       player
-        .getWindow('cardjitsu_snowtimer.swf')
+        .getWindow(Windows.TIMER)
         .sendPayload('update', { tick: this.tick });
     }
   }
 
   private async show() {
     for (const player of this.game.players) {
-      const timer = player.getWindow('cardjitsu_snowtimer.swf');
+      const timer = player.getWindow(Windows.TIMER);
       timer.sendPayload('Timer_Start');
       timer.sendPayload('enableConfirm');
     }
@@ -678,7 +678,7 @@ class Timer {
 
   private async hide() {
     for (const player of this.game.players) {
-      const timer = player.getWindow('cardjitsu_snowtimer.swf');
+      const timer = player.getWindow(Windows.TIMER);
       timer.sendPayload('skipToTransitionOut');
       timer.sendPayload('disableConfirm');
     }
@@ -985,13 +985,13 @@ export class SnowPlayer {
   }
 
   public async sendToRoom() {
-    const win = this.getWindow('cardjitsu_snowexternalinterfaceconnector.swf');
+    const win = this.getWindow(Windows.EI_CONNECTOR);
     win.layer = 'toolLayer';
     await win.load(null, { type: EventType.IMMEDIATE });
   }
 
   public async sendTip(phase: TipPhase) {
-    const infotip = this.getWindow('cardjitsu_snowinfotip.swf');
+    const infotip = this.getWindow(Windows.INFOTIP);
     infotip.layer = 'topLayer';
     await infotip.load({
       element: this.element,
@@ -1008,7 +1008,7 @@ export class SnowPlayer {
 
   public async hideTip() {
     await this
-      .getWindow('cardjitsu_snowinfotip.swf')
+      .getWindow(Windows.INFOTIP)
       .sendPayload('disable');
   }
 
@@ -1076,9 +1076,7 @@ export class SnowPlayer {
       }
     }
 
-    await this
-      .getWindow('cardjitsu_snowui.swf')
-      .sendPayload('updateStamina', update);
+    await this.getWindow(Windows.UI).sendPayload('updateStamina', update);
   }
 }
 
@@ -1161,7 +1159,7 @@ export class SnowGame {
     const battlePlace = this.ctx.world.places['snow_battle'];
 
     for (const player of this.players) {
-      await player.getWindow('cardjitsu_snowplayerselect.swf').close();
+      await player.getWindow(Windows.PLAYER_SELECT).close();
       await player.switchPlace(battlePlace);
     }
 
@@ -1186,9 +1184,9 @@ export class SnowGame {
     await this.spawnNinjas();
 
     for (const player of this.players) {
-      await player.getWindow('cardjitsu_snowplayerselect.swf').sendAction('closeCjsnowRoomToRoom');
+      await player.getWindow(Windows.PLAYER_SELECT).sendAction('closeCjsnowRoomToRoom');
 
-      const btn = player.getWindow('cardjitsu_snowclose.swf');
+      const btn = player.getWindow(Windows.CLOSE);
       btn.layer = 'bottomLayer';
       await btn.load(null, {
         loadDescription: '',
@@ -1206,7 +1204,7 @@ export class SnowGame {
     await sleep(1600);
 
     await this.spawnEnemies();
-    await this.waitForWindow('cardjitsu_snowrounds.swf', false);
+    await this.waitForWindow(Windows.ROUNDS, false);
 
     await this.showUI();
     await this.sendTip(TipPhase.MOVE);
@@ -1214,9 +1212,7 @@ export class SnowGame {
     this.disconnectedPlayers.forEach(p => p.ninja.setHealth(0));
 
     for (const player of this.players.filter(p => !p.hasPowerCards)) {
-      player
-        .getWindow('cardjitsu_snowui.swf')
-        .sendPayload('noCards');
+      player.getWindow(Windows.UI).sendPayload('noCards');
     }
 
     this.startNextLoop();
@@ -1335,7 +1331,7 @@ export class SnowGame {
 
       await this.createEnemies();
       await this.spawnEnemies();
-      await this.waitForWindow('cardjitsu_snowrounds.swf', false);
+      await this.waitForWindow(Windows.ROUNDS, false);
     }
 
     this.startNextLoop();
@@ -1522,7 +1518,7 @@ export class SnowGame {
 
   private async showUI() {
     for (const player of this.players) {
-      const ui = player.getWindow('cardjitsu_snowui.swf');
+      const ui = player.getWindow(Windows.UI);
       ui.layer = 'bottomLayer';
       ui.load({
         cardsAssetPath: this.ctx.world.locations.cards,
@@ -1548,17 +1544,13 @@ export class SnowGame {
 
   private async enableCards() {
     for (const player of this.players) {
-      player
-        .getWindow('cardjitsu_snowui.swf')
-        .sendPayload('enableCards');
+      player.getWindow(Windows.UI).sendPayload('enableCards');
     }
   }
 
   private async disableCards() {
     for (const player of this.players) {
-      player
-        .getWindow('cardjitsu_snowui.swf')
-        .sendPayload('disableCards');
+      player.getWindow(Windows.UI).sendPayload('disableCards');
     }
   }
 
@@ -1634,14 +1626,12 @@ export class SnowGame {
     if (ninjas.length === 0) return;
 
     for (const player of this.connectedPlayers) {
-      player
-        .getWindow('cardjitsu_snowrevive.swf')
-        .load(null, { xPercent: 0.2, yPercent: 0 });
+      player.getWindow(Windows.REVIVE).load(null, { xPercent: 0.2, yPercent: 0 });
     }
 
     // Wait for it to open and close
-    await this.waitForWindow('cardjitsu_snowrevive.swf', true);
-    await this.waitForWindow('cardjitsu_snowrevive.swf', false);
+    await this.waitForWindow(Windows.REVIVE, true);
+    await this.waitForWindow(Windows.REVIVE, false);
 
     for (const ninja of ninjas) {
       await ninja.player.memberCard.consume();
@@ -1741,7 +1731,7 @@ export class SnowGame {
     const roundTime = (this.gameStart + 300000) - Date.now();
 
     for (const penguin of this.players) {
-      const title = penguin.getWindow('cardjitsu_snowrounds.swf');
+      const title = penguin.getWindow(Windows.ROUNDS);
       title.load({
         bonusCriteria: this.bonusCriteria,
         remainingTime: Math.max(0, roundTime),
@@ -1754,12 +1744,12 @@ export class SnowGame {
       });
     }
 
-    await this.waitForWindow('cardjitsu_snowrounds.swf', true);
+    await this.waitForWindow(Windows.ROUNDS, true);
   }
 
   private async displayComboTitle(elements: string[]) {
     for (const penguin of this.players) {
-      const title = penguin.getWindow('cardjitsu_snowcombos.swf');
+      const title = penguin.getWindow(Windows.COMBOS);
       title.layer = 'bottomLayer';
       title.load({
         data: elements
@@ -1771,7 +1761,7 @@ export class SnowGame {
       });
     }
 
-    await this.waitForWindow('cardjitsu_snowcombos.swf', true);
+    await this.waitForWindow(Windows.COMBOS, true);
   }
 
   public async sendTip(phase: TipPhase, player: SnowPlayer | null = null) {
@@ -1788,7 +1778,7 @@ export class SnowGame {
       }
 
       player
-        .getWindow('cardjitsu_snowinfotip.swf')
+        .getWindow(Windows.INFOTIP)
         .onClose = ({ penguin }) => penguin.sendTip(phase);
     }
   }
@@ -1846,7 +1836,7 @@ export class SnowGame {
 
       // TODO: update db and add items
 
-      const payout = player.getWindow('cardjitsu_snowpayout.swf');
+      const payout = player.getWindow(Windows.PAYOUT);
       payout.layer = 'bottomLayer';
       payout.load({
         coinsEarned: coins,

@@ -1,3 +1,22 @@
+const winName = (n: string) => {
+  return `cardjitsu_snow${n}.swf`;
+}
+
+export const Windows = {
+  CLOSE: winName('close'),
+  COMBOS: winName('combos'),
+  ERRORS: winName('errorhandler'),
+  EI_CONNECTOR: winName('externalinterfaceconnector'),
+  INFOTIP: winName('infotip'),
+  PAYOUT: winName('payout'),
+  PLAYER_SELECT: winName('playerselect'),
+  REVIVE: winName('revive'),
+  ROUNDS: winName('rounds'),
+  TIMER: winName('timer'),
+  UI: winName('ui'),
+  STAMPS: 'stampearned.swf'
+} as const;
+
 export const SnowRewards: Readonly<Record<number, number | null>> = {
   0: null,
   1: null,  // Movie 1
@@ -151,24 +170,24 @@ export enum MapblockType {
   MAP = "ht"
 };
 
-export const ScaleMode = {
-  WIDTH: "scale_width",
-  HEIGHT: "scale_height",
-  BOTH: "scale_both",
-  NONE: "scale_none",
-} as const;
+export enum ScaleMode {
+  WIDTH = "scale_width",
+  HEIGHT = "scale_height",
+  BOTH = "scale_both",
+  NONE = "scale_none",
+};
 
-export const AlignMode = {
-  TOP_LEFT: "top_left",
-  TOP: "top",
-  TOP_RIGHT: "top_right",
-  RIGHT: "right",
-  BOTTOM_RIGHT: "bottom_right",
-  BOTTOM: "bottom",
-  BOTTOM_LEFT: "bottom_left",
-  LEFT: "left",
-  CENTER: "center"
-} as const;
+export enum AlignMode {
+  TOP_LEFT = "top_left",
+  TOP = "top",
+  TOP_RIGHT = "top_right",
+  RIGHT = "right",
+  BOTTOM_RIGHT = "bottom_right",
+  BOTTOM = "bottom",
+  BOTTOM_LEFT = "bottom_left",
+  LEFT = "left",
+  CENTER = "center"
+};
 
 export enum MessageType {
   CONFIGURE_CALLBACK               = "configureCallBack",
@@ -180,45 +199,45 @@ export enum MessageType {
   SCREEN_SIZE                      = "screenSize"
 };
 
-export const WindowAction = {
-  ADD_LAYER: "addLayer",
-  LOAD_WINDOW: "loadWindow",
-  LOAD_GAME: "loadGame",
-  LOAD_FONT: "loadFont",
-  CLOSE_WINDOW: "closeWindow",
-  MOVE_WINDOW: "moveWindow",
-  LINK_WINDOW_CACHE: "linkWindowCache",
-  SHOW_TOOLTIP: "showTooltip",
-  HIDE_TOOLTIP: "hideTooltip",
-  SKIN_TOOLTIP: "skinTooltip",
-  SKIN_PROGRESS_BAR: "skinProgressBar",
-  SKIN_ROOM_TO_ROOM: "skinRoomToRoom",
-  MOUSE_POSITION: "mousePosition",
-  SUPPRESS_LOG_ALERTS: "suppressLogAlerts",
-  JSON_PAYLOAD: "jsonPayload",
-  JSON_PAYLOAD_UNFINISHED_ACTION: "jsonPayloadUnfinishedAction",
-  DISPLAY_COINS_AWARDED: "displayCoinsAwarded",
-  START_MULTIGAME: "startMultigame",
-  PLAYER_EXITED: "playerExited",
-  UPDATE_PLAYER_VO: "updatePlayerVO",
-  SHOW_LAYER: "showLayer",
-  HIDE_LAYER: "hideLayer",
-  SHOW_WINDOW: "showWindow",
-  HIDE_WINDOW: "hideWindow",
-  SHOW_EDGE_BLOCKER: "showEdgeBlocker",
-  HIDE_EDGE_BLOCKER: "hideEdgeBlocker",
-  ATTACH_METAPLACE_OBJECT: "attachMetaplaceObject",
-  DETACH_METAPLACE_OBJECT: "detachMetaplaceObject",
-  SET_FONT_PATH: "setFontPath",
-  SET_WORLD_ID: "setWorldId",
-  SET_BASE_ASSET_URL: "setBaseAssetUrl",
-  SET_CURSOR: "setCursor",
-  SET_PSEUDOLOCALIZE: "setPseudolocalize",
-  CHANGE_LANGUAGE: "changeLanguage",
-  PUSH_LOCALIZATION_DATA_TO_MP: "pushLocalizationDataToMP",
-  PUSH_DEVON_DATA_TO_MP: "pushDevonDataToMp",
-  INITIALIZE_BUSINESS_INTELLIGENCE: "initializeBusinessIntelligence"
-} as const;
+export enum WindowAction {
+  ADD_LAYER = "addLayer",
+  LOAD_WINDOW = "loadWindow",
+  LOAD_GAME = "loadGame",
+  LOAD_FONT = "loadFont",
+  CLOSE_WINDOW = "closeWindow",
+  MOVE_WINDOW = "moveWindow",
+  LINK_WINDOW_CACHE = "linkWindowCache",
+  SHOW_TOOLTIP = "showTooltip",
+  HIDE_TOOLTIP = "hideTooltip",
+  SKIN_TOOLTIP = "skinTooltip",
+  SKIN_PROGRESS_BAR = "skinProgressBar",
+  SKIN_ROOM_TO_ROOM = "skinRoomToRoom",
+  MOUSE_POSITION = "mousePosition",
+  SUPPRESS_LOG_ALERTS = "suppressLogAlerts",
+  JSON_PAYLOAD = "jsonPayload",
+  JSON_PAYLOAD_UNFINISHED_ACTION = "jsonPayloadUnfinishedAction",
+  DISPLAY_COINS_AWARDED = "displayCoinsAwarded",
+  START_MULTIGAME = "startMultigame",
+  PLAYER_EXITED = "playerExited",
+  UPDATE_PLAYER_VO = "updatePlayerVO",
+  SHOW_LAYER = "showLayer",
+  HIDE_LAYER = "hideLayer",
+  SHOW_WINDOW = "showWindow",
+  HIDE_WINDOW = "hideWindow",
+  SHOW_EDGE_BLOCKER = "showEdgeBlocker",
+  HIDE_EDGE_BLOCKER = "hideEdgeBlocker",
+  ATTACH_METAPLACE_OBJECT = "attachMetaplaceObject",
+  DETACH_METAPLACE_OBJECT = "detachMetaplaceObject",
+  SET_FONT_PATH = "setFontPath",
+  SET_WORLD_ID = "setWorldId",
+  SET_BASE_ASSET_URL = "setBaseAssetUrl",
+  SET_CURSOR = "setCursor",
+  SET_PSEUDOLOCALIZE = "setPseudolocalize",
+  CHANGE_LANGUAGE = "changeLanguage",
+  PUSH_LOCALIZATION_DATA_TO_MP = "pushLocalizationDataToMP",
+  PUSH_DEVON_DATA_TO_MP = "pushDevonDataToMp",
+  INITIALIZE_BUSINESS_INTELLIGENCE = "initializeBusinessIntelligence"
+};
 
 export enum EventType {
   PLAY_ACTION  = "playAction",
