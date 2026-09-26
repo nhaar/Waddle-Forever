@@ -25,8 +25,14 @@ export const handleGetNinjaLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
 }
 
 export const handleGetNinjaCards: PenguinHandler<[]> = ({ msg, penguin }) => {
+  msg.send(penguin, 'gcd', penguin.ninja.cards.map(([id, [a1, a2]]) => {
+    return [id, a1 + a2].join(',');
+  }).join('|'));
+}
+
+export const handleGetNinjaCardsVanilla: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gcd', penguin.ninja.cards.map((card) => {
-    return card.join(',');
+    return card.flat().join(',');
   }).join('|'));
 }
 
@@ -38,7 +44,7 @@ export const handleBuyNinjaCards: PenguinHandler<[]> = ({ msg, penguin, prst }) 
   const powerCards = getAllPowerCards();
   const cards = chooseN(powerCards, 3);
   cards.forEach(card => {
-    penguin.ninja.addCard(card, 1);
+    penguin.ninja.addCard(card, 0, 1);
   });
   
   msg.send(penguin, 'bpc', cards.join(','), penguin.currency.discount(1500));
@@ -105,6 +111,10 @@ export const handleGetFireLevel: PenguinHandler<[]> = ({ penguin, msg }) => {
 
 export const handleGetWaterLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gwl', 0, 0);
+}
+
+export const handleGetSnowLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
+  msg.send(penguin, 'gsl', 0, 0, 24);
 }
 
 export const handleLeaveMatchmake: GameHandler<[]> = ({ game, penguin }) => {

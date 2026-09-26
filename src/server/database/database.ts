@@ -148,7 +148,7 @@ export interface PenguinJson {
   nuggets: number // Total number of golden nuggets in the gold puffle quest
   
 // CARD-JITSU
-  cards: Record<number, number>
+  cards: Record<number, [number, number]>
   cardProgress: number
   isNinja: boolean;
   senseiAttempts: number;
@@ -415,6 +415,24 @@ class DatabaseMigrator {
         const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
 
         content.virtualRegistrationTimestamp = content.registration_date;
+
+        fs.writeFileSync(penguinDir, JSON.stringify(content))
+      }
+    }
+  }
+
+  private migrate_1_6_0() {
+    const penguinsDir = path.join(this._folderPath, 'penguins')
+    const penguins = fs.readdirSync(penguinsDir)
+    for (const penguin of penguins) {
+      if (penguin.match(/\d+\.json/) !== null) {
+        const penguinDir = path.join(penguinsDir, penguin)
+        const content = JSON.parse(fs.readFileSync(penguinDir, { encoding: 'utf-8' }))
+
+        for (const cardId in content.cards) {
+          const amount = content.cards[cardId];
+          content.cards[cardId] = [amount, 0];
+        }
 
         fs.writeFileSync(penguinDir, JSON.stringify(content))
       }
