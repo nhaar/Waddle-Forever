@@ -3,7 +3,7 @@ import { SnowContext, SnowPenguinContext } from "../../snow-data-handler";
 import { BuildType, EventType, ExpRequirements, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction, Windows } from "./snow-constants";
 import { CardObject, Enemy, FireNinja, GameObject, MemberCard, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
-import { choose, EventListener, randomInt, shuffle } from "@common/utils";
+import { choose, EventListener, makeUrl, randomInt, shuffle } from "@common/utils";
 import { CardColor, CARDS } from "@server/game-logic/cards";
 import { getYellowString, logverbose } from "@server/logger";
 
@@ -1896,7 +1896,7 @@ export class SnowWorld {
   assets: AssetCollection = new AssetCollection();
 
   // TODO: temporary for testing, make this 3 later
-  matchMaker: MatchMaker = new MatchMaker(2);
+  matchMaker: MatchMaker = new MatchMaker(1);
 
   games: Set<SnowGame> = new Set();
 
@@ -1921,7 +1921,7 @@ export class SnowWorld {
 
     this.ctx = ctx;
 
-    const base = `http://${ctx.settings.targetIP}:${ctx.settings.targetPort}`;
+    const base = makeUrl(ctx.settings.targetIP, ctx.settings.targetPort);
     this.locations = {
       base: `${base}/game/mpassets/`,
       cards: `${base}/game/mpassets/minigames/cjsnow/en_US/deploy/`,
