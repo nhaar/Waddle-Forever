@@ -2614,7 +2614,7 @@ export class Sound implements Asset {
       ctx.msg.sendSnowData(
         target.players,
         'FX_STOPSOUND',
-        `0:${action.handleId}`,
+        action.handleId,
       );
     }
   }

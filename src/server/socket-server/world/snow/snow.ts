@@ -1103,6 +1103,7 @@ export class SnowGame {
   public windowEvents: WindowEventListener = new WindowEventListener();
   private backgrounds: GameObject[];
   public rocks: GameObject[];
+  private music: Sound;
 
   public grid = new Grid(9, 5, this);
   public timer = new Timer(this);
@@ -1182,7 +1183,8 @@ export class SnowGame {
 
     this.started = true;
 
-    Sound.fromName(this.ctx.world, 'mus_mg_201303_cjsnow_gamewindamb', true).play(this.ctx, this);
+    this.music = Sound.fromName(this.ctx.world, 'mus_mg_201303_cjsnow_gamewindamb', true);
+    this.music.play(this.ctx, this);
 
     await this.initObjects();
     await this.showEnvironment();
@@ -1382,6 +1384,7 @@ export class SnowGame {
       }
     }
 
+    this.music.stop(this.ctx, this);
     this.displayPayout();
     this.removeObjects();
     this.close();
@@ -1722,6 +1725,9 @@ export class SnowGame {
       ninja.removeObject();
       ninja.shield?.removeObject();
       ninja.rage?.removeObject();
+      if (!ninja.player.disconnected) {
+        ninja.player.getWindow(Windows.UI).close();
+      }
     }
 
     for (const enemy of this.enemies) {
