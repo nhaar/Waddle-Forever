@@ -59,7 +59,7 @@ export class PenguinMessenger<Penguin extends object = WorldPenguin> {
   }
 
   public async sendSnowData(client: ClientSocket | Penguin | Penguin[], message: string, ...args: Array<string | number>): Promise<void> {
-    const disconnected = (client instanceof SnowPlayer) ? client.disconnected : ('closed' in client) ? client.closed : false;
+    const disconnected = (client instanceof SnowPlayer) ? client.disconnected : false;
     if (disconnected) return;
     logverbose(getGreenString('sending snow data: '), message, args);
     const msg = `[${message}]|${args.join('|')}|`

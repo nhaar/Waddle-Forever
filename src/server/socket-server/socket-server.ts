@@ -13,7 +13,6 @@ export interface ClientSocket {
   write: (data: string) => Promise<void>;
   end: (data?: string) => void;
   buffer: string;
-  closed: boolean;
 }
 
 const parseHeaders = (data: string): Record<string, string> => {
@@ -46,11 +45,9 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
           })
         },
         end: (d) => {
-          cs.closed = true;
           ws.close(undefined, d);
         },
-        buffer: '',
-        closed: false
+        buffer: ''
       }
 
       handler.connect(cs);
@@ -112,15 +109,13 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
               })
             },
             end: (d) => {
-              cs.closed = true
               if (d === undefined) {
                 socket.end();
               } else {
                 socket.end(d);
               }
             },
-            buffer: '',
-            closed: false
+            buffer: ''
           }
 
           handler.connect(cs);

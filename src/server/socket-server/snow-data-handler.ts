@@ -50,7 +50,7 @@ export class SnowDataHandler {
 
     const messages = message.trim().split('\n');
     for (const command of messages) {
-      if (ctx.client.closed) {
+      if (ctx.penguin.disconnected) {
         return;
       }
 
