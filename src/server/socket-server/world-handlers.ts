@@ -8,7 +8,7 @@ import { handleDeleteMailFromPenguin, handleDeletePostcard, handleGetMail, handl
 import { handleCheckName } from "./handlers/create";
 import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game";
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
-import { handleBuyNinjaCards, handleGetFireLevel, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleGetWaterLevel, handleJoinFromMatchmake, handleJoinMatchmaking, handleJoinSensei, handleLeaveMatchmake } from "./handlers/ninja";
+import { handleBuyNinjaCards, handleGetFireLevel, handleGetNinjaCards, handleGetNinjaCardsVanilla, handleGetNinjaLevel, handleGetNinjaRanks, handleGetSnowLevel, handleGetWaterLevel, handleJoinFromMatchmake, handleJoinMatchmaking, handleJoinSensei, handleLeaveMatchmake } from "./handlers/ninja";
 import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "./handlers/party";
 import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetIglooPufflesOld, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "./handlers/puffle";
 import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "./handlers/rainbow";
@@ -183,7 +183,7 @@ export const createWorldXtHandler = (): XtHandler => {
     
     p.xt('s', 'j#js', ['string', 'string', 'string'], handleJoinServer),
     p.xt('s', 'j#jr', ['number', 'number', 'number'], joinRoom),
-    g.xt('s', 'j#grs', [], handleRoomRefresh),
+    p.xt('s', 'j#grs', [], handleRoomRefresh),
     p.xt('s', 'j#jp', ['number'], handleJoinPlayerCpip, { guard: isPreBackyardGuard }),
     p.xt('s', 'j#jp', ['number', 'string'], handleJoinPlayerModern, { guard: isBackyardGuard }),
     
@@ -298,11 +298,13 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'f#epfgp', [], handleGetPartyOp),
     p.xt('s', 'f#epfsp', ['number'], handleSetPartyOp),
 
+    p.xt('s', 'cd#gcd', [], handleGetNinjaCardsVanilla),
     p.xt('s', 'ni#gnr', ['number'], handleGetNinjaRanks),
     p.xt('s', 'ni#gnl', [], handleGetNinjaLevel),
     p.xt('s', 'ni#gcd', [], handleGetNinjaCards),
     p.xt('s', 'ni#gfl', [], handleGetFireLevel),
     p.xt('s', 'ni#gwl', [], handleGetWaterLevel),
+    p.xt('s', 'ni#gsl', [], handleGetSnowLevel),
 
     p.xt('s', 'w#jx', ['number', 'number', 'number'], handleJoinFromMatchmake),
 
