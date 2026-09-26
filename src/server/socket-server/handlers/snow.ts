@@ -28,6 +28,7 @@ export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => 
 
   if (battleMode === null || baseAssetUrl === null || place === undefined) {
     await ctx.penguin.sendLoginError(ctx);
+    ctx.penguin.disconnected = true;
     ctx.client.end();
     return;
   }
@@ -45,6 +46,7 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
   const failLogin = async (msg: string) => {
     logdebug(getYellowString(`Snow login failed: ${msg}`));
     await penguin.sendLoginError(ctx);
+    ctx.penguin.disconnected = true;
     client.end();
   }
 
@@ -315,6 +317,7 @@ export const frameworkElementSelected: SnowFrameworkHandler = async (ctx, { elem
 
   if (!['fire', 'water', 'snow'].includes(ctx.penguin.element)) {
     logverbose(getYellowString('Invalid element: ' + ctx.penguin.element));
+    ctx.penguin.disconnected = true;
     ctx.client.end();
     return;
   }
@@ -474,5 +477,4 @@ export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
   console.log(`${penguin.penguin.name} is leaving CJ Snow`);
   await penguin.sendToRoom();
   penguin.disconnected = true;
-  client.closed = true;
 }
