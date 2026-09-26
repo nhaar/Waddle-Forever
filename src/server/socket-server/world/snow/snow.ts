@@ -201,7 +201,7 @@ class SWFWindow {
 
   public setLoaded(v: boolean, game: SnowGame) {
     this._loaded = v;
-    if (game !== null) game.windowEvents.fire(this.name, v);
+    if (game !== null) game.windowEvents.fire(this.name, this._player, v);
   }
 
   public async send(content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
@@ -378,7 +378,7 @@ class Grid {
             } else if (ninja.hp <= 0 && !ninja.player.disconnected) {
               // Player can revive ninja
               tileName = 'ui_tile_heal';
-            } else if (ninja.hp < ninja.maxHp && player.element === 'snow') {
+            } else if (ninja.hp < ninja.maxHp && !ninja.player.disconnected && player.element === 'snow') {
               // Player can heal ninja
               tileName = 'ui_tile_heal';
             }
@@ -616,7 +616,7 @@ class Timer {
         return;
       }
 
-      if (this.game.players.every(p => p.isReady && !p.disconnected)) {
+      if (this.game.connectedPlayers.every(p => p.isReady)) {
         // Everyone is ready, so finish early
         this.stopInterval();
         this.hide();
@@ -725,13 +725,11 @@ class CallbackHandler {
         return;
       }
       const callback = () => {
+        clearTimeout(timer);
         this._animEvents.removeListener(callback);
         resolve();
       }
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        callback();
-      }, 8000);
+      const timer = setTimeout(() => callback(), 8000);
       this._animEvents.addListener(callback);
     });
   }
@@ -797,8 +795,17 @@ class CallbackHandler {
     this.registerEvent(name, target);
     // TODO: resolve when penguin becomes disconnected, also timeout
     return new Promise((resolve) => {
-      this._frameworkEvents.addListener(name, target, resolve);
+      const callback = () => {
+        clearTimeout(timer);
+        resolve();
+      }
+      const timer = setTimeout(() => callback(), 8000);
+      this._frameworkEvents.addListener(name, target, () => callback());
     });
+  }
+
+  public async forceFireClientEvents(player: SnowPlayer) {
+    this._frameworkEvents.fireAllForPlayer(player);
   }
 
   public async waitForEvent(name: string): Promise<void> {
@@ -835,24 +842,28 @@ class WindowEventListener {
     name: string
     loaded: boolean
     callback: () => void
-    once: boolean
+    player: SnowPlayer
   }> = [];
 
-  public addListener(name: string, loaded: boolean, callback: () => void) {
-    this.listeners.push({ name, loaded, callback, once: false });
+  public addListener(name: string, player: SnowPlayer, loaded: boolean, callback: () => void) {
+    this.listeners.push({ name, loaded, callback, player });
   }
 
-  public once(name: string, loaded: boolean, callback: () => void) {
-    this.listeners.push({ name, loaded, callback, once: true });
-  }
-
-  public fire(n: string, l: boolean): void {
-    this.listeners.forEach(({ name, loaded, callback, once }) => {
-      if (name === n && loaded === l) {
+  public fire(n: string, p: SnowPlayer, l: boolean): void {
+    this.listeners.forEach(({ name, loaded, callback, player }) => {
+      if (name === n && loaded === l && player === p) {
         callback();
-        if (once) {
-          this.listeners = this.listeners.filter(({ callback: c }) => c !== callback);
-        }
+        this.listeners = this.listeners.filter(({ player: p }) => p !== player);
+      }
+    });
+  }
+
+  /** To be used when a player disconnects */
+  public fireAllForPlayer(p: SnowPlayer): void {
+    this.listeners.forEach(({ callback, player }) => {
+      if (player === p) {
+        callback();
+        this.listeners = this.listeners.filter(({ player: p }) => p !== player);
       }
     });
   }
@@ -876,6 +887,16 @@ class FrameworkEventListener {
   public fire(n: string, t: SnowPlayer | SnowGame): void {
     this.listeners.forEach(({ name, target, callback }) => {
       if (name === n && target === t) {
+        callback();
+        this.listeners = this.listeners.filter(({ callback: c }) => c !== callback);
+      }
+    });
+  }
+
+  /** To be used when a player disconnects. */
+  public fireAllForPlayer(player: SnowPlayer): void {
+    this.listeners.forEach(({ target, callback }) => {
+      if (target === player) {
         callback();
         this.listeners = this.listeners.filter(({ callback: c }) => c !== callback);
       }
@@ -1094,6 +1115,14 @@ export class SnowGame {
     return [this.fire, this.water, this.snow].filter(Boolean);
   }
 
+  public get disconnectedPlayers() {
+    return this.players.filter(p => p.disconnected);
+  }
+
+  public get connectedPlayers() {
+    return this.players.filter(p => !p.disconnected);
+  }
+
   public get ninjas(): Ninja[] {
     return [
       this.objects.getByName('Fire') as Ninja,
@@ -1113,9 +1142,9 @@ export class SnowGame {
   private get bonusCriteriaMet() {
     switch (this.bonusCriteria) {
       case 'no_ko':
-        return this.players.filter(p => !p.disconnected).every(p => !p.wasKO);
+        return this.connectedPlayers.every(p => !p.wasKO);
       case 'full_health':
-        return this.players.filter(p => !p.disconnected).every(p => p.ninja.hp === p.ninja.maxHp);
+        return this.connectedPlayers.every(p => p.ninja.hp === p.ninja.maxHp);
       case 'under_time':
         return Date.now() < (this.gameStart + (300 * 1000));
     }
@@ -1144,7 +1173,7 @@ export class SnowGame {
   }
 
   public async playersReady() {
-    if (this.started || !this.roomMinTimeReceived || this.players.some(p => !p.isReady)) {
+    if (this.started || !this.roomMinTimeReceived || this.connectedPlayers.some(p => !p.isReady)) {
       return;
     }
 
@@ -1182,7 +1211,7 @@ export class SnowGame {
     await this.showUI();
     await this.sendTip(TipPhase.MOVE);
 
-    this.players.filter(p => p.disconnected).forEach(p => p.ninja.setHealth(0));
+    this.disconnectedPlayers.forEach(p => p.ninja.setHealth(0));
 
     for (const player of this.players.filter(p => !p.hasPowerCards)) {
       player
@@ -1236,7 +1265,7 @@ export class SnowGame {
         continue;
       }
 
-      for (const player of this.players.filter(p => !p.disconnected)) {
+      for (const player of this.connectedPlayers) {
         if (player.ninja.selectedObject === ninja.selectedObject) {
           // TODO: unlock revive stamp for everyone who was reviving
         }
@@ -1255,7 +1284,7 @@ export class SnowGame {
     if (this.checkRoundComplete()) {
       // Moving onto the next round
       
-      for (const player of this.players.filter(p => p.disconnected)) {
+      for (const player of this.disconnectedPlayers) {
         // remove disconnected players
         player.ninja.removeObject();
       }
@@ -1363,15 +1392,20 @@ export class SnowGame {
 
   public async waitForWindow(name: string, loaded: boolean): Promise<void> {
     return new Promise((resolve) => {
-      for (const penguin of this.players) {
-        // Check if window is already loaded or not loaded
-        if (penguin.getWindow(name).loaded === loaded) {
-          resolve();
-          return;
-        }
+      if (this.connectedPlayers.every(p => p.getWindow(name).loaded === loaded)) {
+        resolve();
+        return;
       }
 
-      this.windowEvents.once(name, loaded, resolve);
+      const callback = () => {
+        if (this.connectedPlayers.every(p => p.getWindow(name).loaded === loaded)) {
+          clearTimeout(timer);
+          resolve();
+        }
+      }
+      const timer = setTimeout(resolve, 8000);
+
+      this.connectedPlayers.forEach(p => this.windowEvents.addListener(name, p, loaded, callback));
     });
   }
 
@@ -1599,9 +1633,7 @@ export class SnowGame {
 
     if (ninjas.length === 0) return;
 
-    for (const player of this.players) {
-      if (player.disconnected) continue;
-
+    for (const player of this.connectedPlayers) {
       player
         .getWindow('cardjitsu_snowrevive.swf')
         .load(null, { xPercent: 0.2, yPercent: 0 });
@@ -1777,9 +1809,7 @@ export class SnowGame {
   private async displayPayout() {
     // TODO: beta payout (if we do an option for that)
 
-    for (const player of this.players) {
-      if (player.disconnected) continue;
-
+    for (const player of this.connectedPlayers) {
       let resultRank = 24;
       let expPercent = 100;
 
