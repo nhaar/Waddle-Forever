@@ -89,6 +89,8 @@ class SnowServer implements MessageHandler {
     penguin.disconnected = true;
     this._world.disconnect(penguin);
     if (game !== null && penguin.ninja !== null) {
+      game.callbacks.forceFireClientEvents(penguin);
+      game.windowEvents.fireAllForPlayer(penguin);
       penguin.ninja.setHealth(0);
     }
   }

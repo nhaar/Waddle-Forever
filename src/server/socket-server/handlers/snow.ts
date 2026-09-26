@@ -472,7 +472,7 @@ export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ penguin, g
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
   const { client, penguin } = ctx;
   console.log(`${penguin.penguin.name} is leaving CJ Snow`);
-  penguin.disconnected = true;
   await penguin.sendToRoom();
+  penguin.disconnected = true;
   client.closed = true;
 }

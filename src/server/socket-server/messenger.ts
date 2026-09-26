@@ -1,6 +1,7 @@
 import { getGreenString, getYellowString, logverbose } from "@server/logger";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
+import { SnowPlayer } from "./world/snow/snow";
 
 const getXtMessageLastless = (handler: string, ...args: Array<number | string>): string => {
   return `%xt%${handler}%-1%` + args.join('%');
@@ -58,6 +59,8 @@ export class PenguinMessenger<Penguin extends object = WorldPenguin> {
   }
 
   public async sendSnowData(client: ClientSocket | Penguin | Penguin[], message: string, ...args: Array<string | number>): Promise<void> {
+    const disconnected = (client instanceof SnowPlayer) ? client.disconnected : ('closed' in client) ? client.closed : false;
+    if (disconnected) return;
     logverbose(getGreenString('sending snow data: '), message, args);
     const msg = `[${message}]|${args.join('|')}|`
     await this.write(client, msg, '\r\n');
