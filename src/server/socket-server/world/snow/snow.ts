@@ -366,7 +366,12 @@ class Grid {
     for (const player of (penguin ? [penguin] : this.game.players)) {
       if (player.ninja.hp <= 0) continue;
 
-      for (const tile of player.ninja.tilesInRange()) {
+      for (const tile of this.tiles) {
+        if (!player.ninja.tilesInRange().includes(tile)) {
+          tile.hide(player);
+          continue;
+        }
+
         if (!this.canMove(tile.x, tile.y)) {
           // Cannot move to the tile
           let tileName = 'ui_tile_no_move';
