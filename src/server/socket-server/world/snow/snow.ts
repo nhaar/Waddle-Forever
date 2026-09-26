@@ -1,11 +1,11 @@
 import { WorldPenguin } from "../world-penguin";
-import { ClientSocket } from "../../socket-server";
-import { PenguinMessenger } from "../../messenger";
 import { SnowContext, SnowPenguinContext } from "../../snow-data-handler";
-import { BuildType, EventType, MessageType, ServerType, ViewMode, WindowAction } from "./snow-constants";
-import { Enemy, FireNinja, GameObject, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
+import { BuildType, EventType, ExpRequirements, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction } from "./snow-constants";
+import { CardObject, Enemy, FireNinja, GameObject, MemberCard, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
-import { capitalize, choose, EventListener, randomInt, shuffle } from "@common/utils";
+import { choose, EventListener, randomInt, shuffle } from "@common/utils";
+import { CardColor, CARDS } from "@server/game-logic/cards";
+import { getYellowString, logverbose } from "@server/logger";
 
 export interface Asset {
   index: number;
@@ -54,77 +54,6 @@ class ObjectCollection extends Set<GameObject> {
     return maxId + 1;
   }
 
-}
-
-export class SnowPlayer {
-  penguin: WorldPenguin | null = null;
-  ninja: Ninja | null = null;
-  pid: number = -1;
-  loggedIn: boolean = false;
-  isReady: boolean = false;
-  disconnected: boolean = false;
-  wasKO = false;
-
-  battleMode: number = 0;
-  screenSize: string = '';
-  baseUrl: string = '';
-  place: Place | null = null;
-
-  element: string = '';
-  tipMode: boolean = false;
-
-  windowManager: WindowManager;
-  localObjects: ObjectCollection = new ObjectCollection();
-
-  constructor(private ctx: SnowContext) {
-    this.windowManager = new WindowManager(this, ctx);
-  }
-
-  public get inGame() {
-    // TODO: returns true if we are in a game
-    return false;
-  }
-
-  public async sendLoginMessage({ msg }: SnowContext, message: string) {
-    await msg.sendSnowData(this, 'S_LOGINDEBUG', message);
-  }
-
-  public async sendLoginError({ msg }: SnowContext, code: number = 900) {
-    await this.sendLoginMessage({ msg } as SnowContext, `user code ${code}`);
-  }
-
-  public async sendLoginReply({ msg }: SnowContext) {
-    await msg.sendSnowData(this, 'S_LOGIN', this.penguin.id);
-  }
-
-  public async setPlace(name: string, objectId: number = 0, instanceId: number = 0) {
-    this.place = this.ctx.world.places[name];
-    await this.ctx.msg.sendSnowData(this, 'W_PLACE', this.place.id, objectId, instanceId);
-  }
-  
-  public async switchPlace(place: Place) {
-    await this.setPlace(place.name);
-    
-    // TODO use Promise.all() instead
-    for (const { index } of place.assets.values()) {
-      await this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`);
-    }
-    for (const { index } of place.soundAssets.values()) {
-      await this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`);
-    }
-
-    await this.ctx.msg.sendSnowData(this, 'W_ASSETSCOMPLETE', this.pid);
-  }
-
-  public getWindow(name: string | null = null, url: string | null = null) {
-    return this.windowManager.getWindow(name, url);
-  }
-
-  public async sendToRoom() {
-    const win = this.getWindow('cardjitsu_snowexternalinterfaceconnector.swf');
-    win.layer = 'toolLayer';
-    await win.load(null, { type: EventType.IMMEDIATE });
-  }
 }
 
 // TODO: see if most of these can just be objects instead
@@ -394,7 +323,7 @@ class Grid {
   private _array: (GameObject | null)[][];
   public tiles: GameObject[] = [];
 
-  constructor(private maxX: number, private maxY: number, private game: SnowGame) {
+  constructor(public maxX: number, public maxY: number, private game: SnowGame) {
     this._array = Array.from({ length: maxX }, () =>
       Array<GameObject | null>(maxY).fill(null)
     );
@@ -402,6 +331,18 @@ class Grid {
 
   private get obstacles() {
     return this.game.rocks.map(r => [r.x, r.y]);
+  }
+
+  private get objects() {
+    const objects: GameObject[] = [];
+    for (let x = 0; x < this.maxX; x++) {
+      for (let y = 0; y < this.maxY; y++) {
+        if (this._array[x][y] !== null) {
+          objects.push(this._array[x][y]);
+        }
+      }
+    }
+    return objects;
   }
 
   public initTiles() {
@@ -418,17 +359,77 @@ class Grid {
     }
   }
 
-  private onTileClick(ctx: SnowPenguinContext, object: GameObject) {
-    // TODO: if penguin selected card, place powercard
+  public showTiles(penguin: SnowPlayer | null = null) {
+    const frame = this.game.objects.getByName('ui_tile_frame');
+    frame.placeSprite();
 
-    const ninja = this.game.objects.getByName(capitalize(ctx.penguin.element)) as Ninja;
-    ninja.placeGhost(ctx, object.x, object.y);
+    for (const player of (penguin ? [penguin] : this.game.players)) {
+      if (player.ninja.hp <= 0) continue;
+
+      for (const tile of player.ninja.tilesInRange()) {
+        if (!this.canMove(tile.x, tile.y)) {
+          // Cannot move to the tile
+          let tileName = 'ui_tile_no_move';
+
+          const ninja = this.get(tile.x, tile.y);
+          if (ninja instanceof Ninja) {
+            if (ninja === player.ninja) {
+              tileName = 'ui_tile_move';
+            } else if (ninja.hp <= 0 && !ninja.player.disconnected) {
+              // Player can revive ninja
+              tileName = 'ui_tile_heal';
+            } else if (ninja.hp < ninja.maxHp && player.element === 'snow') {
+              // Player can heal ninja
+              tileName = 'ui_tile_heal';
+            }
+          } else if (ninja === player.ninja.ghost) {
+            tileName = 'ui_tile_move';
+          }
+
+          tile.placeSprite(tileName, player);
+        } else {
+          tile.placeSprite('ui_tile_move', player);
+        }
+      }
+    }
+  }
+
+  public hideTiles(player: SnowPlayer = null) {
+    if (player === null) {
+      this.game.objects.getByName('ui_tile_frame').hide();
+    }
+    this.tiles.forEach(t => t.hide(player))
+  }
+
+  public changeTiles(player: SnowPlayer, name: string, ghost: boolean = false, ignoreObjects: boolean = false) {
+    if (ignoreObjects) {
+      const tiles = ghost ? player.ninja.ghostTilesInRange() : player.ninja.tilesInRange();
+      this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite(name, player) : t.hide(player));
+    } else {
+      const tiles = [
+        ...(ghost ? player.ninja.movableGhostTiles() : player.ninja.movableTiles()),
+        ...(player.ninja.placedGhost ? [this.getTile(player.ninja.ghost.x, player.ninja.ghost.y)] : [])
+      ]
+      this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite(name, player) : t.hide(player));
+    }
+  }
+
+  private onTileClick(ctx: SnowPenguinContext, object: GameObject) {
+    if (ctx.penguin.selectedCard) {
+      ctx.penguin.ninja.placePowerCard(object.x, object.y);
+      return;
+    }
+
+    ctx.penguin.ninja.placeGhost(ctx, object.x, object.y);
     
-    // TODO: hide tip
+    if (ctx.penguin.tipMode && ctx.penguin.lastTip === TipPhase.MOVE) {
+      ctx.penguin.hideTip();
+    }
   }
 
   /** Get the game object existing at the given x, y */
   public get(x: number, y: number) {
+    if (!this.isValid(x, y)) return null;
     return this._array[x][y];
   }
 
@@ -456,7 +457,7 @@ class Grid {
   /** Move a game object to a different spot in the grid */
   public move(obj: GameObject, x: number, y: number) {
     this.remove(obj);
-    this._array[x][y] = obj;
+    this.add(obj, x, y);
   }
 
   /** Get the x and y of a game object on the grid */
@@ -541,6 +542,32 @@ class Grid {
       .filter(Boolean);
   }
 
+  public objectsInRange(minX: number, maxX: number, minY: number, maxY: number) {
+    const objects: GameObject[] = [];
+    for (const object of this.objects) {
+      if (object.x >= minX && object.x <= maxX && object.y >= minY && object.y <= maxY) {
+        objects.push(object);
+        continue;
+      }
+
+      if (object instanceof Enemy && object.tileRange > 0) {
+        const enemyMinX = object.x - object.tileRange;
+        const enemyMaxX = object.x + object.tileRange;
+        const enemyMinY = object.y - object.tileRange;
+        const enemyMaxY = object.y + object.tileRange;
+
+        const overlapsX = minX <= enemyMaxX && maxX >= enemyMinX;
+        const overlapsY = minY <= enemyMaxY && maxY >= enemyMinY;
+
+        if (overlapsX && overlapsY) {
+          objects.push(object);
+        }
+      }
+    }
+
+    return objects;
+  }
+
   /** Get a valid spawn x/y for a new enemy */
   public enemySpawnLocation(): [number, number] {
     for (let i = 0; i < 100; i++) {
@@ -553,6 +580,108 @@ class Grid {
     }
 
     return [8, 4];
+  }
+}
+
+class Timer {
+  private tick: number = 10;
+  private interval: NodeJS.Timer = null;
+  private intervalDivisor: number = 4;
+  private loaded: boolean = false;
+  public running: boolean = false;
+
+  constructor(private game: SnowGame) {}
+
+  public async run(onComplete: () => void) {
+    if (!this.loaded) {
+      await this.load();
+      this.loaded = true;
+    }
+
+    if (this.running) return;
+
+    this.tick = 10;
+    this.running = true;
+    this.show();
+
+    if (this.interval !== null) clearInterval(this.interval);
+
+    let sec = this.intervalDivisor;
+    this.interval = setInterval(() => {
+      sec -= 1;
+
+      if (this.game.players.every(p => p.disconnected)) {
+        this.stopInterval();
+        this.game.close();
+        return;
+      }
+
+      if (this.game.players.every(p => p.isReady && !p.disconnected)) {
+        // Everyone is ready, so finish early
+        this.stopInterval();
+        this.hide();
+        onComplete();
+        return;
+      }
+
+      if (sec === 0) {
+        // 1 full second has passed
+        sec = this.intervalDivisor;
+        this.tick -= 1;
+        this.update();
+      }
+
+      if (this.tick === 0) {
+        // Finished
+        this.stopInterval();
+        this.tick = 10;
+        this.hide();
+        onComplete();
+      }
+    }, 1000 / this.intervalDivisor)
+  }
+
+  private stopInterval() {
+    clearInterval(this.interval);
+    this.interval = null;
+    this.running = false;
+  }
+
+  private async load() {
+    for (const player of this.game.players) {
+      const timer = player.getWindow('cardjitsu_snowtimer.swf');
+      timer.layer = 'bottomLayer';
+      timer.load({ element: player.element }, {
+        loadDescription: '', assetPath: '',
+        xPercent: 0.5, yPercent: 0
+      });
+    }
+
+    await this.game.waitForWindow('cardjitsu_snowtimer.swf', true);
+  }
+
+  private async update() {
+    for (const player of this.game.players) {
+      player
+        .getWindow('cardjitsu_snowtimer.swf')
+        .sendPayload('update', { tick: this.tick });
+    }
+  }
+
+  private async show() {
+    for (const player of this.game.players) {
+      const timer = player.getWindow('cardjitsu_snowtimer.swf');
+      timer.sendPayload('Timer_Start');
+      timer.sendPayload('enableConfirm');
+    }
+  }
+
+  private async hide() {
+    for (const player of this.game.players) {
+      const timer = player.getWindow('cardjitsu_snowtimer.swf');
+      timer.sendPayload('skipToTransitionOut');
+      timer.sendPayload('disableConfirm');
+    }
   }
 }
 
@@ -574,8 +703,10 @@ interface Action {
 class CallbackHandler {
 
   private _tick: number = 0;
-  private _events: EventListener = new EventListener();
+  private _animEvents: EventListener = new EventListener();
+  private _frameworkEvents: FrameworkEventListener = new FrameworkEventListener();
   private pendingActions: Record<number, Set<Action>> = {};
+  private pendingEvents: Map<SnowGame | SnowPlayer, string[]> = new Map();
 
   constructor(private game: SnowGame) {}
 
@@ -594,10 +725,14 @@ class CallbackHandler {
         return;
       }
       const callback = () => {
-        this._events.removeListener(callback);
+        this._animEvents.removeListener(callback);
         resolve();
       }
-      this._events.addListener(callback);
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        callback();
+      }, 8000);
+      this._animEvents.addListener(callback);
     });
   }
 
@@ -628,13 +763,49 @@ class CallbackHandler {
       this.pendingActions[objectId].delete(action);
 
       if (this.pendingAnimations.length === 0) {
-        this._events.fire();
+        this._animEvents.fire();
       }
     }
 
     if (this.pendingActions[objectId].size === 0) {
       delete this.pendingActions[objectId];
     }
+  }
+
+  private registerEvent(name: string, target: SnowGame | SnowPlayer) {
+    if (!this.pendingEvents.has(target)) {
+      this.pendingEvents.set(target, []);
+    }
+    this.pendingEvents.get(target).push(name);
+  }
+
+  public eventDone(name: string, target: SnowGame | SnowPlayer) {
+    const events = this.pendingEvents.get(target);
+
+    if (events === undefined) return;
+
+    this._frameworkEvents.fire(name, target);
+
+    this.pendingEvents.set(target, events.filter(n => n !== name));
+
+    if (this.pendingEvents.get(target).length === 0) {
+      this.pendingEvents.delete(target);
+    }
+  }
+
+  public async waitForClient(name: string, target: SnowPlayer): Promise<void> {
+    this.registerEvent(name, target);
+    // TODO: resolve when penguin becomes disconnected, also timeout
+    return new Promise((resolve) => {
+      this._frameworkEvents.addListener(name, target, resolve);
+    });
+  }
+
+  public async waitForEvent(name: string): Promise<void> {
+    this.registerEvent(name, this.game);
+    return new Promise((resolve) => {
+      this._frameworkEvents.addListener(name, this.game, resolve);
+    });
   }
 
   public byName(name: string) {
@@ -647,8 +818,14 @@ class CallbackHandler {
     }
   }
 
-  public remove(id: number) {
+  public remove(id: number, fireAnims: boolean = true) {
     delete this.pendingActions[id];
+
+    // fire anim listeners now, in case an object we were waiting on
+    // was removed before it had a chance to fire it
+    if (fireAnims && this.pendingAnimations.length === 0) {
+      this._animEvents.fire();
+    }
   }
 
 }
@@ -685,12 +862,210 @@ class WindowEventListener {
   }
 }
 
-export class SnowGame {
-  private id: number = -1;
-  private started: boolean = false;
-  private _somePlayerReady: boolean = false;
+class FrameworkEventListener {
+  private listeners: Array<{
+    name: string
+    target: SnowGame | SnowPlayer
+    callback: () => void
+  }> = [];
 
-  private bonusCriteria: string = choose(['no_ko', 'under_time', 'full_health']);
+  public addListener(name: string, target: SnowGame | SnowPlayer, callback: () => void) {
+    this.listeners.push({ name, target, callback });
+  }
+
+  public fire(n: string, t: SnowPlayer | SnowGame): void {
+    this.listeners.forEach(({ name, target, callback }) => {
+      if (name === n && target === t) {
+        callback();
+        this.listeners = this.listeners.filter(({ callback: c }) => c !== callback);
+      }
+    });
+  }
+
+  public removeListeners(): void {
+    this.listeners.length = 0;
+  }
+}
+
+export class SnowPlayer {
+  penguin: WorldPenguin | null = null;
+  ninja: Ninja | null = null;
+  pid: number = -1;
+  loggedIn: boolean = false;
+  isReady: boolean = false;
+  disconnected: boolean = false;
+  wasKO = false;
+
+  battleMode: number = 0;
+  baseUrl: string = '';
+  place: Place | null = null;
+  element: string = '';
+
+  tipMode: boolean = false;
+  displayedTips: Set<TipPhase> = new Set();
+  lastTip: TipPhase | null = null;
+
+  memberCard: MemberCard | null = null;
+  powerCards: Set<CardObject> = new Set();
+  powerCardSlots: Set<CardObject> = new Set();
+  selectedCard: CardObject | null = null;
+  powerCardStamina: number = 0;
+  playedCards: number = 0;
+
+  windowManager: WindowManager;
+  localObjects: ObjectCollection = new ObjectCollection();
+
+  constructor(private ctx: SnowContext) {
+    this.windowManager = new WindowManager(this, ctx);
+  }
+
+  public get selectedMemberCard() {
+    return this.memberCard !== null && this.memberCard.selected;
+  }
+
+  public get hasPowerCards() {
+    return this.powerCardSlots.size > 0 || this.powerCards.size > 0;
+  }
+
+  public async sendLoginMessage({ msg }: SnowContext, message: string) {
+    await msg.sendSnowData(this, 'S_LOGINDEBUG', message);
+  }
+
+  public async sendLoginError({ msg }: SnowContext, code: number = 900) {
+    await this.sendLoginMessage({ msg } as SnowContext, `user code ${code}`);
+  }
+
+  public async sendLoginReply({ msg }: SnowContext) {
+    await msg.sendSnowData(this, 'S_LOGIN', this.penguin.id);
+  }
+
+  public async setPlace(name: string, objectId: number = 0, instanceId: number = 0) {
+    this.place = this.ctx.world.places[name];
+    await this.ctx.msg.sendSnowData(this, 'W_PLACE', this.place.id, objectId, instanceId);
+  }
+  
+  public async switchPlace(place: Place) {
+    await this.setPlace(place.name);
+    
+    await Promise.all([
+      ...Array.from(place.assets).map(({ index }) => 
+        this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`)
+      ),
+      ...Array.from(place.soundAssets).map(({ index }) => 
+        this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`)
+      )
+    ]);
+
+    await this.ctx.msg.sendSnowData(this, 'W_ASSETSCOMPLETE', this.pid);
+  }
+
+  public getWindow(name: string | null = null, url: string | null = null) {
+    return this.windowManager.getWindow(name, url);
+  }
+
+  public async sendToRoom() {
+    const win = this.getWindow('cardjitsu_snowexternalinterfaceconnector.swf');
+    win.layer = 'toolLayer';
+    await win.load(null, { type: EventType.IMMEDIATE });
+  }
+
+  public async sendTip(phase: TipPhase) {
+    const infotip = this.getWindow('cardjitsu_snowinfotip.swf');
+    infotip.layer = 'topLayer';
+    await infotip.load({
+      element: this.element,
+      phase
+    }, {
+      loadDescription: '',
+      assetPath: '',
+      xPercent: 0.1,
+      yPercent: 0
+    });
+    this.lastTip = phase;
+    infotip.onClose = ({ penguin }) => penguin.lastTip = null;
+  }
+
+  public async hideTip() {
+    await this
+      .getWindow('cardjitsu_snowinfotip.swf')
+      .sendPayload('disable');
+  }
+
+  public powerCardById(id: number) {
+    return Array.from(this.powerCardSlots).find(card => card.id === id);
+  }
+
+  public async initPowerCards(game: SnowGame) {
+    const cardColor = {
+      'snow': 'p',
+      'water': 'b',
+      'fire': 'r'
+    }[this.element];
+
+    const powerCards = this.penguin.ninja.getDeck().map(id => CARDS.get(id)).filter(card => {
+      return card.powerId > 0 && card.element === this.element.charAt(0);
+    });
+
+    for (const card of powerCards) {
+      const obj = new CardObject(card, game, this);
+      obj.color = cardColor as CardColor;
+      this.powerCards.add(obj);
+    }
+  }
+
+  public nextPowerCard(): CardObject | null {
+    if (this.powerCards.size === 0) {
+      // Out of cards, maybe you should buy more from the martial artworks catalog #ad
+      return null;
+    }
+
+    if (this.powerCardSlots.size >= 4) {
+      // Cannot hold more than 4 cards at a time
+      return null;
+    }
+
+    const next = choose(Array.from(this.powerCards));
+    this.powerCardSlots.add(next);
+    this.powerCards.delete(next);
+    return next;
+  }
+
+  public async updateCards() {
+    if (this.disconnected) return;
+
+    this.powerCardStamina += 2;
+
+    const update = {
+      cardData: null,
+      cycle: false,
+      stamina: this.powerCardStamina
+    };
+
+    if (this.powerCardStamina >= 10) {
+      this.powerCardStamina = 0;
+      update.stamina = 0;
+
+      const next = this.nextPowerCard();
+      if (next !== null) {
+        update.cardData = next.cardData;
+      }
+
+      if (this.powerCardSlots.size >= 4) {
+        update.cycle = true;
+      }
+    }
+
+    await this
+      .getWindow('cardjitsu_snowui.swf')
+      .sendPayload('updateStamina', update);
+  }
+}
+
+export class SnowGame {
+  private started: boolean = false;
+  private roomMinTimeReceived: boolean = false;
+
+  private bonusCriteria: 'no_ko' | 'under_time' | 'full_health' = choose(['no_ko', 'under_time', 'full_health']);
   private gameStart: number = Date.now();
 
   private map: number = randomInt(1, 3);
@@ -706,6 +1081,7 @@ export class SnowGame {
   public rocks: GameObject[];
 
   public grid = new Grid(9, 5, this);
+  public timer = new Timer(this);
 
   constructor(
     public ctx: SnowContext,
@@ -734,9 +1110,21 @@ export class SnowGame {
     ];
   }
 
+  private get bonusCriteriaMet() {
+    switch (this.bonusCriteria) {
+      case 'no_ko':
+        return this.players.filter(p => !p.disconnected).every(p => !p.wasKO);
+      case 'full_health':
+        return this.players.filter(p => !p.disconnected).every(p => p.ninja.hp === p.ninja.maxHp);
+      case 'under_time':
+        return Date.now() < (this.gameStart + (300 * 1000));
+    }
+  }
+
   public async start() {
     this.players.forEach(player => {
-      // TODO: set member card, set power cards
+      player.memberCard = new MemberCard(this, player);
+      player.initPowerCards(this);
     });
 
     await sleep(3000);
@@ -747,17 +1135,16 @@ export class SnowGame {
       await player.getWindow('cardjitsu_snowplayerselect.swf').close();
       await player.switchPlace(battlePlace);
     }
-  }
 
-  public async somePlayerReady() {
-    if (this._somePlayerReady) return;
-    this._somePlayerReady = true;
+    await this.callbacks.waitForEvent('roomToRoomMinTime');
+
+    this.roomMinTimeReceived = true;
     await sleep(1000);
     this.playersReady();
   }
 
   public async playersReady() {
-    if (this.started || !this._somePlayerReady || this.players.some(p => !p.isReady)) {
+    if (this.started || !this.roomMinTimeReceived || this.players.some(p => !p.isReady)) {
       return;
     }
 
@@ -787,16 +1174,194 @@ export class SnowGame {
     this.gameStart = Date.now();
 
     await this.displayRoundTitle();
-
     await sleep(1600);
 
     await this.spawnEnemies();
     await this.waitForWindow('cardjitsu_snowrounds.swf', false);
 
     await this.showUI();
+    await this.sendTip(TipPhase.MOVE);
+
+    this.players.filter(p => p.disconnected).forEach(p => p.ninja.setHealth(0));
+
+    for (const player of this.players.filter(p => !p.hasPowerCards)) {
+      player
+        .getWindow('cardjitsu_snowui.swf')
+        .sendPayload('noCards');
+    }
+
+    this.startNextLoop();
   }
 
-  private async waitForWindow(name: string, loaded: boolean): Promise<void> {
+  private async startNextLoop() {
+    if (this.players.every(p => p.disconnected)) {
+      this.close();
+      return;
+    }
+    for (const player of this.players) {
+      player.selectedCard = null;
+      player.isReady = false;
+      player.ninja.resetSpriteSettings();
+      if (player.powerCardSlots.size > 0) this.sendTip(TipPhase.CARD, player);
+    }
+    this.showTargets();
+    this.grid.showTiles();
+    this.enableCards();
+    this.timer.run(() => this.timerDone());
+  }
+
+  private async timerDone() {
+    this.grid.hideTiles();
+    this.disableCards();
+    this.hideGhosts();
+    this.removeUI();
+    this.hideTargets();
+
+    await sleep(1250);
+
+    // according to snowflake, targets can sometimes still be visible
+    // see if this still happens to us
+
+    await this.moveNinjas();
+    await this.doNinjaActions();
+    await this.doEnemyActions();
+
+    // Check if any ninjas are being revived
+    for (const ninja of this.ninjas) {
+      if (!(ninja.selectedObject instanceof Ninja)) continue;
+
+      if (ninja.selectedObject.hp > 0 || ninja.player.disconnected) {
+        // They were already revived, or left
+        ninja.idleAnimation();
+        continue;
+      }
+
+      for (const player of this.players.filter(p => !p.disconnected)) {
+        if (player.ninja.selectedObject === ninja.selectedObject) {
+          // TODO: unlock revive stamp for everyone who was reviving
+        }
+      }
+
+      await this.callbacks.waitForAnims();
+      ninja.selectedObject.setHealth(1);
+      ninja.targets.clear();
+      ninja.idleAnimation();
+    }
+
+    this.enemies.forEach(e => e.updateFlame());
+
+    await this.callbacks.waitForAnims();
+
+    if (this.checkRoundComplete()) {
+      // Moving onto the next round
+      
+      for (const player of this.players.filter(p => p.disconnected)) {
+        // remove disconnected players
+        player.ninja.removeObject();
+      }
+
+      if (this.ninjas.every(n => n.hp <= 0)) {
+        this.postGame();
+        return;
+      }
+
+      const coins = {
+        0: 60,
+        1: 120,
+        2: 120,
+        3: 120
+      }
+      const exp = {
+        0: 100,
+        1: 200,
+        2: 300,
+        3: 180
+      }
+
+      this.coins += coins[this.round];
+      this.exp += exp[this.round];
+
+      if (this.round >= 2 && !this.bonusCriteriaMet) {
+        // Bonus criteria not met on round 3
+        this.postGame();
+        return;
+      }
+
+      if (this.round >= 3) {
+        // Bonus round complete
+        this.postGame();
+        return;
+      }
+
+      this.round++;
+
+      if (this.round >= 3 && this.bonusCriteria === 'full_health') {
+        // TODO: full health stamp
+      }
+
+      this.enemies.forEach(e => e.removeObject());
+
+      await this.displayRoundTitle();
+      await sleep(1600);
+
+      await this.createEnemies();
+      await this.spawnEnemies();
+      await this.waitForWindow('cardjitsu_snowrounds.swf', false);
+    }
+
+    this.startNextLoop();
+  }
+
+  private checkRoundComplete() {
+    if (this.players.every(p => p.disconnected)) {
+      this.close();
+      return;
+    }
+
+    if (this.enemies.length === 0) {
+      // All enemies defeated
+      return true;
+    }
+
+    if (this.ninjas.every(n => n.hp <= 0)) {
+      // Everyone died
+      return true;
+    }
+
+    return false;
+  }
+
+  private async postGame() {
+    this.removeUI();
+    this.removeTargets();
+    await this.displayWinSequence();
+
+    if (this.enemies.length === 0) {
+      for (const player of this.players) {
+        if (!player.wasKO) continue;
+
+        // TODO: up and at em stamp
+      }
+
+      if (this.players.every(p => p.wasKO)) {
+        // TODO: team revival stamp
+      }
+
+      if (this.round >= 3) {
+        // TODO: bonus win stamp
+      }
+    }
+
+    this.displayPayout();
+    this.removeObjects();
+    this.close();
+  }
+
+  public close() {
+    this.ctx.world.removeGame(this);
+  }
+
+  public async waitForWindow(name: string, loaded: boolean): Promise<void> {
     return new Promise((resolve) => {
       for (const penguin of this.players) {
         // Check if window is already loaded or not loaded
@@ -938,6 +1503,208 @@ export class SnowGame {
     }
   }
 
+  private async removeUI() {
+    this.objects.getAllByName('confirm').forEach(o => o.removeObject());
+
+    for (const player of this.players) {
+      player.selectedCard?.remove();
+      if (player.selectedMemberCard) player.memberCard.remove();
+    }
+  }
+
+  private async enableCards() {
+    for (const player of this.players) {
+      player
+        .getWindow('cardjitsu_snowui.swf')
+        .sendPayload('enableCards');
+    }
+  }
+
+  private async disableCards() {
+    for (const player of this.players) {
+      player
+        .getWindow('cardjitsu_snowui.swf')
+        .sendPayload('disableCards');
+    }
+  }
+
+  private async moveNinjas() {
+    for (const ninja of this.ninjas) {
+      if (ninja.placedGhost) ninja.player.updateCards();
+      ninja.moveNinja(ninja.ghost.x, ninja.ghost.y);
+    }
+
+    await this.callbacks.waitForAnims();
+  }
+
+  private async doNinjaActions() {
+    await this.doNinjaAttacks();
+    await this.doPowerCardAttacks();
+    await this.doNinjaRevive();
+  }
+
+  private async doNinjaAttacks() {
+    const ninjasWithoutCards = this.ninjas.filter(n => !n.player.selectedCard && !n.player.selectedMemberCard);
+
+    for (const ninja of ninjasWithoutCards) {
+      if (!ninja.selectedTarget) continue;
+
+      const target = ninja.selectedObject;
+
+      if (target === null) continue; // Target is defeated or removed
+
+      if (target instanceof Enemy) {
+        await ninja.attackTarget(target);
+      } else if (target instanceof Ninja) {
+        await ninja.healTarget(target);
+      }
+
+      if (ninja.heals >= 15) {
+        // TODO: heal 15 stamp
+      }
+
+      await sleep(1000);
+    }
+  }
+
+  private async doPowerCardAttacks() {
+    const ninjasWithCards = this.ninjas.filter(n => n.player.selectedCard !== null);
+
+    const isCombo = ninjasWithCards.length > 1;
+
+    if (isCombo) {
+      this.totalCombos++;
+
+      if (ninjasWithCards.length === 3) {
+        // TODO: 3 ninja combo stamp
+      }
+
+      if (this.totalCombos >= 3) {
+        // TODO: 3 combos stamp
+      }
+
+      await this.displayComboTitle(ninjasWithCards.map(n => n.player.element));
+
+      await this.callbacks.waitForEvent('comboScreenComplete');
+    }
+
+    for (const ninja of ninjasWithCards) {
+      await ninja.usePowerCard(isCombo);
+      await sleep(1000);
+    }
+  }
+
+  private async doNinjaRevive() {
+    const ninjas = this.ninjas.filter(n => n.player.selectedMemberCard);
+
+    if (ninjas.length === 0) return;
+
+    for (const player of this.players) {
+      if (player.disconnected) continue;
+
+      player
+        .getWindow('cardjitsu_snowrevive.swf')
+        .load(null, { xPercent: 0.2, yPercent: 0 });
+    }
+
+    // Wait for it to open and close
+    await this.waitForWindow('cardjitsu_snowrevive.swf', true);
+    await this.waitForWindow('cardjitsu_snowrevive.swf', false);
+
+    for (const ninja of ninjas) {
+      await ninja.player.memberCard.consume();
+      await sleep(1000);
+    }
+  }
+
+  private async doEnemyActions() {
+    for (const enemy of this.enemies) {
+      await sleep(500);
+
+      if (enemy.hp <= 0) continue;
+
+      const [nextMove, target] = enemy.nextTarget();
+
+      if (nextMove === null && target === null) continue; // Enemy is stuck
+
+      if (enemy.stunned) continue; // Stunned by a fire ninja, can't attack
+
+      if (nextMove !== null) {
+        enemy.moveEnemy(nextMove.x, nextMove.y);
+        await this.callbacks.waitForAnims();
+      }
+
+      if (target === null) {
+        enemy.resetSpriteSettings();
+        continue;
+      }
+
+      const targetObject = this.grid.get(target.x, target.y);
+
+      if (targetObject === null) {
+        logverbose(getYellowString('Enemy tried to attack a null object'));
+        continue;
+      }
+
+      const ninja = targetObject as Ninja;
+
+      if (ninja.hp <= 0) continue;
+
+      // Enemy sprite might be flipped to the wrong direction
+      if (targetObject.x < enemy.x) enemy.resetSpriteSettings();
+
+      await enemy.attackTarget(ninja);
+
+      if (targetObject.x > enemy.x) {
+        // Flip ninja sprite to face enemy
+        targetObject.spriteSettings({ mirrorMode: MirrorMode.X });
+      }
+
+      await this.callbacks.waitForAnims();
+      targetObject.resetSpriteSettings();
+    }
+
+    // Reset stunned state
+    for (const enemy of this.enemies.filter(e => e.stunned)) {
+      enemy.stunned = false;
+      enemy.idleAnimation();
+    }
+  }
+
+  private async showTargets() {
+    this.ninjas.forEach(n => n.showTargets());
+  }
+
+  private async hideTargets() {
+    this.ninjas.forEach(n => n.hideTargets());
+  }
+
+  private async removeTargets() {
+    this.ninjas.forEach(n => n.removeTargets());
+  }
+
+  private async hideGhosts() {
+    this.ninjas.forEach(n => n.hideGhost(false));
+  }
+
+  private async removeObjects() {
+    this.removeTargets();
+    this.removeUI();
+
+    for (const ninja of this.ninjas) {
+      ninja.removeObject();
+      ninja.shield?.removeObject();
+      ninja.rage?.removeObject();
+    }
+
+    for (const enemy of this.enemies) {
+      enemy.removeObject();
+      enemy.flame?.removeObject();
+    }
+
+    this.rocks.forEach(r => r.removeObject());
+  }
+
   private async displayRoundTitle() {
     const roundTime = (this.gameStart + 300000) - Date.now();
 
@@ -956,6 +1723,136 @@ export class SnowGame {
     }
 
     await this.waitForWindow('cardjitsu_snowrounds.swf', true);
+  }
+
+  private async displayComboTitle(elements: string[]) {
+    for (const penguin of this.players) {
+      const title = penguin.getWindow('cardjitsu_snowcombos.swf');
+      title.layer = 'bottomLayer';
+      title.load({
+        data: elements
+      }, {
+        loadDescription: '',
+        assetPath: '',
+        xPercent: 0.5,
+        yPercent: 0.5
+      });
+    }
+
+    await this.waitForWindow('cardjitsu_snowcombos.swf', true);
+  }
+
+  public async sendTip(phase: TipPhase, player: SnowPlayer | null = null) {
+    const players = player ? [player] : this.players;
+
+    for (const player of players) {
+      if (!player.tipMode || player.displayedTips.has(phase)) continue;
+
+      player.displayedTips.add(phase);
+
+      if (player.lastTip === null) {
+        player.sendTip(phase);
+        continue;
+      }
+
+      player
+        .getWindow('cardjitsu_snowinfotip.swf')
+        .onClose = ({ penguin }) => penguin.sendTip(phase);
+    }
+  }
+
+  private getPayoutRound() {
+    if (this.round >= 3) {
+      // Bonus round entered
+      return 9 - this.enemies.length;
+    }
+    if (this.enemies.length === 0 && this.round === 2) {
+      // All enemies defeated
+      return 4;
+    }
+    // Players were defeated
+    return this.round + 1;
+  }
+
+  private async displayPayout() {
+    // TODO: beta payout (if we do an option for that)
+
+    for (const player of this.players) {
+      if (player.disconnected) continue;
+
+      let resultRank = 24;
+      let expPercent = 100;
+
+      if (true) { // TODO: check if snow rank < 24
+        // TODO: replace 0 with snow rank
+        const requiredExp = ExpRequirements[0 + 1] ?? 3000;
+        const currentExp = 0 // TODO: get actual current exp
+
+        const resultExp = currentExp + this.exp;
+        expPercent = Math.round(resultExp / requiredExp * 100);
+
+        const ranksGained = Math.floor(expPercent / 100);
+        // TODO: replace 0 with snow rank
+        resultRank = Math.round(0 + ranksGained);
+      }
+
+      const doubleCoins = false; // TODO: check if all stamps gotten
+      const coins = this.coins * (doubleCoins ? 2 : 1);
+
+      if (resultRank >= 13) {
+        // TODO: snow pro stamp
+      }
+
+      // TODO: get update stuff for db
+      /*const updates = {
+        coins: player.penguin.currency.coins + coins,
+        snow_ninja_rank: resultRank,
+        snow_ninja_progress: ((expPercent % 100) + 100) % 100
+      }
+
+      if (this.enemies.length <= 0) {
+        const key = 
+      }*/
+
+      // TODO: update db and add items
+
+      const payout = player.getWindow('cardjitsu_snowpayout.swf');
+      payout.layer = 'bottomLayer';
+      payout.load({
+        coinsEarned: coins,
+        doubleCoins: Number(doubleCoins),
+        damage: 0,
+        isBoss: 0,
+        rank: 1, // TODO: actual rank + 1
+        round: this.getPayoutRound(),
+        showItems: 0,
+        stampList: [], // TODO: full list of cjs stamps
+        stamps: [], // TODO: get client's list of unlocked stamps
+        xpStart: 0, // TODO: client's exp progress (updated?)
+        xpEnd: resultRank < 24 ? expPercent : 100
+      }, {
+        loadDescription: '',
+        assetPath: '',
+        xPercent: 0.08,
+        yPercent: 0.05
+      });
+    }
+  }
+
+  private async displayWinSequence() {
+    await sleep(2000);
+
+    if (this.ninjas.every(n => n.hp <= 0)) return;
+
+    for (const ninja of this.ninjas) {
+      if (ninja.player.disconnected) continue;
+
+      if (ninja.hp <= 0) ninja.setHealth(1);
+
+      ninja.winAnimation();
+    }
+
+    await sleep(3500);
   }
 
 }
@@ -979,9 +1876,9 @@ export class SnowWorld {
   assets: AssetCollection = new AssetCollection();
 
   // TODO: temporary for testing, make this 3 later
-  matchMaker: MatchMaker = new MatchMaker(1);
+  matchMaker: MatchMaker = new MatchMaker(2);
 
-  games: SnowGame[] = [];
+  games: Set<SnowGame> = new Set();
 
   locations: {
     base: string,
@@ -1040,7 +1937,11 @@ export class SnowWorld {
 
   public createGame(fire: SnowPlayer | null, water: SnowPlayer | null, snow: SnowPlayer | null) {
     const game = new SnowGame(this.ctx, fire, water, snow);
-    this.games.push(game);
+    this.games.add(game);
     game.start();
+  }
+
+  public removeGame(game: SnowGame) {
+    this.games.delete(game);
   }
 }
