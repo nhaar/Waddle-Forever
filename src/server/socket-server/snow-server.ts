@@ -57,7 +57,7 @@ class SnowServer implements MessageHandler {
 
   private getPenguinCtx(client: ClientSocket): SnowPenguinContext {
     const penguin = this._msg.getPenguin(client);
-    const game = this._world.games.find(game => game.players.includes(penguin)) ?? null;
+    const game = Array.from(this._world.games).find(game => game.players.includes(penguin)) ?? null;
     return {
       ...this.getContext(),
       client,
@@ -88,8 +88,8 @@ class SnowServer implements MessageHandler {
     const { penguin, game } = this.getPenguinCtx(cs);
     penguin.disconnected = true;
     this._world.disconnect(penguin);
-    if (game !== null) {
-      // TODO
+    if (game !== null && penguin.ninja !== null) {
+      penguin.ninja.setHealth(0);
     }
   }
 }

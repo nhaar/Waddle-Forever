@@ -4,17 +4,17 @@ import { getDefaultPenguin } from "@server/database/database";
 import { getYellowString, logdebug, logverbose } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
-import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, ViewMode } from "../world/snow/snow-constants";
-import { LocalGameObject } from "../world/snow/snow-game-objects";
+import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, TipPhase, ViewMode } from "../world/snow/snow-constants";
 import { CARDS } from "@server/game-logic/cards";
-import { SnowGame, SnowPlayer, SnowWorld } from "../world/snow/snow";
+import { sleep, SnowGame, SnowPlayer, SnowWorld } from "../world/snow/snow";
+import { GameObject, sfxName } from "../world/snow/snow-game-objects";
 
 
 export type SnowHandler = (ctx: SnowPenguinContext, ...args: Array<string>) => Promise<void>;
 export type SnowFrameworkHandler = (ctx: SnowPenguinContext, args: Record<string, any>) => Promise<void>;
 
 export const handleVersion: SnowHandler = async ({ msg, client }) => {
-  // copied from snowflake config.py, is this meaningful at all?
+  // copied from snowflake config.py
   await msg.sendSnowData(client, 'S_VERSION', 'FY15-20150206 (4954)r');
 }
 
@@ -164,9 +164,8 @@ export const handlePlaceReady: SnowHandler = async (ctx) => {
   await msg.sendSnowData(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
   await msg.sendSnowData(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
 
-  const player = new LocalGameObject(penguin, ctx, 'Player', 5, 2.5);
-  await player.placeObject();
-  await msg.sendSnowData(client, 'O_PLAYER', player.id);
+  // this does nothing for snow, but it's needed for the game to start
+  await msg.sendSnowData(client, 'O_PLAYER', -1);
 }
 
 export const handleIntroAnimDone: SnowHandler = async () => {
@@ -191,7 +190,10 @@ export const handleUse: SnowHandler = async (ctx, objectId) => {
   }
 
   if (obj.onClick === null) {
-    // TODO: place powercard;
+    // We're placing a power card
+    if (ctx.penguin.selectedCard) {
+      ctx.penguin.ninja.placePowerCard(obj.x, obj.y);
+    }
     return;
   }
 
@@ -219,8 +221,6 @@ export const frameworkRoomToRoomMinTime: SnowFrameworkHandler = async (ctx) => {
     InputModifier.NONE,
     '/use' // command
   );
-
-  ctx.game.somePlayerReady();
 }
 
 export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async (ctx) => {
@@ -281,8 +281,9 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   });
 }
 
-export const frameworkScreenSize: SnowFrameworkHandler = async (ctx, { smallViewEnabled }) => {
-  ctx.penguin.screenSize = smallViewEnabled;
+export const frameworkScreenSize: SnowFrameworkHandler = async () => {
+  // 'smallViewEnabled' is given, but as far as i can tell this is meaningless.
+  // possibly did something for the original play page?
 }
 
 export const frameworkPayloadBILogAction: SnowFrameworkHandler = async () => {
@@ -355,9 +356,123 @@ export const setupMatchMaker = async (world: SnowWorld) => {
   world.matchMaker.setTickListener(() => {});
 }
 
+export const frameworkMemberCardInfo: SnowFrameworkHandler = async ({ penguin }) => {
+  if (penguin.lastTip === TipPhase.MEMBER_CARD) {
+    penguin.hideTip();
+  } else {
+    penguin.sendTip(TipPhase.MEMBER_CARD);
+  }
+}
+
+export const frameworkWindowDuplicated: SnowFrameworkHandler = async ({ penguin }) => {
+  // comment from snowflake:
+  // This will get sent by the client when the server tries to load a
+  // window that already exists.
+  // In most cases, it's just the tip window.
+  penguin.hideTip();
+}
+
+export const frameworkCardSelect: SnowFrameworkHandler = async ({ penguin, game }, { element, value, cardId }) => {
+  if (penguin.isReady || !game.timer.running) return console.log('die2');
+
+  const card = penguin.powerCardById(Number(cardId));
+
+  if (card.value !== Number(value) || card.element !== element) return console.log('die');
+
+  if (penguin.selectedMemberCard) {
+    penguin.memberCard.remove();
+    penguin.memberCard.selected = false;
+  }
+
+  if (penguin.selectedCard) {
+    penguin.selectedCard.remove();
+  }
+
+  card.object.x = card.object.y = -1;
+
+  penguin.selectedCard = card;
+  penguin.ninja.removeTargets();
+  game.grid.changeTiles(penguin, 'ui_tile_attack', true, true);
+  penguin.ninja.playSound(sfxName('uitargetred'), penguin);
+}
+
+export const frameworkCardDeselect: SnowFrameworkHandler = async ({ penguin, game }) => {
+  if (penguin.isReady || !game.timer.running || !penguin.selectedCard) return console.log('die3');
+
+  penguin.selectedCard.remove();
+  penguin.selectedCard = null;
+  penguin.ninja.showTargets();
+  game.grid.showTiles(penguin);
+}
+
+export const frameworkMemberCardSelect: SnowFrameworkHandler = async ({ penguin, game }) => {
+  if (!penguin.penguin.membership.isMember) return;
+
+  if (penguin.isReady || !penguin.memberCard || !game.timer.running) return;
+
+  if (penguin.selectedCard) {
+    await penguin.selectedCard.remove();
+    penguin.selectedCard = null;
+  }
+
+  await penguin.memberCard.place();
+  penguin.ninja.removeTargets();
+  game.grid.hideTiles(penguin);
+}
+
+export const frameworkMemberCardDeselect: SnowFrameworkHandler = async ({ penguin, game }) => {
+  if (!penguin.penguin.membership.isMember) return;
+
+  if (penguin.isReady || !penguin.memberCard || !game.timer.running) return;
+
+  penguin.memberCard.selected = false;
+  await penguin.memberCard.remove();
+
+  if (penguin.ninja.hp > 0) {
+    penguin.ninja.showTargets();
+    game.grid.showTiles(penguin);
+  }
+}
+
+export const frameworkCardConsumed: SnowFrameworkHandler = async ({ penguin }) => {
+  penguin.powerCardSlots.delete(penguin.selectedCard);
+  penguin.selectedCard = null;
+
+  if (!penguin.hasPowerCards) {
+    const ui = penguin.getWindow('cardjitsu_snowui.swf');
+    ui.sendPayload('updateStamina', { cardData: null, cycle: false, stamina: 0 });
+    ui.sendPayload('noCards');
+  }
+}
+
+export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ penguin, game }) => {
+  if (penguin.isReady) return;
+
+  // snowflake had this named 'ui_confirm', but that doesnt seem to exist?
+  const confirm = new GameObject(game, 'confirm', penguin.ninja.x, penguin.ninja.y, false, 0.5, 1.05);
+  await confirm.placeObject();
+  await confirm.placeSprite();
+  confirm.playSound('SFX_MG_2013_CJSnow_UIPlayerReady_VBR8');
+
+  penguin.getWindow('cardjitsu_snowui.swf').sendPayload('disableCards');
+
+  game.grid.hideTiles(penguin);
+
+  penguin.isReady = true;
+
+  if (!penguin.displayedTips.has(TipPhase.CONFIRM)) {
+    penguin.displayedTips.add(TipPhase.CONFIRM);
+  }
+
+  if (penguin.tipMode && penguin.lastTip === TipPhase.CONFIRM) {
+    penguin.hideTip();
+  }
+}
+
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
   const { client, penguin } = ctx;
   console.log(`${penguin.penguin.name} is leaving CJ Snow`);
+  penguin.disconnected = true;
   await penguin.sendToRoom();
   client.closed = true;
 }

@@ -1,5 +1,5 @@
 import { filePolicy } from "./handlers/login";
-import { frameworkQuit, frameworkRoomToRoomComplete, frameworkScreenSize, frameworkWindowManagerReady, frameworkWindowReady, frameworkWindowClosed, handleIntroAnimDone, handleLogin, frameworkPayloadBILogAction, handlePlaceContext, handlePlaceReady, handleReady, handleVersion, frameworkElementSelected, frameworkMMCancel, frameworkRoomToRoomMinTime, handleUse, handleActionDone } from "./handlers/snow";
+import { frameworkQuit, frameworkRoomToRoomComplete, frameworkScreenSize, frameworkWindowManagerReady, frameworkWindowReady, frameworkWindowClosed, handleIntroAnimDone, handleLogin, frameworkPayloadBILogAction, handlePlaceContext, handlePlaceReady, handleReady, handleVersion, frameworkElementSelected, frameworkMMCancel, frameworkRoomToRoomMinTime, handleUse, handleActionDone, frameworkMemberCardInfo, frameworkWindowDuplicated, frameworkMemberCardSelect, frameworkMemberCardDeselect, frameworkConfirmClicked, frameworkCardSelect, frameworkCardDeselect, frameworkCardConsumed } from "./handlers/snow";
 import { SnowDataHandler } from "./snow-data-handler";
 import { XmlHandler } from "./xml-handler";
 
@@ -33,6 +33,14 @@ export const createSnowDataHandler = (): SnowDataHandler => {
       ['payloadBILogAction', frameworkPayloadBILogAction],
       ['mmElementSelected', frameworkElementSelected],
       ['mmCancel', frameworkMMCancel],
+      ['ShowMemberCardInfoTip', frameworkMemberCardInfo],
+      ['windowDuplicated', frameworkWindowDuplicated],
+      ['cardClick', frameworkCardSelect],
+      ['unselectCard', frameworkCardDeselect],
+      ['memberCardClick', frameworkMemberCardSelect],
+      ['unselectMemberCard', frameworkMemberCardDeselect],
+      ['ConsumeCardResponse', frameworkCardConsumed],
+      ['confirmClicked', frameworkConfirmClicked],
       ['quit', frameworkQuit],
       ['quitFromPayout', frameworkQuit]
     ])

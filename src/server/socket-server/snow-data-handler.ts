@@ -69,6 +69,11 @@ export class SnowDataHandler {
           continue;
         }
 
+        if (ctx.game !== null) {
+          ctx.game.callbacks.eventDone(json.triggerName, ctx.penguin);
+          ctx.game.callbacks.eventDone(json.triggerName, ctx.game);
+        }
+
         const callback = this._frameworkCallbacks.get(json.triggerName);
 
         if (callback !== undefined) {
