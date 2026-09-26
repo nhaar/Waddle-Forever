@@ -1,9 +1,10 @@
 import { World } from "@server/socket-server/world/world";
 import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
-import { PenguinMessenger } from "../../socket-server/messenger";
+import { PenguinMessenger } from "@server/socket-server/messenger";
 import { GameHandler, PenguinHandler } from "./handlers";
 import { MATCHMAKERS } from "@server/game-data/games";
+import { WorldPenguin } from "../world/world-penguin";
 
 export const handleGetNinjaRanks: PenguinHandler<[number]> = ({ msg, penguin, world }, id) => {
   const target = world.getPenguin(id);
@@ -53,22 +54,22 @@ export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
     }
     switch (name) {
       case 'card':
-        mm.addMatchListener((players) => {
+        mm.setMatchListener((players: WorldPenguin[]) => {
           const game = world.getWaddleGame('card', players);
           const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
           msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
         });
-        mm.addTickListener((players, time) => {
+        mm.setTickListener((players: WorldPenguin[], time) => {
           msg.send(players, 'tmm', time, ...players.map(p => p.name));
         });
         break;
       case 'fire':
-        mm.addMatchListener((players) => {
+        mm.setMatchListener((players: WorldPenguin[]) => {
           const game = world.getWaddleGame('fire', players);
           const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
           msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
         });
-        mm.addTickListener((players, time) => {
+        mm.setTickListener((players: WorldPenguin[], time) => {
           msg.send(players, 'tmm', players.length, time, ...players.map(p => [p.name, p.inventory.color].join('|')));
         });
         break;

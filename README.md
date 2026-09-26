@@ -70,6 +70,10 @@ The server, code and setup sources a lot of things from the [Houdini](https://gi
 
 Special thanks to charlotte, who made CPSC, the original singleplayer/speedrunning client.
 
-Credits to Ben for developing the Scavenger Hunt dependency and dynamic Igloo List. Credits for Randomno for the modified igloo list.
+Credits to Ben for developing the Scavenger Hunt dependency and dynamic Igloo List.
+
+Credits for Randomno for the modified igloo list.
+
+Thanks to Levi for developing [snowflake](https://github.com/Lekuruu/snowflake/), from which most of the logic for Card-Jitsu Snow is derived.
 
 Special thanks for continued support, recreating, researching and or testing the game to: Doubleuman, slicedpizza39, Cyan, Randomno, supermanover, Blue Kirby, Jeff The Rock, Resol van Lemmy, VampLovr, ungato, Zeldaboy, Ryboflavin, Bluestk, Levi

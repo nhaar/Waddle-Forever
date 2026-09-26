@@ -6,6 +6,7 @@ import { PenguinRepository } from "@server/database/database"
 import { ClientSocket } from "./socket-server"
 import { getYellowString, logverbose } from "@server/logger"
 import { OfflineWorld } from "./offline-world"
+import { SnowContext } from "./snow-data-handler"
 
 export type LoginContext = {
   msg: PenguinMessenger,
@@ -26,9 +27,9 @@ const parseXmlMessage = (message: string): [string, string] => {
 }
 
 export class XmlHandler {
-  constructor(private _callbacks: Map<string, (ctx: LoginContext, data: string) => void | Promise<void>>) {}
+  constructor(private _callbacks: Map<string, (ctx: LoginContext | SnowContext, data: string) => void | Promise<void>>) {}
 
-  public handle(context: LoginContext, message: string) {
+  public handle(context: LoginContext | SnowContext, message: string) {
     logverbose(getYellowString('Incoming XML data: '), message);
     const [action, data] = parseXmlMessage(message);
     const callback = this._callbacks.get(action);

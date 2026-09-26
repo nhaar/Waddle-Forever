@@ -5,6 +5,7 @@ import { EffectService } from '@common/utils';
 
 export interface MessageHandler {
   handle: (client: ClientSocket, message: string) => void;
+  connect: (client: ClientSocket) => Promise<void>;
   disconnect: (client: ClientSocket) => Promise<void>;
 }
 
@@ -34,7 +35,7 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
       const cs: ClientSocket = {
         write: async (message: string) => {
           return new Promise<void>((resolve, reject) => {
-            ws.send(Buffer.from(message + '\0', 'utf8'), { binary: true }, (err) => {
+            ws.send(Buffer.from(message, 'utf8'), { binary: true }, (err) => {
               if (err) {
                 reject(err);
                 return;
@@ -43,10 +44,13 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
             });
           })
         },
-
-        end: (d) => ws.close(undefined, d),
+        end: (d) => {
+          ws.close(undefined, d);
+        },
         buffer: ''
       }
+
+      handler.connect(cs);
 
       ws.on('message', (data) => {
         const str = data.toString();
@@ -96,7 +100,7 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
           const cs: ClientSocket = {
             write: async (message: string) => {
               return new Promise<void>((resolve, reject) => {
-                socket.write(message + '\0', (err) => {
+                socket.write(message, (err) => {
                   if (err) {
                     reject(err);
                   }
@@ -114,9 +118,13 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
             buffer: ''
           }
 
+          handler.connect(cs);
+
           socket.on('data', (data: string | Buffer) => {
-            const packets = (cs.buffer + data.toString()).split('\0');
-            cs.buffer = packets.pop() ?? '';
+            data = data.toString();
+
+            const packets = (cs.buffer + data).split('\0');
+            cs.buffer = data.endsWith('\0') ? (packets.pop() ?? '') : '';
 
             for (const packet of packets) {
               if (packet.length > 0) {

@@ -755,6 +755,12 @@ export class GameData {
   }
 
   public lookupFile(route: string): string | undefined {
+    // TODO: clean this up - this is an awful hack because i do NOT want to
+    // manually define every single file here in as3-static
+    if (route.startsWith('game/')) {
+      return `default/svanilla/media/${route}`;
+    }
+
     return this.state.files.get(route);
   }
 

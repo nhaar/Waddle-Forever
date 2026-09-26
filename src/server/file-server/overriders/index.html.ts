@@ -1,32 +1,10 @@
+import { makeUrl } from "@common/utils";
 import { getMediaFile } from "@server/game-data/files";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 
-function injectRuffleIntoHtml(html: string, ip: string, loginPort: number, worldPort: number) {
-  const socketProxy = JSON.stringify([
-    {
-      host: ip,
-      port: loginPort,
-      proxyUrl: `ws://${ip}:${loginPort}`,
-    },
-    {
-      host: ip,
-      port: worldPort,
-      proxyUrl: `ws://${ip}:${worldPort}`,
-    },
-  ]);
-
-  const injectedScript = `
-    <script>
-      window.RufflePlayer = window.RufflePlayer || {};
-      window.RufflePlayer.config = {
-        ...window.RufflePlayer.config,
-        socketProxy: ${socketProxy}
-      };
-    </script>
-  `;
-
-  return html.replace('</head>', `${injectedScript}</head>`);
+function socketInfo(host: string, port: number) {
+  return { host, port, proxyUrl: `ws://${host}:${port}` }
 }
 
 export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buffer | string): Promise<Buffer | string> {
@@ -52,5 +30,25 @@ export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buff
     b = b.toString();
   }
 
-  return injectRuffleIntoHtml(b, s.targetIP, s.loginPort, s.worldPort);
+  // For modern-as3.html, inject the correct url for media
+  b = b.replaceAll('##MEDIA_URL##', makeUrl(s.targetIP, s.targetPort));
+
+  // Ruffle socket proxy
+  const socketProxy = JSON.stringify([
+    socketInfo(s.targetIP, s.loginPort),
+    socketInfo(s.targetIP, s.worldPort),
+    socketInfo(s.targetIP, s.snowPort)
+  ]);
+
+  const injectedScript = `
+    <script>
+      window.RufflePlayer = window.RufflePlayer || {};
+      window.RufflePlayer.config = {
+        ...window.RufflePlayer.config,
+        socketProxy: ${socketProxy}
+      };
+    </script>
+  `;
+
+  return b.replace('</head>', `${injectedScript}</head>`);
 }
