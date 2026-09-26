@@ -1,3 +1,4 @@
+import { makeUrl } from "@common/utils";
 import { getMediaFile } from "@server/game-data/files";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
@@ -30,7 +31,7 @@ export async function overrideIndexHtml(d: GameData, s: SettingsManager, b: Buff
   }
 
   // For modern-as3.html, inject the correct url for media
-  b = b.replaceAll('##MEDIA_URL##', `http://${s.targetIP}:${s.targetPort}`);
+  b = b.replaceAll('##MEDIA_URL##', makeUrl(s.targetIP, s.targetPort));
 
   // Ruffle socket proxy
   const socketProxy = JSON.stringify([

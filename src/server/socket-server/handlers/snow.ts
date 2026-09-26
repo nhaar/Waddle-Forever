@@ -270,7 +270,7 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   });
 
   // TODO: this can be one of two: 'cardjitsu_snowplayerselect.swf' or 'cardjitsu_snowplayerselectbeta.swf'
-  const playerSelect = penguin.getWindow('cardjitsu_snowplayerselect.swf');
+  const playerSelect = penguin.getWindow(Windows.PLAYER_SELECT);
   await playerSelect.load({
     game: penguin.battleMode === 0 ? 'snow' : 'snowtusk',
     name: penguin.penguin.name,
@@ -345,7 +345,7 @@ export const setupMatchMaker = async (world: SnowWorld) => {
     const snowNinja = players.find(p => p.element === 'snow') ?? null;
 
     for (const penguin of [fireNinja, snowNinja, waterNinja].filter(Boolean)) {
-      const select = penguin.getWindow(null, 'cardjitsu_snowplayerselect.swf');
+      const select = penguin.getWindow(null, Windows.PLAYER_SELECT);
       select.sendPayload('matchFound', {
         1: fireNinja ? fireNinja.penguin.name : null,
         2: waterNinja ? waterNinja.penguin.name : null,
@@ -376,11 +376,11 @@ export const frameworkWindowDuplicated: SnowFrameworkHandler = async ({ penguin 
 }
 
 export const frameworkCardSelect: SnowFrameworkHandler = async ({ penguin, game }, { element, value, cardId }) => {
-  if (penguin.isReady || !game.timer.running) return console.log('die2');
+  if (penguin.isReady || !game.timer.running) return;
 
   const card = penguin.powerCardById(Number(cardId));
 
-  if (card.value !== Number(value) || card.element !== element) return console.log('die');
+  if (card.value !== Number(value) || card.element !== element) return;
 
   if (penguin.selectedMemberCard) {
     penguin.memberCard.remove();
@@ -400,7 +400,7 @@ export const frameworkCardSelect: SnowFrameworkHandler = async ({ penguin, game 
 }
 
 export const frameworkCardDeselect: SnowFrameworkHandler = async ({ penguin, game }) => {
-  if (penguin.isReady || !game.timer.running || !penguin.selectedCard) return console.log('die3');
+  if (penguin.isReady || !game.timer.running || !penguin.selectedCard) return;
 
   penguin.selectedCard.remove();
   penguin.selectedCard = null;
@@ -473,7 +473,7 @@ export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ penguin, g
 }
 
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
-  const { client, penguin } = ctx;
+  const { penguin } = ctx;
   console.log(`${penguin.penguin.name} is leaving CJ Snow`);
   await penguin.sendToRoom();
   penguin.disconnected = true;
