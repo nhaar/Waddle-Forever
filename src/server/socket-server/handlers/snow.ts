@@ -59,9 +59,9 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
     return;
   }
 
-  const pjson = await ctx.db.get(id);
+  const p = ctx.regularWorld.getById(id);
 
-  if (pjson === null) {
+  if (p === undefined) {
     failLogin("Penguin not found");
     return;
   }
@@ -73,10 +73,8 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
 
   // TODO: block joining tusk battle if user is not a snow ninja
 
-  console.log(`${pjson.name} is logging into CJ Snow`);
+  console.log(`${p.name} is logging into CJ Snow`);
 
-  const p = new WorldPenguin(id, pjson, ctx.settings);
-  ctx.off.removePenguin(id);
   penguin.penguin = p;
   penguin.pid = p.id;
   world.addPenguin(ctx.penguin);

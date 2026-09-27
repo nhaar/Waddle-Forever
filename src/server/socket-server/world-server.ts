@@ -27,7 +27,6 @@ import { BotManager } from "./world/bots";
 import { ModManager } from "@server/mods";
 
 export class WorldServer implements MessageHandler {
-  private _world: World;
   private _msg = new XtMessenger();
   private _off: OfflineWorld;
   private _commandsHandler: CommandsHandler;
@@ -37,9 +36,8 @@ export class WorldServer implements MessageHandler {
   private _botManager: BotManager;
   private _mods: ModManager;
   
-  constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository) {
+  constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository, private _world: World) {
     this._off = new OfflineWorld(_db);
-    this._world = new World(_gameData);
     this._botManager = this.getBotManager();
 
     this._mods = new ModManager(this._gameData);
@@ -160,8 +158,9 @@ export class WorldServer implements MessageHandler {
   }
 }
 
-export const setupWorldServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<WorldServer>> => {
-  const world = new WorldServer(settings, gameData, db);
-  await setupSocketServer('world', WORLD_PORT, world);
-  return world;
+export const setupWorldServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<[WorldServer, World]>> => {
+  const world = new World(gameData);
+  const server = new WorldServer(settings, gameData, db, world);
+  await setupSocketServer('world', WORLD_PORT, server);
+  return [server, world];
 }

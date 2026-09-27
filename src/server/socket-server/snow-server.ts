@@ -12,10 +12,10 @@ import { createSnowXmlHandler, createSnowDataHandler } from "./snow-handlers";
 import { SnowContext, SnowDataHandler, SnowPenguinContext } from "./snow-data-handler";
 import { SnowPlayer, SnowWorld } from "./world/snow/snow";
 import { PenguinPersister } from "./handlers/handlers";
-import { OfflineWorld } from "./offline-world";
 import { setAssets } from "./world/snow/snow-assets";
 import { setupMatchMaker } from "./handlers/snow";
 import { SnowMessenger } from "./snow-messenger";
+import { World } from "./world/world";
 
 class SnowServer implements MessageHandler {
   private _msg: SnowMessenger;
@@ -23,19 +23,22 @@ class SnowServer implements MessageHandler {
   private _xmlHandler: XmlHandler;
   private _world: SnowWorld
   private _persister: PenguinPersister;
-  private _off: OfflineWorld;
 
-  constructor(private gameData: GameData, private settings: SettingsManager, private db: PenguinRepository) {
+  constructor(
+    private gameData: GameData,
+    private settings: SettingsManager,
+    private regularWorld: World,
+    db: PenguinRepository
+  ) {
     this._msg = new SnowMessenger();
     this._handler = createSnowDataHandler();
     this._xmlHandler = createSnowXmlHandler();
-    this._off = new OfflineWorld(db);
     this._world = new SnowWorld();
     this._world.init(this.getContext());
 
     this._persister = (p, force = false) => { 
       if (p.canSave || force) {
-        this.db.write(p.id, p.getJSON());
+        db.write(p.id, p.getJSON());
       }
     };
 
@@ -48,9 +51,8 @@ class SnowServer implements MessageHandler {
       msg: this._msg,
       data: this.gameData,
       settings: this.settings,
-      db: this.db,
       prst: this._persister,
-      off: this._off
+      regularWorld: this.regularWorld
     };
   }
 
@@ -95,8 +97,13 @@ class SnowServer implements MessageHandler {
   }
 }
 
-export const setupSnowServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<void>> => {
-  const snowServer = new SnowServer(gameData, settings, db);
+export const setupSnowServer = async (
+  settings: SettingsManager,
+  db: PenguinRepository,
+  gameData: GameData,
+  world: World
+): Promise<EffectService<void>> => {
+  const snowServer = new SnowServer(gameData, settings, world, db);
   await snowServer.setAssets();
   await setupSocketServer('CJ Snow', SNOW_PORT, snowServer);
 }
