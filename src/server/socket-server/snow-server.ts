@@ -7,8 +7,6 @@ import { GameData } from "@server/timelines/game-data";
 
 import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
-import { PenguinMessenger } from "@server/socket-server/messenger";
-
 import { XmlHandler } from "./xml-handler";
 import { createSnowXmlHandler, createSnowDataHandler } from "./snow-handlers";
 import { SnowContext, SnowDataHandler, SnowPenguinContext } from "./snow-data-handler";
@@ -17,9 +15,10 @@ import { PenguinPersister } from "./handlers/handlers";
 import { OfflineWorld } from "./offline-world";
 import { setAssets } from "./world/snow/snow-assets";
 import { setupMatchMaker } from "./handlers/snow";
+import { SnowMessenger } from "./snow-messenger";
 
 class SnowServer implements MessageHandler {
-  private _msg: PenguinMessenger<SnowPlayer>;
+  private _msg: SnowMessenger;
   private _handler: SnowDataHandler;
   private _xmlHandler: XmlHandler;
   private _world: SnowWorld
@@ -27,7 +26,7 @@ class SnowServer implements MessageHandler {
   private _off: OfflineWorld;
 
   constructor(private gameData: GameData, private settings: SettingsManager, private db: PenguinRepository) {
-    this._msg = new PenguinMessenger<SnowPlayer>((p): p is SnowPlayer => p instanceof SnowPlayer);
+    this._msg = new SnowMessenger();
     this._handler = createSnowDataHandler();
     this._xmlHandler = createSnowXmlHandler();
     this._off = new OfflineWorld(db);

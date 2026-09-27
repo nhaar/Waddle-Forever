@@ -13,7 +13,7 @@ import { choose, clamp, randomInt } from '@common/utils';
 import { Bot, BotAttributes, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
-import { PenguinMessenger } from '../messenger';
+import { XtMessenger } from '../xt-messenger';
 import { joinWaddle } from '../handlers/room';
 import path from 'path';
 import { generateBots, generateRandomBot } from './bot-generation';
@@ -91,7 +91,7 @@ export class BotManager {
 
   constructor(
     private _world: World,
-    private _msg: PenguinMessenger,
+    private _msg: XtMessenger,
     private _data: GameData,
     private _appSettings: SettingsManager,
     private _writeFn: WriteFunction,

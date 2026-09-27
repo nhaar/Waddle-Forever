@@ -1,12 +1,9 @@
-import { PenguinMessenger } from "../messenger";
-import { ClientSocket } from "@server/socket-server/socket-server";
-import { getDefaultPenguin } from "@server/database/database";
 import { getYellowString, logdebug, logverbose } from "@server/logger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
-import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
-import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, TipPhase, ViewMode, Windows } from "../world/snow/snow-constants";
+import { SnowPenguinContext } from "@server/socket-server/snow-data-handler";
+import { AlignMode, EventType, InputModifier, InputTarget, InputType, MapblockType, ScaleMode, ServerType, TipPhase, Windows } from "../world/snow/snow-constants";
 import { CARDS } from "@server/game-logic/cards";
-import { sleep, SnowGame, SnowPlayer, SnowWorld } from "../world/snow/snow";
+import { SnowPlayer, SnowWorld } from "../world/snow/snow";
 import { GameObject, sfxName } from "../world/snow/snow-game-objects";
 
 
@@ -15,7 +12,7 @@ export type SnowFrameworkHandler = (ctx: SnowPenguinContext, args: Record<string
 
 export const handleVersion: SnowHandler = async ({ msg, client }) => {
   // copied from snowflake config.py
-  await msg.sendSnowData(client, 'S_VERSION', 'FY15-20150206 (4954)r');
+  await msg.send(client, 'S_VERSION', 'FY15-20150206 (4954)r');
 }
 
 export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => {
@@ -89,9 +86,9 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
   await penguin.sendLoginReply(ctx);
   
   // TODO: this shouldnt be sending an empty string... is somewhere else incorrect?
-  await msg.sendSnowData(client, 'W_BASEASSETURL', '');
-  await msg.sendSnowData(client, 'S_WORLDTYPE', world.serverType, world.buildType);
-  await msg.sendSnowData(client, 'S_WORLD', world.worldId, world.worldName, `0:${penguin.place.id}`, 0, 'none', 0, world.worldOwner, world.worldName, 0, world.stylesheetId, 0);
+  await msg.send(client, 'W_BASEASSETURL', '');
+  await msg.send(client, 'S_WORLDTYPE', world.serverType, world.buildType);
+  await msg.send(client, 'S_WORLD', world.worldId, world.worldName, `0:${penguin.place.id}`, 0, 'none', 0, world.worldOwner, world.worldName, 0, world.stylesheetId, 0);
 
   await penguin.switchPlace(penguin.place);
 }
@@ -105,30 +102,30 @@ export const handleReady: SnowHandler = async (ctx) => {
 
   const place = penguin.place;
 
-  await msg.sendSnowData(client, 'UI_ALIGN', ctx.world.worldId, 0, 0, AlignMode.CENTER, ScaleMode.NONE);
-  await msg.sendSnowData(client, 'UI_BGCOLOR', 34, 164, 243);
+  await msg.send(client, 'UI_ALIGN', ctx.world.worldId, 0, 0, AlignMode.CENTER, ScaleMode.NONE);
+  await msg.send(client, 'UI_BGCOLOR', 34, 164, 243);
   await penguin.setPlace(place.name, 1, 0);
   
-  await msg.sendSnowData(client, 'P_MAPBLOCK', MapblockType.TILEMAP, 1, 1, place.mapBlocks.tileMap);
-  await msg.sendSnowData(client, 'P_MAPBLOCK', MapblockType.HEIGHTMAP, 1, 1, place.mapBlocks.heightMap);
+  await msg.send(client, 'P_MAPBLOCK', MapblockType.TILEMAP, 1, 1, place.mapBlocks.tileMap);
+  await msg.send(client, 'P_MAPBLOCK', MapblockType.HEIGHTMAP, 1, 1, place.mapBlocks.heightMap);
 
-  await msg.sendSnowData(client, 'P_VIEW', place.camera.viewMode);
-  await msg.sendSnowData(client, 'P_TILESIZE', place.camera.tileSize);
-  await msg.sendSnowData(client, 'P_LOCKVIEW', Number(place.camera.lockView));
-  await msg.sendSnowData(client, 'P_LOCKSCROLL', Number(place.camera.lockScroll));
-  await msg.sendSnowData(client, 'P_LOCKOBJECTS', Number(place.objectLock));
+  await msg.send(client, 'P_VIEW', place.camera.viewMode);
+  await msg.send(client, 'P_TILESIZE', place.camera.tileSize);
+  await msg.send(client, 'P_LOCKVIEW', Number(place.camera.lockView));
+  await msg.send(client, 'P_LOCKSCROLL', Number(place.camera.lockScroll));
+  await msg.send(client, 'P_LOCKOBJECTS', Number(place.objectLock));
 
-  await msg.sendSnowData(client, 'P_HEIGHTMAPDIVISIONS', place.camera.heightMapDivisions);
-  await msg.sendSnowData(client, 'P_HEIGHTMAPSCALE', place.camera.heightMapScale);
-  await msg.sendSnowData(client, 'P_DRAG', Number(place.draggable));
-  await msg.sendSnowData(client, 'P_ELEVSCALE', place.camera.elevationScale);
-  await msg.sendSnowData(client, 'P_RELIEF', Number(place.camera.terrainLighting));
+  await msg.send(client, 'P_HEIGHTMAPDIVISIONS', place.camera.heightMapDivisions);
+  await msg.send(client, 'P_HEIGHTMAPSCALE', place.camera.heightMapScale);
+  await msg.send(client, 'P_DRAG', Number(place.draggable));
+  await msg.send(client, 'P_ELEVSCALE', place.camera.elevationScale);
+  await msg.send(client, 'P_RELIEF', Number(place.camera.terrainLighting));
   // do these need repeated?
-  await msg.sendSnowData(client, 'P_HEIGHTMAPDIVISIONS', place.camera.heightMapDivisions);
-  await msg.sendSnowData(client, 'P_HEIGHTMAPSCALE', place.camera.heightMapScale);
+  await msg.send(client, 'P_HEIGHTMAPDIVISIONS', place.camera.heightMapDivisions);
+  await msg.send(client, 'P_HEIGHTMAPSCALE', place.camera.heightMapScale);
 
   const c3d = place.camera3d;
-  await msg.sendSnowData(client, 'P_CAMERA3D',
+  await msg.send(client, 'P_CAMERA3D',
     c3d.near, c3d.far,
     ...c3d.position, ...c3d.angle,
     c3d.cameraView, c3d.left,
@@ -140,34 +137,34 @@ export const handleReady: SnowHandler = async (ctx) => {
   );
 
   const cam = place.camera;
-  await msg.sendSnowData(client, 'P_CAMLIMITS',
+  await msg.send(client, 'P_CAMLIMITS',
     cam.marginTopLeftX, cam.marginTopLeftY,
     cam.marginBottomRightX, cam.marginBottomRightY
   );
 
-  await msg.sendSnowData(client, 'P_RENDERFLAGS', Number(place.render.occludeTiles), place.render.alphaCutoff);
-  await msg.sendSnowData(client, 'P_LOCKRENDERSIZE', 0, c3d.cameraWidth, c3d.cameraHeight);
+  await msg.send(client, 'P_RENDERFLAGS', Number(place.render.occludeTiles), place.render.alphaCutoff);
+  await msg.send(client, 'P_LOCKRENDERSIZE', 0, c3d.cameraWidth, c3d.cameraHeight);
 
   const s = place.physics;
-  await msg.sendSnowData(client, 'P_PHYSICS', ...[
+  await msg.send(client, 'P_PHYSICS', ...[
     s.gravity, s.collision, s.friction,
     s.tileFriction, s.safetyNet, s.netHeight,
     s.netFriction, s.netBounce
   ].map(Number));
 
-  await msg.sendSnowData(client, 'P_ASSETSCOMPLETE');
+  await msg.send(client, 'P_ASSETSCOMPLETE');
 }
 
 export const handlePlaceReady: SnowHandler = async (ctx) => {
   const { msg, client, penguin } = ctx;
 
-  await msg.sendSnowData(client, 'P_CAMERA', ...penguin.place.camera.position, 0, 1);
-  await msg.sendSnowData(client, 'P_ZOOM', penguin.place.camera.zoom);
-  await msg.sendSnowData(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
-  await msg.sendSnowData(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
+  await msg.send(client, 'P_CAMERA', ...penguin.place.camera.position, 0, 1);
+  await msg.send(client, 'P_ZOOM', penguin.place.camera.zoom);
+  await msg.send(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
+  await msg.send(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
 
   // this does nothing for snow, but it's needed for the game to start
-  await msg.sendSnowData(client, 'O_PLAYER', -1);
+  await msg.send(client, 'O_PLAYER', -1);
 }
 
 export const handleIntroAnimDone: SnowHandler = async () => {
@@ -213,7 +210,7 @@ export const frameworkRoomToRoomMinTime: SnowFrameworkHandler = async (ctx) => {
     return;
   }
 
-  await ctx.msg.sendSnowData(
+  await ctx.msg.send(
     ctx.client,
     'W_INPUT',
     '/use', // input id

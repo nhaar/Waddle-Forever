@@ -4,7 +4,7 @@ import { World } from '@server/socket-server/world/world';
 import { WorldPenguin } from '@server/socket-server/world/world-penguin';
 import { WorldRoom } from '@server/socket-server/world/world-room';
 import { GameData } from '@server/timelines/game-data';
-import { PenguinMessenger } from '../../socket-server/messenger';
+import { XtMessenger } from '../xt-messenger';
 import { getClientPuffleIds, getPuffleWalkArguments } from './puffle';
 import { getFurnitureString, getIglooFromId } from './igloo';
 import { WorldTable } from '@server/socket-server/world/world-table';
@@ -52,7 +52,7 @@ export async function formatBuddyEntry(id: number, world: World, db: PenguinRepo
   return online ? `${id}|${name}|1` : `${id}|${name}`;
 }
 
-function sendGetOnlineBuddies(msg: PenguinMessenger, p: WorldPenguin, world: World) {
+function sendGetOnlineBuddies(msg: XtMessenger, p: WorldPenguin, world: World) {
   const onlineIds = p.buddy.buddies.filter(id => world.getById(id) !== undefined).map(i => String(i));
   msg.send(p, 'go', ...onlineIds);
 }
@@ -136,7 +136,7 @@ export function filterItems(data: GameData, items: number[]): number[] {
   return items;
 }
 
-function sendCoinsForChange(data: GameData, msg: PenguinMessenger, penguin: WorldPenguin) {
+function sendCoinsForChange(data: GameData, msg: XtMessenger, penguin: WorldPenguin) {
   const donations = data.getCoinsForChangeDonations();
   if (donations !== null) {
     // placeholder donation values
@@ -144,7 +144,7 @@ function sendCoinsForChange(data: GameData, msg: PenguinMessenger, penguin: Worl
   }
 }
 
-export function sendLPMessage(penguin: WorldPenguin, data: GameData, msg: PenguinMessenger) {
+export function sendLPMessage(penguin: WorldPenguin, data: GameData, msg: XtMessenger) {
   msg.send(
     penguin,
     'lp',

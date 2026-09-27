@@ -1,4 +1,4 @@
-import { PenguinMessenger } from "@server/socket-server/messenger"
+import { XtMessenger } from "@server/socket-server/xt-messenger"
 import { World } from "./world/world"
 import { GameData } from "@server/timelines/game-data"
 import { SettingsManager } from "@server/settings"
@@ -9,7 +9,7 @@ import { OfflineWorld } from "./offline-world"
 import { SnowContext } from "./snow-data-handler"
 
 export type LoginContext = {
-  msg: PenguinMessenger,
+  msg: XtMessenger,
   data: GameData,
   settings: SettingsManager,
   db: PenguinRepository,

@@ -98,7 +98,7 @@ export class GameObject {
   }
 
   public async placeObject() {
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       this.clients,
       'O_HERE',
       this.id,
@@ -122,7 +122,7 @@ export class GameObject {
       this.game.grid.move(this, x, y);
     }
 
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       this.clients,
       'O_SLIDE',
       this.id,
@@ -159,7 +159,7 @@ export class GameObject {
       handleId = this.game.callbacks.registerAction(name, ActionType.Animation, this.id, settings.callback);
     }
 
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       target ?? this.clients,
       'O_ANIM',
       this.id,
@@ -174,7 +174,7 @@ export class GameObject {
   }
 
   public async placeSprite(name: string = this.name, target: SnowPlayer | null = null) {
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       target ?? this.clients,
       'O_SPRITE',
       this.id,
@@ -184,7 +184,7 @@ export class GameObject {
   }
 
   public async loadSprite(name: string) {
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       this.clients,
       'S_LOADSPRITE',
       `0:${this.ctx.world.assets.getByName(name).index}`
@@ -203,7 +203,7 @@ export class GameObject {
       ...settings
     }
 
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       this.clients,
       'O_SPRITEANIM',
       this.id,
@@ -224,7 +224,7 @@ export class GameObject {
     const originMode = s.originMode ?? this._originMode;
     const mirrorMode = s.mirrorMode ?? this._mirrorMode;
 
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       this.clients,
       'O_SPRITESETTINGS',
       this.id,
@@ -251,7 +251,7 @@ export class GameObject {
   }
 
   public async removeObject() {
-    await this.ctx.msg.sendSnowData(this.clients, 'O_GONE', this.id);
+    await this.ctx.msg.send(this.clients, 'O_GONE', this.id);
     this.game.grid.remove(this);
     this.game.objects.delete(this);
     this.removePendingActions();
@@ -310,7 +310,7 @@ export class LocalGameObject extends GameObject {
 
   public async removeObject() {
     this.client.localObjects.delete(this);
-    await this.ctx.msg.sendSnowData(this.clients, 'O_GONE', this.id);
+    await this.ctx.msg.send(this.clients, 'O_GONE', this.id);
     this.removePendingActions();
   }
 
@@ -2594,7 +2594,7 @@ export class Sound implements Asset {
 
     const targets = (target instanceof SnowPlayer) ? [target] : [...target.players];
 
-    await ctx.msg.sendSnowData(
+    await ctx.msg.send(
       targets,
       'FX_PLAYSOUND',
       `0:${this.index}`,
@@ -2611,7 +2611,7 @@ export class Sound implements Asset {
     const action = target.callbacks.byName(this.name);
 
     if (action) {
-      ctx.msg.sendSnowData(
+      ctx.msg.send(
         target.players,
         'FX_STOPSOUND',
         action.handleId,

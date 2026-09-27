@@ -1,7 +1,7 @@
 import { World } from "@server/socket-server/world/world";
 import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
-import { PenguinMessenger } from "@server/socket-server/messenger";
+import { XtMessenger } from "@server/socket-server/xt-messenger";
 import { GameHandler, PenguinHandler } from "./handlers";
 import { MATCHMAKERS } from "@server/game-data/games";
 import { WorldPenguin } from "../world/world-penguin";
@@ -52,7 +52,7 @@ export const handleBuyNinjaCards: PenguinHandler<[]> = ({ msg, penguin, prst }) 
   prst(penguin);
 }
 
-export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
+export const addMatchmakerListeners = (world: World, msg: XtMessenger) => {
   MATCHMAKERS.forEach(({ name, id }) => {
     const mm = world.getGame(id).matchMaker;
     if (mm === null) {

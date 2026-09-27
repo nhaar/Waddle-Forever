@@ -9,7 +9,7 @@ import { GameData } from "@server/timelines/game-data";
 
 import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
-import { PenguinMessenger } from "@server/socket-server/messenger";
+import { XtMessenger } from "@server/socket-server/xt-messenger";
 
 import { World } from "./world/world";
 
@@ -28,7 +28,7 @@ import { ModManager } from "@server/mods";
 
 export class WorldServer implements MessageHandler {
   private _world: World;
-  private _msg = new PenguinMessenger();
+  private _msg = new XtMessenger();
   private _off: OfflineWorld;
   private _commandsHandler: CommandsHandler;
   private _xtHandler: XtHandler;
@@ -108,7 +108,7 @@ export class WorldServer implements MessageHandler {
     await Promise.all(this._msg.getClients().map(client => this.disconnect(client)));
     this._msg.close();
     this._botManager.shutdown();
-    this._msg = new PenguinMessenger();
+    this._msg = new XtMessenger();
     this._world = new World(this._gameData);
     this.init();
     this._botManager = this.getBotManager();

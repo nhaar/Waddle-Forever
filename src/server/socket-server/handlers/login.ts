@@ -1,4 +1,4 @@
-import { PenguinMessenger } from "../../socket-server/messenger";
+import { XtMessenger } from "../xt-messenger";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { getDefaultPenguin } from "@server/database/database";
 import { logdebug } from "@server/logger";
@@ -6,9 +6,7 @@ import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
 import { LoginContext } from "@server/socket-server/xml-handler";
 
-
-
-export function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
+export function sendError(msg: XtMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
   msg.send(p, 'e', error);
 }
 

@@ -205,7 +205,7 @@ class SWFWindow {
   }
 
   public async send(content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
-    await this.ctx.msg.sendSnowData(this._player, 'UI_CLIENTEVENT', this.ctx.world.worldId, msgType, JSON.stringify(content));
+    await this.ctx.msg.send(this._player, 'UI_CLIENTEVENT', this.ctx.world.worldId, msgType, JSON.stringify(content));
   }
 
   public async load(initPayload: Record<string, any> | null = null, args: Record<string, any> = {}) {
@@ -293,7 +293,7 @@ class WindowManager {
   }
 
   public async load() {
-    await this.ctx.msg.sendSnowData(
+    await this.ctx.msg.send(
       this._player,
       'UI_CROSSWORLDSWFREF',
       this.ctx.world.worldId, // element id
@@ -954,7 +954,7 @@ export class SnowPlayer {
   }
 
   public async sendLoginMessage({ msg }: SnowContext, message: string) {
-    await msg.sendSnowData(this, 'S_LOGINDEBUG', message);
+    await msg.send(this, 'S_LOGINDEBUG', message);
   }
 
   public async sendLoginError({ msg }: SnowContext, code: number = 900) {
@@ -962,12 +962,12 @@ export class SnowPlayer {
   }
 
   public async sendLoginReply({ msg }: SnowContext) {
-    await msg.sendSnowData(this, 'S_LOGIN', this.penguin.id);
+    await msg.send(this, 'S_LOGIN', this.penguin.id);
   }
 
   public async setPlace(name: string, objectId: number = 0, instanceId: number = 0) {
     this.place = this.ctx.world.places[name];
-    await this.ctx.msg.sendSnowData(this, 'W_PLACE', this.place.id, objectId, instanceId);
+    await this.ctx.msg.send(this, 'W_PLACE', this.place.id, objectId, instanceId);
   }
   
   public async switchPlace(place: Place) {
@@ -975,14 +975,14 @@ export class SnowPlayer {
     
     await Promise.all([
       ...Array.from(place.assets).map(({ index }) => 
-        this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`)
+        this.ctx.msg.send(this, 'S_LOADSPRITE', `0:${index}`)
       ),
       ...Array.from(place.soundAssets).map(({ index }) => 
-        this.ctx.msg.sendSnowData(this, 'S_LOADSPRITE', `0:${index}`)
+        this.ctx.msg.send(this, 'S_LOADSPRITE', `0:${index}`)
       )
     ]);
 
-    await this.ctx.msg.sendSnowData(this, 'W_ASSETSCOMPLETE', this.pid);
+    await this.ctx.msg.send(this, 'W_ASSETSCOMPLETE', this.pid);
   }
 
   public getWindow(name: string | null = null, url: string | null = null) {

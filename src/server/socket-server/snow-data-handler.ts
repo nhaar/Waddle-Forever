@@ -1,22 +1,21 @@
-import { PenguinMessenger } from "@server/socket-server/messenger"
-import { World } from "./world/world"
 import { GameData } from "@server/timelines/game-data"
 import { SettingsManager } from "@server/settings"
 import { PenguinRepository } from "@server/database/database"
 import { ClientSocket } from "./socket-server"
-import { getRedString, getBlueString, getYellowString, logverbose } from "@server/logger"
+import { getRedString, getBlueString, logverbose } from "@server/logger"
 import { OfflineWorld } from "./offline-world"
 import { SnowFrameworkHandler, SnowHandler } from "./handlers/snow"
 import { SnowGame, SnowWorld } from "./world/snow/snow"
 import { SnowPlayer } from "./world/snow/snow"
 import { PenguinPersister } from "./handlers/handlers"
+import { SnowMessenger } from "./snow-messenger"
 
 /**
  * A global context for classes that do not pertain
  * to a specific client.
  */
 export interface SnowContext {
-  msg: PenguinMessenger<SnowPlayer>,
+  msg: SnowMessenger,
   data: GameData,
   settings: SettingsManager,
   db: PenguinRepository,
