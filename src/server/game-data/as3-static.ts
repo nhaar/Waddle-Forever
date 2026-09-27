@@ -1144,7 +1144,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/en/web_service/game_configs/cards.json': 'archives:ENWeb_serviceGame_configsCards.json',
   'play/v2/client/ninja_progress.swf': 'archives:ClientNinja_progress.swf',
   'play/v2/client/catalog_viewer.swf': 'svanilla:media/play/v2/client/catalog_viewer.swf',
-  'play/v2/client/video_player.swf': 'unknown:video_player.swf',
+  'play/v2/client/video_player.swf': 'archives:Video_player.swf',
   'play/v2/content/local/en/video/cjsnowcinematic01.f4v': 'svanilla:media/play/v2/content/local/en/video/cjsnowcinematic01.f4v',
   'play/v2/content/local/en/video/cjsnowcinematic02.f4v': 'svanilla:media/play/v2/content/local/en/video/cjsnowcinematic02.f4v',
   'play/v2/content/local/en/video/cjsnowcinematic03.f4v': 'svanilla:media/play/v2/content/local/en/video/cjsnowcinematic03.f4v',
