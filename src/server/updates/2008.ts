@@ -119,6 +119,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-01-21',
+    missionItems: [813, 814],
     end: ['party']
   },
   {
@@ -867,6 +868,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-04-21',
+    missionItems: [815, 816],
     rooms: {
       agent: 'recreation:agent_2008_apr_pre_cpip.swf'
     }
@@ -1240,6 +1242,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-06-24',
+    missionItems: [817, 818],
     miscComments: ['The earthquake ends'],
     end: ['earthquake']
   },
@@ -2376,6 +2379,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-10-07',
+    missionItems: [819, 820],
     miscComments: ['Mission 9: Operation: Spy & Seek is added'],
     localChanges: {
       'forms/missions.swf': {
@@ -3334,6 +3338,7 @@ export const UPDATES_2008: Update[] = [
   },
   {
     date: '2008-12-29',
+    missionItems: [822, 823],
     end: ['party'],
     miscComments: ['Mission 10: Waddle Squad is added'],
     localChanges: {
