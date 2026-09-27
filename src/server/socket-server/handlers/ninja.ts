@@ -30,7 +30,7 @@ export const handleGetNinjaCards: PenguinHandler<[]> = ({ msg, penguin }) => {
   }).join('|'));
 }
 
-export const handleGetNinjaCardsVanilla: PenguinHandler<[]> = ({ msg, penguin }) => {
+export const handleGetNinjaCardsModern: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gcd', penguin.ninja.cards.map((card) => {
     return card.flat().join(',');
   }).join('|'));
