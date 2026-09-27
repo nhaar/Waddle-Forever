@@ -177,7 +177,7 @@ function generateRandomInventory(
   addExploreItems(inventory, today, attrs.exploreFan);
   addNintendoItems(inventory, startDate, today, attrs.transferFan, attrs.collectorMania);
   addIbitzItems(inventory, today, attrs.transferFan, attrs.collectorMania);
-  addMissionItems(inventory, startDate, today, attrs.missionFan);
+  addMissionItems(inventory, startDate, today, attrs.agentFan);
 
   return [...inventory];
 }
@@ -292,7 +292,7 @@ export function generateRandomBot(data: GameData): [BotAttributes, PenguinJson] 
     ninjaFan: Math.random(),
     exploreFan: Math.random(),
     transferFan: Math.random(),
-    missionFan: Math.random()
+    agentFan: Math.random()
   };
   return [attrs,
     generateRandomPenguin(data, attrs)];

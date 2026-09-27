@@ -348,7 +348,7 @@ export type BotAttributes = {
   ninjaFan: number;
   exploreFan: number;
   transferFan: number;
-  missionFan: number;
+  agentFan: number;
 }
 
 enum BehaviorId {
