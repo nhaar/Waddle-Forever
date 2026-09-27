@@ -1847,6 +1847,8 @@ export class SnowGame {
 
       // TODO: update db and add items
 
+      const snowStamps = this.ctx.data.getStampbook().find(g => g.group_id === 60).stamps;
+
       const payout = player.getWindow(Windows.PAYOUT);
       payout.layer = 'bottomLayer';
       payout.load({
@@ -1857,8 +1859,18 @@ export class SnowGame {
         rank: 1, // TODO: actual rank + 1
         round: this.getPayoutRound(),
         showItems: 0,
-        stampList: [], // TODO: full list of cjs stamps
-        stamps: [], // TODO: get client's list of unlocked stamps
+        stampList: snowStamps.map(stamp => ({
+          stamp_id: stamp.stamp_id,
+          name: `global_content.stamps.${stamp.stamp_id}.name`,
+          description: `global_content.stamps.${stamp.stamp_id}.description`,
+          rank_token: `global_content.stamps.${stamp.stamp_id}.rank_token`,
+          rank: stamp.rank,
+          is_member: stamp.is_member
+        })),
+        stamps: player.penguin.stampbook.stamps.filter(id => snowStamps.some(g => g.stamp_id === id)).map(id => ({
+          _id: id,
+          new: false // TODO: if id is in the collected stamps this game
+        })),
         xpStart: 0, // TODO: client's exp progress (updated?)
         xpEnd: resultRank < 24 ? expPercent : 100
       }, {
