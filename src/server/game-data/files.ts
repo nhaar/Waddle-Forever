@@ -2161,6 +2161,10 @@ map to work with CPIP, it's used as a placeholder pre dojo courtyard`
     {
       file: 'medieval2012/mdlv2.swf',
       comment: 'From JF archives, second login poster for medieval 2012. Unknown why but the login poster from archives doesn\'t work, but this one does'
+    },
+    {
+      file: 'video_player.swf',
+      comment: 'Given by Misabr, supposedly ripped from media1'
     }
   ]
 };
