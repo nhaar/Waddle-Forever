@@ -30,7 +30,7 @@ export async function startServices() {
 
   // TODO: would be nice if we could only have this available
   // when cj snow is available on the timeline (can dynamically start or stop)
-  await setupSnowServer(settingsManager, db, gameData,);
+  await setupSnowServer(settingsManager, db, gameData);
 
   const failedMods = world.mods.initializeMods();
 
