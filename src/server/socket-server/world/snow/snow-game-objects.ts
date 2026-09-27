@@ -3,6 +3,7 @@ import { MirrorMode, OriginMode, TipPhase, Windows } from "./snow-constants";
 import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld } from "./snow";
 import { choose } from "@common/utils";
 import { Card, CardColor, CardElement } from "@server/game-logic/cards";
+import { Stamp } from "@server/game-logic/stamps";
 
 interface SpriteSettings {
   scaleX?: number
@@ -2375,8 +2376,8 @@ export class CardObject implements Card {
     if (isCombo) this.applyEffects();
 
     this.player.playedCards++;
+    this.checkStamps(isCombo);
     await this.game.callbacks.waitForAnims();
-    // TODO: check stamps
   }
 
   async consume() {
@@ -2486,6 +2487,38 @@ export class CardObject implements Card {
 
         target.flame = new Flame(this.game, target.x, target.y);
         target.flame.play();
+      }
+    }
+  }
+
+  async checkStamps(isCombo: boolean) {
+    const ninjas = this.targets.filter(t => (t instanceof Ninja) && !t.player.disconnected);
+
+    if (this.player.playedCards >= 3) {
+      await this.player.unlockStamp(this.game, Stamp.PowerCardPro);
+    }
+
+    if (ninjas.length >= 3 && this.element === 's') {
+      await this.player.unlockStamp(this.game, Stamp.HugeHeal);
+    }
+
+    if (ninjas.length > 0 && isCombo) {
+      if (this.element === 'w') {
+        await this.player.unlockStamp(this.game, Stamp.WaveBoost);
+      } else if (this.element === 's') {
+        await this.player.unlockStamp(this.game, Stamp.SnowShield);
+      }
+    }
+
+    const enemies = this.targets.filter(t => t instanceof Enemy);
+
+    if (enemies.length >= 3) {
+      if (this.element === 'w') {
+        await this.player.unlockStamp(this.game, Stamp.WaveBoost);
+      } else if (this.element === 'f') {
+        await this.player.unlockStamp(this.game, Stamp.FireBlast);
+
+        if (isCombo) await this.player.unlockStamp(this.game, Stamp.FireBlastCombo);
       }
     }
   }

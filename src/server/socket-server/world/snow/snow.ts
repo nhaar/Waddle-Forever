@@ -6,6 +6,8 @@ import { MatchMaker } from "../matchmaker";
 import { choose, EventListener, makeUrl, randomInt, shuffle } from "@common/utils";
 import { CardColor, CARDS } from "@server/game-logic/cards";
 import { getYellowString, logverbose } from "@server/logger";
+import { getStampInfo } from "@server/game-data/stamps";
+import { Stamp } from "@server/game-logic/stamps";
 
 export interface Asset {
   index: number;
@@ -940,6 +942,7 @@ export class SnowPlayer {
 
   windowManager: WindowManager;
   localObjects: ObjectCollection = new ObjectCollection();
+  unlockedStamps: Set<number> = new Set();
 
   constructor(private ctx: SnowContext) {
     this.windowManager = new WindowManager(this, ctx);
@@ -963,6 +966,43 @@ export class SnowPlayer {
 
   public async sendLoginReply({ msg }: SnowContext) {
     await msg.send(this, 'S_LOGIN', this.penguin.id);
+  }
+
+  public async unlockStamp(game: SnowGame, id: number) {
+    if (this.disconnected) return;
+
+    if (this.penguin.stampbook.has(id)) return;
+
+    const stamp = getStampInfo(this.ctx.data.getStampbook(), id);
+
+    if (stamp === null) return;
+
+    this.unlockedStamps.add(id);
+    this.penguin.stampbook.add(id);
+
+    this.ctx.prst(this.penguin);
+
+    const window = this.getWindow(Windows.STAMPS);
+
+    // if stamp window is already visible, wait for it to close
+    // in theory this wouldn't work if there was more than 2 stamps earned at a time
+    // but that should never happen i think
+    await game.waitForWindow(Windows.STAMPS, false, this);
+
+    window.load({
+      stamp: {
+        stamp_id: id,
+        stampGroupId: 60,
+        parent_group_id: 8,
+        name: `global_content.stamps.${id}.name`,
+        description: `global_content.stamps.${id}.description`,
+        rank_token: `global_content.stamps.${id}.rank_token`,
+        is_member: Boolean(stamp.is_member),
+        rank: stamp.rank
+      }
+    }, {
+      assetPath: `${this.ctx.world.locations.windowBase}/`
+    })
   }
 
   public async setPlace(name: string, objectId: number = 0, instanceId: number = 0) {
@@ -1270,7 +1310,8 @@ export class SnowGame {
 
       for (const player of this.connectedPlayers) {
         if (player.ninja.selectedObject === ninja.selectedObject) {
-          // TODO: unlock revive stamp for everyone who was reviving
+          // unlocked for everyone who was reviving
+          player.unlockStamp(this, Stamp.Revive);
         }
       }
 
@@ -1328,7 +1369,7 @@ export class SnowGame {
       this.round++;
 
       if (this.round >= 3 && this.bonusCriteria === 'full_health') {
-        // TODO: full health stamp
+        this.unlockStamp(Stamp.FullHealth);
       }
 
       this.enemies.forEach(e => e.removeObject());
@@ -1370,17 +1411,17 @@ export class SnowGame {
 
     if (this.enemies.length === 0) {
       for (const player of this.players) {
-        if (!player.wasKO) continue;
-
-        // TODO: up and at em stamp
+        if (player.wasKO) {
+          player.unlockStamp(this, Stamp.UpAndAtEm);
+        }
       }
 
       if (this.players.every(p => p.wasKO)) {
-        // TODO: team revival stamp
+        this.unlockStamp(Stamp.TeamRevival);
       }
 
       if (this.round >= 3) {
-        // TODO: bonus win stamp
+        this.unlockStamp(Stamp.BonusWin);
       }
     }
 
@@ -1394,22 +1435,23 @@ export class SnowGame {
     this.ctx.world.removeGame(this);
   }
 
-  public async waitForWindow(name: string, loaded: boolean): Promise<void> {
+  public async waitForWindow(name: string, loaded: boolean, player?: SnowPlayer): Promise<void> {
+    const players = player ? [player] : this.connectedPlayers;
     return new Promise((resolve) => {
-      if (this.connectedPlayers.every(p => p.getWindow(name).loaded === loaded)) {
+      if (players.every(p => p.getWindow(name).loaded === loaded)) {
         resolve();
         return;
       }
 
       const callback = () => {
-        if (this.connectedPlayers.every(p => p.getWindow(name).loaded === loaded)) {
+        if (players.every(p => p.getWindow(name).loaded === loaded)) {
           clearTimeout(timer);
           resolve();
         }
       }
       const timer = setTimeout(resolve, 8000);
 
-      this.connectedPlayers.forEach(p => this.windowEvents.addListener(name, p, loaded, callback));
+      players.forEach(p => this.windowEvents.addListener(name, p, loaded, callback));
     });
   }
 
@@ -1448,14 +1490,8 @@ export class SnowGame {
   private async createEnemies() {
     if (this.round > 3) return;
 
-    const maxEnemies = [
-      [1, 3],
-      [1, 3],
-      [1, 3],
-      [4, 4] // always 4 enemies for bonus round
-    ][this.round];
-
-    const amountEnemies = randomInt(maxEnemies[0], maxEnemies[1]);
+    // always 4 enemies for bonus round
+    const amountEnemies = this.round === 3 ? 4 : randomInt(1, 3);
     const enemyClasses = [Sly, Scrap, Tank];
 
     for (let i = 0; i < amountEnemies; i++) {
@@ -1594,7 +1630,7 @@ export class SnowGame {
       }
 
       if (ninja.heals >= 15) {
-        // TODO: heal 15 stamp
+        this.snow.unlockStamp(this, Stamp.Heal15);
       }
 
       await sleep(1000);
@@ -1610,11 +1646,11 @@ export class SnowGame {
       this.totalCombos++;
 
       if (ninjasWithCards.length === 3) {
-        // TODO: 3 ninja combo stamp
+        this.unlockStamp(Stamp.ThreeNinjaCombo);
       }
 
       if (this.totalCombos >= 3) {
-        // TODO: 3 combos stamp
+        this.unlockStamp(Stamp.ThreeCombos);
       }
 
       await this.displayComboTitle(ninjasWithCards.map(n => n.player.element));
@@ -1810,6 +1846,8 @@ export class SnowGame {
   private async displayPayout() {
     // TODO: beta payout (if we do an option for that)
 
+    const snowStamps = this.ctx.data.getStampbook().find(g => g.group_id === 60).stamps;
+
     for (const player of this.connectedPlayers) {
       let resultRank = 24;
       let expPercent = 100;
@@ -1831,8 +1869,10 @@ export class SnowGame {
       const coins = this.coins * (doubleCoins ? 2 : 1);
 
       if (resultRank >= 13) {
-        // TODO: snow pro stamp
+        player.unlockStamp(this, Stamp.SnowPro);
       }
+
+      // TODO: award win stamps for element if above 3 wins
 
       // TODO: get update stuff for db
       /*const updates = {
@@ -1846,8 +1886,6 @@ export class SnowGame {
       }*/
 
       // TODO: update db and add items
-
-      const snowStamps = this.ctx.data.getStampbook().find(g => g.group_id === 60).stamps;
 
       const payout = player.getWindow(Windows.PAYOUT);
       payout.layer = 'bottomLayer';
@@ -1865,11 +1903,11 @@ export class SnowGame {
           description: `global_content.stamps.${stamp.stamp_id}.description`,
           rank_token: `global_content.stamps.${stamp.stamp_id}.rank_token`,
           rank: stamp.rank,
-          is_member: stamp.is_member
+          is_member: Boolean(stamp.is_member)
         })),
         stamps: player.penguin.stampbook.stamps.filter(id => snowStamps.some(g => g.stamp_id === id)).map(id => ({
           _id: id,
-          new: false // TODO: if id is in the collected stamps this game
+          new: player.unlockedStamps.has(id)
         })),
         xpStart: 0, // TODO: client's exp progress (updated?)
         xpEnd: resultRank < 24 ? expPercent : 100
@@ -1896,6 +1934,10 @@ export class SnowGame {
     }
 
     await sleep(3500);
+  }
+
+  unlockStamp(stamp: number) {
+    this.connectedPlayers.forEach(p => p.unlockStamp(this, stamp));
   }
 
 }

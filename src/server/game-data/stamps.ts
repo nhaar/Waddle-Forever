@@ -102,6 +102,11 @@ export type StampUpdates = Array<NewCategoryUpdate | NewStampsUpdate>;
 
 export type Stampbook = StampCategory[];
 
+export function getStampInfo(stampbook: Stampbook, id: number) {
+  const stamps = stampbook.map(g => g.stamps).flat();
+  return stamps.find(s => s.stamp_id === id) ?? null;
+}
+
 export const ORIGINAL_STAMPBOOK: Stampbook = [
   {
     "name": "Activities",

@@ -73,30 +73,6 @@ export const ExpRequirements: Readonly<Record<number, number>> = {
   24: 3000
 };
 
-export const Stamps: Readonly<Array<number>> = [
-  467,
-  468,
-  469,
-  470,
-  471,
-  472,
-  473,
-  474,
-  475,
-  476,
-  477,
-  478,
-  479,
-  480,
-  481,
-  482,
-  483,
-  484,
-  485,
-  486,
-  487
-];
-
 export enum InputType {
   UP = 1,
   DOWN = 2,
