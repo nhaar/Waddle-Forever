@@ -1271,15 +1271,15 @@ export abstract class Ninja extends GameObject {
     return attackable;
   }
 
-  public tilesInRange(target: GameObject = this) {
+  public tilesInRange(target: GameObject = this, range: number = this.move) {
     return this.game.grid.tiles.filter(tile => {
       const distance = this.game.grid.distance([target.x, target.y], [tile.x, tile.y]);
-      return distance <= this.move;
+      return distance <= range;
     });
   }
 
-  public ghostTilesInRange() {
-    return this.tilesInRange(this.placedGhost ? this.ghost : this);
+  public ghostTilesInRange(range: number = this.move) {
+    return this.tilesInRange(this.placedGhost ? this.ghost : this, range);
   }
 
   public movableTiles() {

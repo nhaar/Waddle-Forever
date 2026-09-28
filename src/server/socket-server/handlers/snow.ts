@@ -390,7 +390,7 @@ export const frameworkCardSelect: SnowFrameworkHandler = async ({ penguin, game 
 
   penguin.selectedCard = card;
   penguin.ninja.removeTargets();
-  game.grid.changeTiles(penguin, 'ui_tile_attack', true, true);
+  game.grid.showAttackTiles(penguin);
   penguin.ninja.playSound(sfxName('uitargetred'), penguin);
 }
 

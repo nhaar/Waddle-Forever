@@ -408,17 +408,9 @@ class Grid {
     this.tiles.forEach(t => t.hide(player))
   }
 
-  public changeTiles(player: SnowPlayer, name: string, ghost: boolean = false, ignoreObjects: boolean = false) {
-    if (ignoreObjects) {
-      const tiles = ghost ? player.ninja.ghostTilesInRange() : player.ninja.tilesInRange();
-      this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite(name, player) : t.hide(player));
-    } else {
-      const tiles = [
-        ...(ghost ? player.ninja.movableGhostTiles() : player.ninja.movableTiles()),
-        ...(player.ninja.placedGhost ? [this.getTile(player.ninja.ghost.x, player.ninja.ghost.y)] : [])
-      ]
-      this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite(name, player) : t.hide(player));
-    }
+  public showAttackTiles(player: SnowPlayer) {
+    const tiles = player.ninja.ghostTilesInRange(player.ninja.range);
+    this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite('ui_tile_attack', player) : t.hide(player));
   }
 
   private onTileClick(ctx: SnowPenguinContext, object: GameObject) {
