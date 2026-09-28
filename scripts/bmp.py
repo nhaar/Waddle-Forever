@@ -114,6 +114,7 @@ def main():
 
     bool_matrix = change_resolution(get_boolean_matrix(get_pixel_matrix(read_file(bmp))), downscale)
     bool_array_to_ts(bool_matrix, output)
+    bool_array_to_bmp(bool_matrix, output + '.bmp')
 
 if __name__ == "__main__":
     main()

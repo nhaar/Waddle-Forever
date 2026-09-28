@@ -8,8 +8,9 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
-import { getRoomFromName, IGLOO_ROOM_BASE, RoomName, ROOMS } from "@server/game-data/rooms";
+import { getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
+import { BERG_BLOCK, findLeftmostMiddlemostPosition } from "./bot-block";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -619,7 +620,11 @@ const BEHAVIORS: Behavior[] = [
     success({ room, attrs, rng }) {
       return room.id === ROOMS.berg.id && Math.max(attrs.mythsFan, attrs.stampsFan) > rng.random();
     },
-    start({ bot, rng }) {
+    start({ bot, room }) {
+      const [x, y] = findLeftmostMiddlemostPosition(BERG_BLOCK, room.players.map(p => {
+        const state = room.getState(p);
+        return [state.x, state.y];
+      }));
       bot.wearItem('head', 429);
       bot.wearItem('face', 0);
       bot.wearItem('neck', 0);
@@ -628,7 +633,7 @@ const BEHAVIORS: Behavior[] = [
       bot.wearItem('feet', 0);
       bot.schedule(() => {
         bot.doDance();
-      }, bot.walkTo(rng.int(80, 120), rng.int(150, 350)));
+      }, bot.walkTo(x, y));
     },
     end({ bot }) {
       bot.wearOutfit();
