@@ -1,7 +1,7 @@
 import { choose, clamp, findFirstIndexEqualOrGreater, randomInt } from "@common/utils";
-import { AMULET_ID, MAX_SNOW_RANK, MAX_WATER_RANK, SNOW_AWARDS, WATER_AWARDS } from "@server/game-data/ninja";
+import { AMULET_ID, MAX_WATER_RANK, WATER_AWARDS } from "@server/game-data/ninja";
 import { getTestingItems } from "@server/game-logic/items-testing";
-import { CardJitsuProgress, getFireReward, MAX_FIRE_RANK } from "@server/game-logic/ninja-progress";
+import { CardJitsuProgress, getFireReward, getSnowReward, MAX_FIRE_RANK, MAX_SNOW_RANK, SNOW_NINJA_RANK } from "@server/game-logic/ninja-progress";
 import { addDays, getDaysDelta, isGreaterOrEqual, isLower, isLowerOrEqual, Version, versionToEpoch } from "@server/routes/versions";
 import { GameData } from "@server/timelines/game-data";
 import { getAddedCatalogIndex, getIncludedCatalogIndex } from "@server/timelines/items";
@@ -141,14 +141,14 @@ function addElementalItems(inventory: Set<number>, data: GameData, member: boole
   for (let i = 1; i <= Math.min(fire, MAX_FIRE_RANK - 1); i++) {
     inventory.add(getFireReward(i));
   }
+
   for (let i = 0; i < Math.min(water, MAX_WATER_RANK - 1); i++) {
     inventory.add(WATER_AWARDS[i]);
   }
 
-
-  for (let i = 0; i < snow; i++) {
-    const item = SNOW_AWARDS[i];
-    if (member || data.getItem(item)?.isMember === false) {
+  for (let i = 1; i <= Math.min(snow, MAX_SNOW_RANK - 1); i++) {
+    const item = getSnowReward(i);
+    if (item !== null && (member || data.getItem(item)?.isMember === false)) {
       inventory.add(item);
     }
   }
@@ -264,7 +264,7 @@ function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJso
     inventory,
     fireNinja: fireRank === MAX_FIRE_RANK,
     waterNinja: waterRank === MAX_WATER_RANK,
-    snowNinja: snowRank === MAX_SNOW_RANK,
+    snowNinja: snowRank >= SNOW_NINJA_RANK,
     // never let a bot be written to the penguin database
     noSave: true
   };

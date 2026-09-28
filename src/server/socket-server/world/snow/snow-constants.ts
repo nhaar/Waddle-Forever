@@ -17,62 +17,6 @@ export const Windows = {
   STAMPS: 'stampearned.swf'
 } as const;
 
-export const SnowRewards: Readonly<Record<number, number | null>> = {
-  0: null,
-  1: null,  // Movie 1
-  2: 6163,  // Glacial Sandals
-  3: null,  // Movie 2
-  4: null,  // Movie 3
-  5: 4834,  // Coat of Frost
-  6: null,  // Movie 4
-  7: null,  // Movie 5
-  8: 2119,  // Icy Mask
-  9: null,  // Movie 6
-  10: null, // Movie 7
-  11: 1581, // Blizzard Helmet
-  12: null, // Movie 8
-  13: null, // Snow Gem (not awarded within the snow server)
-  14: 1582, // Black Ice Headband
-  15: 4835, // Frozen Armor
-  16: 5223, // Ice Cap Cuffs
-  17: 4836, // Black Ice Training Plates
-  18: 1583, // The Flurry
-  19: 6164, // Cold Snap Sandals
-  20: 4837, // Snowstorm Gi
-  21: 5224, // Storm Cloud Bracers,
-  22: 5225, // Snow Shuriken
-  23: 5226, // Fire Nunchaku
-  24: 5227  // Water Hammer
-};
-
-export const ExpRequirements: Readonly<Record<number, number>> = {
-  0: 600,
-  1: 600,
-  2: 600,
-  3: 1130,
-  4: 1130,
-  5: 1130,
-  6: 1500,
-  7: 1500,
-  8: 2000,
-  9: 2000,
-  10: 2000,
-  11: 3000,
-  12: 3000,
-  13: 3000,
-  14: 3000,
-  15: 3000,
-  16: 3000,
-  17: 3000,
-  18: 3000,
-  19: 3000,
-  20: 3000,
-  21: 3000,
-  22: 3000,
-  23: 3000,
-  24: 3000
-};
-
 export enum InputType {
   UP = 1,
   DOWN = 2,

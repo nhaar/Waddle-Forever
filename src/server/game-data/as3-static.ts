@@ -357,6 +357,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/puffle/paper/puffle_white_paper.swf': 'svanilla:media/play/v2/content/global/puffle/paper/puffle_white_paper.swf',
   'play/v2/content/global/puffle/paper/puffle_yellow_paper.swf': 'svanilla:media/play/v2/content/global/puffle/paper/puffle_yellow_paper.swf',
   'play/v2/content/global/rooms/effects/avatar.swf': 'svanilla:media/play/v2/content/global/rooms/effects/avatar.swf',
+  'play/v2/content/local/en/close_ups/earn_snow_gem.swf': 'svanilla:media/play/v2/content/local/en/close_ups/earn_snow_gem.swf',
   'play/v2/content/local/en/close_ups/hotel_elevator.swf': 'svanilla:media/play/v2/content/local/en/close_ups/hotel_elevator.swf',
   'play/v2/content/local/en/close_ups/rainbow_puffle_quest.swf': 'svanilla:media/play/v2/content/local/en/close_ups/rainbow_puffle_quest.swf',
   'play/v2/games/chipmaze/lang/de/locale.swf': 'svanilla:media/play/v2/games/chipmaze/lang/de/locale.swf',

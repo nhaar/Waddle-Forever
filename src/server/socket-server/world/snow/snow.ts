@@ -1,6 +1,6 @@
 import { WorldPenguin } from "../world-penguin";
 import { SnowContext, SnowPenguinContext } from "../../snow-data-handler";
-import { BuildType, EventType, ExpRequirements, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction, Windows } from "./snow-constants";
+import { BuildType, EventType, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction, Windows } from "./snow-constants";
 import { CardObject, Enemy, FireNinja, GameObject, MemberCard, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
 import { choose, EventListener, makeUrl, randomInt, shuffle } from "@common/utils";
@@ -8,6 +8,7 @@ import { CardColor, CARDS } from "@server/game-logic/cards";
 import { getYellowString, logverbose } from "@server/logger";
 import { getStampInfo } from "@server/game-data/stamps";
 import { Stamp } from "@server/game-logic/stamps";
+import { getSnowReward, MAX_SNOW_RANK, SNOW_NINJA_RANK } from "@server/game-logic/ninja-progress";
 
 export interface Asset {
   index: number;
@@ -1330,21 +1331,13 @@ export class SnowGame {
         return;
       }
 
-      const coins = {
-        0: 60,
-        1: 120,
-        2: 120,
-        3: 120
-      }
-      const exp = {
-        0: 100,
-        1: 200,
-        2: 300,
-        3: 180
-      }
+      this.coins += [
+        60, 120, 120, 120
+      ][this.round];
 
-      this.coins += coins[this.round];
-      this.exp += exp[this.round];
+      this.exp += [
+        100, 200, 300, 180
+      ][this.round];
 
       if (this.round >= 2 && !this.bonusCriteriaMet) {
         // Bonus criteria not met on round 3
@@ -1841,44 +1834,56 @@ export class SnowGame {
     const snowStamps = this.ctx.data.getStampbook().find(g => g.group_id === 60).stamps;
 
     for (const player of this.connectedPlayers) {
-      let resultRank = 24;
-      let expPercent = 100;
+      const progress = player.penguin.ninja.snowProgress;
 
-      if (true) { // TODO: check if snow rank < 24
-        // TODO: replace 0 with snow rank
-        const requiredExp = ExpRequirements[0 + 1] ?? 3000;
-        const currentExp = 0 // TODO: get actual current exp
+      // get current stats before we add xp
+      const currentPercent = progress.percentage;
+      const currentRank = progress.rank;
 
-        const resultExp = currentExp + this.exp;
-        expPercent = Math.round(resultExp / requiredExp * 100);
-
-        const ranksGained = Math.floor(expPercent / 100);
-        // TODO: replace 0 with snow rank
-        resultRank = Math.round(0 + ranksGained);
+      if (currentRank < MAX_SNOW_RANK) {
+        progress.addXp(this.exp);
       }
 
-      const doubleCoins = false; // TODO: check if all stamps gotten
-      const coins = this.coins * (doubleCoins ? 2 : 1);
+      const newPercent = progress.percentage;
+      const newRank = progress.rank;
 
-      if (resultRank >= 13) {
+      if (newRank >= SNOW_NINJA_RANK) {
+        progress.setNinja();
         player.unlockStamp(this, Stamp.SnowPro);
       }
 
+      const doubleCoins = snowStamps.every(s => player.penguin.stampbook.has(s.stamp_id));
+      const coins = this.coins * (doubleCoins ? 2 : 1);
+
       player.penguin.currency.add(coins);
 
-      // TODO: award win stamps for element if above 3 wins
-
-      // TODO: get update stuff for db
-      /*const updates = {
-        snow_ninja_rank: resultRank,
-        snow_ninja_progress: ((expPercent % 100) + 100) % 100
+      if (newRank > currentRank) {
+        for (let i = currentRank + 1; i <= newRank; i++) {
+          const reward = getSnowReward(i);
+          if (reward !== null) {
+            player.penguin.inventory.add(reward);
+          }
+        }
       }
 
-      if (this.enemies.length <= 0) {
-        const key = 
-      }*/
+      if (this.enemies.length === 0) {
+        // Update wins
+        const element = {
+          'fire': 'f',
+          'water': 'w',
+          'snow': 's'
+        }[player.element];
 
-      // TODO: update db and add items
+        player.penguin.ninja.addSnowWin(element);
+
+        if (player.penguin.ninja.snowWins[element] >= 3) {
+          player.unlockStamp(this, {
+            'fire': Stamp.FireNinja_Snow,
+            'water': Stamp.WaterNinja_Snow,
+            'snow': Stamp.SnowNinja
+          }[player.element]);
+        }
+      }
 
       this.ctx.prst(player.penguin);
 
@@ -1889,7 +1894,7 @@ export class SnowGame {
         doubleCoins: Number(doubleCoins),
         damage: 0,
         isBoss: 0,
-        rank: 1, // TODO: actual rank + 1
+        rank: currentRank + 1,
         round: this.getPayoutRound(),
         showItems: 0,
         stampList: snowStamps.map(stamp => ({
@@ -1904,8 +1909,10 @@ export class SnowGame {
           _id: id,
           new: player.unlockedStamps.has(id)
         })),
-        xpStart: 0, // TODO: client's exp progress (updated?)
-        xpEnd: resultRank < 24 ? expPercent : 100
+        xpStart: currentPercent,
+        xpEnd: newRank < 24
+          ? ((newRank - currentRank) * 100) + newPercent
+          : 100
       }, {
         loadDescription: '',
         assetPath: '',

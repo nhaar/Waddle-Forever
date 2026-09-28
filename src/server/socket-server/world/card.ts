@@ -372,7 +372,7 @@ export class CardJitsu extends WaddleGame {
     if (this._sensei) {
       const player = players[0];
       const ninja = new NinjaPlayer(player, 1);
-      const sensei = new Sensei(player.ninja.senseiAttempts < 5, ninja);
+      const sensei = new Sensei(player.ninja.cardProgress.senseiAttempts < 5, ninja);
       ninjas = [sensei, ninja];
       this._ninjas.set(player, ninja);
     } else {
