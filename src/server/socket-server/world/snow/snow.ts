@@ -1872,11 +1872,12 @@ export class SnowGame {
         player.unlockStamp(this, Stamp.SnowPro);
       }
 
+      player.penguin.currency.add(coins);
+
       // TODO: award win stamps for element if above 3 wins
 
       // TODO: get update stuff for db
       /*const updates = {
-        coins: player.penguin.currency.coins + coins,
         snow_ninja_rank: resultRank,
         snow_ninja_progress: ((expPercent % 100) + 100) % 100
       }
@@ -1886,6 +1887,8 @@ export class SnowGame {
       }*/
 
       // TODO: update db and add items
+
+      this.ctx.prst(player.penguin);
 
       const payout = player.getWindow(Windows.PAYOUT);
       payout.layer = 'bottomLayer';

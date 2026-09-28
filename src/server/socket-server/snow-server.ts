@@ -34,14 +34,13 @@ class SnowServer implements MessageHandler {
     this._handler = createSnowDataHandler();
     this._xmlHandler = createSnowXmlHandler();
     this._world = new SnowWorld();
-    this._world.init(this.getContext());
-
     this._persister = (p, force = false) => { 
       if (p.canSave || force) {
         db.write(p.id, p.getJSON());
       }
     };
 
+    this._world.init(this.getContext());
     setupMatchMaker(this._world);
   }
 
