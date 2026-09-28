@@ -793,7 +793,6 @@ class CallbackHandler {
 
   public async waitForClient(name: string, target: SnowPlayer): Promise<void> {
     this.registerEvent(name, target);
-    // TODO: resolve when penguin becomes disconnected, also timeout
     return new Promise((resolve) => {
       const callback = () => {
         clearTimeout(timer);
@@ -1284,8 +1283,10 @@ export class SnowGame {
 
     await sleep(1250);
 
-    // according to snowflake, targets can sometimes still be visible
-    // see if this still happens to us
+    // Targets can sometimes still be visible if
+    // it is clicked right before the timer ends.
+    // Can't really be helped because of anims, so just hide them again
+    this.hideTargets();
 
     await this.moveNinjas();
     await this.doNinjaActions();
