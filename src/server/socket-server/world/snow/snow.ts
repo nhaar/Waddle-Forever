@@ -1963,8 +1963,7 @@ export class SnowWorld {
   soundAssets: AssetCollection = new AssetCollection();
   assets: AssetCollection = new AssetCollection();
 
-  // TODO: temporary for testing, make this 3 later
-  matchMaker: MatchMaker = new MatchMaker(1);
+  matchMaker: MatchMaker = new MatchMaker(3);
 
   games: Set<SnowGame> = new Set();
 
