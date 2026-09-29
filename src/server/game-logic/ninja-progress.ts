@@ -102,7 +102,9 @@ const FIRE_RANK_THRESHOLD = [
   150
 ];
 
-const SNOW_RANK_XP_PER_RANK = [
+// each value is how much xp is needed between levels to rank up
+// 600 total xp needed for rank 1, then 1200 total for rank 2, etc.
+const SNOW_RANK_THRESHOLD = [
   600,
   600,
   1130,
@@ -128,13 +130,6 @@ const SNOW_RANK_XP_PER_RANK = [
   3000,
   3000
 ];
-
-// calculate the values for the current logic
-// 600 total xp needed for rank 1, then 1200 total for rank 2, etc.
-const SNOW_RANK_THRESHOLD = SNOW_RANK_XP_PER_RANK.reduce((thresholds: number[], xp) => {
-  thresholds.push((thresholds[thresholds.length - 1] ?? 0) + xp);
-  return thresholds;
-}, []);
 
 export const getFireReward = (rank: number): number | undefined => {
   return [6025, 4120, 2013, 1086, 3032][rank - 1];
@@ -265,28 +260,41 @@ export class CardJitsuSnowProgress {
   }
 
   public get percentage(): number {
-    const rank = this.rank;
-    if (rank >= MAX_SNOW_RANK) {
+    if (this.rank >= MAX_SNOW_RANK) {
       return 0;
-    } else {
-      const prevRankThreshold = SNOW_RANK_THRESHOLD[rank - 1] ?? 0;
-      const nextRankThreshold = SNOW_RANK_THRESHOLD[rank];
-
-      return Math.floor(
-        (this._xp - prevRankThreshold) / (nextRankThreshold - prevRankThreshold) * 100
-      );
     }
+
+    let cumulative = 0;
+
+    for (let rank = 0; rank < MAX_SNOW_RANK; rank++) {
+      const threshold = SNOW_RANK_THRESHOLD[rank];
+      if (this._xp < cumulative + threshold) {
+        return Math.floor(
+          (this._xp - cumulative) / threshold * 100
+        );
+      }
+      cumulative += threshold;
+    }
+
+    return 0;
   }
 
   public get rank(): number {
-    if (this._ninja) {
+    // if xp is the sum of all the thresholds, we're max rank
+    if (this._xp >= SNOW_RANK_THRESHOLD.reduce((a, b) => a + b)) {
       return MAX_SNOW_RANK;
     }
-    const unbeatenThreshold = SNOW_RANK_THRESHOLD.map((t, i) => [t, i]).find(([t]) => this._xp < t);
 
-    return unbeatenThreshold === undefined
-      ? MAX_SNOW_RANK
-      : unbeatenThreshold[1];
+    let cumulative = 0;
+
+    for (let rank = 0; rank < MAX_SNOW_RANK; rank++) {
+      cumulative += SNOW_RANK_THRESHOLD[rank];
+      if (this.xp < cumulative) {
+        return rank;
+      }
+    }
+
+    return MAX_SNOW_RANK;
   }
 
   public get xp(): number {
