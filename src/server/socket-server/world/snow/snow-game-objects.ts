@@ -86,16 +86,39 @@ export class GameObject {
     return this._originMode;
   }
 
+  public set originMode(originMode: OriginMode) {
+    this.spriteSettings({ originMode });
+  }
+
   public get mirrorMode() {
     return this._mirrorMode;
+  }
+
+  public set mirrorMode(mirrorMode: MirrorMode) {
+    this.spriteSettings({ mirrorMode });
   }
 
   public get xScale() {
     return this._xScale;
   }
 
+  public set xScale(scaleX: number) {
+    this.spriteSettings({ scaleX });
+  }
+
   public get yScale() {
     return this._yScale;
+  }
+
+  public set yScale(scaleY: number) {
+    this.spriteSettings({ scaleY });
+  }
+
+  private get spriteSettingsChanged() {
+    return this.mirrorMode !== MirrorMode.NONE
+      || this.originMode !== OriginMode.NONE
+      || this.xScale !== 1
+      || this.yScale !== 1;
   }
 
   public async placeObject() {
@@ -113,6 +136,10 @@ export class GameObject {
       Number(Boolean(this.onClick)),
       0
     );
+
+    if (this.spriteSettingsChanged) {
+      await this.spriteSettings();
+    }
   }
 
   public async moveObject(x: number, y: number, duration: number = 600) {
@@ -217,9 +244,7 @@ export class GameObject {
   }
 
   /** Use this to adjust the x/y scale or origin/mirror mode of this game object. */
-  // TODO: now that ctx doesn't need passed here,
-  // we can use normal setters to change this
-  public async spriteSettings(s: SpriteSettings) {
+  private async spriteSettings(s: SpriteSettings = {}) {
     const scaleX = s.scaleX ?? this._xScale;
     const scaleY = s.scaleY ?? this._yScale;
     const originMode = s.originMode ?? this._originMode;
@@ -242,11 +267,7 @@ export class GameObject {
   }
 
   public async resetSpriteSettings() {
-    if (this.mirrorMode !== MirrorMode.NONE
-      || this.originMode !== OriginMode.NONE
-      || this.xScale !== 1
-      || this.yScale !== 1
-    ) {
+    if (this.spriteSettingsChanged) {
       await this.spriteSettings({ scaleX: 1, scaleY: 1, originMode: OriginMode.NONE, mirrorMode: MirrorMode.NONE });
     }
   }
@@ -548,19 +569,13 @@ export class SnowProjectile extends Effect {
   private async setMirrorMode(tx: number, ty: number) {
     const xDiff = tx - this.x;
     const yDiff = ty - this.y;
-    
-    let mirrorMode: MirrorMode = null;
 
     if (xDiff < 0 && yDiff > 0) {
-      mirrorMode = MirrorMode.XY;
+      this.mirrorMode = MirrorMode.XY;
     } else if (xDiff < 0) {
-      mirrorMode = MirrorMode.X;
+      this.mirrorMode = MirrorMode.X;
     } else if (yDiff > 0) {
-      mirrorMode = MirrorMode.Y;
-    }
-
-    if (mirrorMode !== null) {
-      this.spriteSettings({ mirrorMode });
+      this.mirrorMode = MirrorMode.Y;
     }
   }
 
@@ -596,7 +611,7 @@ export class FireProjectile extends Effect {
   async play(tx: number = 0, ty: number = 0) {
     if ((tx - this.x) < 0) this.xOffset = -1;
     await this.placeObject();
-    if ((tx - this.x) < 0) await this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if ((tx - this.x) < 0) this.mirrorMode = MirrorMode.X;
 
     await this.placeSprite(this.getAnimName(tx, ty));
   }
@@ -1364,7 +1379,7 @@ export class FireNinja extends Ninja {
   }
 
   async attackAnimation(x: number, y: number) {
-    if (this.x > x) this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x > x) this.mirrorMode = MirrorMode.X;
 
     this.attackSound();
     await this.animateObject('fireninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
@@ -1464,7 +1479,7 @@ export class WaterNinja extends Ninja {
   }
 
   async attackAnimation(x: number, y: number) {
-    if (this.x > x) this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x > x) this.mirrorMode = MirrorMode.X;
 
     await this.animateObject('waterninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
     this.idleAnimation();
@@ -1552,7 +1567,7 @@ export class SnowNinja extends Ninja {
   }
 
   async attackAnimation(x: number, y: number) {
-    if (this.x > x) this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x > x) this.mirrorMode = MirrorMode.X;
 
     this.attackSound();
     await this.animateObject('snowninja_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
@@ -1676,7 +1691,7 @@ export abstract class Enemy extends GameObject {
 
     if (this.x === x && this.y === y) return;
 
-    if (this.x < x) this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x < x) this.mirrorMode = MirrorMode.X;
 
     await this.moveAnimation();
     await this.moveObject(x, y);
@@ -1921,7 +1936,7 @@ export class Sly extends Enemy {
   }
 
   async attackAnimation(x: number, y: number) {
-    if (this.x < x) await this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x < x) this.mirrorMode = MirrorMode.X;
 
     await sleep(250);
     await this.animateObject('sly_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
@@ -2028,7 +2043,7 @@ export class Scrap extends Enemy {
   }
 
   async attackAnimation(x: number, y: number) {
-    if (this.x < x) await this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x < x) this.mirrorMode = MirrorMode.X;
 
     await this.animateObject('scrap_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
     this.idleAnimation();
@@ -2192,7 +2207,7 @@ export class Tank extends Enemy {
   }
 
   async attackAnimation(x: number, y: number) {
-    if (this.x < x) await this.spriteSettings({ mirrorMode: MirrorMode.X });
+    if (this.x < x) this.mirrorMode = MirrorMode.X;
 
     this.attackSound();
     await this.animateObject('tank_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });

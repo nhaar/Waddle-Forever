@@ -1709,7 +1709,7 @@ export class SnowGame {
 
       if (targetObject.x > enemy.x) {
         // Flip ninja sprite to face enemy
-        targetObject.spriteSettings({ mirrorMode: MirrorMode.X });
+        targetObject.mirrorMode = MirrorMode.X;
       }
 
       await this.callbacks.waitForAnims();
