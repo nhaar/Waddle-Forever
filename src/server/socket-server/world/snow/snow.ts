@@ -1591,6 +1591,8 @@ export class SnowGame {
     }
 
     await this.callbacks.waitForAnims();
+
+    this.ninjas.forEach(n => n.resetSpriteSettings());
   }
 
   private async doNinjaActions() {

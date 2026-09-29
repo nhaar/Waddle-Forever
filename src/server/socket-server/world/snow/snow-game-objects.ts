@@ -1006,6 +1006,8 @@ export abstract class Ninja extends GameObject {
       return;
     }
 
+    if (this.x > x) this.mirrorMode = MirrorMode.X;
+
     for (const ninja of this.game.ninjas) {
       if (ninja.selectedObject === this) {
         ninja.selectedTarget.moveObject(x, y);
