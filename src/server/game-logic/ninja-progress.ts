@@ -266,8 +266,7 @@ export class CardJitsuSnowProgress {
 
     let cumulative = 0;
 
-    for (let rank = 0; rank < MAX_SNOW_RANK; rank++) {
-      const threshold = SNOW_RANK_THRESHOLD[rank];
+    for (const threshold of SNOW_RANK_THRESHOLD) {
       if (this._xp < cumulative + threshold) {
         return Math.floor(
           (this._xp - cumulative) / threshold * 100

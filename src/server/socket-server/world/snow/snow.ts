@@ -367,7 +367,7 @@ class Grid {
     frame.placeSprite();
 
     for (const player of (penguin ? [penguin] : this.game.players)) {
-      if (player.ninja.hp <= 0) continue;
+      if (player.ninja.isKO) continue;
 
       for (const tile of this.tiles) {
         if (!player.ninja.tilesInRange().includes(tile)) {
@@ -383,7 +383,7 @@ class Grid {
           if (ninja instanceof Ninja) {
             if (ninja === player.ninja) {
               tileName = 'ui_tile_move';
-            } else if (ninja.hp <= 0 && !ninja.player.disconnected) {
+            } else if (ninja.isKO && !ninja.player.disconnected) {
               // Player can revive ninja
               tileName = 'ui_tile_heal';
             } else if (ninja.hp < ninja.maxHp && !ninja.player.disconnected && player.element === 'snow') {
@@ -616,7 +616,7 @@ class Timer {
         return;
       }
 
-      if (this.game.connectedPlayers.every(p => p.isReady)) {
+      if (this.game.connectedPlayers.filter(p => !p.ninja.isKO).every(p => p.isReady)) {
         // Everyone is ready, so finish early
         this.stopInterval();
         this.hide();
@@ -672,7 +672,9 @@ class Timer {
     for (const player of this.game.players) {
       const timer = player.getWindow(Windows.TIMER);
       timer.sendPayload('Timer_Start');
-      timer.sendPayload('enableConfirm');
+      if (!player.ninja.isKO) {
+        timer.sendPayload('enableConfirm');
+      }
     }
   }
 
@@ -680,7 +682,9 @@ class Timer {
     for (const player of this.game.players) {
       const timer = player.getWindow(Windows.TIMER);
       timer.sendPayload('skipToTransitionOut');
-      timer.sendPayload('disableConfirm');
+      if (!player.ninja.isKO) {
+        timer.sendPayload('disableConfirm');
+      }
     }
   }
 }
@@ -1296,7 +1300,7 @@ export class SnowGame {
     for (const ninja of this.ninjas) {
       if (!(ninja.selectedObject instanceof Ninja)) continue;
 
-      if (ninja.selectedObject.hp > 0 || ninja.player.disconnected) {
+      if (!ninja.selectedObject.isKO || ninja.player.disconnected) {
         // They were already revived, or left
         ninja.idleAnimation();
         continue;
@@ -1327,7 +1331,7 @@ export class SnowGame {
         player.ninja.removeObject();
       }
 
-      if (this.ninjas.every(n => n.hp <= 0)) {
+      if (this.ninjas.every(n => n.isKO)) {
         this.postGame();
         return;
       }
@@ -1382,7 +1386,7 @@ export class SnowGame {
       return true;
     }
 
-    if (this.ninjas.every(n => n.hp <= 0)) {
+    if (this.ninjas.every(n => n.isKO)) {
       // Everyone died
       return true;
     }
@@ -1574,7 +1578,9 @@ export class SnowGame {
 
   private async enableCards() {
     for (const player of this.players) {
-      player.getWindow(Windows.UI).sendPayload('enableCards');
+      player.getWindow(Windows.UI).sendPayload(
+        player.ninja.isKO ? 'enableMemberCard' : 'enableCards'
+      );
     }
   }
 
@@ -1702,7 +1708,7 @@ export class SnowGame {
 
       const ninja = targetObject as Ninja;
 
-      if (ninja.hp <= 0) continue;
+      if (ninja.isKO) continue;
 
       // Enemy sprite might be flipped to the wrong direction
       if (targetObject.x < enemy.x) enemy.resetSpriteSettings();
@@ -1912,6 +1918,8 @@ export class SnowGame {
           _id: id,
           new: player.unlockedStamps.has(id)
         })),
+        // note: the original UI has a bug where it'll actually display
+        // current progress - 1, instead of the actual number
         xpStart: currentPercent,
         xpEnd: newRank < 24
           ? ((newRank - currentRank) * 100) + newPercent
@@ -1928,12 +1936,12 @@ export class SnowGame {
   private async displayWinSequence() {
     await sleep(2000);
 
-    if (this.ninjas.every(n => n.hp <= 0)) return;
+    if (this.ninjas.every(n => n.isKO)) return;
 
     for (const ninja of this.ninjas) {
       if (ninja.player.disconnected) continue;
 
-      if (ninja.hp <= 0) ninja.setHealth(1);
+      if (ninja.isKO) ninja.setHealth(1);
 
       ninja.winAnimation();
     }

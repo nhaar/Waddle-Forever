@@ -973,7 +973,11 @@ export abstract class Ninja extends GameObject {
   }
 
   get isReviving() {
-    return (this.selectedObject instanceof Ninja) && this.selectedObject.hp <= 0;
+    return (this.selectedObject instanceof Ninja) && this.selectedObject.isKO;
+  }
+
+  get isKO() {
+    return this.hp <= 0;
   }
 
   public async removeObject() {
@@ -994,7 +998,7 @@ export abstract class Ninja extends GameObject {
   }
 
   public moveNinja(x: number, y: number) {
-    if (this.hp <= 0 || this.player.disconnected) {
+    if (this.isKO|| this.player.disconnected) {
       return;
     }
     
@@ -1049,7 +1053,7 @@ export abstract class Ninja extends GameObject {
       this.shield = null;
     }
 
-    if (this.player.disconnected && this.hp <= 0) return;
+    if (this.player.disconnected && this.isKO) return;
 
     hp = Math.max(0, Math.min(hp, this.maxHp));
 
@@ -1074,7 +1078,7 @@ export abstract class Ninja extends GameObject {
       return;
     }
 
-    if (this.hp <= 0) return;
+    if (this.isKO) return;
 
     // Ninja has become KO'd
     this.hp = hp;
@@ -1121,7 +1125,7 @@ export abstract class Ninja extends GameObject {
       return;
     }
 
-    if (this.hp <= 0) {
+    if (this.isKO) {
       this.hideGhost();
       return;
     }
@@ -1212,7 +1216,7 @@ export abstract class Ninja extends GameObject {
       this.player.hideTip();
     }
 
-    if (target.hp <= 0) {
+    if (target.isKO) {
       this.reviveOtherAnimation();
       return;
     }
@@ -1236,20 +1240,18 @@ export abstract class Ninja extends GameObject {
   private healableTiles(tx: number, ty: number) {
     const healable: GameObject[] = [];
 
-    if (this.hp <= 0) return healable;
+    if (this.isKO) return healable;
 
     for (const ninja of this.game.ninjas) {
       if (ninja.player.disconnected || ninja === this || ninja.hp === ninja.maxHp) continue;
 
-      if (ninja.hp > 0 && this.name === 'Snow') {
+      if (!ninja.isKO && this.name === 'Snow') {
         const distance = this.game.grid.distance([ninja.x, ninja.y], [tx, ty])
 
         if (distance <= this.range) {
           healable.push(this.game.grid.getTile(ninja.x, ninja.y));
         }
-      } else {
-        if (ninja.hp > 0) continue;
-
+      } else if (ninja.isKO) {
         const tiles = this.game.grid.surroundingTiles(ninja.x, ninja.y);
 
         if (tiles.includes(this.game.grid.getTile(tx, ty))) {
@@ -1264,7 +1266,7 @@ export abstract class Ninja extends GameObject {
   private attackableTiles(tx: number, ty: number) {
     const attackable: GameObject[] = [];
 
-    if (this.hp <= 0) return attackable;
+    if (this.isKO) return attackable;
 
     for (const tile of this.game.grid.tiles) {
       const target = this.game.grid.get(tile.x, tile.y);
@@ -1312,7 +1314,7 @@ export abstract class Ninja extends GameObject {
 
     if (!this.game.grid.isValid(x, y)) return;
 
-    if (this.hp <= 0) return;
+    if (this.isKO) return;
 
     const tile = this.game.grid.getTile(x, y);
 
@@ -1785,7 +1787,7 @@ export abstract class Enemy extends GameObject {
 
       if (!(target instanceof Ninja)) continue;
 
-      if (target.hp <= 0) continue;
+      if (target.isKO) continue;
 
       const distance = this.game.grid.distanceWithObstacles([tx, ty], [tile.x, tile.y]);
 
@@ -1859,7 +1861,7 @@ export abstract class Enemy extends GameObject {
     if (tiles.length === 0) return null;
 
     const selectedTiles = this.game.ninjas
-      .filter(ninja => ninja.hp > 0)
+      .filter(ninja => !ninja.isKO)
       .map(ninja => 
           tiles.reduce((closest, tile) => 
               (Math.abs(tile.x - ninja.x) + Math.abs(tile.y - ninja.y)) < 
@@ -1914,7 +1916,7 @@ export class Sly extends Enemy {
   }
 
   async attackTarget(target: Ninja) {
-    if (target.hp <= 0) return;
+    if (target.isKO) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
     await sleep(250);
@@ -2008,7 +2010,7 @@ export class Scrap extends Enemy {
   }
 
   async attackTarget(target: Ninja) {
-    if (target.hp <= 0) return;
+    if (target.isKO) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
     await sleep(250);
@@ -2145,7 +2147,7 @@ export class Tank extends Enemy {
   }
 
   async attackTarget(target: Ninja) {
-    if (target.hp <= 0) return;
+    if (target.isKO) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
     await sleep(250);
@@ -2375,7 +2377,7 @@ export class CardObject implements Card {
   }
 
   async use(isCombo: boolean = false) {
-    if (this.player.ninja.hp <= 0) return;
+    if (this.player.ninja.isKO) return;
 
     if (this.player.selectedCard !== this) return;
 
@@ -2484,7 +2486,7 @@ export class CardObject implements Card {
     if (this.element === 's') {
       // Shield
       for (const ninja of this.game.ninjas) {
-        if (ninja.player.disconnected || ninja.hp <= 0 || ninja.shield !== null) continue;
+        if (ninja.player.disconnected || ninja.isKO || ninja.shield !== null) continue;
 
         ninja.shield = new Shield(this.game, ninja.x, ninja.y);
         ninja.shield.play();
@@ -2492,7 +2494,7 @@ export class CardObject implements Card {
     } if (this.element === 'w') {
       // Rage effect
       for (const ninja of this.game.ninjas) {
-        if (ninja.player.disconnected || ninja.hp <= 0 || ninja.rage !== null) continue;
+        if (ninja.player.disconnected || ninja.isKO || ninja.rage !== null) continue;
 
         ninja.rage = new Rage(this.game, ninja.x, ninja.y);
         ninja.rage.play();
