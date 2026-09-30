@@ -1974,7 +1974,7 @@ export class SnowWorld {
   soundAssets: AssetCollection = new AssetCollection();
   assets: AssetCollection = new AssetCollection();
 
-  matchMaker: MatchMaker = new MatchMaker(3);
+  matchMaker = new MatchMaker<SnowPlayer>(3);
 
   games: Set<SnowGame> = new Set();
 

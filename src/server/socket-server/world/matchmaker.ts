@@ -1,23 +1,18 @@
-import { SnowPlayer } from "./snow/snow";
-import { WorldPenguin } from "./world-penguin";
+type MatchedCallback<Penguin> = (players: Penguin[]) => void;
 
-type Penguin = WorldPenguin | SnowPlayer;
+type TickCallback<Penguin> = (players: Penguin[], time: number) => void;
 
-type MatchedCallback = (players: Penguin[]) => void;
-
-type TickCallback = (players: Penguin[], time: number) => void;
-
-type FindAvailableRoomCallback = (room: MatchmakingRoom, p: Penguin | undefined) => boolean;
+type FindAvailableRoomCallback<Penguin> = (room: MatchmakingRoom<Penguin>, p: Penguin | undefined) => boolean;
 
 /**
  * Handles a room that will be used for making a match  of games that have queueing
  * */
-class MatchmakingRoom {
+class MatchmakingRoom<Penguin> {
   private _players: Penguin[];
   private _time = 0;
   private _timer: NodeJS.Timeout;
 
-  constructor(private _max: number, private _matchedCallback: MatchedCallback, private _tickCallback: TickCallback) {
+  constructor(private _max: number, private _matchedCallback: MatchedCallback<Penguin>, private _tickCallback: TickCallback<Penguin>) {
     this._players = [];
     this.resetTime();
     this._timer = setInterval(() => {
@@ -63,17 +58,17 @@ class MatchmakingRoom {
   }
 }
 
-export class MatchMaker {
+export class MatchMaker<Penguin> {
   /** Max number of players each match supports */
-  protected _maxPlayers: number;
+  private _maxPlayers: number;
   /** All rooms available */
-  protected _rooms: MatchmakingRoom[];
+  private _rooms: MatchmakingRoom<Penguin>[];
   /** Callback to run when a match is found */
-  protected _onMatched: MatchedCallback | null = null;
+  private _onMatched: MatchedCallback<Penguin> | null = null;
   /** Callback to run each second that ticks while matchmaking */
-  protected _onTick: TickCallback | null = null;
+  private _onTick: TickCallback<Penguin> | null = null;
   /** Predicate run for each room in _rooms, to determine if a penguin can be inserted in it */
-  protected _findAvailableRoom: FindAvailableRoomCallback = (r) => !r.full;
+  private _findAvailableRoom: FindAvailableRoomCallback<Penguin> = (r) => !r.full;
 
   constructor(max: number) {
     this._maxPlayers = max;
@@ -113,15 +108,15 @@ export class MatchMaker {
     this._rooms = this._rooms.filter(r => !r.isEmpty());
   }
 
-  public setMatchListener(callback: MatchedCallback): void {
+  public setMatchListener(callback: MatchedCallback<Penguin>): void {
     this._onMatched = callback;
   }
 
-  public setTickListener(callback: TickCallback): void {
+  public setTickListener(callback: TickCallback<Penguin>): void {
     this._onTick = callback;
   }
 
-  public setAvailableRoomPredicate(callback: FindAvailableRoomCallback): void {
+  public setAvailableRoomPredicate(callback: FindAvailableRoomCallback<Penguin>): void {
     this._findAvailableRoom = callback;
   }
 }

@@ -34,7 +34,7 @@ export class World {
     this._bakery = new Bakery(this.getRoom(853));
 
     MATCHMAKERS.forEach(({ id, count }) => {
-      this.games.set(id, new WorldGame(id, new MatchMaker(count)));
+      this.games.set(id, new WorldGame(id, new MatchMaker<WorldPenguin>(count)));
     });
   }
 
