@@ -252,7 +252,8 @@ export class CardJitsuSnowProgress {
   }
 
   public addXp(xp: number): void {
-    this._xp = Math.min(this._xp + xp, SNOW_RANK_THRESHOLD[MAX_SNOW_RANK - 1]);
+    const maxXp = SNOW_RANK_THRESHOLD.reduce((total, threshold) => total + threshold);
+    this._xp = Math.min(this._xp + xp, maxXp);
   }
 
   public setNinja() {
