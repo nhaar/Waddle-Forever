@@ -1,7 +1,7 @@
 import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
 import { MirrorMode, OriginMode, TipPhase, Windows } from "./snow-constants";
 import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld } from "./snow";
-import { choose } from "@common/utils";
+import { choose, clamp } from "@common/utils";
 import { Card, CardColor, CardElement } from "@server/game-logic/cards";
 import { Stamp } from "@server/game-logic/stamps";
 
@@ -273,10 +273,10 @@ export class GameObject {
   }
 
   public async removeObject() {
-    await this.ctx.msg.send(this.clients, 'O_GONE', this.id);
     this.game.grid.remove(this);
     this.game.objects.delete(this);
     this.removePendingActions();
+    await this.ctx.msg.send(this.clients, 'O_GONE', this.id);
   }
 
   public async hide(player: SnowPlayer | null = null) {
@@ -1055,7 +1055,7 @@ export abstract class Ninja extends GameObject {
 
     if (this.player.disconnected && this.isKO) return;
 
-    hp = Math.max(0, Math.min(hp, this.maxHp));
+    hp = clamp(hp, 0, this.maxHp);
 
     this.animateHealthbar(this.hp, hp);
 
@@ -1193,8 +1193,8 @@ export abstract class Ninja extends GameObject {
     this.targets.clear();
   }
 
-  async attackTarget(target: Enemy) {
-    if (target.hp <= 0) return;
+  async attackTarget(target: Enemy, shouldDie: boolean) {
+    if (!this.game.objects.has(target)) return;
 
     // fixes mirror mode, according to snowflake. check if this also applies to us
     await sleep(250);
@@ -1205,9 +1205,9 @@ export abstract class Ninja extends GameObject {
     if (this.rage !== null) {
       this.rage.use(target.x, target.y);
       this.rage = null;
-      await target.setHealth(target.hp - (this.attack * 1.5));
+      await target.setHealth(target.hp - (this.attack * 1.5), true, shouldDie);
     } else {
-      await target.setHealth(target.hp - this.attack);
+      await target.setHealth(target.hp - this.attack, true, shouldDie);
     }
   }
 
@@ -1726,8 +1726,8 @@ export abstract class Enemy extends GameObject {
     this.healthBar.animateSprite();
   }
 
-  public async setHealth(hp: number, wait: boolean = true) {
-    hp = Math.max(0, Math.min(hp, this.maxHp));
+  public async setHealth(hp: number, wait: boolean = true, shouldDie: boolean = true) {
+    hp = clamp(hp, 0, this.maxHp);
 
     this.animateHealthbar(this.hp, hp);
 
@@ -1735,8 +1735,11 @@ export abstract class Enemy extends GameObject {
     new DamageNumbers(this.game, this.x, this.y).play(this.hp - hp);
 
     this.hp = hp;
-    
-    if (this.hp <= 0) {
+
+    // in the original game, if multiple ninjas attack an enemy,
+    // and the enemy's hp gets to 0 before all ninjas have attacked it,
+    // then it allows all ninjas to attack before playing the death anim
+    if (this.hp <= 0 && shouldDie) {
       this.koAnimation();
 
       if (this.game.round >= 3) {

@@ -1610,24 +1610,25 @@ export class SnowGame {
   private async doNinjaAttacks() {
     const ninjasWithoutCards = this.ninjas.filter(n => !n.player.selectedCard && !n.player.selectedMemberCard);
 
-    for (const ninja of ninjasWithoutCards) {
-      if (!ninja.selectedTarget) continue;
+    for (const target of this.enemies) {
+      const attacking = ninjasWithoutCards.filter(n => n.selectedObject === target);
+      for (const ninja of attacking) {
+        await ninja.attackTarget(target, attacking.indexOf(ninja) === attacking.length - 1);
+        await sleep(1000);
+      }
+    }
 
-      const target = ninja.selectedObject;
-
-      if (target === null) continue; // Target is defeated or removed
-
-      if (target instanceof Enemy) {
-        await ninja.attackTarget(target);
-      } else if (target instanceof Ninja) {
+    for (const target of this.ninjas) {
+      const healing = ninjasWithoutCards.filter(n => n.selectedObject === target);
+      for (const ninja of healing) {
         await ninja.healTarget(target);
-      }
 
-      if (ninja.heals >= 15) {
-        this.snow.unlockStamp(this, Stamp.Heal15);
-      }
+        if (ninja.heals >= 15) {
+          ninja.player.unlockStamp(this, Stamp.Heal15);
+        }
 
-      await sleep(1000);
+        await sleep(1000);
+      }
     }
   }
 
