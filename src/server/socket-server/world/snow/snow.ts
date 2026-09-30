@@ -585,8 +585,13 @@ class Grid {
 
 class Timer {
   private tick: number = 10;
-  private interval: NodeJS.Timer = null;
-  private intervalDivisor: number = 4;
+
+  private tickInterval: NodeJS.Timer = null;
+  private tickRate: number = 1200;
+
+  private updateInterval: NodeJS.Timer = null;
+  private updateRate: number = 200;
+
   private loaded: boolean = false;
   public running: boolean = false;
 
@@ -604,12 +609,10 @@ class Timer {
     this.running = true;
     this.show();
 
-    if (this.interval !== null) clearInterval(this.interval);
+    if (this.tickInterval !== null) clearInterval(this.tickInterval);
+    if (this.updateInterval !== null) clearInterval(this.updateInterval);
 
-    let sec = this.intervalDivisor;
-    this.interval = setInterval(() => {
-      sec -= 1;
-
+    this.updateInterval = setInterval(() => {
       if (this.game.players.every(p => p.disconnected)) {
         this.stopInterval();
         this.game.close();
@@ -623,27 +626,27 @@ class Timer {
         onComplete();
         return;
       }
+    }, this.updateRate)
 
-      if (sec === 0) {
-        // 1 full second has passed
-        sec = this.intervalDivisor;
-        this.tick -= 1;
-        this.update();
-      }
+    this.tickInterval = setInterval(() => {
+      this.tick -= 1;
+      this.update();
 
-      if (this.tick === 0) {
+      // -1 because it waits 1 more tick before hiding
+      if (this.tick === -1) {
         // Finished
         this.stopInterval();
         this.tick = 10;
         this.hide();
         onComplete();
       }
-    }, 1000 / this.intervalDivisor)
+    }, this.tickRate)
   }
 
   private stopInterval() {
-    clearInterval(this.interval);
-    this.interval = null;
+    clearInterval(this.tickInterval);
+    clearInterval(this.updateInterval);
+    this.tickInterval = this.updateInterval = null;
     this.running = false;
   }
 
