@@ -107,7 +107,7 @@ export class WorldServer implements MessageHandler {
     this._msg.close();
     this._botManager.shutdown();
     this._msg = new XtMessenger();
-    this._world = new World(this._gameData);
+    this._world.init();
     this.init();
     this._botManager = this.getBotManager();
   }
