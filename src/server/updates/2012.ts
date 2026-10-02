@@ -2241,7 +2241,7 @@ export const UPDATES_2012: Update[] = [
       const: {
         rooms: {
           'forest': 'archives:HalloweenParty2012PreForest.swf',
-          'forts': 'archives:HalloweenParty2012PreForest.swf',
+          'forts': 'archives:HalloweenParty2012PreForts.swf',
           'plaza': 'archives:HalloweenParty2012PrePlaza.swf',
           'town': 'archives:RoomsTown-HalloweenParty2012Pre.swf'
         },
