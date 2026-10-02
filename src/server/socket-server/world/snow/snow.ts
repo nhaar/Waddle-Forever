@@ -415,15 +415,15 @@ class Grid {
   }
 
   private onTileClick(ctx: SnowPenguinContext, object: GameObject) {
-    if (ctx.penguin.selectedCard) {
-      ctx.penguin.ninja.placePowerCard(object.x, object.y);
+    if (ctx.player.selectedCard) {
+      ctx.player.ninja.placePowerCard(object.x, object.y);
       return;
     }
 
-    ctx.penguin.ninja.placeGhost(ctx, object.x, object.y);
+    ctx.player.ninja.placeGhost(ctx, object.x, object.y);
     
-    if (ctx.penguin.tipMode && ctx.penguin.lastTip === TipPhase.MOVE) {
-      ctx.penguin.hideTip();
+    if (ctx.player.tipMode && ctx.player.lastTip === TipPhase.MOVE) {
+      ctx.player.hideTip();
     }
   }
 
@@ -1044,7 +1044,7 @@ export class SnowPlayer {
       yPercent: 0
     });
     this.lastTip = phase;
-    infotip.onClose = ({ penguin }) => penguin.lastTip = null;
+    infotip.onClose = ({ player }) => player.lastTip = null;
   }
 
   public async hideTip() {
@@ -1821,7 +1821,7 @@ export class SnowGame {
 
       player
         .getWindow(Windows.INFOTIP)
-        .onClose = ({ penguin }) => penguin.sendTip(phase);
+        .onClose = ({ player }) => player.sendTip(phase);
     }
   }
 

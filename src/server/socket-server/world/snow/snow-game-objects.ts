@@ -409,7 +409,7 @@ class Target extends LocalGameObject {
   }
 
   public onClick = (ctx: SnowPenguinContext) => {
-    if (ctx.penguin.isReady || !this.game.timer.running) return;
+    if (ctx.player.isReady || !this.game.timer.running) return;
 
     this.select();
   }
@@ -1104,14 +1104,14 @@ export abstract class Ninja extends GameObject {
   }
 
   private onGhostClick(ctx: SnowPenguinContext, object: GameObject) {
-    if (ctx.penguin.isReady) return;
+    if (ctx.player.isReady) return;
 
-    if (ctx.penguin.selectedCard) {
-      ctx.penguin.selectedCard.place(object.x, object.y);
+    if (ctx.player.selectedCard) {
+      ctx.player.selectedCard.place(object.x, object.y);
       return;
     }
 
-    if (ctx.penguin.element !== this.name.toLowerCase()) {
+    if (ctx.player.element !== this.name.toLowerCase()) {
       return;
     }
 
@@ -1122,7 +1122,7 @@ export abstract class Ninja extends GameObject {
   }
 
   public async placeGhost(ctx: SnowPenguinContext, x: number, y: number) {
-    if (ctx.penguin.isReady || !ctx.game.timer.running) {
+    if (ctx.player.isReady || !ctx.game.timer.running) {
       return;
     }
 

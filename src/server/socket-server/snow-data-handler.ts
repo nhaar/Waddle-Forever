@@ -29,7 +29,7 @@ export interface SnowContext {
  */
 export interface SnowPenguinContext extends SnowContext {
   client: ClientSocket,
-  penguin: SnowPlayer,
+  player: SnowPlayer,
   game: SnowGame | null
 }
 
@@ -40,14 +40,14 @@ export class SnowDataHandler {
   ) {}
 
   public async handle(ctx: SnowPenguinContext, message: string) {
-    if (ctx.penguin === undefined) {
+    if (ctx.player === undefined) {
       // a SnowPlayer object should get created and linked on connection (see snow-server.ts)
       throw new Error('Snow player should exist!');
     }
 
     const messages = message.trim().split('\n');
     for (const command of messages) {
-      if (ctx.penguin.disconnected) {
+      if (ctx.player.disconnected) {
         return;
       }
 
@@ -67,7 +67,7 @@ export class SnowDataHandler {
         }
 
         if (ctx.game !== null) {
-          ctx.game.callbacks.eventDone(json.triggerName, ctx.penguin);
+          ctx.game.callbacks.eventDone(json.triggerName, ctx.player);
           ctx.game.callbacks.eventDone(json.triggerName, ctx.game);
         }
 

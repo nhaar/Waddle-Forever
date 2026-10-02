@@ -56,12 +56,12 @@ class SnowServer implements MessageHandler {
   }
 
   private getPenguinCtx(client: ClientSocket): SnowPenguinContext {
-    const penguin = this._msg.getPenguin(client);
-    const game = Array.from(this._world.games).find(game => game.players.includes(penguin)) ?? null;
+    const player = this._msg.getPenguin(client);
+    const game = Array.from(this._world.games).find(game => game.players.includes(player)) ?? null;
     return {
       ...this.getContext(),
       client,
-      penguin,
+      player,
       game
     };
   }
@@ -85,13 +85,15 @@ class SnowServer implements MessageHandler {
   }
 
   public async disconnect(cs: ClientSocket) {
-    const { penguin, game } = this.getPenguinCtx(cs);
-    penguin.disconnected = true;
-    this._world.disconnect(penguin);
-    if (game !== null && penguin.ninja !== null) {
-      game.callbacks.forceFireClientEvents(penguin);
-      game.windowEvents.fireAllForPlayer(penguin);
-      penguin.ninja.setHealth(0);
+    const { player, game } = this.getPenguinCtx(cs);
+    player.disconnected = true;
+    this._world.disconnect(player);
+    if (game !== null && player.ninja !== null) {
+      game.callbacks.forceFireClientEvents(player);
+      game.windowEvents.fireAllForPlayer(player);
+      // TODO: not exactly accurate, most gameplay videos imply
+      // that the ninja is immediately removed when player leaves
+      player.ninja.setHealth(0);
     }
   }
 }

@@ -24,32 +24,32 @@ export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => 
   const place = ctx.world.places[JSON.parse(placeName)];
 
   if (battleMode === null || baseAssetUrl === null || place === undefined) {
-    await ctx.penguin.sendLoginError();
-    ctx.penguin.disconnected = true;
+    await ctx.player.sendLoginError();
+    ctx.player.disconnected = true;
     ctx.client.end();
     return;
   }
 
-  ctx.penguin.battleMode = Number(battleMode);
-  ctx.penguin.baseUrl = ctx.world.locations.base;
-  ctx.penguin.place = place;
+  ctx.player.battleMode = Number(battleMode);
+  ctx.player.baseUrl = ctx.world.locations.base;
+  ctx.player.place = place;
 }
 
 export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
   const id = Number(pid);
 
-  const { msg, client, penguin, world } = ctx;
+  const { msg, client, player, world } = ctx;
 
   const failLogin = async (msg: string) => {
     logdebug(getYellowString(`Snow login failed: ${msg}`));
-    await penguin.sendLoginError();
-    ctx.penguin.disconnected = true;
+    await player.sendLoginError();
+    ctx.player.disconnected = true;
     client.end();
   }
 
-  await penguin.sendLoginMessage("Got /login command");
+  await player.sendLoginMessage("Got /login command");
 
-  if (penguin.loggedIn) {
+  if (player.loggedIn) {
     failLogin("Already logged in!");
     return;
   }
@@ -75,34 +75,34 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
 
   console.log(`${p.name} is logging into CJ Snow`);
 
-  penguin.penguin = p;
-  penguin.pid = p.id;
-  world.addPenguin(ctx.penguin);
+  player.penguin = p;
+  player.pid = p.id;
+  world.addPenguin(ctx.player);
 
-  penguin.loggedIn = true;
-  await penguin.sendLoginMessage('Finalizing login');
+  player.loggedIn = true;
+  await player.sendLoginMessage('Finalizing login');
   await msg.send(client, 'S_LOGIN', p.id);
   
   // TODO: this shouldnt be sending an empty string... is somewhere else incorrect?
   await msg.send(client, 'W_BASEASSETURL', '');
   await msg.send(client, 'S_WORLDTYPE', world.serverType, world.buildType);
-  await msg.send(client, 'S_WORLD', world.worldId, world.worldName, `0:${penguin.place.id}`, 0, 'none', 0, world.worldOwner, world.worldName, 0, world.stylesheetId, 0);
+  await msg.send(client, 'S_WORLD', world.worldId, world.worldName, `0:${player.place.id}`, 0, 'none', 0, world.worldOwner, world.worldName, 0, world.stylesheetId, 0);
 
-  await penguin.switchPlace(penguin.place);
+  await player.switchPlace(player.place);
 }
 
 export const handleReady: SnowHandler = async (ctx) => {
-  const { msg, client, penguin } = ctx;
+  const { msg, client, player } = ctx;
 
-  if (!penguin.windowManager.loaded) {
-    await penguin.windowManager.load();
+  if (!player.windowManager.loaded) {
+    await player.windowManager.load();
   }
 
-  const place = penguin.place;
+  const place = player.place;
 
   await msg.send(client, 'UI_ALIGN', ctx.world.worldId, 0, 0, AlignMode.CENTER, ScaleMode.NONE);
   await msg.send(client, 'UI_BGCOLOR', 34, 164, 243);
-  await penguin.setPlace(place.name, 1, 0);
+  await player.setPlace(place.name, 1, 0);
   
   await msg.send(client, 'P_MAPBLOCK', MapblockType.TILEMAP, 1, 1, place.mapBlocks.tileMap);
   await msg.send(client, 'P_MAPBLOCK', MapblockType.HEIGHTMAP, 1, 1, place.mapBlocks.heightMap);
@@ -154,12 +154,12 @@ export const handleReady: SnowHandler = async (ctx) => {
 }
 
 export const handlePlaceReady: SnowHandler = async (ctx) => {
-  const { msg, client, penguin } = ctx;
+  const { msg, client, player } = ctx;
 
-  await msg.send(client, 'P_CAMERA', ...penguin.place.camera.position, 0, 1);
-  await msg.send(client, 'P_ZOOM', penguin.place.camera.zoom);
-  await msg.send(client, 'P_LOCKCAMERA', Number(penguin.place.camera.lockView));
-  await msg.send(client, 'P_LOCKZOOM', Number(penguin.place.camera.lockZoom));
+  await msg.send(client, 'P_CAMERA', ...player.place.camera.position, 0, 1);
+  await msg.send(client, 'P_ZOOM', player.place.camera.zoom);
+  await msg.send(client, 'P_LOCKCAMERA', Number(player.place.camera.lockView));
+  await msg.send(client, 'P_LOCKZOOM', Number(player.place.camera.lockZoom));
 
   // this does nothing for snow, but it's needed for the game to start
   await msg.send(client, 'O_PLAYER', -1);
@@ -177,7 +177,7 @@ export const handleUse: SnowHandler = async (ctx, objectId) => {
 
   if (obj === null) {
     // Try and find the obj in the client local objects
-    const lobj = ctx.penguin.localObjects.getById(Number(objectId));
+    const lobj = ctx.player.localObjects.getById(Number(objectId));
 
     if (lobj !== null && lobj.onClick !== null) {
       lobj.onClick(ctx, lobj);
@@ -188,8 +188,8 @@ export const handleUse: SnowHandler = async (ctx, objectId) => {
 
   if (obj.onClick === null) {
     // We're placing a power card
-    if (ctx.penguin.selectedCard) {
-      ctx.penguin.ninja.placePowerCard(obj.x, obj.y);
+    if (ctx.player.selectedCard) {
+      ctx.player.ninja.placePowerCard(obj.x, obj.y);
     }
     return;
   }
@@ -221,25 +221,25 @@ export const frameworkRoomToRoomMinTime: SnowFrameworkHandler = async (ctx) => {
 }
 
 export const frameworkRoomToRoomComplete: SnowFrameworkHandler = async (ctx) => {
-  const { penguin, game } = ctx;
+  const { player, game } = ctx;
 
-  if (game !== null && !penguin.isReady) {
-    penguin.isReady = true;
+  if (game !== null && !player.isReady) {
+    player.isReady = true;
     game.playersReady();
   }
 }
 
 export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => {
-  const { penguin, world } = ctx;
+  const { player, world } = ctx;
 
-  penguin.windowManager.ready = true;
+  player.windowManager.ready = true;
 
-  const loadingScreen = penguin.getWindow(
+  const loadingScreen = player.getWindow(
     'cjsnow_loadingscreenassets.swf',
     `${world.locations.assetBase}/cjsnow_loadingscreenassets.swf`
   );
 
-  const wm = penguin.getWindow('windowmanager.swf');
+  const wm = player.getWindow('windowmanager.swf');
   await wm.sendAction('setWorldId', { worldId: world.worldId });
   await wm.sendAction('setBaseAssetUrl', { baseAssetUrl: world.locations.base });
   await wm.sendAction('setFontPath', { defaultFontPath: `${world.locations.base}/fonts/` });
@@ -247,10 +247,10 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
   await wm.sendAction('skinRoomToRoom', {
     url: loadingScreen.url,
     className: '',
-    variant: penguin.battleMode
+    variant: player.battleMode
   }, EventType.PLAY_ACTION);
 
-  const errorHandler = penguin.getWindow(Windows.ERRORS);
+  const errorHandler = player.getWindow(Windows.ERRORS);
   errorHandler.layer = 'bottomLayer';
   await errorHandler.load(null, { xPercent: 0, yPercent: 0, loadDescription: '' });
 
@@ -259,20 +259,20 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
     'w': 0,
     's': 0
   };
-  penguin.penguin.ninja.getDeck().forEach(id => {
+  player.penguin.ninja.getDeck().forEach(id => {
     const card = CARDS.get(id);
     if (card.powerId > 0) cardCounts[card.element]++;
   });
 
   // TODO: this can be one of two: 'cardjitsu_snowplayerselect.swf' or 'cardjitsu_snowplayerselectbeta.swf'
-  const playerSelect = penguin.getWindow(Windows.PLAYER_SELECT);
+  const playerSelect = player.getWindow(Windows.PLAYER_SELECT);
   await playerSelect.load({
-    game: penguin.battleMode === 0 ? 'snow' : 'snowtusk',
-    name: penguin.penguin.name,
+    game: player.battleMode === 0 ? 'snow' : 'snowtusk',
+    name: player.penguin.name,
     powerCardsFire: cardCounts.f,
     powerCardsWater: cardCounts.w,
     powerCardsSnow: cardCounts.s,
-    playerSnowRank: penguin.penguin.ninja.snowProgress.rank,
+    playerSnowRank: player.penguin.ninja.snowProgress.rank,
   }, {
     loadDescription: '', xPercent: 0, yPercent: 0
   });
@@ -289,7 +289,7 @@ export const frameworkPayloadBILogAction: SnowFrameworkHandler = async () => {
 
 export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
   const name = (windowUrl as string).split('/').pop();
-  const win = ctx.penguin.getWindow(name);
+  const win = ctx.player.getWindow(name);
   win.setLoaded(true, ctx.game);
   if (win.onLoad !== null) {
     win.onLoad(ctx);
@@ -298,30 +298,30 @@ export const frameworkWindowReady: SnowFrameworkHandler = async (ctx, { windowUr
 
 export const frameworkWindowClosed: SnowFrameworkHandler = async (ctx, { windowUrl }) => {
   const name = (windowUrl as string).split('/').pop();
-  const win = ctx.penguin.getWindow(name);
+  const win = ctx.player.getWindow(name);
   win.setLoaded(false, ctx.game);
   if (win.onClose !== null) {
     win.onClose(ctx);
   }
-  ctx.penguin.windowManager.delete(name);
+  ctx.player.windowManager.delete(name);
 }
 
 export const frameworkElementSelected: SnowFrameworkHandler = async (ctx, { element, tipMode }) => {
-  ctx.penguin.element = (element as string).toLowerCase();
-  ctx.penguin.tipMode = tipMode;
+  ctx.player.element = (element as string).toLowerCase();
+  ctx.player.tipMode = tipMode;
 
-  if (!['fire', 'water', 'snow'].includes(ctx.penguin.element)) {
-    logverbose(getYellowString('Invalid element: ' + ctx.penguin.element));
-    ctx.penguin.disconnected = true;
+  if (!['fire', 'water', 'snow'].includes(ctx.player.element)) {
+    logverbose(getYellowString('Invalid element: ' + ctx.player.element));
+    ctx.player.disconnected = true;
     ctx.client.end();
     return;
   }
 
-  ctx.world.matchMaker.addPlayer(ctx.penguin);
+  ctx.world.matchMaker.addPlayer(ctx.player);
 }
 
 export const frameworkMMCancel: SnowFrameworkHandler = async (ctx) => {
-  ctx.world.matchMaker.removePlayer(ctx.penguin);
+  ctx.world.matchMaker.removePlayer(ctx.player);
 }
 
 export const setupMatchMaker = async (world: SnowWorld) => {
@@ -331,149 +331,149 @@ export const setupMatchMaker = async (world: SnowWorld) => {
 
   world.matchMaker.setAvailableRoomPredicate((room, player: SnowPlayer) => {
     return !room.full && room.allPlayersMeetCondition((p: SnowPlayer) => {
-      return p.element !== player.element;
+      return p.element !== player.element && p.battleMode === player.battleMode;
     })
   });
   world.matchMaker.setMatchListener((players: SnowPlayer[]) => {
-    const fireNinja = players.find(p => p.element === 'fire') ?? null;
-    const waterNinja = players.find(p => p.element === 'water') ?? null;
-    const snowNinja = players.find(p => p.element === 'snow') ?? null;
+    const fire = players.find(p => p.element === 'fire') ?? null;
+    const water = players.find(p => p.element === 'water') ?? null;
+    const snow = players.find(p => p.element === 'snow') ?? null;
 
-    for (const penguin of [fireNinja, snowNinja, waterNinja].filter(Boolean)) {
+    for (const penguin of [fire, snow, water].filter(Boolean)) {
       const select = penguin.getWindow(null, Windows.PLAYER_SELECT);
       select.sendPayload('matchFound', {
-        1: fireNinja ? fireNinja.penguin.name : null,
-        2: waterNinja ? waterNinja.penguin.name : null,
-        4: snowNinja ? snowNinja.penguin.name : null
+        1: fire ? fire.penguin.name : null,
+        2: water ? water.penguin.name : null,
+        4: snow ? snow.penguin.name : null
       })
       world.matchMaker.removePlayer(penguin);
     }
 
-    world.createGame(fireNinja, waterNinja, snowNinja);
+    world.createGame(fire, water, snow);
   });
   world.matchMaker.setTickListener(() => {});
 }
 
-export const frameworkMemberCardInfo: SnowFrameworkHandler = async ({ penguin }) => {
-  if (penguin.lastTip === TipPhase.MEMBER_CARD) {
-    penguin.hideTip();
+export const frameworkMemberCardInfo: SnowFrameworkHandler = async ({ player }) => {
+  if (player.lastTip === TipPhase.MEMBER_CARD) {
+    player.hideTip();
   } else {
-    penguin.sendTip(TipPhase.MEMBER_CARD);
+    player.sendTip(TipPhase.MEMBER_CARD);
   }
 }
 
-export const frameworkWindowDuplicated: SnowFrameworkHandler = async ({ penguin }) => {
+export const frameworkWindowDuplicated: SnowFrameworkHandler = async ({ player }) => {
   // comment from snowflake:
   // This will get sent by the client when the server tries to load a
   // window that already exists.
   // In most cases, it's just the tip window.
-  penguin.hideTip();
+  player.hideTip();
 }
 
-export const frameworkCardSelect: SnowFrameworkHandler = async ({ penguin, game }, { element, value, cardId }) => {
-  if (penguin.isReady || !game.timer.running) return;
+export const frameworkCardSelect: SnowFrameworkHandler = async ({ player, game }, { element, value, cardId }) => {
+  if (player.isReady || !game.timer.running || player.ninja.isKO) return;
 
-  const card = penguin.powerCardById(Number(cardId));
+  const card = player.powerCardById(Number(cardId));
 
   if (card.value !== Number(value) || card.element !== element) return;
 
-  if (penguin.selectedMemberCard) {
-    penguin.memberCard.remove();
-    penguin.memberCard.selected = false;
+  if (player.selectedMemberCard) {
+    player.memberCard.remove();
+    player.memberCard.selected = false;
   }
 
-  if (penguin.selectedCard) {
-    penguin.selectedCard.remove();
+  if (player.selectedCard) {
+    player.selectedCard.remove();
   }
 
   card.object.x = card.object.y = -1;
 
-  penguin.selectedCard = card;
-  penguin.ninja.removeTargets();
-  game.grid.showAttackTiles(penguin);
-  penguin.ninja.playSound(sfxName('uitargetred'), penguin);
+  player.selectedCard = card;
+  player.ninja.removeTargets();
+  game.grid.showAttackTiles(player);
+  player.ninja.playSound(sfxName('uitargetred'), player);
 }
 
-export const frameworkCardDeselect: SnowFrameworkHandler = async ({ penguin, game }) => {
-  if (penguin.isReady || !game.timer.running || !penguin.selectedCard) return;
+export const frameworkCardDeselect: SnowFrameworkHandler = async ({ player, game }) => {
+  if (player.isReady || !game.timer.running || !player.selectedCard) return;
 
-  penguin.selectedCard.remove();
-  penguin.selectedCard = null;
-  penguin.ninja.showTargets();
-  game.grid.showTiles(penguin);
+  player.selectedCard.remove();
+  player.selectedCard = null;
+  player.ninja.showTargets();
+  game.grid.showTiles(player);
 }
 
-export const frameworkMemberCardSelect: SnowFrameworkHandler = async ({ penguin, game }) => {
-  if (!penguin.penguin.membership.isMember) return;
+export const frameworkMemberCardSelect: SnowFrameworkHandler = async ({ player, game }) => {
+  if (!player.penguin.membership.isMember) return;
 
-  if (penguin.isReady || !penguin.memberCard || !game.timer.running) return;
+  if (player.isReady || !player.memberCard || !game.timer.running) return;
 
-  if (penguin.selectedCard) {
-    await penguin.selectedCard.remove();
-    penguin.selectedCard = null;
+  if (player.selectedCard) {
+    await player.selectedCard.remove();
+    player.selectedCard = null;
   }
 
-  await penguin.memberCard.place();
-  penguin.ninja.removeTargets();
-  game.grid.hideTiles(penguin);
+  await player.memberCard.place();
+  player.ninja.removeTargets();
+  game.grid.hideTiles(player);
 }
 
-export const frameworkMemberCardDeselect: SnowFrameworkHandler = async ({ penguin, game }) => {
-  if (!penguin.penguin.membership.isMember) return;
+export const frameworkMemberCardDeselect: SnowFrameworkHandler = async ({ player, game }) => {
+  if (!player.penguin.membership.isMember) return;
 
-  if (penguin.isReady || !penguin.memberCard || !game.timer.running) return;
+  if (player.isReady || !player.memberCard || !game.timer.running) return;
 
-  penguin.memberCard.selected = false;
-  await penguin.memberCard.remove();
+  player.memberCard.selected = false;
+  await player.memberCard.remove();
 
-  if (penguin.ninja.hp > 0) {
-    penguin.ninja.showTargets();
-    game.grid.showTiles(penguin);
+  if (player.ninja.hp > 0) {
+    player.ninja.showTargets();
+    game.grid.showTiles(player);
   }
 }
 
-export const frameworkCardConsumed: SnowFrameworkHandler = async ({ penguin }) => {
-  penguin.powerCardSlots.delete(penguin.selectedCard);
-  penguin.selectedCard = null;
+export const frameworkCardConsumed: SnowFrameworkHandler = async ({ player }) => {
+  player.powerCardSlots.delete(player.selectedCard);
+  player.selectedCard = null;
 
-  if (!penguin.hasPowerCards) {
-    const ui = penguin.getWindow(Windows.UI);
+  if (!player.hasPowerCards) {
+    const ui = player.getWindow(Windows.UI);
     ui.sendPayload('updateStamina', { cardData: null, cycle: false, stamina: 0 });
     ui.sendPayload('noCards');
   }
 }
 
-export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ penguin, game }) => {
-  if (penguin.isReady) return;
+export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ player, game }) => {
+  if (player.isReady) return;
 
   // snowflake had this named 'ui_confirm', but that doesnt seem to exist?
-  const confirm = new GameObject(game, 'confirm', penguin.ninja.x, penguin.ninja.y, false, 0.5, 1.05);
+  const confirm = new GameObject(game, 'confirm', player.ninja.x, player.ninja.y, false, 0.5, 1.05);
   await confirm.placeObject();
   await confirm.placeSprite();
   confirm.playSound('SFX_MG_2013_CJSnow_UIPlayerReady_VBR8');
 
-  penguin.getWindow(Windows.UI).sendPayload('disableCards');
+  player.getWindow(Windows.UI).sendPayload('disableCards');
 
-  game.grid.hideTiles(penguin);
+  game.grid.hideTiles(player);
 
-  penguin.isReady = true;
+  player.isReady = true;
 
-  if (!penguin.displayedTips.has(TipPhase.CONFIRM)) {
-    penguin.displayedTips.add(TipPhase.CONFIRM);
+  if (!player.displayedTips.has(TipPhase.CONFIRM)) {
+    player.displayedTips.add(TipPhase.CONFIRM);
   }
 
-  if (penguin.tipMode && penguin.lastTip === TipPhase.CONFIRM) {
-    penguin.hideTip();
+  if (player.tipMode && player.lastTip === TipPhase.CONFIRM) {
+    player.hideTip();
   }
 }
 
 export const frameworkMute: SnowFrameworkHandler = async (ctx) => {
-  ctx.penguin.muteSounds = true;
+  ctx.player.muteSounds = true;
 }
 
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
-  const { penguin } = ctx;
-  console.log(`${penguin.penguin.name} is leaving CJ Snow`);
-  await penguin.sendToRoom();
-  penguin.disconnected = true;
+  const { player } = ctx;
+  console.log(`${player.penguin.name} is leaving CJ Snow`);
+  await player.sendToRoom();
+  player.disconnected = true;
 }
