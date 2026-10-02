@@ -272,7 +272,7 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
     powerCardsFire: cardCounts.f,
     powerCardsWater: cardCounts.w,
     powerCardsSnow: cardCounts.s,
-    playerSnowRank: 0, // TODO
+    playerSnowRank: penguin.penguin.ninja.snowProgress.rank,
   }, {
     loadDescription: '', xPercent: 0, yPercent: 0
   });
