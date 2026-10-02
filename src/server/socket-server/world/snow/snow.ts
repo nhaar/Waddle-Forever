@@ -1097,7 +1097,7 @@ export class SnowPlayer {
   }
 
   public async updateCards() {
-    if (this.disconnected) return;
+    if (this.disconnected || this.powerCards.size <= 0) return;
 
     this.powerCardStamina += 2;
 
