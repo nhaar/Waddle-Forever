@@ -467,6 +467,10 @@ export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ penguin, g
   }
 }
 
+export const frameworkMute: SnowFrameworkHandler = async (ctx) => {
+  ctx.penguin.muteSounds = true;
+}
+
 export const frameworkQuit: SnowFrameworkHandler = async (ctx) => {
   const { penguin } = ctx;
   console.log(`${penguin.penguin.name} is leaving CJ Snow`);

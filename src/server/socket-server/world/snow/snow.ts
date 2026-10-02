@@ -921,6 +921,7 @@ export class SnowPlayer {
   loggedIn: boolean = false;
   isReady: boolean = false;
   disconnected: boolean = false;
+  muteSounds: boolean = false;
   wasKO = false;
 
   battleMode: number = 0;

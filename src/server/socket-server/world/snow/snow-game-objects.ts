@@ -2651,7 +2651,7 @@ export class Sound implements Asset {
     const targets = (target instanceof SnowPlayer) ? [target] : [...target.players];
 
     await ctx.msg.send(
-      targets,
+      targets.filter(p => !p.muteSounds),
       'FX_PLAYSOUND',
       `0:${this.index}`,
       handleId,
@@ -2668,7 +2668,7 @@ export class Sound implements Asset {
 
     if (action) {
       ctx.msg.send(
-        target.players,
+        target.players.filter(p => !p.muteSounds),
         'FX_STOPSOUND',
         action.handleId,
       );
