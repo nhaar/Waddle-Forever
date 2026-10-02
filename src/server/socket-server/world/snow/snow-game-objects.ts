@@ -894,8 +894,8 @@ export class Rage extends Effect {
   }
 
   async use(x: number, y: number) {
-    await this.moveObject(x, y);
-    await this.placeSprite('effect_shieldpop_anim');
+    await this.moveObject(x, y, 100);
+    await this.placeSprite('effect_ragehit_anim');
     await this.animateSprite(0, 11, { duration: 750 });
     setTimeout(() => this.removeObject(), 700);
   }
@@ -1051,6 +1051,7 @@ export abstract class Ninja extends GameObject {
     if (hp < this.hp && this.shield !== null) {
       this.shield.pop();
       this.shield = null;
+      return;
     }
 
     if (this.player.disconnected && this.isKO) return;
