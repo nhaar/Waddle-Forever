@@ -956,16 +956,12 @@ export class SnowPlayer {
     return this.powerCardSlots.size > 0 || this.powerCards.size > 0;
   }
 
-  public async sendLoginMessage({ msg }: SnowContext, message: string) {
-    await msg.send(this, 'S_LOGINDEBUG', message);
+  public async sendLoginMessage(message: string) {
+    await this.ctx.msg.send(this, 'S_LOGINDEBUG', message);
   }
 
-  public async sendLoginError({ msg }: SnowContext, code: number = 900) {
-    await this.sendLoginMessage({ msg } as SnowContext, `user code ${code}`);
-  }
-
-  public async sendLoginReply({ msg }: SnowContext) {
-    await msg.send(this, 'S_LOGIN', this.penguin.id);
+  public async sendLoginError(code: number = 900) {
+    await this.sendLoginMessage(`user code ${code}`);
   }
 
   public async unlockStamp(game: SnowGame, id: number) {

@@ -24,7 +24,7 @@ export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => 
   const place = ctx.world.places[JSON.parse(placeName)];
 
   if (battleMode === null || baseAssetUrl === null || place === undefined) {
-    await ctx.penguin.sendLoginError(ctx);
+    await ctx.penguin.sendLoginError();
     ctx.penguin.disconnected = true;
     ctx.client.end();
     return;
@@ -42,12 +42,12 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
 
   const failLogin = async (msg: string) => {
     logdebug(getYellowString(`Snow login failed: ${msg}`));
-    await penguin.sendLoginError(ctx);
+    await penguin.sendLoginError();
     ctx.penguin.disconnected = true;
     client.end();
   }
 
-  await penguin.sendLoginMessage(ctx, "Got /login command");
+  await penguin.sendLoginMessage("Got /login command");
 
   if (penguin.loggedIn) {
     failLogin("Already logged in!");
@@ -80,8 +80,8 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
   world.addPenguin(ctx.penguin);
 
   penguin.loggedIn = true;
-  await penguin.sendLoginMessage(ctx, 'Finalizing login');
-  await penguin.sendLoginReply(ctx);
+  await penguin.sendLoginMessage('Finalizing login');
+  await msg.send(client, 'S_LOGIN', p.id);
   
   // TODO: this shouldnt be sending an empty string... is somewhere else incorrect?
   await msg.send(client, 'W_BASEASSETURL', '');
