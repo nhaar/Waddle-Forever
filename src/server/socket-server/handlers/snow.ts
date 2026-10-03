@@ -8,7 +8,7 @@ import { GameObject, sfxName } from "../world/snow/snow-game-objects";
 
 
 export type SnowHandler = (ctx: SnowPenguinContext, ...args: Array<string>) => Promise<void>;
-export type SnowFrameworkHandler = (ctx: SnowPenguinContext, args: Record<string, any>) => Promise<void>;
+export type SnowFrameworkHandler = (ctx: SnowPenguinContext, args: Record<string, unknown>) => Promise<void>;
 
 export const handleVersion: SnowHandler = async ({ msg, client }) => {
   // copied from snowflake config.py
@@ -307,8 +307,8 @@ export const frameworkWindowClosed: SnowFrameworkHandler = async (ctx, { windowU
 }
 
 export const frameworkElementSelected: SnowFrameworkHandler = async (ctx, { element, tipMode }) => {
-  ctx.player.element = (element as string).toLowerCase();
-  ctx.player.tipMode = tipMode;
+  ctx.player.element = String(element).toLowerCase();
+  ctx.player.tipMode = Boolean(tipMode);
 
   if (!['fire', 'water', 'snow'].includes(ctx.player.element)) {
     logverbose(getYellowString('Invalid element: ' + ctx.player.element));
@@ -339,7 +339,12 @@ export const setupMatchMaker = async (world: SnowWorld) => {
     const water = players.find(p => p.element === 'water') ?? null;
     const snow = players.find(p => p.element === 'snow') ?? null;
 
+    let isTusk: boolean;
+
     for (const penguin of [fire, snow, water].filter(Boolean)) {
+      // somewhat hacky, but all players in a matchmaking room
+      // should all have the same battle mode, so this works
+      isTusk = penguin.battleMode === 1;
       const select = penguin.getWindow(null, Windows.PLAYER_SELECT);
       select.sendPayload('matchFound', {
         1: fire ? fire.penguin.name : null,
@@ -349,7 +354,7 @@ export const setupMatchMaker = async (world: SnowWorld) => {
       world.matchMaker.removePlayer(penguin);
     }
 
-    world.createGame(fire, water, snow);
+    world.createGame(isTusk, fire, water, snow);
   });
   world.matchMaker.setTickListener(() => {});
 }

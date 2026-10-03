@@ -18,7 +18,7 @@ interface Ctx {
   };
 }
 
-type PostCallback = (body: any, ctx: Ctx) => Promise<string | Record<string, any>>;
+type PostCallback = (body: any, ctx: Ctx) => Promise<string | Record<string, unknown>>;
 
 type GetCallback = (body: any, ctx: Ctx) => string;
 

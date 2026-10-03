@@ -57,7 +57,7 @@ export class SnowDataHandler {
       const action = data.shift(); 
 
       if (action === '/framework') {
-        let json: Record<string, any>;
+        let json: { triggerName: string, [key: string]: unknown };
 
         try {
           json = JSON.parse(command.trim().slice(action.length).trim());

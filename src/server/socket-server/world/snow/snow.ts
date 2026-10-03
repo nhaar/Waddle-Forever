@@ -1,7 +1,7 @@
 import { WorldPenguin } from "../world-penguin";
 import { SnowContext, SnowPenguinContext } from "../../snow-data-handler";
 import { BuildType, EventType, MessageType, MirrorMode, ServerType, TipPhase, ViewMode, WindowAction, Windows } from "./snow-constants";
-import { CardObject, Enemy, FireNinja, GameObject, MemberCard, Ninja, Scrap, Sly, SnowNinja, Sound, Tank, WaterNinja } from "./snow-game-objects";
+import { CardObject, Enemy, FireNinja, GameObject, MemberCard, Ninja, Scrap, Sensei, Sly, SnowNinja, Sound, Tank, Tusk, WaterNinja } from "./snow-game-objects";
 import { MatchMaker } from "../matchmaker";
 import { choose, EventListener, makeUrl, randomInt, shuffle } from "@common/utils";
 import { CardColor, CARDS } from "@server/game-logic/cards";
@@ -207,11 +207,11 @@ class SWFWindow {
     if (game !== null) game.windowEvents.fire(this.name, this._player, v);
   }
 
-  public async send(content: Record<string, any>, msgType: MessageType = MessageType.RECEIVED_JSON) {
+  public async send(content: Record<string, unknown>, msgType: MessageType = MessageType.RECEIVED_JSON) {
     await this.ctx.msg.send(this._player, 'UI_CLIENTEVENT', this.ctx.world.worldId, msgType, JSON.stringify(content));
   }
 
-  public async load(initPayload: Record<string, any> | null = null, args: Record<string, any> = {}) {
+  public async load(initPayload: Record<string, unknown> | null = null, args: Record<string, unknown> = {}) {
     // TODO apply window manager offset, which is optional, dunno what its for
     /*args.xPercent = (args.xPercent ?? 0) - 0.5;
     args.yPercent = (args.yPercent ?? 0) - 0.5;*/
@@ -227,7 +227,7 @@ class SWFWindow {
     });
   }
 
-  public async close(args: Record<string, any> = {}) {
+  public async close(args: Record<string, unknown> = {}) {
     await this.send({
       targetWindow: this.url,
       action: WindowAction.CLOSE_WINDOW,
@@ -238,8 +238,8 @@ class SWFWindow {
 
   public async sendPayload(
     triggerName: string,
-    payload: Record<string, any> = {},
-    args: Record<string, any> = {},
+    payload: Record<string, unknown> = {},
+    args: Record<string, unknown> = {},
     type: EventType = EventType.IMMEDIATE
   ) {
     await this.send({
@@ -254,7 +254,7 @@ class SWFWindow {
 
   public async sendAction(
     action: string,
-    args: Record<string, any> = {},
+    args: Record<string, unknown> = {},
     type: EventType = EventType.IMMEDIATE
   ) {
     await this.send({
@@ -375,7 +375,17 @@ class Grid {
           continue;
         }
 
-        if (!this.canMove(tile.x, tile.y)) {
+        const enemyRange = this.game.enemies.some(enemy =>
+          enemy.tileRange > 0 &&
+          (enemy.x !== tile.x || enemy.y !== tile.y) &&
+          Math.abs(enemy.x - tile.x) <= enemy.tileRange &&
+          Math.abs(enemy.y - tile.y) <= enemy.tileRange
+        );
+
+        if (enemyRange) {
+          // Tile is within the extended tile range, can't move there
+          tile.placeSprite('ui_tile_no_move', player);
+        } else if (!this.canMove(tile.x, tile.y)) {
           // Cannot move to the tile
           let tileName = 'ui_tile_no_move';
 
@@ -956,6 +966,10 @@ export class SnowPlayer {
     return this.powerCardSlots.size > 0 || this.powerCards.size > 0;
   }
 
+  get placedPowerCard() {
+    return this.selectedCard !== null && this.selectedCard.x !== -1 && this.selectedCard.y !== -1;
+  }
+
   public async sendLoginMessage(message: string) {
     await this.ctx.msg.send(this, 'S_LOGINDEBUG', message);
   }
@@ -1125,11 +1139,17 @@ export class SnowGame {
   private started: boolean = false;
   private roomMinTimeReceived: boolean = false;
 
+  protected ninjaSpawnPositions = [
+    {'x': 0, 'y': 0},
+    {'x': 0, 'y': 2},
+    {'x': 0, 'y': 4}
+  ];
+
   private bonusCriteria: 'no_ko' | 'under_time' | 'full_health' = choose(['no_ko', 'under_time', 'full_health']);
   private gameStart: number = Date.now();
 
   private map: number = randomInt(1, 3);
-  private totalCombos: number = 0;
+  protected totalCombos: number = 0;
   public round: number = 0;
   public coins: number = 0;
   public exp: number = 0;
@@ -1137,8 +1157,8 @@ export class SnowGame {
   public callbacks: CallbackHandler = new CallbackHandler(this);
   public objects: ObjectCollection = new ObjectCollection(1000);
   public windowEvents: WindowEventListener = new WindowEventListener();
-  private backgrounds: GameObject[];
-  public rocks: GameObject[];
+  protected backgrounds: GameObject[];
+  public rocks: GameObject[] = [];
   private music: Sound;
 
   public grid = new Grid(9, 5, this);
@@ -1190,7 +1210,7 @@ export class SnowGame {
     }
   }
 
-  public async start() {
+  public async start(place: string = 'snow_battle') {
     this.players.forEach(player => {
       player.memberCard = new MemberCard(this, player);
       player.initPowerCards(this);
@@ -1198,7 +1218,7 @@ export class SnowGame {
 
     await sleep(3000);
 
-    const battlePlace = this.ctx.world.places['snow_battle'];
+    const battlePlace = this.ctx.world.places[place];
 
     for (const player of this.players) {
       await player.getWindow(Windows.PLAYER_SELECT).close();
@@ -1212,19 +1232,17 @@ export class SnowGame {
     this.playersReady();
   }
 
-  public async playersReady() {
+  public async playersReady(waitForEnemies: boolean = true, music: string = 'mus_mg_201303_cjsnow_gamewindamb') {
     if (this.started || !this.roomMinTimeReceived || this.connectedPlayers.some(p => !p.isReady)) {
       return;
     }
 
     this.started = true;
 
-    this.music = Sound.fromName(this.ctx.world, 'mus_mg_201303_cjsnow_gamewindamb', true);
+    this.music = Sound.fromName(this.ctx.world, music, true);
     this.music.play(this.ctx, this);
 
     await this.initObjects();
-    await this.showEnvironment();
-    await this.spawnNinjas();
 
     for (const player of this.players) {
       await player.getWindow(Windows.PLAYER_SELECT).sendAction('closeCjsnowRoomToRoom');
@@ -1244,9 +1262,12 @@ export class SnowGame {
     this.gameStart = Date.now();
 
     await this.displayRoundTitle();
-    await sleep(1600);
 
-    await this.spawnEnemies();
+    if (waitForEnemies) {
+      await sleep(1600);
+      await this.spawnEnemies();
+    }
+
     await this.waitForWindow(Windows.ROUNDS, false);
 
     await this.showUI();
@@ -1337,11 +1358,11 @@ export class SnowGame {
       }
 
       this.coins += [
-        60, 120, 120, 120
+        60, 120, 120, 120, 0
       ][this.round];
 
       this.exp += [
-        100, 200, 300, 180
+        100, 200, 300, 180, 0
       ][this.round];
 
       if (this.round >= 2 && !this.bonusCriteriaMet) {
@@ -1351,7 +1372,7 @@ export class SnowGame {
       }
 
       if (this.round >= 3) {
-        // Bonus round complete
+        // Bonus round (or tusk game) complete
         this.postGame();
         return;
       }
@@ -1445,14 +1466,17 @@ export class SnowGame {
     });
   }
 
-  private async initObjects() {
+  protected async initObjects() {
     this.grid.initTiles();
     await this.createEnvironment();
     await this.createEnemies();
     await this.createNinjas();
+
+    await this.showEnvironment();
+    await this.spawnNinjas();
   }
 
-  private async createEnvironment() {
+  protected async createEnvironment() {
     // TODO: if we ever do a settings option for beta, this.map is always 1
     this.backgrounds = {
       1: [new GameObject(this, 'env_mountaintop_bg', 4.5, -1.1)],
@@ -1477,7 +1501,7 @@ export class SnowGame {
     await Promise.all(this.rocks.map(r => r.placeObject()));
   }
 
-  private async createEnemies() {
+  protected async createEnemies() {
     if (this.round > 3) return;
 
     // always 4 enemies for bonus round
@@ -1499,14 +1523,8 @@ export class SnowGame {
     }
   }
 
-  private async createNinjas() {
-    const spawnPositions = [
-      {'x': 0, 'y': 0},
-      {'x': 0, 'y': 2},
-      {'x': 0, 'y': 4}
-    ];
-
-    shuffle(spawnPositions);
+  protected async createNinjas() {
+    shuffle(this.ninjaSpawnPositions);
 
     const ninjaClasses = {
       'fire': FireNinja,
@@ -1517,7 +1535,7 @@ export class SnowGame {
     this.players.forEach((player, index) => {
       const cls = ninjaClasses[player.element];
 
-      const pos = spawnPositions[index];
+      const pos = this.ninjaSpawnPositions[index];
       const ninja = new cls(this, player, pos.x, pos.y) as Ninja;
       ninja.placeObject();
       player.ninja = ninja;
@@ -1531,7 +1549,7 @@ export class SnowGame {
     }
   }
 
-  private async spawnNinjas() {
+  protected async spawnNinjas() {
     for (const ninja of this.ninjas) {
       await ninja.placeObject();
       await ninja.idleAnimation();
@@ -1539,7 +1557,7 @@ export class SnowGame {
     }
   }
 
-  private async spawnEnemies() {
+  protected async spawnEnemies() {
     for (const enemy of this.enemies) {
       const [x, y] = this.grid.enemySpawnLocation();
       this.grid.add(enemy, x, y);
@@ -1632,7 +1650,7 @@ export class SnowGame {
     }
   }
 
-  private async doPowerCardAttacks() {
+  protected async doPowerCardAttacks() {
     const ninjasWithCards = this.ninjas.filter(n => n.player.selectedCard !== null);
 
     const isCombo = ninjasWithCards.length > 1;
@@ -1748,7 +1766,7 @@ export class SnowGame {
     this.ninjas.forEach(n => n.hideGhost(false));
   }
 
-  private async removeObjects() {
+  protected async removeObjects() {
     this.removeTargets();
     this.removeUI();
 
@@ -1769,7 +1787,7 @@ export class SnowGame {
     this.rocks.forEach(r => r.removeObject());
   }
 
-  private async displayRoundTitle() {
+  protected async displayRoundTitle() {
     const roundTime = (this.gameStart + 300000) - Date.now();
 
     for (const penguin of this.players) {
@@ -1789,7 +1807,7 @@ export class SnowGame {
     await this.waitForWindow(Windows.ROUNDS, true);
   }
 
-  private async displayComboTitle(elements: string[]) {
+  protected async displayComboTitle(elements: string[]) {
     for (const penguin of this.players) {
       const title = penguin.getWindow(Windows.COMBOS);
       title.layer = 'bottomLayer';
@@ -1838,7 +1856,7 @@ export class SnowGame {
     return this.round + 1;
   }
 
-  private async displayPayout() {
+  protected async displayPayout(damage: number | null = null) {
     // TODO: beta payout (if we do an option for that)
 
     const snowStamps = this.ctx.data.getStampbook().find(g => g.group_id === 60).stamps;
@@ -1876,6 +1894,11 @@ export class SnowGame {
         }
       }
 
+      if (damage !== null) {
+        // add Tusk's Cloak
+        player.penguin.inventory.add(3160);
+      }
+
       if (this.enemies.length === 0) {
         // Update wins
         const element = {
@@ -1902,11 +1925,11 @@ export class SnowGame {
       payout.load({
         coinsEarned: coins,
         doubleCoins: Number(doubleCoins),
-        damage: 0,
-        isBoss: 0,
+        damage: damage ?? 0,
+        isBoss: Number(damage !== null),
         rank: currentRank + 1,
         round: this.getPayoutRound(),
-        showItems: 0,
+        showItems: Number(damage !== null),
         stampList: snowStamps.map(stamp => ({
           stamp_id: stamp.stamp_id,
           name: `global_content.stamps.${stamp.stamp_id}.name`,
@@ -1934,7 +1957,7 @@ export class SnowGame {
     }
   }
 
-  private async displayWinSequence() {
+  protected async displayWinSequence() {
     await sleep(2000);
 
     if (this.ninjas.every(n => n.isKO)) return;
@@ -1953,7 +1976,190 @@ export class SnowGame {
   unlockStamp(stamp: number) {
     this.connectedPlayers.forEach(p => p.unlockStamp(this, stamp));
   }
+}
 
+export class TuskGame extends SnowGame {
+  protected ninjaSpawnPositions = [
+    {'x': 0, 'y': 1},
+    {'x': 1, 'y': 2},
+    {'x': 0, 'y': 3}
+  ];
+  public round: number = 4; // this tells the round title that it's a tusk battle
+
+  private sensei: Sensei;
+  public tusk: Tusk;
+
+  constructor(
+    ctx: SnowContext,
+    fire: SnowPlayer | null,
+    water: SnowPlayer | null,
+    snow: SnowPlayer | null
+  ) {
+    super(ctx, fire, water, snow);
+  }
+
+  public get enemies() {
+    return this.tusk.hp <= 0 ? [] : [this.tusk];
+  }
+
+  public async start() {
+    await super.start('tusk_battle');
+  }
+
+  public async playersReady() {
+    await super.playersReady(false, 'mus_mg_201303_cjsnow_tuskthemecaveamb');
+  }
+
+  protected async initObjects() {
+    await super.initObjects();
+    await this.spawnEnemies();
+    await this.callbacks.waitForAnims();
+  }
+
+  protected async spawnNinjas() {
+    await super.spawnNinjas();
+    await this.sensei.placeObject();
+    await this.sensei.idleAnimation();
+  }
+
+  protected async spawnEnemies() {
+    await this.tusk.idleAnimation();
+    this.tusk.placeHealthbar();
+  }
+
+  protected async removeObjects() {
+    await super.removeObjects();
+    await this.sensei.removeObject();
+    await this.tusk.removeObject();
+  }
+
+  protected async createEnvironment() {
+    this.backgrounds = [
+      new GameObject(this, 'tusk_background_under', 4.5, -1.1),
+      new GameObject(this, 'tusk_background_over', 4.5, 6.125),
+    ];
+
+    this.backgrounds.forEach(b => b.placeObject());
+  }
+
+  protected async createNinjas() {
+    super.createNinjas();
+
+    this.sensei = new Sensei(this, 0, 2);
+    this.sensei.placeObject();
+  }
+
+  protected async createEnemies() {
+    // Tusk's max HP changes based on player count
+    const maxHp = [300, 500, 800][this.connectedPlayers.length - 1];
+    this.tusk = new Tusk(this, 8, 2, maxHp);
+    this.tusk.placeObject();
+  }
+
+  protected async doPowerCardAttacks() {
+    const ninjasWithCards = this.ninjas.filter(n => n.player.placedPowerCard);
+
+    const elements = ninjasWithCards.map(n => n.player.element);
+
+    if (this.sensei.powerState === 2) {
+      elements.push('sensei');
+    }
+
+    const isCombo = elements.length > 1;
+
+    if (isCombo) {
+      this.totalCombos++;
+
+      if (ninjasWithCards.length === 3) {
+        this.unlockStamp(Stamp.ThreeNinjaCombo);
+      }
+
+      if (this.totalCombos >= 3) {
+        this.unlockStamp(Stamp.ThreeCombos);
+      }
+
+      if (elements.length >= 4) {
+        this.unlockStamp(Stamp.FourNinjaCombo);
+      }
+
+      await this.displayComboTitle(elements);
+
+      await this.callbacks.waitForEvent('comboScreenComplete');
+    }
+
+    await this.sensei.updateState();
+    await sleep(1000);
+
+    for (const ninja of ninjasWithCards) {
+      await ninja.usePowerCard(isCombo);
+      await sleep(1000);
+    }
+  }
+
+  protected async displayRoundTitle() {
+    for (const penguin of this.players) {
+      const title = penguin.getWindow(Windows.ROUNDS);
+      title.load({
+        roundNumber: this.round
+      }, {
+        loadDescription: '',
+        assetPath: '',
+        xPercent: 0.15,
+        yPercent: 0.15
+      });
+    }
+
+    await this.waitForWindow(Windows.ROUNDS, true);
+  }
+
+  protected async displayPayout() {
+    const damagePercent = Math.round((this.tusk.hp / this.tusk.maxHp) * 100);
+    const totalDamage = 100 - damagePercent;
+
+    // map of damage percent to [xp, coins]
+    const rewards = {
+      0: [2100, 660],
+      10: [1290, 420],
+      20: [1050, 300],
+      30: [340, 180],
+      100: [90, 60]
+    }
+
+    for (const [damage, [exp, coins]] of Object.entries(rewards)) {
+      if (damagePercent <= Number(damage)) {
+        this.coins = coins;
+        this.exp = exp;
+        break
+      }
+    }
+
+    super.displayPayout(Math.min(totalDamage, 100));
+  }
+
+  protected async displayWinSequence() {
+    await sleep(2000);
+
+    if (this.ninjas.every(n => n.isKO)) {
+      this.tusk.winAnimation();
+      this.sensei.loseAnimation();
+      await this.callbacks.waitForAnims();
+      return;
+    }
+
+    this.unlockStamp(Stamp.FinalBattle);
+
+    for (const ninja of this.ninjas) {
+      if (ninja.player.disconnected) continue;
+
+      if (ninja.isKO) ninja.setHealth(1);
+
+      ninja.winAnimation();
+    }
+
+    this.sensei.winAnimation();
+
+    await sleep(3500);
+  }
 }
 
 // TODO: could we just merge this with SnowServer?
@@ -2033,8 +2239,8 @@ export class SnowWorld {
     return [...this.penguins.values()];
   }
 
-  public createGame(fire: SnowPlayer | null, water: SnowPlayer | null, snow: SnowPlayer | null) {
-    const game = new SnowGame(this.ctx, fire, water, snow);
+  public createGame(isTusk: boolean, fire: SnowPlayer | null, water: SnowPlayer | null, snow: SnowPlayer | null) {
+    const game = new (isTusk ? TuskGame : SnowGame)(this.ctx, fire, water, snow);
     this.games.add(game);
     game.start();
   }

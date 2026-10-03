@@ -1,7 +1,7 @@
 import { SnowContext, SnowPenguinContext } from "@server/socket-server/snow-data-handler";
 import { MirrorMode, OriginMode, TipPhase, Windows } from "./snow-constants";
-import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld } from "./snow";
-import { choose, clamp } from "@common/utils";
+import { ActionCallback, ActionType, Asset, sleep, SnowGame, SnowPlayer, SnowWorld, TuskGame } from "./snow";
+import { choose, chooseN, clamp, randomInt } from "@common/utils";
 import { Card, CardColor, CardElement } from "@server/game-logic/cards";
 import { Stamp } from "@server/game-logic/stamps";
 
@@ -60,10 +60,12 @@ export class GameObject {
     private _yScale: number = 1,
     public target: SnowPlayer | SnowGame = game
   ) {
-    if (target instanceof SnowGame) {
-      this.game?.objects.add(this);
-    } else {
-      (this.target as SnowPlayer).localObjects.add(this);
+    if (target !== null) {
+      if (target instanceof SnowPlayer) {
+        target.localObjects.add(this);
+      } else {
+        this.game?.objects.add(this);
+      }
     }
 
     if (this.grid) {
@@ -339,8 +341,7 @@ export class LocalGameObject extends GameObject {
 }
 
 class Target extends LocalGameObject {
-
-  private anims = {
+  protected anims = {
     attackIntro: 'ui_target_red_attack_intro_anim',
     attackIdle: 'ui_target_red_attack_idle_anim',
     healIntro: 'ui_target_white_heal_intro_anim',
@@ -413,7 +414,20 @@ class Target extends LocalGameObject {
 
     this.select();
   }
+}
 
+class TuskTarget extends Target {
+  constructor(ninja: Ninja, x: number, y: number) {
+    super(ninja, x, y);
+
+    this.anims = {
+      ...this.anims,
+      attackIntro: 'ui_target_red_attack_tusk_intro',
+      attackIdle: 'ui_target_red_attack_idle_tusk_anim',
+      attackSelectedIntro: 'ui_target_green_attack_selected_intro_tusk_anim',
+      attackSelectedIdle: 'ui_target_green_idle_tusk'
+    }
+  }
 }
 
 //
@@ -913,7 +927,57 @@ export class MemberReviveBeam extends Effect {
   }
 }
 
-// TODO: tusk effects
+class TuskPushRock extends Effect {
+  constructor(game: SnowGame, x: number, y: number) {
+    super(game, 'effect_tusk_push', x, y, 0.5, 1, 0.75);
+  }
+
+  async play() {
+    await this.placeObject();
+    await this.placeSprite();
+    await this.animateSprite(0, 14, { duration: this.duration * 1000 });
+    setTimeout(() => this.removeObject(), this.duration * 1000);
+  }
+}
+
+class TuskIcicle extends Effect {
+  constructor(game: SnowGame, x: number, y: number) {
+    super(game, 'tusk_icicle_drop_anim', x, y, 0.5, 1);
+  }
+
+  async play() {
+    await this.placeObject();
+    await this.placeSprite();
+    await this.animateSprite(0, 15, { duration: 800 });
+    setTimeout(() => this.applyDamage(), 800);
+  }
+
+  private applyDamage() {
+    this.removeObject();
+
+    const target = this.game.grid.get(this.x, this.y);
+
+    if (target === null) return;
+
+    if (!(target instanceof Ninja)) return;
+
+    if (target.isKO) return;
+
+    target.setHealth(target.hp - (this.game as TuskGame).tusk.attack);
+  }
+}
+
+class TuskIcicleRow {
+  static async play(game: SnowGame, pair: number[]) {
+    const first = pair[0];
+    const second = pair[1];
+    for (let x = game.grid.maxX - 1; x >= 0; x--) {
+      new TuskIcicle(game, x, first).play();
+      new TuskIcicle(game, x, second).play();
+      await sleep(90);
+    }
+  }
+}
 
 //
 // Ninjas
@@ -1178,7 +1242,13 @@ export abstract class Ninja extends GameObject {
     );
 
     for (const tile of attackable) {
-      // TODO: handle tusk
+      const obj = this.game.grid.get(tile.x, tile.y);
+      if (obj instanceof Tusk) {
+        const t = new TuskTarget(this, tile.x, tile.y);
+        this.targets.add(t);
+        t.showAttack();
+        return; // must return to prevent multiple targets being made
+      }
       const t = new Target(this, tile.x, tile.y);
       this.targets.add(t);
       t.showAttack();
@@ -1646,6 +1716,153 @@ export class SnowNinja extends Ninja {
 
 }
 
+export class Sensei extends GameObject {
+  private elementState: string = 'snow';
+  public powerState: number = 0;
+
+  constructor(game: SnowGame, x: number, y: number) {
+    super(game, 'Sensei', x, y, true, 0.5, 1);
+  }
+
+  get nextElement() {
+    return {
+      'snow': 'fire',
+      'fire': 'water',
+      'water': 'snow'
+    }[this.elementState];
+  }
+
+  async updateState() {
+    this.powerState++;
+
+    if (this.powerState >= 4) {
+      this.powerState = 1;
+      this.elementState = this.nextElement;
+    }
+
+    switch (this.powerState) {
+      case 0:
+      case 1:
+        this.idleAnimation();
+        break;
+      case 2:
+        this.powerUpAnimation();
+        break;
+      case 3:
+        await this.doPowerUp();
+        break;
+    }
+  }
+
+  async doPowerUp() {
+    if (this.game.enemies.length <= 0) return;
+
+    await sleep(500);
+    this.attackAnimation();
+    this.attackSound();
+    await sleep(500);
+
+    const beamClass = {
+      'fire': FirePowerBeam,
+      'water': WaterPowerBeam,
+      'snow': SnowPowerBeam
+    }[this.elementState];
+
+    const beamOffset = {
+      'fire': [0.6, 0.2],
+      'water': [0.4, 1],
+      'snow': [0.75, 1]
+    }[this.elementState];
+
+    const beam = new beamClass(this.game, this.x, this.y);
+    beam.xOffset = beamOffset[0];
+    beam.yOffset = beamOffset[1];
+    beam.play();
+    await sleep(650);
+
+    const impacts: [CardObject, Effect][] = [];
+    const delay = 350;
+
+    for (const [x, y] of [[1, 2], [4, 2], [7, 2]]) {
+      impacts.push(this.placeCard(x, y));
+      await sleep(delay);
+    }
+
+    if (this.elementState === 'snow') this.snowImpactSound();
+
+    await sleep((impacts[0][1].duration * 1000) - delay);
+
+    await beam.removeObject();
+    this.idleAnimation();
+
+    const isCombo = this.game.ninjas.filter(n => n.player.placedPowerCard).length > 0;
+
+    for (const [card, impact] of impacts) {
+      impact.removeObject();
+      card.applyHealth();
+
+      if (isCombo) card.applyEffects();
+    }
+
+    await this.game.callbacks.waitForAnims();
+  }
+
+  private placeCard(x: number, y: number): [CardObject, Effect] {
+    const dummyCard = {
+      element: this.elementState.charAt(0),
+      value: 10
+    }
+    const card = new CardObject(dummyCard as Card, this.game, null);
+    card.object.x = x;
+    card.object.y = y;
+
+    const impactClass = {
+      'fire': FirePowerBottle,
+      'water': WaterFishDrop,
+      'snow': SnowIgloo
+    }[this.elementState];
+
+    const impact = new impactClass(this.game, x, y);
+    impact.play(false);
+    return [card, impact];
+  }
+
+  async idleAnimation() {
+    await this.animateObject('sensei_idle_anim', { playStyle: 'loop', register: false });
+  }
+
+  async winAnimation() {
+    await this.animateObject('sensei_win_anim', { reset: true });
+  }
+
+  async loseAnimation() {
+    await this.animateObject('sensei_lose_anim', { reset: true });
+  }
+
+  async attackAnimation() {
+    await this.animateObject('sensei_attackstart_anim', { reset: true, duration: 500 });
+    await this.animateObject('sensei_attackloop_anim', { playStyle: 'loop' });
+  }
+
+  async powerUpAnimation() {
+    await this.animateObject(`sensei_powerup${this.elementState}_anim`, { reset: true });
+    await this.animateObject(`sensei_powerup${this.elementState}loop_anim`, { playStyle: 'loop' });
+    await this.animateSprite(0, 5, { playStyle: 'loop', duration: 600 });
+  }
+
+  async attackSound() {
+    await this.playSound(sfxName(`attacksensei${this.elementState}`));
+  }
+
+  async hitSound() {
+    await this.playSound(sfxName('hitsensei'));
+  }
+
+  private async snowImpactSound() {
+    await this.playSound(sfxName('impactsenseisnow'));
+  }
+}
+
 //
 // Enemies
 //
@@ -1659,6 +1876,8 @@ export abstract class Enemy extends GameObject {
   constructor(
     game: SnowGame,
     name: string,
+    x: number,
+    y: number,
     public maxHp: number,
     public range: number,
     public attack: number,
@@ -1666,12 +1885,16 @@ export abstract class Enemy extends GameObject {
     public moveDuration: number,
     public tileRange: number = 0
   ) {
-    super(game, name, -1, -1, true, 0.5, 1);
+    super(game, name, x, y, true, 0.5, 1);
 
     this.hp = maxHp;
 
+    this.createHealthBar();
+  }
+
+  protected createHealthBar() {
     this.healthBar = new GameObject(
-      game,
+      this.game,
       'reghealthbar_animation',
       this.x, this.y,
       false,
@@ -1711,14 +1934,14 @@ export abstract class Enemy extends GameObject {
     this.resetHealthbar();
   }
 
-  public animateHealthbar(_startHp: number, _endHp: number, duration = 500) {
+  public animateHealthbar(_startHp: number, _endHp: number, duration = 500, maxFrame = 60) {
     const backwards = _endHp > _startHp;
 
     const startHp = backwards ? _endHp : _startHp;
     const endHp = backwards ? _startHp : _endHp;
 
-    const start = 60 - Math.floor((startHp / this.maxHp) * 60) - 1;
-    const end = 60 - Math.floor((endHp / this.maxHp) * 60) - 1;
+    const start = maxFrame - Math.floor((startHp / this.maxHp) * maxFrame) - 1;
+    const end = maxFrame - Math.floor((endHp / this.maxHp) * maxFrame) - 1;
 
     this.healthBar.animateSprite(start, end, { backwards, duration });
   }
@@ -1743,7 +1966,8 @@ export abstract class Enemy extends GameObject {
     if (this.hp <= 0 && shouldDie) {
       this.koAnimation();
 
-      if (this.game.round >= 3) {
+      // Bonus round
+      if (this.game.round === 3) {
         this.game.coins += 60;
         this.game.exp += 75;
       }
@@ -1916,7 +2140,7 @@ export abstract class Enemy extends GameObject {
 export class Sly extends Enemy {
 
   constructor(game: SnowGame) {
-    super(game, 'Sly', 30, 3, 3, 3, 1200);
+    super(game, 'Sly', -1, -1, 30, 3, 3, 3, 1200);
   }
 
   async attackTarget(target: Ninja) {
@@ -2004,7 +2228,7 @@ export class Sly extends Enemy {
 export class Scrap extends Enemy {
 
   constructor(game: SnowGame) {
-    super(game, 'Scrap', 45, 2, 8, 2, 1200);
+    super(game, 'Scrap', -1, -1, 45, 2, 8, 2, 1200);
   }
 
   protected simulateDamage(xPos: number, yPos: number, target: GameObject) {
@@ -2110,7 +2334,7 @@ export class Scrap extends Enemy {
 export class Tank extends Enemy {
 
   constructor(game: SnowGame) {
-    super(game, 'Tank', 60, 1, 10, 1, 1100);
+    super(game, 'Tank', -1, -1, 60, 1, 10, 1, 1100);
   }
 
   protected simulateDamage(xPos: number, yPos: number, target: GameObject) {
@@ -2258,6 +2482,260 @@ export class Tank extends Enemy {
 
   async impactSound() {}
 
+}
+
+export class Tusk extends Enemy {
+  private nextAttack: 'push' | 'icicle_random' | 'icicle_paired';
+  private iciclePairs = [
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4]
+  ];
+
+  constructor(game: SnowGame, x: number, y: number, maxHp: number) {
+    super(game, 'Tusk', x, y, maxHp, 9, 10, 0, 0, 1);
+
+    this.nextAttack = choose(['push', 'icicle_random']);
+  }
+
+  protected createHealthBar() {
+    this.healthBar = new GameObject(
+      this.game,
+      'tuskhealthbar_animation',
+      this.x, this.y,
+      false,
+      0.5, 1.005
+    );
+  }
+
+  public animateHealthbar(startHp: number, endHp: number, duration = 500) {
+    super.animateHealthbar(startHp, endHp, duration, 240);
+  }
+
+  async attackTarget(target: Ninja) {
+    if (target.isKO) return;
+
+    switch (this.nextAttack) {
+      case 'push':
+        await this.pushAttack();
+        break;
+      case 'icicle_random':
+        await this.icicleRandomAttack();
+        break;
+      case 'icicle_paired':
+        await this.iciclePairedAttack();
+        break;
+    }
+
+    this.determineNextAttack(target);
+  }
+
+  private determineNextAttack(target: Ninja) {
+    if (this.nextAttack !== 'icicle_paired') {
+      this.nextAttack = 'icicle_paired';
+      return;
+    }
+
+    this.nextAttack = 'icicle_random';
+
+    const dist = this.game.grid.distance([this.x, this.y], [target.x, target.y]);
+
+    const pushAttackChance = Math.abs(1 - ((dist - 1) / 7));
+
+    if (Math.random() <= pushAttackChance) {
+      this.nextAttack = 'push';
+    }
+  }
+
+  private async pushAttack() {
+    this.pushAttackAnimation();
+
+    const pushDuration = 2.25;
+    const attackDelay = 1.85;
+
+    const ninjas = this.game.ninjas.sort((a, b) => a.x - b.x);
+    const ninjaPositions: [number, number][] = [];
+
+    for (const ninja of ninjas) {
+      // end position for the push
+      let resultX = 0;
+
+      while(
+        ninjaPositions.some(([x, y]) => x === resultX && y === ninja.y)
+        || !this.game.grid.canMove(resultX, ninja.y)
+      ) {
+        resultX++;
+      }
+
+      if (resultX < ninja.x) {
+        setTimeout(() => ninja.moveObject(resultX, ninja.y, pushDuration * 1000), attackDelay * 1000);
+      }
+
+      if (!ninja.isKO) {
+        setTimeout(() => {
+          ninja.setHealth(ninja.hp - this.attack, false);
+        }, (attackDelay + (pushDuration / 1.5)) * 1000);
+      }
+
+      if (resultX > ninja.x) {
+        resultX = ninja.x;
+      }
+
+      ninjaPositions.push([resultX, ninja.y]);
+    }
+
+    await sleep(attackDelay * 1000);
+
+    // the exact algorithm for this is unknown,
+    // but it should be mostly accurate according to snowflake
+
+    const positions = [
+      [1, 0],
+      [1, 2],
+      [0, 4],
+      [0, 1],
+      [1, 3]
+    ]
+
+    for (let x = this.game.grid.maxX - 1; x >= 0; x--) {
+      const firstPositions = positions.slice(0, 3);
+      const lastPositions = positions.slice(2);
+
+      for (const [baseX, baseY] of firstPositions) {
+        if (x - baseX < 0) continue;
+
+        new TuskPushRock(this.game, x - baseX, baseY).play();
+      }
+
+      await sleep(((pushDuration / this.game.grid.maxX) / 2) * 1000);
+
+      for (const [baseX, baseY] of lastPositions) {
+        if (x - baseX < 0) continue;
+
+        new TuskPushRock(this.game, x - baseX, baseY).play();
+      }
+
+      await sleep(((pushDuration / this.game.grid.maxX) / 2) * 1000);
+    }
+
+    await this.game.callbacks.waitForAnims();
+  }
+
+  private async icicleRandomAttack() {
+    await this.icicleAttackAnimation();
+    await sleep(1100);
+
+    // NOTE: exact algorithm for this is unknown
+
+    const randomPositions: [number, number][] = chooseN(
+      this.game.grid.tiles.map(t => [t.x, t.y]),
+      randomInt(1, 6 - this.game.connectedPlayers.length)
+    );
+
+    const hitChance = (this.game.connectedPlayers.length / 10) + 0.2;
+    const ninjaPositions: number[][] = [];
+
+    if (Math.random() <= hitChance) {
+      ninjaPositions.push(
+        ...chooseN(
+          this.game.ninjas.filter(n => !n.player.disconnected).map(n => [n.x, n.y]),
+          randomInt(1, this.game.connectedPlayers.length)
+        )
+      );
+    }
+
+    const positions = new Set([...randomPositions, ...ninjaPositions]);
+
+    for (const [x, y] of positions) {
+      new TuskIcicle(this.game, x, y).play();
+    }
+
+    await sleep(1500);
+    await this.game.callbacks.waitForAnims();
+  }
+
+  private async iciclePairedAttack() {
+    await this.icicleAttackAnimation();
+    await sleep(1100);
+
+    // get the pair, and move it to the back
+    // this allows us to iterate through it
+    const nextPair = this.iciclePairs.shift();
+    this.iciclePairs.push(nextPair);
+
+    TuskIcicleRow.play(this.game, nextPair);
+  }
+
+  async idleAnimation(reset: boolean = false) {
+    await this.animateObject('tusk_idle_anim', { playStyle: 'loop', register: false, reset });
+  }
+
+  async pushAttackAnimation() {
+    this.animateObject('tusk_pushattack_anim', { reset: true });
+    this.pushAttackSound();
+    await this.idleAnimation();
+  }
+
+  async icicleAttackAnimation() {
+    this.icicleAttackSoundStart();
+    this.animateObject('tusk_iciclesummon1_anim', { reset: true });
+    this.animateSprite(0, 25, { duration: 1300 });
+    await this.game.callbacks.waitForAnims();
+    this.icicleAttackSoundEnd();
+    this.animateObject('tusk_iciclesummon2_anim');
+    this.idleAnimation();
+  }
+
+  async koAnimation() {
+    await this.animateObject('tusk_lose_anim', { reset: true });
+  }
+
+  async winAnimation() {
+    await this.animateObject('tusk_win_anim', { reset: true });
+    this.laughSound();
+  }
+
+  async hitAnimation() {
+    await this.animateObject('tusk_hit_anim', { reset: true });
+    await this.hitSound();
+
+    if (this.stunned) {
+      this.dazeAnimation(false)
+    } else {
+      this.idleAnimation();
+    }
+  }
+
+  async dazeAnimation(reset: boolean = true) {
+    await this.animateObject('tusk_stun_anim', { playStyle: 'loop', reset });
+  }
+
+  async hitSound() {
+    await this.playSound(sfxName('hittusk'));
+  }
+
+  async laughSound() {
+    await this.playSound(sfxName('tusklaugh'));
+  }
+
+  async pushAttackSound() {
+    await this.playSound(sfxName('attacktuskearthquake'));
+  }
+
+  async icicleAttackSoundStart() {
+    await this.playSound(sfxName('attacktuskicicle01'));
+  }
+
+  async icicleAttackSoundEnd() {
+    await this.playSound(sfxName('attacktuskicicle02'));
+  }
+
+  async moveAnimation() {}
+  async attackAnimation() {}
+  async moveSound() {}
+  async attackSound() {}
+  async impactSound() {}
 }
 
 //
@@ -2638,9 +3116,6 @@ export class Sound implements Asset {
     return new Sound(asset.index, asset.name, looping, volume, radius, gameObjectId, resObjectId);
   }
 
-  // TODO: instead of 'target' param, grab either player
-  // or game from ctx, have a boolean param to determine which one
-  // (whether this is possible depends on how this is used)
   public async play(ctx: SnowContext, target: SnowGame | SnowPlayer, objectId: number = -1, callback: ActionCallback = null) {
     let handleId = -1;
 
