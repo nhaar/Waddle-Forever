@@ -2753,13 +2753,13 @@ export class CardObject implements Card {
   description: string;
 
   object: GameObject;
-  pattern: LocalGameObject;
+  pattern: GameObject;
 
   constructor(card: Card, private game: SnowGame, private player: SnowPlayer) {
     Object.assign(this, card);
 
     this.object = new GameObject(game, card.name, -1, -1, false, 0.5, 1.015);
-    this.pattern = new LocalGameObject(player, game, 'ui_card_pattern', 0, 0, 0.5, 1);
+    this.pattern = new GameObject(game, 'ui_card_pattern', 0, 0, false, 0.5, 1);
   }
 
   get x() {
