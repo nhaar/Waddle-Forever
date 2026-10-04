@@ -844,8 +844,10 @@ class NinjaProfile {
     this._cardProgress.earnXP(won ? 5 : 1);
   }
 
-  getDeck(): number[] {
-    return [...this._cards.entries()].flatMap(([id, [amount, memberAmount]]) => new Array(amount + memberAmount).fill(id));
+  getDeck(isMember: boolean = true): number[] {
+    return this.cards.flatMap(([id, [amount, memberAmount]]) =>
+      new Array(amount + (isMember ? memberAmount : 0)).fill(id)
+    );
   }
 
   public addWin() {

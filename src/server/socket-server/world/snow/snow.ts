@@ -1078,9 +1078,9 @@ export class SnowPlayer {
       'fire': 'r'
     }[this.element];
 
-    const powerCards = this.penguin.ninja.getDeck().map(id => CARDS.get(id)).filter(card => {
-      return card.powerId > 0 && card.element === this.element.charAt(0);
-    });
+    const powerCards = this.penguin.ninja.getDeck(this.penguin.membership.isMember)
+      .map(id => CARDS.get(id))
+      .filter(card => card.powerId > 0 && card.element === this.element.charAt(0));
 
     for (const card of powerCards) {
       const obj = new CardObject(card, game, this);
