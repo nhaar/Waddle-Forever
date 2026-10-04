@@ -1,9 +1,13 @@
-import { isLiteralScoreGame } from "@server/game-logic/rooms";
+import { isLiteralScoreGame, Room } from "@server/game-logic/rooms";
 import { getPenguinString } from "./join";
 import { GameGuard, GameHandler, } from "./handlers";
 
 export const handleLeaveGame: GameHandler<[number]> = (ctx, score) => {
   const { game, data, penguin, msg, prst } = ctx;
+
+  if (game.getId() === Room.CardJitsuSnow) {
+    return;
+  }
 
   const rawCoins = isLiteralScoreGame(game.getId()) ? (
     Number(score)

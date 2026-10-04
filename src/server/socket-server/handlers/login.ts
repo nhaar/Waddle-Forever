@@ -1,4 +1,4 @@
-import { PenguinMessenger } from "../../socket-server/messenger";
+import { XtMessenger } from "../xt-messenger";
 import { ClientSocket } from "@server/socket-server/socket-server";
 import { getDefaultPenguin } from "@server/database/database";
 import { logdebug } from "@server/logger";
@@ -6,9 +6,7 @@ import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import serverList, { getServerPopulation } from "@server/servers";
 import { LoginContext } from "@server/socket-server/xml-handler";
 
-
-
-export function sendError(msg: PenguinMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
+export function sendError(msg: XtMessenger, p: WorldPenguin | ClientSocket | Array<WorldPenguin | ClientSocket>, error: number) {
   msg.send(p, 'e', error);
 }
 
@@ -63,7 +61,7 @@ export const login: LoginHandler = async (ctx, message: string) => {
       }
     }
 
-    const idTest = modernLogin ? Number(nickname) : await db.fromName(nickname);
+    const idTest = modernLogin ? Number(nickname.split('|')[0]) : await db.fromName(nickname);
     if (idTest === null) {
       throw new Error(`Could not find penguin with name: ${nickname}`);
     }
@@ -86,9 +84,19 @@ export const login: LoginHandler = async (ctx, message: string) => {
     how will server size be handled after NPCs?
     */
     // information regarding how many populations are in each server
-    msg.send(client, 'l', id, id, '', serverList.map((server) => {
-      const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
-      return `${server.id},${population}`;
-    }).join('|'));
+    msg.send(
+      client,
+      'l',
+      data.isVanillaEngine() ? [
+        // id, swid, username, login key
+        id, id, nickname, id
+      ].join('|') : id,
+      id,
+      '',
+      serverList.map((server) => {
+        const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
+        return `${server.id},${population}`;
+      }).join('|')
+    );
   }
 }

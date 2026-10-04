@@ -755,7 +755,7 @@ export class GameData {
   }
 
   public lookupFile(route: string): string | undefined {
-    return this.state.files.get(route);
+    return this.state.files.get(route.replaceAll('//', '/'));
   }
 
   public getDate() {

@@ -4,7 +4,7 @@ import { PenguinEnvironment, World } from "@server/socket-server/world/world";
 import { WorldGame } from "@server/socket-server/world/world-game";
 import { UserPenguin, WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldRoom } from "@server/socket-server/world/world-room";
-import { PenguinMessenger } from "../messenger";
+import { XtMessenger } from "../xt-messenger";
 import { GameData } from "@server/timelines/game-data";
 import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
@@ -28,7 +28,7 @@ export type FireContext = PenguinContext & { fire: FireGame };
 
 type GlobalContext = {
   world: World;
-  msg: PenguinMessenger;
+  msg: XtMessenger;
   data: GameData;
   settings: SettingsManager;
   db: PenguinRepository;

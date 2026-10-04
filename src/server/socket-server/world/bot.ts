@@ -1016,5 +1016,4 @@ export class Bot implements ClientSocket {
   }
 
   public end() {};
-  public buffer = '';
 }
