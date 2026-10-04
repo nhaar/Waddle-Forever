@@ -60,7 +60,7 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
       ws.on('close', () => {
         handler.disconnect(cs).then(() => {
           cs.end()
-          console.log('A client has disconnected (WebSocket)');
+          console.log(`A client has disconnected from ${name} (WebSocket)`);
         });
       });
 
@@ -130,7 +130,7 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
           socket.on('close', () => {
             handler.disconnect(cs).then(() => {
               cs.end();
-              console.log('A client has disconnected');
+              console.log(`A client has disconnected from ${name}`);
             });
           });
 

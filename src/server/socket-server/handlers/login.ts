@@ -76,8 +76,10 @@ export const login: LoginHandler = async (ctx, message: string) => {
       ctx.off.removePenguin(offline.id);
       ctx.world.addPenguin(p);
       msg.linkClient(client, p);
+      console.log(`${p.name} is logging in (world)`);
+    } else {
+      console.log(`${nickname} is logging in`);
     }
-    console.log(`${nickname} is logging in`);
     /*
     TODO
     buddies
