@@ -1340,8 +1340,6 @@ export class SnowGame {
       ninja.idleAnimation();
     }
 
-    this.enemies.forEach(e => e.updateFlame());
-
     await this.callbacks.waitForAnims();
 
     if (this.checkRoundComplete()) {
@@ -1702,45 +1700,41 @@ export class SnowGame {
 
       if (enemy.hp <= 0) continue;
 
-      const [nextMove, target] = enemy.nextTarget();
+      // If enemy is stunned, can't attack
+      if (!enemy.stunned) {
+        const [nextMove, target] = enemy.nextTarget();
 
-      if (nextMove === null && target === null) continue; // Enemy is stuck
+        if (nextMove !== null) {
+          enemy.moveEnemy(nextMove.x, nextMove.y);
+          await this.callbacks.waitForAnims();
+        }
 
-      if (enemy.stunned) continue; // Stunned by a fire ninja, can't attack
+        if (target !== null) {
+          const targetObject = this.grid.get(target.x, target.y);
+          const ninja = targetObject as Ninja;
 
-      if (nextMove !== null) {
-        enemy.moveEnemy(nextMove.x, nextMove.y);
-        await this.callbacks.waitForAnims();
+          if (targetObject !== null && !ninja.isKO) {
+            // Enemy sprite might be flipped to the wrong direction
+            if (targetObject.x < enemy.x) enemy.resetSpriteSettings();
+
+            await enemy.attackTarget(ninja);
+
+            if (targetObject.x > enemy.x) {
+              // Flip ninja sprite to face enemy
+              targetObject.mirrorMode = MirrorMode.X;
+            }
+
+            await this.callbacks.waitForAnims();
+            targetObject.resetSpriteSettings();
+          }
+        }
       }
 
-      if (target === null) {
+      if (enemy.flame !== null) {
+        enemy.updateFlame();
+      } else {
         enemy.resetSpriteSettings();
-        continue;
       }
-
-      const targetObject = this.grid.get(target.x, target.y);
-
-      if (targetObject === null) {
-        logverbose(getYellowString('Enemy tried to attack a null object'));
-        continue;
-      }
-
-      const ninja = targetObject as Ninja;
-
-      if (ninja.isKO) continue;
-
-      // Enemy sprite might be flipped to the wrong direction
-      if (targetObject.x < enemy.x) enemy.resetSpriteSettings();
-
-      await enemy.attackTarget(ninja);
-
-      if (targetObject.x > enemy.x) {
-        // Flip ninja sprite to face enemy
-        targetObject.mirrorMode = MirrorMode.X;
-      }
-
-      await this.callbacks.waitForAnims();
-      targetObject.resetSpriteSettings();
     }
 
     // Reset stunned state

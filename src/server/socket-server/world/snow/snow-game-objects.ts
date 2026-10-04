@@ -245,12 +245,16 @@ export class GameObject {
     );
   }
 
-  /** Use this to adjust the x/y scale or origin/mirror mode of this game object. */
   private async spriteSettings(s: SpriteSettings = {}) {
     const scaleX = s.scaleX ?? this._xScale;
     const scaleY = s.scaleY ?? this._yScale;
     const originMode = s.originMode ?? this._originMode;
     const mirrorMode = s.mirrorMode ?? this._mirrorMode;
+
+    this._xScale = scaleX;
+    this._yScale = scaleY;
+    this._originMode = originMode;
+    this._mirrorMode = mirrorMode;
 
     await this.ctx.msg.send(
       this.clients,
@@ -261,11 +265,6 @@ export class GameObject {
       '', '', '',
       originMode, mirrorMode
     );
-
-    this._xScale = scaleX;
-    this._yScale = scaleY;
-    this._originMode = originMode;
-    this._mirrorMode = mirrorMode;
   }
 
   public async resetSpriteSettings() {
@@ -1342,7 +1341,7 @@ export abstract class Ninja extends GameObject {
     for (const tile of this.game.grid.tiles) {
       const target = this.game.grid.get(tile.x, tile.y);
 
-      if (!(target instanceof Enemy)) continue;
+      if (!(target instanceof Enemy) || target.hp <= 0) continue;
 
       const distance = this.game.grid.distance([tile.x, tile.y], [tx, ty]);
 
@@ -1964,6 +1963,11 @@ export abstract class Enemy extends GameObject {
     // and the enemy's hp gets to 0 before all ninjas have attacked it,
     // then it allows all ninjas to attack before playing the death anim
     if (this.hp <= 0 && shouldDie) {
+      // Remove from grid now, otherwise there's a chance
+      // the next loop might start before object is removed,
+      // causing that tile to appear to be occupied
+      this.game.grid.remove(this);
+
       this.koAnimation();
 
       // Bonus round
@@ -2003,8 +2007,6 @@ export abstract class Enemy extends GameObject {
 
     this.flame.removeObject();
     this.flame = null;
-
-    setTimeout(() => this.idleAnimation(true), 800);
   }
 
   protected attackableTiles(tx: number, ty: number, range = this.range) {
@@ -2171,7 +2173,7 @@ export class Sly extends Enemy {
     if (this.x < x) this.mirrorMode = MirrorMode.X;
 
     await sleep(250);
-    await this.animateObject('sly_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    await this.animateObject('sly_attack_anim', { reset: true });
     this.idleAnimation();
     this.attackSound();
 
@@ -2193,7 +2195,7 @@ export class Sly extends Enemy {
   }
 
   async hitAnimation() {
-    await this.animateObject('sly_hit_anim', { reset: true });
+    await this.animateObject('sly_hit_anim', { reset: true, callback: () => this.resetSpriteSettings() });
     await this.hitSound();
 
     if (this.stunned) {
@@ -2277,7 +2279,7 @@ export class Scrap extends Enemy {
   async attackAnimation(x: number, y: number) {
     if (this.x < x) this.mirrorMode = MirrorMode.X;
 
-    await this.animateObject('scrap_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    await this.animateObject('scrap_attack_anim', { reset: true });
     this.idleAnimation();
 
     await sleep(700);
@@ -2299,7 +2301,7 @@ export class Scrap extends Enemy {
   }
 
   async hitAnimation() {
-    await this.animateObject('scrap_hit_anim', { reset: true });
+    await this.animateObject('scrap_hit_anim', { reset: true, callback: () => this.resetSpriteSettings() });
     await this.hitSound();
 
     if (this.stunned) {
@@ -2442,7 +2444,7 @@ export class Tank extends Enemy {
     if (this.x < x) this.mirrorMode = MirrorMode.X;
 
     this.attackSound();
-    await this.animateObject('tank_attack_anim', { reset: true, callback: () => this.resetSpriteSettings() });
+    await this.animateObject('tank_attack_anim', { reset: true });
     this.idleAnimation();
     await sleep(150);
   }
@@ -2454,7 +2456,7 @@ export class Tank extends Enemy {
   }
 
   async hitAnimation() {
-    await this.animateObject('tank_hit_anim', { reset: true });
+    await this.animateObject('tank_hit_anim', { reset: true, callback: () => this.resetSpriteSettings() });
     await this.hitSound();
 
     if (this.stunned) {
