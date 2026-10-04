@@ -3017,7 +3017,7 @@ export class CardObject implements Card {
 
     if (enemies.length >= 3) {
       if (this.element === 'w') {
-        await this.player.unlockStamp(this.game, Stamp.WaveBoost);
+        await this.player.unlockStamp(this.game, Stamp.TidalWave);
       } else if (this.element === 'f') {
         await this.player.unlockStamp(this.game, Stamp.FireBlast);
 
