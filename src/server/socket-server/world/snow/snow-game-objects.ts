@@ -290,14 +290,14 @@ export class GameObject {
     this.game.callbacks.remove(this.id, fireAnims);
   }
 
-  public async playSound(
+  public playSound(
     name: string,
     target: SnowPlayer = null,
     looping: boolean = false,
     volume: number = 100,
     radius: number = 0,
     callback: ActionCallback = null
-  ): Promise<Sound> {
+  ) {
     const sound = Sound.fromName(
       this.ctx.world,
       name,
@@ -307,7 +307,7 @@ export class GameObject {
       this.id,
       this.id
     );
-    await sound.play(this.ctx, target ?? this.game, this.id, callback);
+    sound.play(this.ctx, target ?? this.game, this.id, callback);
     return sound;
   }
 
@@ -1207,7 +1207,7 @@ export abstract class Ninja extends GameObject {
     this.game.grid.move(this.ghost, x, y);
     await this.ghost.placeObject();
     await this.ghost.placeSprite();
-    await this.ghost.playSound(sfxName('uiselecttile'));
+    this.ghost.playSound(sfxName('uiselecttile'));
     this.showTargets();
   }
 
@@ -1412,14 +1412,14 @@ export abstract class Ninja extends GameObject {
   public abstract reviveMemberCardAnimation(): Promise<void>;
   public abstract powerAnimation(): Promise<void>;
 
-  public async koSound() {
-    await this.playSound(sfxName('penguinground'));
+  public koSound() {
+    this.playSound(sfxName('penguinground'));
   }
-  public async moveSound() {
-    await this.playSound(sfxName('footsteppenguin'));
+  public moveSound() {
+    this.playSound(sfxName('footsteppenguin'));
   }
-  public abstract attackSound(): Promise<void>;
-  public abstract powercardSound(): Promise<void>;
+  public abstract attackSound(): void;
+  public abstract powercardSound(): void;
 }
 
 export class FireNinja extends Ninja {
@@ -1502,22 +1502,22 @@ export class FireNinja extends Ninja {
   async powerAnimation() {
     await this.animateObject('fireninja_power_anim', { reset: true });
     await this.idleAnimation();
-    await this.powercardSound();
+    this.powercardSound();
     await sleep(1000);
   }
 
   async healAnimation() {}
 
-  async moveSound() {
-    await this.playSound(sfxName('footsteppenguinfire'));
+  moveSound() {
+    this.playSound(sfxName('footsteppenguinfire'));
   }
 
-  async attackSound() {
-    await this.playSound(sfxName('attackfire'));
+  attackSound() {
+    this.playSound(sfxName('attackfire'));
   }
 
-  async powercardSound() {
-    await this.playSound(sfxName('attackpowercardfire'));
+  powercardSound() {
+    this.playSound(sfxName('attackpowercardfire'));
   }
 
 }
@@ -1594,18 +1594,18 @@ export class WaterNinja extends Ninja {
   async powerAnimation() {
     await this.animateObject('waterninja_powercard_summon_anim', { reset: true });
     await this.idleAnimation();
-    await this.powercardSound();
+    this.powercardSound();
     await sleep(650);
   }
 
   async healAnimation() {}
 
-  async attackSound() {
-    await this.playSound(sfxName('attackwater'));
+  attackSound() {
+    this.playSound(sfxName('attackwater'));
   }
 
-  async powercardSound() {
-    await this.playSound(sfxName('attackpowercardwater'));
+  powercardSound() {
+    this.playSound(sfxName('attackpowercardwater'));
   }
 
 }
@@ -1696,7 +1696,7 @@ export class SnowNinja extends Ninja {
   async powerAnimation() {
     await this.animateObject('snowninja_powercard_anim', { reset: true });
     await this.idleAnimation();
-    await this.powercardSound();
+    this.powercardSound();
     await sleep(450);
   }
 
@@ -1705,12 +1705,12 @@ export class SnowNinja extends Ninja {
     await this.idleAnimation();
   }
 
-  async attackSound() {
-    await this.playSound(sfxName('attacksnow'));
+  attackSound() {
+    this.playSound(sfxName('attacksnow'));
   }
 
-  async powercardSound() {
-    await this.playSound(sfxName('attackpowercardsnow'));
+  powercardSound() {
+    this.playSound(sfxName('attackpowercardsnow'));
   }
 
 }
@@ -1849,16 +1849,16 @@ export class Sensei extends GameObject {
     await this.animateSprite(0, 5, { playStyle: 'loop', duration: 600 });
   }
 
-  async attackSound() {
-    await this.playSound(sfxName(`attacksensei${this.elementState}`));
+  attackSound() {
+    this.playSound(sfxName(`attacksensei${this.elementState}`));
   }
 
-  async hitSound() {
-    await this.playSound(sfxName('hitsensei'));
+  hitSound() {
+    this.playSound(sfxName('hitsensei'));
   }
 
-  private async snowImpactSound() {
-    await this.playSound(sfxName('impactsenseisnow'));
+  private snowImpactSound() {
+    this.playSound(sfxName('impactsenseisnow'));
   }
 }
 
@@ -1922,7 +1922,7 @@ export abstract class Enemy extends GameObject {
 
     await this.moveAnimation();
     await this.moveObject(x, y);
-    await this.moveSound();
+    this.moveSound();
   }
 
   public placeHealthbar() {
@@ -2129,13 +2129,13 @@ export abstract class Enemy extends GameObject {
     this.playSound(sfxName('snowmenappear'));
   }
 
-  async koSound() {
-    await this.playSound(sfxName('snowmandeathexplode'));
+  koSound() {
+    this.playSound(sfxName('snowmandeathexplode'));
   }
-  public abstract moveSound(): Promise<void>;
-  public abstract attackSound(): Promise<void>;
-  public abstract hitSound(): Promise<void>;
-  public abstract impactSound(): Promise<void>;
+  public abstract moveSound(): void;
+  public abstract attackSound(): void;
+  public abstract hitSound(): void;
+  public abstract impactSound(): void;
 
 }
 
@@ -2191,12 +2191,12 @@ export class Sly extends Enemy {
   async koAnimation() {
     await this.animateObject('sly_ko_anim', { reset: true });
     await this.animateObject('blank_png');
-    await this.koSound();
+    this.koSound();
   }
 
   async hitAnimation() {
     await this.animateObject('sly_hit_anim', { reset: true, callback: () => this.resetSpriteSettings() });
-    await this.hitSound();
+    this.hitSound();
 
     if (this.stunned) {
       this.dazeAnimation(false)
@@ -2209,20 +2209,20 @@ export class Sly extends Enemy {
     await this.animateObject('sly_daze_anim', { playStyle: 'loop', reset });
   }
 
-  async moveSound() {
-    await this.playSound(sfxName('footstepsly_loop'));
+  moveSound() {
+    this.playSound(sfxName('footstepsly_loop'));
   }
 
-  async hitSound() {
-    await this.playSound(sfxName('snowmanslyhit'));
+  hitSound() {
+    this.playSound(sfxName('snowmanslyhit'));
   }
 
-  async attackSound() {
-    await this.playSound(sfxName('attacksly'));
+  attackSound() {
+    this.playSound(sfxName('attacksly'));
   }
 
-  async impactSound() {
-    await this.playSound(sfxName('impactsly'));
+  impactSound() {
+    this.playSound(sfxName('impactsly'));
   }
 
 }
@@ -2273,7 +2273,7 @@ export class Scrap extends Enemy {
   async moveAnimation() {
     this.animateObject('scrap_move_anim', { playStyle: 'loop', reset: true });
     await this.idleAnimation();
-    await this.moveSound();
+    this.moveSound();
   }
 
   async attackAnimation(x: number, y: number) {
@@ -2297,12 +2297,12 @@ export class Scrap extends Enemy {
   async koAnimation() {
     await this.animateObject('scrap_ko_anim', { reset: true });
     await this.animateObject('blank_png');
-    await this.koSound();
+    this.koSound();
   }
 
   async hitAnimation() {
     await this.animateObject('scrap_hit_anim', { reset: true, callback: () => this.resetSpriteSettings() });
-    await this.hitSound();
+    this.hitSound();
 
     if (this.stunned) {
       this.dazeAnimation(false)
@@ -2315,20 +2315,20 @@ export class Scrap extends Enemy {
     await this.animateObject('scrap_dazed_anim', { playStyle: 'loop', reset });
   }
 
-  async moveSound() {
-    await this.playSound(sfxName('footstepscrap_loop'));
+  moveSound() {
+    this.playSound(sfxName('footstepscrap_loop'));
   }
 
-  async hitSound() {
-    await this.playSound(sfxName('snowmanscraphit'));
+  hitSound() {
+    this.playSound(sfxName('snowmanscraphit'));
   }
 
-  async attackSound() {
-    await this.playSound(sfxName('attackscrap'));
+  attackSound() {
+    this.playSound(sfxName('attackscrap'));
   }
 
-  async impactSound() {
-    await this.playSound(sfxName('impactscrap'));
+  impactSound() {
+    this.playSound(sfxName('impactscrap'));
   }
 
 }
@@ -2437,7 +2437,7 @@ export class Tank extends Enemy {
   async moveAnimation() {
     this.animateObject('tank_move_anim', { playStyle: 'loop', reset: true });
     await this.idleAnimation();
-    await this.moveSound();
+    this.moveSound();
   }
 
   async attackAnimation(x: number, y: number) {
@@ -2452,12 +2452,12 @@ export class Tank extends Enemy {
   async koAnimation() {
     await this.animateObject('tank_knockout_anim', { reset: true });
     await this.animateObject('blank_png');
-    await this.koSound();
+    this.koSound();
   }
 
   async hitAnimation() {
     await this.animateObject('tank_hit_anim', { reset: true, callback: () => this.resetSpriteSettings() });
-    await this.hitSound();
+    this.hitSound();
 
     if (this.stunned) {
       this.dazeAnimation(false)
@@ -2470,19 +2470,19 @@ export class Tank extends Enemy {
     await this.animateObject('tank_daze_anim', { playStyle: 'loop', reset });
   }
 
-  async moveSound() {
-    await this.playSound(sfxName('footsteptank'));
+  moveSound() {
+    this.playSound(sfxName('footsteptank'));
   }
 
-  async hitSound() {
-    await this.playSound(sfxName('snowmantankhit'));
+  hitSound() {
+    this.playSound(sfxName('snowmantankhit'));
   }
 
-  async attackSound() {
-    await this.playSound(sfxName('attacktank'));
+  attackSound() {
+    this.playSound(sfxName('attacktank'));
   }
 
-  async impactSound() {}
+  impactSound() {}
 
 }
 
@@ -2700,7 +2700,7 @@ export class Tusk extends Enemy {
 
   async hitAnimation() {
     await this.animateObject('tusk_hit_anim', { reset: true });
-    await this.hitSound();
+    this.hitSound();
 
     if (this.stunned) {
       this.dazeAnimation(false)
@@ -2713,31 +2713,31 @@ export class Tusk extends Enemy {
     await this.animateObject('tusk_stun_anim', { playStyle: 'loop', reset });
   }
 
-  async hitSound() {
-    await this.playSound(sfxName('hittusk'));
+  hitSound() {
+    this.playSound(sfxName('hittusk'));
   }
 
-  async laughSound() {
-    await this.playSound(sfxName('tusklaugh'));
+  laughSound() {
+    this.playSound(sfxName('tusklaugh'));
   }
 
-  async pushAttackSound() {
-    await this.playSound(sfxName('attacktuskearthquake'));
+  pushAttackSound() {
+    this.playSound(sfxName('attacktuskearthquake'));
   }
 
-  async icicleAttackSoundStart() {
-    await this.playSound(sfxName('attacktuskicicle01'));
+  icicleAttackSoundStart() {
+    this.playSound(sfxName('attacktuskicicle01'));
   }
 
-  async icicleAttackSoundEnd() {
-    await this.playSound(sfxName('attacktuskicicle02'));
+  icicleAttackSoundEnd() {
+    this.playSound(sfxName('attacktuskicicle02'));
   }
 
   async moveAnimation() {}
   async attackAnimation() {}
-  async moveSound() {}
-  async attackSound() {}
-  async impactSound() {}
+  moveSound() {}
+  attackSound() {}
+  impactSound() {}
 }
 
 //
@@ -3118,7 +3118,7 @@ export class Sound implements Asset {
     return new Sound(asset.index, asset.name, looping, volume, radius, gameObjectId, resObjectId);
   }
 
-  public async play(ctx: SnowContext, target: SnowGame | SnowPlayer, objectId: number = -1, callback: ActionCallback = null) {
+  public play(ctx: SnowContext, target: SnowGame | SnowPlayer, objectId: number = -1, callback: ActionCallback = null) {
     let handleId = -1;
 
     if (target instanceof SnowGame) {
@@ -3127,7 +3127,7 @@ export class Sound implements Asset {
 
     const targets = (target instanceof SnowPlayer) ? [target] : [...target.players];
 
-    await ctx.msg.send(
+    ctx.msg.send(
       targets.filter(p => !p.muteSounds),
       'FX_PLAYSOUND',
       `0:${this.index}`,
