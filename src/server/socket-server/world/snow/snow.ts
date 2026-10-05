@@ -1888,11 +1888,6 @@ export class SnowGame {
         }
       }
 
-      if (damage !== null) {
-        // add Tusk's Cloak
-        player.penguin.inventory.add(3160);
-      }
-
       if (this.enemies.length === 0) {
         // Update wins
         const element = {
@@ -2125,6 +2120,11 @@ export class TuskGame extends SnowGame {
         this.exp = exp;
         break
       }
+    }
+
+    if (this.enemies.length === 0) {
+      // add Tusk's Cloak
+      this.connectedPlayers.forEach(p => p.penguin.inventory.add(3160));
     }
 
     super.displayPayout(Math.min(totalDamage, 100));
