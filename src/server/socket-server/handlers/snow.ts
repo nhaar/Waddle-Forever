@@ -259,7 +259,7 @@ export const frameworkWindowManagerReady: SnowFrameworkHandler = async (ctx) => 
     'w': 0,
     's': 0
   };
-  player.penguin.ninja.getDeck().forEach(id => {
+  player.penguin.ninja.getDeck(player.penguin.membership.isMember).forEach(id => {
     const card = CARDS.get(id);
     if (card.powerId > 0) cardCounts[card.element]++;
   });
