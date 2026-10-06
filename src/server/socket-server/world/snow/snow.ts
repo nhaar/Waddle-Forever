@@ -1275,14 +1275,18 @@ export class SnowGame {
 
     this.disconnectedPlayers.forEach(p => p.ninja.setHealth(0));
 
-    for (const player of this.players.filter(p => !p.hasPowerCards)) {
+    this.players.filter(p => !p.hasPowerCards).forEach(async (player) => {
+      // sometimes there'll be a race condition where
+      // the client receives this before the UI assets have been loaded,
+      // and therefore it doesn't show the notice.
+      await sleep(500);
       player.getWindow(Windows.UI).sendPayload('noCards');
-    }
+    });
 
     this.startNextLoop();
   }
 
-  private async startNextLoop() {
+  private startNextLoop() {
     if (this.players.every(p => p.disconnected)) {
       this.close();
       return;
@@ -1313,7 +1317,6 @@ export class SnowGame {
     // Can't really be helped because of anims, so just hide them again
     this.hideTargets();
 
-    await this.moveNinjas();
     await this.doNinjaActions();
     await this.doEnemyActions();
 
@@ -1386,7 +1389,7 @@ export class SnowGame {
       await this.displayRoundTitle();
       await sleep(1600);
 
-      await this.createEnemies();
+      this.createEnemies();
       await this.spawnEnemies();
       await this.waitForWindow(Windows.ROUNDS, false);
     }
@@ -1466,15 +1469,12 @@ export class SnowGame {
 
   protected async initObjects() {
     this.grid.initTiles();
-    await this.createEnvironment();
-    await this.createEnemies();
-    await this.createNinjas();
-
-    await this.showEnvironment();
-    await this.spawnNinjas();
+    this.createEnvironment();
+    this.createEnemies();
+    this.createNinjas();
   }
 
-  protected async createEnvironment() {
+  protected createEnvironment() {
     // TODO: if we ever do a settings option for beta, this.map is always 1
     this.backgrounds = {
       1: [new GameObject(this, 'env_mountaintop_bg', 4.5, -1.1)],
@@ -1488,18 +1488,19 @@ export class SnowGame {
       ],
     }[this.map];
 
-    this.backgrounds.forEach(b => b.placeObject());
-
     const rockName = this.map === 3 ? 'crag_rock' : 'rock_mountaintop';
 
     this.rocks = [[2, 0], [6, 0], [2, 4], [6, 4]].map(([x, y]) => {
       return new GameObject(this, rockName, x, y, true, 0.5, 1);
     });
 
-    await Promise.all(this.rocks.map(r => r.placeObject()));
+    [...this.rocks, ...this.backgrounds].forEach(obj => {
+      obj.placeObject();
+      obj.placeSprite();
+    });
   }
 
-  protected async createEnemies() {
+  protected createEnemies() {
     if (this.round > 3) return;
 
     // always 4 enemies for bonus round
@@ -1521,7 +1522,7 @@ export class SnowGame {
     }
   }
 
-  protected async createNinjas() {
+  protected createNinjas() {
     shuffle(this.ninjaSpawnPositions);
 
     const ninjaClasses = {
@@ -1535,24 +1536,11 @@ export class SnowGame {
 
       const pos = this.ninjaSpawnPositions[index];
       const ninja = new cls(this, player, pos.x, pos.y) as Ninja;
-      ninja.placeObject();
       player.ninja = ninja;
-    })
-  }
-
-  private async showEnvironment() {
-    for (const { id, name } of [...this.backgrounds, ...this.rocks]) {
-      const obj = this.objects.getById(id);
-      await obj.placeSprite(name);
-    }
-  }
-
-  protected async spawnNinjas() {
-    for (const ninja of this.ninjas) {
-      await ninja.placeObject();
-      await ninja.idleAnimation();
+      ninja.placeObject();
+      ninja.idleAnimation();
       ninja.placeHealthbar();
-    }
+    })
   }
 
   protected async spawnEnemies() {
@@ -1581,6 +1569,7 @@ export class SnowGame {
         yPercent: 1
       });
     }
+    await this.waitForWindow(Windows.UI, true);
   }
 
   private async removeUI() {
@@ -1618,6 +1607,7 @@ export class SnowGame {
   }
 
   private async doNinjaActions() {
+    await this.moveNinjas();
     await this.doNinjaAttacks();
     await this.doPowerCardAttacks();
     await this.doNinjaRevive();
@@ -1656,17 +1646,17 @@ export class SnowGame {
     if (isCombo) {
       this.totalCombos++;
 
-      if (ninjasWithCards.length === 3) {
-        this.unlockStamp(Stamp.ThreeNinjaCombo);
-      }
-
-      if (this.totalCombos >= 3) {
-        this.unlockStamp(Stamp.ThreeCombos);
-      }
-
       await this.displayComboTitle(ninjasWithCards.map(n => n.player.element));
 
       await this.callbacks.waitForEvent('comboScreenComplete');
+    }
+
+    if (ninjasWithCards.length === 3) {
+      this.unlockStamp(Stamp.ThreeNinjaCombo);
+    }
+
+    if (this.totalCombos >= 3) {
+      this.unlockStamp(Stamp.ThreeCombos);
     }
 
     for (const ninja of ninjasWithCards) {
@@ -1744,23 +1734,23 @@ export class SnowGame {
     }
   }
 
-  private async showTargets() {
+  private showTargets() {
     this.ninjas.forEach(n => n.showTargets());
   }
 
-  private async hideTargets() {
+  private hideTargets() {
     this.ninjas.forEach(n => n.hideTargets());
   }
 
-  private async removeTargets() {
+  private removeTargets() {
     this.ninjas.forEach(n => n.removeTargets());
   }
 
-  private async hideGhosts() {
+  private hideGhosts() {
     this.ninjas.forEach(n => n.hideGhost(false));
   }
 
-  protected async removeObjects() {
+  protected removeObjects() {
     this.removeTargets();
     this.removeUI();
 
@@ -2005,37 +1995,35 @@ export class TuskGame extends SnowGame {
     await this.callbacks.waitForAnims();
   }
 
-  protected async spawnNinjas() {
-    await super.spawnNinjas();
-    await this.sensei.placeObject();
-    await this.sensei.idleAnimation();
-  }
-
   protected async spawnEnemies() {
     await this.tusk.idleAnimation();
     this.tusk.placeHealthbar();
   }
 
-  protected async removeObjects() {
-    await super.removeObjects();
-    await this.sensei.removeObject();
-    await this.tusk.removeObject();
+  protected removeObjects() {
+    super.removeObjects();
+    this.sensei.removeObject();
+    this.tusk.removeObject();
   }
 
-  protected async createEnvironment() {
+  protected createEnvironment() {
     this.backgrounds = [
       new GameObject(this, 'tusk_background_under', 4.5, -1.1),
       new GameObject(this, 'tusk_background_over', 4.5, 6.125),
     ];
 
-    this.backgrounds.forEach(b => b.placeObject());
+    this.backgrounds.forEach(b => {
+      b.placeObject();
+      b.placeSprite();
+    });
   }
 
   protected async createNinjas() {
     super.createNinjas();
 
     this.sensei = new Sensei(this, 0, 2);
-    this.sensei.placeObject();
+    await this.sensei.placeObject();
+    await this.sensei.idleAnimation();
   }
 
   protected async createEnemies() {
@@ -2059,18 +2047,6 @@ export class TuskGame extends SnowGame {
     if (isCombo) {
       this.totalCombos++;
 
-      if (ninjasWithCards.length === 3) {
-        this.unlockStamp(Stamp.ThreeNinjaCombo);
-      }
-
-      if (this.totalCombos >= 3) {
-        this.unlockStamp(Stamp.ThreeCombos);
-      }
-
-      if (elements.length >= 4) {
-        this.unlockStamp(Stamp.FourNinjaCombo);
-      }
-
       await this.displayComboTitle(elements);
 
       await this.callbacks.waitForEvent('comboScreenComplete');
@@ -2078,6 +2054,18 @@ export class TuskGame extends SnowGame {
 
     await this.sensei.updateState();
     await sleep(1000);
+
+    if (ninjasWithCards.length === 3) {
+      this.unlockStamp(Stamp.ThreeNinjaCombo);
+    }
+
+    if (this.totalCombos >= 3) {
+      this.unlockStamp(Stamp.ThreeCombos);
+    }
+
+    if (elements.length >= 4) {
+      this.unlockStamp(Stamp.FourNinjaCombo);
+    }
 
     for (const ninja of ninjasWithCards) {
       await ninja.usePowerCard(isCombo);
