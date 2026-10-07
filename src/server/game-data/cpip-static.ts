@@ -31,7 +31,6 @@ export const CPIP_STATIC_FILES: RouteRefMap = {
   'play/v2/content/global/close_ups/ninja_water_video.swf': 'slegacy:media/play/v2/content/global/close_ups/ninja_water_video.swf',
   'play/v2/content/global/content/archives.swf': 'slegacy:media/play/v2/content/global/content/archives.swf',
   'play/v2/content/global/content/help.swf': 'recreation:help.swf',
-  'play/v2/content/global/content/ninjaprogress.swf': 'slegacy:media/play/v2/content/global/content/ninjaprogress.swf',
   'play/v2/content/global/penguin/penguin.swf': 'slegacy:media/play/v2/content/global/penguin/penguin.swf',
   'play/v2/content/global/rooms/agentlobbymulti.swf': 'slegacy:media/play/v2/content/global/rooms/agentlobbymulti.swf',
   'play/v2/content/global/rooms/agentlobbysolo.swf': 'slegacy:media/play/v2/content/global/rooms/agentlobbysolo.swf',

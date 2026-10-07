@@ -4179,6 +4179,9 @@ export const UPDATES_2010: Update[] = [
         }
       }
     },
+    fileChanges: {
+      'play/v2/content/global/content/ninjaprogress.swf': 'slegacy:media/play/v2/content/global/content/ninjaprogress.swf'
+    },
     rooms: {
       dojohide: 'archives:RoomsDojohide_3.swf',
       dojowater: 'slegacy:media/play/v2/content/global/rooms/dojowater.swf'
