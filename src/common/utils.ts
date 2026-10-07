@@ -136,10 +136,6 @@ export function getDateString(timestamp: number): string {
   return `${year}-${month}-${day}`
 }
 
-export function capitalize(val: string) {
-  return val.charAt(0).toUpperCase() + val.slice(1);
-}
-
 /** Runs a command in the current shell, asynchronously. */
 export async function runCommand(command: string): Promise<void> {
   await new Promise<void>((resolve, reject) => {
