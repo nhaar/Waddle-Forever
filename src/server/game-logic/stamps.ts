@@ -152,5 +152,29 @@ export enum Stamp {
   /** 3 energy points */
   MaxEnergy = 266,
   /** 50 matches */
-  FireExpert
+  FireExpert = 268,
+
+  ThreeNinjaCombo = 467,
+  FourNinjaCombo = 468,
+  SnowNinja = 469,
+  /** not to be confused with "Fire Ninja" from cj fire */
+  FireNinja_Snow = 470,
+  /** not to be confused with "Water Ninja" from cj water */
+  WaterNinja_Snow = 471,
+  FullHealth = 472,
+  BonusWin = 473,
+  Revive = 474,
+  UpAndAtEm = 475,
+  TeamRevival = 476,
+  Heal15 = 477,
+  HugeHeal = 478,
+  SnowShield = 479,
+  TidalWave = 480,
+  WaveBoost = 481,
+  FireBlast = 482,
+  FireBlastCombo = 483,
+  PowerCardPro = 484,
+  ThreeCombos = 485,
+  FinalBattle = 486,
+  SnowPro = 487,
 }

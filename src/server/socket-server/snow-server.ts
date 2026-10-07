@@ -1,0 +1,110 @@
+import { EffectService } from "@common/utils";
+import { SNOW_PORT } from "@server/servers";
+
+import { SettingsManager } from "@server/settings";
+import { PenguinRepository } from "@server/database/database";
+import { GameData } from "@server/timelines/game-data";
+
+import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
+
+import { XmlHandler } from "./xml-handler";
+import { createSnowXmlHandler, createSnowDataHandler } from "./snow-handlers";
+import { SnowContext, SnowDataHandler, SnowPenguinContext } from "./snow-data-handler";
+import { SnowPlayer, SnowWorld } from "./world/snow/snow";
+import { PenguinPersister } from "./handlers/handlers";
+import { setAssets } from "./world/snow/snow-assets";
+import { setupMatchMaker } from "./handlers/snow";
+import { SnowMessenger } from "./snow-messenger";
+import { World } from "./world/world";
+
+class SnowServer implements MessageHandler {
+  private _msg: SnowMessenger;
+  private _handler: SnowDataHandler;
+  private _xmlHandler: XmlHandler;
+  private _world: SnowWorld
+  private _persister: PenguinPersister;
+
+  constructor(
+    private gameData: GameData,
+    private settings: SettingsManager,
+    private regularWorld: World,
+    db: PenguinRepository
+  ) {
+    this._msg = new SnowMessenger();
+    this._handler = createSnowDataHandler();
+    this._xmlHandler = createSnowXmlHandler();
+    this._world = new SnowWorld();
+    this._persister = (p, force = false) => { 
+      if (p.canSave || force) {
+        db.write(p.id, p.getJSON());
+      }
+    };
+
+    this._world.init(this.getContext());
+    setupMatchMaker(this._world);
+  }
+
+  private getContext(): SnowContext {
+    return {
+      world: this._world,
+      msg: this._msg,
+      data: this.gameData,
+      settings: this.settings,
+      prst: this._persister,
+      regularWorld: this.regularWorld
+    };
+  }
+
+  private getPenguinCtx(client: ClientSocket): SnowPenguinContext {
+    const player = this._msg.getPenguin(client);
+    const game = Array.from(this._world.games).find(game => game.players.includes(player)) ?? null;
+    return {
+      ...this.getContext(),
+      client,
+      player,
+      game
+    };
+  }
+
+  public async setAssets() {
+    await setAssets({ world: this._world } as SnowContext);
+  }
+
+  public async handle(client: ClientSocket, message: string) {
+    if (message.startsWith('<')) {
+      this._xmlHandler.handle({ client } as SnowPenguinContext, message);
+    } else {
+      await this._handler.handle(this.getPenguinCtx(client), message)
+    }
+  };
+
+  public async connect(cs: ClientSocket) {
+    const { msg, client } = this.getPenguinCtx(cs);
+    const p = new SnowPlayer(this.getContext());
+    msg.linkClient(client, p);
+  }
+
+  public async disconnect(cs: ClientSocket) {
+    const { player, game } = this.getPenguinCtx(cs);
+    player.disconnected = true;
+    this._world.disconnect(player);
+    if (game !== null && player.ninja !== null) {
+      game.callbacks.forceFireClientEvents(player);
+      game.windowEvents.fireAllForPlayer(player);
+      // TODO: not exactly accurate, most gameplay videos imply
+      // that the ninja is immediately removed when player leaves
+      player.ninja.setHealth(0);
+    }
+  }
+}
+
+export const setupSnowServer = async (
+  settings: SettingsManager,
+  db: PenguinRepository,
+  gameData: GameData,
+  world: World
+): Promise<EffectService<void>> => {
+  const snowServer = new SnowServer(gameData, settings, world, db);
+  await snowServer.setAssets();
+  await setupSocketServer('CJ Snow', SNOW_PORT, snowServer);
+}

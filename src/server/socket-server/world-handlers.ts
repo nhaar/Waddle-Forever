@@ -188,6 +188,7 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'j#jp', ['number', 'string'], handleJoinPlayerModern, { guard: isBackyardGuard }),
     
     p.xt('s', 'i#gi', [], handleGetItems),
+    g.xt('s', 'i#ngi', [], handleGetItems),
     p.xt('s', 'i#ai', ['number'], handleAddItem),
     p.xt('s', 'i#qpp', ['number'], handleGetPinInfo),
     p.xt('s', 'i#qpa', ['number'], handleGetMissionStamps),
@@ -282,10 +283,11 @@ export const createWorldXtHandler = (): XtHandler => {
     r.xt('s', 'pt#spts', ['number'], handlePlayerTransform),
     
     p.xt('s', 'r#gtc', [], handleGetTotalCoins),
-    
+
     p.xt('s', 'st#gsbcd', ['number'], handleGetStampbookCoverData),
     p.xt('s', 'st#gps', ['number'], sendStamps),
     p.xt('s', 'st#gmres', [], handleGetRecentStamps),
+    g.xt('s', 'st#ngps', ['number'], sendStamps),
     p.xt('s', 'st#ssbcd', 'string', handleSetStampbookCoverData),
     p.xt('s', 'st#sse', ['number'], handleSetStampEarned),
     

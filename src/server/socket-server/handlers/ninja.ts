@@ -1,9 +1,10 @@
 import { World } from "@server/socket-server/world/world";
 import { CARDS } from "@server/game-logic/cards";
 import { chooseN } from "@common/utils";
-import { PenguinMessenger } from "../../socket-server/messenger";
+import { XtMessenger } from "@server/socket-server/xt-messenger";
 import { GameHandler, PenguinHandler } from "./handlers";
 import { MATCHMAKERS } from "@server/game-data/games";
+import { WorldPenguin } from "../world/world-penguin";
 
 export const handleGetNinjaRanks: PenguinHandler<[number]> = ({ msg, penguin, world }, id) => {
   const target = world.getPenguin(id);
@@ -11,17 +12,17 @@ export const handleGetNinjaRanks: PenguinHandler<[number]> = ({ msg, penguin, wo
     msg.send(
       penguin, 'gnr',
       id,
-      target.ninja.cardRank,
+      target.ninja.cardProgress.rank,
       target.ninja.fireProgress.getRank(),
       target.ninja.isWaterNinja ? 5 : 0,
-      target.ninja.isSnowNinja ? 13 : 0
+      target.ninja.snowProgress.rank
     );
   }
 }
 
 export const handleGetNinjaLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
   // ranke, percentage, unsure what 10 is
-  msg.send(penguin, 'gnl', penguin.ninja.cardRank, penguin.ninja.cardPercentage, 10);
+  msg.send(penguin, 'gnl', penguin.ninja.cardProgress.rank, penguin.ninja.cardProgress.percentage, 10);
 }
 
 export const handleGetNinjaCards: PenguinHandler<[]> = ({ msg, penguin }) => {
@@ -51,7 +52,7 @@ export const handleBuyNinjaCards: PenguinHandler<[]> = ({ msg, penguin, prst }) 
   prst(penguin);
 }
 
-export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
+export const addMatchmakerListeners = (world: World, msg: XtMessenger) => {
   MATCHMAKERS.forEach(({ name, id }) => {
     const mm = world.getGame(id).matchMaker;
     if (mm === null) {
@@ -59,22 +60,22 @@ export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
     }
     switch (name) {
       case 'card':
-        mm.addMatchListener((players) => {
+        mm.setMatchListener((players: WorldPenguin[]) => {
           const game = world.getWaddleGame('card', players);
           const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
           msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
         });
-        mm.addTickListener((players, time) => {
+        mm.setTickListener((players: WorldPenguin[], time) => {
           msg.send(players, 'tmm', time, ...players.map(p => p.name));
         });
         break;
       case 'fire':
-        mm.addMatchListener((players) => {
+        mm.setMatchListener((players: WorldPenguin[]) => {
           const game = world.getWaddleGame('fire', players);
           const playersInfo = players.map(p => [p.name, p.inventory.color].join('|'));
           msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
         });
-        mm.addTickListener((players, time) => {
+        mm.setTickListener((players: WorldPenguin[], time) => {
           msg.send(players, 'tmm', players.length, time, ...players.map(p => [p.name, p.inventory.color].join('|')));
         });
         break;
@@ -114,7 +115,7 @@ export const handleGetWaterLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
 }
 
 export const handleGetSnowLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
-  msg.send(penguin, 'gsl', 0, 0, 24);
+  msg.send(penguin, 'gsl', penguin.ninja.snowProgress.rank, penguin.ninja.snowProgress.percentage, 24);
 }
 
 export const handleLeaveMatchmake: GameHandler<[]> = ({ game, penguin }) => {

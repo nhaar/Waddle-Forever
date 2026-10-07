@@ -1,7 +1,7 @@
 import { World } from "@server/socket-server/world/world";
 
 import { sendError } from "./login";
-import { PenguinMessenger } from "../../socket-server/messenger";
+import { XtMessenger } from "../xt-messenger";
 import { PenguinHandler } from "./handlers";
 
 export const handleDonateCoins: PenguinHandler<[string, number]> = ({ prst, penguin, msg }, _, donation) => {
@@ -30,7 +30,7 @@ export const handleViewedMedieval2012: PenguinHandler<[number]> = ({ penguin, pr
   prst(penguin);
 }
 
-export const addBakeryListener = (world: World, msg: PenguinMessenger) => {
+export const addBakeryListener = (world: World, msg: XtMessenger) => {
   world.addBakeryListener(() => {
     msg.send(world.bakery.players, 'barsu', world.bakery.bakeryState);
   });

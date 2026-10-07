@@ -2,7 +2,7 @@ import fs from 'fs';
 import { SETTINGS_PATH } from '../common/paths';
 import { isVersionValid, processVersion, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
-import { LOGIN_DELTA, WORLD_DELTA } from './servers';
+import { LOGIN_DELTA, SNOW_DELTA, WORLD_DELTA } from './servers';
 import { EventListener } from '@common/utils';
 
 export type BooleanSettingKey = 
@@ -126,6 +126,10 @@ export class SettingsManager {
 
   get worldPort() {
     return this.targetPort + WORLD_DELTA;
+  }
+
+  get snowPort() {
+    return this.targetPort + SNOW_DELTA;
   }
 
   getVirtualDate(offset: number): Date {

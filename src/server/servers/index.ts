@@ -2,9 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import { HTTP_PORT } from '../../common/constants';
 
+export const SNOW_DELTA = 3;
+
 export const WORLD_DELTA = 2;
 
 export const LOGIN_DELTA = 1;
+
+export const SNOW_PORT = HTTP_PORT + SNOW_DELTA;
 
 export const WORLD_PORT = HTTP_PORT + WORLD_DELTA;
 

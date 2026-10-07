@@ -1,7 +1,7 @@
 import { modulo, randomInt } from "@common/utils";
 import { WaddleGame } from "./waddle-game";
 import { WorldPenguin } from "./world-penguin";
-import { MIN_SENSEI_RANK } from "@server/game-logic/ninja-progress";
+import { MIN_FIRE_SENSEI_RANK } from "@server/game-logic/ninja-progress";
 
 export const STARTER_ENERGY = 6;
 const BOARD_TILE_COUNT = 16;
@@ -272,7 +272,7 @@ export class FireGame extends WaddleGame {
     this._seats = [...players, ...(isSensei ? [null] : [])].map((p, i) => {
       const tile = START_POSITIONS[i];
       if (p === null) {
-        const sensei = new FireSensei(tile, players[0].ninja.fireProgress.getRank() >= MIN_SENSEI_RANK, i);
+        const sensei = new FireSensei(tile, players[0].ninja.fireProgress.getRank() >= MIN_FIRE_SENSEI_RANK, i);
         this._sensei = sensei;
         return sensei;
       } else {

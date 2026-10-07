@@ -1,10 +1,11 @@
 import { isLiteralScoreGame } from "@server/game-logic/rooms";
 import { MatchMaker } from "./matchmaker";
+import { WorldPenguin } from "./world-penguin";
 
 export class WorldGame {
-  private _matchMaker: MatchMaker | null = null;
+  private _matchMaker: MatchMaker<WorldPenguin> | null = null;
 
-  constructor(private id: number, mm?: MatchMaker) {
+  constructor(private id: number, mm?: MatchMaker<WorldPenguin>) {
     this._matchMaker = mm ?? null;
   }
 

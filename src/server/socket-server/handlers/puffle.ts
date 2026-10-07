@@ -1,4 +1,4 @@
-import { PenguinMessenger } from "../../socket-server/messenger";
+import { XtMessenger } from "../xt-messenger";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { GameData } from "@server/timelines/game-data";
 import { PUFFLES } from "@server/game-logic/puffle";
@@ -144,7 +144,7 @@ export function getClientPuffleIds(puffleId: number) {
   }
 }
 
-export function getStamp(data: GameData, msg: PenguinMessenger, p: WorldPenguin, stamp: number) {
+export function getStamp(data: GameData, msg: XtMessenger, p: WorldPenguin, stamp: number) {
   if (data.isStampAvailable(stamp)) {
     p.stampbook.add(stamp);
     msg.send(p, 'aabs', stamp);

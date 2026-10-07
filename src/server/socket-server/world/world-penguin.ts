@@ -1,6 +1,6 @@
 import { getDefaultIgloo, Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
 import { MASCOTS } from "@server/game-data/mascots";
-import { CardJitsuFireProgress, CardJitsuProgress } from "@server/game-logic/ninja-progress";
+import { CardJitsuFireProgress, CardJitsuProgress, CardJitsuSnowProgress } from "@server/game-logic/ninja-progress";
 import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
 
@@ -785,17 +785,28 @@ class NinjaProfile {
   
   private _fireProgress: CardJitsuFireProgress;
   private _fireWins: number;
+
+  private _snowProgress: CardJitsuSnowProgress;
+  private _snowWins: { f: number, w: number, s: number };
+
   private _water: boolean;
-  private _snow: boolean;
 
   constructor(data: PenguinJson) {
     this._cards = new Map(Object.entries(data.cards).map(([k, v]) => [Number(k), v]));
+
     this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
     this._fireProgress = new CardJitsuFireProgress(data.fireXP ?? 0, data.fireNinja ?? false);
-    this._cardWins = data.cardWins;
+    this._snowProgress = new CardJitsuSnowProgress(data.snowXP ?? 0, data.snowNinja ?? false);
+
     this._water = data.waterNinja ?? false;
-    this._snow = data.snowNinja ?? false;
+
+    this._cardWins = data.cardWins;
     this._fireWins = data.fireWins ?? 0;
+    this._snowWins = {
+      f: data.snowWinsF ?? 0,
+      w: data.snowWinsW ?? 0,
+      s: data.snowWinsS ?? 0,
+    }
   }
 
   public get cards() {
@@ -806,20 +817,8 @@ class NinjaProfile {
     return this._cardProgress.xp;
   }
 
-  public get cardRank() {
-    return this._cardProgress.rank;
-  }
-
-  public get cardPercentage() {
-    return this._cardProgress.percentage;
-  }
-
-  public get isNinja() {
-    return this._cardProgress.isNinja;
-  }
-
-  public get senseiAttempts() {
-    return this._cardProgress.senseiAttempts;
+  get cardProgress() {
+    return this._cardProgress;
   }
 
   public get cardWins() {
@@ -830,16 +829,8 @@ class NinjaProfile {
     return this._water;
   }
 
-  public get isSnowNinja() {
-    return this._snow;
-  }
-
   public setWaterNinja(value: boolean) {
     this._water = value;
-  }
-
-  public setSnowNinja(value: boolean) {
-    this._snow = value;
   }
 
   public addCard(cardId: number, amount = 1, memberAmount = 0): void {
@@ -853,24 +844,14 @@ class NinjaProfile {
     this._cardProgress.earnXP(won ? 5 : 1);
   }
 
-  getDeck(): number[] {
-    return [...this._cards.entries()].flatMap(([id, [amount, memberAmount]]) => new Array(amount + memberAmount).fill(id));
+  getDeck(isMember: boolean = true): number[] {
+    return this.cards.flatMap(([id, [amount, memberAmount]]) =>
+      new Array(amount + (isMember ? memberAmount : 0)).fill(id)
+    );
   }
 
   public addWin() {
     this._cardWins++;
-  }
-
-  public earnXP(xp: number) {
-    this._cardProgress.earnXP(xp);
-  }
-
-  public becomeNinja() {
-    this._cardProgress.becomeNinja();
-  }
-
-  public addAttempt() {
-    this._cardProgress.addAttempt();
   }
 
   public get fireProgress() {
@@ -883,6 +864,21 @@ class NinjaProfile {
 
   public addFireWin() {
     this._fireWins++;
+  }
+
+  public get snowProgress() {
+    return this._snowProgress;
+  }
+
+  public get snowWins() {
+    return this._snowWins;
+  }
+
+  public addSnowWin(element: string) {
+    if (!['f', 'w', 's'].includes(element)) {
+      throw new Error(`Invalid element given for snow win: ${element}`);
+    }
+    this._snowWins[element]++;
   }
 }
 
@@ -1184,16 +1180,21 @@ export class WorldPenguin implements UserPenguin {
 
       cards: Object.fromEntries(this._ninja.cards),
       cardProgress: this._ninja.xp,
-      isNinja: this._ninja.isNinja,
-      senseiAttempts: this._ninja.senseiAttempts,
+      isNinja: this._ninja.cardProgress.isNinja,
+      senseiAttempts: this._ninja.cardProgress.senseiAttempts,
       cardWins: this._ninja.cardWins,
 
       fireXP: this._ninja.fireProgress.xp,
       fireNinja: this._ninja.fireProgress.isFireNinja,
       fireWins: this._ninja.fireWins,
 
+      snowXP: this._ninja.snowProgress.xp,
+      snowNinja: this._ninja.snowProgress.isSnowNinja,
+      snowWinsF: this._ninja.snowWins.f,
+      snowWinsW: this._ninja.snowWins.w,
+      snowWinsS: this._ninja.snowWins.s,
+
       waterNinja: this._ninja.isWaterNinja,
-      snowNinja: this._ninja.isSnowNinja,
 
       battleOfDoom: this._battleOfDoom.completed,
 

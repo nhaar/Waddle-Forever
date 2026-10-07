@@ -7,17 +7,17 @@ import { GameData } from "@server/timelines/game-data";
 
 import { ClientSocket, MessageHandler, setupSocketServer } from "./socket-server";
 
-import { PenguinMessenger } from "@server/socket-server/messenger";
+import { XtMessenger } from "@server/socket-server/xt-messenger";
 
 import { XmlHandler } from "./xml-handler";
 import { createLoginXmlHandler } from "./login-handlers";
 
 class LoginServer implements MessageHandler {
-  private _msg: PenguinMessenger;
+  private _msg: XtMessenger;
   private _handler: XmlHandler;
 
   constructor(private gameData: GameData, private settings: SettingsManager, private db: PenguinRepository) {
-    this._msg = new PenguinMessenger();
+    this._msg = new XtMessenger();
     this._handler = createLoginXmlHandler();
   }
 
@@ -31,6 +31,7 @@ class LoginServer implements MessageHandler {
     }, message); 
   };
 
+  public async connect() {}
   public async disconnect() {}
 }
 

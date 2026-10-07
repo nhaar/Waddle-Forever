@@ -206,6 +206,17 @@ export function chooseN<T>(array: T[], n: number): T[] {
   return chosen;
 }
 
+export function shuffle<T>(array: T[]) {
+  let currentIndex = array.length;
+
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
 export function isPositiveInteger(n: number): boolean {
   return n > 0 && !isNaN(n) && Number.isInteger(n);
 }
@@ -260,7 +271,9 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
 }
 
 export function shuffleArray<T>(arr: T[]) {
-  return [...arr].sort(() => Math.random() - 0.5);
+  const newArr = [...arr];
+  shuffle(newArr);
+  return newArr;
 }
 
 export function isDisjoint<T>(arr1: readonly T[], arr2: readonly T[]): boolean {
@@ -314,6 +327,10 @@ export class EventListener {
     this.listeners.push(callback);
   }
 
+  public removeListener(callback: () => void) {
+    this.listeners = this.listeners.filter(c => c !== callback);
+  }
+
   public fire(): void {
     this.listeners.forEach(callback => callback());
   }
@@ -352,6 +369,15 @@ export function toForwardSlash(s: string): string {
 export function tryToNumber(s: string) {
   const num = Number(s);
   return isNaN(num) ? s : num
+}
+
+// https://stackoverflow.com/questions/23164474/how-unique-and-random-are-javascript-generated-uuids
+// we need this since the 'crypto' module isn't available for some reason
+export function randomUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
 }
 
 export const doubleFilter = <T>(predicate: (e: T) => boolean, arr: T[]): [T[], T[]] => {

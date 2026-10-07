@@ -158,9 +158,15 @@ export interface PenguinJson {
   fireNinja?: boolean;
   fireWins?: number;
 
+  snowXP?: number;
+  snowNinja?: boolean;
+  // Wins playing as each element
+  snowWinsF?: number,
+  snowWinsW?: number,
+  snowWinsS?: number,
+
   /** Temporary data for cheaters who want the amulet to be completed */
   waterNinja?: boolean;
-  snowNinja?: boolean;
   
 
 // BATTLE OF DOOM

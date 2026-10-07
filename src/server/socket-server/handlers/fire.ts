@@ -32,7 +32,7 @@ export const handleEnterFireGame: FireHandler<[]> = async (ctx) => {
     fire.positions.join(','),
     ninja.hand.join(','),
     fire.spin.join(','),
-    fire.ninjas.filter(n => n instanceof FirePlayer).map(n => n.penguin.ninja.cardRank).join(','),
+    fire.ninjas.filter(n => n instanceof FirePlayer).map(n => n.penguin.ninja.cardProgress.rank).join(','),
     '' // unused
   );
 
