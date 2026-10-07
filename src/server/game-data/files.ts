@@ -2027,6 +2027,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'clothing_10_01.swf',
       comment: 'Made by Randomno, the January 2010 penguin style but with the proper year label'
+    },
+    {
+      file: 'ninjaprogress_nowater.swf',
+      comment: 'Made by ChrisCPI, the slegacy Ninja Progress but with Water progress removed, and the fire items use the paper artwork under "Next Item" instead of the icon'
     }
   ],
   [MOD]: [

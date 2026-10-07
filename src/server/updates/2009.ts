@@ -1422,6 +1422,9 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-05-28',
     roomComment: 'The dojo rooms are slightly revamped',
+    fileChanges: {
+      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf'
+    },
     rooms: {
       dojo: 'archives:RoomsDojo.swf',
       dojohide: 'recreation:dojohide_2009.swf',
