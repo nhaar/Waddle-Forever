@@ -271,7 +271,9 @@ export function iterateEntries<Key extends string, Value>(obj: Partial<Record<Ke
 }
 
 export function shuffleArray<T>(arr: T[]) {
-  return [...arr].sort(() => Math.random() - 0.5);
+  const newArr = [...arr];
+  shuffle(newArr);
+  return newArr;
 }
 
 export function isDisjoint<T>(arr1: readonly T[], arr2: readonly T[]): boolean {
