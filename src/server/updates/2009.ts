@@ -1423,7 +1423,7 @@ export const UPDATES_2009: Update[] = [
     date: '2009-05-28',
     roomComment: 'The dojo rooms are slightly revamped',
     fileChanges: {
-      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf'
+      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_original.swf'
     },
     rooms: {
       dojo: 'archives:RoomsDojo.swf',
@@ -2875,6 +2875,9 @@ export const UPDATES_2009: Update[] = [
           dojofire: 'archives:RoomsDojofire-FireCelebrate.swf'
         }
       }
+    },
+    fileChanges: {
+      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf'
     }
   },
   {
