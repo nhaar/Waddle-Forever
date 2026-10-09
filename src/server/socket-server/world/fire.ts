@@ -2,6 +2,7 @@ import { modulo, randomInt } from "@common/utils";
 import { WaddleGame } from "./waddle-game";
 import { WorldPenguin } from "./world-penguin";
 import { MIN_FIRE_SENSEI_RANK } from "@server/game-logic/ninja-progress";
+import { DEFAULT_DECK, FIRE_DECK } from "@server/game-logic/starter-deck";
 
 export const STARTER_ENERGY = 6;
 const BOARD_TILE_COUNT = 16;
@@ -117,7 +118,8 @@ export class FirePlayer extends FireNinja {
 
   public constructor(tile: number, p: WorldPenguin, seat: number) {
     super(tile, seat);
-    this._hand = new Hand(p.ninja.getDeck());
+    const deck = p.ninja.getDeck();
+    this._hand = new Hand(deck.length > 0 ? deck : [...DEFAULT_DECK, ...FIRE_DECK]);
     for (let i = 0; i < 5; i++) {
       this._hand.draw();
     }
