@@ -8,9 +8,12 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
+import { FireGame, FirePlayer } from "./fire";
 import { getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
 import { BERG_BLOCK, findLeftmostMiddlemostPosition } from "./bot-block";
+import { Card, CARDS } from "@server/game-logic/cards";
+import { isBot } from "./bots";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -315,6 +318,105 @@ class CardJitsuBrain implements BotBrain {
         }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
       }
     } else if (name === 'czo' || name === 'cz') {
+      // packets that terminate the match
+      this.dispose();
+    }
+  }
+
+  dispose(): void {
+    if (this._timeout !== null) {
+      clearTimeout(this._timeout);
+    }
+    this._onEnd();
+  }
+}
+
+class FireBrain implements BotBrain {
+  private _timeout: NodeJS.Timeout | null = null;
+
+  constructor(
+    private _game: FireGame,
+    private _ninja: FirePlayer,
+    private _seat: number,
+    private _send: SendFunction,
+    private _onEnd: () => void
+  ) {
+    this._send('z', 'gz', 1);
+  }
+
+  private get _battleNinja() {
+    return this._game.round.fromPenguin(this._ninja.penguin);
+  }
+
+  private pickCard(trump: string) {
+    if (this._ninja.hand.map(i => CARDS.get(i)).every(c => c.element !== trump)) {
+      // cj battle (or we don't have a card of the given element), so just pick a random one
+      return randomInt(0, 4);
+    } else {
+      // get the card of the matching element with the highest value
+      // TODO: rng for a small chance of picking a lower value card?
+      const cards = this._ninja.hand.map((id, i) => [CARDS.get(id), i] as [Card, number]).filter(([c]) => c.element === trump);
+      return cards.reduce((max, current) => (current[0].value > max[0].value) ? current : max)[1];
+    }
+  }
+
+  handle(name: string, args: string[]): void {
+    if (name === 'zm') {
+      switch (args[0]) {
+        case 'sz':
+        case 'nt':
+          if (args[1] === String(this._seat)) {
+            // there seems to be a client bug where spinner
+            // immediately turns over, even when 'is' has not been sent
+            // so we can just do a smaller delay for it
+            this._timeout = setTimeout(() => {
+              this._send('z', 'zm', 'is', '', randomInt(1, 6));
+
+              this._timeout = setTimeout(() => {
+                this._send('z', 'zm', 'cb', this._game.spin[randomInt(1, 2)]);
+              }, clamp(randomLogNormal(1.2, 0.8), 1, 13) * 1000);
+            }, clamp(randomLogNormal(1.2, 0.8), 1, 2) * 1000);
+          }
+          break;
+        case 'ct':
+          this._timeout = setTimeout(() => {
+            // TODO: could do some reasoning logic here
+            // e.g. if the bot has high value fire cards
+            // it might be more inclined to pick fire
+            this._send('z', 'zm', 'ct', choose(['f', 'w', 's']));
+          }, clamp(randomLogNormal(1.2, 0.8), 1, 5) * 1000);
+          break;
+        case 'co':
+          this._timeout = setTimeout(() => {
+            this._send('z', 'zm', 'co', choose(args[2].split(',')));
+          }, clamp(randomLogNormal(1.2, 0.8), 1, 5) * 1000);
+          break;
+        case 'sb':
+          if (args[2].split(',').includes(String(this._seat))) {
+            this._battleNinja.setCard(this.pickCard(args[1] === 'be' ? null : args[3]));
+            this._timeout = setTimeout(() => {
+              this._send('z', 'zm', 'cc', this._battleNinja.chosen)
+            }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
+          }
+          break;
+        case 'rb':
+          // battle resolving - wait 2 seconds before sending ready, 
+          // roughly the amount of time it takes for the animations to finish
+          clearTimeout(this._timeout);
+          this._timeout = setTimeout(() => {
+            if (!this._ninja.ready) this._send('z', 'zm', 'ir', this._seat);
+          }, 2500);
+          break;
+        case 'cz':
+          // if all humans left, no point in continuing 
+          if (this._game.players.every(p => isBot(p))) {
+            this.dispose();
+          }
+          break;
+        default:
+          break;
+      }
+    } else if (name === 'cz') {
       // packets that terminate the match
       this.dispose();
     }
@@ -772,7 +874,14 @@ export class Bot implements ClientSocket {
   }
 
   private handleOverworld(message: string, args: string[]): void {
-    if (message === 'jt') {
+    if (message === 'jg') {
+      const ctx = this._world.getContext(this._penguin);
+      if ('fire' in ctx) {
+        this.joinFire(ctx.fire);
+      } else if ('card' in ctx) {
+        this.joinCard(ctx.card);
+      }
+    } else if (message === 'jt') {
       const room = this._world.getPenguinRoom(this._penguin);
       this._brain = new TableBrain(
         room.getTable(Number(args[0])),
@@ -803,6 +912,19 @@ export class Bot implements ClientSocket {
       card,
       card.getNinja(this._penguin),
       card.getSeatId(this._penguin),
+      this._simulate,
+      () => {
+        this._brain = null;
+        this.exitGameMode();
+      }
+    );
+  }
+
+  public joinFire(fire: FireGame): void {
+    this._brain = new FireBrain(
+      fire,
+      fire.fromPenguin(this._penguin),
+      fire.getSeatId(this._penguin),
       this._simulate,
       () => {
         this._brain = null;
