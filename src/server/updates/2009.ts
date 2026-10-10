@@ -1425,6 +1425,14 @@ export const UPDATES_2009: Update[] = [
     fileChanges: {
       'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf'
     },
+    localChanges: {
+      'close_ups/ninjabelts.swf': {
+        en: 'archives:PlayV2ContentEnClose_upsNinjabelts-pre2011.swf'
+      },
+      'instructions/card_jitsu.swf': {
+        en: 'archives:ENInstructionsCardJitsu-pre2011.swf'
+      }
+    },
     rooms: {
       dojo: 'archives:RoomsDojo.swf',
       dojohide: 'recreation:dojohide_2009.swf',

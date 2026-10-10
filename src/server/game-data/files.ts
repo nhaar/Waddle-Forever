@@ -2031,6 +2031,10 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'ninjaprogress_nowater.swf',
       comment: 'Made by ChrisCPI, the slegacy Ninja Progress but with Water progress removed, and the fire items use the paper artwork under "Next Item" instead of the icon'
+    },
+    {
+      file: 'ninjabelts_2008.swf',
+      comment: 'Made by ChrisCPI, the original ninja belts legend (different text and symbol at the bottom)'
     }
   ],
   [MOD]: [

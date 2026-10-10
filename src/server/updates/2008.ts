@@ -2837,6 +2837,11 @@ export const UPDATES_2008: Update[] = [
       dojoext: 'recreation:dojoext.swf'
     },
     availableRooms: ['dojohide'],
+    localChanges: {
+      'close_ups/ninjabelts.swf': {
+        en: 'recreation:ninjabelts_2008.swf'
+      }
+    },
     music: {
       dojoext: 0
     },
@@ -3312,6 +3317,11 @@ export const UPDATES_2008: Update[] = [
       rink: 'archives:RoomsRink.swf',
       agent: 'archives:RoomsAgent.swf',
       dojo: 'recreation:dojo_2008.swf'
+    },
+    localChanges: {
+      'instructions/card_jitsu.swf': {
+        en: 'archives:InstructionsCardJitsuDecember2008.swf'
+      }
     },
     map: 'archives:Map2008-2011Rink.swf'
   },
