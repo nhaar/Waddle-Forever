@@ -51,7 +51,10 @@ export const createWindow = async (store: Store, clientSettings: GlobalSettings,
   loadMain(mainWindow, clientSettings, serverSettings);
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (!url.includes('localhost') || !url.includes(getIP(clientSettings, serverSettings))) {
+    if (url.includes('clubpenguin.com')) {
+      event.preventDefault();
+      mainWindow.reload();
+    } else if (!url.includes('localhost') && !url.includes(getIP(clientSettings, serverSettings))) {
       event.preventDefault();
       shell.openExternal(url);
     }
