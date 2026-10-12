@@ -51,11 +51,12 @@ const CATALOG_INCLUDED_ITEMS_INDEX: OldCatalogIndex = [];
 function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex): void {
   const included = new Set<number>();
   let previousClothing: Version | null = null;
-  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' | 'martialartworks' | 'gameupgrades' }> = [];
+  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' | 'martialartworks' | 'gameupgrades' | 'elitegear' }> = [];
 
   let previousSportDate: Version | null = null;
   let previousMartialArtworksDate: Version | null = null;
   let previousGameUpgradesDate: Version | null = null;
+  let previousEliteGearDate: Version | null = null;
 
   for (let i = UPDATES.length - 1; i >= 0; i--) {
     const { date, update} = UPDATES[i];
@@ -94,6 +95,15 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         newItems: [...update.gameUpgrades.newItems]
       });
       previousGameUpgradesDate = date;
+    }
+    if (update.eliteGearItems !== undefined) {
+      catalogIndexes.push({ index: i, type: 'elitegear' });
+      newIndex.push({
+        start: date,
+        end: previousEliteGearDate,
+        newItems: [...update.eliteGearItems]
+      });
+      previousEliteGearDate = date;
     }
   }
 
@@ -139,6 +149,16 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       if (gameUpgrades !== undefined) {
         gameUpgrades.newItems.forEach(item => included.add(item));
         gameUpgrades.removed.forEach(item => included.delete(item));
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...included.values()]
+        })
+      }
+    } else if (info.type === 'elitegear') {
+      const eliteGearItems = UPDATES[info.index].update.eliteGearItems;
+      if (eliteGearItems !== undefined) {
+        eliteGearItems.forEach(item => included.add(item));
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
           end: CATALOG_ADDED_ITEMS_INDEX[i].end,
