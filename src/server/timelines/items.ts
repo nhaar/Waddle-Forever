@@ -76,7 +76,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         newItems: [...update.sportCatalog.items]
       });
       previousSportDate = date;
-    },
+    }
     if (update.martialArtworks !== undefined) {
       catalogIndexes.push({ index: i, type: 'martialartworks' });
       newIndex.push({
@@ -85,7 +85,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         newItems: [...update.martialArtworks.items]
       });
       previousMartialArtworksDate = date;
-    },
+    }
     if (update.gameUpgrades !== undefined) {
       catalogIndexes.push({ index: i, type: 'gameupgrades' });
       newIndex.push({
@@ -94,7 +94,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         newItems: [...update.gameUpgrades.items]
       });
       previousGameUpgradesDate = date;
-    },
+    }
   }
 
 
