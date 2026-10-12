@@ -952,7 +952,11 @@ export const UPDATES_2009: Update[] = [
       ],
       removed: []
     },
-    martialArtworks: 'archives:MAMar2009.swf',
+    martialArtworks: {
+      file: 'archives:MAMar2009.swf',
+      newItems: [4075],
+      removedItems: []
+    },
     sportCatalog: {
       file: 'archives:SASMar2009.swf',
       items: [
@@ -1173,11 +1177,7 @@ export const UPDATES_2009: Update[] = [
       mtn: 'archives:RoomsMtn-January2010.swf'
     },
     gameUpgrades: {
-      newItems: [
-        5021,
-        5047,
-        5046
-      ],
+      newItems: [5021],
       removed: []
     }
   },
@@ -1737,6 +1737,10 @@ export const UPDATES_2009: Update[] = [
         981,
         980
       ]
+    },
+    martialArtworks: {
+      newItems: [5040],
+      removedItems: []
     }
   },
   {
@@ -2662,6 +2666,10 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-11-01',
     end: ['party2', 'event'],
+    martialArtworks: {
+      newItems: [4132],
+      removedItems: []
+    },
     temp: {
       // end of storm
       'fire-construction': {
@@ -2669,6 +2677,13 @@ export const UPDATES_2009: Update[] = [
           dojohide: 'archives:RoomsDojohide-FireCelebratePre.swf'
         }
       }
+    }
+  },
+  {
+    date: '2009-11-02',
+    martialArtworks: {
+      newItems: [4132],
+      removedItems: []
     }
   },
   {
@@ -2748,7 +2763,11 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-13',
-    martialArtworks: 'archives:November09Ninja2.swf',
+    martialArtworks: {
+      file: 'archives:November09Ninja2.swf',
+      newItems: [3032],
+      removedItems: []
+    },
     constructionComment: 'Construction for the Fire Dojo begins',
     temp: {
       event: {
@@ -2875,6 +2894,7 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-11-23',
     dateReference: 'fire-release',
+    exploreItems: [8006],
     temp: {
       party: {
         update: 'Card-Jitsu Fire is now available',
@@ -2967,6 +2987,10 @@ export const UPDATES_2009: Update[] = [
         6011,
         6013
       ]
+    },
+    gameUpgrades: {
+      newItems: [5046, 5047],
+      removed: []
     },
     map: 'archives:Map2008-2011Rink.swf'
   },
