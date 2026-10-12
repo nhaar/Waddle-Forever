@@ -77,7 +77,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       });
       previousSportDate = date;
     }
-    if (update.martialArtworks !== undefined) {
+    if (update.martialArtworks !== undefined && typeof update.martialArtworks !== "string") {
       catalogIndexes.push({ index: i, type: 'martialartworks' });
       newIndex.push({
         start: date,
@@ -125,7 +125,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       }
     } else if (info.type === 'martialartworks') {
       const martialArtworks = UPDATES[info.index].update.martialArtworks;
-      if (martialArtworks !== undefined) {
+      if (martialArtworks !== undefined && typeof martialArtworks !== "string") {
         martialArtworks.newItems.forEach(item => included.add(item));
         martialArtworks.removedItems.forEach(item => included.delete(item));
         oldIndex.push({
