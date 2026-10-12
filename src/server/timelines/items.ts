@@ -124,8 +124,10 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         })
       }
     } else if (info.type === 'martialartworks') {
-      const items = UPDATES[info.index].update.martialArtworks?.items;
-      if (items !== undefined) {
+      const martialArtworks = UPDATES[info.index].update.martialArtworks;
+      if (martialArtworks !== undefined) {
+        martialArtworks.newItems.forEach(item => included.add(item));
+        martialArtworks.removedItems.forEach(item => included.delete(item));
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
           end: CATALOG_ADDED_ITEMS_INDEX[i].end,
@@ -133,8 +135,10 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         })
       }
     } else if (info.type === 'gameupgrades') {
-      const items = UPDATES[info.index].update.gameUpgrades?.items;
-      if (items !== undefined) {
+      const gameUpgrades = UPDATES[info.index].update.gameUpgrades;
+      if (gameUpgrades !== undefined) {
+        gameUpgrades.newItems.forEach(item => included.add(item));
+        gameUpgrades.removed.forEach(item => included.delete(item));
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
           end: CATALOG_ADDED_ITEMS_INDEX[i].end,
