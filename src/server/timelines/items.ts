@@ -82,7 +82,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       newIndex.push({
         start: date,
         end: previousMartialArtworksDate,
-        newItems: [...update.martialArtworks.items]
+        newItems: [...update.martialArtworks.newItems]
       });
       previousMartialArtworksDate = date;
     }
@@ -91,7 +91,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       newIndex.push({
         start: date,
         end: previousGameUpgradesDate,
-        newItems: [...update.gameUpgrades.items]
+        newItems: [...update.gameUpgrades.newItems]
       });
       previousGameUpgradesDate = date;
     }
