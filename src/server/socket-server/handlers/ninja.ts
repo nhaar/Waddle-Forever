@@ -25,14 +25,14 @@ export const handleGetNinjaLevel: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gnl', penguin.ninja.cardProgress.rank, penguin.ninja.cardProgress.percentage, 10);
 }
 
-export const handleGetNinjaCards: PenguinHandler<[]> = ({ msg, penguin }) => {
-  msg.send(penguin, 'gcd', penguin.ninja.cards.map(([id, [a1, a2]]) => {
+export const handleGetNinjaCards: PenguinHandler<[]> = ({ msg, penguin, data }) => {
+  msg.send(penguin, 'gcd', penguin.ninja.cards.filter(([id]) => data.isCardAvailable(id)).map(([id, [a1, a2]]) => {
     return [id, a1 + a2].join(',');
   }).join('|'));
 }
 
-export const handleGetNinjaCardsModern: PenguinHandler<[]> = ({ msg, penguin }) => {
-  msg.send(penguin, 'gcd', penguin.ninja.cards.map((card) => {
+export const handleGetNinjaCardsModern: PenguinHandler<[]> = ({ msg, penguin, data }) => {
+  msg.send(penguin, 'gcd', penguin.ninja.cards.filter(([id]) => data.isCardAvailable(id)).map((card) => {
     return card.flat().join(',');
   }).join('|'));
 }

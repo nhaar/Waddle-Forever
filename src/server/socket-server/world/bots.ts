@@ -217,7 +217,7 @@ export class BotManager {
     } = {}): Bot {
     const id = this._nextId++;
     const [attrs,json] = info === undefined ? generateRandomBot(this._data) : info;
-    const penguin = new WorldPenguin(id, json, this._appSettings);
+    const penguin = new WorldPenguin(id, json, this._appSettings, this._data);
     this._world.addPenguin(penguin);
     const bot = new Bot(
       penguin,

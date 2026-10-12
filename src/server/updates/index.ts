@@ -174,6 +174,9 @@ export type CPUpdate = {
    */
   newspaper?: 'irregular' | 'period-start' | 'period-end' | 'fan';
 
+  /** Available Card-Jitsu card sets */
+  cardSets?: number[];
+
   /** New version of the igloo swf */
   iglooVersion?: number;
 

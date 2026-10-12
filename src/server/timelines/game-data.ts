@@ -13,6 +13,7 @@ import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
 import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
+import { CARDS } from "@server/game-logic/cards";
 import { FURNITURE } from "@server/game-logic/furniture";
 import { CustomItem, getItemsTable, Item, ItemTable, ItemType } from "@server/game-logic/items";
 import { ITEMS_DATA } from "@server/game-logic/items-data";
@@ -97,6 +98,7 @@ type GameState = {
   itemMemberStatus: Map<number, boolean>;
   availableRooms: Set<RoomName>;
   starterColors: Set<number>;
+  cardSets: Set<number>;
 }
 
 function getFreshState(): GameState {
@@ -162,7 +164,8 @@ function getFreshState(): GameState {
     available: new Set(),
     itemMemberStatus: new Map(),
     availableRooms: new Set(),
-    starterColors: new Set()
+    starterColors: new Set(),
+    cardSets: new Set()
   };
 }
 
@@ -730,6 +733,9 @@ export class GameData {
       },
       'availableRooms': (v) => {
         v.forEach(r => this.state.availableRooms.add(r));
+      },
+      'cardSets': (v) => {
+        v.forEach(s => this.state.cardSets.add(s));
       }
     }
 
@@ -1017,5 +1023,9 @@ export class GameData {
 
   public isElementalMember() {
     return this.state.flags.memberElementalGames;
+  }
+
+  public isCardAvailable(id: number) {
+    return this.state.cardSets.has(CARDS.get(id).set);
   }
 }
