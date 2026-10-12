@@ -2156,7 +2156,21 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-06-23',
-    martialArtworks: 'archives:June2011Ninja.swf'
+    martialArtworks: {
+      file: 'archives:June2011Ninja.swf',
+      newItems: [
+        1230,
+        1231,
+        1232,
+        1233,
+        4332,
+        4334,
+        4335,
+        4336,
+        4337
+      ],
+      removedItems: []
+    }
   },
   {
     date: '2011-06-24',
@@ -2165,6 +2179,7 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
+    exploreItems: [1285, 9106],
     flags: {
       vanillaEngine: true,
       isSpOnJr: true,
@@ -3675,7 +3690,11 @@ export const UPDATES_2011: Update[] = [
         }
       }
     },
-    martialArtworks: 'archives:ENCataloguesNinjaDecember2011.swf'
+    martialArtworks: {
+      file: 'archives:ENCataloguesNinjaDecember2011.swf',
+      newItems: [],
+      removedItems: [3032]
+    }
   },
   {
     date: '2011-12-14',
