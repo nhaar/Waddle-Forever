@@ -2666,10 +2666,6 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-11-01',
     end: ['party2', 'event'],
-    martialArtworks: {
-      newItems: [4132],
-      removedItems: []
-    },
     temp: {
       // end of storm
       'fire-construction': {
