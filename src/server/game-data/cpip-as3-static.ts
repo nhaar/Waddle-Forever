@@ -45,7 +45,7 @@ export const CPIP_AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/shuffle/bootstrap.swf': 'slegacy:media/play/v2/games/shuffle/bootstrap.swf',
   'play/v2/games/shuffle/shuffle.swf': 'slegacy:media/play/v2/games/shuffle/shuffle.swf',
   'play/v2/games/sub/bootstrap.swf': 'slegacy:media/play/v2/games/sub/bootstrap.swf',
-  'play/v2/games/sub/subgame.swf': 'slegacy:media/play/v2/games/sub/subgame.swf',
+  'play/v2/games/sub/subgame.swf': 'fix:GamesAquaGrabberSubgame.swf',
   'play/v2/games/sub/titlescreens.swf': 'slegacy:media/play/v2/games/sub/titlescreens.swf',
   'play/v2/games/thinice/bootstrap.swf': 'slegacy:media/play/v2/games/thinice/bootstrap.swf',
   'play/v2/games/tower/main.swf': 'slegacy:media/play/v2/games/tower/main.swf',
