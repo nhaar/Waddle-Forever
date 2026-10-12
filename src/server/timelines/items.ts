@@ -51,9 +51,11 @@ const CATALOG_INCLUDED_ITEMS_INDEX: OldCatalogIndex = [];
 function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex): void {
   const included = new Set<number>();
   let previousClothing: Version | null = null;
-  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' }> = [];
+  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' | 'martialartworks' | 'gameupgrades' }> = [];
 
   let previousSportDate: Version | null = null;
+  let previousMartialArtworksDate: Version | null = null;
+  let previousGameUpgradesDate: Version | null = null;
 
   for (let i = UPDATES.length - 1; i >= 0; i--) {
     const { date, update} = UPDATES[i];
@@ -74,7 +76,25 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         newItems: [...update.sportCatalog.items]
       });
       previousSportDate = date;
-    }
+    },
+    if (update.martialArtworks !== undefined) {
+      catalogIndexes.push({ index: i, type: 'martialartworks' });
+      newIndex.push({
+        start: date,
+        end: previousMartialArtworksDate,
+        newItems: [...update.martialArtworks.items]
+      });
+      previousMartialArtworksDate = date;
+    },
+    if (update.gameUpgrades !== undefined) {
+      catalogIndexes.push({ index: i, type: 'gameupgrades' });
+      newIndex.push({
+        start: date,
+        end: previousGameUpgradesDate,
+        newItems: [...update.gameUpgrades.items]
+      });
+      previousGameUpgradesDate = date;
+    },
   }
 
 
@@ -96,6 +116,24 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       }
     } else if (info.type === 'sport') {
       const items = UPDATES[info.index].update.sportCatalog?.items;
+      if (items !== undefined) {
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...items]
+        })
+      }
+    } else if (info.type === 'martialartworks') {
+      const items = UPDATES[info.index].update.martialArtworks?.items;
+      if (items !== undefined) {
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...items]
+        })
+      }
+    } else if (info.type === 'gameupgrades') {
+      const items = UPDATES[info.index].update.gameUpgrades?.items;
       if (items !== undefined) {
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
