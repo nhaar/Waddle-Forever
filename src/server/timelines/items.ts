@@ -131,7 +131,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
           end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...items]
+          items: [...included.values()]
         })
       }
     } else if (info.type === 'gameupgrades') {
@@ -142,7 +142,7 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
           end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...items]
+          items: [...included.values()]
         })
       }
     }
