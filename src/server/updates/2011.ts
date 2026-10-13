@@ -3698,6 +3698,10 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-12-14',
+    postcardgiftItems: {
+      newItems: [1331],
+      removed: []
+    },
     temp: {
       party: {
         partyName: 'Holiday Party',
@@ -3899,6 +3903,10 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-29',
     end: ['party'],
+    postcardgiftItems: {
+      newItems: [],
+      removed: [1331]
+    },
     temp: {
       party2: {
         partyStart: 'Fireworks begin at the Ski Hill and Iceberg',
