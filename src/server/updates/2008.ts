@@ -1492,6 +1492,17 @@ export const UPDATES_2008: Update[] = [
       cart: 105,
       roundup: 102,
       thinice: 111
+    },
+    postcardgiftItems: {
+      newItems: [317],
+      removed: []
+    }
+  },
+  {
+    date: '2008-07-16',
+    postcardgiftItems: {
+      newItems: [],
+      removed: [317]
     }
   },
   {
