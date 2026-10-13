@@ -1840,7 +1840,7 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
-    date: '2008-12-14',
+    date: '2006-12-14',
     newspaperItems: {
       newItems: [570],
       removed: []
