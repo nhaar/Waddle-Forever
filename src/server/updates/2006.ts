@@ -937,7 +937,8 @@ export const UPDATES_2006: Update[] = [
     date: '2006-09-07',
     constructionComment: 'Construction begins at the Beach',
     newspaperItems: {
-      newItems: [282]
+      newItems: [282],
+      removed: []
     },
     temp: {
       event: {
@@ -976,6 +977,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-09-21',
     chatVersion: 506,
     newspaperItems: {
+      newItems: [],
       removed: [282]
     },
     fileChanges: {
@@ -1840,7 +1842,8 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2008-12-14',
     newspaperItems: {
-      newItems: [570]
+      newItems: [570],
+      removed: []
     }
   },
   {
@@ -1871,6 +1874,7 @@ export const UPDATES_2006: Update[] = [
     date: '2006-12-21',
     end: ['event'],
     newspaperItems: {
+      newItems: [],
       removed: [570]
     }
   },
