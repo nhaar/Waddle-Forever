@@ -2849,7 +2849,8 @@ export const UPDATES_2008: Update[] = [
       announce: false,
       newItems: [4034],
       removedItems: []
-    }
+    },
+    cardSets: [1]
   },
   {
     date: '2008-11-18',

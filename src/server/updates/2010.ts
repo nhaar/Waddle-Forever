@@ -1362,6 +1362,8 @@ export const UPDATES_2010: Update[] = [
         }
       }
     },
+    // this is a guesstimate - these cards were added sometime between june 7 and 23
+    cardSets: [5],
     stagePlay: {
       name: 'Ruby and the Ruby',
       costumeTrunk: 'archives:July09Costume.swf'
@@ -4186,6 +4188,8 @@ export const UPDATES_2010: Update[] = [
       dojohide: 'archives:RoomsDojohide_3.swf',
       dojowater: 'slegacy:media/play/v2/content/global/rooms/dojowater.swf'
     },
+    // exact date for these releasing is unknown, but it's likely it was on this date
+    cardSets: [6],
     stampUpdates: [
       {
         category: {

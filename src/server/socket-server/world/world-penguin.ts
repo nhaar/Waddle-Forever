@@ -1,8 +1,10 @@
 import { getDefaultIgloo, Igloo, Mail, PenguinJson, PlayerPuffle, RainbowPuffleStage, StampbookCover } from "@server/database/database";
 import { MASCOTS } from "@server/game-data/mascots";
+import { CARDS } from "@server/game-logic/cards";
 import { CardJitsuFireProgress, CardJitsuProgress, CardJitsuSnowProgress } from "@server/game-logic/ninja-progress";
 import { processVersion } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
+import { GameData } from "@server/timelines/game-data";
 
 export const equipProp = [
   'color',
@@ -791,7 +793,9 @@ class NinjaProfile {
 
   private _water: boolean;
 
-  constructor(data: PenguinJson) {
+  private _cardAvailable: (id: number) => boolean;
+
+  constructor(data: PenguinJson, gameData: GameData) {
     this._cards = new Map(Object.entries(data.cards).map(([k, v]) => [Number(k), v]));
 
     this._cardProgress = new CardJitsuProgress(data.cardProgress, data.senseiAttempts, data.isNinja);
@@ -807,6 +811,8 @@ class NinjaProfile {
       w: data.snowWinsW ?? 0,
       s: data.snowWinsS ?? 0,
     }
+
+    this._cardAvailable = (id) => gameData.isCardAvailable(id);
   }
 
   public get cards() {
@@ -845,7 +851,7 @@ class NinjaProfile {
   }
 
   getDeck(isMember: boolean = true): number[] {
-    return this.cards.flatMap(([id, [amount, memberAmount]]) =>
+    return this.cards.filter(([id]) => this._cardAvailable(id)).flatMap(([id, [amount, memberAmount]]) =>
       new Array(amount + (isMember ? memberAmount : 0)).fill(id)
     );
   }
@@ -991,7 +997,8 @@ export class WorldPenguin implements UserPenguin {
   constructor(
     id: number,
     json: PenguinJson,
-    settings: SettingsManager
+    settings: SettingsManager,
+    data: GameData
   ) {
     this._profile = new Profile(id, json);
     this._membership = new Membership(json);
@@ -1010,7 +1017,7 @@ export class WorldPenguin implements UserPenguin {
     this._puffleLaunch = new PuffleLaunchData(json);
     this._epf = new EpfInventory(json);
     this._gold = new GoldPuffleInventory(json);
-    this._ninja = new NinjaProfile(json);
+    this._ninja = new NinjaProfile(json, data);
     this._battleOfDoom = new BattleOfDoomStatus(json);
     this._medieval2012 = new Medieval2012Status(json);
     this._preference = new UserPreference(json);

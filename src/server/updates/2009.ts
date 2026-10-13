@@ -1433,6 +1433,7 @@ export const UPDATES_2009: Update[] = [
         en: 'archives:ENInstructionsCardJitsu-pre2011.swf'
       }
     },
+    cardSets: [2],
     rooms: {
       dojo: 'archives:RoomsDojo.swf',
       dojohide: 'recreation:dojohide_2009.swf',
@@ -1819,6 +1820,8 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-07-24',
+    // this is a guesstimate - these cards were added sometime between between july 24 and 30
+    cardSets: [3],
     temp: {
       party: {
         update: 'The Dock changes',
@@ -2883,7 +2886,8 @@ export const UPDATES_2009: Update[] = [
           dojofire: 'archives:RoomsDojofire-FireCelebrate.swf'
         }
       }
-    }
+    },
+    cardSets: [4]
   },
   {
     date: '2009-11-27',

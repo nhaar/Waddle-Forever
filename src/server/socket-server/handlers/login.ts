@@ -72,7 +72,7 @@ export const login: LoginHandler = async (ctx, message: string) => {
       if (offline === undefined) {
         throw new Error('Couldn\'t find penguin');
       }
-      const p = new WorldPenguin(id, offline.getJSON(), settings);
+      const p = new WorldPenguin(id, offline.getJSON(), settings, data);
       ctx.off.removePenguin(offline.id);
       ctx.world.addPenguin(p);
       msg.linkClient(client, p);

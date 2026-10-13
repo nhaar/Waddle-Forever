@@ -1698,6 +1698,8 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-05-17',
+    // this is a guesstimate - these cards were added sometime between may 9 and june 4
+    cardSets: [7, 8],
     temp: {
       const: {
         rooms: {
