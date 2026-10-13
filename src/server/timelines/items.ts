@@ -51,12 +51,14 @@ const CATALOG_INCLUDED_ITEMS_INDEX: OldCatalogIndex = [];
 function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex): void {
   const included = new Set<number>();
   let previousClothing: Version | null = null;
-  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' | 'martialartworks' | 'gameupgrades' | 'elitegear' }> = [];
+  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' | 'martialartworks' | 'gameupgrades' | 'elitegear' | 'newspaper' | 'postcardgift' }> = [];
 
   let previousSportDate: Version | null = null;
   let previousMartialArtworksDate: Version | null = null;
   let previousGameUpgradesDate: Version | null = null;
   let previousEliteGearDate: Version | null = null;
+  let previousNewspaperItemDate: Version | null = null;
+  let previousPostcardGiftItemDate: Version | null = null;
 
   for (let i = UPDATES.length - 1; i >= 0; i--) {
     const { date, update} = UPDATES[i];
@@ -104,6 +106,24 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
         newItems: [...update.eliteGearItems]
       });
       previousEliteGearDate = date;
+    }
+    if (update.newspaperItems !== undefined) {
+      catalogIndexes.push({ index: i, type: 'newspaper' });
+      newIndex.push({
+        start: date,
+        end: previousNewspaperItemDate,
+        newItems: [...update.newspaperItems.newItems]
+      });
+      previousNewspaperItemDate = date;
+    }
+    if (update.postcardgiftItems !== undefined) {
+      catalogIndexes.push({ index: i, type: 'postcardgift' });
+      newIndex.push({
+        start: date,
+        end: previousPostcardGiftItemDate,
+        newItems: [...update.postcardgiftItems.newItems]
+      });
+      previousPostcardGiftItemDate = date;
     }
   }
 
@@ -159,6 +179,28 @@ function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex)
       const eliteGearItems = UPDATES[info.index].update.eliteGearItems;
       if (eliteGearItems !== undefined) {
         eliteGearItems.forEach(item => included.add(item));
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...included.values()]
+        })
+      }
+    } else if (info.type === 'newspaper') {
+      const newspaperItems = UPDATES[info.index].update.newspaperItems;
+      if (newspaperItems !== undefined) {
+        newspaperItems.newItems.forEach(item => included.add(item));
+        newspaperItems.removed.forEach(item => included.delete(item));
+        oldIndex.push({
+          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
+          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
+          items: [...included.values()]
+        })
+      }
+    } else if (info.type === 'postcardgift') {
+      const postcardgiftItems = UPDATES[info.index].update.postcardgiftItems;
+      if (postcardgiftItems !== undefined) {
+        postcardgiftItems.newItems.forEach(item => included.add(item));
+        postcardgiftItems.removed.forEach(item => included.delete(item));
         oldIndex.push({
           start: CATALOG_ADDED_ITEMS_INDEX[i].start,
           end: CATALOG_ADDED_ITEMS_INDEX[i].end,
