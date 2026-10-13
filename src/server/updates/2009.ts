@@ -3062,6 +3062,10 @@ export const UPDATES_2009: Update[] = [
     furnitureCatalog: 'archives:December09Furniture.swf',
     iglooCatalog: 'archives:December2009Igloos.swf',
     migrator: 'archives:December2009Pirate.swf',
+    postcardgiftItems: {
+      newItems: [1119],
+      removed: []
+    },
     temp: {
       const: {
         rooms: {
@@ -3179,6 +3183,10 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-12-29',
     migrator: false,
-    end: ['party']
+    end: ['party'],
+    postcardgiftItems: {
+      newItems: [],
+      removed: [1119]
+    }
   }
 ];
