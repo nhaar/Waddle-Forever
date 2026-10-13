@@ -230,7 +230,7 @@ function getTimeline(): Day[] {
     }
     if (update.update.cardSets !== undefined) {
       const sets = update.update.cardSets;
-      addEvent(map, update.date, `Card-Jitsu card ${sets.length > 1 ? 'Sets' : 'Set'} ${sets.join(', ')} ${sets.length > 1 ? 'are' : 'is'} now available`, 'cards');
+      addEvent(map, update.date, `Card-Jitsu card ${sets.length > 1 ? 'sets' : 'set'} ${sets.join(', ')} ${sets.length > 1 ? 'are' : 'is'} now available`, 'cards');
     }
   });
 
