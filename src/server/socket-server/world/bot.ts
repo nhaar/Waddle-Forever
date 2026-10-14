@@ -18,6 +18,10 @@ import { isBot } from "./bots";
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
 
+function randomDecisionTime(limit: number) {
+  return clamp(randomLogNormal(1.2, 0.8), 1, limit);
+}
+
 export function generateRandomOutfit(
   data: GameData,
   inventory: number[]
@@ -315,7 +319,7 @@ class CardJitsuBrain implements BotBrain {
             this._send('z', 'zm', 'pick', choose(selectableCards));
           }
           
-        }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
+        }, randomDecisionTime(20) * 1000);
       }
     } else if (name === 'czo' || name === 'cz') {
       // packets that terminate the match
@@ -374,8 +378,8 @@ class FireBrain implements BotBrain {
 
               this._timeout = setTimeout(() => {
                 this._send('z', 'zm', 'cb', this._game.spin[randomInt(1, 2)]);
-              }, clamp(randomLogNormal(1.2, 0.8), 1, 13) * 1000);
-            }, clamp(randomLogNormal(1.2, 0.8), 1, 2) * 1000);
+              }, randomDecisionTime(13) * 1000);
+            }, randomDecisionTime(2) * 1000);
           }
           break;
         case 'ct':
@@ -384,19 +388,19 @@ class FireBrain implements BotBrain {
             // e.g. if the bot has high value fire cards
             // it might be more inclined to pick fire
             this._send('z', 'zm', 'ct', choose(['f', 'w', 's']));
-          }, clamp(randomLogNormal(1.2, 0.8), 1, 5) * 1000);
+          }, randomDecisionTime(5) * 1000);
           break;
         case 'co':
           this._timeout = setTimeout(() => {
             this._send('z', 'zm', 'co', choose(args[2].split(',')));
-          }, clamp(randomLogNormal(1.2, 0.8), 1, 5) * 1000);
+          }, randomDecisionTime(5) * 1000);
           break;
         case 'sb':
           if (args[2].split(',').includes(String(this._seat))) {
             this._battleNinja.setCard(this.pickCard(args[1] === 'be' ? null : args[3]));
             this._timeout = setTimeout(() => {
               this._send('z', 'zm', 'cc', this._battleNinja.chosen)
-            }, clamp(randomLogNormal(1.2, 0.8), 1, 20) * 1000);
+            }, randomDecisionTime(20) * 1000);
           }
           break;
         case 'rb':
