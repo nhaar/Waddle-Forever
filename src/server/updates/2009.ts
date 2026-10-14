@@ -1423,7 +1423,9 @@ export const UPDATES_2009: Update[] = [
     date: '2009-05-28',
     roomComment: 'The dojo rooms are slightly revamped',
     fileChanges: {
-      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf'
+      'play/v2/content/global/content/ninjaprogress.swf': 'approximation:ninjaprogress_set2.swf',
+      'play/v2/games/sensei/SenseiWidget.swf': 'fix:GamesSenseiSenseiWidget-June2009.swf',
+      'play/v2/games/sensei/lang/en/locale.swf': 'slegacy:media/play/v2/games/sensei/lang/en/locale.swf'
     },
     localChanges: {
       'close_ups/ninjabelts.swf': {
@@ -1822,6 +1824,9 @@ export const UPDATES_2009: Update[] = [
     date: '2009-07-24',
     // this is a guesstimate - these cards were added sometime between between july 24 and 30
     cardSets: [3],
+    fileChanges: {
+      'play/v2/content/global/content/ninjaprogress.swf': 'archives:NinjaProgressJuly2009.swf'
+    },
     temp: {
       party: {
         update: 'The Dock changes',
@@ -2886,6 +2891,13 @@ export const UPDATES_2009: Update[] = [
           dojofire: 'archives:RoomsDojofire-FireCelebrate.swf'
         }
       }
+    },
+    fileChanges: {
+      'play/v2/client/shell.swf': 'archives:ClientShell2009-12-06.swf',
+      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf',
+      // the font changes on this day, and also
+      // adds newer power card effects
+      'play/v2/games/card/card.swf': 'slegacy:media/play/v2/games/card/card.swf'
     },
     cardSets: [4]
   },

@@ -4,6 +4,7 @@ import { Room } from "@server/game-logic/rooms";
 import { WaddleGame } from "./waddle-game";
 import { WorldPenguin } from "./world-penguin";
 import { DEFAULT_DECK } from "@server/game-logic/starter-deck";
+import { GameData } from "@server/timelines/game-data";
 
 export class Hand {
   private _canDrawCards: number[];
@@ -205,10 +206,14 @@ export class Sensei extends Ninja {
   
   private _pupil: NinjaPlayer;
 
-  constructor(unbeatable: boolean, opponent: NinjaPlayer) {
+  /** Full list of cards, filtered by what sets are available */
+  private _availableCards: Card[];
+
+  constructor(unbeatable: boolean, opponent: NinjaPlayer, gameData: GameData) {
     super(0);
     this._unbeatable = unbeatable;
     this._pupil = opponent;
+    this._availableCards = CARDS.rows.filter(c => gameData.isCardAvailable(c.id));
   }
 
   private _sessionToElement = new Map<number, string>();
@@ -260,7 +265,7 @@ export class Sensei extends Ninja {
         unbeatableCard = cardToCounter.id;
       } else {
         const winningElement = RULES[RULES[cardToCounter.element]];
-        const card = choose(CARDS.rows.filter(card => card.element === winningElement));
+        const card = choose(this._availableCards.filter(card => card.element === winningElement));
         unbeatableCard = card.id;
       }
       this._cardsToUse.set(cardToCounterId, id);
@@ -271,10 +276,10 @@ export class Sensei extends Ninja {
       // to prevent death by block element
       // (unknown if this mechanism existed in the original, but this will greatly simplify this)
       if (elements.length === 1) {
-        const elementComplement = CARDS.rows.filter(c => c.element !== elements[0]);
+        const elementComplement = this._availableCards.filter(c => c.element !== elements[0]);
         cardId = choose(elementComplement).id;
       } else {
-        cardId = choose(CARDS.rows).id;
+        cardId = choose(this._availableCards).id;
       }
     }
 
@@ -362,7 +367,7 @@ export class CardJitsu extends WaddleGame {
 
   private _opponents = new Map<Ninja, Ninja>();
 
-  constructor(players: WorldPenguin[]) {    
+  constructor(players: WorldPenguin[], private gameData: GameData) {    
     super(players);
 
     this._sensei = players.length === 1;
@@ -372,7 +377,7 @@ export class CardJitsu extends WaddleGame {
     if (this._sensei) {
       const player = players[0];
       const ninja = new NinjaPlayer(player, 1);
-      const sensei = new Sensei(player.ninja.cardProgress.senseiAttempts < 5, ninja);
+      const sensei = new Sensei(player.ninja.cardProgress.senseiAttempts < 5, ninja, this.gameData);
       ninjas = [sensei, ninja];
       this._ninjas.set(player, ninja);
     } else {

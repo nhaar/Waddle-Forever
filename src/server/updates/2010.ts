@@ -1364,6 +1364,9 @@ export const UPDATES_2010: Update[] = [
     },
     // this is a guesstimate - these cards were added sometime between june 7 and 23
     cardSets: [5],
+    fileChanges: {
+      'play/v2/content/global/content/ninjaprogress.swf': 'approximation:ninjaprogress_set5.swf',
+    },
     stagePlay: {
       name: 'Ruby and the Ruby',
       costumeTrunk: 'archives:July09Costume.swf'
@@ -1372,7 +1375,6 @@ export const UPDATES_2010: Update[] = [
     rooms: {
       plaza: 'recreation:plaza_ruby_no_weather.swf',
       stage: 'recreation:stage_ruby_2010_june.swf',
-
       agentcom: 'recreation:agentcom_nofieldops2.swf'
     },
     availableRooms: ['agentvr']
@@ -4182,7 +4184,9 @@ export const UPDATES_2010: Update[] = [
       }
     },
     fileChanges: {
-      'play/v2/content/global/content/ninjaprogress.swf': 'slegacy:media/play/v2/content/global/content/ninjaprogress.swf'
+      'play/v2/content/global/content/ninjaprogress.swf': 'approximation:ninjaprogress_set6.swf',
+      // Font for the menus changes on this day
+      'play/v2/games/sensei/SenseiWidget.swf': 'slegacy:media/play/v2/games/sensei/SenseiWidget.swf'
     },
     rooms: {
       dojohide: 'archives:RoomsDojohide_3.swf',

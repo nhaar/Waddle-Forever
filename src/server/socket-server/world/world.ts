@@ -111,7 +111,7 @@ export class World {
 
     switch (name) {
       case 'card':
-        game = new CardJitsu(players);
+        game = new CardJitsu(players, this.gameData);
         players.forEach(p => this.enterState(p, { card: game as CardJitsu }));
         break;
       case 'fire':
