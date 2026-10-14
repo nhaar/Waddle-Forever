@@ -2058,7 +2058,6 @@ export const CPIP_AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/card/battles/w_attack.swf': 'slegacy:media/play/v2/games/card/battles/w_attack.swf',
   'play/v2/games/card/battles/w_react.swf': 'slegacy:media/play/v2/games/card/battles/w_react.swf',
   'play/v2/games/card/bootstrap.swf': 'slegacy:media/play/v2/games/card/bootstrap.swf',
-  'play/v2/games/card/card.swf': 'slegacy:media/play/v2/games/card/card.swf',
   'play/v2/games/card/icons/1.swf': 'slegacy:media/play/v2/games/card/icons/1.swf',
   'play/v2/games/card/icons/10.swf': 'slegacy:media/play/v2/games/card/icons/10.swf',
   'play/v2/games/card/icons/100.swf': 'slegacy:media/play/v2/games/card/icons/100.swf',
@@ -2574,7 +2573,5 @@ export const CPIP_AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/games/card/lang/fr/locale.swf': 'slegacy:media/play/v2/games/card/lang/fr/locale.swf',
   'play/v2/games/card/lang/pt/locale.swf': 'slegacy:media/play/v2/games/card/lang/pt/locale.swf',
   'play/v2/games/sensei/bootstrap.swf': 'slegacy:media/play/v2/games/sensei/bootstrap.swf',
-  'play/v2/games/sensei/lang/en/locale.swf': 'slegacy:media/play/v2/games/sensei/lang/en/locale.swf',
-  'play/v2/games/sensei/SenseiWidget.swf': 'slegacy:media/play/v2/games/sensei/SenseiWidget.swf',
   'play/v2/games/mixmaster/ChooseSong.swf': 'archives:GamesMixmasterChooseSong_2011.swf'
 };

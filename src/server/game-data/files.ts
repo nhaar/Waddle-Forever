@@ -246,6 +246,14 @@ would need to investigated`
     {
       file: 'ArtworkRoomsTown4_luau.swf',
       comment: 'Chat 291 compatibility fixes'
+    },
+    {
+      file: 'GamesSenseiSenseiWidget-June2009.swf',
+      comment: 'Removed domain check'
+    },
+    {
+      file: 'Card-July2009.swf',
+      comment: 'Removed domain check, and added the full list of power anims in com.clubpenguin.games.card.BattleController'
     }
   ],
   [APPROXIMATION]: [
@@ -531,6 +539,21 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'christmas_05/village.swf',
       comment: 'Made by indiana, used as basis the fixed version CP05Village.swf but added the door to the lodge'
+    },
+    {
+      file: 'ninjaprogress_set2.swf',
+      comment: 'Removed the set 3 cards in com.clubpenguin.merch.ninja.CardDetails, so its only sets 1 and 2',
+      base: 'archives:NinjaProgressJuly2009.swf'
+    },
+    {
+      file: 'ninjaprogress_set5.swf',
+      comment: 'Adds card set 5 in com.clubpenguin.merch.ninja.CardDetails',
+      base: 'recreation:ninjaprogress_nowater.swf'
+    },
+    {
+      file: 'ninjaprogress_set6.swf',
+      comment: 'Removes card sets 7/8 from com.clubpenguin.merch.ninja.CardDetails',
+      base: 'slegacy:media/play/v2/content/global/content/ninjaprogress.swf'
     }
   ],
   [RECREATION]: [
@@ -2030,11 +2053,19 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'ninjaprogress_nowater.swf',
-      comment: 'Made by ChrisCPI, the slegacy Ninja Progress but with Water progress removed, and the fire items use the paper artwork under "Next Item" instead of the icon'
+      comment: 'Made by ChrisCPI, the slegacy Ninja Progress but with Water progress removed, the fire items use the paper artwork under "Next Item" instead of the icon, fixed the Burbank Small Bold font to be more correct, and the list of cards are defined up to set 4.'
     },
     {
       file: 'ninjabelts_2008.swf',
       comment: 'Made by ChrisCPI, the original ninja belts legend (different text and symbol at the bottom)'
+    },
+    {
+      file: 'senseiwidget_2008/SenseiWidget.swf',
+      comment: 'Made by ChrisCPI. Based on archives GamesSenseiSenseiWidget-June2009.swf, with the icons for the main menu removed'
+    },
+    {
+      file: 'senseiwidget_2008/locale_en.swf',
+      comment: 'Made by ChrisCPI. Based on slegacy locale for sensei, but changed to match the launch version'
     }
   ],
   [MOD]: [

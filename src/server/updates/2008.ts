@@ -2842,6 +2842,11 @@ export const UPDATES_2008: Update[] = [
         en: 'recreation:ninjabelts_2008.swf'
       }
     },
+    fileChanges: {
+      'play/v2/games/card/card.swf': 'fix:Card-July2009.swf',
+      'play/v2/games/sensei/lang/en/locale.swf': 'recreation:senseiwidget_2008/locale_en.swf',
+      'play/v2/games/sensei/SenseiWidget.swf': 'recreation:senseiwidget_2008/SenseiWidget.swf',
+    },
     music: {
       dojoext: 0
     },
