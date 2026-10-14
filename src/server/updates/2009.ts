@@ -2890,7 +2890,6 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-11-23',
     dateReference: 'fire-release',
-    exploreItems: [8006],
     temp: {
       party: {
         update: 'Card-Jitsu Fire is now available',

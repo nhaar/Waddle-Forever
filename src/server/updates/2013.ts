@@ -606,7 +606,6 @@ export const UPDATES_2013: Update[] = [
   {
     date: '2013-05-23',
     dateReference: 'snow-release',
-    exploreItems: [8011],
     flags: {
       memberElementalGames: false
     },
@@ -1529,9 +1528,5 @@ export const UPDATES_2013: Update[] = [
   {
     date: '2013-12-12',
     petFurniture: 'archives:ENCataloguesPetsDec2013.swf'
-  },
-  {
-    date: '2013-12-19',
-    exploreItems: [24023]
   }
 ]

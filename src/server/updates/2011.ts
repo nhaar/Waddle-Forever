@@ -2179,7 +2179,6 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-06-27',
     miscComments: ['The map is revamped'],
-    exploreItems: [1285, 9106],
     flags: {
       vanillaEngine: true,
       isSpOnJr: true,

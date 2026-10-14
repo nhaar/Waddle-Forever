@@ -2841,7 +2841,6 @@ export const UPDATES_2008: Update[] = [
   {
     date: '2008-11-17',
     roomComment: 'The dojo now has the Card-Jitsu game',
-    exploreItems: [821],
     dateReference: 'card-jitsu-release',
     rooms: {
       dojo: 'recreation:dojo_november_2008.swf',

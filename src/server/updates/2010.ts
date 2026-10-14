@@ -1248,8 +1248,7 @@ export const UPDATES_2010: Update[] = [
     availableRooms: ['agentlobbymulti', 'agentlobbysolo'],
     music: {
       agentcom: 23
-    },
-    exploreItems: [8009]
+    }
   },
   {
     date: '2010-05-28',
@@ -4169,7 +4168,6 @@ export const UPDATES_2010: Update[] = [
     date: '2010-11-24',
     dateReference: 'water-release',
     end: ['party'],
-    exploreItems: [8010],
     temp: {
       party2: {
         partyName: 'Celebration of Water',
