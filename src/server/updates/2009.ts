@@ -952,7 +952,11 @@ export const UPDATES_2009: Update[] = [
       ],
       removed: []
     },
-    martialArtworks: 'archives:MAMar2009.swf',
+    martialArtworks: {
+      file: 'archives:MAMar2009.swf',
+      newItems: [4075],
+      removedItems: []
+    },
     sportCatalog: {
       file: 'archives:SASMar2009.swf',
       items: [
@@ -1173,11 +1177,7 @@ export const UPDATES_2009: Update[] = [
       mtn: 'archives:RoomsMtn-January2010.swf'
     },
     gameUpgrades: {
-      newItems: [
-        5021,
-        5047,
-        5046
-      ],
+      newItems: [5021],
       removed: []
     }
   },
@@ -1740,6 +1740,10 @@ export const UPDATES_2009: Update[] = [
         981,
         980
       ]
+    },
+    martialArtworks: {
+      newItems: [5040],
+      removedItems: []
     }
   },
   {
@@ -2680,6 +2684,13 @@ export const UPDATES_2009: Update[] = [
     }
   },
   {
+    date: '2009-11-02',
+    martialArtworks: {
+      newItems: [4132],
+      removedItems: []
+    }
+  },
+  {
     date: '2009-11-05',
     constructionComment: 'Construction for Amulets begins in the Dojo Courtyard',
     temp: {
@@ -2756,7 +2767,11 @@ export const UPDATES_2009: Update[] = [
   },
   {
     date: '2009-11-13',
-    martialArtworks: 'archives:November09Ninja2.swf',
+    martialArtworks: {
+      file: 'archives:November09Ninja2.swf',
+      newItems: [3032],
+      removedItems: []
+    },
     constructionComment: 'Construction for the Fire Dojo begins',
     temp: {
       event: {
@@ -2984,6 +2999,10 @@ export const UPDATES_2009: Update[] = [
         6013
       ]
     },
+    gameUpgrades: {
+      newItems: [5046, 5047],
+      removed: []
+    },
     map: 'archives:Map2008-2011Rink.swf'
   },
   {
@@ -3058,6 +3077,10 @@ export const UPDATES_2009: Update[] = [
     furnitureCatalog: 'archives:December09Furniture.swf',
     iglooCatalog: 'archives:December2009Igloos.swf',
     migrator: 'archives:December2009Pirate.swf',
+    postcardgiftItems: {
+      newItems: [1119],
+      removed: []
+    },
     temp: {
       const: {
         rooms: {
@@ -3175,6 +3198,10 @@ export const UPDATES_2009: Update[] = [
   {
     date: '2009-12-29',
     migrator: false,
-    end: ['party']
+    end: ['party'],
+    postcardgiftItems: {
+      newItems: [],
+      removed: [1119]
+    }
   }
 ];

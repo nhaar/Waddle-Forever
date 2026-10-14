@@ -2162,7 +2162,21 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-06-23',
-    martialArtworks: 'archives:June2011Ninja.swf'
+    martialArtworks: {
+      file: 'archives:June2011Ninja.swf',
+      newItems: [
+        1230,
+        1231,
+        1232,
+        1233,
+        4332,
+        4334,
+        4335,
+        4336,
+        4337
+      ],
+      removedItems: []
+    }
   },
   {
     date: '2011-06-24',
@@ -3644,10 +3658,18 @@ export const UPDATES_2011: Update[] = [
         }
       }
     },
-    martialArtworks: 'archives:ENCataloguesNinjaDecember2011.swf'
+    martialArtworks: {
+      file: 'archives:ENCataloguesNinjaDecember2011.swf',
+      newItems: [],
+      removedItems: [3032]
+    }
   },
   {
     date: '2011-12-14',
+    postcardgiftItems: {
+      newItems: [1331],
+      removed: []
+    },
     temp: {
       party: {
         partyName: 'Holiday Party',
@@ -3887,6 +3909,10 @@ export const UPDATES_2011: Update[] = [
   {
     date: '2011-12-29',
     end: ['party'],
+    postcardgiftItems: {
+      newItems: [],
+      removed: [1331]
+    },
     temp: {
       party2: {
         partyStart: 'Fireworks begin at the Ski Hill and Iceberg',

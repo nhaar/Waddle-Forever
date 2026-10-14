@@ -758,6 +758,20 @@ export const UPDATES_2015: Update[] = [
     }
   },
   {
+    date: '2015-06-11',
+    eliteGearItems: [
+      21029,
+      21030,
+      21031,
+      2169,
+      2170,
+      24313,
+      24314,
+      6266,
+      6267
+    ]
+  },
+  {
     date: '2015-06-24',
     dateReference: 'missions-return',
     memberItems: {

@@ -936,6 +936,10 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-09-07',
     constructionComment: 'Construction begins at the Beach',
+    newspaperItems: {
+      newItems: [282],
+      removed: []
+    },
     temp: {
       event: {
         rooms: {
@@ -972,6 +976,10 @@ export const UPDATES_2006: Update[] = [
   {
     date: '2006-09-21',
     chatVersion: 506,
+    newspaperItems: {
+      newItems: [],
+      removed: [282]
+    },
     fileChanges: {
       'interface.swf': 'recreation:old_interface/old_toolbar.swf'
     },
@@ -1832,6 +1840,13 @@ export const UPDATES_2006: Update[] = [
     }
   },
   {
+    date: '2006-12-14',
+    newspaperItems: {
+      newItems: [570],
+      removed: []
+    }
+  },
+  {
     date: '2006-12-15',
     miscComments: ['A tree is available to be decorated for Christmas'],
     temp: {
@@ -1857,7 +1872,11 @@ export const UPDATES_2006: Update[] = [
   },
   {
     date: '2006-12-21',
-    end: ['event']
+    end: ['event'],
+    newspaperItems: {
+      newItems: [],
+      removed: [570]
+    }
   },
   {
     date: '2006-12-22',

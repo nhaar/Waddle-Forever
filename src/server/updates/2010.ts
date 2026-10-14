@@ -4675,6 +4675,10 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-12-20',
     miscComments: ['The lighthouse has more coins (stage 3)', 'The Stadium Games event ends'],
+    postcardgiftItems: {
+      newItems: [1213],
+      removed: []
+    },
     temp: {
       party: {
         rooms: {
@@ -4740,6 +4744,10 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-12-31',
+    postcardgiftItems: {
+      newItems: [],
+      removed: [1213]
+    },
     temp: {
       party: {
         decorated: false,

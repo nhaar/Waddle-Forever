@@ -139,6 +139,8 @@ export type CPUpdate = {
   /** List of items added to the elite gear catalog */
   eliteGearItems?: number[];
   gameUpgrades?: { newItems: number[]; removed: number[] };
+  newspaperItems?: { newItems: number[]; removed: number[] };
+  postcardgiftItems?: { newItems: number[]; removed: number[] };
 
   testingItems?: number[];
   exploreItems?: number[];
