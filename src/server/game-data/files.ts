@@ -548,12 +548,7 @@ so that it works with newer clients (newer being around 2007)`,
     {
       file: 'ninjaprogress_set5.swf',
       comment: 'Adds card set 5 in com.clubpenguin.merch.ninja.CardDetails',
-      base: 'recreation:ninjaprogress_nowater.swf'
-    },
-    {
-      file: 'ninjaprogress_set6.swf',
-      comment: 'Removes card sets 7/8 from com.clubpenguin.merch.ninja.CardDetails',
-      base: 'slegacy:media/play/v2/content/global/content/ninjaprogress.swf'
+      base: 'archives:NinjaProgressNov2009.swf'
     }
   ],
   [RECREATION]: [
@@ -2050,10 +2045,6 @@ Unknown if its teleporting to village functions would be accurate`
     {
       file: 'clothing_10_01.swf',
       comment: 'Made by Randomno, the January 2010 penguin style but with the proper year label'
-    },
-    {
-      file: 'ninjaprogress_nowater.swf',
-      comment: 'Made by ChrisCPI, the slegacy Ninja Progress but with Water progress removed, the fire items use the paper artwork under "Next Item" instead of the icon, fixed the Burbank Small Bold font to be more correct, and the list of cards are defined up to set 4.'
     },
     {
       file: 'ninjabelts_2008.swf',

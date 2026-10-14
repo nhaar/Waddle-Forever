@@ -2909,7 +2909,7 @@ export const UPDATES_2009: Update[] = [
     },
     fileChanges: {
       'play/v2/client/shell.swf': 'archives:ClientShell2009-12-06.swf',
-      'play/v2/content/global/content/ninjaprogress.swf': 'recreation:ninjaprogress_nowater.swf',
+      'play/v2/content/global/content/ninjaprogress.swf': 'archives:NinjaProgressNov2009.swf',
       // the font changes on this day, and also
       // adds newer power card effects
       'play/v2/games/card/card.swf': 'slegacy:media/play/v2/games/card/card.swf'
