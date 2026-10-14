@@ -31,11 +31,11 @@ function addClothingItems(inventory: Set<number>, data: GameData, startDate: Ver
   const addedIndex = getAddedCatalogIndex();
   const includedIndex = getIncludedCatalogIndex();
 
-  const startIndex = findFirstIndexEqualOrGreater(startDate, addedIndex, ({ end}, date) => {
-    return date < end
+  const startIndex = findFirstIndexEqualOrGreater(startDate, addedIndex, ({ date }, d) => {
+    return isGreaterOrEqual(date, d);
   });
-  const endIndex = findFirstIndexEqualOrGreater(data.getDate(), addedIndex, ({ end }, date) => {
-    return date < end;
+  const endIndex = findFirstIndexEqualOrGreater(data.getDate(), addedIndex, ({ date }, d) => {
+    return isGreaterOrEqual(date, d);
   })
 
   const buyItem = (item: number) => {

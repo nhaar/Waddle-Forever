@@ -34,15 +34,13 @@ export function getItemTypeFromEquipProp(prop: EquipProp): ItemType {
   }[prop];
 }
 type NewCatalogIndex = Array<{
-  readonly start: Version;
-  readonly end: Version | null;
-  readonly newItems: number[]
+  readonly date: Version;
+  readonly newItems: number[];
 }>;
 
 type OldCatalogIndex = Array<{
-  readonly start: Version;
-  readonly end: Version | null;
-  readonly items: number[]
+  readonly date: Version;
+  readonly items: number[];
 }>;
 
 const CATALOG_ADDED_ITEMS_INDEX: NewCatalogIndex = [];
@@ -50,166 +48,65 @@ const CATALOG_INCLUDED_ITEMS_INDEX: OldCatalogIndex = [];
 
 function buildCatalogIndex(newIndex: NewCatalogIndex, oldIndex: OldCatalogIndex): void {
   const included = new Set<number>();
-  let previousClothing: Version | null = null;
-  const catalogIndexes: Array<{ index: number, type: 'clothing' | 'sport' | 'martialartworks' | 'gameupgrades' | 'elitegear' | 'newspaper' | 'postcardgift' }> = [];
+  let sportCatalog: number[] = [];
 
-  let previousSportDate: Version | null = null;
-  let previousMartialArtworksDate: Version | null = null;
-  let previousGameUpgradesDate: Version | null = null;
-  let previousEliteGearDate: Version | null = null;
-  let previousNewspaperItemDate: Version | null = null;
-  let previousPostcardGiftItemDate: Version | null = null;
+  const addDelta = (newItems: number[], removed: number[]) => {
+    newItems.forEach(i => {
+      included.add(i);
+    });
+    removed.forEach(i => {
+      included.delete(i);
+    });
+  }
 
-  for (let i = UPDATES.length - 1; i >= 0; i--) {
-    const { date, update} = UPDATES[i];
+  for (let i = 0; i < UPDATES.length; i++) {
+    const { update, date } = UPDATES[i];
+    let changed = false;
     if (update.clothingCatalog !== undefined) {
-      catalogIndexes.push({ index: i, type: 'clothing' });
-      newIndex.push({
-        start: date,
-        end: previousClothing,
-        newItems: [...update.clothingCatalog.newItems]
-      });
-      previousClothing = date;
+      changed = true;
+      addDelta(update.clothingCatalog.newItems, update.clothingCatalog.removedItems);
     }
     if (update.sportCatalog !== undefined) {
-      catalogIndexes.push({ index: i, type: 'sport' });
-      newIndex.push({
-        start: date,
-        end: previousSportDate,
-        newItems: [...update.sportCatalog.items]
+      changed = true;
+      sportCatalog.forEach(i => {
+        included.delete(i);
       });
-      previousSportDate = date;
+      sportCatalog = update.sportCatalog.items;
+      sportCatalog.forEach(i => {
+        included.add(i);
+      });
     }
-    if (update.martialArtworks !== undefined && typeof update.martialArtworks !== "string") {
-      catalogIndexes.push({ index: i, type: 'martialartworks' });
-      newIndex.push({
-        start: date,
-        end: previousMartialArtworksDate,
-        newItems: [...update.martialArtworks.newItems]
-      });
-      previousMartialArtworksDate = date;
+    if (update.martialArtworks !== undefined && typeof update.martialArtworks !== 'string') {
+      changed = true;
+      addDelta(update.martialArtworks.newItems, update.martialArtworks.removedItems);
     }
     if (update.gameUpgrades !== undefined) {
-      catalogIndexes.push({ index: i, type: 'gameupgrades' });
-      newIndex.push({
-        start: date,
-        end: previousGameUpgradesDate,
-        newItems: [...update.gameUpgrades.newItems]
-      });
-      previousGameUpgradesDate = date;
+      changed = true;
+      addDelta(update.gameUpgrades.newItems, update.gameUpgrades.removed);
     }
     if (update.eliteGearItems !== undefined) {
-      catalogIndexes.push({ index: i, type: 'elitegear' });
-      newIndex.push({
-        start: date,
-        end: previousEliteGearDate,
-        newItems: [...update.eliteGearItems]
-      });
-      previousEliteGearDate = date;
+      changed = true;
+      addDelta(update.eliteGearItems, []);
     }
     if (update.newspaperItems !== undefined) {
-      catalogIndexes.push({ index: i, type: 'newspaper' });
-      newIndex.push({
-        start: date,
-        end: previousNewspaperItemDate,
-        newItems: [...update.newspaperItems.newItems]
-      });
-      previousNewspaperItemDate = date;
+      changed = true;
+      addDelta(update.newspaperItems.newItems, update.newspaperItems.removed);
     }
     if (update.postcardgiftItems !== undefined) {
-      catalogIndexes.push({ index: i, type: 'postcardgift' });
-      newIndex.push({
-        start: date,
-        end: previousPostcardGiftItemDate,
-        newItems: [...update.postcardgiftItems.newItems]
-      });
-      previousPostcardGiftItemDate = date;
+      changed = true;
+      addDelta(update.postcardgiftItems.newItems, update.postcardgiftItems.removed);
+    }
+
+    if (changed) {
+      oldIndex.push({ date, items: [...included.values()] });
     }
   }
 
-
-  CATALOG_ADDED_ITEMS_INDEX.reverse();
-  catalogIndexes.reverse();
-
-  for (let i = 0; i < catalogIndexes.length; i++) {
-    const info = catalogIndexes[i];
-    if (info.type === 'clothing') {
-      const clothingCatalog = UPDATES[info.index].update.clothingCatalog;
-      if (clothingCatalog !== undefined) {
-        clothingCatalog.newItems.forEach(item => included.add(item));
-        clothingCatalog.removedItems.forEach(item => included.delete(item));
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...included.values()]
-        });
-      }
-    } else if (info.type === 'sport') {
-      const items = UPDATES[info.index].update.sportCatalog?.items;
-      if (items !== undefined) {
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...items]
-        })
-      }
-    } else if (info.type === 'martialartworks') {
-      const martialArtworks = UPDATES[info.index].update.martialArtworks;
-      if (martialArtworks !== undefined && typeof martialArtworks !== "string") {
-        martialArtworks.newItems.forEach(item => included.add(item));
-        martialArtworks.removedItems.forEach(item => included.delete(item));
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...included.values()]
-        })
-      }
-    } else if (info.type === 'gameupgrades') {
-      const gameUpgrades = UPDATES[info.index].update.gameUpgrades;
-      if (gameUpgrades !== undefined) {
-        gameUpgrades.newItems.forEach(item => included.add(item));
-        gameUpgrades.removed.forEach(item => included.delete(item));
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...included.values()]
-        })
-      }
-    } else if (info.type === 'elitegear') {
-      const eliteGearItems = UPDATES[info.index].update.eliteGearItems;
-      if (eliteGearItems !== undefined) {
-        eliteGearItems.forEach(item => included.add(item));
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...included.values()]
-        })
-      }
-    } else if (info.type === 'newspaper') {
-      const newspaperItems = UPDATES[info.index].update.newspaperItems;
-      if (newspaperItems !== undefined) {
-        newspaperItems.newItems.forEach(item => included.add(item));
-        newspaperItems.removed.forEach(item => included.delete(item));
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...included.values()]
-        })
-      }
-    } else if (info.type === 'postcardgift') {
-      const postcardgiftItems = UPDATES[info.index].update.postcardgiftItems;
-      if (postcardgiftItems !== undefined) {
-        postcardgiftItems.newItems.forEach(item => included.add(item));
-        postcardgiftItems.removed.forEach(item => included.delete(item));
-        oldIndex.push({
-          start: CATALOG_ADDED_ITEMS_INDEX[i].start,
-          end: CATALOG_ADDED_ITEMS_INDEX[i].end,
-          items: [...included.values()]
-        })
-      }
-    }
+  for (let i = 0; i < oldIndex.length; i++) {
+    const prev = new Set(i == 0 ? [] : oldIndex[i - 1].items);
+    const newItems = oldIndex[i].items.filter(i => !prev.has(i));
+    newIndex.push({ date: oldIndex[i].date, newItems });
   }
-
 }
 
 export function getAddedCatalogIndex(): NewCatalogIndex {
