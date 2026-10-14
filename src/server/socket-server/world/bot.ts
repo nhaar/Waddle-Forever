@@ -10,7 +10,7 @@ import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
 import { getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
-import { BERG_BLOCK, findLeftmostMiddlemostPosition } from "./bot-block";
+import { BERG_BLOCK, findPathBetweenBlockPoints, Block, compactPath, findLeftmostMiddlemostPosition } from "./bot-block";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -391,7 +391,7 @@ interface Behavior {
   success(ctx: BotContext): boolean;
   duration(ctx: BotContext): number;
   cooldown(ctx: BotContext): number;
-  start(ctx: BotContext): void;
+  start(ctx: BotContext): Promise<void>;
   end?(ctx: BotContext): void;
 }
 
@@ -428,7 +428,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return attrs.danceFan > rng.random();
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.doDance();
     }
   },
@@ -444,7 +444,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return attrs.snowballFan > rng.random();
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.throwSnowball(randomInt(WALK_AREA.minX, WALK_AREA.maxX), randomInt(WALK_AREA.minY, WALK_AREA.maxY));
     },
   },
@@ -460,7 +460,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return attrs.sitFan > rng.random();
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.doFrame(choose([17, 18, 19, 20, 21, 22, 23, 24]));
     },
   },
@@ -476,7 +476,7 @@ const BEHAVIORS: Behavior[] = [
     success({ attrs }) {
       return attrs.walkFan > Math.random();
     },
-    start({ bot, rng }) {
+    async start({ bot, rng }) {
       bot.walkTo(rng.int(WALK_AREA.minX, WALK_AREA.maxX), rng.int(WALK_AREA.minY, WALK_AREA.maxY));
     }
   },
@@ -492,7 +492,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return attrs.chatFan > rng.random();
     },
-    start({ bot, rng }) {
+    async start({ bot, rng }) {
       bot.sendMessage(rng.choose(CHAT_LINES));
     }
   },
@@ -508,7 +508,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return attrs.emoteFan > rng.random();
     },
-    start({ bot, rng }) {
+    async start({ bot, rng }) {
       bot.doEmote(rng.choose(EMOTES));
     }
   },
@@ -524,7 +524,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return attrs.waveFan > rng.random();
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.doFrame(25);
     },
   },
@@ -540,7 +540,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs, room }) {
       return (rng.random() * attrs.emptyRoomTolerance + (1 - attrs.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30)) < 0.5;
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.enter(bot.chooseRoom());
     }
   },
@@ -556,7 +556,7 @@ const BEHAVIORS: Behavior[] = [
     success({ rng, attrs }) {
       return rng.random() * attrs.iglooFan > 0.9;
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.enter(IGLOO_ROOM_BASE + bot.penguin.id);
       bot.openIgloo();
     },
@@ -573,7 +573,7 @@ const BEHAVIORS: Behavior[] = [
     success({ room, rng, attrs }) {
       return room.id === ROOMS.dance.id && (rng.random() * attrs.danceFan > 0.3); 
     },
-    start({ bot }) {
+    async start({ bot }) {
       bot.joinDanceFloor();
     },
   },
@@ -589,7 +589,7 @@ const BEHAVIORS: Behavior[] = [
     success({ bot, rng, attrs, now }) {
       return bot.isDoingAction(BehaviorId.JoinDanceFloor, now) && rng.random() * attrs.danceFan > 0.3;
     },
-    start({ room, bot }) {
+    async start({ room, bot }) {
       const colors = new Map<number, number>();
       room.players.forEach((p) => {
         colors.set(p.inventory.color, (colors.get(p.inventory.color) ?? 0) + 1);
@@ -620,7 +620,7 @@ const BEHAVIORS: Behavior[] = [
     success({ room, attrs, rng }) {
       return room.id === ROOMS.berg.id && Math.max(attrs.mythsFan, attrs.stampsFan) > rng.random();
     },
-    start({ bot, room }) {
+    async start({ bot, room }) {
       const [x, y] = findLeftmostMiddlemostPosition(BERG_BLOCK, room.players.map(p => {
         const state = room.getState(p);
         return [state.x, state.y];
@@ -631,9 +631,8 @@ const BEHAVIORS: Behavior[] = [
       bot.wearItem('body', 0);
       bot.wearItem('hand', 0);
       bot.wearItem('feet', 0);
-      bot.schedule(() => {
-        bot.doDance();
-      }, bot.walkTo(x, y));
+      await bot.walkPath(x, y, BERG_BLOCK);
+      bot.doDance();
     },
     end({ bot }) {
       bot.wearOutfit();
@@ -651,7 +650,7 @@ const BEHAVIORS: Behavior[] = [
     success({ attrs, rng, room }) {
       return room.id === ROOMS.light.id && Math.max(attrs.musicFan, attrs.stampsFan) > rng.random();
     },
-    start({ bot, rng }) {
+    async start({ bot, rng }) {
       bot.joinBand(rng.random(), rng.random());
     },
     end({ bot }) {
@@ -858,6 +857,31 @@ export class Bot implements ClientSocket {
     return distance / 4.8 / 24 + 1;
   }
 
+  public async walkPath(x: number, y: number, room: Block) {
+    const [scaledX, scaledY] = [Math.floor(x / room.scale), Math.floor(y / room.scale)];
+    
+    return new Promise<void>((res) => {
+      const state = this._world.getPenguinRoom(this._penguin)?.getState(this._penguin);
+  
+      if (state !== undefined) {
+        const path = compactPath(findPathBetweenBlockPoints([state.x, state.y], [scaledX, scaledY], room), room);
+        const nextStep = (step: number) => {
+          if (step < path.length) {
+            const [unscaledX, unscaledY] = [path[step][0] * room.scale, path[step][1] * room.scale];
+            this.schedule(() => {
+              nextStep(step + 1);
+            }, this.walkTo(unscaledX, unscaledY));
+          } else {
+            res();
+          }
+        }
+        nextStep(0);
+      } else {
+        res();
+      }
+    });
+  }
+
   public chooseRoom(): number {
     const canGo = this._data.getAvailableRooms().filter(r => {
       return this._penguin.membership.isMember || !this._data.isRoomMember(r);
@@ -994,12 +1018,13 @@ export class Bot implements ClientSocket {
       if (action.success(ctx)) {
         const len = action.duration(ctx);
         const cooldown = action.cooldown(ctx);
-        action.start(ctx);
-        if (action.end !== undefined) {
-          this.schedule(() => {
-            action.end(ctx);
-          }, len);
-        }
+        action.start(ctx).then(() => {
+          if (action.end !== undefined) {
+            this.schedule(() => {
+              action.end(ctx);
+            }, len);
+          }
+        });
         this._lenghts[action.id] = ctx.now + len * 1000;
         this._cooldowns[action.id] = ctx.now + (len + cooldown) * 1000;
         break;
