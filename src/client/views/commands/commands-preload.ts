@@ -1,7 +1,7 @@
 import { addDispatchEventListeners } from '@common/utils';
 import { ipcRenderer } from 'electron';
 
-addDispatchEventListeners(['get-players'], ipcRenderer);
+addDispatchEventListeners(['get-players', 'command-response'], ipcRenderer);
 
 (window as any).api = {
   fetchPlayers: () => ipcRenderer.send('get-players'),

@@ -6,16 +6,17 @@
   </head>
   <body>
     <div class="top-buttons">
-        <button id="refresh-button" title="Refresh the player list">
-          Refresh Player List
-        </button>
-        <button id="commandslist-button" title="See the list of available commands">
-          List of Commands
-        </button>
+      <button id="refresh-button" title="Refresh the player list">
+        Refresh Player List
+      </button>
+      <button id="commandslist-button" title="See the list of available commands">
+        List of Commands
+      </button>
     </div>
-    <div>Select the player the command will affect (shows all online players):</div>
+    <label for="player-select">Select the player the command will affect (shows all online players):</label>
     <select id="player-select" class="select">
     </select>
+    <div id="command-response"></div>
     <input type="text" placeholder="Type command here" id="command-input" />
     <button id="command-button">RUN COMMAND</button>
     <script>var exports = {};</script>

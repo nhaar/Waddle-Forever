@@ -72,9 +72,10 @@ export class WorldServer implements MessageHandler {
 
   public runCommand(penguinId: number, name: string, args: string[]) {
     const penguin = this._world.getById(penguinId);
+    let response = "Couldn't run command - penguin is not online!";
     if (penguin !== undefined) {
       const client = this._msg.getClient(penguin);
-      this._commandsHandler.run({
+      const res = this._commandsHandler.run({
         world: this._world,
         penguin,
         prst: this._persister,
@@ -87,7 +88,9 @@ export class WorldServer implements MessageHandler {
         room: this._world.getPenguinRoom(penguin),
         bot: this._botManager
       }, name, args);
+      response = res || `Command '${name}' ran successfully`;
     }
+    return response;
   }
 
   public getAllPlayersInfo() {
