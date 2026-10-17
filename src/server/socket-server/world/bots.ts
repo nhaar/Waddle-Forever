@@ -20,7 +20,7 @@ import { generateBots, generateRandomBot } from './bot-generation';
 
 const BOT_ID_BASE = 9_000_000;
 
-const isBot = (p: WorldPenguin): boolean => p.id >= BOT_ID_BASE;
+export const isBot = (p: WorldPenguin): boolean => p.id >= BOT_ID_BASE;
 
 
 // TODO -> Similar to item trackign system, a furniture and igloo type/music tracking system
@@ -324,11 +324,6 @@ export class BotManager {
 
       this._waddleLastSeat.set(id, now);
       joinWaddle({ msg: this._msg, world: this._world, data: this._data }, room, waddle, bot.penguin);
-
-      const ctx = this._world.getContext(bot.penguin);
-      if ('card' in ctx) {
-        bot.joinCard(ctx.card);
-      }
 
       // starting the game empties the waddle
       if (waddle.isFull()) {
