@@ -181,6 +181,10 @@ class Inventory {
   public add(id: number): void {
     this._items.add(id);
   }
+
+  public delete(id: number): void {
+    this._items.delete(id);
+  }
 }
 
 class Currency {

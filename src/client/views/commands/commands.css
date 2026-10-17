@@ -1,3 +1,7 @@
+body {
+  row-gap: 15px;
+}
+
 .top-buttons {
   display: flex;
   gap: 5px;
@@ -6,4 +10,9 @@
 .top-buttons button {
   flex: 1;
   width: 100%;
+}
+
+#command-response {
+  font-family: var(--mono-stack);
+  font-size: 12px;
 }

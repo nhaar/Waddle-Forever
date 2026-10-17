@@ -10,12 +10,12 @@ import { clamp } from "@common/utils";
 type CommandContext = (PenguinContext | RoomContext) & {
   bot: BotManager
 };
-type CommandHandler<T extends Array<string | number>> = (ctx: CommandContext, ...args: T) => void;
+type CommandHandler<T extends Array<string | number>> = (ctx: CommandContext, ...args: T) => string | void;
 
-type CommandResponse = (ctx: CommandContext, args: Array<string>) => void;
+type CommandResponse = (ctx: CommandContext, args: Array<string>) => string | void;
 type CommandsGenerator = Array<[
   string,
-  Array<[ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => void]>,
+  Array<[ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => string | void]>,
   CommandDisplayInfo
 ]>;
 
@@ -31,14 +31,14 @@ interface CommandDisplayInfoFull extends CommandDisplayInfo {
 
 const getCommands = (generators: CommandsGenerator): Array<[string, CommandResponse]> => {
   return generators.map(([name, responses]) => {
-    const responder: CommandResponse = (ctx: CommandContext, commandArgs: Array<string>): void => {
+    const responder: CommandResponse = (ctx: CommandContext, commandArgs: Array<string>): string | void => {
       for (const [types, callback] of responses) {
         const parse = parseArgs(commandArgs, types);
         if (parse !== null) {
-          callback(ctx, ...parse);
-          break;
+          return callback(ctx, ...parse);
         }
       }
+      return 'Invalid arguments provided';
     }
       
     return [
@@ -52,6 +52,7 @@ const handleAddItem: CommandHandler<[number]> = ({ msg, penguin, prst }, itemId)
   penguin.inventory.add(itemId);
   msg.send(penguin, 'ai', itemId, penguin.currency.coins);
   prst(penguin);
+  return `Added item ${itemId} to penguin`;
 }
 
 const handleAddAllItems: CommandHandler<[string]> = ({ msg, penguin, prst, data }, action) => {
@@ -64,6 +65,13 @@ const handleAddAllItems: CommandHandler<[string]> = ({ msg, penguin, prst, data 
   }
 }
 
+const handleRemoveItem: CommandHandler<[number]> = ({ msg, penguin, prst, data }, itemId) => {
+  penguin.inventory.delete(itemId);
+  msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
+  prst(penguin);
+  return `Removed item ${itemId} from penguin`;
+}
+
 const handleJoinRoomId: CommandHandler<[number]> = (ctx, id) => {
   joinRoom(ctx, id, 0, 0);
 }
@@ -72,7 +80,9 @@ const handleJoinRoomName: CommandHandler<[string]> = (ctx, name) => {
   if (name in ROOMS) {
     const info = ROOMS[name as RoomName];
     joinRoom(ctx, info.id, 0, 0);
+    return 'Penguin is joining room';
   }
+  return 'Invalid room name';
 }
 
 const handleAddCoins: CommandHandler<[number]> = ({ msg, penguin, prst, data }, coins) => {
@@ -86,6 +96,22 @@ const handleAddCoins: CommandHandler<[number]> = ({ msg, penguin, prst, data }, 
   }
 
   prst(penguin);
+  return `Added ${coins} coins - total is now ${total}`;
+}
+
+const handleAgent: CommandHandler<[string]> = ({ msg, penguin, prst, data }, agency) => {
+  if (agency !== 'psa' && agency !== 'epf') return 'Must choose either psa or epf';
+
+  if (agency === 'psa') {
+    penguin.inventory.add(800); // add spy phone
+  } else {
+    penguin.inventory.add(8009); // add epf phone
+    msg.send(penguin, 'epfsa', 1);
+  }
+  msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
+  penguin.psa.setAgent();
+  prst(penguin);
+  return agency === 'psa' ? 'Penguin is now a PSA agent' : 'Penguin is now an EPF agent';
 }
 
 const handleRename: CommandHandler<string[]> = ({ penguin, msg, data, prst }, ...names) => {
@@ -95,6 +121,7 @@ const handleRename: CommandHandler<string[]> = ({ penguin, msg, data, prst }, ..
   // TODO what about pre-cpip?
   sendLPMessage(penguin, data, msg);
   prst(penguin);
+  return `Renamed penguin to ${name}`;
 }
 
 const handleAwards: CommandHandler<[]> = ({ msg, penguin, prst }) => {
@@ -105,21 +132,24 @@ const handleAwards: CommandHandler<[]> = ({ msg, penguin, prst }) => {
     msg.send(penguin, 'ai', award, penguin.currency.coins);
   });
   prst(penguin);
+  return 'Awards added';
 }
 
 const handleAge: CommandHandler<[]> = ({ msg, prst, penguin, data }) => {  
   penguin.time.setVirtualRegistrationToNow();
   sendLPMessage(penguin, data, msg);
   prst(penguin);
+  return 'Updated penguin age';
 }
 
 const handleMember: CommandHandler<[]> = ({ penguin, prst, msg, data }) => {
   penguin.membership.swap();
   sendLPMessage(penguin, data, msg);
   prst(penguin);
+  return penguin.membership.isMember ? 'Penguin is now a member' : 'Penguin is no longer a member';
 }
 
-const handleAddFurniture: CommandHandler<[number, number]> = ({ penguin, prst, msg }, id: number, amount: number): void => {
+const handleAddFurniture: CommandHandler<[number, number]> = ({ penguin, prst, msg }, id: number, amount: number) => {
   const ownedAmount = penguin.igloo.getFurnitureAmount(id);
   const addAmount = clamp(amount, 0, 99 - ownedAmount);
   penguin.igloo.addFurniture(id, addAmount);
@@ -128,6 +158,7 @@ const handleAddFurniture: CommandHandler<[number, number]> = ({ penguin, prst, m
   }
 
   prst(penguin);
+  return `Added ${amount} units of furniture ID ${id}`;
 }
 
 const handleAddOneFurniture: CommandHandler<[number]> = (ctx, id) => handleAddFurniture(ctx, id, 1);
@@ -146,46 +177,48 @@ function getPuffleLaunchDataWithAlLBerries(times: number[], turboStatuses: boole
 const handleUnlockPlLevels: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.puffleLaunch.set(new PuffleLaunchGameSet((new Array<number>(36)).fill(0x1), [], []).get());
   prst(penguin);
+  return 'Unlocked all levels for this penguin';
 }
 
 const handleUnlockTimeAttack: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.puffleLaunch.set(getPuffleLaunchDataWithAlLBerries([], []).get());
   prst(penguin);
+  return 'Unlocked time attack for this penguin';
 }
 
 const handleUnlockTurbo: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.puffleLaunch.set(getPuffleLaunchDataWithAlLBerries((new Array<number>(36)).fill(1), []).get());
   prst(penguin);
+  return 'Unlocked turbo mode for this penguin';
 }
 
 const handleUnlockSlowMove: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.puffleLaunch.set(getPuffleLaunchDataWithAlLBerries((new Array<number>(36)).fill(1), (new Array<boolean>(36)).fill(true)).get());
   prst(penguin);
+  return 'Unlocked slow mode for this penguin';
 }
 
-const handleNoSave: CommandHandler<[]> = ({ penguin, prst }) => {
-  penguin.preference.disableSave();
-  prst(penguin, true);
-}
-
-const handleEnableSave: CommandHandler<[]> = ({ penguin, prst }) => {
-  penguin.preference.enableSave();
+const handleAmulet: CommandHandler<[]> = ({ penguin, prst }) => {
+  penguin.ninja.setWaterNinja(!penguin.ninja.isWaterNinja);
   prst(penguin);
+  return penguin.ninja.isWaterNinja ? 'Penguin now has the water gem' : 'Penguin no longer has the water gem';
 }
 
-const handleAmulet: CommandHandler<[string]> = ({ penguin, prst }, element) => {
-  // TODO: should probably refactor this now that its only water
-  switch (element) {
-    case 'water':
-      penguin.ninja.setWaterNinja(!penguin.ninja.isWaterNinja);
-      break;
+const handleSave: CommandHandler<[string]> = ({ penguin, prst }, which) => {
+  if (which !== 'on' && which !== 'off') return "Must choose either 'on' or 'off'";
+  if (which === 'on') {
+    penguin.preference.enableSave();
+  } else {
+    penguin.preference.disableSave();
   }
   prst(penguin);
+  return `Saving is now ${which === 'on' ? 'ENABLED' : 'DISABLED'}`;
 }
 
 const handleCjOneWin: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.ninja.addMatchProgress(true);
   prst(penguin);
+  return 'Added 1 Card-Jitsu win';
 }
 
 const handleCjWins: CommandHandler<[number]> = ({ penguin, prst }, amount) => {
@@ -193,6 +226,7 @@ const handleCjWins: CommandHandler<[number]> = ({ penguin, prst }, amount) => {
     penguin.ninja.addMatchProgress(true);
   }
   prst(penguin);
+  return `Added ${amount} Card-Jitsu wins`;
 }
 
 const handlePowercards: CommandHandler<[]> = ({ penguin, prst }) => {
@@ -202,16 +236,19 @@ const handlePowercards: CommandHandler<[]> = ({ penguin, prst }) => {
     }
   });
   prst(penguin);
+  return 'Added 1 of all powercards';
 }
 
 const handleAddCard: CommandHandler<[number, number]> = ({ penguin, prst }, card, amount) => {
   penguin.ninja.addCard(card, amount);
   prst(penguin);
+  return `Added ${amount} of card ID ${card}`;
 }
 
 const handleSafechat: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.preference.setSafeChat(!penguin.preference.isSafeChat);
   prst(penguin);
+  return `Safe chat is now ${penguin.preference.isSafeChat ? 'ENABLED' : 'DISABLED'}`;
 }
 
 export class CommandsHandler {
@@ -224,33 +261,40 @@ export class CommandsHandler {
     this._listeners = new Map(listeners);
   }
 
-  public run(ctx: CommandContext, name: string, args: Array<string>) {
+  public run(ctx: CommandContext, name: string, args: Array<string>): string | void {
     const callback = this._listeners.get(name);
     if (callback !== undefined) {
-      callback(ctx, args);
+      return callback(ctx, args);
     }
+    return "Invalid command";
   }
 }
 
-const c = <const T extends ArgumentsIndicator>(args: T, callback: (ctx: CommandContext, ...args: GetArgumentsType<T>) => void): [ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => void] => {
+const c = <const T extends ArgumentsIndicator>(args: T, callback: (ctx: CommandContext, ...args: GetArgumentsType<T>) => string | void): [ArgumentsIndicator, callback: (ctx: CommandContext, ...args: Array<string | number>) => string | void] => {
   return [args, callback as (ctx: CommandContext, ...args: Array<string | number>) => void];
 }
 
 const handleBots: CommandHandler<[number]> = ({ bot }, amount) => {
   bot.setPopulation(amount);
+  return `Setting bot population to ${amount}`;
 }
 
 const handleBotsAction: CommandHandler<[string]> = (ctx, action) => {
   const { bot } = ctx;
   if (action === 'here' && 'room' in ctx) {
     bot.addAt(ctx.room.id, 5);
+    return `Spawning 5 bots at room ${ctx.room.id}`;
   } else if (action === 'off') {
     bot.setOff();
+    return 'Bots are now OFF';
   } else if (action === 'games') {
     bot.configure({ playGames: true });
+    return 'Bots can now play games';
   } else if (action === 'nogames') {
     bot.configure({ playGames: false });
+    return 'Bots can no longer play games';
   }
+  return 'Invalid action provided';
 }
 
 const generators: CommandsGenerator = [
@@ -270,6 +314,15 @@ const generators: CommandsGenerator = [
       argNames: ['id'],
       description: "Add a clothing item to your penguin. You can also do 'ai all' to add all clothing items in the game.",
       examples: ['ai 102', 'ai all']
+    }
+  ],
+  [
+    'ri',
+    [c(['number'], handleRemoveItem)],
+    {
+      argNames: ['id'],
+      description: "Remove a clothing item from your inventory.",
+      examples: ['ri 413']
     }
   ],
   [
@@ -318,6 +371,15 @@ const generators: CommandsGenerator = [
       For example, if you run this command on January 15, 2009, and then jump to February 20, 2009, then your penguin will be 36 days old.
       `,
       examples: []
+    }
+  ],
+  [
+    'agent',
+    [c(['string'], handleAgent)],
+    {
+      argNames: ['psa/epf'],
+      description: "Makes your penguin either a PSA or EPF agent.",
+      examples: ['agent psa', 'agent epf']
     }
   ],
   [
@@ -375,30 +437,21 @@ const generators: CommandsGenerator = [
     }
   ],
   [
-    'nosave',
-    [c([], handleNoSave)],
+    'save',
+    [c(['string'], handleSave)],
     {
-      argNames: [],
-      description: "When used, the penguin's current state will be saved, and any changes made to the penguin afterward will not be saved, meaning relogging will go back to the initial state.",
+      argNames: ['on/off'],
+      description: "When set to 'off', the penguin's current state will be saved, and any changes made to the penguin afterward will not be saved, meaning relogging will go back to the initial state.\n\nSetting it to 'on' undoes this effect.",
       examples: []
     }
   ],
   [
-    'enablesave',
-    [c([], handleEnableSave)],
+    'waterninja',
+    [c([], handleAmulet)],
     {
       argNames: [],
-      description: "Undoes the effect of the nosave command.",
+      description: "Adds the water gem to your Card-Jitsu amulet (or removes it). Note that this command will be removed when Card-Jitsu Water is implemented.",
       examples: []
-    }
-  ],
-  [
-    'amulet',
-    [c(['string'], handleAmulet)],
-    {
-      argNames: ['element'],
-      description: "Add the gem of the given element to your Card-Jitsu amulet, which can be fire, water, or snow.",
-      examples: ['element fire', 'element water', 'element snow']
     }
   ],
   [

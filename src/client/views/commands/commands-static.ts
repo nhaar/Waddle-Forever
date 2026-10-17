@@ -3,6 +3,7 @@ const commandsListButton = document.getElementById('commandslist-button')!;
 const playerSelect = document.getElementById('player-select')! as HTMLSelectElement;
 const commandInput = document.getElementById('command-input')! as HTMLInputElement;
 const commandButton = document.getElementById('command-button')!;
+const commandResponse = document.getElementById('command-response')!;
 
 const commandsApi = (window as any).api;
 
@@ -12,6 +13,10 @@ window.addEventListener('get-players', (e: any) => {
   playerSelect.innerHTML = players.map(p => {
     return `<option value="${p.id}">${p.name}</option>`
   }).join('');
+});
+
+window.addEventListener('command-response', (e: any) => {
+  commandResponse.innerText = e.detail;
 });
 
 function updatePlayerSelect() {
