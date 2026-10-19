@@ -80,7 +80,7 @@ const handleJoinRoomName: CommandHandler<[string]> = (ctx, name) => {
   if (name in ROOMS) {
     const info = ROOMS[name as RoomName];
     joinRoom(ctx, info.id, 0, 0);
-    return 'Penguin is joining room';
+    return `Penguin is joining "${info.name}"`;
   }
   return 'Invalid room name';
 }
