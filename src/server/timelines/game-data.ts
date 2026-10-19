@@ -99,6 +99,7 @@ type GameState = {
   availableRooms: Set<RoomName>;
   starterColors: Set<number>;
   cardSets: Set<number>;
+  fieldOp: number;
 }
 
 function getFreshState(): GameState {
@@ -165,7 +166,8 @@ function getFreshState(): GameState {
     itemMemberStatus: new Map(),
     availableRooms: new Set(),
     starterColors: new Set(),
-    cardSets: new Set()
+    cardSets: new Set(),
+    fieldOp: 0
   };
 }
 
@@ -736,6 +738,9 @@ export class GameData {
       },
       'cardSets': (v) => {
         v.forEach(s => this.state.cardSets.add(s));
+      },
+      'fieldOp': (v) => {
+        this.state.fieldOp = v;
       }
     }
 
@@ -1027,5 +1032,9 @@ export class GameData {
 
   public isCardAvailable(id: number) {
     return this.state.cardSets.has(CARDS.get(id).set);
+  }
+
+  public fieldOp() {
+    return this.state.fieldOp;
   }
 }

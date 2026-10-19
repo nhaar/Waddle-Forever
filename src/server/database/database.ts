@@ -143,6 +143,8 @@ export interface PenguinJson {
 // EPF
   careerMedals: number
   ownedMedals: number
+  fieldOpsRead?: number[],
+  fieldOpsCompleted?: number[],
   
 // GOLD PUFFLE
   nuggets: number // Total number of golden nuggets in the gold puffle quest
@@ -242,6 +244,8 @@ export function getDefaultPenguin(name: string, color: number, member: boolean, 
     mailSeq: 0,
     ownedMedals: 0,
     careerMedals: 0,
+    fieldOpsRead: [],
+    fieldOpsCompleted: [],
     nuggets: 0,
     cards: {},
     cardProgress: 0,
