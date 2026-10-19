@@ -74,7 +74,7 @@ export class WorldServer implements MessageHandler {
     const penguin = this._world.getById(penguinId);
     if (penguin !== undefined) {
       const client = this._msg.getClient(penguin);
-      this._commandsHandler.run({
+      const res = this._commandsHandler.run({
         world: this._world,
         penguin,
         prst: this._persister,
@@ -87,7 +87,9 @@ export class WorldServer implements MessageHandler {
         room: this._world.getPenguinRoom(penguin),
         bot: this._botManager
       }, name, args);
+      return res || `Command '${name}' ran successfully`;
     }
+    return "Couldn't run command - penguin is not online!";
   }
 
   public getAllPlayersInfo() {
