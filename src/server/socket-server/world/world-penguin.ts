@@ -726,13 +726,17 @@ class PuffleLaunchData {
   }
 }
 
-class EpfInventory {
+class EpfProfile {
   private _careerMedals: number;
   private _medals: number;
+  private _fieldOpsRead: Set<number>;
+  private _fieldOpsCompleted: Set<number>;
 
   constructor(data: PenguinJson) {
     this._careerMedals = data.careerMedals;
     this._medals = data.ownedMedals;
+    this._fieldOpsRead = new Set(data.fieldOpsRead ?? []);
+    this._fieldOpsCompleted = new Set(data.fieldOpsCompleted ?? []);
   }
 
   public get careerMedals() {
@@ -751,6 +755,40 @@ class EpfInventory {
   public addMedals(medals: number) {
     this._medals += medals;
     this._careerMedals += medals;
+  }
+
+  public get fieldOpsRead() {
+    return [...this._fieldOpsRead];
+  }
+
+  public hasReadFieldOp(id: number) {
+    return this._fieldOpsRead.has(id);
+  }
+
+  public readFieldOp(id: number) {
+    return this._fieldOpsRead.add(id);
+  }
+
+  public get fieldOpsCompleted() {
+    return [...this._fieldOpsCompleted];
+  }
+
+  public hasCompletedFieldOp(id: number) {
+    return this._fieldOpsCompleted.has(id);
+  }
+
+  public completeFieldOp(id: number) {
+    return this._fieldOpsCompleted.add(id);
+  }
+
+  public resetFieldOp(id: number) {
+    this._fieldOpsRead.delete(id);
+    this._fieldOpsCompleted.delete(id);
+  }
+
+  public resetAllFieldOps() {
+    this._fieldOpsRead.clear();
+    this._fieldOpsCompleted.clear();
   }
 }
 
@@ -990,7 +1028,7 @@ export class WorldPenguin implements UserPenguin {
   private _igloo: IglooInventory;
   private _mail: MailInventory;
   private _puffleLaunch: PuffleLaunchData;
-  private _epf: EpfInventory;
+  private _epf: EpfProfile;
   private _gold: GoldPuffleInventory;
   private _ninja: NinjaProfile;
   private _battleOfDoom: BattleOfDoomStatus;
@@ -1019,7 +1057,7 @@ export class WorldPenguin implements UserPenguin {
     this._igloo = new IglooInventory(json);
     this._mail = new MailInventory(json);
     this._puffleLaunch = new PuffleLaunchData(json);
-    this._epf = new EpfInventory(json);
+    this._epf = new EpfProfile(json);
     this._gold = new GoldPuffleInventory(json);
     this._ninja = new NinjaProfile(json, data);
     this._battleOfDoom = new BattleOfDoomStatus(json);
@@ -1186,6 +1224,8 @@ export class WorldPenguin implements UserPenguin {
 
       careerMedals: this._epf.careerMedals,
       ownedMedals: this._epf.medals,
+      fieldOpsRead: this._epf.fieldOpsRead,
+      fieldOpsCompleted: this._epf.fieldOpsCompleted,
 
       nuggets: this._gold.nuggets,
 

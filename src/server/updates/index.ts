@@ -250,6 +250,8 @@ export type CPUpdate = {
   mapNote?: string;
   newWaddleRooms?: WaddleRoomInfo[];
 
+  fieldOp?: number;
+
   coinsForChange?: true;
   bakery?: true;
   cfcValues?: [number, number, number];

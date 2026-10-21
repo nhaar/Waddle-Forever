@@ -1,5 +1,5 @@
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/socket-server/arg-parser";
-import { filterItems, joinRoom, sendLPMessage } from "@server/socket-server/handlers/join";
+import { filterItems, handleGetFieldOps, joinRoom, sendLPMessage } from "@server/socket-server/handlers/join";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
@@ -62,7 +62,9 @@ const handleAddAllItems: CommandHandler<[string]> = ({ msg, penguin, prst, data 
 
     msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
     prst(penguin);
+    return 'Added all items to penguin';
   }
+  return "Must provide either an ID or 'all'";
 }
 
 const handleRemoveItem: CommandHandler<[number]> = ({ msg, penguin, prst, data }, itemId) => {
@@ -248,6 +250,21 @@ const handleSafechat: CommandHandler<[]> = ({ penguin, prst }) => {
   penguin.preference.setSafeChat(!penguin.preference.isSafeChat);
   prst(penguin);
   return `Safe chat is now ${penguin.preference.isSafeChat ? 'ENABLED' : 'DISABLED'}`;
+}
+
+const handleResetFieldOp: CommandHandler<[number]> = (ctx, id) => {
+  ctx.penguin.epf.resetFieldOp(id);
+  ctx.prst(ctx.penguin);
+  handleGetFieldOps(ctx);
+  return `Reset progress for Field-Op #${id}`;
+}
+
+const handleResetAllFieldOps: CommandHandler<[string]> = (ctx, all) => {
+  if (all !== 'all') return "Must provide either an ID or 'all'";
+  ctx.penguin.epf.resetAllFieldOps();
+  ctx.prst(ctx.penguin);
+  handleGetFieldOps(ctx);
+  return `Reset all Field-Ops progress`;
 }
 
 export class CommandsHandler {
@@ -487,6 +504,15 @@ const generators: CommandsGenerator = [
       argNames: [],
       description: "Toggles safe-chat mode for your penguin.",
       examples: []
+    }
+  ],
+  [
+    'resetfieldop',
+    [c(['number'], handleResetFieldOp), c(['string'], handleResetAllFieldOps)],
+    {
+      argNames: ['id/all'],
+      description: "Resets the progress of the given Field-Op #, allowing you to replay that Field-Op if it's already been completed. You can also do 'all' to reset progress for all Field-Ops.",
+      examples: ['resetfieldop 21', 'resetfieldop all']
     }
   ]
 ];

@@ -1386,6 +1386,7 @@ export const UPDATES_2010: Update[] = [
       agentcom: 'archives:RoomsAgentcom-June2010_3.swf',
       shack: 'archives:RoomsShack-June2010.swf'
     },
+    fieldOp: 1,
     eliteGearItems: [
       1148,
       1149,
@@ -1456,6 +1457,10 @@ export const UPDATES_2010: Update[] = [
     migrator: 'recreation:pirate_catalog/10_06.swf'
   },
   {
+    date: '2010-06-23',
+    fieldOp: 2,
+  },
+  {
     date: '2010-06-25',
     iglooList: [
       { display: 'The Viking Opera', id: 41, pos: [3, 1] },
@@ -1466,6 +1471,10 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-06-28',
     end: ['party']
+  },
+  {
+    date: '2010-06-29',
+    fieldOp: 3,
   },
   {
     date: '2010-06-30',
@@ -1574,6 +1583,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-07-05',
+    fieldOp: 4,
     temp: {
       const: {
         rooms: {
@@ -1642,6 +1652,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-07-12',
+    fieldOp: 5,
     gameUpgrades: {
       newItems: [
         5071,
@@ -1678,6 +1689,7 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-07-19',
     end: ['party'],
+    fieldOp: 6,
     rooms: {
       light: 'archives:LightCurrent.swf'
     }
@@ -2108,11 +2120,19 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-07-27',
+    fieldOp: 7
+  },
+  {
     date: '2010-07-29',
     roomComment: 'Grass grows on the patch near the mine shack',
     rooms: {
       shack: 'archives:RoomsShack-July2010.swf'
     }
+  },
+  {
+    date: '2010-08-03',
+    fieldOp: 8
   },
   {
     date: '2010-08-05',
@@ -2190,6 +2210,10 @@ export const UPDATES_2010: Update[] = [
         989
       ]
     }
+  },
+  {
+    date: '2010-08-09',
+    fieldOp: 9
   },
   {
     date: '2010-08-12',
@@ -2276,6 +2300,10 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-08-16',
+    fieldOp: 10
+  },
+  {
     date: '2010-08-19',
     end: ['party']
   },
@@ -2291,6 +2319,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-08-23',
+    fieldOp: 11,
     eliteGearItems: [
       1170,
       1171,
@@ -2329,6 +2358,10 @@ export const UPDATES_2010: Update[] = [
       // TODO document this shack
       shack: 'archives:RoomsShack-LateAugust2010.swf'
     }
+  },
+  {
+    date: '2010-08-30',
+    fieldOp: 12
   },
   {
     date: '2010-08-31',
@@ -2938,6 +2971,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-09-07',
+    fieldOp: 13,
     stampUpdates: [
       {
         categoryId: CategoryID.Activities,
@@ -3183,6 +3217,10 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-09-14',
+    fieldOp: 14
+  },
+  {
     date: '2010-09-16',
     stagePlay: {
       name: 'Fairy Fables',
@@ -3214,6 +3252,10 @@ export const UPDATES_2010: Update[] = [
       16037,
       16038
     ]
+  },
+  {
+    date: '2010-09-20',
+    fieldOp: 15
   },
   {
     date: '2010-09-24',
@@ -3252,6 +3294,10 @@ export const UPDATES_2010: Update[] = [
         6038
       ]
     }
+  },
+  {
+    date: '2010-09-27',
+    fieldOp: 16
   },
   {
     date: '2010-09-30',
@@ -3336,6 +3382,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-10-04',
+    fieldOp: 17,
     stampUpdates: [
       {
         category: {
@@ -3650,8 +3697,16 @@ export const UPDATES_2010: Update[] = [
     }
   },
   {
+    date: '2010-10-12',
+    fieldOp: 18
+  },
+  {
     date: '2010-10-15',
     furnitureCatalog: 'archives:October10Furniture.swf'
+  },
+  {
+    date: '2010-10-18',
+    fieldOp: 19
   },
   {
     date: '2010-10-21',
@@ -3707,6 +3762,10 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-10-25',
     end: ['party']
+  },
+  {
+    date: '2010-10-26',
+    fieldOp: 20
   },
   {
     date: '2010-10-28',
@@ -3850,6 +3909,10 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-11-02',
+    fieldOp: 21
+  },
+  {
     date: '2010-11-04',
     end: ['party'],
     temp: {
@@ -3976,6 +4039,7 @@ export const UPDATES_2010: Update[] = [
   },
   {
     date: '2010-11-08',
+    fieldOp: 22,
     eliteGearItems: [
       1201,
       3061,
@@ -4135,6 +4199,10 @@ export const UPDATES_2010: Update[] = [
       }
     ],
     availableRooms: ['dojowater']
+  },
+  {
+    date: '2010-11-18',
+    fieldOp: 23
   },
   {
     date: '2010-11-19',
@@ -4439,6 +4507,14 @@ export const UPDATES_2010: Update[] = [
     ]
   },
   {
+    date: '2010-11-26',
+    fieldOp: 24
+  },
+  {
+    date: '2010-12-01',
+    fieldOp: 25
+  },
+  {
     date: '2010-12-02',
     end: ['party2'],
     roomComment: 'A video about Card-Jitsu Water is now on display at the Dojo Courtyard',
@@ -4534,6 +4610,10 @@ export const UPDATES_2010: Update[] = [
     }
   },
   {
+    date: '2010-12-08',
+    fieldOp: 26
+  },
+  {
     date: '2010-12-09',
     iglooList: [
       { display: 'Candy Cane March', id: 228, pos: [1, 1] },
@@ -4557,6 +4637,10 @@ export const UPDATES_2010: Update[] = [
   {
     date: '2010-12-10',
     furnitureCatalog: 'archives:FurnDec2010.swf'
+  },
+  {
+    date: '2010-12-15',
+    fieldOp: 27
   },
   {
     date: '2010-12-16',
@@ -4731,6 +4815,10 @@ export const UPDATES_2010: Update[] = [
     miscComments: ['The lighthouse has more coins (stage 4)']
   },
   {
+    date: '2010-12-23',
+    fieldOp: 28
+  },
+  {
     date: '2010-12-28',
     end: ['party'],
     stagePlay: {
@@ -4741,6 +4829,10 @@ export const UPDATES_2010: Update[] = [
       plaza: 'recreation:plaza_ruby_no_weather.swf',
       stage: 'archives:RoomsStage-December2010.swf'
     }
+  },
+  {
+    date: '2010-12-30',
+    fieldOp: 29
   },
   {
     date: '2010-12-31',

@@ -232,6 +232,9 @@ function getTimeline(): Day[] {
       const sets = update.update.cardSets;
       addEvent(map, update.date, `Card-Jitsu card ${sets.length > 1 ? 'sets' : 'set'} ${sets.join(', ')} ${sets.length > 1 ? 'are' : 'is'} now available`, 'cards');
     }
+    if (update.update.fieldOp !== undefined && update.update.fieldOp > 0) {
+      addEvent(map, update.date, `A new Field-Op is available (#${update.update.fieldOp})`, 'fieldop');
+    }
   });
 
   return getDaysFromMap(map);

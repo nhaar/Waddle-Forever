@@ -549,6 +549,11 @@ so that it works with newer clients (newer being around 2007)`,
       file: 'ninjaprogress_set5.swf',
       comment: 'Adds card set 5 in com.clubpenguin.merch.ninja.CardDetails',
       base: 'archives:NinjaProgressNov2009.swf'
+    },
+    {
+      file: 'circuitmatch.swf',
+      comment: 'Changes the completed signal variable name from "succeeded" to "completed", to work in Field-Ops',
+      base: 'svanilla:media/play/v2/games/circuitmatch/circuitmatch.swf'
     }
   ],
   [RECREATION]: [
@@ -2052,11 +2057,43 @@ Unknown if its teleporting to village functions would be accurate`
     },
     {
       file: 'senseiwidget_2008/SenseiWidget.swf',
-      comment: 'Made by ChrisCPI. Based on archives GamesSenseiSenseiWidget-June2009.swf, with the icons for the main menu removed'
+      comment: 'Made by ChrisCPI. Removed icons for the main menu',
+      base: 'fix:GamesSenseiSenseiWidget-June2009.swf'
     },
     {
       file: 'senseiwidget_2008/locale_en.swf',
-      comment: 'Made by ChrisCPI. Based on slegacy locale for sensei, but changed to match the launch version'
+      comment: 'Made by ChrisCPI. Changed the strings to match the launch version',
+      base: 'slegacy:media/play/v2/games/sensei/lang/en/locale.swf'
+    },
+    {
+      file: 'circuitmatch_locale_en.swf',
+      comment: 'Made by ChrisCPI. Changes the strings to match what they were for Field-Ops',
+      base: 'svanilla:media/play/v2/games/circuitmatch/lang/en/locale.swf'
+    },
+    {
+      file: 'commandline_locale_en.swf',
+      comment: 'Made by ChrisCPI. Changes the strings to match what they were for Field-Ops',
+      base: 'svanilla:media/play/v2/games/commandline/lang/en/locale.swf'
+    },
+    {
+      file: 'chipmaze_locale_en.swf',
+      comment: 'Made by ChrisCPI. Changes the strings to match what they were for Field-Ops',
+      base: 'svanilla:media/play/v2/games/chipmaze/lang/en/locale.swf'
+    },
+    {
+      file: 'codebreak_locale_en.swf',
+      comment: 'Made by ChrisCPI. Changes the strings to match what they were for Field-Ops',
+      base: 'svanilla:media/play/v2/games/codebreak/lang/en/locale.swf'
+    },
+    {
+      file: 'firewall_game.swf',
+      comment: 'Made by ChrisCPI. Removed FPS counter and bitmap renderer, fixed "Engage" button not re-appearing after losing, changed the code for the "firerow" mc to change alpha, added a mask for the game taken from Chip Maze, and changed the background to be from the final version.',
+      base: 'svanilla:media/play/v2/games/firewall/firewall_game_FPS.swf'
+    },
+    {
+      file: 'firewall_locale_en.swf',
+      comment: 'Made by ChrisCPI. Changes the strings to match what they were for Field-Ops',
+      base: 'svanilla:media/play/v2/games/firewall/lang/en/locale.swf'
     }
   ],
   [MOD]: [
