@@ -8,9 +8,10 @@ import { WorldTable } from "./world-table";
 import { FindFourTable } from "./find-four";
 import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
-import { getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
+import { getNameFromId, getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
-import { BERG_BLOCK, findPathBetweenBlockPoints, Block, compactPath, findLeftmostMiddlemostPosition } from "./bot-block";
+import { getBlock, findPathBetweenBlockPoints, compactPath, findLeftmostMiddlemostPosition } from "./bot-block";
+import { WORLD_GRAPH } from "./bot-rooms";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -477,7 +478,7 @@ const BEHAVIORS: Behavior[] = [
       return attrs.walkFan > Math.random();
     },
     async start({ bot, rng }) {
-      bot.walkTo(rng.int(WALK_AREA.minX, WALK_AREA.maxX), rng.int(WALK_AREA.minY, WALK_AREA.maxY));
+      await bot.walk(rng.int(WALK_AREA.minX, WALK_AREA.maxX), rng.int(WALK_AREA.minY, WALK_AREA.maxY));
     }
   },
   {
@@ -541,7 +542,7 @@ const BEHAVIORS: Behavior[] = [
       return (rng.random() * attrs.emptyRoomTolerance + (1 - attrs.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30)) < 0.5;
     },
     async start({ bot }) {
-      bot.enter(bot.chooseRoom());
+      await bot.enter(bot.chooseRoom());
     }
   },
   {
@@ -557,7 +558,7 @@ const BEHAVIORS: Behavior[] = [
       return rng.random() * attrs.iglooFan > 0.9;
     },
     async start({ bot }) {
-      bot.enter(IGLOO_ROOM_BASE + bot.penguin.id);
+      await bot.enter(IGLOO_ROOM_BASE + bot.penguin.id);
       bot.openIgloo();
     },
   },
@@ -621,7 +622,7 @@ const BEHAVIORS: Behavior[] = [
       return room.id === ROOMS.berg.id && Math.max(attrs.mythsFan, attrs.stampsFan) > rng.random();
     },
     async start({ bot, room }) {
-      const [x, y] = findLeftmostMiddlemostPosition(BERG_BLOCK, room.players.map(p => {
+      const [x, y] = findLeftmostMiddlemostPosition(getBlock('berg'), room.players.map(p => {
         const state = room.getState(p);
         return [state.x, state.y];
       }));
@@ -631,7 +632,7 @@ const BEHAVIORS: Behavior[] = [
       bot.wearItem('body', 0);
       bot.wearItem('hand', 0);
       bot.wearItem('feet', 0);
-      await bot.walkPath(x, y, BERG_BLOCK);
+      await bot.walk(x, y);
       bot.doDance();
     },
     end({ bot }) {
@@ -712,7 +713,20 @@ export class Bot implements ClientSocket {
     return this._penguin;
   }
 
-  public enter(id: number): void {
+  public async enter(id: number): Promise<void> {
+    const room = this._world.getPenguinRoom(this._penguin);
+    if (room !== undefined) {
+      const path = WORLD_GRAPH.getPath(getNameFromId(room.id), getNameFromId(id));
+      if (path !== null) {
+        for (const { target, pos, spawn } of path) {
+          await this.walk(...pos);
+          this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', ROOMS[target].id, ...spawn);
+          await this.wait(1);
+        }
+        return;
+      }
+    }
+
     this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', id,
       randomInt(WALK_AREA.minX, WALK_AREA.maxX),
       randomInt(WALK_AREA.minY, WALK_AREA.maxY)
@@ -742,7 +756,7 @@ export class Bot implements ClientSocket {
     this.handle(name, args);
   }
 
-  private reactToMessage(message: string) {
+  private async reactToMessage(message: string) {
     message = message.toLowerCase();
 
     // attempt to match a two or one word name, for the room
@@ -752,11 +766,9 @@ export class Bot implements ClientSocket {
       const singleName = commandMatch[1];
       const room = getRoomFromName(doubleName) ?? getRoomFromName(singleName);
       if (room !== undefined && this._attributes.roomDistraction * this._attributes.followability > Math.pow(Math.random(), 2)) {
-
-        this.schedule(() => {
-          this.stopAllActions();
-          this.enter(room);
-        }, 2 * (Math.random() + 1));
+        await this.wait(2 * (Math.random() + 1));
+        this.stopAllActions();
+        await this.enter(room);
       }
     }
   }
@@ -766,8 +778,8 @@ export class Bot implements ClientSocket {
     this.clearAllTimers();
   }
 
-  private exitGameMode() {
-    this.enter(this.chooseRoom());
+  private async exitGameMode() {
+    await this.enter(this.chooseRoom());
   }
 
   private handleOverworld(message: string, args: string[]): void {
@@ -846,31 +858,41 @@ export class Bot implements ClientSocket {
     }
   }
 
-  /** Returns time in seconds to walk that distance */
-  public walkTo(x: number, y: number): number {
-    const state = this._world.getPenguinRoom(this._penguin).getState(this._penguin);
-    const distance = Math.sqrt(Math.pow(x - state.x, 2) + Math.pow(y - state.y, 2));
-    this._simulate('s', this._data.isPreCpip() ? 'sp' : 'u#sp', x, y);
-
-    // 4.8 pixels per frame at 24 fps
-    // exgtra time of lenience
-    return distance / 4.8 / 24 + 1;
+  private async wait(seconds: number) {
+    return new Promise<void>((res) => {
+      this.schedule(() => {
+        res();
+      }, seconds);
+    });
   }
 
-  public async walkPath(x: number, y: number, room: Block) {
-    const [scaledX, scaledY] = [Math.floor(x / room.scale), Math.floor(y / room.scale)];
+  public async walk(x: number, y: number) {
+    const room = this._world.getPenguinRoom(this._penguin);
+    if (room === undefined) {
+      return;
+    }
     
+    const roomBlock = getBlock(getNameFromId(room.id));
+    const [scaledX, scaledY] = [Math.floor(x / roomBlock.scale), Math.floor(y / roomBlock.scale)];
+    const state = room.getState(this._penguin);
+
     return new Promise<void>((res) => {
-      const state = this._world.getPenguinRoom(this._penguin)?.getState(this._penguin);
-  
       if (state !== undefined) {
-        const path = compactPath(findPathBetweenBlockPoints([state.x, state.y], [scaledX, scaledY], room), room);
+        const path = compactPath(findPathBetweenBlockPoints([state.x, state.y], [scaledX, scaledY], roomBlock), roomBlock);
         const nextStep = (step: number) => {
           if (step < path.length) {
-            const [unscaledX, unscaledY] = [path[step][0] * room.scale, path[step][1] * room.scale];
+            const [unscaledX, unscaledY] = [path[step][0] * roomBlock.scale, path[step][1] * roomBlock.scale];
+
+            const distance = Math.sqrt(Math.pow(unscaledX - state.x, 2) + Math.pow(unscaledY - state.y, 2));
+            this._simulate('s', this._data.isPreCpip() ? 'sp' : 'u#sp', unscaledX, unscaledY);
+
+            // 4.8 pixels per frame at 24 fps
+            // exgtra time of lenience
+            const time = distance / 4.8 / 24 + 1;
+          
             this.schedule(() => {
               nextStep(step + 1);
-            }, this.walkTo(unscaledX, unscaledY));
+            }, time);
           } else {
             res();
           }
@@ -901,16 +923,15 @@ export class Bot implements ClientSocket {
     this.doFrame(26);
   }
 
-  public joinDanceFloor(): void {
+  public async joinDanceFloor(): Promise<void> {
     const y = randomInt(267,413);
     const minX = (149-205) / (413-267) * (y - 267) + 205;
     const maxX = (489-442) / (413-267) * (y - 267) + 489;
-    this.schedule(() => {
-      this.doDance();
-    }, this.walkTo(randomInt(minX, maxX), y));
+    await this.walk(randomInt(minX, maxX), y);
+    this.doDance();
   }
 
-  public joinBand(deltaX: number, deltaY: number): void {
+  public async joinBand(deltaX: number, deltaY: number): Promise<void> {
     const BAND_ROLES: Array<[EquipProp, number, [number, number]]> = [
       ['hand', 233, [117, 337]],
       ['hand', 234, [139, 302]],
@@ -948,9 +969,8 @@ export class Bot implements ClientSocket {
     this.wearItem('head', 0);
     this.wearItem('neck', 0);
     this.wearItem(role[0], role[1]);
-    this.schedule(() => {
-      this.doDance();
-    }, this.walkTo(x, y));
+    await this.walk(x, y);
+    this.doDance();
   }
 
   public wearOutfit(): void {

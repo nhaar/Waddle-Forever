@@ -1,4 +1,5 @@
-import { VANILLA_ICEBERG } from "./blocks";
+import { RoomName } from "@server/game-data/rooms";
+import { VANILLA_ICEBERG, VANILLA_TOWN } from "./blocks";
 
 const ROOM_WIDTH = 760;
 const ROOM_HEIGHT = 480;
@@ -75,7 +76,17 @@ export function findLeftmostMiddlemostPosition(block: Block, positions: Array<[n
   return [0, 0];
 }
 
-export const BERG_BLOCK = Block.parseRawBlock(VANILLA_ICEBERG);
+const BERG_BLOCK = Block.parseRawBlock(VANILLA_ICEBERG);
+const TOWN_BLOCK = Block.parseRawBlock(VANILLA_TOWN);
+
+export function getBlock(room: RoomName): Block {
+  switch (room) {
+    case 'berg':
+      return BERG_BLOCK;
+    default:
+      return TOWN_BLOCK;
+  }
+}
 
 /** Returns the path of points adjacent (including starting point and goal), empty if no path */
 export function findPathBetweenBlockPoints([startX, startY]: [number, number], [goalX, goalY]: [number, number], block: Block) {
