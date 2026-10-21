@@ -10,7 +10,8 @@ import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
 import { getNameFromId, getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
-import { getBlock, findPathBetweenBlockPoints, Block, compactPath, findLeftmostMiddlemostPosition } from "./bot-block";
+import { getBlock, findPathBetweenBlockPoints, compactPath, findLeftmostMiddlemostPosition } from "./bot-block";
+import { WORLD_GRAPH } from "./bot-rooms";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -541,7 +542,7 @@ const BEHAVIORS: Behavior[] = [
       return (rng.random() * attrs.emptyRoomTolerance + (1 - attrs.emptyRoomTolerance) * clamp(room.players.length / 30, 0, 30)) < 0.5;
     },
     async start({ bot }) {
-      bot.enter(bot.chooseRoom());
+      await bot.enter(bot.chooseRoom());
     }
   },
   {
@@ -557,7 +558,7 @@ const BEHAVIORS: Behavior[] = [
       return rng.random() * attrs.iglooFan > 0.9;
     },
     async start({ bot }) {
-      bot.enter(IGLOO_ROOM_BASE + bot.penguin.id);
+      await bot.enter(IGLOO_ROOM_BASE + bot.penguin.id);
       bot.openIgloo();
     },
   },
@@ -712,7 +713,20 @@ export class Bot implements ClientSocket {
     return this._penguin;
   }
 
-  public enter(id: number): void {
+  public async enter(id: number): Promise<void> {
+    const room = this._world.getPenguinRoom(this._penguin);
+    if (room !== undefined) {
+      const path = WORLD_GRAPH.getPath(getNameFromId(room.id), getNameFromId(id));
+      if (path !== null) {
+        for (const { target, pos, spawn } of path) {
+          await this.walk(...pos);
+          this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', ROOMS[target].id, ...spawn);
+          await this.wait(1);
+        }
+        return;
+      }
+    }
+
     this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', id,
       randomInt(WALK_AREA.minX, WALK_AREA.maxX),
       randomInt(WALK_AREA.minY, WALK_AREA.maxY)
@@ -742,7 +756,7 @@ export class Bot implements ClientSocket {
     this.handle(name, args);
   }
 
-  private reactToMessage(message: string) {
+  private async reactToMessage(message: string) {
     message = message.toLowerCase();
 
     // attempt to match a two or one word name, for the room
@@ -752,11 +766,9 @@ export class Bot implements ClientSocket {
       const singleName = commandMatch[1];
       const room = getRoomFromName(doubleName) ?? getRoomFromName(singleName);
       if (room !== undefined && this._attributes.roomDistraction * this._attributes.followability > Math.pow(Math.random(), 2)) {
-
-        this.schedule(() => {
-          this.stopAllActions();
-          this.enter(room);
-        }, 2 * (Math.random() + 1));
+        await this.wait(2 * (Math.random() + 1));
+        this.stopAllActions();
+        await this.enter(room);
       }
     }
   }
@@ -766,8 +778,8 @@ export class Bot implements ClientSocket {
     this.clearAllTimers();
   }
 
-  private exitGameMode() {
-    this.enter(this.chooseRoom());
+  private async exitGameMode() {
+    await this.enter(this.chooseRoom());
   }
 
   private handleOverworld(message: string, args: string[]): void {
@@ -844,6 +856,14 @@ export class Bot implements ClientSocket {
     } else {
       this._simulate('s', 'm#sm', this._penguin.id, message);
     }
+  }
+
+  private async wait(seconds: number) {
+    return new Promise<void>((res) => {
+      this.schedule(() => {
+        res();
+      }, seconds);
+    });
   }
 
   public async walk(x: number, y: number) {
