@@ -488,3 +488,13 @@ Object.values(ROOMS).forEach(r => {
 export function getRoomFromName(name: string): number | undefined {
   return naturalNames.get(name.toLowerCase());
 }
+
+const idNameIndex = new Map<number, RoomName>();
+Object.entries(ROOMS).forEach(([name, { id }]) => {
+  idNameIndex.set(id, name as RoomName);
+});
+
+
+export function getNameFromId(roomId: number): RoomName | undefined {
+  return idNameIndex.get(roomId);
+}
