@@ -181,7 +181,7 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
   // using the "media file name convention"
   // the media/ is to access the proper API route
   try {
-    await download(`https://github.com/nhaar/Waddle-Forever/releases/download/v${VERSION}/${mediaName}.zip`, zipDir, mediaName);
+    await download(`https://cdn.waddleforever.com/${mediaName}-${VERSION}.zip`, zipDir, mediaName); 
     const folderDestination = path.join(MEDIA_DIRECTORY, mediaName);
     try {
       await unzip(zipDir, folderDestination);
