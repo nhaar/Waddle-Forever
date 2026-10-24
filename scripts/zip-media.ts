@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { zip, OUT_DIR, createOut } from './zip';
-import { VERSION } from '../src/common/version';
+import { VERSION } from '../src/common/constants';
 
 const MEDIA_DIR = path.join(__dirname, '..', 'media');
 
