@@ -1,5 +1,6 @@
 import { RoomName } from "@server/game-data/rooms";
 import { VANILLA_ICEBERG, VANILLA_TOWN } from "./blocks";
+import { choose } from "@common/utils";
 
 const ROOM_WIDTH = 760;
 const ROOM_HEIGHT = 480;
@@ -11,10 +12,35 @@ class BlockError extends Error {
 }
 
 export class Block {
+  private flatMatrix: boolean[];
+  private valid: number[];
+  private rows: number;
+  private cols: number;
   private constructor(
     public readonly scale: number,
-    public readonly values: boolean[][]
-  ) {}
+    values: boolean[][]
+  ) {
+    this.flatMatrix = values.flat();
+    this.rows = values.length;
+    this.cols = values[0].length;
+
+    this.valid = [];
+    this.flatMatrix.forEach((v, i) => {
+      if (v) {
+        this.valid.push(i);
+      }
+    })
+  }
+
+  public getRandom() {
+    const random = choose(this.valid);
+    return [random % this.rows, Math.floor(random / this.rows)];
+  }
+
+  public at(x: number, y: number) {
+    const index = y * this.rows + x;
+    return this.flatMatrix[index];
+  }
 
   static parseRawBlock(values: number[][]): Block {
     const height = values.length;
@@ -34,14 +60,30 @@ export class Block {
 
     return new Block(scale, values.map(row => row.map(value => value === 1)));
   }
+  public get dimension() {
+    return [this.rows, this.cols];
+  }
 }
 
-function getDimensions(block: Block): [number, number] {
-  return [block.values[0].length, block.values.length];
+class GridSet<T> {
+  private map = new Map<T, Set<T>>();
+
+  public add(x: T, y: T) {
+    let set = this.map.get(x);
+    if (set === undefined) {
+      set = new Set();
+      this.map.set(x, set);
+    }
+    set.add(y);
+  }
+
+  public has(x: T, y: T) {
+    return this.map.get(x)?.has(y) === true;
+  }
 }
 
-export function findLeftmostMiddlemostPosition(block: Block, positions: Array<[number, number]>): [number, number] { 
-  const xToYs = new Map<number, Set<number>>();
+function getInvalidPositions(block: Block, positions: Array<[number, number]>) {
+  const invalid = new GridSet<number>();
   const spacing = 20;
   positions.forEach(([x, y]) => {
     const i0 = Math.floor(x / block.scale);
@@ -50,23 +92,23 @@ export function findLeftmostMiddlemostPosition(block: Block, positions: Array<[n
     // iterate on the square centered around the spacing
     for (let i = Math.round(i0 - spacing / block.scale - 1); i < Math.round(i0 + spacing / block.scale); i++) {
       for (let j = Math.round(j0 - spacing / block.scale - 1); j < Math.round(j0 + spacing / block.scale); j++) {
-        let ys = xToYs.get(i);
-        if (ys === undefined) {
-          ys = new Set<number>();
-          xToYs.set(i, ys);
-        }
-        ys.add(j);
+        invalid.add(i, j);
       }
     }
   });
-  const [width, height] = getDimensions(block);
+  return invalid;
+}
+
+export function findLeftmostMiddlemostPosition(block: Block, positions: Array<[number, number]>): [number, number] { 
+  const xToYs = getInvalidPositions(block, positions);
+  const [width, height] = block.dimension;
   // assuming even
   const half = height / 2;
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < half; j++) {
       for (const k of [-1, 1]) {
         const j0 = half + j * k;
-        if (block.values[j0][i] && !xToYs.get(i)?.has(j0)) {
+        if (block.at(i, j0) && !xToYs.has(i, j0)) {
           return [i * block.scale, j0 * block.scale];
         }
       }
@@ -113,11 +155,11 @@ export function findPathBetweenBlockPoints([startX, startY]: [number, number], [
       for (const [dx, dy] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) {
         const x1 = dx + x;
         const y1 = dy + y;
-        const [w, h] = getDimensions(block);
+        const [w, h] = block.dimension;
         const isInBound = x1 >= 0 && y1 >=0 && x1 < w && y1 < h;
         if (isInBound) {
           const visitedNode = accessed.get(x1)?.has(y1);
-          const canVisit = block.values[y1][x1]
+          const canVisit = block.at(x1,y1)
           if (!visitedNode && canVisit) {
             queue.push([x1, y1]);
             let ys = predecessor.get(x1);
@@ -169,7 +211,7 @@ export function compactPath(path: Array<[number, number]>, block: Block): Array<
 
     // finding corner: apply delta from previous point
     const possibleCorner = [prev[0] + delta[0], prev[1] + delta[1]];
-    if (!block.values[possibleCorner[1]][possibleCorner[0]]) {
+    if (!block.at(possibleCorner[0], possibleCorner[1])) {
       compacted.push(cur);
     }
   }
@@ -178,4 +220,10 @@ export function compactPath(path: Array<[number, number]>, block: Block): Array<
   compacted.push(path[path.length - 1]);
 
   return compacted;
+}
+
+export function getRandomPositionFromBlock(block: Block): [number, number] {
+  const random = block.getRandom();
+
+  return [random[0] * block.scale, random[1] * block.scale];
 }

@@ -10,7 +10,7 @@ import { MancalaTable } from "./mancala";
 import { CardJitsu, NinjaPlayer } from "./card";
 import { getNameFromId, getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
-import { getBlock, findPathBetweenBlockPoints, compactPath, findLeftmostMiddlemostPosition } from "./bot-block";
+import { getBlock, findPathBetweenBlockPoints, compactPath, findLeftmostMiddlemostPosition, getRandomPositionFromBlock } from "./bot-block";
 import { WORLD_GRAPH } from "./bot-rooms";
 
 const CHANCE_NO_ITEM = 0.3;
@@ -622,10 +622,7 @@ const BEHAVIORS: Behavior[] = [
       return room.id === ROOMS.berg.id && Math.max(attrs.mythsFan, attrs.stampsFan) > rng.random();
     },
     async start({ bot, room }) {
-      const [x, y] = findLeftmostMiddlemostPosition(getBlock('berg'), room.players.map(p => {
-        const state = room.getState(p);
-        return [state.x, state.y];
-      }));
+      const [x, y] = findLeftmostMiddlemostPosition(getBlock('berg'), getPositionsFromRoom(room));
       bot.wearItem('head', 429);
       bot.wearItem('face', 0);
       bot.wearItem('neck', 0);
@@ -671,6 +668,17 @@ BEHAVIORS.forEach((behavior, i) => {
     }  
   }
 });
+
+function getPositionsFromRoom(room: WorldRoom): Array<[number, number]> {
+  return room.players.map(p => {
+    const state = room.getState(p);
+    return [state.x, state.y];
+  });
+}
+
+function getRandomPointInRoom(room: WorldRoom) {
+  return getRandomPositionFromBlock(getBlock(getNameFromId(room.id)));;
+}
 
 export class Bot implements ClientSocket {
   private _brain: BotBrain | null = null;
@@ -727,9 +735,9 @@ export class Bot implements ClientSocket {
       }
     }
 
+    const point = getRandomPointInRoom(this._world.getRoom(id));
     this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', id,
-      randomInt(WALK_AREA.minX, WALK_AREA.maxX),
-      randomInt(WALK_AREA.minY, WALK_AREA.maxY)
+    ...point
     );
   }
 
