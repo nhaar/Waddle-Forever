@@ -500,6 +500,9 @@ export const UPDATES_2006: Update[] = [
       boiler: 'archives:ArtworkRoomsBoiler11.swf',
       mine: 'archives:ArtworkRoomsMine13.swf'
     },
+    newRoomTransitions: [
+      { from: 'dance', to: 'boiler', pos: [480, 210], spawn: [560, 320] },
+    ],
     availableRooms: ['cave', 'cavemine', 'boiler', 'mine']
   },
   {

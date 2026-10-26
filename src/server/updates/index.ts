@@ -279,6 +279,12 @@ export type CPUpdate = {
   removeClientFiles?: number[];
 
   dayOfFun?: 'start' | 'end';
+
+  newRoomTransitions?: Array<{
+    from: RoomName,
+    to: RoomName, pos: [number, number], spawn: [number, number]
+  }>;
+  removedRoomTransitions?: Array<{ from: RoomName, to: RoomName }>;
 } & ({
   partyName: string;
   decorated?: false;

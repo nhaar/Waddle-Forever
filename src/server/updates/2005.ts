@@ -29,6 +29,20 @@ export const UPDATES_2005: Update[] = [
       'agent': 'archives:ArtworkRoomsAgent10.swf', // placeholder, not accessable
       attic: 'archives:ArtworkRoomsAttic12.swf'
     },
+    newRoomTransitions: [
+      { from: 'town', to: 'dance', pos: [340, 200], spawn: [150, 280] },
+      { from: 'town', to: 'coffee', pos: [275, 225], spawn: [350, 225] },
+      { from: 'town', to: 'shop', pos: [500, 230], spawn: [518, 260] },
+      { from: 'town', to: 'rink', pos: [705, 290], spawn: [180, 260] },
+      { from: 'town', to: 'dock', pos: [100, 300], spawn: [600, 200] },
+      { from: 'dance', to: 'town', pos: [110, 270], spawn: [340, 260] },
+      { from: 'dance', to: 'lounge', pos: [680, 355], spawn: [600, 380] },
+      { from: 'coffee', to: 'town', pos: [375, 196], spawn: [290, 260] },
+      { from: 'coffee', to: 'book', pos: [640, 395], spawn: [600, 290] },
+      { from: 'book', to: 'coffee', pos: [605, 229], spawn: [560, 400] },
+      { from: 'lounge', to: 'dance', pos: [718, 327], spawn: [600, 396] },
+      { from: 'shop', to: 'town', pos: [540, 233], spawn: [466, 280] }
+    ],
     availableRooms: [
       'coffee',
       'book',
@@ -216,6 +230,12 @@ export const UPDATES_2005: Update[] = [
       town: 'archives:ArtworkRoomsTown10.swf',
       rink: 'archives:ArtworkRoomsRink10.swf'
     },
+    removedRoomTransitions: [
+      { from: 'town', to: 'rink' }
+    ],
+    newRoomTransitions: [
+      { from: 'town', to: 'forts', pos: [705, 290], spawn: [180, 260] },
+    ],
     availableRooms: ['forts'],
     map: 'archives:ArtworkMapsIsland3.swf'
   },

@@ -1,7 +1,6 @@
-import { iterateEntries } from "@common/utils";
 import { RoomName } from "@server/game-data/rooms";
 
-class WorldGraph {
+export class WorldGraph {
   private edges = new Map<RoomName, Array<{
     name: RoomName;
     pos: [number, number];
@@ -96,41 +95,3 @@ class WorldGraph {
     return null;
   }
 }
-
-const ROOM_TRANSITIONS: Partial<Record<RoomName, Array<{
-  room: RoomName, pos: [number, number], spawn: [number, number]
-}>>> = {
-  'town': [
-    { room: 'dance', pos: [340, 200], spawn: [150, 280] },
-    { room: 'coffee', pos: [275, 225], spawn: [350, 225] },
-    { room: 'shop', pos: [500, 230], spawn: [518, 260] },
-    { room: 'forts', pos: [705, 290], spawn: [180, 260] },
-    { room: 'dock', pos: [100, 300], spawn: [600, 200] },
-  ],
-  'dance': [
-    { room: 'town', pos: [110, 270], spawn: [340, 260] },
-    { room: 'lounge', pos: [680, 355], spawn: [600, 380] },
-    { room: 'boiler', pos: [480, 210], spawn: [560, 320] },
-  ],
-  'coffee': [
-    { room: 'town', pos: [375, 196], spawn: [290, 260] },
-    { room: 'book', pos: [640, 395], spawn: [600, 290] },
-  ],
-  'book': [
-    { room: 'coffee', pos: [605, 229], spawn: [560, 400] },
-  ],
-  'lounge': [
-    { room: 'dance', pos: [718, 327], spawn: [600, 396] },
-  ],
-  'shop': [
-    { room: 'town', pos: [540, 233], spawn: [466, 280] },
-  ]
-}
-
-export const WORLD_GRAPH = new WorldGraph();
-
-iterateEntries(ROOM_TRANSITIONS, (left, transitions) => {
-  transitions.forEach(({ room, pos, spawn }) => {
-    WORLD_GRAPH.addRoomTransition(left, room, pos, spawn);
-  });
-});

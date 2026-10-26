@@ -11,7 +11,6 @@ import { CardJitsu, NinjaPlayer } from "./card";
 import { getNameFromId, getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
 import { getBlock, findPathBetweenBlockPoints, compactPath, findLeftmostMiddlemostPosition, getRandomPositionFromBlock } from "./bot-block";
-import { WORLD_GRAPH } from "./bot-rooms";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -724,7 +723,7 @@ export class Bot implements ClientSocket {
   public async enter(id: number): Promise<void> {
     const room = this._world.getPenguinRoom(this._penguin);
     if (room !== undefined) {
-      const path = WORLD_GRAPH.getPath(getNameFromId(room.id), getNameFromId(id));
+      const path = this._data.getPath(getNameFromId(room.id), getNameFromId(id));
       if (path !== null) {
         for (const { target, pos, spawn } of path) {
           await this.walk(...pos);

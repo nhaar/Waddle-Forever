@@ -10,6 +10,7 @@ import { FURNITURE_ICONS, FURNITURE_SPRITES } from "@server/game-data/furniture"
 import { GameName } from "@server/game-data/games";
 import { MUSIC_IDS } from "@server/game-data/music";
 import { PRE_CPIP_STATIC_FILES } from "@server/game-data/precpip-static";
+import { WorldGraph } from "@server/game-data/room-transitions";
 import { RoomName } from "@server/game-data/rooms";
 import { getStagePlayMusic, StageScript } from "@server/game-data/stage-plays";
 import { ORIGINAL_STAMPBOOK, Stampbook, StampCategory, StampRoom, STAMP_ROOMS } from "@server/game-data/stamps";
@@ -100,6 +101,7 @@ type GameState = {
   starterColors: Set<number>;
   cardSets: Set<number>;
   fieldOp: number;
+  worldGraph: WorldGraph;
 }
 
 function getFreshState(): GameState {
@@ -167,7 +169,8 @@ function getFreshState(): GameState {
     availableRooms: new Set(),
     starterColors: new Set(),
     cardSets: new Set(),
-    fieldOp: 0
+    fieldOp: 0,
+    worldGraph: new WorldGraph()
   };
 }
 
@@ -741,6 +744,16 @@ export class GameData {
       },
       'fieldOp': (v) => {
         this.state.fieldOp = v;
+      },
+      'newRoomTransitions': (v) => {
+        v.forEach(transition => {
+          this.state.worldGraph.addRoomTransition(transition.from, transition.to, transition.pos, transition.spawn);
+        });
+      },
+      'removedRoomTransitions': (v) => {
+        v.forEach(removed => {
+          this.state.worldGraph.removeRoomTransition(removed.from, removed.to);
+        });
       }
     }
 
@@ -1036,5 +1049,9 @@ export class GameData {
 
   public fieldOp() {
     return this.state.fieldOp;
+  }
+
+  public getPath(from: RoomName, to: RoomName) {
+    return this.state.worldGraph.getPath(from, to);
   }
 }
