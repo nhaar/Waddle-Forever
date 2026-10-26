@@ -666,10 +666,26 @@ export const handleGetEpfStatus: PenguinHandler<[]> = ({ penguin, msg }) => {
   msg.send(penguin, 'epfga', penguin.psa.isAgent ? 1 : 0);
 }
 
-export const handleGetFieldOps: PenguinHandler<[]> = ({ penguin, msg }) => {
-  // sends an integer boolean, FALSE if there is an active field ops
-  // that wasn't done
-  msg.send(penguin, 'epfgf', 0);
+export const handleGetFieldOps: PenguinHandler<[]> = ({ penguin, msg, data }) => {
+  // 0 - field op has not been accepted
+  // 1 - field op is in progress
+  // 2 - field op complete
+  const status = data.fieldOp() < 1 || penguin.epf.hasCompletedFieldOp(data.fieldOp()) ? 2
+    : penguin.epf.hasReadFieldOp(data.fieldOp()) ? 1
+    : 0;
+  msg.send(penguin, 'epfgf', status);
+}
+
+export const handleSetFieldOps: PenguinHandler<[number]> = ({ penguin, msg, data, prst }, status) => {
+  if (status === 1) {
+    penguin.epf.readFieldOp(data.fieldOp());
+    prst(penguin);
+  } else if (status === 2) {
+    penguin.epf.addMedals(1);
+    penguin.epf.completeFieldOp(data.fieldOp());
+    prst(penguin);
+  }
+  msg.send(penguin, 'epfsf', status);
 }
 
 export const handleGetEpfMedals: PenguinHandler<[]> = ({ msg, penguin }) => {

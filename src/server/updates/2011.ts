@@ -8,6 +8,10 @@ export const UPDATES_2011: Update[] = [
     end: ['party']
   },
   {
+    date: '2011-01-10',
+    fieldOp: 30
+  },
+  {
     date: '2011-01-11',
     clothingCatalog: {
       file: 'archives:January11Style.swf',
@@ -365,6 +369,7 @@ export const UPDATES_2011: Update[] = [
   },
   {
     date: '2011-01-24',
+    fieldOp: 0, // temporary until we can add past #30
     temp: {
       party: {
         update: 'Brown Puffle Houses are available for free',
