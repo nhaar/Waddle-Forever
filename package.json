@@ -22,7 +22,8 @@
     "build-media": "cross-env PRODUCTION_BUILD=PRODUCTION tsx scripts/zip-media",
     "build-win": "yarn build-client-win&&node scripts/zip-win",
     "build-packages": "tsx scripts/build-packages.ts",
-    "debug-versions": "tsx scripts/dump-versions.ts"
+    "debug-versions": "tsx scripts/dump-versions.ts",
+    "cli": "cross-env NODE_ENV=dev tsx src/cli/main.ts"
   },
   "author": "CPS",
   "license": "MIT",

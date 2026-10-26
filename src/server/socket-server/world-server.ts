@@ -70,7 +70,16 @@ export class WorldServer implements MessageHandler {
     );
   }
 
-  public runCommand(penguinId: number, name: string, args: string[]) {
+  public runCommand(penguinId: number, command: string) {
+    const commandMatch = command.match(/(\w+)(.*)/);
+    if (commandMatch === null) {
+      return 'Invalid command';
+    }
+
+    const name = commandMatch[1];
+    const argString = commandMatch[2].trim();
+    const args = argString == '' ? [] : argString.split(/\s+/);
+  
     const penguin = this._world.getById(penguinId);
     if (penguin !== undefined) {
       const client = this._msg.getClient(penguin);

@@ -19,7 +19,6 @@ export function addDays(version: Version, days: number): Version {
   return dateToVersion(date);
 }
 
-/** Returns undefined if an invalid version, otherwise an array [year, month, day] */
 export function processVersion(version: string): [number, number, number] {
   const dateMatch = getDateMatch(version);
   if (dateMatch === null) {

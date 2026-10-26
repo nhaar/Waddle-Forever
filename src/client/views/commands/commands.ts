@@ -27,13 +27,8 @@ export const createCommands = getPopupCreator('commands', ['get-players', 'run-c
   ipcMain.on('run-command', (_, arg) => {
     const { id, command } = arg;
     if (typeof id === 'number' && typeof command === 'string') {
-      const commandMatch = command.match(/(\w+)(.*)/);
-      if (commandMatch !== null) {
-        const name = commandMatch[1];
-        const argString = commandMatch[2].trim();
-        const response = server.runCommand(id, name, argString == '' ? [] : argString.split(/\s+/));
-        commandsWindow.webContents.send('command-response', response);
-      }
+      const response = server.runCommand(id, command);
+      commandsWindow.webContents.send('command-response', response);
     }
   });
 
