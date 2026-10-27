@@ -730,6 +730,8 @@ export class Bot implements ClientSocket {
           this._simulate('s', this._data.isPreCpip() ? 'jr' : 'j#jr', ROOMS[target].id, ...spawn);
           await this.wait(1);
         }
+        const point = getRandomPointInRoom(this._world.getRoom(id));
+        await this.walk(...point);
         return;
       }
     }
