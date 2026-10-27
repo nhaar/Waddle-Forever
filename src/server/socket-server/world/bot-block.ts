@@ -32,9 +32,13 @@ export class Block {
     })
   }
 
+  public getCoords(i: number) {
+    return [i % this.rows, Math.floor(i / this.cols)];
+  }
+
   public getRandom() {
     const random = choose(this.valid);
-    return [random % this.rows, Math.floor(random / this.rows)];
+    return [random % this.rows, Math.floor(random / this.cols)];
   }
 
   public at(x: number, y: number) {
