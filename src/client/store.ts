@@ -16,6 +16,7 @@ export const defaultPublicValues: PublicSchema = {
   enableDiscordRPC: true,
   enableDiscordRPCTracker: true,
   lastLanguage: 'pt',
+  flashTracing: false,
 };
 
 const createPublicStore = () => {

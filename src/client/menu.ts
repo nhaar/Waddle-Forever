@@ -11,6 +11,7 @@ import { createMultiplayerSettings } from "./views/multiplayer/multiplayer";
 import { createCommands } from "./views/commands/commands";
 import { Popups } from "./popups";
 import { WorldServer } from "@server/socket-server/world-server";
+import { toggleFlashTracing } from "./flash-loader";
 
 const startMenu = (
   store: Store,
@@ -82,7 +83,14 @@ const startMenu = (
       {
         label: 'Toggle room tracking through Discord Rich Presence',
         click: () => enableOrDisableDiscordRPCLocationTracking(store, mainWindow)
-      }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Toggle SWF tracing',
+        click: () => toggleFlashTracing(store, mainWindow)
+      },
     ]
   };
 

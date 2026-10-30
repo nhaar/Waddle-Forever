@@ -3,4 +3,5 @@ export type PublicSchema = {
   enableDiscordRPC: boolean;
   enableDiscordRPCTracker: boolean;
   lastLanguage: string;
+  flashTracing: boolean;
 }
