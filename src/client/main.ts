@@ -32,7 +32,7 @@ if (process.platform === 'linux') {
 
 let server: WorldServer | null = null;
 
-loadFlashPlugin(app);
+loadFlashPlugin(store);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
