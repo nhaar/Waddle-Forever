@@ -362,52 +362,57 @@ class Grid {
     }
   }
 
+  /**
+   * Refreshes all of the tiles on the grid.
+   * This should be called after:
+   * - Ninja has moved ghost and/or targets have updated
+   * - After a card has been (de)selected
+   * 
+   * This will update any tiles to whether they should currently be
+   * move, heal, or attack.
+   * @param penguin If provided, only update the tiles for this player.
+   */
   public showTiles(penguin: SnowPlayer | null = null) {
     const frame = this.game.objects.getByName('ui_tile_frame');
     frame.placeSprite();
 
     for (const player of (penguin ? [penguin] : this.game.players)) {
+      // If ninja is KO, can't play anything, so don't show tiles
       if (player.ninja.isKO) continue;
 
+      if (player.selectedCard) {
+        // Card selected, so show attack tiles in range of the ghost.
+        const tiles = player.ninja.ghostTilesInRange(player.ninja.range);
+        this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite('ui_tile_attack', player) : t.hide(player));
+        continue;
+      }
+
+      const healTiles = [...player.ninja.targets].filter(t => t.type === 'heal').map(t => t.tile);
+
       for (const tile of this.tiles) {
+        if (healTiles.includes(tile)) {
+          // All healable targets in ghost range have this tile under them
+          tile.placeSprite('ui_tile_heal', player);
+          continue;
+        }
+
         if (!player.ninja.tilesInRange().includes(tile)) {
           tile.hide(player);
           continue;
         }
 
-        const enemyRange = this.game.enemies.some(enemy =>
-          enemy.tileRange > 0 &&
-          (enemy.x !== tile.x || enemy.y !== tile.y) &&
-          Math.abs(enemy.x - tile.x) <= enemy.tileRange &&
-          Math.abs(enemy.y - tile.y) <= enemy.tileRange
-        );
+        let tileName = 'ui_tile_move';
 
-        if (enemyRange) {
-          // Tile is within the extended tile range, can't move there
-          tile.placeSprite('ui_tile_no_move', player);
-        } else if (!this.canMove(tile.x, tile.y)) {
-          // Cannot move to the tile
-          let tileName = 'ui_tile_no_move';
-
-          const ninja = this.get(tile.x, tile.y);
-          if (ninja instanceof Ninja) {
-            if (ninja === player.ninja) {
-              tileName = 'ui_tile_move';
-            } else if (ninja.isKO && !ninja.player.disconnected) {
-              // Player can revive ninja
-              tileName = 'ui_tile_heal';
-            } else if (ninja.hp < ninja.maxHp && !ninja.player.disconnected && player.element === 'snow') {
-              // Player can heal ninja
-              tileName = 'ui_tile_heal';
-            }
-          } else if (ninja === player.ninja.ghost) {
-            tileName = 'ui_tile_move';
+        if (!this.canMove(tile.x, tile.y)) {
+          // Tile is blocked, so this should be no-move tile,
+          // UNLESS it is a ninja ghost or player's own ninja sprite
+          const obj = this.get(tile.x, tile.y);
+          if (obj === null || (obj !== player.ninja && !obj.name.endsWith('ninja_move_ghost'))) {
+            tileName = 'ui_tile_no_move';
           }
-
-          tile.placeSprite(tileName, player);
-        } else {
-          tile.placeSprite('ui_tile_move', player);
         }
+
+        tile.placeSprite(tileName, player);
       }
     }
   }
@@ -417,11 +422,6 @@ class Grid {
       this.game.objects.getByName('ui_tile_frame').hide();
     }
     this.tiles.forEach(t => t.hide(player))
-  }
-
-  public showAttackTiles(player: SnowPlayer) {
-    const tiles = player.ninja.ghostTilesInRange(player.ninja.range);
-    this.tiles.forEach(t => tiles.includes(t) ? t.placeSprite('ui_tile_attack', player) : t.hide(player));
   }
 
   private onTileClick(ctx: SnowPenguinContext, object: GameObject) {
@@ -488,7 +488,7 @@ class Grid {
 
   /** Check if a given spot is empty */
   public canMove(x: number, y: number) {
-    return this.isValid(x, y) && this._array[x][y] === null;
+    return this.isValid(x, y) && this._array[x][y] === null && !this.tileInEnemyTileRange(x, y);
   }
 
   /** Check if a ninja can move to a tile */
@@ -530,6 +530,16 @@ class Grid {
     }
 
     return false;
+  }
+
+  /** Returns true if the given x/y is in the tileRange of any enemy */
+  private tileInEnemyTileRange(x: number, y: number) {
+    return this.game.enemies.some(enemy =>
+      enemy.tileRange > 0 &&
+      (enemy.x !== x || enemy.y !== y) &&
+      Math.abs(enemy.x - x) <= enemy.tileRange &&
+      Math.abs(enemy.y - y) <= enemy.tileRange
+    );
   }
 
   /** Get the surrounding tiles to the given x, y */
@@ -927,7 +937,6 @@ class FrameworkEventListener {
 export class SnowPlayer {
   penguin: WorldPenguin | null = null;
   ninja: Ninja | null = null;
-  pid: number = -1;
   loggedIn: boolean = false;
   isReady: boolean = false;
   disconnected: boolean = false;
@@ -935,7 +944,6 @@ export class SnowPlayer {
   wasKO = false;
 
   battleMode: number = 0;
-  baseUrl: string = '';
   place: Place | null = null;
   element: string = '';
 
@@ -1032,7 +1040,7 @@ export class SnowPlayer {
       )
     ]);
 
-    await this.ctx.msg.send(this, 'W_ASSETSCOMPLETE', this.pid);
+    await this.ctx.msg.send(this, 'W_ASSETSCOMPLETE', this.penguin.id);
   }
 
   public getWindow(name: string | null = null, url: string | null = null) {
@@ -1603,7 +1611,7 @@ export class SnowGame {
 
     await this.callbacks.waitForAnims();
 
-    this.ninjas.forEach(n => n.resetSpriteSettings());
+    await Promise.all(this.ninjas.map(n => n.resetSpriteSettings()));
   }
 
   private async doNinjaActions() {
@@ -1627,6 +1635,7 @@ export class SnowGame {
     for (const target of this.ninjas) {
       const healing = ninjasWithoutCards.filter(n => n.selectedObject === target);
       for (const ninja of healing) {
+        await ninja.resetSpriteSettings(); // this may or may not do anything
         await ninja.healTarget(target);
 
         if (ninja.heals >= 15) {
@@ -2202,19 +2211,15 @@ export class SnowWorld {
   }
 
   public addPenguin(p: SnowPlayer): void {
-    this.penguins.set(p.pid, p);
+    this.penguins.set(p.penguin.id, p);
   }
 
   public getPenguin(id: number): SnowPlayer | undefined {
     return this.penguins.get(id);
   }
 
-  public disconnect(penguin: SnowPlayer) {
-    this.penguins.delete(penguin.pid);
-  }
-
-  public getById(id: number) {
-    return this.penguins.get(id);
+  public removePenguin(p: SnowPlayer) {
+    this.penguins.delete(p.penguin.id);
   }
 
   public get players() {

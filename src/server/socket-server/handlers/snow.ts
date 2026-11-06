@@ -31,7 +31,6 @@ export const handlePlaceContext: SnowHandler = async (ctx, placeName, query) => 
   }
 
   ctx.player.battleMode = Number(battleMode);
-  ctx.player.baseUrl = ctx.world.locations.base;
   ctx.player.place = place;
 }
 
@@ -76,7 +75,6 @@ export const handleLogin: SnowHandler = async (ctx, serverType, pid, token) => {
   console.log(`${p.name} is logging into CJ Snow`);
 
   player.penguin = p;
-  player.pid = p.id;
   world.addPenguin(ctx.player);
 
   player.loggedIn = true;
@@ -395,7 +393,7 @@ export const frameworkCardSelect: SnowFrameworkHandler = async ({ player, game }
 
   player.selectedCard = card;
   player.ninja.removeTargets();
-  game.grid.showAttackTiles(player);
+  game.grid.showTiles(player);
   player.ninja.playSound(sfxName('uitargetred'), player);
 }
 
@@ -451,7 +449,6 @@ export const frameworkCardConsumed: SnowFrameworkHandler = async ({ player }) =>
 export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ player, game }) => {
   if (player.isReady) return;
 
-  // snowflake had this named 'ui_confirm', but that doesnt seem to exist?
   const confirm = new GameObject(game, 'confirm', player.ninja.x, player.ninja.y, false, 0.5, 1.05);
   await confirm.placeObject();
   await confirm.placeSprite();
@@ -460,6 +457,8 @@ export const frameworkConfirmClicked: SnowFrameworkHandler = async ({ player, ga
   player.getWindow(Windows.UI).sendPayload('disableCards');
 
   game.grid.hideTiles(player);
+
+  player.ninja.hideTargets(true);
 
   player.isReady = true;
 

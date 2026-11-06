@@ -10,13 +10,18 @@ import { World } from './world';
 import { WorldPenguin } from './world-penguin';
 import { WorldRoom } from './world-room';
 import { choose, clamp, randomInt } from '@common/utils';
-import { Bot, BotAttributes, WriteFunction } from './bot';
+import { Bot, BotAttributes, SnowWriteFunction, WriteFunction } from './bot';
 import { FindFourTable } from './find-four';
 import { MancalaTable } from './mancala';
 import { XtMessenger } from '../xt-messenger';
 import { joinWaddle } from '../handlers/room';
 import path from 'path';
 import { generateBots, generateRandomBot } from './bot-generation';
+import { SnowServer } from '../snow-server';
+import { Room } from '@server/game-logic/rooms';
+import { WorldServer } from '../world-server';
+import { convertXtMessage } from '../xt-handler';
+import { convertSnowMessage } from '../snow-data-handler';
 
 const BOT_ID_BASE = 9_000_000;
 
@@ -79,11 +84,9 @@ const MAX_SIZE = 500;
 
 export class BotManager {
   private _bots = new Map<number, Bot>();
-  private _nextId = BOT_ID_BASE;
+  private _nextId: number;
   private _timer: NodeJS.Timeout | null = null;
-  private _settings: BotSettings = { ...DEFAULT_BOT_SETTINGS };
-  /** Bots sitting in a waddle or at a table, which must stop waddling about */
-  /** Bots currently at home with an open igloo, and when they will head back out */
+  private _settings: BotSettings;
   private _on = false;
   private _waddleSeen = new Map<number, number>();
   private _waddleLastSeat = new Map<number, number>();
@@ -91,12 +94,26 @@ export class BotManager {
 
   constructor(
     private _world: World,
+    private _snow: SnowServer,
     private _msg: XtMessenger,
     private _data: GameData,
     private _appSettings: SettingsManager,
     private _writeFn: WriteFunction,
+    private _snowWriteFn: SnowWriteFunction,
     private disconnect: (b: Bot) => void
   ) {
+    this._init();
+  }
+
+  private _init() {
+    this._bots.clear();
+    this._nextId = BOT_ID_BASE;
+    this._timer = null;
+    this._settings = { ...DEFAULT_BOT_SETTINGS };
+    this._on = false;
+    this._waddleSeen.clear();
+    this._waddleLastSeat.clear();
+    this._pendingGeneration = false;
   }
 
   public setOff() {
@@ -161,10 +178,14 @@ export class BotManager {
     }
   }
 
-  /** Removes every bot and stops the loop. Call this when the world is reset. */
-  public shutdown(): void {
+  /**
+   * Removes every bot, stops the loop, and resets properties to their default.
+   * Call this when the world is reset.
+   */
+  public reset(): void {
     this.stop();
     [...this._bots.keys()].forEach(id => this.despawn(id));
+    this._init();
   }
 
   // -------------------------------------------------------------------------
@@ -225,11 +246,11 @@ export class BotManager {
       this._world,
       Date.now() + this.delay(),
       this._writeFn,
+      this._snowWriteFn,
       attrs
     )
     this._msg.linkClient(bot, bot.penguin);
     this._bots.set(id, bot);
-    this._msg
     this.decorateIgloo(penguin);
 
     bot.enter(roomId ?? bot.chooseRoom());
@@ -245,6 +266,7 @@ export class BotManager {
     this.disconnect(bot);
     this._world.closeIgloo(bot.penguin);
     this._world.disconnect(bot.penguin);
+    if (bot.snowBot !== null) this._snow.disconnect(bot.snowBot);
     this._bots.delete(id);
   }
 
@@ -338,6 +360,28 @@ export class BotManager {
     }
   }
 
+  private tickSnowMatchmaker(): void {
+    const mm = this._snow.world.matchMaker;
+
+    for (const room of mm.rooms) {
+      const occupants = room.players;
+      const waitingHuman = occupants.find(p => !isBot(p.penguin));
+
+      if (!waitingHuman || room.full) {
+        continue;
+      }
+
+      // choose an element that isn't taken yet
+      const element = choose(
+        ['fire', 'water', 'snow'].filter(e => occupants.every(p => p.element !== e))
+      );
+
+      const bot = this.spawnInto(Room.CardJitsuSnow);
+
+      bot.joinSnow(this._snow, element, waitingHuman.battleMode);
+    }
+  }
+
   private tickTables(room: WorldRoom): void {
     for (const table of room.getTables()) {
       if (table.hasStarted() || table.hasEnded()) {
@@ -371,6 +415,8 @@ export class BotManager {
       this.tickWaddles(room);
       this.tickTables(room);
     });
+
+    this.tickSnowMatchmaker();
   }
 
   private tick(): void {
@@ -420,4 +466,33 @@ export class BotManager {
       console.error('could not decorate bot igloo', e);
     }
   }
+}
+
+export const getBotManager = (
+  world: World,
+  worldServer: WorldServer,
+  snowServer: SnowServer,
+  gameData: GameData,
+  settings: SettingsManager,
+) => {
+  return new BotManager(
+    world, snowServer, worldServer.msg, gameData, settings,
+    (b, e, c, ...a) => {
+      worldServer.xtHandler.handle(
+        b,
+        worldServer.getContext(b),
+        convertXtMessage(e, c, ...a)
+      );
+    },
+    (b, c, ...a) => {
+      snowServer.handle(
+        b,
+        convertSnowMessage(c, ...a)
+      );
+    },
+    (b) => {
+      worldServer.disconnect(b);
+      if (b.snowBot !== null) snowServer.disconnect(b.snowBot);
+    }
+  );
 }

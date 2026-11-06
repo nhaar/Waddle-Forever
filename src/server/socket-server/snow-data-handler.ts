@@ -33,6 +33,10 @@ export interface SnowPenguinContext extends SnowContext {
   game: SnowGame | null
 }
 
+export const convertSnowMessage = (code: string, ...args: Array<string | number>): string => {
+  return [`/${code}`, ...args.map(String)].join(' ');
+}
+
 export class SnowDataHandler {
   constructor(
     private _callbacks: Map<string, SnowHandler>,

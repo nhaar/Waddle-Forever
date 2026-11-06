@@ -56,6 +56,10 @@ class MatchmakingRoom<Penguin> {
   get full() {
     return this._players.length === this._max;
   }
+
+  get players() {
+    return this._players;
+  }
 }
 
 export class MatchMaker<Penguin> {
@@ -77,6 +81,10 @@ export class MatchMaker<Penguin> {
 
   get capacity() {
     return this._maxPlayers;
+  }
+
+  get rooms() {
+    return this._rooms;
   }
 
   /** Add a player to matchmaking with others in the server */

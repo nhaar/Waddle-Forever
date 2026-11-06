@@ -16,7 +16,7 @@ import { World } from "./world/world";
 import { addBakeryListener } from "./handlers/party";
 import { addMatchmakerListeners } from "./handlers/ninja";
 
-import { convertXtMessage, XtHandler } from "./xt-handler";
+import { XtHandler } from "./xt-handler";
 import { XmlHandler } from "./xml-handler";
 import { createWorldXtHandler } from "./world-handlers";
 import { createLoginXmlHandler } from "./login-handlers";
@@ -33,12 +33,11 @@ export class WorldServer implements MessageHandler {
   private _xtHandler: XtHandler;
   private _xmlHandler: XmlHandler;
   private _persister: PenguinPersister;
-  private _botManager: BotManager;
+  public botManager: BotManager;
   private _mods: ModManager;
   
   constructor(private _settings: SettingsManager, private _gameData: GameData, private _db: PenguinRepository, private _world: World) {
     this._off = new OfflineWorld(_db);
-    this._botManager = this.getBotManager();
 
     this._mods = new ModManager(this._gameData);
 
@@ -54,20 +53,6 @@ export class WorldServer implements MessageHandler {
     this._xmlHandler = createLoginXmlHandler();
 
     this.init();
-  }
-
-  private getBotManager(): BotManager {
-    return new BotManager(
-      this._world, this._msg, this._gameData, this._settings,
-      (b, e, c, ...a) => {
-        this._xtHandler.handle(
-          b,
-          this.getContext(b),
-          convertXtMessage(e, c, ...a)
-        );
-      },
-      (b) => this.disconnect(b)
-    );
   }
 
   public runCommand(penguinId: number, command: string) {
@@ -94,7 +79,7 @@ export class WorldServer implements MessageHandler {
         off: this._off,
         client,
         room: this._world.getPenguinRoom(penguin),
-        bot: this._botManager
+        bot: this.botManager
       }, name, args);
       return res || `Command '${name}' ran successfully`;
     }
@@ -116,14 +101,13 @@ export class WorldServer implements MessageHandler {
   public async reset() {
     await Promise.all(this._msg.getClients().map(client => this.disconnect(client)));
     this._msg.close();
-    this._botManager.shutdown();
+    this.botManager.reset();
     this._msg = new XtMessenger();
     this._world.init();
     this.init();
-    this._botManager = this.getBotManager();
   }
 
-  private getContext(client: ClientSocket): WorldContext {
+  public getContext(client: ClientSocket): WorldContext {
     const penguin = this._msg.getPenguin(client);
     return {
       world: this._world,
@@ -166,6 +150,14 @@ export class WorldServer implements MessageHandler {
 
   public get mods() {
     return this._mods;
+  }
+
+  public get xtHandler() {
+    return this._xtHandler;
+  }
+
+  public get msg() {
+    return this._msg;
   }
 }
 

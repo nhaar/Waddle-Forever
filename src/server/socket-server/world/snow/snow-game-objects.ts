@@ -45,6 +45,7 @@ export class GameObject {
 
   public id: number = -1;
   public onClick: ObjectOnClick = null;
+  private _spriteNames = new Map<SnowPlayer, string>();
 
   constructor(
     public game: SnowGame,
@@ -204,6 +205,10 @@ export class GameObject {
   }
 
   public async placeSprite(name: string = this.name, target: SnowPlayer | null = null) {
+    if (target) {
+      if (this._spriteNames.get(target) === name) return;
+      this._spriteNames.set(target, name);
+    }
     await this.ctx.msg.send(
       target ?? this.clients,
       'O_SPRITE',
@@ -213,6 +218,7 @@ export class GameObject {
     );
   }
 
+  // unused
   public async loadSprite(name: string) {
     await this.ctx.msg.send(
       this.clients,
@@ -351,21 +357,31 @@ class Target extends LocalGameObject {
     healSelectedIdle: 'ui_target_green_heal_selected_idle_anim',
   }
 
-  private type: 'attack' | 'heal' = 'attack';
+  private _type: 'attack' | 'heal' = 'attack';
   public selected: boolean = false;
+  private _tile?: GameObject;
 
   constructor(private ninja: Ninja, x: number, y: number) {
     super(ninja.player, ninja.game, 'Target', x, y, 0.5, 1.05);
+    this._tile = this.game.grid.getTile(x, y);
+  }
+
+  get tile() {
+    return this._tile;
   }
 
   get object() {
     return this.game.grid.get(this.x, this.y);
   }
 
+  get type() {
+    return this._type;
+  }
+
   public showAttack() {
     if (this.selected) return;
 
-    this.type = 'attack';
+    this._type = 'attack';
     this.placeObject();
     this.animateObject(this.anims.attackIntro, { reset: true });
     this.animateObject(this.anims.attackIdle, { playStyle: 'loop' });
@@ -376,7 +392,7 @@ class Target extends LocalGameObject {
   public showHeal() {
     if (this.selected) return;
 
-    this.type = 'heal';
+    this._type = 'heal';
     this.placeObject();
     this.animateObject(this.anims.healIntro, { reset: true });
     this.animateObject(this.anims.healIdle, { playStyle: 'loop' });
@@ -1043,6 +1059,11 @@ export abstract class Ninja extends GameObject {
     return this.hp <= 0;
   }
 
+  /** Returns the [x, y] of the placed ghost, or of the ninja's current position */
+  public get selectedPos(): [number, number] {
+    return this.placedGhost ? [this.ghost.x, this.ghost.y] : [this.x, this.y];
+  }
+
   public async removeObject() {
     this.healthBar.removeObject();
     this.ghost.removeObject();
@@ -1197,6 +1218,7 @@ export abstract class Ninja extends GameObject {
     if (this.ghost.x === x && this.ghost.y === y) {
       this.hideGhost();
       this.showTargets();
+      this.game.grid.showTiles(this.player);
       return;
     }
 
@@ -1205,10 +1227,11 @@ export abstract class Ninja extends GameObject {
     }
 
     this.game.grid.move(this.ghost, x, y);
+    this.showTargets();
+    this.game.grid.showTiles(this.player);
     await this.ghost.placeObject();
     await this.ghost.placeSprite();
     this.ghost.playSound(sfxName('uiselecttile'));
-    this.showTargets();
   }
 
   public async hideGhost(reset: boolean = true) {
@@ -1221,13 +1244,10 @@ export abstract class Ninja extends GameObject {
     }
   }
 
-  public async showTargets() {
+  public showTargets() {
     this.removeTargets();
 
-    const healable = this.healableTiles(
-      this.placedGhost ? this.ghost.x : this.x,
-      this.placedGhost ? this.ghost.y : this.y
-    );
+    const healable = this.healableTiles(...this.selectedPos);
 
     for (const tile of healable) {
       const t = new Target(this, tile.x, tile.y);
@@ -1235,10 +1255,7 @@ export abstract class Ninja extends GameObject {
       t.showHeal();
     }
 
-    const attackable = this.attackableTiles(
-      this.placedGhost ? this.ghost.x : this.x,
-      this.placedGhost ? this.ghost.y : this.y
-    );
+    const attackable = this.attackableTiles(...this.selectedPos);
 
     for (const tile of attackable) {
       const obj = this.game.grid.get(tile.x, tile.y);
@@ -1254,8 +1271,10 @@ export abstract class Ninja extends GameObject {
     }
   }
 
-  public hideTargets() {
-    this.targets.forEach(t => t.hide());
+  public hideTargets(exceptSelected: boolean = false) {
+    this.targets.forEach(t => {
+      if (!exceptSelected || t !== this.selectedTarget) t.hide();
+    });
   }
 
   public removeTargets() {
@@ -1307,7 +1326,7 @@ export abstract class Ninja extends GameObject {
     }
   }
 
-  private healableTiles(tx: number, ty: number) {
+  public healableTiles(tx: number, ty: number) {
     const healable: GameObject[] = [];
 
     if (this.isKO) return healable;
@@ -1333,7 +1352,7 @@ export abstract class Ninja extends GameObject {
     return healable;
   }
 
-  private attackableTiles(tx: number, ty: number) {
+  public attackableTiles(tx: number, ty: number) {
     const attackable: GameObject[] = [];
 
     if (this.isKO) return attackable;
@@ -3042,8 +3061,9 @@ export class MemberCard extends GameObject {
   }
 
   async place() {
-    this.x = this.ninja.placedGhost ? this.ninja.ghost.x : this.ninja.x;
-    this.y = this.ninja.placedGhost ? this.ninja.ghost.y : this.ninja.y;
+    const [x, y] = this.ninja.selectedPos;
+    this.x = x;
+    this.y = y;
 
     await this.placeObject();
     await this.placeSprite(`ui_card_member_${this.player.element}`);
