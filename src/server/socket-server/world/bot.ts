@@ -11,6 +11,8 @@ import { CardJitsu, NinjaPlayer } from "./card";
 import { getNameFromId, getRoomFromName, IGLOO_ROOM_BASE, ROOMS } from "@server/game-data/rooms";
 import { getItemTypeFromEquipProp } from "@server/timelines/items";
 import { getBlock, findPathBetweenBlockPoints, compactPath, findLeftmostMiddlemostPosition, getRandomPositionFromBlock } from "./bot-block";
+import { SnowBot } from "./snow/snow-bot";
+import { SnowServer } from "../snow-server";
 
 const CHANCE_NO_ITEM = 0.3;
 const CHANCE_AVAILABLE_ITEM = 0.2;
@@ -45,6 +47,8 @@ export function generateRandomOutfit(
 
 export type WriteFunction = (b: Bot, ext: string, code: string, ...args: Array<string | number>) => void;
 type SendFunction = (ext: string, code: string, ...args: Array<string | number>) => void;
+
+export type SnowWriteFunction = (b: SnowBot, code: string, ...args: Array<string | number>) => void;
 
 // TODO -> Complete tracking of all walkable boxes
 //         (If possible with a FFDEC script)
@@ -681,8 +685,9 @@ function getRandomPointInRoom(room: WorldRoom) {
 
 export class Bot implements ClientSocket {
   private _brain: BotBrain | null = null;
-  public get busy () {
-    return this._brain !== null;
+  private _snowBot: SnowBot | null = null;
+  public get busy() {
+    return this._brain !== null || this._snowBot !== null;
   }
   private _timers = new Set<NodeJS.Timeout>();
 
@@ -711,6 +716,7 @@ export class Bot implements ClientSocket {
     private _world: World,
     public nextActionAt: number,
     writeFn: WriteFunction,
+    private _snowWriteFn: SnowWriteFunction,
     private _attributes: BotAttributes
   ) {
     this._simulate = (e, c, ...a) => writeFn(this, e, c, ...a);
@@ -718,6 +724,10 @@ export class Bot implements ClientSocket {
 
   public get penguin() {
     return this._penguin;
+  }
+
+  public get snowBot() {
+    return this._snowBot;
   }
 
   public async enter(id: number): Promise<void> {
@@ -829,6 +839,24 @@ export class Bot implements ClientSocket {
         this.exitGameMode();
       }
     );
+  }
+
+  public joinSnow(snow: SnowServer, element: string, battle: number): void {
+    this._snowBot = new SnowBot(
+      this._snowWriteFn,
+      () => {
+        snow.disconnect(this._snowBot);
+        this._snowBot = null;
+        this.exitGameMode();
+      }
+    );
+    snow.connect(this._snowBot);
+    const player = snow.msg.getPenguin(this._snowBot);
+    player.place = snow.world.places['snow_lobby'];
+    player.penguin = this.penguin;
+    snow.world.addPenguin(player);
+    this._snowBot.setPlayer(player);
+    this._snowBot.joinMatchmaker(element, battle);
   }
 
   public sitAtTable(tableId: number): void {

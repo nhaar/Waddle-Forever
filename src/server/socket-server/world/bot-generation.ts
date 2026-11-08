@@ -228,6 +228,7 @@ function generateNinjaStats(
     }
     i++;
   }
+  return ranks;
 }
 
 function generateRandomPenguin(data: GameData, attrs: BotAttributes): PenguinJson {

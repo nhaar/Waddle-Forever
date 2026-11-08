@@ -17,7 +17,7 @@ import { setupMatchMaker } from "./handlers/snow";
 import { SnowMessenger } from "./snow-messenger";
 import { World } from "./world/world";
 
-class SnowServer implements MessageHandler {
+export class SnowServer implements MessageHandler {
   private _msg: SnowMessenger;
   private _handler: SnowDataHandler;
   private _xmlHandler: XmlHandler;
@@ -42,6 +42,14 @@ class SnowServer implements MessageHandler {
 
     this._world.init(this.getContext());
     setupMatchMaker(this._world);
+  }
+
+  public get world() {
+    return this._world;
+  }
+
+  public get msg() {
+    return this._msg;
   }
 
   private getContext(): SnowContext {
@@ -87,7 +95,7 @@ class SnowServer implements MessageHandler {
   public async disconnect(cs: ClientSocket) {
     const { player, game } = this.getPenguinCtx(cs);
     player.disconnected = true;
-    this._world.disconnect(player);
+    if (player.penguin !== null) this._world.removePenguin(player);
     if (game !== null && player.ninja !== null) {
       game.callbacks.forceFireClientEvents(player);
       game.windowEvents.fireAllForPlayer(player);
@@ -103,8 +111,9 @@ export const setupSnowServer = async (
   db: PenguinRepository,
   gameData: GameData,
   world: World
-): Promise<EffectService<void>> => {
+): Promise<EffectService<SnowServer>> => {
   const snowServer = new SnowServer(gameData, settings, world, db);
   await snowServer.setAssets();
   await setupSocketServer('CJ Snow', SNOW_PORT, snowServer);
+  return snowServer;
 }

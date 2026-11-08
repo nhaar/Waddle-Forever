@@ -3,13 +3,14 @@ import { VERSION } from '@common/constants';
 import { USER_DATA_FOLDER } from '@common/paths';
 import settingsManager from './settings';
 import { GameData } from './timelines/game-data';
+import { getBotManager } from './socket-server/world/bots';
 
 import { HttpServer } from './http';
 import { setupWorldServer } from './socket-server/world-server';
 import { setupLoginServer } from './socket-server/login-server';
 import { setupSnowServer } from './socket-server/snow-server';
 
-/** Initialize the db, game data, and the 3 services (http, login, world). Returns the world server and list of failed mods. */
+/** Initialize the db, game data, and the 4 services (http, login, world, cj snow). Returns the world server and list of failed mods. */
 export async function startServices() {
   const data = new DataFolder(USER_DATA_FOLDER);
   data.init(VERSION);
@@ -30,7 +31,11 @@ export async function startServices() {
 
   // TODO: would be nice if we could only have this available
   // when cj snow is available on the timeline (can dynamically start or stop)
-  await setupSnowServer(settingsManager, db, gameData, world);
+  const snowServer = await setupSnowServer(settingsManager, db, gameData, world);
+
+  const botManager = getBotManager(world, worldServer, snowServer, gameData, settingsManager);
+
+  worldServer.botManager = botManager;
 
   const failedMods = worldServer.mods.initializeMods();
 
