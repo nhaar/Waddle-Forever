@@ -126,7 +126,14 @@ const allSettings: Setting[] = [
       update({ medieval_sound_fix: checked });
       api.clearCache();
     }
-  }
+  },
+  {
+    key: 'cjsnow_solo',
+    elementId: 'cjsnow-solo-input',
+    onChange: ({ checked }) => {
+      update({ cjsnow_solo: checked });
+    }
+  },
 ]
 
 for (const setting of allSettings) {

@@ -42,6 +42,25 @@ class SnowServer implements MessageHandler {
 
     this._world.init(this.getContext());
     setupMatchMaker(this._world);
+
+    settings.addListener(() => {
+      if (this.soloMatches !== settings.settings.cjsnow_solo) {
+        this.reset();
+      }
+    });
+  }
+
+  private get soloMatches() {
+    return this._world.matchMaker.capacity === 1;
+  }
+
+  public async reset() {
+    await Promise.all(this._msg.getClients().map(client => this.disconnect(client)));
+    this._msg.close();
+    this._msg = new SnowMessenger();
+    this._world.games.clear();
+    this._world.init(this.getContext());
+    setupMatchMaker(this._world);
   }
 
   private getContext(): SnowContext {
@@ -86,6 +105,7 @@ class SnowServer implements MessageHandler {
 
   public async disconnect(cs: ClientSocket) {
     const { player, game } = this.getPenguinCtx(cs);
+    if (!player || player.disconnected) return;
     player.disconnected = true;
     this._world.disconnect(player);
     if (game !== null && player.ninja !== null) {

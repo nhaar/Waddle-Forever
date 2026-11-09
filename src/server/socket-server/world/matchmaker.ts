@@ -30,7 +30,9 @@ class MatchmakingRoom<Penguin> {
   }
 
   private resetTime() {
-    this._time = 10;
+    // for solo matches, make the tick time short
+    // so we aren't wasting any time
+    this._time = this._max === 1 ? 1 : 10;
   }
 
   addPlayer(player: Penguin) {

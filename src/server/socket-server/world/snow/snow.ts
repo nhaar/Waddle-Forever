@@ -2162,7 +2162,7 @@ export class SnowWorld {
   soundAssets: AssetCollection = new AssetCollection();
   assets: AssetCollection = new AssetCollection();
 
-  matchMaker = new MatchMaker<SnowPlayer>(3);
+  matchMaker: MatchMaker<SnowPlayer>;
 
   games: Set<SnowGame> = new Set();
 
@@ -2181,11 +2181,9 @@ export class SnowWorld {
   }
 
   public init(ctx: SnowContext) {
-    if (this.ctx !== null) {
-      throw new Error('World context is already set!');
-    }
-
     this.ctx = ctx;
+
+    this.matchMaker = new MatchMaker(this.ctx.settings.settings.cjsnow_solo ? 1 : 3);
 
     const base = makeUrl(ctx.settings.targetIP, ctx.settings.targetPort);
     this.locations = {
