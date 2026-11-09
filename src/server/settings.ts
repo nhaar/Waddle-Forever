@@ -19,6 +19,7 @@ export type BooleanSettingKey =
   'medieval_sound_fix' |
   'inventory_accuracy' |
   'no_create_via_login' |
+  'cjsnow_solo' |
   'faq_warning';
 
 export type Settings = {
@@ -73,6 +74,7 @@ export class SettingsManager {
       ignored_version: this.readString(settingsJson, 'ignored_version'),
       medieval_sound_fix: this.readBoolean(settingsJson, 'medieval_sound_fix', true),
       inventory_accuracy: this.readBoolean(settingsJson, 'inventory_accuracy', true),
+      cjsnow_solo: this.readBoolean(settingsJson, 'cjsnow_solo', false),
       faq_warning: this.readBoolean(settingsJson, 'faq_warning', false)
     };
 
