@@ -6,8 +6,9 @@ import { getPopupCreator } from "@client/popups";
 import { SettingsManager } from "@server/settings";
 import { ModError } from "@server/mods";
 import { WorldServer } from "@server/socket-server/world-server";
+import { createModsGuide } from "../mdviewer/mdviewer";
 
-export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
+export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mods-folder', 'mod-from-path', 'get-mods'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer, wins) => {
   const modsWindow = new BrowserWindow({
     width: 500,
     height: 500,
@@ -15,7 +16,8 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
     webPreferences: {
       preload: path.join(__dirname, 'mods-preload.js'),
     },
-    resizable: false
+    resizable: false,
+    parent: mainWindow
   });
 
   modsWindow.setMenu(null);
@@ -79,6 +81,10 @@ export const createModsWindow = getPopupCreator('mods', ['update-mod', 'open-mod
       }
       event.reply('mod-created', err);
     })
+  });
+
+  ipcMain.on('open-mods-guide', () => {
+    createModsGuide(mainWindow, wins, settings, server);
   });
 
   modsWindow.webContents.on('did-finish-load', sendMods);

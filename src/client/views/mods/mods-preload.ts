@@ -7,7 +7,8 @@ addDispatchEventListeners(['mod-error', 'get-mods'], ipcRenderer);
   updateMod: (name: string, state: boolean) => ipcRenderer.send('update-mod', { name, state }),
   openModsFolder: () => ipcRenderer.send('open-mods-folder'),
   makeModFromPath: (modName: string, path: string) => ipcRenderer.send('mod-from-path', modName, path),
-  getMods: () => ipcRenderer.send('get-mods')
+  getMods: () => ipcRenderer.send('get-mods'),
+  openModsGuide: () => ipcRenderer.send('open-mods-guide')
 };
 
 ipcRenderer.on('mod-created', (_, error) => {
