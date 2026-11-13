@@ -50,6 +50,10 @@ document.getElementById('update-mods')?.addEventListener('click', () => {
   modsApi.getMods();
 });
 
+document.getElementById('open-mods-guide')?.addEventListener('click', () => {
+  modsApi.openModsGuide();
+});
+
 const createModPrompt = document.getElementById('mods-clipboard-prompt')!;
 
 document.getElementById('mod-from-clipboard')?.addEventListener('click', () => {

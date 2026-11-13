@@ -13,3 +13,8 @@ a {
   display: flex;
   flex-direction: column;
 }
+
+#open-mods-guide {
+  text-decoration: underline;
+  cursor: pointer;
+}
