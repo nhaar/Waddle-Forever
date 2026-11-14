@@ -149,8 +149,6 @@ export const LOCAL_PATHS: Record<string, string> = {
   oops_game_waves_competition: "membership/game_waves_competition.swf",
   oops_game_waves_survival: "membership/game_waves_survival.swf",
   stampbook_cover_storage: "membership/stampbook.swf",
-  party1: "membership/party1.swf",
-  party2: "membership/party2.swf",
   oops_dojowater_room: "membership/game_water.swf",
   oops_party11_catalog: "membership/party1.swf",
   oops_party11_room: "membership/party2.swf",
