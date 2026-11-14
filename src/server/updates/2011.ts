@@ -2772,6 +2772,7 @@ export const UPDATES_2011: Update[] = [
           coffee: 221,
           pizza: 221,
           party: 221,
+          party2: 221,
           beach: 297,
           beacon: 297,
           cove: 297,
