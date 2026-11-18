@@ -2,19 +2,19 @@ import { GameData } from "@server/timelines/game-data";
 
 export function getGameStrings(d: GameData): string {
   const hunt = d.getHunt();
-  const gameStrings = Object.fromEntries(d.getGameStrings());
+  const langStrings = Object.fromEntries(d.getLangStrings());
   if (hunt !== null && hunt !== undefined) {
-    gameStrings['scavenger_title'] = hunt.lang.en.title;
-    gameStrings['scavenger_claim_prize'] = hunt.lang.en.claim;
-    gameStrings['scavenger_continue'] = hunt.lang.en.continue;
-    gameStrings['scavenger_clue0'] = hunt.lang.en.clues[0];
-    gameStrings['scavenger_clue1'] = hunt.lang.en.clues[1];
-    gameStrings['scavenger_clue2'] = hunt.lang.en.clues[2];
-    gameStrings['scavenger_clue3'] = hunt.lang.en.clues[3];
-    gameStrings['scavenger_clue4'] = hunt.lang.en.clues[4];
-    gameStrings['scavenger_clue5'] = hunt.lang.en.clues[5];
-    gameStrings['scavenger_clue6'] = hunt.lang.en.clues[6];
-    gameStrings['scavenger_clue7'] = hunt.lang.en.clues[7];
+    langStrings['scavenger_title'] = hunt.lang.en.title;
+    langStrings['scavenger_claim_prize'] = hunt.lang.en.claim;
+    langStrings['scavenger_continue'] = hunt.lang.en.continue;
+    langStrings['scavenger_clue0'] = hunt.lang.en.clues[0];
+    langStrings['scavenger_clue1'] = hunt.lang.en.clues[1];
+    langStrings['scavenger_clue2'] = hunt.lang.en.clues[2];
+    langStrings['scavenger_clue3'] = hunt.lang.en.clues[3];
+    langStrings['scavenger_clue4'] = hunt.lang.en.clues[4];
+    langStrings['scavenger_clue5'] = hunt.lang.en.clues[5];
+    langStrings['scavenger_clue6'] = hunt.lang.en.clues[6];
+    langStrings['scavenger_clue7'] = hunt.lang.en.clues[7];
   }
 
   const json = {
@@ -9620,7 +9620,7 @@ export function getGameStrings(d: GameData): string {
         "w.app.february2017.login0322",
         "Thank you for making Club Penguin so incredibly inspiring. Waddle on, everyone!"
       ],
-      ...Object.entries(gameStrings)
+      ...Object.entries(langStrings)
     ],
     "error_lang": [
       [

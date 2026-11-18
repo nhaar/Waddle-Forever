@@ -1,5 +1,5 @@
 import { iterateEntries } from "@common/utils";
-import { Action, addVarToStack, applyJsonToObject, callMethod, createBytecode, createEmptyObjectVar, createJsonDeclaration, defineLocal, defineLocalJson, getMemberChain, wrapPCode, PCodeRep } from "@common/flash/avm1";
+import { Action, getVar, applyJsonToObject, callMethod, createBytecode, newObject, createJsonDeclaration, defineLocal, defineLocalJson, getMemberChain, wrapPCode, PCodeRep, setMember, add2 } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { RoomName, ROOMS } from "../game-data/rooms";
 import { IGLOO_FLOORING, IGLOO_TYPES } from "../game-logic/iglooItems";
@@ -25,8 +25,8 @@ function getIglooCrumbs(): PCodeRep {
 function getServerCrumbs(ip: string, loginPort: number, worldPort: number, modern: boolean): PCodeRep {
   const code: PCodeRep = [
     // normal servers
-    ...createEmptyObjectVar("servers"),
-    ...createEmptyObjectVar("login_server"),
+    ...defineLocal("servers", newObject()),
+    ...defineLocal("login_server", newObject()),
   ]
 
   if (modern) {
@@ -111,8 +111,8 @@ function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
     }
 
     const data: any = {
-      type: wrapPCode(addVarToStack(typeVar)),
-      sort: wrapPCode(addVarToStack(sortVar)),
+      type: wrapPCode(getVar(typeVar)),
+      sort: wrapPCode(getVar(sortVar)),
       cost: prices.get(row.id) ?? row.cost
     };
 
@@ -121,7 +121,7 @@ function getFurnitureCrumbs(prices: Map<number, number>): PCodeRep {
       if (interactiveVar === undefined) {
         throw new Error('Invalid interactive type');
       }
-      data.interactive = wrapPCode(addVarToStack(interactiveVar));
+      data.interactive = wrapPCode(getVar(interactiveVar));
     }
 
     return [row.id, data]
@@ -152,7 +152,7 @@ function getPaperCrumbs(
 
   return applyJsonToObject("paper_crumbs", Object.fromEntries(data.getItems().map(item => {
     const data: any = {
-      type: wrapPCode(addVarToStack(types[item.type])),
+      type: wrapPCode(getVar(types[item.type])),
       cost: item.cost,
       is_member: item.isMember
     };
@@ -182,8 +182,8 @@ function getGlobalPath(paths: Map<string, string>, useCompositePaths: boolean): 
   // TODO put below code in version check. Currently all paths in GLOBAL_PATHS are written twice
   if (useCompositePaths) {
     code.push(
-      ...defineLocal("global_content", callMethod(addVarToStack("shell"), "getGlobalContentPath", false)),
-      ...defineLocal("game_path", callMethod(addVarToStack("shell"), "getGameContentPath", false))
+      ...defineLocal("global_content", callMethod(getVar("shell"), "getGlobalContentPath", false)),
+      ...defineLocal("game_path", callMethod(getVar("shell"), "getGameContentPath", false))
     )
     const newPaths: Record<string, string> = {};
     paths.forEach((value, key) => {
@@ -195,26 +195,18 @@ function getGlobalPath(paths: Map<string, string>, useCompositePaths: boolean): 
     iterateEntries(compositePaths, (key, value) => {
       const [base, path] = value;
       code.push(
-        [Action.Push, "global_path"],
-        Action.GetVariable,
-        [Action.Push, key, base],
-        Action.GetVariable,
-        [Action.Push, path],
-        Action.Add2,
-        Action.SetMember
+        ...setMember(getVar("global_path"), key, add2(
+          getVar(base),
+          createJsonDeclaration(path)
+        ))
       )
     });
   } else {
-    [...Object.entries(GLOBAL_PATHS), ...paths.entries()].forEach(([key, path]) => {
-      if (path !== undefined && path !== null) {
-        code.push(
-          [Action.Push, "global_path"],
-          Action.GetVariable,
-          [Action.Push, key, path],
-          Action.SetMember
-        )
-      }
-    });
+    code.push(
+      ...applyJsonToObject("global_path", Object.fromEntries(
+        [...Object.entries(GLOBAL_PATHS), ...paths.entries()]
+      ))
+    )
   }
   
   return code;
@@ -222,9 +214,9 @@ function getGlobalPath(paths: Map<string, string>, useCompositePaths: boolean): 
 
 function getScavengerHunt(reward: number, member: boolean) {
   return [
-    ...createEmptyObjectVar("scavenger_hunt_crumbs"),
+    ...defineLocal("scavenger_hunt_crumbs", newObject()),
     ...applyJsonToObject("scavenger_hunt_crumbs", {
-      hunt_inactive: true, member_hunt: member, itemRewardID: reward
+      hunt_active: true, member_hunt: member, itemRewardID: reward
     })
   ];
 }
@@ -234,28 +226,24 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager, m: ModManage
   const hunt = d.getHunt();
 
   const code: PCodeRep = [
-    ...defineLocal("shell", callMethod(addVarToStack("_global"), "getCurrentShell", false)),
+    ...defineLocal("shell", callMethod(getVar("_global"), "getCurrentShell", false)),
 
-    [Action.Push, "igloo_options", 0],
-    Action.InitObject,
-    Action.DefineLocal,
+    ...defineLocalJson("igloo_options", {}),
     ...applyJsonToObject("igloo_options", { contestRunning: false }),
 
-    [Action.Push, "igloo_crumbs", 0],
-    Action.InitObject,
-    Action.DefineLocal,
+    ...defineLocalJson("igloo_crumbs", {}),
     ...getIglooCrumbs(),
 
-    ...createEmptyObjectVar("floor_crumbs"),
+    ...defineLocal("floor_crumbs", newObject()),
     ...getFloorCrumbs(),
     
-    ...createEmptyObjectVar("room_crumbs"),
+    ...defineLocal("room_crumbs", newObject()),
     ...getRoomCrumbs(d.getRoomsMusic(m.getMusic()), d.getRoomsMember()),
 
-    ...createEmptyObjectVar("puffle_crumbs"),
+    ...defineLocal("puffle_crumbs", newObject()),
     ...getPuffleCrumbs(),
 
-    ...createEmptyObjectVar("furniture_crumbs"),
+    ...defineLocal("furniture_crumbs", newObject()),
     ...defineLocal("TYPE_ROOM", getMemberChain("shell", "FURNITURE_TYPE_ROOM")),
     ...defineLocal("TYPE_WALL", getMemberChain("shell", "FURNITURE_TYPE_WALL")),
     ...defineLocal("TYPE_FLOOR", getMemberChain("shell", "FURNITURE_TYPE_FLOOR")),
@@ -269,7 +257,7 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager, m: ModManage
 
     ...getFurnitureCrumbs(d.getFurniturePrices()),
 
-    ...createEmptyObjectVar("paper_crumbs"),
+    ...defineLocal("paper_crumbs", newObject()),
     ...defineLocal("COLOUR", getMemberChain("shell", "INVENTORY_TYPE_COLOUR")),
     ...defineLocal("HEAD", getMemberChain("shell", "INVENTORY_TYPE_HEAD")),
     ...defineLocal("FACE", getMemberChain("shell", "INVENTORY_TYPE_FACE")),
@@ -298,7 +286,7 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager, m: ModManage
 
     ...getPaperCrumbs(d),
 
-    ...createEmptyObjectVar("player_colours"),
+    ...defineLocal("player_colours", newObject()),
     ...applyJsonToObject("player_colours", {
       0: "0x003366",
       1: "0x003366",
@@ -318,20 +306,20 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager, m: ModManage
       15: "0x02A797"
     }),
 
-    ...createEmptyObjectVar("frame_hacks"),
+    ...defineLocal("frame_hacks", newObject()),
     ...getFrameHacks(),
 
-    ...createEmptyObjectVar("blocked_prefixes", "Array"),
-    ...["sensei", "room_", "map"].flatMap(v => callMethod(addVarToStack("blocked_prefixes"), "push", true, createJsonDeclaration(v))),
+    ...defineLocal("blocked_prefixes", newObject("Array")),
+    ...["sensei", "room_", "map"].flatMap(v => callMethod(getVar("blocked_prefixes"), "push", true, createJsonDeclaration(v))),
 
-    ...createEmptyObjectVar("blocked_suffixes", "Array"),
-    ...createEmptyObjectVar("blocked_overrides", "Array"),
-    ...callMethod(addVarToStack("blocked_overrides"), "push", true, createJsonDeclaration("room_dojo")),
+    ...defineLocal("blocked_suffixes", newObject("Array")),
+    ...defineLocal("blocked_overrides", newObject("Array")),
+    ...callMethod(getVar("blocked_overrides"), "push", true, createJsonDeclaration("room_dojo")),
 
-    ...createEmptyObjectVar("global_path"),
+    ...defineLocal("global_path", newObject()),
     ...getGlobalPath(d.getGlobalPaths(), d.useCompositePaths()),
 
-    ...createEmptyObjectVar("mascot_options"),
+    ...defineLocal("mascot_options", newObject()),
     ...applyJsonToObject("mascot_options", { migrator_active: migrator }),
 
     ...defineLocalJson("rockhopper", { name: "Rockhopper", gift_id: 959 }),
@@ -344,22 +332,22 @@ export function getGlobalCrumbsSwf(d: GameData, s: SettingsManager, m: ModManage
     ...defineLocalJson("stompinBob", { name: "Stompin Bob", gift_id: 996 }),
     ...defineLocalJson("sensei", { name: "Sensei", gift_id: 9036 }),
     
-    ...createEmptyObjectVar("mascot_crumbs"),
+    ...defineLocal("mascot_crumbs", newObject()),
     ...applyJsonToObject("mascot_crumbs", {
-      1: wrapPCode(addVarToStack("rockhopper")),
-      2: wrapPCode(addVarToStack("auntArctic")),
-      3: wrapPCode(addVarToStack("cadence")),
-      4: wrapPCode(addVarToStack("gary")),
-      5: wrapPCode(addVarToStack("franky")),
-      6: wrapPCode(addVarToStack("peteyK")),
-      7: wrapPCode(addVarToStack("gBilly")),
-      8: wrapPCode(addVarToStack("stompinBob")),
-      9: wrapPCode(addVarToStack("sensei"))
+      1: wrapPCode(getVar("rockhopper")),
+      2: wrapPCode(getVar("auntArctic")),
+      3: wrapPCode(getVar("cadence")),
+      4: wrapPCode(getVar("gary")),
+      5: wrapPCode(getVar("franky")),
+      6: wrapPCode(getVar("peteyK")),
+      7: wrapPCode(getVar("gBilly")),
+      8: wrapPCode(getVar("stompinBob")),
+      9: wrapPCode(getVar("sensei"))
     }),
 
     ...getServerCrumbs(s.targetIP, s.loginPort, s.worldPort, d.isVanillaEngine()),
 
-    ...createEmptyObjectVar("game_crumbs"),
+    ...defineLocal("game_crumbs", newObject()),
     ...getGameCrumbs(d.getGamesMusic())
   ];
 
