@@ -7,6 +7,7 @@ interface JsonLikeObj {
   [x: string | number]: PCodeElement;
 };
 
+export type PCodeRep = Array<[Action, ...Array<string | number | boolean>] | Action>;
 type PCodeTag = '##PCODE##';
 type PCodeWrap = [PCodeTag, PCodeRep];
 /** A legal unit of a value in a JSON Object inside ActionScript represented as PCode or a primitive type */
@@ -76,17 +77,13 @@ function addObject<T extends {}>(code: PCodeRep, obj: T): void {
   );
 }
 
+/** Creates a PCode representation of a primitive value (string, number, boolean) or an array/object. */
 export function createJsonDeclaration(obj: PCodeElement): PCodeRep {
   const code: PCodeRep = [];
 
   addElement(code, obj);
 
   return code;
-}
-
-/** Same as `defineLocal`, but `obj` is put through `createJsonDeclaration`. To use PCode as a value in the obj, use wrapPCode */
-export function defineLocalJson(name: string, obj: PCodeElement): PCodeRep {
-  return defineLocal(name, createJsonDeclaration(obj));
 }
 
 /**
@@ -105,43 +102,43 @@ export function defineLocalJson(name: string, obj: PCodeElement): PCodeRep {
 export function applyJsonToObject(name: string, obj: JsonLikeObj): PCodeRep {
   const code: PCodeRep = [];
 
+  const v = getVar(name);
   iterateEntries(obj, (key, value) => {
-    code.push(
-      [Action.Push, name],
-      Action.GetVariable,
-      [Action.Push, tryToNumber(key)],
-      ...createJsonDeclaration(value),
-      Action.SetMember
-    )
+    code.push(...setMember(v, tryToNumber(key), createJsonDeclaration(value)));
   });
 
   return code;
 }
 
-export type PCodeRep = Array<[Action, ...Array<string | number | boolean>] | Action>;
-
-/** Equiv to `var name = new Object();`, or whatever `cls` is instead of "Object". */
-export const createEmptyObjectVar = (name: string, cls: string = "Object"): PCodeRep => {
+/**
+ * Equivalent to `new cls();`
+ * @param cls - Name of the class. Default is `Object`
+ * @param args - Args to give the constructor
+ */
+export const newObject = (cls: string = "Object", ...args: PCodeRep[]): PCodeRep => {
   return [
-    [Action.Push, name],
-    [Action.Push, 0],
-    [Action.Push, cls],
-    Action.NewObject,
-    Action.DefineLocal
+    ...[...args].reverse().flat() as PCodeRep,
+    [Action.Push, args.length, cls],
+    Action.NewObject
   ];
 }
 
-/** Add var of a name to the AVM1 stack */
-export const addVarToStack = (name: string): PCodeRep => {
+/** Pushes `name` to the stack, then gets it as a variable with `GetVariable`. */
+export const getVar = (name: string): PCodeRep => {
   return [
     [Action.Push, name],
     Action.GetVariable
   ];
 }
 
+/** Add multiple values together with `+` */
+export const add2 = (...values: PCodeRep[]): PCodeRep => {
+  return values.map((v, i) => i > 0 ? [...v, Action.Add2] : [...v]).flat();
+}
+
 /**
- * Similar to `addVarToStack`, but gets a whole chain of variables/members.
- * e.g. `getMemberChain("foo", "bar")` returns `foo.bar` in ActionScript
+ * Similar to `getVar`, but gets a whole chain of variables/members.
+ * e.g. `getMemberChain("foo", "bar")` is `foo.bar` in ActionScript
  */
 export const getMemberChain = (...names: Array<string | number>): PCodeRep => {
   const code: PCodeRep = [];
@@ -157,9 +154,9 @@ export const getMemberChain = (...names: Array<string | number>): PCodeRep => {
 }
 
 /**
- * Equiv to a member assingment `name.member = something` or `name[1] = something`
- * @param v - PCode that pushes a vairable to stack
- * @param member - Name of member that will be set (eg a property of object or index of array)
+ * Equivalent to a member assignment `name.member = something` or `name[1] = something`
+ * @param v - The PCode for the variable on which the member will be set
+ * @param member - Name of member that will be set (e.g. a property of object or index of array)
  * @param value - PCode that pushes the value to the stack, which will be assigned to member
  */
 export const setMember = (v: PCodeRep, member: number | string, value: PCodeRep): PCodeRep => {
@@ -171,7 +168,7 @@ export const setMember = (v: PCodeRep, member: number | string, value: PCodeRep)
   ];
 }
 
-/** Equivalent of `var name = ...` */
+/** Equivalent to `var name = ...` */
 export function defineLocal(name: string, v: PCodeRep): PCodeRep {
   return [
     [Action.Push, name],
@@ -180,18 +177,23 @@ export function defineLocal(name: string, v: PCodeRep): PCodeRep {
   ];
 }
 
+/** Same as `defineLocal`, but `obj` is put through `createJsonDeclaration`. To use PCode as a value in the obj, use wrapPCode */
+export function defineLocalJson(name: string, obj: PCodeElement): PCodeRep {
+  return defineLocal(name, createJsonDeclaration(obj));
+}
+
 /**
  * Call a method or function.
- * @param v - PCode representation of what value to call the method on. Make this null to invoke `CallFunction` instead of `CallMethod`.
+ * @param v - PCode representation of what value to call the method on.
+ * Make this null to invoke `CallFunction` instead of `CallMethod` (calling a local function instead of an object method).
  * @param name - The name of the method
  * @param pop - Whether to append `Action.Pop` at the end of the returned PCode.
  * Make this true when calling a method on its own, and false when used with `DefineLocal`.
  * @param args - The args to give to the method
- * @returns The PCode
  */
-export const callMethod = (v: PCodeRep | null, name: string, pop: boolean = true, ...args: Array<PCodeRep>): PCodeRep => {
+export const callMethod = (v: PCodeRep | null, name: string, pop: boolean = true, ...args: PCodeRep[]): PCodeRep => {
   const code: PCodeRep = [
-    ...[...args].reverse().flat() as PCodeRep,
+    ...[...args].reverse().flat(),
     [Action.Push, args.length]
   ];
 
@@ -216,10 +218,33 @@ export const callMethod = (v: PCodeRep | null, name: string, pop: boolean = true
   return code;
 }
 
+/**
+ * Combines any consecutive `Push` actions in PCode to be in one line.
+ * e.g. `[Action.Push, "a"], [Action.Push, "b"]` becomes `[Action.Push, "a", "b"]`.
+ * This helps reduce the file size of the output SWF.
+ */
+function combinePushActions(code: PCodeRep): PCodeRep {
+  const combined: PCodeRep = [];
+
+  code.forEach(line => {
+    const previous = combined[combined.length - 1];
+    if (
+      typeof line !== 'number' && line[0] === Action.Push &&
+      typeof previous !== 'number' && previous?.[0] === Action.Push
+    ) {
+      combined[combined.length - 1] = [Action.Push, ...previous.slice(1), ...line.slice(1)];
+    } else {
+      combined.push(line);
+    }
+  });
+
+  return combined;
+}
+
 export function createBytecode(code: PCodeRep): Uint8Array {
   const numbers: number[] = [];
 
-  code.forEach(line => {
+  combinePushActions(code).forEach(line => {
     if (typeof line === 'number') {
       numbers.push(line);
     } else {

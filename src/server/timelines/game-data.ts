@@ -81,7 +81,7 @@ type GameState = {
   iglooVersion: number;
   startscreens: string[];
   worldStamps: WorldStamp[];
-  gameStrings: Map<string, string>;
+  langStrings: Map<string, string>;
   iglooMusic: IglooList | null;
   egg: number;
   activeFeatures: string | null;
@@ -151,7 +151,7 @@ function getFreshState(): GameState {
     iglooVersion: 0,
     startscreens: [],
     worldStamps: [],
-    gameStrings: new Map<string, string>(),
+    langStrings: new Map<string, string>(),
     iglooMusic: null,
     egg: 0,
     activeFeatures: null,
@@ -696,8 +696,8 @@ export class GameData {
       'worldStamps': (v) => {
         v.forEach(e => this.state.worldStamps.push(e));
       },
-      'gameStrings': (v) => {
-        this.state.gameStrings = new Map(Object.entries(v));
+      'langStrings': (v) => {
+        this.state.langStrings = new Map(Object.entries(v));
       },
       'activeFeatures': (v) => {
         this.state.activeFeatures = v;
@@ -954,8 +954,8 @@ export class GameData {
     return this.state.worldStamps;
   }
 
-  public getGameStrings() {
-    return this.state.gameStrings;
+  public getLangStrings() {
+    return this.state.langStrings;
   }
 
   public getIglooList() {

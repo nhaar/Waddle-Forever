@@ -2369,7 +2369,7 @@ export const UPDATES_2012: Update[] = [
         },
         partyIconFile: 'archives:HalloweenParty2012ScavengerHuntIcon.swf',
         mapNote: 'archives:Halloween2012Party_map_note.swf',
-        gameStrings: {
+        langStrings: {
           'scavenger_continue': 'CONTINUE'
         }
       }

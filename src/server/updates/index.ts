@@ -199,8 +199,12 @@ export type CPUpdate = {
 
   localChanges?: LocalChanges;
 
-  // only EN support currently
-  gameStrings?: Record<string, string>;
+  /**
+   * For Post-CPIP, defines strings on the `lang` object in local crumbs.
+   * For modern era, defines strings in game_strings.json.
+   * Only EN support currently
+   */
+  langStrings?: Record<string, string>;
 
   globalChanges?: GlobalChanges;
 

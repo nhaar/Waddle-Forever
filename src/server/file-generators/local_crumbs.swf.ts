@@ -1,5 +1,5 @@
 import { iterateEntries } from "@common/utils";
-import { Action, addVarToStack, createBytecode, createEmptyObjectVar, createJsonDeclaration, applyJsonToObject, PCodeRep, callMethod, defineLocal, defineLocalJson, wrapPCode } from "@common/flash/avm1";
+import { Action, getVar, createBytecode, newObject, createJsonDeclaration, applyJsonToObject, PCodeRep, callMethod, defineLocal, defineLocalJson, wrapPCode, getMemberChain, add2, setMember } from "@common/flash/avm1";
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { LOCAL_PATHS, makeLocalPathsComposite } from "../game-data/local-paths";
 import { SAFE_MESSAGES } from "../game-data/safe-messages";
@@ -28,26 +28,17 @@ function getLocalPaths(paths: Map<string, string>, useCompositePaths: boolean) {
     const compositePaths = makeLocalPathsComposite({ ...LOCAL_PATHS, ...newPaths });
     iterateEntries(compositePaths, (key, value) => {
       const [base, path] = value;
-      code.push(
-        ...addVarToStack("local_paths"),
-        [Action.Push, key, base],
-        Action.GetVariable,
-        [Action.Push, path],
-        Action.Add2,
-        Action.SetMember
-      )
+      code.push(...setMember(getVar("local_paths"), key, add2(
+        getVar(base),
+        createJsonDeclaration(path)
+      )));
     });
   } else {
-    [...Object.entries(LOCAL_PATHS), ...paths.entries()].forEach(([key, path]) => {
-      if (path !== null && path !== undefined) {
-        code.push(
-          ...addVarToStack("local_paths"),
-          [Action.Push, key],
-          [Action.Push, path],
-          Action.SetMember
-        );
-      }
-    });
+    code.push(
+      ...applyJsonToObject("local_paths", Object.fromEntries(
+        [...Object.entries(LOCAL_PATHS), ...paths.entries()]
+      ))
+    );
   }
 
   return code;
@@ -61,12 +52,9 @@ function getLinkPaths(isNewShell2009: boolean) {
 
   if (useAffiliateLinks){
     code.push(
-      ...createEmptyObjectVar(linkPaths),
+      ...defineLocal(linkPaths, newObject()),
       // miniclip paths would go here (see Apr 2009 local crumbs)
-      ...addVarToStack("link_paths"),
-      [Action.Push, 0],
-      ...addVarToStack(linkPaths),
-      Action.SetMember
+      ...setMember(getVar("link_paths"), 0, getVar(linkPaths))
     )
   }
 
@@ -128,8 +116,11 @@ function getHuntCrumbs(hunt: HuntCrumbs | null) {
   return code;
 }
 
-function getLang(): PCodeRep {
-  return applyJsonToObject("lang", LANG);
+function getLang(d: GameData): PCodeRep {
+  return applyJsonToObject("lang", {
+    ...LANG,
+    ...Object.fromEntries(d.getLangStrings().entries())
+  });
 }
 
 function getFurnitureCrumbs() {
@@ -167,10 +158,8 @@ function getLangError(): PCodeRep {
 
   iterateEntries(ERROR_LANG, (key, lang) => {
     code.push(
-      ...addVarToStack("error_lang"),
-      ...addVarToStack("shell"),
-      [Action.Push, key],
-      Action.GetMember,
+      ...getVar("error_lang"),
+      ...getMemberChain("shell", key),
       [Action.Push, lang],
       Action.SetMember
     );
@@ -188,22 +177,22 @@ const getPostcardCrumbs = (): PCodeRep => {
       const postcards = toUse.filter(p => p.category === category);
       const varName = `category_0${category}`;
       return [
-        ...createEmptyObjectVar(varName),
+        ...defineLocal(varName, newObject()),
         ...applyJsonToObject(varName, Object.fromEntries(postcards.map(postcard => {
           return [postcard.id, { subject: postcard.subject, in_catalog: true }]
         })))
       ];
     }),
-    createEmptyObjectVar('pc_crumbs'),
+    defineLocal('pc_crumbs', newObject()),
     applyJsonToObject('pc_crumbs', {
-      'EPF': wrapPCode(addVarToStack('category_01')),
-      'Featured Postcards': wrapPCode(addVarToStack('category_02')),
-      'Friendship': wrapPCode(addVarToStack('category_03')),
-      'Puffles': wrapPCode(addVarToStack('category_04')),
-      'Party': wrapPCode(addVarToStack('category_05')),
-      'Games': wrapPCode(addVarToStack('category_06')),
-      'Rooms': wrapPCode(addVarToStack('category_07')),
-      'From us': wrapPCode(addVarToStack('category_08')),
+      'EPF': wrapPCode(getVar('category_01')),
+      'Featured Postcards': wrapPCode(getVar('category_02')),
+      'Friendship': wrapPCode(getVar('category_03')),
+      'Puffles': wrapPCode(getVar('category_04')),
+      'Party': wrapPCode(getVar('category_05')),
+      'Games': wrapPCode(getVar('category_06')),
+      'Rooms': wrapPCode(getVar('category_07')),
+      'From us': wrapPCode(getVar('category_08')),
     })
   ].flat();
 }
@@ -242,33 +231,20 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
   ];
 
   const code: PCodeRep = [
-    ...defineLocal("shell", callMethod(addVarToStack("_global"), "getCurrentShell", false)),
-    ...defineLocal("root_path", callMethod(addVarToStack("shell"), "getRootPath", false)),
-    ...defineLocal("language_folder", callMethod(addVarToStack("shell"), "getLocalizedFolder", false)),
-    ...defineLocal("local_content", [
-      ...addVarToStack("root_path"),
-      [Action.Push, "content/local/"],
-      Action.Add2,
-      ...addVarToStack("language_folder"),
-      Action.Add2
-    ]),
+    ...defineLocal("shell", callMethod(getVar("_global"), "getCurrentShell", false)),
+    ...defineLocal("root_path", callMethod(getVar("shell"), "getRootPath", false)),
+    ...defineLocal("language_folder", callMethod(getVar("shell"), "getLocalizedFolder", false)),
+    ...defineLocal("local_content", add2(
+      getVar("root_path"),
+      createJsonDeclaration("content/local/"),
+      getVar("language_folder")
+    )),
 
-    ...defineLocal("website_content", addVarToStack("root_path")),
+    ...defineLocal("website_content", getVar("root_path")),
 
-    [Action.Push, "blocked_prefixes"],
-    [Action.Push, 0],
-    Action.InitArray,
-    Action.DefineLocal,
-
-    [Action.Push, "blocked_suffixes"],
-    [Action.Push, 0],
-    Action.InitArray,
-    Action.DefineLocal,
-
-    [Action.Push, "blocked_overrides"],
-    [Action.Push, 0],
-    Action.InitArray,
-    Action.DefineLocal,
+    ...defineLocalJson("blocked_prefixes", []),
+    ...defineLocalJson("blocked_suffixes", []),
+    ...defineLocalJson("blocked_overrides", []),
 
     ...[
       "sensei", "room_", "map", "login", "igloo",
@@ -277,35 +253,28 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
       "firesensi", "fire", "hyrdo", "pizzatron", "dancing",
       "library", "fish", "beans", "jetpack", "thinice",
       "mixmaster", "aqua", "roundup", "astro"
-    ].flatMap(v => callMethod(addVarToStack("blocked_prefixes"), "push", true, createJsonDeclaration(v))),
-    ...callMethod(addVarToStack("blocked_suffixes"), "push", true, createJsonDeclaration("_catalogue")),
+    ].flatMap(v => callMethod(getVar("blocked_prefixes"), "push", true, createJsonDeclaration(v))),
+    ...callMethod(getVar("blocked_suffixes"), "push", true, createJsonDeclaration("_catalogue")),
     
-    ...createEmptyObjectVar("local_paths"),
+    ...defineLocal("local_paths", newObject()),
     ...getLocalPaths(d.getLocalPaths(), d.useCompositePaths()),
   
-    ...createEmptyObjectVar("link_paths"),
+    ...defineLocal("link_paths", newObject()),
     ...getLinkPaths(d.isNewShell2009()),
 
-    ...createEmptyObjectVar("lang"),
-    ...createEmptyObjectVar("error_lang"),
+    ...defineLocal("lang", newObject()),
+    ...defineLocal("error_lang", newObject()),
     ...getLangError(),
-    ...getLang(),
+    ...getLang(d),
 
-    [Action.Push, "quick_messages"],
-    [Action.Push, "Ok"],
-    [Action.Push, "No"],
-    [Action.Push, "Yes"],
-    [Action.Push, "Bye"],
-    [Action.Push, "Hello"],
-    [Action.Push, 5],
-    [Action.Push, "Array"],
-    Action.NewObject,
-    Action.DefineLocal,
+    ...defineLocal("quick_messages", newObject("Array",
+      ...["Ok", "No", "Yes", "Bye", "Hello"].map(createJsonDeclaration)
+    )),
 
     ...defineLocalJson("safe_messages", SAFE_MESSAGES),
 
-    ...createEmptyObjectVar("treveresed_safe_message_obj"),
-    ...callMethod(null, "treverseMessages", true, addVarToStack("safe_messages")),
+    ...defineLocal("treveresed_safe_message_obj", newObject()),
+    ...callMethod(null, "treverseMessages", true, getVar("safe_messages")),
 
     ...defineLocalJson("bandScript1", {
       category: "Band Script 1",
@@ -327,40 +296,39 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
     ...defineLocalJson("mascot_messages", MASCOT_MESSAGES),
     ...defineLocalJson("tour_guide_messages", TOUR_GUIDE_MESSAGES),
 
-    [Action.Push, "jokes"],
-    [Action.Push, "What do you call a fish with no eyes?|FSH"],
-    [Action.Push, "Why do penguins eat fish?|Because donuts get soggy before they can catch them"],
-    [Action.Push, "What lies at the bottom of the sea and shakes?|A nervous wreck!"],
-    [Action.Push, "Why is it so easy to weigh fish?|They have their own scales"],
-    [Action.Push, "What do Penguins sing on a birthday?|Freeze a jolly good fellow"],
-    [Action.Push, "How do you communicate with a fish?|You drop him a line"],
-    [Action.Push, "What is a penguin's favourite party game?|Sardines"],
-    [Action.Push, "Why are igloos round?|So that penguins can't hide in the corners"],
-    [Action.Push, "How does a penguin build its house?|Igloos it together"],
-    [Action.Push, "Why are penguins so popular on the Internet?|Because they have Web feet!"],
-    [Action.Push, "What do you call a penguin in the desert?|Lost"],
-    [Action.Push, "Why don´t you see Penguins in Britain?|Because they´re afraid of Wales"],
-    [Action.Push, "What´s black and white and goes round and round?|A penguin in a revolving door"],
-    [Action.Push, "What bird can write underwater?|A ball point PENguin!"],
-    [Action.Push, "What's the best way to catch a fish?|Have someone throw it at you"],
-    [Action.Push, 15],
-    [Action.Push, "Array"],
-    Action.NewObject,
-    Action.DefineLocal,
+    ...defineLocal("jokes", newObject("Array",
+      ...[
+        "What do you call a fish with no eyes?|FSH",
+        "Why do penguins eat fish?|Because donuts get soggy before they can catch them",
+        "What lies at the bottom of the sea and shakes?|A nervous wreck!",
+        "Why is it so easy to weigh fish?|They have their own scales",
+        "What do Penguins sing on a birthday?|Freeze a jolly good fellow",
+        "How do you communicate with a fish?|You drop him a line",
+        "What is a penguin's favourite party game?|Sardines",
+        "Why are igloos round?|So that penguins can't hide in the corners",
+        "How does a penguin build its house?|Igloos it together",
+        "Why are penguins so popular on the Internet?|Because they have Web feet!",
+        "What do you call a penguin in the desert?|Lost",
+        "Why don´t you see Penguins in Britain?|Because they´re afraid of Wales",
+        "What´s black and white and goes round and round?|A penguin in a revolving door",
+        "What bird can write underwater?|A ball point PENguin!",
+        "What's the best way to catch a fish?|Have someone throw it at you"
+      ].map(createJsonDeclaration)
+    )),
     
-    ...createEmptyObjectVar("furniture_crumbs"),
+    ...defineLocal("furniture_crumbs", newObject()),
     ...getFurnitureCrumbs(),
     
-    ...createEmptyObjectVar("floor_crumbs"),
+    ...defineLocal("floor_crumbs", newObject()),
     ...getFloorCrumbs(),
 
-    ...createEmptyObjectVar("paper_crumbs"),
+    ...defineLocal("paper_crumbs", newObject()),
     ...getPaperCrumbs(d),
 
-    ...createEmptyObjectVar("igloo_crumbs"),
+    ...defineLocal("igloo_crumbs", newObject()),
     ...getIglooCrumbs(),
 
-    ...createEmptyObjectVar("puffle_crumbs"),
+    ...defineLocal("puffle_crumbs", newObject()),
     ...applyJsonToObject("puffle_crumbs", {
       0: { name: "Blue" },
       1: { name: "Pink" },
@@ -375,7 +343,7 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
 
     ...getPostcardCrumbs(),
 
-    ...createEmptyObjectVar("hunt_crumbs", "Array"),
+    ...defineLocal("hunt_crumbs", newObject("Array")),
     ...applyJsonToObject("hunt_crumbs", {
       0: {name:"cave",is_found:false,is_required:true},
       1: {name:"cove",is_found:false,is_required:true},
@@ -387,7 +355,7 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
       7: {name:"forest",is_found:false,is_required:true}
     }),
 
-    ...createEmptyObjectVar("achievement_crumbs"),
+    ...defineLocal("achievement_crumbs", newObject()),
     ...applyJsonToObject("achievement_crumbs", {
       0: [{id:0,active:false,name:"start_panel"},{id:1,active:false,name:"light_01"}],
       1: [{id:0,active:false,name:"light_01"},{id:1,active:false,name:"light_02"},{id:2,active:false,name:"light_03"}],
@@ -403,7 +371,7 @@ export function getLocalCrumbsSwf(d: GameData): Buffer {
       11: [{id:0,active:false,name:"laps"}]
     }),
 
-    ...createEmptyObjectVar("servers"),
+    ...defineLocal("servers", newObject()),
     ...getServerCrumbs(),
 
     ...getStageScript(d.getStageScript()),

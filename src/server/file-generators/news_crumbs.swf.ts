@@ -1,15 +1,10 @@
 import { emitCrumbSwf } from "@common/flash/emitter";
 import { monthNames } from "@common/utils";
-import { Action, createBytecode, PCodeRep } from "@common/flash/avm1";
+import { add2, callMethod, createBytecode, createJsonDeclaration, defineLocal, getVar, newObject, PCodeRep, setMember } from "@common/flash/avm1";
 import { GameData, getNewspaperDate } from "@server/timelines/game-data";
 
 function generateNewsPathAssign(n: number, year: number, month: number, day: number, as3: boolean, compositePaths: boolean): PCodeRep {
-  let varname = ''
-  if (n === -1) {
-    varname = 'current_news'
-  } else {
-    varname = `old_news${n}`
-  }
+  const varname = n === -1 ? 'current_news' : `old_news${n}`;
 
   const minifiedDate = getNewspaperDate(year, month, day);
 
@@ -22,22 +17,13 @@ function generateNewsPathAssign(n: number, year: number, month: number, day: num
   );
 
   if (compositePaths) {
-    return [
-      [Action.Push, "news_paths"],
-      Action.GetVariable,
-      [Action.Push, varname, 'local_content'],
-      Action.GetVariable,
-      [Action.Push, `/news/${newspaperPath}`],
-      Action.Add2,
-      Action.SetMember
-    ]
+    return setMember(getVar("news_paths"), varname, add2(
+      getVar('local_content'),
+      createJsonDeclaration(`/news/${newspaperPath}`)
+    ))
   }
-  return [
-    [Action.Push, "news_paths"],
-    Action.GetVariable,
-    [Action.Push, varname, `news/${newspaperPath}`],
-    Action.SetMember,
-  ]
+
+  return setMember(getVar("news_paths"), varname, createJsonDeclaration(`news/${newspaperPath}`))
 }
 
 export function getFullDate(year: number, month: number, day: number): string {
@@ -46,13 +32,12 @@ export function getFullDate(year: number, month: number, day: number): string {
 }
 
 function generateNewsArrayAdd(index: number, issue: number, year: number, month: number, day: number, title: string): PCodeRep {
-  return [
-    [Action.Push, "news_crumbs"],
-    Action.GetVariable,
-    [Action.Push, index, "key", `old_news${index}`, "issue", `Issue:${issue}`, "date", getFullDate(year, month, day), "title", title, 4],
-    Action.InitObject,
-    Action.SetMember
-  ]
+  return setMember(getVar("news_crumbs"), index, createJsonDeclaration({
+    key: `old_news${index}`, 
+    issue: `Issue:${issue}`,
+    date: getFullDate(year, month, day),
+    title
+  }))
 }
 
 export function getNewsCrumbsSwf(d: GameData): Buffer {
@@ -61,51 +46,28 @@ export function getNewsCrumbsSwf(d: GameData): Buffer {
   const useCompositePaths = d.useCompositePaths();
 
   const code: PCodeRep = [
-    [Action.Push, "SHELL", 0, "_global"],
-    Action.GetVariable,
-    [Action.Push, "getCurrentShell"],
-    Action.CallMethod,
-    Action.DefineLocal,
-    [Action.Push, "root_path", 0, "SHELL"],
-    Action.GetVariable,
-    [Action.Push, "getRootPath"],
-    Action.CallMethod,
-    Action.DefineLocal,
-    [Action.Push, "language_folder", 0, "SHELL"],
-    Action.GetVariable,
-    [Action.Push, "getLocalizedFolder"],
-    Action.CallMethod,
-    Action.DefineLocal
+    ...defineLocal("SHELL", callMethod(getVar("_global"), "getCurrentShell", false)),
+    ...defineLocal("root_path", callMethod(getVar("SHELL"), "getRootPath", false)),
+    ...defineLocal("language_folder", callMethod(getVar("SHELL"), "getLocalizedFolder", false))
   ];
 
   if (useCompositePaths) {
     code.push(
-      [Action.Push, "local_content", "root_path"],
-      Action.GetVariable,
-      [Action.Push, "content/local/"],
-      Action.Add2,
-      [Action.Push, "language_folder"],
-      Action.GetVariable,
-      Action.Add2,
-      Action.DefineLocal
-    );
+      ...defineLocal("local_content", add2(
+        getVar("root_path"),
+        createJsonDeclaration("content/local/"),
+        getVar("language_folder"),
+      ))
+    )
   }
 
-  code.push(
-    [Action.Push, "news_paths", 0, "Object"],
-    Action.NewObject,
-    Action.DefineLocal
-  );
+  code.push(...defineLocal("news_paths", newObject()));
 
   for (let i = 0; i < issues.length; i++) {
     const newspaper = issues[i];
     code.push(...generateNewsPathAssign(i - 1, newspaper.year, newspaper.month, newspaper.day, newspaper.as3, useCompositePaths))
   }
-  code.push(
-    [Action.Push, "news_crumbs", 0, "Array"],
-    Action.NewObject,
-    Action.DefineLocal
-  );
+  code.push(...defineLocal("news_crumbs", newObject("Array")));
   for (let i = 1; i < issues.length; i++) {
     const newspaper = issues[i];
     code.push(...generateNewsArrayAdd(i - 1, Number(newspaper.edition), newspaper.year, newspaper.month, newspaper.day, newspaper.title));
